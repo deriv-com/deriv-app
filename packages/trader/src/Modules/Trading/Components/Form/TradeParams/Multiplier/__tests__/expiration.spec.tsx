@@ -7,6 +7,11 @@ import TraderProviders from '../../../../../../../trader-providers';
 
 const expiry_date = '28 Nov 2023 at 11:04';
 
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    getDateFromNow: jest.fn(() => '28 Nov 2023'),
+}));
+
 describe('<Expiration />', () => {
     let default_mocked_store: ReturnType<typeof mockStore>,
         default_mocked_props: React.ComponentProps<typeof Expiration>;

@@ -33,7 +33,7 @@ describe('<StopLoss />', () => {
         };
     });
 
-    const mockExpiration = () => {
+    const mockStopLoss = () => {
         return (
             <TraderProviders store={default_mocked_store}>
                 <StopLoss {...default_mocked_props} />
@@ -42,21 +42,21 @@ describe('<StopLoss />', () => {
     };
 
     it('should render Stop Loss input with checkbox', () => {
-        render(mockExpiration());
+        render(mockStopLoss());
 
         expect(screen.getByText('Stop loss')).toBeInTheDocument();
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
         expect(screen.getByRole('textbox')).toBeInTheDocument();
     });
     it('should call onChangeMultiple if user clicked on checkbox', () => {
-        render(mockExpiration());
+        render(mockStopLoss());
 
         userEvent.click(screen.getByRole('checkbox'));
 
         expect(default_mocked_props.onChangeMultiple).toBeCalled();
     });
     it('should call onChange if user changed value in input', () => {
-        render(mockExpiration());
+        render(mockStopLoss());
 
         userEvent.type(screen.getByRole('textbox'), '20');
 
@@ -64,7 +64,7 @@ describe('<StopLoss />', () => {
     });
     it('should should render functioning Stop Loss input with checkbox if props were not passed (backup should work)', () => {
         default_mocked_props = {};
-        render(mockExpiration());
+        render(mockStopLoss());
 
         const check_box = screen.getByRole('checkbox');
         const input = screen.getByRole('textbox');

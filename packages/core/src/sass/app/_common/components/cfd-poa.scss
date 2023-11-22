@@ -1,5 +1,4 @@
 .cfd-proof-of-address {
-
     .account__scrollbars_container--grid-layout {
         @include mobile {
             padding: 2.4rem 1.6rem;
@@ -11,7 +10,7 @@
         background-color: var(--general-main-1) !important;
     }
 
-    &__form{
+    &__form {
         padding: 1.6rem 6rem;
     }
 }

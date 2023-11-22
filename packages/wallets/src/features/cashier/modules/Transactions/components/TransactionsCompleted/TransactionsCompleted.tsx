@@ -3,6 +3,7 @@ import moment from 'moment';
 import { useTransactions } from '@deriv/api';
 import { TSocketRequestPayload } from '@deriv/api/types';
 import { Loader } from '../../../../../../components';
+import { WalletText } from '../../../../../../components/Base';
 import { TransactionsCompletedRow } from '../TransactionsCompletedRow';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
 import { TransactionsTable } from '../TransactionsTable';
@@ -51,9 +52,12 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
             fetchMore={fetchMoreOnBottomReached}
             groupBy={['date']}
             rowGroupRender={transaction => (
-                <p className='wallets-transactions-completed__group-title'>
-                    {transaction.transaction_time && moment.unix(transaction.transaction_time).format('DD MMM YYYY')}
-                </p>
+                <div className='wallets-transactions-completed__group-title'>
+                    <WalletText color='primary' size='2xs'>
+                        {transaction.transaction_time &&
+                            moment.unix(transaction.transaction_time).format('DD MMM YYYY')}
+                    </WalletText>
+                </div>
             )}
             rowRender={transaction => <TransactionsCompletedRow transaction={transaction} />}
         />

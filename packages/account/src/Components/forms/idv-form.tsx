@@ -117,116 +117,127 @@ const IDVForm = ({
     };
 
     return (
-        <React.Fragment>
-            <section className={classNames('idv-form', class_name)}>
-                <div className='details-form'>
-                    <div className='poi-form-on-signup__fields'>
-                        <div
-                            className={classNames('proof-of-identity__container', {
-                                'proof-of-identity__container--idv': hide_hint,
-                            })}
-                        >
-                            <div className={classNames('proof-of-identity__inner-container')}>
-                                <div className='proof-of-identity__fieldset-container'>
-                                    <fieldset className={classNames({ 'proof-of-identity__fieldset': !hide_hint })}>
-                                        <Field name='document_type'>
-                                            {({ field }: FieldProps) => (
-                                                <React.Fragment>
-                                                    <DesktopWrapper>
-                                                        <Autocomplete
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            error={touched.document_type && errors.document_type}
-                                                            autoComplete='off'
-                                                            type='text'
-                                                            label={localize('Choose the document type')}
-                                                            list_items={document_list}
-                                                            value={values.document_type.text}
-                                                            onBlur={(e: { target: HTMLInputElement }) => {
-                                                                handleBlur(e);
-                                                                if (!getDocument(e.target.value)) {
-                                                                    resetDocumentItemSelected();
-                                                                }
-                                                            }}
-                                                            onChange={handleChange}
-                                                            onItemSelection={(item: TDocument) => {
-                                                                if (item.text === 'No results found' || !item.text) {
-                                                                    setSelectedDoc('');
-                                                                    resetDocumentItemSelected();
-                                                                } else {
-                                                                    bindDocumentData(item);
-                                                                }
-                                                            }}
-                                                            required
-                                                        />
-                                                    </DesktopWrapper>
-                                                    <MobileWrapper>
-                                                        <SelectNative
-                                                            {...field}
-                                                            name='document_type'
-                                                            error={
-                                                                touched.document_type &&
-                                                                (errors.document_type as string | undefined)
+        <section className={classNames('idv-form', class_name)}>
+            <div className='details-form'>
+                <div className='poi-form-on-signup__fields'>
+                    <div
+                        className={classNames('proof-of-identity__container', {
+                            'proof-of-identity__container--idv': hide_hint,
+                        })}
+                    >
+                        <div className={classNames('proof-of-identity__inner-container')}>
+                            <div className='proof-of-identity__fieldset-container'>
+                                <fieldset className={classNames({ 'proof-of-identity__fieldset': !hide_hint })}>
+                                    <Field name='document_type'>
+                                        {({ field }: FieldProps) => (
+                                            <React.Fragment>
+                                                <DesktopWrapper>
+                                                    <Autocomplete
+                                                        {...field}
+                                                        data-lpignore='true'
+                                                        error={touched.document_type && errors.document_type}
+                                                        autoComplete='off'
+                                                        type='text'
+                                                        label={localize('Choose the document type')}
+                                                        list_items={document_list}
+                                                        value={values.document_type.text}
+                                                        onBlur={(e: { target: HTMLInputElement }) => {
+                                                            handleBlur(e);
+                                                            if (!getDocument(e.target.value)) {
+                                                                resetDocumentItemSelected();
                                                             }
-                                                            label={localize('Choose the document type')}
-                                                            placeholder={localize('Please select')}
-                                                            list_items={document_list}
-                                                            value={values.document_type.text}
-                                                            onChange={e => {
-                                                                handleChange(e);
-                                                                const selected_document = getDocument(e.target.value);
-                                                                bindDocumentData(selected_document);
-                                                            }}
-                                                            use_text={true}
-                                                            required
-                                                        />
-                                                    </MobileWrapper>
-                                                </React.Fragment>
-                                            )}
-                                        </Field>
-                                    </fieldset>
-                                    {values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.id && (
+                                                        }}
+                                                        onChange={handleChange}
+                                                        onItemSelection={(item: TDocument) => {
+                                                            if (item.text === 'No results found' || !item.text) {
+                                                                setSelectedDoc('');
+                                                                resetDocumentItemSelected();
+                                                            } else {
+                                                                bindDocumentData(item);
+                                                            }
+                                                        }}
+                                                        required
+                                                    />
+                                                </DesktopWrapper>
+                                                <MobileWrapper>
+                                                    <SelectNative
+                                                        {...field}
+                                                        name='document_type'
+                                                        error={
+                                                            touched.document_type &&
+                                                            (errors.document_type as string | undefined)
+                                                        }
+                                                        label={localize('Choose the document type')}
+                                                        placeholder={localize('Please select')}
+                                                        list_items={document_list}
+                                                        value={values.document_type.text}
+                                                        onChange={e => {
+                                                            handleChange(e);
+                                                            const selected_document = getDocument(e.target.value);
+                                                            bindDocumentData(selected_document);
+                                                        }}
+                                                        use_text={true}
+                                                        required
+                                                    />
+                                                </MobileWrapper>
+                                            </React.Fragment>
+                                        )}
+                                    </Field>
+                                </fieldset>
+                                {values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.id && (
+                                    <React.Fragment>
                                         <fieldset
-                                            className={classNames({
+                                            className={classNames('additional-field', {
                                                 'proof-of-identity__fieldset-input': !hide_hint,
                                             })}
                                         >
                                             <Field name='document_number'>
                                                 {({ field }: FieldProps) => (
-                                                    <React.Fragment>
-                                                        <Input
-                                                            {...field}
-                                                            name='document_number'
-                                                            bottom_label={
-                                                                values.document_type &&
-                                                                getExampleFormat(
-                                                                    values.document_type.example_format ?? ''
-                                                                )
+                                                    <Input
+                                                        {...field}
+                                                        name='document_number'
+                                                        bottom_label={
+                                                            values.document_type &&
+                                                            getExampleFormat(values.document_type.example_format ?? '')
+                                                        }
+                                                        disabled={!values.document_type.id}
+                                                        error={
+                                                            (values.document_type.id &&
+                                                                touched.document_number &&
+                                                                errors.document_number) ||
+                                                            errors.error_message
+                                                        }
+                                                        autoComplete='off'
+                                                        placeholder={generatePlaceholderText(selected_doc)}
+                                                        value={values.document_number}
+                                                        onPaste={preventEmptyClipboardPaste}
+                                                        onBlur={handleBlur}
+                                                        onChange={handleChange}
+                                                        onKeyUp={(e: { target: HTMLInputElement }) =>
+                                                            onKeyUp(e, 'document_number')
+                                                        }
+                                                        required
+                                                        label={
+                                                            values.document_type.id &&
+                                                            generatePlaceholderText(selected_doc)
+                                                        }
+                                                    />
+                                                )}
+                                            </Field>
+                                        </fieldset>
+                                        {values.document_type.additional?.display_name && (
+                                            <fieldset className='additional-field'>
+                                                <Field name='document_additional'>
+                                                    {({ field }: FieldProps) => {
+                                                        const additional_document_placeholder = localize(
+                                                            'Enter your {{document_name}}',
+                                                            {
+                                                                document_name:
+                                                                    values.document_type?.additional?.display_name?.toLowerCase() ??
+                                                                    localize('additional document number'),
                                                             }
-                                                            disabled={!values.document_type.id}
-                                                            error={
-                                                                (values.document_type.id &&
-                                                                    touched.document_number &&
-                                                                    errors.document_number) ||
-                                                                errors.error_message
-                                                            }
-                                                            autoComplete='off'
-                                                            placeholder={generatePlaceholderText(selected_doc)}
-                                                            value={values.document_number}
-                                                            onPaste={preventEmptyClipboardPaste}
-                                                            onBlur={handleBlur}
-                                                            onChange={handleChange}
-                                                            onKeyUp={(e: { target: HTMLInputElement }) =>
-                                                                onKeyUp(e, 'document_number')
-                                                            }
-                                                            className='additional-field'
-                                                            required
-                                                            label={
-                                                                values.document_type.id &&
-                                                                generatePlaceholderText(selected_doc)
-                                                            }
-                                                        />
-                                                        {values.document_type.additional?.display_name && (
+                                                        );
+                                                        return (
                                                             <Input
                                                                 {...field}
                                                                 name='document_additional'
@@ -243,7 +254,7 @@ const IDVForm = ({
                                                                     errors.error_message
                                                                 }
                                                                 autoComplete='off'
-                                                                placeholder={`Enter your ${values.document_type.additional?.display_name.toLowerCase()}`}
+                                                                placeholder={additional_document_placeholder}
                                                                 value={values.document_additional}
                                                                 onPaste={preventEmptyClipboardPaste}
                                                                 onBlur={handleBlur}
@@ -253,19 +264,19 @@ const IDVForm = ({
                                                                 }
                                                                 required
                                                             />
-                                                        )}
-                                                    </React.Fragment>
-                                                )}
-                                            </Field>
-                                        </fieldset>
-                                    )}
-                                </div>
+                                                        );
+                                                    }}
+                                                </Field>
+                                            </fieldset>
+                                        )}
+                                    </React.Fragment>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
-        </React.Fragment>
+            </div>
+        </section>
     );
 };
 

@@ -1,13 +1,45 @@
 import React from 'react';
-import TransferForm from './components/TransferForm/TransferForm';
-import { TransferProvider } from './provider';
+import { WalletButton, WalletText } from '../../../../components';
+import type { THooks } from '../../../../types';
+import { TransferForm, TransferReceipt } from './components';
+import { TransferProvider, useTransfer } from './provider';
 
-const Transfer = () => {
+type TProps = {
+    accounts: THooks.TransferAccount[];
+};
+
+const TransferModule: React.FC<TProps> = ({ accounts }) => {
     return (
-        <TransferProvider>
-            <TransferForm />
+        <TransferProvider accounts={accounts}>
+            <Transfer />
         </TransferProvider>
     );
 };
 
-export default Transfer;
+const Transfer: React.FC = () => {
+    const { error, receipt, resetTransfer } = useTransfer();
+
+    //temporary error handling
+    if (error?.error.message)
+        return (
+            <div
+                style={{
+                    alignItems: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '1.6rem',
+                }}
+            >
+                <WalletText as='p' color='error' size='md'>
+                    {error?.error.message}
+                </WalletText>
+                <WalletButton onClick={() => resetTransfer()} text='Reset error' variant='contained' />
+            </div>
+        );
+
+    if (receipt) return <TransferReceipt />;
+
+    return <TransferForm />;
+};
+
+export default TransferModule;

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { WalletButton } from '../../../../../components';
-import WalletsActionScreen from '../../../../../components/WalletsActionScreen/WalletsActionScreen';
+import { WalletButton, WalletsActionScreen } from '../../../../../components';
 import EmailSent from '../../../../../public/images/email-sent.svg';
 import './WithdrawalVerificationSent.scss';
 

@@ -8,7 +8,7 @@ type TFiatOnRampDisclaimer = {
 };
 
 const FiatOnRampDisclaimer: React.FC<TFiatOnRampDisclaimer> = ({ handleDisclaimer }) => {
-    const { data: provider } = useQuery('service_token', {
+    const { data: provider, isLoading } = useQuery('service_token', {
         payload: { referrer: window.location.href, service: 'banxa' },
     });
 
@@ -34,7 +34,7 @@ const FiatOnRampDisclaimer: React.FC<TFiatOnRampDisclaimer> = ({ handleDisclaime
             </WalletText>
             <div className='wallets-fiat-onramp-disclaimer__buttons'>
                 <WalletButton color='white' onClick={handleDisclaimer} size='md' text={'Back'} variant='outlined' />
-                <WalletButton onClick={() => redirectToBanxa()} size='md' text={'Continue'} />
+                <WalletButton isLoading={isLoading} onClick={() => redirectToBanxa()} size='md' text={'Continue'} />
             </div>
         </div>
     );

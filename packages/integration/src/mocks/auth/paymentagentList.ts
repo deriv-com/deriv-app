@@ -1,6 +1,6 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
-export default function mock_paymentagent_list(context: Context) {
+export default function mockPaymentagentList(context: Context) {
     if (
         'paymentagent_list' in context.request &&
         context.request.paymentagent_list === 'th' &&

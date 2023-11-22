@@ -42,4 +42,4 @@ export const API_TOKEN_CARD_DETAILS = [
 export const TOKEN_LIMITS = {
     MIN: 2,
     MAX: 32,
-};
+} as const;

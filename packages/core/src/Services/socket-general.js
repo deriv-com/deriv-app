@@ -12,11 +12,13 @@ let client_store, common_store, gtm_store;
 const BinarySocketGeneral = (() => {
     let session_duration_limit, session_start_time, session_timeout;
 
+    let responseTimeoutErrorTimer = null;
+
     const onDisconnect = () => {
+        clearTimeout(responseTimeoutErrorTimer);
         common_store.setIsSocketOpened(false);
     };
 
-    let responseTimeoutErrorTimer = null;
     const onOpen = is_ready => {
         responseTimeoutErrorTimer = setTimeout(() => {
             const error = new Error('deriv-api: no message received after 30s');

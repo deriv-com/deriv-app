@@ -57,7 +57,7 @@ describe('<Strike />', () => {
         expect(inputField.value).toBe('1');
     });
 
-    it('should display spot and spot dropdown for minutes correctly', () => {
+    it('should display Spot for minutes correctly', () => {
         mocked_store.modules.trade.duration_unit = 'm';
         mocked_store.modules.trade.expiry_type = 'duration';
 
@@ -66,7 +66,7 @@ describe('<Strike />', () => {
         expect(screen.getByText(spot)).toBeInTheDocument();
     });
 
-    it('should display spot and spot dropdown for hours correctly', () => {
+    it('should display Spot for hours correctly', () => {
         mocked_store.modules.trade.duration_unit = 'h';
 
         render(mockStrike(mocked_store));
@@ -74,7 +74,7 @@ describe('<Strike />', () => {
         expect(screen.getByText(spot)).toBeInTheDocument();
     });
 
-    it('should display spot and spot dropdown for days correctly', () => {
+    it('should not display Spot for days', () => {
         mocked_store.modules.trade.duration_unit = 'd';
         mocked_store.modules.trade.expiry_type = 'endtime';
 

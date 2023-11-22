@@ -21,13 +21,19 @@ const BinarySocketGeneral = (() => {
 
     const onOpen = is_ready => {
         responseTimeoutErrorTimer = setTimeout(() => {
+            const expectedResponseTypes = WS?.get?.()?.expect_response_types || {};
+            const pendingResponseTypes = Object.keys(expectedResponseTypes).filter(
+                key => expectedResponseTypes[key].state === 'pending'
+            );
+
             const error = new Error('deriv-api: no message received after 30s');
             error.userId = client_store?.loginid;
-            /* eslint-disable no-console */
+
             window.TrackJS?.console?.error({
                 message: error.message,
                 clientsCountry: client_store?.clients_country,
                 websocketUrl: getSocketURL(),
+                pendingResponseTypes,
             });
         }, 30000);
 

@@ -240,7 +240,18 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, LABEL_DURATION, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_SIZE, SIZE, CHECKBOX_MAX_STAKE, MAX_STAKE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                LABEL_SIZE,
+                SIZE,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
+            ],
         ],
     },
     REVERSE_D_ALEMBERT: {
@@ -251,7 +262,18 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, LABEL_DURATION, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_DALEMBERT_UNIT, UNIT, CHECKBOX_MAX_STAKE, MAX_STAKE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                LABEL_DALEMBERT_UNIT,
+                UNIT,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
+            ],
         ],
     },
     '1_3_2_6': {
@@ -262,7 +284,7 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS],
+            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_LAST_DIGIT_PREDICTION, LAST_DIGIT_PREDICTION],
         ],
     },
 };

@@ -91,26 +91,24 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !!errors.documentNumber
                 );
             case 'manualScreen':
-                if (formValues.selectedManualDocument) {
-                    if (formValues.selectedManualDocument === 'driving-license') {
-                        return (
-                            !formValues.drivingLicenceNumber ||
-                            !formValues.drivingLicenseExpiryDate ||
-                            !formValues.drivingLicenseCardFront ||
-                            !formValues.drivingLicenseCardBack
-                        );
-                    } else if (formValues.selectedManualDocument === 'passport') {
-                        return !formValues.passportNumber || !formValues.passportExpiryDate || !formValues.passportCard;
-                    } else if (formValues.selectedManualDocument === 'identity-card') {
-                        return (
-                            !formValues.identityCardNumber ||
-                            !formValues.identityCardExpiryDate ||
-                            !formValues.identityCardFront ||
-                            !formValues.identityCardBack
-                        );
-                    } else if (formValues.selectedManualDocument === 'nimc-slip') {
-                        return !formValues.nimcNumber || !formValues.nimcCardFront || !formValues.nimcCardBack;
-                    }
+                if (formValues.selectedManualDocument === 'driving-license') {
+                    return (
+                        !formValues.drivingLicenceNumber ||
+                        !formValues.drivingLicenseExpiryDate ||
+                        !formValues.drivingLicenseCardFront ||
+                        !formValues.drivingLicenseCardBack
+                    );
+                } else if (formValues.selectedManualDocument === 'passport') {
+                    return !formValues.passportNumber || !formValues.passportExpiryDate || !formValues.passportCard;
+                } else if (formValues.selectedManualDocument === 'identity-card') {
+                    return (
+                        !formValues.identityCardNumber ||
+                        !formValues.identityCardExpiryDate ||
+                        !formValues.identityCardFront ||
+                        !formValues.identityCardBack
+                    );
+                } else if (formValues.selectedManualDocument === 'nimc-slip') {
+                    return !formValues.nimcNumber || !formValues.nimcCardFront || !formValues.nimcCardBack;
                 }
                 return !formValues.selectedManualDocument;
             case 'selfieScreen':

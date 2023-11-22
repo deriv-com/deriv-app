@@ -56,10 +56,10 @@ const useDocumentUpload = () => {
                 const id = numToUint8Array(res?.document_upload?.upload_id || 0);
                 const type = numToUint8Array(res?.document_upload?.call_type || 0);
 
-                await chunks.forEach(async chunk => {
+                chunks.forEach(chunk => {
                     const size = numToUint8Array(chunk.length);
                     const payload = new Uint8Array([...type, ...id, ...size, ...chunk]);
-                    await activeWebSocket?.send(payload);
+                    activeWebSocket?.send(payload);
                 });
                 setIsDocumentUploaded(true);
             });

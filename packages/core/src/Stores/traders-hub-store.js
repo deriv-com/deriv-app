@@ -18,6 +18,7 @@ export default class TradersHubStore extends BaseStore {
     selected_account_type;
     selected_region;
     is_onboarding_visited = false;
+    is_first_time_visit = true;
     is_failed_verification_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_mt5_notification_modal_visible = false;
@@ -56,6 +57,7 @@ export default class TradersHubStore extends BaseStore {
             is_tour_open: observable,
             modal_data: observable,
             is_onboarding_visited: observable,
+            is_first_time_visit: observable,
             selected_account: observable,
             selected_account_type: observable,
             selected_platform_type: observable,
@@ -104,6 +106,7 @@ export default class TradersHubStore extends BaseStore {
             closeAccountTransferModal: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
             setIsOnboardingVisited: action.bound,
+            setIsFirstTimeVisit: action.bound,
             setMT5NotificationModal: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
             openFailedVerificationModal: action.bound,
@@ -334,6 +337,10 @@ export default class TradersHubStore extends BaseStore {
 
     setIsOnboardingVisited(is_visited) {
         this.is_onboarding_visited = is_visited;
+    }
+
+    setIsFirstTimeVisit(is_first_time) {
+        this.is_first_time_visit = is_first_time;
     }
 
     get is_eu_selected() {

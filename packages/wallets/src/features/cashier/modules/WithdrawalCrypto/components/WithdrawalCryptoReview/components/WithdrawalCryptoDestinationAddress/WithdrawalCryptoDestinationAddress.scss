@@ -12,10 +12,13 @@
         justify-content: space-between;
         gap: 0.8rem;
         padding: 0.8rem;
-
         border-radius: 4px;
-
         background: #f2f3f4;
+
+        & > span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 
     @include mobile {

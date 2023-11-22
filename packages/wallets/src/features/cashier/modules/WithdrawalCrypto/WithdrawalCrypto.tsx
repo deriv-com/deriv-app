@@ -1,17 +1,28 @@
-import React from 'react';
-import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
+import React, { useState } from 'react';
+import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig } from '@deriv/api';
 import { WalletText } from '../../../../components';
 import { TransactionStatus } from '../TransactionStatus';
-import { WithdrawalCryptoForm, WithdrawalCryptoDisclaimer } from './components';
+import { WithdrawalCryptoDisclaimer, WithdrawalCryptoForm, WithdrawalCryptoReview } from './components';
 import './WithdrawalCrypto.scss';
 
 type TWithdrawalCryptoProps = {
+    onClose: () => void;
     verificationCode: string;
 };
 
-const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ verificationCode }) => {
+type TWithdrawalReceipt = {
+    address: string;
+    amount: string;
+    currency?: string;
+};
+
+const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificationCode }) => {
     const { data: activeWallet } = useActiveWalletAccount();
+    const { isError: isWithdrawalError, isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
     const { getConfig } = useCurrencyConfig();
+    const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({ address: '', amount: '' });
+
+    if (isWithdrawalSuccess) return <WithdrawalCryptoReview onClose={onClose} withdrawalReceipt={withdrawalReceipt} />;
 
     return (
         <div className='wallets-withdrawal-crypto'>
@@ -24,6 +35,10 @@ const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ verificationCode }
                 <WithdrawalCryptoForm
                     activeWallet={activeWallet}
                     getCurrencyConfig={getConfig}
+                    onWithdrawalSuccess={(address, amount, currency) =>
+                        setWithdrawalReceipt({ address, amount, currency })
+                    }
+                    requestCryptoWithdrawal={mutateAsync}
                     verificationCode={verificationCode}
                 />
             </div>

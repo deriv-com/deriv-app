@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
-import { useCryptoWithdrawal, useExchangeRate } from '@deriv/api';
+import { useExchangeRate } from '@deriv/api';
 import { WalletButton, WalletText, WalletTextField, WalletsPercentageSelector } from '../../../../../../components';
 import type { THooks } from '../../../../../../types';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
@@ -18,6 +18,8 @@ export type TForm = {
 type TWithdrawalCryptoFormProps = {
     activeWallet?: THooks.ActiveWalletAccount;
     getCurrencyConfig: THooks.GetCurrencyConfig;
+    onWithdrawalSuccess: (address: string, amount: string, currency?: string) => void;
+    requestCryptoWithdrawal: THooks.CryptoWithdrawal;
     verificationCode?: string;
 };
 
@@ -34,10 +36,12 @@ const validateCryptoAddress = (address: string) => {
 const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
     activeWallet,
     getCurrencyConfig,
+    onWithdrawalSuccess,
+    requestCryptoWithdrawal,
     verificationCode,
 }) => {
     const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
-    const { mutate: requestCryptoWithdrawal } = useCryptoWithdrawal();
+
     const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency_config?.fractional_digits;
     const FRACTIONAL_DIGITS_FIAT = getCurrencyConfig('USD')?.fractional_digits;
 
@@ -63,7 +67,13 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                     address: values.cryptoAddress,
                     amount: parseFloat(parseFloat(values.cryptoAmount).toFixed(FRACTIONAL_DIGITS_CRYPTO)),
                     verification_code: verificationCode,
-                })
+                }).then(() =>
+                    onWithdrawalSuccess(
+                        values.cryptoAddress,
+                        parseFloat(values.cryptoAmount).toFixed(FRACTIONAL_DIGITS_CRYPTO),
+                        activeWallet?.currency
+                    )
+                )
             }
         >
             {({ errors, handleSubmit, isSubmitting, setValues, values }) => {

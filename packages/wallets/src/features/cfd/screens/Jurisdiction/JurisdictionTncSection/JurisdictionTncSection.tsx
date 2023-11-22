@@ -53,6 +53,19 @@ const JurisdictionTncSection: React.FC<TProps> = ({
                                         '_blank'
                                     );
                                 }}
+                                // Reason: To fix sonarcloud issue
+                                onKeyDown={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
+                                    if (event.key === 'Enter') {
+                                        window.open(
+                                            getStaticUrl(
+                                                companyNamesAndUrls[
+                                                    selectedJurisdiction as keyof typeof companyNamesAndUrls
+                                                ].tncUrl
+                                            ),
+                                            '_blank'
+                                        );
+                                    }
+                                }}
                             >
                                 Terms and Conditions
                             </a>

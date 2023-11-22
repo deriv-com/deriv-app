@@ -141,6 +141,7 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                         <div className='wallets-withdrawal-crypto-form__submit'>
                             <WalletButton
                                 disabled={Object.keys(errors).length !== 0 || !values.cryptoAmount || isSubmitting}
+                                isLoading={isSubmitting}
                                 size='lg'
                                 text='Withdraw'
                                 type='submit'

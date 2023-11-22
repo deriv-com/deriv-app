@@ -6,6 +6,7 @@ import './WalletTextField.scss';
 
 export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMessageProps {
     defaultValue?: string;
+    disabled?: boolean;
     errorMessage?: FormikErrors<unknown> | FormikErrors<unknown>[] | string[] | string;
     isInvalid?: boolean;
     label?: string;
@@ -18,6 +19,7 @@ const WalletTextField = forwardRef(
     (
         {
             defaultValue = '',
+            disabled,
             errorMessage,
             isInvalid,
             label,
@@ -43,6 +45,7 @@ const WalletTextField = forwardRef(
         return (
             <div
                 className={classNames('wallets-textfield', {
+                    'wallets-textfield--disabled': disabled,
                     'wallets-textfield--error': isInvalid,
                 })}
             >
@@ -52,6 +55,7 @@ const WalletTextField = forwardRef(
                     )}
                     <input
                         className='wallets-textfield__field'
+                        disabled={disabled}
                         id={name}
                         maxLength={maxLength}
                         onChange={handleChange}
@@ -70,16 +74,20 @@ const WalletTextField = forwardRef(
                     )}
                 </div>
                 <div className='wallets-textfield__message-container'>
-                    {showMessage && !isInvalid && (
-                        <HelperMessage inputValue={value} maxLength={maxLength} message={message} />
-                    )}
-                    {errorMessage && isInvalid && (
-                        <HelperMessage
-                            inputValue={value}
-                            isError
-                            maxLength={maxLength}
-                            message={errorMessage as string}
-                        />
+                    {!disabled && (
+                        <>
+                            {showMessage && !isInvalid && (
+                                <HelperMessage inputValue={value} maxLength={maxLength} message={message} />
+                            )}
+                            {errorMessage && isInvalid && (
+                                <HelperMessage
+                                    inputValue={value}
+                                    isError
+                                    maxLength={maxLength}
+                                    message={errorMessage as string}
+                                />
+                            )}
+                        </>
                     )}
                 </div>
             </div>

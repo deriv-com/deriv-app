@@ -26,9 +26,9 @@ const useCFDAccountsList = () => {
         if (!mt5_accounts || !dxtrade_accounts || !ctrader_accounts) return;
 
         return {
-            mt5: mt5_accounts || [],
-            dxtrade: dxtrade_accounts || [],
-            ctrader: ctrader_accounts || [],
+            mt5: mt5_accounts,
+            dxtrade: dxtrade_accounts,
+            ctrader: ctrader_accounts,
         };
     }, [mt5_accounts, dxtrade_accounts, ctrader_accounts]);
 

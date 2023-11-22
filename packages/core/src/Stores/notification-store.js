@@ -190,10 +190,10 @@ export default class NotificationStore extends BaseStore {
     }
 
     addTradeNotification(contract_info = {}) {
-        const { buy_price, contract_id, currency, shortcode, status } = contract_info;
+        const { buy_price, contract_id, currency, is_opened, shortcode, underlying } = contract_info;
         if (this.trade_notifications.some(item => item.contract_id === contract_id)) return;
         this.trade_notifications.push({
-            id: `${contract_id}_${status}`,
+            id: `${contract_id}_${Number(!!is_opened)}`,
             buy_price,
             contract_id,
             contract_type: getContractTypeDisplay(
@@ -201,9 +201,9 @@ export default class NotificationStore extends BaseStore {
                 isHighLow({ shortcode })
             ),
             currency,
+            is_opened,
             profit: getTotalProfit(contract_info),
-            status,
-            symbol: getMarketName(extractInfoFromShortcode(shortcode).underlying),
+            symbol: getMarketName(underlying ?? extractInfoFromShortcode(shortcode).underlying),
             timestamp: Date.now(),
         });
     }

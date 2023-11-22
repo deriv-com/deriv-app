@@ -170,10 +170,11 @@ export default class PortfolioStore extends BaseStore {
             const i = this.getPositionIndexById(contract_id);
 
             if (!this.positions[i]) {
-                // On a page refresh, portfolio call has returend empty,
-                // even though we we get a transaction.sell response.
+                // On a page refresh, portfolio call has returned empty,
+                // even though we get a transaction.sell response.
                 return;
             }
+            this.root_store.notifications.addTradeNotification(this.positions[i].contract_info);
             this.positions[i].is_loading = true;
 
             // Sometimes when we sell a contract, we don't get `proposal_open_contract` message with exit information and status as `sold`.

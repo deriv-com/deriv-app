@@ -835,7 +835,7 @@ type TContractStore = {
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
     addNotificationMessageByKey: (key: string) => void;
-    addTradeNotification: (contract_info: TContractInfo) => void;
+    addTradeNotification: (contract_info: TContractInfo & { is_opened?: boolean }) => void;
     client_notifications: object;
     is_notifications_empty: boolean;
     is_notifications_visible: boolean;
@@ -859,8 +859,8 @@ type TNotificationStore = {
         currency: string;
         contract_type: string;
         id: string;
+        is_opened?: boolean;
         profit: number;
-        status: string;
         symbol: string;
         timestamp: number;
     }>;

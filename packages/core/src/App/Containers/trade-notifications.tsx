@@ -3,7 +3,7 @@ import { observer } from 'mobx-react';
 import { MobileWrapper, Money, SwipeableNotification, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { getCardLabels, getContractPath } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 
 const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_notifications?: boolean }) => {
     const {
@@ -15,8 +15,17 @@ const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_
         <MobileWrapper>
             <div className='trade-notifications'>
                 {trade_notifications.slice(0, 3).map(notification => {
-                    const { buy_price, contract_id, currency, contract_type, id, profit, status, symbol, timestamp } =
-                        notification;
+                    const {
+                        buy_price,
+                        contract_id,
+                        currency,
+                        contract_type,
+                        id,
+                        is_opened,
+                        profit,
+                        symbol,
+                        timestamp,
+                    } = notification;
                     const seconds = Math.floor(Math.abs(Date.now() - timestamp) / 1000);
 
                     return (
@@ -29,7 +38,7 @@ const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_
                                             i18n_default_text='<0>Trade {{status}}:</0> {{trade_type_name}} on {{symbol}}'
                                             components={[<strong key={0} />]}
                                             values={{
-                                                status: status === 'open' ? localize('opened') : localize('closed'),
+                                                status: is_opened ? localize('opened') : localize('closed'),
                                                 symbol,
                                                 trade_type_name: contract_type,
                                             }}
@@ -37,10 +46,10 @@ const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_
                                         />
                                     </Text>
                                     <Text as='p' size='xxxs' line_height='s'>
-                                        {status === 'open' ? getCardLabels().STAKE : getCardLabels().TOTAL_PROFIT_LOSS}{' '}
+                                        {is_opened ? getCardLabels().STAKE : getCardLabels().TOTAL_PROFIT_LOSS}{' '}
                                         <Text size='xxxs' line_height='s' weight='bold'>
                                             <Money
-                                                amount={status === 'open' ? buy_price : profit}
+                                                amount={is_opened ? buy_price : profit}
                                                 currency={currency}
                                                 has_sign
                                                 should_format
@@ -57,8 +66,8 @@ const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_
                                     <Localize i18n_default_text='{{seconds}}s ago' values={{ seconds }} />
                                 )
                             }
-                            is_failure={status !== 'open' && profit < 0}
-                            is_success={status !== 'open' && profit >= 0}
+                            is_failure={!is_opened && profit < 0}
+                            is_success={!is_opened && profit >= 0}
                             onUnmount={() => removeTradeNotifications(id)}
                             redirect_to={getContractPath(contract_id)}
                             visibility_duration_ms={3000}

@@ -165,6 +165,12 @@
                 border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
                 border-top: 1px solid var(--general-section-1);
                 background-color: var(--general-main-1);
+
+                @include mobile {
+                    &-btn {
+                        width: 100%;
+                    }
+                }
             }
         }
 

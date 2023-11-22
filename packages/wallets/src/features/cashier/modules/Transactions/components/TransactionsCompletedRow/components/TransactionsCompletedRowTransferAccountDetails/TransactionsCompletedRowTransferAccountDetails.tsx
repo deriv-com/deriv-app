@@ -10,7 +10,7 @@ type TProps = {
 };
 
 const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ direction, loginid, wallet }) => {
-    const otherWallet = wallet.linked_to.wallets?.find(account => account.loginid === loginid);
+    const otherWallet = wallet.transfer_options.wallets?.find(account => account.loginid === loginid);
     if (otherWallet)
         return (
             <TransactionsCompletedRowAccountDetails
@@ -19,6 +19,7 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ dire
                 currency={otherWallet.currency ?? 'USD'}
                 displayAccountName={getAccountName({
                     accountCategory: 'wallet',
+                    //@ts-expect-error this needs backend typing
                     accountType: otherWallet.account_type,
                     displayCurrencyCode: otherWallet.currency_config?.display_code ?? 'USD',
                     landingCompanyName: (otherWallet.landing_company_name ?? '') as TWalletLandingCompanyName,
@@ -29,7 +30,7 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ dire
             />
         );
 
-    const dtradeAccount = wallet.linked_to?.dtrade?.find(account => account.loginid === loginid);
+    const dtradeAccount = wallet.transfer_options?.dtrade?.find(account => account.loginid === loginid);
     if (dtradeAccount)
         return (
             <TransactionsCompletedRowAccountDetails
@@ -48,7 +49,26 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ dire
             />
         );
 
-    const mt5Account = wallet.linked_to.mt5?.find(account => account.loginid === loginid);
+    const dxtradeAccount = wallet.transfer_options.dxtrade?.find(account => account.loginid === loginid);
+    if (dxtradeAccount)
+        return (
+            <TransactionsCompletedRowAccountDetails
+                accountType='dxtrade'
+                actionType='transfer'
+                currency={dxtradeAccount.currency ?? 'USD'}
+                displayAccountName={getAccountName({
+                    accountCategory: 'trading',
+                    accountType: 'dxtrade',
+                    displayCurrencyCode: dxtradeAccount.currency ?? 'USD',
+                    landingCompanyName: (dxtradeAccount.landing_company_short ?? '') as TWalletLandingCompanyName,
+                })}
+                displayActionType={`Transfer ${direction}`}
+                isDemo={Boolean(wallet.is_virtual)}
+                isInterWallet={false}
+            />
+        );
+
+    const mt5Account = wallet.transfer_options.mt5?.find(account => account.loginid === loginid);
     if (mt5Account)
         return (
             <TransactionsCompletedRowAccountDetails

@@ -9,7 +9,6 @@ type TGetAccountNameProps = {
     mt5MarketType?: TMarketTypes.SortedMT5Accounts;
 };
 
-//TODO: remove this function when market_type will be added to transfer_between_accounts response in API
 export const getMarketType = (mt5Group?: string) => {
     if (mt5Group?.includes('financial')) return 'financial';
     if (mt5Group?.includes('synthetic')) return 'synthetic';
@@ -17,7 +16,6 @@ export const getMarketType = (mt5Group?: string) => {
     return 'all';
 };
 
-//TODO: remove this function when landing_company_name will be added to transfer_between_accounts response in API for mt5 accounts
 export const getLandingCompanyNameOfMT5Account = (mt5Group?: string) => {
     if (mt5Group?.includes('bvi')) return 'bvi';
     if (mt5Group?.includes('labuan')) return 'labuan';
@@ -43,7 +41,7 @@ export const getTradingAppIcon = (
         }
         return appIconMapper.mt5[marketType].light;
     }
-    //@ts-expect-error provide proper type for accounts from transfer_between_accounts response
+    //@ts-expect-error needs backend typing
     return appIconMapper[accountType]?.light;
 };
 

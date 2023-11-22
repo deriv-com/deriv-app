@@ -3,6 +3,7 @@ import type {
     useActiveAccount,
     useActiveTradingAccount,
     useActiveWalletAccount,
+    useActiveWalletAccountVerbose,
     useAllWalletAccounts,
     useAuthentication,
     useAvailableMT5Accounts,
@@ -33,6 +34,7 @@ export namespace THooks {
     export type SortedMT5Accounts = NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number];
     export type WalletAccountsList = NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
     export type ActiveWalletAccount = NonNullable<ReturnType<typeof useActiveWalletAccount>['data']>;
+    export type ActiveWalletAccountVerbose = NonNullable<ReturnType<typeof useActiveWalletAccountVerbose>>['data'];
     export type AccountsList = NonNullable<ReturnType<typeof useAccountsList>['data']>[number];
     export type ActiveTradingAccount = NonNullable<ReturnType<typeof useActiveTradingAccount>['data']>;
     export type ActiveAccount = NonNullable<ReturnType<typeof useActiveAccount>['data']>;

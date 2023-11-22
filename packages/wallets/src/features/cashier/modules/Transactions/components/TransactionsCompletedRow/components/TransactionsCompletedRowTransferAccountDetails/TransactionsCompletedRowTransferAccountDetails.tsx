@@ -1,46 +1,35 @@
 import React from 'react';
 import { THooks, TWalletLandingCompanyName } from '../../../../../../../../types';
-import { getAccountName } from '../../../../../../helpers';
-import useTransferAccountDetailsByLoginId from '../../hooks/useTransferAccountDetailsByLoginId';
+import { getAccountName, getMarketType } from '../../../../../../helpers';
 import { TransactionsCompletedRowAccountDetails } from '../TransactionsCompletedRowAccountDetails';
-
-const isMT5Account = (account: unknown): account is THooks.MT5AccountsList => {
-    return typeof account === 'object' && !!account && 'account_type' in account && account?.account_type === 'mt5';
-};
 
 type TProps = {
     direction: 'from' | 'to';
     loginid: string;
-    wallet: THooks.ActiveWalletAccount;
+    wallet: THooks.ActiveWalletAccountVerbose;
 };
 
 const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ direction, loginid, wallet }) => {
-    const { account } = useTransferAccountDetailsByLoginId(loginid);
-
-    if (account)
+    const otherWallet = wallet.linked_to.wallets?.find(account => account.loginid === loginid);
+    if (otherWallet)
         return (
             <TransactionsCompletedRowAccountDetails
-                accountType={account.account_type ?? ''}
+                accountType={otherWallet.account_type ?? ''}
                 actionType='transfer'
-                currency={account.currency ?? 'USD'}
+                currency={otherWallet.currency ?? 'USD'}
                 displayAccountName={getAccountName({
-                    accountCategory: account.account_category,
-                    //@ts-expect-error wait until this is typed on the backend
-                    accountType: account.account_type,
-                    displayCurrencyCode: account.currency_config?.display_code ?? 'USD',
-                    landingCompanyName: (account.landing_company_name ?? '') as TWalletLandingCompanyName,
+                    accountCategory: 'wallet',
+                    accountType: otherWallet.account_type,
+                    displayCurrencyCode: otherWallet.currency_config?.display_code ?? 'USD',
+                    landingCompanyName: (otherWallet.landing_company_name ?? '') as TWalletLandingCompanyName,
                 })}
                 displayActionType={`Transfer ${direction}`}
-                isDemo={account.is_virtual}
-                isInterWallet={account.is_wallet}
-                mt5Group={isMT5Account(account) ? account.group : undefined}
+                isDemo={Boolean(otherWallet.is_virtual)}
+                isInterWallet={true}
             />
         );
 
-    const dtradeAccount = wallet.linked_to?.find(
-        account => account.loginid === loginid && account.platform === 'dtrade'
-    );
-
+    const dtradeAccount = wallet.linked_to?.dtrade?.find(account => account.loginid === loginid);
     if (dtradeAccount)
         return (
             <TransactionsCompletedRowAccountDetails
@@ -54,8 +43,29 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ dire
                     landingCompanyName: (wallet.landing_company_name ?? '') as TWalletLandingCompanyName,
                 })}
                 displayActionType={`Transfer ${direction}`}
-                isDemo={wallet.is_virtual}
+                isDemo={Boolean(wallet.is_virtual)}
                 isInterWallet={false}
+            />
+        );
+
+    const mt5Account = wallet.linked_to.mt5?.find(account => account.loginid === loginid);
+    if (mt5Account)
+        return (
+            <TransactionsCompletedRowAccountDetails
+                accountType='mt5'
+                actionType='transfer'
+                currency={mt5Account.currency ?? 'USD'}
+                displayAccountName={getAccountName({
+                    accountCategory: 'trading',
+                    accountType: 'mt5',
+                    displayCurrencyCode: mt5Account.currency ?? 'USD',
+                    landingCompanyName: (mt5Account.landing_company_short ?? '') as TWalletLandingCompanyName,
+                    mt5MarketType: getMarketType(mt5Account.group),
+                })}
+                displayActionType={`Transfer ${direction}`}
+                isDemo={Boolean(wallet.is_virtual)}
+                isInterWallet={false}
+                mt5Group={mt5Account.group}
             />
         );
 

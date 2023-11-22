@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccountVerbose } from '@deriv/api';
 import { WalletText } from '../../../../../../components/Base';
 import { THooks } from '../../../../../../types';
 import { TransactionsCompletedRowAccountDetails } from './components/TransactionsCompletedRowAccountDetails';
@@ -11,7 +11,7 @@ type TProps = {
 };
 
 const TransactionsCompletedRow: React.FC<TProps> = ({ transaction }) => {
-    const { data: wallet } = useActiveWalletAccount();
+    const { data: wallet } = useActiveWalletAccountVerbose();
 
     if (!wallet || !transaction.action_type || !transaction.amount) return null;
 

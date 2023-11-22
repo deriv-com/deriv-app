@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import moment from 'moment';
-import { useTransactions } from '@deriv/api';
+import { useActiveWalletAccountVerbose, useTransactions } from '@deriv/api';
 import { TSocketRequestPayload } from '@deriv/api/types';
 import { Loader } from '../../../../../../components';
 import { WalletText } from '../../../../../../components/Base';
@@ -16,7 +16,16 @@ type TProps = {
 };
 
 const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
-    const { data: transactions, fetchNextPage, isFetching, isLoading, setFilter } = useTransactions();
+    const {
+        data: transactions,
+        fetchNextPage,
+        isFetching,
+        isLoading: isTransactionListLoading,
+        setFilter,
+    } = useTransactions();
+    const { data: wallet, isLoading: isWalletLoading } = useActiveWalletAccountVerbose();
+
+    const isLoading = isTransactionListLoading || isWalletLoading;
 
     const fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
@@ -59,7 +68,7 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
                     </WalletText>
                 </div>
             )}
-            rowRender={transaction => <TransactionsCompletedRow transaction={transaction} />}
+            rowRender={transaction => <TransactionsCompletedRow transaction={transaction} wallet={wallet} />}
         />
     );
 };

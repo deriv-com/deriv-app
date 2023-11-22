@@ -1,5 +1,4 @@
 import React from 'react';
-import { useActiveWalletAccountVerbose } from '@deriv/api';
 import { WalletText } from '../../../../../../components/Base';
 import { THooks } from '../../../../../../types';
 import { TransactionsCompletedRowAccountDetails } from './components/TransactionsCompletedRowAccountDetails';
@@ -8,12 +7,11 @@ import './TransactionsCompletedRow.scss';
 
 type TProps = {
     transaction: THooks.Transactions;
+    wallet: THooks.ActiveWalletAccountVerbose;
 };
 
-const TransactionsCompletedRow: React.FC<TProps> = ({ transaction }) => {
-    const { data: wallet } = useActiveWalletAccountVerbose();
-
-    if (!wallet || !transaction.action_type || !transaction.amount) return null;
+const TransactionsCompletedRow: React.FC<TProps> = ({ transaction, wallet }) => {
+    if (!transaction.action_type || !transaction.amount) return null;
 
     const displayCurrency = wallet?.currency_config?.display_code || 'USD';
     const displayWalletName = `${displayCurrency} Wallet`;

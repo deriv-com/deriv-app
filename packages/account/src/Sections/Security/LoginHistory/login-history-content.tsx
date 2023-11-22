@@ -1,10 +1,18 @@
 import React from 'react';
 import { Table } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { TLoginHistoryData } from '@deriv/api/types';
 import getLoginHistoryTableHeaders from 'Constants/get-login-history-table-headers';
 import LoginHistoryTableRow from './login-history-table-row';
 import LoginHistoryListRow from './login-history-list-row';
+
+type TLoginHistoryData = {
+    id: number;
+    date: string;
+    action: string;
+    browser: string;
+    ip: string;
+    status: string;
+}[];
 
 type TGetFields = {
     [key: string]: JSX.Element;

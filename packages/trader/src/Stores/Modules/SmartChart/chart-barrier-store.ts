@@ -1,5 +1,5 @@
 import { action, computed, observable, makeObservable } from 'mobx';
-import { BARRIER_COLORS, BARRIER_LINE_STYLES, CONTRACT_SHADES, DEFAULT_SHADES } from '@deriv/shared';
+import { BARRIER_LINE_STYLES, CONTRACT_SHADES, DEFAULT_SHADES } from '@deriv/shared';
 import { barriersToString } from './Helpers/barriers';
 
 type TOnChartBarrierChange = null | ((barrier_1: string, barrier_2?: string) => void);
@@ -50,7 +50,6 @@ export class ChartBarrierStore {
             updateBarriers: action.bound,
             updateBarrierShade: action.bound,
             onBarrierChange: action.bound,
-            updateBarrierColor: action.bound,
             barrier_count: computed,
             default_shade: computed,
         });
@@ -92,10 +91,6 @@ export class ChartBarrierStore {
     onBarrierChange({ high, low }: TOnChangeParams) {
         this.updateBarriers(high, low, true);
         this.onChartBarrierChange?.(...(barriersToString(this.relative, high, low) as [string, string | undefined]));
-    }
-
-    updateBarrierColor(is_dark_mode: boolean) {
-        this.color = is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
     }
 
     get barrier_count(): number {

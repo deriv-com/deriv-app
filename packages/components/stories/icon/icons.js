@@ -62,8 +62,6 @@ export const icons =
     'brand': [
         'IcBrandCtraderWordmark',
         'IcBrandCtrader',
-        'IcBrandDerivEzWordmark',
-        'IcBrandDerivEz',
         'IcBrandDeriv',
         'IcBrandDerivgo',
         'IcBrandDmt5FinancialStp',
@@ -621,6 +619,7 @@ export const icons =
         'IcVerification',
         'IcVisaDark',
         'IcVisaLight',
+        'IcWarning',
         'IcWebMoneyDark',
         'IcWebMoneyLight',
         'IcWebTerminal',
@@ -680,9 +679,6 @@ export const icons =
         'IcCurrencyUsdk',
         'IcCurrencyUst',
         'IcCurrencyVirtual'
-    ],
-    'derivez': [
-        'IcDerivez'
     ],
     'dxtrade': [
         'IcDxtradeDerivX',
@@ -779,13 +775,10 @@ export const icons =
         'IcRebrandingCtraderDashboard',
         'IcRebrandingDerivBotDashboard',
         'IcRebrandingDerivBot',
-        'IcRebrandingDerivEzWordmark',
-        'IcRebrandingDerivEz',
         'IcRebrandingDerivGoDashboard',
         'IcRebrandingDerivTraderDashboard',
         'IcRebrandingDerivTrader',
         'IcRebrandingDerivX',
-        'IcRebrandingDerivezDashboard',
         'IcRebrandingDerivx',
         'IcRebrandingDmt5Dashboard',
         'IcRebrandingDmt5',

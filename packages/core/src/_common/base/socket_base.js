@@ -8,7 +8,6 @@ const { getLanguage } = require('@deriv/translations');
 const website_name = require('@deriv/shared').website_name;
 const SocketCache = require('./socket_cache');
 const APIMiddleware = require('./api_middleware');
-const { CFD_PLATFORMS } = require('@deriv/shared');
 
 /*
  * An abstraction layer over native javascript WebSocket,
@@ -393,8 +392,7 @@ const BinarySocketBase = (() => {
         });
 
     const getServiceToken = (platform, server) => {
-        let temp_service = platform;
-        if (platform === CFD_PLATFORMS.DERIVEZ) temp_service = 'pandats';
+        const temp_service = platform;
 
         return deriv_api.send({
             service_token: 1,

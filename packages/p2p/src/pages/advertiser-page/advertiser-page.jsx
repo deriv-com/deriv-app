@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { reaction } from 'mobx';
+import { useP2PAdvertiserAdverts } from 'Hooks';
 import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { useP2PAdvertInfo } from '@deriv/hooks';
@@ -111,7 +112,6 @@ const AdvertiserPage = () => {
                     advertiser_page_store.setActiveIndex(advert_type);
                     advertiser_page_store.handleTabItemClick(advert_type);
                     buy_sell_store.setSelectedAdState(p2p_advert_info);
-                    advertiser_page_store.loadMoreAdvertiserAdverts({ startIndex: 0 });
                     showModal({ key: 'BuySellModal' });
                 } else {
                     showErrorModal();
@@ -179,7 +179,6 @@ const AdvertiserPage = () => {
         const disposeBlockUnblockUserErrorReaction = reaction(
             () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
             () => {
-                advertiser_page_store.onTabChange();
                 if (general_store.block_unblock_user_error) {
                     showModal({
                         key: 'ErrorModal',
@@ -229,12 +228,18 @@ const AdvertiserPage = () => {
         },
     });
 
+    const { error, isError } = useP2PAdvertiserAdverts();
+
     if (advertiser_page_store.is_loading || general_store.is_block_unblock_user_loading) {
         return <Loading is_fullscreen={false} />;
     }
 
     if (advertiser_page_store.error_message) {
         return <div className='advertiser-page__error'>{advertiser_page_store.error_message}</div>;
+    }
+
+    if (isError) {
+        return <div className='advertiser-page__error'>{error.message}</div>;
     }
 
     return (

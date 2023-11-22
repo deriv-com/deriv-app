@@ -5,7 +5,6 @@ import BaseStore from 'Stores/base_store';
 
 export default class AdvertiserPageStore extends BaseStore {
     active_index = 0;
-    adverts = [];
     counterparty_advertiser_info = {};
     counterparty_type = buy_sell.BUY;
     api_error_message = '';
@@ -21,7 +20,6 @@ export default class AdvertiserPageStore extends BaseStore {
 
         makeObservable(this, {
             active_index: observable,
-            adverts: observable,
             counterparty_type: observable,
             api_error_message: observable,
             form_error_message: observable,
@@ -35,7 +33,6 @@ export default class AdvertiserPageStore extends BaseStore {
             advertiser_details: computed,
             advertiser_details_id: computed,
             advertiser_details_name: computed,
-            getCounterpartyAdvertiserList: action.bound,
             handleTabItemClick: action.bound,
             onAdvertiserIdUpdate: action.bound,
             onCancel: action.bound,
@@ -43,7 +40,6 @@ export default class AdvertiserPageStore extends BaseStore {
             onSubmit: action.bound,
             setActiveIndex: action.bound,
             setAdvertiserInfo: action.bound,
-            setAdverts: action.bound,
             setIsCounterpartyAdvertiserBlocked: action.bound,
             setCounterpartyType: action.bound,
             setErrorMessage: action.bound,
@@ -79,39 +75,6 @@ export default class AdvertiserPageStore extends BaseStore {
         return this.advert?.advertiser_details?.name;
     }
 
-    loadMoreAdvertiserAdverts({ startIndex }) {
-        const { buy_sell_store, general_store } = this.root_store;
-        this.setIsLoadingAdverts(true);
-        return new Promise(resolve => {
-            requestWS({
-                p2p_advert_list: 1,
-                counterparty_type: this.counterparty_type,
-                advertiser_id:
-                    general_store.counterparty_advertiser_id && general_store.is_advertiser_info_subscribed
-                        ? general_store.counterparty_advertiser_id
-                        : this.advertiser_details_id,
-                offset: startIndex,
-                limit: general_store.list_item_limit,
-                ...(buy_sell_store.selected_local_currency
-                    ? { local_currency: buy_sell_store.selected_local_currency }
-                    : {}),
-            }).then(response => {
-                if (response) {
-                    if (response.error) {
-                        this.setErrorMessage(response.error);
-                    } else {
-                        const { list } = response.p2p_advert_list;
-
-                        this.setAdverts(list);
-                        this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);
-                    }
-                }
-                this.setIsLoadingAdverts(false);
-                resolve();
-            });
-        });
-    }
-
     setAdvertiserInfo(response) {
         const { general_store } = this.root_store;
 
@@ -136,24 +99,6 @@ export default class AdvertiserPageStore extends BaseStore {
         }
 
         this.setIsLoading(false);
-    }
-
-    getCounterpartyAdvertiserList(advertiser_id) {
-        this.setIsLoading(true);
-        requestWS({
-            p2p_advert_list: 1,
-            advertiser_id,
-        }).then(response => {
-            if (response) {
-                if (!response.error) {
-                    const { list } = response.p2p_advert_list;
-                    this.setAdverts(list.filter(advert => advert.counterparty_type === this.counterparty_type));
-                } else {
-                    this.setErrorMessage(response.error);
-                }
-            }
-            this.setIsLoading(false);
-        });
     }
 
     handleTabItemClick(idx) {
@@ -198,8 +143,6 @@ export default class AdvertiserPageStore extends BaseStore {
                     this.setErrorMessage(response.error);
                 } else {
                     this.setAdvertiserInfo(response);
-                    // force reload adverts list
-                    this.loadMoreAdvertiserAdverts({ startIndex: 0 });
                 }
             });
         }
@@ -208,17 +151,7 @@ export default class AdvertiserPageStore extends BaseStore {
     onSubmit() {
         const current_advertiser_id = this.advertiser_details_id ?? this.counterparty_advertiser_info?.id;
         this.root_store.general_store.blockUnblockUser(!this.is_counterparty_advertiser_blocked, current_advertiser_id);
-        if (this.is_counterparty_advertiser_blocked) this.getCounterpartyAdvertiserList(current_advertiser_id);
         this.setIsDropdownMenuVisible(false);
-    }
-
-    onTabChange() {
-        const { general_store } = this.root_store;
-        const advertiser_id = general_store.counterparty_advertiser_id || this.advertiser_details_id;
-        if (advertiser_id) {
-            this.setAdverts([]);
-            this.loadMoreAdvertiserAdverts({ startIndex: 0 });
-        }
     }
 
     onUnmount() {
@@ -229,10 +162,6 @@ export default class AdvertiserPageStore extends BaseStore {
 
     setActiveIndex(active_index) {
         this.active_index = active_index;
-    }
-
-    setAdverts(adverts) {
-        this.adverts = adverts;
     }
 
     setCounterpartyAdvertiserInfo(counterparty_advertiser_info) {

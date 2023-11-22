@@ -1904,7 +1904,7 @@
     "2010866561": "মোট মুনাফা/ক্ষতি ফেরত",
     "2011609940": "অনুগ্রহ করে ০-এর বেশি নম্বর ইনপুট করুন",
     "2011808755": "ক্রয়ের সময়",
-    "2012362607": "The Reverse D'Alembert strategy increases the stake after a successful trade and reduces the stake after a losing trade by the number of units that traders decide. One unit is equal to the amount of the initial stake. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake.",
+    "2012362607": "Reverse D'Alembert কৌশলটি একটি সফল বাণিজ্যের পরে অংশীদারিত্ব বাড়ায় এবং ব্যবসায়ীদের সিদ্ধান্ত নেওয়া ইউনিটের সংখ্যা দ্বারা হারানো বাণিজ্যের পরে অংশীদারিত্ব হ্রাস করে। এক ইউনিট প্রাথমিক অংশীদারিত্বের পরিমাণের সমান। ঝুঁকি পরিচালনা করতে, একটি একক বাণিজ্যের জন্য সর্বাধিক অংশীদারি সেট করুন। পরবর্তী ট্রেডের জন্য স্টক প্রাথমিক স্টেক রিসেট হবে যদি এটি সর্বোচ্চ শেয়ার ছাড়িয়ে যায়।",
     "2014536501": "কার্ড নাম্বার",
     "2014590669": "পরিবর্তনশীল '{{variable_name}}' এর কোন মান নেই। অবহিত করার জন্য অনুগ্রহ করে পরিবর্তনশীল '{{variable_name}}' এর মান নির্ধারণ করুন।",
     "2017672013": "দয়া করে ডকুমেন্ট ইস্যু করার দেশ নির্বাচন করুন।",

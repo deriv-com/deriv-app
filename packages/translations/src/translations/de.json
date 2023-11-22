@@ -1904,7 +1904,7 @@
     "2010866561": "Gibt den Gesamtgewinn/-verlust zurück",
     "2011609940": "Bitte geben Sie eine Zahl größer als 0 ein",
     "2011808755": "Zeit des Kaufs",
-    "2012362607": "The Reverse D'Alembert strategy increases the stake after a successful trade and reduces the stake after a losing trade by the number of units that traders decide. One unit is equal to the amount of the initial stake. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake.",
+    "2012362607": "Bei der Reverse D'Alembert-Strategie wird der Einsatz nach einem erfolgreichen Handel erhöht und nach einem verlorenen Handel um die von den Händlern festgelegte Anzahl von Einheiten reduziert. Eine Einheit entspricht dem Betrag des ursprünglichen Einsatzes. Um das Risiko zu steuern, legen Sie den maximalen Einsatz für einen einzelnen Handel fest. Der Einsatz für den nächsten Handel wird auf den ursprünglichen Einsatz zurückgesetzt, wenn er den maximalen Einsatz überschreitet.",
     "2014536501": "Nummer der Karte",
     "2014590669": "Die Variable '{{variable_name}}' hat keinen Wert. Bitte geben Sie einen Wert für die Variable '{{variable_name}}' ein, um eine Benachrichtigung zu erhalten.",
     "2017672013": "Bitte wählen Sie das Land aus, in dem das Dokument ausgestellt wurde.",

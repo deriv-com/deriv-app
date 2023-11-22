@@ -87,6 +87,24 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ acco
             />
         );
 
+    const ctraderAccount = accounts.ctrader?.find(account => account.login === loginid);
+    if (ctraderAccount)
+        return (
+            <TransactionsCompletedRowAccountDetails
+                accountType='ctrader'
+                actionType='transfer'
+                currency={ctraderAccount.currency ?? 'USD'}
+                displayAccountName={getAccountName({
+                    accountCategory: 'trading',
+                    accountType: 'ctrader',
+                    displayCurrencyCode: ctraderAccount.currency ?? 'USD',
+                    landingCompanyName: (ctraderAccount.landing_company_short ?? '') as TWalletLandingCompanyName,
+                })}
+                displayActionType={`Transfer ${direction}`}
+                isDemo={ctraderAccount.is_virtual}
+            />
+        );
+
     return null;
 };
 

@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import usePasswordValidation from '../../../hooks/usePasswordValidation';
-import { Score, validPassword } from '../../../utils/passwordUtils';
+import { Score, validatePassword, validPassword } from '../../../utils/passwordUtils';
 import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import PasswordMeter from './PasswordMeter';
@@ -21,7 +20,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isTouched, setIsTouched] = useState(false);
 
-    const { errorMessage, score } = usePasswordValidation(password);
+    const { errorMessage, score } = validatePassword(password);
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -37,7 +37,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
     const { data: authenticationData } = useAuthentication();
-    const { data: getSettings } = useSettings();
+    const { data: getSettings, update } = useSettings();
     const { getModalState, hide, show } = useModal();
 
     const selectedMarketType = getModalState('marketType') || 'all';
@@ -102,8 +102,17 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         }
     };
 
-    const nextFlowHandler = ({ currentScreenId, switchScreen }: TFlowProviderContext<typeof screens>) => {
+    const nextFlowHandler = ({ currentScreenId, formValues, switchScreen }: TFlowProviderContext<typeof screens>) => {
         if (['idvScreen', 'onfidoScreen', 'manualScreen'].includes(currentScreenId)) {
+            if (currentScreenId === 'idvScreen') {
+                update({
+                    date_of_birth: formValues.dateOfBirth,
+                    first_name: formValues.firstName,
+                    last_name: formValues.lastName,
+                });
+            } else if (currentScreenId === 'manualScreen') {
+                // TODO: call the api here
+            }
             if (hasAttemptedPOA) {
                 switchScreen('poaScreen');
             } else if (!getSettings?.has_submitted_personal_details) {
@@ -112,8 +121,22 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             }
         } else if (currentScreenId === 'poaScreen') {
+            update({
+                address_city: formValues.townCityLine,
+                address_line_1: formValues.firstLine,
+                address_line_2: formValues.secondLine,
+                address_postcode: formValues.zipCodeLine,
+                address_state: formValues.stateProvinceDropdownLine,
+            });
             switchScreen('personalDetailsScreen');
         } else if (currentScreenId === 'personalDetailsScreen') {
+            update({
+                account_opening_reason: formValues.accountOpeningReason,
+                citizen: formValues.citizenship,
+                place_of_birth: formValues.placeOfBirth,
+                tax_identification_number: formValues.taxIdentificationNumber,
+                tax_residence: formValues.taxResidence,
+            });
             show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
         } else {
             hide();

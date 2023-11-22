@@ -125,6 +125,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     if (isMobile) {
         return (
             <ModalStepWrapper renderFooter={renderFooter} title={renderTitle()}>
+                {/* TODO: We need to separate this out into a separate `show` modal call to hide the Deriv.app header */}
                 {isSuccess && (
                     <CFDSuccess
                         description={`You can now start practicing trading with your ${marketTypeTitle} ${

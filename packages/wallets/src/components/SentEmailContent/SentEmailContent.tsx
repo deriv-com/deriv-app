@@ -46,7 +46,7 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
     const title = PlatformDetails[platform || 'mt5'].title;
     const titleSize = 'md';
     const descriptionSize = 'sm';
-    const emailLinkSize = isMobile ? 'xl' : 'md';
+    const emailLinkSize = isMobile ? 'lg' : 'md';
     const [count, { resetCountdown, startCountdown }] = useCountdown({
         countStart: 60,
         intervalMs: 1000,

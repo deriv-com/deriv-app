@@ -16,7 +16,7 @@ interface WalletButtonProps {
     isLoading?: boolean;
     onClick?: ComponentProps<'button'>['onClick'];
     rounded?: Extract<TGenericSizes, 'md' | 'sm'>;
-    size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm' | 'xl'>;
+    size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     text?: React.ReactNode;
     type?: ComponentProps<'button'>['type'];
     variant?: TVariant;
@@ -81,10 +81,9 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     };
 
     const buttonFontSizeMapper = {
-        lg: 'sm',
+        lg: 'md',
         md: 'sm',
         sm: 'xs',
-        xl: 'md',
     } as const;
 
     return (

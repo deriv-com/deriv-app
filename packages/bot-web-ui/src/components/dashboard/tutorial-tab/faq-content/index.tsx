@@ -2,13 +2,12 @@ import React from 'react';
 import { Accordion, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
+import { TDescription } from '../config';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { TDescription } from './tutorial-content';
 
 type TFAQContent = {
     faq_list: TFAQList[];
-    hide_header?: boolean;
 };
 
 type TFAQList = {
@@ -42,9 +41,10 @@ const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
     }
 };
 
-const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => {
+const FAQContent = observer(({ faq_list }: TFAQContent) => {
     const { dashboard } = useDBotStore();
-    const { faq_search_value } = dashboard;
+    const { active_tab_tutorials } = dashboard;
+
     const faq_wrapper_element = React.useRef<HTMLDivElement>(null);
     const timer_id = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -61,6 +61,10 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
             }
             if (timer_id?.current) clearTimeout(timer_id.current);
         }, 5);
+    };
+
+    const handleKeyboardEvent = (e: KeyboardEvent) => {
+        if (e.key === 'Enter') handleAccordionClick();
     };
 
     React.useEffect(() => {
@@ -83,32 +87,30 @@ const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => 
                     {title}
                 </Text>
             ),
-            content: description.map((item, index) => (
+            content: description?.map((item, index) => (
                 <FAQ {...item} key={`faq-description-item-${item?.content}-${index}`} />
             )),
         }));
     };
 
     return (
-        <div>
+        <div data-testid='id-faq__wrapper'>
             <div className='faq__wrapper' ref={faq_wrapper_element}>
-                {!hide_header && (
-                    <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
-                        {localize('FAQ')}
-                    </Text>
-                )}
-                {faq_list?.length ? (
-                    <div onClick={handleAccordionClick}>
-                        <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
-                    </div>
-                ) : (
-                    <div className='faq__wrapper__nosearch'>
-                        <Text as='h1' weight='bold' line_height='xxs'>
-                            {localize('No results found "{{ faq_search_value }}"', {
-                                faq_search_value,
-                            })}
-                        </Text>
-                    </div>
+                {faq_list?.length > 0 && (
+                    <>
+                        {active_tab_tutorials === 2 && (
+                            <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
+                                <Localize i18n_default_text='FAQ' />
+                            </Text>
+                        )}
+                        <div
+                            data-testid='id-accordion-test'
+                            onClick={handleAccordionClick}
+                            onKeyDown={handleKeyboardEvent}
+                        >
+                            <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
+                        </div>
+                    </>
                 )}
             </div>
         </div>

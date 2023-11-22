@@ -7,7 +7,7 @@ export interface WalletTextProps {
     align?: CSSProperties['textAlign'];
     as?: ElementType;
     children: ReactNode;
-    color?: CSSProperties['color'] | 'error' | 'general' | 'primary' | 'success' | 'warning';
+    color?: CSSProperties['color'] | 'error' | 'general' | 'less-prominent' | 'primary' | 'success' | 'warning';
     fontStyle?: CSSProperties['fontStyle'];
     lineHeight?: TGenericSizes;
     size?: Exclude<TGenericSizes, '3xs' | '6xl' | '7xl'>;

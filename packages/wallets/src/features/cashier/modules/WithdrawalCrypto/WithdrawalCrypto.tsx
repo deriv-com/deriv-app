@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig } from '@deriv/api';
 import { WalletText } from '../../../../components';
 import { TransactionStatus } from '../TransactionStatus';
-import { WithdrawalCryptoDisclaimer, WithdrawalCryptoForm, WithdrawalCryptoReview } from './components';
+import { WithdrawalCryptoDisclaimer, WithdrawalCryptoForm, WithdrawalCryptoReceipt } from './components';
 import './WithdrawalCrypto.scss';
 
 type TWithdrawalCryptoProps = {
@@ -22,7 +22,7 @@ const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificat
     const { getConfig } = useCurrencyConfig();
     const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({ address: '', amount: '' });
 
-    if (isWithdrawalSuccess) return <WithdrawalCryptoReview onClose={onClose} withdrawalReceipt={withdrawalReceipt} />;
+    if (isWithdrawalSuccess) return <WithdrawalCryptoReceipt onClose={onClose} withdrawalReceipt={withdrawalReceipt} />;
 
     return (
         <div className='wallets-withdrawal-crypto'>

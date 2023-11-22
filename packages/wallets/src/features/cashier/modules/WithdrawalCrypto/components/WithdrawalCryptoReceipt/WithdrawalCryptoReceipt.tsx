@@ -1,10 +1,10 @@
 import React from 'react';
-import ArrowDown from '../../../../../../public/images/ic-back-arrow.svg';
-import { WalletButton, WalletCard, WalletText } from '../../../../../../components';
-import { WithdrawalCryptoDestinationAddress } from './components';
-import './WithdrawalCryptoReview.scss';
-import useDevice from '../../../../../../hooks/useDevice';
 import { useHistory } from 'react-router-dom';
+import { WalletButton, WalletCard, WalletText } from '../../../../../../components';
+import useDevice from '../../../../../../hooks/useDevice';
+import ArrowDown from '../../../../../../public/images/ic-back-arrow.svg';
+import { WithdrawalCryptoDestinationAddress } from './components';
+import './WithdrawalCryptoReceipt.scss';
 
 type TProps = {
     onClose: () => void;
@@ -15,19 +15,19 @@ type TProps = {
     };
 };
 
-const WithdrawalCryptoReview: React.FC<TProps> = ({ onClose, withdrawalReceipt }) => {
+const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt }) => {
     const { isMobile } = useDevice();
     const history = useHistory();
     const { address, amount, currency } = withdrawalReceipt;
 
     return (
-        <div className='wallets-withdrawal-crypto-review'>
-            <div className='wallets-withdrawal-crypto-review__accounts-info'>
+        <div className='wallets-withdrawal-crypto-receipt'>
+            <div className='wallets-withdrawal-crypto-receipt__accounts-info'>
                 <WalletCard balance={`-${amount} ${currency}`} currency={currency ?? ''} landingCompanyName='SVG' />
                 <ArrowDown />
                 <WithdrawalCryptoDestinationAddress address={address} />
             </div>
-            <div className='wallets-withdrawal-crypto-review__withdrawal-info'>
+            <div className='wallets-withdrawal-crypto-receipt__withdrawal-info'>
                 <WalletText align='center' size='xl' weight='bold'>
                     {amount} {currency}
                 </WalletText>
@@ -36,7 +36,7 @@ const WithdrawalCryptoReview: React.FC<TProps> = ({ onClose, withdrawalReceipt }
                     an email once your transaction has been processed.
                 </WalletText>
             </div>
-            <div className='wallets-withdrawal-crypto-review__actions'>
+            <div className='wallets-withdrawal-crypto-receipt__actions'>
                 <WalletButton
                     color='white'
                     onClick={() => history.push('/wallets/cashier/transactions')}
@@ -49,4 +49,4 @@ const WithdrawalCryptoReview: React.FC<TProps> = ({ onClose, withdrawalReceipt }
     );
 };
 
-export default WithdrawalCryptoReview;
+export default WithdrawalCryptoReceipt;

@@ -1068,6 +1068,66 @@ type TPrivateSocketEndpoints = {
         req_id?: number;
         [k: string]: unknown;
     };
+    trading_platform_leverage: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_leverage: 1;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'mt5' | 'dxtrade' | 'ctrader';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * dynamic leverage data.
+             */
+            trading_platform_leverage: {
+                leverage: {
+                    [x in 'stock_indices' | 'forex' | 'metals' | 'cryptocurrencies']: {
+                        display_name: string;
+                        instruments: string[];
+                        min: number;
+                        max: number;
+                        volume: {
+                            unit: string;
+                            data: {
+                                from: number;
+                                to: number;
+                                leverage: number;
+                            }[];
+                        };
+                    };
+                };
+            };
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'trading_platform_leverage';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
     trading_platform_password_change: {
         request: {
             /**

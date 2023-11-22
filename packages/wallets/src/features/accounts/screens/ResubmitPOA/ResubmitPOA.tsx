@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSettings, useStatesList } from '@deriv/api';
-import { Dropzone, FlowTextField } from '../../../../components';
+import { Dropzone, FlowTextField, useFlow } from '../../../../components';
 import { InlineMessage, WalletDropdown, WalletText } from '../../../../components/Base';
 import Upload from '../../../../public/images/accounts/upload.svg';
 import { getExampleImagesConfig } from '../../constants';
+import { letterRequiredValidator, requiredValidator } from '../../validations';
 import { CommonMistakesExamples } from '../CommonMistakesExamples';
 import './ResubmitPOA.scss';
 
@@ -15,15 +16,10 @@ const ListItems = [
 
 const ResubmitPOA: React.FC = () => {
     const { data } = useSettings();
+    const { setFormValues } = useFlow();
+    const { data: getSettings } = useSettings();
     const country = data?.country_code || '';
     const { data: statesList } = useStatesList(country);
-
-    const [selectedState, setSelectedState] = useState('');
-
-    // Will replace this with formik values later
-    const handleSelect = (value: string) => {
-        setSelectedState(value);
-    };
 
     return (
         <div className='wallets-poa'>
@@ -41,18 +37,36 @@ const ResubmitPOA: React.FC = () => {
                     </InlineMessage>
                 </div>
                 <div className='wallets-poa__address__input'>
-                    <FlowTextField label='First line of address*' name='firstLine' />
-                    <FlowTextField label='Second line of address' name='secondLine' />
-                    <FlowTextField label='Town/City*' name='townCityLine' />
+                    <FlowTextField
+                        defaultValue={getSettings?.address_line_1 ?? ''}
+                        label='First line of address*'
+                        name='firstLine'
+                        validationSchema={requiredValidator}
+                    />
+                    <FlowTextField
+                        defaultValue={getSettings?.address_line_2 ?? ''}
+                        label='Second line of address'
+                        name='secondLine'
+                    />
+                    <FlowTextField
+                        defaultValue={getSettings?.address_city ?? ''}
+                        label='Town/City*'
+                        name='townCityLine'
+                        validationSchema={letterRequiredValidator}
+                    />
                     <WalletDropdown
                         label='State/Province'
                         list={statesList}
                         listHeight='sm'
                         name='stateProvinceDropdownLine'
-                        onSelect={handleSelect}
-                        value={selectedState}
+                        onSelect={selectedItem => setFormValues('stateProvinceDropdownLine', selectedItem)}
+                        value={getSettings?.address_state ?? ''}
                     />
-                    <FlowTextField label='Postal/ZIP Code' name='zipCodeLine' />
+                    <FlowTextField
+                        defaultValue={getSettings?.address_postcode ?? ''}
+                        label='Postal/ZIP Code'
+                        name='zipCodeLine'
+                    />
                 </div>
             </div>
 

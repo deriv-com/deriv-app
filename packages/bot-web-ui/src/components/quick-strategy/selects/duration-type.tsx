@@ -22,7 +22,7 @@ type TDurationUnit = {
 const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }) => {
     const [list, setList] = React.useState<TDurationUnitItem[]>([]);
     const { quick_strategy } = useDBotStore();
-    const { setValue } = quick_strategy;
+    const { setValue, setCurrentDurationMinMax } = quick_strategy;
     const { setFieldValue, validateForm, values } = useFormikContext<TFormData>();
     const { symbol, tradetype } = values;
     const selected = values?.durationtype;
@@ -46,10 +46,14 @@ const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }) 
                         validateForm();
                     });
                     setValue('durationtype', durations?.[0]?.unit);
+                    setCurrentDurationMinMax(durations?.[0]?.min, durations?.[0]?.max);
                 } else {
                     const duration = duration_units?.find((duration: TDurationUnitItem) => duration.value === selected);
-                    setFieldValue?.('duration', duration?.min);
+                    setFieldValue?.('duration', duration?.min).then(() => {
+                        validateForm();
+                    });
                     setValue('duration', duration?.min);
+                    setCurrentDurationMinMax(duration?.min, duration?.max);
                 }
             };
             getDurationUnits();
@@ -78,9 +82,15 @@ const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }) 
                             list_items={list}
                             onItemSelection={(item: TItem) => {
                                 if ((item as TDurationUnitItem)?.value) {
+                                    setCurrentDurationMinMax(
+                                        (item as TDurationUnitItem)?.min,
+                                        (item as TDurationUnitItem)?.max
+                                    );
                                     setFieldValue?.('durationtype', (item as TDurationUnitItem)?.value as string);
                                     setValue('durationtype', (item as TDurationUnitItem)?.value as string);
-                                    setFieldValue?.('duration', (item as TDurationUnitItem)?.min);
+                                    setFieldValue?.('duration', (item as TDurationUnitItem)?.min).then(() => {
+                                        validateForm();
+                                    });
                                     setValue('duration', (item as TDurationUnitItem)?.min);
                                 }
                             }}

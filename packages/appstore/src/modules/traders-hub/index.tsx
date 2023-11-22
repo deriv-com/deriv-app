@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { isDesktop, routes, ContentFlag } from '@deriv/shared';
@@ -61,7 +62,7 @@ const TradersHub = observer(() => {
     };
     if (!is_logged_in) return null;
 
-    const renderOrderedPlatformSections = (is_cfd_visible = true, is_options_and_multipliers_visible = true) => {
+    const OrderedPlatformSections = ({ is_cfd_visible = true, is_options_and_multipliers_visible = true }) => {
         return (
             <div
                 data-testid='dt_traders_hub'
@@ -87,7 +88,9 @@ const TradersHub = observer(() => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
-                    <DesktopWrapper>{renderOrderedPlatformSections()}</DesktopWrapper>
+                    <DesktopWrapper>
+                        <OrderedPlatformSections />
+                    </DesktopWrapper>
                     <MobileWrapper>
                         {is_landing_company_loaded ? (
                             <ButtonToggle
@@ -102,10 +105,10 @@ const TradersHub = observer(() => {
                         ) : (
                             <ButtonToggleLoader />
                         )}
-                        {renderOrderedPlatformSections(
-                            selected_platform_type === 'cfd',
-                            selected_platform_type === 'options'
-                        )}
+                        <OrderedPlatformSections
+                            is_cfd_visible={selected_platform_type === 'cfd'}
+                            is_options_and_multipliers_visible={selected_platform_type === 'options'}
+                        />
                     </MobileWrapper>
                     <ModalManager />
                     {scrolled && <TourGuide />}

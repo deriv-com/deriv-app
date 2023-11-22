@@ -3,7 +3,7 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
 import { TError } from '../../../../types';
 import AccountTransferForm from '../account-transfer-form';
 
@@ -123,7 +123,11 @@ describe('<AccountTransferForm />', () => {
 
     const renderAccountTransferForm = () => {
         render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore}>
+                    <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
+                </CashierProviders>
+            ),
         });
     };
 

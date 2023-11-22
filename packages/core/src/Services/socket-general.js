@@ -24,6 +24,7 @@ const BinarySocketGeneral = (() => {
             /* eslint-disable no-console */
             window.TrackJS?.console?.error({
                 message: error.message,
+                clientsCountry: client_store?.clients_country,
                 websocketUrl: getSocketURL(),
             });
         }, 30000);

@@ -39,7 +39,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
     const { data: authenticationData } = useAuthentication();
     const { isLoading: isUploadLoading, upload } = useDocumentUpload();
-    const { data: settings } = useSettings();
+    const { data: settings, update: updateSettings } = useSettings();
     const { getModalState, hide, show } = useModal();
 
     const selectedMarketType = getModalState('marketType') || 'all';
@@ -143,7 +143,13 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         async ({ currentScreenId, formValues, setFormValues, switchScreen }: TFlowProviderContext<typeof screens>) => {
             if (['idvScreen', 'onfidoScreen', 'selfieScreen'].includes(currentScreenId)) {
                 // API call for selfie screen
-                if (currentScreenId === 'selfieScreen') {
+                if (currentScreenId === 'idvScreen') {
+                    updateSettings({
+                        date_of_birth: formValues.dateOfBirth,
+                        first_name: formValues.firstName,
+                        last_name: formValues.lastName,
+                    });
+                } else if (currentScreenId === 'selfieScreen') {
                     await upload({
                         document_issuing_country: settings?.country_code ?? undefined,
                         document_type: 'selfie_with_id',
@@ -221,8 +227,22 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 setFormValues('selectedManualDocument', '');
                 switchScreen('selfieScreen');
             } else if (currentScreenId === 'poaScreen') {
+                updateSettings({
+                    address_city: formValues.townCityLine,
+                    address_line_1: formValues.firstLine,
+                    address_line_2: formValues.secondLine,
+                    address_postcode: formValues.zipCodeLine,
+                    address_state: formValues.stateProvinceDropdownLine,
+                });
                 switchScreen('personalDetailsScreen');
             } else if (currentScreenId === 'personalDetailsScreen') {
+                updateSettings({
+                    account_opening_reason: formValues.accountOpeningReason,
+                    citizen: formValues.citizenship,
+                    place_of_birth: formValues.placeOfBirth,
+                    tax_identification_number: formValues.taxIdentificationNumber,
+                    tax_residence: formValues.taxResidence,
+                });
                 show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             } else {
                 hide();
@@ -236,6 +256,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             settings?.country_code,
             settings?.has_submitted_personal_details,
             show,
+            updateSettings,
             upload,
         ]
     );

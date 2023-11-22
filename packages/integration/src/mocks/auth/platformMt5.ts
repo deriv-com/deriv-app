@@ -1,6 +1,6 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
-export default function mock_platform_mt5(context: Context) {
+export default function mockPlatformMt5(context: Context) {
     if ('platform' in context.request && context.request.platform === 'mt5') {
         context.response = {
             echo_req: {

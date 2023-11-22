@@ -1,6 +1,6 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
-export default function mock_payout_currencies(context: Context) {
+export default function mockPayoutCurrencies(context: Context) {
     if ('payout_currencies' in context.request && context.request.payout_currencies === 1) {
         context.response = {
             echo_req: {

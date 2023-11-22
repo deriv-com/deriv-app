@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { createContractInfo, getCardLabels } from '@deriv/shared';
+import { mockContractInfo, getCardLabels } from '@deriv/shared';
 import MultiplierCardBody from '../multiplier-card-body';
 
 type TMockedMultiplierCardBodyProps = Partial<React.ComponentProps<typeof MultiplierCardBody>>;
@@ -14,7 +14,7 @@ describe('MultiplierCardBody', () => {
     beforeEach(() => {
         mock_props = {
             addToast: jest.fn(),
-            contract_info: createContractInfo({
+            contract_info: mockContractInfo({
                 // 'Total profit/loss' equals to bid_price - buy_price;
                 buy_price: 10.44,
                 bid_price: 10,

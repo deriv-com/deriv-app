@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
-import { createContractInfo } from '@deriv/shared';
+import { mockContractInfo } from '@deriv/shared';
 import ContractDetails from '../contract-details';
 
 const contract_types = {
@@ -11,7 +11,7 @@ const contract_types = {
     digit: 'digit',
     expiry: 'expiry',
 };
-const contract_info = createContractInfo({
+const contract_info = mockContractInfo({
     barrier: '1460.00',
     cancellation: { ask_price: 122223 },
     contract_type: contract_types.test_contract_type,

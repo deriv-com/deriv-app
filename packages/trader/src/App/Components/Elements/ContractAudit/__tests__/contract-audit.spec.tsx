@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createContractInfo } from '@deriv/shared';
+import { mockContractInfo } from '@deriv/shared';
 import ContractAudit from '../contract-audit';
 
 const ContractDetails = 'ContractDetails';
 const ContractHistory = 'ContractHistory';
 const mocked_default_props: React.ComponentProps<typeof ContractAudit> = {
-    contract_info: createContractInfo(),
+    contract_info: mockContractInfo(),
     contract_update_history: [{ order_date: 1700482235 }, { order_date: 1700482236 }],
     has_result: true,
     is_multiplier: true,

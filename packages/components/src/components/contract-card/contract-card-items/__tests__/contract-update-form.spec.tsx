@@ -1,10 +1,10 @@
 import React from 'react';
 import { configure, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createContractInfo, getCardLabels } from '@deriv/shared';
+import { mockContractInfo, getCardLabels } from '@deriv/shared';
 import ContractUpdateForm from '../contract-update-form';
 
-const contract_info = createContractInfo({
+const contract_info = mockContractInfo({
     contract_id: 1,
     contract_type: 'ACCU',
     is_sold: 0,
@@ -173,7 +173,7 @@ describe('ContractUpdateForm', () => {
             ...mock_props,
             contract: {
                 ...contract,
-                contract_info: createContractInfo({
+                contract_info: mockContractInfo({
                     ...contract_info,
                     contract_type: 'MULTDOWN',
                 }),

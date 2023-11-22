@@ -2,7 +2,7 @@ import React from 'react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { render, screen } from '@testing-library/react';
-import { createContractInfo, TContractInfo } from '@deriv/shared';
+import { mockContractInfo, TContractInfo } from '@deriv/shared';
 import Purchase from '../purchase';
 import TraderProviders from '../../../../trader-providers';
 
@@ -67,7 +67,7 @@ describe('<Purchase />', () => {
             ...default_mock_store,
             portfolio: {
                 active_positions: [
-                    { contract_info: createContractInfo({ underlying: 'test_symbol' }), type: 'accumulator' },
+                    { contract_info: mockContractInfo({ underlying: 'test_symbol' }), type: 'accumulator' },
                 ],
             },
         };

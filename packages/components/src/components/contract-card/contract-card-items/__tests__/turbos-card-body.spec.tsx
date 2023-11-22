@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render, screen } from '@testing-library/react';
-import { createContractInfo, getCardLabels } from '@deriv/shared';
+import { mockContractInfo, getCardLabels } from '@deriv/shared';
 import TurbosCardBody from '../turbos-card-body';
 
-const contract_info = createContractInfo({
+const contract_info = mockContractInfo({
     contract_id: 1,
     bid_price: 1044.02,
     buy_price: 1044.0,

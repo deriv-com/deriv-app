@@ -3,14 +3,14 @@ import moment from 'moment';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { createContractInfo, VANILLALONG, TURBOS } from '@deriv/shared';
+import { mockContractInfo, VANILLALONG, TURBOS } from '@deriv/shared';
 import { ActiveSymbols } from '@deriv/api-types';
 import PositionsModalCard from '../positions-modal-card';
 import TraderProviders from '../../../../../trader-providers';
 
 const default_mock_props: React.ComponentProps<typeof PositionsModalCard> = {
     className: 'test_className',
-    contract_info: createContractInfo({
+    contract_info: mockContractInfo({
         contract_type: VANILLALONG.CALL,
         underlying: '',
         contract_id: 123386875,
@@ -55,7 +55,7 @@ const default_mock_store = {
         toggleCancellationWarning: jest.fn(),
     },
     common: {
-        server_time: moment(new Date()).utc(),
+        server_time: moment('2023-11-21 10:59:59'),
     },
     contract_trade: {
         getContractById: jest.fn(),

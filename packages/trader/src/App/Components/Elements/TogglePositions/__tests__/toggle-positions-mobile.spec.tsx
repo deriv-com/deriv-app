@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { createContractInfo } from '@deriv/shared';
+import { mockContractInfo } from '@deriv/shared';
 import TogglePositionsMobile from '../toggle-positions-mobile';
 import TraderProviders from '../../../../../trader-providers';
 
@@ -14,7 +14,7 @@ const default_mocked_props: React.ComponentProps<typeof TogglePositionsMobile> =
     error: '',
     filtered_positions: [
         {
-            contract_info: createContractInfo({
+            contract_info: mockContractInfo({
                 contract_id: 215925907928,
                 contract_type: 'CALL',
                 is_sold: 0,
@@ -30,7 +30,7 @@ const default_mocked_props: React.ComponentProps<typeof TogglePositionsMobile> =
             profit_loss: -9.45,
         },
         {
-            contract_info: createContractInfo({
+            contract_info: mockContractInfo({
                 contract_id: 2,
                 contract_type: 'PUT',
                 is_sold: 0,
@@ -107,7 +107,7 @@ describe('TogglePositionsMobile component', () => {
             error: '',
             filtered_positions: [
                 {
-                    contract_info: createContractInfo({
+                    contract_info: mockContractInfo({
                         contract_id: 1,
                         contract_type: 'CALL',
                         is_sold: 0,
@@ -123,7 +123,7 @@ describe('TogglePositionsMobile component', () => {
                     profit_loss: -9.45,
                 },
                 {
-                    contract_info: createContractInfo({
+                    contract_info: mockContractInfo({
                         contract_id: 2,
                         contract_type: 'PUT',
                         is_sold: 0,
@@ -158,7 +158,7 @@ describe('TogglePositionsMobile component', () => {
             error: '',
             filtered_positions: [
                 {
-                    contract_info: createContractInfo({
+                    contract_info: mockContractInfo({
                         contract_id: 1,
                         contract_type: 'CALL',
                         is_sold: 0,
@@ -174,7 +174,7 @@ describe('TogglePositionsMobile component', () => {
                     profit_loss: -9.45,
                 },
                 {
-                    contract_info: createContractInfo({
+                    contract_info: mockContractInfo({
                         contract_id: 2,
                         contract_type: 'PUT',
                         is_sold: 1,
@@ -211,7 +211,7 @@ describe('TogglePositionsMobile component', () => {
     it('should display no more than 5 recent positions', () => {
         const positions_pair: React.ComponentProps<typeof TogglePositionsMobile>['filtered_positions'] = [
             {
-                contract_info: createContractInfo({
+                contract_info: mockContractInfo({
                     contract_id: 1,
                     contract_type: 'CALL',
                     is_sold: 0,
@@ -227,7 +227,7 @@ describe('TogglePositionsMobile component', () => {
                 profit_loss: -9.45,
             },
             {
-                contract_info: createContractInfo({
+                contract_info: mockContractInfo({
                     contract_id: 2,
                     contract_type: 'PUT',
                     is_sold: 0,

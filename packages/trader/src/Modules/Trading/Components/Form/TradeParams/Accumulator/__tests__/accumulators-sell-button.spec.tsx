@@ -2,13 +2,13 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AccumulatorsSellButton from '../accumulators-sell-button';
 import { mockStore } from '@deriv/stores';
-import { createContractInfo } from '@deriv/shared';
+import { mockContractInfo } from '@deriv/shared';
 import TraderProviders from '../../../../../../../trader-providers';
 
 const mock_default_props = {
     is_disabled: false,
     onClick: jest.fn(),
-    contract_info: createContractInfo({
+    contract_info: mockContractInfo({
         is_valid_to_sell: 1,
         status: 'open',
     }),

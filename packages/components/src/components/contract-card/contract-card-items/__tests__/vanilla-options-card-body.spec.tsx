@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { createContractInfo, getCardLabels } from '@deriv/shared';
+import { mockContractInfo, getCardLabels } from '@deriv/shared';
 import VanillaOptionsCardBody, { TVanillaOptionsCardBodyProps } from '../vanilla-options-card-body';
 
 describe('VanillaOptionsCardBody', () => {
     const mock_props: TVanillaOptionsCardBodyProps = {
-        contract_info: createContractInfo({
+        contract_info: mockContractInfo({
             buy_price: 100,
             bid_price: 105,
             entry_spot_display_value: '110',

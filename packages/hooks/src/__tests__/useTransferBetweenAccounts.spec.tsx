@@ -1,7 +1,9 @@
 import React from 'react';
-import { renderHook } from '@testing-library/react-hooks';
+
 import { APIProvider } from '@deriv/api';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { renderHook } from '@testing-library/react-hooks';
+
 import useTransferBetweenAccounts from '../useTransferBetweenAccounts';
 
 jest.mock('@deriv/api', () => ({
@@ -33,10 +35,6 @@ jest.mock('@deriv/api', () => ({
                                     {
                                         loginid: 'DXR1646584',
                                         platform: 'dxtrade',
-                                    },
-                                    {
-                                        loginid: 'EZR80001086',
-                                        platform: 'derivez',
                                     },
                                 ],
                                 loginid: 'CRW1030',
@@ -79,34 +77,6 @@ jest.mock('@deriv/api', () => ({
                             sub_account_category: '',
                             sub_account_type: 'financial',
                         },
-                        {
-                            account_type: 'real',
-                            balance: 0,
-                            country: 'ng',
-                            currency: 'USD',
-                            display_balance: '0.00',
-                            email: 'email@gmail.com',
-                            group: 'real\\p02_ts01\\all\\svg_std-sf_usd',
-                            landing_company_short: 'svg',
-                            leverage: 1000,
-                            login: 'MTR80057067',
-                            market_type: 'all',
-                            name: 'Name',
-                            server: 'p02_ts01',
-                            server_info: {
-                                environment: 'Deriv-Server-02',
-                                geolocation: {
-                                    group: 'africa_derivez',
-                                    location: 'South Africa',
-                                    region: 'Africa',
-                                    sequence: 2,
-                                },
-                                id: 'p02_ts01',
-                            },
-                            status: null,
-                            sub_account_category: 'swap_free',
-                            sub_account_type: 'standard',
-                        },
                     ],
                 },
             };
@@ -126,31 +96,6 @@ jest.mock('@deriv/api', () => ({
                             login: '8807230',
                             market_type: 'all',
                             platform: 'dxtrade',
-                        },
-                        {
-                            account_type: 'real',
-                            balance: 0,
-                            country: 'za',
-                            currency: 'USD',
-                            display_balance: '0.00',
-                            email: 'mei+za1@binary.com',
-                            group: 'real\\p02_ts01\\all\\svg_ez_usd',
-                            landing_company_short: 'svg',
-                            leverage: 1000,
-                            login: 'EZR80001086',
-                            market_type: 'all',
-                            name: 'Baily Pan',
-                            server: 'p02_ts01',
-                            server_info: {
-                                environment: 'Deriv-Server-02',
-                                geolocation: {
-                                    group: 'africa_derivez',
-                                    location: 'South Africa',
-                                    region: 'Africa',
-                                    sequence: 2,
-                                },
-                                id: 'p02_ts01',
-                            },
                         },
                     ],
                 },
@@ -197,13 +142,6 @@ jest.mock('@deriv/api', () => ({
                             loginid: 'MTR80057067',
                         },
                         {
-                            account_type: 'derivez',
-                            balance: '0.00',
-                            currency: 'USD',
-                            demo_account: 0,
-                            loginid: 'EZR80001086',
-                        },
-                        {
                             account_type: 'dxtrade',
                             balance: '0.00',
                             currency: 'USD',
@@ -248,7 +186,7 @@ describe('useTransferBetweenAccounts', () => {
             },
         } = renderHook(() => useTransferBetweenAccounts(), { wrapper });
 
-        expect(Object.keys(trading_accounts)).toHaveLength(4);
+        expect(Object.keys(trading_accounts)).toHaveLength(3);
         expect(Object.keys(wallet_accounts)).toHaveLength(1);
     });
 

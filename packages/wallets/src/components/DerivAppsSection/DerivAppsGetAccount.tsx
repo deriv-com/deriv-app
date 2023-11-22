@@ -22,8 +22,8 @@ const DerivAppsGetAccount: React.FC = () => {
     const openSuccessModal = useCallback(() => {
         show(
             <ModalStepWrapper
-                closeOnEscape
                 renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
+                shouldHideDerivAppHeader
                 shouldHideHeader={isDesktop}
             >
                 <CFDSuccess
@@ -32,7 +32,10 @@ const DerivAppsGetAccount: React.FC = () => {
                     renderButton={() => <DerivAppsSuccessFooter />}
                     title={`Your Deriv Apps (${landingCompanyName}) account is ready`}
                 />
-            </ModalStepWrapper>
+            </ModalStepWrapper>,
+            {
+                defaultRootId: 'wallets_modal_root',
+            }
         );
     }, [activeWallet?.display_balance, activeWallet?.wallet_currency_type, isDesktop, landingCompanyName, show]);
 
@@ -61,7 +64,7 @@ const DerivAppsGetAccount: React.FC = () => {
                 <WalletText size='sm' weight='bold'>
                     Deriv Apps
                 </WalletText>
-                <WalletText lineHeight='2xs' size='2xs'>
+                <WalletText lineHeight='2xs' size='xs'>
                     {activeWallet?.is_malta_wallet
                         ? 'Get a Deriv Apps trading account regulated by MFSA to trade multipliers on Deriv Trader.'
                         : 'Get a Deriv Apps trading account to trade options and multipliers on these apps.'}

@@ -37,7 +37,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
     const { data: authenticationData } = useAuthentication();
-    const { data: getSettings, update } = useSettings();
+    const { data: getSettings, update: updateSettings } = useSettings();
     const { getModalState, hide, show } = useModal();
 
     const selectedMarketType = getModalState('marketType') || 'all';
@@ -105,7 +105,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const nextFlowHandler = ({ currentScreenId, formValues, switchScreen }: TFlowProviderContext<typeof screens>) => {
         if (['idvScreen', 'onfidoScreen', 'manualScreen'].includes(currentScreenId)) {
             if (currentScreenId === 'idvScreen') {
-                update({
+                updateSettings({
                     date_of_birth: formValues.dateOfBirth,
                     first_name: formValues.firstName,
                     last_name: formValues.lastName,
@@ -121,7 +121,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             }
         } else if (currentScreenId === 'poaScreen') {
-            update({
+            updateSettings({
                 address_city: formValues.townCityLine,
                 address_line_1: formValues.firstLine,
                 address_line_2: formValues.secondLine,
@@ -130,7 +130,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             });
             switchScreen('personalDetailsScreen');
         } else if (currentScreenId === 'personalDetailsScreen') {
-            update({
+            updateSettings({
                 account_opening_reason: formValues.accountOpeningReason,
                 citizen: formValues.citizenship,
                 place_of_birth: formValues.placeOfBirth,

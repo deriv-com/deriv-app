@@ -1,23 +1,23 @@
 import { observer, useStore } from '@deriv/stores';
 import React from 'react';
-import { TFormData } from 'Types';
+import { TTradingAssessmentForm } from 'Types';
 import TradingAssessmentForm from './trading-assessment-form';
 
 type TradingAssessmentNewUserProps = {
     disabled_items: string[];
     goToNextStep: () => void;
     goToPreviousStep: () => void;
-    onSave: (current_step: number, values: TFormData) => void;
+    onSave: (current_step: number, values: TTradingAssessmentForm) => void;
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;
     onSubmit: (
         current_step?: number,
-        values?: TFormData,
+        values?: TTradingAssessmentForm,
         goToNextStep?: () => void,
         action?: React.ReactNode,
         should_override?: boolean
     ) => void;
     getCurrentStep: () => number;
-    value: TFormData;
+    value: TTradingAssessmentForm;
     setSubSectionIndex: (index: number) => void;
 };
 
@@ -35,13 +35,17 @@ const TradingAssessmentNewUser = observer(
     }: TradingAssessmentNewUserProps) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
-        const handleCancel = (values: TFormData) => {
+        const handleCancel = (values: TTradingAssessmentForm) => {
             const current_step = getCurrentStep() - 1;
             onSave(current_step, values);
             onCancel(current_step, goToPreviousStep);
         };
 
-        const handleSubmit = (values?: TFormData, actions?: React.ReactNode, should_override?: boolean) => {
+        const handleSubmit = (
+            values?: TTradingAssessmentForm,
+            actions?: React.ReactNode,
+            should_override?: boolean
+        ) => {
             let process_form_values = { ...values };
             if (should_override) {
                 // Remove the keys with no values

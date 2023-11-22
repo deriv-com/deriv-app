@@ -1,6 +1,6 @@
 /** Add types that are shared between components */
 import React from 'react';
-import { Authorize, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
+import { Authorize, GetFinancialAssessment, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
 import { Platforms } from '@deriv/shared';
 
@@ -163,22 +163,25 @@ export type TServerError = {
     fields?: string[];
 };
 
-export type TFormData = {
-    cfd_experience: string;
-    cfd_frequency: string;
-    cfd_trading_definition: string;
-    leverage_impact_trading: string;
-    leverage_trading_high_risk_stop_loss: string;
-    required_initial_margin: string;
-    risk_tolerance: string;
-    source_of_experience: string;
-    trading_experience_financial_instruments: string;
-    trading_frequency_financial_instruments: string;
-};
+export type TTradingAssessmentForm = Required<
+    Pick<
+        GetFinancialAssessment,
+        | 'cfd_experience'
+        | 'cfd_frequency'
+        | 'cfd_trading_definition'
+        | 'leverage_trading_high_risk_stop_loss'
+        | 'leverage_impact_trading'
+        | 'required_initial_margin'
+        | 'risk_tolerance'
+        | 'source_of_experience'
+        | 'trading_experience_financial_instruments'
+        | 'trading_frequency_financial_instruments'
+    >
+>;
 
 export type TQuestion = {
     question_text: string;
-    form_control: keyof TFormData;
+    form_control: keyof TTradingAssessmentForm;
     answer_options: { text: string; value: string }[];
     field_type?: string;
 };

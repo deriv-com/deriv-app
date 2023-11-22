@@ -7,16 +7,16 @@ import { localize, Localize } from '@deriv/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdown from './trading-assessment-dropdown';
 import { getTradingAssessmentQuestions } from '../../Constants/trading-assessment-questions';
-import { TFormData, TQuestion } from 'Types';
+import { TTradingAssessmentForm, TQuestion } from 'Types';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
 
 type TradingAssessmentFormProps = {
     class_name?: string;
     disabled_items: string[];
-    form_value: TFormData;
-    onSubmit: (values?: TFormData, action?: React.ReactNode, should_override?: boolean) => void;
-    onCancel: (form_data: TFormData) => void;
+    form_value: TTradingAssessmentForm;
+    onSubmit: (values?: TTradingAssessmentForm, action?: React.ReactNode, should_override?: boolean) => void;
+    onCancel: (form_data: TTradingAssessmentForm) => void;
     should_move_to_next: boolean;
     setSubSectionIndex: (index: number) => void;
     is_independent_section: boolean;
@@ -112,9 +112,9 @@ const TradingAssessmentForm = ({
 
     const handleValueSelection = (
         e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>,
-        form_control: keyof TFormData,
+        form_control: keyof TTradingAssessmentForm,
         callBackFn: {
-            (form_control: keyof TFormData, value: string): void;
+            (form_control: keyof TTradingAssessmentForm, value: string): void;
         }
     ) => {
         if (typeof e.persist === 'function') e.persist();
@@ -122,17 +122,18 @@ const TradingAssessmentForm = ({
         setFormData(prev_form => ({ ...prev_form, [form_control]: e.target.value }));
     };
 
-    const isAssessmentCompleted = (answers: TFormData) => Object.values(answers).every(answer => Boolean(answer));
+    const isAssessmentCompleted = (answers: TTradingAssessmentForm) =>
+        Object.values(answers).every(answer => Boolean(answer));
 
-    const nextButtonHandler = (values: TFormData) => {
+    const nextButtonHandler = (values: TTradingAssessmentForm) => {
         if (is_section_filled) {
             if (isAssessmentCompleted(values) && stored_items === last_question_index) onSubmit(values);
             else displayNextPage();
         }
     };
 
-    const handleValidate = (values: TFormData) => {
-        const errors: FormikErrors<TFormData> = {};
+    const handleValidate = (values: TTradingAssessmentForm) => {
+        const errors: FormikErrors<TTradingAssessmentForm> = {};
 
         if (!values.risk_tolerance && current_question_details.current_question.section === 'risk_tolerance') {
             errors.risk_tolerance = 'error';
@@ -144,7 +145,7 @@ const TradingAssessmentForm = ({
             errors.source_of_experience = 'error';
         }
         if (current_question_details.current_question.section === 'trading_experience') {
-            const trading_experience_required_fields: (keyof TFormData)[] = [
+            const trading_experience_required_fields: (keyof TTradingAssessmentForm)[] = [
                 'cfd_experience',
                 'cfd_frequency',
                 'trading_experience_financial_instruments',
@@ -157,7 +158,7 @@ const TradingAssessmentForm = ({
             });
         }
         if (current_question_details.current_question.section === 'trading_knowledge') {
-            const trading_knowledge_required_fields: (keyof TFormData)[] = [
+            const trading_knowledge_required_fields: (keyof TTradingAssessmentForm)[] = [
                 'cfd_trading_definition',
                 'leverage_impact_trading',
                 'leverage_trading_high_risk_stop_loss',
@@ -230,12 +231,12 @@ const TradingAssessmentForm = ({
                                                 onChange={e => {
                                                     handleValueSelection(
                                                         e as React.ChangeEvent<HTMLInputElement>,
-                                                        form_control as keyof TFormData,
+                                                        form_control as keyof TTradingAssessmentForm,
                                                         setFieldValue
                                                     );
                                                 }}
                                                 values={values}
-                                                form_control={form_control as keyof TFormData}
+                                                form_control={form_control as keyof TTradingAssessmentForm}
                                                 setEnableNextSection={setIsSectionFilled}
                                                 disabled_items={disabled_items ?? []}
                                             />

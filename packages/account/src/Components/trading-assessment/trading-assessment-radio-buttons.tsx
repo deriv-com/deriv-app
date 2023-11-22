@@ -1,15 +1,15 @@
 import React from 'react';
 import { Field } from 'formik';
 import { Text, RadioGroup } from '@deriv/components';
-import { TFormData } from 'Types';
+import { TTradingAssessmentForm } from 'Types';
 
 type TradingAssessmentRadioButtonProps = {
     disabled_items: string[];
     text?: string;
     list: { text: string; value: string }[];
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    values: TFormData;
-    form_control: keyof TFormData;
+    values: TTradingAssessmentForm;
+    form_control: keyof TTradingAssessmentForm;
     setEnableNextSection: (enable: boolean) => void;
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import TradingAssessmentRadioButton from '../trading-assessment-radio-buttons';
-import { TFormData } from 'Types';
+import { TTradingAssessmentForm } from 'Types';
 import { Form, Formik } from 'formik';
 import userEvent from '@testing-library/user-event';
 
@@ -29,7 +29,7 @@ describe('TradingAssessmentRadioButton', () => {
             trading_experience_financial_instruments: '',
             trading_frequency_financial_instruments: '',
         },
-        form_control: 'risk_tolerance' as keyof TFormData,
+        form_control: 'risk_tolerance' as keyof TTradingAssessmentForm,
         setEnableNextSection: mockSetEnableNextSection,
     };
 

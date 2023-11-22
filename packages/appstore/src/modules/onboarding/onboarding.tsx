@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { localize } from '@deriv/translations';
 import { useHasActiveRealAccount } from '@deriv/hooks';
@@ -8,6 +8,7 @@ import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
 import EmptyOnboarding from './empty-onboarding';
 import { useStore, observer } from '@deriv/stores';
+import { useTradersHubTracking } from 'Hooks/index';
 
 type TOnboardingProps = {
     contents: Record<
@@ -34,13 +35,23 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const [step, setStep] = React.useState<number>(1);
     const has_active_real_account = useHasActiveRealAccount();
 
+    const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose, trackDotNavigation } =
+        useTradersHubTracking();
+
     const prevStep = () => {
-        if (step > 1) setStep(step - 1);
+        if (step > 1) {
+            trackStepBack(step);
+            setStep(step - 1);
+        }
     };
 
     const nextStep = () => {
-        if (step < steps_list.length) setStep(step + 1);
+        if (step < steps_list.length) {
+            setStep(step + 1);
+            trackStepForward(step);
+        }
         if (step === steps_list.length) {
+            trackStepForward(step);
             toggleIsTourOpen(true);
             history.push(routes.traders_hub);
             if (is_demo_low_risk) {
@@ -51,6 +62,8 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     };
 
     const handleCloseButton = async () => {
+        trackOnboardingClose(step);
+
         toggleIsTourOpen(false);
         history.push(routes.traders_hub);
         if (content_flag === ContentFlag.EU_REAL && !has_active_real_account) {
@@ -58,6 +71,11 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
         } else {
             await selectAccountType(prev_account_type);
         }
+    };
+
+    const handleOnboardingStepChange = (step_num: number) => {
+        setStep(step_num);
+        trackDotNavigation(step_num);
     };
 
     const eu_user =
@@ -77,6 +95,12 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const footer_header_text = is_eu_user ? eu_footer_header : footer_header;
 
     const footer_description = is_eu_user ? eu_footer_text : footer_text;
+
+    useEffect(() => {
+        if (is_logged_in && is_landing_company_loaded) {
+            trackOnboardingOpen();
+        }
+    }, [is_logged_in, is_landing_company_loaded, trackOnboardingOpen]);
 
     if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;
@@ -128,7 +152,11 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
                             <Button secondary onClick={prevStep} style={step === 1 ? { visibility: 'hidden' } : {}}>
                                 {localize('Back')}
                             </Button>
-                            <ProgressBarTracker step={step} steps_list={steps_list} setStep={setStep} />
+                            <ProgressBarTracker
+                                step={step}
+                                steps_list={steps_list}
+                                onStepChange={handleOnboardingStepChange}
+                            />
                             <Button primary onClick={nextStep} className='onboarding-footer-buttons--full-size'>
                                 {contents[onboarding_step]?.has_next_content
                                     ? contents[onboarding_step]?.next_content
@@ -139,7 +167,11 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
                     {is_mobile && (
                         <React.Fragment>
                             <div className='onboarding-footer__progress-bar'>
-                                <ProgressBarTracker step={step} steps_list={steps_list} setStep={setStep} />
+                                <ProgressBarTracker
+                                    step={step}
+                                    steps_list={steps_list}
+                                    onStepChange={handleOnboardingStepChange}
+                                />
                             </div>
                             <div
                                 className='onboarding-footer-buttons'

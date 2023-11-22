@@ -34,7 +34,7 @@ const typeToWidthMapper = {
     },
     roundedIcon: {
         lg: { desktop: 48, mobile: 32 },
-        md: { desktop: 24, mobile: 24 },
+        md: { desktop: 32, mobile: 24 },
         sm: { desktop: 16, mobile: 16 },
         xl: { desktop: 64, mobile: 48 },
     },

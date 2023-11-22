@@ -56,4 +56,22 @@ describe('getStatusBadgeConfig', () => {
         expect(btn.hasAttribute('href'));
         expect(btn.hasAttribute('/account/proof-of-identity'));
     });
+
+    it('should render migrated_with_position status', () => {
+        account_status = 'migrated_with_position';
+
+        renderCheck(account_status, openFailedVerificationModal, selected_account_type);
+
+        expect(screen.getByText('No new positions')).toBeInTheDocument();
+        expect(screen.getByText('IcAlertWarning')).toBeInTheDocument();
+    });
+
+    it('should render migrated_without_position status', () => {
+        account_status = 'migrated_without_position';
+
+        renderCheck(account_status, openFailedVerificationModal, selected_account_type);
+
+        expect(screen.getByText('Account closed')).toBeInTheDocument();
+        expect(screen.getByText('IcAlertWarning')).toBeInTheDocument();
+    });
 });

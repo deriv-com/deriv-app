@@ -206,7 +206,7 @@ export const getTradingHubContents = (): TTradingHubContents => ({
                     text: false,
                     trade: true,
                     topup: false,
-                    button: false,
+                    button: true,
                     get: false,
                 }}
                 is_grey

@@ -1,31 +1,38 @@
-import React, { ChangeEvent, forwardRef, InputHTMLAttributes, useState } from 'react';
+import React, { ChangeEvent, ComponentProps, forwardRef, Ref, useState } from 'react';
 import classNames from 'classnames';
-import MessageContainer, { MessageContainerProps } from './HelperMessage';
+import { FormikErrors } from 'formik';
+import HelperMessage, { HelperMessageProps } from './HelperMessage';
 import './WalletTextField.scss';
 
-export interface WalletTextFieldProps extends InputHTMLAttributes<HTMLInputElement>, MessageContainerProps {
+export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMessageProps {
     defaultValue?: string;
-    inputClassName?: string;
+    disabled?: boolean;
+    errorMessage?: FormikErrors<unknown> | FormikErrors<unknown>[] | string[] | string;
+    isInvalid?: boolean;
     label?: string;
+    renderLeftIcon?: () => React.ReactNode;
     renderRightIcon?: () => React.ReactNode;
     showMessage?: boolean;
 }
 
-const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
+const WalletTextField = forwardRef(
     (
         {
             defaultValue = '',
-            helperMessage,
-            inputClassName,
+            disabled,
+            errorMessage,
+            isInvalid,
             label,
             maxLength,
+            message,
             name = 'wallet-textfield',
             onChange,
+            renderLeftIcon,
             renderRightIcon,
             showMessage = false,
             ...rest
-        },
-        ref
+        }: WalletTextFieldProps,
+        ref: Ref<HTMLInputElement>
     ) => {
         const [value, setValue] = useState(defaultValue);
 
@@ -36,28 +43,51 @@ const WalletTextField = forwardRef<HTMLInputElement, WalletTextFieldProps>(
         };
 
         return (
-            <div className='wallets-textfield'>
-                <div className={classNames('wallets-textfield__box', inputClassName)}>
+            <div
+                className={classNames('wallets-textfield', {
+                    'wallets-textfield--disabled': disabled,
+                    'wallets-textfield--error': isInvalid,
+                })}
+            >
+                <div className='wallets-textfield__box'>
+                    {typeof renderLeftIcon === 'function' && (
+                        <div className='wallets-textfield__icon-left'>{renderLeftIcon()}</div>
+                    )}
                     <input
                         className='wallets-textfield__field'
+                        disabled={disabled}
                         id={name}
                         maxLength={maxLength}
                         onChange={handleChange}
                         placeholder={label}
+                        ref={ref}
                         value={value}
                         {...rest}
-                        ref={ref}
                     />
                     {label && (
                         <label className='wallets-textfield__label' htmlFor={name}>
                             {label}
                         </label>
                     )}
-                    <div className='wallets-textfield__icon'>{renderRightIcon?.()}</div>
+                    {typeof renderRightIcon === 'function' && (
+                        <div className='wallets-textfield__icon-right'>{renderRightIcon()}</div>
+                    )}
                 </div>
                 <div className='wallets-textfield__message-container'>
-                    {showMessage && (
-                        <MessageContainer helperMessage={helperMessage} inputValue={value} maxLength={maxLength} />
+                    {!disabled && (
+                        <>
+                            {showMessage && !isInvalid && (
+                                <HelperMessage inputValue={value} maxLength={maxLength} message={message} />
+                            )}
+                            {errorMessage && isInvalid && (
+                                <HelperMessage
+                                    inputValue={value}
+                                    isError
+                                    maxLength={maxLength}
+                                    message={errorMessage as string}
+                                />
+                            )}
+                        </>
                     )}
                 </div>
             </div>

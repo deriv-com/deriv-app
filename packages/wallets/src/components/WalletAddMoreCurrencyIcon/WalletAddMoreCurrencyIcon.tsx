@@ -25,7 +25,7 @@ const currencies = {
 };
 
 type TWalletCurrencyIconProps = {
-    currency: THooks.AvailableWallets['currency'];
+    currency: THooks.AllWalletAccounts['currency'];
 };
 
 const WalletAddMoreCurrencyIcon: React.FC<TWalletCurrencyIconProps> = ({ currency }) => {

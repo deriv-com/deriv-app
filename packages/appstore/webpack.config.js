@@ -60,6 +60,7 @@ module.exports = function (env) {
                 Stores: path.resolve(__dirname, 'src/stores'),
                 Types: path.resolve(__dirname, 'src/types'),
                 Utils: path.resolve(__dirname, 'src/utils'),
+                Hooks: path.resolve(__dirname, 'src/hooks'),
             },
             extensions: ['.ts', '.tsx', '.js'],
         },

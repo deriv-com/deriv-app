@@ -26,7 +26,8 @@ const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_
                         symbol,
                         timestamp,
                     } = notification;
-                    const seconds = Math.floor(Math.abs(Date.now() - timestamp) / 1000);
+                    // TODO: it's visually better to update seconds every second, so need to incapsulate it inside SwipeableNotification:
+                    const seconds = Math.abs(Math.floor(Date.now() / 1000) - timestamp);
 
                     return (
                         <SwipeableNotification

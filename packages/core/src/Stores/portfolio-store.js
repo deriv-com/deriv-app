@@ -174,6 +174,7 @@ export default class PortfolioStore extends BaseStore {
                 // even though we get a transaction.sell response.
                 return;
             }
+            // TODO: find a better place for this to get position details when status is not open:
             this.root_store.notifications.addTradeNotification(this.positions[i].contract_info);
             this.positions[i].is_loading = true;
 

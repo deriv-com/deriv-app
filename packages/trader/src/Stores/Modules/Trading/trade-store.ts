@@ -937,6 +937,7 @@ export default class TradeStore extends BaseStore {
                                 contract_id: response.buy.contract_id,
                                 currency: getCurrencyDisplayCode(this.root_store.client.currency),
                                 is_opened: true,
+                                purchase_time: response.buy.purchase_time,
                                 shortcode: response.buy.shortcode,
                             });
                             this.is_purchasing_contract = false;

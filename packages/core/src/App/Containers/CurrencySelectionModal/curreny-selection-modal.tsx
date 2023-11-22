@@ -9,6 +9,7 @@ import CurrencyIcon from './currency';
 import { AccountListDetail } from './types';
 import classNames from 'classnames';
 import { useHasSetCurrency } from '@deriv/hooks';
+import { GetAccountStatus } from '@deriv/api-types';
 
 type CurrencySelectionModalProps = {
     //TODO: Replace the type with a proper one when ts migration cards merged
@@ -26,6 +27,7 @@ type CurrencySelectionModalProps = {
     multipliers_account_status: string | null;
     toggleSetCurrencyModal: () => void;
     has_any_real_account: boolean;
+    account_status: GetAccountStatus;
 };
 
 const CurrencySelectionModal = ({
@@ -41,7 +43,10 @@ const CurrencySelectionModal = ({
     multipliers_account_status,
     toggleSetCurrencyModal,
     has_any_real_account,
+    account_status,
 }: CurrencySelectionModalProps) => {
+    const { authentication } = account_status;
+
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         multipliers_account_status,
         openFailedVerificationModal,
@@ -141,4 +146,5 @@ export default connect(({ client, traders_hub, ui }: RootStore) => ({
     multipliers_account_status: traders_hub.multipliers_account_status,
     toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
     has_any_real_account: client.has_any_real_account,
+    account_status: client.account_status,
 }))(CurrencySelectionModal);

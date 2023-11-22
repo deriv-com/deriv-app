@@ -14,16 +14,19 @@ type AccountNeedsVerificationProps = {
 
 const AccountNeedsVerification = observer(({ multipliers_account_status }: AccountNeedsVerificationProps) => {
     const { client, traders_hub } = useStore();
-    const { account_list, loginid } = client;
+    const { account_list, loginid, account_status } = client;
     const { openModal, openFailedVerificationModal } = traders_hub;
 
     const account = account_list?.find((acc: { loginid?: string }) => loginid === acc?.loginid);
     const icon_title = account?.title;
 
+    const { authentication } = account_status;
+
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         multipliers_account_status,
         openFailedVerificationModal,
-        'multipliers'
+        'multipliers',
+        { poi_status: authentication?.identity?.status, poa_status: authentication?.document?.status }
     );
 
     return (

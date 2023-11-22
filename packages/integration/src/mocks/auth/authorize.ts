@@ -1,6 +1,45 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
-export default function mock_authorize(context: Context) {
+export const DEFAULT_ACCOUNTS = [
+    {
+        id: 'CR5712715',
+        account_category: 'trading',
+        account_type: 'binary',
+        created_at: 1688638657,
+        currency: 'USD',
+        is_disabled: 0,
+        is_virtual: 0,
+        landing_company_name: 'svg',
+        linked_to: [],
+        token: 'a1-x0000000000000000000000000001',
+    },
+    {
+        id: 'CR5712710',
+        account_category: 'trading',
+        account_type: 'binary',
+        created_at: 1688638635,
+        currency: 'BTC',
+        is_disabled: 0,
+        is_virtual: 0,
+        landing_company_name: 'svg',
+        linked_to: [],
+        token: 'a1-x0000000000000000000000000002',
+    },
+    {
+        id: 'VRTC8420051',
+        account_category: 'trading',
+        account_type: 'binary',
+        created_at: 1688638579,
+        currency: 'USD',
+        is_disabled: 0,
+        is_virtual: 1,
+        landing_company_name: 'virtual',
+        linked_to: [],
+        token: 'a1-x0000000000000000000000000003',
+    },
+];
+
+export default function mockAuthorize(context: Context) {
     if ('authorize' in context.request) {
         context.response = {
             authorize: {

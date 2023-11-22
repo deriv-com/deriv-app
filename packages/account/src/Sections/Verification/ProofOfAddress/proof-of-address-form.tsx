@@ -19,6 +19,7 @@ import { isServerError, validate } from '../../../Helpers/utils';
 import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
 
 type TProofOfAddressForm = {
+    className?: string;
     is_resubmit: boolean;
     is_for_cfd_modal?: boolean;
     onCancel?: () => void;
@@ -35,7 +36,14 @@ type TFormInitialValues = Record<
 type TFormState = Record<'is_btn_loading' | 'is_submit_success' | 'should_allow_submit' | 'should_show_form', boolean>;
 
 const ProofOfAddressForm = observer(
-    ({ is_resubmit, is_for_cfd_modal, onSubmit, onSubmitForCFDModal, step_index }: Partial<TProofOfAddressForm>) => {
+    ({
+        is_resubmit,
+        is_for_cfd_modal,
+        onSubmit,
+        onSubmitForCFDModal,
+        step_index,
+        className,
+    }: Partial<TProofOfAddressForm>) => {
         const { client, notifications, ui } = useStore();
         const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list } = client;
         const {
@@ -262,7 +270,11 @@ const ProofOfAddressForm = observer(
                         <LeaveConfirm onDirty={is_mobile ? showForm : undefined} />
                         {form_state.should_show_form && (
                             <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
-                                <ThemedScrollbars height='572px' is_bypassed={!is_for_cfd_modal || is_mobile}>
+                                <ThemedScrollbars
+                                    height='572px'
+                                    is_bypassed={!is_for_cfd_modal || is_mobile}
+                                    className={className}
+                                >
                                     <FormBody scroll_offset={setOffset(status)}>
                                         {status?.msg && (
                                             <HintBox

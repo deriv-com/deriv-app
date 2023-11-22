@@ -1,5 +1,6 @@
 const DEFAULT_IMAGE_WIDTH = 2560;
 const DEFAULT_IMAGE_QUALITY = 0.9;
+const WORD_SIZE = 4;
 
 type TCompressImageOption = {
     maxWidth?: number;
@@ -7,12 +8,18 @@ type TCompressImageOption = {
 };
 
 type TBase64Image = {
-    src: string;
     filename: string;
+    src: string;
 };
 
 type TCompressImage = TBase64Image & {
     options?: TCompressImageOption;
+};
+
+export type TFileObject = {
+    filename: File['name'];
+    buffer: FileReader['result'];
+    fileSize: File['size'];
 };
 
 /**
@@ -25,7 +32,7 @@ type TCompressImage = TBase64Image & {
  * @param {number} [params.options.quality=DEFAULT_IMAGE_QUALITY] - The image quality (0 to 1) for compression.
  * @returns {Promise<Blob>} A Promise that resolves with the compressed image as a Blob.
  */
-export const compressImage = ({ src, filename, options }: TCompressImage): Promise<Blob | undefined> => {
+export const compressImage = ({ src, filename, options }: TCompressImage): Promise<Blob> => {
     const { maxWidth = DEFAULT_IMAGE_WIDTH, quality = DEFAULT_IMAGE_QUALITY } = options || {};
 
     return new Promise((resolve, reject) => {
@@ -79,7 +86,10 @@ export const convertToBase64 = (file: File): Promise<TBase64Image> => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-            resolve({ src: reader.result?.toString() || '', filename: file.name });
+            resolve({
+                src: reader.result?.toString() || '',
+                filename: file.name,
+            });
         };
     });
 };
@@ -91,3 +101,87 @@ export const convertToBase64 = (file: File): Promise<TBase64Image> => {
  * @returns {boolean} True if the filename has a supported image format extension, false otherwise.
  */
 export const isSupportedImageFormat = (filename: string) => /\.(png|jpg|jpeg|gif|pdf)$/gi.test(filename ?? '');
+
+/**
+ * Convert image to base64 and cmpress an image file if it is a supported image format.
+ *
+ * @param {File} file - The File object to compress.
+ * @returns {Promise<Blob>} A Promise that resolves with the compressed image as a Blob.
+ */
+export const compressImageFile = (file: File) => {
+    return new Promise<Blob>(resolve => {
+        if (isSupportedImageFormat(file.type)) {
+            convertToBase64(file).then(img => {
+                compressImage(img).then(resolve);
+            });
+        } else {
+            resolve(file);
+        }
+    });
+};
+
+/**
+ * Get Uint8Array from number
+ *
+ * @param {num} number - The number to convert to Uint8Array.
+ * @returns {Uint8Array} Uint8Array
+ */
+export function numToUint8Array(num: number) {
+    const typedArray = new Uint8Array(WORD_SIZE);
+    const dv = new DataView(typedArray.buffer);
+    dv.setUint32(0, num);
+    return typedArray;
+}
+
+/**
+ * Turn binary into array of chunks
+ *
+ * @param {binary} Uint8Array - Uint8Array to be chunked.
+ * @returns {Uint8Array[]} Array of Uint8Array chunks
+ */
+export const generateChunks = (binary: Uint8Array, { chunkSize = 16384 /* 16KB */ }) => {
+    const chunks = [];
+    for (let i = 0; i < binary.length; i++) {
+        const item = binary[i];
+        if (i % chunkSize === 0) {
+            chunks.push([item]);
+        } else {
+            chunks[chunks.length - 1].push(item);
+        }
+    }
+    return chunks.map(b => new Uint8Array(b)).concat(new Uint8Array([]));
+};
+
+/**
+ * Read a file and return it as modified object with a buffer of the file contents.
+ * @param {Blob} file - The file to read.
+ * @returns {Promise<TFileObject>} A Promise that resolves with the file as a TFileObject.
+ *
+ */
+export const readFile = (file: Blob) => {
+    const fr = new FileReader();
+    return new Promise<
+        | TFileObject
+        | {
+              message: string;
+          }
+    >(resolve => {
+        fr.onload = () => {
+            const fileMetadata = {
+                filename: file.name,
+                buffer: fr.result,
+                fileSize: file.size,
+            };
+            resolve(fileMetadata);
+        };
+
+        fr.onerror = () => {
+            resolve({
+                message: `Unable to read file ${file.name}`,
+            });
+        };
+
+        // Reading file
+        fr.readAsArrayBuffer(file);
+    });
+};

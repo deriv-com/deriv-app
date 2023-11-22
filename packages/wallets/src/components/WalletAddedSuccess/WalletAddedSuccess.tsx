@@ -39,12 +39,9 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
     );
     const renderIcon = useCallback(
         () => (
-            <WalletCard
-                balance={displayBalance}
-                currency={currency || 'USD'}
-                landingCompanyName={landingCompany}
-                width='24rem'
-            />
+            <div className='wallets-add-more__success-card'>
+                <WalletCard balance={displayBalance} currency={currency || 'USD'} landingCompanyName={landingCompany} />
+            </div>
         ),
         [currency, displayBalance, landingCompany]
     );

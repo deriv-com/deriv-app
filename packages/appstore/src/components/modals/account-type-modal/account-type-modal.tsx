@@ -179,7 +179,6 @@ const MT5AccountTypeModal = () => {
                         />
                         <Modal.Footer className='account-type-card__footer-button' has_separator>
                             <Button
-                                style={{ width: '100%' }}
                                 disabled={!account_type_card}
                                 primary
                                 onClick={() => {

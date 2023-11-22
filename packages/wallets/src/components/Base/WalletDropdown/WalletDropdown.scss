@@ -3,6 +3,14 @@
     position: relative;
     cursor: pointer;
 
+    &--disabled {
+        pointer-events: none;
+
+        & label {
+            color: var(--system-light-5-active-background, #999);
+        }
+    }
+
     &__button {
         all: unset;
         right: 1.6rem;

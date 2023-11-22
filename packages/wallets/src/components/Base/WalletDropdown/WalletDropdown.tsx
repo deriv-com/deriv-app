@@ -9,6 +9,7 @@ import WalletTextField, { WalletTextFieldProps } from '../WalletTextField/Wallet
 import './WalletDropdown.scss';
 
 type TProps = {
+    disabled?: boolean;
     errorMessage?: WalletTextFieldProps['errorMessage'];
     icon?: React.ReactNode;
     isRequired?: boolean;
@@ -26,6 +27,7 @@ type TProps = {
 };
 
 const WalletDropdown: React.FC<TProps> = ({
+    disabled,
     errorMessage,
     icon = false,
     isRequired = false,
@@ -90,9 +92,15 @@ const WalletDropdown: React.FC<TProps> = ({
     }, [list]);
 
     return (
-        <div className='wallets-dropdown' {...getToggleButtonProps()}>
+        <div
+            className={classNames('wallets-dropdown', {
+                'wallets-dropdown--disabled': disabled,
+            })}
+            {...getToggleButtonProps()}
+        >
             <div className='wallets-dropdown__content'>
                 <WalletTextField
+                    disabled={disabled}
                     errorMessage={errorMessage}
                     isInvalid={hasSelected && !value && isRequired}
                     label={label}

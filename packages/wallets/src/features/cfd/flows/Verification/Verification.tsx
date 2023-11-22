@@ -115,6 +115,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 return !formValues.selectedManualDocument;
             case 'selfieScreen':
                 return !formValues.selfie;
+            case 'onfidoScreen':
+                return !formValues.hasSubmittedOnfido;
             case 'personalDetailsScreen':
                 return (
                     !formValues.citizenship ||
@@ -221,9 +223,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 setFormValues('selectedManualDocument', '');
                 switchScreen('selfieScreen');
             } else if (currentScreenId === 'poaScreen') {
-                if (!settings?.has_submitted_personal_details) {
-                    switchScreen('personalDetailsScreen');
-                }
+                switchScreen('personalDetailsScreen');
             } else if (currentScreenId === 'personalDetailsScreen') {
                 show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             } else {
@@ -246,6 +246,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         <FlowProvider
             initialScreenId={initialScreenId}
             initialValues={{
+                hasSubmittedOnfido: false,
                 selectedJurisdiction,
             }}
             screens={screens}

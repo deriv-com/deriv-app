@@ -4,7 +4,7 @@ import CryptoFiatConverter from '../crypto-fiat-converter';
 import { Formik } from 'formik';
 import * as formik from 'formik';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 describe('<CryptoFiatConverter />', () => {
     let mockRootStore: ReturnType<typeof mockStore>, mockProps: React.ComponentProps<typeof CryptoFiatConverter>;
@@ -16,6 +16,7 @@ describe('<CryptoFiatConverter />', () => {
                     crypto_fiat_converter: {
                         converter_from_amount: '100',
                         converter_to_amount: '200',
+                        is_timer_visible: true,
                     },
                 },
             },
@@ -36,11 +37,9 @@ describe('<CryptoFiatConverter />', () => {
     const renderCryptoFiatConverter = () => {
         return render(
             <CashierProviders store={mockRootStore}>
-                <ExchangeRatesProvider>
-                    <Formik initialValues={{}} onSubmit={() => Promise.resolve()}>
-                        <CryptoFiatConverter {...mockProps} />
-                    </Formik>
-                </ExchangeRatesProvider>
+                <Formik initialValues={{}} onSubmit={() => Promise.resolve()}>
+                    <CryptoFiatConverter {...mockProps} />
+                </Formik>
             </CashierProviders>
         );
     };
@@ -52,6 +51,7 @@ describe('<CryptoFiatConverter />', () => {
         expect(screen.getByText('Amount (USD)')).toBeInTheDocument();
         expect(screen.getByText('Transfer limits')).toBeInTheDocument();
         expect(screen.getByText('Approximate value')).toBeInTheDocument();
+        expect(screen.getByText('60s')).toBeInTheDocument();
     });
 
     it('should change arrow direction when the focus changes between inputs', () => {
@@ -74,13 +74,6 @@ describe('<CryptoFiatConverter />', () => {
     });
 
     it('should trigger onChange callback when the input field changes', () => {
-        const mockJson = {
-            BTC: {
-                USD: 2.2,
-            },
-        };
-        window.localStorage.setItem('exchange_rates', JSON.stringify(mockJson));
-
         const use_formik_context = jest.spyOn(formik, 'useFormikContext') as any;
         use_formik_context.mockReturnValueOnce({ handleChange: jest.fn() });
 

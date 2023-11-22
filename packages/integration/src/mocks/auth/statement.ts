@@ -1,6 +1,6 @@
-import { Context } from 'Utils/mocks/mocks';
+import { Context } from '../../utils/mocks/mocks';
 
-export default function mock_statement(context: Context) {
+export default function mockStatement(context: Context) {
     if ('statement' in context.request && context.request.statement === 1) {
         context.response = {
             echo_req: context.request,

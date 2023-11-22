@@ -12,9 +12,9 @@ type TSwipeableNotificationProps = {
     displayed_time?: React.ReactNode;
     is_failure?: boolean;
     is_success?: boolean;
-    is_visible?: boolean;
-    onSwipeEnd: () => void;
+    onUnmount?: () => void;
     redirect_to?: string;
+    visibility_duration_ms?: number;
 };
 
 const SwipeableNotification = ({
@@ -23,17 +23,18 @@ const SwipeableNotification = ({
     displayed_time,
     is_failure,
     is_success,
-    is_visible,
-    onSwipeEnd,
+    onUnmount,
     redirect_to = '',
+    visibility_duration_ms,
 }: TSwipeableNotificationProps) => {
     const [is_swipe_right, setSwipeRight] = React.useState(false);
-    const [is_shown, setIsShown] = React.useState(is_visible);
-    const debouncedOnSwipeEnd = React.useMemo(() => debounce(onSwipeEnd, 300), [onSwipeEnd]);
-    const hideNotification = () => {
-        setIsShown(false);
-        debouncedOnSwipeEnd();
-    };
+    const [is_shown, setIsShown] = React.useState(true);
+    const hideNotification = () => setIsShown(false);
+    const debouncedHideNotification = React.useMemo(
+        () => debounce(hideNotification, visibility_duration_ms),
+        [visibility_duration_ms]
+    );
+
     const onSwipeLeft = () => {
         setSwipeRight(false);
         hideNotification();
@@ -48,13 +49,15 @@ const SwipeableNotification = ({
         onSwipedRight: onSwipeRight,
     });
 
-    React.useEffect(() => debouncedOnSwipeEnd.cancel, [debouncedOnSwipeEnd]);
+    React.useEffect(() => {
+        return () => {
+            debouncedHideNotification.cancel();
+        };
+    }, [debouncedHideNotification]);
 
     return (
         <CSSTransition
             appear
-            in={is_visible && is_shown}
-            timeout={300}
             classNames={{
                 appear: `${classname}-appear`,
                 appearActive: `${classname}-appear-active`,
@@ -65,6 +68,12 @@ const SwipeableNotification = ({
                 exit: `${classname}-exit`,
                 exitActive: `${classname}-exit-active-${is_swipe_right ? 'right' : 'left'}`,
             }}
+            in={is_shown}
+            onEntered={() => {
+                if (visibility_duration_ms) debouncedHideNotification();
+            }}
+            onExited={onUnmount}
+            timeout={300}
             unmountOnExit
         >
             <NavLink

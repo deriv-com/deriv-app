@@ -62,7 +62,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         >
             <div className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
-                    <WalletText size='2xs'>{title}</WalletText>
+                    <WalletText size='sm'>{title}</WalletText>
                     {!activeWallet?.is_virtual && (
                         <div className='wallets-added-mt5__details-title-landing-company'>
                             <WalletText size='2xs' weight='bold'>

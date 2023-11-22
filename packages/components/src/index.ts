@@ -59,7 +59,6 @@ export { default as HintBox } from './components/hint-box';
 export { default as HorizontalSwipe } from './components/horizontal-swipe';
 export { default as Icon } from './components/icon';
 export { default as IconTradeTypes } from './components/icon-trade-types';
-export { default as MessageWithIcon } from './components/message-with-icon';
 // export { default as Icon/icons.js } from './components/icon/icons.js';
 export { default as InfiniteDataList } from './components/infinite-data-list';
 export * from './components/inline-message';

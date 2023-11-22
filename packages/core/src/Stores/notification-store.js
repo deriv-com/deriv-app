@@ -651,7 +651,7 @@ export default class NotificationStore extends BaseStore {
 
     removeTradeNotifications(id) {
         if (id) {
-            this.trade_notifications = this.trade_notifications.filter(n => n.id !== id);
+            this.trade_notifications = this.trade_notifications.filter(item => item.id !== id);
         } else {
             this.trade_notifications = [];
         }

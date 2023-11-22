@@ -60,10 +60,8 @@ const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_
                             is_failure={status !== 'open' && profit < 0}
                             is_success={status !== 'open' && profit >= 0}
                             is_visible={seconds < 3}
-                            onSwipeEnd={(should_remove_notification?: boolean) => {
-                                if (should_remove_notification) {
-                                    removeTradeNotifications(id);
-                                }
+                            onSwipeEnd={() => {
+                                removeTradeNotifications(id);
                             }}
                             redirect_to={getContractPath(contract_id)}
                         />

@@ -13,7 +13,7 @@ type TSwipeableNotificationProps = {
     is_failure?: boolean;
     is_success?: boolean;
     is_visible?: boolean;
-    onSwipeEnd: (should_remove_notification?: boolean) => void;
+    onSwipeEnd: () => void;
     redirect_to?: string;
 };
 
@@ -29,9 +29,10 @@ const SwipeableNotification = ({
 }: TSwipeableNotificationProps) => {
     const [is_swipe_right, setSwipeRight] = React.useState(false);
     const [is_shown, setIsShown] = React.useState(is_visible);
+    const debouncedOnSwipeEnd = React.useMemo(() => debounce(onSwipeEnd, 300), [onSwipeEnd]);
     const hideNotification = () => {
         setIsShown(false);
-        debounce(() => onSwipeEnd(true), 300)();
+        debouncedOnSwipeEnd();
     };
     const onSwipeLeft = () => {
         setSwipeRight(false);
@@ -46,6 +47,8 @@ const SwipeableNotification = ({
         onSwipedLeft: onSwipeLeft,
         onSwipedRight: onSwipeRight,
     });
+
+    React.useEffect(() => debouncedOnSwipeEnd.cancel, [debouncedOnSwipeEnd]);
 
     return (
         <CSSTransition

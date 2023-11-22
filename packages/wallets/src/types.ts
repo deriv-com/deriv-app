@@ -3,7 +3,7 @@ import type {
     useActiveAccount,
     useActiveTradingAccount,
     useActiveWalletAccount,
-    useActiveWalletAccountVerbose,
+    useAllAccountsList,
     useAllWalletAccounts,
     useAuthentication,
     useAvailableMT5Accounts,
@@ -34,11 +34,11 @@ export namespace THooks {
     export type SortedMT5Accounts = NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number];
     export type WalletAccountsList = NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
     export type ActiveWalletAccount = NonNullable<ReturnType<typeof useActiveWalletAccount>['data']>;
-    export type ActiveWalletAccountVerbose = NonNullable<ReturnType<typeof useActiveWalletAccountVerbose>>['data'];
     export type AccountsList = NonNullable<ReturnType<typeof useAccountsList>['data']>[number];
     export type ActiveTradingAccount = NonNullable<ReturnType<typeof useActiveTradingAccount>['data']>;
     export type ActiveAccount = NonNullable<ReturnType<typeof useActiveAccount>['data']>;
     export type AllWalletAccounts = NonNullable<ReturnType<typeof useAllWalletAccounts>['data']>[number];
+    export type AllAccountsList = NonNullable<ReturnType<typeof useAllAccountsList>>['data'];
     export type DynamicLeverage = NonNullable<ReturnType<typeof useDynamicLeverage>['data']>;
     export type CryptoTransactions = NonNullable<ReturnType<typeof useCryptoTransactions>['data']>[number];
     export type POA = NonNullable<ReturnType<typeof usePOA>['data']>;

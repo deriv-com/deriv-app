@@ -28,7 +28,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
     displayAccountName,
     displayActionType,
     isDemo,
-    isInterWallet,
+    isInterWallet = false,
     landingCompanyName,
     mt5Group,
 }) => {

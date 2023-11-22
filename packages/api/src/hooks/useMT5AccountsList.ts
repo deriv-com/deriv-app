@@ -38,6 +38,8 @@ const useMT5AccountsList = () => {
             display_balance: displayMoney(account.balance || 0, account.currency || 'USD', {
                 preferred_language: authorize_data?.preferred_language,
             }),
+            /** indicating whether the account is a virtual-money account. */
+            is_virtual: account.account_type === 'demo',
         }));
     }, [authorize_data?.preferred_language, mt5_accounts?.mt5_login_list, wallet?.linked_to]);
 

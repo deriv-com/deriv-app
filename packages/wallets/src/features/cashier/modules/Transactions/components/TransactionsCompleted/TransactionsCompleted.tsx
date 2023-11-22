@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import moment from 'moment';
-import { useActiveWalletAccountVerbose, useTransactions } from '@deriv/api';
+import { useActiveWalletAccount, useAllAccountsList, useTransactions } from '@deriv/api';
 import { TSocketRequestPayload } from '@deriv/api/types';
 import { Loader } from '../../../../../../components';
 import { WalletText } from '../../../../../../components/Base';
@@ -23,9 +23,10 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
         isLoading: isTransactionListLoading,
         setFilter,
     } = useTransactions();
-    const { data: wallet, isLoading: isWalletLoading } = useActiveWalletAccountVerbose();
+    const { data: wallet, isLoading: isWalletLoading } = useActiveWalletAccount();
+    const { data: accounts, isLoading: isAccountsListLoading } = useAllAccountsList();
 
-    const isLoading = isTransactionListLoading || isWalletLoading;
+    const isLoading = isTransactionListLoading || isWalletLoading || isAccountsListLoading;
 
     const fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
@@ -44,7 +45,7 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
         setFilter(filter);
     }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    if (!transactions && (isFetching || isLoading)) return <Loader />;
+    if (!wallet || (!transactions && (isFetching || isLoading))) return <Loader />;
 
     if (!transactions) return <TransactionsNoDataState />;
 
@@ -68,7 +69,9 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
                     </WalletText>
                 </div>
             )}
-            rowRender={transaction => <TransactionsCompletedRow transaction={transaction} wallet={wallet} />}
+            rowRender={transaction => (
+                <TransactionsCompletedRow accounts={accounts} transaction={transaction} wallet={wallet} />
+            )}
         />
     );
 };

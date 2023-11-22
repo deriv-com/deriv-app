@@ -17,6 +17,8 @@ const useCtraderAccountsList = () => {
                 ...account,
                 /** The id of the cTrader account */
                 id: account.account_id,
+                /** indicating whether the account is a virtual-money account. */
+                is_virtual: account.account_type === 'demo',
             })),
         [ctrader_accounts?.trading_platform_accounts]
     );

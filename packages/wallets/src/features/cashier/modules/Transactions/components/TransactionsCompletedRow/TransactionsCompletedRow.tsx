@@ -6,11 +6,12 @@ import { TransactionsCompletedRowTransferAccountDetails } from './components/Tra
 import './TransactionsCompletedRow.scss';
 
 type TProps = {
+    accounts: THooks.AllAccountsList;
     transaction: THooks.Transactions;
-    wallet: THooks.ActiveWalletAccountVerbose;
+    wallet: THooks.ActiveWalletAccount;
 };
 
-const TransactionsCompletedRow: React.FC<TProps> = ({ transaction, wallet }) => {
+const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wallet }) => {
     if (!transaction.action_type || !transaction.amount) return null;
 
     const displayCurrency = wallet?.currency_config?.display_code || 'USD';
@@ -29,13 +30,13 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ transaction, wallet }) => 
                 />
             ) : (
                 <TransactionsCompletedRowTransferAccountDetails
+                    accounts={accounts}
                     direction={transaction.from?.loginid === wallet?.loginid ? 'to' : 'from'}
                     loginid={
                         [transaction.from?.loginid, transaction.to?.loginid].find(
                             loginid => loginid !== wallet?.loginid
                         ) ?? ''
                     }
-                    wallet={wallet}
                 />
             )}
             <div className='wallets-transactions-completed-row__transaction-details'>

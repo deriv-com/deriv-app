@@ -1,65 +1,32 @@
 import React, { FC, useMemo } from 'react';
-import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
-import { useModal } from '../../../../components/ModalProvider';
+import { useAuthentication, usePOA, usePOI, useSettings } from '@deriv/api';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
+import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { Loader } from '../../../../components/Loader';
-import { Onfido } from '../../screens';
-import { useAuthentication, usePOA, usePOI } from '@deriv/api';
+import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
-
-const Idv = () => {
-    return (
-        <div style={{ fontSize: 60, height: 400, width: 600 }}>
-            <h1>IDV screen</h1>
-        </div>
-    );
-};
-
-const Manual = () => {
-    return (
-        <div style={{ fontSize: 60, height: 400, width: 600 }}>
-            <h1>Manual screen</h1>
-        </div>
-    );
-};
-
-const Poa = () => {
-    return (
-        <div style={{ fontSize: 60, height: 400, width: 600 }}>
-            <h1>POA screen</h1>
-        </div>
-    );
-};
-
-const PersonalDetails = () => {
-    return (
-        <div style={{ fontSize: 60, height: 400, width: 600 }}>
-            <h1>Personal details screen</h1>
-        </div>
-    );
-};
+import { ManualDocumentUpload, ResubmitPOA } from '../../../accounts/screens';
+import { IDVDocumentUpload } from '../../../accounts/screens/IDVDocumentUpload';
+import { PersonalDetails } from '../../../accounts/screens/PersonalDetails';
+import { MT5PasswordModal } from '../../modals';
+import { Onfido } from '../../screens';
 
 const Loading = () => {
     return (
-        <div style={{ fontSize: 60, height: 400, width: 600 }}>
+        <div style={{ height: 400, width: 600 }}>
             <Loader />
         </div>
     );
 };
 
-const Password = () => {
-    return <div style={{ fontSize: 60, height: 400, width: 600 }}>Password screen</div>;
-};
-
 // TODO: Replace these mock components with the screens
 const screens = {
-    idvScreen: <Idv />,
+    idvScreen: <IDVDocumentUpload />,
     loadingScreen: <Loading />,
-    manualScreen: <Manual />,
+    manualScreen: <ManualDocumentUpload />,
     onfidoScreen: <Onfido />,
-    passwordScreen: <Password />,
     personalDetailsScreen: <PersonalDetails />,
-    poaScreen: <Poa />,
+    poaScreen: <ResubmitPOA />,
 };
 
 type TVerificationProps = {
@@ -70,57 +37,84 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
     const { data: authenticationData } = useAuthentication();
-    const { hide } = useModal();
+    const { data: getSettings } = useSettings();
+    const { getModalState, hide, show } = useModal();
+
+    const selectedMarketType = getModalState('marketType') || 'all';
+    const platform = getModalState('platform') || 'mt5';
 
     const isLoading = useMemo(() => {
         return !isSuccessPOIStatus || !isSuccessPOAStatus;
     }, [isSuccessPOIStatus, isSuccessPOAStatus]);
 
     const hasAttemptedPOA = poaStatus?.has_attempted_poa || true;
-    const needPersonalDetails = true;
 
     const initialScreenId: keyof typeof screens = useMemo(() => {
         const service = (poiStatus?.current?.service || 'manual') as keyof THooks.POI['services'];
 
-        if (poiStatus?.services) {
-            const serviceStatus = poiStatus.services?.[service];
+        if (poiStatus?.services && isSuccessPOIStatus) {
+            const serviceStatus = poiStatus.status;
 
             if (!isSuccessPOIStatus) return 'loadingScreen';
+
             if (serviceStatus === 'pending' || serviceStatus === 'verified') {
                 if (authenticationData?.is_poa_needed && !hasAttemptedPOA) return 'poaScreen';
-                if (needPersonalDetails) return 'personalDetailsScreen';
-                return 'passwordScreen';
+                if (!getSettings?.has_submitted_personal_details) return 'personalDetailsScreen';
+                show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             }
             if (service === 'idv') return 'idvScreen';
             if (service === 'onfido') return 'onfidoScreen';
         }
-        return 'manualScreen';
+        return 'loadingScreen';
     }, [
-        hasAttemptedPOA,
-        needPersonalDetails,
-        authenticationData?.is_poa_needed,
         poiStatus,
-        poiStatus?.services,
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        poiStatus?.current?.service,
         isSuccessPOIStatus,
+        authenticationData?.is_poa_needed,
+        hasAttemptedPOA,
+        getSettings?.has_submitted_personal_details,
+        show,
+        selectedMarketType,
+        platform,
     ]);
+
+    const isNextDisabled = ({ currentScreenId, errors, formValues }: TFlowProviderContext<typeof screens>) => {
+        switch (currentScreenId) {
+            case 'idvScreen':
+                return (
+                    !formValues.documentNumber ||
+                    !formValues.firstName ||
+                    !formValues.lastName ||
+                    !formValues.dateOfBirth ||
+                    !!errors.documentNumber
+                );
+            case 'personalDetailsScreen':
+                return (
+                    !formValues.citizenship ||
+                    !formValues.placeOfBirth ||
+                    !formValues.taxResidence ||
+                    !formValues.accountOpeningReason ||
+                    !formValues.taxIdentificationNumber
+                );
+            case 'poaScreen':
+                return !formValues.townCityLine || !formValues.firstLine;
+            default:
+                return false;
+        }
+    };
 
     const nextFlowHandler = ({ currentScreenId, switchScreen }: TFlowProviderContext<typeof screens>) => {
         if (['idvScreen', 'onfidoScreen', 'manualScreen'].includes(currentScreenId)) {
-            if (!hasAttemptedPOA) {
+            if (hasAttemptedPOA) {
                 switchScreen('poaScreen');
-            } else if (needPersonalDetails) {
+            } else if (!getSettings?.has_submitted_personal_details) {
                 switchScreen('personalDetailsScreen');
             } else {
-                switchScreen('passwordScreen');
+                show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             }
         } else if (currentScreenId === 'poaScreen') {
-            if (needPersonalDetails) {
-                switchScreen('personalDetailsScreen');
-            }
+            switchScreen('personalDetailsScreen');
         } else if (currentScreenId === 'personalDetailsScreen') {
-            switchScreen('passwordScreen');
+            show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
         } else {
             hide();
         }
@@ -140,6 +134,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                         renderFooter={() => {
                             return (
                                 <WalletButton
+                                    disabled={isNextDisabled(context)}
                                     isLoading={isLoading}
                                     onClick={() => nextFlowHandler(context)}
                                     size='lg'

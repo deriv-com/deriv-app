@@ -1,9 +1,9 @@
-import * as SocketCache from '_common/base/socket_cache';
+import Cookies from 'js-cookie';
+import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
+import moment from 'moment';
 
 import {
     CFD_PLATFORMS,
-    LocalStore,
-    State,
     deriv_urls,
     excludeParamsFromUrlQuery,
     filterUrlQuery,
@@ -17,29 +17,31 @@ import {
     isProduction,
     isStaging,
     isTestLink,
+    LocalStore,
     redirectToLogin,
     removeCookies,
     routes,
-    setCurrencies,
     SessionStore,
+    setCurrencies,
+    State,
     toMoment,
     urlForLanguage,
     getAppId,
 } from '@deriv/shared';
 import { Analytics } from '@deriv/analytics';
-import { WS, requestLogout } from 'Services';
-import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
-import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
-import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
-import BaseStore from './base-store';
-import BinarySocket from '_common/base/socket_base';
+import { requestLogout, WS } from 'Services';
 import BinarySocketGeneral from 'Services/socket-general';
-import Cookies from 'js-cookie';
-import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
-import moment from 'moment';
+
+import { getAccountTitle, getAvailableAccount, getClientAccountType } from './Helpers/client';
 import { setDeviceDataCookie } from './Helpers/device';
+import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
+import BaseStore from './base-store';
+
+import BinarySocket from '_common/base/socket_base';
+import * as SocketCache from '_common/base/socket_cache';
+import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
 const LANGUAGE_KEY = 'i18n_language';
 const storage_key = 'client.accounts';
@@ -54,7 +56,6 @@ export default class ClientStore extends BaseStore {
     email;
     accounts = {};
     trading_platform_available_accounts = [];
-    derivez_available_accounts = [];
     pre_switch_broadcast = false;
     switched = '';
     is_switching = false;
@@ -102,7 +103,6 @@ export default class ClientStore extends BaseStore {
     mt5_login_list_error = null;
     dxtrade_accounts_list = [];
     ctrader_accounts_list = [];
-    derivez_accounts_list = [];
     dxtrade_accounts_list_error = null;
     dxtrade_disabled_signup_types = { real: false, demo: false };
     statement = [];
@@ -169,7 +169,6 @@ export default class ClientStore extends BaseStore {
             email: observable,
             accounts: observable,
             trading_platform_available_accounts: observable,
-            derivez_available_accounts: observable,
             pre_switch_broadcast: observable,
             switched: observable,
             is_switching: observable,
@@ -206,7 +205,6 @@ export default class ClientStore extends BaseStore {
             mt5_login_list_error: observable,
             dxtrade_accounts_list: observable,
             ctrader_accounts_list: observable,
-            derivez_accounts_list: observable,
             dxtrade_accounts_list_error: observable,
             dxtrade_disabled_signup_types: observable,
             statement: observable,
@@ -385,7 +383,6 @@ export default class ClientStore extends BaseStore {
             responseMt5LoginList: action.bound,
             responseDxtradeTradingServers: action.bound,
             responseTradingPlatformAvailableAccounts: action.bound,
-            responseDerivezAvailableAccounts: action.bound,
             responseTradingPlatformAccountsList: action.bound,
             responseStatement: action.bound,
             getChangeableFields: action.bound,
@@ -631,10 +628,6 @@ export default class ClientStore extends BaseStore {
         return this.ctrader_accounts_list.some(account => account.account_type === 'real');
     }
 
-    get has_real_derivez_login() {
-        return this.derivez_accounts_list.some(account => account.account_type === 'real');
-    }
-
     hasAccountErrorInCFDList = (platform, account_type) => {
         if (!this.is_logged_in) return false;
         let list;
@@ -644,9 +637,6 @@ export default class ClientStore extends BaseStore {
                 break;
             case CFD_PLATFORMS.DXTRADE:
                 list = this.dxtrade_accounts_list;
-                break;
-            case CFD_PLATFORMS.DERIVEZ:
-                list = this.derivez_accounts_list;
                 break;
             default:
                 return false;
@@ -1685,6 +1675,7 @@ export default class ClientStore extends BaseStore {
                 // Client comes back from oauth and logs in
                 Analytics.setAttributes({
                     app_id: getAppId(),
+                    account_type: this.loginid.substring(0, 2),
                 });
                 tracking?.identifyEvent(user_id, {
                     language: getLanguage().toLowerCase(),
@@ -1749,8 +1740,6 @@ export default class ClientStore extends BaseStore {
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE).then(this.responseTradingPlatformAccountsList);
             WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER).then(this.responseTradingPlatformAccountsList);
             WS.tradingServers(CFD_PLATFORMS.DXTRADE).then(this.responseDxtradeTradingServers);
-            WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseTradingPlatformAccountsList);
-            WS.tradingPlatformAccountsList(CFD_PLATFORMS.DERIVEZ).then(this.responseDerivezAvailableAccounts);
 
             this.responseStatement(
                 await BinarySocket.send({
@@ -2142,7 +2131,6 @@ export default class ClientStore extends BaseStore {
         this.mt5_login_list = [];
         this.dxtrade_accounts_list = [];
         this.ctrader_accounts_list = [];
-        this.derivez_accounts_list = [];
         this.landing_companies = {};
         localStorage.removeItem('readScamMessage');
         localStorage.removeItem('isNewAccount');
@@ -2547,7 +2535,7 @@ export default class ClientStore extends BaseStore {
                     this.setMT5DisabledSignupTypes({
                         [account_type]: true,
                     });
-                    if (platform === CFD_PLATFORMS.DERIVEZ || platform === CFD_PLATFORMS.CTRADER) {
+                    if (platform === CFD_PLATFORMS.CTRADER) {
                         this.setCFDDisabledSignupTypes(platform, {
                             [account_type]: true,
                         });
@@ -2589,12 +2577,6 @@ export default class ClientStore extends BaseStore {
     responseTradingPlatformAvailableAccounts(response) {
         if (!response.error) {
             this.trading_platform_available_accounts = response.trading_platform_available_accounts;
-        }
-    }
-
-    responseDerivezAvailableAccounts(response) {
-        if (!response.error) {
-            this.derivez_available_accounts = response.trading_platform_accounts;
         }
     }
 

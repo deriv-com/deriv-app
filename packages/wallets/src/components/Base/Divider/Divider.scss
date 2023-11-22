@@ -1,9 +1,11 @@
 .wallets-divider {
-    &__horizontal {
+    width: 100%;
+
+    &--horizontal {
         border-top: 1px solid;
     }
 
-    &__vertical {
+    &--vertical {
         border-right: 1px solid;
     }
 }

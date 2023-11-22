@@ -1,33 +1,32 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { FC, ReactElement, useState } from 'react';
+import TabTitle, { TabTitleProps } from './TabTitle';
+import './Tabs.scss';
 
-type TTabContext = {
-    activeTabIndex: number;
-    setActiveTabIndex: React.Dispatch<React.SetStateAction<number>>;
+type TabsProps = {
+    children: ReactElement<TabTitleProps>[];
+    preSelectedTab?: number;
+    wrapperClassName?: string;
 };
 
-const TabsContext = createContext<TTabContext | null>(null);
-
-export const useTabs = () => {
-    const context = useContext(TabsContext);
-
-    if (!context) {
-        throw new Error('Seems you forgot to wrap the components in "<Tabs />"');
-    }
-
-    return context;
-};
-
-type TTabsProps = {
-    className?: string;
-};
-
-export const Tabs = ({ children, className }: React.PropsWithChildren<TTabsProps>) => {
-    const [activeTabIndex, setActiveTabIndex] = useState(0);
+const Tabs: FC<TabsProps> = ({ children, preSelectedTab, wrapperClassName }): JSX.Element => {
+    const [selectedTabIndex, setSelectedTabIndex] = useState(preSelectedTab || 0);
 
     return (
-        <TabsContext.Provider value={{ activeTabIndex, setActiveTabIndex }}>
-            <div className={className}>{children}</div>
-        </TabsContext.Provider>
+        <div className={wrapperClassName}>
+            <div className='wallets-tabs'>
+                {children.map((item, index) => (
+                    <TabTitle
+                        icon={item.props.icon}
+                        index={index}
+                        isActive={index === selectedTabIndex}
+                        key={`wallets-tab-${item.props.title}`}
+                        setSelectedTab={setSelectedTabIndex}
+                        title={item.props.title}
+                    />
+                ))}
+            </div>
+            {children[selectedTabIndex]}
+        </div>
     );
 };
 

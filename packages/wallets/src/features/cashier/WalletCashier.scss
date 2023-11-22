@@ -19,7 +19,7 @@
     overflow: scroll;
 
     @include mobile {
-        padding: 2.4rem 1.6rem 0;
+        padding: 2.4rem 1.6rem;
     }
 
     &::-webkit-scrollbar {

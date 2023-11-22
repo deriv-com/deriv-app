@@ -50,7 +50,8 @@ const CurrencySelectionModal = ({
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         multipliers_account_status,
         openFailedVerificationModal,
-        'multipliers'
+        'multipliers',
+        { poi_status: authentication?.identity?.status, poa_status: authentication?.document?.status }
     );
 
     const hasSetCurrency = useHasSetCurrency();

@@ -16,13 +16,13 @@ describe('useJurisdictionStatus', () => {
     test('for BVI/Labuan, should have a failed verification status if MT5 account status has failed and IDV status is rejected', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         mockUsePOI.mockReturnValue({
-            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 services: {
                     idv: {
                         status: 'rejected',
                     },
                 },
+                // @ts-expect-error This is just for mocking, we just need to mock some properties only
                 current: {
                     service: 'idv',
                 },
@@ -49,13 +49,13 @@ describe('useJurisdictionStatus', () => {
     test('for BVI/Labuan, should have a pending verification status if MT5 account status is currently pending verification and IDV status is pending', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         mockUsePOI.mockReturnValue({
-            // @ts-expect-error This is just for mocking, we just need to mock some properties onl
             data: {
                 services: {
                     idv: {
                         status: 'pending',
                     },
                 },
+                // @ts-expect-error This is just for mocking, we just need to mock some properties onl
                 current: {
                     service: 'idv',
                 },
@@ -90,7 +90,6 @@ describe('useJurisdictionStatus', () => {
             },
         });
         mockUsePOI.mockReturnValue({
-            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 services: {
                     idv: {
@@ -100,6 +99,7 @@ describe('useJurisdictionStatus', () => {
                         status: 'pending',
                     },
                 },
+                // @ts-expect-error This is just for mocking, we just need to mock some properties only
                 current: {
                     service: 'onfido',
                 },
@@ -122,13 +122,13 @@ describe('useJurisdictionStatus', () => {
     test('for BVI/Labuan, should have a failed verification status if IDV is revoked', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         mockUsePOI.mockReturnValue({
-            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 services: {
                     idv: {
                         status: 'none',
                     },
                 },
+                // @ts-expect-error This is just for mocking, we just need to mock some properties only
                 current: {
                     service: 'idv',
                 },
@@ -157,13 +157,13 @@ describe('useJurisdictionStatus', () => {
     test('for Labuan, should have a failed verification status if is_authenticated_with_idv_photoid is present in account status', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         mockUsePOI.mockReturnValue({
-            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 services: {
                     idv: {
                         status: 'verified',
                     },
                 },
+                // @ts-expect-error This is just for mocking, we just need to mock some properties only
                 current: {
                     service: 'idv',
                 },
@@ -184,13 +184,13 @@ describe('useJurisdictionStatus', () => {
     test('for SVG, status should not be applicable', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         mockUsePOI.mockReturnValue({
-            // @ts-expect-error This is just for mocking, we just need to mock some properties only
             data: {
                 services: {
                     idv: {
                         status: 'none',
                     },
                 },
+                // @ts-expect-error This is just for mocking, we just need to mock some properties only
                 current: {
                     service: 'idv',
                 },

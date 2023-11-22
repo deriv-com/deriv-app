@@ -23,7 +23,6 @@ module.exports = function (env) {
             CFDFinancialStpRealAccountSignup: 'Containers/cfd-financial-stp-real-account-signup.tsx',
             getDXTradeWebTerminalLink: 'Helpers/constants.ts',
             getCTraderWebTerminalLink: 'Helpers/constants.ts',
-            getDerivEzWebTerminalLink: 'Helpers/constants.ts',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

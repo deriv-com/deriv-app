@@ -1,0 +1,21 @@
+.wallets-atm-amount-input {
+    display: flex;
+    flex-direction: column;
+    padding-right: 0.8rem;
+
+    &__input {
+        all: unset;
+        position: absolute;
+        inset: 0;
+        color: var(--system-light-2-general-text, #333);
+
+        &:disabled {
+            color: var(--system-light-4-disabled-text, #d6d6d6);
+        }
+    }
+
+    &__input-container {
+        position: relative;
+        flex-grow: 1;
+    }
+}

@@ -1,9 +1,13 @@
 import React from 'react';
+import { useSettings } from '@deriv/api';
 import { FlowTextField, InlineMessage, WalletText } from '../../../../../../components';
 import SideNote from '../../../../../../public/images/accounts/side-note-example-image.svg';
+import { dateOfBirthValidator, firstNameValidator, lastNameValidator } from '../../../../validations';
 import './IDVDocumentUploadDetails.scss';
 
 const IDVDocumentUploadDetails = () => {
+    const { data: getSettings } = useSettings();
+
     return (
         <div className='wallets-idv-document-details'>
             <InlineMessage>
@@ -14,31 +18,31 @@ const IDVDocumentUploadDetails = () => {
             </InlineMessage>
             <div className='wallets-idv-document-details__body'>
                 <div className='wallets-idv-document-details__content'>
-                    {/* TODO: Update account details using implemented Formik */}
-
                     <FlowTextField
+                        defaultValue={getSettings?.first_name}
                         label='First name*'
-                        maxWidth='35.9rem'
                         message='Your first name as in your identity document'
                         name='firstName'
                         showMessage
+                        validationSchema={firstNameValidator}
                     />
 
                     <FlowTextField
+                        defaultValue={getSettings?.last_name}
                         label='Last name*'
-                        maxWidth='35.9rem'
                         message='Your last name as in your identity document'
                         name='lastName'
                         showMessage
+                        validationSchema={lastNameValidator}
                     />
                     {/* TODO: Replace with DatePicker component*/}
                     <FlowTextField
                         label='Date of birth*'
-                        maxWidth='35.9rem'
                         message='Your date of birth as in your identity document'
                         name='dateOfBirth'
                         showMessage
                         type='date'
+                        validationSchema={dateOfBirthValidator}
                     />
                 </div>
                 <div className='wallets-idv-document-details__sidenote'>

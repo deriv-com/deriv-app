@@ -31,7 +31,11 @@ const BarriersList = ({ className, header, onClickCross, show_table, ...props }:
                         <Text color='prominent' weight='bold' size='xs'>
                             {header}
                         </Text>
-                        <div className={`${className}__icon-close`} onClick={onClickCross}>
+                        <div
+                            className={`${className}__icon-close`}
+                            data-testid={`dt_${className}__icon-close`}
+                            onClick={onClickCross}
+                        >
                             <Icon icon='IcCross' />
                         </div>
                     </div>

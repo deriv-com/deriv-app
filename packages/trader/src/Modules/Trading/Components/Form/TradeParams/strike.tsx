@@ -39,7 +39,7 @@ const Strike = observer(() => {
     const is_relative_strike_applicable =
         expiry_type === 'endtime' ? is_24_hours_contract : advanced_duration_unit !== 'd';
 
-    const strike_price_list = strike_price_choices.map(strike_price => ({
+    const strike_price_list = strike_price_choices.map((strike_price: string) => ({
         text: strike_price,
         value: strike_price,
     }));
@@ -68,6 +68,7 @@ const Strike = observer(() => {
                         <InputField
                             type='number'
                             name='barrier_1'
+                            data_testid='dt_strike_input'
                             value={selected_value}
                             className='trade-container__barriers-single'
                             classNameInput={classNames(
@@ -110,7 +111,7 @@ const Strike = observer(() => {
                         barriers_list={strike_price_choices}
                         selected_item={selected_value}
                         show_table={should_open_dropdown}
-                        onClick={strike => {
+                        onClick={(strike: string) => {
                             setSelectedValue(strike);
                             setShouldOpenDropdown(false);
                             onChange({ target: { name: 'barrier_1', value: strike } });

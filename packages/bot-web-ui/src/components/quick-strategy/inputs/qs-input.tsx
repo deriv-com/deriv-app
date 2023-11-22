@@ -17,7 +17,7 @@ type TQSInput = {
 const QSInput: React.FC<TQSInput> = observer(
     ({ name, onChange, type = 'text', fullwidth = false, attached = false, disabled = false }) => {
         const [has_focus, setFocus] = React.useState(false);
-        const is_number = type === 'number';
+        const is_number = type === 'number' || type === 'text'; //last_digit_prediction has type 'text'
 
         const handleChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
             e?.preventDefault();
@@ -62,7 +62,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                                 >
                                                     -
                                                 </button>
-                                            ) : null
+                                            ) : undefined
                                         }
                                         trailing_icon={
                                             is_number ? (
@@ -81,8 +81,23 @@ const QSInput: React.FC<TQSInput> = observer(
                                         disabled={disabled}
                                         {...field}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                            const value = is_number ? Number(e.target.value) : e.target.value;
-                                            onChange(name, value);
+                                            const input_value = e.target.value;
+                                            if (/^[0-9]*(\.[0-9]*)?$/.test(input_value)) {
+                                                if (input_value === '') {
+                                                    e.target.value = '0';
+                                                    onChange(name, '0');
+                                                } else if (/^0[^.]/.test(input_value)) {
+                                                    const last_value = input_value[1];
+                                                    e.target.value = last_value;
+                                                    onChange(name, last_value);
+                                                } else {
+                                                    onChange(name, e.target.value);
+                                                }
+                                            }
+                                            if (name !== 'last_digit_prediction') {
+                                                const value = is_number ? Number(input_value) : input_value;
+                                                onChange(name, value);
+                                            }
                                         }}
                                     />
                                 </Popover>

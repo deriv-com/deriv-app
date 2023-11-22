@@ -92,7 +92,10 @@ const QuickStrategyForm = observer(() => {
                                 }
                                 return <QSInput {...field} onChange={onChange} key={key} name={field.name as string} />;
                             }
-
+                            case 'text': {
+                                if (!field.name) return null;
+                                return <QSInput {...field} onChange={onChange} key={key} name={field.name as string} />;
+                            }
                             case 'label':
                                 if (!field.label) return null;
                                 return (

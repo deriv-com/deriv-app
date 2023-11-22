@@ -159,13 +159,12 @@ const LABEL_LAST_DIGIT_PREDICTION: TConfigItem = {
     name: 'label_last_digit_prediction',
     label: localize('Last Digit Prediction'),
     description: localize('Your prediction of the last digit of the asset price.'),
-    hide: ['tradetype', 'contract_type'],
 };
 
 const LAST_DIGIT_PREDICTION: TConfigItem = {
-    type: 'number',
+    type: 'text',
     name: 'last_digit_prediction',
-    validation: ['number', 'required', 'min', 'max', 'integer'],
+    validation: ['text-number'],
 };
 
 export const STRATEGIES: TStrategies = {

@@ -96,13 +96,6 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                             }
                             min_error = getErrorMessage('MIN', min);
                         }
-                        if (field.name === 'last_digit_prediction') {
-                            max = 9;
-                            if (isNaN(min)) {
-                                min = +initial_value.last_digit_prediction;
-                            }
-                            max_error = getErrorMessage('MAX', max);
-                        }
                         if (should_validate) {
                             field.validation.forEach(validation => {
                                 if (typeof validation === 'string') {
@@ -122,9 +115,6 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                                         case 'floor':
                                             schema = schema.round('floor');
                                             break;
-                                        case 'integer':
-                                            schema = schema.integer();
-                                            break;
                                         default:
                                             break;
                                     }
@@ -138,6 +128,26 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                                 }
                             });
                         }
+                        sub_schema[field.name] = schema;
+                    }
+                    if (field.validation.includes('text-number')) {
+                        let schema: Record<string, any> = Yup.string();
+                        field.validation.forEach(validation => {
+                            if (typeof validation === 'string') {
+                                switch (validation) {
+                                    case 'required':
+                                        schema = schema.required(localize('Field cannot be empty'));
+                                        break;
+                                    case 'text-number':
+                                        schema = schema.matches(/^[0-9.]$/, {
+                                            message: localize('Enter a value from 0 to 9.'),
+                                        });
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        });
                         sub_schema[field.name] = schema;
                     }
                 }

@@ -1,12 +1,4 @@
 .cfd-proof-of-address {
-    .dc-themed-scrollbars {
-        padding: 0.8rem 3rem;
-    }
-
-    .dc-input {
-        margin-bottom: 0.8rem;
-    }
-
     .account__scrollbars_container--grid-layout {
         @include mobile {
             padding: 2.4rem 1.6rem;
@@ -18,7 +10,7 @@
         background-color: var(--general-main-1) !important;
     }
 
-    .dc-autocomplete {
-        margin-bottom: 0 !important;
+    &__form {
+        padding: 1.6rem 6rem;
     }
 }

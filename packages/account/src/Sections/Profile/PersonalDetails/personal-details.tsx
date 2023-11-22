@@ -15,10 +15,10 @@ import {
     MobileWrapper,
     SelectNative,
     Text,
+    useStateCallback,
 } from '@deriv/components';
-import { useGetAccountStatus, useResidenceList, useSettings } from '@deriv/api';
 import { GetSettings } from '@deriv/api-types';
-import { getBrandWebsiteName, routes } from '@deriv/shared';
+import { WS, getBrandWebsiteName, routes, useIsMounted } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import LeaveConfirm from 'Components/leave-confirm';
@@ -30,7 +30,6 @@ import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
-import { isServerError } from 'Helpers/utils';
 import { salutation_list } from './constants';
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
@@ -45,30 +44,39 @@ type TRestState = {
 };
 
 export const PersonalDetailsForm = observer(({ history }: { history: BrowserHistory }) => {
+    const [is_loading, setIsLoading] = React.useState(true);
+    const [is_state_loading, setIsStateLoading] = React.useState(false);
+    const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
-    const timeout_ref = React.useRef<NodeJS.Timeout>();
-    const is_success_timeout_ref = React.useRef<NodeJS.Timeout>();
-    const { client, notifications, ui } = useStore();
-    const {
-        data: account_settings,
-        update,
-        mutation: { isLoading: isSetAccountSettingsLoading, status, error, isError },
-        isLoading: isGetAccountSettingsLoading,
-    } = useSettings();
-    const { data: account_status } = useGetAccountStatus();
-    const { data: residence_list } = useResidenceList();
 
     const {
+        client,
+        notifications,
+        ui,
+        common: { is_language_changing },
+    } = useStore();
+
+    const {
+        account_settings,
+        account_status,
+        residence_list,
         authentication_status,
         is_eu,
         is_virtual,
         states_list,
+        fetchStatesList,
+        fetchResidenceList,
+        has_residence,
         current_landing_company,
         updateAccountStatus,
         is_social_signup,
     } = client;
 
-    const { refreshNotifications, showPOAAddressMismatchFailureNotification } = notifications;
+    const {
+        refreshNotifications,
+        showPOAAddressMismatchSuccessNotification,
+        showPOAAddressMismatchFailureNotification,
+    } = notifications;
 
     const { is_mobile } = ui;
     const has_poa_address_mismatch = account_status?.status?.includes('poa_address_mismatch');
@@ -77,52 +85,99 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
         form_initial_values: {},
     });
 
+    const [start_on_submit_timeout, setStartOnSubmitTimeout] = React.useState<{
+        is_timeout_started: boolean;
+        timeout_callback: () => void;
+    }>({
+        is_timeout_started: false,
+        timeout_callback: () => null,
+    });
+
+    const isMounted = useIsMounted();
+
     React.useEffect(() => {
-        if (status === 'success') {
-            setIsSubmitSuccess(true);
-            updateAccountStatus();
-            refreshNotifications();
-            const url_query_string = window.location.search;
-            const url_params = new URLSearchParams(url_query_string);
+        if (isMounted()) {
+            const getSettings = async () => {
+                // waits for residence to be populated
+                await WS.wait('get_settings');
 
-            // from will always be keyof typeof routes
-            const from = url_params.get('from') as keyof typeof routes;
-            if (from) {
-                history.push(routes[from]);
-            }
+                fetchResidenceList?.();
 
-            timeout_ref.current = setTimeout(() => {
-                if (has_poa_address_mismatch) {
-                    showPOAAddressMismatchFailureNotification();
+                if (has_residence) {
+                    if (!is_language_changing) {
+                        setIsStateLoading(true);
+                        fetchStatesList().then(() => {
+                            setIsStateLoading(false);
+                        });
+                    }
                 }
-            }, 2000);
+            };
+            getSettings();
         }
-
-        return () => clearTimeout(timeout_ref.current);
-    }, [
-        history,
-        refreshNotifications,
-        status,
-        updateAccountStatus,
-        has_poa_address_mismatch,
-        showPOAAddressMismatchFailureNotification,
-    ]);
-
-    React.useEffect(() => {
-        is_success_timeout_ref.current = setTimeout(() => {
-            setIsSubmitSuccess(false);
-        }, 3000);
-
-        return () => clearTimeout(is_success_timeout_ref.current);
-    }, [is_submit_success]);
+        setIsLoading(false);
+    }, [account_settings, is_eu, is_social_signup]);
 
     const onSubmit = async (values: GetSettings, { setStatus, setSubmitting }: FormikHelpers<GetSettings>) => {
         setStatus({ msg: '' });
         const request = makeSettingsRequest(values, residence_list, states_list, is_virtual);
-        // @ts-expect-error have to fix on the types for account_opening_reason because the types in GetSettings and SetAccountSettings are different
-        update(request);
-        setSubmitting(false);
+        setIsBtnLoading(true);
+        const data = await WS.setSettings(request);
+
+        if (data.error) {
+            setStatus({ msg: data.error.message });
+            setIsBtnLoading(false);
+            setSubmitting(false);
+        } else {
+            // Adding a delay to show the notification after the page reload
+            setTimeout(() => {
+                if (data.set_settings.notification) {
+                    showPOAAddressMismatchSuccessNotification();
+                } else if (has_poa_address_mismatch) {
+                    showPOAAddressMismatchFailureNotification();
+                }
+            }, 2000);
+
+            // force request to update settings cache since settings have been updated
+            const response = await WS.authorized.storage.getSettings();
+            if (response.error) {
+                setRestState({ ...rest_state, api_error: response.error.message });
+                return;
+            }
+            // Fetches the status of the account after update
+            updateAccountStatus();
+            setRestState({ ...rest_state, ...response.get_settings });
+            setIsLoading(false);
+            refreshNotifications();
+            setIsBtnLoading(false);
+            setIsSubmitSuccess(true);
+            setStartOnSubmitTimeout({
+                is_timeout_started: true,
+                timeout_callback: () => {
+                    setSubmitting(false);
+                },
+            });
+            // redirection back based on 'from' param in query string
+            const url_query_string = window.location.search;
+            const url_params = new URLSearchParams(url_query_string);
+            if (url_params.get('from')) {
+                const from = url_params.get('from') as keyof typeof routes;
+                history.push(routes[from]);
+            }
+        }
     };
+
+    React.useEffect(() => {
+        let timeout_id: NodeJS.Timeout;
+        if (start_on_submit_timeout.is_timeout_started) {
+            timeout_id = setTimeout(() => {
+                setIsSubmitSuccess(false);
+            }, 10000);
+        }
+
+        return () => {
+            clearTimeout(timeout_id);
+        };
+    }, [start_on_submit_timeout.is_timeout_started]);
 
     const showForm = (show_form: boolean) => setRestState({ show_form });
 
@@ -134,7 +189,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
-    if (isGetAccountSettingsLoading || isSetAccountSettingsLoading) {
+    if (is_loading || is_state_loading || !residence_list.length) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
@@ -167,6 +222,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
             {({
                 values,
                 errors,
+                status,
                 touched,
                 handleChange,
                 handleBlur,
@@ -646,8 +702,8 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                 </FormBodySection>
                             </FormBody>
                             <FormFooter>
-                                {isServerError(error) && <FormSubmitErrorMessage message={error.message} />}
-                                {!is_virtual && isError && (
+                                {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                                {!is_virtual && !(isSubmitting || is_submit_success || (status && status.msg)) && (
                                     <Text
                                         className='account-form__footer-note'
                                         size='xxs'
@@ -664,9 +720,9 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                         'dc-btn--green': is_submit_success,
                                     })}
                                     type='submit'
-                                    is_disabled={isSubmitting || !dirty || !isValid || isSetAccountSettingsLoading}
+                                    is_disabled={isSubmitting || !dirty || !isValid || is_btn_loading}
                                     has_effect
-                                    is_loading={isSetAccountSettingsLoading}
+                                    is_loading={is_btn_loading}
                                     is_submit_success={is_submit_success}
                                     text={localize('Submit')}
                                     large

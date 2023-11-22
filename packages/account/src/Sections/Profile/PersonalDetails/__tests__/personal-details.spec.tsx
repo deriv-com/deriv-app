@@ -4,65 +4,56 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { PersonalDetailsForm } from '../personal-details';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { useGetAccountStatus, useResidenceList, useSettings } from '@deriv/api';
 import userEvent from '@testing-library/user-event';
 
 afterAll(cleanup);
-
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
-    useSettings: jest.fn(),
-    useGetAccountStatus: jest.fn(),
-    useResidenceList: jest.fn(),
-}));
-
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Loading: () => <div>Loading</div>,
 }));
 
-const mockedUseSettings = useSettings as jest.MockedFunction<typeof useSettings>;
-const mockedUseGetAccountStatus = useGetAccountStatus as jest.MockedFunction<typeof useGetAccountStatus>;
-const mockedUseResidenceList = useResidenceList as jest.MockedFunction<typeof useResidenceList>;
-
-const mock_settings: ReturnType<typeof useSettings> = {
-    update: jest.fn(),
-    // @ts-expect-error will not required all mutation from useSettings
-    mutation: { isLoading: false, isSuccess: false, error: null, isError: true },
-    data: {
-        first_name: 'John',
-        tax_identification_number: '',
-        tax_residence: '',
-        place_of_birth: 'id',
-        citizen: 'id',
-        account_opening_reason: '',
-    },
-};
-
-const mock_use_get_account_status: ReturnType<typeof useGetAccountStatus> = {
-    // @ts-expect-error will not required all data to be returning from useGetAccountStatus
-    data: {
-        status: [],
-    },
-};
-const mock_use_residence_list: Partial<ReturnType<typeof useResidenceList>> = {
-    data: [
-        {
-            text: 'Indonesia',
-            value: 'id',
+jest.mock('@deriv/shared/src/services/ws-methods', () => ({
+    __esModule: true, // this property makes it work,
+    default: 'mockedDefaultExport',
+    WS: {
+        wait: (...payload: []) => {
+            return Promise.resolve([...payload]);
         },
-    ],
-};
+    },
+    useWS: () => undefined,
+}));
 
 describe('<PersonalDetailsForm />', () => {
     const history = createBrowserHistory();
-    const mock_store = mockStore({});
+
+    const promise = Promise.resolve();
+    const fetchResidenceList = jest.fn(() => promise);
+    const fetchStatesList = jest.fn(() => promise);
+    const residence_list = [
+        {
+            text: 'Text',
+            value: 'value',
+        },
+    ];
+    const mock_store = mockStore({
+        client: {
+            account_settings: {
+                first_name: 'John',
+                place_of_birth: 'Thailand',
+                citizen: 'Thailand',
+                email_consent: 1,
+            },
+            is_virtual: false,
+            states_list: residence_list,
+            residence_list,
+            has_residence: true,
+            getChangeableFields: () => [],
+            fetchResidenceList,
+            fetchStatesList,
+        },
+    });
 
     const renderComponent = (modified_store = mock_store) => {
-        mockedUseSettings.mockReturnValue(mock_settings);
-        mockedUseGetAccountStatus.mockReturnValue(mock_use_get_account_status);
-        // @ts-expect-error will not have to mock all return value from useResidenceList
-        mockedUseResidenceList.mockReturnValue(mock_use_residence_list);
         return render(
             <Router history={history}>
                 <StoreProvider store={modified_store}>
@@ -85,9 +76,9 @@ describe('<PersonalDetailsForm />', () => {
         const fields = [
             'First name*',
             'Last name*',
-            'Place of birth',
+            // 'Place of birth',
             'Date of birth*',
-            'Citizenship',
+            // 'Citizenship',
             'Country of residence*',
             'Phone number*',
             'First line of address*',
@@ -107,8 +98,8 @@ describe('<PersonalDetailsForm />', () => {
         await waitFor(() => {
             const first_name = screen.getByTestId('dt_first_name');
             userEvent.clear(first_name);
+            expect(screen.getByText(/First name is required./)).toBeInTheDocument();
         });
-        expect(screen.getByText(/First name is required./)).toBeInTheDocument();
     });
 
     it('should display error for 2-50 characters length validation, for First name when entered characters are less than 2', async () => {
@@ -116,18 +107,17 @@ describe('<PersonalDetailsForm />', () => {
         await waitFor(() => {
             const last_name = screen.getByTestId('dt_last_name');
             fireEvent.input(last_name, { target: { value: 'b' } });
+            expect(screen.getByText(/You should enter 2-50 characters./)).toBeInTheDocument();
         });
-
-        expect(screen.getByText(/You should enter 2-50 characters./)).toBeInTheDocument();
     });
 
     it('should display error for 2-50 characters length validation, for Last name when entered characters are more than 50', async () => {
         renderComponent();
         await waitFor(() => {
-            const first_name = screen.getByTestId('dt_last_name');
+            const first_name = screen.getByTestId('dt_first_name');
             fireEvent.input(first_name, { target: { value: 'fifty chars fifty chars fifty chars fifty chars fifty' } });
+            expect(screen.getByText(/You should enter 2-50 characters./)).toBeInTheDocument();
         });
-        expect(screen.getByText(/You should enter 2-50 characters./)).toBeInTheDocument();
     });
 
     it('should display error for the regex validation, for First name when unacceptable characters are entered', async () => {
@@ -228,11 +218,5 @@ describe('<PersonalDetailsForm />', () => {
             expect(screen.queryByText(value)).not.toBeInTheDocument();
         });
         expect(screen.getByText('Country of residence*')).toBeInTheDocument();
-    });
-
-    it('should render loading component', () => {
-        mock_settings.mutation.isLoading = true;
-        renderComponent();
-        expect(screen.queryByText(/Loading/)).toBeInTheDocument();
     });
 });

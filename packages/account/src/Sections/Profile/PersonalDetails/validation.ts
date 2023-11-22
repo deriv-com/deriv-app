@@ -67,9 +67,8 @@ export const getPersonalDetailsInitialValues = (
         email_consent: account_settings.email_consent ?? 0,
     };
 
-    const isGetSettingsKey = (value: string): value is keyof GetSettings => {
-        return Object.keys(account_settings).includes(value);
-    };
+    const isGetSettingsKey = (value: string): value is keyof GetSettings =>
+        Object.keys(account_settings).includes(value);
 
     ['citizen', 'place_of_birth', 'tax_residence'].forEach(key => {
         if (isGetSettingsKey(key)) {

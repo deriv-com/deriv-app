@@ -17,9 +17,9 @@ const useAccesiblePlatforms = () => {
 
         return {
             /** is ctrader accessible for this country of residence */
-            isCtraderAvailable: !!is_ctrader_available,
+            is_ctrader_available: !!is_ctrader_available,
             /** is dxtrade accessible for this country of residence */
-            isDxtradeAvailable: !!is_dxtrade_available,
+            is_dxtrade_available: !!is_dxtrade_available,
         };
     }, [landing_company]);
 

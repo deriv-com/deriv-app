@@ -1904,7 +1904,7 @@
     "2010866561": "Trả về tổng lợi nhuận/thua lỗ",
     "2011609940": "Vui lòng nhập số lớn hơn 0",
     "2011808755": "Thời gian mua",
-    "2012362607": "The Reverse D'Alembert strategy increases the stake after a successful trade and reduces the stake after a losing trade by the number of units that traders decide. One unit is equal to the amount of the initial stake. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake.",
+    "2012362607": "Chiến lược Reverse D'Alembert tăng cổ phần sau khi giao dịch thành công và giảm cổ phần sau khi giao dịch thua lỗ theo số lượng đơn vị mà các nhà giao dịch quyết định. Một đơn vị bằng số tiền đặt cược ban đầu. Để quản lý rủi ro, hãy đặt số tiền đặt cược tối đa cho một giao dịch duy nhất. Tiền đặt cược cho giao dịch tiếp theo sẽ được đặt lại về số tiền đặt cược ban đầu nếu vượt quá số tiền đặt cược tối đa.",
     "2014536501": "Số thẻ",
     "2014590669": "Biến '{{variable_name}}' không có giá trị. Vui lòng chọn một giá trị cho biến '{{variable_name}}' để thông báo.",
     "2017672013": "Vui lòng chọn quốc gia đã cấp giấy tờ.",

@@ -1,21 +1,31 @@
+import { useMemo } from 'react';
 import useLandingCompany from './useLandingCompany';
 
 /**
  * A custom hook that provides flags to determine the accessibility status of cTrader and Dxtrade based on the current country of residence.
  */
 const useAccesiblePlatforms = () => {
-    const { data: landing_company } = useLandingCompany();
+    const { data: landing_company, ...rest } = useLandingCompany();
 
-    /** check if ctrader jurisdiction is offered in the landing_company response  */
-    const is_ctrader_available = landing_company?.ctrader?.all?.standard === 'svg';
-    /** check if dxtrade is in the landing_company response */
-    const is_dxtrade_available = landing_company?.dxtrade_all_company;
+    const modified_accesible_platform = useMemo(() => {
+        if (!landing_company) return;
+
+        /** check if ctrader jurisdiction is offered in the landing_company response  */
+        const is_ctrader_available = landing_company?.ctrader?.all?.standard === 'svg';
+        /** check if dxtrade is in the landing_company response */
+        const is_dxtrade_available = landing_company?.dxtrade_all_company;
+
+        return {
+            /** is ctrader accessible for this country of residence */
+            isCtraderAvailable: !!is_ctrader_available,
+            /** is dxtrade accessible for this country of residence */
+            isDxtradeAvailable: !!is_dxtrade_available,
+        };
+    }, [landing_company]);
 
     return {
-        /** is ctrader accessible for this country of residence */
-        isCtraderAvailable: !!is_ctrader_available,
-        /** is dxtrade accessible for this country of residence */
-        isDxtradeAvailable: !!is_dxtrade_available,
+        data: modified_accesible_platform,
+        ...rest,
     };
 };
 

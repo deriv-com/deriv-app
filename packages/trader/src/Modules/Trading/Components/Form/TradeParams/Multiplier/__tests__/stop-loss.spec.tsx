@@ -15,7 +15,7 @@ describe('<StopLoss />', () => {
                 trade: {
                     amount: 10,
                     currency: 'USD',
-                    validation_errors: { take_profit__error: ['mocked_error', 'mocked_error'] },
+                    validation_errors: { take_profit_error: ['mocked_error', 'mocked_error'] },
                     stop_loss: '10',
                     has_stop_loss: true,
                     onChangeMultiple: jest.fn(),
@@ -29,7 +29,7 @@ describe('<StopLoss />', () => {
             onChange: jest.fn(),
             onChangeMultiple: jest.fn(),
             stop_loss: '10',
-            validation_errors: { take_profit__error: ['mocked_error', 'mocked_error'] },
+            validation_errors: { take_profit_error: ['mocked_error', 'mocked_error'] },
         };
     });
 

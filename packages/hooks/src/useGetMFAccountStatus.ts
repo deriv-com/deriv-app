@@ -36,10 +36,10 @@ const useGetMFAccountStatus = () => {
         !poi_pending_by_onfido_or_manual && !poi_not_submitted_by_onfido_or_manual && !poi_verified_by_onfido_or_manual;
 
     if (poa_status && onfido_status && manual_status) {
-        if (poi_not_submitted_by_onfido_or_manual || poa_not_submitted) {
-            return 'needs_verification';
-        } else if (need_poi_resubmission_by_onfido_or_manual || need_poa_resubmission) {
+        if (need_poi_resubmission_by_onfido_or_manual || need_poa_resubmission) {
             return 'failed';
+        } else if (poi_not_submitted_by_onfido_or_manual || poa_not_submitted) {
+            return 'needs_verification';
         } else if (poi_pending_by_onfido_or_manual || poa_pending) {
             return 'pending';
         }

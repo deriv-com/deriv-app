@@ -82,7 +82,7 @@ const AccountTransferNote = ({
                                 )
                                     .toFixed(2)
                                     .toString()
-                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+                                    .replace(/\B(?:\d{3})+(?!\d)/g, ','),
                                 currency: account_currency,
                             }}
                         />
@@ -102,7 +102,7 @@ const AccountTransferNote = ({
                                 )
                                     .toFixed(2)
                                     .toString()
-                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+                                    .replace(/\B(?:\d{3})+(?!\d)/g, ','),
                                 currency: account_currency,
                             }}
                         />
@@ -122,7 +122,7 @@ const AccountTransferNote = ({
                             )
                                 .toFixed(2)
                                 .toString()
-                                .replace(/\B(?=(\d{3})+(?!\d))/g, ','),
+                                .replace(/\B(?:\d{3})+(?!\d)/g, ','),
                             currency: account_currency,
                         }}
                     />

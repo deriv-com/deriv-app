@@ -77,7 +77,12 @@ const CardsSliderSwiper = observer(() => {
                 <div className='wallet-cards-carousel__container'>{slider}</div>
             </div>
             <div className='wallet-cards-carousel__pagination'>
-                <ProgressBarTracker step={active_index} steps_list={steps} is_transition setStep={setActiveIndex} />
+                <ProgressBarTracker
+                    step={active_index}
+                    steps_list={steps}
+                    is_transition
+                    onStepChange={setActiveIndex}
+                />
             </div>
         </React.Fragment>
     );

@@ -88,6 +88,11 @@ const usePOI = () => {
             ...authentication_data?.identity,
             previous: previous_poi,
             current: current_poi,
+            is_pending: authentication_data?.identity?.status === 'pending',
+            is_rejected: authentication_data?.identity?.status === 'rejected',
+            is_expired: authentication_data?.identity?.status === 'expired',
+            is_suspected: authentication_data?.identity?.status === 'suspected',
+            is_verified: authentication_data?.identity?.status === 'verified',
         };
     }, [authentication_data, current_poi, previous_poi]);
 

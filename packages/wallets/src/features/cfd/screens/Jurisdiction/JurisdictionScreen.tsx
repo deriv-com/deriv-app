@@ -7,7 +7,7 @@ import { THooks } from '../../../../types';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
 import { MarketTypeDetails } from '../../constants';
 import { JurisdictionCard } from './JurisdictionCard';
-import { JurisdictionFootNoteTitle } from './JurisdictionFootNoteTitle';
+import { JurisdictionTncSection } from './JurisdictionTncSection';
 import './JurisdictionScreen.scss';
 
 type TJurisdictionScreenProps = {
@@ -70,28 +70,11 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({
                     />
                 ))}
             </div>
-
-            <div className='wallets-jurisdiction-screen__tnc'>
-                {selectedJurisdiction && (
-                    <JurisdictionFootNoteTitle marketType={marketType} selectedJurisdiction={selectedJurisdiction} />
-                )}
-                {selectedJurisdiction && selectedJurisdiction !== 'svg' && (
-                    <div className='wallets-jurisdiction-screen__tnc-checkbox'>
-                        <input
-                            checked={isCheckBoxChecked}
-                            className='wallets-jurisdiction-screen__tnc-checkbox-input'
-                            id='tnc-checkbox'
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                                setIsCheckBoxChecked(event.target.checked)
-                            }
-                            type='checkbox'
-                        />
-                        <label className='wallets-jurisdiction-screen__tnc-checkbox-label' htmlFor='tnc-checkbox'>
-                            <WalletText>I confirm and accept Deriv (V) Ltd&lsquo;s Terms and Conditions</WalletText>
-                        </label>
-                    </div>
-                )}
-            </div>
+            <JurisdictionTncSection
+                isCheckBoxChecked={isCheckBoxChecked}
+                selectedJurisdiction={selectedJurisdiction}
+                setIsCheckBoxChecked={setIsCheckBoxChecked}
+            />
         </div>
     );
 };

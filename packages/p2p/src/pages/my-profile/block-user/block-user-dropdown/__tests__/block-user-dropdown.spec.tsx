@@ -46,7 +46,7 @@ describe('<BlockUserDropdown />', () => {
     it('should render BlockUserDropdown with default sorting as all_users', () => {
         render(<BlockUserDropdown />);
 
-        expect(screen.getByText('Sort by')).toBeInTheDocument();
+        expect(screen.getByText('Filter by')).toBeInTheDocument();
         expect(screen.getByText('All')).toBeInTheDocument();
     });
 

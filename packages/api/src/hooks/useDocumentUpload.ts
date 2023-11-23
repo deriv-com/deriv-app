@@ -22,16 +22,12 @@ const useDocumentUpload = () => {
     const [isDocumentUploaded, setIsDocumentUploaded] = useState(false);
     const activeWebSocket = getActiveWebsocket();
 
-    const isLoading = useMemo(
-        () => _isLoading || (!isDocumentUploaded && status === 'success'),
-        [_isLoading, isDocumentUploaded, status]
-    );
-    const isSuccess = useMemo(() => _isSuccess && isDocumentUploaded, [_isSuccess, isDocumentUploaded]);
+    const isLoading = _isLoading || (!isDocumentUploaded && status === 'success');
+    const isSuccess = _isSuccess && isDocumentUploaded;
 
     const upload = useCallback(
         async (payload: TUploadPayload) => {
             if (!payload?.file) return Promise.reject(new Error('No file selected'));
-            setIsDocumentUploaded(false);
             const file = payload.file;
             delete payload.file;
             const fileBlob = await compressImageFile(file);
@@ -51,6 +47,7 @@ const useDocumentUpload = () => {
                     document_upload: true,
                 },
             };
+            setIsDocumentUploaded(false);
             await mutateAsync({ payload: updatedPayload }).then(async res => {
                 const chunks = generateChunks(fileBuffer, {});
                 const id = numToUint8Array(res?.document_upload?.upload_id || 0);

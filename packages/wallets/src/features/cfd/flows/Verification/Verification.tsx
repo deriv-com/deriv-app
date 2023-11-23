@@ -5,7 +5,12 @@ import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowP
 import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
-import { ManualDocumentUpload, ResubmitPOA, SelfieDocumentUpload } from '../../../accounts/screens';
+import {
+    ManualDocumentUpload,
+    ResubmitPOA,
+    SelfieDocumentUpload,
+    useHandleManualDocumentUpload,
+} from '../../../accounts/screens';
 import { IDVDocumentUpload } from '../../../accounts/screens/IDVDocumentUpload';
 import { PersonalDetails } from '../../../accounts/screens/PersonalDetails';
 import { MT5PasswordModal } from '../../modals';
@@ -39,6 +44,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
     const { data: authenticationData } = useAuthentication();
     const { isLoading: isUploadLoading, upload } = useDocumentUpload();
+    const { isLoading: isManualUploadLoading, uploadDocument } = useHandleManualDocumentUpload();
     const { data: settings, update: updateSettings } = useSettings();
     const { getModalState, hide, show } = useModal();
 
@@ -96,19 +102,31 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                         !formValues.drivingLicenceNumber ||
                         !formValues.drivingLicenseExpiryDate ||
                         !formValues.drivingLicenseCardFront ||
-                        !formValues.drivingLicenseCardBack
+                        !formValues.drivingLicenseCardBack ||
+                        isManualUploadLoading
                     );
                 } else if (formValues.selectedManualDocument === 'passport') {
-                    return !formValues.passportNumber || !formValues.passportExpiryDate || !formValues.passportCard;
+                    return (
+                        !formValues.passportNumber ||
+                        !formValues.passportExpiryDate ||
+                        !formValues.passportCard ||
+                        isManualUploadLoading
+                    );
                 } else if (formValues.selectedManualDocument === 'identity-card') {
                     return (
                         !formValues.identityCardNumber ||
                         !formValues.identityCardExpiryDate ||
                         !formValues.identityCardFront ||
-                        !formValues.identityCardBack
+                        !formValues.identityCardBack ||
+                        isManualUploadLoading
                     );
                 } else if (formValues.selectedManualDocument === 'nimc-slip') {
-                    return !formValues.nimcNumber || !formValues.nimcCardFront || !formValues.nimcCardBack;
+                    return (
+                        !formValues.nimcNumber ||
+                        !formValues.nimcCardFront ||
+                        !formValues.nimcCardBack ||
+                        isManualUploadLoading
+                    );
                 }
                 return !formValues.selectedManualDocument;
             case 'selfieScreen':
@@ -133,10 +151,10 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const isNextLoading = useCallback(
         ({ currentScreenId, formValues }: TFlowProviderContext<typeof screens>) => {
             if (['manualScreen', 'selfieScreen'].includes(currentScreenId) && formValues.selectedManualDocument)
-                return isUploadLoading || isLoading;
+                return isUploadLoading || isManualUploadLoading || isLoading;
             return isLoading;
         },
-        [isLoading, isUploadLoading]
+        [isLoading, isManualUploadLoading, isUploadLoading]
     );
 
     const nextFlowHandler = useCallback(
@@ -166,64 +184,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
                 }
             } else if (currentScreenId === 'manualScreen') {
-                if (formValues.selectedManualDocument === 'passport') {
-                    await upload({
-                        document_id: formValues.passportNumber,
-                        document_issuing_country: settings?.country_code ?? undefined,
-                        document_type: 'passport',
-                        expiration_date: formValues.passportExpiryDate,
-                        file: formValues.passportCard,
-                    });
-                } else if (formValues.selectedManualDocument === 'identity-card') {
-                    await upload({
-                        document_id: formValues.identityCardNumber,
-                        document_issuing_country: settings?.country_code ?? undefined,
-                        document_type: 'national_identity_card',
-                        expiration_date: formValues.identityCardExpiryDate,
-                        file: formValues.identityCardFront,
-                        page_type: 'front',
-                    });
-                    await upload({
-                        document_id: formValues.identityCardNumber,
-                        document_issuing_country: settings?.country_code ?? undefined,
-                        document_type: 'national_identity_card',
-                        expiration_date: formValues.identityCardExpiryDate,
-                        file: formValues.identityCardBack,
-                        page_type: 'back',
-                    });
-                } else if (formValues.selectedManualDocument === 'driving-license') {
-                    await upload({
-                        document_id: formValues.drivingLicenceNumber,
-                        document_issuing_country: settings?.country_code ?? undefined,
-                        document_type: 'driving_licence',
-                        expiration_date: formValues.drivingLicenseExpiryDate,
-                        file: formValues.drivingLicenseCardFront,
-                        page_type: 'front',
-                    });
-                    await upload({
-                        document_id: formValues.drivingLicenceNumber,
-                        document_issuing_country: settings?.country_code ?? undefined,
-                        document_type: 'driving_licence',
-                        expiration_date: formValues.drivingLicenseExpiryDate,
-                        file: formValues.drivingLicenseCardBack,
-                        page_type: 'back',
-                    });
-                } else if (formValues.selectedManualDocument === 'nimc-slip') {
-                    await upload({
-                        document_id: formValues.nimcNumber,
-                        document_issuing_country: settings?.country_code ?? undefined,
-                        document_type: 'nimc_slip',
-                        file: formValues.nimcCardFront,
-                        page_type: 'front',
-                    });
-                    await upload({
-                        document_id: formValues.nimcNumber,
-                        document_issuing_country: settings?.country_code ?? undefined,
-                        document_type: 'nimc_slip',
-                        file: formValues.nimcCardBack,
-                        page_type: 'back',
-                    });
-                }
+                await uploadDocument(formValues);
                 setFormValues('selectedManualDocument', '');
                 switchScreen('selfieScreen');
             } else if (currentScreenId === 'poaScreen') {
@@ -258,6 +219,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             show,
             updateSettings,
             upload,
+            uploadDocument,
         ]
     );
 

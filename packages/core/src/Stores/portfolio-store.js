@@ -174,8 +174,6 @@ export default class PortfolioStore extends BaseStore {
                 // even though we get a transaction.sell response.
                 return;
             }
-            // TODO: find a better place for this to get position details when status is not open:
-            this.root_store.notifications.addTradeNotification(this.positions[i].contract_info);
             this.positions[i].is_loading = true;
 
             // Sometimes when we sell a contract, we don't get `proposal_open_contract` message with exit information and status as `sold`.
@@ -413,6 +411,8 @@ export default class PortfolioStore extends BaseStore {
         if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
 
         this.positions[i].is_loading = false;
+
+        this.root_store.notifications.addTradeNotification(this.positions[i].contract_info);
     };
 
     populateContractUpdate({ contract_update }, contract_id) {

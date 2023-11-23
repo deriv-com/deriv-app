@@ -6,6 +6,7 @@ type TGetAccountNameProps = {
     accountType: THooks.TransferAccount['account_type'];
     activeWalletLandingCompanyName: TWalletLandingCompanyName;
     displayCurrencyCode?: THooks.CurrencyConfig['display_code'];
+    isDemo: THooks.ActiveWalletAccount['is_virtual'];
     mt5MarketType: TMarketTypes.SortedMT5Accounts;
 };
 
@@ -40,7 +41,9 @@ export const getTradingAppIcon = (account: TAccount, activeWalletLandingCompanyN
 
     if (account.account_type === 'mt5') {
         if (marketType === 'financial') {
-            return appIconMapper.mt5.financial[activeWalletLandingCompanyName]?.light;
+            return account.demo_account
+                ? appIconMapper.mt5.financial.svg.light
+                : appIconMapper.mt5.financial[activeWalletLandingCompanyName]?.light;
         }
         return appIconMapper.mt5[marketType].light;
     }
@@ -53,6 +56,7 @@ export const getAccountName = ({
     accountType,
     activeWalletLandingCompanyName,
     displayCurrencyCode,
+    isDemo,
     mt5MarketType,
 }: TGetAccountNameProps) => {
     switch (accountCategory) {
@@ -70,7 +74,7 @@ export const getAccountName = ({
                 case 'mt5': {
                     switch (mt5MarketType) {
                         case 'financial':
-                            return activeWalletLandingCompanyName === 'svg' ? 'MT5 Financial' : 'MT5 CFDs';
+                            return activeWalletLandingCompanyName === 'svg' || isDemo ? 'MT5 Financial' : 'MT5 CFDs';
                         case 'synthetic':
                             return 'MT5 Derived';
                         case 'all':

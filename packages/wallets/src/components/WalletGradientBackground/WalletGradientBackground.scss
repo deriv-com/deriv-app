@@ -25,6 +25,26 @@
         }
     }
 
+    &--APP {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(153, 153, 153, 0.08) 0%,
+                            rgba(153, 153, 153, 0.32) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(100% 277.78% at 0% 100%, #151717 0%, rgba(36, 40, 40, 0.98) 100%)
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+        }
+    }
+
     &--USD {
         &-desktop {
             &-card {

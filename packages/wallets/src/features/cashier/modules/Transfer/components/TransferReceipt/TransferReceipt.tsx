@@ -19,11 +19,11 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
     const isTradingApp = account?.account_category === 'trading';
     const isWallet = account?.account_category === 'wallet';
     const appIcon = getTradingAppIcon(
-        account?.account_type || '',
+        account?.account_type ?? '',
         activeWallet?.landingCompanyName as TWalletLandingCompanyName,
         account?.mt5_group
     );
-    const walletIcon = getWalletIcon(activeWallet?.currency || '', Boolean(activeWallet?.demo_account));
+    const walletIcon = getWalletIcon(activeWallet?.currency ?? '', Boolean(activeWallet?.demo_account));
 
     if (isTradingApp)
         return (
@@ -44,7 +44,7 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
         return (
             <WalletCard
                 balance={balance}
-                currency={account.currency || ''}
+                currency={account.currency ?? ''}
                 iconSize='md'
                 isDemo={Boolean(account?.demo_account)}
                 landingCompanyName={account?.landingCompanyName}

@@ -32,23 +32,18 @@ const AppCard: React.FC<TProps> = ({
     walletName,
 }) => {
     return (
-        <div className={classNames('wallets-app-card', `wallets-app-card--border-radius--${cardSize}`)}>
+        <div className={`wallets-app-card wallets-app-card--border-radius--${cardSize}`}>
             <WalletGradientBackground currency='APP' device='desktop' hasShine type='card'>
                 {cardSize !== 'sm' && (
                     <div className='wallets-app-card__badge'>
                         <AppCardBadge isDemo={isDemoWallet} />
                     </div>
                 )}
-                <div
-                    className={classNames(
-                        'wallets-app-card__content',
-                        `wallets-app-card__content--${device}--${cardSize}`
-                    )}
-                >
+                <div className={`wallets-app-card__content wallets-app-card__content--${device}--${cardSize}`}>
                     <div className='wallets-app-card__top'>
                         <WalletsAppLinkedWithWalletIcon
                             appIcon={appIcon}
-                            currency={activeWalletCurrency || ''}
+                            currency={activeWalletCurrency ?? ''}
                             isDemo={isDemoWallet}
                             size='small'
                             walletIcon={walletIcon}

@@ -48,7 +48,7 @@ const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet
                     ) : (
                         <WalletsAppLinkedWithWalletIcon
                             appIcon={appIcon}
-                            currency={activeWallet?.currency || ''}
+                            currency={activeWallet?.currency ?? ''}
                             isDemo={Boolean(account?.demo_account)}
                             size='small'
                             walletIcon={walletIcon}

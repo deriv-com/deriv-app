@@ -1,17 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
-import { THooks } from '../../types';
 import { WalletText } from '../Base';
 import './AppCardBadge.scss';
 
 type TProps = {
-    isDemo: THooks.ActiveWalletAccount['is_virtual'];
+    isDemo: boolean;
 };
 
 const AppCardBadge: React.FC<TProps> = ({ isDemo }) => {
-    const className = classNames('wallets-app-card__badge', {
-        'wallets-app-card__badge--demo': isDemo,
-        'wallets-app-card__badge--real': !isDemo,
+    const className = classNames('wallets-app-card-badge', {
+        'wallets-app-card-badge--demo': isDemo,
+        'wallets-app-card-badge--real': !isDemo,
     });
 
     const formattedLabel = isDemo ? 'Demo' : 'Real';

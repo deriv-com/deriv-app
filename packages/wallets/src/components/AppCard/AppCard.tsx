@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import type { THooks } from '../../types';
 import { AppCardBadge } from '../AppCardBadge';
 import { WalletText } from '../Base';

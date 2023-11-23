@@ -190,17 +190,7 @@ const ApiToken = observer(() => {
                     <ThemedScrollbars className='da-api-token__scrollbars' is_bypassed={is_mobile}>
                         {is_mobile && <ApiTokenArticle />}
                         <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields}>
-                            {({
-                                values,
-                                errors,
-                                isValid,
-                                dirty,
-                                touched,
-                                handleChange,
-                                handleBlur,
-                                isSubmitting,
-                                setFieldTouched,
-                            }) => (
+                            {({ values, errors, isValid, dirty, touched, handleChange, handleBlur, isSubmitting }) => (
                                 <Form noValidate>
                                     <Timeline className='da-api-token__timeline' line_height='xxxl'>
                                         <Timeline.Item
@@ -244,10 +234,7 @@ const ApiToken = observer(() => {
                                                             className='da-api-token__input dc-input__input-group'
                                                             label={localize('Token name')}
                                                             value={values.token_name}
-                                                            onChange={e => {
-                                                                setFieldTouched('token_name', true);
-                                                                handleChange(e);
-                                                            }}
+                                                            onChange={handleChange}
                                                             onBlur={handleBlur}
                                                             hint={
                                                                 <Localize i18n_default_text='Length of token name must be between 2 and 32 characters.' />

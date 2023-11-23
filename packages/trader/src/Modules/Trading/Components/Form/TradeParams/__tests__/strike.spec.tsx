@@ -94,7 +94,7 @@ describe('<Strike />', () => {
             expect(screen.getByText(strike_prices)).toBeInTheDocument();
         });
 
-        userEvent.click(screen.getByTestId('dt_trade-container__barriers-table__icon-close'));
+        userEvent.click(screen.getByTestId('dt_trade-container__barriers-table__icon_close'));
 
         await waitFor(() => {
             expect(screen.queryByText(strike_prices)).not.toBeInTheDocument();

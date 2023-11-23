@@ -32,7 +32,7 @@ const BarriersList = ({ className, header, onClickCross, show_table, ...props }:
                             {header}
                         </Text>
                         <div className={`${className}__icon-close`} onClick={onClickCross}>
-                            <Icon icon='IcCross' data_testid={`dt_${className}__icon-close`} />
+                            <Icon icon='IcCross' data_testid={`dt_${className}__icon_close`} />
                         </div>
                     </div>
                     <BarriersListBody className={className} {...props} />

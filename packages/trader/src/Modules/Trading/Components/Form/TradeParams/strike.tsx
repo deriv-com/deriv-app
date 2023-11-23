@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import BarriersList from './barriers-list';
 import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 import { clickAndKeyEventHandler, toMoment, VANILLALONG } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
@@ -59,18 +59,9 @@ const Strike = observer(() => {
                             i18n_default_text='If you buy a "<0>{{trade_type}}</0>" option, you receive a payout at expiry if the final price is {{payout_status}} the strike price. Otherwise, your “<0>{{trade_type}}</0>” option will expire worthless.'
                             components={[<strong key={0} />]}
                             values={{
-                                trade_type:
-                                    contract_type === VANILLALONG.CALL ? (
-                                        <Localize i18n_default_text='Call' />
-                                    ) : (
-                                        <Localize i18n_default_text='Put' />
-                                    ),
+                                trade_type: contract_type === VANILLALONG.CALL ? localize('Call') : localize('Put'),
                                 payout_status:
-                                    contract_type === VANILLALONG.CALL ? (
-                                        <Localize i18n_default_text='above' />
-                                    ) : (
-                                        <Localize i18n_default_text='below' />
-                                    ),
+                                    contract_type === VANILLALONG.CALL ? localize('above') : localize('below'),
                             }}
                         />
                     }

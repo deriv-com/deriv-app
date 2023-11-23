@@ -4,7 +4,7 @@ import { Field, FieldProps, Formik, FormikProps } from 'formik';
 
 import { Button, Icon, Input, Loading, Text } from '@deriv/components';
 import { useCurrentAccountDetails, useExchangeRate } from '@deriv/hooks';
-import { CookieStorage, CryptoConfig, getCurrencyName } from '@deriv/shared';
+import { CryptoConfig, getCurrencyName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 

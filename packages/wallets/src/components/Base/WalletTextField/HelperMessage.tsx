@@ -18,7 +18,7 @@ const HelperMessage: React.FC<HelperMessageProps> = memo(
         };
 
         return (
-            <>
+            <React.Fragment>
                 {message && (
                     <div className='wallets-textfield__message-container--msg'>
                         <WalletText
@@ -36,7 +36,7 @@ const HelperMessage: React.FC<HelperMessageProps> = memo(
                         </WalletText>
                     </div>
                 )}
-            </>
+            </React.Fragment>
         );
     }
 );

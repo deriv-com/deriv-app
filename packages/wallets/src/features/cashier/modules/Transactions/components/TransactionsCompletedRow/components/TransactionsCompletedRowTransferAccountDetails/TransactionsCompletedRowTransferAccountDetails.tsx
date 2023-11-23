@@ -11,99 +11,38 @@ type TProps = {
 
 const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ accounts, direction, loginid }) => {
     const wallet = accounts.wallets?.find(account => account.loginid === loginid);
-    if (wallet)
-        return (
-            <TransactionsCompletedRowAccountDetails
-                accountType={wallet.account_type ?? ''}
-                actionType='transfer'
-                currency={wallet.currency ?? 'USD'}
-                displayAccountName={getAccountName({
-                    accountCategory: 'wallet',
-                    //@ts-expect-error this needs backend typing
-                    accountType: wallet.account_type,
-                    displayCurrencyCode: wallet.currency_config?.display_code ?? 'USD',
-                    landingCompanyName: (wallet.landing_company_name ?? '') as TWalletLandingCompanyName,
-                })}
-                displayActionType={`Transfer ${direction}`}
-                isDemo={Boolean(wallet.is_virtual)}
-                isInterWallet
-            />
-        );
-
     const dtradeAccount = accounts.dtrade?.find(account => account.loginid === loginid);
-    if (dtradeAccount) {
+    const dxtradeAccount = accounts.dxtrade?.find(account => account.login === loginid);
+    const mt5Account = accounts.mt5?.find(account => account.login === loginid);
+    const ctraderAccount = accounts.ctrader?.find(account => account.login === loginid);
+
+    const transferAccount = [wallet, dtradeAccount, dxtradeAccount, mt5Account, ctraderAccount].find(Boolean);
+
+    if (transferAccount) {
+        const derivAccountType = transferAccount === wallet ? 'wallet' : 'standard';
+        const accountType = transferAccount?.platform !== 'deriv' ? transferAccount.platform : derivAccountType;
+        const displayAccountName = getAccountName({
+            accountCategory: transferAccount === wallet ? 'wallet' : 'trading',
+            //@ts-expect-error this needs backend typing
+            accountType,
+            displayCurrencyCode: transferAccount.currency_config?.display_code ?? 'USD',
+            landingCompanyName: (transferAccount.landing_company_name ?? '') as TWalletLandingCompanyName,
+            mt5MarketType: transferAccount === mt5Account ? mt5Account.market_type : undefined,
+        });
+
         return (
             <TransactionsCompletedRowAccountDetails
-                accountType='standard'
+                accountType={accountType ?? ''}
                 actionType='transfer'
-                currency={dtradeAccount.currency ?? 'USD'}
-                displayAccountName={getAccountName({
-                    accountCategory: 'trading',
-                    accountType: 'standard',
-                    displayCurrencyCode: dtradeAccount.currency_config?.display_code ?? 'USD',
-                    landingCompanyName: (dtradeAccount.landing_company_name ?? '') as TWalletLandingCompanyName,
-                })}
+                currency={transferAccount.currency ?? 'USD'}
+                displayAccountName={displayAccountName}
                 displayActionType={`Transfer ${direction}`}
-                isDemo={Boolean(dtradeAccount.is_virtual)}
+                isDemo={Boolean(transferAccount.is_virtual)}
+                isInterWallet={transferAccount === wallet}
+                mt5Group={transferAccount === mt5Account ? mt5Account.group : undefined}
             />
         );
     }
-
-    const dxtradeAccount = accounts.dxtrade?.find(account => account.login === loginid);
-    if (dxtradeAccount)
-        return (
-            <TransactionsCompletedRowAccountDetails
-                accountType='dxtrade'
-                actionType='transfer'
-                currency={dxtradeAccount.currency ?? 'USD'}
-                displayAccountName={getAccountName({
-                    accountCategory: 'trading',
-                    accountType: 'dxtrade',
-                    displayCurrencyCode: dxtradeAccount.currency ?? 'USD',
-                    landingCompanyName: (dxtradeAccount.landing_company_short ?? '') as TWalletLandingCompanyName,
-                })}
-                displayActionType={`Transfer ${direction}`}
-                isDemo={dxtradeAccount.is_virtual}
-            />
-        );
-
-    const mt5Account = accounts.mt5?.find(account => account.loginid === loginid);
-    if (mt5Account)
-        return (
-            <TransactionsCompletedRowAccountDetails
-                accountType='mt5'
-                actionType='transfer'
-                currency={mt5Account.currency ?? 'USD'}
-                displayAccountName={getAccountName({
-                    accountCategory: 'trading',
-                    accountType: 'mt5',
-                    displayCurrencyCode: mt5Account.currency ?? 'USD',
-                    landingCompanyName: (mt5Account.landing_company_short ?? '') as TWalletLandingCompanyName,
-                    mt5MarketType: mt5Account.market_type,
-                })}
-                displayActionType={`Transfer ${direction}`}
-                isDemo={mt5Account.is_virtual}
-                mt5Group={mt5Account.group}
-            />
-        );
-
-    const ctraderAccount = accounts.ctrader?.find(account => account.login === loginid);
-    if (ctraderAccount)
-        return (
-            <TransactionsCompletedRowAccountDetails
-                accountType='ctrader'
-                actionType='transfer'
-                currency={ctraderAccount.currency ?? 'USD'}
-                displayAccountName={getAccountName({
-                    accountCategory: 'trading',
-                    accountType: 'ctrader',
-                    displayCurrencyCode: ctraderAccount.currency ?? 'USD',
-                    landingCompanyName: (ctraderAccount.landing_company_short ?? '') as TWalletLandingCompanyName,
-                })}
-                displayActionType={`Transfer ${direction}`}
-                isDemo={ctraderAccount.is_virtual}
-            />
-        );
 
     return null;
 };

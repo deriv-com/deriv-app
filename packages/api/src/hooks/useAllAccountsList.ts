@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import useAccountsList from './useAccountsList';
 import useCFDAccountsList from './useCFDAccountsList';
 
@@ -10,11 +11,14 @@ const useAllAccountsList = () => {
         isLoading: isCFDAccountsListLoading,
     } = useCFDAccountsList();
 
-    const accounts = {
-        wallets: accountsList?.filter(account => account.is_wallet),
-        dtrade: accountsList?.filter(account => account.is_trading),
-        ...cfdsList,
-    };
+    const accounts = useMemo(
+        () => ({
+            wallets: accountsList?.filter(account => account.is_wallet),
+            dtrade: accountsList?.filter(account => account.is_trading),
+            ...cfdsList,
+        }),
+        [accountsList, cfdsList]
+    );
     const isError = isAccountsListError || isCFDAccountsListError;
     const isLoading = isAccountsListLoading || isCFDAccountsListLoading;
 

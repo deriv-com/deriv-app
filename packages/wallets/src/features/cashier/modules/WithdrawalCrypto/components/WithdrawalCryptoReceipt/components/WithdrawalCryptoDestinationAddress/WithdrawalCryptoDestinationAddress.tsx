@@ -3,7 +3,7 @@ import useDevice from '../../../../../../../../hooks/useDevice';
 import { WalletClipboard, WalletText } from '../../../../../../../../components';
 import './WithdrawalCryptoDestinationAddress.scss';
 
-const WithdrawalCryptoDestinationAddress: React.FC<{ address: string }> = ({ address }) => {
+const WithdrawalCryptoDestinationAddress: React.FC<{ address?: string }> = ({ address }) => {
     const { isMobile } = useDevice();
     return (
         <div className='wallets-withdrawal-crypto-destination-address'>

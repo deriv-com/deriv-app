@@ -3,6 +3,8 @@ import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig } from '
 import { WalletText } from '../../../../components';
 import { TransactionStatus } from '../TransactionStatus';
 import { WithdrawalCryptoDisclaimer, WithdrawalCryptoForm, WithdrawalCryptoReceipt } from './components';
+import { TWithdrawalReceipt } from './types';
+import { THooks } from 'src/types';
 import './WithdrawalCrypto.scss';
 
 type TWithdrawalCryptoProps = {
@@ -10,18 +12,27 @@ type TWithdrawalCryptoProps = {
     verificationCode: string;
 };
 
-type TWithdrawalReceipt = {
-    address: string;
-    amount: string;
-    currency?: string;
-};
-
 const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificationCode }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
     const { getConfig } = useCurrencyConfig();
-    const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({ address: '', amount: '' });
+    const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({ address: '' });
 
+    const requestCryptoWithdrawal = (values: Parameters<THooks.CryptoWithdrawal>[0]) => {
+        const { address, amount, verification_code } = values;
+        mutateAsync({
+            address,
+            amount,
+            verification_code,
+        }).then(() =>
+            setWithdrawalReceipt({
+                address,
+                amount,
+                currency: activeWallet?.currency,
+                landingCompany: activeWallet?.landing_company_name,
+            })
+        );
+    };
     if (isWithdrawalSuccess) return <WithdrawalCryptoReceipt onClose={onClose} withdrawalReceipt={withdrawalReceipt} />;
 
     return (
@@ -35,10 +46,7 @@ const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificat
                 <WithdrawalCryptoForm
                     activeWallet={activeWallet}
                     getCurrencyConfig={getConfig}
-                    onWithdrawalSuccess={(address, amount, currency) =>
-                        setWithdrawalReceipt({ address, amount, currency })
-                    }
-                    requestCryptoWithdrawal={mutateAsync}
+                    requestCryptoWithdrawal={requestCryptoWithdrawal}
                     verificationCode={verificationCode}
                 />
             </div>

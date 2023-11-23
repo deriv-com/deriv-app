@@ -3,15 +3,12 @@ import { useHistory } from 'react-router-dom';
 import { WalletButton, WalletCard, WalletText } from '../../../../../../components';
 import ArrowDown from '../../../../../../public/images/ic-back-arrow.svg';
 import { WithdrawalCryptoDestinationAddress } from './components';
+import { TWithdrawalReceipt } from '../../types';
 import './WithdrawalCryptoReceipt.scss';
 
 type TProps = {
     onClose: () => void;
-    withdrawalReceipt: {
-        address: string;
-        amount: string;
-        currency?: string;
-    };
+    withdrawalReceipt: TWithdrawalReceipt;
 };
 
 const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt }) => {

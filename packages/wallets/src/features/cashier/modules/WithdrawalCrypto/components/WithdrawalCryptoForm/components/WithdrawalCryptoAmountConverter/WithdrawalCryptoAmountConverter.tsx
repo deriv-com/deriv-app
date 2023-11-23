@@ -46,6 +46,7 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
                     ),
                 });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeWallet?.currency, exchangeRate?.rates]);
 
     const validateCryptoInput = (value: string) => {

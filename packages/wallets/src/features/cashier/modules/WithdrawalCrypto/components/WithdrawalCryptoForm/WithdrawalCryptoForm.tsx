@@ -18,8 +18,7 @@ export type TForm = {
 type TWithdrawalCryptoFormProps = {
     activeWallet?: THooks.ActiveWalletAccount;
     getCurrencyConfig: THooks.GetCurrencyConfig;
-    onWithdrawalSuccess: (address: string, amount: string, currency?: string) => void;
-    requestCryptoWithdrawal: THooks.CryptoWithdrawal;
+    requestCryptoWithdrawal: (values: Parameters<THooks.CryptoWithdrawal>[0]) => void;
     verificationCode?: string;
 };
 
@@ -36,7 +35,6 @@ const validateCryptoAddress = (address: string) => {
 const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
     activeWallet,
     getCurrencyConfig,
-    onWithdrawalSuccess,
     requestCryptoWithdrawal,
     verificationCode,
 }) => {
@@ -67,13 +65,7 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                     address: values.cryptoAddress,
                     amount: parseFloat(parseFloat(values.cryptoAmount).toFixed(FRACTIONAL_DIGITS_CRYPTO)),
                     verification_code: verificationCode,
-                }).then(() =>
-                    onWithdrawalSuccess(
-                        values.cryptoAddress,
-                        parseFloat(values.cryptoAmount).toFixed(FRACTIONAL_DIGITS_CRYPTO),
-                        activeWallet?.currency
-                    )
-                )
+                })
             }
         >
             {({ errors, handleSubmit, isSubmitting, setValues, values }) => {

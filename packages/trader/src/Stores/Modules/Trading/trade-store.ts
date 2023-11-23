@@ -932,14 +932,16 @@ export default class TradeStore extends BaseStore {
                             this.debouncedProposal();
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
-                            this.root_store.notifications.addTradeNotification({
-                                buy_price: response.buy.buy_price,
-                                contract_id: response.buy.contract_id,
-                                currency: getCurrencyDisplayCode(this.root_store.client.currency),
-                                is_opened: true,
-                                purchase_time: response.buy.purchase_time,
-                                shortcode: response.buy.shortcode,
-                            });
+                            if (this.root_store.ui.is_mobile) {
+                                this.root_store.notifications.addTradeNotification({
+                                    buy_price: response.buy.buy_price,
+                                    contract_id: response.buy.contract_id,
+                                    currency: getCurrencyDisplayCode(this.root_store.client.currency),
+                                    purchase_time: response.buy.purchase_time,
+                                    shortcode: response.buy.shortcode,
+                                    status: 'open',
+                                });
+                            }
                             this.is_purchasing_contract = false;
                             return;
                         }

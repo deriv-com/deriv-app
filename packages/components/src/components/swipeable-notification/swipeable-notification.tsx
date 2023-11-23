@@ -7,20 +7,19 @@ import { useSwipeable } from 'react-swipeable';
 import { Localize } from '@deriv/translations';
 import Text from '../text';
 
-type TSwipeableNotificationProps = {
+type TSwipeableNotificationProps = React.PropsWithChildren<{
     classname?: string;
-    content?: React.ReactNode;
     is_failure?: boolean;
     is_success?: boolean;
     onUnmount?: () => void;
     redirect_to?: string;
     timestamp?: number;
     visibility_duration_ms?: number;
-};
+}>;
 
 const SwipeableNotification = ({
+    children,
     classname = 'swipeable-notification',
-    content,
     is_failure,
     is_success,
     onUnmount,
@@ -65,14 +64,14 @@ const SwipeableNotification = ({
     React.useEffect(() => {
         if (timestamp) {
             interval_ref.current = setInterval(() => {
-                setSeconds(Math.abs(Math.floor(Date.now() / 1000) - timestamp));
+                setSeconds(getSeconds(timestamp));
             }, 1000);
         }
         return () => {
             debouncedHideNotification.cancel();
             if (timestamp && interval_ref.current) clearInterval(interval_ref.current);
         };
-    }, [debouncedHideNotification, timestamp]);
+    }, [debouncedHideNotification, getSeconds, timestamp]);
 
     return (
         <CSSTransition
@@ -103,7 +102,7 @@ const SwipeableNotification = ({
                 to={redirect_to}
                 {...swipe_handlers}
             >
-                <div className={`${classname}-content`}>{content}</div>
+                <div className={`${classname}-content`}>{children}</div>
                 <Text as='p' size='xxxs' line_height='s' className={`${classname}-time`}>
                     {getDisplayedTime()}
                 </Text>

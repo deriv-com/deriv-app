@@ -85,7 +85,7 @@ const Dropzone: React.FC<TProps> = ({
         if (files.length > 0 && onFileChange) {
             onFileChange(files[0].file);
         }
-    }, [files, onFileChange]);
+    }, [files]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const removeFile = useCallback(
         (file: { name: string; preview: string }) => () => {

@@ -3,8 +3,11 @@ import { Analytics, TEvents } from '@deriv/analytics';
 import { useStore } from '@deriv/stores';
 import { removeNullOrUndefinedValues } from '@deriv/shared';
 
-type TTrackRealAccountSignup = Omit<TEvents['ce_real_account_signup_form'], 'landing_company' | 'user_choice'> & {
-    user_choice: string | object;
+export type TTrackRealAccountSignup = Omit<
+    TEvents['ce_real_account_signup_form'],
+    'landing_company' | 'user_choice'
+> & {
+    user_choice?: string | object;
 };
 
 const useAnalytics = () => {
@@ -20,7 +23,14 @@ const useAnalytics = () => {
     }, [is_mobile, client?.loginid]);
 
     const trackRealAccountSignup = React.useCallback(
-        ({ action, step_codename, step_num, user_choice, real_signup_error_message }: TTrackRealAccountSignup) => {
+        ({
+            action,
+            step_codename,
+            step_num,
+            user_choice,
+            real_signup_error_message,
+            form_source,
+        }: TTrackRealAccountSignup) => {
             if (real_account_signup_target === 'maltainvest') return;
 
             const payload: TEvents['ce_real_account_signup_form'] = {
@@ -28,7 +38,7 @@ const useAnalytics = () => {
                 step_codename,
                 step_num,
                 user_choice: JSON.stringify(user_choice),
-                form_source: window?.location?.href,
+                form_source: form_source ?? window?.location?.href,
                 form_name: 'real_account_signup_form',
                 real_signup_error_message: JSON.stringify(real_signup_error_message),
                 landing_company: real_account_signup_target,

@@ -10,7 +10,6 @@ import type {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
-    StatesListResponse,
     GetSettings,
     LandingCompany,
     LogOutResponse,

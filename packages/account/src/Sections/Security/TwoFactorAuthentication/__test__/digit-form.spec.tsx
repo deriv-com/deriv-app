@@ -17,16 +17,7 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<DigitForm />', () => {
-    const store = mockStore({
-        client: {
-            has_enabled_two_fa: false,
-            setTwoFAStatus: jest.fn(),
-            setTwoFAChangedStatus: jest.fn(),
-        },
-        common: {
-            is_language_changing: false,
-        },
-    });
+    const store = mockStore({});
 
     const renderComponent = ({ store_config = store }) => {
         render(
@@ -56,13 +47,11 @@ describe('<DigitForm />', () => {
     });
 
     it('should change button text when user enables or disables 2FA', () => {
-        const new_store_config = {
-            ...store,
+        const new_store_config = mockStore({
             client: {
-                ...store.client,
                 has_enabled_two_fa: true,
             },
-        };
+        });
 
         renderComponent({ store_config: store });
         const enableButton = screen.getByRole('button', { name: /Enable/i });

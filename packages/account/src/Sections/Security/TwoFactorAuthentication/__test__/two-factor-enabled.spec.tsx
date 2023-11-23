@@ -4,11 +4,7 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import TwoFactorEnabled from '../two-factor-enabled';
 
 describe('<TwoFactorEnabled />', () => {
-    const store = mockStore({
-        client: {
-            has_enabled_two_fa: false,
-        },
-    });
+    const store = mockStore({});
 
     it('should render TwoFactorEnabled component if 2FA is enabled', () => {
         render(

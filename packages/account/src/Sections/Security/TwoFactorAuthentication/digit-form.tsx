@@ -41,7 +41,7 @@ const DigitForm = observer(() => {
         const digit_code = values.digit_code;
         if (!digit_code) {
             return { digit_code: localize('Digit code is required.') };
-        } else if (!(digit_code.length === 6)) {
+        } else if (digit_code.length !== 6) {
             return { digit_code: localize('Length of digit code must be 6 characters.') };
         } else if (!/^[0-9]{6}$/g.test(digit_code)) {
             return { digit_code: localize('Digit code must only contain numbers.') };

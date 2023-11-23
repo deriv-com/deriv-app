@@ -13,14 +13,10 @@ jest.mock('@deriv/shared', () => ({
     },
 }));
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
-
-    return {
-        ...original_module,
-        Loading: jest.fn(() => 'mockedLoading'),
-    };
-});
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Loading: jest.fn(() => 'mockedLoading'),
+}));
 
 jest.mock('qrcode.react', () => jest.fn(() => <div>QRCode</div>));
 
@@ -34,8 +30,6 @@ describe('<TwoFactorAuthentication/>', () => {
         client: {
             has_enabled_two_fa: false,
             getTwoFAStatus: jest.fn().mockResolvedValue(false),
-            email_address: 'test@dev.com',
-            is_switching: false,
         },
     });
 

@@ -10,8 +10,10 @@ import { connect } from 'Stores/connect';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
-import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
+import { useAnalytics, useIsClientHighRiskForMT5 } from '@deriv/hooks';
 import 'Sass/details-form.scss';
+
+const STEP_IDENTIFIERS = ['account_currency', 'personal_details', 'address_details', 'terms_of_use'];
 
 const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps, sub_section_index }) => {
     const step = getCurrentStep() - 1;
@@ -59,6 +61,8 @@ const AccountWizard = props => {
     const [state_items, setStateItems] = React.useState([]);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
     const is_high_risk_client_for_mt5 = useIsClientHighRiskForMT5();
+
+    const { trackRealAccountSignup } = useAnalytics();
 
     const {
         setIsTradingAssessmentForNewUserEnabled,
@@ -198,6 +202,12 @@ const AccountWizard = props => {
             return;
         }
 
+        trackRealAccountSignup({
+            action: 'step_back',
+            step_codename: STEP_IDENTIFIERS[current_step],
+            step_num: current_step,
+        });
+
         goToPreviousStep();
         clearError();
     };
@@ -247,6 +257,12 @@ const AccountWizard = props => {
         if (should_override || index + 1 >= state_items.length) {
             createRealAccount({});
         } else {
+            trackRealAccountSignup({
+                action: 'step_passed',
+                step_codename: STEP_IDENTIFIERS[index],
+                step_num: index,
+                user_choice: value,
+            });
             goToNextStep();
         }
     };
@@ -283,6 +299,10 @@ const AccountWizard = props => {
         if (!form_data?.document_type?.id) {
             delete form_data.document_type;
         }
+        trackRealAccountSignup({
+            action: 'save',
+            user_choice: payload,
+        });
         submitForm(payload)
             .then(async response => {
                 props.setIsRiskWarningVisible(false);
@@ -306,6 +326,10 @@ const AccountWizard = props => {
                 }
             })
             .catch(error => {
+                trackRealAccountSignup({
+                    action: 'real_signup_error',
+                    real_signup_error_message: error,
+                });
                 if (error.code === 'show risk disclaimer') {
                     props.setIsRiskWarningVisible(true);
                     setShouldAcceptFinancialRisk(true);
@@ -323,6 +347,9 @@ const AccountWizard = props => {
             .finally(() => {
                 setLoading(false);
                 localStorage.removeItem('current_question_index');
+                trackRealAccountSignup({
+                    action: 'real_signup_finished',
+                });
             });
     };
 

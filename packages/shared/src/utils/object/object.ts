@@ -119,3 +119,7 @@ export const deepFreeze = (obj: any) => {
     });
     return Object.freeze(obj);
 };
+
+export const removeNullOrUndefinedValues = <T extends Record<string, any>>(obj: T): T => {
+    return Object.fromEntries(Object.entries(obj).filter(([_, value]) => value !== null && value !== undefined)) as T;
+};

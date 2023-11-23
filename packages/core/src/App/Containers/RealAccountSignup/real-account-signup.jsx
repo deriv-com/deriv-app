@@ -19,6 +19,7 @@ import FinishedSetCurrency from './finished-set-currency.jsx';
 import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
+import { useAnalytics } from '@deriv/hooks';
 
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
@@ -276,6 +277,15 @@ const RealAccountSignup = ({
     ]);
 
     const [assessment_decline, setAssessmentDecline] = React.useState(false);
+    const { trackRealAccountSignup } = useAnalytics();
+
+    React.useEffect(() => {
+        if (is_real_acc_signup_on) {
+            trackRealAccountSignup({
+                action: 'open',
+            });
+        }
+    }, [is_real_acc_signup_on, trackRealAccountSignup]);
 
     const getModalHeight = () => {
         if (is_from_restricted_country) return '304px';
@@ -355,6 +365,11 @@ const RealAccountSignup = ({
 
         setCurrentAction(modal_content[getActiveModalIndex()]?.action);
         setError(err);
+
+        trackRealAccountSignup({
+            action: 'other_error',
+            real_signup_error_message: err,
+        });
     };
 
     React.useEffect(() => {

@@ -173,6 +173,7 @@ describe('<ApiToken/>', () => {
         expect(read_checkbox?.checked).toBeTruthy();
 
         userEvent.type(token_name_input, '@#$');
+        userEvent.tab();
         expect(await screen.findByText('Only letters, numbers, and underscores are allowed.')).toBeInTheDocument();
         userEvent.clear(token_name_input);
 

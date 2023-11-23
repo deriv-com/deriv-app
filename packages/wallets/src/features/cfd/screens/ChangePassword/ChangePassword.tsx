@@ -1,5 +1,6 @@
 import React from 'react';
 import { ModalStepWrapper, Tab, Tabs } from '../../../../components/Base';
+import MT5ChangeInvestorPasswordScreens from './MT5ChangeInvestorPasswordScreens';
 import MT5ChangePasswordScreens from './MT5ChangePasswordScreens';
 import './ChangePassword.scss';
 
@@ -12,8 +13,7 @@ const ChangePassword = () => {
                         <MT5ChangePasswordScreens />
                     </Tab>
                     <Tab title='Investor Password'>
-                        {/* TODO: Add Investor Password */}
-                        <></>
+                        <MT5ChangeInvestorPasswordScreens />
                     </Tab>
                 </Tabs>
             </div>

@@ -29,7 +29,7 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
     const renderFooter = useCallback(
         () => (
             <div className='wallets-add-more__success-footer'>
-                <WalletButtonGroup isFlex>
+                <WalletButtonGroup isFlex isFullWidth>
                     <WalletButton onClick={onSecondaryButtonClick} text='Maybe later' variant='outlined' />
                     <WalletButton onClick={onPrimaryButtonClick} text='Deposit' />
                 </WalletButtonGroup>

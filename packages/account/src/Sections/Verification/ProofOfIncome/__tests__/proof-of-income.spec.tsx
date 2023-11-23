@@ -84,7 +84,7 @@ describe('ProofOfIncome', () => {
                 ...mocked_account_status.authentication,
                 needs_verification: ['income'],
             },
-            status: ['allow_document_upload', 'age_verification'],
+            status: ['allow_document_upload', 'age_verification', 'authenticated'],
         };
         (WS.authorized.getAccountStatus as jest.Mock).mockResolvedValue({
             get_account_status: {
@@ -116,7 +116,7 @@ describe('ProofOfIncome', () => {
                 ...mocked_account_status.authentication,
                 needs_verification: ['income'],
             },
-            status: ['allow_document_upload', 'age_verification'],
+            status: ['allow_document_upload', 'age_verification', 'authenticated'],
         };
         (WS.authorized.getAccountStatus as jest.Mock).mockResolvedValue({
             get_account_status: {

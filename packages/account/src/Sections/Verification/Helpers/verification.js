@@ -10,6 +10,7 @@ export const populateVerificationStatus = account_status => {
     const allow_poa_resubmission = account_status.status.some(status => status === 'allow_poa_resubmission');
     const allow_poinc_resubmission = account_status.status.some(status => status === 'allow_poinc_resubmission');
     const is_age_verified = account_status.status.some(status => status === 'age_verification');
+    const is_fully_authenticated = account_status.status.some(status => status === 'authenticated');
     const is_idv_disallowed = account_status.status.some(status => status === 'idv_disallowed');
     const poa_address_mismatch = account_status.status.some(status => status === 'poa_address_mismatch');
 
@@ -41,6 +42,7 @@ export const populateVerificationStatus = account_status => {
         income_status,
         idv,
         is_age_verified,
+        is_fully_authenticated,
         is_idv_disallowed,
         manual,
         needs_poa,

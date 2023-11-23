@@ -707,7 +707,9 @@ export default class ClientStore extends BaseStore {
     }
 
     get should_allow_poinc_authentication() {
-        return this.account_status?.authentication?.needs_verification?.includes('income');
+        return (
+            this.is_fully_authenticated && this.account_status?.authentication?.needs_verification?.includes('income')
+        );
     }
 
     get is_financial_assessment_incomplete() {

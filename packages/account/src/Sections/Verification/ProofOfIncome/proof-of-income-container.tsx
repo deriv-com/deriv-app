@@ -26,14 +26,21 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }: TProofOf
         needs_poinc: false,
         income_status: income_status_codes.NONE,
         is_age_verified: false,
+        is_fully_authenticated: false,
     });
 
     React.useEffect(() => {
         if (!is_switching) {
             WS.authorized.getAccountStatus().then((response: DeepRequired<AccountStatusResponse>) => {
                 const { get_account_status } = response;
-                const { allow_document_upload, allow_poinc_resubmission, income_status, needs_poinc, is_age_verified } =
-                    populateVerificationStatus(get_account_status);
+                const {
+                    allow_document_upload,
+                    allow_poinc_resubmission,
+                    income_status,
+                    needs_poinc,
+                    is_age_verified,
+                    is_fully_authenticated,
+                } = populateVerificationStatus(get_account_status);
 
                 setAuthenticationStatus({
                     ...authentication_status,
@@ -43,6 +50,7 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }: TProofOf
                         needs_poinc,
                         income_status,
                         is_age_verified,
+                        is_fully_authenticated,
                     },
                 });
                 setIsLoading(false);
@@ -56,8 +64,14 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }: TProofOf
         setAuthenticationStatus({ ...authentication_status, ...{ income_status: status } });
     };
 
-    const { allow_document_upload, allow_poinc_resubmission, income_status, needs_poinc, is_age_verified } =
-        authentication_status;
+    const {
+        allow_document_upload,
+        allow_poinc_resubmission,
+        income_status,
+        needs_poinc,
+        is_age_verified,
+        is_fully_authenticated,
+    } = authentication_status;
 
     const should_show_poinc_form =
         allow_document_upload &&
@@ -67,7 +81,7 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }: TProofOf
             income_status === income_status_codes.NONE);
 
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (!needs_poinc) return <Redirect to={routes.account} />;
+    if (!needs_poinc || !is_fully_authenticated) return <Redirect to={routes.account} />;
     if (should_show_poinc_form) return <ProofOfIncomeForm onSubmit={handleSubmit} />;
     if (income_status === income_status_codes.PENDING) return <PoincReceived />;
     if (income_status === income_status_codes.VERIFIED) return <PoincVerified />;

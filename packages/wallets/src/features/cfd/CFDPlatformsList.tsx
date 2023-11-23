@@ -23,7 +23,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                     </WalletText>
                 )}
                 <div className='wallets-cfd-list__header-description'>
-                    <h1>
+                    <WalletText size={isMobile ? 'sm' : 'md'}>
                         Trade with leverage and tight spreads for better returns on trades.{' '}
                         <a
                             className='wallets-cfd-list__header-description__link'
@@ -33,7 +33,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                         >
                             Learn more
                         </a>
-                    </h1>
+                    </WalletText>
                 </div>
             </section>
             {activeWallet?.currency_config?.is_crypto ? (

@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { useAuthentication, usePOA, usePOI, useSettings } from '@deriv/api';
+import { usePOA, usePOI, useSettings } from '@deriv/api';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { Loader } from '../../../../components/Loader';
@@ -36,18 +36,19 @@ type TVerificationProps = {
 const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
-    const { data: authenticationData } = useAuthentication();
     const { data: getSettings, update: updateSettings } = useSettings();
     const { getModalState, hide, show } = useModal();
 
     const selectedMarketType = getModalState('marketType') || 'all';
     const platform = getModalState('platform') || 'mt5';
+    const shouldSubmitPOA = useMemo(
+        () => !poaStatus?.has_attempted_poa || (!poaStatus?.is_pending && !poaStatus.is_verified),
+        [poaStatus]
+    );
 
     const isLoading = useMemo(() => {
         return !isSuccessPOIStatus || !isSuccessPOAStatus;
     }, [isSuccessPOIStatus, isSuccessPOAStatus]);
-
-    const hasAttemptedPOA = poaStatus?.has_attempted_poa || true;
 
     const initialScreenId: keyof typeof screens = useMemo(() => {
         const service = (poiStatus?.current?.service || 'manual') as keyof THooks.POI['services'];
@@ -56,9 +57,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             const serviceStatus = poiStatus.status;
 
             if (!isSuccessPOIStatus) return 'loadingScreen';
-
             if (serviceStatus === 'pending' || serviceStatus === 'verified') {
-                if (authenticationData?.is_poa_needed && !hasAttemptedPOA) return 'poaScreen';
+                if (shouldSubmitPOA) return 'poaScreen';
                 if (!getSettings?.has_submitted_personal_details) return 'personalDetailsScreen';
                 show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             }
@@ -69,8 +69,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     }, [
         poiStatus,
         isSuccessPOIStatus,
-        authenticationData?.is_poa_needed,
-        hasAttemptedPOA,
+        shouldSubmitPOA,
         getSettings?.has_submitted_personal_details,
         show,
         selectedMarketType,
@@ -115,7 +114,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             } else if (currentScreenId === 'manualScreen') {
                 // TODO: call the api here
             }
-            if (hasAttemptedPOA) {
+            if (shouldSubmitPOA) {
                 switchScreen('poaScreen');
             } else if (!getSettings?.has_submitted_personal_details) {
                 switchScreen('personalDetailsScreen');

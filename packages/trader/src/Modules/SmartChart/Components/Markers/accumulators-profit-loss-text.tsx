@@ -1,17 +1,16 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode, isMobile } from '@deriv/shared';
+import { addComma, formatMoney, getCurrencyDisplayCode, isMobile } from '@deriv/shared';
 import { FastMarker } from 'Modules/SmartChart';
 import classNames from 'classnames';
 import { TRef } from './accumulators-profit-loss-tooltip';
 import { ProposalOpenContract } from '@deriv/api-types';
 
-type TProposalOpenContractProfit = Required<Pick<ProposalOpenContract, 'profit'>>;
-
-type TAccumulatorsProfitLossText = Pick<ProposalOpenContract, 'current_spot' | 'current_spot_time' | 'currency'> &
-    TProposalOpenContractProfit & {
-        className?: string;
-    };
+type TAccumulatorsProfitLossText = Pick<ProposalOpenContract, 'current_spot' | 'current_spot_time' | 'currency'> & {
+    className?: string;
+    profit_value: number;
+    should_show_profit_percentage?: boolean;
+};
 
 const ACTIONS = {
     INC: 'increment',
@@ -24,11 +23,14 @@ const AccumulatorsProfitLossText = ({
     current_spot_time,
     currency,
     className = 'sc-accumulators-profit-loss-text',
-    profit,
+    profit_value,
+    should_show_profit_percentage,
 }: TAccumulatorsProfitLossText) => {
     const [is_fading_in, setIsFadingIn] = React.useState(false);
     const [is_sliding, setIsSliding] = React.useState(false);
-    const formatted_profit = formatMoney(currency ?? '', profit, true, 0, 0);
+    const formatted_profit = should_show_profit_percentage
+        ? addComma(profit_value, 2)
+        : formatMoney(currency ?? '', profit_value, true, 0, 0);
     const prev_profit = React.useRef(formatted_profit);
     const prev_profit_tenth = +prev_profit.current?.split('.')[1][0];
     const [current_profit_tenth, setCurrentProfitTenth] = React.useState(prev_profit_tenth);
@@ -40,8 +42,8 @@ const AccumulatorsProfitLossText = ({
     const profit_whole_number = profit_portions_array[0];
     const profit_tenth = +profit_portions_array[1][0];
     const profit_hundredths = +profit_portions_array[1].slice(1);
-    const won = profit >= 0;
-    const sign = profit > 0 ? '+' : '';
+    const won = profit_value >= 0;
+    const sign = profit_value > 0 ? '+' : '';
 
     const runThroughTenthDigit = (
         action: typeof ACTIONS[keyof typeof ACTIONS],
@@ -68,7 +70,7 @@ const AccumulatorsProfitLossText = ({
     };
 
     React.useEffect(() => {
-        if (profit) {
+        if (profit_value) {
             setIsFadingIn(true);
             setIsSliding(true);
             fading_in_timeout_id.current = setTimeout(() => {
@@ -78,7 +80,7 @@ const AccumulatorsProfitLossText = ({
                 setIsSliding(false);
             }, 300);
         }
-        if (profit !== 0) {
+        if (profit_value !== 0) {
             const updateTenth = (start: number, end: number) => {
                 const delta = Math.abs(end - start);
                 profit_tenth_ref.current = start;
@@ -97,7 +99,7 @@ const AccumulatorsProfitLossText = ({
             clearTimeout(sliding_timeout_id.current);
             clearInterval(interval_id_ref.current);
         };
-    }, [profit, prev_profit_tenth, profit_tenth]);
+    }, [profit_value, prev_profit_tenth, profit_tenth]);
 
     const onRef = (ref: TRef | null): void => {
         if (ref) {
@@ -130,7 +132,7 @@ const AccumulatorsProfitLossText = ({
                 {`${profit_hundredths}`}
             </Text>
             <Text size={isMobile() ? 'xxxs' : 'xxs'} as='div' className={`${className}__currency`}>
-                {getCurrencyDisplayCode(currency)}
+                {should_show_profit_percentage ? '%' : getCurrencyDisplayCode(currency)}
             </Text>
         </FastMarker>
     );

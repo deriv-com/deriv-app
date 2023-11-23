@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren, ReactNode } from 'react';
+import React, { FC, PropsWithChildren, ReactNode, useEffect } from 'react';
 import classNames from 'classnames';
 import { useEventListener } from 'usehooks-ts';
 import CloseIcon from '../../../public/images/close-icon.svg';
@@ -7,35 +7,44 @@ import { WalletText } from '../WalletText';
 import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {
-    closeOnEscape?: boolean;
     renderFooter?: () => ReactNode;
     shouldFixedFooter?: boolean;
+    shouldHideDerivAppHeader?: boolean;
     shouldHideHeader?: boolean;
+    shouldPreventCloseOnEscape?: boolean;
     title?: string;
 };
 
 const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     children,
-    closeOnEscape = false,
     renderFooter,
     shouldFixedFooter = true,
+    shouldHideDerivAppHeader = false,
     shouldHideHeader = false,
+    shouldPreventCloseOnEscape = false,
     title,
 }) => {
-    const { hide } = useModal();
+    const { hide, setModalOptions } = useModal();
     const hasRenderFooter = typeof renderFooter === 'function';
     const fixedFooter = shouldFixedFooter && hasRenderFooter;
 
     useEventListener('keydown', (event: KeyboardEvent) => {
-        if (closeOnEscape && event.key === 'Escape') {
+        if (!shouldPreventCloseOnEscape && event.key === 'Escape') {
             hide();
         }
     });
+
+    useEffect(() => {
+        setModalOptions({
+            shouldHideDerivAppHeader,
+        });
+    }, [shouldHideDerivAppHeader, setModalOptions]);
 
     return (
         <div
             className={classNames('wallets-modal-step-wrapper', {
                 'wallets-modal-step-wrapper--fixed-footer': fixedFooter && !shouldHideHeader,
+                'wallets-modal-step-wrapper--hide-deriv-app-header': shouldHideDerivAppHeader,
                 'wallets-modal-step-wrapper--no-header': shouldHideHeader && !fixedFooter,
                 'wallets-modal-step-wrapper--no-header--fixed-footer': shouldHideHeader && fixedFooter,
             })}

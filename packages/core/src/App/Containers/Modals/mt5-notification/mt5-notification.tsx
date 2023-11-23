@@ -17,13 +17,13 @@ const MT5Notification = observer(() => {
                 <Modal
                     has_close_icon={false}
                     is_open={is_mt5_notification_modal_visible}
-                    title={localize('Trouble accessing Deriv MT5 on your mobile?')}
+                    title={localize('Deriv MT5: Your action is needed')}
                     toggleModal={clickHandler}
                     className='mt5-notification-modal'
                     width='510px'
                 >
                     <Modal.Body className='mt5-notification-modal-body'>
-                        <MT5NotificationDescription />
+                        <MT5NotificationDescription setMT5NotificationModal={setMT5NotificationModal} />
                     </Modal.Body>
                     <Modal.Footer has_separator>
                         <Button
@@ -41,7 +41,7 @@ const MT5Notification = observer(() => {
                 <MobileDialog
                     portal_element_id='modal_root'
                     wrapper_classname='mt5-notification-modal-description'
-                    title={localize('Trouble accessing Deriv MT5 on your mobile?')}
+                    title={localize('Deriv MT5: Your action is needed')}
                     visible={is_mt5_notification_modal_visible}
                     onClose={() => {
                         setMT5NotificationModal(false);
@@ -60,7 +60,7 @@ const MT5Notification = observer(() => {
                         </div>
                     }
                 >
-                    <MT5NotificationDescription />
+                    <MT5NotificationDescription setMT5NotificationModal={setMT5NotificationModal} />
                 </MobileDialog>
             </MobileWrapper>
         </React.Suspense>

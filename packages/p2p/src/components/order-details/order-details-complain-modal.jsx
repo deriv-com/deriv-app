@@ -4,13 +4,13 @@ import { Button, MobileFullPageModal, Modal, Text } from '@deriv/components';
 import { isMobile, useIsMounted } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
-import FormError from 'Components/form/error.jsx';
+import FormError from 'Components/section-error';
 import OrderDetailsComplainModalRadioGroup from './order-details-complain-modal-radio-group.jsx';
 import 'Components/order-details/order-details-complain-modal.scss';
 
 const ComplainExplanation = () => (
     <div className='order-details-complain-modal__explanation'>
-        <Text size='xxs' line_height='m' color='general'>
+        <Text size='xxs'>
             <Localize i18n_default_text="If your complaint isn't listed here, please contact our Customer Support team." />
         </Text>
     </div>
@@ -95,7 +95,7 @@ const OrderDetailsComplainModal = ({
             toggleModal={hideComplainOrderModal}
             has_close_icon
             renderTitle={() => (
-                <Text color='prominent' line-height='m' size='s' weight='bold'>
+                <Text color='prominent' weight='bold'>
                     <Localize i18n_default_text="What's your complaint?" />
                 </Text>
             )}

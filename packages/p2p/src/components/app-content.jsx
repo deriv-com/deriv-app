@@ -1,27 +1,57 @@
 import React from 'react';
-import { isAction, reaction } from 'mobx';
 import { useHistory } from 'react-router-dom';
-import { useStores } from 'Stores';
-import { isMobile } from '@deriv/shared';
+import { isAction, reaction } from 'mobx';
+import { observer } from 'mobx-react-lite';
+
 import { Loading, Tabs } from '@deriv/components';
-import { useStore, observer } from '@deriv/stores';
-import classNames from 'classnames';
-import { localize } from './i18next';
-import NicknameForm from './nickname-form';
-import TemporarilyBarredHint from './temporarily-barred-hint';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useP2PNotificationCount } from '@deriv/hooks';
+import { isMobile } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
+
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import TemporarilyBarredHint from 'Components/temporarily-barred-hint';
+import { buy_sell } from 'Constants/buy-sell';
+import { useStores } from 'Stores';
+import { getHoursDifference } from 'Utils/date-time';
+import { localize } from './i18next';
+
+const INTERVAL_DURATION = 24; // 24 hours
 
 const AppContent = ({ order_id }) => {
     const { buy_sell_store, general_store } = useStores();
     const { showModal, hideModal } = useModalManagerContext();
+    let timeout;
     const {
         notifications: { setP2POrderProps },
+        client: { loginid },
     } = useStore();
     const notification_count = useP2PNotificationCount();
     const history = useHistory();
 
+    const handleDisclaimerTimeout = time_lapsed => {
+        timeout = setTimeout(() => {
+            showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });
+            // Display the disclaimer modal again after 24 hours
+        }, (INTERVAL_DURATION - time_lapsed) * 3600000);
+    };
+
     React.useEffect(() => {
+        if (!general_store.should_show_dp2p_blocked) {
+            const time_lapsed = getHoursDifference(localStorage.getItem(`p2p_${loginid}_disclaimer_shown`));
+            if (time_lapsed === undefined || time_lapsed > INTERVAL_DURATION) {
+                showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });
+            } else {
+                handleDisclaimerTimeout(time_lapsed);
+            }
+        }
+
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, []);
+
+    React.useEffect(() => {
+        buy_sell_store.setTableType(buy_sell.BUY);
         return reaction(
             () => setP2POrderProps,
             () => {
@@ -47,10 +77,6 @@ const AppContent = ({ order_id }) => {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (general_store.should_show_popup) {
-        return <NicknameForm />;
-    }
-
     // return empty or else the tabs will be shown above when displaying the advertiser page
     if (
         (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) ||
@@ -62,7 +88,6 @@ const AppContent = ({ order_id }) => {
     return (
         <Tabs
             active_index={general_store.active_index}
-            className={classNames({ 'p2p-cashier__tabs': general_store.active_index === 0 && isMobile() })}
             header_fit_content={!isMobile()}
             is_100vw={isMobile()}
             is_scrollable
@@ -82,7 +107,7 @@ const AppContent = ({ order_id }) => {
             <div label={localize('My ads')}>
                 <TemporarilyBarredHint />
             </div>
-            {general_store.is_advertiser && <div label={localize('My profile')} data-testid='my_profile' />}
+            <div label={localize('My profile')} />
         </Tabs>
     );
 };

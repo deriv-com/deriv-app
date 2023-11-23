@@ -568,8 +568,17 @@
         }
     }
 
+    &__question-counter {
+        margin: 2.4rem 0 0;
+        padding-left: 12rem;
+
+        @include mobile {
+            padding-left: 1.6rem;
+        }
+    }
+
     &__form {
-        margin-top: 2.2rem;
+        margin-top: 1.6rem;
         display: grid;
         grid-template-rows: 4.7fr 1fr;
 
@@ -584,10 +593,6 @@
         &--fields {
             display: flex;
             padding: 0 10rem;
-
-            @include desktop() {
-                justify-content: center;
-            }
 
             @include mobile() {
                 padding: 0 1.6rem;
@@ -609,6 +614,11 @@
     }
 
     &__wrapper__question {
+        .dc-field--error {
+            padding-left: 0;
+            margin: 1.6rem 0;
+        }
+
         @include desktop() {
             padding: 0 2rem;
         }
@@ -707,73 +717,6 @@
     }
 }
 
-.highlight {
-    animation: shake 150ms 2 linear;
-    -moz-animation: shake 150ms 2 linear;
-    -webkit-animation: shake 150ms 2 linear;
-    -o-animation: shake 150ms 2 linear;
-}
-
-@keyframes shake {
-    0% {
-        transform: translate(3px, 0);
-    }
-    50% {
-        transform: translate(-3px, 0);
-    }
-    100% {
-        transform: translate(0, 0);
-    }
-}
-
-@-moz-keyframes shake {
-    0% {
-        -moz-transform: translate(3px, 0);
-    }
-    50% {
-        -moz-transform: translate(-3px, 0);
-    }
-    100% {
-        -moz-transform: translate(0, 0);
-    }
-}
-
-@-webkit-keyframes shake {
-    0% {
-        -webkit-transform: translate(3px, 0);
-    }
-    50% {
-        -webkit-transform: translate(-3px, 0);
-    }
-    100% {
-        -webkit-transform: translate(0, 0);
-    }
-}
-
-@-ms-keyframes shake {
-    0% {
-        -ms-transform: translate(3px, 0);
-    }
-    50% {
-        -ms-transform: translate(-3px, 0);
-    }
-    100% {
-        -ms-transform: translate(0, 0);
-    }
-}
-
-@-o-keyframes shake {
-    0% {
-        -o-transform: translate(3px, 0);
-    }
-    50% {
-        -o-transform: translate(-3px, 0);
-    }
-    100% {
-        -o-transform: translate(0, 0);
-    }
-}
-
 .field-layout {
     .trading-assessment__wrapper__dropdown {
         div:last-child {
@@ -830,7 +773,16 @@
 
 .personal-details-form {
     .dc-radio-group__input {
-        display: unset;
-        appearance: unset;
+        width: 0;
+        height: 0;
+    }
+}
+
+.wizard__main-step {
+    .account-form {
+        &__fieldset {
+            width: 100%;
+            max-width: unset !important;
+        }
     }
 }

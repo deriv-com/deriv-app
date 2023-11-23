@@ -13,14 +13,14 @@ type TListItem = {
 };
 
 type TFilterDropdown = {
-    dropdown_className: string;
+    dropdown_className?: string;
     dropdown_display_className: string;
     filter_list: Array<TListItem>;
     handleFilterChange: (e: string) => void;
-    initial_filter: string;
+    initial_filter?: string;
     initial_selected_filter: string;
-    label: string;
-    hide_top_placeholder: boolean;
+    label?: string;
+    hide_top_placeholder?: boolean;
 };
 
 const FilterDropdown = ({

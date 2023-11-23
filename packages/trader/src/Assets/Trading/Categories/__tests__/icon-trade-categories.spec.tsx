@@ -175,8 +175,17 @@ describe('<IconTradeCatgory />', () => {
         expect(mocked_icon_text).toBeInTheDocument();
         expect(mocked_icon_text).toHaveClass('category-wrapper');
     });
-    it('Expect two MockedIcons to be rendered when category is vanilla', () => {
-        render(<IconTradeCategory category='vanilla' />);
+    it('Expect two MockedIcons to be rendered when category is vanillalongcall', () => {
+        render(<IconTradeCategory category='vanillalongcall' />);
+        const mocked_icons = screen.getAllByText(mocked_icon);
+        expect(mocked_icons).toHaveLength(2);
+        mocked_icons.forEach(icon => {
+            expect(icon).toBeInTheDocument();
+            expect(icon).toHaveClass('category-wrapper');
+        });
+    });
+    it('Expect two MockedIcons to be rendered when category is turboslong', () => {
+        render(<IconTradeCategory category='turboslong' />);
         const mocked_icons = screen.getAllByText(mocked_icon);
         expect(mocked_icons).toHaveLength(2);
         mocked_icons.forEach(icon => {

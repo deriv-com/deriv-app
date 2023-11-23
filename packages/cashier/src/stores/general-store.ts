@@ -182,11 +182,11 @@ export default class GeneralStore extends BaseStore {
             }
 
             if (
-                !transaction_history.is_crypto_transactions_visible &&
-                window.location.pathname.endsWith(routes.cashier_crypto_transactions)
+                !transaction_history.is_transactions_crypto_visible &&
+                window.location.pathname.endsWith(routes.cashier_transactions_crypto)
             ) {
                 routeTo(routes.cashier_deposit);
-                transaction_history.setIsCryptoTransactionsVisible(true);
+                transaction_history.setIsTransactionsCryptoVisible(true);
             }
         }
     }

@@ -14,8 +14,16 @@
         height: 8.8rem;
     }
 
-    &__button--hidden {
-        visibility: hidden;
+    &__button {
+        &--hidden {
+            visibility: hidden;
+        }
+
+        &--animated {
+            width: fit-content;
+            position: inherit;
+            animation: triggerAnimation 0.5s linear infinite alternate;
+        }
     }
 
     &--blurry {
@@ -29,6 +37,10 @@
         height: 100%;
         margin-left: 1.6rem;
         padding: 0 2rem;
+
+        @include mobile {
+            width: 22rem;
+        }
     }
 
     &__actions {

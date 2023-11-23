@@ -1,7 +1,6 @@
 export { default as useAccountLimits } from './useAccountLimits';
 export { default as useAccountStatus } from './useAccountStatus';
 export { default as useAccountTypes } from './useAccountTypes';
-export { default as useAccountsList } from './useAccountsList';
 export { default as useActiveAccount } from './useActiveAccount';
 export { default as useActiveLinkedToTradingAccount } from './useActiveLinkedToTradingAccount';
 export { default as useActiveTradingAccount } from './useActiveTradingAccount';
@@ -28,6 +27,7 @@ export { default as useCtraderAccountsList } from './useCtraderAccountsList';
 export { default as useCtraderServiceToken } from './useCtraderServiceToken';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
+export { default as useDerivAccountsList } from './useDerivAccountsList';
 export { default as useDocumentUpload } from './useDocumentUpload';
 export { default as useDxtradeAccountsList } from './useDxtradeAccountsList';
 export { default as useDxtradeServiceToken } from './useDxtradeServiceToken';

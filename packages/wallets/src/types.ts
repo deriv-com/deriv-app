@@ -1,5 +1,4 @@
 import type {
-    useAccountsList,
     useActiveAccount,
     useActiveTradingAccount,
     useActiveWalletAccount,
@@ -12,6 +11,7 @@ import type {
     useCryptoTransactions,
     useCtraderAccountsList,
     useCurrencyConfig,
+    useDerivAccountsList,
     useDxtradeAccountsList,
     useDynamicLeverage,
     useExchangeRate,
@@ -36,7 +36,7 @@ export namespace THooks {
     export type SortedMT5Accounts = NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number];
     export type WalletAccountsList = NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
     export type ActiveWalletAccount = NonNullable<ReturnType<typeof useActiveWalletAccount>['data']>;
-    export type AccountsList = NonNullable<ReturnType<typeof useAccountsList>['data']>[number];
+    export type DerivAccountsList = NonNullable<ReturnType<typeof useDerivAccountsList>['data']>[number];
     export type ActiveTradingAccount = NonNullable<ReturnType<typeof useActiveTradingAccount>['data']>;
     export type ActiveAccount = NonNullable<ReturnType<typeof useActiveAccount>['data']>;
     export type AllWalletAccounts = NonNullable<ReturnType<typeof useAllWalletAccounts>['data']>[number];
@@ -78,7 +78,7 @@ export namespace TDisplayBalance {
     export type MT5AccountsList = THooks.MT5AccountsList['display_balance'];
     export type WalletAccountsList = THooks.WalletAccountsList['display_balance'];
     export type ActiveWalletAccount = THooks.ActiveWalletAccount['display_balance'];
-    export type AccountsList = THooks.AccountsList['display_balance'];
+    export type AccountsList = THooks.DerivAccountsList['display_balance'];
     export type ActiveTradingAccount = THooks.ActiveTradingAccount['display_balance'];
 }
 

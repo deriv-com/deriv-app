@@ -5,7 +5,7 @@ import useCurrencyConfig from './useCurrencyConfig';
 import { displayMoney } from '../utils';
 
 /** A custom hook that returns the list of accounts for the current user. */
-const useAccountsList = () => {
+const useDerivAccountsList = () => {
     const { data: authorize_data, ...rest } = useAuthorize();
     const { data: balance_data } = useBalance();
     const { getConfig } = useCurrencyConfig();
@@ -66,4 +66,4 @@ const useAccountsList = () => {
     };
 };
 
-export default useAccountsList;
+export default useDerivAccountsList;

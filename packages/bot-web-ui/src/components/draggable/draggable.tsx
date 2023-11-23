@@ -58,6 +58,8 @@ export default function Draggable({
             minHeight={height}
             minWidth={minWidth}
             onDrag={(e, data) => {
+                //we need these calculations since we no longer use the 'transform: translate(x, y)' property
+                //as it causes unexpected behaviour of Beta Chart styles & helps avoid bounce bug upon the first drag
                 data.node.style.left = `${data.lastX - first_drag_x + first_left + data.deltaX}px`;
                 data.node.style.top = `${data.lastY - first_drag_y + first_top + data.deltaY}px`;
             }}

@@ -20,7 +20,6 @@ const useExtendedTransferAccountProperties = (accounts?: THooks.TransferAccount[
                 accountCategory: account.account_category,
                 accountType: account.account_type,
                 displayCurrencyCode: currencyConfig?.display_code,
-                isDemo: Boolean(account.demo_account),
                 landingCompanyName: activeWallet?.landing_company_name as TWalletLandingCompanyName,
                 mt5MarketType: getMarketType(account.mt5_group),
             });

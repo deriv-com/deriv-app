@@ -46,7 +46,7 @@ const DxtradeEnterPasswordModal = () => {
     const renderFooter = useMemo(() => {
         if (isSuccess) {
             return (
-                <WalletButtonGroup isFlex>
+                <WalletButtonGroup isFlex isFullWidth>
                     <WalletButton onClick={() => hide()} size='lg' text='Maybe later' variant='outlined' />
                     <WalletButton
                         onClick={() => {

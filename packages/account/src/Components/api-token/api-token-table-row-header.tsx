@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 
 type TApiTokenTableRowHeader = {
-    text: JSX.Element;
+    text: JSX.Element | string;
 };
 
 const ApiTokenTableRowHeader = ({ text }: TApiTokenTableRowHeader) => (

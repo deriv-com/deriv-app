@@ -54,13 +54,15 @@ const ApiToken = observer(() => {
         }
     );
 
-    const timeout_ref = React.useRef<NodeJS.Timeout | undefined>();
+    const handle_submit_timeout_ref = React.useRef<NodeJS.Timeout | undefined>();
+    const delete_token_timeout_ref = React.useRef<NodeJS.Timeout | undefined>();
 
     React.useEffect(() => {
         getApiTokens();
 
         return () => {
-            clearTimeout(timeout_ref.current);
+            clearTimeout(handle_submit_timeout_ref.current);
+            clearTimeout(delete_token_timeout_ref.current);
         };
     }, []);
 
@@ -124,7 +126,7 @@ const ApiToken = observer(() => {
                 is_success: true,
                 api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
             });
-            setTimeout(() => {
+            handle_submit_timeout_ref.current = setTimeout(() => {
                 setState({ is_success: false });
             }, 500);
         }
@@ -161,7 +163,7 @@ const ApiToken = observer(() => {
 
         setState({ is_delete_loading: false, is_delete_success: true });
 
-        timeout_ref.current = setTimeout(() => {
+        delete_token_timeout_ref.current = setTimeout(() => {
             setState({ is_delete_success: false });
         }, 500);
     };
@@ -188,17 +190,7 @@ const ApiToken = observer(() => {
                     <ThemedScrollbars className='da-api-token__scrollbars' is_bypassed={is_mobile}>
                         {is_mobile && <ApiTokenArticle />}
                         <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields}>
-                            {({
-                                values,
-                                errors,
-                                isValid,
-                                dirty,
-                                touched,
-                                handleChange,
-                                handleBlur,
-                                isSubmitting,
-                                setFieldTouched,
-                            }) => (
+                            {({ values, errors, isValid, dirty, touched, handleChange, handleBlur, isSubmitting }) => (
                                 <Form noValidate>
                                     <Timeline className='da-api-token__timeline' line_height='xxxl'>
                                         <Timeline.Item
@@ -242,10 +234,7 @@ const ApiToken = observer(() => {
                                                             className='da-api-token__input dc-input__input-group'
                                                             label={localize('Token name')}
                                                             value={values.token_name}
-                                                            onChange={e => {
-                                                                setFieldTouched('token_name', true);
-                                                                handleChange(e);
-                                                            }}
+                                                            onChange={handleChange}
                                                             onBlur={handleBlur}
                                                             hint={
                                                                 <Localize i18n_default_text='Length of token name must be between 2 and 32 characters.' />

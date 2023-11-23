@@ -29,7 +29,7 @@ const PercentageSelector = ({
     to_currency,
 }: TPercentageSelectorProps) => {
     const [selected_percentage, setSelectedPercentage] = React.useState<number | string>('0');
-    const { exchange_rates } = useExchangeRate();
+    const { getRate } = useExchangeRate();
     React.useEffect(() => {
         if (should_percentage_reset) {
             for (let i = 1; i <= 4; i++) {
@@ -55,9 +55,9 @@ const PercentageSelector = ({
         if (is_percentage_selected) new_percentage -= 25;
 
         setSelectedPercentage(new_percentage || 0);
-        const rate = exchange_rates?.[from_currency]?.[to_currency] ?? 1;
-        const converted_amount = amount * (new_percentage / 100) * rate;
-
+        const from_rate = getRate(from_currency || '');
+        const to_rate = getRate(to_currency || '');
+        const converted_amount = (amount * (new_percentage / 100) * to_rate) / from_rate;
         getCalculatedAmount(
             (amount * (new_percentage / 100)).toFixed(getDecimalPlaces(from_currency)),
             converted_amount

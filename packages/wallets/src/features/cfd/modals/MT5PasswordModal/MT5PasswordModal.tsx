@@ -30,7 +30,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: settings } = useSettings();
-    const { hide, show } = useModal();
+    const { getModalState, hide, show } = useModal();
     const { isMobile } = useDevice();
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
@@ -39,6 +39,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         marketType === 'all' && Object.keys(PlatformDetails).includes(platform)
             ? PlatformDetails[platform].title
             : MarketTypeDetails[marketType].title;
+    const selectedJurisdiction = getModalState('selectedJurisdiction');
 
     const onSubmit = async () => {
         const accountType = marketType === 'synthetic' ? 'gaming' : marketType;
@@ -57,12 +58,18 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 account_type: activeWallet?.is_virtual ? 'demo' : accountType,
                 address: settings?.address_line_1 || '',
                 city: settings?.address_city || '',
-                company: 'svg',
+                company: selectedJurisdiction,
                 country: settings?.country_code || '',
                 email: settings?.email || '',
                 leverage: availableMT5Accounts?.find(acc => acc.market_type === marketType)?.leverage || 500,
                 mainPassword: password,
-                ...(marketType === 'financial' && { mt5_account_type: 'financial' }),
+                ...(marketType === 'financial' &&
+                    (selectedJurisdiction !== 'labuan'
+                        ? { mt5_account_type: 'financial' }
+                        : {
+                              account_type: 'financial',
+                              mt5_account_type: 'financial_stp',
+                          })),
                 ...(marketType === 'all' && { sub_account_category: 'swap_free' }),
                 name: settings?.first_name || '',
                 phone: settings?.phone || '',
@@ -86,7 +93,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         if (isSuccess) return <WalletButton isFullWidth onClick={() => hide()} size='lg' text='Continue' />;
         if (hasMT5Account)
             return (
-                <WalletButtonGroup>
+                <WalletButtonGroup isFullWidth>
                     <WalletButton
                         isFullWidth
                         onClick={() => {
@@ -134,6 +141,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                         displayBalance={
                             mt5Accounts?.find(account => account.market_type === marketType)?.display_balance || ''
                         }
+                        landingCompany={selectedJurisdiction}
                         marketType={marketType}
                         platform={platform}
                         renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
@@ -174,6 +182,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     displayBalance={
                         mt5Accounts?.find(account => account.market_type === marketType)?.display_balance || ''
                     }
+                    landingCompany={selectedJurisdiction}
                     marketType={marketType}
                     platform={platform}
                     renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}

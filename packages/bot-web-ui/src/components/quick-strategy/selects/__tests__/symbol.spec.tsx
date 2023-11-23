@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 
@@ -74,6 +74,7 @@ describe('<SymbolSelect />', () => {
                 is_mobile: true,
             },
         });
+
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         const mock_onSubmit = jest.fn();
         const initial_value = {
@@ -99,17 +100,29 @@ describe('<SymbolSelect />', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should select item from list', async () => {
+    it('should select item from the list', async () => {
         render(<SymbolSelect key='RDBULL' />, {
             wrapper,
         });
 
         const autocomplete_element = screen.getByTestId('qs_autocomplete_symbol');
         userEvent.click(autocomplete_element);
-        await waitFor(() => {
-            const option_element = screen.getByText(/Bear Market Index/i);
-            userEvent.click(option_element);
-        });
+
+        const option_element = screen.getByText(/Bear Market Index/i);
+        userEvent.click(option_element);
+
         expect(autocomplete_element).toHaveDisplayValue([/Bear Market Index/i]);
+    });
+
+    it('should input to be empty when the user clicks to type something', () => {
+        mockStore({ ui: { is_mobile: false, is_desktop: true } });
+        render(<SymbolSelect />, {
+            wrapper,
+        });
+
+        const autocomplete_element = screen.getByTestId('qs_autocomplete_symbol');
+        userEvent.hover(autocomplete_element);
+
+        expect((autocomplete_element as HTMLInputElement).value).toBe('AUD Basket');
     });
 });

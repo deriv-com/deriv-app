@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { useAuthentication, useDocumentUpload, usePOA, usePOI, useSettings } from '@deriv/api';
+import { useDocumentUpload, usePOA, usePOI, useSettings } from '@deriv/api';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { Loader } from '../../../../components/Loader';
@@ -42,7 +42,6 @@ type TVerificationProps = {
 const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
-    const { data: authenticationData } = useAuthentication();
     const { isLoading: isUploadLoading, upload } = useDocumentUpload();
     const { isLoading: isManualUploadLoading, uploadDocument } = useHandleManualDocumentUpload();
     const { data: settings, update: updateSettings } = useSettings();
@@ -50,12 +49,14 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
 
     const selectedMarketType = getModalState('marketType') || 'all';
     const platform = getModalState('platform') || 'mt5';
+    const shouldSubmitPOA = useMemo(
+        () => !poaStatus?.has_attempted_poa || (!poaStatus?.is_pending && !poaStatus.is_verified),
+        [poaStatus]
+    );
 
     const isLoading = useMemo(() => {
         return !isSuccessPOIStatus || !isSuccessPOAStatus;
     }, [isSuccessPOIStatus, isSuccessPOAStatus]);
-
-    const hasAttemptedPOA = poaStatus?.has_attempted_poa || true;
 
     const initialScreenId: keyof typeof screens = useMemo(() => {
         const service = (poiStatus?.current?.service || 'manual') as keyof THooks.POI['services'];
@@ -64,9 +65,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             const serviceStatus = poiStatus.status;
 
             if (!isSuccessPOIStatus) return 'loadingScreen';
-
             if (serviceStatus === 'pending' || serviceStatus === 'verified') {
-                if (authenticationData?.is_poa_needed && !hasAttemptedPOA) return 'poaScreen';
+                if (shouldSubmitPOA) return 'poaScreen';
                 if (!settings?.has_submitted_personal_details) return 'personalDetailsScreen';
                 show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             }
@@ -78,8 +78,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     }, [
         poiStatus,
         isSuccessPOIStatus,
-        authenticationData?.is_poa_needed,
-        hasAttemptedPOA,
+        shouldSubmitPOA,
         settings?.has_submitted_personal_details,
         show,
         selectedMarketType,
@@ -160,7 +159,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const nextFlowHandler = useCallback(
         async ({ currentScreenId, formValues, setFormValues, switchScreen }: TFlowProviderContext<typeof screens>) => {
             if (['idvScreen', 'onfidoScreen', 'selfieScreen'].includes(currentScreenId)) {
-                // API call for selfie screen
+                // API calls
                 if (currentScreenId === 'idvScreen') {
                     updateSettings({
                         date_of_birth: formValues.dateOfBirth,
@@ -175,8 +174,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     });
                 }
 
-                // Switching screen
-                if (hasAttemptedPOA) {
+                // handle screen switching
+                if (shouldSubmitPOA) {
                     switchScreen('poaScreen');
                 } else if (!settings?.has_submitted_personal_details) {
                     switchScreen('personalDetailsScreen');
@@ -210,12 +209,12 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             }
         },
         [
-            hasAttemptedPOA,
             hide,
             platform,
             selectedMarketType,
             settings?.country_code,
             settings?.has_submitted_personal_details,
+            shouldSubmitPOA,
             show,
             updateSettings,
             upload,

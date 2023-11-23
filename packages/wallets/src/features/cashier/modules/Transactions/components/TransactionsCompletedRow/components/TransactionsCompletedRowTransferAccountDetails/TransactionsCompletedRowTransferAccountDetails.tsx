@@ -26,7 +26,7 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ acco
             //@ts-expect-error this needs backend typing
             accountType,
             displayCurrencyCode: transferAccount.currency_config?.display_code ?? 'USD',
-            landingCompanyName: (transferAccount.landing_company_name ?? '') as TWalletLandingCompanyName,
+            landingCompanyName: transferAccount.landing_company_name as TWalletLandingCompanyName,
             mt5MarketType: transferAccount === mt5Account ? mt5Account.market_type : undefined,
         });
 

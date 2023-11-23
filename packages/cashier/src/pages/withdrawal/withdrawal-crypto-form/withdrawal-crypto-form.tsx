@@ -57,7 +57,7 @@ const WithdrawalCryptoForm = observer(() => {
     const {
         balance,
         currency,
-        current_fiat_currency,
+        current_fiat_currency = 'USD',
         verification_code: { payment_withdraw: verification_code },
     } = client;
     const { crypto_fiat_converter, general_store, withdraw } = useCashierStore();

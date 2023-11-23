@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useP2PExchangeRate } from '@deriv/hooks';
+import { useExchangeRate } from '@deriv/hooks';
 import { useStores } from 'Stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
@@ -13,6 +13,7 @@ import './advertiser-page-row.scss';
 
 const AdvertiserPageRow = ({ row: advert }) => {
     const { advertiser_page_store, buy_sell_store, general_store } = useStores();
+    const { getRate } = useExchangeRate();
     const {
         client: { currency },
     } = useStore();
@@ -30,14 +31,13 @@ const AdvertiserPageRow = ({ row: advert }) => {
 
     const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
-    const exchange_rate = useP2PExchangeRate(local_currency);
 
     const { display_effective_rate } = generateEffectiveRate({
         price: price_display,
         rate_type,
         rate,
         local_currency,
-        exchange_rate,
+        exchange_rate: getRate(local_currency),
         market_rate: effective_rate,
     });
 

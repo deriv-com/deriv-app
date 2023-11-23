@@ -1,33 +1,29 @@
 import React, { useCallback, useRef } from 'react';
 import { Formik } from 'formik';
-import { Loader } from '../../../../../../components';
+import { Loader, WalletButton } from '../../../../../../components';
+import useDevice from '../../../../../../hooks/useDevice';
 import { useTransfer } from '../../provider';
 import type { TInitialTransferFormValues } from '../../types';
+import { TransferFormAmountInput } from '../TransferFormAmountInput';
 import { TransferFormDropdown } from '../TransferFormDropdown';
-import { TransferFormInputField } from '../TransferFormInputField';
 import './TransferForm.scss';
 
 const TransferForm = () => {
-    const { activeWallet, isLoading, mutate } = useTransfer();
+    const { isMobile } = useDevice();
+    const { activeWallet, isLoading, requestTransferBetweenAccounts } = useTransfer();
     const mobileAccountsListRef = useRef<HTMLDivElement | null>(null);
 
     const initialValues: TInitialTransferFormValues = {
-        amountReceive: 0,
-        amountSend: 0,
+        activeAmountFieldName: undefined,
         fromAccount: activeWallet,
+        fromAmount: 0,
         toAccount: undefined,
+        toAmount: 0,
     };
 
     const onSubmit = useCallback(
-        (values: TInitialTransferFormValues) => {
-            mutate({
-                account_from: values.fromAccount?.loginid,
-                account_to: values.toAccount?.loginid,
-                amount: Number(values.amountSend),
-                currency: values.fromAccount?.currency,
-            });
-        },
-        [mutate]
+        (values: TInitialTransferFormValues) => requestTransferBetweenAccounts(values),
+        [requestTransferBetweenAccounts]
     );
 
     if (isLoading) return <Loader />;
@@ -35,40 +31,33 @@ const TransferForm = () => {
     return (
         <div className='wallets-transfer'>
             <Formik initialValues={initialValues} onSubmit={onSubmit}>
-                {props => (
-                    <form className='wallets-transfer__form' onSubmit={props.handleSubmit}>
-                        <div className='wallets-transfer__form__fields'>
-                            <div className='wallets-transfer__form__fields-section'>
-                                <TransferFormInputField
-                                    defaultValue={props.values.amountSend}
-                                    fieldName='amountSend'
-                                    fractionDigits={props.values.fromAccount?.currencyConfig?.fractional_digits}
-                                    label='Amount you send'
-                                />
+                {({ handleSubmit, values }) => (
+                    <form className='wallets-transfer__form' onSubmit={handleSubmit}>
+                        <div className='wallets-transfer__fields'>
+                            <div className='wallets-transfer__fields-section'>
+                                <TransferFormAmountInput fieldName='fromAmount' />
                                 <TransferFormDropdown
                                     fieldName='fromAccount'
-                                    label='Transfer from'
                                     mobileAccountsListRef={mobileAccountsListRef}
                                 />
                             </div>
                             <div style={{ height: '20px' }} />
-                            <div className='wallets-transfer__form__fields-section'>
-                                <TransferFormInputField
-                                    defaultValue={props.values.amountReceive}
-                                    fieldName='amountReceive'
-                                    fractionDigits={props.values.toAccount?.currencyConfig?.fractional_digits}
-                                    label='Estimated amount'
-                                />
+                            <div className='wallets-transfer__fields-section'>
+                                <TransferFormAmountInput fieldName='toAmount' />
                                 <TransferFormDropdown
                                     fieldName='toAccount'
-                                    label='Transfer to'
                                     mobileAccountsListRef={mobileAccountsListRef}
                                 />
                             </div>
                         </div>
-                        <button className='wallets-transfer__form__submit-button' type='submit'>
-                            Transfer
-                        </button>
+                        <div className='wallets-transfer__submit-button'>
+                            <WalletButton
+                                disabled={!values.toAmount}
+                                size={isMobile ? 'md' : 'lg'}
+                                text='Transfer'
+                                variant='contained'
+                            />
+                        </div>
                     </form>
                 )}
             </Formik>

@@ -12,7 +12,7 @@ const useStatesList = (country: TStatesList) => {
         payload: { states_list: country },
     });
 
-    const modified_states_list = useMemo(() => ({ ...data?.states_list }), [data?.states_list]);
+    const modified_states_list = useMemo(() => [...(data?.states_list || [])], [data?.states_list]);
 
     return {
         /** The states list for the given country. */

@@ -115,7 +115,7 @@ export const calcDecimalPlaces = (currency: string) => {
     return isCryptocurrency(currency) ? getPropertyValue(CryptoConfig.get(), [currency, 'fractional_digits']) : 2;
 };
 
-export const getDecimalPlaces = (currency: string) =>
+export const getDecimalPlaces = (currency = '') =>
     // need to check currencies_config[currency] exists instead of || in case of 0 value
     currencies_config[currency]
         ? getPropertyValue(currencies_config, [currency, 'fractional_digits'])

@@ -21,7 +21,7 @@ jest.mock('@deriv/components', () => ({
     Dropdown: jest.fn(props => (
         <div>
             {dropdown}
-            <button onClick={props.onChange}>OnChange</button>
+            <button onClick={props.onChange}>DropdownList</button>
         </div>
     )),
 }));
@@ -85,7 +85,7 @@ describe('<CancelDeal />', () => {
     it('should call onChangeCancellationDuration if user clicked on dropdown', () => {
         render(mockTakeProfit());
 
-        userEvent.click(screen.getByText('OnChange'));
+        userEvent.click(screen.getByText('DropdownList'));
 
         expect(onChangeCancellationDuration).toBeCalled();
     });

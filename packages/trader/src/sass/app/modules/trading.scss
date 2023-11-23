@@ -92,6 +92,12 @@
                 transform: translateX(5px);
             }
         }
+        &-expiration {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.6rem;
+        }
         &-wrapper {
             &--disabled {
                 .btn-purchase__box-shadow {

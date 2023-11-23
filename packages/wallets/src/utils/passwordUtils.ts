@@ -1,9 +1,25 @@
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
-import * as zxcvbnCommonPackage from '@zxcvbn-ts/language-common';
-import * as zxcvbnEnPackage from '@zxcvbn-ts/language-en';
-import { passwordErrorMessage, passwordRegex, passwordValues } from '../constants/passwordConstants';
+import { dictionary } from '@zxcvbn-ts/language-common';
+import { passwordErrorMessage, passwordRegex, passwordValues, warningMessages } from '../constants/passwordConstants';
 
 export type Score = 0 | 1 | 2 | 3 | 4;
+export type passwordKeys =
+    | 'common'
+    | 'commonNames'
+    | 'dates'
+    | 'extendedRepeat'
+    | 'keyPattern'
+    | 'namesByThemselves'
+    | 'pwned'
+    | 'recentYears'
+    | 'sequences'
+    | 'similarToCommon'
+    | 'simpleRepeat'
+    | 'straightRow'
+    | 'topHundred'
+    | 'topTen'
+    | 'userInputs'
+    | 'wordByItself';
 
 export const validPassword = (value: string) => passwordRegex.isPasswordValid.test(value);
 
@@ -43,22 +59,17 @@ export const calculateScore = (password: string) => {
 export const validatePassword = (password: string) => {
     const score = calculateScore(password);
     let errorMessage = '';
-    const options = {
-        dictionary: {
-            ...zxcvbnCommonPackage.dictionary,
-            ...zxcvbnEnPackage.dictionary,
-        },
-        graphs: zxcvbnCommonPackage.adjacencyGraphs,
-        translations: zxcvbnEnPackage.translations,
-    };
+
+    const options = { dictionary: { ...dictionary } };
     zxcvbnOptions.setOptions(options);
+
     const { feedback } = zxcvbn(password);
     if (!passwordRegex.isLengthValid.test(password)) {
         errorMessage = passwordErrorMessage.invalidLength;
     } else if (!isPasswordValid(password)) {
         errorMessage = passwordErrorMessage.missingCharacter;
     } else {
-        errorMessage = feedback.warning || '';
+        errorMessage = warningMessages[feedback.warning as passwordKeys] || '';
     }
     return { errorMessage, score };
 };

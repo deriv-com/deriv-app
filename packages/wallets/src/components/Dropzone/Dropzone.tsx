@@ -32,6 +32,12 @@ type TProps = {
     titleType?: ComponentProps<typeof WalletText>['weight'];
 };
 
+type TFile = {
+    file: File;
+    name: string;
+    preview: string;
+};
+
 const Dropzone: React.FC<TProps> = ({
     buttonText,
     defaultFile,
@@ -48,11 +54,7 @@ const Dropzone: React.FC<TProps> = ({
     title = false,
     titleType = 'normal',
 }) => {
-    const [file, setFile] = useState<{
-        file: File;
-        name: string;
-        preview: string;
-    } | null>(
+    const [file, setFile] = useState<TFile | null>(
         defaultFile ? { file: defaultFile, name: defaultFile.name, preview: URL.createObjectURL(defaultFile) } : null
     );
     const [showHoverMessage, setShowHoverMessage] = useState(false);

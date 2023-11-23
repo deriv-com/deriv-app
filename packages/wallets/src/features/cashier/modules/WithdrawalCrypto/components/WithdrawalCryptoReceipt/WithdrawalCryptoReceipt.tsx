@@ -43,10 +43,11 @@ const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt 
                 <WalletButton
                     color='white'
                     onClick={() => history.push('/wallets/cashier/transactions')}
+                    size='lg'
                     text='View transactions'
                     variant='outlined'
                 />
-                <WalletButton onClick={onClose} text='Close' />
+                <WalletButton onClick={onClose} size='lg' text='Close' />
             </div>
         </div>
     );

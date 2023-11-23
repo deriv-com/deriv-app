@@ -54,13 +54,15 @@ const ApiToken = observer(() => {
         }
     );
 
-    const timeout_ref = React.useRef<NodeJS.Timeout | undefined>();
+    const handle_submit_timeout_ref = React.useRef<NodeJS.Timeout | undefined>();
+    const delete_token_timeout_ref = React.useRef<NodeJS.Timeout | undefined>();
 
     React.useEffect(() => {
         getApiTokens();
 
         return () => {
-            clearTimeout(timeout_ref.current);
+            clearTimeout(handle_submit_timeout_ref.current);
+            clearTimeout(delete_token_timeout_ref.current);
         };
     }, []);
 
@@ -124,7 +126,7 @@ const ApiToken = observer(() => {
                 is_success: true,
                 api_tokens: getPropertyValue(token_response, ['api_token', 'tokens']),
             });
-            setTimeout(() => {
+            handle_submit_timeout_ref.current = setTimeout(() => {
                 setState({ is_success: false });
             }, 500);
         }
@@ -161,7 +163,7 @@ const ApiToken = observer(() => {
 
         setState({ is_delete_loading: false, is_delete_success: true });
 
-        timeout_ref.current = setTimeout(() => {
+        delete_token_timeout_ref.current = setTimeout(() => {
             setState({ is_delete_success: false });
         }, 500);
     };

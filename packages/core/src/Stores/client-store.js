@@ -1675,6 +1675,7 @@ export default class ClientStore extends BaseStore {
                 // Client comes back from oauth and logs in
                 Analytics.setAttributes({
                     app_id: getAppId(),
+                    account_type: this.loginid.substring(0, 2),
                 });
                 tracking?.identifyEvent(user_id, {
                     language: getLanguage().toLowerCase(),

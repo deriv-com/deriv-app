@@ -2,11 +2,14 @@ import React from 'react';
 import { useSettings } from '@deriv/api';
 import { FlowTextField, InlineMessage, WalletText } from '../../../../../../components';
 import SideNote from '../../../../../../public/images/accounts/side-note-example-image.svg';
+import unixToDateString from '../../../../utils';
 import { dateOfBirthValidator, firstNameValidator, lastNameValidator } from '../../../../validations';
 import './IDVDocumentUploadDetails.scss';
 
 const IDVDocumentUploadDetails = () => {
     const { data: getSettings } = useSettings();
+
+    const dateOfBirth = getSettings?.date_of_birth || 0;
 
     return (
         <div className='wallets-idv-document-details'>
@@ -37,6 +40,7 @@ const IDVDocumentUploadDetails = () => {
                     />
                     {/* TODO: Replace with DatePicker component*/}
                     <FlowTextField
+                        defaultValue={unixToDateString(dateOfBirth)}
                         label='Date of birth*'
                         message='Your date of birth as in your identity document'
                         name='dateOfBirth'

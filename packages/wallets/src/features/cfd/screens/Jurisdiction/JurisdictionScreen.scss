@@ -54,25 +54,4 @@
             padding: 2rem 0;
         }
     }
-
-    &__tnc {
-        display: flex;
-        flex-direction: column;
-        gap: 1.2rem;
-        height: 8%;
-        justify-content: center;
-        margin-top: 2rem;
-
-        &-checkbox {
-            align-items: center;
-            display: flex;
-            gap: 0.4rem;
-            justify-content: center;
-
-            &-input,
-            &-label {
-                cursor: pointer;
-            }
-        }
-    }
 }

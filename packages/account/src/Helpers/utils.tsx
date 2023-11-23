@@ -1,17 +1,17 @@
 import React from 'react';
-import { FormikValues } from 'formik';
 import countries from 'i18n-iso-countries';
-import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
+import { Localize, localize } from '@deriv/translations';
 import {
     filterObjProperties,
     toMoment,
     validLength,
     validName,
     getIDVNotApplicableOption,
-    IDV_ERROR_STATUS,
+    idv_error_statuses,
     AUTH_STATUS_CODES,
 } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
+import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
+import { FormikValues } from 'formik';
 import { getIDVDocuments } from '../Constants/idv-document-config';
 import { TServerError } from '../Types';
 import { LANGUAGE_CODES } from '../Constants/onfido';
@@ -265,12 +265,12 @@ export const validate = <T,>(errors: Record<string, string>, values: T) => {
     };
 };
 
-type TIDVErrorStatus = keyof typeof IDV_ERROR_STATUS;
+type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];
 export const verifyFields = (status: TIDVErrorStatus) => {
     switch (status) {
-        case IDV_ERROR_STATUS.DobMismatch.code:
+        case idv_error_statuses.poi_dob_mismatch:
             return ['date_of_birth'];
-        case IDV_ERROR_STATUS.NameMismatch.code:
+        case idv_error_statuses.poi_name_mismatch:
             return ['first_name', 'last_name'];
         default:
             return ['first_name', 'last_name', 'date_of_birth'];

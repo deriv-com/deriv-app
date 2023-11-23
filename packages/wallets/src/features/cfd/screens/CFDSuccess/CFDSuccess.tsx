@@ -5,7 +5,7 @@ import { WalletSuccess, WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
 import useDevice from '../../../../hooks/useDevice';
-import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
+import { TDisplayBalance, THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import './CFDSuccess.scss';
 
@@ -15,6 +15,7 @@ type TSuccessProps = {
         | TDisplayBalance.CtraderAccountsList
         | TDisplayBalance.DxtradeAccountsList
         | TDisplayBalance.MT5AccountsList;
+    landingCompany?: THooks.AvailableMT5Accounts['shortcode'];
     marketType?: TMarketTypes.SortedMT5Accounts;
     platform?: TPlatforms.All;
     renderButton?: ComponentProps<typeof WalletSuccess>['renderButtons'];
@@ -24,6 +25,7 @@ type TSuccessProps = {
 const CFDSuccess: React.FC<TSuccessProps> = ({
     description,
     displayBalance,
+    landingCompany = 'svg',
     marketType,
     platform,
     renderButton,
@@ -32,7 +34,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
     const { data } = useActiveWalletAccount();
     const { isDesktop } = useDevice();
     const isDemo = data?.is_virtual;
-    const landingCompanyName = data?.landing_company_name?.toUpperCase();
+    const landingCompanyName = landingCompany.toUpperCase();
 
     const isMarketTypeAll = marketType === 'all';
 

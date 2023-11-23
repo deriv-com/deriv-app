@@ -452,7 +452,7 @@ export default class GeneralStore extends BaseStore {
         );
 
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
-            const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
+            const hasStatuses = statuses => statuses?.every(status => get_account_status.status.includes(status));
 
             const is_authenticated = hasStatuses(['authenticated']);
             const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);

@@ -2,14 +2,12 @@ import { useMemo } from 'react';
 import useAuthentication from './useAuthentication';
 import useResidenceList from './useResidenceList';
 import useSettings from './useSettings';
-import useAccountStatus from './useAccountStatus';
 
 /** A custom hook to get the proof of identity verification info of the current user. */
 const usePOI = () => {
     const { data: authentication_data, ...rest } = useAuthentication();
     const { data: residence_list_data } = useResidenceList();
     const { data: get_settings_data } = useSettings();
-    const { data: account_status_data } = useAccountStatus();
 
     const previous_service = useMemo(() => {
         const latest_poi_attempt = authentication_data?.attempts?.latest;
@@ -55,19 +53,25 @@ const usePOI = () => {
         const onfido_submission_left = services?.onfido?.submissions_left ?? 0;
         if (is_idv_supported && idv_submission_left && !authentication_data?.is_idv_disallowed) {
             return {
+                country_code: user_country_code,
                 service: 'idv',
+                status: services?.idv?.status,
                 submission_left: idv_submission_left,
                 document_supported: matching_residence_data?.identity?.services?.idv?.documents_supported,
             };
         } else if (is_onfido_supported && onfido_submission_left) {
             return {
+                country_code: user_country_code,
                 service: 'onfido',
+                status: services?.onfido?.status,
                 submission_left: onfido_submission_left,
                 document_supported: matching_residence_data?.identity?.services?.onfido?.documents_supported,
             };
         }
         return {
+            country_code: user_country_code,
             service: 'manual',
+            status: services?.manual?.status,
         };
     }, [
         get_settings_data?.citizen,
@@ -75,7 +79,6 @@ const usePOI = () => {
         residence_list_data,
         authentication_data?.identity?.services,
         authentication_data?.is_idv_disallowed,
-        account_status_data?.is_idv_revoked,
     ]);
 
     const modified_verification_data = useMemo(() => {
@@ -85,6 +88,11 @@ const usePOI = () => {
             ...authentication_data?.identity,
             previous: previous_poi,
             current: current_poi,
+            is_pending: authentication_data?.identity?.status === 'pending',
+            is_rejected: authentication_data?.identity?.status === 'rejected',
+            is_expired: authentication_data?.identity?.status === 'expired',
+            is_suspected: authentication_data?.identity?.status === 'suspected',
+            is_verified: authentication_data?.identity?.status === 'verified',
         };
     }, [authentication_data, current_poi, previous_poi]);
 

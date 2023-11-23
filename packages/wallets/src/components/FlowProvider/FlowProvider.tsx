@@ -10,10 +10,12 @@ import React, {
     useState,
 } from 'react';
 import { Formik, FormikErrors, FormikValues } from 'formik';
+import * as Yup from 'yup';
 
 export type TFlowProviderContext<T> = {
     WalletScreen?: ReactNode;
     currentScreenId: keyof T;
+    errors: FormikErrors<FormikValues>;
     formValues: FormikValues;
     setFormValues: (
         field: string,
@@ -34,6 +36,7 @@ export type TFlowProviderProps<T> = {
     initialScreenId?: keyof T;
     initialValues: FormikValues;
     screens: T;
+    validationSchema?: Yup.AnyObjectSchema;
 };
 
 const FlowProviderContext = createContext<TFlowProviderContext<TWalletScreens> | null>(null);
@@ -69,6 +72,7 @@ function FlowProvider<T extends TWalletScreens>({
     initialScreenId,
     initialValues,
     screens,
+    validationSchema,
 }: TFlowProviderProps<T>) {
     const [currentScreenId, setCurrentScreenId] = useState<keyof T>(initialScreenId || Object.keys(screens)[0]);
     const switchScreen = (screenId: keyof T) => {
@@ -94,18 +98,26 @@ function FlowProvider<T extends TWalletScreens>({
     if (!currentScreenId) return null;
     return (
         // We let the logic of the onSubmit be handled by the flow component
-        <Formik initialValues={initialValues} onSubmit={() => undefined}>
-            {({ setFieldValue, values }) => {
+        <Formik
+            enableReinitialize
+            initialValues={initialValues}
+            onSubmit={() => undefined}
+            validateOnChange
+            validationSchema={validationSchema}
+        >
+            {({ errors, setFieldValue, values }) => {
                 return (
                     <FlowProvider
                         value={{
                             ...context,
+                            errors,
                             formValues: values,
                             setFormValues: setFieldValue,
                         }}
                     >
                         {children({
                             ...context,
+                            errors,
                             formValues: values,
                             setFormValues: setFieldValue,
                         })}

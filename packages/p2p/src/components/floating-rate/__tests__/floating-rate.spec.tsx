@@ -1,21 +1,14 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { mockStore, StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import FloatingRate from '../floating-rate';
 import { APIProvider } from '@deriv/api';
-import { useP2PConfig } from '@deriv/hooks';
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
+const wrapper = ({ children }) => (
     <APIProvider>
-        <StoreProvider store={mockStore({})}>
-            <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
-        </StoreProvider>
+        <StoreProvider store={mockStore({})}>{children}</StoreProvider>
     </APIProvider>
 );
-
-jest.mock('@deriv/hooks');
-
-const mockUseP2PConfigs = useP2PConfig as jest.MockedFunction<typeof useP2PConfig>;
 
 describe('<FloatingRate/>', () => {
     const floating_rate_props = {
@@ -28,15 +21,6 @@ describe('<FloatingRate/>', () => {
         onChange: jest.fn(),
         offset: {},
     };
-
-    beforeEach(() => {
-        mockUseP2PConfigs.mockReturnValue({
-            // @ts-expect-error need to come up with a way to mock the return type of usePaginatedFetch
-            data: {
-                override_exchange_rate: '1.00',
-            },
-        });
-    });
 
     it('should render default state of the component with hint message and increment, decrement buttons', () => {
         render(<FloatingRate {...floating_rate_props} />, { wrapper });
@@ -69,7 +53,7 @@ describe('<FloatingRate/>', () => {
 
         // Case 1: Value meets conditions with '+' symbol
         const inputElement = screen.getByLabelText('Floating rate');
-        (inputElement as HTMLInputElement).value = '10';
+        inputElement.value = '10';
         fireEvent.blur(inputElement);
 
         expect(onChangeMock).toHaveBeenCalledTimes(1);
@@ -78,7 +62,7 @@ describe('<FloatingRate/>', () => {
         );
 
         // Case 2: Value does not meet conditions without '+' symbol
-        (inputElement as HTMLInputElement).value = '-5';
+        inputElement.value = '-5';
         fireEvent.blur(inputElement);
         expect(onChangeMock).toHaveBeenCalledTimes(2);
         expect(onChangeMock).toHaveBeenCalledWith(

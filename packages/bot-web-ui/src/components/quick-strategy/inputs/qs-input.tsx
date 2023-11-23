@@ -1,6 +1,6 @@
 import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
-import { Field, FieldProps } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 import { Input, Popover } from '@deriv/components';
 import { observer } from '@deriv/stores';
 
@@ -17,12 +17,16 @@ type TQSInput = {
 const QSInput: React.FC<TQSInput> = observer(
     ({ name, onChange, type = 'text', fullwidth = false, attached = false, disabled = false }) => {
         const [has_focus, setFocus] = React.useState(false);
+        const { setFieldValue, setFieldTouched } = useFormikContext();
         const is_number = type === 'number';
 
         const handleChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
             e?.preventDefault();
             onChange(name, value);
+            setFieldTouched(name, true, true);
+            setFieldValue(name, value);
         };
+
         return (
             <Field name={name} key={name} id={name}>
                 {({ field, meta }: FieldProps) => {
@@ -36,7 +40,11 @@ const QSInput: React.FC<TQSInput> = observer(
                                 'no-border-top': attached,
                             })}
                         >
-                            <div onMouseEnter={() => setFocus(true)} onMouseLeave={() => setFocus(false)}>
+                            <div
+                                data-testid='qs-input-container'
+                                onMouseEnter={() => setFocus(true)}
+                                onMouseLeave={() => setFocus(false)}
+                            >
                                 <Popover
                                     alignment='bottom'
                                     message={error}
@@ -58,11 +66,10 @@ const QSInput: React.FC<TQSInput> = observer(
                                                         const value = Number(field.value) - 1;
                                                         handleChange(e, String(value % 1 ? value.toFixed(2) : value));
                                                     }}
-                                                    disabled={disabled}
                                                 >
                                                     -
                                                 </button>
-                                            ) : null
+                                            ) : undefined
                                         }
                                         trailing_icon={
                                             is_number ? (
@@ -72,14 +79,13 @@ const QSInput: React.FC<TQSInput> = observer(
                                                         const value = Number(field.value) + 1;
                                                         handleChange(e, String(value % 1 ? value.toFixed(2) : value));
                                                     }}
-                                                    disabled={disabled}
                                                 >
                                                     +
                                                 </button>
                                             ) : null
                                         }
-                                        disabled={disabled}
                                         {...field}
+                                        disabled={disabled}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                             const value = is_number ? Number(e.target.value) : e.target.value;
                                             onChange(name, value);

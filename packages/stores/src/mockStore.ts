@@ -443,7 +443,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             },
             is_eu_user: false,
             is_demo: false,
+            is_onboarding_visited: false,
+            is_first_time_visit: true,
             setIsOnboardingVisited: jest.fn(),
+            setIsFirstTimeVisit: jest.fn(),
             is_real: false,
             selectRegion: jest.fn(),
             setSelectedAccount: jest.fn(),
@@ -585,6 +588,11 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setAccountType: jest.fn(),
                 setMigratedMT5Accounts: jest.fn(),
             },
+        },
+        exchange_rates: {
+            data: undefined,
+            update: jest.fn(),
+            unmount: jest.fn(),
         },
         feature_flags: {
             data: undefined,

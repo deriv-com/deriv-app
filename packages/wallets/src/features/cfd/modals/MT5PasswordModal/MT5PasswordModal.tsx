@@ -86,7 +86,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         if (isSuccess) return <WalletButton isFullWidth onClick={() => hide()} size='lg' text='Continue' />;
         if (hasMT5Account)
             return (
-                <WalletButtonGroup>
+                <WalletButtonGroup isFullWidth>
                     <WalletButton
                         isFullWidth
                         onClick={() => {

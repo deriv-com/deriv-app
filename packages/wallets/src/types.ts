@@ -13,6 +13,7 @@ import type {
     useCurrencyConfig,
     useDxtradeAccountsList,
     useDynamicLeverage,
+    useExchangeRate,
     useMT5AccountsList,
     usePOA,
     usePOI,
@@ -29,6 +30,7 @@ export namespace THooks {
     export type CreateWallet = NonNullable<ReturnType<typeof useCreateWallet>['data']>;
     export type CtraderAccountsList = NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number];
     export type DxtradeAccountsList = NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[number];
+    export type ExchangeRate = NonNullable<ReturnType<typeof useExchangeRate>['data']>;
     export type MT5AccountsList = NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
     export type SortedMT5Accounts = NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number];
     export type WalletAccountsList = NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
@@ -42,6 +44,7 @@ export namespace THooks {
     export type POA = NonNullable<ReturnType<typeof usePOA>['data']>;
     export type POI = NonNullable<ReturnType<typeof usePOI>['data']>;
     export type CurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['data']>[string];
+    export type GetCurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['getConfig']>;
     export type Transactions = NonNullable<ReturnType<typeof useTransactions>['data']>[number];
     export type TransferAccount = NonNullable<
         NonNullable<ReturnType<typeof useTransferBetweenAccounts>['data']>['accounts']

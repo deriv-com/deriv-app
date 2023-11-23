@@ -74,6 +74,7 @@ export const priority_toast_messages = [
     'poinc_upload_limited',
     'wallets_migrated',
     'wallets_failed',
+    'needs_poinc',
     'notify_financial_assessment',
     'additional_kyc_info',
     'poa_expired',

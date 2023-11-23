@@ -1,30 +1,20 @@
-import React, { FC, useMemo } from 'react';
-import * as Yup from 'yup';
-import { useAuthentication, usePOA, usePOI } from '@deriv/api';
-import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
+import React, { FC, useCallback, useMemo } from 'react';
+import { useDocumentUpload, usePOA, usePOI, useSettings } from '@deriv/api';
+import { ModalStepWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { Loader } from '../../../../components/Loader';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
-import { ResubmitPOA } from '../../../accounts/screens';
+import {
+    ManualDocumentUpload,
+    ResubmitPOA,
+    SelfieDocumentUpload,
+    useHandleManualDocumentUpload,
+} from '../../../accounts/screens';
 import { IDVDocumentUpload } from '../../../accounts/screens/IDVDocumentUpload';
+import { PersonalDetails } from '../../../accounts/screens/PersonalDetails';
+import { MT5PasswordModal } from '../../modals';
 import { Onfido } from '../../screens';
-
-const Manual = () => {
-    return (
-        <div style={{ fontSize: 60, height: 400, width: 600 }}>
-            <h1>Manual screen</h1>
-        </div>
-    );
-};
-
-const PersonalDetails = () => {
-    return (
-        <div style={{ fontSize: 60, height: 400, width: 600 }}>
-            <h1>Personal details screen</h1>
-        </div>
-    );
-};
 
 const Loading = () => {
     return (
@@ -34,19 +24,15 @@ const Loading = () => {
     );
 };
 
-const Password = () => {
-    return <div style={{ fontSize: 60, height: 400, width: 600 }}>Password screen</div>;
-};
-
 // TODO: Replace these mock components with the screens
 const screens = {
     idvScreen: <IDVDocumentUpload />,
     loadingScreen: <Loading />,
-    manualScreen: <Manual />,
+    manualScreen: <ManualDocumentUpload />,
     onfidoScreen: <Onfido />,
-    passwordScreen: <Password />,
     personalDetailsScreen: <PersonalDetails />,
     poaScreen: <ResubmitPOA />,
+    selfieScreen: <SelfieDocumentUpload />,
 };
 
 type TVerificationProps = {
@@ -56,109 +42,233 @@ type TVerificationProps = {
 const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
-    const { data: authenticationData } = useAuthentication();
-    const { hide } = useModal();
+    const { isLoading: isUploadLoading, upload } = useDocumentUpload();
+    const { isLoading: isManualUploadLoading, uploadDocument } = useHandleManualDocumentUpload();
+    const { data: settings, update: updateSettings } = useSettings();
+    const { getModalState, hide, show } = useModal();
+
+    const selectedMarketType = getModalState('marketType') || 'all';
+    const platform = getModalState('platform') || 'mt5';
+    const shouldSubmitPOA = useMemo(
+        () => !poaStatus?.has_attempted_poa || (!poaStatus?.is_pending && !poaStatus.is_verified),
+        [poaStatus]
+    );
 
     const isLoading = useMemo(() => {
         return !isSuccessPOIStatus || !isSuccessPOAStatus;
     }, [isSuccessPOIStatus, isSuccessPOAStatus]);
 
-    const hasAttemptedPOA = poaStatus?.has_attempted_poa || true;
-    const needPersonalDetails = true;
-
     const initialScreenId: keyof typeof screens = useMemo(() => {
         const service = (poiStatus?.current?.service || 'manual') as keyof THooks.POI['services'];
 
-        if (poiStatus?.services) {
-            const serviceStatus = poiStatus.services?.[service];
+        if (poiStatus?.services && isSuccessPOIStatus) {
+            const serviceStatus = poiStatus.status;
 
             if (!isSuccessPOIStatus) return 'loadingScreen';
             if (serviceStatus === 'pending' || serviceStatus === 'verified') {
-                if (authenticationData?.is_poa_needed && !hasAttemptedPOA) return 'poaScreen';
-                if (needPersonalDetails) return 'personalDetailsScreen';
-                return 'passwordScreen';
+                if (shouldSubmitPOA) return 'poaScreen';
+                if (!settings?.has_submitted_personal_details) return 'personalDetailsScreen';
+                show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             }
             if (service === 'idv') return 'idvScreen';
             if (service === 'onfido') return 'onfidoScreen';
-            return 'manualScreen';
+            if (service === 'manual') return 'manualScreen';
         }
         return 'loadingScreen';
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
-        hasAttemptedPOA,
-        needPersonalDetails,
-        authenticationData?.is_poa_needed,
         poiStatus,
-        poiStatus?.services,
-        poiStatus?.current?.service,
         isSuccessPOIStatus,
+        shouldSubmitPOA,
+        settings?.has_submitted_personal_details,
+        show,
+        selectedMarketType,
+        platform,
     ]);
 
-    const isNextDisabled = ({ currentScreenId, formValues }: TFlowProviderContext<typeof screens>) => {
+    const isNextDisabled = ({ currentScreenId, errors, formValues }: TFlowProviderContext<typeof screens>) => {
         switch (currentScreenId) {
             case 'idvScreen':
                 return (
                     !formValues.documentNumber ||
                     !formValues.firstName ||
                     !formValues.lastName ||
-                    !formValues.dateOfBirth
+                    !formValues.dateOfBirth ||
+                    !!errors.documentNumber
                 );
+            case 'manualScreen':
+                if (formValues.selectedManualDocument === 'driving-license') {
+                    return (
+                        !formValues.drivingLicenceNumber ||
+                        !formValues.drivingLicenseExpiryDate ||
+                        !formValues.drivingLicenseCardFront ||
+                        !formValues.drivingLicenseCardBack ||
+                        isManualUploadLoading
+                    );
+                } else if (formValues.selectedManualDocument === 'passport') {
+                    return (
+                        !formValues.passportNumber ||
+                        !formValues.passportExpiryDate ||
+                        !formValues.passportCard ||
+                        isManualUploadLoading
+                    );
+                } else if (formValues.selectedManualDocument === 'identity-card') {
+                    return (
+                        !formValues.identityCardNumber ||
+                        !formValues.identityCardExpiryDate ||
+                        !formValues.identityCardFront ||
+                        !formValues.identityCardBack ||
+                        isManualUploadLoading
+                    );
+                } else if (formValues.selectedManualDocument === 'nimc-slip') {
+                    return (
+                        !formValues.nimcNumber ||
+                        !formValues.nimcCardFront ||
+                        !formValues.nimcCardBack ||
+                        isManualUploadLoading
+                    );
+                }
+                return !formValues.selectedManualDocument;
+            case 'selfieScreen':
+                return !formValues.selfie;
+            case 'onfidoScreen':
+                return !formValues.hasSubmittedOnfido;
+            case 'personalDetailsScreen':
+                return (
+                    !formValues.citizenship ||
+                    !formValues.placeOfBirth ||
+                    !formValues.taxResidence ||
+                    !formValues.accountOpeningReason ||
+                    !formValues.taxIdentificationNumber
+                );
+            case 'poaScreen':
+                return !formValues.townCityLine || !formValues.firstLine;
             default:
                 return false;
         }
     };
 
-    const nextFlowHandler = ({ currentScreenId, switchScreen }: TFlowProviderContext<typeof screens>) => {
-        if (['idvScreen', 'onfidoScreen', 'manualScreen'].includes(currentScreenId)) {
-            if (hasAttemptedPOA) {
-                switchScreen('poaScreen');
-            } else if (needPersonalDetails) {
-                switchScreen('personalDetailsScreen');
-            } else {
-                switchScreen('passwordScreen');
-            }
-        } else if (currentScreenId === 'poaScreen') {
-            if (needPersonalDetails) {
-                switchScreen('personalDetailsScreen');
-            }
-        } else if (currentScreenId === 'personalDetailsScreen') {
-            switchScreen('passwordScreen');
-        } else {
-            hide();
-        }
-    };
+    const isNextLoading = useCallback(
+        ({ currentScreenId, formValues }: TFlowProviderContext<typeof screens>) => {
+            if (['manualScreen', 'selfieScreen'].includes(currentScreenId) && formValues.selectedManualDocument)
+                return isUploadLoading || isManualUploadLoading || isLoading;
+            return isLoading;
+        },
+        [isLoading, isManualUploadLoading, isUploadLoading]
+    );
 
-    // NOTE: These are test validations, add the correct validators here for different screens
-    const validationSchema = Yup.object().shape({
-        dateOfBirth: Yup.date().required(),
-        documentNumber: Yup.string().min(12, 'document number should have minimum 12 characters').required(),
-        firstName: Yup.string().min(1).max(5).required(),
-        lastName: Yup.string().min(1).max(20).required(),
-    });
+    const nextFlowHandler = useCallback(
+        async ({ currentScreenId, formValues, setFormValues, switchScreen }: TFlowProviderContext<typeof screens>) => {
+            if (['idvScreen', 'onfidoScreen', 'selfieScreen'].includes(currentScreenId)) {
+                // API calls
+                if (currentScreenId === 'idvScreen') {
+                    updateSettings({
+                        date_of_birth: formValues.dateOfBirth,
+                        first_name: formValues.firstName,
+                        last_name: formValues.lastName,
+                    });
+                } else if (currentScreenId === 'selfieScreen') {
+                    await upload({
+                        document_issuing_country: settings?.country_code ?? undefined,
+                        document_type: 'selfie_with_id',
+                        file: formValues.selfie,
+                    });
+                }
+
+                // handle screen switching
+                if (shouldSubmitPOA) {
+                    switchScreen('poaScreen');
+                } else if (!settings?.has_submitted_personal_details) {
+                    switchScreen('personalDetailsScreen');
+                } else {
+                    show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
+                }
+            } else if (currentScreenId === 'manualScreen') {
+                await uploadDocument(formValues);
+                setFormValues('selectedManualDocument', '');
+                switchScreen('selfieScreen');
+            } else if (currentScreenId === 'poaScreen') {
+                updateSettings({
+                    address_city: formValues.townCityLine,
+                    address_line_1: formValues.firstLine,
+                    address_line_2: formValues.secondLine,
+                    address_postcode: formValues.zipCodeLine,
+                    address_state: formValues.stateProvinceDropdownLine,
+                });
+                switchScreen('personalDetailsScreen');
+            } else if (currentScreenId === 'personalDetailsScreen') {
+                updateSettings({
+                    account_opening_reason: formValues.accountOpeningReason,
+                    citizen: formValues.citizenship,
+                    place_of_birth: formValues.placeOfBirth,
+                    tax_identification_number: formValues.taxIdentificationNumber,
+                    tax_residence: formValues.taxResidence,
+                });
+                show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
+            } else {
+                hide();
+            }
+        },
+        [
+            hide,
+            platform,
+            selectedMarketType,
+            settings?.country_code,
+            settings?.has_submitted_personal_details,
+            shouldSubmitPOA,
+            show,
+            updateSettings,
+            upload,
+            uploadDocument,
+        ]
+    );
 
     return (
         <FlowProvider
             initialScreenId={initialScreenId}
             initialValues={{
+                hasSubmittedOnfido: false,
                 selectedJurisdiction,
             }}
             screens={screens}
-            validationSchema={validationSchema}
         >
             {context => {
                 return (
                     <ModalStepWrapper
-                        renderFooter={() => {
-                            return (
-                                <WalletButton
-                                    disabled={isNextDisabled(context)}
-                                    isLoading={isLoading}
-                                    onClick={() => nextFlowHandler(context)}
-                                    size='lg'
-                                    text='Next'
-                                />
-                            );
-                        }}
+                        renderFooter={
+                            context.currentScreenId === 'manualScreen' && !context.formValues.selectedManualDocument
+                                ? undefined
+                                : () => {
+                                      if (context.currentScreenId === 'manualScreen')
+                                          return (
+                                              <WalletButtonGroup isFlex>
+                                                  <WalletButton
+                                                      onClick={() =>
+                                                          context.setFormValues('selectedManualDocument', '')
+                                                      }
+                                                      size='lg'
+                                                      text='Back'
+                                                      variant='outlined'
+                                                  />
+                                                  <WalletButton
+                                                      disabled={isNextDisabled(context)}
+                                                      isLoading={isNextLoading(context)}
+                                                      onClick={() => nextFlowHandler(context)}
+                                                      size='lg'
+                                                      text='Next'
+                                                  />
+                                              </WalletButtonGroup>
+                                          );
+                                      return (
+                                          <WalletButton
+                                              disabled={isNextDisabled(context)}
+                                              isLoading={isNextLoading(context)}
+                                              onClick={() => nextFlowHandler(context)}
+                                              size='lg'
+                                              text='Next'
+                                          />
+                                      );
+                                  }
+                        }
                         title='Add a real MT5 account'
                     >
                         {context.WalletScreen}

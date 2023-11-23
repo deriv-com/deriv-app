@@ -9,7 +9,10 @@ import WalletTextField, { WalletTextFieldProps } from '../WalletTextField/Wallet
 import './WalletDropdown.scss';
 
 type TProps = {
+    disabled?: boolean;
+    errorMessage?: WalletTextFieldProps['errorMessage'];
     icon?: React.ReactNode;
+    isRequired?: boolean;
     label?: WalletTextFieldProps['label'];
     list: {
         text?: React.ReactNode;
@@ -17,63 +20,62 @@ type TProps = {
     }[];
     listHeight?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     name: WalletTextFieldProps['name'];
+    onChange?: (inputValue: string) => void;
     onSelect: (value: string) => void;
     value?: WalletTextFieldProps['value'];
     variant?: 'comboBox' | 'prompt';
 };
 
 const WalletDropdown: React.FC<TProps> = ({
+    disabled,
+    errorMessage,
     icon = false,
+    isRequired = false,
     label,
     list,
     listHeight = 'md',
     name,
+    onChange,
     onSelect,
     value,
     variant = 'prompt',
 }) => {
     const [items, setItems] = useState(list);
+    const [hasSelected, setHasSelected] = useState(false);
     const [shouldFilterList, setShouldFilterList] = useState(false);
     const clearFilter = useCallback(() => {
         setShouldFilterList(false);
         setItems(list);
     }, [list]);
-    const {
-        closeMenu,
-        getInputProps,
-        getItemProps,
-        getLabelProps,
-        getMenuProps,
-        getToggleButtonProps,
-        isOpen,
-        openMenu,
-    } = useCombobox({
-        defaultSelectedItem: items.find(item => item.value === value) ?? null,
-        items,
-        itemToString(item) {
-            return item ? reactNodeToString(item.text) : '';
-        },
-        onInputValueChange({ inputValue }) {
-            if (shouldFilterList) {
-                setItems(
-                    list.filter(item =>
-                        reactNodeToString(item.text)
-                            .toLowerCase()
-                            .includes(inputValue?.toLowerCase() ?? '')
-                    )
-                );
-            }
-        },
-        onIsOpenChange({ isOpen }) {
-            if (!isOpen) {
-                clearFilter();
-            }
-        },
-        onSelectedItemChange({ selectedItem }) {
-            onSelect(selectedItem?.value ?? '');
-            closeMenu();
-        },
-    });
+    const { closeMenu, getInputProps, getItemProps, getMenuProps, getToggleButtonProps, isOpen, openMenu } =
+        useCombobox({
+            defaultSelectedItem: items.find(item => item.value === value) ?? null,
+            items,
+            itemToString(item) {
+                return item ? reactNodeToString(item.text) : '';
+            },
+            onInputValueChange({ inputValue }) {
+                onChange?.(inputValue ?? '');
+                if (shouldFilterList) {
+                    setItems(
+                        list.filter(item =>
+                            reactNodeToString(item.text)
+                                .toLowerCase()
+                                .includes(inputValue?.toLowerCase() ?? '')
+                        )
+                    );
+                }
+            },
+            onIsOpenChange({ isOpen }) {
+                if (!isOpen) {
+                    clearFilter();
+                }
+            },
+            onSelectedItemChange({ selectedItem }) {
+                onSelect(selectedItem?.value ?? '');
+                closeMenu();
+            },
+        });
 
     const handleInputClick = useCallback(() => {
         variant === 'comboBox' && setShouldFilterList(true);
@@ -90,15 +92,25 @@ const WalletDropdown: React.FC<TProps> = ({
     }, [list]);
 
     return (
-        <div className='wallets-dropdown' {...getToggleButtonProps()}>
+        <div
+            className={classNames('wallets-dropdown', {
+                'wallets-dropdown--disabled': disabled,
+            })}
+            {...getToggleButtonProps()}
+        >
             <div className='wallets-dropdown__content'>
                 <WalletTextField
+                    disabled={disabled}
+                    errorMessage={errorMessage}
+                    isInvalid={hasSelected && !value && isRequired}
+                    label={label}
                     name={name}
                     onClickCapture={handleInputClick}
+                    onFocus={() => setHasSelected(true)}
                     onKeyUp={() => setShouldFilterList(true)}
                     placeholder={reactNodeToString(label)}
                     readOnly={variant !== 'comboBox'}
-                    renderLeftIcon={() => icon}
+                    renderLeftIcon={icon ? () => icon : undefined}
                     renderRightIcon={() => (
                         <button
                             className={classNames('wallets-dropdown__button', {
@@ -112,15 +124,6 @@ const WalletDropdown: React.FC<TProps> = ({
                     value={value}
                     {...getInputProps()}
                 />
-                <label
-                    className={classNames('wallets-dropdown__label', {
-                        'wallets-dropdown__label--with-icon': !!icon,
-                    })}
-                    htmlFor={name}
-                    {...getLabelProps()}
-                >
-                    {label}
-                </label>
             </div>
             <ul className={`wallets-dropdown__items wallets-dropdown__items--${listHeight}`} {...getMenuProps()}>
                 {isOpen &&

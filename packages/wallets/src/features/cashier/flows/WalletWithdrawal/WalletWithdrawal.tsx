@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
+import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
+import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
+import { Loader } from '../../../../components';
 
 const WalletWithdrawal = () => {
+    const { getConfig, isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
+    const { data: activeWallet } = useActiveWalletAccount();
     const [verificationCode, setVerificationCode] = useState('');
 
     useEffect(() => {
@@ -18,9 +22,14 @@ const WalletWithdrawal = () => {
     }, []);
 
     if (verificationCode) {
-        return <WithdrawalFiatModule verificationCode={verificationCode} />;
+        if (isCurrencyConfigSuccess && activeWallet?.currency) {
+            if (getConfig(activeWallet?.currency)?.is_fiat) {
+                return <WithdrawalFiatModule verificationCode={verificationCode} />;
+            }
+            return <WithdrawalCryptoModule verificationCode={verificationCode} />;
+        }
+        return <Loader />;
     }
-
     return <WithdrawalVerificationModule />;
 };
 

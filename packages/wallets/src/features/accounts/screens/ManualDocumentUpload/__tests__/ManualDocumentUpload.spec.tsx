@@ -1,13 +1,22 @@
 import React from 'react';
 import { APIProvider } from '@deriv/api';
 import { render, screen } from '@testing-library/react';
+import { FlowProvider } from '../../../../../components';
 import ManualDocumentUpload from '../ManualDocumentUpload';
 
 describe('<ManualDocumentUpload />', () => {
     it('should set selected document', () => {
+        const screens = {
+            manualScreen: <ManualDocumentUpload />,
+        };
+
         render(
             <APIProvider>
-                <ManualDocumentUpload />
+                <FlowProvider initialValues={{}} screens={screens}>
+                    {() => {
+                        return <ManualDocumentUpload />;
+                    }}
+                </FlowProvider>
             </APIProvider>
         );
 

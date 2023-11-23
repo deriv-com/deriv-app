@@ -1,4 +1,5 @@
 import merge from 'lodash.merge';
+
 import type { TCoreStores, TStores } from '../types';
 
 const mock = (): TStores & { is_mock: boolean } => {
@@ -263,7 +264,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             fetchStatesList: jest.fn(),
             is_crypto: jest.fn(),
             dxtrade_accounts_list: [],
-            derivez_accounts_list: [],
             default_currency: 'USD',
             resetVirtualBalance: jest.fn(),
             has_enabled_two_fa: false,
@@ -439,7 +439,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             },
             is_eu_user: false,
             is_demo: false,
+            is_onboarding_visited: false,
+            is_first_time_visit: true,
             setIsOnboardingVisited: jest.fn(),
+            setIsFirstTimeVisit: jest.fn(),
             is_real: false,
             selectRegion: jest.fn(),
             setSelectedAccount: jest.fn(),
@@ -495,7 +498,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_demo_low_risk: false,
             is_mt5_notification_modal_visible: false,
             setMT5NotificationModal: jest.fn(),
-            available_derivez_accounts: [],
             has_any_real_account: false,
             startTrade: jest.fn(),
             showTopUpModal: jest.fn(),
@@ -581,6 +583,11 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setAccountType: jest.fn(),
                 setMigratedMT5Accounts: jest.fn(),
             },
+        },
+        exchange_rates: {
+            data: undefined,
+            update: jest.fn(),
+            unmount: jest.fn(),
         },
         feature_flags: {
             data: undefined,

@@ -1,4 +1,6 @@
 import React from 'react';
+import { FormikHelpers as FormikActions } from 'formik';
+
 import {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
@@ -6,25 +8,26 @@ import {
     ResidenceList,
     VerifyEmailResponse,
 } from '@deriv/api-types';
-import { FormikHelpers as FormikActions } from 'formik';
-import { TCFDPasswordFormValues } from './cfd-password-modal';
+
 import {
-    TTradingPlatformAvailableAccount,
-    TExistingData,
-    TJurisdictionCardSection,
-    TJurisdictionCardSectionTitleIndicators,
+    TCFDsPlatformType,
     TClickableDescription,
+    TExistingData,
     TJurisdictionCardItems,
     TJurisdictionCardItemVerification,
-    TCFDsPlatformType,
+    TJurisdictionCardSection,
+    TJurisdictionCardSectionTitleIndicators,
+    TTradingPlatformAvailableAccount,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
+
+import { TCFDPasswordFormValues } from './cfd-password-modal';
 
 export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;
 };
 
-export type CFD_Platform = 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
+type CFD_Platform = 'dxtrade' | 'mt5' | 'ctrader';
 
 export type TCFDChangePasswordConfirmationProps = {
     confirm_label?: string;
@@ -44,10 +47,6 @@ export type TCFDDashboardContainer = {
         real: string;
     };
     ctrader_tokens: {
-        demo: string;
-        real: string;
-    };
-    derivez_tokens: {
         demo: string;
         real: string;
     };

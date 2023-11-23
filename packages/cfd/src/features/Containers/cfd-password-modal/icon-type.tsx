@@ -13,8 +13,6 @@ export const IconType = React.memo(({ platform, type, show_eu_related_content }:
     const traders_hub = window.location.pathname === routes.traders_hub;
     if (platform === CFD_PLATFORMS.DXTRADE) {
         return <Icon icon='IcRebrandingDxtradeDashboard' size={128} />;
-    } else if (platform === CFD_PLATFORMS.DERIVEZ) {
-        return <Icon icon='IcBrandDerivEz' size={128} />;
     } else if (traders_hub) {
         if (platform === CFD_PLATFORMS.CTRADER) {
             return <TradingPlatformIcon icon='CTrader' size={128} />;

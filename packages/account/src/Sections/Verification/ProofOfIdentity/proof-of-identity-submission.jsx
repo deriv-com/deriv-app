@@ -53,7 +53,7 @@ const POISubmission = observer(
 
                 if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
                     setSubmissionService(service_code.idv);
-                } else if (onfido_submissions_left && is_onfido_supported) {
+                } else if (Number(onfido_submissions_left) > 0 && is_onfido_supported) {
                     setSubmissionService(service_code.onfido);
                 } else {
                     setSubmissionService(service_code.manual);
@@ -89,34 +89,24 @@ const POISubmission = observer(
                 const { service, country_code } = identity_last_attempt;
                 setSelectedCountry(getCountryFromResidence(country_code));
                 switch (service) {
-                    case service_code.idv: {
-                        if (Number(idv.submissions_left) < 1 || is_idv_disallowed) {
-                            if (Number(onfido.submissions_left) < 1 || country_code === 'ng') {
-                                setSubmissionService(service_code.manual);
-                            } else {
-                                setSubmissionService(service_code.onfido);
-                            }
-                        } else {
-                            setSubmissionService(service_code.idv);
-                        }
-                        break;
-                    }
+                    case service_code.idv:
                     case service_code.onfido: {
-                        if (Number(onfido.submissions_left) < 1) {
-                            setSubmissionService(service_code.manual);
+                        if (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) {
+                            setSubmissionStatus(submission_status_code.selecting);
                         } else {
-                            setSubmissionService(service_code.onfido);
+                            setSubmissionService(service_code.manual);
+                            setSubmissionStatus(submission_status_code.submitting);
                         }
                         break;
                     }
                     case service_code.manual: {
                         setSubmissionService(service_code.manual);
+                        setSubmissionStatus(submission_status_code.submitting);
                         break;
                     }
                     default:
                         break;
                 }
-                setSubmissionStatus(submission_status_code.submitting);
             },
             [
                 getCountryFromResidence,

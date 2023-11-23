@@ -1,10 +1,13 @@
-import React, { forwardRef, Ref } from 'react';
+import React, { forwardRef, Ref, useEffect, useState } from 'react';
 import { Field, FieldProps } from 'formik';
+import * as Yup from 'yup';
 import WalletTextField, { WalletTextFieldProps } from '../Base/WalletTextField/WalletTextField';
+import { useFlow } from '../FlowProvider';
 
 export interface TFlowFieldProps extends WalletTextFieldProps {
     isInvalid?: WalletTextFieldProps['isInvalid'];
     name: string;
+    validationSchema?: Yup.AnySchema;
 }
 
 /**
@@ -12,23 +15,55 @@ export interface TFlowFieldProps extends WalletTextFieldProps {
  * Use this component when you are using the FlowProvider with a form and several inputs,
  * and you want those input values to be tracked and validated
  */
-const FlowTextField = forwardRef(({ isInvalid, name, ...rest }: TFlowFieldProps, ref: Ref<HTMLInputElement>) => {
-    return (
-        <Field name={name}>
-            {({ field, form, meta }: FieldProps) => {
-                return (
-                    <WalletTextField
-                        {...rest}
-                        {...field}
-                        errorMessage={form.errors[name]}
-                        isInvalid={isInvalid || (meta.value !== meta.initialValue && Boolean(form.errors[name]))}
-                        ref={ref}
-                    />
-                );
-            }}
-        </Field>
-    );
-});
+const FlowTextField = forwardRef(
+    (
+        { defaultValue, disabled, errorMessage, isInvalid, name, validationSchema, ...rest }: TFlowFieldProps,
+        ref: Ref<HTMLInputElement>
+    ) => {
+        const [hasTouched, setHasTouched] = useState(false);
+        const { setFormValues } = useFlow();
+
+        const validateField = (value: unknown) => {
+            try {
+                if (validationSchema) {
+                    validationSchema.validateSync(value);
+                }
+            } catch (err: unknown) {
+                return (err as Yup.ValidationError).message;
+            }
+        };
+
+        useEffect(() => {
+            if (defaultValue) {
+                setFormValues(name, defaultValue);
+            }
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, []);
+
+        return (
+            <Field name={name} validate={validateField}>
+                {({ field, form }: FieldProps) => {
+                    return (
+                        <WalletTextField
+                            {...rest}
+                            defaultValue={defaultValue}
+                            disabled={disabled}
+                            errorMessage={form.errors[name] || errorMessage}
+                            isInvalid={(hasTouched && isInvalid) || (hasTouched && Boolean(form.errors[name]))}
+                            name={field.name}
+                            onChange={field.onChange}
+                            onFocus={e => {
+                                setHasTouched(true);
+                                field.onBlur(e);
+                            }}
+                            ref={ref}
+                        />
+                    );
+                }}
+            </Field>
+        );
+    }
+);
 
 FlowTextField.displayName = 'FlowTextField';
 export default FlowTextField;

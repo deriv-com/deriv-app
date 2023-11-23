@@ -13,7 +13,7 @@ const LaunchModalInfo = ({ is_dark_mode }: { is_dark_mode: boolean }) => {
                 <LaunchModalChartImage className='chart-image' />
             )}
             <Text as='h1' weight='bold' align='center' size='sm'>
-                <Localize i18n_default_text='Deriv Trader Chart v2.0.' />
+                <Localize i18n_default_text='Deriv Trader Chart v2.0' />
             </Text>
             <Text as='p' align='center'>
                 <Localize i18n_default_text='Smoother charts. Smarter insights.' />

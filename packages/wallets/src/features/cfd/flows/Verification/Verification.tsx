@@ -39,6 +39,42 @@ type TVerificationProps = {
     selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
 };
 
+type TManualVerificationFooter = {
+    context: TFlowProviderContext<typeof screens>;
+    isNextDisabled: boolean;
+    isNextLoading: boolean;
+    nextFlowHandler: () => void;
+};
+
+const getManualVerificationFooter = ({
+    context,
+    isNextDisabled,
+    isNextLoading,
+    nextFlowHandler,
+}: TManualVerificationFooter) => {
+    if (!context.formValues.selectedManualDocument) return undefined;
+
+    const onClickBack = () => {
+        if (context.currentScreenId === 'selfieScreen') {
+            context.switchScreen('manualScreen');
+        } else context.setFormValues('selectedManualDocument', '');
+    };
+
+    // eslint-disable-next-line react/display-name
+    return () => (
+        <WalletButtonGroup isFlex>
+            <WalletButton onClick={onClickBack} size='lg' text='Back' variant='outlined' />
+            <WalletButton
+                disabled={isNextDisabled}
+                isLoading={isNextLoading}
+                onClick={nextFlowHandler}
+                size='lg'
+                text='Next'
+            />
+        </WalletButtonGroup>
+    );
+};
+
 const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
@@ -101,35 +137,23 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                         !formValues.drivingLicenceNumber ||
                         !formValues.drivingLicenseExpiryDate ||
                         !formValues.drivingLicenseCardFront ||
-                        !formValues.drivingLicenseCardBack ||
-                        isManualUploadLoading
+                        !formValues.drivingLicenseCardBack
                     );
                 } else if (formValues.selectedManualDocument === 'passport') {
-                    return (
-                        !formValues.passportNumber ||
-                        !formValues.passportExpiryDate ||
-                        !formValues.passportCard ||
-                        isManualUploadLoading
-                    );
+                    return !formValues.passportNumber || !formValues.passportExpiryDate || !formValues.passportCard;
                 } else if (formValues.selectedManualDocument === 'identity-card') {
                     return (
                         !formValues.identityCardNumber ||
                         !formValues.identityCardExpiryDate ||
                         !formValues.identityCardFront ||
-                        !formValues.identityCardBack ||
-                        isManualUploadLoading
+                        !formValues.identityCardBack
                     );
                 } else if (formValues.selectedManualDocument === 'nimc-slip') {
-                    return (
-                        !formValues.nimcNumber ||
-                        !formValues.nimcCardFront ||
-                        !formValues.nimcCardBack ||
-                        isManualUploadLoading
-                    );
+                    return !formValues.nimcNumber || !formValues.nimcCardFront || !formValues.nimcCardBack;
                 }
                 return !formValues.selectedManualDocument;
             case 'selfieScreen':
-                return !formValues.selfie;
+                return !formValues.selfie || isManualUploadLoading || isUploadLoading;
             case 'onfidoScreen':
                 return !formValues.hasSubmittedOnfido;
             case 'personalDetailsScreen':
@@ -167,11 +191,13 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                         last_name: formValues.lastName,
                     });
                 } else if (currentScreenId === 'selfieScreen') {
+                    await uploadDocument(formValues);
                     await upload({
                         document_issuing_country: settings?.country_code ?? undefined,
                         document_type: 'selfie_with_id',
                         file: formValues.selfie,
                     });
+                    setFormValues('selectedManualDocument', '');
                 }
 
                 // handle screen switching
@@ -183,8 +209,6 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
                 }
             } else if (currentScreenId === 'manualScreen') {
-                await uploadDocument(formValues);
-                setFormValues('selectedManualDocument', '');
                 switchScreen('selfieScreen');
             } else if (currentScreenId === 'poaScreen') {
                 updateSettings({
@@ -235,39 +259,22 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 return (
                     <ModalStepWrapper
                         renderFooter={
-                            context.currentScreenId === 'manualScreen' && !context.formValues.selectedManualDocument
-                                ? undefined
-                                : () => {
-                                      if (context.currentScreenId === 'manualScreen')
-                                          return (
-                                              <WalletButtonGroup isFlex>
-                                                  <WalletButton
-                                                      onClick={() =>
-                                                          context.setFormValues('selectedManualDocument', '')
-                                                      }
-                                                      size='lg'
-                                                      text='Back'
-                                                      variant='outlined'
-                                                  />
-                                                  <WalletButton
-                                                      disabled={isNextDisabled(context)}
-                                                      isLoading={isNextLoading(context)}
-                                                      onClick={() => nextFlowHandler(context)}
-                                                      size='lg'
-                                                      text='Next'
-                                                  />
-                                              </WalletButtonGroup>
-                                          );
-                                      return (
-                                          <WalletButton
-                                              disabled={isNextDisabled(context)}
-                                              isLoading={isNextLoading(context)}
-                                              onClick={() => nextFlowHandler(context)}
-                                              size='lg'
-                                              text='Next'
-                                          />
-                                      );
-                                  }
+                            context.currentScreenId === 'manualScreen' || context.currentScreenId === 'selfieScreen'
+                                ? getManualVerificationFooter({
+                                      context,
+                                      isNextDisabled: isNextDisabled(context),
+                                      isNextLoading: isNextLoading(context),
+                                      nextFlowHandler: () => nextFlowHandler(context),
+                                  })
+                                : () => (
+                                      <WalletButton
+                                          disabled={isNextDisabled(context)}
+                                          isLoading={isNextLoading(context)}
+                                          onClick={() => nextFlowHandler(context)}
+                                          size='lg'
+                                          text='Next'
+                                      />
+                                  )
                         }
                         title='Add a real MT5 account'
                     >

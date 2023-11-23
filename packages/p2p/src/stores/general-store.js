@@ -386,9 +386,9 @@ export default class GeneralStore extends BaseStore {
 
     setP2POrderTab(order_id) {
         const { order_store } = this.root_store;
+        order_store.setOrderId(order_id);
         this.redirectTo('orders');
         this.setOrderTableType(order_list.INACTIVE);
-        order_store.setOrderId(order_id);
     }
 
     showCompletedOrderNotification(advertiser_name, order_id) {

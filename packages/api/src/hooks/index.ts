@@ -11,6 +11,7 @@ export { default as useAllAvailableAccounts } from './useAllAvailableAccounts';
 export { default as useAllWalletAccounts } from './useAllWalletAccounts';
 export { default as useAuthentication } from './useAuthentication';
 export { default as useAuthorize } from './useAuthorize';
+export { default as useAccesiblePlatforms } from './useAccesiblePlatforms';
 export { default as useAvailableMT5Accounts } from './useAvailableMT5Accounts';
 export { default as useAvailableWallets } from './useAvailableWallets';
 export { default as useBalance } from './useBalance';

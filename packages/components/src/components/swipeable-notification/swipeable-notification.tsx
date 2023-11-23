@@ -17,6 +17,11 @@ type TSwipeableNotificationProps = React.PropsWithChildren<{
     visibility_duration_ms?: number;
 }>;
 
+const DIRECTION = {
+    LEFT: 'left',
+    RIGHT: 'right',
+};
+
 const SwipeableNotification = ({
     children,
     classname = 'swipeable-notification',
@@ -27,15 +32,15 @@ const SwipeableNotification = ({
     timestamp,
     visibility_duration_ms,
 }: TSwipeableNotificationProps) => {
-    const [is_swipe_right, setSwipeRight] = React.useState(false);
-    const [is_shown, setIsShown] = React.useState(true);
+    const [swipe_direction, setSwipeDirection] = React.useState(DIRECTION.LEFT);
+    const [is_visible, setIsVisible] = React.useState(true);
     const getSeconds = React.useCallback((timestamp?: number) => {
         return timestamp ? Math.abs(Math.floor(Date.now() / 1000) - timestamp) : null;
     }, []);
     const [seconds, setSeconds] = React.useState<number | null>(getSeconds(timestamp));
     const interval_ref = React.useRef<number>();
 
-    const hideNotification = () => setIsShown(false);
+    const hideNotification = () => setIsVisible(false);
     const debouncedHideNotification = React.useMemo(
         () => debounce(hideNotification, visibility_duration_ms),
         [visibility_duration_ms]
@@ -49,11 +54,11 @@ const SwipeableNotification = ({
         );
     };
     const onSwipeLeft = () => {
-        setSwipeRight(false);
+        setSwipeDirection(DIRECTION.LEFT);
         hideNotification();
     };
     const onSwipeRight = () => {
-        setSwipeRight(true);
+        setSwipeDirection(DIRECTION.RIGHT);
         hideNotification();
     };
     const swipe_handlers = useSwipeable({
@@ -84,9 +89,9 @@ const SwipeableNotification = ({
                 enterActive: `${classname}-enter-active`,
                 enterDone: `${classname}-enter-done`,
                 exit: `${classname}-exit`,
-                exitActive: `${classname}-exit-active-${is_swipe_right ? 'right' : 'left'}`,
+                exitActive: `${classname}-exit-active-${swipe_direction}`,
             }}
-            in={is_shown}
+            in={is_visible}
             onEntered={() => {
                 if (visibility_duration_ms) debouncedHideNotification();
             }}

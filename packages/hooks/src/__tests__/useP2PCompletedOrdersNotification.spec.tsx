@@ -14,7 +14,7 @@ const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'website_st
 const mockUseSubscription = useSubscription as jest.MockedFunction<typeof useSubscription<'p2p_order_list'>>;
 
 describe('useP2PCompletedOrdersNotification', () => {
-    test('should unsubscribe from p2p_order_list if user not authorize', () => {
+    test('should unsubscribe from p2p_order_list if user is not authorized', () => {
         const mock = mockStore({
             client: {
                 is_authorize: false,

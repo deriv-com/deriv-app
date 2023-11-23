@@ -39,19 +39,19 @@ const ClosingAccountPendingBalance = observer(({ platform, account_balance }: TC
             {account_balance.map(account => {
                 const getCurrencyIcon = (platform: TCFDPlatform) => {
                     switch (platform) {
-                        case 'mt5':
+                        case CFD_PLATFORMS.MT5:
                             return `IcMt5-${getMT5Icon({
                                 market_type: account.market_type,
                                 is_eu: is_eu_user,
                             })}`;
-                        case 'dxtrade':
+                        case CFD_PLATFORMS.DXTRADE:
                             return `IcDxtrade-${getCFDAccount({
                                 market_type: account.market_type,
                                 sub_account_type: account.sub_account_type,
                                 platform,
                                 is_eu: is_eu_user,
                             })}`;
-                        case 'ctrader':
+                        case CFD_PLATFORMS.CTRADER:
                             return `IcCtrader`;
                         default:
                             return '';

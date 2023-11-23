@@ -1,0 +1,13 @@
+.wallets-error {
+    width: 47.6rem;
+    padding: 2.4rem;
+    border-radius: 0.4rem;
+    background: #fff;
+
+    @include mobile {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+}

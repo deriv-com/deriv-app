@@ -15,7 +15,6 @@ import {
     isMobile,
     isMultiplierContract,
     LocalStore,
-    platform_name,
     routes,
     unique,
 } from '@deriv/shared';
@@ -266,6 +265,7 @@ export default class NotificationStore extends BaseStore {
             is_pending_proof_of_ownership,
             p2p_advertiser_info,
             is_p2p_enabled,
+            is_poa_expired,
         } = this.root_store.client;
         const { upgradable_daily_limits } = p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
@@ -306,6 +306,9 @@ export default class NotificationStore extends BaseStore {
 
             this.handlePOAAddressMismatchNotifications();
 
+            if (status?.includes('mt5_additional_kyc_required'))
+                this.addNotificationMessage(this.client_notifications.additional_kyc_info);
+
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
             } else {
@@ -323,7 +326,11 @@ export default class NotificationStore extends BaseStore {
             } else {
                 this.removeNotificationByKey({ key: this.client_notifications.poi_dob_mismatch });
             }
-
+            if (is_poa_expired) {
+                this.addNotificationMessage(this.client_notifications.poa_expired);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.poa_expired });
+            }
             if (loginid !== LocalStore.get('active_loginid')) return;
 
             if (is_financial_assessment_needed) {
@@ -639,10 +646,10 @@ export default class NotificationStore extends BaseStore {
     resetVirtualBalanceNotification(loginid) {
         const { accounts, is_logged_in } = this.root_store.client;
         if (!is_logged_in) return;
-        if (!accounts[loginid].is_virtual) return;
+        if (!accounts[loginid]?.is_virtual) return;
         const min_reset_limit = 1000;
         const max_reset_limit = 999000;
-        const balance = parseInt(accounts[loginid].balance);
+        const balance = parseInt(accounts[loginid]?.balance);
 
         // Display notification message to user with virtual account to reset their balance
         // if the balance is less than equals to 1000 or more than equals to 999000
@@ -991,6 +998,16 @@ export default class NotificationStore extends BaseStore {
                 type: 'announce',
                 should_hide_close_btn: false,
             },
+            poa_expired: {
+                key: 'poa_expired',
+                header: <Localize i18n_default_text='Lets get your address verified' />,
+                message: <Localize i18n_default_text='Please submit your proof of address' />,
+                type: 'warning',
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Submit now'),
+                },
+            },
             poi_failed: {
                 action: {
                     route: routes.proof_of_identity,
@@ -1075,7 +1092,6 @@ export default class NotificationStore extends BaseStore {
                 type: 'info',
                 is_persistent: true,
                 should_show_again: true,
-                platform: [platform_name.DTrader],
                 is_disposable: true,
                 action: {
                     text: localize('Reset balance'),
@@ -1415,12 +1431,28 @@ export default class NotificationStore extends BaseStore {
             },
             mt5_notification: {
                 key: 'mt5_notification',
-                header: localize('Trouble accessing Deriv MT5 on your mobile?'),
+                header: localize('Deriv MT5: Your action is needed'),
                 message: localize('Follow these simple instructions to fix it.'),
                 action: {
                     text: localize('Learn more'),
                     onClick: () => {
                         setMT5NotificationModal(true);
+                    },
+                },
+                type: 'warning',
+            },
+            additional_kyc_info: {
+                key: 'additional_kyc_info',
+                header: <Localize i18n_default_text='Pending action required' />,
+                message: (
+                    <Localize i18n_default_text='We require additional information for your Deriv MT5 account(s). Please take a moment to update your information now.' />
+                ),
+                action: {
+                    text: localize('Update now'),
+                    onClick: () => {
+                        if (this.is_notifications_visible) this.toggleNotificationsModal();
+                        ui.toggleAdditionalKycInfoModal();
+                        this.markNotificationMessage({ key: 'additional_kyc_info' });
                     },
                 },
                 type: 'warning',
@@ -1438,7 +1470,6 @@ export default class NotificationStore extends BaseStore {
         this.p2p_redirect_to = p2p_redirect_to;
     }
 
-    //TODO (yauheni-kryzhyk): this method is not used. leaving this for the upcoming new pop-up notifications implementation
     setShouldShowPopups(should_show_popups) {
         this.should_show_popups = should_show_popups;
     }

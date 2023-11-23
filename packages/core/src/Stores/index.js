@@ -1,7 +1,6 @@
 import ClientStore from './client-store';
 import CommonStore from './common-store';
 import GTMStore from './gtm-store';
-import PushWooshStore from './pushwoosh-store';
 import ModulesStore from './Modules';
 import NotificationStore from './notification-store';
 import UIStore from './ui-store';
@@ -19,7 +18,6 @@ export default class RootStore {
         this.modules = new ModulesStore(this);
         this.ui = new UIStore(this);
         this.gtm = new GTMStore(this);
-        this.pushwoosh = new PushWooshStore(this);
         this.notifications = new NotificationStore(this);
         this.active_symbols = new ActiveSymbolsStore(this);
         this.portfolio = new PortfolioStore(this);

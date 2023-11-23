@@ -12,7 +12,7 @@ import {
     CellMeasurerCache,
     Grid,
 } from 'react-virtualized';
-import TableRow from './table-row';
+import TableRow, { TSource } from './table-row';
 import ThemedScrollbars from '../themed-scrollbars';
 import { TTableRowItem } from '../types/common.types';
 import { CellMeasurerProps, MeasuredCellParent } from 'react-virtualized/dist/es/CellMeasurer.js';
@@ -20,10 +20,6 @@ import { CellMeasurerProps, MeasuredCellParent } from 'react-virtualized/dist/es
 const List = _List as unknown as React.FC<ListProps>;
 const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
 const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
-
-export type TSource = {
-    [key: string]: unknown;
-};
 
 type TMeasure = {
     measure?: () => void;

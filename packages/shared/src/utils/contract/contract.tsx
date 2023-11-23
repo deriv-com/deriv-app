@@ -3,7 +3,7 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { unique } from '../object';
 import { capitalizeFirstLetter } from '../string/string_util';
-import { TContractInfo, TDigitsInfo, TLimitOrder, TTickItem } from './contract-types';
+import { TContractInfo, TContractStore, TDigitsInfo, TLimitOrder, TTickItem } from './contract-types';
 
 type TGetAccuBarriersDTraderTimeout = (params: {
     barriers_update_timestamp: number;
@@ -11,6 +11,17 @@ type TGetAccuBarriersDTraderTimeout = (params: {
     tick_update_timestamp: number | null;
     underlying: string;
 }) => number;
+
+// Trade types that are considered as vanilla financials
+export const VANILLA_FX_SYMBOLS = [
+    'frxAUDUSD',
+    'frxEURUSD',
+    'frxGBPUSD',
+    'frxUSDCAD',
+    'frxUSDJPY',
+    'frxXAUUSD',
+    'frxXAGUSD',
+] as const;
 
 // animation correction time is an interval in ms between ticks receival from API and their actual visual update on the chart
 export const ANIMATION_CORRECTION_TIME = 200;
@@ -26,6 +37,7 @@ export const TURBOS = {
 export const VANILLALONG = {
     CALL: 'vanillalongcall',
     PUT: 'vanillalongput',
+    FX: 'vanilla_fx',
 } as const;
 
 export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {
@@ -65,6 +77,8 @@ export const isValidToSell = (contract_info: TContractInfo) =>
 
 export const hasContractEntered = (contract_info: TContractInfo) => !!contract_info.entry_spot;
 
+export const hasBarrier = (contract_type = '') => /VANILLA|TURBOS|HIGH_LOW|TOUCH/i.test(contract_type);
+
 export const hasTwoBarriers = (contract_type = '') => /EXPIRY|RANGE|UPORDOWN/i.test(contract_type);
 
 export const isAccumulatorContract = (contract_type = '') => /ACCU/i.test(contract_type);
@@ -75,9 +89,14 @@ export const isAccumulatorContractOpen = (contract_info: TContractInfo = {}) => 
 
 export const isMultiplierContract = (contract_type = '') => /MULT/i.test(contract_type);
 
+export const isTouchContract = (contract_type: string) => /TOUCH/i.test(contract_type);
+
 export const isTurbosContract = (contract_type = '') => /TURBOS/i.test(contract_type);
 
 export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
+
+export const isVanillaFxContract = (contract_type = '', symbol = '') =>
+    isVanillaContract(contract_type) && VANILLA_FX_SYMBOLS.includes(symbol as typeof VANILLA_FX_SYMBOLS[number]);
 
 export const isSmartTraderContract = (contract_type = '') => /RUN|EXPIRY|RANGE|UPORDOWN|ASIAN/i.test(contract_type);
 
@@ -118,6 +137,14 @@ export const getCurrentTick = (contract_info: TContractInfo) => {
             ? tick_stream.length
             : tick_stream.length - 1;
     return !current_tick || current_tick < 0 ? 0 : current_tick;
+};
+
+export const getLastContractMarkerIndex = (markers: TContractStore[] = []) => {
+    const sorted_markers = [...markers].sort(
+        (a, b) => Number(b.contract_info.date_start) - Number(a.contract_info.date_start)
+    );
+    const index = sorted_markers[0].contract_info.date_start ? markers.indexOf(sorted_markers[0]) : -1;
+    return index >= 0 ? index : markers.length - 1;
 };
 
 export const getLastTickFromTickStream = (tick_stream: TTickItem[] = []) => tick_stream[tick_stream.length - 1] || {};
@@ -228,4 +255,18 @@ export const getLocalizedTurbosSubtype = (contract_type = '') => {
     ) : (
         <Localize i18n_default_text='Short' />
     );
+};
+
+export const clickAndKeyEventHandler = (
+    callback: () => void,
+    e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>
+) => {
+    if (e) {
+        e.preventDefault();
+        if (e.type !== 'keydown' || (e.type === 'keydown' && (e as React.KeyboardEvent).key === 'Enter')) {
+            callback();
+        }
+    } else {
+        callback();
+    }
 };

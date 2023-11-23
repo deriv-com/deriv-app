@@ -1,16 +1,24 @@
 import debounce from 'lodash.debounce';
 import { isEmptyObject, WS } from '@deriv/shared';
 import { createProposalRequests } from './proposal';
-import { PriceProposalResponse } from '@deriv/api-types';
+import { PriceProposalRequest, PriceProposalResponse } from '@deriv/api-types';
 import { TTradeStore } from 'Types';
 
+type TResponse<Req, Res extends { [key: string]: unknown }, K extends string> = Res & {
+    echo_req: Req;
+    error?: {
+        code: string;
+        message: string;
+        details?: Res[K] & { field: string };
+    };
+};
 export const requestPreviewProposal = debounce(
-    (store: TTradeStore, override = {}, onProposalResponse: (response: PriceProposalResponse) => void) => {
+    (store: TTradeStore, onProposalResponse: TTradeStore['onProposalResponse'], override = {}) => {
         const new_store = { ...store, ...override };
         const requests = createProposalRequests(new_store);
         const subscription_map: { [key: string]: boolean } = {};
 
-        const onResponse = (response: PriceProposalResponse) => {
+        const onResponse = (response: TResponse<PriceProposalRequest, PriceProposalResponse, 'proposal'>) => {
             if (response.error || !response.subscription) return;
 
             subscription_map[response.subscription.id] = true;

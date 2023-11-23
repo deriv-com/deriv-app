@@ -7,22 +7,25 @@ import { Money, Numpad, Tabs } from '@deriv/components';
 import { getDecimalPlaces, isEmptyObject } from '@deriv/shared';
 import MinMaxStakeInfo from './min-max-stake-info';
 
-type TAmountMobile = React.ComponentProps<typeof Basis> & {
+type TAmountMobile = Pick<
+    React.ComponentProps<typeof Basis>,
+    'toggleModal' | 'duration_value' | 'duration_unit' | 'has_duration_error' | 'setAmountError' | 'setSelectedAmount'
+> & {
     amount_tab_idx?: number;
-    setAmountTabIdx: React.ComponentProps<typeof Tabs>['onTabItemClick'];
+    setAmountTabIdx?: React.ComponentProps<typeof Tabs>['onTabItemClick'];
     stake_value: string | number;
-    payout_value: string | number;
+    payout_value?: string | number;
 };
 
 type TBasis = {
     basis: string;
-    duration_unit: string;
-    duration_value: number;
+    duration_unit?: string;
+    duration_value?: number;
     toggleModal: () => void;
-    has_duration_error: boolean;
-    selected_basis: string | number;
+    has_duration_error?: boolean;
+    selected_basis?: string | number;
     setSelectedAmount: (basis: string, num: string | number) => void;
-    setAmountError: (has_error: boolean) => void;
+    setAmountError?: (has_error: boolean) => void;
 };
 
 const Basis = observer(
@@ -44,11 +47,11 @@ const Basis = observer(
             is_turbos,
             is_vanilla,
             onChangeMultiple,
-            stake_boundary,
             amount: trade_amount,
             basis: trade_basis,
             duration_unit: trade_duration_unit,
             duration: trade_duration,
+            stake_boundary,
         } = useTraderStore();
         const { min_stake, max_stake } = stake_boundary[contract_type.toUpperCase()] || {};
         const user_currency_decimal_places = getDecimalPlaces(currency);
@@ -89,18 +92,18 @@ const Basis = observer(
 
             if (value.toString() === '0.' || selected_value === 0) {
                 addToast({ key: 'amount_error', content: localized_message, type: 'error', timeout: 2000 });
-                setAmountError(true);
+                setAmountError?.(true);
                 return 'error';
             } else if (isNaN(selected_value) || selected_value < min_amount || value.toString().length < 1) {
                 addToast({ key: 'amount_error', content: localized_message, type: 'error', timeout: 2000 });
-                setAmountError(true);
+                setAmountError?.(true);
                 return false;
             } else if (selected_value < Number(min_stake)) {
                 addToast({ key: 'amount_error', content: min_max_stake_message, type: 'error', timeout: 2000 });
-                setAmountError(true);
+                setAmountError?.(true);
                 return 'error';
             }
-            setAmountError(false);
+            setAmountError?.(false);
             return true;
         };
 
@@ -116,7 +119,7 @@ const Basis = observer(
                         })}
                     >
                         <Numpad
-                            value={selected_basis}
+                            value={selected_basis || ''}
                             format={formatAmount}
                             onSubmit={setBasisAndAmount}
                             currency={currency}

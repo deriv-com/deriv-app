@@ -1,17 +1,18 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ContractTypeWidget from '../contract-type-widget';
-import { useStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
+import TraderProviders from '../../../../../../trader-providers';
 
-jest.mock('@deriv/stores', () => ({
-    ...jest.requireActual('@deriv/stores'),
-    observer: jest.fn(x => x),
-    useStore: jest.fn(() => ({
-        ui: {
-            is_mobile: false,
+const mock_connect_props = {
+    modules: {
+        trade: {
+            symbol: 'R_100',
         },
-    })),
-}));
+    },
+    active_symbols: { active_symbols: [] },
+    ui: { is_mobile: false },
+};
 
 describe('<ContractTypeWidget />', () => {
     const list = [
@@ -77,18 +78,43 @@ describe('<ContractTypeWidget />', () => {
         },
     ];
 
+    const unavailable_trade_types_list = [
+        {
+            contract_types: [{ text: 'Vanillas', value: 'vanilla' }],
+            icon: 'IcVanillas',
+            is_unavailable: true,
+            key: 'Vanillas',
+            label: 'Vanillas',
+        },
+        {
+            contract_types: [{ text: 'Accumulators', value: 'accumulator' }],
+            icon: 'IcAccumulators',
+            is_unavailable: true,
+            key: 'Accumulators',
+            label: 'Accumulators',
+        },
+    ];
+
     const item = {
         text: 'Multipliers',
         value: 'multiplier',
     };
 
     it('should render <ContractTypeMenu /> component when click on ', () => {
-        (useStore as jest.Mock).mockReturnValue({
-            ui: {
-                is_mobile: false,
-            },
-        });
-        render(<ContractTypeWidget name='test_name' onChange={jest.fn()} list={list} value={item.value} />);
+        render(
+            <ContractTypeWidget
+                name='test_name'
+                onChange={jest.fn()}
+                list={list}
+                unavailable_trade_types_list={unavailable_trade_types_list}
+                value={item.value}
+            />,
+            {
+                wrapper: ({ children }) => (
+                    <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+                ),
+            }
+        );
         expect(screen.getByTestId('dt_contract_widget')).toBeInTheDocument();
     });
 });

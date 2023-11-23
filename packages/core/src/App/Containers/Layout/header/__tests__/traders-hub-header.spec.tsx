@@ -32,10 +32,26 @@ jest.mock('Assets/SvgComponents/header/deriv-rebranding-logo.svg', () => jest.fn
 jest.mock('../../../CurrencySelectionModal', () => jest.fn(() => <div>MockedCurrencySelectionModal</div>));
 jest.mock('../show-notifications', () => jest.fn(() => <div>MockedShowNotifications</div>));
 
+jest.mock('@deriv/hooks', () => ({
+    useFeatureFlags: () => ({
+        is_next_wallet_enabled: false,
+    }),
+    useIsRealAccountNeededForCashier: () => false,
+    useHasSetCurrency: () => true,
+}));
+
 describe('TradersHubHeader', () => {
     const renderComponent = () =>
         render(
-            <StoreProvider store={mockStore({})}>
+            <StoreProvider
+                store={mockStore({
+                    feature_flags: {
+                        data: {
+                            next_wallet: true,
+                        },
+                    },
+                })}
+            >
                 <TradersHubHeader />
             </StoreProvider>
         );

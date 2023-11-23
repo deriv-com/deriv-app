@@ -15,7 +15,7 @@ export type TFilterMessageValues = {
     className: string;
     date: string;
     extra: TExtraFilterMessage | TExtraJournal;
-    message: string;
+    message: string | ((value: () => void) => string);
     message_type: string;
     time: string;
     unique_id: string;

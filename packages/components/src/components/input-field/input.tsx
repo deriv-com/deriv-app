@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import { TInputMode } from './input-field';
 
+export type TInputMode = 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal';
 type TInputProps = {
     ariaLabel?: string;
     changeValue: (
@@ -36,7 +36,7 @@ type TInputProps = {
     onKeyPressed: React.KeyboardEventHandler<HTMLInputElement>;
     placeholder?: string;
     required?: boolean;
-    setCurrentFocus: (name: string | null) => void;
+    setCurrentFocus?: (name: string | null) => void;
     type: string;
     value?: number | string;
 };
@@ -80,12 +80,10 @@ const Input = ({
     }, [current_focus, name]);
 
     const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
-        setCurrentFocus(null);
-        if (onBlur) {
-            onBlur(e);
-        }
+        setCurrentFocus?.(null);
+        onBlur?.(e);
     };
-    const onFocus = () => setCurrentFocus(name);
+    const onFocus = () => setCurrentFocus?.(name);
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         /**

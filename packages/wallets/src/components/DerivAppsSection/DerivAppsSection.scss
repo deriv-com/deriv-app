@@ -1,0 +1,32 @@
+@import '../SkeletonLoader/SkeletonLoader.scss';
+
+.wallets-deriv-apps-section {
+    display: flex;
+    min-width: 35.2rem;
+    height: 8.8rem;
+    padding: 0rem 1.6rem;
+    align-items: center;
+    gap: 1.6rem;
+
+    border-radius: 0.8rem;
+    border: 0.1rem solid var(--system-light-7-secondary-background, #f2f3f4);
+
+    &__title-and-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        flex: 1 0 0;
+        user-select: none;
+    }
+}
+
+.wallets-deriv-apps-balance-loader {
+    padding: 0.7rem;
+    width: 8rem;
+}

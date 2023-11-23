@@ -79,7 +79,9 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                         get_account_status_response.get_account_status.authentication;
                     const needs_poinc =
                         needs_verification.includes('income') &&
-                        [income_status_codes.REJECTED, income_status_codes.NONE].includes(income?.status);
+                        [income_status_codes.REJECTED, income_status_codes.NONE].some(
+                            status => status === income?.status
+                        );
                     removeNotificationMessage({ key: 'needs_poinc' });
                     removeNotificationByKey({ key: 'needs_poinc' });
                     removeNotificationMessage({ key: 'poinc_upload_limited' });
@@ -153,7 +155,7 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                                                 label={localize('Select your document*')}
                                                 value={values.document_type}
                                                 list_items={poinc_documents_list}
-                                                error={touched.document_type && errors.document_type}
+                                                error={touched.document_type ? errors.document_type : undefined}
                                                 use_text
                                                 onChange={e => {
                                                     setFieldValue('document_type', e.target.value, true);

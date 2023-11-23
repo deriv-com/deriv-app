@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { useExchangeRate } from '@deriv/api';
-import { WalletButton, WalletText, WalletTextField, WalletsPercentageSelector } from '../../../../../../components';
+import { WalletButton, WalletsPercentageSelector, WalletText, WalletTextField } from '../../../../../../components';
 import type { THooks } from '../../../../../../types';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
 import './WithdrawalCryptoForm.scss';

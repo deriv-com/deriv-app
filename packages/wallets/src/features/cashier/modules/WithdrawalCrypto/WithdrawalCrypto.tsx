@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig } from '@deriv/api';
 import { WalletText } from '../../../../components';
+import { THooks } from '../../../../types';
 import { TransactionStatus } from '../TransactionStatus';
 import { WithdrawalCryptoDisclaimer, WithdrawalCryptoForm, WithdrawalCryptoReceipt } from './components';
 import { TWithdrawalReceipt } from './types';
-import { THooks } from 'src/types';
 import './WithdrawalCrypto.scss';
 
 type TWithdrawalCryptoProps = {
@@ -19,11 +19,11 @@ const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificat
     const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({ address: '' });
 
     const requestCryptoWithdrawal = (values: Parameters<THooks.CryptoWithdrawal>[0]) => {
-        const { address, amount, verification_code } = values;
+        const { address, amount, verification_code: verificationCode } = values;
         mutateAsync({
             address,
             amount,
-            verification_code,
+            verification_code: verificationCode,
         }).then(() =>
             setWithdrawalReceipt({
                 address,

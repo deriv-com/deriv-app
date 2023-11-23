@@ -43,7 +43,7 @@ const DigitForm = observer(() => {
             return { digit_code: localize('Digit code is required.') };
         } else if (digit_code.length !== 6) {
             return { digit_code: localize('Length of digit code must be 6 characters.') };
-        } else if (!/^[0-9]{6}$/g.test(digit_code)) {
+        } else if (!/^\d{6}$/g.test(digit_code)) {
             return { digit_code: localize('Digit code must only contain numbers.') };
         } else if (formik_ref.current?.isValid) {
             const totp_action = has_enabled_two_fa ? 'disable' : 'enable';

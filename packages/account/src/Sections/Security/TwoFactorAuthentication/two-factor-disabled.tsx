@@ -36,6 +36,7 @@ const TwoFactorDisabled = ({ secret_key, qr_secret_key, is_qr_loading }: TTwoFac
                                         target='_blank'
                                         rel='noopener noreferrer'
                                         key={0}
+                                        aria-label={localize('Authy')}
                                     />,
                                     <a
                                         className='link two-factor__link'
@@ -43,6 +44,7 @@ const TwoFactorDisabled = ({ secret_key, qr_secret_key, is_qr_loading }: TTwoFac
                                         target='_blank'
                                         rel='noopener noreferrer'
                                         key={1}
+                                        aria-label={localize('Google Authenticator')}
                                     />,
                                 ]}
                             />

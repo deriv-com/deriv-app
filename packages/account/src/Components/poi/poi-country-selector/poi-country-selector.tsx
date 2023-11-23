@@ -59,7 +59,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
     }
     if (mismatch_status === idv_error_statuses.poi_high_risk) {
         failed_message = (
-            <Localize i18n_default_text='For optimal account security, we need to reverify your identity. Kindly resubmit your proof of identity to unlock your account.' />
+            <Localize i18n_default_text='For enhanced security, we need to reverify your identity. Kindly resubmit your proof of identity to unlock your account.' />
         );
     }
 

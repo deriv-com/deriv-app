@@ -134,7 +134,7 @@ describe('<CountrySelector/>', () => {
 
         expect(
             screen.getByText(
-                'For optimal account security, we need to reverify your identity. Kindly resubmit your proof of identity to unlock your account.'
+                'For enhanced security, we need to reverify your identity. Kindly resubmit your proof of identity to unlock your account.'
             )
         ).toBeInTheDocument();
     });

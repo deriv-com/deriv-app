@@ -69,6 +69,7 @@ const PersonalDetails = () => {
                     variant='comboBox'
                 />
                 <FlowTextField
+                    defaultValue={getSettings?.tax_identification_number ?? formValues?.taxIdentificationNumber}
                     errorMessage={'Please fill in tax residence'}
                     isInvalid={!formValues.taxResidence || !formValues.taxIdentificationNumber}
                     label='Tax identification number*'

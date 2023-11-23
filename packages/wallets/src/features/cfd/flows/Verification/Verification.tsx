@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { useAuthentication, usePOA, usePOI, useSettings } from '@deriv/api';
+import { usePOA, usePOI, useSettings } from '@deriv/api';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { Loader } from '../../../../components/Loader';
@@ -36,18 +36,19 @@ type TVerificationProps = {
 const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
-    const { data: authenticationData } = useAuthentication();
-    const { data: getSettings } = useSettings();
+    const { data: getSettings, update: updateSettings } = useSettings();
     const { getModalState, hide, show } = useModal();
 
     const selectedMarketType = getModalState('marketType') || 'all';
     const platform = getModalState('platform') || 'mt5';
+    const shouldSubmitPOA = useMemo(
+        () => !poaStatus?.has_attempted_poa || (!poaStatus?.is_pending && !poaStatus.is_verified),
+        [poaStatus]
+    );
 
     const isLoading = useMemo(() => {
         return !isSuccessPOIStatus || !isSuccessPOAStatus;
     }, [isSuccessPOIStatus, isSuccessPOAStatus]);
-
-    const hasAttemptedPOA = poaStatus?.has_attempted_poa || true;
 
     const initialScreenId: keyof typeof screens = useMemo(() => {
         const service = (poiStatus?.current?.service || 'manual') as keyof THooks.POI['services'];
@@ -56,9 +57,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             const serviceStatus = poiStatus.status;
 
             if (!isSuccessPOIStatus) return 'loadingScreen';
-
             if (serviceStatus === 'pending' || serviceStatus === 'verified') {
-                if (authenticationData?.is_poa_needed && !hasAttemptedPOA) return 'poaScreen';
+                if (shouldSubmitPOA) return 'poaScreen';
                 if (!getSettings?.has_submitted_personal_details) return 'personalDetailsScreen';
                 show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             }
@@ -69,8 +69,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     }, [
         poiStatus,
         isSuccessPOIStatus,
-        authenticationData?.is_poa_needed,
-        hasAttemptedPOA,
+        shouldSubmitPOA,
         getSettings?.has_submitted_personal_details,
         show,
         selectedMarketType,
@@ -87,6 +86,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.dateOfBirth ||
                     !!errors.documentNumber
                 );
+            case 'onfidoScreen':
+                return !formValues.hasSubmittedOnfido;
             case 'personalDetailsScreen':
                 return (
                     !formValues.citizenship ||
@@ -102,9 +103,18 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         }
     };
 
-    const nextFlowHandler = ({ currentScreenId, switchScreen }: TFlowProviderContext<typeof screens>) => {
+    const nextFlowHandler = ({ currentScreenId, formValues, switchScreen }: TFlowProviderContext<typeof screens>) => {
         if (['idvScreen', 'onfidoScreen', 'manualScreen'].includes(currentScreenId)) {
-            if (hasAttemptedPOA) {
+            if (currentScreenId === 'idvScreen') {
+                updateSettings({
+                    date_of_birth: formValues.dateOfBirth,
+                    first_name: formValues.firstName,
+                    last_name: formValues.lastName,
+                });
+            } else if (currentScreenId === 'manualScreen') {
+                // TODO: call the api here
+            }
+            if (shouldSubmitPOA) {
                 switchScreen('poaScreen');
             } else if (!getSettings?.has_submitted_personal_details) {
                 switchScreen('personalDetailsScreen');
@@ -112,8 +122,22 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             }
         } else if (currentScreenId === 'poaScreen') {
+            updateSettings({
+                address_city: formValues.townCityLine,
+                address_line_1: formValues.firstLine,
+                address_line_2: formValues.secondLine,
+                address_postcode: formValues.zipCodeLine,
+                address_state: formValues.stateProvinceDropdownLine,
+            });
             switchScreen('personalDetailsScreen');
         } else if (currentScreenId === 'personalDetailsScreen') {
+            updateSettings({
+                account_opening_reason: formValues.accountOpeningReason,
+                citizen: formValues.citizenship,
+                place_of_birth: formValues.placeOfBirth,
+                tax_identification_number: formValues.taxIdentificationNumber,
+                tax_residence: formValues.taxResidence,
+            });
             show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
         } else {
             hide();
@@ -124,6 +148,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         <FlowProvider
             initialScreenId={initialScreenId}
             initialValues={{
+                hasSubmittedOnfido: false,
                 selectedJurisdiction,
             }}
             screens={screens}

@@ -26,9 +26,6 @@ const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_
                         symbol,
                         timestamp,
                     } = notification;
-                    // TODO: it's visually better to update seconds every second, so need to incapsulate it inside SwipeableNotification:
-                    const seconds = Math.abs(Math.floor(Date.now() / 1000) - timestamp);
-
                     return (
                         <SwipeableNotification
                             key={id}
@@ -60,17 +57,11 @@ const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_
                                     </Text>
                                 </React.Fragment>
                             }
-                            displayed_time={
-                                seconds < 10 ? (
-                                    <Localize i18n_default_text='now' />
-                                ) : (
-                                    <Localize i18n_default_text='{{seconds}}s ago' values={{ seconds }} />
-                                )
-                            }
                             is_failure={!is_opened && profit < 0}
                             is_success={!is_opened && profit >= 0}
                             onUnmount={() => removeTradeNotifications(id)}
                             redirect_to={getContractPath(contract_id)}
+                            timestamp={timestamp}
                             visibility_duration_ms={3000}
                         />
                     );

@@ -255,13 +255,15 @@ const App = () => {
     }
 
     return (
-        <main className='p2p'>
-            <ModalManagerContextProvider>
-                <ModalManager />
-                <AppContent order_id={order_id} />
-                <Routes />
-            </ModalManagerContextProvider>
-        </main>
+        <>
+            <main className='p2p'>
+                <ModalManagerContextProvider>
+                    <ModalManager />
+                    <AppContent order_id={order_id} />
+                    <Routes />
+                </ModalManagerContextProvider>
+            </main>
+        </>
     );
 };
 

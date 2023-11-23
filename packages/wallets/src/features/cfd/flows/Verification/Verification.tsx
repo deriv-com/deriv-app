@@ -1,5 +1,4 @@
 import React, { FC, useMemo } from 'react';
-import * as Yup from 'yup';
 import { useAuthentication, usePOA, usePOI, useSettings } from '@deriv/api';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
@@ -38,7 +37,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: poiStatus, isSuccess: isSuccessPOIStatus } = usePOI();
     const { data: poaStatus, isSuccess: isSuccessPOAStatus } = usePOA();
     const { data: authenticationData } = useAuthentication();
-    const { data: getSettings } = useSettings();
+    const { data: getSettings, update: updateSettings } = useSettings();
     const { getModalState, hide, show } = useModal();
 
     const selectedMarketType = getModalState('marketType') || 'all';
@@ -78,15 +77,18 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         platform,
     ]);
 
-    const isNextDisabled = ({ currentScreenId, formValues }: TFlowProviderContext<typeof screens>) => {
+    const isNextDisabled = ({ currentScreenId, errors, formValues }: TFlowProviderContext<typeof screens>) => {
         switch (currentScreenId) {
             case 'idvScreen':
                 return (
                     !formValues.documentNumber ||
                     !formValues.firstName ||
                     !formValues.lastName ||
-                    !formValues.dateOfBirth
+                    !formValues.dateOfBirth ||
+                    !!errors.documentNumber
                 );
+            case 'onfidoScreen':
+                return !formValues.hasSubmittedOnfido;
             case 'personalDetailsScreen':
                 return (
                     !formValues.citizenship ||
@@ -102,8 +104,17 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
         }
     };
 
-    const nextFlowHandler = ({ currentScreenId, switchScreen }: TFlowProviderContext<typeof screens>) => {
+    const nextFlowHandler = ({ currentScreenId, formValues, switchScreen }: TFlowProviderContext<typeof screens>) => {
         if (['idvScreen', 'onfidoScreen', 'manualScreen'].includes(currentScreenId)) {
+            if (currentScreenId === 'idvScreen') {
+                updateSettings({
+                    date_of_birth: formValues.dateOfBirth,
+                    first_name: formValues.firstName,
+                    last_name: formValues.lastName,
+                });
+            } else if (currentScreenId === 'manualScreen') {
+                // TODO: call the api here
+            }
             if (hasAttemptedPOA) {
                 switchScreen('poaScreen');
             } else if (!getSettings?.has_submitted_personal_details) {
@@ -112,32 +123,36 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             }
         } else if (currentScreenId === 'poaScreen') {
-            if (!getSettings?.has_submitted_personal_details) {
-                switchScreen('personalDetailsScreen');
-            }
+            updateSettings({
+                address_city: formValues.townCityLine,
+                address_line_1: formValues.firstLine,
+                address_line_2: formValues.secondLine,
+                address_postcode: formValues.zipCodeLine,
+                address_state: formValues.stateProvinceDropdownLine,
+            });
+            switchScreen('personalDetailsScreen');
         } else if (currentScreenId === 'personalDetailsScreen') {
+            updateSettings({
+                account_opening_reason: formValues.accountOpeningReason,
+                citizen: formValues.citizenship,
+                place_of_birth: formValues.placeOfBirth,
+                tax_identification_number: formValues.taxIdentificationNumber,
+                tax_residence: formValues.taxResidence,
+            });
             show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
         } else {
             hide();
         }
     };
 
-    // NOTE: These are test validations, add the correct validators here for different screens
-    const validationSchema = Yup.object().shape({
-        dateOfBirth: Yup.date().required(),
-        documentNumber: Yup.string().min(12, 'document number should have minimum 12 characters').required(),
-        firstName: Yup.string().min(1).max(5).required(),
-        lastName: Yup.string().min(1).max(20).required(),
-    });
-
     return (
         <FlowProvider
             initialScreenId={initialScreenId}
             initialValues={{
+                hasSubmittedOnfido: false,
                 selectedJurisdiction,
             }}
             screens={screens}
-            validationSchema={validationSchema}
         >
             {context => {
                 return (

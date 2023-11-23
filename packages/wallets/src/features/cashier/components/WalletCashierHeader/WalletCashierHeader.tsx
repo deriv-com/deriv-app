@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount, useActiveWalletBalance } from '@deriv/api';
 import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useDevice from '../../../../hooks/useDevice';
@@ -64,6 +64,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
+    const { displayBalance } = useActiveWalletBalance();
     const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
 
     useEffect(() => {
@@ -102,7 +103,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                             )}
                         </div>
                         <WalletText color={activeWallet?.is_virtual ? 'white' : 'general'} size='xl' weight='bold'>
-                            {activeWallet?.display_balance}
+                            {displayBalance}
                         </WalletText>
                     </div>
                     <div className='wallets-cashier-header__top-right-info'>
@@ -125,7 +126,10 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                 </section>
                 <section className='wallets-cashier-header__tabs'>
                     {tabs.map(tab => {
-                        const isActiveTab = location.pathname === `/wallets/cashier/${tab.path}`;
+                        const isActiveTab =
+                            location.pathname === `/wallets/cashier/on-ramp`
+                                ? tab.path === 'deposit'
+                                : location.pathname === `/wallets/cashier/${tab.path}`;
                         return (
                             <button
                                 className={`wallets-cashier-header__tab ${

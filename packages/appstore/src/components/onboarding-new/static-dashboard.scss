@@ -36,8 +36,7 @@
     }
 
     @include mobile {
-        width: 90%;
-        margin-inline: 5%;
+        width: 90vw;
     }
 
     &-wrapper {
@@ -74,8 +73,15 @@
         &__bordered,
         &__bordered--with-margin {
             @include mobile {
-                padding: 1.2rem;
+                padding: 3rem 3rem 15rem;
+                height: 48vh;
                 border: none;
+                overflow-y: scroll;
+                overflow-x: hidden;
+
+                @media (max-height: 680px) {
+                    height: 38vh;
+                }
             }
         }
 

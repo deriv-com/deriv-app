@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, act, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import ProofOfIdentityContainer from '../proof-of-identity-container';
 import { populateVerificationStatus } from '../../Helpers/verification.js';
 import { identity_status_codes, service_code } from '../proof-of-identity-utils';
@@ -184,16 +184,18 @@ describe('ProofOfIdentityContainer', () => {
 
         renderComponent({ store_config: new_store });
 
-        await waitFor(() => {});
-        expect(screen.getByText('mockedLoading')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('mockedLoading')).toBeInTheDocument();
+        });
     });
 
     it('should render message when account is virtual', async () => {
         const new_store = { ...store, client: { ...store.client, is_virtual: true } };
 
         renderComponent({ store_config: new_store });
-        await waitFor(() => {});
-        expect(screen.getByText('mockedDemoMessage')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('mockedDemoMessage')).toBeInTheDocument();
+        });
     });
 
     it('should render API error message returned in response', async () => {
@@ -210,25 +212,28 @@ describe('ProofOfIdentityContainer', () => {
         };
 
         renderComponent({ store_config: new_store });
-        await waitFor(() => {});
-        expect(screen.getByText('mockedErrorMessage')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('mockedErrorMessage')).toBeInTheDocument();
+        });
     });
 
     it('should render messages that POA is not required', async () => {
         renderComponent({});
-        await waitFor(() => {});
-        expect(screen.getByText('mockedNotRequired')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('mockedNotRequired')).toBeInTheDocument();
+        });
     });
 
     it('should render POI submission section when status is none', async () => {
         populateVerificationStatus.mockReturnValue({
             identity_status: identity_status_codes.none,
             is_age_verified: true,
+            idv: { submissions_left: 3 },
         });
 
         renderComponent({});
         await waitFor(() => {});
-        expect(screen.getByText('mockedProofOfIdentitySubmission')).toBeInTheDocument();
+        expect(await screen.findByText('mockedProofOfIdentitySubmission')).toBeInTheDocument();
     });
 
     it('should render POI submission section when allow_poi_resubmission is set', async () => {
@@ -236,11 +241,13 @@ describe('ProofOfIdentityContainer', () => {
             allow_poi_resubmission: true,
             is_age_verified: true,
             identity_status: identity_status_codes.verified,
+            idv: { submissions_left: 3 },
         });
 
         renderComponent({});
-        await waitFor(() => {});
-        expect(screen.getByText('mockedProofOfIdentitySubmission')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('mockedProofOfIdentitySubmission')).toBeInTheDocument();
+        });
     });
 
     it('should render Upload complete section when status is pending', async () => {
@@ -248,10 +255,12 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: null,
             is_age_verified: true,
             identity_status: identity_status_codes.pending,
+            idv: { submissions_left: 3 },
         });
         renderComponent({});
-        await waitFor(() => {});
-        expect(screen.getByText('mockedUploadComplete')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('mockedUploadComplete')).toBeInTheDocument();
+        });
     });
 
     it('should render Verified section when status is verified', async () => {
@@ -259,11 +268,13 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: null,
             is_age_verified: true,
             identity_status: identity_status_codes.verified,
+            idv: { submissions_left: 3 },
         });
 
         renderComponent({});
-        await waitFor(() => {});
-        expect(screen.getByText('mockedVerified')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('mockedVerified')).toBeInTheDocument();
+        });
     });
 
     it('should render Expired section when status is expired', async () => {
@@ -271,10 +282,12 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: null,
             is_age_verified: true,
             identity_status: identity_status_codes.expired,
+            idv: { submissions_left: 3 },
         });
         renderComponent({});
-        await waitFor(() => {});
-        expect(screen.getByText('mockedExpired')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('mockedExpired')).toBeInTheDocument();
+        });
     });
 
     it('should render Limited section when status is rejected', async () => {
@@ -282,11 +295,13 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: null,
             is_age_verified: true,
             identity_status: identity_status_codes.rejected,
+            idv: { submissions_left: 3 },
         });
 
         renderComponent({});
-        await waitFor(() => {});
-        expect(screen.getByText('mockedLimited')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('mockedLimited')).toBeInTheDocument();
+        });
     });
 
     it('should render Onfido section when there was a previous onfido submission', async () => {
@@ -294,11 +309,13 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: { service: service_code.onfido },
             is_age_verified: true,
             identity_status: identity_status_codes.rejected,
+            idv: { submissions_left: 3 },
         });
 
         renderComponent({});
-        await waitFor(() => {});
-        expect(screen.getByText('mockedOnfido')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('mockedOnfido')).toBeInTheDocument();
+        });
     });
 
     it('should render IDV section when there was a previous IDV submission', async () => {
@@ -306,11 +323,13 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: { service: service_code.idv },
             is_age_verified: true,
             identity_status: identity_status_codes.rejected,
+            idv: { submissions_left: 3 },
         });
 
         renderComponent({});
-        await waitFor(() => {});
-        expect(screen.getByText('mockedIDV')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('mockedIDV')).toBeInTheDocument();
+        });
     });
 
     it('should render Manual section when there was a previous manual submission', async () => {
@@ -318,10 +337,12 @@ describe('ProofOfIdentityContainer', () => {
             identity_last_attempt: { service: service_code.manual },
             is_age_verified: true,
             identity_status: identity_status_codes.rejected,
+            idv: { submissions_left: 3 },
         });
 
         renderComponent({});
-        await waitFor(() => {});
-        expect(screen.getByText('mockedUnsupported')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(screen.getByText('mockedUnsupported')).toBeInTheDocument();
+        });
     });
 });

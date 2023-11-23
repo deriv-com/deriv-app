@@ -7,7 +7,7 @@ type TWalletDescriptionMapper = {
 };
 
 type TProps = {
-    currency: Exclude<THooks.AvailableWallets['currency'], undefined>;
+    currency: Exclude<THooks.AllWalletAccounts['currency'], undefined>;
 };
 
 const walletDescriptionMapper: TWalletDescriptionMapper = {

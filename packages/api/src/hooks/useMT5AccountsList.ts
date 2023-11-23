@@ -33,7 +33,7 @@ const useMT5AccountsList = () => {
             /** The id of the account */
             loginid: account.login,
             /** The platform of the account */
-            platform: 'mt5',
+            platform: 'mt5' as const,
             /** The balance of the account in currency format. */
             display_balance: displayMoney(account.balance || 0, account.currency || 'USD', {
                 preferred_language: authorize_data?.preferred_language,

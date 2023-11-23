@@ -34,7 +34,7 @@ $size-map: (
 );
 
 .wallets-button {
-    display: inline-flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.8rem;
@@ -99,7 +99,7 @@ $size-map: (
 
     &__loader {
         .wallets-loader {
-            width: 2rem;
+            width: 5rem;
             height: 1.2rem;
 
             &__element {

@@ -18,6 +18,7 @@ interface WalletButtonProps {
     rounded?: Extract<TGenericSizes, 'md' | 'sm'>;
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     text?: React.ReactNode;
+    type?: ComponentProps<'button'>['type'];
     variant?: TVariant;
 }
 
@@ -31,6 +32,7 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     rounded = 'sm',
     size = 'md',
     text,
+    type,
     variant = 'contained',
 }) => {
     const isContained = variant === 'contained';
@@ -79,13 +81,13 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     };
 
     const buttonFontSizeMapper = {
-        lg: 'sm',
+        lg: 'md',
         md: 'sm',
         sm: 'xs',
     } as const;
 
     return (
-        <button className={buttonClassNames} disabled={disabled} onClick={onClick}>
+        <button className={buttonClassNames} disabled={disabled} onClick={onClick} type={type}>
             {isLoading && (
                 <div className='wallets-button__loader'>
                     <Loader color={isContained ? loaderColorMapper[color] : '#85ACB0'} isFullScreen={false} />

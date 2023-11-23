@@ -9,7 +9,7 @@ import { REGION } from '../../Helpers/cfd-config';
 
 const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareAccountsCard) => {
     const market_type = getMarketType(trading_platforms);
-    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
+    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode ?? '');
     const juridisction_data = getJuridisctionDescription(market_type_shortcode);
     const { traders_hub } = useStore();
     const { selected_region } = traders_hub;

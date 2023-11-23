@@ -9,7 +9,7 @@ import Notification, {
     max_display_notifications,
     max_display_notifications_mobile,
 } from '../Components/Elements/NotificationMessage';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 import { useLocation } from 'react-router-dom';
 import {
     excluded_notifications,
@@ -53,16 +53,19 @@ const NotificationsContent = ({ is_notification_loaded, style, notifications, re
     );
 };
 
-const AppNotificationMessages = ({
+const AppNotificationMessages = observer(({
     is_notification_loaded,
     is_mt5,
-    marked_notifications,
-    notification_messages,
-    removeNotificationMessage,
     stopNotificationLoading,
-    markNotificationMessage,
-    should_show_popups,
 }) => {
+    const { notifications } = useStore()
+    const {
+        marked_notifications,
+        notification_messages,
+        removeNotificationMessage,
+        markNotificationMessage,
+        should_show_popups,
+    } = notifications
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
 
@@ -83,42 +86,42 @@ const AppNotificationMessages = ({
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
             ? [
-                  ...maintenance_notifications,
-                  'authenticate',
-                  'deriv_go',
-                  'document_needs_action',
-                  'dp2p',
-                  'contract_sold',
-                  'has_changed_two_fa',
-                  'identity',
-                  'install_pwa',
-                  'need_fa',
-                  'notify_financial_assessment',
-                  'poi_name_mismatch',
-                  'poa_address_mismatch_failure',
-                  'poa_address_mismatch_success',
-                  'poa_address_mismatch_warning',
-                  'poa_expired',
-                  'poa_failed',
-                  'poa_rejected_for_mt5',
-                  'poa_verified',
-                  'poi_expired',
-                  'poi_failed',
-                  'poi_verified',
-                  'p2p_daily_limit_increase',
-                  'resticted_mt5_with_failed_poa',
-                  'resticted_mt5_with_pending_poa',
-                  'svg_needs_poa',
-                  'svg_needs_poi',
-                  'svg_needs_poi_poa',
-                  'svg_poi_expired',
-                  'wallets_migrated',
-                  'wallets_failed',
-                  'tnc',
-                  'trustpilot',
-                  'unwelcome',
-                  'additional_kyc_info',
-              ].includes(message.key) || message.type === 'p2p_completed_order'
+                ...maintenance_notifications,
+                'authenticate',
+                'deriv_go',
+                'document_needs_action',
+                'dp2p',
+                'contract_sold',
+                'has_changed_two_fa',
+                'identity',
+                'install_pwa',
+                'need_fa',
+                'notify_financial_assessment',
+                'poi_name_mismatch',
+                'poa_address_mismatch_failure',
+                'poa_address_mismatch_success',
+                'poa_address_mismatch_warning',
+                'poa_expired',
+                'poa_failed',
+                'poa_rejected_for_mt5',
+                'poa_verified',
+                'poi_expired',
+                'poi_failed',
+                'poi_verified',
+                'p2p_daily_limit_increase',
+                'resticted_mt5_with_failed_poa',
+                'resticted_mt5_with_pending_poa',
+                'svg_needs_poa',
+                'svg_needs_poi',
+                'svg_needs_poi_poa',
+                'svg_poi_expired',
+                'wallets_migrated',
+                'wallets_failed',
+                'tnc',
+                'trustpilot',
+                'unwelcome',
+                'additional_kyc_info',
+            ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
 
         const is_only_for_p2p_notification =
@@ -145,8 +148,8 @@ const AppNotificationMessages = ({
     const notifications_sublist =
         window.location.pathname === routes.cashier_deposit
             ? filtered_excluded_notifications.filter(message =>
-                  ['switched_to_real', ...maintenance_notifications].includes(message.key)
-              )
+                ['switched_to_real', ...maintenance_notifications].includes(message.key)
+            )
             : filtered_excluded_notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
@@ -164,33 +167,12 @@ const AppNotificationMessages = ({
             </Portal>
         </div>
     ) : null;
-};
+});
 
 AppNotificationMessages.propTypes = {
     is_mt5: PropTypes.bool,
     is_notification_loaded: PropTypes.bool,
-    marked_notifications: PropTypes.array,
-    markNotificationMessage: PropTypes.func,
-    notification_messages: PropTypes.arrayOf(
-        PropTypes.shape({
-            closeOnClick: PropTypes.func,
-            delay: PropTypes.number,
-            header: PropTypes.string,
-            is_auto_close: PropTypes.bool,
-            message: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-            size: PropTypes.oneOf(['small']),
-            type: PropTypes.oneOf(['warning', 'info', 'success', 'danger', 'contract_sold', 'news', 'announce']),
-        })
-    ),
-    removeNotificationMessage: PropTypes.func,
-    should_show_popups: PropTypes.bool,
     stopNotificationLoading: PropTypes.func,
 };
 
-export default connect(({ notifications }) => ({
-    marked_notifications: notifications.marked_notifications,
-    notification_messages: notifications.notification_messages,
-    removeNotificationMessage: notifications.removeNotificationMessage,
-    markNotificationMessage: notifications.markNotificationMessage,
-    should_show_popups: notifications.should_show_popups,
-}))(AppNotificationMessages);
+export default (AppNotificationMessages);

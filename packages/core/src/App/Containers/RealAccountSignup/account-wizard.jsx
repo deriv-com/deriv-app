@@ -6,7 +6,7 @@ import React from 'react';
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
 import { WS, getLocation, toMoment, formatIDVFormValues } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer,useStore } from '@deriv/stores';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
@@ -51,7 +51,39 @@ const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, ge
     );
 };
 
-const AccountWizard = props => {
+const AccountWizard = observer(props => {
+    const { client, notifications, ui, traders_hub } =useStore()
+    const {
+        account_settings,
+        account_status,
+        fetchAccountSettings,
+        fetchResidenceList,
+        fetchStatesList,
+        financial_assessment,
+        currency,
+        has_active_real_account:has_real_account,
+        residence:has_residence,
+        is_fully_authenticated,
+        is_virtual,
+        realAccountSignup,
+        residence_list,
+        residence,
+        states_list,
+        upgrade_info,
+    } =client
+    const {refreshNotifications} =notifications
+    const {content_flag} =traders_hub
+    const {
+        closeRealAccountSignup,
+        real_account_signup_target,
+        setIsRealAccountSignupModalVisible,
+        setIsTradingAssessmentForNewUserEnabled,
+        setShouldShowAppropriatenessWarningModal,
+        setShouldShowRiskWarningModal,
+        setSubSectionIndex,
+        sub_section_index,
+    } =ui
+    const has_currency =!!currency
     const [finished] = React.useState(undefined);
     const [mounted, setMounted] = React.useState(false);
     const [form_error, setFormError] = React.useState('');
@@ -61,12 +93,6 @@ const AccountWizard = props => {
     const is_high_risk_client_for_mt5 = useIsClientHighRiskForMT5();
 
     const {
-        setIsTradingAssessmentForNewUserEnabled,
-        residence_list,
-        states_list,
-        fetchResidenceList,
-        fetchStatesList,
-        has_residence,
         setLoading,
     } = props;
 
@@ -142,7 +168,7 @@ const AccountWizard = props => {
     };
 
     const getCountryCode = async residences => {
-        const response = residences.find(item => item.value === props.residence);
+        const response = residences.find(item => item.value === residence);
         if (!response || !response.phone_idd) return '';
         return `+${response.phone_idd}`;
     };
@@ -236,7 +262,7 @@ const AccountWizard = props => {
                 ...payload,
             };
         }
-        return props.realAccountSignup(clone);
+        return realAccountSignup(clone);
     };
 
     const updateValue = (index, value, setSubmitting, goToNextStep, should_override = false) => {
@@ -286,14 +312,14 @@ const AccountWizard = props => {
         submitForm(payload)
             .then(async response => {
                 props.setIsRiskWarningVisible(false);
-                if (props.real_account_signup_target === 'maltainvest') {
+                if (real_account_signup_target === 'maltainvest') {
                     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
-                } else if (props.real_account_signup_target === 'samoa') {
+                } else if (real_account_signup_target === 'samoa') {
                     props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
                 } else {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
-                const country_code = props.account_settings.citizen || props.residence;
+                const country_code = account_settings.citizen || residence;
                 /**
                  * If IDV details are present, then submit IDV details
                  */
@@ -311,10 +337,10 @@ const AccountWizard = props => {
                     setShouldAcceptFinancialRisk(true);
                 } else if (error.code === 'AppropriatenessTestFailed') {
                     if (form_data?.risk_tolerance === 'No') {
-                        props.fetchAccountSettings();
-                        props.setShouldShowRiskWarningModal(true);
+                        fetchAccountSettings();
+                        setShouldShowRiskWarningModal(true);
                     } else {
-                        props.setShouldShowAppropriatenessWarningModal(true);
+                        setShouldShowAppropriatenessWarningModal(true);
                     }
                 } else {
                     props.onError(error, state_items);
@@ -356,9 +382,9 @@ const AccountWizard = props => {
                     onSubmit={updateValue}
                     onCancel={prevStep}
                     onSave={saveFormData}
-                    closeRealAccountSignup={props.closeRealAccountSignup}
-                    is_virtual={props.is_virtual}
-                    has_currency={props.has_currency}
+                    closeRealAccountSignup={closeRealAccountSignup}
+                    is_virtual={is_virtual}
+                    has_currency={has_currency}
                     form_error={form_error}
                     {...passthrough}
                     key={step_index}
@@ -368,13 +394,13 @@ const AccountWizard = props => {
         });
 
         let navHeader = <div />;
-        if (props.real_account_signup_target !== 'samoa') {
+        if (real_account_signup_target !== 'samoa') {
             navHeader = (
                 <StepperHeader
-                    has_real_account={props.has_real_account}
+                    has_real_account={has_real_account}
                     items={state_items}
-                    has_currency={props.has_currency}
-                    has_target={props.real_account_signup_target !== 'manage'}
+                    has_currency={has_currency}
+                    has_target={real_account_signup_target !== 'manage'}
                     setIsRiskWarningVisible={props.setIsRiskWarningVisible}
                     sub_section_index={props.sub_section_index}
                 />
@@ -385,8 +411,8 @@ const AccountWizard = props => {
             <Wizard
                 nav={navHeader}
                 className={classNames('account-wizard', {
-                    'account-wizard--set-currency': !props.has_currency,
-                    'account-wizard--deriv-crypto': props.real_account_signup_target === 'samoa',
+                    'account-wizard--set-currency': !has_currency,
+                    'account-wizard--deriv-crypto': real_account_signup_target === 'samoa',
                 })}
             >
                 {wizard_steps}
@@ -396,64 +422,17 @@ const AccountWizard = props => {
 
     const FinishedModalItem = getFinishedComponent();
     return <FinishedModalItem />;
-};
+});
 
 AccountWizard.propTypes = {
-    account_settings: PropTypes.object,
-    account_status: PropTypes.object,
-    closeRealAccountSignup: PropTypes.func,
-    content_flag: PropTypes.string,
-    fetchResidenceList: PropTypes.func,
-    fetchAccountSettings: PropTypes.func,
-    fetchStatesList: PropTypes.func,
-    has_currency: PropTypes.bool,
-    has_real_account: PropTypes.bool,
-    has_residence: PropTypes.bool,
     is_loading: PropTypes.bool,
-    is_virtual: PropTypes.bool,
     onClose: PropTypes.func,
     onError: PropTypes.func,
     onFinishSuccess: PropTypes.func,
     onLoading: PropTypes.func,
     onOpenWelcomeModal: PropTypes.func,
-    real_account_signup_target: PropTypes.string,
-    realAccountSignup: PropTypes.func,
-    residence_list: PropTypes.array,
-    residence: PropTypes.string,
-    states_list: PropTypes.array,
-    setIsTradingAssessmentForNewUserEnabled: PropTypes.func,
     setIsRiskWarningVisible: PropTypes.func,
     setLoading: PropTypes.func,
-    setShouldShowRiskWarningModal: PropTypes.func,
-    setSubSectionIndex: PropTypes.func,
-    sub_section_index: PropTypes.number,
 };
 
-export default connect(({ client, notifications, ui, traders_hub }) => ({
-    account_settings: client.account_settings,
-    account_status: client.account_status,
-    closeRealAccountSignup: ui.closeRealAccountSignup,
-    content_flag: traders_hub.content_flag,
-    fetchAccountSettings: client.fetchAccountSettings,
-    fetchResidenceList: client.fetchResidenceList,
-    fetchStatesList: client.fetchStatesList,
-    financial_assessment: client.financial_assessment,
-    has_currency: !!client.currency,
-    has_real_account: client.has_active_real_account,
-    has_residence: client.residence,
-    is_fully_authenticated: client.is_fully_authenticated,
-    is_virtual: client.is_virtual,
-    real_account_signup_target: ui.real_account_signup_target,
-    realAccountSignup: client.realAccountSignup,
-    refreshNotifications: notifications.refreshNotifications,
-    residence_list: client.residence_list,
-    residence: client.residence,
-    setIsRealAccountSignupModalVisible: ui.setIsRealAccountSignupModalVisible,
-    setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
-    setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
-    setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
-    states_list: client.states_list,
-    upgrade_info: client.upgrade_info,
-    setSubSectionIndex: ui.setSubSectionIndex,
-    sub_section_index: ui.sub_section_index,
-}))(AccountWizard);
+export default (AccountWizard);

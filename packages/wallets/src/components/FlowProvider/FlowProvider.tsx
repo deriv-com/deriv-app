@@ -36,7 +36,7 @@ export type TFlowProviderProps<T> = {
     initialScreenId?: keyof T;
     initialValues: FormikValues;
     screens: T;
-    validationSchema: Yup.AnyObjectSchema;
+    validationSchema?: Yup.AnyObjectSchema;
 };
 
 const FlowProviderContext = createContext<TFlowProviderContext<TWalletScreens> | null>(null);

@@ -23,7 +23,6 @@ const MultipliersExpirationModal = ({ is_open, toggleModal }: TMultipliersExpira
                     components={[<Expiration key={0} is_text_only text_size='xs' />]}
                 />
             </Text>
-
             <Modal.Footer has_separator>
                 <Button className='dc-btn__wide' large primary has_effect text={localize('OK')} onClick={toggleModal} />
             </Modal.Footer>

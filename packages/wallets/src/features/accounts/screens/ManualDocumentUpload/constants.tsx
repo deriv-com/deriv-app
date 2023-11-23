@@ -23,7 +23,7 @@ export const documentTypes: TDocumentType[] = [
         description: 'Upload the front and back of your driving licence.',
         icon: DrivingLicenseIcon,
         title: 'Driving licence',
-        value: 'driver-license',
+        value: 'driving-license',
     },
     {
         description: 'Upload the front and back of your identity card.',

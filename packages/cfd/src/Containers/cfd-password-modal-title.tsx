@@ -17,8 +17,6 @@ const CFDPasswordModalTitle = observer(({ platform }: TCFDPasswordModalTitleProp
     const accountTitle = (category: typeof CATEGORY[keyof typeof CATEGORY]) => {
         switch (platform) {
             case CFD_PLATFORMS.CTRADER:
-            case CFD_PLATFORMS.DERIVEZ:
-                return 'CFD';
             case CFD_PLATFORMS.DXTRADE:
                 return category === CATEGORY.REAL ? 'Real' : '';
             default:

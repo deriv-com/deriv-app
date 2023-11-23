@@ -30,7 +30,7 @@
         overflow-y: auto;
 
         @include mobile {
-            margin-top: 5.2rem;
+            margin-top: 6rem;
             padding: 0 1.6rem 1.6rem;
             gap: 1.6rem;
             overflow-y: unset;
@@ -75,7 +75,7 @@
     &__header {
         display: flex;
         height: 5.6rem;
-        padding: 0 1.6rem 0 2.4rem;
+        padding: 1.6rem 1.6rem 1.6rem 2.4rem;
         justify-content: space-between;
         align-items: center;
         gap: 1.6rem;
@@ -88,8 +88,7 @@
             right: 0;
             border: none;
             background: var(--system-dark-1-prominent-text, #fff);
-            padding-inline: 2.4rem;
-            padding-block: 1.6rem;
+            padding: 2.4rem 2.4rem 1.6rem;
             height: auto;
             z-index: 10;
         }

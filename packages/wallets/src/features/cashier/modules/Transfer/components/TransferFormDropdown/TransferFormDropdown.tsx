@@ -1,4 +1,4 @@
-import React, { RefObject, useMemo } from 'react';
+import React, { RefObject, useCallback, useMemo } from 'react';
 import { useFormikContext } from 'formik';
 import { WalletListCardBadge, WalletText } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
@@ -12,12 +12,11 @@ import './TransferFormDropdown.scss';
 
 type TProps = {
     fieldName: keyof TInitialTransferFormValues;
-    label: 'Transfer from' | 'Transfer to';
     mobileAccountsListRef: RefObject<HTMLElement>;
 };
 
-const TransferFormDropdown: React.FC<TProps> = ({ fieldName, label, mobileAccountsListRef }) => {
-    const { setFieldValue, values } = useFormikContext<TInitialTransferFormValues>();
+const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListRef }) => {
+    const { setValues, values } = useFormikContext<TInitialTransferFormValues>();
     const { accounts, activeWallet } = useTransfer();
     const { fromAccount, toAccount } = values;
     const { isMobile } = useDevice();
@@ -34,12 +33,30 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, label, mobileAccoun
         return { tradingAccounts: [], walletAccounts: [activeWallet] };
     }, [accounts?.tradingAccounts, accounts?.walletAccounts, activeWallet, fromAccount?.loginid]);
 
-    const selectedAccount = label === 'Transfer from' ? fromAccount : toAccount;
-    const accountsList = label === 'Transfer from' ? accounts : toAccountList;
+    const selectedAccount = fieldName === 'fromAccount' ? fromAccount : toAccount;
+    const accountsList = fieldName === 'fromAccount' ? accounts : toAccountList;
+    const label = fieldName === 'fromAccount' ? 'Transfer from' : 'Transfer to';
 
-    const handleSelect = (value: TInitialTransferFormValues['fromAccount']) => {
-        setFieldValue(fieldName, value);
-    };
+    const handleSelect = useCallback(
+        (account: TInitialTransferFormValues['fromAccount']) => {
+            if (account?.loginid === selectedAccount?.loginid) return;
+
+            setValues(prev => {
+                const fromAccount = fieldName === 'fromAccount' ? account : prev.fromAccount;
+                const computedToAccount = account?.loginid !== activeWallet?.loginid ? activeWallet : undefined;
+                const toAccount = fieldName === 'toAccount' ? account : computedToAccount;
+                return {
+                    ...prev,
+                    activeAmountFieldName: undefined,
+                    fromAccount,
+                    fromAmount: 0,
+                    toAccount,
+                    toAmount: 0,
+                };
+            });
+        },
+        [activeWallet, fieldName, selectedAccount?.loginid, setValues]
+    );
 
     return (
         <button
@@ -83,7 +100,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, label, mobileAccoun
                     {selectedAccount && (
                         <div className='wallets-transfer-form-dropdown__badge'>
                             <WalletListCardBadge
-                                isDemo={Boolean(selectedAccount?.isVirtual)}
+                                isDemo={Boolean(selectedAccount?.demo_account)}
                                 label={selectedAccount?.landingCompanyName}
                             />
                         </div>

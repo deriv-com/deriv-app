@@ -154,7 +154,7 @@ describe('<MultiplierAmountWidget />', () => {
         );
     };
 
-    it('should render only amount of money and Multipliers Info if it is not crypro', () => {
+    it('should render only amount of money and Multipliers Info if it is not crypto', () => {
         render(mockMultiplierAmountWidget());
 
         expect(screen.getByText(/10.00 USD/i)).toBeInTheDocument();
@@ -172,7 +172,7 @@ describe('<MultiplierAmountWidget />', () => {
 
         expect(screen.getByText(multiplier_amount_modal)).toBeInTheDocument();
     });
-    it('should render amount of money, Multipliers Info, Multipliers Expiration if it is crypro', () => {
+    it('should render amount of money, Multipliers Info, Multipliers Expiration if it is crypto', () => {
         default_mocked_store.modules.trade.is_crypto_multiplier = true;
         render(mockMultiplierAmountWidget());
 
@@ -180,7 +180,7 @@ describe('<MultiplierAmountWidget />', () => {
         expect(screen.getByText(multipliers_info)).toBeInTheDocument();
         expect(screen.getByText(multipliers_expiration)).toBeInTheDocument();
     });
-    it('should render Multipliers Expiration Modal if it is crypro and user clicked on Expiration button', () => {
+    it('should render Multipliers Expiration Modal if it is crypto and user clicked on Expiration button', () => {
         default_mocked_store.modules.trade.is_crypto_multiplier = true;
         render(mockMultiplierAmountWidget());
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore, ExchangeRatesProvider } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { APIProvider /*useFetch*/ } from '@deriv/api';
 import MainTitleBar from '..';
 
@@ -58,9 +58,7 @@ describe('MainTitleBar', () => {
         const mock_store = mockStore({ feature_flags: { data: { wallet: false } } });
         const wrapper = ({ children }: React.PropsWithChildren) => (
             <APIProvider>
-                <StoreProvider store={mock_store_override ?? mock_store}>
-                    <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
-                </StoreProvider>
+                <StoreProvider store={mock_store_override ?? mock_store}>{children}</StoreProvider>
             </APIProvider>
         );
 

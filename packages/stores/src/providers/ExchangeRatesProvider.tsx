@@ -1,50 +1,28 @@
-import React, { ReactNode } from 'react';
-import { useLocalStorage } from 'usehooks-ts';
+import React, { useEffect } from 'react';
 import { useSubscription } from '@deriv/api';
-import ExchangeRatesContext from '../stores/ExchangeRatesContext';
+import merge from 'lodash.merge';
+import { observer } from 'mobx-react-lite';
+import useStore from '../useStore';
 
-type TExchangeRatesProvider = {
-    children: ReactNode;
-};
+const ExchangeRatesProvider = observer(({ children }: React.PropsWithChildren<unknown>) => {
+    const { data, subscribe } = useSubscription('exchange_rates');
+    const {
+        exchange_rates: { update },
+    } = useStore();
 
-type TRate = Record<string, Record<string, number>>;
+    useEffect(() => {
+        subscribe({ payload: { base_currency: 'USD' } });
+    }, [subscribe]);
 
-const ExchangeRatesProvider = ({ children }: TExchangeRatesProvider) => {
-    const [exchange_rates, setExchangeRates] = useLocalStorage<TRate>('exchange_rates', {});
-
-    const { subscribe, data, ...rest } = useSubscription('exchange_rates');
-
-    const handleSubscription = (base_currency: string, target_currency: string) => {
-        if (base_currency === '' || target_currency === '' || base_currency === target_currency) return;
-        subscribe({
-            payload: {
-                base_currency,
-                target_currency,
-            },
-        });
-    };
-
-    React.useEffect(() => {
+    useEffect(() => {
         if (data) {
-            setExchangeRates(prev_rates => {
-                const base_currency = data?.exchange_rates?.base_currency || 'USD';
-                const new_rates = {
-                    ...prev_rates,
-                    [base_currency]: {
-                        ...prev_rates[base_currency],
-                        ...data?.exchange_rates?.rates,
-                    },
-                };
-                return new_rates;
-            });
-        }
-    }, [data, setExchangeRates]);
+            const { exchange_rates } = data;
 
-    return (
-        <ExchangeRatesContext.Provider value={{ handleSubscription, exchange_rates, rest }}>
-            {children}
-        </ExchangeRatesContext.Provider>
-    );
-};
+            if (exchange_rates) update(prev => merge(prev, exchange_rates));
+        }
+    }, [update, data]);
+
+    return <>{children}</>;
+});
 
 export default ExchangeRatesProvider;

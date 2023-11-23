@@ -4,7 +4,7 @@ import { Field, FieldProps, Formik, FormikProps } from 'formik';
 
 import { Button, Icon, Input, Loading, Text } from '@deriv/components';
 import { useCurrentAccountDetails, useExchangeRate } from '@deriv/hooks';
-import { CryptoConfig, getCurrencyName } from '@deriv/shared';
+import { CookieStorage, CryptoConfig, getCurrencyName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 
@@ -57,7 +57,7 @@ const WithdrawalCryptoForm = observer(() => {
     const {
         balance,
         currency,
-        current_fiat_currency,
+        current_fiat_currency = 'USD',
         verification_code: { payment_withdraw: verification_code },
     } = client;
     const { crypto_fiat_converter, general_store, withdraw } = useCashierStore();

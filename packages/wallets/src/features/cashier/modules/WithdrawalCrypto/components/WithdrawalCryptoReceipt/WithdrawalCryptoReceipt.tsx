@@ -21,7 +21,12 @@ const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt 
     return (
         <div className='wallets-withdrawal-crypto-receipt'>
             <div className='wallets-withdrawal-crypto-receipt__accounts-info'>
-                <WalletCard balance={`-${amount} ${currency}`} currency={currency ?? ''} landingCompanyName='SVG' />
+                <WalletCard
+                    balance={`-${amount} ${currency}`}
+                    currency={currency ?? ''}
+                    iconSize='md'
+                    landingCompanyName='SVG'
+                />
                 <ArrowDown />
                 <WithdrawalCryptoDestinationAddress address={address} />
             </div>
@@ -29,7 +34,7 @@ const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt 
                 <WalletText align='center' size='xl' weight='bold'>
                     {amount} {currency}
                 </WalletText>
-                <WalletText align='center'>
+                <WalletText align='center' as='p'>
                     Your withdrawal is currently in review. It will be processed within 24 hours. We&rsquo;ll send you
                     an email once your transaction has been processed.
                 </WalletText>
@@ -38,7 +43,7 @@ const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt 
                 <WalletButton
                     color='white'
                     onClick={() => history.push('/wallets/cashier/transactions')}
-                    text='View Transactions'
+                    text='View transactions'
                     variant='outlined'
                 />
                 <WalletButton onClick={onClose} text='Close' />

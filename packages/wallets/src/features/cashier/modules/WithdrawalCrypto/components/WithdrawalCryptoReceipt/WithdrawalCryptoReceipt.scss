@@ -16,6 +16,16 @@
         align-items: center;
         gap: 0.8rem;
 
+        & .wallets-card__details {
+            padding: 1.6rem;
+            width: 20rem;
+
+            @include mobile {
+                width: 16rem;
+                padding: 0.8rem;
+            }
+        }
+
         & > svg {
             transform: rotate(-90deg);
         }
@@ -24,6 +34,7 @@
     &__withdrawal-info {
         display: flex;
         flex-direction: column;
+        gap: 0.8rem;
     }
 
     &__actions {

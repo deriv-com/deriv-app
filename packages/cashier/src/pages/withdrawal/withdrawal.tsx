@@ -4,14 +4,14 @@ import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { PageContainer } from 'Components/page-container';
-import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
+import TransactionsCryptoHistory from '../../components/transactions-crypto-history';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
 import { DepositCryptoSideNotes } from '../../modules/deposit-crypto/components';
 import { useCashierStore } from '../../stores/useCashierStores';
-import CryptoWithdrawForm from './crypto-withdraw-form';
-import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
-import Withdraw from './withdraw';
+import WithdrawalCryptoForm from './withdrawal-crypto-form';
+import WithdrawalCryptoReceipt from './withdrawal-crypto-receipt';
+import WithdrawalFiat from './withdrawal-fiat';
 import WithdrawalLocked from './withdrawal-locked';
 import WithdrawalVerificationEmail from './withdrawal-verification-email';
 
@@ -53,21 +53,21 @@ const WithdrawalPageContent = observer(() => {
     if (!currency_config.is_crypto && (verification_code || iframe_url))
         return (
             <PageContainer hide_breadcrumb>
-                <Withdraw />
+                <WithdrawalFiat />
             </PageContainer>
         );
 
     if (verification_code && currency_config.is_crypto && !is_withdraw_confirmed)
         return (
             <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
-                <CryptoWithdrawForm />
+                <WithdrawalCryptoForm />
             </PageContainer>
         );
 
     if (is_withdraw_confirmed)
         return (
             <PageContainer hide_breadcrumb right={<WithdrawalSideNotes />}>
-                <CryptoWithdrawReceipt />
+                <WithdrawalCryptoReceipt />
             </PageContainer>
         );
 
@@ -87,7 +87,7 @@ const Withdrawal = observer(() => {
         setVerificationCode,
     } = client;
     const { withdraw, transaction_history } = useCashierStore();
-    const { is_crypto_transactions_visible } = transaction_history;
+    const { is_transactions_crypto_visible } = transaction_history;
 
     const {
         check10kLimit,
@@ -140,7 +140,7 @@ const Withdrawal = observer(() => {
             </PageContainer>
         );
 
-    if (is_crypto_transactions_visible) return <CryptoTransactionsHistory />;
+    if (is_transactions_crypto_visible) return <TransactionsCryptoHistory />;
 
     return <WithdrawalPageContent />;
 });

@@ -1,12 +1,28 @@
-.wallets-cashier-content {
-    padding: 24px;
+.wallets-cashier {
     display: flex;
-    gap: 24px;
-    justify-content: center;
-    flex: 1;
-    background-color: #ffffff;
+    flex-direction: column;
+    height: calc(100vh - (4.8rem + 3.6rem));
 
     @include mobile {
-        padding: 24px 16px;
+        height: calc(100svh - 4rem);
+    }
+}
+
+.wallets-cashier-content {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    gap: 2.4rem;
+    flex: 1;
+    padding: 4.8rem 1.6rem 0;
+    background-color: #ffffff;
+    overflow: scroll;
+
+    @include mobile {
+        padding: 2.4rem 1.6rem;
+    }
+
+    &::-webkit-scrollbar {
+        display: none;
     }
 }

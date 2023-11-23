@@ -57,6 +57,24 @@ describe('formatDate', () => {
         const date = moment().utc();
         expect(DateTime.formatDate(date, date_format)).toEqual(moment(date).format(date_format));
     });
+
+    it('returns undefined when date is null and should_format_null is false', () => {
+        expect(DateTime.formatDate(null, date_format, false)).toBeUndefined();
+    });
+
+    it('returns formatted date when date is null and should_format_null is true', () => {
+        expect(DateTime.formatDate(null, date_format, true)).toEqual(moment().utc().format(date_format));
+    });
+
+    it('returns formatted date when date is not null and should_format_null is true', () => {
+        const date = moment('2023-09-20').utc();
+        expect(DateTime.formatDate(date, date_format, true)).toEqual(moment(date).format(date_format));
+    });
+
+    it('returns formatted date when date is not null and should_format_null is false', () => {
+        const date = moment('2023-09-20').utc();
+        expect(DateTime.formatDate(date, date_format, false)).toEqual(moment(date).format(date_format));
+    });
 });
 
 /* eslint-disable no-unused-expressions */

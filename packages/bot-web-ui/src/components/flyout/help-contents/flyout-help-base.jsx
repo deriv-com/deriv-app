@@ -4,10 +4,10 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { help_content_config, help_content_types } from 'Utils/help-content/help-content.config';
 import { useDBotStore } from 'Stores/useDBotStore';
-import FlyoutBlock from '../flyout-block.jsx';
-import FlyoutImage from './flyout-img.jsx';
-import FlyoutText from './flyout-text.jsx';
-import FlyoutVideo from './flyout-video.jsx';
+import FlyoutBlock from '../flyout-block';
+import FlyoutImage from './flyout-img';
+import FlyoutText from './flyout-text';
+import FlyoutVideo from './flyout-video';
 
 const HelpBase = observer(() => {
     const { flyout, flyout_help } = useDBotStore();
@@ -65,20 +65,13 @@ const HelpBase = observer(() => {
                             case help_content_types.IMAGE:
                                 return <FlyoutImage key={`${block_type}_${index}`} width={width} url={url} />;
                             case help_content_types.BLOCK: {
-                                return (
-                                    <FlyoutBlock
-                                        key={`${block_type}_${index}`}
-                                        should_center_block={true}
-                                        block_node={block_node}
-                                    />
-                                );
+                                return <FlyoutBlock key={`${block_type}_${index}`} block_node={block_node} />;
                             }
                             case help_content_types.EXAMPLE:
                                 if (example_node) {
                                     return (
                                         <FlyoutBlock
                                             key={`${block_type}_${index}`}
-                                            should_center_block={true}
                                             block_node={example_node.childNodes[0]}
                                         />
                                     );

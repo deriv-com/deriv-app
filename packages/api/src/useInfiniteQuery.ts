@@ -2,10 +2,12 @@ import { useInfiniteQuery as _useInfiniteQuery } from '@tanstack/react-query';
 
 import type {
     TSocketAcceptableProps,
+    TSocketError,
     TSocketPaginatateableRequestCleaned,
     TSocketPaginateableEndpointNames,
     TSocketRequestInfiniteQueryOptions,
     TSocketRequestPayload,
+    TSocketResponseData,
 } from '../types';
 
 import useAPI from './useAPI';
@@ -23,7 +25,7 @@ const useInfiniteQuery = <T extends TSocketPaginateableEndpointNames>(
     const initial_offset = payload?.offset || 0;
     const limit = payload?.limit || 50;
 
-    return _useInfiniteQuery(
+    return _useInfiniteQuery<TSocketResponseData<T>, TSocketError<T>>(
         getQueryKeys(name, payload),
 
         ({ pageParam = 0 }) =>
@@ -35,7 +37,7 @@ const useInfiniteQuery = <T extends TSocketPaginateableEndpointNames>(
         {
             ...options,
             getNextPageParam: options?.getNextPageParam ? options.getNextPageParam : (_lastPage, pages) => pages.length,
-        } as TSocketRequestInfiniteQueryOptions<T>
+        }
     );
 };
 

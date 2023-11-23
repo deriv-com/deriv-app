@@ -1,60 +1,52 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { mt5_community_url } from '@deriv/shared';
 
-const MT5NotificationDescription = () => {
+type TMT5NotificationDescription = {
+    setMT5NotificationModal: (value: boolean) => void;
+};
+const MT5NotificationDescription = ({ setMT5NotificationModal }: TMT5NotificationDescription) => {
     return (
         <div className={'mt5-notification-modal-description'}>
-            <Text as='p' size='xs'>
-                <Localize i18n_default_text='Follow these simple steps to fix it:' />
-            </Text>
             <ol className='mt5-notification-list-container'>
-                <li className='mt5-notification-list-container-item'>
-                    <Text as='p' size='xs'>
-                        <Localize i18n_default_text='On your MT5 mobile app, delete your existing Deriv account:' />
-                    </Text>
-                    <ul>
-                        <li className='mt5-notification-list'>
-                            <Text as='p' size='xs'>
-                                <Localize
-                                    i18n_default_text='- iOS: Swipe left on the account and tap <0>Delete</0>.'
-                                    components={[<strong key={0} />]}
-                                />
-                            </Text>
-                        </li>
-                        <li className='mt5-notification-list'>
-                            <Text as='p' size='xs'>
-                                <Localize
-                                    i18n_default_text='- Android: Tap the account, open <0>Options</0>, and tap <0>Delete</0>.'
-                                    components={[<strong key={0} />]}
-                                />
-                            </Text>
-                        </li>
-                    </ul>
-                </li>
-                <li className='mt5-notification-list-container-item'>
+                <li className='mt5-notification-list'>
                     <Text as='p' size='xs'>
                         <Localize
-                            i18n_default_text='Search for the broker <0>Deriv Holdings (Guernsey) Limited</0> and select it.'
-                            components={[<strong key={0} />]}
+                            i18n_default_text='Log back in to MT5 after 7:30 GMT on 20 Oct 2023 if you’re having difficulty logging in to MT5 as we’re making some updates to our MT5 platform. <0>Follow these steps</0> to log back in to MT5.'
+                            components={[
+                                <a
+                                    className='mt5-notification-list__link'
+                                    target='_blank'
+                                    rel='noopener noreferrer'
+                                    href={mt5_community_url}
+                                    key={0}
+                                    onClick={() => {
+                                        setMT5NotificationModal(false);
+                                    }}
+                                />,
+                            ]}
                         />
                     </Text>
                 </li>
-                <li className='mt5-notification-list-container-item'>
+                <li className='mt5-notification-list'>
                     <Text as='p' size='xs'>
-                        <Localize i18n_default_text='Re-add your MT5 account using the same log in credentials.' />
+                        <Localize
+                            i18n_default_text='If you need further assistance, let us know via <0>live chat</0>.'
+                            components={[
+                                <a
+                                    className='mt5-notification-list__link'
+                                    onClick={() => {
+                                        window.LC_API.open_chat_window();
+                                        setMT5NotificationModal(false);
+                                    }}
+                                    key={0}
+                                />,
+                            ]}
+                        />
                     </Text>
                 </li>
             </ol>
-            <Text as='p' size='xs'>
-                <Localize
-                    i18n_default_text='If this doesn’t work, uninstall and re-install the MT5 app. Then redo steps <0>2</0> and <0>3</0>.'
-                    components={[<strong key={0} />]}
-                />
-            </Text>
-            <Text as='p' size='xs' className='mt5-notification-list-contact'>
-                <Localize i18n_default_text='Need more help? Contact us through live chat for assistance.' />
-            </Text>
         </div>
     );
 };

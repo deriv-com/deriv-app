@@ -1,0 +1,22 @@
+.wallets-action-modal {
+    width: 44rem;
+    padding: 2.4rem;
+    border-radius: 0.8rem;
+    background: var(--system-light-8-primary-background, #fff);
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+
+    @include mobile {
+        width: auto;
+        padding: 1.6rem;
+        gap: 1.6rem;
+    }
+
+    &__buttons-container {
+        height: 4rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.8rem;
+    }
+}

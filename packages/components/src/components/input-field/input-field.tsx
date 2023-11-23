@@ -59,7 +59,7 @@ type TInputField = {
     placeholder?: string;
     prefix?: string;
     required?: boolean;
-    setCurrentFocus: (name: string | null) => void;
+    setCurrentFocus?: (name: string | null) => void;
     type?: string;
     unit?: string;
     value: number | string;

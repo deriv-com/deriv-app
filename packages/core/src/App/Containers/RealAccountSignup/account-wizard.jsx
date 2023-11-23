@@ -219,6 +219,7 @@ const AccountWizard = props => {
         delete clone?.tax_identification_confirm;
         delete clone?.agreed_tnc;
         delete clone?.agreed_tos;
+        delete clone?.confirmation_checkbox;
 
         // BE does not accept empty strings for TIN
         // so we remove it from the payload if it is empty in case of optional TIN field
@@ -343,6 +344,8 @@ const AccountWizard = props => {
     if (!mounted) return null;
 
     if (!finished) {
+        const employment_status =
+            state_items.find(item => item.form_value.employment_status)?.form_value?.employment_status || '';
         const wizard_steps = state_items.map((step, step_index) => {
             const passthrough = getPropsForChild(step_index);
             const BodyComponent = step.body;
@@ -359,6 +362,7 @@ const AccountWizard = props => {
                     form_error={form_error}
                     {...passthrough}
                     key={step_index}
+                    employment_status={employment_status}
                 />
             );
         });

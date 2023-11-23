@@ -1,13 +1,14 @@
 import React from 'react';
+import { THooks } from '../../types';
 import './WalletGradientBackground.scss';
 
 type TProps = {
     bodyClassName?: string;
     children: React.ReactNode;
-    currency: string;
+    currency: THooks.WalletAccountsList['wallet_currency_type'];
     device?: 'desktop' | 'mobile';
     hasShine?: boolean;
-    isDemo?: boolean;
+    isDemo?: THooks.WalletAccountsList['is_virtual'];
     theme?: 'dark' | 'grey' | 'light';
     type?: 'card' | 'header';
 };
@@ -29,9 +30,9 @@ const WalletGradientBackground: React.FC<TProps> = ({
     };
 
     return (
-        <div className={`wallets-gradient ${bodyClassName} ${getClassName()}`}>
+        <div className={`wallets-gradient ${bodyClassName} ${getClassName()}`} data-testid='wallet-gradient-background'>
             {hasShine && !isDemo && <span className='wallets-gradient__shine' />}
-            {children}
+            <div className='wallets-gradient__content'>{children}</div>
         </div>
     );
 };

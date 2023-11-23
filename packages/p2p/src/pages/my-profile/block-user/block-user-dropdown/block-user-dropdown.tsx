@@ -18,7 +18,7 @@ const BlockUserDropdown = () => {
                     is_align_text_left
                     list={my_profile_store.block_user_sort_list}
                     onChange={my_profile_store.handleChange}
-                    placeholder={localize('Sort by')}
+                    placeholder={localize('Filter by')}
                     value={my_profile_store.selected_sort_value}
                 />
             </DesktopWrapper>

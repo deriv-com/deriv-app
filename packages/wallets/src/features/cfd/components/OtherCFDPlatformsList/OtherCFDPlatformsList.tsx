@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { useAuthorize, useDxtradeAccountsList, useInvalidateQuery } from '@deriv/api';
+import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
 import { AddedDxtradeAccountsList, AvailableDxtradeAccountsList } from '../../flows/OtherCFDs/Dxtrade';
 import './OtherCFDPlatformsList.scss';
 
 const OtherCFDPlatformsList: React.FC = () => {
     const { isFetching } = useAuthorize();
-    const { data } = useDxtradeAccountsList();
+    const { data, isFetchedAfterMount } = useDxtradeAccountsList();
     const invalidate = useInvalidateQuery();
     const hasDxtradeAccount = !!data?.length;
 
@@ -21,7 +22,9 @@ const OtherCFDPlatformsList: React.FC = () => {
                 <h1>Other CFD Platforms</h1>
             </div>
             <div className='wallets-other-cfd__content'>
-                {hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />}
+                {!isFetchedAfterMount && <TradingAppCardLoader />}
+                {isFetchedAfterMount &&
+                    (hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />)}
             </div>
         </div>
     );

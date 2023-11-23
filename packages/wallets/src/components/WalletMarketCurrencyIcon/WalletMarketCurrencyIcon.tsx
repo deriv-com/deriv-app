@@ -1,7 +1,11 @@
 import React, { ComponentType, SVGAttributes } from 'react';
+import CTraderIcon from '../../public/images/ctrader.svg';
+import DerivAppIcon from '../../public/images/deriv-apps.svg';
+import DerivXIcon from '../../public/images/derivx.svg';
 import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
 import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
+import { THooks, TPlatforms } from '../../types';
 import { WalletCardIcon } from '../WalletCardIcon';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import './WalletMarketCurrencyIcon.scss';
@@ -12,14 +16,33 @@ const marketTypeToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElem
     synthetic: DerivedMT5Icon,
 };
 
-type TWalletMarketCurrencyIconProps = {
-    currency: string;
-    isDemo: boolean;
-    marketType: string;
+const marketTypeToPlatformIconMapper: Record<string, ComponentType<SVGAttributes<SVGElement>>> = {
+    ctrader: CTraderIcon,
+    dxtrade: DerivXIcon,
 };
 
-const WalletMarketCurrencyIcon = ({ currency, isDemo, marketType }: TWalletMarketCurrencyIconProps) => {
-    const MarketTypeIcon = marketTypeToIconMapper[marketType];
+type TWalletMarketCurrencyIconProps = {
+    currency: Exclude<THooks.ActiveWalletAccount['currency'], undefined>;
+    isDemo: THooks.ActiveWalletAccount['is_virtual'];
+    marketType?: THooks.SortedMT5Accounts['market_type'];
+    platform?: TPlatforms.All;
+};
+
+const WalletMarketCurrencyIcon: React.FC<TWalletMarketCurrencyIconProps> = ({
+    currency,
+    isDemo,
+    marketType,
+    platform,
+}) => {
+    let MarketTypeIcon: ComponentType<SVGAttributes<SVGElement>>;
+    if (marketType && platform) {
+        MarketTypeIcon =
+            marketType === 'all' && Object.keys(marketTypeToPlatformIconMapper).includes(platform)
+                ? marketTypeToPlatformIconMapper[platform]
+                : marketTypeToIconMapper[marketType];
+    } else {
+        MarketTypeIcon = DerivAppIcon;
+    }
 
     return (
         <div className='wallets-market-currency-icon'>
@@ -30,7 +53,7 @@ const WalletMarketCurrencyIcon = ({ currency, isDemo, marketType }: TWalletMarke
                 }`}
             >
                 <WalletGradientBackground currency={currency} hasShine isDemo={isDemo} type='card'>
-                    <WalletCardIcon type={isDemo ? 'Demo' : currency} />
+                    <WalletCardIcon device='desktop' size='lg' type={isDemo ? 'Demo' : currency} />
                 </WalletGradientBackground>
             </div>
         </div>

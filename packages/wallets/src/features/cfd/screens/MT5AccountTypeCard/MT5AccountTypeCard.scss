@@ -2,25 +2,25 @@
     cursor: pointer;
     &-list {
         display: flex;
-        width: 264px;
-        height: 320px;
+        width: 26.4rem;
+        height: 32rem;
         align-items: flex-start;
 
         &-content {
             display: flex;
             align-items: flex-start;
             flex: 1 0 0;
-            padding: 24px;
+            padding: 2.4rem;
             align-self: stretch;
-            border-radius: 16px;
-            border: 1px solid var(--system-light-5-active-background, #d6dadb);
+            border-radius: 1.6rem;
+            border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
             background: var(--system-light-8-primary-background, #fff);
 
             &-details {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 24px;
+                gap: 2.4rem;
                 align-self: stretch;
                 justify-content: center;
 
@@ -28,7 +28,7 @@
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    gap: 8px;
+                    gap: 0.8rem;
                     align-self: stretch;
                 }
 
@@ -40,10 +40,10 @@
                     display: flex;
 
                     /* desktop/subtitle/Sub 2 - bold */
-                    font-size: 20px;
+                    font-size: 2rem;
                     font-style: normal;
                     font-weight: 700;
-                    line-height: 30px; /* 150% */
+                    line-height: 3rem; /* 150% */
                 }
 
                 &-description {
@@ -52,20 +52,20 @@
                     text-align: center;
 
                     /* desktop/paragraph/P2 - regular */
-                    font-size: 14px;
+                    font-size: 1.4rem;
                     font-style: normal;
                     font-weight: 400;
-                    line-height: 20px; /* 142.857% */
+                    line-height: 2rem; /* 142.857% */
                 }
             }
         }
     }
     &-selected {
-        border-radius: 16px;
-        border: 2px solid var(--brand-blue, #85acb0);
+        border-radius: 1.6rem;
+        border: 0.2rem solid var(--brand-blue, #85acb0);
         background: var(--system-light-8-primary-background, #fff);
 
         /* Shadows/xxl */
-        box-shadow: 0px 24px 48px 0px rgba(14, 14, 14, 0.18);
+        box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
     }
 }

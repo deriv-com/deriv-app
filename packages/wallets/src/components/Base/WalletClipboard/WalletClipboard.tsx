@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useCopyToClipboard } from 'usehooks-ts';
-import CheckmarkCircle from '../../../public/images/checkmark-circle.svg';
+import React, { useEffect, useRef, useState } from 'react';
+import { useCopyToClipboard, useHover } from 'usehooks-ts';
+import useDevice from '../../../hooks/useDevice';
+import CheckmarkCircle from '../../../public/images/ic-checkmark-circle.svg';
 import Clipboard from '../../../public/images/clipboard.svg';
+import { Tooltip } from '../Tooltip';
 import './WalletClipboard.scss';
 
 type TProps = {
@@ -16,7 +18,10 @@ const WalletClipboard = ({
     textCopy,
 }: TProps) => {
     const [, copy] = useCopyToClipboard();
+    const { isMobile } = useDevice();
     const [isCopied, setIsCopied] = useState(false);
+    const hoverRef = useRef(null);
+    const isHovered = useHover(hoverRef);
     let timeoutClipboard: ReturnType<typeof setTimeout>;
 
     const onClick = (event: { stopPropagation: () => void }) => {
@@ -33,9 +38,11 @@ const WalletClipboard = ({
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <button className='wallets-clipboard' onClick={onClick}>
-            {isCopied ? <CheckmarkCircle /> : <Clipboard />}
-        </button>
+        <Tooltip alignment='right' isVisible={isHovered && !isMobile} message={isCopied ? 'Copied!' : 'Copy'}>
+            <button className='wallets-clipboard' onClick={onClick} ref={hoverRef}>
+                {isCopied ? <CheckmarkCircle /> : <Clipboard />}
+            </button>
+        </Tooltip>
     );
 };
 

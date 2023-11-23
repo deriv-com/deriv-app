@@ -1,45 +1,52 @@
 import React from 'react';
-import { useAvailableMT5Accounts, useCreateOtherCFDAccount } from '@deriv/api';
-import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
+import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
+import { passwordChecker } from '../../../../components/Base/WalletPasswordField/PasswordFieldUtils';
+import useDevice from '../../../../hooks/useDevice';
+import { TPlatforms } from '../../../../types';
+import { PlatformDetails } from '../../constants';
 import './CreatePassword.scss';
-
-type TPlatformMT5 = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number]['platform'];
-
-type TPlatformOtherAccounts =
-    | Parameters<NonNullable<ReturnType<typeof useCreateOtherCFDAccount>['mutate']>>[0]['payload']['platform'];
-
-type TPlatform = TPlatformMT5 | TPlatformOtherAccounts;
-
-const platformToTitleMapper: Record<TPlatform, string> = {
-    ctrader: 'cTrader',
-    derivez: 'Deriv EZ',
-    dxtrade: 'Deriv X',
-    mt5: 'Deriv MT5',
-};
 
 type TProps = {
     icon: React.ReactNode;
+    isLoading?: boolean;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick: () => void;
-    platform: TPlatform;
+    password: string;
+    platform: TPlatforms.All;
 };
 
-const CreatePassword: React.FC<TProps> = ({ icon, onPasswordChange, onPrimaryClick, platform }) => {
-    const title = platformToTitleMapper[platform];
+const CreatePassword: React.FC<TProps> = ({
+    icon,
+    isLoading,
+    onPasswordChange,
+    onPrimaryClick,
+    password,
+    platform,
+}) => {
+    const { isMobile } = useDevice();
+
+    const title = PlatformDetails[platform].title;
+    const { score } = passwordChecker(password);
     return (
         <div className='wallets-create-password'>
-            {icon}
-            <div className='wallets-create-password-title'>Create a {title} password</div>
-            <span className='wallets-create-password-subtitle'>
+            {!isMobile && icon}
+            <WalletText lineHeight='xl' weight='bold'>
+                Create a {title} password
+            </WalletText>
+            <WalletText align='center' size='sm'>
                 You can use this password for all your {title} accounts.
-            </span>
-            <div className='wallets-create-password-input'>
-                <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
-                <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
-            </div>
-            <button className='wallets-create-password-button' onClick={onPrimaryClick}>
-                Create {title} password
-            </button>
+            </WalletText>
+
+            <WalletPasswordField label={`${title} password`} onChange={onPasswordChange} password={password} />
+            {!isMobile && (
+                <WalletButton
+                    disabled={!password || isLoading || score <= 2}
+                    isLoading={isLoading}
+                    onClick={onPrimaryClick}
+                    size='lg'
+                    text={`Create ${title} password`}
+                />
+            )}
         </div>
     );
 };

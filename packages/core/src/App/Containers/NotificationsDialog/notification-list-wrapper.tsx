@@ -17,13 +17,14 @@ const NotificationListWrapperForwardRef = React.forwardRef(
         const { is_mobile } = ui;
 
         const traders_hub = window.location.pathname === routes.traders_hub;
+        const wallets_path = window.location.pathname === routes.wallets;
 
         return (
             <div
                 data-testid='dt_notifications_list_wrapper'
                 className={classNames('notifications-dialog', {
                     'notifications-dialog--pre-appstore':
-                        traders_hub || window.location.pathname.startsWith(routes.account),
+                        traders_hub || window.location.pathname.startsWith(routes.account) || wallets_path,
                 })}
                 ref={ref}
             >

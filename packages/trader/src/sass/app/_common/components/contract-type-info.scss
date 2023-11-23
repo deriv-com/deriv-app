@@ -89,14 +89,12 @@
         }
     }
     &__gif {
-        width: 100%;
         height: 16.4rem;
         border-radius: 4px;
         text-align: center;
         margin-top: 1.6rem;
 
         @include mobile {
-            width: 32.8rem;
             height: 16.4rem;
             background-color: var(--general-section-1);
             svg {
@@ -136,6 +134,7 @@
     &__scrollbars {
         position: relative;
         height: 100%;
+        padding-right: 1rem;
         &-description--active {
             transition: transform 0.3s linear;
         }

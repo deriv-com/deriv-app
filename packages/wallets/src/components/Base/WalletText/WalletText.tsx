@@ -1,31 +1,42 @@
-import React from 'react';
+import React, { CSSProperties, ElementType, ReactNode } from 'react';
 import classNames from 'classnames';
-import styles from './WalletText.module.css';
+import { TGenericSizes } from '../types';
+import './WalletText.scss';
 
 interface WalletTextProps {
-    align?: 'center' | 'left' | 'right';
-    children: React.ReactNode;
-    color?: 'black' | 'error' | 'general' | 'primary' | 'success' | 'warning' | 'white';
-    size?: '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '4xs' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';
-    weight?: 'bold' | 'normal';
+    align?: CSSProperties['textAlign'];
+    as?: ElementType;
+    children: ReactNode;
+    color?: CSSProperties['color'] | 'error' | 'general' | 'less-prominent' | 'primary' | 'success' | 'warning';
+    fontStyle?: CSSProperties['fontStyle'];
+    lineHeight?: TGenericSizes;
+    size?: Exclude<TGenericSizes, '3xs' | '6xl' | '7xl'>;
+    weight?: CSSProperties['fontWeight'];
 }
 
 const WalletText: React.FC<WalletTextProps> = ({
     align = 'left',
+    as = 'span',
     children,
     color = 'general',
+    fontStyle = 'normal',
+    lineHeight,
     size = 'md',
     weight = 'normal',
 }) => {
     const textClassNames = classNames(
-        styles.wallets,
-        styles[`wallets-text-size-${size}`],
-        styles[`wallets-text-weight-${weight}`],
-        styles[`wallets-text-align-${align}`],
-        styles[`wallets-text-color-${color}`]
+        'wallet-text',
+        `wallets-text__size--${size}`,
+        `wallets-text__weight--${weight}`,
+        `wallets-text__align--${align}`,
+        `wallets-text__color--${color}`,
+        `wallets-text__line-height--${lineHeight}`,
+        `wallets-text__font-style--${fontStyle}`
     );
 
-    return <span className={textClassNames}>{children}</span>;
+    const Tag = as;
+
+    return <Tag className={textClassNames}>{children}</Tag>;
 };
 
 export default WalletText;

@@ -1,6 +1,7 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { useWalletsList, useAvailableWallets } from '@deriv/hooks';
+import { useAvailableWallets, useWalletsList } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
+
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
 
@@ -14,7 +15,8 @@ export type RequiredAndNotNull<T> = {
 
 export type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 export type TAccountCategory = 'real' | 'demo';
-export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go' | 'derivez' | 'ctrader';
+export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go' | 'ctrader';
+
 export type TBrandData = {
     name: string;
     icon?: string;
@@ -65,6 +67,7 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
         };
     platform?: TPlatform;
     openFailedVerificationModal?: (from_account: string) => void;
+    market_type: NonNullable<TTradingPlatformAvailableAccount['market_type']> | TMarketType;
 };
 
 export type TTradingPlatformAvailableAccount = {
@@ -121,9 +124,7 @@ export type TIconTypes =
     | 'Options'
     | 'SmartTrader'
     | 'SmartTraderBlue'
-    | 'CFDs'
-    | 'DerivEz';
-
+    | 'CFDs';
 export interface AvailableAccount {
     name: string;
     is_item_blurry?: boolean;
@@ -191,7 +192,7 @@ export type TWalletInfo = NonNullable<ReturnType<typeof useAvailableWallets>['da
 
 export type TTransferAccount = {
     active_wallet_icon: string | undefined;
-    account_type?: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'derivez' | 'binary' | 'ctrader';
+    account_type?: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'binary' | 'ctrader';
     balance: number;
     currency?: string;
     display_currency_code: string | undefined;

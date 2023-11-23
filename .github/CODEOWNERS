@@ -94,9 +94,9 @@
 #  deriv-app/bot
 # ==============================================================
 
-/packages/bot-skeleton/**/*                                     @prince-deriv @sandeep-deriv
-/packages/bot-web-ui/**/*                                       @prince-deriv @sandeep-deriv
-/packages/indicators/**/*                                       @prince-deriv @sandeep-deriv
+/packages/bot-skeleton/**/*                                     @prince-deriv @sandeep-deriv @vinu-deriv
+/packages/bot-web-ui/**/*                                       @prince-deriv @sandeep-deriv @vinu-deriv
+/packages/indicators/**/*                                       @prince-deriv @sandeep-deriv @vinu-deriv
 
 
 # ==============================================================
@@ -159,7 +159,7 @@
 #  deriv-app/wallets
 # ==============================================================
 
-/packages/wallets/**/*                                          @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv
+/packages/wallets/**/*                                          @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv @aizad-deriv @heorhi-deriv
 
 
 # ==============================================================

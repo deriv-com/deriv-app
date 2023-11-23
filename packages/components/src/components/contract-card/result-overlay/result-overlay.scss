@@ -1,13 +1,21 @@
 /** @define dc-result */
 .dc-result {
+    &__content {
+        display: flex;
+        justify-items: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
     &__caption {
         text-transform: capitalize;
-        font-size: 1.6em;
+        font-size: 1.4em;
         font-weight: bold;
         display: flex;
         justify-content: center;
         align-items: center;
         transition: opacity 0.25s ease;
+        gap: 0.4rem;
 
         &--won {
             color: var(--text-profit-success);
@@ -45,8 +53,13 @@
             color: var(--text-general);
         }
     }
-    &__icon {
-        margin-left: 10px;
+    &__payout {
+        &--won {
+            color: var(--text-profit-success);
+        }
+        &--lost {
+            color: var(--text-loss-danger);
+        }
     }
     &__positions-overlay {
         max-width: 218px;

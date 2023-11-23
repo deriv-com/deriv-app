@@ -1,7 +1,8 @@
-import type { useMT5AccountsList } from '@deriv/api';
+import { THooks } from '../../../../../types';
 
 export type TClickableDescription = {
     onClick?: React.MouseEventHandler<HTMLSpanElement>;
+    tag?: string;
     text: string;
     type: 'link' | 'text';
 };
@@ -48,6 +49,7 @@ export type TJurisdictionVerificationSection = {
 };
 export type TJurisdictionVerificationItems = {
     documentNumber?: TJurisdictionVerificationSection;
+    identityDocument?: TJurisdictionVerificationSection;
     identityNumber?: TJurisdictionVerificationSection;
     nameAndAddress?: TJurisdictionVerificationSection;
     notApplicable?: TJurisdictionVerificationSection;
@@ -77,5 +79,5 @@ export type TInstrumentsIcon = {
 };
 
 export type TJurisdictionData = {
-    jurisdiction?: NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[0]['landing_company_short'];
+    jurisdiction?: THooks.MT5AccountsList['landing_company_short'];
 };

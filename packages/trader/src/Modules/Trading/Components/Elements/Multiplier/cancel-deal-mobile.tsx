@@ -109,7 +109,7 @@ const CancelDeal = observer(
                             classNameBubble='trade-container__deal-cancellation-popover'
                             zIndex='9999'
                             message={localize(
-                                'Cancel your trade anytime within a chosen time-frame. Triggered automatically if your trade reaches the stop out level within the chosen time-frame.'
+                                'When this is active, you can cancel your trade within the chosen time frame. Your stake will be returned without loss.'
                             )}
                         />
                     </div>

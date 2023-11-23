@@ -1,17 +1,17 @@
 .wallets-mt5-list {
     &__title {
         color: #333;
-        font-size: 16px;
+        font-size: 1.6rem;
         font-style: normal;
         font-weight: 700;
-        line-height: 24px; /* 150% */
+        line-height: 2.4rem; /* 150% */
     }
 
     &__content {
         display: grid;
         gap: 1.6rem 4.8rem;
         grid-template-columns: repeat(3, 1fr);
-        padding-bottom: 24px;
+        padding-bottom: 2.4rem;
 
         @include mobile {
             grid-template-rows: repeat(3, 1fr);
@@ -23,16 +23,16 @@
             &-title {
                 font-weight: bold;
                 font-size: 1.4rem;
-                line-height: 20px;
+                line-height: 2rem;
             }
 
             &-description {
                 font-size: 1.2rem;
-                line-height: 14px;
+                line-height: 1.4rem;
 
                 @include mobile {
                     font-size: 1.4rem;
-                    line-height: 20px;
+                    line-height: 2rem;
                 }
             }
         }
@@ -40,9 +40,9 @@
 }
 
 .wallets-mt5-loader {
-    width: 48px;
-    height: 48px;
-    border: 5px solid #fff;
+    width: 4.8rem;
+    height: 4.8rem;
+    border: 0.5rem solid #fff;
     border-bottom-color: #ff3d00;
     border-radius: 50%;
     display: inline-block;

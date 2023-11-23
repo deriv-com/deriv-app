@@ -11,8 +11,9 @@ const CFDCompareAccountsPlatformLabel = ({ trading_platforms }: TCompareAccounts
     return (
         <div
             className={classNames('compare-cfd-account-platform-label', {
-                'compare-cfd-account-platform-label--other-cfds': platform_label === platformsHeaderLabel.other_cfds,
-                'compare-cfd-account-platform-label--ctrader': platform_label === platformsHeaderLabel.ctrader,
+                'compare-cfd-account-platform-label--other-cfds':
+                    platform_label === platformsHeaderLabel.other_cfds ||
+                    platform_label === platformsHeaderLabel.ctrader,
             })}
         >
             <Text as='p' weight='bold' size='xxxs' align='center' color={header_color}>

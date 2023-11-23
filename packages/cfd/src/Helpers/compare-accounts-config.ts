@@ -162,8 +162,8 @@ const getPlatformLabel = (shortcode?: string) => {
 // Object to map the platform label
 const platformsHeaderLabel = {
     mt5: localize('MT5 Platform'),
-    other_cfds: localize('Other CFDs Platform'),
     ctrader: localize('Deriv cTrader'),
+    other_cfds: localize('Other CFDs Platform'),
 };
 
 // Get the Account Icons based on the market type
@@ -193,9 +193,8 @@ const getMarketType = (trading_platforms: TModifiedTradingPlatformAvailableAccou
 const getHeaderColor = (shortcode: string) => {
     switch (shortcode) {
         case platformsHeaderLabel.other_cfds:
-            return 'green';
         case platformsHeaderLabel.ctrader:
-            return 'warning';
+            return 'green';
         case platformsHeaderLabel.mt5:
         default:
             return 'blue';

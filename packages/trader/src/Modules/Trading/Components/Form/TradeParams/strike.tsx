@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import BarriersList from './barriers-list';
 import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import { toMoment, VANILLALONG } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
+import { clickAndKeyEventHandler, toMoment, VANILLALONG } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
 import { observer, useStore } from '@deriv/stores';
@@ -32,7 +32,9 @@ const Strike = observer(() => {
         setSelectedValue(barrier_1);
     }, [barrier_1]);
 
-    const toggleWidget = () => setIsOpen(!is_open);
+    const toggleWidget = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        clickAndKeyEventHandler(() => setIsOpen(!is_open), e);
+    };
 
     const is_24_hours_contract = expiry_date ? toMoment(expiry_date).isSame(toMoment(server_time), 'day') : false;
 
@@ -51,15 +53,24 @@ const Strike = observer(() => {
             <DesktopWrapper>
                 <Fieldset
                     className='trade-container__fieldset trade-container__barriers'
-                    header={localize('Strike price')}
+                    header={<Localize i18n_default_text='Strike price' />}
                     header_tooltip={
                         <Localize
                             i18n_default_text='If you buy a "<0>{{trade_type}}</0>" option, you receive a payout at expiry if the final price is {{payout_status}} the strike price. Otherwise, your “<0>{{trade_type}}</0>” option will expire worthless.'
                             components={[<strong key={0} />]}
                             values={{
-                                trade_type: contract_type === VANILLALONG.CALL ? localize('Call') : localize('Put'),
+                                trade_type:
+                                    contract_type === VANILLALONG.CALL ? (
+                                        <Localize i18n_default_text='Call' />
+                                    ) : (
+                                        <Localize i18n_default_text='Put' />
+                                    ),
                                 payout_status:
-                                    contract_type === VANILLALONG.CALL ? localize('above') : localize('below'),
+                                    contract_type === VANILLALONG.CALL ? (
+                                        <Localize i18n_default_text='above' />
+                                    ) : (
+                                        <Localize i18n_default_text='below' />
+                                    ),
                             }}
                         />
                     }
@@ -87,7 +98,7 @@ const Strike = observer(() => {
                     ) : (
                         <div className='trade-container__strike-field'>
                             <Text size='s' className='strike-field--text'>
-                                {localize('Spot')}
+                                <Localize i18n_default_text='Spot' />
                             </Text>
                             <Dropdown
                                 classNameDisplay='dc-dropdown__display--duration'
@@ -107,7 +118,7 @@ const Strike = observer(() => {
                 {should_open_dropdown && (
                     <BarriersList
                         className='trade-container__barriers-table'
-                        header={localize('Strike Prices')}
+                        header={<Localize i18n_default_text='Strike Prices' />}
                         barriers_list={strike_price_choices}
                         selected_item={selected_value}
                         show_table={should_open_dropdown}
@@ -124,10 +135,16 @@ const Strike = observer(() => {
                 <div className='mobile-widget__wrapper'>
                     <div className='strike-widget' onClick={toggleWidget} onKeyDown={toggleWidget}>
                         {should_show_spot && (
-                            <div className='mobile-widget__spot'>{<Text size='xs'>{localize('Spot')}</Text>}</div>
+                            <div className='mobile-widget__spot'>
+                                <Text size='xs'>
+                                    <Localize i18n_default_text='Spot' />
+                                </Text>
+                            </div>
                         )}
                         <div className='mobile-widget__amount'>{barrier_1}</div>
-                        <div className='mobile-widget__type'>{localize('Strike price')}</div>
+                        <div className='mobile-widget__type'>
+                            <Localize i18n_default_text='Strike price' />
+                        </div>
                     </div>
                     <StrikeParamModal
                         contract_type={contract_type}

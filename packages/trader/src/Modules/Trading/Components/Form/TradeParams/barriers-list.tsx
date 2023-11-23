@@ -6,7 +6,7 @@ import Fieldset from 'App/Components/Form/fieldset';
 import BarriersListBody, { TBarriersListBody } from './barriers-list-body';
 
 type TBarriersList = TBarriersListBody & {
-    header: string;
+    header: string | React.ReactNode;
     onClickCross: () => void;
     show_table: boolean;
 };
@@ -31,12 +31,8 @@ const BarriersList = ({ className, header, onClickCross, show_table, ...props }:
                         <Text color='prominent' weight='bold' size='xs'>
                             {header}
                         </Text>
-                        <div
-                            className={`${className}__icon-close`}
-                            data-testid={`dt_${className}__icon-close`}
-                            onClick={onClickCross}
-                        >
-                            <Icon icon='IcCross' />
+                        <div className={`${className}__icon-close`} onClick={onClickCross}>
+                            <Icon icon='IcCross' data_testid={`dt_${className}__icon-close`} />
                         </div>
                     </div>
                     <BarriersListBody className={className} {...props} />

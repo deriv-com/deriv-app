@@ -4,6 +4,7 @@ import { mockStore } from '@deriv/stores';
 import { isMobile, isDesktop, VANILLALONG } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 import Strike from '../strike';
+import userEvent from '@testing-library/user-event';
 
 const mocked_store = {
     modules: {
@@ -19,6 +20,7 @@ const mocked_store = {
         },
     },
 };
+const mocked_trade = mocked_store.modules.trade;
 const mocked_strike_param_modal = 'Mocked Strike Param Modal Component';
 const strike_price = 'Strike price';
 const strike_prices = 'Strike Prices';
@@ -58,8 +60,8 @@ describe('<Strike />', () => {
     });
 
     it('should display Spot for minutes correctly', () => {
-        mocked_store.modules.trade.duration_unit = 'm';
-        mocked_store.modules.trade.expiry_type = 'duration';
+        mocked_trade.duration_unit = 'm';
+        mocked_trade.expiry_type = 'duration';
 
         render(mockStrike(mocked_store));
 
@@ -67,7 +69,7 @@ describe('<Strike />', () => {
     });
 
     it('should display Spot for hours correctly', () => {
-        mocked_store.modules.trade.duration_unit = 'h';
+        mocked_trade.duration_unit = 'h';
 
         render(mockStrike(mocked_store));
 
@@ -75,8 +77,8 @@ describe('<Strike />', () => {
     });
 
     it('should not display Spot for days', () => {
-        mocked_store.modules.trade.duration_unit = 'd';
-        mocked_store.modules.trade.expiry_type = 'endtime';
+        mocked_trade.duration_unit = 'd';
+        mocked_trade.expiry_type = 'endtime';
 
         render(mockStrike(mocked_store));
 
@@ -86,13 +88,13 @@ describe('<Strike />', () => {
     it('should open and close BarriersList on input click', async () => {
         render(mockStrike(mocked_store));
 
-        fireEvent.click(screen.getByRole('textbox'));
+        userEvent.click(screen.getByRole('textbox'));
 
         await waitFor(() => {
             expect(screen.getByText(strike_prices)).toBeInTheDocument();
         });
 
-        fireEvent.click(screen.getByTestId('dt_trade-container__barriers-table__icon-close'));
+        userEvent.click(screen.getByTestId('dt_trade-container__barriers-table__icon-close'));
 
         await waitFor(() => {
             expect(screen.queryByText(strike_prices)).not.toBeInTheDocument();
@@ -100,7 +102,7 @@ describe('<Strike />', () => {
     });
 
     it('should render a proper children components if it is mobile', () => {
-        mocked_store.modules.trade.duration_unit = 'm';
+        mocked_trade.duration_unit = 'm';
         (isDesktop as jest.Mock).mockReturnValueOnce(false);
         (isMobile as jest.Mock).mockReturnValueOnce(true);
 
@@ -112,7 +114,7 @@ describe('<Strike />', () => {
     });
 
     it('should not render Spot components if it duration_unit is equal to "d" in mobile', () => {
-        mocked_store.modules.trade.duration_unit = 'd';
+        mocked_trade.duration_unit = 'd';
         (isDesktop as jest.Mock).mockReturnValueOnce(false);
         (isMobile as jest.Mock).mockReturnValueOnce(true);
 

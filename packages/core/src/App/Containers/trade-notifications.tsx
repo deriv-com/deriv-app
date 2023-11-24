@@ -24,7 +24,7 @@ const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_
                             is_success={status !== 'open' && profit >= 0}
                             onUnmount={() => removeTradeNotifications(id)}
                             redirect_to={getContractPath(contract_id)}
-                            timestamp={timestamp}
+                            timestamp={status === 'open' ? null : timestamp}
                             visibility_duration_ms={3000}
                         >
                             <Text as='p' size='xxxs' line_height='s'>

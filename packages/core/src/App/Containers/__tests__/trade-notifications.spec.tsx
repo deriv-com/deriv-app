@@ -5,15 +5,22 @@ import { StoreProvider, mockStore, useStore } from '@deriv/stores';
 import { getCardLabels } from '@deriv/shared';
 import TradeNotifications from '../trade-notifications';
 
+type TMockedSwipeableNotificationProps = React.ComponentProps<typeof SwipeableNotification> & {
+    onUnmount?: () => void;
+    timestamp?: number | null;
+};
+
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     MobileWrapper: jest.fn(({ children }) => children),
-    SwipeableNotification: ({
-        children,
-        onUnmount,
-    }: React.ComponentProps<typeof SwipeableNotification> & { onUnmount?: () => void }) => {
+    SwipeableNotification: ({ children, onUnmount, timestamp }: TMockedSwipeableNotificationProps) => {
         if (onUnmount) onUnmount();
-        return <div>{children}</div>;
+        return (
+            <div>
+                {children}
+                {!!timestamp && <div>Timestamp</div>}
+            </div>
+        );
     },
 }));
 
@@ -22,8 +29,13 @@ describe('TradeNotifications', () => {
         OPEN: 'open',
         COMPLETED: 'completed',
     };
-    const getTradeNotification = (status: string) => ({ id: `${Math.random()}_${status}`, status });
+    const getTradeNotification = (status: string) => ({
+        id: `${Math.random()}_${status}`,
+        status,
+        timestamp: 1234567890,
+    });
     const opened_trade_title = 'Trade opened:';
+    const timestamp = 'Timestamp';
 
     const renderTradeNotifications = (
         mock_props: React.ComponentProps<typeof TradeNotifications> = {},
@@ -45,7 +57,7 @@ describe('TradeNotifications', () => {
         expect(screen.queryByText(getCardLabels().TOTAL_PROFIT_LOSS)).not.toBeInTheDocument();
         expect(screen.queryByText(getCardLabels().STAKE)).not.toBeInTheDocument();
     });
-    it('should render notifications if show_trade_notifications is passed and has "Trade opened" notification', () => {
+    it('should render "Trade opened" notification without timestamp', () => {
         const mock_store = mockStore({
             notifications: {
                 trade_notifications: [getTradeNotification(STATUS.OPEN)],
@@ -54,8 +66,9 @@ describe('TradeNotifications', () => {
         renderTradeNotifications({ show_trade_notifications: true }, mock_store);
         expect(screen.getByText(opened_trade_title)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().STAKE)).toBeInTheDocument();
+        expect(screen.queryByText(timestamp)).not.toBeInTheDocument();
     });
-    it('should render notifications if show_trade_notifications is passed and has "Trade closed" notification', () => {
+    it('should render "Trade closed" notification with timestamp', () => {
         const mock_store = mockStore({
             notifications: {
                 trade_notifications: [getTradeNotification(STATUS.COMPLETED)],
@@ -64,6 +77,7 @@ describe('TradeNotifications', () => {
         renderTradeNotifications({ show_trade_notifications: true }, mock_store);
         expect(screen.getByText('Trade closed:')).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
+        expect(screen.getByText(timestamp)).toBeInTheDocument();
     });
     it('should display no more than 3 notifications', () => {
         const mock_store = mockStore({

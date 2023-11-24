@@ -13,7 +13,7 @@ type TSwipeableNotificationProps = React.PropsWithChildren<{
     is_success?: boolean;
     onUnmount?: () => void;
     redirect_to?: string;
-    timestamp?: number;
+    timestamp?: number | null;
     visibility_duration_ms?: number;
 }>;
 
@@ -34,7 +34,7 @@ const SwipeableNotification = ({
 }: TSwipeableNotificationProps) => {
     const [swipe_direction, setSwipeDirection] = React.useState(DIRECTION.LEFT);
     const [is_visible, setIsVisible] = React.useState(true);
-    const getSeconds = React.useCallback((timestamp?: number) => {
+    const getSeconds = React.useCallback((timestamp?: number | null) => {
         return timestamp ? Math.abs(Math.floor(Date.now() / 1000) - timestamp) : null;
     }, []);
     const [seconds, setSeconds] = React.useState<number | null>(getSeconds(timestamp));

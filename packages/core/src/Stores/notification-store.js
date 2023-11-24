@@ -193,7 +193,17 @@ export default class NotificationStore extends BaseStore {
     addTradeNotification(contract_info) {
         if (!contract_info || this.trade_notifications.some(({ contract_id: id }) => id === contract_info.contract_id))
             return;
-        const { buy_price, contract_id, currency, purchase_time, shortcode, status, underlying } = contract_info ?? {};
+        const {
+            buy_price,
+            contract_id,
+            contract_type,
+            currency,
+            profit,
+            purchase_time,
+            shortcode,
+            status,
+            underlying,
+        } = contract_info ?? {};
         this.trade_notifications.push({
             id: `${contract_id}_${status}`,
             buy_price,
@@ -203,11 +213,15 @@ export default class NotificationStore extends BaseStore {
                 isHighLow({ shortcode })
             ),
             currency,
-            profit: getTotalProfit(contract_info),
+            profit: isMultiplierContract(contract_type) ? getTotalProfit(contract_info) : profit,
             status,
             symbol: getMarketName(underlying ?? extractInfoFromShortcode(shortcode).underlying),
             timestamp: status === 'open' ? purchase_time : getEndTime(contract_info),
         });
+        /* Consider notifications older than 100s ago as stale and filter out such trade_notifications from the array
+           in order to protect RAM in case a user sells contracts from Reports with DTrader open in another tab. */
+        const hundred_sec_ago = Math.floor(Date.now() / 1000) - 100;
+        this.trade_notifications = this.trade_notifications.filter(({ timestamp }) => timestamp > hundred_sec_ago);
     }
 
     addVerificationNotifications(identity, document, has_restricted_mt5_account, has_mt5_account_with_rejected_poa) {

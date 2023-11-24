@@ -1443,11 +1443,11 @@ export default class TradeStore extends BaseStore {
     }
 
     onMount() {
+        this.root_store.notifications.removeTradeNotifications();
         if (this.is_trade_component_mounted && this.should_skip_prepost_lifecycle) {
             return;
         }
         this.root_store.notifications.setShouldShowPopups(false);
-        this.root_store.notifications.removeTradeNotifications();
         this.onPreSwitchAccount(this.preSwitchAccountListener);
         this.onSwitchAccount(this.accountSwitcherListener);
         this.resetAccumulatorData();

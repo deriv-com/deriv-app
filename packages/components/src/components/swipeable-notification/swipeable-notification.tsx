@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
 import { useSwipeable } from 'react-swipeable';
 import { Localize } from '@deriv/translations';
+import { getTimeSince } from '@deriv/shared';
 import Text from '../text';
 
 type TSwipeableNotificationProps = React.PropsWithChildren<{
@@ -47,11 +48,7 @@ const SwipeableNotification = ({
     );
     const getDisplayedTime = () => {
         if (!seconds && seconds !== 0) return;
-        return seconds < 10 ? (
-            <Localize i18n_default_text='now' />
-        ) : (
-            <Localize i18n_default_text='{{seconds}}s ago' values={{ seconds }} />
-        );
+        return seconds < 10 ? <Localize i18n_default_text='now' /> : getTimeSince(Number(timestamp) * 1000);
     };
     const onSwipe = (direction: string) => {
         setSwipeDirection(direction);

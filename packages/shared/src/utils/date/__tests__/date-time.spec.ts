@@ -113,3 +113,23 @@ describe('convertDuration', () => {
         });
     });
 });
+
+describe('getTimeSince', () => {
+    it('should return correct time since timestamp for each time unit', () => {
+        const now = Date.now();
+        const fifteen_sec_ago = Date.now() - 15000;
+        const ninety_sec_ago = Date.now() - 90000;
+        const four_thousand_sec_ago = Date.now() - 4000000;
+        expect(DateTime.getTimeSince(now)).toEqual('0s ago');
+        expect(DateTime.getTimeSince(fifteen_sec_ago)).toEqual('15s ago');
+        expect(DateTime.getTimeSince(ninety_sec_ago)).toEqual('1m ago');
+        expect(DateTime.getTimeSince(four_thousand_sec_ago)).toEqual('1h ago');
+    });
+    it('should return date when > 86400 seconds passed since timestamp', () => {
+        const hundred_thousand_sec_ago = 1234567890000;
+        expect(DateTime.getTimeSince(hundred_thousand_sec_ago)).toEqual('14 Feb 2009');
+    });
+    it('should return an empty string when called with 0', () => {
+        expect(DateTime.getTimeSince(0)).toEqual('');
+    });
+});

@@ -35,14 +35,6 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
     const displayCurrency = wallet?.currency_config?.display_code || 'USD';
     const displayWalletName = `${displayCurrency} Wallet`;
 
-    transaction?.action_type === 'transfer' && transaction.longcode && transaction.longcode.includes('Deriv X')
-        ? {
-              from: { loginid: wallet.loginid },
-              to: { loginid: wallet.loginid },
-              [transaction.longcode.split(' ')[1]]: { loginid: transaction.longcode.split(' ').pop() },
-          }
-        : null;
-
     return (
         <div className='wallets-transactions-completed-row'>
             {transaction.action_type !== 'transfer' ? (

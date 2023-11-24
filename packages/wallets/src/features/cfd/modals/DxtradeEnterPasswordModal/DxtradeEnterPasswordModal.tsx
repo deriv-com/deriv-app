@@ -6,6 +6,7 @@ import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from 
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import DxTradePasswordIcon from '../../../../public/images/ic-dxtrade-password.svg';
+import { PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 import './DxtradeEnterPasswordModal.scss';
 
@@ -60,6 +61,34 @@ const DxtradeEnterPasswordModal = () => {
             );
         }
 
+        if (!isDxtradePasswordNotSet) {
+            return (
+                <WalletButtonGroup isFullWidth>
+                    <WalletButton
+                        isFullWidth
+                        onClick={() => {
+                            show(
+                                <ModalStepWrapper title="We've sent you an email">
+                                    <SentEmailContent platform='dxtrade' />
+                                </ModalStepWrapper>
+                            );
+                        }}
+                        size='lg'
+                        text='Forgot password?'
+                        variant='outlined'
+                    />
+                    <WalletButton
+                        disabled={!password || isLoading}
+                        isFullWidth
+                        isLoading={isLoading}
+                        onClick={onSubmit}
+                        size='lg'
+                        text='Add account'
+                    />
+                </WalletButtonGroup>
+            );
+        }
+
         return (
             <WalletButton
                 disabled={!password || isLoading}
@@ -67,10 +96,10 @@ const DxtradeEnterPasswordModal = () => {
                 isLoading={isLoading}
                 onClick={onSubmit}
                 size='lg'
-                text='Create Deriv MT5 password'
+                text={`Create ${PlatformDetails.dxtrade.title} password`}
             />
         );
-    }, [hide, history, isLoading, isSuccess, onSubmit, password]);
+    }, [hide, history, isDxtradePasswordNotSet, isLoading, isSuccess, onSubmit, password, show]);
 
     const successComponent = useMemo(() => {
         if (isSuccess && dxtradeAccountListSuccess) {

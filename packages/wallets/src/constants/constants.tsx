@@ -11,14 +11,14 @@ export const optionsAndMultipliersContent = [
         description: 'Options and multipliers trading platform.',
         icon: <IcAppstoreDerivTrader />,
         redirect: '/',
-        smallIcon: <IcAppstoreDerivTrader style={{ height: '3.2rem', width: '3.2rem' }} />,
+        smallIcon: <IcAppstoreDerivTrader height='3.2rem' width='3.2rem' />,
         title: 'Deriv Trader',
     },
     {
         description: 'Automate your trading, no coding needed.',
         icon: <IcAppstoreDerivBot />,
         redirect: '/bot',
-        smallIcon: <IcAppstoreDerivBot style={{ height: '3.2rem', width: '3.2rem' }} />,
+        smallIcon: <IcAppstoreDerivBot height='3.2rem' width='3.2rem' />,
         title: 'Deriv Bot',
     },
     {
@@ -26,7 +26,7 @@ export const optionsAndMultipliersContent = [
         icon: <IcAppstoreSmartTrader />,
         isExternal: true,
         redirect: getUrlSmartTrader(),
-        smallIcon: <IcAppstoreSmartTrader style={{ height: '3.2rem', width: '3.2rem' }} />,
+        smallIcon: <IcAppstoreSmartTrader height='3.2rem' width='3.2rem' />,
         title: 'SmartTrader',
     },
     {
@@ -34,7 +34,7 @@ export const optionsAndMultipliersContent = [
         icon: <IcAppstoreBinaryBot />,
         isExternal: true,
         redirect: getUrlBinaryBot(),
-        smallIcon: <IcAppstoreBinaryBot style={{ height: '3.2rem', width: '3.2rem' }} />,
+        smallIcon: <IcAppstoreBinaryBot height='3.2rem' width='3.2rem' />,
         title: 'Binary Bot',
     },
     {
@@ -42,7 +42,7 @@ export const optionsAndMultipliersContent = [
         icon: <IcAppstoreDerivGo />,
         isExternal: true,
         redirect: getStaticUrl('/deriv-go'),
-        smallIcon: <IcAppstoreDerivGo style={{ height: '3.2rem', width: '3.2rem' }} />,
+        smallIcon: <IcAppstoreDerivGo height='3.2rem' width='3.2rem' />,
         title: 'Deriv GO',
     },
 ];

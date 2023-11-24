@@ -123,7 +123,7 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
             </section>
             <div
                 className={classNames('wallets-options-and-multipliers-listing__content', {
-                    'wallets-options-and-multipliers-listing__content-no-trading-account': !data?.dtrade_loginid,
+                    'wallets-options-and-multipliers-listing__content--without-trading-account': !data?.dtrade_loginid,
                 })}
             >
                 {optionsAndMultipliersContent.map(account => {

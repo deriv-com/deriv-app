@@ -58,7 +58,7 @@
             cursor: pointer;
         }
 
-        &-no-trading-account {
+        &--without-trading-account {
             @include mobile {
                 margin: auto 2rem;
             }

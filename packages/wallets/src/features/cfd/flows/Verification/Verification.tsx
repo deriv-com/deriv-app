@@ -7,7 +7,7 @@ import { useModal } from '../../../../components/ModalProvider';
 import { THooks } from '../../../../types';
 import {
     ManualDocumentUpload,
-    ResubmitPOA,
+    PoaScreen,
     SelfieDocumentUpload,
     useHandleManualDocumentUpload,
 } from '../../../accounts/screens';
@@ -24,14 +24,13 @@ const Loading = () => {
     );
 };
 
-// TODO: Replace these mock components with the screens
 const screens = {
     idvScreen: <IDVDocumentUpload />,
     loadingScreen: <Loading />,
     manualScreen: <ManualDocumentUpload />,
     onfidoScreen: <Onfido />,
     personalDetailsScreen: <PersonalDetails />,
-    poaScreen: <ResubmitPOA />,
+    poaScreen: <PoaScreen />,
     selfieScreen: <SelfieDocumentUpload />,
 };
 
@@ -141,7 +140,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.taxIdentificationNumber
                 );
             case 'poaScreen':
-                return !formValues.townCityLine || !formValues.firstLine;
+                return !formValues.townCityLine || !formValues.firstLine || !formValues.documentFile;
             default:
                 return false;
         }

@@ -32,7 +32,7 @@ const AppCard: React.FC<TProps> = ({
 }) => {
     return (
         <div className={`wallets-app-card wallets-app-card--border-radius--${cardSize}`}>
-            <WalletGradientBackground currency='APP' device='desktop' hasShine type='card'>
+            <WalletGradientBackground currency='' hasShine theme='grey'>
                 {cardSize !== 'sm' && (
                     <div className='wallets-app-card__badge'>
                         <AppCardBadge isDemo={isDemoWallet} />

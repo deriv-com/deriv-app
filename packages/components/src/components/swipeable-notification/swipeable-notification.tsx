@@ -96,7 +96,10 @@ const SwipeableNotification = ({
                 if (visibility_duration_ms) debouncedHideNotification();
             }}
             onExited={onUnmount}
-            timeout={300}
+            timeout={{
+                enter: 300,
+                exit: 600,
+            }}
             unmountOnExit
         >
             <NavLink

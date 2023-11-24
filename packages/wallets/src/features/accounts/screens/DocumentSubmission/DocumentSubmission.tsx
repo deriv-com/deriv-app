@@ -6,7 +6,7 @@ import { getExampleImagesConfig } from '../../constants';
 import { CommonMistakesExamples } from '../CommonMistakesExamples';
 import './DocumentSubmission.scss';
 
-const ListItems = [
+const listItems = [
     'Utility bill: electricity, water, gas, or landline phone bill.',
     'Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.',
     'Home rental agreement: valid and current agreement.',
@@ -30,7 +30,7 @@ const DocumentSubmission: React.FC = () => {
                     </WalletText>
 
                     <ul className='wallets-poa__document__container__disclaimer__list'>
-                        {ListItems.map(item => (
+                        {listItems.map(item => (
                             <li key={`list-item-${item}`}>
                                 <WalletText size='sm'>{item}</WalletText>
                             </li>

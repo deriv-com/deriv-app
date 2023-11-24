@@ -6,10 +6,9 @@ import { letterRequiredValidator, requiredValidator } from '../../validations';
 import './AddressSection.scss';
 
 const AddressSection: React.FC = () => {
-    const { data } = useSettings();
     const { setFormValues } = useFlow();
     const { data: getSettings } = useSettings();
-    const country = data?.country_code ?? '';
+    const country = getSettings?.country_code ?? '';
     const { data: statesList } = useStatesList(country);
 
     return (

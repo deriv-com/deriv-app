@@ -17,7 +17,7 @@ import BuySellModalError from './buy-sell-modal-error';
 const BuySellModal = () => {
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
     const { buy_sell_store, general_store, my_profile_store, order_store } = useStores();
-    const { is_buy, selected_ad_state } = buy_sell_store;
+    const { is_buy_advert, selected_ad_state } = buy_sell_store;
     const { balance } = general_store;
     const { should_show_add_payment_method_form } = my_profile_store;
 
@@ -28,7 +28,7 @@ const BuySellModal = () => {
     const [is_account_balance_low, setIsAccountBalanceLow] = React.useState(false);
     const submitForm = React.useRef<(() => void) | null>(null);
 
-    const show_low_balance_message = !is_buy && is_account_balance_low;
+    const show_low_balance_message = !is_buy_advert && is_account_balance_low;
 
     const setSubmitForm = (submitFormFn: () => void) => (submitForm.current = submitFormFn);
 
@@ -110,7 +110,7 @@ const BuySellModal = () => {
                     is_flex
                     is_modal_open={is_modal_open}
                     page_header_className='buy-sell-modal__header'
-                    renderPageHeaderElement={<BuySellModalTitle is_buy={is_buy} />}
+                    renderPageHeaderElement={<BuySellModalTitle is_buy={is_buy_advert} />}
                     pageHeaderReturnFn={onCancel}
                 >
                     <BuySellModalError
@@ -144,15 +144,15 @@ const BuySellModal = () => {
                     className={classNames('buy-sell-modal', {
                         'buy-sell-modal__form': should_show_add_payment_method_form,
                     })}
-                    height={is_buy ? 'auto' : '649px'}
+                    height={is_buy_advert ? 'auto' : '649px'}
                     is_open={is_modal_open}
                     portalId='modal_root'
-                    title={<BuySellModalTitle is_buy={is_buy} />}
+                    title={<BuySellModalTitle is_buy={is_buy_advert} />}
                     toggleModal={onCancel}
                     width='456px'
                 >
                     {/* Parent height - Modal.Header height - Modal.Footer height */}
-                    <ThemedScrollbars height={is_buy ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
+                    <ThemedScrollbars height={is_buy_advert ? '100%' : 'calc(100% - 5.8rem - 7.4rem)'}>
                         <Modal.Body className='buy-sell-modal__layout'>
                             <BuySellModalError
                                 error_message={error_message}

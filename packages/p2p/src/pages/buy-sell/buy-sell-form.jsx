@@ -29,7 +29,7 @@ const BuySellForm = props => {
         buy_sell_store.setFormProps(props);
     }, [props, buy_sell_store]);
 
-    const { advert, setIsSubmitDisabled, setPageFooterParent, setSubmitForm } = props;
+    const { advert, setPageFooterParent } = props;
     const {
         advertiser_details,
         description,
@@ -161,7 +161,7 @@ const BuySellForm = props => {
     };
 
     React.useEffect(() => {
-        setIsSubmitDisabled(
+        buy_sell_store.form_props.setIsSubmitDisabled(
             !isValid ||
                 isSubmitting ||
                 (buy_sell_store.is_sell_advert && payment_method_names && selected_methods.length < 1)
@@ -170,13 +170,13 @@ const BuySellForm = props => {
         isValid,
         isSubmitting,
         selected_methods.length,
-        buy_sell_store.form_props,
         buy_sell_store.is_sell_advert,
         payment_method_names,
+        buy_sell_store.form_props,
     ]);
 
     React.useEffect(() => {
-        setSubmitForm(submitForm);
+        buy_sell_store.form_props.setSubmitForm(submitForm);
     }, [submitForm, buy_sell_store.form_props]);
 
     return (

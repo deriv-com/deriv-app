@@ -1,6 +1,6 @@
 export type TWithdrawalReceipt = {
     address?: string;
-    amount?: number;
+    amount?: string;
     currency?: string;
     landingCompany?: string;
 };

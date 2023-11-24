@@ -48,13 +48,14 @@ const getMessage = ({
             ? 'Please reset the balance of your Demo Wallet to make a transfer.'
             : `Please make a deposit to your ${currency} Wallet to make a transfer.`;
         const locationPathName = `wallets/cashier/${isVirtual ? 'reset-balance' : 'deposit'}`;
+        const buttonText = isVirtual ? 'Reset balance' : 'Deposit';
 
         return {
             actionButton: () => (
                 <WalletButton
                     onClick={() => history.push(locationPathName)}
                     size='lg'
-                    text={isVirtual ? 'Reset balance' : 'Deposit'}
+                    text={buttonText}
                     variant='contained'
                 />
             ),

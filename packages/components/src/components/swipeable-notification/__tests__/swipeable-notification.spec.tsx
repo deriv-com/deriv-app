@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import SwipeableNotification from '../swipeable-notification';
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
@@ -52,13 +52,8 @@ describe('SwipeableNotification', () => {
         renderwithRouter({ is_failure: true });
         expect(screen.getByRole('link')).toHaveClass('swipeable-notification--failure');
     });
-    it('should apply correct classname in case of failure', async () => {
+    it('should apply correct classname in case of failure', () => {
         renderwithRouter({ is_success: true });
-        await waitFor(
-            () => {
-                expect(screen.getByRole('link')).toHaveClass('swipeable-notification--success');
-            },
-            { timeout: 3000 }
-        );
+        expect(screen.getByRole('link')).toHaveClass('swipeable-notification--success');
     });
 });

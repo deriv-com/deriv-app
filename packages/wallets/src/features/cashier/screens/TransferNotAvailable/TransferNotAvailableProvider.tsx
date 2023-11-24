@@ -8,7 +8,7 @@ type TGetMessageProps = {
     hasAccountsForTransfer: boolean;
     hasTransferAccountsWithFunds: boolean;
     history: ReturnType<typeof useHistory>;
-    isVirtual: THooks.ActiveWalletAccount['is_virtual'];
+    isVirtual?: THooks.ActiveWalletAccount['is_virtual'];
 };
 
 const getMessage = ({

@@ -205,6 +205,15 @@ $MIN_HEIGHT_FLOATING: calc(
         height: 100%;
         width: 100%;
 
+        @include desktop {
+            &__financial-assessment {
+                .account-form__fieldset {
+                    margin-top: 0.8rem;
+                    margin-bottom: 2rem;
+                }
+            }
+        }
+
         &__header {
             font-size: var(--text-size-xs);
             font-weight: bold;
@@ -1439,29 +1448,6 @@ $MIN_HEIGHT_FLOATING: calc(
         display: grid;
         grid-gap: 2.4rem;
         grid-template-columns: 1fr 1fr 1fr;
-    }
-}
-
-/** @define onfido-container; weak */
-.onfido-container {
-    &__hidden {
-        display: none;
-    }
-
-    @include mobile {
-        .onfido-sdk-ui-PageTitle {
-            &-titleWrapper {
-                margin: 0 1.5em 0.4em;
-            }
-
-            &-title {
-                text-align: left;
-            }
-
-            &-subTitle {
-                text-align: left;
-            }
-        }
     }
 }
 

@@ -7,6 +7,7 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
+import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -22,14 +23,14 @@ type TProps = {
 
 const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const [password, setPassword] = useState('');
-    const { isLoading: createMT5AccountLoading, isSuccess, mutate } = useCreateMT5Account();
+    const { error, isLoading: createMT5AccountLoading, isSuccess, mutate, status } = useCreateMT5Account();
     const { isLoading: tradingPlatformPasswordChangeLoading, mutate: tradingPasswordChange } =
         useTradingPlatformPasswordChange();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: settings } = useSettings();
-    const { hide } = useModal();
+    const { getModalState, hide, show } = useModal();
     const { isMobile } = useDevice();
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
@@ -38,6 +39,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         marketType === 'all' && Object.keys(PlatformDetails).includes(platform)
             ? PlatformDetails[platform].title
             : MarketTypeDetails[marketType].title;
+    const selectedJurisdiction = getModalState('selectedJurisdiction');
 
     const onSubmit = async () => {
         const accountType = marketType === 'synthetic' ? 'gaming' : marketType;
@@ -51,17 +53,29 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             });
         }
 
+        const categoryAccountType = activeWallet?.is_virtual ? 'demo' : accountType;
+
         mutate({
             payload: {
-                account_type: activeWallet?.is_virtual ? 'demo' : accountType,
+                account_type: categoryAccountType,
                 address: settings?.address_line_1 || '',
                 city: settings?.address_city || '',
-                company: 'svg',
+                company: selectedJurisdiction,
                 country: settings?.country_code || '',
                 email: settings?.email || '',
                 leverage: availableMT5Accounts?.find(acc => acc.market_type === marketType)?.leverage || 500,
                 mainPassword: password,
                 ...(marketType === 'financial' && { mt5_account_type: 'financial' }),
+                ...(selectedJurisdiction &&
+                    (selectedJurisdiction !== 'labuan'
+                        ? {
+                              account_type: categoryAccountType,
+                              ...(selectedJurisdiction === 'financial' && { mt5_account_type: 'financial' }),
+                          }
+                        : {
+                              account_type: 'financial',
+                              mt5_account_type: 'financial_stp',
+                          })),
                 ...(marketType === 'all' && { sub_account_category: 'swap_free' }),
                 name: settings?.first_name || '',
                 phone: settings?.phone || '',
@@ -85,8 +99,20 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         if (isSuccess) return <WalletButton isFullWidth onClick={() => hide()} size='lg' text='Continue' />;
         if (hasMT5Account)
             return (
-                <WalletButtonGroup>
-                    <WalletButton isFullWidth size='lg' text='Forgot password?' variant='outlined' />
+                <WalletButtonGroup isFullWidth>
+                    <WalletButton
+                        isFullWidth
+                        onClick={() => {
+                            show(
+                                <ModalStepWrapper title="We've sent you an email">
+                                    <SentEmailContent platform={platform} />
+                                </ModalStepWrapper>
+                            );
+                        }}
+                        size='lg'
+                        text='Forgot password?'
+                        variant='outlined'
+                    />
                     <WalletButton
                         disabled={!password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading}
                         isFullWidth
@@ -112,6 +138,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     if (isMobile) {
         return (
             <ModalStepWrapper renderFooter={renderFooter} title={renderTitle()}>
+                {/* TODO: We need to separate this out into a separate `show` modal call to hide the Deriv.app header */}
                 {isSuccess && (
                     <CFDSuccess
                         description={`You can now start practicing trading with your ${marketTypeTitle} ${
@@ -120,6 +147,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                         displayBalance={
                             mt5Accounts?.find(account => account.market_type === marketType)?.display_balance || ''
                         }
+                        landingCompany={selectedJurisdiction}
                         marketType={marketType}
                         platform={platform}
                         renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
@@ -150,6 +178,10 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         );
     }
 
+    if (status === 'error') {
+        return <WalletError errorMessage={error?.error.message} onClick={() => hide()} title={error?.error?.code} />;
+    }
+
     return (
         <ModalWrapper hideCloseButton={isSuccess}>
             {isSuccess && (
@@ -160,6 +192,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     displayBalance={
                         mt5Accounts?.find(account => account.market_type === marketType)?.display_balance || ''
                     }
+                    landingCompany={selectedJurisdiction}
                     marketType={marketType}
                     platform={platform}
                     renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
@@ -173,6 +206,13 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                         marketType={marketType}
                         onPasswordChange={e => setPassword(e.target.value)}
                         onPrimaryClick={onSubmit}
+                        onSecondaryClick={() =>
+                            show(
+                                <ModalWrapper>
+                                    <SentEmailContent platform={platform} />
+                                </ModalWrapper>
+                            )
+                        }
                         password={password}
                         platform='mt5'
                     />

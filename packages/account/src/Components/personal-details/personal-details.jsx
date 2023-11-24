@@ -65,6 +65,7 @@ const PersonalDetails = ({
         residence_list,
         real_account_signup_target,
     });
+
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
 
     const validateIDV = values => {

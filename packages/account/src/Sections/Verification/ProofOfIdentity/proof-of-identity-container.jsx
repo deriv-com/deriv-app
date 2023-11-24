@@ -1,3 +1,5 @@
+import React from 'react';
+import { useHistory } from 'react-router';
 import { Button, Loading } from '@deriv/components';
 import { isEmptyObject, WS, getPlatformRedirect, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -11,12 +13,10 @@ import { Localize } from '@deriv/translations';
 import NotRequired from 'Components/poi/status/not-required';
 import Onfido from './onfido.jsx';
 import POISubmission from './proof-of-identity-submission.jsx';
-import React from 'react';
 import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
 import Verified from 'Components/poi/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
-import { useHistory } from 'react-router';
 
 const ProofOfIdentityContainer = observer(
     ({ height, is_from_external, onStateChange, setIsCfdPoiCompleted, getChangeableFields, updateAccountStatus }) => {
@@ -38,7 +38,7 @@ const ProofOfIdentityContainer = observer(
             should_allow_authentication,
             is_virtual,
         } = client;
-        const { app_routing_history, is_language_changing, routeBackInApp } = common;
+        const { app_routing_history, routeBackInApp, is_language_changing } = common;
         const { refreshNotifications } = notifications;
 
         const from_platform = getPlatformRedirect(app_routing_history);
@@ -55,8 +55,6 @@ const ProofOfIdentityContainer = observer(
             });
         };
         const loadResidenceList = React.useCallback(() => {
-            setAPIError(null);
-            setStatusLoading(true);
             fetchResidenceList().then(response_residence_list => {
                 if (response_residence_list.error) {
                     setAPIError(response_residence_list.error);
@@ -64,7 +62,6 @@ const ProofOfIdentityContainer = observer(
                     setResidenceList(response_residence_list.residence_list);
                 }
             });
-            setStatusLoading(false);
         }, [fetchResidenceList]);
 
         React.useEffect(() => {
@@ -83,8 +80,8 @@ const ProofOfIdentityContainer = observer(
                         setStatusLoading(false);
                         return;
                     }
-
                     loadResidenceList();
+                    setStatusLoading(false);
                 });
             }
         }, [loadResidenceList, is_switching]);

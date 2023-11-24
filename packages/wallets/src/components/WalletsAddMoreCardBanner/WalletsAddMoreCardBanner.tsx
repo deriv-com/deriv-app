@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAccountsList, useCreateWallet } from '@deriv/api';
+import { useCreateWallet, useDerivAccountsList } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import CheckIcon from '../../public/images/check.svg';
@@ -21,7 +21,7 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     is_crypto: isCrypto,
     landing_company_name: landingCompanyName,
 }: TProps) => {
-    const { switchAccount } = useAccountsList();
+    const { switchAccount } = useDerivAccountsList();
     const { data, error, isSuccess: isMutateSuccess, mutate, status } = useCreateWallet();
     const { isMobile } = useDevice();
     const history = useHistory();

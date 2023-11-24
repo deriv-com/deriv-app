@@ -8,7 +8,7 @@ import {
 } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
 import { TWalletLandingCompanyName } from '../../../../../../types';
-import { getActiveWalletIcon, getTradingAppIcon } from '../../helpers';
+import { getTradingAppIcon, getWalletIcon } from '../../../../helpers';
 import type { TAccount } from '../../types';
 import './TransferFormAccountCard.scss';
 
@@ -41,13 +41,17 @@ const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet
                     ) : (
                         <WalletsAppLinkedWithWalletIcon
                             appIcon={getTradingAppIcon(
-                                account,
-                                activeWallet?.landingCompanyName as TWalletLandingCompanyName
+                                account?.account_type ?? '',
+                                activeWallet?.landingCompanyName as TWalletLandingCompanyName,
+                                account?.mt5_group
                             )}
                             currency={activeWallet?.currency || ''}
                             isDemo={Boolean(account?.demo_account)}
                             size='small'
-                            walletIcon={getActiveWalletIcon(activeWallet)}
+                            walletIcon={getWalletIcon(
+                                activeWallet?.currency ?? 'USD',
+                                Boolean(activeWallet?.demo_account)
+                            )}
                         />
                     )}
                 </div>

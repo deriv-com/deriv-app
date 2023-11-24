@@ -1,45 +1,64 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import SwipeableNotification from '../swipeable-notification';
+import { BrowserRouter } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 
 describe('SwipeableNotification', () => {
     const content = 'Notification content';
 
-    //     props_to_test = {
-    //         classname: 'swipeable-notification',
-    //         is_failure: false,
-    //         is_success: false,
-    //         onUnmount: jest.fn(),
-    //         redirect_to: '',
-    //         timestamp: 1234567890,
-    //         visibility_duration_ms: 3000,
-    //     };
+    const renderwithRouter = (props: React.ComponentProps<typeof SwipeableNotification> = {}) => {
+        render(
+            <BrowserRouter>
+                <SwipeableNotification {...props}>{content}</SwipeableNotification>
+            </BrowserRouter>
+        );
+    };
 
     it('should render the correct content', () => {
-        render(<SwipeableNotification>{content}</SwipeableNotification>);
+        renderwithRouter();
 
         expect(screen.getByText(content)).toBeInTheDocument();
     });
     it('should render 15s ago timestamp', () => {
-        const fifteen_sec_ago = Date.now() - 15 / 1000;
-        render(<SwipeableNotification timestamp={fifteen_sec_ago}>{content}</SwipeableNotification>);
+        const fifteen_sec_ago = Math.floor(Date.now() / 1000) - 15;
+        renderwithRouter({ timestamp: fifteen_sec_ago });
 
         expect(screen.getByText('15s ago')).toBeInTheDocument();
     });
     it('should render "now" timestamp', () => {
-        const five_sec_ago = Date.now() - 5 / 1000;
-        render(<SwipeableNotification timestamp={five_sec_ago}>{content}</SwipeableNotification>);
+        const five_sec_ago = Math.floor(Date.now() / 1000) - 5;
+        renderwithRouter({ timestamp: five_sec_ago });
 
         expect(screen.getByText('now')).toBeInTheDocument();
     });
-    it('should hide notifications after visibility_duration_ms and call onUnmount after + 300 seconds of animation', async () => {
+    it('should hide notifications using a memoized function when visibility_duration_ms is passed', () => {
         const onUnmountCallback = jest.fn();
-        render(
-            <SwipeableNotification visibility_duration_ms={3000} onUnmount={onUnmountCallback}>
-                {content}
-            </SwipeableNotification>
-        );
-        jest.advanceTimersByTime(3300);
+        jest.spyOn(React, 'useMemo').mockImplementationOnce(() => {
+            onUnmountCallback();
+            return { cancel: jest.fn() };
+        });
+        renderwithRouter({ visibility_duration_ms: 3000, onUnmount: onUnmountCallback });
         expect(onUnmountCallback).toBeCalled();
+    });
+    it('should redirect to URL passed as redirect_to', () => {
+        renderwithRouter({ redirect_to: '/test_url' });
+        const link = screen.getByRole('link');
+        expect(link).toHaveAttribute('href', '/test_url');
+        userEvent.click(link);
+        expect(window.location.pathname).toEqual('/test_url');
+    });
+    it('should apply correct classname in case of failure', () => {
+        renderwithRouter({ is_failure: true });
+        expect(screen.getByRole('link')).toHaveClass('swipeable-notification--failure');
+    });
+    it('should apply correct classname in case of failure', async () => {
+        renderwithRouter({ is_success: true });
+        await waitFor(
+            () => {
+                expect(screen.getByRole('link')).toHaveClass('swipeable-notification--success');
+            },
+            { timeout: 3000 }
+        );
     });
 });

@@ -38,7 +38,7 @@ const SwipeableNotification = ({
         return timestamp ? Math.abs(Math.floor(Date.now() / 1000) - timestamp) : null;
     }, []);
     const [seconds, setSeconds] = React.useState<number | null>(getSeconds(timestamp));
-    const interval_ref = React.useRef<number>();
+    const interval_ref = React.useRef<ReturnType<typeof setInterval>>();
 
     const hideNotification = () => setIsVisible(false);
     const debouncedHideNotification = React.useMemo(
@@ -73,10 +73,10 @@ const SwipeableNotification = ({
             }, 1000);
         }
         return () => {
-            debouncedHideNotification.cancel();
+            if (visibility_duration_ms) debouncedHideNotification.cancel();
             if (timestamp && interval_ref.current) clearInterval(interval_ref.current);
         };
-    }, [debouncedHideNotification, getSeconds, timestamp]);
+    }, [debouncedHideNotification, getSeconds, timestamp, visibility_duration_ms]);
 
     return (
         <CSSTransition

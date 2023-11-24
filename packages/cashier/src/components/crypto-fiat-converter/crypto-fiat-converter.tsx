@@ -82,10 +82,15 @@ const CryptoFiatConverter = observer(
         validateToAmount,
     }: TCryptoFiatConverterProps) => {
         const { crypto_fiat_converter } = useCashierStore();
-        const { exchange_rates } = useExchangeRate();
+        const { getRate } = useExchangeRate();
 
-        const { converter_from_amount, converter_from_error, converter_to_error, converter_to_amount } =
-            crypto_fiat_converter;
+        const {
+            converter_from_amount,
+            converter_from_error,
+            converter_to_error,
+            converter_to_amount,
+            is_timer_visible,
+        } = crypto_fiat_converter;
 
         const { handleChange } = useFormikContext();
         const [arrow_icon_direction, setArrowIconDirection] = React.useState<string>('right');
@@ -110,8 +115,9 @@ const CryptoFiatConverter = observer(
                                 setArrowIconDirection('right');
                             }}
                             onChange={(e: TReactChangeEvent) => {
-                                const rate = exchange_rates?.[from_currency]?.[to_currency] ?? 1;
-                                const converted_amount = Number(e.target.value) * rate;
+                                const from_rate = getRate(from_currency || '');
+                                const to_rate = getRate(to_currency || '');
+                                const converted_amount = (Number(e.target.value) * to_rate) / from_rate;
                                 onChangeConverterFromAmount(e, from_currency, to_currency, converted_amount);
                                 handleChange(e);
                             }}
@@ -148,8 +154,9 @@ const CryptoFiatConverter = observer(
                                     setArrowIconDirection('left');
                                 }}
                                 onChange={(e: TReactChangeEvent) => {
-                                    const rate = exchange_rates?.[to_currency]?.[from_currency] ?? 1;
-                                    const converted_amount = Number(e.target.value) * rate;
+                                    const from_rate = getRate(from_currency || '');
+                                    const to_rate = getRate(to_currency || '');
+                                    const converted_amount = (Number(e.target.value) * from_rate) / to_rate;
                                     onChangeConverterToAmount(e, to_currency, from_currency, converted_amount);
                                     handleChange(e);
                                 }}
@@ -164,6 +171,21 @@ const CryptoFiatConverter = observer(
                                 classNameHint='crypto-fiat-converter__hint'
                                 data-testid='dt_converter_to_amount_input'
                             />
+                            {is_timer_visible && (
+                                <Timer
+                                    onComplete={() => {
+                                        const from_rate = getRate(from_currency || '');
+                                        const to_rate = getRate(to_currency || '');
+                                        const converted_amount = (Number(converter_from_amount) * to_rate) / from_rate;
+                                        onChangeConverterFromAmount(
+                                            { target: { value: converter_from_amount } },
+                                            from_currency,
+                                            to_currency,
+                                            converted_amount
+                                        );
+                                    }}
+                                />
+                            )}
                         </InputGroup>
                     )}
                 </Field>

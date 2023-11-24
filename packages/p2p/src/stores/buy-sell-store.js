@@ -85,7 +85,6 @@ export default class BuySellStore extends BaseStore {
             is_buy_advert: computed,
             is_sell_advert: computed,
             modal_title: computed,
-            should_filter_by_payment_method: computed,
             getWebsiteStatus: action.bound,
             handleAdvertInfoResponse: action.bound,
             handleChange: action.bound,
@@ -167,11 +166,6 @@ export default class BuySellStore extends BaseStore {
         }
 
         return localize('Sell {{ account_currency }}', { account_currency: this.account_currency });
-    }
-
-    get should_filter_by_payment_method() {
-        const { my_profile_store } = this.root_store;
-        return my_profile_store.payment_methods_list_values !== this.selected_payment_method_value;
     }
 
     // eslint-disable-next-line class-methods-use-this

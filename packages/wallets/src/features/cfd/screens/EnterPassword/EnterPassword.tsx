@@ -3,6 +3,7 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
+import { validPassword } from '../../../../utils/passwordUtils';
 import { PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
@@ -47,7 +48,7 @@ const EnterPassword: React.FC<TProps> = ({
                 <div className='wallets-enter-password__buttons'>
                     <WalletButton onClick={onSecondaryClick} size='lg' text='Forgot password?' variant='outlined' />
                     <WalletButton
-                        disabled={!password || isLoading}
+                        disabled={!password || isLoading || !validPassword(password)}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

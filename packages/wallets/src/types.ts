@@ -9,6 +9,7 @@ import type {
     useCreateOtherCFDAccount,
     useCreateWallet,
     useCryptoTransactions,
+    useCryptoWithdrawal,
     useCtraderAccountsList,
     useCurrencyConfig,
     useDerivAccountsList,
@@ -43,6 +44,7 @@ export namespace THooks {
     export type AllAccountsList = NonNullable<ReturnType<typeof useAllAccountsList>>['data'];
     export type DynamicLeverage = NonNullable<ReturnType<typeof useDynamicLeverage>['data']>;
     export type CryptoTransactions = NonNullable<ReturnType<typeof useCryptoTransactions>['data']>[number];
+    export type CryptoWithdrawal = NonNullable<ReturnType<typeof useCryptoWithdrawal>['mutateAsync']>;
     export type POA = NonNullable<ReturnType<typeof usePOA>['data']>;
     export type POI = NonNullable<ReturnType<typeof usePOI>['data']>;
     export type CurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['data']>[string];

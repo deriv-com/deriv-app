@@ -22,6 +22,7 @@ const DigitForm = observer(() => {
     const { is_language_changing } = common;
     const { has_enabled_two_fa, setTwoFAChangedStatus, setTwoFAStatus } = client;
     const [is_success, setSuccess] = React.useState(false);
+    const [is_ready_for_verification, setReadyForVerification] = React.useState(false);
 
     const button_text = has_enabled_two_fa ? localize('Disable') : localize('Enable');
     const formik_ref = React.useRef<FormikProps<TDigitFormValues>>(null);
@@ -45,7 +46,7 @@ const DigitForm = observer(() => {
             return { digit_code: localize('Length of digit code must be 6 characters.') };
         } else if (!/^\d{6}$/g.test(digit_code)) {
             return { digit_code: localize('Digit code must only contain numbers.') };
-        } else if (formik_ref.current?.isValid) {
+        } else if (is_ready_for_verification && formik_ref.current?.isValid) {
             const totp_action = has_enabled_two_fa ? 'disable' : 'enable';
             enable_response = await WS.authorized.accountSecurity({
                 account_security: 1,
@@ -76,7 +77,7 @@ const DigitForm = observer(() => {
         <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields} innerRef={formik_ref}>
             {({ values, isValid, handleChange, handleBlur, isSubmitting, dirty }) => (
                 <Form noValidate>
-                    <div className='two-factor__input-group'>
+                    <div className='two-factor__input-group' data-testid='dt_digitform_2fa'>
                         <Field name='digit_code'>
                             {({ field, meta }: FieldProps) => (
                                 <Input
@@ -88,6 +89,7 @@ const DigitForm = observer(() => {
                                     value={values.digit_code}
                                     onChange={e => {
                                         handleChange(e);
+                                        setReadyForVerification(false);
                                     }}
                                     onBlur={handleBlur}
                                     required
@@ -107,6 +109,9 @@ const DigitForm = observer(() => {
                             is_loading={isSubmitting}
                             is_submit_success={is_success}
                             text={button_text}
+                            onClick={() => {
+                                setReadyForVerification(true);
+                            }}
                             large
                             primary
                         />

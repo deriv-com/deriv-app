@@ -29,7 +29,7 @@ describe('<TwoFactorEnabled />', () => {
             </StoreProvider>
         );
 
-        const digitform = screen.getByTestId('dt_digitform_2fa_enabled');
+        const digitform = screen.getByTestId('dt_digitform_2fa');
         expect(digitform).toBeInTheDocument();
     });
 });

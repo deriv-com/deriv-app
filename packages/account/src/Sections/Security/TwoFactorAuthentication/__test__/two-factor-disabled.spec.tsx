@@ -84,7 +84,7 @@ describe('<TwoFactorDisabled />', () => {
     it('should render digitform component if 2FA is disabled', () => {
         renderComponent({ store_config: store });
 
-        const digitform = screen.getByTestId('dt_digitform_2fa_disabled');
+        const digitform = screen.getByTestId('dt_digitform_2fa');
         expect(digitform).toBeInTheDocument();
     });
 

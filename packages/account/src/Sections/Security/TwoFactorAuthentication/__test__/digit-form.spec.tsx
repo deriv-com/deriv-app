@@ -9,9 +9,7 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     WS: {
         authorized: {
-            accountSecurity: jest.fn().mockResolvedValue({
-                error: { message: "That's not the right code. Please try again.", code: 'InvalidOTP' },
-            }),
+            accountSecurity: jest.fn(),
         },
     },
 }));
@@ -103,15 +101,19 @@ describe('<DigitForm />', () => {
     });
 
     it('should display error if user sends invalid OTP', async () => {
+        WS.authorized.accountSecurity.mockResolvedValue({
+            error: { message: "That's not the right code. Please try again.", code: 'InvalidOTP' },
+        });
+
         renderComponent({ store_config: store });
 
         const digitInput = screen.getByRole('textbox');
         userEvent.type(digitInput, '786789');
 
         const submitButton = screen.getByRole('button');
-        userEvent.click(submitButton);
 
         await waitFor(() => {
+            userEvent.click(submitButton);
             const error = screen.getByText(/That's not the right code. Please try again./i);
             expect(error).toBeInTheDocument();
         });
@@ -130,9 +132,9 @@ describe('<DigitForm />', () => {
         userEvent.type(digitInput, invalidOTP);
 
         const submitButton = screen.getByRole('button', { name: /Enable/i });
-        userEvent.click(submitButton);
 
         await waitFor(() => {
+            userEvent.click(submitButton);
             const error = screen.getByText(/OTP verification failed/i);
             expect(error).toBeInTheDocument();
         });

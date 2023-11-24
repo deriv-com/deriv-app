@@ -6,11 +6,12 @@ import React from 'react';
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
 import { WS, getLocation, toMoment, formatIDVFormValues } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { Analytics } from '@deriv/analytics';
 import { connect } from 'Stores/connect';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
-import { useAnalytics, useIsClientHighRiskForMT5 } from '@deriv/hooks';
+import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
 import 'Sass/details-form.scss';
 
 const STEP_IDENTIFIERS = ['account_currency', 'personal_details', 'address_details', 'terms_of_use'];
@@ -62,7 +63,10 @@ const AccountWizard = props => {
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
     const is_high_risk_client_for_mt5 = useIsClientHighRiskForMT5();
 
-    const { trackRealAccountSignup } = useAnalytics();
+    const analyticData = {
+        form_source: document.referrer,
+        form_name: 'real_account_signup_form',
+    };
 
     const {
         setIsTradingAssessmentForNewUserEnabled,
@@ -202,10 +206,11 @@ const AccountWizard = props => {
             return;
         }
 
-        trackRealAccountSignup({
+        Analytics.trackEvent('ce_real_account_signup_form', {
             action: 'step_back',
             step_codename: STEP_IDENTIFIERS[current_step],
             step_num: current_step,
+            ...analyticData,
         });
 
         goToPreviousStep();
@@ -257,11 +262,11 @@ const AccountWizard = props => {
         if (should_override || index + 1 >= state_items.length) {
             createRealAccount({});
         } else {
-            trackRealAccountSignup({
+            Analytics.trackEvent('ce_real_account_signup_form', {
                 action: 'step_passed',
                 step_codename: STEP_IDENTIFIERS[index],
                 step_num: index,
-                user_choice: value,
+                ...analyticData,
             });
             goToNextStep();
         }
@@ -299,12 +304,17 @@ const AccountWizard = props => {
         if (!form_data?.document_type?.id) {
             delete form_data.document_type;
         }
-        trackRealAccountSignup({
+        Analytics.trackEvent('ce_real_account_signup_form', {
             action: 'save',
-            user_choice: payload,
+            ...analyticData,
         });
         submitForm(payload)
             .then(async response => {
+                Analytics.trackEvent('ce_real_account_signup_form', {
+                    action: 'real_signup_finished',
+                    user_choice: JSON.stringify(response.echo_req),
+                    ...analyticData,
+                });
                 props.setIsRiskWarningVisible(false);
                 if (props.real_account_signup_target === 'maltainvest') {
                     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
@@ -326,9 +336,10 @@ const AccountWizard = props => {
                 }
             })
             .catch(error => {
-                trackRealAccountSignup({
+                Analytics.trackEvent('ce_real_account_signup_form', {
                     action: 'real_signup_error',
                     real_signup_error_message: error,
+                    ...analyticData,
                 });
                 if (error.code === 'show risk disclaimer') {
                     props.setIsRiskWarningVisible(true);
@@ -347,9 +358,6 @@ const AccountWizard = props => {
             .finally(() => {
                 setLoading(false);
                 localStorage.removeItem('current_question_index');
-                trackRealAccountSignup({
-                    action: 'real_signup_finished',
-                });
             });
     };
 

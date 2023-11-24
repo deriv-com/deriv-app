@@ -1416,7 +1416,6 @@ export default class ClientStore extends BaseStore {
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)
             : await WS.newAccountReal(required_form_values);
-
         if (!response.error) {
             await this.accountRealReaction(response);
             if (is_samoa_account) {
@@ -1621,7 +1620,7 @@ export default class ClientStore extends BaseStore {
             '_filteredParams',
         ];
 
-        const { tracking } = Analytics.getInstances();
+        const { tracking } = Analytics?.getInstances();
 
         const authorize_response = await this.setUserLogin(login_new_user);
 

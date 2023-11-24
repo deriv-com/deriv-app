@@ -54,7 +54,8 @@ const AppWithoutTranslation = ({ root_store }) => {
         if (
             process.env.NODE_ENV === 'production' ||
             process.env.NODE_ENV === 'staging' ||
-            process.env.NODE_ENV === 'test'
+            process.env.NODE_ENV === 'test' ||
+            window.location.hostname.includes('localhost')
         ) {
             Analytics.initialise({
                 growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,

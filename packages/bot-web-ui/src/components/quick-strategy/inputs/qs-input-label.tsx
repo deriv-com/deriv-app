@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Popover, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { Analytics } from '@deriv/analytics';
 
 type TQSInputLabel = {
     children?: React.ReactNode;
@@ -14,6 +15,14 @@ const QSInputLabel: React.FC<TQSInputLabel> = observer(({ label, description, fu
     const { ui } = useStore();
     const { is_mobile } = ui;
 
+    const sendEventToRudderstack = () => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'info_popup_open',
+            form_source: 'ce_bot_quick_strategy_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
+        });
+    };
+
     return (
         <div className={classNames('qs__form__field', { 'full-width': fullwidth })}>
             <div className='qs__input-label'>
@@ -21,7 +30,13 @@ const QSInputLabel: React.FC<TQSInputLabel> = observer(({ label, description, fu
                     {label}
                 </Text>
                 <span>
-                    <Popover message={description} zIndex='9999' alignment={is_mobile ? 'top' : 'right'} icon='info' />
+                    <Popover
+                        onClick={sendEventToRudderstack}
+                        message={description}
+                        zIndex='9999'
+                        alignment={is_mobile ? 'top' : 'right'}
+                        icon='info'
+                    />
                 </span>
             </div>
         </div>

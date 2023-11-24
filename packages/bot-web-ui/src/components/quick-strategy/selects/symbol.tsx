@@ -6,6 +6,8 @@ import { Autocomplete, Icon, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
+import { Analytics } from '@deriv/analytics';
+import { useStore } from '@deriv/stores';
 
 type TSymbol = {
     component?: React.ReactNode;
@@ -33,9 +35,20 @@ type TSymbolSelect = {
 
 const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     const { quick_strategy } = useDBotStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { setValue } = quick_strategy;
     const [active_symbols, setActiveSymbols] = React.useState([]);
     const { setFieldValue, values } = useFormikContext<TFormData>();
+
+    const sendAssetValueToRudderStack = (item: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_asset',
+            asset_type: item,
+            form_source: 'ce_bot_quick_strategy_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
+        });
+    };
 
     React.useEffect(() => {
         const { active_symbols } = ApiHelpers.instance;
@@ -78,6 +91,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
                                 list_items={symbols}
                                 onItemSelection={(item: TItem) => {
                                     if ((item as TSymbol)?.value) {
+                                        sendAssetValueToRudderStack(item.text);
                                         setFieldValue?.('symbol', (item as TSymbol)?.value as string);
                                         setValue('symbol', (item as TSymbol)?.value as string);
                                     }

@@ -442,6 +442,13 @@ export default class ClientStore extends BaseStore {
             () => this.root_store.ui.closeRealAccountSignup()
         );
 
+        reaction(
+            () => this.email,
+            () => {
+                if (!this.email) Analytics.reset();
+            }
+        );
+
         this.setIsBetaChart();
     }
 
@@ -2152,8 +2159,6 @@ export default class ClientStore extends BaseStore {
 
         if (response?.logout === 1) {
             this.cleanUp();
-
-            Analytics.reset();
             this.setLogout(true);
         }
 

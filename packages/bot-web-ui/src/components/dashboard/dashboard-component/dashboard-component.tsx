@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import { Analytics } from '@deriv/analytics';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -62,11 +62,23 @@ const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboar
 );
 
 const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
+    const { ui } = useStore();
     const { load_modal, dashboard } = useDBotStore();
     const { dashboard_strategies } = load_modal;
     const { setActiveTab, setActiveTabTutorial, active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
-    const is_mobile = isMobile();
+    const { is_mobile } = ui;
+
+    React.useEffect(() => {
+        //on dashbord umount fire close event for rudderstack
+        return () => {
+            Analytics.trackEvent('ce_bot_dashboard_form', {
+                action: 'close',
+                form_source: 'ce_bot_dashboard_form',
+                device_type: is_mobile ? 'mobile' : 'desktop',
+            });
+        };
+    }, [active_tab]);
 
     return (
         <React.Fragment>

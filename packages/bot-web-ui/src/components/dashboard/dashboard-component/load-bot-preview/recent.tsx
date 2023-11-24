@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
+import { Analytics } from '@deriv/analytics';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { MobileWrapper, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import DeleteDialog from './delete-dialog';
@@ -15,8 +15,11 @@ const HEADERS = [localize('Bot name'), localize('Last modified'), localize('Stat
 
 const RecentComponent = observer(() => {
     const { load_modal, dashboard } = useDBotStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { setDashboardStrategies, dashboard_strategies } = load_modal;
     const { setStrategySaveType, strategy_save_type } = dashboard;
+    const check_rudder_stack_instance = React.useRef(false);
 
     React.useEffect(() => {
         setStrategySaveType('');
@@ -28,7 +31,21 @@ const RecentComponent = observer(() => {
         //this dependency is used when we use the save modal popup
     }, [strategy_save_type]);
 
-    const is_mobile = isMobile();
+    React.useEffect(() => {
+        if (!dashboard_strategies?.length && !check_rudder_stack_instance.current) {
+            const getStratagiesForRudderStack = async () => {
+                const recent_strategies = await getSavedWorkspaces();
+                Analytics.trackEvent('ce_bot_dashboard_form', {
+                    bot_last_modified_time: recent_strategies?.[0]?.timestamp,
+                    form_source: 'bot_header_form',
+                    action: 'open',
+                    device_type: is_mobile ? 'mobile' : 'desktop',
+                });
+            };
+            getStratagiesForRudderStack();
+            check_rudder_stack_instance.current = true;
+        }
+    }, []);
 
     if (!dashboard_strategies?.length) return null;
     return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import BotSnackbar from 'Components/bot-snackbar';
 import { useDBotStore } from '../../../stores/useDBotStore';
@@ -9,17 +9,38 @@ import QuickStrategy1 from '../../quick-strategy';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../dbot-tours/bot-builder-tour';
 import WorkspaceWrapper from './workspace-wrapper';
+import { Analytics, TActions } from '@deriv/analytics';
+import { DBOT_TABS } from 'Constants/bot-contents';
 
 const BotBuilder = observer(() => {
     const { dashboard, app, run_panel, toolbar, quick_strategy } = useDBotStore();
+    const { ui } = useStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
     const { is_open } = quick_strategy;
     const { is_running } = run_panel;
+    const { is_mobile } = ui;
     const is_blockly_listener_registered = React.useRef(false);
     const [show_snackbar, setShowSnackbar] = React.useState(false);
 
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
+
+    const trackRudderStackForBotBuilder = (action: TActions) => {
+        Analytics.trackEvent('ce_bot_builder_form', {
+            action,
+            form_source: 'ce_bot_builder_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
+        });
+    };
+
+    React.useEffect(() => {
+        if (active_tab === DBOT_TABS.BOT_BUILDER) {
+            trackRudderStackForBotBuilder('open');
+            return () => {
+                trackRudderStackForBotBuilder('close');
+            };
+        }
+    }, [active_tab]);
 
     React.useEffect(() => {
         onMount();

@@ -7,6 +7,8 @@ import { Autocomplete, IconTradeTypes, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
+import { Analytics } from '@deriv/analytics';
+import { useStore } from '@deriv/stores';
 
 type TTradeType = {
     component?: React.ReactNode;
@@ -37,9 +39,19 @@ type TTradeTypeSelect = {
 const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ fullWidth = false }) => {
     const [trade_types, setTradeTypes] = React.useState([]);
     const { setFieldValue, values, validateForm } = useFormikContext<TFormData>();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { quick_strategy } = useDBotStore();
     const { setValue } = quick_strategy;
     const selected = values?.tradetype;
+
+    const sendTradeTypeToRudderStack = (item: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            choose_trade_type: item,
+            form_source: 'ce_bot_quick_strategy_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
+        });
+    };
 
     React.useEffect(() => {
         if (values?.symbol) {
@@ -88,6 +100,7 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ fullWidth = false }) => {
                             list_items={trade_type_dropdown_options}
                             onItemSelection={(item: TItem) => {
                                 if ((item as TTradeType)?.value) {
+                                    sendTradeTypeToRudderStack(item.text);
                                     setFieldValue?.('tradetype', (item as TTradeType)?.value as string);
                                     setValue('tradetype', (item as TTradeType)?.value as string);
                                 }

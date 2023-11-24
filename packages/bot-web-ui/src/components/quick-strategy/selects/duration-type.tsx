@@ -6,6 +6,8 @@ import { Autocomplete } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TDurationItemRaw, TFormData } from '../types';
+import { Analytics } from '@deriv/analytics';
+import { useStore } from '@deriv/stores';
 
 type TDurationUnitItem = {
     text: string;
@@ -22,10 +24,21 @@ type TDurationUnit = {
 const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }) => {
     const [list, setList] = React.useState<TDurationUnitItem[]>([]);
     const { quick_strategy } = useDBotStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { setValue, setCurrentDurationMinMax } = quick_strategy;
     const { setFieldValue, validateForm, values } = useFormikContext<TFormData>();
     const { symbol, tradetype } = values;
     const selected = values?.durationtype;
+
+    const sendDurationTypeToRudderStack = (item: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_duration',
+            duration_type: item,
+            form_source: 'ce_bot_quick_strategy_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
+        });
+    };
 
     React.useEffect(() => {
         if (tradetype && symbol) {
@@ -75,12 +88,13 @@ const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }) 
                         <Autocomplete
                             {...field}
                             inputMode='none'
-                            data-testid='qs_autocomplete_durationtype'
+                            data-testid='qs_autocomplete_durationtype test'
                             autoComplete='off'
                             className='qs__select'
                             value={selected_item?.text || ''}
                             list_items={list}
                             onItemSelection={(item: TItem) => {
+                                sendDurationTypeToRudderStack(item?.text);
                                 if ((item as TDurationUnitItem)?.value) {
                                     setCurrentDurationMinMax(
                                         (item as TDurationUnitItem)?.min,

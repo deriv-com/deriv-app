@@ -1,11 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
 
+import { Analytics, TActions } from '@deriv/analytics';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -25,6 +26,8 @@ type TRecentWorkspace = {
 
 const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const { dashboard, load_modal, save_modal } = useDBotStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
     const { toggleSaveModal, updateBotName } = save_modal;
     const {
@@ -41,12 +44,18 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         setPreviewedStrategyId,
     } = load_modal;
 
+    const sendToRudderStack = (action: TActions) => {
+        Analytics.trackEvent('ce_bot_builder_form', {
+            action,
+            form_source: 'ce_bot_dashboard_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
+        });
+    };
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
     const toggle_ref = React.useRef<HTMLInputElement>(null);
     const is_div_triggered_once = React.useRef<boolean>(false);
     const visible = useComponentVisibility(toggle_ref);
     const { setDropdownVisibility, is_dropdown_visible } = visible;
-    const is_mobile = isMobile();
     const is_desktop = isDesktop();
 
     React.useEffect(() => {
@@ -89,16 +98,27 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                 previewRecentStrategy(workspace.id);
             });
         }
+        Analytics.trackEvent('ce_bot_builder_form', {
+            action: 'open',
+            form_source: 'bot_dashboard_form-open',
+            device_type: is_mobile ? 'mobile' : 'desktop',
+        });
     };
 
     const handleEdit = async () => {
         await loadFileFromRecent();
         setActiveTab(DBOT_TABS.BOT_BUILDER);
+        Analytics.trackEvent('ce_bot_builder_form', {
+            action: 'close',
+            form_source: 'bot_dashboard_form-edit',
+            device_type: is_mobile ? 'mobile' : 'desktop',
+        });
     };
 
     const handleSave = () => {
         updateBotName(workspace?.name);
         toggleSaveModal();
+        sendToRudderStack('save_your_bot');
     };
 
     const viewRecentStrategy = async (type: string) => {
@@ -106,23 +126,30 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
 
         switch (type) {
             case STRATEGY.INIT:
+                // Fires for desktop preview
                 handleInit();
+                sendToRudderStack('choose_your_bot');
                 break;
 
             case STRATEGY.PREVIEW_LIST:
+                // Fires for mobile preview
                 handlePreviewList();
+                sendToRudderStack('choose_your_bot');
                 break;
 
             case STRATEGY.EDIT:
                 await handleEdit();
+                sendToRudderStack('edit_your_bot');
                 break;
 
             case STRATEGY.SAVE:
                 handleSave();
+                sendToRudderStack('save_your_bot');
                 break;
 
             case STRATEGY.DELETE:
                 onToggleDeleteDialog(true);
+                sendToRudderStack('delete_your_bot');
                 break;
 
             default:

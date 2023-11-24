@@ -1,16 +1,18 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from '../../../../stores/useDBotStore';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';
 import { ToolboxItems } from './toolbox-items';
+import { Analytics } from '@deriv/analytics';
 
 const Toolbox = observer(() => {
     const { toolbox, flyout, quick_strategy } = useDBotStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const {
         hasSubCategory,
         is_search_loading,
@@ -39,9 +41,19 @@ const Toolbox = observer(() => {
 
     const handleQuickStrategyOpen = () => {
         setFormVisibility(true);
+        sendToRudderStackOnQuickStrategyIconClick();
     };
 
-    if (!isMobile()) {
+    // this is check if the user has opened quick strategy model from the dashboard
+    const sendToRudderStackOnQuickStrategyIconClick = () => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'open',
+            form_source: 'bot_builder_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
+        });
+    };
+
+    if (!is_mobile) {
         return (
             <div className='dashboard__toolbox' data-testid='dashboard__toolbox'>
                 <ToolbarButton
@@ -49,7 +61,7 @@ const Toolbox = observer(() => {
                     button_id='db-toolbar__get-started-button'
                     button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
                     buttonOnClick={handleQuickStrategyOpen}
-                    button_text={localize('Quick strategy')}
+                    button_text={localize('Quick strategy d')}
                 />
                 <div id='gtm-toolbox' className='db-toolbox__content'>
                     <div className='db-toolbox__header'>

@@ -3,11 +3,12 @@ import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { Button, Text, ThemedScrollbars } from '@deriv/components';
 import Icon from '@deriv/components/src/components/icon/icon';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
 import '../quick-strategy.scss';
+import { Analytics } from '@deriv/analytics';
 
 type TDesktopFormWrapper = {
     children: React.ReactNode;
@@ -17,6 +18,8 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
     // const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
     const { submitForm, isValid, setFieldValue, validateForm } = useFormikContext();
     const { quick_strategy, run_panel } = useDBotStore();
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { selected_strategy, setSelectedStrategy, setFormVisibility, toggleStopBotDialog } = quick_strategy;
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
     const handleClose = () => {
@@ -29,11 +32,25 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
 
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
+        // on strategy selection
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_strategy',
+            strategy_type: strategy,
+            device_type: is_mobile ? 'mobile' : 'desktop',
+        });
     };
 
     const onEdit = async () => {
         await setFieldValue('action', 'EDIT');
         submitForm();
+    };
+
+    const sendEventToRudderstack = () => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'run_strategy',
+            form_source: 'ce_bot_quick_strategy_form',
+            device_type: is_mobile ? 'mobile' : 'desktop',
+        });
     };
 
     const handleSubmit = async () => {
@@ -45,6 +62,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
             await setFieldValue('action', 'RUN');
             submitForm();
         }
+        sendEventToRudderstack();
     };
 
     return (

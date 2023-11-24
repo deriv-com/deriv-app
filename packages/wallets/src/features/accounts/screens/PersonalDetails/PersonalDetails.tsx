@@ -62,9 +62,15 @@ const PersonalDetails = () => {
                     }))}
                     name='wallets-personal-details__dropdown-tax-residence'
                     onChange={inputValue => {
-                        setFormValues('taxResidence', inputValue);
+                        residenceList.forEach(residence => {
+                            if (residence.text?.toLowerCase() === inputValue.toLowerCase()) {
+                                setFormValues('taxResidence', residence.value);
+                            }
+                        });
                     }}
-                    onSelect={selectedItem => setFormValues('taxResidence', selectedItem)}
+                    onSelect={selectedItem => {
+                        setFormValues('taxResidence', selectedItem);
+                    }}
                     value={getSettings?.tax_residence ?? formValues?.taxResidence}
                     variant='comboBox'
                 />

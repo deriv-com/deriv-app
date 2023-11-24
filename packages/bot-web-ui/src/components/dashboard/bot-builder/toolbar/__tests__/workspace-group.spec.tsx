@@ -39,14 +39,14 @@ describe('WorkspaceGroup', () => {
         );
     });
 
-    it('should render WorkspaceGroup in desktop', async () => {
+    it('should render WorkspaceGroup', () => {
         render(<WorkspaceGroup {...mock_props} />, {
             wrapper,
         });
         expect(screen.getByTestId('dt_toolbar_group_btn')).toBeInTheDocument();
     });
 
-    it('should call reset function on clicking reset icon', async () => {
+    it('should call reset function on clicking reset icon', () => {
         render(<WorkspaceGroup {...mock_props} />, {
             wrapper,
         });
@@ -55,7 +55,7 @@ describe('WorkspaceGroup', () => {
         expect(mock_props.onResetClick).toBeCalledTimes(1);
     });
 
-    it('should call toggleLoadModal function on clicking import icon', async () => {
+    it('should call toggleLoadModal function on clicking import icon', () => {
         render(<WorkspaceGroup {...mock_props} />, {
             wrapper,
         });
@@ -64,7 +64,7 @@ describe('WorkspaceGroup', () => {
         expect(mock_props.toggleLoadModal).toBeCalledTimes(1);
     });
 
-    it('should call toggleSaveModal function on clicking save icon', async () => {
+    it('should call toggleSaveModal function on clicking save icon', () => {
         render(<WorkspaceGroup {...mock_props} />, {
             wrapper,
         });
@@ -73,7 +73,7 @@ describe('WorkspaceGroup', () => {
         expect(mock_props.toggleSaveModal).toBeCalledTimes(1);
     });
 
-    it('should call onSortClick function on clicking sort icon', async () => {
+    it('should call onSortClick function on clicking sort icon', () => {
         render(<WorkspaceGroup {...mock_props} />, {
             wrapper,
         });
@@ -82,7 +82,7 @@ describe('WorkspaceGroup', () => {
         expect(mock_props.onSortClick).toBeCalledTimes(1);
     });
 
-    it('should call onUndoClick function with false on clicking undo icon', async () => {
+    it('should call onUndoClick function with false on clicking undo icon', () => {
         render(<WorkspaceGroup {...mock_props} />, {
             wrapper,
         });
@@ -91,7 +91,7 @@ describe('WorkspaceGroup', () => {
         expect(mock_props.onUndoClick).toBeCalledWith(false);
     });
 
-    it('should call onUndoClick function with true on clicking redo icon', async () => {
+    it('should call onUndoClick function with true on clicking redo icon', () => {
         render(<WorkspaceGroup {...mock_props} />, {
             wrapper,
         });
@@ -100,7 +100,7 @@ describe('WorkspaceGroup', () => {
         expect(mock_props.onUndoClick).toBeCalledWith(true);
     });
 
-    it('should call onZoomInOutClick function with true on clicking zoomIn icon', async () => {
+    it('should call onZoomInOutClick function with true on clicking zoomIn icon', () => {
         render(<WorkspaceGroup {...mock_props} />, {
             wrapper,
         });
@@ -109,7 +109,7 @@ describe('WorkspaceGroup', () => {
         expect(mock_props.onZoomInOutClick).toBeCalledWith(true);
     });
 
-    it('should call onZoomInOutClick function with false on clicking zoomOut icon', async () => {
+    it('should call onZoomInOutClick function with false on clicking zoomOut icon', () => {
         render(<WorkspaceGroup {...mock_props} />, {
             wrapper,
         });

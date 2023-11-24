@@ -190,9 +190,10 @@ export default class NotificationStore extends BaseStore {
         if (key) this.addNotificationMessage(this.client_notifications[key]);
     }
 
-    addTradeNotification(contract_info = {}) {
-        const { buy_price, contract_id, currency, purchase_time, shortcode, status, underlying } = contract_info;
-        if (this.trade_notifications.some(item => item.contract_id === contract_id)) return;
+    addTradeNotification(contract_info) {
+        if (!contract_info || this.trade_notifications.some(({ contract_id: id }) => id === contract_info.contract_id))
+            return;
+        const { buy_price, contract_id, currency, purchase_time, shortcode, status, underlying } = contract_info ?? {};
         this.trade_notifications.push({
             id: `${contract_id}_${status}`,
             buy_price,
@@ -651,11 +652,7 @@ export default class NotificationStore extends BaseStore {
     }
 
     removeTradeNotifications(id) {
-        if (id) {
-            this.trade_notifications = this.trade_notifications.filter(item => item.id !== id);
-        } else {
-            this.trade_notifications = [];
-        }
+        this.trade_notifications = id ? this.trade_notifications.filter(item => item.id !== id) : [];
     }
 
     removeNotificationByKey({ key }) {

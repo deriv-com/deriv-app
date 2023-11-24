@@ -52,7 +52,7 @@ describe('TradeNotifications', () => {
         expect(screen.queryByText(getCardLabels().TOTAL_PROFIT_LOSS)).not.toBeInTheDocument();
         expect(screen.queryByText(getCardLabels().STAKE)).not.toBeInTheDocument();
     });
-    it('should not render notifications if show_trade_notifications is not passed and has no notifications', () => {
+    it('should not render notifications if show_trade_notifications is passed but has no notifications', () => {
         renderTradeNotifications({ show_trade_notifications: true });
         expect(screen.queryByText(getCardLabels().TOTAL_PROFIT_LOSS)).not.toBeInTheDocument();
         expect(screen.queryByText(getCardLabels().STAKE)).not.toBeInTheDocument();

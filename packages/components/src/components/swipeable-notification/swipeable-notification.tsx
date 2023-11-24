@@ -53,17 +53,13 @@ const SwipeableNotification = ({
             <Localize i18n_default_text='{{seconds}}s ago' values={{ seconds }} />
         );
     };
-    const onSwipeLeft = () => {
-        setSwipeDirection(DIRECTION.LEFT);
-        hideNotification();
-    };
-    const onSwipeRight = () => {
-        setSwipeDirection(DIRECTION.RIGHT);
+    const onSwipe = (direction: string) => {
+        setSwipeDirection(direction);
         hideNotification();
     };
     const swipe_handlers = useSwipeable({
-        onSwipedLeft: onSwipeLeft,
-        onSwipedRight: onSwipeRight,
+        onSwipedLeft: () => onSwipe(DIRECTION.LEFT),
+        onSwipedRight: () => onSwipe(DIRECTION.RIGHT),
     });
 
     React.useEffect(() => {

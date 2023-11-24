@@ -232,7 +232,6 @@ const SessionAndLoginLimitsInputs = () => {
                                 min_date={toMoment().add(1, 'days').format('YYYY-MM-DD')}
                                 max_date={toMoment().add(6, 'weeks').format('YYYY-MM-DD')}
                                 {...field}
-                                should_show_today={false}
                                 className='da-self-exclusion__input'
                                 label={localize('Date')}
                                 value={values.timeout_until && epochToMoment(values.timeout_until)}
@@ -527,11 +526,11 @@ const SelfExclusionInputs = () => {
 
     return (
         <React.Fragment>
-            {Object.keys(versions).map((version_name: string, version_idx) => {
+            {Object.keys(versions).map((version_name: string) => {
                 const version = versions[version_name];
                 if (!version.condition) return null;
                 return (
-                    <React.Fragment key={`${version_name}${version_idx}`}>
+                    <React.Fragment key={version_name}>
                         {version.components.map((Component, component_idx) => (
                             <Component key={`${version_name}component${component_idx}`} />
                         ))}

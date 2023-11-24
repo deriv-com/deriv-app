@@ -1,6 +1,8 @@
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
+
 import { CFD_PLATFORMS } from '../platform';
+import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants/jurisdictions-config';
 
 let CFD_text_translated: { [key: string]: () => void };
 
@@ -9,7 +11,7 @@ export const CFD_text: { [key: string]: string } = {
     mt5: 'MT5',
     mt5_cfds: 'MT5 CFDs',
     cfd: 'CFDs',
-    derivez: 'DerivEz',
+    ctrader: 'Deriv cTrader',
     synthetic: 'Derived',
     synthetic_demo: 'Derived Demo',
     synthetic_bvi: 'Derived BVI',
@@ -36,9 +38,9 @@ export const getMT5Title = (account_type: string) => {
     return CFD_text.financial;
 };
 
-type TPlatform = 'dxtrade' | 'mt5' | 'derivez';
+type TPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
-type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu';
+type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'maltainvest';
 type TGetAccount = {
     market_type: TMarketType;
     sub_account_type?: TAccount['sub_account_type'];
@@ -55,17 +57,21 @@ type TGetCFDAccountKey = TGetAccount & {
 // sub_account_type financial_stp only happens in "financial" market_type
 // dxrade and swap_free both have market_type "all" so check for platform is neccessary
 export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shortcode }: TGetCFDAccountKey) => {
+    if (platform === CFD_PLATFORMS.MT5 && market_type === 'all') {
+        // currently we are only supporting SVG for SwapFree
+        switch (shortcode) {
+            case 'svg':
+                return 'all_svg';
+            default:
+                return 'all_demo';
+        }
+    }
     if (market_type === 'all') {
-        if (platform === CFD_PLATFORMS.MT5) {
-            // currently we are only supporting SVG for SwapFree
-            switch (shortcode) {
-                case 'svg':
-                    return 'all_svg';
-                default:
-                    return 'all_demo';
-            }
-        } else {
-            return platform === CFD_PLATFORMS.DERIVEZ ? 'derivez' : 'dxtrade';
+        switch (platform) {
+            case CFD_PLATFORMS.CTRADER:
+                return 'ctrader';
+            default:
+                return 'dxtrade';
         }
     }
 
@@ -98,6 +104,8 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
                     return 'financial_fx';
                 case 'vanuatu':
                     return 'financial_v';
+                case 'maltainvest':
+                    return 'financial';
                 default:
                     return 'financial_demo';
             }
@@ -174,12 +182,17 @@ export const getCFDAccountDisplay = ({
     is_mt5_trade_modal,
     is_transfer_form = false,
 }: TGetCFDAccountDisplay) => {
-    let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
+    const cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform, shortcode });
     if (!cfd_account_key) return undefined;
 
-    if (cfd_account_key === 'financial' && is_eu) {
-        if (is_mt5_trade_modal) cfd_account_key = 'mt5_cfds';
-        else cfd_account_key = 'cfd';
+    if (is_mt5_trade_modal && is_eu) {
+        switch (cfd_account_key) {
+            case 'financial':
+                return localize('CFDs');
+            case 'financial_demo':
+            default:
+                return localize('CFDs Demo');
+        }
     }
 
     const cfd_account_display = CFD_text_translated[cfd_account_key]();
@@ -187,24 +200,45 @@ export const getCFDAccountDisplay = ({
     // TODO condition will be changed when card 74063 is merged
     if (market_type === 'synthetic' && platform === CFD_PLATFORMS.DXTRADE) return localize('Synthetic');
     if (market_type === 'all' && platform === CFD_PLATFORMS.DXTRADE && is_transfer_form) return '';
-    if (platform === CFD_PLATFORMS.DERIVEZ) return '';
+    if (market_type === 'all' && platform === CFD_PLATFORMS.CTRADER && is_transfer_form) return '';
+    if (platform === CFD_PLATFORMS.CTRADER) return cfd_account_display;
 
     return cfd_account_display;
 };
 
 type TGetCFDAccount = TGetAccount & {
     is_eu?: boolean;
+    is_transfer_form?: boolean;
 };
 
-export const getCFDAccount = ({ market_type, sub_account_type, platform, is_eu }: TGetCFDAccount) => {
+type TGetMT5Icon = {
+    market_type: TMarketType;
+    is_eu?: boolean;
+};
+
+export const getCFDAccount = ({
+    market_type,
+    sub_account_type,
+    platform,
+    is_eu,
+    is_transfer_form = false,
+}: TGetCFDAccount) => {
     let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
     if (!cfd_account_key) return undefined;
 
-    if (cfd_account_key === 'financial' && is_eu) {
+    if (cfd_account_key === 'financial_demo' && is_eu) {
         cfd_account_key = 'cfd';
     }
 
+    if (cfd_account_key === 'ctrader' && is_transfer_form) return 'Ctrader';
+
     return CFD_text[cfd_account_key as keyof typeof CFD_text];
+};
+
+export const getMT5Icon = ({ market_type, is_eu }: TGetMT5Icon) => {
+    if (market_type === 'all' && !is_eu) return 'SwapFree';
+    if (market_type === 'financial' && is_eu) return 'CFDs';
+    return market_type;
 };
 
 export const setSharedCFDText = (all_shared_CFD_text: { [key: string]: () => void }) => {
@@ -219,7 +253,7 @@ export const getAccountListKey = (account: TAccount, platform: TPlatform, shortc
         platform,
         shortcode,
     })}@${
-        platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.DERIVEZ ? account.market_type : account.server
+        platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER ? account.market_type : account.server
     }`;
 };
 
@@ -229,8 +263,21 @@ export const getCFDPlatformLabel = (platform: TPlatform) => {
             return 'Deriv MT5';
         case CFD_PLATFORMS.DXTRADE:
             return 'Deriv X';
-        case CFD_PLATFORMS.DERIVEZ:
-            return 'Deriv EZ';
+        case CFD_PLATFORMS.CTRADER:
+            return 'Deriv cTrader';
+        default:
+            return '';
+    }
+};
+
+export const getCFDPlatformNames = (platform: TPlatform) => {
+    switch (platform) {
+        case CFD_PLATFORMS.MT5:
+            return 'MT5';
+        case CFD_PLATFORMS.DXTRADE:
+            return 'Deriv X';
+        case CFD_PLATFORMS.CTRADER:
+            return 'cTrader';
         default:
             return '';
     }
@@ -406,4 +453,61 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         poa_resubmit_for_labuan,
         is_idv_revoked,
     };
+};
+
+export const mt5_community_url =
+    'https://community.deriv.com/t/log-in-using-mt5-pc-or-mobile-app-application-guideline/49622';
+
+export const getFormattedJurisdictionCode = (jurisdiction_code?: typeof Jurisdiction[keyof typeof Jurisdiction]) => {
+    let formatted_label = '';
+
+    switch (jurisdiction_code) {
+        case Jurisdiction.SVG:
+            formatted_label = localize('SVG');
+            break;
+        case Jurisdiction.BVI:
+            formatted_label = localize('BVI');
+            break;
+        case Jurisdiction.LABUAN:
+            formatted_label = localize('Labuan');
+            break;
+        case Jurisdiction.VANUATU:
+            formatted_label = localize('Vanuatu');
+            break;
+        case Jurisdiction.MALTA_INVEST:
+            formatted_label = localize('Malta');
+            break;
+        default:
+            break;
+    }
+    return formatted_label;
+};
+
+export const getFormattedJurisdictionMarketTypes = (
+    jurisdiction_market_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES] | TMarketType
+) => {
+    let formatted_market_type = '';
+
+    switch (jurisdiction_market_type) {
+        case 'synthetic': // need to remove this once we have the correct market type from BE
+        case JURISDICTION_MARKET_TYPES.DERIVED:
+            formatted_market_type = localize('Derived');
+            break;
+        case JURISDICTION_MARKET_TYPES.FINANCIAL:
+            formatted_market_type = localize('Financial');
+            break;
+        default:
+            break;
+    }
+    return formatted_market_type;
+};
+
+type TGetMT5AccountTitle = {
+    account_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES];
+    jurisdiction: typeof Jurisdiction[keyof typeof Jurisdiction];
+};
+export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5AccountTitle) => {
+    return `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
+        account_type
+    )} ${getFormattedJurisdictionCode(jurisdiction)}`;
 };

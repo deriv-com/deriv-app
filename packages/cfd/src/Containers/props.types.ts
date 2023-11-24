@@ -1,4 +1,6 @@
 import React from 'react';
+import { FormikHelpers as FormikActions } from 'formik';
+
 import {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
@@ -6,24 +8,26 @@ import {
     ResidenceList,
     VerifyEmailResponse,
 } from '@deriv/api-types';
-import { FormikHelpers as FormikActions } from 'formik';
-import { TCFDPasswordFormValues } from './cfd-password-modal';
+
 import {
-    TTradingPlatformAvailableAccount,
-    TExistingData,
-    TJurisdictionCardSection,
-    TJurisdictionCardSectionTitleIndicators,
+    TCFDsPlatformType,
     TClickableDescription,
+    TExistingData,
     TJurisdictionCardItems,
     TJurisdictionCardItemVerification,
+    TJurisdictionCardSection,
+    TJurisdictionCardSectionTitleIndicators,
+    TTradingPlatformAvailableAccount,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
+
+import { TCFDPasswordFormValues } from './cfd-password-modal';
 
 export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;
 };
 
-type CFD_Platform = 'dxtrade' | 'mt5';
+type CFD_Platform = 'dxtrade' | 'mt5' | 'ctrader';
 
 export type TCFDChangePasswordConfirmationProps = {
     confirm_label?: string;
@@ -42,7 +46,7 @@ export type TCFDDashboardContainer = {
         demo: string;
         real: string;
     };
-    derivez_tokens: {
+    ctrader_tokens: {
         demo: string;
         real: string;
     };
@@ -222,7 +226,7 @@ export type TJurisdictionCheckBoxProps = {
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
 };
-type TOpenAccountTransferMeta = {
+export type TOpenAccountTransferMeta = {
     category: string;
     type?: string;
 };
@@ -243,11 +247,18 @@ export type TJurisdictionModalContentProps = {
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
+    all_market_type_available_accounts: TTradingPlatformAvailableAccount[];
     swapfree_available_accounts: TTradingPlatformAvailableAccount[];
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
     real_swapfree_accounts_existing_data: TExistingData;
     is_virtual: boolean;
+};
+
+export type TJurisdictionModalTitleProps = {
+    show_eu_related_content: boolean;
+    account_type: string;
+    platform: TCFDsPlatformType;
 };
 
 type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
@@ -325,4 +336,22 @@ export type TCFDDbviOnboardingProps = {
     toggleCFDVerificationModal: () => void;
     updateAccountStatus: () => void;
     updateMT5Status: () => void;
+};
+
+type TDynamicLeverage = {
+    from: number;
+    to: number;
+    leverage: number;
+};
+
+export type TDynamicLeverageMarketCardProps = {
+    title: string;
+    description?: string;
+    leverage: string;
+    data: TDynamicLeverage[];
+};
+
+export type TDynamicLeverageTableColumnHeader = {
+    title: string;
+    subtitle: string;
 };

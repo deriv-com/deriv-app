@@ -59,7 +59,6 @@ describe('<BuySellModal />', () => {
                 },
                 table_type: 'buy',
                 fetchAdvertiserAdverts: jest.fn(),
-                is_buy: true,
                 is_buy_advert: true,
                 setFormErrorCode: jest.fn(),
                 unsubscribeAdvertInfo: jest.fn(),

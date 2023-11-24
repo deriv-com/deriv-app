@@ -27,7 +27,7 @@ const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificat
         }).then(() =>
             setWithdrawalReceipt({
                 address,
-                amount,
+                amount: amount?.toFixed(activeWallet?.currency_config?.fractional_digits),
                 currency: activeWallet?.currency,
                 landingCompany: activeWallet?.landing_company_name,
             })

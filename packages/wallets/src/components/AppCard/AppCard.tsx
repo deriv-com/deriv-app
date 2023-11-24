@@ -14,7 +14,7 @@ type TProps = {
     balance?: string;
     cardSize: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     device: 'desktop' | 'mobile';
-    isDemoWallet?: boolean;
+    isDemoWallet?: THooks.ActiveWalletAccount['is_virtual'];
     walletIcon: string;
     walletName?: string;
 };

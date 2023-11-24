@@ -1,10 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
+import { THooks } from '../../types';
 import { WalletText } from '../Base';
 import './AppCardBadge.scss';
 
 type TProps = {
-    isDemo: boolean;
+    isDemo: THooks.ActiveWalletAccount['is_virtual'];
 };
 
 const AppCardBadge: React.FC<TProps> = ({ isDemo }) => {

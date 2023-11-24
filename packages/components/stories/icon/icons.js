@@ -704,6 +704,8 @@ export const icons =
         'IcDxtradeSyntheticPlatform',
     ],
     'flag': [
+        //change to arabic flag when there's any
+        'IcFlagAr',
         'IcFlagDe',
         'IcFlagEn',
         'IcFlagEs',

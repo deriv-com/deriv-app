@@ -323,31 +323,29 @@ const AdvertiserPage = () => {
                             {!isEmptyObject(info) && (
                                 <div className='advertiser-page__rating'>
                                     <DesktopWrapper>
-                                        <React.Fragment>
-                                            <div className='advertiser-page__rating--row'>
-                                                <OnlineStatusIcon is_online={is_online} />
-                                                <OnlineStatusLabel
-                                                    is_online={is_online}
-                                                    last_online_time={last_online_time}
-                                                />
-                                            </div>
-                                            <div className='advertiser-page__rating--row'>
-                                                <Text
-                                                    className='advertiser-page__joined-since'
-                                                    color='less-prominent'
-                                                    size='xs'
-                                                >
-                                                    {joined_since ? (
-                                                        <Localize
-                                                            i18n_default_text='Joined {{days_since_joined}}d'
-                                                            values={{ days_since_joined: joined_since }}
-                                                        />
-                                                    ) : (
-                                                        <Localize i18n_default_text='Joined today' />
-                                                    )}
-                                                </Text>
-                                            </div>
-                                        </React.Fragment>
+                                        <div className='advertiser-page__rating--row'>
+                                            <OnlineStatusIcon is_online={is_online} />
+                                            <OnlineStatusLabel
+                                                is_online={is_online}
+                                                last_online_time={last_online_time}
+                                            />
+                                        </div>
+                                        <div className='advertiser-page__rating--row'>
+                                            <Text
+                                                className='advertiser-page__joined-since'
+                                                color='less-prominent'
+                                                size='xs'
+                                            >
+                                                {joined_since ? (
+                                                    <Localize
+                                                        i18n_default_text='Joined {{days_since_joined}}d'
+                                                        values={{ days_since_joined: joined_since }}
+                                                    />
+                                                ) : (
+                                                    <Localize i18n_default_text='Joined today' />
+                                                )}
+                                            </Text>
+                                        </div>
                                     </DesktopWrapper>
                                     {rating_average ? (
                                         <React.Fragment>

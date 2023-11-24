@@ -3,6 +3,7 @@ import { WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import BackArrow from '../../../../public/images/ic-back-arrow.svg';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
+import { PlatformDetails } from '../../constants';
 import './DynamicLeverageTitle.scss';
 
 export const DynamicLeverageTitle: FC = () => {
@@ -18,7 +19,7 @@ export const DynamicLeverageTitle: FC = () => {
                 onClick={toggleDynamicLeverage}
             />
             <WalletText color='prominent' size={isMobile ? 'sm' : 'md'} weight='bold'>
-                Get more out of Deriv MT5 Financial
+                Get more out of {PlatformDetails?.mt5?.title} Financial
             </WalletText>
         </div>
     );

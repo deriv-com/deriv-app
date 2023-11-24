@@ -6,7 +6,7 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
-import { MarketTypeDetails } from '../../../constants';
+import { MarketTypeDetails, PlatformDetails } from '../../../constants';
 import { MT5TradeModal, VerificationFailedModal } from '../../../modals';
 import './AddedMT5AccountsList.scss';
 
@@ -59,7 +59,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                 <MT5TradeModal
                                     marketType={account.market_type || 'all'}
                                     mt5Account={account}
-                                    platform='mt5'
+                                    platform={PlatformDetails.mt5.id}
                                 />
                             )
                         }

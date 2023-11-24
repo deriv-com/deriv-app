@@ -4,6 +4,7 @@ import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/derivx.svg';
+import { PlatformDetails } from '../../../../constants';
 import { DxtradeEnterPasswordModal } from '../../../../modals';
 import './AvailableDxtradeAccountsList.scss';
 
@@ -29,7 +30,7 @@ const AvailableDxtradeAccountsList: React.FC = () => {
             <div className='wallets-available-dxtrade__details'>
                 <p className='wallets-available-dxtrade__details-title'>
                     <WalletText size='sm' weight='bold'>
-                        Deriv X
+                        {PlatformDetails?.dxtrade.title}
                     </WalletText>
                 </p>
                 <WalletText size='xs'>

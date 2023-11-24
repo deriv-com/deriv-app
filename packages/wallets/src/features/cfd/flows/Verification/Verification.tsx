@@ -13,6 +13,7 @@ import {
 } from '../../../accounts/screens';
 import { IDVDocumentUpload } from '../../../accounts/screens/IDVDocumentUpload';
 import { PersonalDetails } from '../../../accounts/screens/PersonalDetails';
+import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import { MT5PasswordModal } from '../../modals';
 import { Onfido } from '../../screens';
 
@@ -82,8 +83,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: settings, update: updateSettings } = useSettings();
     const { getModalState, hide, show } = useModal();
 
-    const selectedMarketType = getModalState('marketType') || 'all';
-    const platform = getModalState('platform') || 'mt5';
+    const selectedMarketType = getModalState('marketType') || MarketTypeDetails.all.id;
+    const platform = getModalState('platform') || PlatformDetails.mt5.id;
     const shouldSubmitPOA = useMemo(
         () => !poaStatus?.has_attempted_poa || (!poaStatus?.is_pending && !poaStatus.is_verified),
         [poaStatus]

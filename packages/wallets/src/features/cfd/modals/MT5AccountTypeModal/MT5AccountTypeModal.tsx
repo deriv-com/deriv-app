@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
+import { PlatformDetails } from '../../constants';
 import { MT5AccountType } from '../../screens';
 import { JurisdictionModal } from '../JurisdictionModal';
 
@@ -22,7 +23,7 @@ const MT5AccountTypeModal = () => {
                     text='Next'
                 />
             )}
-            title='Select Deriv MT5’s account type'
+            title={`Select ${PlatformDetails?.mt5?.title}’s account type`}
         >
             <MT5AccountType onMarketTypeSelect={setSelectedMarketType} selectedMarketType={selectedMarketType} />
         </ModalStepWrapper>

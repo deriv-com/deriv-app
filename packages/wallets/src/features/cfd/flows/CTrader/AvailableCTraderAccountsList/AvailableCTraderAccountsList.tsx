@@ -4,6 +4,7 @@ import { TradingAccountCard, WalletsErrorScreen } from '../../../../../component
 import { ModalWrapper, WalletButton, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import CTrader from '../../../../../public/images/ctrader.svg';
+import { PlatformDetails } from '../../../constants';
 import { CFDSuccess } from '../../../screens';
 import './AvailableCTraderAccountsList.scss';
 
@@ -11,7 +12,7 @@ const ctraderMapper = [
     {
         description: 'This account offers CFDs on a feature-rich trading platform.',
         icon: <CTrader />,
-        title: 'Deriv cTrader',
+        title: `${PlatformDetails?.ctrader.title}`,
     },
 ];
 

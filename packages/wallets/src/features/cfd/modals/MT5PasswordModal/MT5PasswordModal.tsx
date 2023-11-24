@@ -130,7 +130,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                 onClick={onSubmit}
                 size='lg'
-                text='Create Deriv MT5 password'
+                text={`Create ${PlatformDetails?.mt5?.title} password`}
             />
         );
     };

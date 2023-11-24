@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useActiveWalletAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
 import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
+import { PlatformDetails } from '../../constants';
 import { AddedMT5AccountsList, AvailableMT5AccountsList } from '../../flows/MT5';
 import { GetMoreMT5Accounts } from '../../screens';
 import './MT5PlatformsList.scss';
@@ -34,7 +35,7 @@ const MT5PlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
         <React.Fragment>
             <section className='wallets-mt5-list'>
                 <div className='wallets-mt5-list__title'>
-                    <h1>Deriv MT5</h1>
+                    <h1>{PlatformDetails?.mt5.title}</h1>
                 </div>
             </section>
             {!isFetchedAfterMount && <TradingAppCardLoader />}

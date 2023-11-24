@@ -36,8 +36,8 @@ const DxtradeEnterPasswordModal = () => {
 
     const successDescription = useMemo(() => {
         return accountType === 'demo'
-            ? 'Transfer virtual funds from your Demo Wallet to your Deriv X Demo account to practise trading.'
-            : `Transfer funds from your ${activeWallet?.currency} Wallet to your Deriv X account to start trading.`;
+            ? `Transfer virtual funds from your Demo Wallet to your ${PlatformDetails?.dxtrade.title} Demo account to practise trading.`
+            : `Transfer funds from your ${activeWallet?.currency} Wallet to your ${PlatformDetails?.dxtrade.title} account to start trading.`;
     }, [accountType, activeWallet?.currency]);
 
     const dxtradeBalance = useMemo(() => {
@@ -110,7 +110,9 @@ const DxtradeEnterPasswordModal = () => {
                     marketType='all'
                     platform='dxtrade'
                     renderButton={() => renderFooter}
-                    title={`Your Deriv X${accountType === 'demo' ? ` ${accountType}` : ''} account is ready`}
+                    title={`Your ${PlatformDetails?.dxtrade.title} ${
+                        accountType === 'demo' ? ` ${accountType}` : ''
+                    } account is ready`}
                 />
             );
         }

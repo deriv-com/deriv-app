@@ -6,6 +6,7 @@ import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/derivx.svg';
+import { PlatformDetails } from '../../../../constants';
 import { MT5TradeModal } from '../../../../modals';
 import './AddedDxtradeAccountsList.scss';
 
@@ -42,7 +43,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
             <div className='wallets-available-derivx__details'>
                 {data?.map(account => (
                     <React.Fragment key={account?.account_id}>
-                        <WalletText size='sm'>Deriv X</WalletText>
+                        <WalletText size='sm'>{PlatformDetails?.dxtrade.title}</WalletText>
                         <WalletText size='sm' weight='bold'>
                             {account?.display_balance}
                         </WalletText>

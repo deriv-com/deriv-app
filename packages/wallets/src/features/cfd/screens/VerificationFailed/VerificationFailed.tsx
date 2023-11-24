@@ -4,6 +4,8 @@ import { WalletButton, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import './VerificationFailed.scss';
 
+const listItems = ['Document details do not match profile details', 'Expired documents', 'Poor image quality'];
+
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
     if (isPOIFailed && isPOAFailed) return 'proof of identity and proof of address';
     if (isPOIFailed) return 'proof of identity';
@@ -28,15 +30,11 @@ const VerificationFailed = () => {
                 due to reasons such as:
             </WalletText>
             <ul>
-                <li>
-                    <WalletText size='sm'>Document details do not match profile details</WalletText>
-                </li>
-                <li>
-                    <WalletText size='sm'>Expired documents</WalletText>
-                </li>
-                <li>
-                    <WalletText size='sm'>Poor image quality</WalletText>
-                </li>
+                {listItems.map(item => (
+                    <li key={`verification-failed-${item}`}>
+                        <WalletText size='sm'>{item}</WalletText>
+                    </li>
+                ))}
             </ul>
             <WalletText size='sm'>
                 Click <strong>Resubmit documents</strong> to find out more and submit your documents again.

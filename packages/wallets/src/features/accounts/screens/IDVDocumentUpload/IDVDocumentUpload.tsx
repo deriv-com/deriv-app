@@ -57,7 +57,7 @@ const IDVDocumentUpload = () => {
             const residence = residenceList.filter(residence => residence.value === settings.citizen)[0];
             if (residence) {
                 const supportedDocuments = residence.identity?.services?.idv?.documents_supported || {};
-                Object.keys(supportedDocuments).map(document => {
+                Object.keys(supportedDocuments).forEach(document => {
                     const text = supportedDocuments[document].display_name || '';
                     const value = document;
                     documents[document] = {

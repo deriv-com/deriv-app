@@ -4,7 +4,7 @@ import { TradingAccountCard, WalletsErrorScreen } from '../../../../../component
 import { ModalWrapper, WalletButton, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import CTrader from '../../../../../public/images/ctrader.svg';
-import { PlatformDetails } from '../../../constants';
+import { MarketTypeDetails, PlatformDetails } from '../../../constants';
 import { CFDSuccess } from '../../../screens';
 import './AvailableCTraderAccountsList.scss';
 
@@ -28,8 +28,8 @@ const AvailableCTraderAccountsList: React.FC = () => {
         mutate({
             payload: {
                 account_type: accountType,
-                market_type: 'all',
-                platform: 'ctrader',
+                market_type: MarketTypeDetails?.all.id,
+                platform: PlatformDetails?.ctrader.id,
             },
         });
     };
@@ -42,8 +42,8 @@ const AvailableCTraderAccountsList: React.FC = () => {
                     <CFDSuccess
                         description={`Transfer your virtual funds from your ${accountType} wallet to your ${ctraderMapper[0].title} ${accountType} account to practice trading.`}
                         displayBalance={cTraderAccounts?.find(account => account.login)?.display_balance}
-                        marketType='all'
-                        platform='ctrader'
+                        marketType={MarketTypeDetails?.all.id}
+                        platform={PlatformDetails?.ctrader.id}
                         renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
                         title={`Your ${ctraderMapper[0].title} ${accountType} account is ready`}
                     />

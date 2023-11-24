@@ -31,7 +31,7 @@ const EnterPassword: React.FC<TProps> = ({
     const title = PlatformDetails[platform].title;
     const { data } = useActiveWalletAccount();
     const accountType = data?.is_virtual ? 'Demo' : 'Real';
-    const marketTypeTitle = platform === 'dxtrade' ? accountType : marketType;
+    const marketTypeTitle = platform === PlatformDetails.dxtrade.id ? accountType : marketType;
 
     return (
         <div className='wallets-enter-password'>

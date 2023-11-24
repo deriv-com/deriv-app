@@ -6,7 +6,7 @@ import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from 
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import DxTradePasswordIcon from '../../../../public/images/ic-dxtrade-password.svg';
-import { PlatformDetails } from '../../constants';
+import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 import './DxtradeEnterPasswordModal.scss';
 
@@ -27,9 +27,9 @@ const DxtradeEnterPasswordModal = () => {
         mutate({
             payload: {
                 account_type: accountType,
-                market_type: 'all',
+                market_type: MarketTypeDetails.all.id,
                 password,
-                platform: 'dxtrade',
+                platform: PlatformDetails.dxtrade.id,
             },
         });
     }, [mutate, accountType, password]);
@@ -41,7 +41,7 @@ const DxtradeEnterPasswordModal = () => {
     }, [accountType, activeWallet?.currency]);
 
     const dxtradeBalance = useMemo(() => {
-        return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;
+        return dxtradeAccount?.find(account => account.market_type === MarketTypeDetails.all.id)?.display_balance;
     }, [dxtradeAccount]);
 
     const renderFooter = useMemo(() => {
@@ -69,7 +69,7 @@ const DxtradeEnterPasswordModal = () => {
                         onClick={() => {
                             show(
                                 <ModalStepWrapper title="We've sent you an email">
-                                    <SentEmailContent platform='dxtrade' />
+                                    <SentEmailContent platform={PlatformDetails.dxtrade.id} />
                                 </ModalStepWrapper>
                             );
                         }}
@@ -107,8 +107,8 @@ const DxtradeEnterPasswordModal = () => {
                 <CFDSuccess
                     description={successDescription}
                     displayBalance={dxtradeBalance || ''}
-                    marketType='all'
-                    platform='dxtrade'
+                    marketType={MarketTypeDetails.all.id}
+                    platform={PlatformDetails.dxtrade.id}
                     renderButton={() => renderFooter}
                     title={`Your ${PlatformDetails?.dxtrade.title} ${
                         accountType === 'demo' ? ` ${accountType}` : ''
@@ -127,23 +127,23 @@ const DxtradeEnterPasswordModal = () => {
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
                     password={password}
-                    platform='dxtrade'
+                    platform={PlatformDetails.dxtrade.id}
                 />
             ) : (
                 <EnterPassword
                     isLoading={isLoading}
-                    marketType='all'
+                    marketType={MarketTypeDetails.all.id}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
                     onSecondaryClick={() =>
                         show(
                             <ModalWrapper>
-                                <SentEmailContent platform='dxtrade' />
+                                <SentEmailContent platform={PlatformDetails.dxtrade.id} />
                             </ModalWrapper>
                         )
                     }
                     password={password}
-                    platform='dxtrade'
+                    platform={PlatformDetails.dxtrade.id}
                 />
             );
         }

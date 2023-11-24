@@ -7,6 +7,7 @@ import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import NotApplicableIcon from '../../../../../public/images/ic-not-applicable.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
 import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
+import { MarketTypeDetails } from '../../../constants';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardItems, TJurisdictionCardSection } from '../jurisdiction-contents/props.types';
 import JurisdictionCardBack from './JurisdictionCardBack';
@@ -67,7 +68,7 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
         () => getJurisdictionContents()[jurisdiction],
         [jurisdiction]
     );
-    const marketType = getModalState('marketType') || 'all';
+    const marketType = getModalState('marketType') || MarketTypeDetails.all.id;
     const rows = contents[marketType] || [];
 
     const parseDescription = (row: TJurisdictionCardSection) => {

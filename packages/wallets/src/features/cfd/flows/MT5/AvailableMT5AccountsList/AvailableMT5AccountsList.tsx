@@ -15,9 +15,9 @@ type TProps = {
 const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
     const IconToLink = () => {
         switch (account.market_type) {
-            case 'financial':
-            case 'synthetic':
-            case 'all':
+            case MarketTypeDetails.financial.id:
+            case MarketTypeDetails.synthetic.id:
+            case MarketTypeDetails.all.id:
                 return window.open(getStaticUrl('/dmt5'));
             default:
                 return window.open(getStaticUrl('/dmt5'));
@@ -25,7 +25,7 @@ const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
     };
     return (
         <div className='wallets-available-mt5__icon' onClick={() => IconToLink()}>
-            {MarketTypeDetails[account.market_type || 'all'].icon}
+            {MarketTypeDetails[account.market_type || MarketTypeDetails.all.id].icon}
         </div>
     );
 };
@@ -33,7 +33,7 @@ const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
 const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { setModalState, show } = useModal();
-    const { description, title } = MarketTypeDetails[account.market_type || 'all'];
+    const { description, title } = MarketTypeDetails[account.market_type || MarketTypeDetails.all.id];
 
     return (
         <TradingAccountCard
@@ -46,7 +46,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         show(
                             activeWallet?.is_virtual ? (
                                 <MT5PasswordModal
-                                    marketType={account?.market_type || 'synthetic'}
+                                    marketType={account?.market_type || MarketTypeDetails.synthetic.id}
                                     platform={account.platform}
                                 />
                             ) : (

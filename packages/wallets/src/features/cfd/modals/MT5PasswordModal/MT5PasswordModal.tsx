@@ -36,7 +36,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeWallet?.is_virtual;
     const marketTypeTitle =
-        marketType === 'all' && Object.keys(PlatformDetails).includes(platform)
+        marketType === MarketTypeDetails.all.id && Object.keys(PlatformDetails).includes(platform)
             ? PlatformDetails[platform].title
             : MarketTypeDetails[marketType].title;
     const selectedJurisdiction = getModalState('selectedJurisdiction');
@@ -49,7 +49,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         if (!mt5Accounts?.length) {
             await tradingPasswordChange({
                 new_password: password,
-                platform: 'mt5',
+                platform: PlatformDetails.mt5.id,
             });
         }
 
@@ -76,7 +76,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                               account_type: 'financial',
                               mt5_account_type: 'financial_stp',
                           })),
-                ...(marketType === 'all' && { sub_account_category: 'swap_free' }),
+                ...(marketType === MarketTypeDetails.all.id && { sub_account_category: 'swap_free' }),
                 name: settings?.first_name || '',
                 phone: settings?.phone || '',
                 state: settings?.address_state || '',
@@ -162,7 +162,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                             onPasswordChange={e => setPassword(e.target.value)}
                             onPrimaryClick={onSubmit}
                             password={password}
-                            platform='mt5'
+                            platform={PlatformDetails.mt5.id}
                         />
                     ) : (
                         <CreatePassword
@@ -171,7 +171,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                             onPasswordChange={e => setPassword(e.target.value)}
                             onPrimaryClick={onSubmit}
                             password={password}
-                            platform='mt5'
+                            platform={PlatformDetails.mt5.id}
                         />
                     ))}
             </ModalStepWrapper>
@@ -214,7 +214,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                             )
                         }
                         password={password}
-                        platform='mt5'
+                        platform={PlatformDetails.mt5.id}
                     />
                 ) : (
                     <CreatePassword
@@ -223,7 +223,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                         onPasswordChange={e => setPassword(e.target.value)}
                         onPrimaryClick={onSubmit}
                         password={password}
-                        platform='mt5'
+                        platform={PlatformDetails.mt5.id}
                     />
                 ))}
         </ModalWrapper>

@@ -1,4 +1,5 @@
 import React, { ComponentType, SVGAttributes } from 'react';
+import { MarketTypeDetails } from '../../features/cfd/constants';
 import CTraderIcon from '../../public/images/ctrader.svg';
 import DerivAppIcon from '../../public/images/deriv-apps.svg';
 import DerivXIcon from '../../public/images/derivx.svg';
@@ -37,7 +38,7 @@ const WalletMarketCurrencyIcon: React.FC<TWalletMarketCurrencyIconProps> = ({
     let MarketTypeIcon: ComponentType<SVGAttributes<SVGElement>>;
     if (marketType && platform) {
         MarketTypeIcon =
-            marketType === 'all' && Object.keys(marketTypeToPlatformIconMapper).includes(platform)
+            marketType === MarketTypeDetails?.all.id && Object.keys(marketTypeToPlatformIconMapper).includes(platform)
                 ? marketTypeToPlatformIconMapper[platform]
                 : marketTypeToIconMapper[marketType];
     } else {

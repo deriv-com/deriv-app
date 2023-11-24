@@ -35,15 +35,15 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     );
 
     const details = useMemo(() => {
-        return platform === 'mt5'
+        return platform === PlatformDetails?.mt5?.id
             ? platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]
             : platformToAccountsListMapper.dxtrade?.[0];
     }, [platform, marketType, platformToAccountsListMapper]);
 
     const loginId = useMemo(() => {
-        if (platform === 'mt5') {
+        if (platform === PlatformDetails?.mt5?.id) {
             return (details as THooks.MT5AccountsList)?.loginid;
-        } else if (platform === 'dxtrade') {
+        } else if (platform === PlatformDetails?.dxtrade?.id) {
             return (details as THooks.DxtradeAccountsList)?.account_id;
         }
         return details?.login;
@@ -54,15 +54,15 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
             <div className='wallets-mt5-trade-screen__details'>
                 <div className='wallets-mt5-trade-screen__details-description'>
                     <div className='wallets-mt5-trade-screen__details-description--left'>
-                        {platform === 'mt5'
-                            ? MarketTypeDetails[marketType || 'all'].icon
-                            : PlatformDetails[platform || 'dxtrade'].icon}
+                        {platform === PlatformDetails.mt5.id
+                            ? MarketTypeDetails[marketType || MarketTypeDetails.all.id].icon
+                            : PlatformDetails[platform || PlatformDetails.dxtrade.id].icon}
                         <div className='wallets-mt5-trade-screen__label'>
                             <div className='wallets-mt5-trade-screen__title'>
                                 <WalletText lineHeight='3xs' size='sm'>
-                                    {platform === 'mt5'
-                                        ? MarketTypeDetails[marketType || 'all'].title
-                                        : PlatformDetails[platform || 'dxtrade'].title}{' '}
+                                    {platform === PlatformDetails.mt5.id
+                                        ? MarketTypeDetails[marketType || MarketTypeDetails.all.id].title
+                                        : PlatformDetails[platform || PlatformDetails.dxtrade.id].title}{' '}
                                     {!activeWalletData?.is_virtual && details?.landing_company_short?.toUpperCase()}
                                 </WalletText>
                                 {activeWalletData?.is_virtual && <WalletListCardBadge isDemo label='virtual' />}
@@ -85,7 +85,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 </div>
 
                 <div className='wallets-mt5-trade-screen__details-clipboards'>
-                    {getModalState('platform') === 'mt5' && (
+                    {getModalState('platform') === PlatformDetails.mt5.id && (
                         <>
                             <MT5TradeDetailsItem label='Broker' value='Deriv Holdings (Guernsey) Ltd' />
                             <MT5TradeDetailsItem
@@ -96,13 +96,13 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                             <MT5TradeDetailsItem label='Password' value='********' variant='password' />
                         </>
                     )}
-                    {getModalState('platform') === 'dxtrade' && (
+                    {getModalState('platform') === PlatformDetails.dxtrade.id && (
                         <>
                             <MT5TradeDetailsItem label='Username' value={details?.login || '12345678'} />
                             <MT5TradeDetailsItem label='Password' value='********' variant='password' />
                         </>
                     )}
-                    {getModalState('platform') === 'ctrader' && (
+                    {getModalState('platform') === PlatformDetails.ctrader.id && (
                         <MT5TradeDetailsItem
                             value=' Use your Deriv account email and password to login into the cTrader platform.'
                             variant='info'
@@ -119,23 +119,25 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 </div>
             </div>
             <div className='wallets-mt5-trade-screen__links'>
-                {isDesktop && platform === 'mt5' && (
+                {isDesktop && platform === PlatformDetails.mt5.id && (
                     <>
                         <MT5TradeLink
                             app='web'
-                            platform='mt5'
+                            platform={PlatformDetails.mt5.id}
                             webtraderUrl={(details as THooks.MT5AccountsList)?.webtrader_url}
                         />
-                        <MT5TradeLink app='windows' platform='mt5' />
-                        <MT5TradeLink app='macos' platform='mt5' />
-                        <MT5TradeLink app='linux' platform='mt5' />
+                        <MT5TradeLink app='windows' platform={PlatformDetails.mt5.id} />
+                        <MT5TradeLink app='macos' platform={PlatformDetails.mt5.id} />
+                        <MT5TradeLink app='linux' platform={PlatformDetails.mt5.id} />
                     </>
                 )}
-                {platform === 'dxtrade' && <MT5TradeLink isDemo={activeWalletData?.is_virtual} platform='dxtrade' />}
-                {platform === 'ctrader' && (
+                {platform === PlatformDetails.dxtrade.id && (
+                    <MT5TradeLink isDemo={activeWalletData?.is_virtual} platform={PlatformDetails.dxtrade.id} />
+                )}
+                {platform === PlatformDetails.ctrader.id && (
                     <>
-                        <MT5TradeLink app='ctrader' platform='ctrader' />
-                        <MT5TradeLink platform='ctrader' />
+                        <MT5TradeLink app='ctrader' platform={PlatformDetails.ctrader.id} />
+                        <MT5TradeLink platform={PlatformDetails.ctrader.id} />
                     </>
                 )}
             </div>

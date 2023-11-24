@@ -8,7 +8,7 @@ import './ChangePassword.scss';
 
 const ChangePassword = () => {
     const { getModalState } = useModal();
-    const platform = getModalState('platform') || 'mt5';
+    const platform = getModalState('platform') || PlatformDetails.mt5.id;
     const platformTitle = PlatformDetails[platform].title;
     return (
         <ModalStepWrapper title={`Manage ${platformTitle} password`}>

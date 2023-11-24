@@ -4,7 +4,7 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import useDevice from '../../../../../hooks/useDevice';
 import { THooks } from '../../../../../types';
-import { companyNamesAndUrls } from '../../../constants';
+import { companyNamesAndUrls, MarketTypeDetails } from '../../../constants';
 import { JurisdictionFootNoteTitle } from '../JurisdictionFootNoteTitle';
 import './JurisdictionTncSection.scss';
 
@@ -21,7 +21,7 @@ const JurisdictionTncSection: React.FC<TProps> = ({
 }) => {
     const { isMobile } = useDevice();
     const { getModalState } = useModal();
-    const marketType = getModalState('marketType') || 'all';
+    const marketType = getModalState('marketType') || MarketTypeDetails.all.id;
     return (
         <div className='wallets-jurisdiction-tnc'>
             {selectedJurisdiction && (

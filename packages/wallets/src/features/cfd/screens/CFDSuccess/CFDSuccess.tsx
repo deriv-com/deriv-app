@@ -36,7 +36,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
     const isDemo = data?.is_virtual;
     const landingCompanyName = landingCompany.toUpperCase();
 
-    const isMarketTypeAll = marketType === 'all';
+    const isMarketTypeAll = marketType === MarketTypeDetails.all.id;
 
     let marketTypeTitle = 'Deriv Apps';
 
@@ -49,7 +49,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
         }
     }
 
-    const platformTitlePrefix = platform === 'mt5' ? PlatformDetails.mt5.title : '';
+    const platformTitlePrefix = platform === PlatformDetails.mt5.id ? PlatformDetails.mt5.title : '';
 
     return (
         <WalletSuccess

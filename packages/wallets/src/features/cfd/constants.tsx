@@ -6,58 +6,44 @@ import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
 import { TMarketTypes, TPlatforms } from '../../types';
 
-type TPlatformDetail = {
-    icon: React.ReactNode;
-    id: TPlatforms.All;
-    link: string;
-    title: string;
-};
-
-type TMarketTypeDetail = {
-    description: string;
-    icon: React.ReactNode;
-    id: TMarketTypes.All;
-    title: string;
-};
-
-export const MarketTypeDetails: Record<TMarketTypes.All, TMarketTypeDetail> = {
+export const MarketTypeDetails = {
     all: {
         description:
             'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs',
         icon: <SwapFreeMT5Icon />,
-        id: 'all',
+        id: 'all' as TMarketTypes.SortedMT5Accounts,
         title: 'Swap-Free',
     },
     financial: {
         description: 'This account offers CFDs on financial instruments.',
         icon: <FinancialMT5Icon />,
-        id: 'financial',
+        id: 'financial' as TMarketTypes.SortedMT5Accounts,
         title: 'Financial',
     },
     synthetic: {
         description: 'This account offers CFDs on derived instruments.',
         icon: <DerivedMT5Icon />,
-        id: 'synthetic',
+        id: 'synthetic' as TMarketTypes.SortedMT5Accounts,
         title: 'Derived',
     },
 } as const;
 
-export const PlatformDetails: Record<TPlatforms.All, TPlatformDetail> = {
+export const PlatformDetails = {
     ctrader: {
         icon: <CTraderIcon />,
-        id: 'ctrader',
+        id: 'ctrader' as TPlatforms.OtherAccounts,
         link: 'https://onelink.to/hyqpv7',
         title: 'Deriv cTrader',
     },
     dxtrade: {
         icon: <DerivXIcon />,
-        id: 'dxtrade',
+        id: 'dxtrade' as TPlatforms.OtherAccounts,
         link: 'https://onelink.to/grmtyx',
         title: 'Deriv X',
     },
     mt5: {
         icon: <DerivedMT5Icon />,
-        id: 'mt5',
+        id: 'mt5' as TPlatforms.MT5,
         link: 'https://onelink.to/grmtyx',
         title: 'Deriv MT5',
     },

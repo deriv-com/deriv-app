@@ -65,10 +65,10 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
         const { isStaging, isTestLink } = getPlatformFromUrl();
         let url;
         switch (platform) {
-            case 'dxtrade':
+            case PlatformDetails.dxtrade.id:
                 url = isDemo ? 'https://dx-demo.deriv.com' : 'https://dx.deriv.com';
                 break;
-            case 'ctrader':
+            case PlatformDetails.ctrader.id:
                 url = isTestLink || isStaging ? 'https://ct-uat.deriv.com' : 'https://ct.deriv.com';
                 if (ctraderToken) url += `?token=${ctraderToken}`;
                 break;
@@ -81,19 +81,19 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
     return (
         <div className='wallets-mt5-trade-link'>
             <div className='wallets-mt5-trade-link--left'>
-                {(platform === 'mt5' || app === 'ctrader') && (
+                {(platform === PlatformDetails?.mt5.id || app === PlatformDetails?.ctrader.id) && (
                     <>
                         <div className='wallets-mt5-trade-link--left-icon'>{content.icon}</div>
                         <WalletText size='sm'>{content.title}</WalletText>
                     </>
                 )}
-                {platform !== 'mt5' && app !== 'ctrader' && (
+                {platform !== PlatformDetails?.mt5.id && app !== PlatformDetails?.ctrader.id && (
                     <WalletText size='sm'>
-                        Run {PlatformDetails[platform || 'ctrader'].title} on your browser
+                        Run {PlatformDetails[platform || PlatformDetails?.ctrader.id].title} on your browser
                     </WalletText>
                 )}
             </div>
-            {(platform === 'mt5' || app === 'ctrader') && (
+            {(platform === PlatformDetails?.mt5.id || app === PlatformDetails?.ctrader.id) && (
                 <WalletButton
                     onClick={() => window.open(app === 'web' ? webtraderUrl : content.link)}
                     size='sm'
@@ -101,9 +101,9 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                     variant='outlined'
                 />
             )}
-            {platform !== 'mt5' && app !== 'ctrader' && (
+            {platform !== PlatformDetails?.mt5.id && app !== PlatformDetails?.ctrader.id && (
                 <button className='wallets-mt5-trade-link__platform' onClick={onClickWebTerminal}>
-                    {PlatformToLabelIconMapper[platform || 'ctrader']}
+                    {PlatformToLabelIconMapper[platform || PlatformDetails?.ctrader.id]}
                     <WalletText color='white' size='xs' weight='bold'>
                         Web terminal
                     </WalletText>

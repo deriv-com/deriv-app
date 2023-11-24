@@ -3,6 +3,7 @@ import { Field, FieldProps, Formik } from 'formik';
 import { useExchangeRate } from '@deriv/api';
 import { WalletButton, WalletsPercentageSelector, WalletText, WalletTextField } from '../../../../../../components';
 import type { THooks } from '../../../../../../types';
+import { useWithdrawalCryptoContext } from '../../provider/WithdrawalCryptoProvider';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
 import './WithdrawalCryptoForm.scss';
 
@@ -16,7 +17,6 @@ export type TForm = {
 };
 
 type TWithdrawalCryptoFormProps = {
-    activeWallet?: THooks.ActiveWalletAccount;
     getCurrencyConfig: THooks.GetCurrencyConfig;
     requestCryptoWithdrawal: (values: Parameters<THooks.CryptoWithdrawal>[0]) => void;
     verificationCode?: string;
@@ -33,12 +33,13 @@ const validateCryptoAddress = (address: string) => {
 };
 
 const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
-    activeWallet,
     getCurrencyConfig,
     requestCryptoWithdrawal,
     verificationCode,
 }) => {
     const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
+
+    const { activeWallet } = useWithdrawalCryptoContext();
 
     const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency_config?.fractional_digits;
     const FRACTIONAL_DIGITS_FIAT = getCurrencyConfig('USD')?.fractional_digits;

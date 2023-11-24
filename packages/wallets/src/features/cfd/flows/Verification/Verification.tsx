@@ -222,7 +222,11 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     address_postcode: formValues.zipCodeLine,
                     address_state: formValues.stateProvinceDropdownLine,
                 });
-                switchScreen('personalDetailsScreen');
+                if (!settings?.has_submitted_personal_details) {
+                    switchScreen('personalDetailsScreen');
+                } else {
+                    show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
+                }
             } else if (currentScreenId === 'personalDetailsScreen') {
                 updateSettings({
                     account_opening_reason: formValues.accountOpeningReason,

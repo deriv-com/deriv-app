@@ -164,16 +164,16 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.taxIdentificationNumber
                 );
             case 'poaScreen':
-                return !formValues.townCityLine || !formValues.firstLine || !formValues.documentFile;
+                return !formValues.townCityLine || !formValues.firstLine || !formValues.poaDocument || isUploadLoading;
             default:
                 return false;
         }
     };
 
     const isNextLoading = useCallback(
-        ({ currentScreenId, formValues }: TFlowProviderContext<typeof screens>) => {
-            if (['manualScreen', 'selfieScreen'].includes(currentScreenId) && formValues.selectedManualDocument)
-                return isUploadLoading || isManualUploadLoading || isLoading;
+        ({ currentScreenId }: TFlowProviderContext<typeof screens>) => {
+            if (currentScreenId === 'selfieScreen') return isUploadLoading || isManualUploadLoading || isLoading;
+            if (currentScreenId === 'poaScreen') return isUploadLoading || isLoading;
             return isLoading;
         },
         [isLoading, isManualUploadLoading, isUploadLoading]
@@ -210,6 +210,11 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             } else if (currentScreenId === 'manualScreen') {
                 switchScreen('selfieScreen');
             } else if (currentScreenId === 'poaScreen') {
+                await upload({
+                    document_issuing_country: settings?.country_code ?? undefined,
+                    document_type: 'proofaddress',
+                    file: formValues.poaDocument,
+                });
                 updateSettings({
                     address_city: formValues.townCityLine,
                     address_line_1: formValues.firstLine,

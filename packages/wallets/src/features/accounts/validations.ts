@@ -5,8 +5,6 @@ export const drivingLicenseValidator = Yup.string()
     .max(8)
     .required('Please enter your Driver License number. Example: B1234567');
 
-export const nationalIdValidator = Yup.string().required('Identity card number is required');
-
 export const passportValidator = Yup.string()
     .matches(/^[A-Z]\d{7}$/, 'Please enter the correct format. Example: G1234567')
     .max(8)

@@ -91,12 +91,9 @@ const Dropzone: React.FC<TProps> = ({
         }
     }, [file]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const removeFile = useCallback(
-        () => () => {
-            setFile(null);
-        },
-        []
-    );
+    const removeFile = useCallback(() => {
+        setFile(null);
+    }, []);
 
     return (
         <div {...getRootProps()} className='wallets-dropzone__container' ref={rootRef as RefObject<HTMLDivElement>}>
@@ -147,7 +144,7 @@ const Dropzone: React.FC<TProps> = ({
                                 <IconButton
                                     className='wallets-dropzone__remove-file'
                                     icon={<CloseIcon width={12} />}
-                                    onClick={removeFile()}
+                                    onClick={removeFile}
                                     size='sm'
                                 />
                             </div>

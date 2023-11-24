@@ -84,9 +84,14 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
 
     const selectedMarketType = getModalState('marketType') || 'all';
     const platform = getModalState('platform') || 'mt5';
+
     const shouldSubmitPOA = useMemo(
         () => !poaStatus?.has_attempted_poa || (!poaStatus?.is_pending && !poaStatus.is_verified),
         [poaStatus]
+    );
+    const shouldFillPersonalDetails = useMemo(
+        () => !settings?.has_submitted_personal_details,
+        [settings?.has_submitted_personal_details]
     );
 
     const isLoading = useMemo(() => {
@@ -102,7 +107,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             if (!isSuccessPOIStatus) return 'loadingScreen';
             if (serviceStatus === 'pending' || serviceStatus === 'verified') {
                 if (shouldSubmitPOA) return 'poaScreen';
-                if (!settings?.has_submitted_personal_details) return 'personalDetailsScreen';
+                if (shouldFillPersonalDetails) return 'personalDetailsScreen';
                 show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
             }
             if (service === 'idv') return 'idvScreen';
@@ -110,15 +115,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             if (service === 'manual') return 'manualScreen';
         }
         return 'loadingScreen';
-    }, [
-        poiStatus,
-        isSuccessPOIStatus,
-        shouldSubmitPOA,
-        settings?.has_submitted_personal_details,
-        show,
-        selectedMarketType,
-        platform,
-    ]);
+    }, [poiStatus, isSuccessPOIStatus, shouldSubmitPOA, shouldFillPersonalDetails, show, selectedMarketType, platform]);
 
     const isNextDisabled = ({ currentScreenId, errors, formValues }: TFlowProviderContext<typeof screens>) => {
         switch (currentScreenId) {
@@ -202,7 +199,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                 // handle screen switching
                 if (shouldSubmitPOA) {
                     switchScreen('poaScreen');
-                } else if (!settings?.has_submitted_personal_details) {
+                } else if (shouldFillPersonalDetails) {
                     switchScreen('personalDetailsScreen');
                 } else {
                     show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
@@ -222,7 +219,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     address_postcode: formValues.zipCodeLine,
                     address_state: formValues.stateProvinceDropdownLine,
                 });
-                if (!settings?.has_submitted_personal_details) {
+                if (shouldFillPersonalDetails) {
                     switchScreen('personalDetailsScreen');
                 } else {
                     show(<MT5PasswordModal marketType={selectedMarketType} platform={platform} />);
@@ -245,7 +242,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             platform,
             selectedMarketType,
             settings?.country_code,
-            settings?.has_submitted_personal_details,
+            shouldFillPersonalDetails,
             shouldSubmitPOA,
             show,
             updateSettings,

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
@@ -16,7 +16,7 @@ const JurisdictionModal = () => {
     const [isDynamicLeverageVisible, setIsDynamicLeverageVisible] = useState(false);
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
 
-    const { getModalState, show } = useModal();
+    const { getModalState, setModalState, show } = useModal();
     const { isLoading } = useAvailableMT5Accounts();
     const { isMobile } = useDevice();
 
@@ -49,6 +49,10 @@ const JurisdictionModal = () => {
                   text='Next'
               />
           );
+
+    useEffect(() => {
+        setModalState('selectedJurisdiction', selectedJurisdiction);
+    }, [selectedJurisdiction]);
 
     if (isLoading) return <h1>Loading...</h1>;
 

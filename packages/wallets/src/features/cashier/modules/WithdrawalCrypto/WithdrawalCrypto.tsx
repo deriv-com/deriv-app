@@ -10,8 +10,8 @@ type TWithdrawalCryptoProps = {
     verificationCode: string;
 };
 
-const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificationCode }) => {
-    const { activeWallet, getCurrencyConfig, isWithdrawalSuccess, requestCryptoWithdrawal, withdrawalReceipt } =
+const WithdrawalCrypto: React.FC = () => {
+    const { activeWallet, getCurrencyConfig, isWithdrawalSuccess, onClose, withdrawalReceipt } =
         useWithdrawalCryptoContext();
 
     if (isWithdrawalSuccess) return <WithdrawalCryptoReceipt onClose={onClose} withdrawalReceipt={withdrawalReceipt} />;
@@ -24,11 +24,7 @@ const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificat
                     {activeWallet?.currency}) to your wallet
                 </WalletText>
                 <WithdrawalCryptoDisclaimer />
-                <WithdrawalCryptoForm
-                    getCurrencyConfig={getCurrencyConfig}
-                    requestCryptoWithdrawal={requestCryptoWithdrawal}
-                    verificationCode={verificationCode}
-                />
+                <WithdrawalCryptoForm />
             </div>
             <TransactionStatus transactionType='withdrawal' />
         </div>
@@ -37,8 +33,8 @@ const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificat
 
 const WithdrawalCryptoModule: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificationCode }) => {
     return (
-        <WithdrawalCryptoProvider>
-            <WithdrawalCrypto onClose={onClose} verificationCode={verificationCode} />
+        <WithdrawalCryptoProvider onClose={onClose} verificationCode={verificationCode}>
+            <WithdrawalCrypto />
         </WithdrawalCryptoProvider>
     );
 };

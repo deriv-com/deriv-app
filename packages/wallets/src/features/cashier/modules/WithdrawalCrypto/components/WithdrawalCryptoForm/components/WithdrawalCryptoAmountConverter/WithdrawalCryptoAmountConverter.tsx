@@ -4,13 +4,12 @@ import { Field, FieldProps, useFormikContext } from 'formik';
 import { WalletTextField } from '../../../../../../../../components';
 import ArrowBold from '../../../../../../../../public/images/ic-back-arrow.svg';
 import type { THooks } from '../../../../../../../../types';
+import { useWithdrawalCryptoContext } from '../../../../provider';
 import type { TForm } from '../../WithdrawalCryptoForm';
 import './WithdrawalCryptoAmountConverter.scss';
 
 type TProps = {
-    activeWallet?: THooks.ActiveWalletAccount;
     exchangeRate?: THooks.ExchangeRate;
-    getCurrencyConfig: THooks.GetCurrencyConfig;
 };
 
 const helperMessageMapper = {
@@ -22,7 +21,8 @@ const helperMessageMapper = {
     },
 };
 
-const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurrencyConfig }: TProps) => {
+const WithdrawalCryptoAmountConverter: React.FC<TProps> = ({ exchangeRate }) => {
+    const { activeWallet, getCurrencyConfig } = useWithdrawalCryptoContext();
     const [isCryptoInputActive, setIsCryptoInputActive] = useState(false);
     const { errors, setValues, values } = useFormikContext<TForm>();
     const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency_config?.fractional_digits;

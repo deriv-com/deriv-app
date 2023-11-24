@@ -21,6 +21,10 @@ const useAccountsList = () => {
                 excluded_until: account.excluded_until ? new Date(account.excluded_until) : undefined,
                 /** Indicating whether the wallet is the currently active account. */
                 is_active: account.loginid === authorize_data.loginid,
+                /** Indicating whether any linked account is active */
+                is_linked_account_active: account.linked_to?.some(
+                    account => account.loginid === authorize_data.loginid
+                ),
                 /** indicating whether the account is a virtual-money account. */
                 is_virtual: Boolean(account.is_virtual),
                 /** indicating whether the account is marked as disabled or not. */

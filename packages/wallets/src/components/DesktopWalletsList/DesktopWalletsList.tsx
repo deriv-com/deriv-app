@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAuthorize, useCurrencyConfig, useWalletAccountsList } from '@deriv/api';
 import { AccountsList } from '../AccountsList';
 import { WalletsAccordionLoader } from '../SkeletonLoader';
@@ -10,6 +10,16 @@ const DesktopWalletsList: React.FC = () => {
     const { data: wallets } = useWalletAccountsList();
     const { isLoading: isAuthorizeLoading, switchAccount } = useAuthorize();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
+
+    useEffect(() => {
+        const activeWallet = wallets?.find(wallet => wallet.is_active);
+        if (!activeWallet) {
+            const activeLinkedAccount = wallets?.find(wallet => wallet.is_linked_account_active);
+            if (activeLinkedAccount) {
+                switchAccount(activeLinkedAccount.loginid);
+            }
+        }
+    }, [wallets, switchAccount]);
 
     return (
         <div className='wallets-desktop-wallets-list'>

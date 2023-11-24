@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, WalletIcon, Text, AppLinkedWithWalletIcon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { TStores } from '@deriv/stores/types';
+import { getActiveLoginIDFromLocalStorage } from '@deriv/utils';
 import { useStoreWalletAccountsList, useStoreLinkedWalletsAccounts } from '@deriv/hooks';
 import { AccountSwitcherWallet, AccountSwitcherWalletMobile } from 'App/Containers/AccountSwitcherWallet';
 import { AccountsInfoLoader } from '../Components/Preloader';
@@ -116,9 +116,17 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
     const linked_wallets_accounts = useStoreLinkedWalletsAccounts();
 
     const active_account = accounts?.[loginid ?? ''];
-    const active_wallet = wallet_list?.find(wallet => wallet.loginid === loginid);
+    const [wallet_loginid, setWalletLoginID] = useState<string>();
+    const active_wallet = wallet_list?.find(wallet => wallet.loginid === wallet_loginid);
 
     let linked_dtrade_trading_account_loginid = loginid;
+
+    useEffect(() => {
+        const active_loginid = getActiveLoginIDFromLocalStorage();
+        if (wallet_loginid !== active_loginid && loginid !== active_loginid) {
+            setWalletLoginID(active_loginid);
+        }
+    }, [loginid, wallet_loginid]);
 
     if (active_wallet) {
         // get 'dtrade' loginid account linked to the current wallet

@@ -1,4 +1,5 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useMemo } from 'react';
+import * as Yup from 'yup';
 import { useResidenceList, useSettings } from '@deriv/api';
 import { FlowTextField, Loader, useFlow, WalletDropdown, WalletText } from '../../../../components';
 import { accountOpeningReasonList } from './constants';
@@ -8,6 +9,19 @@ const PersonalDetails = () => {
     const { data: residenceList, isLoading, isSuccess: isResidenceListSuccess } = useResidenceList();
     const { formValues, setFormValues } = useFlow();
     const { data: getSettings } = useSettings();
+
+    const countryCodeToPatternMapper = useMemo(() => {
+        const countryCodeToPatternMapping: Record<string, string> = {};
+
+        if (isResidenceListSuccess) {
+            residenceList.forEach(residence => {
+                if (residence.value && !(residence.value in countryCodeToPatternMapping)) {
+                    countryCodeToPatternMapping[residence.value] = residence?.tin_format?.[0] ?? '';
+                }
+            });
+        }
+        return countryCodeToPatternMapping;
+    }, [isResidenceListSuccess, residenceList]);
 
     useEffect(() => {
         if (getSettings && isResidenceListSuccess) {
@@ -83,6 +97,12 @@ const PersonalDetails = () => {
                             isInvalid={!formValues.taxResidence || !formValues.taxIdentificationNumber}
                             label='Tax identification number*'
                             name='taxIdentificationNumber'
+                            validationSchema={Yup.string()
+                                .matches(
+                                    countryCodeToPatternMapper[formValues?.taxResidence],
+                                    'The format is incorrect.'
+                                )
+                                .required()}
                         />
                         <WalletDropdown
                             label='Account opening reason*'

@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import useAccountsList from './useAccountsList';
+import useDerivAccountsList from './useDerivAccountsList';
 
 /** A custom hook that gets the list of all wallet accounts for the current user. */
 const useWalletAccountsList = () => {
-    const { data: account_list_data, ...rest } = useAccountsList();
+    const { data: account_list_data, ...rest } = useDerivAccountsList();
 
     // Filter out non-wallet accounts.
     const filtered_accounts = useMemo(

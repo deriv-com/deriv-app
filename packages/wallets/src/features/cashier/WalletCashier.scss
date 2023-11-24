@@ -21,4 +21,8 @@
     @include mobile {
         padding: 2.4rem 1.6rem;
     }
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
 }

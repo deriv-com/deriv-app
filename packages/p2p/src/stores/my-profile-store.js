@@ -1,4 +1,4 @@
-import { observable, action, computed, when, makeObservable } from 'mobx';
+import { observable, action, computed, makeObservable } from 'mobx';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
@@ -12,7 +12,6 @@ export default class MyProfileStore extends BaseStore {
     advertiser_payment_methods = {};
     advertiser_payment_methods_error = '';
     available_payment_methods = {};
-    delete_error_message = '';
     error_message = '';
     form_error = '';
     full_name = '';
@@ -37,7 +36,6 @@ export default class MyProfileStore extends BaseStore {
     selected_payment_method = '';
     selected_payment_method_display_name = '';
     selected_payment_method_fields = [];
-    selected_payment_method_type = '';
     selected_sort_value = 'all_users';
     selected_trade_partner = {};
     should_show_add_payment_method_form = false;
@@ -58,7 +56,6 @@ export default class MyProfileStore extends BaseStore {
             advertiser_payment_methods: observable,
             advertiser_payment_methods_error: observable,
             available_payment_methods: observable,
-            delete_error_message: observable,
             error_message: observable,
             form_error: observable,
             full_name: observable,
@@ -83,7 +80,6 @@ export default class MyProfileStore extends BaseStore {
             selected_payment_method: observable,
             selected_payment_method_display_name: observable,
             selected_payment_method_fields: observable,
-            selected_payment_method_type: observable,
             selected_sort_value: observable,
             selected_trade_partner: observable,
             should_show_add_payment_method_form: observable,
@@ -100,7 +96,6 @@ export default class MyProfileStore extends BaseStore {
             payment_methods_list_values: computed,
             rendered_trade_partners_list: computed,
             trade_partner_dropdown_list: computed,
-            createPaymentMethod: action.bound,
             getAdvertiserPaymentMethods: action.bound,
             getCounterpartyAdvertiserInfo: action.bound,
             getPaymentMethodsList: action.bound,
@@ -113,12 +108,10 @@ export default class MyProfileStore extends BaseStore {
             handleSubmit: action.bound,
             handleToggle: action.bound,
             hideAddPaymentMethodForm: action.bound,
-            onClickDelete: action.bound,
             onClear: action.bound,
             validatePaymentMethodFields: action.bound,
             updatePaymentMethod: action.bound,
             showAddPaymentMethodForm: action.bound,
-            onEditDeletePaymentMethodCard: action.bound,
             onSubmit: action.bound,
             onClickUnblock: action.bound,
             setActiveTab: action.bound,
@@ -126,7 +119,6 @@ export default class MyProfileStore extends BaseStore {
             setAdvertiserPaymentMethods: action.bound,
             setAdvertiserPaymentMethodsError: action.bound,
             setAvailablePaymentMethods: action.bound,
-            setDeleteErrorMessage: action.bound,
             setErrorMessage: action.bound,
             setFormError: action.bound,
             setFullName: action.bound,
@@ -150,7 +142,6 @@ export default class MyProfileStore extends BaseStore {
             setSelectedPaymentMethod: action.bound,
             setSelectedPaymentMethodDisplayName: action.bound,
             setSelectedPaymentMethodFields: action.bound,
-            setSelectedPaymentMethodType: action.bound,
             setSelectedSortValue: action.bound,
             setSelectedTradePartner: action.bound,
             setShouldShowAddPaymentMethodForm: action.bound,
@@ -281,55 +272,6 @@ export default class MyProfileStore extends BaseStore {
         return this.trade_partners_list;
     }
 
-    createPaymentMethod(values, { setSubmitting }) {
-        setSubmitting(true);
-        requestWS({
-            p2p_advertiser_payment_methods: 1,
-            create: [
-                {
-                    account: values?.account,
-                    bank_name: values?.bank_name,
-                    branch: values?.branch,
-                    instructions: values?.instructions,
-                    method: this.payment_method_value || this.selected_payment_method,
-                    name: values?.name,
-                    bank_code: values?.bank_code,
-                },
-            ],
-        }).then(response => {
-            if (response) {
-                const { general_store, my_ads_store } = this.root_store;
-
-                if (general_store.isCurrentModal('BlockUserModal')) {
-                    general_store.hideModal();
-                }
-                this.setSelectedPaymentMethod('');
-                general_store.setSavedFormState(null);
-                general_store.setFormikRef(null);
-
-                if (my_ads_store.should_show_add_payment_method) {
-                    my_ads_store.setShouldShowAddPaymentMethod(false);
-                }
-
-                if (response.error) {
-                    this.setAddPaymentMethodErrorMessage(response.error.message);
-                    general_store.showModal({
-                        key: 'AddPaymentMethodErrorModal',
-                    });
-                } else {
-                    this.setShouldShowAddPaymentMethodForm(false);
-                    this.getAdvertiserPaymentMethods();
-
-                    if (general_store.isCurrentModal('CreateAdAddPaymentMethodModal')) {
-                        general_store.hideModal();
-                    }
-                }
-
-                setSubmitting(false);
-            }
-        });
-    }
-
     getAdvertiserPaymentMethods() {
         this.setIsLoading(true);
         requestWS({
@@ -428,7 +370,6 @@ export default class MyProfileStore extends BaseStore {
             this.setSelectedPaymentMethodFields(
                 Object.entries(this.available_payment_methods[this.selected_payment_method].fields)
             );
-            this.setSelectedPaymentMethodType(this.available_payment_methods[this.selected_payment_method].type);
         } else if (this.selected_payment_method_display_name) {
             const payment_method = Object.entries(this.available_payment_methods).filter(
                 pm => pm[1].display_name === this.selected_payment_method_display_name
@@ -438,7 +379,6 @@ export default class MyProfileStore extends BaseStore {
             this.setPaymentMethodValue(payment_method[0][0]);
             this.setSelectedPaymentMethodDisplayName(filtered_payment_method.display_name);
             this.setSelectedPaymentMethodFields(Object.entries(filtered_payment_method.fields));
-            this.setSelectedPaymentMethodType(filtered_payment_method.type);
         }
     }
 
@@ -561,27 +501,6 @@ export default class MyProfileStore extends BaseStore {
         }
     }
 
-    onClickDelete() {
-        requestWS({
-            p2p_advertiser_payment_methods: 1,
-            delete: [this.payment_method_to_delete.ID],
-        }).then(async response => {
-            this.setIsConfirmDeleteModalOpen(false);
-            if (!response.error) {
-                this.getAdvertiserPaymentMethods();
-            } else {
-                this.setDeleteErrorMessage(response.error.message);
-                await when(
-                    () => !this.root_store.general_store.is_modal_open,
-                    () =>
-                        this.root_store.general_store.showModal({
-                            key: 'DeletePaymentMethodErrorModal',
-                        })
-                );
-            }
-        });
-    }
-
     onClear() {
         if (this.search_term) {
             this.setSearchTerm('');
@@ -599,18 +518,6 @@ export default class MyProfileStore extends BaseStore {
             props: { advertiser_name: advertiser.name, is_advertiser_blocked: !!advertiser.is_blocked },
         });
         this.setSelectedTradePartner(advertiser);
-    }
-
-    onEditDeletePaymentMethodCard(event, payment_method) {
-        if (event.target.value === 'edit') {
-            this.setPaymentMethodToEdit(payment_method);
-            this.setSelectedPaymentMethodDisplayName(payment_method?.display_name);
-            this.getSelectedPaymentMethodDetails();
-            this.setShouldShowEditPaymentMethodForm(true);
-        } else {
-            this.setPaymentMethodToDelete(payment_method);
-            this.setIsConfirmDeleteModalOpen(true);
-        }
     }
 
     onSubmit() {
@@ -745,10 +652,6 @@ export default class MyProfileStore extends BaseStore {
         this.available_payment_methods = available_payment_methods;
     }
 
-    setDeleteErrorMessage(delete_error_message) {
-        this.delete_error_message = delete_error_message;
-    }
-
     setErrorMessage(error_message) {
         this.error_message = error_message;
     }
@@ -839,10 +742,6 @@ export default class MyProfileStore extends BaseStore {
 
     setSelectedPaymentMethodFields(selected_payment_method_fields) {
         this.selected_payment_method_fields = selected_payment_method_fields;
-    }
-
-    setSelectedPaymentMethodType(selected_payment_method_type) {
-        this.selected_payment_method_type = selected_payment_method_type;
     }
 
     setSelectedSortValue(selected_sort_value) {

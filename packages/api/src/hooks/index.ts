@@ -34,6 +34,7 @@ export { default as useDxtradeServiceToken } from './useDxtradeServiceToken';
 export { default as useDynamicLeverage } from './useDynamicLeverage';
 export { default as useExchangeRate } from './useExchangeRate';
 export { default as useGetAccountStatus } from './useGetAccountStatus';
+export { default as useIdentityDocumentVerificationAdd } from './useIdentityDocumentVerificationAdd';
 export { default as useJurisdictionStatus } from './useJurisdictionStatus';
 export { default as useLandingCompany } from './useLandingCompany';
 export { default as useMT5AccountsList } from './useMT5AccountsList';

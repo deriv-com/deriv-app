@@ -7,7 +7,7 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
-import { SentEmailContent } from '../../../../components';
+import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -23,7 +23,7 @@ type TProps = {
 
 const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const [password, setPassword] = useState('');
-    const { isLoading: createMT5AccountLoading, isSuccess, mutate } = useCreateMT5Account();
+    const { error, isLoading: createMT5AccountLoading, isSuccess, mutate, status } = useCreateMT5Account();
     const { isLoading: tradingPlatformPasswordChangeLoading, mutate: tradingPasswordChange } =
         useTradingPlatformPasswordChange();
     const { data: activeWallet } = useActiveWalletAccount();
@@ -53,9 +53,11 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             });
         }
 
+        const categoryAccountType = activeWallet?.is_virtual ? 'demo' : accountType;
+
         mutate({
             payload: {
-                account_type: activeWallet?.is_virtual ? 'demo' : accountType,
+                account_type: categoryAccountType,
                 address: settings?.address_line_1 || '',
                 city: settings?.address_city || '',
                 company: selectedJurisdiction,
@@ -63,9 +65,13 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 email: settings?.email || '',
                 leverage: availableMT5Accounts?.find(acc => acc.market_type === marketType)?.leverage || 500,
                 mainPassword: password,
-                ...(marketType === 'financial' &&
+                ...(marketType === 'financial' && { mt5_account_type: 'financial' }),
+                ...(selectedJurisdiction &&
                     (selectedJurisdiction !== 'labuan'
-                        ? { mt5_account_type: 'financial' }
+                        ? {
+                              account_type: categoryAccountType,
+                              ...(selectedJurisdiction === 'financial' && { mt5_account_type: 'financial' }),
+                          }
                         : {
                               account_type: 'financial',
                               mt5_account_type: 'financial_stp',
@@ -170,6 +176,10 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     ))}
             </ModalStepWrapper>
         );
+    }
+
+    if (status === 'error') {
+        return <WalletError errorMessage={error?.error.message} onClick={() => hide()} title={error?.error?.code} />;
     }
 
     return (

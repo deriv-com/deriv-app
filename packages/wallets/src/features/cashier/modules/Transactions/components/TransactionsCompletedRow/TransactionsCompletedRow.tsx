@@ -1,37 +1,44 @@
 import React from 'react';
-import { useActiveWalletAccount } from '@deriv/api';
-import { WalletListCardBadge } from '../../../../../../components';
 import { WalletText } from '../../../../../../components/Base';
-import { WalletCurrencyCard } from '../../../../../../components/WalletCurrencyCard';
 import { THooks } from '../../../../../../types';
+import { TransactionsCompletedRowAccountDetails } from './components/TransactionsCompletedRowAccountDetails';
+import { TransactionsCompletedRowTransferAccountDetails } from './components/TransactionsCompletedRowTransferAccountDetails';
 import './TransactionsCompletedRow.scss';
 
 type TProps = {
+    accounts: THooks.AllAccountsList;
     transaction: THooks.Transactions;
+    wallet: THooks.ActiveWalletAccount;
 };
 
-const TransactionsCompletedRow: React.FC<TProps> = ({ transaction }) => {
-    const { data: wallet } = useActiveWalletAccount();
-    const displayCode = wallet?.currency_config?.display_code || 'USD';
-
+const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wallet }) => {
     if (!transaction.action_type || !transaction.amount) return null;
+
+    const displayCurrency = wallet?.currency_config?.display_code || 'USD';
+    const displayWalletName = `${displayCurrency} Wallet`;
 
     return (
         <div className='wallets-transactions-completed-row'>
-            <div className='wallets-transactions-completed-row__account-details'>
-                <WalletCurrencyCard currency={wallet?.currency || 'USD'} isDemo={wallet?.is_virtual} size='md' />
-                <div className='wallets-transactions-completed-row__type-and-wallet-name'>
-                    <WalletText color='primary' size='xs'>
-                        {transaction.action_type.replace(/^\w/, c => c.toUpperCase())}
-                    </WalletText>
-                    <div className='wallets-transactions-completed-row__wallet-name'>
-                        <WalletText color='general' size='xs' weight='bold'>
-                            {displayCode} Wallet
-                        </WalletText>
-                        {!wallet?.is_virtual && <WalletListCardBadge label={wallet?.landing_company_name} />}
-                    </div>
-                </div>
-            </div>
+            {transaction.action_type !== 'transfer' ? (
+                <TransactionsCompletedRowAccountDetails
+                    accountType={wallet?.account_type ?? ''}
+                    actionType={transaction.action_type}
+                    currency={wallet?.currency ?? 'USD'}
+                    displayAccountName={displayWalletName}
+                    displayActionType={transaction.action_type.replace(/^\w/, c => c.toUpperCase())}
+                    isDemo={Boolean(wallet?.is_virtual)}
+                />
+            ) : (
+                <TransactionsCompletedRowTransferAccountDetails
+                    accounts={accounts}
+                    direction={transaction.from?.loginid === wallet?.loginid ? 'to' : 'from'}
+                    loginid={
+                        [transaction.from?.loginid, transaction.to?.loginid].find(
+                            loginid => loginid !== wallet?.loginid
+                        ) ?? ''
+                    }
+                />
+            )}
             <div className='wallets-transactions-completed-row__transaction-details'>
                 <WalletText color={transaction.amount > 0 ? 'success' : 'red'} size='xs' weight='bold'>
                     {transaction.amount && transaction.amount > 0 ? '+' : ''}

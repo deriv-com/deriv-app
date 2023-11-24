@@ -53,9 +53,11 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             });
         }
 
+        const categoryAccountType = activeWallet?.is_virtual ? 'demo' : accountType;
+
         mutate({
             payload: {
-                account_type: activeWallet?.is_virtual ? 'demo' : accountType,
+                account_type: categoryAccountType,
                 address: settings?.address_line_1 || '',
                 city: settings?.address_city || '',
                 company: selectedJurisdiction,
@@ -63,9 +65,13 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 email: settings?.email || '',
                 leverage: availableMT5Accounts?.find(acc => acc.market_type === marketType)?.leverage || 500,
                 mainPassword: password,
-                ...(marketType === 'financial' &&
+                ...(marketType === 'financial' && { mt5_account_type: 'financial' }),
+                ...(selectedJurisdiction &&
                     (selectedJurisdiction !== 'labuan'
-                        ? { mt5_account_type: 'financial' }
+                        ? {
+                              account_type: categoryAccountType,
+                              ...(selectedJurisdiction === 'financial' && { mt5_account_type: 'financial' }),
+                          }
                         : {
                               account_type: 'financial',
                               mt5_account_type: 'financial_stp',

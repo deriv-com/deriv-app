@@ -80,7 +80,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { isLoading: isUploadLoading, upload } = useDocumentUpload();
     const { isLoading: isManualUploadLoading, uploadDocument } = useHandleManualDocumentUpload();
     const { data: settings, update: updateSettings } = useSettings();
-    const { mutate: sendIDVDocuments } = useIdentityDocumentVerificationAdd();
+    const { submitIDVDocuments } = useIdentityDocumentVerificationAdd();
     const { getModalState, hide, show } = useModal();
 
     const selectedMarketType = getModalState('marketType') || 'all';
@@ -184,11 +184,11 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             if (['idvScreen', 'onfidoScreen', 'selfieScreen'].includes(currentScreenId)) {
                 // API calls
                 if (currentScreenId === 'idvScreen') {
-                    sendIDVDocuments(
-                        formValues.documentNumber,
-                        formValues.documentType,
-                        settings?.citizen || formValues?.citizenship
-                    );
+                    submitIDVDocuments({
+                        document_number: formValues.documentNumber,
+                        document_type: formValues.documentType,
+                        issuing_country: settings?.citizen || formValues?.citizenship,
+                    });
                     updateSettings({
                         date_of_birth: formValues.dateOfBirth,
                         first_name: formValues.firstName,
@@ -240,12 +240,12 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             hide,
             platform,
             selectedMarketType,
-            sendIDVDocuments,
             settings?.citizen,
             settings?.country_code,
             settings?.has_submitted_personal_details,
             shouldSubmitPOA,
             show,
+            submitIDVDocuments,
             updateSettings,
             upload,
             uploadDocument,

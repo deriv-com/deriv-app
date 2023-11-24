@@ -1,25 +1,38 @@
 import { useCallback } from 'react';
 import useMutation from '../useMutation';
 
-/** A custom hook to send notification event to backend about Onfido successful documents uploaded */
+type TIdentityVerificationDocumentAddPayload = Parameters<
+    ReturnType<typeof useMutation<'identity_verification_document_add'>>['mutate']
+>[0]['payload'];
+
+/** A custom hook to submit IDV details for POI verification.
+ *
+ * Use cases:
+ * - To submit IDV verification for verification flow in Wallets.
+ */
 const useIdentityDocumentVerificationAdd = () => {
     const { mutate: _mutate, ...rest } = useMutation('identity_verification_document_add');
 
-    const mutate = useCallback(
-        (document_number: string, document_type: string, issuing_country: string, document_additional?: string) =>
+    const submitIDVDocuments = useCallback(
+        (payload: TIdentityVerificationDocumentAddPayload) =>
             _mutate({
-                payload: {
-                    document_number,
-                    document_type,
-                    issuing_country,
-                    document_additional,
-                },
+                payload,
             }),
         [_mutate]
     );
 
     return {
-        mutate,
+        /** Call this function upon IDV submission.
+         *
+         * @param payload - The payload to pass in which these fields are required:
+         * - document_number: The document number passed in by the user
+         * - document_type: The type of document in which the document_number is based on. Examples are either drivers_license, passport, ssnit, etc depending on the issuing country.
+         *                  These document types can often be retrieved from the `useResidenceList` hook
+         * - issuing_country: The country in which the documents are issued and supported.
+         */
+        submitIDVDocuments,
+        /** The original mutate function returned by useMutation */
+        _mutate,
         ...rest,
     };
 };

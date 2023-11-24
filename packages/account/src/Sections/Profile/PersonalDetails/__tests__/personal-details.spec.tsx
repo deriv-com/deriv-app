@@ -16,9 +16,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true, // this property makes it work,
     default: 'mockedDefaultExport',
     WS: {
-        wait: (...payload: []) => {
-            return Promise.resolve([...payload]);
-        },
+        wait: (...payload: []) => Promise.resolve([...payload]),
     },
     useWS: () => undefined,
 }));
@@ -43,11 +41,9 @@ describe('<PersonalDetailsForm />', () => {
                 citizen: 'Thailand',
                 email_consent: 1,
             },
-            is_virtual: false,
             states_list: residence_list,
             residence_list,
             has_residence: true,
-            getChangeableFields: () => [],
             fetchResidenceList,
             fetchStatesList,
         },
@@ -76,9 +72,7 @@ describe('<PersonalDetailsForm />', () => {
         const fields = [
             'First name*',
             'Last name*',
-            // 'Place of birth',
             'Date of birth*',
-            // 'Citizenship',
             'Country of residence*',
             'Phone number*',
             'First line of address*',

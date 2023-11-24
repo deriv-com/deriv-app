@@ -11,4 +11,4 @@ export const salutation_list = [
     { text: localize('Mrs'), value: 'Mrs' },
     { text: localize('Ms'), value: 'Ms' },
     { text: localize('Miss'), value: 'Miss' },
-];
+] as const;

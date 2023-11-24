@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { getMarketType } from '../helpers';
+import { getMarketType } from '../../../helpers';
 import { TAccount, TAccountsList } from '../types';
 
 const useSortedTransferAccounts = (accounts: TAccountsList) => {

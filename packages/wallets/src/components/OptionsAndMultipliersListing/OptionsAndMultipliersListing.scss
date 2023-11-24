@@ -49,12 +49,9 @@
         user-select: none;
 
         @include mobile {
-            gap: 0;
-        }
-
-        @include mobile {
             grid-template-rows: repeat(5, 1fr);
             grid-template-columns: auto;
+            gap: 0;
         }
 
         &__icon {

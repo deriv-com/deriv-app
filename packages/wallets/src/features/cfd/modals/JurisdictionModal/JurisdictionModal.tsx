@@ -52,7 +52,7 @@ const JurisdictionModal = () => {
 
     useEffect(() => {
         setModalState('selectedJurisdiction', selectedJurisdiction);
-    }, [selectedJurisdiction]);
+    }, [selectedJurisdiction, setModalState]);
 
     if (isLoading) return <h1>Loading...</h1>;
 

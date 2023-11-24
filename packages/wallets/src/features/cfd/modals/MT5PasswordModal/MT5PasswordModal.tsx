@@ -7,7 +7,7 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
-import { SentEmailContent } from '../../../../components';
+import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
@@ -23,7 +23,7 @@ type TProps = {
 
 const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const [password, setPassword] = useState('');
-    const { isLoading: createMT5AccountLoading, isSuccess, mutate } = useCreateMT5Account();
+    const { error, isLoading: createMT5AccountLoading, isSuccess, mutate, status } = useCreateMT5Account();
     const { isLoading: tradingPlatformPasswordChangeLoading, mutate: tradingPasswordChange } =
         useTradingPlatformPasswordChange();
     const { data: activeWallet } = useActiveWalletAccount();
@@ -176,6 +176,10 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     ))}
             </ModalStepWrapper>
         );
+    }
+
+    if (status === 'error') {
+        return <WalletError errorMessage={error?.error.message} onClick={() => hide()} title={error?.error?.code} />;
     }
 
     return (

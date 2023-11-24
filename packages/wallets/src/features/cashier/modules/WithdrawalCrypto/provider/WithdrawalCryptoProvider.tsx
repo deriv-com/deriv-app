@@ -7,8 +7,14 @@ export type TWithdrawalCrypto = {
     activeWallet: ReturnType<typeof useActiveWalletAccount>['data'];
     getCurrencyConfig: ReturnType<typeof useCurrencyConfig>['getConfig'];
     isWithdrawalSuccess: ReturnType<typeof useCryptoWithdrawal>['isSuccess'];
+    onClose: () => void;
     requestCryptoWithdrawal: (values: Parameters<THooks.CryptoWithdrawal>[0]) => void;
     withdrawalReceipt: TWithdrawalReceipt;
+};
+
+type TWithdrawalCryptoContextProps = {
+    onClose: TWithdrawalCrypto['onClose'];
+    verificationCode: string;
 };
 
 const WithdrawalCryptoContext = createContext<TWithdrawalCrypto | null>(null);
@@ -24,14 +30,18 @@ export const useWithdrawalCryptoContext = () => {
     return context;
 };
 
-const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryptoContextProps>> = ({
+    children,
+    onClose,
+    verificationCode,
+}) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
     const { getConfig } = useCurrencyConfig();
     const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({});
 
     const requestCryptoWithdrawal = (values: Parameters<THooks.CryptoWithdrawal>[0]) => {
-        const { address, amount, verification_code: verificationCode } = values;
+        const { address, amount } = values;
         mutateAsync({
             address,
             amount,
@@ -52,6 +62,7 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren> = ({ children 
                 activeWallet,
                 getCurrencyConfig: getConfig,
                 isWithdrawalSuccess,
+                onClose,
                 requestCryptoWithdrawal,
                 withdrawalReceipt,
             }}

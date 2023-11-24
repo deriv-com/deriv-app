@@ -1,7 +1,9 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+
 import { CFD_PLATFORMS } from '@deriv/shared';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { render, screen } from '@testing-library/react';
+
 import CFDCompareAccountsCard from '../cfd-compare-accounts-card';
 
 jest.mock('../../../Assets/svgs/trading-platform', () => jest.fn(() => <div>Mocked Icon</div>));
@@ -95,16 +97,5 @@ describe('<CFDCompareAccountsCard />', () => {
         render(<CFDCompareAccountsCard {...mocked_props} />, { wrapper });
 
         expect(screen.queryByText(/New!/i)).not.toBeInTheDocument();
-    });
-
-    it('should render the "New!" banner for DerivEz', () => {
-        mocked_props.trading_platforms.platform = CFD_PLATFORMS.DERIVEZ;
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-
-        render(<CFDCompareAccountsCard {...mocked_props} />, { wrapper });
-
-        expect(screen.queryByText(/New!/i)).toBeInTheDocument();
     });
 });

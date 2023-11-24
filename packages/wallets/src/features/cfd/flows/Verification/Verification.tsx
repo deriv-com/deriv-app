@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useMemo } from 'react';
-import { useDocumentUpload, usePOA, usePOI, useSettings } from '@deriv/api';
+import { useDocumentUpload, useIdentityDocumentVerificationAdd, usePOA, usePOI, useSettings } from '@deriv/api';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
 import { Loader } from '../../../../components/Loader';
@@ -80,6 +80,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { isLoading: isUploadLoading, upload } = useDocumentUpload();
     const { isLoading: isManualUploadLoading, uploadDocument } = useHandleManualDocumentUpload();
     const { data: settings, update: updateSettings } = useSettings();
+    const { submitIDVDocuments } = useIdentityDocumentVerificationAdd();
     const { getModalState, hide, show } = useModal();
 
     const selectedMarketType = getModalState('marketType') || 'all';
@@ -94,12 +95,11 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     }, [isSuccessPOIStatus, isSuccessPOAStatus]);
 
     const initialScreenId: keyof typeof screens = useMemo(() => {
-        const service = (poiStatus?.current?.service || 'manual') as keyof THooks.POI['services'];
+        const service = poiStatus?.current?.service as keyof THooks.POI['services'];
 
-        if (poiStatus?.services && isSuccessPOIStatus) {
+        if (service && poiStatus?.services && isSuccessPOIStatus) {
             const serviceStatus = poiStatus.status;
 
-            if (!isSuccessPOIStatus) return 'loadingScreen';
             if (serviceStatus === 'pending' || serviceStatus === 'verified') {
                 if (shouldSubmitPOA) return 'poaScreen';
                 if (!settings?.has_submitted_personal_details) return 'personalDetailsScreen';
@@ -184,6 +184,11 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             if (['idvScreen', 'onfidoScreen', 'selfieScreen'].includes(currentScreenId)) {
                 // API calls
                 if (currentScreenId === 'idvScreen') {
+                    submitIDVDocuments({
+                        document_number: formValues.documentNumber,
+                        document_type: formValues.documentType,
+                        issuing_country: settings?.citizen || formValues?.citizenship,
+                    });
                     updateSettings({
                         date_of_birth: formValues.dateOfBirth,
                         first_name: formValues.firstName,
@@ -235,10 +240,12 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
             hide,
             platform,
             selectedMarketType,
+            settings?.citizen,
             settings?.country_code,
             settings?.has_submitted_personal_details,
             shouldSubmitPOA,
             show,
+            submitIDVDocuments,
             updateSettings,
             upload,
             uploadDocument,

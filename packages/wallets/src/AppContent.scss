@@ -18,14 +18,3 @@
     position: absolute;
     z-index: 1;
 }
-
-::-webkit-scrollbar {
-    width: 1.2rem;
-    height: 1.2rem;
-
-    &-thumb {
-        border: 0.4rem solid #fff;
-        border-radius: 4rem;
-        background: var(--state-active, #d6dadb);
-    }
-}

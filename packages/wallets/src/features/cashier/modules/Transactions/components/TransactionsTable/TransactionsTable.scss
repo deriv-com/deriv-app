@@ -10,6 +10,10 @@
         overflow: auto;
     }
 
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
     &__row {
         width: 100%;
         display: flex;

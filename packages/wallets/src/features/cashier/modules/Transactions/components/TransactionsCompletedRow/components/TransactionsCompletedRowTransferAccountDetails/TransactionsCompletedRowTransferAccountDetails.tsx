@@ -12,7 +12,7 @@ type TProps = {
 const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ accounts, direction, loginid }) => {
     const wallet = accounts.wallets?.find(account => account.loginid === loginid);
     const dtradeAccount = accounts.dtrade?.find(account => account.loginid === loginid);
-    const dxtradeAccount = accounts.dxtrade?.find(account => account.login === loginid);
+    const dxtradeAccount = accounts.dxtrade?.find(account => account.account_id === loginid);
     const mt5Account = accounts.mt5?.find(account => account.login === loginid);
     const ctraderAccount = accounts.ctrader?.find(account => account.login === loginid);
 

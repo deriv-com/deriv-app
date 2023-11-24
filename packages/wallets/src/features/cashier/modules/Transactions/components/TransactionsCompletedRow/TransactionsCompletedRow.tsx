@@ -17,6 +17,16 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
     const displayCurrency = wallet?.currency_config?.display_code || 'USD';
     const displayWalletName = `${displayCurrency} Wallet`;
 
+    // TODO: remove this once backend adds `to` and `from` for Deriv X transfers
+    const dxtradeToFrom =
+        transaction?.action_type === 'transfer' && transaction.longcode && transaction.longcode.includes('Deriv X')
+            ? {
+                  from: { loginid: wallet.loginid },
+                  to: { loginid: wallet.loginid },
+                  [transaction.longcode.split(' ')[1]]: { loginid: transaction.longcode.split(' ').pop() },
+              }
+            : null;
+
     return (
         <div className='wallets-transactions-completed-row'>
             {transaction.action_type !== 'transfer' ? (
@@ -31,11 +41,12 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
             ) : (
                 <TransactionsCompletedRowTransferAccountDetails
                     accounts={accounts}
-                    direction={transaction.from?.loginid === wallet?.loginid ? 'to' : 'from'}
+                    direction={(transaction.from ?? dxtradeToFrom?.from)?.loginid === wallet?.loginid ? 'to' : 'from'}
                     loginid={
-                        [transaction.from?.loginid, transaction.to?.loginid].find(
-                            loginid => loginid !== wallet?.loginid
-                        ) ?? ''
+                        [
+                            transaction.from?.loginid ?? dxtradeToFrom?.from.loginid,
+                            transaction.to?.loginid ?? dxtradeToFrom?.to.loginid,
+                        ].find(loginid => loginid !== wallet?.loginid) ?? ''
                     }
                 />
             )}

@@ -8,7 +8,7 @@ import { CashierOnboardingCard } from '../cashier-onboarding-card';
 import { CashierOnboardingIconMarquee } from '../cashier-onboarding-icon-marquee';
 
 const icons: React.ComponentProps<typeof CashierOnboardingIconMarquee>['icons'] = [
-    'IcWalletCreditDebit',
+    'IcCashierCreditDebit',
     'IcCashierInstantBankTransfer',
     'IcCashierEwallet',
     'IcCashierLocalPaymentMethods',

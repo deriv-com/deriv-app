@@ -1,7 +1,7 @@
 import React from 'react';
-import { Jurisdiction } from '@deriv/shared';
 import { TJurisdictionModalContentProps } from '../props.types';
 import JurisdictionCard from './jurisdiction-card';
+import { MARKET_TYPE, JURISDICTION } from '../../Helpers/cfd-config';
 
 const JurisdictionModalContent = ({
     account_status,
@@ -21,9 +21,9 @@ const JurisdictionModalContent = ({
 
     const cardsToBeShown = (type_of_card: string) => {
         switch (account_type) {
-            case 'synthetic':
+            case MARKET_TYPE.SYNTHETIC:
                 return synthetic_available_accounts?.some(account => account.shortcode === type_of_card);
-            case 'all':
+            case MARKET_TYPE.ALL:
                 return swapfree_available_accounts?.some(account => account.shortcode === type_of_card);
             default:
                 return financial_available_accounts?.some(account => account.shortcode === type_of_card);
@@ -31,15 +31,15 @@ const JurisdictionModalContent = ({
     };
 
     const disableCard = (type_of_card: string) => {
-        if (is_virtual && type_of_card !== 'svg') {
+        if (is_virtual && type_of_card !== JURISDICTION.SVG) {
             return true;
         }
         switch (account_type) {
-            case 'synthetic':
+            case MARKET_TYPE.SYNTHETIC:
                 return real_synthetic_accounts_existing_data?.some(
                     account => account.landing_company_short === type_of_card
                 );
-            case 'all':
+            case MARKET_TYPE.ALL:
                 return real_swapfree_accounts_existing_data?.some(
                     account => account.landing_company_short === type_of_card
                 );
@@ -51,11 +51,11 @@ const JurisdictionModalContent = ({
     };
 
     const jurisdiction_cards_array = [
-        Jurisdiction.SVG,
-        Jurisdiction.BVI,
-        Jurisdiction.VANUATU,
-        Jurisdiction.LABUAN,
-        Jurisdiction.MALTA_INVEST,
+        JURISDICTION.SVG,
+        JURISDICTION.BVI,
+        JURISDICTION.VANUATU,
+        JURISDICTION.LABUAN,
+        JURISDICTION.MALTA_INVEST,
     ];
 
     return (

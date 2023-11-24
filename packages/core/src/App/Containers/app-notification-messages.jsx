@@ -112,10 +112,12 @@ const AppNotificationMessages = ({
                   'svg_needs_poi',
                   'svg_needs_poi_poa',
                   'svg_poi_expired',
-                  'switched_to_real',
+                  'wallets_migrated',
+                  'wallets_failed',
                   'tnc',
                   'trustpilot',
                   'unwelcome',
+                  'additional_kyc_info',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
 

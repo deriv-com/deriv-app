@@ -1,78 +1,87 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useAuthorize } from '@deriv/api';
-import useCashierParam, { TCashierTabs } from '../../hooks/useCashierParam';
 import useDevice from '../../hooks/useDevice';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
+import { THooks } from '../../types';
+import { IconButton, WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
 const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
     const buttons = [
         {
             icon: <IcCashierAdd />,
-            name: 'Deposit',
+            name: isDemo ? 'reset-balance' : 'deposit',
             text: isDemo ? 'Reset balance' : 'Deposit',
         },
         {
             icon: <IcCashierWithdrawal />,
-            name: 'Withdraw',
+            name: 'withdraw',
             text: 'Withdraw',
         },
         {
             icon: <IcCashierTransfer />,
-            name: 'Transfer',
+            name: 'transfer',
             text: 'Transfer',
         },
         {
             icon: <IcCashierStatement />,
-            name: 'Transactions',
+            name: 'transactions',
             text: 'Transactions',
         },
-    ];
+    ] as const;
 
     // Filter out the "Withdraw" button when is_demo is true
-    const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'Withdraw') : buttons;
+    const filteredButtons = isDemo ? buttons.filter(button => button.name !== 'withdraw') : buttons;
 
-    return filteredButtons.map(button => ({
+    const orderForDemo = ['transfer', 'transactions', 'reset-balance'];
+
+    const sortedButtons = isDemo
+        ? [...filteredButtons].sort((a, b) => orderForDemo.indexOf(a.name) - orderForDemo.indexOf(b.name))
+        : filteredButtons;
+
+    return sortedButtons.map(button => ({
         ...button,
         action: () => handleAction?.(),
     }));
 };
 
 type TProps = {
-    isDemo: boolean;
-    loginid: string;
+    isActive: THooks.WalletAccountsList['is_active'];
+    isDemo: THooks.WalletAccountsList['is_virtual'];
+    loginid: THooks.WalletAccountsList['loginid'];
 };
 
-const WalletListCardActions: React.FC<TProps> = ({ isDemo, loginid }) => {
-    const { data: activeWallet } = useActiveWalletAccount();
+const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) => {
     const { switchAccount } = useAuthorize();
-    const { getCashierParam } = useCashierParam();
+    const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();
-
-    const is_demo = !!activeWallet?.is_virtual;
 
     if (isMobile)
         return (
             <div className='wallets-mobile-actions__container'>
                 <div className='wallets-mobile-actions'>
-                    {getWalletHeaderButtons(is_demo).map(button => (
-                        <React.Fragment key={button.name}>
-                            <div className='wallets-mobile-actions-content'>
-                                <button
-                                    className='wallets-mobile-actions-content-icon'
-                                    key={button.name}
-                                    onClick={button.action}
-                                >
-                                    {button.icon}
-                                </button>
-                                <div className='wallets-mobile-actions-content-text'>{button.text}</div>
-                            </div>
-                        </React.Fragment>
+                    {getWalletHeaderButtons(isDemo).map(button => (
+                        <div className='wallets-mobile-actions-content' key={button.name}>
+                            <IconButton
+                                className='wallets-mobile-actions-content-icon'
+                                color='transparent'
+                                icon={button.icon}
+                                isRound
+                                onClick={() => {
+                                    if (activeWallet?.loginid !== loginid) {
+                                        switchAccount(loginid);
+                                    }
+                                    history.push(`/wallets/cashier/${button.name}`);
+                                }}
+                                size='lg'
+                            />
+                            <WalletText size='sm'>{button.text}</WalletText>
+                        </div>
                     ))}
                 </div>
             </div>
@@ -81,25 +90,17 @@ const WalletListCardActions: React.FC<TProps> = ({ isDemo, loginid }) => {
     return (
         <div className='wallets-header__actions'>
             {getWalletHeaderButtons(isDemo).map(button => (
-                <button
-                    className='wallets-header__button'
-                    key={loginid}
-                    onClick={async () => {
-                        await switchAccount(loginid);
-                        history.push(
-                            `/appstore/traders-hub?${getCashierParam(button.name.toLowerCase() as TCashierTabs)}`
-                        );
+                <WalletButton
+                    icon={button.icon}
+                    key={button.name}
+                    onClick={() => {
+                        switchAccount(loginid);
+                        history.push(`/wallets/cashier/${button.name}`);
                     }}
-                >
-                    {button.icon}
-                    <span
-                        className={`wallets-header__actions-label ${
-                            isDemo ? 'wallets-header__actions-label--active' : ''
-                        }`}
-                    >
-                        {button.name}
-                    </span>
-                </button>
+                    rounded='md'
+                    text={isActive ? button.text : undefined}
+                    variant='outlined'
+                />
             ))}
         </div>
     );

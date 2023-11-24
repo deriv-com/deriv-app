@@ -22,6 +22,7 @@ jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
 // // Mocking the imports from @deriv/deriv-charts
 jest.mock('@deriv/deriv-charts', () => ({
+    ...jest.requireActual('@deriv/deriv-charts'),
     __esModule: true,
     ChartMode: jest.fn(() => <div>Mocked ChartMode</div>),
     DrawTools: jest.fn(() => <div>Mocked DrawTools</div>),
@@ -29,7 +30,6 @@ jest.mock('@deriv/deriv-charts', () => ({
     StudyLegend: jest.fn(() => <div>Mocked StudyLegend</div>),
     ToolbarWidget: jest.fn(({ children }) => <div>{children}</div>),
     Views: jest.fn(() => <div>Mocked Views</div>),
-    setSmartChartsPublicPath: jest.fn(),
 }));
 
 describe('ToolbarWidgets', () => {
@@ -51,21 +51,31 @@ describe('ToolbarWidgets', () => {
         );
     });
 
-    it('should render ToolbarWidgets in desktop', () => {
+    it('should render ToolbarWidgets in desktop', async () => {
         (isMobile as jest.Mock).mockReturnValueOnce(false);
         (isDesktop as jest.Mock).mockReturnValueOnce(true);
-        render(<ToolbarWidgets updateChartType={mockUpdateChartType} updateGranularity={mockUpdateGranularity} />, {
-            wrapper,
-        });
-        expect(screen.getByText('Mocked StudyLegend')).toBeInTheDocument();
+        render(
+            <React.Suspense fallback={<div />}>
+                <ToolbarWidgets updateChartType={mockUpdateChartType} updateGranularity={mockUpdateGranularity} />
+            </React.Suspense>,
+            {
+                wrapper,
+            }
+        );
+        expect(await screen.findByText('Mocked StudyLegend')).toBeInTheDocument();
     });
 
-    it('should render ToolbarWidgets in mobile', () => {
+    it('should render ToolbarWidgets in mobile', async () => {
         (isMobile as jest.Mock).mockReturnValueOnce(true);
         (isDesktop as jest.Mock).mockReturnValueOnce(false);
-        render(<ToolbarWidgets updateChartType={mockUpdateChartType} updateGranularity={mockUpdateGranularity} />, {
-            wrapper,
-        });
-        expect(screen.queryByText('Mocked StudyLegend')).not.toBeInTheDocument();
+        render(
+            <React.Suspense fallback={<div />}>
+                <ToolbarWidgets updateChartType={mockUpdateChartType} updateGranularity={mockUpdateGranularity} />
+            </React.Suspense>,
+            {
+                wrapper,
+            }
+        );
+        expect(await screen.findByText('Mocked ChartMode')).toBeInTheDocument();
     });
 });

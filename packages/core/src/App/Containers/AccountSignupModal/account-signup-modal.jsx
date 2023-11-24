@@ -1,21 +1,25 @@
-import classNames from 'classnames';
-import { Formik, Form } from 'formik';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { getLocation, PlatformContext, SessionStore } from '@deriv/shared';
+import { Form, Formik } from 'formik';
+import PropTypes from 'prop-types';
+
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
+import { getLocation, SessionStore } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
+import { Analytics } from '@deriv/analytics';
+
+import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
-import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
-import 'Sass/app/modules/account-signup.scss';
+
 import validateSignupFields from './validate-signup-fields.jsx';
 
-const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
+import 'Sass/app/modules/account-signup.scss';
+
+const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, onSignup, residence_list }) => {
     const signupInitialValues = { citizenship: '', password: '', residence: '' };
-    const { is_appstore } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
     const [country, setCountry] = React.useState('');
@@ -46,6 +50,16 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
             }
             setIsLoading(false);
         });
+
+        Analytics.trackEvent('ce_virtual_signup_form', {
+            action: 'signup_confirmed',
+            form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+        });
+
+        Analytics.trackEvent('ce_virtual_signup_form', {
+            action: 'country_selection_screen_opened',
+            form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+        });
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const validateSignupPassthrough = values => validateSignupFields(values, residence_list);
@@ -69,10 +83,21 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
     const onSignupComplete = error => {
         if (error) {
             setApiError(error);
+
+            Analytics.trackEvent('ce_virtual_signup_form', {
+                action: 'signup_flow_error',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+                error_message: error,
+            });
         } else {
             isModalVisible(false);
             SessionStore.remove('signup_query_param');
             enableApp();
+
+            Analytics.trackEvent('ce_virtual_signup_form', {
+                action: 'signup_done',
+                form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
+            });
         }
     };
 
@@ -99,8 +124,13 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                     }) => (
                         <Form>
                             {!is_password_modal ? (
-                                <div className='account-signup__main'>
-                                    <Text as='h1' weight='bold' className='account-signup__heading'>
+                                <div className='account-signup__location-selection'>
+                                    <Text
+                                        as='h1'
+                                        size={is_mobile ? 'xs' : 's'}
+                                        weight='bold'
+                                        className='account-signup__heading'
+                                    >
                                         {localize('Select your country and citizenship:')}
                                     </Text>
                                     <ResidenceForm
@@ -135,9 +165,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                     )}
                                     <div className='account-signup__footer'>
                                         <Button
-                                            className={classNames('account-signup__btn', {
-                                                'account-signup__btn--disabled': disableButton(values, errors),
-                                            })}
+                                            className='account-signup__btn'
                                             is_disabled={disableButton(values, errors)}
                                             type='button'
                                             onClick={() => {
@@ -156,7 +184,6 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                     errors={errors}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
-                                    is_appstore={is_appstore}
                                     isModalVisible={isModalVisible}
                                     isSubmitting={isSubmitting}
                                     touched={touched}
@@ -179,6 +206,7 @@ AccountSignup.propTypes = {
     enableApp: PropTypes.func,
     onSignup: PropTypes.func,
     residence_list: PropTypes.array,
+    is_mobile: PropTypes.bool,
     isModalVisible: PropTypes.func,
 };
 
@@ -187,6 +215,7 @@ const AccountSignupModal = ({
     disableApp,
     clients_country,
     is_loading,
+    is_mobile,
     is_visible,
     is_logged_in,
     logout,
@@ -214,6 +243,7 @@ const AccountSignupModal = ({
                 clients_country={clients_country}
                 onSignup={onSignup}
                 residence_list={residence_list}
+                is_mobile={is_mobile}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
             />
@@ -227,6 +257,7 @@ AccountSignupModal.propTypes = {
     enableApp: PropTypes.func,
     is_loading: PropTypes.bool,
     is_logged_in: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     is_visible: PropTypes.bool,
     logout: PropTypes.func,
     onSignup: PropTypes.func,
@@ -240,6 +271,7 @@ export default connect(({ ui, client }) => ({
     enableApp: ui.enableApp,
     disableApp: ui.disableApp,
     is_loading: ui.is_loading,
+    is_mobile: ui.is_mobile,
     onSignup: client.onSignup,
     is_logged_in: client.is_logged_in,
     residence_list: client.residence_list,

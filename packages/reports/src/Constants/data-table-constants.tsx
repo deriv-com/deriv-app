@@ -18,6 +18,7 @@ import MarketSymbolIconRow from '../Components/market-symbol-icon-row';
 import ProfitLossCell from '../Components/profit_loss_cell';
 import CurrencyWrapper from '../Components/currency-wrapper';
 import { useStore } from '@deriv/stores';
+import moment from 'moment';
 
 type TPortfolioStore = ReturnType<typeof useStore>['portfolio'];
 
@@ -41,6 +42,7 @@ type TAccumulatorOpenPositionstemplateProps = Omit<
     TMultiplierOpenPositionstemplateProps,
     'onClickCancel' | 'server_time'
 >;
+
 type TMultiplierOpenPositionstemplateProps = Pick<
     TPortfolioStore,
     'getPositionById' | 'onClickCancel' | 'onClickSell'
@@ -226,8 +228,9 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
         title: localize('Indicative profit/loss'),
         col_index: 'profit',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
-            if (!row_obj.profit_loss && (!row_obj.contract_info || !row_obj.contract_info.profit)) return;
-            const profit = row_obj.profit_loss || row_obj.contract_info.profit;
+            const { profit_loss, contract_info } = row_obj ?? {};
+            if (!profit_loss && profit_loss !== 0 && !contract_info?.profit && contract_info?.profit !== 0) return;
+            const profit = profit_loss ?? contract_info.profit;
             // eslint-disable-next-line consistent-return
             return (
                 <div
@@ -565,4 +568,3 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
         },
     },
 ];
-/* eslint-enable react/display-name, react/prop-types */

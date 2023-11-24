@@ -1,16 +1,9 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
-import { ModalProvider } from './components/ModalProvider';
-import AppContent from './AppContent';
-import './styles/fonts.scss';
-import './index.scss';
+import { makeLazyLoader, moduleLoader } from './utils/loader';
 
-const App: React.FC = () => (
-    <APIProvider>
-        <ModalProvider>
-            <AppContent />
-        </ModalProvider>
-    </APIProvider>
-);
+const LazyApp = makeLazyLoader(
+    () => moduleLoader(() => import(/* webpackChunkName: "wallets-app", webpackPreload: true */ './App')),
+    () => <div />
+)();
 
-export default App;
+export default LazyApp;

@@ -1,30 +1,35 @@
 import React from 'react';
-import { useAuthorize, useWalletAccountsList } from '@deriv/api';
+import { useAuthorize, useCurrencyConfig, useWalletAccountsList } from '@deriv/api';
 import { AccountsList } from '../AccountsList';
+import { WalletsAccordionLoader } from '../SkeletonLoader';
 import { WalletListCard } from '../WalletListCard';
 import { WalletsAccordion } from '../WalletsAccordion';
 import './DesktopWalletsList.scss';
 
 const DesktopWalletsList: React.FC = () => {
     const { data: wallets } = useWalletAccountsList();
-    const { switchAccount } = useAuthorize();
+    const { isLoading: isAuthorizeLoading, switchAccount } = useAuthorize();
+    const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
     return (
         <div className='wallets-desktop-wallets-list'>
-            {wallets?.map(wallet => {
+            {(isAuthorizeLoading || isCurrencyConfigLoading) && <WalletsAccordionLoader />}
+            {wallets?.map(account => {
                 return (
                     <WalletsAccordion
-                        isOpen={wallet.is_active}
-                        key={`wallets-accordion-${wallet.loginid}`}
-                        onToggle={() => switchAccount(wallet.loginid)}
+                        isDemo={account.is_virtual}
+                        isOpen={account.is_active}
+                        key={`wallets-accordion-${account.loginid}`}
+                        onToggle={() => switchAccount(account.loginid)}
                         renderHeader={() => (
                             <WalletListCard
-                                badge={wallet.landing_company_name}
-                                balance={wallet.display_balance}
-                                currency={wallet.currency_config?.display_code || 'USD'}
-                                isDemo={wallet.is_virtual}
-                                loginid={wallet.loginid}
-                                walletType={wallet.wallet_currency_type}
+                                badge={account.landing_company_name}
+                                balance={account.display_balance}
+                                currency={account.wallet_currency_type || 'USD'}
+                                isActive={account.is_active}
+                                isDemo={account.is_virtual}
+                                loginid={account.loginid}
+                                title={account.currency || 'USD'}
                             />
                         )}
                     >

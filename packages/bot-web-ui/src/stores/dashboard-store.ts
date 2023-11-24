@@ -1,20 +1,25 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
+
 import { setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
+
 import { clearInjectionDiv } from 'Constants/load-modal';
+
 import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
-import RootStore from './root-store';
+import {
+    faq_content,
+    guide_content,
+    user_guide_content,
+    TFaqContent,
+    TGuideContent,
+    TUserGuideContent,
+} from 'Components/dashboard/tutorial-tab/config';
 
 export interface IDashboardStore {
     active_tab: number;
     dialog_options: { [key: string]: string };
     faq_search_value: string | null;
-    has_builder_token: string | number;
     has_mobile_preview_loaded: boolean;
-    has_onboarding_token: string | number;
-    has_started_bot_builder_tour: boolean;
-    has_started_onboarding_tour: boolean;
-    has_tour_ended: boolean;
     is_web_socket_intialised: boolean;
     initInfoPanel: () => void;
     is_dialog_open: boolean;
@@ -23,43 +28,38 @@ export interface IDashboardStore {
     is_preview_on_popup: boolean;
     onCloseDialog: () => void;
     onCloseTour: (param: Partial<string>) => void;
-    onTourEnd: (step: number, has_started_onboarding_tour: boolean) => void;
+    onTourEnd: (step: number, is_tour_active: boolean) => void;
     setActiveTab: (active_tab: number) => void;
     setActiveTabTutorial: (active_tab_tutorials: number) => void;
     setFAQSearchValue: (faq_search_value: string) => void;
-    setHasTourEnded: (has_tour_ended: boolean) => void;
     setInfoPanelVisibility: (visibility: boolean) => void;
     setIsFileSupported: (is_file_supported: boolean) => void;
-    setOnBoardTourRunState: (has_started_onboarding_tour: boolean) => void;
     setWebSocketState: (is_web_socket_intialised: boolean) => void;
     setOpenSettings: (toast_message: string, show_toast: boolean) => void;
     setPreviewOnDialog: (has_mobile_preview_loaded: boolean) => void;
     setStrategySaveType: (param: string) => void;
     show_toast: boolean;
+    show_mobile_tour_dialog: boolean;
     showVideoDialog: (param: { [key: string]: string }) => void;
     strategy_save_type: string;
     toast_message: string;
 }
 
 export default class DashboardStore implements IDashboardStore {
-    root_store: RootStore;
+    root_store: any;
+    tutorials_combined_content: (TFaqContent | TGuideContent | TUserGuideContent)[] = [];
 
-    constructor(root_store: RootStore) {
+    constructor(root_store: any) {
         makeObservable(this, {
             active_tab_tutorials: observable,
             active_tab: observable,
             dialog_options: observable,
             faq_search_value: observable,
             getFileArray: observable,
-            has_builder_token: observable,
             has_file_loaded: observable,
             has_mobile_preview_loaded: observable,
-            has_onboarding_token: observable,
-            has_started_bot_builder_tour: observable,
-            has_started_onboarding_tour: observable,
-            has_tour_ended: observable,
-            has_tour_started: observable,
             initInfoPanel: action.bound,
+            active_tour: observable,
             is_dialog_open: observable,
             is_file_supported: observable,
             is_info_panel_visible: observable,
@@ -67,34 +67,33 @@ export default class DashboardStore implements IDashboardStore {
             is_tour_dialog_visible: observable,
             is_web_socket_intialised: observable,
             is_dark_mode: computed,
+            tutorials_combined_content: observable,
             onCloseDialog: action.bound,
             onCloseTour: action.bound,
             onTourEnd: action.bound,
             setActiveTab: action.bound,
             setActiveTabTutorial: action.bound,
             setWebSocketState: action.bound,
-            setBotBuilderTokenCheck: action.bound,
-            setBotBuilderTourState: action.bound,
             setFAQSearchValue: action.bound,
             setFileLoaded: action.bound,
-            setHasTourEnded: action.bound,
             setInfoPanelVisibility: action.bound,
             setIsFileSupported: action.bound,
-            setOnBoardingTokenCheck: action.bound,
-            setOnBoardTourRunState: action.bound,
             setPreviewOnDialog: action.bound,
             setPreviewOnPopup: action.bound,
-            setTourActive: action.bound,
+            setActiveTour: action.bound,
             setTourDialogVisibility: action.bound,
             setOpenSettings: action.bound,
             show_toast: observable,
+            show_mobile_tour_dialog: observable,
             showVideoDialog: action.bound,
             strategy_save_type: observable,
-            toggleOnConfirm: action.bound,
             toast_message: observable,
             setStrategySaveType: action.bound,
+            setShowMobileTourDialog: action.bound,
         });
         this.root_store = root_store;
+        this.tutorials_combined_content = [...user_guide_content, ...guide_content, ...faq_content];
+
         const {
             load_modal: { previewRecentStrategy, current_workspace_id },
         } = this.root_store;
@@ -107,9 +106,16 @@ export default class DashboardStore implements IDashboardStore {
             );
         };
 
+        const setCurrentXML = () => {
+            const xml = Blockly?.Xml.workspaceToDom(Blockly?.derivWorkspace);
+            const current_xml = Blockly?.Xml.domToText(xml);
+            if (Blockly) Blockly.derivWorkspace.strategy_to_load = current_xml;
+        };
+
         reaction(
             () => this.is_dark_mode,
             () => {
+                if (Blockly) setCurrentXML();
                 setColors(this.is_dark_mode);
                 if (this.active_tab === 1) {
                     refreshBotBuilderTheme();
@@ -136,20 +142,16 @@ export default class DashboardStore implements IDashboardStore {
     dialog_options = {};
     faq_search_value = '';
     getFileArray = [];
-    has_builder_token = '';
     has_file_loaded = false;
     has_mobile_preview_loaded = false;
-    has_onboarding_token = '';
-    has_started_bot_builder_tour = false;
-    has_started_onboarding_tour = false;
-    has_tour_ended = false;
-    has_tour_started = false;
+    active_tour = '';
     is_dialog_open = false;
     is_file_supported = false;
     is_info_panel_visible = false;
     is_preview_on_popup = false;
     is_tour_dialog_visible = false;
     show_toast = false;
+    show_mobile_tour_dialog = false;
     strategy_save_type = 'unsaved';
     toast_message = '';
     is_web_socket_intialised = true;
@@ -164,6 +166,10 @@ export default class DashboardStore implements IDashboardStore {
         } = this.root_store;
         return is_dark_mode_on;
     }
+
+    setShowMobileTourDialog = (show_mobile_tour_dialog: boolean) => {
+        this.show_mobile_tour_dialog = show_mobile_tour_dialog;
+    };
 
     setWebSocketState = (is_web_socket_intialised: boolean) => {
         this.is_web_socket_intialised = is_web_socket_intialised;
@@ -198,36 +204,16 @@ export default class DashboardStore implements IDashboardStore {
         this.strategy_save_type = strategy_save_type;
     };
 
-    setHasTourEnded = (has_tour_ended: boolean): void => {
-        this.has_tour_ended = has_tour_ended;
-    };
-
-    setBotBuilderTokenCheck = (has_builder_token: string | number): void => {
-        this.has_builder_token = has_builder_token;
-    };
-
-    setOnBoardingTokenCheck = (has_onboarding_token: string | number): void => {
-        this.has_onboarding_token = has_onboarding_token;
-    };
-
-    setBotBuilderTourState = (has_started_bot_builder_tour: boolean): void => {
-        this.has_started_bot_builder_tour = has_started_bot_builder_tour;
-    };
-
     setPreviewOnPopup = (is_preview_on_popup: boolean): void => {
         this.is_preview_on_popup = is_preview_on_popup;
-    };
-
-    setOnBoardTourRunState = (has_started_onboarding_tour: boolean): void => {
-        this.has_started_onboarding_tour = has_started_onboarding_tour;
     };
 
     setTourDialogVisibility = (is_tour_dialog_visible: boolean): void => {
         this.is_tour_dialog_visible = is_tour_dialog_visible;
     };
 
-    setTourActive = (has_tour_started: boolean): void => {
-        this.has_tour_started = has_tour_started;
+    setActiveTour = (active_tour: string): void => {
+        this.active_tour = active_tour;
     };
 
     setFileLoaded = (has_file_loaded: boolean): void => {
@@ -241,13 +227,6 @@ export default class DashboardStore implements IDashboardStore {
 
     setActiveTab = (active_tab: number): void => {
         this.active_tab = active_tab;
-        if (this.has_started_bot_builder_tour) {
-            this.setTourActive(false);
-            this.setBotBuilderTourState(false);
-        }
-        if (this.active_tab === 1) {
-            window.Blockly?.derivWorkspace?.cleanUp();
-        }
     };
 
     setActiveTabTutorial = (active_tab_tutorials: number): void => {
@@ -285,38 +264,26 @@ export default class DashboardStore implements IDashboardStore {
         workspace.zoom(metrics.viewWidth / 2, metrics.viewHeight / 2, addition);
     };
 
-    toggleOnConfirm = (active_tab: number, value: boolean): void => {
-        if (active_tab === 0) {
-            this.setTourActive(value);
-            this.setOnBoardTourRunState(value);
-        } else {
-            this.setBotBuilderTourState(value);
-        }
-        this.setHasTourEnded(value);
-    };
-
     onCloseTour = (): void => {
-        this.setOnBoardTourRunState(false);
-        this.setBotBuilderTourState(false);
         setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
-        this.setTourActive(false);
+        this.setActiveTour('');
     };
     setTourEnd = (param: TTourType): void => {
         const { key } = param;
-        this.setHasTourEnded(true);
         if (!isMobile()) this.setTourDialogVisibility(true);
-        this.setTourActive(false);
         setTourSettings(new Date().getTime(), `${key}_token`);
     };
 
-    onTourEnd = (step: number, has_started_onboarding_tour: boolean): void => {
+    onTourEnd = (step: number, is_tour_active: boolean): void => {
         if (step === 8) {
             this.onCloseTour();
             this.setTourEnd(tour_type);
+            this.setActiveTour('');
         }
-        if (!has_started_onboarding_tour && step === 3) {
+        if (!is_tour_active && step === 3) {
             this.onCloseTour();
             this.setTourEnd(tour_type);
+            this.setActiveTour('');
         }
     };
 }

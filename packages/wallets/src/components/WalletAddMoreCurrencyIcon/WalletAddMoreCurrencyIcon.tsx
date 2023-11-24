@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import AUDIcon from '../../public/images/currencies/aud.svg';
 import BTCIcon from '../../public/images/currencies/btc.svg';
 import ETHIcon from '../../public/images/currencies/eth.svg';
@@ -8,6 +8,7 @@ import GBPIcon from '../../public/images/currencies/gbp.svg';
 import LTCIcon from '../../public/images/currencies/ltc.svg';
 import USDIcon from '../../public/images/currencies/usd.svg';
 import USDCIcon from '../../public/images/currencies/usdc.svg';
+import { THooks } from '../../types';
 
 const currencies = {
     aud: AUDIcon,
@@ -15,20 +16,20 @@ const currencies = {
     eth: ETHIcon,
     eur: EURIcon,
     eusdt: TetherIcon,
-    ltc: LTCIcon,
-    usd: USDIcon,
     gbp: GBPIcon,
-    usdc: USDCIcon,
+    ltc: LTCIcon,
     tusdt: TetherIcon,
+    usd: USDIcon,
+    usdc: USDCIcon,
     ust: TetherIcon,
 };
 
 type TWalletCurrencyIconProps = {
-    currency: string;
+    currency: THooks.AllWalletAccounts['currency'];
 };
 
-const WalletAddMoreCurrencyIcon = ({ currency }: TWalletCurrencyIconProps) => {
-    const CurrencyIcon = React.useMemo(() => currencies[currency as keyof typeof currencies], [currency]);
+const WalletAddMoreCurrencyIcon: React.FC<TWalletCurrencyIconProps> = ({ currency }) => {
+    const CurrencyIcon = useMemo(() => currencies[currency as keyof typeof currencies], [currency]);
 
     if (CurrencyIcon) {
         return (

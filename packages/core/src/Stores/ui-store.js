@@ -1,6 +1,9 @@
+import { action, autorun, computed, makeObservable, observable } from 'mobx';
+
 import { isMobile, isTouchDevice, LocalStore, routes } from '@deriv/shared';
+
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
-import { action, autorun, computed, observable, makeObservable } from 'mobx';
+
 import BaseStore from './base-store';
 
 const store_name = 'ui_store';
@@ -26,6 +29,7 @@ export default class UIStore extends BaseStore {
     is_dark_mode_on = window?.matchMedia?.('(prefers-color-scheme: dark)').matches && isMobile();
     is_settings_modal_on = false;
     is_language_settings_modal_on = false;
+    is_mobile_language_menu_open = false;
     is_accounts_switcher_on = false;
     account_switcher_disabled_message = '';
 
@@ -101,9 +105,6 @@ export default class UIStore extends BaseStore {
     // MT5 create real STP from demo, show only real accounts from switcher
     should_show_real_accounts_list = false;
 
-    // MT5 acuity download
-    is_acuity_modal_open = false;
-
     // Real account signup
     real_account_signup = {
         active_modal_index: -1,
@@ -132,6 +133,7 @@ export default class UIStore extends BaseStore {
 
     // MT5 account needed modal
     is_account_needed_modal_on = false;
+    is_mt5_migration_modal_open = false;
     account_needed_modal_props = {
         target: '',
         target_label: '',
@@ -161,11 +163,16 @@ export default class UIStore extends BaseStore {
     should_show_assessment_complete_modal = false;
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
+    is_wallet_modal_visible = false;
     is_ready_to_deposit_modal_visible = false;
     is_need_real_account_for_cashier_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
+    is_mt5_migration_modal_enabled = false;
     sub_section_index = 0;
+
+    is_additional_kyc_info_modal_open = false;
+    is_kyc_information_submitted_modal_open = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -196,6 +203,8 @@ export default class UIStore extends BaseStore {
         super({ root_store, local_storage_properties, store_name });
 
         makeObservable(this, {
+            is_additional_kyc_info_modal_open: observable,
+            is_kyc_information_submitted_modal_open: observable,
             account_needed_modal_props: observable,
             account_switcher_disabled_message: observable,
             has_only_forward_starting_contracts: observable,
@@ -239,7 +248,6 @@ export default class UIStore extends BaseStore {
             is_account_settings_visible: observable,
 
             is_accounts_switcher_on: observable,
-            is_acuity_modal_open: observable,
 
             is_app_disabled: observable,
             is_cashier_visible: observable,
@@ -248,10 +256,12 @@ export default class UIStore extends BaseStore {
             is_closing_create_real_account_modal: observable,
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
+            is_wallet_modal_visible: observable,
 
             is_history_tab_active: observable,
             is_landscape: observable,
             is_language_settings_modal_on: observable,
+            is_mobile_language_menu_open: observable,
             is_nativepicker_visible: observable,
 
             is_positions_drawer_on: observable,
@@ -268,6 +278,8 @@ export default class UIStore extends BaseStore {
             is_trading_assessment_for_existing_user_enabled: observable,
             is_trading_assessment_for_new_user_enabled: observable,
             is_welcome_modal_visible: observable,
+            is_mt5_migration_modal_open: observable,
+            is_mt5_migration_modal_enabled: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
             notification_messages_ui: observable,
@@ -305,6 +317,7 @@ export default class UIStore extends BaseStore {
             init: action.bound,
             installWithDeferredPrompt: action.bound,
             is_account_switcher_disabled: computed,
+            is_desktop: computed,
             is_mobile: computed,
             is_tablet: computed,
             is_warning_scam_message_modal_visible: computed,
@@ -334,7 +347,6 @@ export default class UIStore extends BaseStore {
             setDarkMode: action.bound,
             setHasOnlyForwardingContracts: action.bound,
             setHashedValue: action.bound,
-            setIsAcuityModalOpen: action.bound,
             setIsClosingCreateRealAccountModal: action.bound,
             setIsNativepickerVisible: action.bound,
             setReportsTabIndex: action.bound,
@@ -345,6 +357,7 @@ export default class UIStore extends BaseStore {
             toggleShouldShowMultipliersOnboarding: action.bound,
             shouldNavigateAfterChooseCrypto: action.bound,
             setShouldShowRiskWarningModal: action.bound,
+            setIsWalletModalVisible: action.bound,
             setIsNewAccount: action.bound,
             setIsRealTabEnabled: action.bound,
             setIsTradingAssessmentForExistingUserEnabled: action.bound,
@@ -368,6 +381,8 @@ export default class UIStore extends BaseStore {
             setShouldShowWarningModal: action.bound,
             setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
+            setMT5MigrationModalEnabled: action.bound,
+            setMobileLanguageMenuOpen: action.bound,
             toggleAccountsDialog: action.bound,
             toggleAccountSettings: action.bound,
             toggleAccountSignupModal: action.bound,
@@ -387,6 +402,9 @@ export default class UIStore extends BaseStore {
             toggleLanguageSettingsModal: action.bound,
             toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
+            toggleAdditionalKycInfoModal: action.bound,
+            toggleKycInformationSubmittedModal: action.bound,
+            toggleMT5MigrationModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -478,7 +496,12 @@ export default class UIStore extends BaseStore {
     }
 
     get is_tablet() {
-        return this.screen_width <= MAX_TABLET_WIDTH;
+        return MAX_MOBILE_WIDTH < this.screen_width && this.screen_width <= MAX_TABLET_WIDTH;
+    }
+
+    get is_desktop() {
+        // TODO: remove tablet once there is a design for the specific size.
+        return this.is_tablet || this.screen_width > MAX_TABLET_WIDTH;
     }
 
     get is_account_switcher_disabled() {
@@ -573,6 +596,10 @@ export default class UIStore extends BaseStore {
         }
 
         return this.is_dark_mode_on;
+    }
+
+    setMobileLanguageMenuOpen(is_mobile_language_menu_open) {
+        this.is_mobile_language_menu_open = is_mobile_language_menu_open;
     }
 
     toggleSetCurrencyModal() {
@@ -827,10 +854,6 @@ export default class UIStore extends BaseStore {
         this.should_show_real_accounts_list = value;
     }
 
-    setIsAcuityModalOpen(value) {
-        this.is_acuity_modal_open = value;
-    }
-
     toggleShouldShowMultipliersOnboarding(value) {
         this.should_show_multipliers_onboarding = value;
     }
@@ -849,6 +872,10 @@ export default class UIStore extends BaseStore {
 
     openDerivRealAccountNeededModal() {
         this.is_deriv_account_needed_modal_visible = !this.is_deriv_account_needed_modal_visible;
+    }
+
+    setIsWalletModalVisible(value) {
+        this.is_wallet_modal_visible = value;
     }
 
     setShouldShowRiskWarningModal(value) {
@@ -905,5 +932,21 @@ export default class UIStore extends BaseStore {
 
     setSubSectionIndex(index) {
         this.sub_section_index = index;
+    }
+
+    toggleAdditionalKycInfoModal() {
+        this.is_additional_kyc_info_modal_open = !this.is_additional_kyc_info_modal_open;
+    }
+
+    toggleKycInformationSubmittedModal() {
+        this.is_kyc_information_submitted_modal_open = !this.is_kyc_information_submitted_modal_open;
+    }
+
+    setMT5MigrationModalEnabled(value) {
+        this.is_mt5_migration_modal_enabled = value;
+    }
+
+    toggleMT5MigrationModal() {
+        this.is_mt5_migration_modal_open = !this.is_mt5_migration_modal_open;
     }
 }

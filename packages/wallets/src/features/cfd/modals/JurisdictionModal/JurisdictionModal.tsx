@@ -52,7 +52,8 @@ const JurisdictionModal = () => {
 
     useEffect(() => {
         setModalState('selectedJurisdiction', selectedJurisdiction);
-    }, [selectedJurisdiction, setModalState]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedJurisdiction]);
 
     if (isLoading) return <h1>Loading...</h1>;
 

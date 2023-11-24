@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { WalletText } from '../../../../../../components/Base';
 import { THooks } from '../../../../../../types';
 import { TransactionsCompletedRowAccountDetails } from './components/TransactionsCompletedRowAccountDetails';
@@ -12,20 +12,36 @@ type TProps = {
 };
 
 const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wallet }) => {
+    // TODO: remove this once backend adds `to` and `from` for Deriv X transfers
+    const dxtradeToFrom = useMemo(() => {
+        if (
+            transaction?.action_type !== 'transfer' ||
+            !transaction.longcode ||
+            !transaction.longcode.includes('Deriv X')
+        )
+            return null;
+        const longcodeMessageTokens = transaction.longcode.split(' ');
+        const direction = longcodeMessageTokens[1];
+        const dxtradeLoginid = longcodeMessageTokens.find(token => token.startsWith('DX'));
+        return {
+            from: { loginid: wallet.loginid },
+            to: { loginid: wallet.loginid },
+            ...(direction && { [direction]: { loginid: dxtradeLoginid } }),
+        };
+    }, [transaction?.action_type, transaction.longcode, wallet.loginid]);
+
     if (!transaction.action_type || !transaction.amount) return null;
 
     const displayCurrency = wallet?.currency_config?.display_code || 'USD';
     const displayWalletName = `${displayCurrency} Wallet`;
 
-    // TODO: remove this once backend adds `to` and `from` for Deriv X transfers
-    const dxtradeToFrom =
-        transaction?.action_type === 'transfer' && transaction.longcode && transaction.longcode.includes('Deriv X')
-            ? {
-                  from: { loginid: wallet.loginid },
-                  to: { loginid: wallet.loginid },
-                  [transaction.longcode.split(' ')[1]]: { loginid: transaction.longcode.split(' ').pop() },
-              }
-            : null;
+    transaction?.action_type === 'transfer' && transaction.longcode && transaction.longcode.includes('Deriv X')
+        ? {
+              from: { loginid: wallet.loginid },
+              to: { loginid: wallet.loginid },
+              [transaction.longcode.split(' ')[1]]: { loginid: transaction.longcode.split(' ').pop() },
+          }
+        : null;
 
     return (
         <div className='wallets-transactions-completed-row'>

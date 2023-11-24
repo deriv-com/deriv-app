@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
-import { getAuthenticationStatusInfo } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isPOARequiredForMT5 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TJurisdictionModalContentWrapperProps } from '../props.types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
@@ -50,7 +50,6 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
         poi_acknowledged_for_maltainvest,
         poa_acknowledged,
         need_poa_resubmission,
-        poa_resubmit_for_labuan,
     } = getAuthenticationStatusInfo(account_status);
 
     React.useEffect(() => {
@@ -146,6 +145,8 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
             type: account_type.type,
         };
 
+        const is_poa_required_for_mt5 = isPOARequiredForMT5(account_status, jurisdiction_selected_shortcode);
+
         if (is_svg_selected) {
             openPasswordModal(type_of_account);
         } else if (is_vanuatu_selected) {
@@ -154,7 +155,8 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                 !poi_or_poa_not_submitted &&
                 !should_restrict_vanuatu_account_creation &&
                 poa_acknowledged &&
-                has_submitted_cfd_personal_details
+                has_submitted_cfd_personal_details &&
+                !is_poa_required_for_mt5
             ) {
                 openPasswordModal(type_of_account);
             } else {
@@ -166,7 +168,8 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                 !poi_or_poa_not_submitted &&
                 !should_restrict_bvi_account_creation &&
                 poa_acknowledged &&
-                has_submitted_cfd_personal_details
+                has_submitted_cfd_personal_details &&
+                !is_poa_required_for_mt5
             ) {
                 openPasswordModal(type_of_account);
             } else {
@@ -177,7 +180,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                 poi_acknowledged_for_bvi_labuan_vanuatu &&
                 poa_acknowledged &&
                 has_submitted_cfd_personal_details &&
-                !poa_resubmit_for_labuan
+                !is_poa_required_for_mt5
             ) {
                 openPasswordModal(type_of_account);
             } else {

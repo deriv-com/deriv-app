@@ -37,7 +37,7 @@ type TValidatePersonalDetailsParams = {
     values: TFormValues;
     residence_list: ResidenceList;
     account_opening_reason: TAccountOpeningReasonList;
-    tin_not_mandatory: boolean;
+    is_tin_mandatory: boolean;
 };
 
 type TFindDefaultValuesInResidenceList = (params: {
@@ -127,7 +127,7 @@ const validatePersonalDetails = ({
     values,
     residence_list,
     account_opening_reason,
-    tin_not_mandatory,
+    is_tin_mandatory,
 }: TValidatePersonalDetailsParams) => {
     const tin_format = residence_list.find(res => res.text === values.tax_residence)?.tin_format;
 
@@ -143,7 +143,7 @@ const validatePersonalDetails = ({
         place_of_birth: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
     };
 
-    if (!tin_not_mandatory) {
+    if (is_tin_mandatory) {
         validations.tax_identification_number = [
             (v: string) => !!v,
             (v: string) => (tin_regex ? tin_regex?.some(regex => v.match(regex)) : true),
@@ -237,7 +237,8 @@ const CFDPersonalDetailsForm = ({
         country: residence?.value,
     });
 
-    const tin_not_mandatory = data?.tin_not_mandatory === 1;
+    // tin_not_mandatory is 0 when tin field should be mandatory
+    const is_tin_mandatory = data?.tin_not_mandatory === 0;
 
     const onSubmitForm = (values: TFormValues, actions: FormikActions<TFormValues>) =>
         submitForm(values, actions, index, onSubmit, !isDeepEqual(initial_values, values), residence_list);
@@ -249,7 +250,7 @@ const CFDPersonalDetailsForm = ({
     const { tax_identification_number, ...rest } = initial_values;
     const form_initial_values = { ...rest };
 
-    if (!tin_not_mandatory) form_initial_values.tax_identification_number = tax_identification_number;
+    if (is_tin_mandatory) form_initial_values.tax_identification_number = tax_identification_number;
 
     return (
         <Formik
@@ -262,7 +263,7 @@ const CFDPersonalDetailsForm = ({
                     values,
                     residence_list,
                     account_opening_reason,
-                    tin_not_mandatory,
+                    is_tin_mandatory,
                 })
             }
             onSubmit={onSubmitForm}
@@ -436,7 +437,7 @@ const CFDPersonalDetailsForm = ({
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
-                                            {!tin_not_mandatory && (
+                                            {is_tin_mandatory && (
                                                 <fieldset className='account-form__fieldset'>
                                                     <InputField
                                                         id='real_mt5_tax_identification_number'

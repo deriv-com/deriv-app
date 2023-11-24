@@ -48,14 +48,18 @@
         grid-template-columns: repeat(3, 1fr);
         user-select: none;
 
-        &__icon {
-            cursor: pointer;
+        @include mobile {
+            gap: 0;
         }
 
         @include mobile {
             // margin: auto;
             grid-template-rows: repeat(5, 1fr);
             grid-template-columns: auto;
+        }
+
+        &__icon {
+            cursor: pointer;
         }
 
         &-no-trading-account {

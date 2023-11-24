@@ -297,10 +297,7 @@ export const getTimeSince = (timestamp: number) => {
     }
     const date = new Date(timestamp);
     const day = date.getDate();
-    const month = date
-        .toDateString()
-        .match(/ [a-zA-Z]*/)?.[0]
-        .replace(' ', '');
+    const month = / [a-zA-Z]*/.exec(date.toDateString())?.[0].replace(' ', '');
     const year = date.getFullYear();
     return day && month && year ? `${day} ${month} ${year}` : '';
 };

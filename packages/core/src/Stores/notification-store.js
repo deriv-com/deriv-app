@@ -191,8 +191,7 @@ export default class NotificationStore extends BaseStore {
     }
 
     addTradeNotification(contract_info) {
-        if (!contract_info || this.trade_notifications.some(({ contract_id: id }) => id === contract_info.contract_id))
-            return;
+        if (!contract_info) return;
         const {
             buy_price,
             contract_id,
@@ -204,8 +203,10 @@ export default class NotificationStore extends BaseStore {
             status,
             underlying,
         } = contract_info ?? {};
+        const id = `${contract_id}_${status}`;
+        if (this.trade_notifications.some(({ id: notification_id }) => notification_id === id)) return;
         this.trade_notifications.push({
-            id: `${contract_id}_${status}`,
+            id,
             buy_price,
             contract_id,
             contract_type: getContractTypeDisplay(

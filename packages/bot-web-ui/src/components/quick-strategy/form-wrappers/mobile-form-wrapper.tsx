@@ -12,7 +12,7 @@ type TMobileFormWrapper = {
 };
 
 const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) => {
-    // const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
+    const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
     const { submitForm, isValid, setFieldValue, validateForm } = useFormikContext();
     const { quick_strategy, run_panel } = useDBotStore();
     const { selected_strategy, setSelectedStrategy, toggleStopBotDialog } = quick_strategy;
@@ -71,7 +71,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                 <Text size='xxs'>{strategy.description}</Text>
                             </div>
                         </div>
-                        {/* <div className='qs__body__content__head'>
+                        <div className='qs__body__content__head'>
                             <div className='qs__body__content__head__tabs'>
                                 {FORM_TABS.map(tab => {
                                     const active = tab.value === active_tab;
@@ -89,7 +89,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                     );
                                 })}
                             </div>
-                        </div> */}
+                        </div>
                         <div className='qs__body__content__form'>{children}</div>
                     </ThemedScrollbars>
                     <div className='qs__body__content__footer'>

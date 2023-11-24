@@ -1,3 +1,5 @@
+import { ReactElement, ReactNode } from 'react';
+
 export type TDurationItemRaw = {
     display: string;
     unit: string;
@@ -38,10 +40,17 @@ export type TConfigItem = {
     }[];
 };
 
+export type TLongDescription = {
+    title?: ReactNode;
+    content?: ReactNode;
+    image?: string;
+};
+
 export type TStrategy = {
     name: string;
     label: string;
     description: string;
+    long_description?: TLongDescription[];
     fields: TConfigItem[][];
 };
 

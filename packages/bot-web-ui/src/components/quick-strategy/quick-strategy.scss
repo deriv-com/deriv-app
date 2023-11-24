@@ -468,4 +468,12 @@
             }
         }
     }
+    .long_description {
+        &__title {
+            margin: 0.8rem 0;
+        }
+        &__content {
+            margin-bottom: 0.8rem;
+        }
+    }
 }

@@ -18,6 +18,7 @@ import {
     getAccuBarriersDefaultTimeout,
     getAccuBarriersForContractDetails,
     getEndTime,
+    BARRIER_COLORS,
 } from '@deriv/shared';
 import { getChartConfig } from './Helpers/logic';
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
@@ -273,6 +274,7 @@ export default class ContractStore extends BaseStore {
                     this.accu_low_barrier || low_barrier,
                     null,
                     {
+                        color: BARRIER_COLORS.BLUE,
                         line_style: !isAccumulatorContract(contract_type) && BARRIER_LINE_STYLES.SOLID,
                         not_draggable: true,
                         hideBarrierLine: isAccumulatorContract(contract_type),

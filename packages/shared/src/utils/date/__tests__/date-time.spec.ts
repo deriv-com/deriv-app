@@ -127,9 +127,8 @@ describe('getTimeSince', () => {
     });
     it('should return date when > 86400 seconds passed since timestamp', () => {
         const long_time_ago = 1234567890000;
-        const day = new Date(long_time_ago).getDate();
-        // day returned by getDate() may vary depending on the timezone of the machine running the test
-        expect(DateTime.getTimeSince(long_time_ago)).toContain(`${day} Feb 2009`);
+        const date = moment(long_time_ago).format('D MMM YYYY');
+        expect(DateTime.getTimeSince(long_time_ago)).toEqual(date);
     });
     it('should return an empty string when called with 0', () => {
         expect(DateTime.getTimeSince(0)).toEqual('');

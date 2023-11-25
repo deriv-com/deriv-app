@@ -283,8 +283,7 @@ export const convertTimeFormat = (time: string) => {
  */
 export const getTimeSince = (timestamp: number) => {
     if (!timestamp) return '';
-    const now = new Date();
-    const seconds_passed = Math.floor((now.getTime() - timestamp) / 1000);
+    const seconds_passed = Math.floor((Date.now() - timestamp) / 1000);
 
     if (seconds_passed < 60) {
         return localize('{{seconds_passed}}s ago', { seconds_passed });
@@ -295,9 +294,5 @@ export const getTimeSince = (timestamp: number) => {
     if (seconds_passed <= 86400) {
         return localize('{{hours_passed}}h ago', { hours_passed: Math.floor(seconds_passed / 3600) });
     }
-    const date = new Date(timestamp);
-    const day = date.getDate();
-    const month = / [a-zA-Z]*/.exec(date.toDateString())?.[0].replace(' ', '');
-    const year = date.getFullYear();
-    return day && month && year ? `${day} ${month} ${year}` : '';
+    return moment(timestamp).format('D MMM YYYY');
 };

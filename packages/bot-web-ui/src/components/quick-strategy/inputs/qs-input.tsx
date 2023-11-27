@@ -2,7 +2,7 @@ import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Input, Popover } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 
 type TQSInput = {
     name: string;
@@ -16,6 +16,9 @@ type TQSInput = {
 
 const QSInput: React.FC<TQSInput> = observer(
     ({ name, onChange, type = 'text', fullwidth = false, attached = false, disabled = false }) => {
+        const {
+            ui: { is_mobile },
+        } = useStore();
         const [has_focus, setFocus] = React.useState(false);
         const { setFieldValue, setFieldTouched } = useFormikContext();
         const is_number = type === 'number';
@@ -48,7 +51,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                 <Popover
                                     alignment='bottom'
                                     message={error}
-                                    is_open={!!(error && has_focus)}
+                                    is_open={is_mobile ? !!error : !!error && has_focus}
                                     zIndex='9999'
                                     classNameBubble='qs__warning-bubble'
                                     has_error

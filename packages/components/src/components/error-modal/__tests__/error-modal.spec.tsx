@@ -19,8 +19,9 @@ describe('<ErrorModal />', () => {
 
     it('should render the error modal with modal content', () => {
         render(<ErrorModal messages={messages} />);
+        const refresh_button = screen.getByRole('button', { name: /Refresh/i });
         expect(screen.getByText(/Sorry for the interruption/i)).toBeInTheDocument();
-        expect(screen.getByText(/Refresh/i)).toBeInTheDocument();
+        expect(refresh_button).toBeInTheDocument();
     });
 
     it('should check if the parent container is present', () => {

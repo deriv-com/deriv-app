@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import ArrowBold from '../../../../../../../../public/images/ic-back-arrow.svg';
 import { WalletTextField } from '../../../../../../../../components';
+import ArrowBold from '../../../../../../../../public/images/ic-back-arrow.svg';
 import type { THooks } from '../../../../../../../../types';
 import type { TForm } from '../../WithdrawalCryptoForm';
 import './WithdrawalCryptoAmountConverter.scss';
@@ -46,6 +46,7 @@ const WithdrawalCryptoAmountConverter = ({ activeWallet, exchangeRate, getCurren
                     ),
                 });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeWallet?.currency, exchangeRate?.rates]);
 
     const validateCryptoInput = (value: string) => {

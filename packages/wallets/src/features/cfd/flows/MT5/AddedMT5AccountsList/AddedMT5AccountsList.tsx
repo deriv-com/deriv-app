@@ -54,7 +54,15 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     />
                     <WalletButton
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
-                        onClick={() => show(<MT5TradeModal marketType={account.market_type || 'all'} platform='mt5' />)}
+                        onClick={() =>
+                            show(
+                                <MT5TradeModal
+                                    marketType={account.market_type || 'all'}
+                                    mt5Account={account}
+                                    platform='mt5'
+                                />
+                            )
+                        }
                         text='Open'
                     />
                 </div>
@@ -62,7 +70,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
         >
             <div className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>
-                    <WalletText size='2xs'>{title}</WalletText>
+                    <WalletText size='sm'>{title}</WalletText>
                     {!activeWallet?.is_virtual && (
                         <div className='wallets-added-mt5__details-title-landing-company'>
                             <WalletText size='2xs' weight='bold'>

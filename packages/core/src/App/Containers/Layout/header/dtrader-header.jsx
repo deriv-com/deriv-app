@@ -180,7 +180,7 @@ const DTraderHeader = ({
 };
 
 DTraderHeader.propTypes = {
-    acc_switcher_disabled_message: PropTypes.string,
+    acc_switcher_disabled_message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     account_type: PropTypes.string,
     addNotificationMessage: PropTypes.func,
     app_routing_history: PropTypes.array,

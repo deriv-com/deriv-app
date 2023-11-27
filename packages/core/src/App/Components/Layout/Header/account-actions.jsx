@@ -139,7 +139,7 @@ const AccountActions = React.memo(
 AccountActions.displayName = 'AccountActions';
 
 AccountActions.propTypes = {
-    acc_switcher_disabled_message: PropTypes.string,
+    acc_switcher_disabled_message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     account_type: PropTypes.string,
     balance: PropTypes.any,
     currency: PropTypes.any,

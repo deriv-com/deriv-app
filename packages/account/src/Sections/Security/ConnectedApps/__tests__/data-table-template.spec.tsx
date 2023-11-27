@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import DataTableTemplate from '../data-table-template';
+import { getConnectedAppsScopes } from '../template-helper';
 
 describe('DataTableTemplate', () => {
     it("should render the 'DataTableTemplate' component with correct details", () => {
@@ -23,9 +24,7 @@ describe('DataTableTemplate', () => {
             ],
             handleToggleModal: () => undefined,
         };
-        const mock_permissions = mock_props.connected_apps[0]?.scopes
-            ?.map(scope => scope.charAt(0).toUpperCase().concat(scope.substring(1)))
-            .join(', ');
+        const mock_permissions = getConnectedAppsScopes(mock_props.connected_apps[0]?.scopes);
         render(<DataTableTemplate {...mock_props} />);
 
         expect(screen.getByText(mock_props.connected_apps[0].name)).toBeInTheDocument();

@@ -477,7 +477,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         } else if (has_first_barrier) {
             this.createBarrierInputs({ values: [1] });
         } else if (has_prediction) {
-            this.createPredictionInput(null, null, [0]);
+            this.createPredictionInput(null, null, [1]);
         }
     },
     mutationToDom() {

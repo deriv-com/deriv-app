@@ -5,7 +5,7 @@ import Text from '../text';
 import { Localize } from '@deriv/translations';
 
 type TErrorModalContent = {
-    error_message: string | undefined;
+    error_message?: string;
 };
 
 const ErrorModalContent = ({ error_message }: TErrorModalContent) => {

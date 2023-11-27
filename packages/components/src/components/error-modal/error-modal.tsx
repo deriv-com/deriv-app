@@ -11,7 +11,7 @@ type TMessageObject = {
 };
 
 type TErrorModalProps = {
-    messages: Array<TMessageObject | React.ReactNode>;
+    messages: Array<TMessageObject>;
 };
 
 const ErrorModal = ({ messages }: TErrorModalProps) => {

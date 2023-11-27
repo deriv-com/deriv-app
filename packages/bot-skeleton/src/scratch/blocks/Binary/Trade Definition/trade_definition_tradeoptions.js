@@ -22,6 +22,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                 duration_value: '%2',
             }),
             message1: `${is_stake ? localize('Stake') : localize('Payout')}: %1 %2 %3`,
+            message2: `${localize('Prediction')}: %1`,
             args0: [
                 {
                     type: 'field_dropdown',
@@ -51,6 +52,13 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                     text: '',
                 },
             ],
+            args2: [
+                {
+                    type: 'input_value',
+                    name: 'PREDICTION',
+                    check: 'Number',
+                },
+            ],
             colour: Blockly.Colours.Special1.colour,
             colourSecondary: Blockly.Colours.Special1.colourSecondary,
             colourTertiary: Blockly.Colours.Special1.colourTertiary,
@@ -72,13 +80,20 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         if (event.type === 'change') {
             const selected_block = this.workspace.getBlockById(event.blockId);
             selected_block?.parentBlock_?.inputList
-                .filter(item => ['DURATION', 'AMOUNT'].includes(item.name))
+                .filter(item => ['DURATION', 'AMOUNT', 'PREDICTION'].includes(item.name))
                 .forEach(input => {
                     const input_target = input.connection.targetBlock();
-                    const value = input_target.getFieldValue('NUM');
-                    if (value?.startsWith('0')) {
-                        const new_value = value.includes('.') ? parseFloat(`${value}`) : parseInt(`${value}`);
-                        input_target.setFieldValue(new_value.toString(), 'NUM');
+                    if (input_target) {
+                        const value = input_target.getFieldValue('NUM');
+                        if (value?.startsWith('0')) {
+                            const new_value = value.includes('.') ? parseFloat(`${value}`) : parseInt(`${value}`);
+                            input_target.setFieldValue(new_value.toString(), 'NUM');
+                        }
+                        if (input.name === 'PREDICTION') {
+                            if (value > 9) {
+                                input_target.setFieldValue(9, 'NUM');
+                            }
+                        }
                     }
                 });
         }
@@ -110,6 +125,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.getFieldValue('BARRIEROFFSETTYPE_LIST') || config.BARRIER_TYPES[0][1],
             this.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST') || config.BARRIER_TYPES[1][1],
         ];
+        this.createPredictionInput(this.selected_trade_type_category, this.selected_trade_type);
 
         if (
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
@@ -177,19 +193,29 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             }
         }
     },
-    createPredictionInput(prediction_range) {
+    createPredictionInput(selected_trade_type_category, selected_trade_type, prediction_range) {
         runIrreversibleEvents(() => {
-            if (prediction_range.length === 0) {
+            if (
+                (selected_trade_type_category &&
+                    ((selected_trade_type_category === 'digits' && selected_trade_type === 'evenodd') ||
+                        (selected_trade_type_category !== 'digits' &&
+                            selected_trade_type_category !== 'highlowticks'))) ||
+                (prediction_range && prediction_range.length === 0)
+            ) {
                 this.removeInput('PREDICTION_LABEL', true);
                 this.removeInput('PREDICTION', true);
             } else if (!this.getInput('PREDICTION')) {
+                const {
+                    DEFAULT: { prediction },
+                } = config.QUICK_STRATEGY;
+
                 this.appendDummyInput('PREDICTION_LABEL').appendField(localize('Prediction:'));
 
                 const prediction_input = this.appendValueInput('PREDICTION');
                 const shadow_block = this.workspace.newBlock('math_number_positive');
 
                 shadow_block.setShadow(true);
-                shadow_block.setFieldValue(prediction_range[0], 'NUM');
+                shadow_block.setFieldValue(prediction, 'NUM');
                 shadow_block.outputConnection.connect(prediction_input.connection);
                 shadow_block.initSvg();
                 shadow_block.render(true);
@@ -400,7 +426,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         const { contracts_for } = ApiHelpers.instance;
 
         contracts_for.getPredictionRange(this.selected_symbol, this.selected_trade_type).then(prediction_range => {
-            this.createPredictionInput(prediction_range);
+            this.createPredictionInput(this.selected_trade_type_category, this.selected_trade_type, prediction_range);
 
             if (prediction_range.length > 0) {
                 const prediction_input = this.getInput('PREDICTION');
@@ -451,7 +477,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         } else if (has_first_barrier) {
             this.createBarrierInputs({ values: [1] });
         } else if (has_prediction) {
-            this.createPredictionInput([1]);
+            this.createPredictionInput(null, null, [0]);
         }
     },
     mutationToDom() {

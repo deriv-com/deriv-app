@@ -312,6 +312,7 @@ export const config = {
             durationtype: 't',
             size: 1,
             unit: 1,
+            prediction: 0,
         },
     },
 };

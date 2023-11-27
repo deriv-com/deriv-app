@@ -200,19 +200,24 @@ export default class BuySellStore extends BaseStore {
         this.setIsSortDropdownOpen(false);
     }
 
-    handleResponse = async order => {
+    handleResponse = async (isMounted, order) => {
         const { sendbird_store, order_store, general_store } = this.root_store;
         const { setErrorMessage, handleConfirm, handleClose } = this.form_props;
         const { error, p2p_order_create, p2p_order_info, subscription } = order || {};
 
         if (error) {
-            setErrorMessage(error.message);
+            if (isMounted()) {
+                setErrorMessage(error.message);
+            }
             this.setFormErrorCode(error.code);
         } else {
             if (subscription?.id && !this.is_create_order_subscribed) {
                 this.setIsCreateOrderSubscribed(true);
             }
-            setErrorMessage(null);
+            if (isMounted()) {
+                setErrorMessage(null);
+            }
+
             general_store.hideModal();
 
             if (p2p_order_create?.id) {
@@ -230,7 +235,7 @@ export default class BuySellStore extends BaseStore {
         }
     };
 
-    handleSubmit = async (values, { setSubmitting }) => {
+    handleSubmit = async (isMounted, values, { setSubmitting }) => {
         setSubmitting(true);
 
         this.form_props.setErrorMessage(null);
@@ -252,7 +257,9 @@ export default class BuySellStore extends BaseStore {
             payload.rate = values.rate;
         }
 
-        this.create_order_subscription = subscribeWS({ ...payload }, [this.handleResponse]);
+        this.create_order_subscription = subscribeWS({ ...payload }, [
+            response => this.handleResponse(isMounted, response),
+        ]);
 
         setSubmitting(false);
     };

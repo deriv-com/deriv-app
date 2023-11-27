@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 import { HintBox, Input, Text } from '@deriv/components';
 import { useP2PAdvertiserPaymentMethods, useExchangeRate } from '@deriv/hooks';
-import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
+import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
@@ -20,6 +20,7 @@ import PaymentMethodIcon from 'Components/payment-method-icon';
 import './buy-sell-form.scss';
 
 const BuySellForm = props => {
+    const isMounted = useIsMounted();
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const { showModal } = useModalManagerContext();
@@ -149,7 +150,7 @@ const BuySellForm = props => {
                 rate: rate_type === ad_type.FLOAT ? effective_rate : null,
             },
             initialErrors: buy_sell_store.is_sell_advert ? { contact_info: true } : {},
-            onSubmit: (...args) => buy_sell_store.handleSubmit(...args),
+            onSubmit: (...args) => buy_sell_store.handleSubmit(isMounted, ...args),
         });
 
     const getAdvertiserMaxLimit = () => {

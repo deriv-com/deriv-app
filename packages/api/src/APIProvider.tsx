@@ -3,7 +3,6 @@ import React, { PropsWithChildren, createContext, useContext, useEffect, useRef,
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getAppId, getSocketURL, useWS } from '@deriv/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 type APIContextData = {
     derivAPI: DerivAPIBasic | null;

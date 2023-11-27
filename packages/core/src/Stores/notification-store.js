@@ -220,7 +220,7 @@ export default class NotificationStore extends BaseStore {
             timestamp: status === 'open' ? purchase_time : getEndTime(contract_info),
         });
         /* Consider notifications older than 100s ago as stale and filter out such trade_notifications from the array
-           in order to protect RAM in case a user sells contracts from Reports with DTrader open in another tab. */
+           in order to protect RAM in case there are too many notifications coming at once. */
         const hundred_sec_ago = Math.floor(Date.now() / 1000) - 100;
         this.trade_notifications = this.trade_notifications.filter(({ timestamp }) => timestamp > hundred_sec_ago);
     }

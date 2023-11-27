@@ -120,15 +120,12 @@ describe('getTimeSince', () => {
         const fifteen_sec_ago = Date.now() - 15000;
         const ninety_sec_ago = Date.now() - 90000;
         const four_thousand_sec_ago = Date.now() - 4000000;
+        const hundred_thousand_sec_ago = Date.now() - 100000000;
         expect(DateTime.getTimeSince(now)).toEqual('0s ago');
         expect(DateTime.getTimeSince(fifteen_sec_ago)).toEqual('15s ago');
         expect(DateTime.getTimeSince(ninety_sec_ago)).toEqual('1m ago');
         expect(DateTime.getTimeSince(four_thousand_sec_ago)).toEqual('1h ago');
-    });
-    it('should return date when > 86400 seconds passed since timestamp', () => {
-        const long_time_ago = 1234567890000;
-        const date = moment(long_time_ago).format('D MMM YYYY');
-        expect(DateTime.getTimeSince(long_time_ago)).toEqual(date);
+        expect(DateTime.getTimeSince(hundred_thousand_sec_ago)).toEqual('1d ago');
     });
     it('should return an empty string when called with 0', () => {
         expect(DateTime.getTimeSince(0)).toEqual('');

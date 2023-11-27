@@ -412,7 +412,11 @@ export default class PortfolioStore extends BaseStore {
 
         this.positions[i].is_loading = false;
 
-        if (this.root_store.ui.is_mobile && getEndTime(contract_response)) {
+        if (
+            this.root_store.ui.is_mobile &&
+            getEndTime(contract_response) &&
+            window.location.pathname === routes.trade
+        ) {
             this.root_store.notifications.addTradeNotification(this.positions[i].contract_info);
         }
     };

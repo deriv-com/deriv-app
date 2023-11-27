@@ -34,7 +34,7 @@ const getCurrentMT5Account = (mt5_login_list: DetailsOfEachMT5Loginid[], login_i
     mt5_login_list.find(account_obj => account_obj.login === login_id);
 
 const getCurrentDxTradeOrCtraderAccount = (
-    accounts_list: TDetailsOfDerivXAccount[] | TDetailsOfCtraderAccount[],
+    accounts_list: Array<TDetailsOfDerivXAccount | TDetailsOfCtraderAccount>,
     login_id: string
 ) => accounts_list.find(account_obj => account_obj.account_id === login_id);
 

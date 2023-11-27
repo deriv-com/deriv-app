@@ -348,7 +348,6 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         manual: { status: manual_status } = {},
     } = services;
 
-    // const is_authenticated_with_idv_photoid = account_status?.status?.includes('authenticated_with_idv_photoid');
     const is_idv_revoked = account_status?.status?.includes('idv_revoked');
 
     const acknowledged_status: string[] = ['pending', 'verified'];

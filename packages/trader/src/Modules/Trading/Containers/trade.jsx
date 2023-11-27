@@ -371,7 +371,13 @@ const ChartTrade = observer(props => {
             isConnectionOpened={is_socket_opened}
             clearChart={false}
             toolbarWidget={() => {
-                return <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />;
+                return (
+                    <ToolbarWidgets
+                        updateChartType={updateChartType}
+                        updateGranularity={updateGranularity}
+                        is_mobile={is_mobile}
+                    />
+                );
             }}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}

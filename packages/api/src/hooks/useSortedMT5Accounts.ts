@@ -22,7 +22,6 @@ const useSortedMT5Accounts = () => {
                     ...created_account,
                     /** Determine if the account is added or not */
                     is_added: true,
-                    is_max_account_created: all_available_mt5_accounts?.length === mt5_accounts?.length,
                 } as const;
 
             return {

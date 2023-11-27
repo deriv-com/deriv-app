@@ -15,15 +15,16 @@ import { getQueryKeys } from './utils';
 
 const useInfiniteQuery = <T extends TSocketPaginateableEndpointNames>(
     name: T,
-    ...props: TSocketAcceptableProps<T, true, 'useInfiniteQuery'>
+    ...props: TSocketAcceptableProps<T, true, 'useInfiniteQuery'> & [{ isPaginated?: boolean }]
 ) => {
     const prop = props?.[0];
     const payload = prop && 'payload' in prop ? (prop.payload as TSocketPaginatateableRequestCleaned<T>) : undefined;
     const options = prop && 'options' in prop ? (prop.options as TSocketRequestInfiniteQueryOptions<T>) : undefined;
+    const isPaginated = prop && 'isPaginated' in prop ? prop.isPaginated : true;
     const { send } = useAPI();
 
     const initial_offset = payload?.offset || 0;
-    const limit = payload?.limit || 50;
+    const limit = isPaginated ? payload?.limit ?? 50 : undefined;
 
     return _useInfiniteQuery<TSocketResponseData<T>, TSocketError<T>>(
         getQueryKeys(name, payload),
@@ -32,7 +33,7 @@ const useInfiniteQuery = <T extends TSocketPaginateableEndpointNames>(
             send(name, {
                 ...payload,
                 limit,
-                offset: pageParam * limit + initial_offset,
+                offset: limit ? pageParam * limit + initial_offset : initial_offset,
             } as unknown as TSocketRequestPayload<T>),
         {
             ...options,

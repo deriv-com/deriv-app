@@ -34,8 +34,8 @@ const useTransactions = (isPaginated = true) => {
             action_type: filter,
             // TODO: remove this once backend adds `to` and `from` for Deriv X transfers
             description: 1,
-            ...(!isPaginated && { limit: undefined }),
         },
+        isPaginated,
     });
 
     const invalidate = useInvalidateQuery();

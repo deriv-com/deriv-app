@@ -23,7 +23,7 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
         isFetching,
         isLoading: isTransactionListLoading,
         setFilter,
-    } = useTransactions();
+    } = useTransactions(false);
     const { data: wallet, isLoading: isWalletLoading } = useActiveWalletAccount();
     const { data: accounts, isLoading: isAccountsListLoading } = useAllAccountsList();
 

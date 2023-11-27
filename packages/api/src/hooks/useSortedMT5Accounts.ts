@@ -22,6 +22,7 @@ const useSortedMT5Accounts = () => {
                     ...created_account,
                     /** Determine if the account is added or not */
                     is_added: true,
+                    is_max_account_created: all_available_mt5_accounts?.length === mt5_accounts?.length,
                 } as const;
 
             return {
@@ -65,8 +66,12 @@ const useSortedMT5Accounts = () => {
         return sorted_data;
     }, [filtered_data]);
 
+    const areAllAccountsCreated = sorted_data?.length === all_available_mt5_accounts?.length;
+
     return {
         data: sorted_data,
+        /** Determine if all the accounts are created */
+        areAllAccountsCreated,
         ...rest,
     };
 };

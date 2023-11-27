@@ -1,5 +1,4 @@
 .wallets-jurisdiction-card-row {
-    border-bottom: 0.2rem solid #f2f3f4;
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
@@ -12,10 +11,6 @@
 
     &:first-child {
         margin-top: 1.6rem;
-    }
-
-    &:last-child {
-        border-bottom: none;
     }
 
     &__header {

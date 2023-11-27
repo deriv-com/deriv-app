@@ -67,7 +67,7 @@ const DerivAppsGetAccount: React.FC = () => {
                     <WalletText size='sm' weight='bold'>
                         Deriv Apps
                     </WalletText>
-                    <WalletText lineHeight='2xs' size='xs'>
+                    <WalletText size={isDesktop ? '2xs' : 'xs'}>
                         {activeWallet?.is_malta_wallet
                             ? 'Get a Deriv Apps trading account regulated by MFSA to trade multipliers on Deriv Trader.'
                             : 'Get a Deriv Apps trading account to trade options and multipliers on these apps.'}

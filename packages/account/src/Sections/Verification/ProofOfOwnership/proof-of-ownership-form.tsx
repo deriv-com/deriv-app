@@ -162,7 +162,7 @@ const ProofOfOwnershipForm = ({
                 const payment_method_details = values[card_key as TPaymentMethod];
                 if (payment_method_details?.files?.length) {
                     const processed_files = await readFiles(payment_method_details.files, fileReadErrorMessage, {
-                        documentType: UPLOAD_FILE_TYPE.proof_of_ownership,
+                        document_type: UPLOAD_FILE_TYPE.proof_of_ownership,
                         proof_of_ownership: {
                             details: {
                                 email: client_email,

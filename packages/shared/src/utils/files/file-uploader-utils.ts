@@ -26,7 +26,7 @@ export const compressImageFiles = (files?: File[]) => {
     const promises: Promise<Blob>[] = [];
     Array.from(files).forEach(file => {
         const promise = new Promise<Blob>(resolve => {
-            if (isImageType(file.type)) {
+            if (isImageType(file?.type)) {
                 convertToBase64(file).then(img => {
                     compressImg(img as TImage).then(resolve);
                 });

@@ -141,12 +141,6 @@
         }
     }
 
-    &--danger {
-        margin-bottom: 1.6rem;
-        width: fit-content;
-        align-items: flex-start;
-    }
-
     &--input {
         display: flex;
         gap: 2rem;
@@ -211,10 +205,6 @@
         &--disable {
             opacity: 0.32;
         }
-    }
-
-    &--error-message {
-        padding: 0 2.4rem;
     }
 }
 

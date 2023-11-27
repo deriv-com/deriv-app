@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
-import { WalletClipboard, WalletText } from '../../../../../components/Base';
-import EditIcon from '../../../../../public/images/ic-edit.svg';
-import './MT5TradeDetailsItem.scss';
 import classNames from 'classnames';
+import { WalletClipboard, WalletText } from '../../../../../components/Base';
+import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
+import EditIcon from '../../../../../public/images/ic-edit.svg';
+import { ChangePassword } from '../../ChangePassword';
+import './MT5TradeDetailsItem.scss';
 
 type TMT5TradeDetailsItemProps = {
     label?: string;
@@ -13,6 +15,7 @@ type TMT5TradeDetailsItemProps = {
 
 const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, variant = 'clipboard' }) => {
     const { isDesktop } = useDevice();
+    const { show } = useModal();
     return (
         <div
             className={classNames('wallets-mt5-trade-details-item', {
@@ -29,11 +32,13 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
                             {value}
                         </WalletText>
                         {variant === 'clipboard' && (
-                            <WalletClipboard popoverAlignment='right' successMessage='lol' textCopy={value} />
+                            <WalletClipboard popoverAlignment='right' successMessage='' textCopy={value} />
                         )}
                         {variant === 'password' && (
-                            // TODO: Show ChangePasswordModal onClick this icon
-                            <EditIcon className='wallets-mt5-trade-details-item__edit' onClick={() => undefined} />
+                            <EditIcon
+                                className='wallets-mt5-trade-details-item__edit'
+                                onClick={() => show(<ChangePassword />)}
+                            />
                         )}
                     </div>
                 </React.Fragment>

@@ -12,6 +12,7 @@ import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import LoadErrorMessage from 'Components/load-error-message';
 import { API_TOKEN_CARD_DETAILS, TOKEN_LIMITS } from 'Constants/api-token-card-details';
 import './api-token.scss';
+import { TOKEN_NAME_REGEX } from 'Constants/api-token';
 
 type AptTokenState = {
     api_tokens: NonNullable<TToken[]>;
@@ -88,7 +89,7 @@ const ApiToken = observer(() => {
 
         if (!token_name) {
             errors.token_name = localize('Please enter a token name.');
-        } else if (!/^[A-Za-z0-9\s_]+$/g.test(token_name)) {
+        } else if (!TOKEN_NAME_REGEX.test(token_name)) {
             errors.token_name = localize('Only letters, numbers, and underscores are allowed.');
         } else if (token_name.length < TOKEN_LIMITS.MIN) {
             errors.token_name = localize(

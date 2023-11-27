@@ -1,8 +1,9 @@
 .wallets-withdrawal-crypto {
     position: relative;
+    width: 100%;
     display: flex;
     justify-content: center;
-    width: 100%;
+    gap: 2.4rem;
 
     @include mobile {
         flex-direction: column;
@@ -25,6 +26,18 @@
         & .wallets-textfield {
             width: 100%;
             max-width: none;
+        }
+    }
+
+    &__side-pane {
+        height: fit-content;
+        display: flex;
+        flex: 1 1 0;
+        justify-content: flex-end;
+
+        .wallets-transaction-status {
+            margin-top: -2.4rem;
+            margin-right: 2.4rem;
         }
     }
 }

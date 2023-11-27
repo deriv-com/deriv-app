@@ -43,11 +43,13 @@ export const PlatformDetails = {
 };
 
 export const companyNamesAndUrls = {
-    bvi: { name: 'Deriv (BVI) Ltd', tncUrl: 'tnc/deriv-(bvi)-ltd.pdf' },
-    labuan: { name: 'Deriv (FX) Ltd', tncUrl: 'tnc/deriv-(fx)-ltd.pdf' },
+    bvi: { name: 'Deriv (BVI) Ltd', shortcode: 'BVI', tncUrl: 'tnc/deriv-(bvi)-ltd.pdf' },
+    labuan: { name: 'Deriv (FX) Ltd', shortcode: 'Labuan', tncUrl: 'tnc/deriv-(fx)-ltd.pdf' },
     maltainvest: {
         name: 'Deriv Investments (Europe) Limited',
+        shortcode: 'Maltainvest',
         tncUrl: 'tnc/deriv-investments-(europe)-limited.pdf',
     },
-    vanuatu: { name: 'Deriv (V) Ltd', tncUrl: 'tnc/general-terms.pdf' },
+    svg: { name: 'Deriv (SVG) LLC', shortcode: 'SVG', tncUrl: 'tnc/deriv-(svg)-llc.pdf' },
+    vanuatu: { name: 'Deriv (V) Ltd', shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
 } as const;

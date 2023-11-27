@@ -3,7 +3,8 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { PlatformDetails } from '../../constants';
+import { validPassword } from '../../../../utils/passwordUtils';
+import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
 // TODO: Refactor the unnecessary props out once FlowProvider is integrated
@@ -30,7 +31,7 @@ const EnterPassword: React.FC<TProps> = ({
     const title = PlatformDetails[platform].title;
     const { data } = useActiveWalletAccount();
     const accountType = data?.is_virtual ? 'Demo' : 'Real';
-    const marketTypeTitle = platform === 'dxtrade' ? accountType : marketType;
+    const marketTypeTitle = platform === 'dxtrade' ? accountType : MarketTypeDetails[marketType].title;
 
     return (
         <div className='wallets-enter-password'>
@@ -47,7 +48,7 @@ const EnterPassword: React.FC<TProps> = ({
                 <div className='wallets-enter-password__buttons'>
                     <WalletButton onClick={onSecondaryClick} size='lg' text='Forgot password?' variant='outlined' />
                     <WalletButton
-                        disabled={!password || isLoading}
+                        disabled={!password || isLoading || !validPassword(password)}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

@@ -1,7 +1,7 @@
 /** Add types that are shared between components */
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Authorize, GetAccountStatus, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
+import { Authorize, GetAccountStatus, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, Platforms } from '@deriv/shared';
 import { IDENTIFIER_TYPES } from '../Constants/poo-identifier';
 import getPaymentMethodsConfig from '../Configs/payment-method-config';

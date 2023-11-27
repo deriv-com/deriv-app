@@ -76,7 +76,9 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     );
 
     useEffect(() => {
-        if (debouncedAmountValue) amountConverterHandler(debouncedAmountValue);
+        if (debouncedAmountValue) {
+            amountConverterHandler(debouncedAmountValue);
+        }
     }, [amountConverterHandler, debouncedAmountValue]);
 
     const onChangeHandler = useCallback(
@@ -99,6 +101,10 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
         setFieldValue('activeAmountFieldName', fieldName);
     }, [fieldName, setFieldValue]);
 
+    const onBlurHandler = useCallback(() => {
+        setFieldValue('activeAmountFieldName', undefined);
+    }, [setFieldValue]);
+
     return (
         <ATMAmountInput
             currency={currency}
@@ -106,6 +112,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
             fractionDigits={fractionDigits}
             label={amountLabel}
             maxDigits={MAX_DIGITS}
+            onBlur={onBlurHandler}
             onChange={onChangeHandler}
             onFocus={onFocusHandler}
             value={amountValue}

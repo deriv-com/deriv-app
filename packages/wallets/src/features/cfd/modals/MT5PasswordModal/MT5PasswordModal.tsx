@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
     useActiveWalletAccount,
     useAvailableMT5Accounts,
@@ -7,13 +8,13 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
-import { SentEmailContent } from '../../../../components';
+import { SentEmailContent, WalletError } from '../../../../components';
 import { ModalStepWrapper, ModalWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { MarketTypeDetails, PlatformDetails } from '../../constants';
+import { companyNamesAndUrls, MarketTypeDetails, PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 
 type TProps = {
@@ -23,15 +24,16 @@ type TProps = {
 
 const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const [password, setPassword] = useState('');
-    const { isLoading: createMT5AccountLoading, isSuccess, mutate } = useCreateMT5Account();
+    const { error, isLoading: createMT5AccountLoading, isSuccess, mutate, status } = useCreateMT5Account();
     const { isLoading: tradingPlatformPasswordChangeLoading, mutate: tradingPasswordChange } =
         useTradingPlatformPasswordChange();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: settings } = useSettings();
-    const { hide, show } = useModal();
+    const { getModalState, hide, show } = useModal();
     const { isMobile } = useDevice();
+    const history = useHistory();
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeWallet?.is_virtual;
@@ -39,6 +41,11 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         marketType === 'all' && Object.keys(PlatformDetails).includes(platform)
             ? PlatformDetails[platform].title
             : MarketTypeDetails[marketType].title;
+    const selectedJurisdiction = getModalState('selectedJurisdiction');
+
+    const landingCompanyName = `(${
+        companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls].shortcode
+    })`;
 
     const onSubmit = async () => {
         const accountType = marketType === 'synthetic' ? 'gaming' : marketType;
@@ -52,17 +59,29 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             });
         }
 
+        const categoryAccountType = activeWallet?.is_virtual ? 'demo' : accountType;
+
         mutate({
             payload: {
-                account_type: activeWallet?.is_virtual ? 'demo' : accountType,
+                account_type: categoryAccountType,
                 address: settings?.address_line_1 || '',
                 city: settings?.address_city || '',
-                company: 'svg',
+                company: selectedJurisdiction,
                 country: settings?.country_code || '',
                 email: settings?.email || '',
                 leverage: availableMT5Accounts?.find(acc => acc.market_type === marketType)?.leverage || 500,
                 mainPassword: password,
                 ...(marketType === 'financial' && { mt5_account_type: 'financial' }),
+                ...(selectedJurisdiction &&
+                    (selectedJurisdiction !== 'labuan'
+                        ? {
+                              account_type: categoryAccountType,
+                              ...(selectedJurisdiction === 'financial' && { mt5_account_type: 'financial' }),
+                          }
+                        : {
+                              account_type: 'financial',
+                              mt5_account_type: 'financial_stp',
+                          })),
                 ...(marketType === 'all' && { sub_account_category: 'swap_free' }),
                 name: settings?.first_name || '',
                 phone: settings?.phone || '',
@@ -82,8 +101,34 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         return `Create a ${isDemo ? 'demo' : 'real'} ${PlatformDetails.mt5.title} account`;
     };
 
+    const renderSuccessDescription = () => {
+        if (isDemo) {
+            return `You can now start practicing trading with your ${marketTypeTitle} demo account.`;
+        }
+        return `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
+    };
+
+    const renderSuccessButton = () => {
+        if (isDemo) {
+            return <WalletButton isFullWidth onClick={() => hide()} size='lg' text='Continue' />;
+        }
+        return (
+            <WalletButtonGroup isFlex isFullWidth>
+                <WalletButton onClick={() => hide()} size='lg' text='Maybe later' variant='outlined' />
+                <WalletButton
+                    onClick={() => {
+                        hide();
+                        history.push('/wallets/cashier/transfer');
+                    }}
+                    size='lg'
+                    text='Transfer funds'
+                />
+            </WalletButtonGroup>
+        );
+    };
+
     const renderFooter = () => {
-        if (isSuccess) return <WalletButton isFullWidth onClick={() => hide()} size='lg' text='Continue' />;
+        if (isSuccess) return renderSuccessButton();
         if (hasMT5Account)
             return (
                 <WalletButtonGroup isFullWidth>
@@ -128,16 +173,15 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 {/* TODO: We need to separate this out into a separate `show` modal call to hide the Deriv.app header */}
                 {isSuccess && (
                     <CFDSuccess
-                        description={`You can now start practicing trading with your ${marketTypeTitle} ${
-                            isDemo ? ' demo' : 'real'
-                        } account.`}
+                        description={renderSuccessDescription()}
                         displayBalance={
-                            mt5Accounts?.find(account => account.market_type === marketType)?.display_balance || ''
+                            mt5Accounts?.find(account => account.market_type === marketType)?.display_balance || '0.00'
                         }
+                        landingCompany={selectedJurisdiction}
                         marketType={marketType}
                         platform={platform}
-                        renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
-                        title={`Your ${marketTypeTitle} ${isDemo ? ' demo' : 'real'} account is ready`}
+                        renderButton={renderSuccessButton}
+                        title={`Your ${marketTypeTitle} ${isDemo ? ' demo' : landingCompanyName} account is ready`}
                     />
                 )}
                 {!isSuccess &&
@@ -164,20 +208,23 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         );
     }
 
+    if (status === 'error') {
+        return <WalletError errorMessage={error?.error.message} onClick={() => hide()} title={error?.error?.code} />;
+    }
+
     return (
         <ModalWrapper hideCloseButton={isSuccess}>
             {isSuccess && (
                 <CFDSuccess
-                    description={`You can now start practicing trading with your ${marketTypeTitle} ${
-                        isDemo ? ' demo' : 'real'
-                    } account.`}
+                    description={renderSuccessDescription()}
                     displayBalance={
-                        mt5Accounts?.find(account => account.market_type === marketType)?.display_balance || ''
+                        mt5Accounts?.find(account => account.market_type === marketType)?.display_balance || '0.00'
                     }
+                    landingCompany={selectedJurisdiction}
                     marketType={marketType}
                     platform={platform}
-                    renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
-                    title={`Your ${marketTypeTitle} ${isDemo ? ' demo' : 'real'} account is ready`}
+                    renderButton={renderSuccessButton}
+                    title={`Your ${marketTypeTitle} ${isDemo ? ' demo' : landingCompanyName} account is ready`}
                 />
             )}
             {!isSuccess &&

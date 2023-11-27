@@ -30,6 +30,26 @@ const QSInput: React.FC<TQSInput> = observer(
             setFieldValue(name, value);
         };
 
+        const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const input_value = e.target.value;
+            if (/^\d*(\.\d*)?$/.test(input_value)) {
+                if (input_value === '') {
+                    e.target.value = '0';
+                    onChange(name, '0');
+                } else if (/^0[^.]/.test(input_value)) {
+                    const last_value = input_value[1];
+                    e.target.value = last_value;
+                    onChange(name, last_value);
+                } else {
+                    onChange(name, e.target.value);
+                }
+            }
+            if (name !== 'last_digit_prediction') {
+                const value = is_number ? Number(input_value) : input_value;
+                onChange(name, value);
+            }
+        };
+
         return (
             <Field name={name} key={name} id={name}>
                 {({ field, meta }: FieldProps) => {
@@ -89,25 +109,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         }
                                         {...field}
                                         disabled={disabled}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                            const input_value = e.target.value;
-                                            if (/^[0-9]*(\.[0-9]*)?$/.test(input_value)) {
-                                                if (input_value === '') {
-                                                    e.target.value = '0';
-                                                    onChange(name, '0');
-                                                } else if (/^0[^.]/.test(input_value)) {
-                                                    const last_value = input_value[1];
-                                                    e.target.value = last_value;
-                                                    onChange(name, last_value);
-                                                } else {
-                                                    onChange(name, e.target.value);
-                                                }
-                                            }
-                                            if (name !== 'last_digit_prediction') {
-                                                const value = is_number ? Number(input_value) : input_value;
-                                                onChange(name, value);
-                                            }
-                                        }}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChange(e)}
                                     />
                                 </Popover>
                             </div>

@@ -1,11 +1,13 @@
-import React, { PropsWithChildren, createContext, useContext, useEffect, useRef } from 'react';
+import React, { PropsWithChildren, createContext, useContext, useEffect, useRef, useState } from 'react';
 // @ts-expect-error `@deriv/deriv-api` is not in TypeScript, Hence we ignore the TS error.
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getAppId, getSocketURL, useWS } from '@deriv/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 type APIContextData = {
     derivAPI: DerivAPIBasic | null;
+    switchEnvironment: (loginid: string | null | undefined) => void;
 };
 
 const APIContext = createContext<APIContextData | null>(null);
@@ -118,6 +120,19 @@ const initializeDerivAPI = (): DerivAPIBasic => {
 
 const queryClient = getSharedQueryClientContext();
 
+/**
+ * Determines the WS environment based on the login ID and custom server URL.
+ * @param {string | null | undefined} loginid - The login ID (can be a string, null, or undefined).
+ * @returns {string} Returns the WS environment: 'custom', 'real', or 'demo'.
+ */
+const getEnvironment = (loginid: string | null | undefined) => {
+    const customServerURL = window.localStorage.getItem('config.server_url');
+    if (customServerURL) return 'custom';
+
+    if (loginid && !/^(VRT|VRW)/.test(loginid)) return 'real';
+    return 'demo';
+};
+
 type TAPIProviderProps = {
     /** If set to true, the APIProvider will instantiate it's own socket connection. */
     standalone?: boolean;
@@ -125,7 +140,17 @@ type TAPIProviderProps = {
 
 const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
     const WS = useWS();
+    const activeLoginid = window.localStorage.getItem('active_loginid');
+    const [environment, setEnvironment] = useState(getEnvironment(activeLoginid));
     const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI() : null);
+
+    const switchEnvironment = (loginid: string | null | undefined) => {
+        if (!standalone) return;
+        const currentEnvironment = getEnvironment(loginid);
+        if (currentEnvironment !== 'custom' && currentEnvironment !== environment) {
+            setEnvironment(currentEnvironment);
+        }
+    };
 
     useEffect(() => {
         let interval_id: NodeJS.Timer;
@@ -137,8 +162,14 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
         return () => clearInterval(interval_id);
     }, [standalone]);
 
+    useEffect(() => {
+        if (standalone) {
+            standaloneDerivAPI.current = initializeDerivAPI();
+        }
+    }, [environment, standalone]);
+
     return (
-        <APIContext.Provider value={{ derivAPI: standalone ? standaloneDerivAPI.current : WS }}>
+        <APIContext.Provider value={{ derivAPI: standalone ? standaloneDerivAPI.current : WS, switchEnvironment }}>
             <QueryClientProvider client={queryClient}>
                 {children}
                 {/* <ReactQueryDevtools /> */}

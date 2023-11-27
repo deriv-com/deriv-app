@@ -1,46 +1,26 @@
-import React, { useState } from 'react';
-import { ModalStepWrapper, WalletText } from '../../../../components/Base';
+import React from 'react';
+import { ModalStepWrapper, Tab, Tabs } from '../../../../components/Base';
+import { useModal } from '../../../../components/ModalProvider';
+import { PlatformDetails } from '../../constants';
+import MT5ChangeInvestorPasswordScreens from './MT5ChangeInvestorPasswordScreens';
 import MT5ChangePasswordScreens from './MT5ChangePasswordScreens';
 import './ChangePassword.scss';
 
 const ChangePassword = () => {
-    const tabs = [
-        {
-            content: <MT5ChangePasswordScreens />,
-            label: 'Deriv MT5 password',
-        },
-        {
-            content: <></>, // TODO: Add InvestorPassword component
-            label: 'Investor password',
-        },
-    ];
-    const [activeTab, setActiveTab] = useState(0);
-
-    const handleTabClick = (index: number) => {
-        setActiveTab(index);
-    };
-
+    const { getModalState } = useModal();
+    const platform = getModalState('platform') || 'mt5';
+    const platformTitle = PlatformDetails[platform].title;
     return (
-        <ModalStepWrapper title='Manage Deriv MT5 password'>
+        <ModalStepWrapper title={`Manage ${platformTitle} password`}>
             <div className='wallets-change-password__modal-wrapper'>
-                <div className='wallets-change-password__container'>
-                    <div className='wallets-change-password__tab'>
-                        {tabs.map((tab, index) => (
-                            <button
-                                className={
-                                    activeTab === index
-                                        ? 'wallets-change-password__tab__btn--active'
-                                        : 'wallets-change-password__tab__btn'
-                                }
-                                key={index}
-                                onClick={() => handleTabClick(index)}
-                            >
-                                <WalletText weight='bold'>{tab.label}</WalletText>
-                            </button>
-                        ))}
-                    </div>
-                    <>{tabs[activeTab].content}</>
-                </div>
+                <Tabs wrapperClassName='wallets-change-password__container'>
+                    <Tab title={`${platformTitle} Password`}>
+                        <MT5ChangePasswordScreens platform={platform} platformTitle={platformTitle} />
+                    </Tab>
+                    <Tab title='Investor Password'>
+                        <MT5ChangeInvestorPasswordScreens />
+                    </Tab>
+                </Tabs>
             </div>
         </ModalStepWrapper>
     );

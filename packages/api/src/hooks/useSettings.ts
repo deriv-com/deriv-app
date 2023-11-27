@@ -16,7 +16,20 @@ const useSettings = () => {
     const update = useCallback((payload: TSetSettingsPayload) => mutate({ payload }), [mutate]);
 
     // Add additional information to the settings response.
-    const modified_settings = useMemo(() => ({ ...data?.get_settings }), [data?.get_settings]);
+    const modified_settings = useMemo(() => {
+        const citizenship = data?.get_settings?.citizen ?? '';
+        const account = data?.get_settings?.account_opening_reason ?? '';
+        const placeofbirth = data?.get_settings?.place_of_birth ?? '';
+        const taxResidence = data?.get_settings?.tax_residence ?? '';
+        const taxIdentificationnumber = data?.get_settings?.tax_identification_number ?? '';
+
+        return {
+            ...data?.get_settings,
+            has_submitted_personal_details: Boolean(
+                citizenship && account && placeofbirth && taxResidence && taxIdentificationnumber
+            ),
+        };
+    }, [data?.get_settings]);
 
     return {
         /** The settings response. */

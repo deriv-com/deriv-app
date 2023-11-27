@@ -14,17 +14,39 @@ import { WalletsActionScreen } from '../WalletsActionScreen';
 import './SentEmailContent.scss';
 
 type TProps = {
+    description?: string;
     platform?: TPlatforms.All;
 };
 
-const SentEmailContent: React.FC<TProps> = ({ platform }) => {
+const REASONS = [
+    {
+        icon: EmailSpamIcon,
+        text: 'The email is in your spam folder (Sometimes things get lost there).',
+    },
+    {
+        icon: EmailIcon,
+        text: 'You accidentally gave us another email address (Usually a work or a personal one instead of the one you meant).',
+    },
+    {
+        icon: EmailTypoIcon,
+        text: 'The email address you entered had a mistake or typo (happens to the best of us).',
+    },
+    {
+        icon: EmailFirewallIcon,
+        text: 'We can’t deliver the email to this address (Usually because of firewalls or filtering).',
+    },
+];
+
+const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { data } = useSettings();
     const { mutate: verifyEmail } = useVerifyEmail();
     const { isMobile } = useDevice();
     const title = PlatformDetails[platform || 'mt5'].title;
-    const deviceSize = isMobile ? 'lg' : 'md';
+    const titleSize = 'md';
+    const descriptionSize = 'sm';
+    const emailLinkSize = isMobile ? 'lg' : 'md';
     const [count, { resetCountdown, startCountdown }] = useCountdown({
         countStart: 60,
         intervalMs: 1000,
@@ -37,49 +59,30 @@ const SentEmailContent: React.FC<TProps> = ({ platform }) => {
     return (
         <div className='wallets-sent-email-content'>
             <WalletsActionScreen
-                description={`Please click on the link in the email to change your ${title} password.`}
-                descriptionSize={deviceSize}
+                description={description ?? `Please click on the link in the email to change your ${title} password.`}
+                descriptionSize={descriptionSize}
                 icon={<ChangePassword />}
                 renderButtons={() => (
                     <WalletButton
                         onClick={() => {
                             setShouldShowResendEmailReasons(true);
                         }}
-                        size={deviceSize}
+                        size={emailLinkSize}
                         text="Didn't receive the email?"
                         variant='ghost'
                     />
                 )}
                 title='We’ve sent you an email'
-                titleSize={deviceSize}
+                titleSize={titleSize}
             />
             {shouldShowResendEmailReasons && (
                 <div className='wallets-sent-email-content__reasons'>
-                    <div className='wallets-sent-email-content__reasons-item'>
-                        <EmailSpamIcon />
-                        <WalletText size='xs'>
-                            The email is in your spam folder (Sometimes things get lost there).
-                        </WalletText>
-                    </div>
-                    <div className='wallets-sent-email-content__reasons-item'>
-                        <EmailIcon />
-                        <WalletText size='xs'>
-                            You accidentally gave us another email address (Usually a work or a personal one instead of
-                            the one you meant).
-                        </WalletText>
-                    </div>
-                    <div className='wallets-sent-email-content__reasons-item'>
-                        <EmailTypoIcon />
-                        <WalletText size='xs'>
-                            The email address you entered had a mistake or typo (happens to the best of us).
-                        </WalletText>
-                    </div>
-                    <div className='wallets-sent-email-content__reasons-item'>
-                        <EmailFirewallIcon />
-                        <WalletText size='xs'>
-                            We can’t deliver the email to this address (Usually because of firewalls or filtering).
-                        </WalletText>
-                    </div>
+                    {REASONS.map(reason => (
+                        <div className='wallets-sent-email-content__reasons-item' key={`reason-${reason.text}`}>
+                            <reason.icon />
+                            <WalletText size='xs'>{reason.text}</WalletText>
+                        </div>
+                    ))}
                     <WalletButton
                         disabled={hasCountdownStarted}
                         onClick={() => {

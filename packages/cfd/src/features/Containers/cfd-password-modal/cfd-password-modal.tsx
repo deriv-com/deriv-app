@@ -2,14 +2,6 @@ import React from 'react';
 import { FormikErrors } from 'formik';
 import { useHistory } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
-import {
-    getDxCompanies,
-    getMtCompanies,
-    getDerivezCompanies,
-    TMtCompanies,
-    TDxCompanies,
-    TDerivezCompanies,
-} from '../../../Stores/Modules/CFD/Helpers/cfd-config';
 import { MobileDialog, Modal } from '@deriv/components';
 import {
     getAuthenticationStatusInfo,
@@ -32,16 +24,17 @@ import {
     useTradingPlatformPasswordChange,
     useVerifyEmail,
 } from '@deriv/api';
-import SuccessDialog from '../../../Components/success-dialog.jsx';
-import '../../../sass/cfd.scss';
+import { getDxCompanies, getMtCompanies, TMtCompanies, TDxCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import SuccessDialog from 'Components/success-dialog.jsx';
+import 'sass/cfd.scss';
 import './cfd-password-modal.scss';
 import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from '../../../Stores/Modules/CFD/Helpers/useCfdStores';
+import { useCfdStore } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 import { PasswordModalHeader } from './password-modal-header';
 import { CFDPasswordForm } from './cfd-password-form';
 import { IconType } from './icon-type';
 import { TCFDPasswordFormValues, TOnSubmitPassword } from './types';
-import { CFD_PLATFORMS, CATEGORY, JURISDICTION, MARKET_TYPE } from '../../../Helpers/cfd-config';
+import { CFD_PLATFORMS, CATEGORY, JURISDICTION, MARKET_TYPE, QUERY_STATUS } from 'Helpers/cfd-config';
 
 type TReviewMsgForMT5 = {
     is_selected_mt5_verified: boolean;
@@ -59,7 +52,7 @@ type TAccountType = 'all' | 'financial' | 'gaming' | 'demo';
 
 type TAccountCategory = 'real' | 'demo';
 
-type TCFDOtherPlatform = 'dxtrade' | 'derivez' | 'ctrader';
+type TCFDOtherPlatform = 'dxtrade' | 'ctrader';
 
 const ReviewMessageForMT5 = ({
     is_selected_mt5_verified,
@@ -186,10 +179,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     }, [jurisdiction_selected_shortcode, account_status]);
 
     React.useEffect(() => {
-        if (mt5_create_account_status === 'error' && mt5_create_account_error) {
+        if (mt5_create_account_status === QUERY_STATUS.ERROR && mt5_create_account_error) {
             setError(true, mt5_create_account_error as unknown as Error);
         }
-        if (mt5_create_account_status === 'success') {
+        if (mt5_create_account_status === QUERY_STATUS.SUCCESS) {
             setError(false);
             setCFDSuccessDialog(true);
         }
@@ -197,10 +190,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     }, [mt5_create_account_status, mt5_create_account_error]);
 
     React.useEffect(() => {
-        if (cfd_create_account_status === 'error' && mt5_create_account_error) {
+        if (cfd_create_account_status === QUERY_STATUS.ERROR && mt5_create_account_error) {
             setError(true, cfd_create_account_error as unknown as Error);
         }
-        if (cfd_create_account_status === 'success') {
+        if (cfd_create_account_status === QUERY_STATUS.SUCCESS) {
             setError(false);
             setCFDSuccessDialog(true);
         }
@@ -290,7 +283,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                                 : (accountType as unknown as TAccountType),
                         address: settings?.address_line_1 || '',
                         city: settings?.address_city || '',
-                        company: 'svg',
+                        company: JURISDICTION.SVG,
                         country: settings?.country_code || '',
                         email: settings?.email || '',
                         leverage: availableMT5Accounts?.find(acc => acc.market_type === marketType)?.leverage || 500,
@@ -304,10 +297,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     },
                 });
 
-                if (mt5_create_account_status === 'success') {
+                if (mt5_create_account_status === QUERY_STATUS.SUCCESS) {
                     actions.setStatus({ success: true });
                     actions.setSubmitting(false);
-                } else if (mt5_create_account_status === 'error' && mt5_create_account_error) {
+                } else if (mt5_create_account_status === QUERY_STATUS.ERROR && mt5_create_account_error) {
                     actions.resetForm({});
                     actions.setSubmitting(false);
                     actions.setStatus({ success: false });
@@ -327,10 +320,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         platform: platform as unknown as TCFDOtherPlatform,
                     },
                 });
-                if (cfd_create_account_status === 'success') {
+                if (cfd_create_account_status === QUERY_STATUS.SUCCESS) {
                     actions.setStatus({ success: true });
                     actions.setSubmitting(false);
-                } else if (cfd_create_account_status === 'error' && cfd_create_account_error) {
+                } else if (cfd_create_account_status === QUERY_STATUS.ERROR && cfd_create_account_error) {
                     actions.resetForm({});
                     actions.setSubmitting(false);
                     actions.setStatus({ success: false });
@@ -395,12 +388,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']]
                         .short_title;
                 break;
-            case CFD_PLATFORMS.DERIVEZ:
-                type_label =
-                    getDerivezCompanies()[category as keyof TDerivezCompanies][
-                        type as keyof TDerivezCompanies['demo' | 'real']
-                    ].short_title;
-                break;
             default:
                 type_label = '';
                 break;
@@ -413,7 +400,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         const accountTypes = () => {
             if (platform === CFD_PLATFORMS.DXTRADE && type_label === 'Derived') {
                 return 'Synthetic';
-            } else if (platform === CFD_PLATFORMS.DERIVEZ || platform === CFD_PLATFORMS.CTRADER) {
+            } else if (platform === CFD_PLATFORMS.CTRADER) {
                 return 'CFDs';
             }
             return type_label;

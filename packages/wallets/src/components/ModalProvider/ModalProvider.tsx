@@ -2,11 +2,12 @@ import React, { createContext, useContext, useEffect, useMemo, useRef, useState 
 import { createPortal } from 'react-dom';
 import { useOnClickOutside } from 'usehooks-ts';
 import useDevice from '../../hooks/useDevice';
-import { TPlatforms, TMarketTypes } from '../../types';
+import { THooks, TMarketTypes, TPlatforms } from '../../types';
 
 type TModalState = {
     marketType?: TMarketTypes.All;
     platform?: TPlatforms.All;
+    selectedJurisdiction?: THooks.AvailableMT5Accounts['shortcode'];
 };
 
 type TModalContext = {
@@ -14,13 +15,15 @@ type TModalContext = {
     hide: () => void;
     isOpen: boolean;
     modalState?: Map<keyof TModalState, TModalState[keyof TModalState]>;
+    setModalOptions: React.Dispatch<React.SetStateAction<TModalOptions>>;
     setModalState: <T extends keyof TModalState>(key: T, value: TModalState[T]) => void;
     show: (ModalContent: React.ReactNode, options?: TModalOptions) => void;
 };
 
 type TModalOptions = {
-    defaultRootId?: 'wallets_modal_responsive_root' | 'wallets_modal_root';
+    defaultRootId?: 'wallets_modal_root' | 'wallets_modal_show_header_root';
     rootRef?: React.RefObject<HTMLElement>;
+    shouldHideDerivAppHeader?: boolean;
 };
 
 const ModalContext = createContext<TModalContext | null>(null);
@@ -41,7 +44,7 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const { isDesktop } = useDevice();
 
     const rootRef = useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
-    const rootResponsiveRef = useRef<HTMLElement | null>(document.getElementById('wallets_modal_responsive_root'));
+    const rootHeaderRef = useRef<HTMLElement | null>(document.getElementById('wallets_modal_show_header_root'));
 
     const getModalState = <T extends keyof TModalState>(key: T): TModalState[T] => {
         return modalState.get(key) as TModalState[T];
@@ -60,8 +63,8 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     };
 
     useEffect(() => {
-        if (!rootResponsiveRef.current) {
-            rootResponsiveRef.current = document.getElementById('wallets_modal_responsive_root');
+        if (!rootHeaderRef.current) {
+            rootHeaderRef.current = document.getElementById('wallets_modal_show_header_root');
         }
     }, []);
 
@@ -72,14 +75,27 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     useOnClickOutside(modalRef, isDesktop ? hide : () => undefined);
 
     const modalRootRef = useMemo(() => {
+        // if they specify their own root, prioritize this first
         if (modalOptions?.rootRef?.current) return modalOptions?.rootRef;
-        if (isDesktop || modalOptions?.defaultRootId === 'wallets_modal_root') return rootRef;
-        return rootResponsiveRef;
-    }, [isDesktop, modalOptions]);
+        // if user specifically specify they want to show on root or hide the Deriv.app header
+        if (modalOptions?.shouldHideDerivAppHeader || modalOptions?.defaultRootId === 'wallets_modal_root')
+            return rootRef;
+        // otherwise do the default behaviour, show Deriv.app header if on responsive
+        if (modalOptions?.defaultRootId === 'wallets_modal_show_header_root' || !isDesktop) return rootHeaderRef;
+        return rootRef;
+    }, [modalOptions?.rootRef, modalOptions?.shouldHideDerivAppHeader, modalOptions?.defaultRootId, isDesktop]);
 
     return (
         <ModalContext.Provider
-            value={{ getModalState, hide, isOpen: content !== null, modalState, setModalState: updateModalState, show }}
+            value={{
+                getModalState,
+                hide,
+                isOpen: content !== null,
+                modalState,
+                setModalOptions,
+                setModalState: updateModalState,
+                show,
+            }}
         >
             {children}
             {modalRootRef?.current &&

@@ -3,8 +3,10 @@ import type { Moment } from 'moment';
 
 import type {
     AccountLimitsResponse,
+    ActiveSymbols,
     Authorize,
     ContractUpdate,
+    ContractUpdateHistory,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
@@ -17,13 +19,11 @@ import type {
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     StatesList,
-    WebsiteStatus,
-    ContractUpdateHistory,
     Transaction,
-    ActiveSymbols,
+    WebsiteStatus,
 } from '@deriv/api-types';
 
-import type { FeatureFlagsStore } from './src/stores';
+import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
 
 type TRoutes =
     | '/404'
@@ -495,7 +495,6 @@ type TClientStore = {
     is_crypto: (currency?: string) => boolean;
     ctrader_accounts_list: TCtraderAccountsList[];
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
-    derivez_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;
@@ -542,7 +541,7 @@ type TCommonStore = {
     has_error: boolean;
     is_from_derivgo: boolean;
     is_network_online: boolean;
-    platform: 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
+    platform: 'dxtrade' | 'mt5' | 'ctrader' | '';
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     server_time: Moment;
@@ -754,7 +753,6 @@ type TBarriers = Array<{
     hideOffscreenBarrier?: boolean;
     isSingleBarrier?: boolean;
     onBarrierChange: (barriers: TOnChangeParams) => void;
-    updateBarrierColor: (is_dark_mode: boolean) => void;
     updateBarriers: (high: string | number, low?: string | number, isFromChart?: boolean) => void;
     updateBarrierShade: (should_display: boolean, contract_type: string) => void;
     barrier_count: number;
@@ -897,7 +895,10 @@ type TTradersHubStore = {
     };
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
+    is_onboarding_visited: boolean;
+    is_first_time_visit: boolean;
     setIsOnboardingVisited: (is_visited: boolean) => void;
+    setIsFirstTimeVisit: (first_time_visit: boolean) => void;
     show_eu_related_content: boolean;
     setTogglePlatformType: (platform_type: string) => void;
     is_demo: boolean;
@@ -940,7 +941,6 @@ type TTradersHubStore = {
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
-    available_derivez_accounts: DetailsOfEachMT5Loginid[];
     has_any_real_account: boolean;
     startTrade: (platform?: TPlatform, existing_account?: DetailsOfEachMT5Loginid) => void;
     getAccount: () => void;
@@ -1000,5 +1000,6 @@ export type TCoreStores = {
 };
 
 export type TStores = TCoreStores & {
+    exchange_rates: ExchangeRatesStore;
     feature_flags: FeatureFlagsStore;
 };

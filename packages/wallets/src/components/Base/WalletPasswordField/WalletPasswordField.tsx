@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { Score, validatePassword, validPassword } from '../../../utils/passwordUtils';
 import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
-import { passwordChecker, passwordPattern, Score } from './PasswordFieldUtils';
 import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
@@ -17,21 +17,33 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     password,
     shouldDisablePasswordMeter = false,
 }) => {
-    const [viewPassword, setViewPassword] = useState(false);
-    const { message, score } = passwordChecker(password);
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [isTouched, setIsTouched] = useState(false);
+
+    const { errorMessage, score } = validatePassword(password);
+
+    const handleChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            onChange?.(e);
+            setIsTouched(true);
+        },
+        [onChange]
+    );
 
     return (
         <div className='wallets-password'>
             <WalletTextField
+                errorMessage={errorMessage}
+                isInvalid={!validPassword(password) && isTouched}
                 label={label}
-                message={message}
-                onChange={onChange}
-                pattern={passwordPattern}
+                message={isTouched ? errorMessage : ''}
+                messageVariant='warning'
+                onChange={handleChange}
                 renderRightIcon={() => (
-                    <PasswordViewerIcon setViewPassword={setViewPassword} viewPassword={viewPassword} />
+                    <PasswordViewerIcon setViewPassword={setIsPasswordVisible} viewPassword={isPasswordVisible} />
                 )}
                 showMessage
-                type={viewPassword ? 'text' : 'password'}
+                type={isPasswordVisible ? 'text' : 'password'}
                 value={password}
             />
             {!shouldDisablePasswordMeter && <PasswordMeter score={score as Score} />}

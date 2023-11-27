@@ -49,7 +49,7 @@ const DocumentSubmission: React.FC = () => {
                         hoverMessage='Upload your file here'
                         icon={<Upload />}
                         maxSize={8388608}
-                        onFileChange={(file: File) => setFormValues('documentFile', file)}
+                        onFileChange={(file: File) => setFormValues('poaDocument', file)}
                         title='Drag and drop a file or click to browse your files.'
                         titleType='bold'
                     />

@@ -65,8 +65,12 @@ const useSortedMT5Accounts = () => {
         return sorted_data;
     }, [filtered_data]);
 
+    const areAllAccountsCreated = sorted_data?.length === all_available_mt5_accounts?.length;
+
     return {
         data: sorted_data,
+        /** Determine if all the accounts are created */
+        areAllAccountsCreated,
         ...rest,
     };
 };

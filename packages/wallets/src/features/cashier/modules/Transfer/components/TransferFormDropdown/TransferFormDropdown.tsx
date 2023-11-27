@@ -36,6 +36,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const selectedAccount = fieldName === 'fromAccount' ? fromAccount : toAccount;
     const accountsList = fieldName === 'fromAccount' ? accounts : toAccountList;
     const label = fieldName === 'fromAccount' ? 'Transfer from' : 'Transfer to';
+    const badgeLabel = selectedAccount?.demo_account ? 'virtual' : selectedAccount?.landingCompanyName;
 
     const handleSelect = useCallback(
         (account: TInitialTransferFormValues['fromAccount']) => {
@@ -99,10 +100,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 <>
                     {selectedAccount && (
                         <div className='wallets-transfer-form-dropdown__badge'>
-                            <WalletListCardBadge
-                                isDemo={Boolean(selectedAccount?.demo_account)}
-                                label={selectedAccount?.landingCompanyName}
-                            />
+                            <WalletListCardBadge isDemo={Boolean(selectedAccount?.demo_account)} label={badgeLabel} />
                         </div>
                     )}
                     <IcDropdown className='wallets-transfer-form-dropdown__icon-dropdown' />

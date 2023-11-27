@@ -8,7 +8,6 @@
         "@deriv/stores": "^1.0.0",
         "@deriv/utils": "^1.0.0",
         "@deriv/shared": "^1.0.0",
-        "@deriv/analytics": "^1.4.2",
         "react": "^17.0.2",
         "@binary-com/binary-document-uploader": "^2.4.8"
     },

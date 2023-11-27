@@ -33,11 +33,10 @@ const getDerivAccount = (client_accounts: TAccounts[], login_id: string) =>
 const getCurrentMT5Account = (mt5_login_list: DetailsOfEachMT5Loginid[], login_id: string) =>
     mt5_login_list.find(account_obj => account_obj.login === login_id);
 
-const getCurrentDxtradeAccount = (dxtrade_accounts_list: TDetailsOfDerivXAccount[], login_id: string) =>
-    dxtrade_accounts_list.find(account_obj => account_obj.account_id === login_id);
-
-const getCurrentCtraderAccount = (ctrader_accounts_list: TDetailsOfCtraderAccount[], login_id: string) =>
-    ctrader_accounts_list.find(account_obj => account_obj.account_id === login_id);
+const getCurrentDxTradeOrCtraderAccount = (
+    accounts_list: TDetailsOfDerivXAccount[] | TDetailsOfCtraderAccount[],
+    login_id: string
+) => accounts_list.find(account_obj => account_obj.account_id === login_id);
 
 const ClosingAccountHasPendingConditions = observer(
     ({ details, onConfirm }: TClosingAccountHasPendingConditionsProps) => {
@@ -83,12 +82,12 @@ const ClosingAccountHasPendingConditions = observer(
                         mt5_open_positions = [...mt5_open_positions, { ...mt5_account, ...info }];
                     }
 
-                    const dxtrade_account = getCurrentDxtradeAccount(dxtrade_accounts_list, login_id);
+                    const dxtrade_account = getCurrentDxTradeOrCtraderAccount(dxtrade_accounts_list, login_id);
                     if (dxtrade_account) {
                         dxtrade_open_positions = [...dxtrade_open_positions, { ...dxtrade_account, ...info }];
                     }
 
-                    const ctrader_account = getCurrentCtraderAccount(ctrader_accounts_list, login_id);
+                    const ctrader_account = getCurrentDxTradeOrCtraderAccount(ctrader_accounts_list, login_id);
                     if (ctrader_account) {
                         ctrader_open_positions = [...ctrader_open_positions, { ...ctrader_account, ...info }];
                     }
@@ -111,12 +110,12 @@ const ClosingAccountHasPendingConditions = observer(
                         mt5_balance = [...mt5_balance, { ...mt5_account, ...info }];
                     }
 
-                    const dxtrade_account = getCurrentDxtradeAccount(dxtrade_accounts_list, login_id);
+                    const dxtrade_account = getCurrentDxTradeOrCtraderAccount(dxtrade_accounts_list, login_id);
                     if (dxtrade_account) {
                         dxtrade_balance = [...dxtrade_balance, { ...dxtrade_account, ...info }];
                     }
 
-                    const ctrader_account = getCurrentCtraderAccount(ctrader_accounts_list, login_id);
+                    const ctrader_account = getCurrentDxTradeOrCtraderAccount(ctrader_accounts_list, login_id);
                     if (ctrader_account) {
                         ctrader_balance = [...ctrader_balance, { ...ctrader_account, ...info }];
                     }

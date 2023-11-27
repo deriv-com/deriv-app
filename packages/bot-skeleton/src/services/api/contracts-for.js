@@ -524,7 +524,6 @@ export default class ContractsFor {
         }
         return trade_type_options;
     }
-    s;
 
     async getTradeTypeCategories(market, submarket, symbol) {
         const { TRADE_TYPE_CATEGORY_NAMES, NOT_AVAILABLE_DROPDOWN_OPTIONS } = config;

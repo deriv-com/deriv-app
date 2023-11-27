@@ -26,7 +26,14 @@ const WalletWithdrawal = () => {
             if (getConfig(activeWallet?.currency)?.is_fiat) {
                 return <WithdrawalFiatModule verificationCode={verificationCode} />;
             }
-            return <WithdrawalCryptoModule verificationCode={verificationCode} />;
+            return (
+                <WithdrawalCryptoModule
+                    onClose={() => {
+                        setVerificationCode('');
+                    }}
+                    verificationCode={verificationCode}
+                />
+            );
         }
         return <Loader />;
     }

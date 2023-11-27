@@ -9,9 +9,10 @@ type TToolbarIcon = {
     icon_id: string;
     action: () => void;
     icon_color?: string;
+    data_testid?: string;
 };
 
-const ToolbarIcon = ({ popover_message, icon, icon_id, icon_color, action }: TToolbarIcon) => {
+const ToolbarIcon = ({ popover_message, icon, icon_id, icon_color, action, data_testid }: TToolbarIcon) => {
     const renderIcon = () => (
         <Icon
             icon={icon}
@@ -19,6 +20,7 @@ const ToolbarIcon = ({ popover_message, icon, icon_id, icon_color, action }: TTo
             className='toolbar__icon'
             onClick={action}
             {...(icon_color && { color: icon_color })}
+            data_testid={data_testid}
         />
     );
 

@@ -69,7 +69,7 @@ export const getAccountName = ({
                 case 'mt5': {
                     switch (mt5MarketType) {
                         case 'financial':
-                            return landingCompanyName === 'svg' ? 'MT5 Financial' : 'MT5 CFDs';
+                            return ['svg', 'virtual'].includes(landingCompanyName) ? 'MT5 Financial' : 'MT5 CFDs';
                         case 'synthetic':
                             return 'MT5 Derived';
                         case 'all':

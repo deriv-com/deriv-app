@@ -202,7 +202,7 @@ export default class NotificationStore extends BaseStore {
             shortcode,
             status,
             underlying,
-        } = contract_info ?? {};
+        } = contract_info;
         const id = `${contract_id}_${status}`;
         if (this.trade_notifications.some(({ id: notification_id }) => notification_id === id)) return;
         this.trade_notifications.push({

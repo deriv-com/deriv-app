@@ -40,7 +40,7 @@ jobs:
         # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
         record: true
         parallel: true # Runs test in parallel using settings above
-        spec: cypress/e2e/smoke/t*.js
+        spec: cypress/e2e/smoke/*.js
         group: 'Smoke Tests'
         
       env:
@@ -57,6 +57,9 @@ jobs:
         E2E_OAUTH_URL: ${{ secrets.E2E_OAUTH_URL }}
         E2E_CONFIG_APPID: ${{ secrets.E2E_CONFIG_APPID }}
         E2E_CONFIG_SERVER: ${{ secrets.E2E_CONFIG_SERVER }}
+        E2E_MT5_LOGIN: ${{ secrets.E2E_MT5_LOGIN }}
+        E2E_MT5_PASSWORD: ${{ secrets.E2E_MT5_PASSWORD }}
+        E2E_MT5_BASEURL: ${{ secrets.E2E_MT5_BASEURL }}
 
     - name: Set comments message
       id: set_msg 

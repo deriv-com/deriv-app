@@ -10,6 +10,12 @@ const mock_modal_manager = {
     useRegisterModalProps: jest.fn(),
     is_modal_open: true,
 };
+jest.mock('@deriv/hooks', () => {
+    return {
+        ...jest.requireActual('@deriv/hooks'),
+        useP2PAdvertInfo: jest.fn(() => ({ data: true, isLoading: false, isSuccess: true })),
+    };
+});
 
 jest.mock('Components/modal-manager/modal-manager-context');
 const mocked_useModalManagerContext = useModalManagerContext as jest.MockedFunction<
@@ -84,6 +90,13 @@ jest.mock('react-router-dom', () => ({
         key: '0',
         pathname: '/cashier/p2p/advertiser',
         search: '?id=39',
+    })),
+}));
+
+jest.mock('Hooks', () => ({
+    ...jest.requireActual('Hooks'),
+    useP2PAdvertiserAdverts: jest.fn(() => ({
+        isLoading: false,
     })),
 }));
 

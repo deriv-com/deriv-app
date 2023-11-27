@@ -106,6 +106,7 @@ export default class MyAdsStore extends BaseStore {
             setShowEditAdForm: action.bound,
             onToggleSwitchModal: action.bound,
             setRequiredAdType: action.bound,
+            toggleMyAdsRateSwitchModal: action.bound,
             validateCreateAdForm: action.bound,
             validateEditAdForm: action.bound,
         });

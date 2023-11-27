@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect } from 'react';
 import moment from 'moment';
-import { useTransactions } from '@deriv/api';
+import { useActiveWalletAccount, useAllAccountsList, useTransactions } from '@deriv/api';
 import { TSocketRequestPayload } from '@deriv/api/types';
 import { Loader } from '../../../../../../components';
+import { WalletText } from '../../../../../../components/Base';
 import { TransactionsCompletedRow } from '../TransactionsCompletedRow';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
 import { TransactionsTable } from '../TransactionsTable';
@@ -15,7 +16,17 @@ type TProps = {
 };
 
 const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
-    const { data: transactions, fetchNextPage, isFetching, isLoading, setFilter } = useTransactions();
+    const {
+        data: transactions,
+        fetchNextPage,
+        isFetching,
+        isLoading: isTransactionListLoading,
+        setFilter,
+    } = useTransactions();
+    const { data: wallet, isLoading: isWalletLoading } = useActiveWalletAccount();
+    const { data: accounts, isLoading: isAccountsListLoading } = useAllAccountsList();
+
+    const isLoading = isTransactionListLoading || isWalletLoading || isAccountsListLoading;
 
     const fetchMoreOnBottomReached = useCallback(
         (containerRefElement?: HTMLDivElement | null) => {
@@ -34,7 +45,7 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
         setFilter(filter);
     }, [filter]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    if (!transactions && (isFetching || isLoading)) return <Loader />;
+    if (!wallet || (!transactions && (isFetching || isLoading))) return <Loader />;
 
     if (!transactions) return <TransactionsNoDataState />;
 
@@ -51,11 +62,16 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
             fetchMore={fetchMoreOnBottomReached}
             groupBy={['date']}
             rowGroupRender={transaction => (
-                <p className='wallets-transactions-completed__group-title'>
-                    {transaction.transaction_time && moment.unix(transaction.transaction_time).format('DD MMM YYYY')}
-                </p>
+                <div className='wallets-transactions-completed__group-title'>
+                    <WalletText color='primary' size='2xs'>
+                        {transaction.transaction_time &&
+                            moment.unix(transaction.transaction_time).format('DD MMM YYYY')}
+                    </WalletText>
+                </div>
             )}
-            rowRender={transaction => <TransactionsCompletedRow transaction={transaction} />}
+            rowRender={transaction => (
+                <TransactionsCompletedRow accounts={accounts} transaction={transaction} wallet={wallet} />
+            )}
         />
     );
 };

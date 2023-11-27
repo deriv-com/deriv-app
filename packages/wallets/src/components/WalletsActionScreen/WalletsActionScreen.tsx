@@ -4,8 +4,8 @@ import WalletText from '../Base/WalletText/WalletText';
 import './WalletsActionScreen.scss';
 
 type TProps = {
-    desciptionSize?: ComponentProps<typeof WalletText>['size'];
     description: ReactNode;
+    descriptionSize?: ComponentProps<typeof WalletText>['size'];
     icon?: ReactNode;
     renderButtons?: () =>
         | ReactElement<ComponentProps<'div'>>
@@ -21,8 +21,8 @@ type TProps = {
  * at the moment of writing this, there are already 3 different patterns use to display ex
  */
 const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
-    desciptionSize = 'md',
     description,
+    descriptionSize = 'md',
     icon,
     renderButtons,
     title,
@@ -40,7 +40,7 @@ const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
                 {isValidElement(description) ? (
                     description
                 ) : (
-                    <WalletText align='center' size={desciptionSize}>
+                    <WalletText align='center' size={descriptionSize}>
                         {description}
                     </WalletText>
                 )}

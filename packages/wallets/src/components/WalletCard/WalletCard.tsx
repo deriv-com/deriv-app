@@ -9,12 +9,12 @@ import './WalletCard.scss';
 type TProps = {
     balance: string;
     currency: string;
+    iconSize?: React.ComponentProps<typeof WalletCardIcon>['size'];
     isDemo?: boolean;
     landingCompanyName?: string;
-    width?: React.CSSProperties['width'];
 };
 
-const WalletCard: React.FC<TProps> = ({ balance, currency, isDemo, landingCompanyName, width }) => {
+const WalletCard: React.FC<TProps> = ({ balance, currency, iconSize = 'lg', isDemo, landingCompanyName }) => {
     const { isLoading } = useBalance();
 
     return (
@@ -26,9 +26,9 @@ const WalletCard: React.FC<TProps> = ({ balance, currency, isDemo, landingCompan
                 isDemo={isDemo}
                 type='card'
             >
-                <div className='wallets-card__details' style={{ width }}>
+                <div className='wallets-card__details'>
                     <div className='wallets-card__details__top'>
-                        <WalletCardIcon type={isDemo ? 'Demo' : currency} />
+                        <WalletCardIcon size={iconSize} type={isDemo ? 'Demo' : currency} />
                         <div className='wallets-card__details-landing_company'>
                             {landingCompanyName && <WalletListCardBadge isDemo={isDemo} label={landingCompanyName} />}
                         </div>

@@ -47,7 +47,11 @@ const LossThresholdWarningDialog = observer(() => {
         >
             <div className={`${base_classname}__body-text`}>
                 <Localize
-                    i18n_default_text={`Please confirm that your loss threshold amount is ${loss_threshold_warning_data.loss_amount} ${loss_threshold_warning_data.currency}.`}
+                    i18n_default_text={`Please confirm that your loss threshold amount is {{loss_amount}} {{currency}}.`}
+                    values={{
+                        loss_amount: loss_threshold_warning_data?.loss_amount,
+                        currency: loss_threshold_warning_data?.currency,
+                    }}
                 />
             </div>
             <Checkbox

@@ -17,12 +17,7 @@ const ClosingAccountWarningModal = ({
         <Modal className='closing-account-reasons' is_open={show_warning_modal} toggleModal={closeWarningModal}>
             <div className='account-closure-warning-modal'>
                 <Icon icon='IcRedWarning' size={96} />
-                <Text
-                    size='xs'
-                    line_height='x'
-                    weight='bold'
-                    className='account-closure-warning-modal__warning-message'
-                >
+                <Text size='xs' weight='bold' className='account-closure-warning-modal__warning-message'>
                     <Localize i18n_default_text='Close your account?' />
                 </Text>
                 <div className='account-closure-warning-modal__content-wrapper'>

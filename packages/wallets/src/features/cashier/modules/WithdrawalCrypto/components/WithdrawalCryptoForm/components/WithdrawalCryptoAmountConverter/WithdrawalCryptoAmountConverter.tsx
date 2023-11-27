@@ -3,14 +3,9 @@ import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { WalletTextField } from '../../../../../../../../components';
 import ArrowBold from '../../../../../../../../public/images/ic-back-arrow.svg';
-import type { THooks } from '../../../../../../../../types';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import type { TForm } from '../../WithdrawalCryptoForm';
 import './WithdrawalCryptoAmountConverter.scss';
-
-type TProps = {
-    exchangeRate?: THooks.ExchangeRate;
-};
 
 const helperMessageMapper = {
     decimalPlacesExceeded: (limit: number) => `Up to ${limit} decimal places are allowed.`,
@@ -21,8 +16,9 @@ const helperMessageMapper = {
     },
 };
 
-const WithdrawalCryptoAmountConverter: React.FC<TProps> = ({ exchangeRate }) => {
-    const { activeWallet, getCurrencyConfig } = useWithdrawalCryptoContext();
+const WithdrawalCryptoAmountConverter: React.FC = () => {
+    const { activeWallet, exchangeRates, getConvertedCryptoAmount, getConvertedFiatAmount, getCurrencyConfig } =
+        useWithdrawalCryptoContext();
     const [isCryptoInputActive, setIsCryptoInputActive] = useState(false);
     const { errors, setValues, values } = useFormikContext<TForm>();
     const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency_config?.fractional_digits;
@@ -31,23 +27,18 @@ const WithdrawalCryptoAmountConverter: React.FC<TProps> = ({ exchangeRate }) => 
 
     useEffect(() => {
         // update the amount when the exchangeRate is updated.
-        const value = parseFloat(values.cryptoAmount);
-        if (!Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency) {
-            if (isCryptoInputActive)
-                setValues({
-                    ...values,
-                    fiatAmount: (value / exchangeRate?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_FIAT),
-                });
-            else
-                setValues({
-                    ...values,
-                    cryptoAmount: (value * exchangeRate?.rates[activeWallet?.currency]).toFixed(
-                        FRACTIONAL_DIGITS_CRYPTO
-                    ),
-                });
-        }
+        if (isCryptoInputActive)
+            setValues({
+                ...values,
+                fiatAmount: getConvertedFiatAmount(values.cryptoAmount),
+            });
+        else
+            setValues({
+                ...values,
+                cryptoAmount: getConvertedCryptoAmount(values.fiatAmount),
+            });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeWallet?.currency, exchangeRate?.rates]);
+    }, [activeWallet?.currency, exchangeRates?.data?.rates]);
 
     const validateCryptoInput = (value: string) => {
         if (!value.length) return;
@@ -88,8 +79,8 @@ const WithdrawalCryptoAmountConverter: React.FC<TProps> = ({ exchangeRate }) => 
     const onChangeCryptoInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseFloat(e.target.value);
         const convertedValue =
-            !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
-                ? (value / exchangeRate?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_FIAT)
+            !Number.isNaN(value) && exchangeRates?.data?.rates && activeWallet?.currency
+                ? (value / exchangeRates?.data.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_FIAT)
                 : '';
         setValues(values => ({
             ...values,
@@ -101,8 +92,8 @@ const WithdrawalCryptoAmountConverter: React.FC<TProps> = ({ exchangeRate }) => 
     const onChangeFiatInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = parseFloat(e.target.value);
         const convertedValue =
-            !Number.isNaN(value) && exchangeRate?.rates && activeWallet?.currency
-                ? (value * exchangeRate?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_CRYPTO)
+            !Number.isNaN(value) && exchangeRates?.data?.rates && activeWallet?.currency
+                ? (value * exchangeRates?.data?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_CRYPTO)
                 : '';
 
         setValues(values => ({

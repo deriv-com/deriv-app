@@ -1,10 +1,17 @@
-import React, { createContext, useContext, useState } from 'react';
-import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig } from '@deriv/api';
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig, useExchangeRate } from '@deriv/api';
 import { THooks } from '../../../../../types';
 import { TWithdrawalReceipt } from '../types';
 
 export type TWithdrawalCrypto = {
     activeWallet: ReturnType<typeof useActiveWalletAccount>['data'];
+    exchangeRates: Partial<ReturnType<typeof useExchangeRate>>;
+    fractionalDigits: {
+        crypto?: number;
+        fiat?: number;
+    };
+    getConvertedCryptoAmount: (fiatInput: number | string) => string;
+    getConvertedFiatAmount: (cryptoInput: number | string) => string;
     getCurrencyConfig: ReturnType<typeof useCurrencyConfig>['getConfig'];
     isWithdrawalSuccess: ReturnType<typeof useCryptoWithdrawal>['isSuccess'];
     onClose: () => void;
@@ -39,6 +46,38 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     const { isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
     const { getConfig } = useCurrencyConfig();
     const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({});
+    const { data: exchangeRates, subscribe, unsubscribe } = useExchangeRate();
+    const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency_config?.fractional_digits;
+    const FRACTIONAL_DIGITS_FIAT = getConfig('USD')?.fractional_digits;
+
+    useEffect(() => {
+        if (activeWallet?.currency)
+            subscribe({
+                base_currency: 'USD',
+                loginid: activeWallet.loginid,
+                target_currency: activeWallet.currency,
+            });
+        return () => unsubscribe();
+    }, [activeWallet?.currency, activeWallet?.loginid, subscribe, unsubscribe]);
+
+    const getConvertedCryptoAmount = (fiatInput: number | string) => {
+        const value = Number(fiatInput);
+        const convertedValue =
+            value && exchangeRates?.rates && activeWallet?.currency
+                ? (value * exchangeRates?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_CRYPTO)
+                : '';
+        return convertedValue;
+    };
+
+    const getConvertedFiatAmount = (cryptoInput: number | string) => {
+        const value = Number(cryptoInput);
+        const convertedValue =
+            !Number.isNaN(value) && exchangeRates?.rates && activeWallet?.currency
+                ? (value / exchangeRates?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_FIAT)
+                : '';
+
+        return convertedValue;
+    };
 
     const requestCryptoWithdrawal = (values: Parameters<THooks.CryptoWithdrawal>[0]) => {
         const { address, amount } = values;
@@ -60,6 +99,17 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         <WithdrawalCryptoContext.Provider
             value={{
                 activeWallet,
+                exchangeRates: {
+                    data: exchangeRates,
+                    subscribe,
+                    unsubscribe,
+                },
+                fractionalDigits: {
+                    crypto: FRACTIONAL_DIGITS_CRYPTO,
+                    fiat: FRACTIONAL_DIGITS_FIAT,
+                },
+                getConvertedCryptoAmount,
+                getConvertedFiatAmount,
                 getCurrencyConfig: getConfig,
                 isWithdrawalSuccess,
                 onClose,

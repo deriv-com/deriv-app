@@ -122,7 +122,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
                 }
             }
         }
-        if (name_block === 'PREDICTION') {
+        if (name_block === 'PREDICTION' && strategy_dom) {
             const mutation_element = strategy_dom.querySelector(
                 'block[type="trade_definition_tradeoptions"] > mutation'
             );

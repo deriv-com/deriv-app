@@ -283,6 +283,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_already_attempted: false,
             is_bot_allowed: false,
             account_open_date: undefined,
+            setAccounts: jest.fn(),
         },
         common: {
             error: common_store_error,

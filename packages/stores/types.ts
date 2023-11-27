@@ -516,6 +516,7 @@ type TClientStore = {
     account_open_date: number | undefined;
     is_beta_chart: boolean;
     is_bot_allowed: boolean;
+    setAccounts: (accounts: Record<string, TActiveAccount>) => void;
 };
 
 type TCommonStoreError = {

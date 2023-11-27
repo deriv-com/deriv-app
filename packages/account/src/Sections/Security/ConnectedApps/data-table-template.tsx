@@ -15,10 +15,9 @@ const DataTableTemplate = ({ connected_apps, handleToggleModal }: TDataTableTemp
                 size='xs'
                 weight='bold'
                 key={column_name.key}
-                className={classNames(
-                    'connected-apps__tabular--cell connected-apps__tabular--header',
-                    index === 0 ? 'connected-apps__tabular--skip-left-padding' : ''
-                )}
+                className={classNames('connected-apps__tabular--cell connected-apps__tabular--header', {
+                    'connected-apps__tabular--skip-left-padding': index === 0,
+                })}
             >
                 {column_name}
             </Text>

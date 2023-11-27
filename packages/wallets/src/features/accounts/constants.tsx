@@ -4,11 +4,14 @@ import IcDocumentAddressMismatch from '../../public/images/accounts/ic-document-
 import IcDocumentNameMismatch from '../../public/images/accounts/ic-document-name-mismatch.svg';
 import IcEnvelope from '../../public/images/accounts/ic-envelop.svg';
 import IcOldIssuedDocument from '../../public/images/accounts/ic-old-issued-document.svg';
+import { THooks } from '../../types';
 
 type TExampleImageConfig = {
     description: React.ReactNode;
     image: React.ComponentType<React.SVGAttributes<SVGElement>>;
 };
+
+type TStatusCodes = Exclude<THooks.POA['status'] | THooks.POI['current']['status'], undefined>;
 
 export const getExampleImagesConfig = (): TExampleImageConfig[] => [
     {
@@ -36,3 +39,12 @@ export const getExampleImagesConfig = (): TExampleImageConfig[] => [
         image: IcEnvelope,
     },
 ];
+
+export const statusCodes: Record<TStatusCodes, string> = {
+    expired: 'expired',
+    none: 'none',
+    pending: 'pending',
+    rejected: 'rejected',
+    suspected: 'suspected',
+    verified: 'verified',
+} as const;

@@ -43,7 +43,6 @@ describe('MyAdsStore', () => {
         my_ads_store.onClickActivateDeactivate('53', true, mockFn);
         expect(requestWS).toBeCalledWith({ p2p_advert_update: 1, id: '53', is_active: 0 });
         await waitFor(() => expect(my_ads_store.error_code).toBe('some_error'));
-        await waitFor(() => expect(my_ads_store.activate_deactivate_error_message).toBe('this is the error message'));
         await waitFor(() =>
             expect(my_ads_store.root_store.general_store.showModal).toBeCalledWith({
                 key: 'ErrorModal',

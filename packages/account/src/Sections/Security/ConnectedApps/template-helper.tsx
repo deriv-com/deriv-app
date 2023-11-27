@@ -20,19 +20,5 @@ const generatePermissions = (): Permissions => ({
     admin: localize('Admin'),
 });
 
-export const getConnectedAppsScopes = (permissions_list: string[] = []) => {
-    const is_trading_information = permissions_list.includes('trading_information');
-    let oauth_apps_list = [];
-    if (is_trading_information) {
-        oauth_apps_list = permissions_list.filter(permission => permission !== 'trading_information');
-        oauth_apps_list.push('trading_information');
-    } else {
-        oauth_apps_list = permissions_list;
-    }
-    const sorted_app_list: string[] = [];
-    oauth_apps_list.forEach((permission, index) => {
-        const separator = index === permissions_list.length - 1 ? '' : ', ';
-        sorted_app_list.push(`${generatePermissions()[permission]}${separator}`);
-    });
-    return sorted_app_list;
-};
+export const getConnectedAppsScopes = (permission_list: string[] = []) =>
+    permission_list.map(permission => generatePermissions()[permission]).join(', ');

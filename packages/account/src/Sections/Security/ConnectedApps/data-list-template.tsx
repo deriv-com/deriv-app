@@ -30,7 +30,7 @@ const DataListTemplate = ({ connected_apps, handleToggleModal }: TDataListTempla
                     <div className='connected-apps__list--permission'>
                         <DataListTemplateEntry
                             title={<Localize i18n_default_text='Permission' />}
-                            content={<div>{getConnectedAppsScopes(connected_app.scopes)}</div>}
+                            content={getConnectedAppsScopes(connected_app.scopes)}
                         />
                     </div>
                     <div className='connected-apps__list--revoke'>

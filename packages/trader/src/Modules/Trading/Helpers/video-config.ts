@@ -11,16 +11,16 @@ type TVideoVariants = {
 If considered necessary later, the current approach can be replaced with HTTP-request to fetch videos by their file names. */
 export const DESCRIPTION_VIDEO_ID: TDtraderVideoUrl = {
     accumulator: {
-        light: '6e46c112851bd002d78ad8481e47b0ca',
-        dark: 'c11a56449976f2a111a9ba6bfad496f4',
+        light: '3a8f185f22a3e2b9da59cea6e70e706e',
+        dark: '0602069e9de7f4206929402606928853',
     },
     turbos: {
-        light: 'c09f5ebb317f702067289323c405544d',
-        dark: '50b3064f0d468726defa4dabe1d8d04d',
+        light: '4d03df21b56b33101806394f9bdffb43',
+        dark: '8d71878b0f2ba06cf83b51919e50d77b',
     },
     vanilla: {
-        light: 'b7d10cca1efd4a50674347ba77f35259',
-        dark: '8ddb543bbfd6b92d26f72a97c0ae6f0f',
+        light: 'bed2bd4d874b15999590265e25b7778b',
+        dark: '0d22d76a321833f1c6b732cf055057ae',
     },
 };
 

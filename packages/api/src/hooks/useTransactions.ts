@@ -21,22 +21,25 @@ const useTransactions = (isPaginated = true) => {
     const fractional_digits = account?.currency_config?.fractional_digits || 2;
 
     const [filter, setFilter] = useState<TFilter>();
-    const { data, fetchNextPage, remove, ...rest } = useInfiniteQuery('statement', {
-        options: {
-            enabled: !isFetching && isSuccess,
-            getNextPageParam: (lastPage, pages) => {
-                if (!lastPage?.statement?.count) return;
+    const { data, fetchNextPage, remove, ...rest } = useInfiniteQuery(
+        'statement',
+        {
+            options: {
+                enabled: !isFetching && isSuccess,
+                getNextPageParam: (lastPage, pages) => {
+                    if (!lastPage?.statement?.count) return;
 
-                return pages.length;
+                    return pages.length;
+                },
+            },
+            payload: {
+                action_type: filter,
+                // TODO: remove this once backend adds `to` and `from` for Deriv X transfers
+                description: 1,
             },
         },
-        payload: {
-            action_type: filter,
-            // TODO: remove this once backend adds `to` and `from` for Deriv X transfers
-            description: 1,
-        },
-        isPaginated,
-    });
+        { isPaginated }
+    );
 
     const invalidate = useInvalidateQuery();
     useEffect(() => {

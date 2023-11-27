@@ -1,0 +1,23 @@
+.stepper{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    &__line{
+        height: 0.2rem;
+        display: block;
+        background-color: var(--text-less-prominent)
+        &--active{
+            background-color: var(--brand-red-coral)
+        }
+    }
+
+    &__bullet{
+        height: 1.6rem;
+        width: 1.6rem;
+        border-radius: 50%;
+        border: 2px solid var(--text-less-prominent);
+        &--active{
+            border-color: var(--brand-red-coral);
+        }
+    }
+}

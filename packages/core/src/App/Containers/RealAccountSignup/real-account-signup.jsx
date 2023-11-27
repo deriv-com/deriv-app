@@ -19,7 +19,7 @@ import FinishedSetCurrency from './finished-set-currency.jsx';
 import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
-import { useAnalytics } from '@deriv/hooks';
+import { Analytics } from '@deriv/analytics';
 
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
@@ -277,15 +277,23 @@ const RealAccountSignup = ({
     ]);
 
     const [assessment_decline, setAssessmentDecline] = React.useState(false);
-    const { trackRealAccountSignup } = useAnalytics();
+
+    const analytic_data = React.useMemo(
+        () => ({
+            form_source: document.referrer,
+            form_name: 'real_account_signup_form',
+        }),
+        []
+    );
 
     React.useEffect(() => {
         if (is_real_acc_signup_on) {
-            trackRealAccountSignup({
+            Analytics.trackEvent('ce_real_account_signup_form', {
                 action: 'open',
+                ...analytic_data,
             });
         }
-    }, [is_real_acc_signup_on, trackRealAccountSignup]);
+    }, [analytic_data, is_real_acc_signup_on]);
 
     const getModalHeight = () => {
         if (is_from_restricted_country) return '304px';
@@ -366,9 +374,10 @@ const RealAccountSignup = ({
         setCurrentAction(modal_content[getActiveModalIndex()]?.action);
         setError(err);
 
-        trackRealAccountSignup({
+        Analytics.trackEvent('ce_real_account_signup_form', {
             action: 'other_error',
             real_signup_error_message: err,
+            ...analytic_data,
         });
     };
 

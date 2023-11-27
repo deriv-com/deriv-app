@@ -5,13 +5,6 @@ import { render, screen } from '@testing-library/react';
 
 import RealAccountSignup from '../real-account-signup.jsx';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useAnalytics: () => ({
-        trackRealAccountSignup: jest.fn(),
-    }),
-}));
-
 jest.mock('Stores/connect', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',

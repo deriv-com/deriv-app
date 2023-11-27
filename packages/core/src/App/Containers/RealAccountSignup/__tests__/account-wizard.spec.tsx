@@ -7,9 +7,6 @@ import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useAnalytics: () => ({
-        trackRealAccountSignup: jest.fn(),
-    }),
     useIsClientHighRiskForMT5: jest.fn(),
 }));
 

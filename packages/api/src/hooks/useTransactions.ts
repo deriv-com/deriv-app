@@ -9,7 +9,7 @@ import { displayMoney } from '../utils';
 type TFilter = NonNullable<TSocketRequestPayload<'statement'>['payload']>['action_type'];
 
 /** A custom hook to get the summary of account transactions */
-const useTransactions = () => {
+const useTransactions = (isPaginated = true) => {
     const {
         data: { preferred_language },
         isFetching,
@@ -34,6 +34,7 @@ const useTransactions = () => {
             action_type: filter,
             // TODO: remove this once backend adds `to` and `from` for Deriv X transfers
             description: 1,
+            ...(!isPaginated && { limit: undefined }),
         },
     });
 

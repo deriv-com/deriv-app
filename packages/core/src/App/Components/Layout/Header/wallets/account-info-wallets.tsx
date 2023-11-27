@@ -7,6 +7,7 @@ import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getActiveLoginIDFromLocalStorage } from '@deriv/utils';
 import { useStoreWalletAccountsList, useStoreLinkedWalletsAccounts } from '@deriv/hooks';
+import { TStores } from '@deriv/stores/types';
 import { AccountSwitcherWallet, AccountSwitcherWalletMobile } from 'App/Containers/AccountSwitcherWallet';
 import { AccountsInfoLoader } from '../Components/Preloader';
 import AccountInfoWrapper from '../account-info-wrapper';
@@ -22,18 +23,16 @@ type TDropdownArrow = {
 };
 
 type TBalanceLabel = {
-    balance: number;
-    currency: string;
+    balance: TStores['client']['accounts'][string]['balance'];
+    currency: TStores['client']['accounts'][string]['currency'];
     is_virtual: boolean;
     display_code: string;
 };
 
-type TMobileInfoIcon = {
-    wallet_account: ReturnType<typeof useStoreWalletAccountsList>['data'][number];
-};
-
-type TDesktopInfoIcons = {
-    wallet_account: ReturnType<typeof useStoreWalletAccountsList>['data'][number];
+type TInfoIcons = {
+    gradients: ReturnType<typeof useStoreWalletAccountsList>['data'][number]['gradients'];
+    icons: ReturnType<typeof useStoreWalletAccountsList>['data'][number]['icons'];
+    icon_type: ReturnType<typeof useStoreWalletAccountsList>['data'][number]['icon_type'];
 };
 
 const DropdownArrow = ({ is_disabled = false }: TDropdownArrow) =>
@@ -62,7 +61,7 @@ const BalanceLabel = ({ balance, currency, is_virtual, display_code }: Partial<T
         </div>
     ) : null;
 
-const MobileInfoIcon = observer(({ wallet_account }: TMobileInfoIcon) => {
+const MobileInfoIcon = observer(({ gradients, icons, icon_type }: TInfoIcons) => {
     const {
         ui: { is_dark_mode_on },
     } = useStore();
@@ -74,17 +73,17 @@ const MobileInfoIcon = observer(({ wallet_account }: TMobileInfoIcon) => {
         <div className='acc-info__wallets-container'>
             <AppLinkedWithWalletIcon
                 app_icon={app_icon}
-                gradient_class={wallet_account?.gradients?.card[theme] ?? ''}
+                gradient_class={gradients?.card[theme] ?? ''}
                 size='small'
-                type={wallet_account?.icon_type}
-                wallet_icon={wallet_account?.icons?.[theme] ?? ''}
+                type={icon_type}
+                wallet_icon={icons?.[theme] ?? ''}
                 hide_watermark
             />
         </div>
     );
 });
 
-const DesktopInfoIcons = observer(({ wallet_account }: TDesktopInfoIcons) => {
+const DesktopInfoIcons = observer(({ gradients, icons, icon_type }: TInfoIcons) => {
     const { ui } = useStore();
     const { is_dark_mode_on } = ui;
     const theme = is_dark_mode_on ? 'dark' : 'light';
@@ -97,9 +96,9 @@ const DesktopInfoIcons = observer(({ wallet_account }: TDesktopInfoIcons) => {
                 data_testid='dt_ic_wallet_options'
             />
             <WalletIcon
-                icon={wallet_account?.icons?.[theme] ?? ''}
-                type={wallet_account?.icon_type}
-                gradient_class={wallet_account?.gradients?.card[theme]}
+                icon={icons?.[theme] ?? ''}
+                type={icon_type}
+                gradient_class={gradients?.card[theme]}
                 size={'small'}
                 has_bg
                 hide_watermark
@@ -164,9 +163,17 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                     onKeyDown={active_account?.is_disabled ? undefined : () => toggleDialog()}
                 >
                     {is_mobile ? (
-                        <MobileInfoIcon wallet_account={linked_wallet} />
+                        <MobileInfoIcon
+                            gradients={linked_wallet.gradients}
+                            icons={linked_wallet.icons}
+                            icon_type={linked_wallet.icon_type}
+                        />
                     ) : (
-                        <DesktopInfoIcons wallet_account={linked_wallet} />
+                        <DesktopInfoIcons
+                            gradients={linked_wallet.gradients}
+                            icons={linked_wallet.icons}
+                            icon_type={linked_wallet.icon_type}
+                        />
                     )}
                     <BalanceLabel
                         balance={active_account?.balance}

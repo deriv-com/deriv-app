@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+    useAccountStatus,
     useActiveWalletAccount,
     useAvailableMT5Accounts,
     useCreateMT5Account,
@@ -26,12 +27,15 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const { error, isLoading: createMT5AccountLoading, isSuccess, mutate, status } = useCreateMT5Account();
     const { isLoading: tradingPlatformPasswordChangeLoading, mutate: tradingPasswordChange } =
         useTradingPlatformPasswordChange();
+    const { data: accountStatus } = useAccountStatus();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: settings } = useSettings();
     const { getModalState, hide, show } = useModal();
     const { isMobile } = useDevice();
+
+    const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeWallet?.is_virtual;
@@ -46,7 +50,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
 
         // in order to create account, we need to set a password through trading_platform_password_change endpoint first
         // then only mt5_create_account can be called, otherwise it will response an error for password required
-        if (!mt5Accounts?.length) {
+        if (isMT5PasswordNotSet) {
             await tradingPasswordChange({
                 new_password: password,
                 platform: 'mt5',
@@ -154,26 +158,25 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                         title={`Your ${marketTypeTitle} ${isDemo ? ' demo' : 'real'} account is ready`}
                     />
                 )}
-                {!isSuccess &&
-                    (hasMT5Account ? (
-                        <EnterPassword
-                            isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
-                            marketType={marketType}
-                            onPasswordChange={e => setPassword(e.target.value)}
-                            onPrimaryClick={onSubmit}
-                            password={password}
-                            platform='mt5'
-                        />
-                    ) : (
-                        <CreatePassword
-                            icon={<MT5PasswordIcon />}
-                            isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
-                            onPasswordChange={e => setPassword(e.target.value)}
-                            onPrimaryClick={onSubmit}
-                            password={password}
-                            platform='mt5'
-                        />
-                    ))}
+                {!isSuccess && !isMT5PasswordNotSet ? (
+                    <EnterPassword
+                        isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
+                        marketType={marketType}
+                        onPasswordChange={e => setPassword(e.target.value)}
+                        onPrimaryClick={onSubmit}
+                        password={password}
+                        platform='mt5'
+                    />
+                ) : (
+                    <CreatePassword
+                        icon={<MT5PasswordIcon />}
+                        isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
+                        onPasswordChange={e => setPassword(e.target.value)}
+                        onPrimaryClick={onSubmit}
+                        password={password}
+                        platform='mt5'
+                    />
+                )}
             </ModalStepWrapper>
         );
     }
@@ -200,7 +203,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 />
             )}
             {!isSuccess &&
-                (hasMT5Account ? (
+                (!isMT5PasswordNotSet ? (
                     <EnterPassword
                         isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                         marketType={marketType}

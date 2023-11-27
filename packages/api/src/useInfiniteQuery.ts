@@ -15,7 +15,7 @@ import { getQueryKeys } from './utils';
 
 const useInfiniteQuery = <T extends TSocketPaginateableEndpointNames>(
     name: T,
-    ...props: [TSocketAcceptableProps<T, true, 'useInfiniteQuery'>[number], { isPaginated: boolean }?]
+    ...props: [TSocketAcceptableProps<T, true, 'useInfiniteQuery'>[0], { isPaginated: boolean }?]
 ) => {
     const prop = props?.[0];
     const payload = prop && 'payload' in prop ? (prop.payload as TSocketPaginatateableRequestCleaned<T>) : undefined;

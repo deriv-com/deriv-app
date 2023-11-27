@@ -7,28 +7,22 @@ type TVideoVariants = {
     light: string;
 };
 
-export const CF_STREAM_CUSTOMER_URL = 'https://customer-hhvo3ceuqt00w8g8.cloudflarestream.com';
-/* The video upload feature is not available yet. The following video uids are taken from CF Stream account. */
+/* The video upload feature is not available yet. The following video uids are taken from CF Stream account.
+If considered necessary later, the current approach can be replaced with HTTP-request to fetch videos by their file names. */
 export const DESCRIPTION_VIDEO_ID: TDtraderVideoUrl = {
     accumulator: {
-        light: 'dc6145aaee3f6b3f1cd96be9a3d1bfee',
-        dark: 'e122519abc977631e67d21fbe08e8192',
+        light: '6e46c112851bd002d78ad8481e47b0ca',
+        dark: 'c11a56449976f2a111a9ba6bfad496f4',
     },
     turbos: {
-        light: 'df97133addc5b8863a617e03697ea051',
-        dark: '38041ca7fdd5388df4db9563608d0bcc',
+        light: 'c09f5ebb317f702067289323c405544d',
+        dark: '50b3064f0d468726defa4dabe1d8d04d',
     },
     vanilla: {
-        light: '2bacfe56a73840d1a4f3239affedaab2',
-        dark: 'ed81e651f8bf01ab80e968091dc7fa35',
+        light: 'b7d10cca1efd4a50674347ba77f35259',
+        dark: '8ddb543bbfd6b92d26f72a97c0ae6f0f',
     },
 };
 
 export const getDescriptionVideoId = (contract_type = '', is_dark_theme = false) =>
     DESCRIPTION_VIDEO_ID[contract_type]?.[is_dark_theme ? 'dark' : 'light'];
-
-export const getVideoDownloadUrl = (contract_type = '', is_dark_theme = false) => {
-    const uid = getDescriptionVideoId(contract_type, is_dark_theme);
-    /* The following url will work only if the MP4 download is enabled for the video in the CF Stream account */
-    return uid ? `${CF_STREAM_CUSTOMER_URL}${uid}/downloads/default.mp4` : '';
-};

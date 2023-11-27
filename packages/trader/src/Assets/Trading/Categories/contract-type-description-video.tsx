@@ -34,8 +34,7 @@ const ContractTypeDescriptionVideo = ({ data_testid, selected_contract_type }: T
                         width='100%' // applied to iframe
                     />                    
                 More: https://www.npmjs.com/package/@cloudflare/stream-react
-                API: https://developers.cloudflare.com/stream/viewing-videos/using-the-stream-player/using-the-player-api/
-                Please use getVideoDownloadUrl helper in order to add a Download feature. */}
+                API: https://developers.cloudflare.com/stream/viewing-videos/using-the-stream-player/using-the-player-api/ */}
             <VideoStream
                 autoplay
                 controls

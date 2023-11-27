@@ -1,9 +1,4 @@
-import {
-    CF_STREAM_CUSTOMER_URL,
-    DESCRIPTION_VIDEO_ID,
-    getDescriptionVideoId,
-    getVideoDownloadUrl,
-} from '../video-config';
+import { DESCRIPTION_VIDEO_ID, getDescriptionVideoId } from '../video-config';
 
 describe('getDescriptionVideoId', () => {
     it('should return an id for Vanillas description video in light theme', () => {
@@ -14,16 +9,5 @@ describe('getDescriptionVideoId', () => {
     });
     it('should return undefined when called with empty arguments', () => {
         expect(getDescriptionVideoId()).toEqual(undefined);
-    });
-});
-
-describe('getVideoDownloadUrl', () => {
-    it('should return a download URL for Vanillas description video in light theme', () => {
-        expect(getVideoDownloadUrl('vanilla', false)).toEqual(
-            `${CF_STREAM_CUSTOMER_URL}${DESCRIPTION_VIDEO_ID.vanilla.light}/downloads/default.mp4`
-        );
-    });
-    it('should return an empty string if called with empty arguments', () => {
-        expect(getVideoDownloadUrl()).toEqual('');
     });
 });

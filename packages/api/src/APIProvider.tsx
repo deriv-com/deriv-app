@@ -22,7 +22,13 @@ declare global {
 // This is a temporary workaround to share a single `QueryClient` instance between all the packages.
 const getSharedQueryClientContext = (): QueryClient => {
     if (!window.ReactQueryClient) {
-        window.ReactQueryClient = new QueryClient();
+        window.ReactQueryClient = new QueryClient({
+            logger: {
+                log: console.log, // eslint-disable-line no-console
+                warn: console.warn, // eslint-disable-line no-console
+                error: () => null,
+            },
+        });
     }
 
     return window.ReactQueryClient;
@@ -90,7 +96,7 @@ const initializeDerivAPI = (onWSClose: () => void): DerivAPIBasic => {
     const wss_url = getWebSocketURL();
     const websocketConnection = getWebsocketInstance(wss_url, onWSClose);
 
-    if (!window.DerivAPI?.[wss_url]) {
+    if (!window.DerivAPI?.[wss_url] || window.DerivAPI?.[wss_url].isConnectionClosed()) {
         window.DerivAPI[wss_url] = new DerivAPIBasic({ connection: websocketConnection });
     }
 

@@ -29,6 +29,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
         ? fromAccount?.currencyConfig?.fractional_digits
         : toAccount?.currencyConfig?.fractional_digits;
     const isAmountInputDisabled = fieldName === 'toAmount' && !toAccount;
+    const isAmountFieldActive = fieldName === values.activeAmountFieldName;
 
     useEffect(() => {
         if (!fromAccount?.currency || !toAccount?.currency || !activeWallet?.loginid) return;
@@ -49,7 +50,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
 
     const amountConverterHandler = useCallback(
         (value: number) => {
-            if (!toAccount?.currency || !exchangeRate?.rates) return;
+            if (!toAccount?.currency || !exchangeRate?.rates || !isAmountFieldActive) return;
 
             const toRate = exchangeRate.rates[toAccount.currency];
 
@@ -68,6 +69,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
         [
             exchangeRate?.rates,
             fromAccount?.currencyConfig?.fractional_digits,
+            isAmountFieldActive,
             isFromAmountFieldName,
             setFieldValue,
             toAccount?.currency,
@@ -83,7 +85,8 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
 
     const onChangeHandler = useCallback(
         (value: number) => {
-            if (fieldName !== values.activeAmountFieldName) return;
+            if (!isAmountFieldActive) return;
+
             if (isSameCurrency) {
                 setValues(prev => ({ ...prev, fromAmount: value, toAmount: value }));
             } else {
@@ -94,7 +97,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
                 setFieldValue(fieldName, value);
             }
         },
-        [fieldName, isSameCurrency, setFieldValue, setValues, values.activeAmountFieldName]
+        [fieldName, isAmountFieldActive, isSameCurrency, setFieldValue, setValues]
     );
 
     const onFocusHandler = useCallback(() => {

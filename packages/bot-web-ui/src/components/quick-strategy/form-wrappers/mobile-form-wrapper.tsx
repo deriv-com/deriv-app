@@ -6,6 +6,7 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { FORM_TABS, STRATEGIES } from '../config';
+import QSTabContent from '../qs-tab-content';
 import '../quick-strategy.scss';
 
 type TMobileFormWrapper = {
@@ -89,40 +90,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                 })}
                             </div>
                         </div>
-                        {active_tab === 'TRADE_PARAMETERS' ? (
-                            <>
-                                <div className='qs__body__content__description'>
-                                    <div>
-                                        <Text size='xxs'>{strategy.description}</Text>
-                                    </div>
-                                </div>
-                                <div className='qs__body__content__form'>{children}</div>
-                            </>
-                        ) : (
-                            <div className='qs__body__content__description'>
-                                <div>
-                                    {strategy?.long_description?.map((data, index) => {
-                                        return (
-                                            <div key={index}>
-                                                <div className='long_description__title'>
-                                                    <Text size='xxs' weight='bold'>
-                                                        {data.title}
-                                                    </Text>
-                                                </div>
-                                                <div className='long_description__content'>
-                                                    <Text size='xxs'>{data.content}</Text>
-                                                </div>
-                                                {data.image && (
-                                                    <div>
-                                                        <img className='long_description__image' src={data.image} />
-                                                    </div>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        )}
+                        <QSTabContent formfields={children} active_tab={active_tab} />
                     </ThemedScrollbars>
                     {active_tab === 'TRADE_PARAMETERS' && (
                         <div className='qs__body__content__footer'>

@@ -150,51 +150,41 @@ export default class AccountTransferStore {
         // various issues happen when loading from cache
         // e.g. new account may have been created, transfer may have been done elsewhere, etc
         // so on load of this page just call it again
-        if (!is_logged_in) {
-            setLoading(false);
+        if (is_logged_in) {
+            const transfer_between_accounts = await this.WS.authorized.transferBetweenAccounts();
 
-            return;
-        }
+            if (transfer_between_accounts.error) {
+                this.error.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
+                setLoading(false);
+                return;
+            }
 
-        const transfer_between_accounts = await this.WS.authorized.transferBetweenAccounts();
-        if (!is_from_derivgo) {
-            transfer_between_accounts.accounts = transfer_between_accounts.accounts || [];
-        }
+            if (!is_from_derivgo) {
+                transfer_between_accounts.accounts = transfer_between_accounts.accounts || [];
+            }
 
-        if (transfer_between_accounts.error) {
-            this.error.setErrorMessage(transfer_between_accounts.error, this.onMountAccountTransfer);
-            setLoading(false);
-            return;
-        }
+            if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
+                return;
+            }
 
-        if (!is_from_derivgo) {
-            transfer_between_accounts.accounts = transfer_between_accounts.accounts?.filter(
-                account => account.account_type !== CFD_PLATFORMS.DERIVEZ
-            );
-        }
+            await this.sortAccountsTransfer(transfer_between_accounts, is_from_derivgo);
+            this.setTransferFee();
+            this.setMinimumFee();
+            this.setTransferLimit();
 
-        if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
-            return;
-        }
-
-        await this.sortAccountsTransfer(transfer_between_accounts, is_from_derivgo);
-        this.setTransferFee();
-        this.setMinimumFee();
-        this.setTransferLimit();
-
-        if (this.accounts_list?.length > 0) {
-            const cfd_transfer_to_login_id = sessionStorage.getItem('cfd_transfer_to_login_id');
-            sessionStorage.removeItem('cfd_transfer_to_login_id');
-            const obj_values = this.accounts_list.find(account => account.value === cfd_transfer_to_login_id);
-            if (obj_values) {
-                if (hasTransferNotAllowedLoginid(obj_values.value)) {
-                    // check if selected to is not allowed account
-                    obj_values.error = AccountTransferGetSelectedError(obj_values.value);
+            if (this.accounts_list?.length > 0) {
+                const cfd_transfer_to_login_id = sessionStorage.getItem('cfd_transfer_to_login_id');
+                sessionStorage.removeItem('cfd_transfer_to_login_id');
+                const obj_values = this.accounts_list.find(account => account.value === cfd_transfer_to_login_id);
+                if (obj_values) {
+                    if (hasTransferNotAllowedLoginid(obj_values.value)) {
+                        // check if selected to is not allowed account
+                        obj_values.error = AccountTransferGetSelectedError(obj_values.value);
+                    }
+                    this.setSelectedTo(obj_values);
                 }
-                this.setSelectedTo(obj_values);
             }
         }
-
         setLoading(false);
     }
 
@@ -379,13 +369,15 @@ export default class AccountTransferStore {
             const cfd_text_display = cfd_platforms[account.account_type as keyof typeof cfd_platforms]?.name;
 
             const cfd_icon_display = `${cfd_platforms[account.account_type as keyof typeof cfd_platforms]?.icon}${
-                getCFDAccount({
-                    market_type: account.market_type,
-                    sub_account_type: account.sub_account_type,
-                    platform: account.account_type,
-                    is_eu: this.root_store.client.is_eu,
-                    is_transfer_form: true,
-                }) ?? ''
+                ('-' &&
+                    getCFDAccount({
+                        market_type: account.market_type,
+                        sub_account_type: account.sub_account_type,
+                        platform: account.account_type,
+                        is_eu: this.root_store.client.is_eu,
+                        is_transfer_form: true,
+                    })) ||
+                ''
             }`;
 
             const non_eu_accounts =
@@ -394,8 +386,6 @@ export default class AccountTransferStore {
                 account.landing_company_short !== 'bvi'
                     ? account.landing_company_short?.charAt(0).toUpperCase() + account.landing_company_short?.slice(1)
                     : account.landing_company_short?.toUpperCase();
-
-            const account_display = this.root_store.client.is_eu ? '' : non_eu_accounts;
 
             const cfd_account_text_display =
                 account.account_type === 'mt5'
@@ -416,7 +406,9 @@ export default class AccountTransferStore {
                       }`;
             const account_text_display = is_cfd
                 ? cfd_account_text_display
-                : getCurrencyDisplayCode(account_currency_display);
+                : getCurrencyDisplayCode(
+                      account.currency !== 'eUSDT' ? account.currency?.toUpperCase() : account.currency
+                  );
 
             const combined_cfd_mt5_account = this.root_store.traders_hub?.combined_cfd_mt5_accounts.find(
                 x => x.login === account.login
@@ -697,12 +689,12 @@ export default class AccountTransferStore {
         } else {
             const { is_ok, message } = validNumber(converter_from_amount, {
                 type: 'float',
-                decimals: getDecimalPlaces(this.selected_from.currency ?? ''),
+                decimals: getDecimalPlaces(this.selected_from.currency || ''),
                 min: Number(this.transfer_limit.min),
                 max: Number(this.transfer_limit.max),
             });
             if (!is_ok) {
-                setConverterFromError(message ?? '');
+                setConverterFromError(message || '');
             } else if (Number(this.selected_from.balance) < Number(converter_from_amount)) {
                 setConverterFromError(localize('Insufficient funds'));
             } else {

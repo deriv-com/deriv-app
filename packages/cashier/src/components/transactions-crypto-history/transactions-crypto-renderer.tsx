@@ -327,24 +327,26 @@ const TransactionsCryptoRenderer = observer(({ row: crypto, onTooltipClick }: TT
                         </div>
                     </Table.Cell>
                 ) : (
-                    <Table.Cell className='transactions-crypto-history__table-action'>
-                        {is_valid_to_cancel === 1 && (
-                            <div onClick={onClickCancel} data-testid='dt_transactions_crypto_history_table_button'>
-                                <Popover
-                                    alignment='left'
-                                    className='transactions-crypto-history__table-popover'
-                                    message={localize('Cancel transaction')}
-                                >
-                                    <div
-                                        className={classNames(
-                                            'crypto-transactions-history__table-status-code',
-                                            `crypto-transactions-history__table-status-code-${status.renderer}`
-                                        )}
-                                    />
-                                    <Text as='p' size='xs'>
-                                        {status.name}
-                                    </Text>
-                                </Popover>
+                    <>
+                        <Table.Cell className='transactions-crypto-history__table-action'>
+                            {is_valid_to_cancel === 1 && (
+                                <div onClick={onClickCancel} data-testid='dt_transactions_crypto_history_table_button'>
+                                    <Popover
+                                        alignment='left'
+                                        className='transactions-crypto-history__table-popover'
+                                        message={localize('Cancel transaction')}
+                                    >
+                                        <div
+                                            className={classNames(
+                                                'crypto-transactions-history__table-status-code',
+                                                `crypto-transactions-history__table-status-code-${status?.renderer}`
+                                            )}
+                                        />
+                                        <Text as='p' size='xs'>
+                                            {status?.name}
+                                        </Text>
+                                    </Popover>
+                                </div>
                             )}
                         </Table.Cell>
                         <Table.Cell className='crypto-transactions-history__table-action'>

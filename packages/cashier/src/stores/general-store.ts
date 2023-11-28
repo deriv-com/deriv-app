@@ -187,41 +187,40 @@ export default class GeneralStore extends BaseStore {
             transaction_history.setIsTransactionsCryptoVisible(true);
         }
     }
-}
 
-setCashierTabIndex(index: number): void {
-    this.cashier_route_tab_index = index;
-}
-
-setLoading(is_loading: boolean): void {
-    this.is_loading = is_loading;
-}
-
-setActiveTab(container: typeof this.active_container): void {
-    if(this.active_container === 'payment_agent' && container !== 'payment_agent') {
-    this.root_store.modules.cashier.payment_agent.resetPaymentAgent();
-}
-
-this.active_container = container;
+    setCashierTabIndex(index: number): void {
+        this.cashier_route_tab_index = index;
     }
 
-accountSwitcherListener() {
-    const { client, modules } = this.root_store;
-    const { iframe, payment_agent } = modules.cashier;
-    const container = Constants.map_action[this.active_container as keyof typeof Constants.map_action];
-
-    client.setVerificationCode('', container);
-    iframe.clearIframe();
-
-    this.payment_agent = payment_agent;
-    if (payment_agent.active_tab_index === 1 && window.location.pathname.endsWith(routes.cashier_pa)) {
-        payment_agent.setActiveTab(1);
+    setLoading(is_loading: boolean): void {
+        this.is_loading = is_loading;
     }
 
-    this.is_populating_values = false;
+    setActiveTab(container: typeof this.active_container): void {
+        if (this.active_container === 'payment_agent' && container !== 'payment_agent') {
+            this.root_store.modules.cashier.payment_agent.resetPaymentAgent();
+        }
 
-    this.onRemount();
+        this.active_container = container;
+    }
 
-    return Promise.resolve();
-}
+    accountSwitcherListener() {
+        const { client, modules } = this.root_store;
+        const { iframe, payment_agent } = modules.cashier;
+        const container = Constants.map_action[this.active_container as keyof typeof Constants.map_action];
+
+        client.setVerificationCode('', container);
+        iframe.clearIframe();
+
+        this.payment_agent = payment_agent;
+        if (payment_agent.active_tab_index === 1 && window.location.pathname.endsWith(routes.cashier_pa)) {
+            payment_agent.setActiveTab(1);
+        }
+
+        this.is_populating_values = false;
+
+        this.onRemount();
+
+        return Promise.resolve();
+    }
 }

@@ -22,7 +22,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const isSameCurrency = fromAccount?.currency === toAccount?.currency;
     const amountValue = isFromAmountFieldName ? fromAmount : toAmount;
     const debouncedAmountValue = useDebounce(values.activeAmountFieldName === fieldName ? amountValue : undefined, 500);
-    const toAmountLabel = isSameCurrency ? 'Amount you receive' : 'Estimated amount';
+    const toAmountLabel = isSameCurrency || !toAccount ? 'Amount you receive' : 'Estimated amount';
     const amountLabel = isFromAmountFieldName ? 'Amount you send' : toAmountLabel;
     const currency = isFromAmountFieldName ? fromAccount?.currency : toAccount?.currency;
     const fractionDigits = isFromAmountFieldName

@@ -9,7 +9,7 @@ import { displayMoney } from '../utils';
 type TFilter = NonNullable<TSocketRequestPayload<'statement'>['payload']>['action_type'];
 
 /** A custom hook to get the summary of account transactions */
-const useTransactions = (isPaginated = true) => {
+const useTransactions = () => {
     const {
         data: { preferred_language },
         isFetching,
@@ -21,25 +21,21 @@ const useTransactions = (isPaginated = true) => {
     const fractional_digits = account?.currency_config?.fractional_digits || 2;
 
     const [filter, setFilter] = useState<TFilter>();
-    const { data, fetchNextPage, remove, ...rest } = useInfiniteQuery(
-        'statement',
-        {
-            options: {
-                enabled: !isFetching && isSuccess,
-                getNextPageParam: (lastPage, pages) => {
-                    if (!lastPage?.statement?.count) return;
+    const { data, fetchNextPage, remove, ...rest } = useInfiniteQuery('statement', {
+        options: {
+            enabled: !isFetching && isSuccess,
+            getNextPageParam: (lastPage, pages) => {
+                if (!lastPage?.statement?.count) return;
 
-                    return pages.length;
-                },
-            },
-            payload: {
-                action_type: filter,
-                // TODO: remove this once backend adds `to` and `from` for Deriv X transfers
-                description: 1,
+                return pages.length;
             },
         },
-        { isPaginated }
-    );
+        payload: {
+            action_type: filter,
+            // TODO: remove this once backend adds `to` and `from` for Deriv X transfers
+            description: 1,
+        },
+    });
 
     const invalidate = useInvalidateQuery();
     useEffect(() => {

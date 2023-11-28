@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Field, FieldProps, Formik } from 'formik';
-import { useCryptoWithdrawal, useExchangeRate } from '@deriv/api';
-import { WalletButton, WalletText, WalletTextField, WalletsPercentageSelector } from '../../../../../../components';
+import { useExchangeRate } from '@deriv/api';
+import { WalletButton, WalletsPercentageSelector, WalletText, WalletTextField } from '../../../../../../components';
 import type { THooks } from '../../../../../../types';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
 import './WithdrawalCryptoForm.scss';
@@ -18,6 +18,7 @@ export type TForm = {
 type TWithdrawalCryptoFormProps = {
     activeWallet?: THooks.ActiveWalletAccount;
     getCurrencyConfig: THooks.GetCurrencyConfig;
+    requestCryptoWithdrawal: (values: Parameters<THooks.CryptoWithdrawal>[0]) => void;
     verificationCode?: string;
 };
 
@@ -34,10 +35,11 @@ const validateCryptoAddress = (address: string) => {
 const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
     activeWallet,
     getCurrencyConfig,
+    requestCryptoWithdrawal,
     verificationCode,
 }) => {
     const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
-    const { mutate: requestCryptoWithdrawal } = useCryptoWithdrawal();
+
     const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency_config?.fractional_digits;
     const FRACTIONAL_DIGITS_FIAT = getCurrencyConfig('USD')?.fractional_digits;
 
@@ -118,7 +120,7 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                             />
                             <WalletText color='less-prominent' size='xs'>
                                 {!Number.isNaN(parseFloat(values.cryptoAmount)) && activeWallet?.balance
-                                    ? Math.round(parseFloat(values.cryptoAmount) / activeWallet?.balance)
+                                    ? Math.round((parseFloat(values.cryptoAmount) * 100) / activeWallet?.balance)
                                     : '0'}
                                 % of available balance ({activeWallet?.display_balance})
                             </WalletText>
@@ -131,6 +133,7 @@ const WithdrawalCryptoForm: React.FC<TWithdrawalCryptoFormProps> = ({
                         <div className='wallets-withdrawal-crypto-form__submit'>
                             <WalletButton
                                 disabled={Object.keys(errors).length !== 0 || !values.cryptoAmount || isSubmitting}
+                                isLoading={isSubmitting}
                                 size='lg'
                                 text='Withdraw'
                                 type='submit'

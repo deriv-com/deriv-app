@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { ModalManagerContextProvider } from 'Components/modal-manager';
 import { useStores } from 'Stores/index';
 import MyProfileDetailsContainer from '../my-profile-details-container';
 
@@ -28,7 +29,11 @@ describe('<MyProfileDetailsContainer />', () => {
     });
     it('should render MyProfileDetailsContainer component', () => {
         render(<MyProfileDetailsContainer />, {
-            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+            wrapper: ({ children }) => (
+                <ModalManagerContextProvider>
+                    <StoreProvider store={mockStore({})}>{children}</StoreProvider>
+                </ModalManagerContextProvider>
+            ),
         });
 
         expect(screen.getByText('test')).toBeInTheDocument();

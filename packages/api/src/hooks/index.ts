@@ -15,6 +15,7 @@ export { default as useAvailableMT5Accounts } from './useAvailableMT5Accounts';
 export { default as useAvailableWallets } from './useAvailableWallets';
 export { default as useBalance } from './useBalance';
 export { default as useCFDAccountsList } from './useCFDAccountsList';
+export { default as useCFDCompareAccounts } from './useCFDCompareAccounts';
 export { default as useCancelCryptoTransaction } from './useCancelCryptoTransaction';
 export { default as useCashierFiatAddress } from './useCashierFiatAddress';
 export { default as useCountryConfig } from './useCountryConfig';

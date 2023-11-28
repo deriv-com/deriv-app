@@ -1,0 +1,10 @@
+.wallets-compare-accounts-platform-label {
+    background-color: var(--header-background-mt5);
+    padding: 0.9rem;
+    border-top-left-radius: 1.4rem;
+    border-top-right-radius: 1.4rem;
+
+    &--other-cfds {
+        background-color: var(--header-background-others);
+    }
+}

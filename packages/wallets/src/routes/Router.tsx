@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { useWalletAccountsList } from '@deriv/api';
 import { WalletNoWalletFoundState } from '../components';
 import { CashierModalRoute } from './CashierModalRoute';
+import { CompareAccountsRoute } from './CompareAccountsRoute';
 import { WalletsListingRoute } from './WalletsListingRoute';
 
 const prefix = '/wallets';
@@ -14,6 +15,7 @@ type TRoutes =
     | `${typeof prefix}/cashier/transfer`
     | `${typeof prefix}/cashier/withdraw`
     | `${typeof prefix}/cashier`
+    | `${typeof prefix}/compare-accounts`
     | `${typeof prefix}`;
 
 declare module 'react-router-dom' {
@@ -30,6 +32,7 @@ const Router: React.FC = () => {
 
     return (
         <Switch>
+            <Route component={CompareAccountsRoute} path={`${prefix}/compare-accounts`} />
             <Route component={CashierModalRoute} path={`${prefix}/cashier`} />
             <Route component={WalletsListingRoute} path={prefix} />
         </Switch>

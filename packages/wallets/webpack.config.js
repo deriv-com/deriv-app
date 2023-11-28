@@ -21,7 +21,7 @@ const svg_loaders = [
                 plugins: [
                     { removeTitle: false },
                     { removeUselessStrokeAndFill: false },
-                    { removeUknownsAndDefaults: false },
+                    { removeUnknownsAndDefaults: false },
                     { removeViewBox: false },
                 ],
                 floatPrecision: 3,

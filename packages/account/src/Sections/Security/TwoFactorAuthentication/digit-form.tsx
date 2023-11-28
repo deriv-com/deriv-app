@@ -39,7 +39,7 @@ const DigitForm = observer(() => {
     }, [is_language_changing]);
 
     const validateFields = async (values: TDigitFormValues) => {
-        const digit_code = values.digit_code;
+        const digit_code = values?.digit_code;
         if (!digit_code) {
             return { digit_code: localize('Digit code is required.') };
         } else if (digit_code.length !== 6) {

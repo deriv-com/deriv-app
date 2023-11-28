@@ -24,7 +24,7 @@ const useSyncLocalStorageClientAccounts = () => {
                     account_type: data.account_type,
                     balance: 0,
                     created_at: data.created_at,
-                    currency: data.currency,
+                    currency: newAccount.currency,
                     email: settingsData.email,
                     excluded_until: data.excluded_until,
                     is_disabled: data.is_disabled,

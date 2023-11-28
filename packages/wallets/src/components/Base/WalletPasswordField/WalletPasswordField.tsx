@@ -13,7 +13,7 @@ interface WalletPasswordFieldProps extends WalletTextFieldProps {
 
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     label,
-    name = 'wallet-passwordfield',
+    name = 'walletPasswordField',
     onChange,
     password,
     shouldDisablePasswordMeter = false,

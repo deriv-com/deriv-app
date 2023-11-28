@@ -41,13 +41,13 @@ const MT5ChangeInvestorPasswordScreens = () => {
                     <div className='wallets-change-password__investor-password-fields'>
                         <WalletPasswordField
                             label='Current investor password'
-                            name='current_password'
+                            name='currentPassword'
                             onChange={e => setCurrentInvestorPassword(e.target.value)}
                             password={currentInvestorPassword}
                         />
                         <WalletPasswordField
                             label='New investor password'
-                            name='new_password'
+                            name='newPassword'
                             onChange={e => setNewInvestorPassword(e.target.value)}
                             password={newInvestorPassword}
                         />

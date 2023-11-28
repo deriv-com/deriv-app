@@ -10,9 +10,8 @@ import { TToken } from 'Types';
 import { ApiTokenContext, ApiTokenArticle, ApiTokenCard, ApiTokenTable } from 'Components/api-token';
 import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import LoadErrorMessage from 'Components/load-error-message';
-import { API_TOKEN_CARD_DETAILS, TOKEN_LIMITS } from 'Constants/api-token-card-details';
+import { API_TOKEN_CARD_DETAILS, TOKEN_LIMITS, TOKEN_NAME_REGEX } from 'Constants/api-token-card-details';
 import './api-token.scss';
-import { TOKEN_NAME_REGEX } from 'Constants/api-token';
 
 type AptTokenState = {
     api_tokens: NonNullable<TToken[]>;

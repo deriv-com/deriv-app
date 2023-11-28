@@ -43,3 +43,5 @@ export const TOKEN_LIMITS = {
     MIN: 2,
     MAX: 32,
 } as const;
+
+export const TOKEN_NAME_REGEX = /^[A-Za-z0-9\s_]+$/g;

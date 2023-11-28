@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig, useExchangeRate } from '@deriv/api';
 import { THooks } from '../../../../../types';
 import { TWithdrawalReceipt } from '../types';
@@ -95,31 +95,31 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         );
     };
 
-    return (
-        <WithdrawalCryptoContext.Provider
-            value={{
-                activeWallet,
-                exchangeRates: {
-                    data: exchangeRates,
-                    subscribe,
-                    unsubscribe,
-                },
-                fractionalDigits: {
-                    crypto: FRACTIONAL_DIGITS_CRYPTO,
-                    fiat: FRACTIONAL_DIGITS_FIAT,
-                },
-                getConvertedCryptoAmount,
-                getConvertedFiatAmount,
-                getCurrencyConfig: getConfig,
-                isWithdrawalSuccess,
-                onClose,
-                requestCryptoWithdrawal,
-                withdrawalReceipt,
-            }}
-        >
-            {children}
-        </WithdrawalCryptoContext.Provider>
+    const value = useMemo(
+        () => ({
+            activeWallet,
+            exchangeRates: {
+                data: exchangeRates,
+                subscribe,
+                unsubscribe,
+            },
+            fractionalDigits: {
+                crypto: FRACTIONAL_DIGITS_CRYPTO,
+                fiat: FRACTIONAL_DIGITS_FIAT,
+            },
+            getConvertedCryptoAmount,
+            getConvertedFiatAmount,
+            getCurrencyConfig: getConfig,
+            isWithdrawalSuccess,
+            onClose,
+            requestCryptoWithdrawal,
+            withdrawalReceipt,
+        }),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [activeWallet, exchangeRates, getConfig]
     );
+
+    return <WithdrawalCryptoContext.Provider value={value}>{children}</WithdrawalCryptoContext.Provider>;
 };
 
 export default WithdrawalCryptoProvider;

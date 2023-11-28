@@ -1,0 +1,46 @@
+.wallets-market-currency-icon {
+    $scaling: 65%;
+
+    width: 9.5rem;
+    height: 7rem;
+    position: relative;
+    z-index: 0;
+    transform-origin: top left;
+    transform: scale($scaling);
+
+    &__before {
+        &-demo {
+            $scaling-before: $scaling + 10%;
+            width: $scaling + 25%;
+
+            & .wallets-gradient svg {
+                transform: scale($scaling-before + 10%);
+            }
+            transform: scale($scaling-before);
+            transform-origin: bottom right;
+        }
+
+        &-real {
+            $scaling-before: $scaling + 25%;
+            width: $scaling + 15%;
+
+            & .wallets-gradient svg {
+                transform: scale($scaling-before - 20%);
+            }
+            transform: scale($scaling-before);
+            transform-origin: bottom right;
+        }
+
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 1;
+    }
+
+    &__after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+    }
+}

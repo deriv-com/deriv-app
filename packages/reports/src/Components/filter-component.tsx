@@ -1,33 +1,14 @@
 import React from 'react';
 import { FilterDropdown } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import CompositeCalendar from './Form/CompositeCalendar';
-import { TRootStore } from 'Stores/index';
+import { observer } from '@deriv/stores';
+import { useReportsStore } from 'Stores/useReportsStores';
 
-type TFilterComponent = {
-    action_type: string;
-    date_from: number;
-    date_to: number;
-    filtered_date_range: {
-        duration: number;
-        label: string;
-        onClick?: () => void;
-        value?: string;
-    };
-    handleDateChange: () => void;
-    handleFilterChange: () => void;
-    suffix_icon: string;
-};
+const FilterComponent = observer(() => {
+    const { statement } = useReportsStore();
+    const { action_type, date_from, date_to, handleFilterChange, handleDateChange } = statement;
 
-const FilterComponent = ({
-    action_type,
-    date_from,
-    date_to,
-    handleFilterChange,
-    handleDateChange,
-    filtered_date_range,
-}: TFilterComponent) => {
     const filter_list = [
         {
             text: localize('All transactions'),
@@ -57,12 +38,7 @@ const FilterComponent = ({
 
     return (
         <React.Fragment>
-            <CompositeCalendar
-                input_date_range={filtered_date_range}
-                onChange={handleDateChange}
-                from={date_from}
-                to={date_to}
-            />
+            <CompositeCalendar onChange={handleDateChange} from={date_from} to={date_to} />
             <FilterDropdown
                 dropdown_display_className='dc-dropdown__display--has-suffix-icon'
                 filter_list={filter_list}
@@ -71,14 +47,6 @@ const FilterComponent = ({
             />
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ modules }: TRootStore) => ({
-    action_type: modules.statement.action_type,
-    data: modules.statement.data,
-    date_from: modules.statement.date_from,
-    date_to: modules.statement.date_to,
-    filtered_date_range: modules.statement.filtered_date_range,
-    handleDateChange: modules.statement.handleDateChange,
-    handleFilterChange: modules.statement.handleFilterChange,
-}))(FilterComponent);
+export default FilterComponent;

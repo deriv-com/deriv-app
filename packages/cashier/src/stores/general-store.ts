@@ -179,53 +179,49 @@ export default class GeneralStore extends BaseStore {
         if (!payment_agent.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
             routeTo(routes.cashier_deposit);
         }
-
-        if (!onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
-            routeTo(routes.cashier_deposit);
-        }
-
         if (
-            !transaction_history.is_crypto_transactions_visible &&
-            window.location.pathname.endsWith(routes.cashier_crypto_transactions)
+            !transaction_history.is_transactions_crypto_visible &&
+            window.location.pathname.endsWith(routes.cashier_transactions_crypto)
         ) {
             routeTo(routes.cashier_deposit);
-            transaction_history.setIsCryptoTransactionsVisible(true);
+            transaction_history.setIsTransactionsCryptoVisible(true);
         }
     }
+}
 
-    setCashierTabIndex(index: number): void {
-        this.cashier_route_tab_index = index;
+setCashierTabIndex(index: number): void {
+    this.cashier_route_tab_index = index;
+}
+
+setLoading(is_loading: boolean): void {
+    this.is_loading = is_loading;
+}
+
+setActiveTab(container: typeof this.active_container): void {
+    if(this.active_container === 'payment_agent' && container !== 'payment_agent') {
+    this.root_store.modules.cashier.payment_agent.resetPaymentAgent();
+}
+
+this.active_container = container;
     }
 
-    setLoading(is_loading: boolean): void {
-        this.is_loading = is_loading;
+accountSwitcherListener() {
+    const { client, modules } = this.root_store;
+    const { iframe, payment_agent } = modules.cashier;
+    const container = Constants.map_action[this.active_container as keyof typeof Constants.map_action];
+
+    client.setVerificationCode('', container);
+    iframe.clearIframe();
+
+    this.payment_agent = payment_agent;
+    if (payment_agent.active_tab_index === 1 && window.location.pathname.endsWith(routes.cashier_pa)) {
+        payment_agent.setActiveTab(1);
     }
 
-    setActiveTab(container: typeof this.active_container): void {
-        if (this.active_container === 'payment_agent' && container !== 'payment_agent') {
-            this.root_store.modules.cashier.payment_agent.resetPaymentAgent();
-        }
+    this.is_populating_values = false;
 
-        this.active_container = container;
-    }
+    this.onRemount();
 
-    accountSwitcherListener() {
-        const { client, modules } = this.root_store;
-        const { iframe, payment_agent } = modules.cashier;
-        const container = Constants.map_action[this.active_container as keyof typeof Constants.map_action];
-
-        client.setVerificationCode('', container);
-        iframe.clearIframe();
-
-        this.payment_agent = payment_agent;
-        if (payment_agent.active_tab_index === 1 && window.location.pathname.endsWith(routes.cashier_pa)) {
-            payment_agent.setActiveTab(1);
-        }
-
-        this.is_populating_values = false;
-
-        this.onRemount();
-
-        return Promise.resolve();
-    }
+    return Promise.resolve();
+}
 }

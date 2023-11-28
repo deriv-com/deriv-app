@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { mobileOSDetect, getPosition } from '@deriv/shared';
 import { TList, findNextFocusableNode, findPreviousFocusableNode, TListItem } from './utility';
+import { Localize } from '@deriv/translations';
 import Items from './items';
 import DisplayText from './display-text';
 import Text from '../text/text';
@@ -25,7 +26,9 @@ type TDropdown = {
     };
     has_symbol?: boolean;
     hint?: string;
+    id?: string;
     initial_offset?: number;
+    initial_height_offset?: number;
     is_align_text_left?: boolean;
     is_alignment_left?: boolean;
     is_alignment_top?: boolean;
@@ -42,6 +45,7 @@ type TDropdown = {
     onClick?: () => void;
     placeholder?: string;
     suffix_icon?: string;
+    should_show_new_label?: boolean;
     test_id?: string;
     value?: string | number;
     classNameIcon?: string;
@@ -53,6 +57,7 @@ type TDropdownList = {
     handleSelect: (item: TListItem) => void;
     has_symbol?: boolean;
     initial_offset?: number;
+    initial_height_offset?: number;
     is_align_text_left?: boolean;
     is_alignment_left?: boolean;
     is_alignment_top?: boolean;
@@ -74,6 +79,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
         handleSelect,
         has_symbol,
         initial_offset,
+        initial_height_offset,
         is_align_text_left,
         is_alignment_left,
         is_alignment_top,
@@ -156,7 +162,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
     const setListDimension = () =>
         setListDimensions([
             initial_offset || (list_ref as React.MutableRefObject<HTMLElement>).current.offsetWidth,
-            (list_ref as React.MutableRefObject<HTMLElement>).current.offsetHeight,
+            initial_height_offset || (list_ref as React.MutableRefObject<HTMLElement>).current.offsetHeight,
         ]);
 
     const getDropDownAlignment = () => {
@@ -241,6 +247,7 @@ const Dropdown = ({
     has_symbol,
     hint,
     initial_offset = 0,
+    initial_height_offset = 0,
     is_align_text_left,
     is_alignment_left,
     is_alignment_top,
@@ -256,6 +263,7 @@ const Dropdown = ({
     onClick,
     placeholder,
     suffix_icon,
+    should_show_new_label = false,
     test_id,
     value,
     classNameIcon,
@@ -485,6 +493,7 @@ const Dropdown = ({
                         handleSelect={handleSelect}
                         has_symbol={has_symbol}
                         initial_offset={initial_offset}
+                        initial_height_offset={initial_height_offset}
                         is_align_text_left={is_align_text_left}
                         is_alignment_left={is_alignment_left}
                         is_alignment_top={is_alignment_top}
@@ -499,6 +508,17 @@ const Dropdown = ({
                         suffix_icon={suffix_icon}
                         value={value}
                     />
+                    {should_show_new_label && (
+                        <Text
+                            className='dc-dropdown__label--new'
+                            weight='bold'
+                            size='xxxs'
+                            line_height='s'
+                            color='colored-background'
+                        >
+                            <Localize i18n_default_text='NEW!' />
+                        </Text>
+                    )}
                 </div>
                 {!error && hint && (
                     <Text

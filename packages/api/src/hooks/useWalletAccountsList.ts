@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import useAccountsList from './useAccountsList';
+import useDerivAccountsList from './useDerivAccountsList';
 
 /** A custom hook that gets the list of all wallet accounts for the current user. */
 const useWalletAccountsList = () => {
-    const { data: account_list_data, ...rest } = useAccountsList();
+    const { data: account_list_data, ...rest } = useDerivAccountsList();
 
     // Filter out non-wallet accounts.
     const filtered_accounts = useMemo(
@@ -15,6 +15,7 @@ const useWalletAccountsList = () => {
     const modified_accounts = useMemo(() => {
         return filtered_accounts?.map(wallet => {
             const wallet_currency_type = wallet.is_virtual ? 'Demo' : wallet.currency || '';
+            const dtrade_loginid = wallet.linked_to?.find(account => account.platform === 'dtrade')?.loginid;
 
             return {
                 ...wallet,
@@ -23,14 +24,18 @@ const useWalletAccountsList = () => {
                 /** Landing company shortcode the account belongs to. */
                 landing_company_name: wallet.landing_company_name?.replace('maltainvest', 'malta'),
                 /** Indicating whether the wallet is a maltainvest wallet. */
-                is_malta_wallet: wallet.landing_company_name === 'malta',
+                is_malta_wallet: wallet.landing_company_name === 'maltainvest',
+                /** The DTrade account ID of this wallet */
+                dtrade_loginid,
+                /** Returns if the wallet is a crypto wallet. */
+                is_crypto: wallet.currency_config?.is_crypto,
             } as const;
         });
     }, [filtered_accounts]);
 
     // Sort wallet accounts alphabetically by fiat, crypto, then virtual.
     const sorted_accounts = useMemo(() => {
-        if (!modified_accounts) return [];
+        if (!modified_accounts) return;
 
         return [...modified_accounts].sort((a, b) => {
             if (a.is_virtual !== b.is_virtual) {

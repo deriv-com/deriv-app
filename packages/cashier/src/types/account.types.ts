@@ -11,7 +11,7 @@ export type TAccount = {
     disabled?: boolean;
     error?: JSX.Element | string;
     is_crypto?: boolean;
-    is_derivez?: boolean;
+    is_ctrader?: boolean;
     is_dxtrade?: boolean;
     is_mt?: boolean;
     market_type?: string;

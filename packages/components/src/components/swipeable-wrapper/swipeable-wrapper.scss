@@ -5,9 +5,10 @@
     &__view {
         display: flex;
         flex-direction: row;
-        transition: transform 0.1s linear;
+        transition: left 0.1s linear;
         width: max-content;
         height: inherit;
+        position: relative;
     }
     &__item {
         position: relative;
@@ -16,7 +17,7 @@
 
         &--is-disabled {
             & .dc-swipeable__view {
-                transform: translateX(-100vw);
+                left: -100vw;
                 transition: none;
             }
         }
@@ -28,8 +29,13 @@
         display: flex;
         padding: 1.6rem 0.8rem;
         justify-content: space-between;
+        pointer-events: none;
         svg {
             z-index: 3;
+        }
+
+        * {
+            pointer-events: all;
         }
     }
 }

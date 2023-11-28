@@ -6,11 +6,15 @@
     gap: 1.6rem;
 
     &__container {
-        height: 100%;
+        height: max-content;
         display: flex;
         align-items: center;
         justify-content: flex-start;
         gap: 2.4rem;
+
+        & > .wallets-card__details {
+            width: 45vw;
+        }
     }
 
     &__progress-bar {

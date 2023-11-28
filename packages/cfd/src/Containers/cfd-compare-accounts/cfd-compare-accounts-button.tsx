@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { routes, getAuthenticationStatusInfo, WS, CFD_PLATFORMS } from '@deriv/shared';
+import { routes, getAuthenticationStatusInfo, WS } from '@deriv/shared';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -11,13 +11,15 @@ import {
     getAccountVerficationStatus,
     isMt5AccountAdded,
     isDxtradeAccountAdded,
+    isCTraderAccountAdded,
 } from '../../Helpers/compare-accounts-config';
+import { CATEGORY, CFD_PLATFORMS } from '../../Helpers/cfd-config';
 
 const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TCompareAccountsCard) => {
     const history = useHistory();
 
     const market_type = getMarketType(trading_platforms);
-    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
+    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode ?? '');
     const {
         modules: { cfd },
         common,
@@ -55,7 +57,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
     } = getAuthenticationStatusInfo(account_status);
 
     const type_of_account = {
-        category: is_demo ? 'demo' : 'real',
+        category: is_demo ? CATEGORY.DEMO : CATEGORY.REAL,
         type: market_type,
     };
 
@@ -66,6 +68,8 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         is_account_added = isMt5AccountAdded(current_list, market_type_shortcode, is_demo);
     } else if (trading_platforms.platform === CFD_PLATFORMS.DXTRADE) {
         is_account_added = isDxtradeAccountAdded(current_list, is_demo);
+    } else if (trading_platforms.platform === CFD_PLATFORMS.CTRADER) {
+        is_account_added = isCTraderAccountAdded(current_list, is_demo);
     }
 
     React.useEffect(() => {
@@ -88,8 +92,14 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
                 setHasSubmittedPersonalDetails(true);
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [
+        account_settings,
+        has_submitted_personal_details,
+        is_logged_in,
+        is_virtual,
+        setAccountSettings,
+        updateMT5Status,
+    ]);
 
     const is_account_status_verified = getAccountVerficationStatus(
         market_type_shortcode,

@@ -12,7 +12,6 @@ import { localize } from '@deriv/translations';
 import { MAX_STRATEGIES } from 'Constants/bot-contents';
 import { button_status } from 'Constants/button-status';
 import { TStrategy } from 'Types';
-import RootStore from './root-store';
 
 type IOnConfirmProps = {
     is_local: boolean;
@@ -33,9 +32,9 @@ interface ISaveModalStore {
 const Blockly = window.Blockly;
 
 export default class SaveModalStore implements ISaveModalStore {
-    root_store: RootStore;
+    root_store: any;
 
-    constructor(root_store: RootStore) {
+    constructor(root_store: any) {
         makeObservable(this, {
             is_save_modal_open: observable,
             button_status: observable,
@@ -160,14 +159,15 @@ export default class SaveModalStore implements ISaveModalStore {
             this.setButtonStatus(button_status.COMPLETED);
         }
 
+        this.updateBotName(bot_name);
+
         if (active_tab === 0) {
-            const workspace_id = selected_strategy.id || Blockly?.utils?.genUid();
+            const workspace_id = selected_strategy.id ?? Blockly?.utils?.genUid();
             await this.addStrategyToWorkspace(workspace_id, is_local, save_as_collection, bot_name, xml);
             if (main_strategy) await loadStrategyToBuilder(main_strategy);
         } else {
             await saveWorkspaceToRecent(xml, is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
         }
-        this.updateBotName(bot_name);
         this.toggleSaveModal();
     }
 

@@ -1,0 +1,144 @@
+.wallets-jurisdiction-card {
+    align-items: center;
+    border-radius: 1.6rem;
+    border: 0.2rem solid #f2f3f4;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 25%;
+    position: relative;
+    height: 100%;
+
+    transition-duration: 0.3s;
+    transition-property: transform, box-shadow;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+
+    &--flip {
+        transform: rotateY(180deg);
+    }
+
+    @include mobile {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    &__added-status {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        padding: 0.8rem;
+        text-align: center;
+        border-radius: 0 0 1.3rem 1.3rem;
+        background: var(--brand-blue, #85acb0);
+    }
+
+    &__link {
+        color: #ff444f;
+    }
+
+    &:hover:not(.wallets-jurisdiction-card--added) {
+        box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
+    }
+
+    &--added {
+        user-select: none;
+        cursor: not-allowed;
+    }
+
+    &--selected {
+        border: 0.2rem solid #85acb0;
+        box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
+    }
+
+    &-front {
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        padding: 2rem 1.6rem 3.6rem;
+
+        @include mobile {
+            width: 100%;
+        }
+
+        -webkit-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+        transition: transform 0.3s;
+
+        &--flip {
+            -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+        }
+
+        &__label {
+            margin-bottom: 1.5rem;
+            text-align: center;
+
+            @include mobile {
+                margin-top: 2.5rem;
+            }
+        }
+
+        &__tag {
+            background-color: #661b20;
+            border-radius: 0.4rem;
+            color: #ffffff;
+            font-weight: 700;
+            padding: 0.5rem 1rem;
+
+            &-icons {
+                display: flex;
+                gap: 0.6rem;
+            }
+
+            &--red-darker {
+                background: #661b20;
+            }
+            &--red-dark {
+                background: #b33037;
+            }
+            &--red-light {
+                background: #ff444f;
+            }
+            &--yellow-dark {
+                background: #b3760d;
+            }
+            &--yellow-light {
+                background: #ffa912;
+            }
+            &--violet-dark {
+                background: #4a3871;
+            }
+            &--brown-dark {
+                background: #664407;
+            }
+        }
+    }
+}
+
+@keyframes flip {
+    from {
+        transform: rotateY(-180deg);
+    }
+    to {
+        transform: rotateY(0deg);
+    }
+}
+
+.wallets-dynamic-leverage-modal-transition {
+    animation: flip 0.6s;
+}
+
+.wallets-jurisdiction-card-rows > .wallets-jurisdiction-card-row {
+    border-bottom: 0.2rem solid #f2f3f4;
+}
+
+.wallets-jurisdiction-card-rows > .wallets-jurisdiction-card-row:last-child {
+    border-bottom: none;
+}

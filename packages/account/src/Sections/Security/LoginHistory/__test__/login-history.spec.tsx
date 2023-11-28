@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
-import { WS, isMobile } from '@deriv/shared';
+import { WS } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import LoginHistory from '../login-history';
 import { getLoginHistoryFormattedData } from '../../../../../../utils/src/getLoginHistoryFormattedData';
@@ -16,7 +16,6 @@ jest.mock('../../../../../../utils/src/getLoginHistoryFormattedData', () => ({
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
     WS: {
         authorized: {
             fetchLoginHistory: jest.fn(() =>
@@ -59,7 +58,6 @@ describe('<LoginHistory />', () => {
                 id: 0,
             },
         ]);
-        (isMobile as jest.Mock).mockReturnValue(false);
         mock_store = mockStore({
             client: {
                 is_switching: false,
@@ -71,7 +69,7 @@ describe('<LoginHistory />', () => {
         });
     });
 
-    it('should render Login History List when isMobile is true', async () => {
+    it('should render Login History List when is_mobile is true', async () => {
         mock_store.ui.is_mobile = true;
         renderComponent();
         await waitFor(() => {

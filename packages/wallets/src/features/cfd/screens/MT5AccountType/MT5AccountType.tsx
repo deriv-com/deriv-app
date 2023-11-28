@@ -8,7 +8,7 @@ import './MT5AccountType.scss';
 const marketTypeDetailsMapper = {
     all: {
         description:
-            'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.',
+            'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities cryptocurrencies, ETFs and synthetic indices.',
         icon: <SwapFreeMT5 />,
         title: 'Swap-Free',
     },

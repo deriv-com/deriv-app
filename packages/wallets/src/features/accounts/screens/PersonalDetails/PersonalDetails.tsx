@@ -1,4 +1,5 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useEffect, useMemo } from 'react';
+import * as Yup from 'yup';
 import { useResidenceList, useSettings } from '@deriv/api';
 import { FlowTextField, Loader, useFlow, WalletDropdown, WalletText } from '../../../../components';
 import { accountOpeningReasonList } from './constants';
@@ -8,6 +9,37 @@ const PersonalDetails = () => {
     const { data: residenceList, isLoading, isSuccess: isResidenceListSuccess } = useResidenceList();
     const { formValues, setFormValues } = useFlow();
     const { data: getSettings } = useSettings();
+
+    const countryCodeToPatternMapper = useMemo(() => {
+        const countryCodeToPatternMapping: Record<string, string> = {};
+
+        if (isResidenceListSuccess) {
+            residenceList.forEach(residence => {
+                if (residence.value && !(residence.value in countryCodeToPatternMapping)) {
+                    countryCodeToPatternMapping[residence.value] = residence?.tin_format?.[0] ?? '';
+                }
+            });
+        }
+        return countryCodeToPatternMapping;
+    }, [isResidenceListSuccess, residenceList]);
+
+    const tinValidator = useMemo(() => {
+        const patternStr = countryCodeToPatternMapper[formValues?.taxResidence];
+        try {
+            if (patternStr) {
+                Yup.string()
+                    .required('Please fill in Tax identification number')
+                    .matches(new RegExp(patternStr), 'The format is incorrect.')
+                    .validateSync(formValues?.taxIdentificationNumber);
+            } else {
+                Yup.string()
+                    .required('Please fill in Tax identification number')
+                    .validateSync(formValues?.taxIdentificationNumber);
+            }
+        } catch (err) {
+            return (err as Yup.ValidationError).message;
+        }
+    }, [countryCodeToPatternMapper, formValues?.taxIdentificationNumber, formValues?.taxResidence]);
 
     useEffect(() => {
         if (getSettings && isResidenceListSuccess) {
@@ -79,8 +111,10 @@ const PersonalDetails = () => {
                         />
                         <FlowTextField
                             defaultValue={getSettings?.tax_identification_number ?? formValues?.taxIdentificationNumber}
-                            errorMessage={'Please fill in tax residence'}
-                            isInvalid={!formValues.taxResidence || !formValues.taxIdentificationNumber}
+                            errorMessage={!formValues?.taxResidence ? 'Please fill in tax residence' : tinValidator}
+                            isInvalid={
+                                !formValues.taxResidence || !formValues.taxIdentificationNumber || Boolean(tinValidator)
+                            }
                             label='Tax identification number*'
                             name='taxIdentificationNumber'
                         />

@@ -26,7 +26,7 @@ const WalletTextField = forwardRef(
             maxLength,
             message,
             messageVariant = 'general',
-            name = 'wallet-textfield',
+            name = 'walletTextField',
             onChange,
             renderLeftIcon,
             renderRightIcon,

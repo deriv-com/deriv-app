@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, FormikProps, FormikValues } from 'formik';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { Button, Icon, Text } from '@deriv/components';
 import Uploader from './uploader';
@@ -43,22 +43,20 @@ const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }: TSelfie
                             <FormBody className='form-body' scroll_offset={isMobile() ? '18rem' : '8rem'}>
                                 <div className={`${ROOT_CLASS}__fields-content`}>
                                     <Text as='h3' size='s' weight='bold' color='prominent'>
-                                        {localize('Upload your selfie')}
+                                        <Localize i18n_default_text='Upload your selfie' />
                                     </Text>
                                     <div className={`${ROOT_CLASS}__uploaders-wrap`}>
                                         <Uploader
                                             data={SELFIE_DOCUMENT}
                                             value={values ? values[SELFIE_DOCUMENT.name] : ''}
-                                            is_full={true}
+                                            is_full
                                             onChange={onFileDrop}
                                             has_frame
                                         />
                                     </div>
                                     <div className={`${ROOT_CLASS}__notice`}>
                                         <Text as='p' size='xs' color='general'>
-                                            {localize(
-                                                'Before uploading, please ensure that you’re facing forward in the selfie, your face is within the frame, and your eyes are clearly visible even if you’re wearing glasses.'
-                                            )}
+                                            <Localize i18n_default_text='Before uploading, please ensure that you’re facing forward in the selfie, your face is within the frame, and your eyes are clearly visible even if you’re wearing glasses.' />
                                         </Text>
                                     </div>
                                 </div>
@@ -70,7 +68,7 @@ const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }: TSelfie
                                         secondary
                                         large
                                         text={localize('Go back')}
-                                        icon={<Icon icon={'IcButtonBack'} size={16} />}
+                                        icon={<Icon icon='IcButtonBack' />}
                                     />
                                     <Button
                                         type='submit'

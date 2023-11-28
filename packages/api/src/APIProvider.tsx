@@ -23,8 +23,8 @@ const getSharedQueryClientContext = (): QueryClient => {
     if (!window.ReactQueryClient) {
         window.ReactQueryClient = new QueryClient({
             logger: {
-                log: () => null,
-                warn: () => null,
+                log: console.log, // eslint-disable-line no-console
+                warn: console.warn, // eslint-disable-line no-console
                 error: () => null,
             },
         });

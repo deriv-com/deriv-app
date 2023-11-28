@@ -39,6 +39,7 @@ export { default as useIdentityDocumentVerificationAdd } from './useIdentityDocu
 export { default as useJurisdictionStatus } from './useJurisdictionStatus';
 export { default as useLandingCompany } from './useLandingCompany';
 export { default as useMT5AccountsList } from './useMT5AccountsList';
+export { default as useMT5Deposit } from './useMT5Deposit';
 export { default as useOnfido } from './useOnfido';
 export { default as useOnfidoNotificationEvent } from './useOnfidoNotificationEvent';
 export { default as useOnfidoServiceToken } from './useOnfidoServiceToken';
@@ -49,6 +50,7 @@ export { default as useSettings } from './useSettings';
 export { default as useSortedMT5Accounts } from './useSortedMT5Accounts';
 export { default as useStatesList } from './useStatesList';
 export { default as useTradingAccountsList } from './useTradingAccountsList';
+export { default as useTradingPlatformDeposit } from './useTradingPlatformDeposit';
 export { default as useTradingPlatformInvestorPasswordChange } from './useTradingPlatformInvestorPasswordChange';
 export { default as useTradingPlatformInvestorPasswordReset } from './useTradingPlatformInvestorPasswordReset';
 export { default as useTradingPlatformPasswordChange } from './useTradingPlatformPasswordChange';

@@ -1,4 +1,5 @@
 export * from './AccountsList';
+export * from './AppCard';
 export * from './Base';
 export * from './DerivAppsSection';
 export * from './DesktopWalletsList';
@@ -31,6 +32,7 @@ export * from './WalletsAppLinkedWithWalletIcon';
 export * from './WalletsCarousel';
 export * from './WalletsCarouselContent';
 export * from './WalletsErrorScreen';
+export * from './WalletsPercentageSelector';
 export * from './WalletsPrimaryTabs';
 export * from './WalletSuccess';
 export * from './WalletTourGuide';

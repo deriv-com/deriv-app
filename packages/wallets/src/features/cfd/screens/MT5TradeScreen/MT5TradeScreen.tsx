@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList, useMT5AccountsList } from '@deriv/api';
+import React, { FC, useMemo } from 'react';
+import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
 import { WalletListCardBadge } from '../../../../components';
 import { InlineMessage, WalletText } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
@@ -11,10 +11,13 @@ import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
 import { MT5TradeLink } from './MT5TradeLink';
 import './MT5TradeScreen.scss';
 
-const MT5TradeScreen = () => {
+type MT5TradeScreenProps = {
+    mt5Account?: THooks.MT5AccountsList;
+};
+
+const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const { isDesktop } = useDevice();
     const { getModalState } = useModal();
-    const { data: mt5AccountsList } = useMT5AccountsList();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
     const { data: activeWalletData } = useActiveWalletAccount();
@@ -26,14 +29,14 @@ const MT5TradeScreen = () => {
         () => ({
             ctrader: ctraderAccountsList,
             dxtrade: dxtradeAccountsList,
-            mt5: mt5AccountsList,
+            mt5: [mt5Account],
         }),
-        [ctraderAccountsList, dxtradeAccountsList, mt5AccountsList]
+        [ctraderAccountsList, dxtradeAccountsList, mt5Account]
     );
 
     const details = useMemo(() => {
         return platform === 'mt5'
-            ? platformToAccountsListMapper.mt5?.filter(account => account.market_type === marketType)[0]
+            ? platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]
             : platformToAccountsListMapper.dxtrade?.[0];
     }, [platform, marketType, platformToAccountsListMapper]);
 

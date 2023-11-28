@@ -5,7 +5,7 @@ import { useExtendedTransferAccountProperties, useSortedTransferAccounts } from 
 import type { TInitialTransferFormValues } from '../types';
 
 type TReceipt = {
-    feeAmount?: number;
+    feeAmount?: string;
     feePercentage?: number;
     fromAccount: TInitialTransferFormValues['fromAccount'];
     fromAmount: TInitialTransferFormValues['fromAmount'];
@@ -16,9 +16,11 @@ type TReceipt = {
 export type TTransferContext = {
     accounts: ReturnType<typeof useExtendedTransferAccountProperties>['accounts'];
     activeWallet: ReturnType<typeof useExtendedTransferAccountProperties>['activeWallet'];
+    error: ReturnType<typeof useTransferBetweenAccounts>['error'];
     isLoading: boolean;
     receipt?: TReceipt;
     requestTransferBetweenAccounts: (values: TInitialTransferFormValues) => void;
+    resetTransfer: VoidFunction;
 };
 
 const TransferContext = createContext<TTransferContext | null>(null);
@@ -36,15 +38,15 @@ type TProps = {
 };
 
 const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts: transferAccounts, children }) => {
-    const { data, isLoading: isTransferAccountsLoading, mutate, mutateAsync } = useTransferBetweenAccounts();
+    const { data, error, isLoading: isTransferAccountsLoading, mutate, mutateAsync } = useTransferBetweenAccounts();
     const {
         accounts,
         activeWallet,
         isLoading: isModifiedAccountsLoading,
-    } = useExtendedTransferAccountProperties(transferAccounts || data?.accounts);
+    } = useExtendedTransferAccountProperties(data?.accounts || transferAccounts);
     const [receipt, setReceipt] = useState<TReceipt>();
     const sortedAccounts = useSortedTransferAccounts(accounts);
-    const isLoading = (!data && !transferAccounts) || isTransferAccountsLoading || isModifiedAccountsLoading;
+    const isLoading = (!data?.accounts && !transferAccounts) || isTransferAccountsLoading || isModifiedAccountsLoading;
 
     const requestTransferAccounts = useCallback(() => mutate({ accounts: 'all' }), [mutate]);
 
@@ -63,8 +65,8 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
                 if (!isSameCurrency) {
                     feePercentage =
                         fromAccount?.currencyConfig?.transfer_between_accounts.fees[toAccount?.currency || ''] || 0;
-                    feeAmount = Number(
-                        (feePercentage * fromAmount).toFixed(fromAccount?.currencyConfig?.fractional_digits)
+                    feeAmount = ((feePercentage / 100) * fromAmount).toFixed(
+                        fromAccount?.currencyConfig?.fractional_digits
                     );
                 }
 
@@ -81,13 +83,26 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
         [mutateAsync]
     );
 
+    const resetTransfer = useCallback(() => {
+        setReceipt(undefined);
+        requestTransferAccounts();
+    }, [requestTransferAccounts]);
+
     useEffect(() => {
         if (!transferAccounts) requestTransferAccounts();
     }, [requestTransferAccounts, transferAccounts]);
 
     return (
         <TransferContext.Provider
-            value={{ accounts: sortedAccounts, activeWallet, isLoading, receipt, requestTransferBetweenAccounts }}
+            value={{
+                accounts: sortedAccounts,
+                activeWallet,
+                error,
+                isLoading,
+                receipt,
+                requestTransferBetweenAccounts,
+                resetTransfer,
+            }}
         >
             {children}
         </TransferContext.Provider>

@@ -39,8 +39,13 @@
         color: #ff444f;
     }
 
-    &:hover {
+    &:hover:not(.wallets-jurisdiction-card--added) {
         box-shadow: 0rem 2.4rem 4.8rem 0rem rgba(14, 14, 14, 0.18);
+    }
+
+    &--added {
+        user-select: none;
+        cursor: not-allowed;
     }
 
     &--selected {
@@ -128,4 +133,12 @@
 
 .wallets-dynamic-leverage-modal-transition {
     animation: flip 0.6s;
+}
+
+.wallets-jurisdiction-card-rows > .wallets-jurisdiction-card-row {
+    border-bottom: 0.2rem solid #f2f3f4;
+}
+
+.wallets-jurisdiction-card-rows > .wallets-jurisdiction-card-row:last-child {
+    border-bottom: none;
 }

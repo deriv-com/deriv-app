@@ -9,97 +9,104 @@ import { CFD_PLATFORMS, MARKET_TYPE, CATEGORY, JURISDICTION, REGION, MARKET_TYPE
 // Map the accounts according to the market type
 const getHighlightedIconLabel = (
     trading_platforms: TModifiedTradingPlatformAvailableAccount,
-    selected_region?: string,
-    is_demo?: boolean
+    selected_region?: string
 ): TInstrumentsIcon[] => {
     const market_type = getMarketType(trading_platforms);
     const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode ?? '');
-    // Forex for these: MT5 Financial Vanuatu, MT5 Financial Labuan
-    const forex_label =
-        market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN ||
-        market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU ||
-        is_demo ||
-        trading_platforms.platform === CFD_PLATFORMS.DXTRADE ||
-        trading_platforms.platform === CFD_PLATFORMS.CTRADER ||
-        selected_region === REGION.EU ||
-        (trading_platforms.platform === CFD_PLATFORMS.MT5 && market_type_shortcode === 'all_svg')
-            ? localize('Forex')
-            : localize('Forex: standard/micro');
+    const getForexLabel = () => {
+        if (selected_region === REGION.EU) {
+            return localize('Forex');
+        } else if (market_type_shortcode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN) {
+            return localize('Forex: standard/exotic');
+        } else if (
+            (trading_platforms.platform === CFD_PLATFORMS.MT5 &&
+                market_type_shortcode === MARKET_TYPE_SHORTCODE.ALL_SVG) ||
+            trading_platforms.platform === CFD_PLATFORMS.CTRADER
+        ) {
+            return localize('Forex: major/minor');
+        }
+        return localize('Forex: standard/micro');
+    };
 
     switch (trading_platforms.market_type) {
         case MARKET_TYPE.GAMING:
             return [
-                { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true },
-                { icon: 'Baskets', text: localize('Baskets'), highlighted: true },
-                { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
+                { icon: 'Forex', text: getForexLabel(), highlighted: false },
                 { icon: 'Stocks', text: localize('Stocks'), highlighted: false },
                 { icon: 'StockIndices', text: localize('Stock indices'), highlighted: false },
                 { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
-                { icon: 'Forex', text: forex_label, highlighted: false },
                 { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: false },
-                { icon: 'ETF', text: localize('ETF'), highlighted: false },
+                { icon: 'ETF', text: localize('ETFs'), highlighted: false },
+                { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: true },
+                { icon: 'Baskets', text: localize('Basket indices'), highlighted: true },
+                { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
             ];
         case MARKET_TYPE.FINANCIAL:
             switch (trading_platforms.shortcode) {
                 case JURISDICTION.MALTA_INVEST:
                     return [
-                        { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true, is_asterisk: true },
-                        { icon: 'Forex', text: forex_label, highlighted: true },
+                        { icon: 'Forex', text: getForexLabel(), highlighted: true },
                         { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                         { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                         { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
                         { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
+                        {
+                            icon: 'Synthetics',
+                            text: localize('Synthetic indices'),
+                            highlighted: true,
+                            is_asterisk: true,
+                        },
                     ];
                 case JURISDICTION.LABUAN:
                     return [
-                        { icon: 'Synthetics', text: localize('Synthetics'), highlighted: false },
-                        { icon: 'Baskets', text: localize('Baskets'), highlighted: false },
-                        { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
+                        { icon: 'Forex', text: getForexLabel(), highlighted: true },
                         { icon: 'Stocks', text: localize('Stocks'), highlighted: false },
                         { icon: 'StockIndices', text: localize('Stock indices'), highlighted: false },
                         { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
-                        { icon: 'Forex', text: forex_label, highlighted: true },
                         { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                        { icon: 'ETF', text: localize('ETF'), highlighted: true },
+                        { icon: 'ETF', text: localize('ETFs'), highlighted: false },
+                        { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: false },
+                        { icon: 'Baskets', text: localize('Basket indices'), highlighted: false },
+                        { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
                     ];
                 default:
                     return [
-                        { icon: 'Synthetics', text: localize('Synthetics'), highlighted: false },
-                        { icon: 'Baskets', text: localize('Baskets'), highlighted: false },
-                        { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
+                        { icon: 'Forex', text: getForexLabel(), highlighted: true },
                         { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                         { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                         { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
-                        { icon: 'Forex', text: forex_label, highlighted: true },
                         { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                        { icon: 'ETF', text: localize('ETF'), highlighted: true },
+                        { icon: 'ETF', text: localize('ETFs'), highlighted: true },
+                        { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: false },
+                        { icon: 'Baskets', text: localize('Basket indices'), highlighted: false },
+                        { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
                     ];
             }
         case MARKET_TYPE.ALL:
         default:
             if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
                 return [
-                    { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true },
-                    { icon: 'Baskets', text: localize('Baskets'), highlighted: false },
-                    { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
+                    { icon: 'Forex', text: getForexLabel(), highlighted: true },
                     { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                     { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
-                    { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
-                    { icon: 'Forex', text: forex_label, highlighted: true },
+                    { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
                     { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                    { icon: 'ETF', text: localize('ETF'), highlighted: true },
+                    { icon: 'ETF', text: localize('ETFs'), highlighted: true },
+                    { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: true },
+                    { icon: 'Baskets', text: localize('Basket indices'), highlighted: false },
+                    { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
                 ];
             }
             return [
-                { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true },
-                { icon: 'Baskets', text: localize('Baskets'), highlighted: true },
-                { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
+                { icon: 'Forex', text: getForexLabel(), highlighted: true },
                 { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                 { icon: 'StockIndices', text: localize('Stock indices'), highlighted: true },
                 { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
-                { icon: 'Forex', text: forex_label, highlighted: true },
                 { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                { icon: 'ETF', text: localize('ETF'), highlighted: true },
+                { icon: 'ETF', text: localize('ETFs'), highlighted: true },
+                { icon: 'Synthetics', text: localize('Synthetic indices'), highlighted: true },
+                { icon: 'Baskets', text: localize('Basket indices'), highlighted: true },
+                { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: true },
             ];
     }
 };
@@ -254,7 +261,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 localize('Financial Commission'),
                 localize('Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)'),
                 '',
-                'Up to 1:30'
+                '1:30'
             );
         // Dxtrade
         case MARKET_TYPE_SHORTCODE.ALL_DXTRADE:

@@ -144,14 +144,16 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                             </div>
                         )}
                     </ThemedScrollbars>
-                    <div className='qs__body__content__footer'>
-                        <Button secondary disabled={!isValid} onClick={onEdit}>
-                            {localize('Edit')}
-                        </Button>
-                        <Button data-testid='qs-run-button' primary onClick={handleSubmit} disabled={!isValid}>
-                            {localize('Run')}
-                        </Button>
-                    </div>
+                    {active_tab === 'TRADE_PARAMETERS' && (
+                        <div className='qs__body__content__footer'>
+                            <Button secondary disabled={!isValid} onClick={onEdit}>
+                                {localize('Edit')}
+                            </Button>
+                            <Button data-testid='qs-run-button' primary onClick={handleSubmit} disabled={!isValid}>
+                                {localize('Run')}
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

@@ -109,6 +109,7 @@
 
                 @include mobile() {
                     padding: 0 1.6rem 1.6rem;
+                    margin-top: 1.6rem;
                 }
 
                 &__tabs {
@@ -548,6 +549,9 @@
         }
         &__content {
             margin-bottom: 0.8rem;
+        }
+        &__image {
+            width: 100%;
         }
     }
 }

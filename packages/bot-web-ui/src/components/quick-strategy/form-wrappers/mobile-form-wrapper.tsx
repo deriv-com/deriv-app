@@ -1,10 +1,11 @@
 import React from 'react';
+import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { Button, SelectNative, Text, ThemedScrollbars } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { STRATEGIES } from '../config';
+import { FORM_TABS, STRATEGIES } from '../config';
 import '../quick-strategy.scss';
 
 type TMobileFormWrapper = {
@@ -58,17 +59,12 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                 <SelectNative
                                     list_items={dropdown_list}
                                     value={selected_strategy}
-                                    // label={localize(label)}
+                                    label={localize('Strategy')}
                                     should_show_empty_option={false}
                                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                         onChangeStrategy(e.target.value);
                                     }}
                                 />
-                            </div>
-                        </div>
-                        <div className='qs__body__content__description'>
-                            <div>
-                                <Text size='xxs'>{strategy.description}</Text>
                             </div>
                         </div>
                         <div className='qs__body__content__head'>
@@ -78,11 +74,14 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                     const cs = 'qs__body__content__head__tabs__tab';
                                     return (
                                         <span
-                                            className={classNames(cs, { active, disabled: tab?.disabled })}
+                                            className={classNames(cs, {
+                                                active,
+                                                disabled: !strategy.long_description ? tab?.disabled : false,
+                                            })}
                                             key={tab.value}
                                             onClick={() => setActiveTab(tab.value)}
                                         >
-                                            <Text size='xs' weight={active ? 'bold' : 'normal'}>
+                                            <Text size='xs' weight={active ? 'bold' : 'lighter'}>
                                                 {tab.label}
                                             </Text>
                                         </span>
@@ -90,19 +89,54 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                 })}
                             </div>
                         </div>
-                        <div className='qs__body__content__form'>{children}</div>
+                        {active_tab === 'TRADE_PARAMETERS' ? (
+                            <>
+                                <div className='qs__body__content__description'>
+                                    <div>
+                                        <Text size='xxs'>{strategy.description}</Text>
+                                    </div>
+                                </div>
+                                <div className='qs__body__content__form'>{children}</div>
+                            </>
+                        ) : (
+                            <div className='qs__body__content__description'>
+                                <div>
+                                    {strategy?.long_description?.map((data, index) => {
+                                        return (
+                                            <div key={index}>
+                                                <div className='long_description__title'>
+                                                    <Text size='xxs' weight='bold'>
+                                                        {data.title}
+                                                    </Text>
+                                                </div>
+                                                <div className='long_description__content'>
+                                                    <Text size='xxs'>{data.content}</Text>
+                                                </div>
+                                                {data.image && (
+                                                    <div>
+                                                        <img className='long_description__image' src={data.image} />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
                     </ThemedScrollbars>
-                    <div className='qs__body__content__footer'>
-                        <Button
-                            primary
-                            data-testid='qs-run-button'
-                            type='submit'
-                            onClick={handleSubmit}
-                            disabled={!isValid}
-                        >
-                            {localize('Run')}
-                        </Button>
-                    </div>
+                    {active_tab === 'TRADE_PARAMETERS' && (
+                        <div className='qs__body__content__footer'>
+                            <Button
+                                primary
+                                data-testid='qs-run-button'
+                                type='submit'
+                                onClick={handleSubmit}
+                                disabled={!isValid}
+                            >
+                                {localize('Run')}
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

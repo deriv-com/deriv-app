@@ -1,28 +1,10 @@
 import React from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { WalletButton, WalletsPercentageSelector, WalletText, WalletTextField } from '../../../../../../components';
+import { useWithdrawalCryptoInput } from '../../hooks';
 import { useWithdrawalCryptoContext } from '../../provider/WithdrawalCryptoProvider';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
 import './WithdrawalCryptoForm.scss';
-
-const MIN_ADDRESS_LENGTH = 25;
-const MAX_ADDRESS_LENGTH = 64;
-
-export type TForm = {
-    cryptoAddress: string;
-    cryptoAmount: string;
-    fiatAmount: string;
-};
-
-const validateCryptoAddress = (address: string) => {
-    if (!address) return 'This field is required.';
-
-    if (address.length < MIN_ADDRESS_LENGTH || address.length > MAX_ADDRESS_LENGTH) {
-        return 'Your wallet address should have 25 to 64 characters.';
-    }
-
-    return undefined;
-};
 
 const WithdrawalCryptoForm: React.FC = () => {
     const {
@@ -33,6 +15,7 @@ const WithdrawalCryptoForm: React.FC = () => {
         getConvertedFiatAmount,
         requestCryptoWithdrawal,
     } = useWithdrawalCryptoContext();
+    const { validateCryptoAddress } = useWithdrawalCryptoInput();
 
     return (
         <Formik

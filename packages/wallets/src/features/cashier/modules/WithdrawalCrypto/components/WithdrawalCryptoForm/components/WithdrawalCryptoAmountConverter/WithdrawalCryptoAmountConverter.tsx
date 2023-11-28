@@ -3,27 +3,17 @@ import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { WalletTextField } from '../../../../../../../../components';
 import ArrowBold from '../../../../../../../../public/images/ic-back-arrow.svg';
+import { useWithdrawalCryptoInput } from '../../../../hooks';
 import { useWithdrawalCryptoContext } from '../../../../provider';
-import type { TForm } from '../../WithdrawalCryptoForm';
+import type { TWithdrawalForm } from '../../../../types';
 import './WithdrawalCryptoAmountConverter.scss';
 
-const helperMessageMapper = {
-    decimalPlacesExceeded: (limit: number) => `Up to ${limit} decimal places are allowed.`,
-    insufficientFunds: 'Insufficient funds',
-    invalidInput: 'Should be a valid number.',
-    withdrawalLimitError: (min: string, max: string) => {
-        return `The current allowed withdraw amount is ${min} to ${max}.`;
-    },
-};
-
 const WithdrawalCryptoAmountConverter: React.FC = () => {
-    const { activeWallet, exchangeRates, getConvertedCryptoAmount, getConvertedFiatAmount, getCurrencyConfig } =
+    const { activeWallet, exchangeRates, getConvertedCryptoAmount, getConvertedFiatAmount } =
         useWithdrawalCryptoContext();
+    const { validateCryptoInput, validateFiatInput } = useWithdrawalCryptoInput();
     const [isCryptoInputActive, setIsCryptoInputActive] = useState(false);
-    const { errors, setValues, values } = useFormikContext<TForm>();
-    const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency_config?.fractional_digits;
-    const FRACTIONAL_DIGITS_FIAT = getCurrencyConfig('USD')?.fractional_digits;
-    const MINIMUM_WITHDRAWAL_AMOUNT = activeWallet?.currency_config?.minimum_withdrawal;
+    const { errors, setValues, values } = useFormikContext<TWithdrawalForm>();
 
     useEffect(() => {
         // update the amount when the exchangeRate is updated.
@@ -40,48 +30,9 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeWallet?.currency, exchangeRates?.data?.rates]);
 
-    const validateCryptoInput = (value: string) => {
-        if (!value.length) return;
-
-        const amount = parseFloat(parseFloat(value).toFixed(FRACTIONAL_DIGITS_CRYPTO));
-
-        if (Number.isNaN(amount)) return helperMessageMapper.invalidInput;
-
-        if (activeWallet?.balance && amount > activeWallet?.balance) return helperMessageMapper.insufficientFunds;
-
-        if (
-            MINIMUM_WITHDRAWAL_AMOUNT &&
-            activeWallet?.balance &&
-            activeWallet.currency &&
-            amount < MINIMUM_WITHDRAWAL_AMOUNT
-        ) {
-            return helperMessageMapper.withdrawalLimitError(
-                MINIMUM_WITHDRAWAL_AMOUNT.toFixed(FRACTIONAL_DIGITS_CRYPTO),
-                activeWallet?.display_balance
-            );
-        }
-
-        const fractionalPart = value.split('.');
-        if (FRACTIONAL_DIGITS_CRYPTO && fractionalPart[1] && fractionalPart[1].length > FRACTIONAL_DIGITS_CRYPTO)
-            return helperMessageMapper.decimalPlacesExceeded(FRACTIONAL_DIGITS_CRYPTO);
-    };
-
-    const validateFiatInput = (value: string) => {
-        if (!value.length) return;
-
-        if (Number.isNaN(parseFloat(value))) return helperMessageMapper.invalidInput;
-
-        const fractionalPart = value.split('.');
-        if (FRACTIONAL_DIGITS_FIAT && fractionalPart[1] && fractionalPart[1].length > FRACTIONAL_DIGITS_FIAT)
-            return helperMessageMapper.decimalPlacesExceeded(FRACTIONAL_DIGITS_FIAT);
-    };
-
     const onChangeCryptoInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseFloat(e.target.value);
-        const convertedValue =
-            !Number.isNaN(value) && exchangeRates?.data?.rates && activeWallet?.currency
-                ? (value / exchangeRates?.data.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_FIAT)
-                : '';
+        const convertedValue = getConvertedFiatAmount(e.target.value);
+
         setValues(values => ({
             ...values,
             cryptoAmount: e.target.value,
@@ -90,11 +41,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
     };
 
     const onChangeFiatInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseFloat(e.target.value);
-        const convertedValue =
-            !Number.isNaN(value) && exchangeRates?.data?.rates && activeWallet?.currency
-                ? (value * exchangeRates?.data?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_CRYPTO)
-                : '';
+        const convertedValue = getConvertedCryptoAmount(e.target.value);
 
         setValues(values => ({
             ...values,

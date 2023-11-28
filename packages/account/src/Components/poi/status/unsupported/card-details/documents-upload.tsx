@@ -9,7 +9,7 @@ import Uploader from './uploader';
 import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS, date_field, getDocumentIndex } from '../constants';
 import FormFooter from '../../../../form-footer';
-import FormBody from 'Components/form-body';
+import FormBody from '../../../../form-body';
 
 const icons = [
     {

@@ -93,27 +93,35 @@ const FAQContent = observer(({ faq_list }: TFAQContent) => {
         }));
     };
 
-    return (
-        <div data-testid='id-faq__wrapper'>
-            <div className='faq__wrapper' ref={faq_wrapper_element}>
-                {faq_list?.length > 0 && (
-                    <>
-                        {active_tab_tutorials === 2 && (
-                            <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
-                                <Localize i18n_default_text='FAQ' />
-                            </Text>
-                        )}
-                        <div
-                            data-testid='id-accordion-test'
-                            onClick={handleAccordionClick}
-                            onKeyDown={handleKeyboardEvent}
-                        >
-                            <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
-                        </div>
-                    </>
-                )}
+    return React.useMemo(
+        () => (
+            <div data-testid='id-faq__wrapper'>
+                <div className='faq__wrapper' ref={faq_wrapper_element}>
+                    {faq_list?.length > 0 && (
+                        <>
+                            {active_tab_tutorials === 2 && (
+                                <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
+                                    <Localize i18n_default_text='FAQ' />
+                                </Text>
+                            )}
+                            <div
+                                data-testid='id-accordion-test'
+                                onClick={handleAccordionClick}
+                                onKeyDown={handleKeyboardEvent}
+                            >
+                                <Accordion
+                                    className='faq__wrapper__content'
+                                    list={getList()}
+                                    icon_close=''
+                                    icon_open=''
+                                />
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
-        </div>
+        ),
+        [faq_list]
     );
 });
 

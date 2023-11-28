@@ -8,11 +8,13 @@ import SearchInput from './common/search-input';
 
 type TTutorialsTabMobile = {
     tutorial_tabs: TContent;
+    prev_active_tutorials: number;
 };
 
 const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: TTutorialsTabMobile) => {
     const { dashboard } = useDBotStore();
-    const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue } = dashboard;
+    const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue, resetTutorialTabContent } =
+        dashboard;
 
     const search = faq_search_value?.toLowerCase();
     const initialSelectedTab = { label: '', content: '' };
@@ -46,6 +48,7 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
         onFocusSearch();
         setFAQSearchValue('');
         setActiveTabTutorial(2);
+        resetTutorialTabContent();
     };
 
     React.useEffect(() => {

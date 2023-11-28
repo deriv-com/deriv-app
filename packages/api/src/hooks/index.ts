@@ -39,9 +39,11 @@ export { default as useIdentityDocumentVerificationAdd } from './useIdentityDocu
 export { default as useJurisdictionStatus } from './useJurisdictionStatus';
 export { default as useLandingCompany } from './useLandingCompany';
 export { default as useMT5AccountsList } from './useMT5AccountsList';
+export { default as useMT5Deposit } from './useMT5Deposit';
 export { default as useOnfido } from './useOnfido';
 export { default as useOnfidoNotificationEvent } from './useOnfidoNotificationEvent';
 export { default as useOnfidoServiceToken } from './useOnfidoServiceToken';
+export { default as useOtherCFDPlatformsDeposit } from './useOtherCFDPlatformsDeposit';
 export { default as usePOA } from './usePOA';
 export { default as usePOI } from './usePOI';
 export { default as useResidenceList } from './useResidenceList';

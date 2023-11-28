@@ -28,28 +28,6 @@ const getSharedQueryClientContext = (): QueryClient => {
     return window.ReactQueryClient;
 };
 
-let timer_id: NodeJS.Timer;
-/**
- * Handles reconnection logic by reinitializing the WebSocket instance if it is in
- * closing or closed state.
- * @param wss_url WebSocket URL
- * @returns
- */
-const handleReconnection = (wss_url: string) => {
-    if (!window.WSConnections) return;
-    const existingWebsocketInstance = window.WSConnections[wss_url];
-    if (
-        !existingWebsocketInstance ||
-        !(existingWebsocketInstance instanceof WebSocket) ||
-        [2, 3].includes(existingWebsocketInstance.readyState)
-    ) {
-        clearTimeout(timer_id);
-        timer_id = setTimeout(() => {
-            initializeDerivAPI();
-        }, 1000);
-    }
-};
-
 /**
  * Retrieves the WebSocket URL based on the current environment.
  * @returns {string} The WebSocket URL.
@@ -69,7 +47,7 @@ const getWebSocketURL = () => {
  * @param {string} wss_url - The WebSocket URL.
  * @returns {WebSocket} The WebSocket instance associated with the provided URL.
  */
-const getWebsocketInstance = (wss_url: string) => {
+const getWebsocketInstance = (wss_url: string, onWSClose: () => void) => {
     if (!window.WSConnections) {
         window.WSConnections = {};
     }
@@ -81,7 +59,9 @@ const getWebsocketInstance = (wss_url: string) => {
         [2, 3].includes(existingWebsocketInstance.readyState)
     ) {
         window.WSConnections[wss_url] = new WebSocket(wss_url);
-        window.WSConnections[wss_url].addEventListener('close', () => handleReconnection(wss_url));
+        window.WSConnections[wss_url].addEventListener('close', () => {
+            if (typeof onWSClose === 'function') onWSClose();
+        });
     }
 
     return window.WSConnections[wss_url];
@@ -102,13 +82,13 @@ export const getActiveWebsocket = () => {
  * without causing race conditions with deriv-app core stores.
  * @returns {DerivAPIBasic} The initialized DerivAPI instance.
  */
-const initializeDerivAPI = (): DerivAPIBasic => {
+const initializeDerivAPI = (onWSClose: () => void): DerivAPIBasic => {
     if (!window.DerivAPI) {
         window.DerivAPI = {};
     }
 
     const wss_url = getWebSocketURL();
-    const websocketConnection = getWebsocketInstance(wss_url);
+    const websocketConnection = getWebsocketInstance(wss_url, onWSClose);
 
     if (!window.DerivAPI?.[wss_url]) {
         window.DerivAPI[wss_url] = new DerivAPIBasic({ connection: websocketConnection });
@@ -139,9 +119,10 @@ type TAPIProviderProps = {
 
 const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
     const WS = useWS();
+    const [reconnect, setReconnect] = useState(false);
     const activeLoginid = window.localStorage.getItem('active_loginid');
     const [environment, setEnvironment] = useState(getEnvironment(activeLoginid));
-    const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI() : null);
+    const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI(() => setReconnect(true)) : null);
 
     const switchEnvironment = (loginid: string | null | undefined) => {
         if (!standalone) return;
@@ -162,10 +143,16 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     }, [standalone]);
 
     useEffect(() => {
-        if (standalone) {
-            standaloneDerivAPI.current = initializeDerivAPI();
+        let reconnectTimerId: NodeJS.Timeout;
+        if (standalone || reconnect) {
+            standaloneDerivAPI.current = initializeDerivAPI(() => {
+                reconnectTimerId = setTimeout(() => setReconnect(true), 500);
+            });
+            setReconnect(false);
         }
-    }, [environment, standalone]);
+
+        return () => clearTimeout(reconnectTimerId);
+    }, [environment, reconnect, standalone]);
 
     return (
         <APIContext.Provider value={{ derivAPI: standalone ? standaloneDerivAPI.current : WS, switchEnvironment }}>

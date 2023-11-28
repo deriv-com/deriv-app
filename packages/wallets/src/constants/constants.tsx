@@ -11,12 +11,14 @@ export const optionsAndMultipliersContent = [
         description: 'Options and multipliers trading platform.',
         icon: <IcAppstoreDerivTrader />,
         redirect: '/',
+        smallIcon: <IcAppstoreDerivTrader height='3.2rem' width='3.2rem' />,
         title: 'Deriv Trader',
     },
     {
         description: 'Automate your trading, no coding needed.',
         icon: <IcAppstoreDerivBot />,
         redirect: '/bot',
+        smallIcon: <IcAppstoreDerivBot height='3.2rem' width='3.2rem' />,
         title: 'Deriv Bot',
     },
     {
@@ -24,6 +26,7 @@ export const optionsAndMultipliersContent = [
         icon: <IcAppstoreSmartTrader />,
         isExternal: true,
         redirect: getUrlSmartTrader(),
+        smallIcon: <IcAppstoreSmartTrader height='3.2rem' width='3.2rem' />,
         title: 'SmartTrader',
     },
     {
@@ -31,6 +34,7 @@ export const optionsAndMultipliersContent = [
         icon: <IcAppstoreBinaryBot />,
         isExternal: true,
         redirect: getUrlBinaryBot(),
+        smallIcon: <IcAppstoreBinaryBot height='3.2rem' width='3.2rem' />,
         title: 'Binary Bot',
     },
     {
@@ -38,6 +42,7 @@ export const optionsAndMultipliersContent = [
         icon: <IcAppstoreDerivGo />,
         isExternal: true,
         redirect: getStaticUrl('/deriv-go'),
+        smallIcon: <IcAppstoreDerivGo height='3.2rem' width='3.2rem' />,
         title: 'Deriv GO',
     },
 ];

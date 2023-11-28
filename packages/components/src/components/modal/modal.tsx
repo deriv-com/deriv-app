@@ -197,7 +197,7 @@ const ModalElement = ({
                     )}
                     {has_close_icon && (
                         <div onClick={toggleModal} className='dc-modal-header__close' role='button'>
-                            <Icon icon='IcCross' color={close_icon_color} data_testid='dt-close-modal-icon' />
+                            <Icon icon='IcCross' color={close_icon_color} data_testid='dt_modal_close_icon' />
                         </div>
                     )}
                 </div>

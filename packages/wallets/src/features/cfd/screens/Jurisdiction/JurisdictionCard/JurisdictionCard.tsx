@@ -108,53 +108,55 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                             {header}
                         </WalletText>
                     </div>
-                    {rows.map(row => {
-                        return (
-                            <JurisdictionCardRow
-                                description={parseDescription(row)}
-                                key={`wallets-jurisdiction-card--${row?.title}`}
-                                renderTag={() => {
-                                    if (!row?.titleIndicators) return;
+                    <div className='wallets-jurisdiction-card-rows'>
+                        {rows.map(row => {
+                            return (
+                                <JurisdictionCardRow
+                                    description={parseDescription(row)}
+                                    key={`wallets-jurisdiction-card--${row?.title}`}
+                                    renderTag={() => {
+                                        if (!row?.titleIndicators) return;
 
-                                    if (
-                                        row.titleIndicators?.type === 'displayIcons' &&
-                                        verificationDocs &&
-                                        marketType &&
-                                        marketType !== 'all'
-                                    ) {
-                                        return (
-                                            <div className='wallets-jurisdiction-card-front__tag-icons'>
-                                                {!(marketType in verificationDocs)
-                                                    ? verificationDocumentsMapper.notApplicable.icon
-                                                    : verificationDocs[marketType]?.map(doc => (
-                                                          <JurisdictionCardVerificationTag
-                                                              category={verificationDocumentsMapper[doc].category}
-                                                              icon={verificationDocumentsMapper[doc].icon}
-                                                              key={`verification-doc-${doc}`}
-                                                          />
-                                                      ))}
-                                            </div>
-                                        );
-                                    }
+                                        if (
+                                            row.titleIndicators?.type === 'displayIcons' &&
+                                            verificationDocs &&
+                                            marketType &&
+                                            marketType !== 'all'
+                                        ) {
+                                            return (
+                                                <div className='wallets-jurisdiction-card-front__tag-icons'>
+                                                    {!(marketType in verificationDocs)
+                                                        ? verificationDocumentsMapper.notApplicable.icon
+                                                        : verificationDocs[marketType]?.map(doc => (
+                                                              <JurisdictionCardVerificationTag
+                                                                  category={verificationDocumentsMapper[doc].category}
+                                                                  icon={verificationDocumentsMapper[doc].icon}
+                                                                  key={`verification-doc-${doc}`}
+                                                              />
+                                                          ))}
+                                                </div>
+                                            );
+                                        }
 
-                                    if (row?.titleIndicators?.displayText) {
-                                        return (
-                                            <div
-                                                className={`wallets-jurisdiction-card-front__tag wallets-jurisdiction-card-front__tag--${
-                                                    row.titleIndicators?.displayTextSkinColor || ''
-                                                }`}
-                                            >
-                                                <WalletText color='white' size='xs' weight='bold'>
-                                                    {row.titleIndicators.displayText}
-                                                </WalletText>
-                                            </div>
-                                        );
-                                    }
-                                }}
-                                title={row.title}
-                            />
-                        );
-                    })}
+                                        if (row?.titleIndicators?.displayText) {
+                                            return (
+                                                <div
+                                                    className={`wallets-jurisdiction-card-front__tag wallets-jurisdiction-card-front__tag--${
+                                                        row.titleIndicators?.displayTextSkinColor || ''
+                                                    }`}
+                                                >
+                                                    <WalletText color='white' size='xs' weight='bold'>
+                                                        {row.titleIndicators.displayText}
+                                                    </WalletText>
+                                                </div>
+                                            );
+                                        }
+                                    }}
+                                    title={row.title}
+                                />
+                            );
+                        })}
+                    </div>
                     {isAdded && (
                         <div className='wallets-jurisdiction-card__added-status'>
                             <WalletText align='center' color='white' lineHeight='3xs' size='xs' weight='bold'>

@@ -23,6 +23,24 @@ const PersonalDetails = () => {
         return countryCodeToPatternMapping;
     }, [isResidenceListSuccess, residenceList]);
 
+    const tinValidator = useMemo(() => {
+        const patternStr = countryCodeToPatternMapper[formValues?.taxResidence];
+        try {
+            if (patternStr) {
+                Yup.string()
+                    .required('Please fill in Tax identification number')
+                    .matches(new RegExp(patternStr), 'The format is incorrect.')
+                    .validateSync(formValues?.taxIdentificationNumber);
+            } else {
+                Yup.string()
+                    .required('Please fill in Tax identification number')
+                    .validateSync(formValues?.taxIdentificationNumber);
+            }
+        } catch (err) {
+            return (err as Yup.ValidationError).message;
+        }
+    }, [countryCodeToPatternMapper, formValues?.taxIdentificationNumber, formValues?.taxResidence]);
+
     useEffect(() => {
         if (getSettings && isResidenceListSuccess) {
             setFormValues('citizenship', getSettings.citizen);
@@ -93,16 +111,12 @@ const PersonalDetails = () => {
                         />
                         <FlowTextField
                             defaultValue={getSettings?.tax_identification_number ?? formValues?.taxIdentificationNumber}
-                            errorMessage={'Please fill in tax residence'}
-                            isInvalid={!formValues.taxResidence || !formValues.taxIdentificationNumber}
+                            errorMessage={!formValues?.taxResidence ? 'Please fill in tax residence' : tinValidator}
+                            isInvalid={
+                                !formValues.taxResidence || !formValues.taxIdentificationNumber || Boolean(tinValidator)
+                            }
                             label='Tax identification number*'
                             name='taxIdentificationNumber'
-                            validationSchema={Yup.string()
-                                .matches(
-                                    countryCodeToPatternMapper[formValues?.taxResidence],
-                                    'The format is incorrect.'
-                                )
-                                .required()}
                         />
                         <WalletDropdown
                             label='Account opening reason*'

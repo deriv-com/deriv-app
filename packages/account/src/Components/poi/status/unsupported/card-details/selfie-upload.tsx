@@ -7,8 +7,8 @@ import { Button, Icon, Text } from '@deriv/components';
 import Uploader from './uploader';
 import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS, SELFIE_DOCUMENT } from '../constants';
-import FormBody from 'Components/form-body';
-import FormFooter from 'Components/form-footer';
+import FormBody from '../../../../form-body';
+import FormFooter from '../../../../form-footer';
 
 type TSelfieUpload = {
     initial_values?: FormikValues;

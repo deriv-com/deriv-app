@@ -48,6 +48,7 @@ export interface IDashboardStore {
 export default class DashboardStore implements IDashboardStore {
     root_store: any;
     tutorials_combined_content: (TFaqContent | TGuideContent | TUserGuideContent)[] = [];
+    combined_search: string[] = [];
 
     constructor(root_store: any) {
         makeObservable(this, {
@@ -83,16 +84,41 @@ export default class DashboardStore implements IDashboardStore {
             setActiveTour: action.bound,
             setTourDialogVisibility: action.bound,
             setOpenSettings: action.bound,
+            resetTutorialTabContent: action.bound,
+            filterTuotrialTab: action.bound,
             show_toast: observable,
             show_mobile_tour_dialog: observable,
             showVideoDialog: action.bound,
             strategy_save_type: observable,
             toast_message: observable,
+            guide_tab_content: observable,
+            faq_tab_content: observable,
             setStrategySaveType: action.bound,
             setShowMobileTourDialog: action.bound,
         });
         this.root_store = root_store;
-        this.tutorials_combined_content = [...user_guide_content, ...guide_content, ...faq_content];
+        const removeHTMLTagsFromString = (param = '') => param.replace(/<.*?>/g, '');
+
+        const getUserGuideContent = () => {
+            return [...user_guide_content].map(item => `${item.search_id}# ${item.content.toLowerCase()}`);
+        };
+
+        const getVideoContent = () => {
+            return [...guide_content].map(item => `${item.search_id}# ${item.content.toLowerCase()}`);
+        };
+
+        const getFaqContent = () => {
+            return faq_content.map(item => {
+                return `${item.search_id}# ${item.title.toLowerCase()} ${item.description
+                    .map(inner_item => {
+                        const itemWithoutHTML = removeHTMLTagsFromString(inner_item.content);
+                        return itemWithoutHTML?.toLowerCase();
+                    })
+                    .join(' ')}`;
+            });
+        };
+
+        this.combined_search = [...getUserGuideContent(), ...getVideoContent(), ...getFaqContent()];
 
         const {
             load_modal: { previewRecentStrategy, current_workspace_id },
@@ -155,6 +181,44 @@ export default class DashboardStore implements IDashboardStore {
     strategy_save_type = 'unsaved';
     toast_message = '';
     is_web_socket_intialised = true;
+    debounced_value = '';
+    guide_tab_content = [...user_guide_content, ...guide_content];
+    faq_tab_content = faq_content;
+    filtered_tab_list = [];
+
+    resetTutorialTabContent = () => {
+        this.guide_tab_content = [...user_guide_content, ...guide_content];
+        this.faq_tab_content = faq_content;
+    };
+
+    filterTuotrialTab = (debounced_value: string) => {
+        this.debounced_value = debounced_value;
+        const foundItems = this.combined_search.filter(item => {
+            return item.includes(debounced_value.toLowerCase());
+        });
+
+        const filtered_user_guide: [] = [];
+        const filtered_faq_content: [] = [];
+
+        const filtered_tutorial_content = foundItems.map(item => {
+            const identifier = item.split('#')[0];
+            const index: string = identifier.split('-')[1];
+            if (identifier.includes('ugc')) {
+                filtered_user_guide.push(user_guide_content[Number(index)]);
+                return user_guide_content[Number(index)];
+            } else if (identifier.includes('gc')) {
+                filtered_user_guide.push(guide_content[Number(index)]);
+                return guide_content[Number(index)];
+            }
+            filtered_faq_content.push(faq_content[Number(index)]);
+            return faq_content[Number(index)];
+        });
+
+        this.guide_tab_content = filtered_user_guide;
+        this.faq_tab_content = filtered_faq_content;
+
+        return filtered_tutorial_content;
+    };
 
     get is_dark_mode() {
         const {

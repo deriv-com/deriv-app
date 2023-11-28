@@ -90,7 +90,7 @@ const initializeDerivAPI = (onWSClose: () => void): DerivAPIBasic => {
     const wss_url = getWebSocketURL();
     const websocketConnection = getWebsocketInstance(wss_url, onWSClose);
 
-    if (!window.DerivAPI?.[wss_url]) {
+    if (!window.DerivAPI?.[wss_url] || window.DerivAPI?.[wss_url].isConnectionClosed()) {
         window.DerivAPI[wss_url] = new DerivAPIBasic({ connection: websocketConnection });
     }
 

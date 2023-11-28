@@ -67,9 +67,9 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
                 top
             >
                 {tutorial_tabs.map(
-                    ({ label, content }, index) =>
+                    ({ label, content }) =>
                         content && (
-                            <div label={label} key={`${content}_${label}_${index}`}>
+                            <div label={label} key={`${content}_${label}`}>
                                 {content}
                             </div>
                         )

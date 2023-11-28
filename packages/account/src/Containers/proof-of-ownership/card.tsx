@@ -6,7 +6,6 @@ import { TPaymentMethodInfo } from '../../Types';
 
 type TCardProps = {
     details: TPaymentMethodInfo;
-    index: number;
 };
 
 /**
@@ -28,10 +27,9 @@ const ExpansionIcon = ({ is_open }: { is_open: boolean }) => (
  * Renders payment method
  * @name Card
  * @param details - payment method details
- * @param index - index of payment method
  * @returns React Component
  */
-const Card = ({ details, index }: TCardProps) => {
+const Card = ({ details }: TCardProps) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const onClickHandler = () => {

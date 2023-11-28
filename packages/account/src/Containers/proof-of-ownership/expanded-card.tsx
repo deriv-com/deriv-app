@@ -6,7 +6,7 @@ import { hasInvalidCharacters } from '@deriv/shared';
 import { IDENTIFIER_TYPES } from '../../Constants/poo-identifier';
 import { isSpecialPaymentMethod } from '../../Helpers/utils';
 import FileUploader from './file-uploader';
-import { TPaymentMethod, TPaymentMethodInfo, TProofOfOwnershipFormValue } from '../../Types';
+import { TPaymentMethod, TPaymentMethodInfo, TProofOfOwnershipData, TProofOfOwnershipFormValue } from '../../Types';
 import ExampleLink from './example-link';
 
 type TExpandedCardProps = {
@@ -24,27 +24,21 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
 
     const payment_method = card_details.payment_method.toLowerCase() as TPaymentMethod;
 
-    const handleBlur = (
-        payment_method_identifier: string,
-        identifier_type: string,
-        item_id: number,
-        documents_required: number
-    ) => {
-        handleIdentifierChange(
-            formatIdentifier(payment_method_identifier, identifier_type),
-            item_id,
-            documents_required
-        );
+    const handleBlur = (payment_method_identifier: string, identifier_type: string, index: number) => {
+        handleIdentifierChange(formatIdentifier(payment_method_identifier, identifier_type), index);
     };
-    const handleIdentifierChange = (payment_method_identifier: string, item_id: number, documents_required: number) => {
-        setFieldValue(payment_method, {
-            ...values?.[payment_method],
-            documents_required,
-            id: item_id,
+    const handleIdentifierChange = (payment_method_identifier: string, index = 0) => {
+        const selected_payment_method = values?.[payment_method];
+        if (!selected_payment_method) {
+            return;
+        }
+
+        selected_payment_method[index] = {
+            ...selected_payment_method[index],
             payment_method_identifier,
-            is_generic_pm: card_details?.is_generic_pm,
             identifier_type: card_details?.identifier_type,
-        });
+        };
+        setFieldValue(payment_method, [...selected_payment_method]);
     };
 
     const formatIdentifier = (payment_method_identifier: string, identifier_type: string) => {
@@ -75,7 +69,7 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
             ))}
             <fieldset>
                 {card_details?.items &&
-                    card_details?.items.map(item => {
+                    card_details?.items.map((item, index) => {
                         const controls_to_show = [...Array(item?.documents_required).keys()];
                         return (
                             <div
@@ -89,28 +83,19 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
                                             data-lpignore='true'
                                             className={classNames('proof-of-ownership__card-open-inputs-cardnumber', {
                                                 'proof-of-ownership-valid-identifier':
-                                                    values?.[payment_method]?.payment_method_identifier &&
-                                                    !errors?.[payment_method]?.payment_method_identifier,
+                                                    values?.[payment_method]?.[index]?.payment_method_identifier &&
+                                                    !errors?.[payment_method]?.[index]?.payment_method_identifier,
                                             })}
                                             type='text'
                                             onChange={e => {
-                                                handleIdentifierChange(
-                                                    e.target.value,
-                                                    item.id,
-                                                    card_details.documents_required
-                                                );
+                                                handleIdentifierChange(e.target.value, index);
                                             }}
-                                            value={values?.[payment_method]?.payment_method_identifier}
+                                            value={values?.[payment_method]?.[index]?.payment_method_identifier}
                                             onBlur={e => {
-                                                handleBlur(
-                                                    e.target.value.trim(),
-                                                    card_details?.identifier_type,
-                                                    item.id,
-                                                    card_details.documents_required
-                                                );
+                                                handleBlur(e.target.value.trim(), card_details?.identifier_type, index);
                                             }}
                                             data-testid='dt_payment_method_identifier'
-                                            error={errors?.[payment_method]?.payment_method_identifier}
+                                            error={errors?.[payment_method]?.[index]?.payment_method_identifier}
                                         />
                                     </div>
                                 )}
@@ -125,29 +110,32 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
                                                         'proof-of-ownership__card-open-inputs-cardnumber',
                                                         {
                                                             'proof-of-ownership-valid-identifier':
-                                                                values?.[payment_method]?.payment_method_identifier &&
-                                                                !errors?.[payment_method]?.payment_method_identifier,
+                                                                values?.[payment_method]?.[index]
+                                                                    ?.payment_method_identifier &&
+                                                                !errors?.[payment_method]?.[index]
+                                                                    ?.payment_method_identifier,
                                                         }
                                                     )}
                                                     type='text'
                                                     onChange={e => {
-                                                        handleIdentifierChange(
-                                                            e.target.value.trim(),
-                                                            item.id,
-                                                            card_details.documents_required
-                                                        );
+                                                        handleIdentifierChange(e.target.value.trim(), index);
                                                     }}
-                                                    value={values?.[payment_method]?.payment_method_identifier ?? ''}
+                                                    value={
+                                                        values?.[payment_method]?.[index]?.payment_method_identifier ??
+                                                        ''
+                                                    }
                                                     onBlur={e => {
                                                         handleBlur(
                                                             e.target.value.trim(),
                                                             card_details?.identifier_type,
-                                                            item.id,
-                                                            card_details.documents_required
+                                                            index
                                                         );
                                                     }}
                                                     data-testid='dt_payment_method_identifier'
-                                                    error={errors?.[payment_method]?.payment_method_identifier ?? ''}
+                                                    error={
+                                                        errors?.[payment_method]?.[index]?.payment_method_identifier ??
+                                                        ''
+                                                    }
                                                 />
                                             </div>
                                         )}
@@ -161,6 +149,7 @@ const ExpandedCard = ({ card_details }: TExpandedCardProps) => {
                                                 class_name='proof-of-ownership__card-open-inputs-photo'
                                                 sub_index={i}
                                                 name={payment_method}
+                                                index={index}
                                             />
                                         </div>
                                     </React.Fragment>

@@ -37,6 +37,7 @@ const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificat
 
     return (
         <div className='wallets-withdrawal-crypto'>
+            <div className='wallets-withdrawal-crypto__side-pane' />
             <div className='wallets-withdrawal-crypto__content'>
                 <WalletText weight='bold'>
                     Withdraw {activeWallet?.currency ? getConfig(activeWallet?.currency)?.name : ''} (
@@ -50,7 +51,9 @@ const WithdrawalCrypto: React.FC<TWithdrawalCryptoProps> = ({ onClose, verificat
                     verificationCode={verificationCode}
                 />
             </div>
-            <TransactionStatus transactionType='withdrawal' />
+            <div className='wallets-withdrawal-crypto__side-pane'>
+                <TransactionStatus transactionType='withdrawal' />
+            </div>
         </div>
     );
 };

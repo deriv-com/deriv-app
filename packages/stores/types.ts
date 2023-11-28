@@ -3,8 +3,10 @@ import type { Moment } from 'moment';
 
 import type {
     AccountLimitsResponse,
+    ActiveSymbols,
     Authorize,
     ContractUpdate,
+    ContractUpdateHistory,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
@@ -17,10 +19,8 @@ import type {
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     StatesList,
-    WebsiteStatus,
-    ContractUpdateHistory,
     Transaction,
-    ActiveSymbols,
+    WebsiteStatus,
 } from '@deriv/api-types';
 
 import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
@@ -125,6 +125,9 @@ type AvailableAccount = {
     availability: TRegionAvailability;
     short_code_and_region?: string;
     login?: string;
+    currency?: string;
+    display_balance?: string;
+    display_login?: string;
 };
 
 type BrandConfig = {
@@ -226,14 +229,14 @@ type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
+    shortcode?: DetailsOfEachMT5Loginid['landing_company_short'];
     sub_account_type: string;
 };
 
 type TAvailableCFDAccounts = {
     availability: 'Non-EU' | 'EU' | 'All';
     description: string;
-    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree' | 'Ctrader';
+    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree' | 'CTrader';
     market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
     name: string;
     platform: 'mt5' | 'dxtrade' | 'ctrader';
@@ -390,6 +393,7 @@ type TClientStore = {
     is_low_risk: boolean;
     is_mt5_password_not_set: boolean;
     is_pending_proof_of_ownership: boolean;
+    is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
@@ -491,7 +495,6 @@ type TClientStore = {
     is_crypto: (currency?: string) => boolean;
     ctrader_accounts_list: TCtraderAccountsList[];
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
-    derivez_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;
@@ -507,7 +510,10 @@ type TClientStore = {
     setFinancialAndTradingAssessment: (
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
+    setIsAlreadyAttempted: (value: boolean) => void;
+    is_already_attempted: boolean;
     prev_account_type: string;
+    account_open_date: number | undefined;
     is_beta_chart: boolean;
 };
 
@@ -535,7 +541,7 @@ type TCommonStore = {
     has_error: boolean;
     is_from_derivgo: boolean;
     is_network_online: boolean;
-    platform: 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
+    platform: 'dxtrade' | 'mt5' | 'ctrader' | '';
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     server_time: Moment;
@@ -545,7 +551,7 @@ type TCommonStore = {
     is_language_changing: boolean;
     services_error: TCommonStoreServicesError;
     is_socket_opened: boolean;
-    setAppstorePlatform: (value: string) => void;
+    setAppstorePlatform: (value?: string) => void;
     setError?: (has_error: boolean, error: TCommonStoreError) => void;
     setSelectedContractType: (contract_type: string) => void;
     setServicesError: (error: TCommonStoreServicesError) => void;
@@ -557,12 +563,15 @@ type TCommonStore = {
 
 type TUiStore = {
     advanced_duration_unit: string;
+    advanced_expiry_type: string;
     addToast: (toast_config: TAddToastProps) => void;
     account_switcher_disabled_message: string;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
+    duration_t: number;
     enableApp: () => void;
+    getDurationFromUnit: (unit: string) => number;
     has_only_forward_starting_contracts: boolean;
     has_real_account_signup_ended: boolean;
     header_extension: JSX.Element | null;
@@ -573,6 +582,7 @@ type TUiStore = {
     is_wallet_modal_visible: boolean;
     is_chart_asset_info_visible?: boolean;
     is_chart_layout_default: boolean;
+    is_chart_countdown_visible: boolean;
     is_closing_create_real_account_modal: boolean;
     is_kyc_information_submitted_modal_open: boolean;
     is_dark_mode_on: boolean;
@@ -593,7 +603,9 @@ type TUiStore = {
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
+    onChangeUiStore: ({ name, value }: { name: string; value: number | null }) => void;
     notification_messages_ui: React.ElementType;
+    setChartCountdown: (value: boolean) => void;
     populateFooterExtensions: (
         footer_extensions:
             | [
@@ -616,7 +628,12 @@ type TUiStore = {
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
+    simple_duration_unit: string;
     sub_section_index: number;
+    setPromptHandler: (
+        condition: boolean,
+        cb?: (() => void) | ((route_to: RouteComponentProps['location'], action: string) => boolean)
+    ) => void;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
     toggleAccountsDialog: () => void;
@@ -649,6 +666,8 @@ type TUiStore = {
     closeSuccessTopUpModal: () => void;
     closeTopUpModal: () => void;
     is_cfd_reset_password_modal_enabled: boolean;
+    is_mt5_migration_modal_enabled: boolean;
+    is_mt5_migration_modal_open: boolean;
     setCFDPasswordResetModal: (value: boolean) => void;
     openAccountNeededModal: () => void;
     is_accounts_switcher_on: boolean;
@@ -661,6 +680,8 @@ type TUiStore = {
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
+    setMT5MigrationModalEnabled: (value: boolean) => void;
+    toggleMT5MigrationModal: () => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
     toggleAdditionalKycInfoModal: () => void;
     toggleKycInformationSubmittedModal: () => void;
@@ -682,6 +703,7 @@ type TPortfolioStore = {
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
     onMount: () => void;
+    onUnmount: () => void;
     open_accu_contract: TPortfolioPosition | null;
     positions: TPortfolioPosition[];
     removePositionById: (contract_id?: number) => void;
@@ -731,7 +753,6 @@ type TBarriers = Array<{
     hideOffscreenBarrier?: boolean;
     isSingleBarrier?: boolean;
     onBarrierChange: (barriers: TOnChangeParams) => void;
-    updateBarrierColor: (is_dark_mode: boolean) => void;
     updateBarriers: (high: string | number, low?: string | number, isFromChart?: boolean) => void;
     updateBarrierShade: (should_display: boolean, contract_type: string) => void;
     barrier_count: number;
@@ -757,6 +778,7 @@ type TContractTradeStore = {
     clearError: () => void;
     contracts: TContractStore[];
     error_message: string;
+    filtered_contracts: TPortfolioPosition[];
     getContractById: (contract_id?: number) => TContractStore;
     granularity: null | number;
     has_crossed_accu_barriers: boolean;
@@ -764,17 +786,7 @@ type TContractTradeStore = {
     last_contract: TContractStore | Record<string, never>;
     markers_array: Array<{
         type: string;
-        contract_info: {
-            accu_barriers_difference:
-                | boolean
-                | {
-                      top: string;
-                      bottom: string;
-                      font: string;
-                  };
-            has_crossed_accu_barriers: boolean;
-            is_accumulator_trade_without_contract: boolean;
-        };
+        contract_info: TPortfolioPosition['contract_info'];
         key: string;
         price_array: [string, string];
         epoch_array: [number];
@@ -855,6 +867,8 @@ type TModalData = {
     data: Record<string, unknown>;
 };
 
+type TPlatform = 'mt5' | 'dxtrade' | 'ctrader';
+
 type TTradersHubStore = {
     closeModal: () => void;
     content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
@@ -868,8 +882,9 @@ type TTradersHubStore = {
             action_type: 'get' | 'none' | 'trade' | 'dxtrade' | 'multi-action';
             key: string;
             name: string;
-            landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
-            platform?: string;
+            landing_company_short?: DetailsOfEachMT5Loginid['landing_company_short'];
+            platform?: TPlatform;
+            availability?: TRegionAvailability;
             description?: string;
             market_type?: 'all' | 'financial' | 'synthetic';
         }[];
@@ -880,7 +895,10 @@ type TTradersHubStore = {
     };
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
+    is_onboarding_visited: boolean;
+    is_first_time_visit: boolean;
     setIsOnboardingVisited: (is_visited: boolean) => void;
+    setIsFirstTimeVisit: (first_time_visit: boolean) => void;
     show_eu_related_content: boolean;
     setTogglePlatformType: (platform_type: string) => void;
     is_demo: boolean;
@@ -923,11 +941,10 @@ type TTradersHubStore = {
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
-    available_derivez_accounts: DetailsOfEachMT5Loginid[];
     has_any_real_account: boolean;
-    startTrade: () => void;
+    startTrade: (platform?: TPlatform, existing_account?: DetailsOfEachMT5Loginid) => void;
     getAccount: () => void;
-    showTopUpModal: () => void;
+    showTopUpModal: (existing_account?: DetailsOfEachMT5Loginid) => void;
 };
 
 type TContractReplay = {
@@ -938,6 +955,8 @@ type TContractReplay = {
         is_digit_contract: boolean;
         is_ended: boolean;
     };
+    removeErrorMessage: () => void;
+    error_message: string;
 };
 type TGtmStore = {
     is_gtm_applicable: boolean;

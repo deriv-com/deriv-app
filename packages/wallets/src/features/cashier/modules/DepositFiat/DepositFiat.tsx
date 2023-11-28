@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useAuthorize, useDepositFiatAddress } from '@deriv/api';
-import { WalletsErrorScreen } from '../../../../components';
+import { useAuthorize, useCashierFiatAddress } from '@deriv/api';
+import { Loader, WalletsErrorScreen } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
 import './DepositFiat.scss';
 
 const DepositFiat = () => {
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: iframeUrl, error: depositError, isError, mutate } = useDepositFiatAddress();
+    const { data: iframeUrl, error: depositError, isError, mutate } = useCashierFiatAddress();
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
@@ -15,7 +15,7 @@ const DepositFiat = () => {
 
     useEffect(() => {
         if (isAuthorizeSuccess) {
-            mutate();
+            mutate('deposit');
         }
     }, [isAuthorizeSuccess, mutate]);
 
@@ -24,7 +24,7 @@ const DepositFiat = () => {
 
     return (
         <React.Fragment>
-            {isLoading && <p>Loading...</p>}
+            {isLoading && <Loader />}
             {iframeUrl && (
                 <iframe
                     className='wallets-deposit-fiat__iframe'

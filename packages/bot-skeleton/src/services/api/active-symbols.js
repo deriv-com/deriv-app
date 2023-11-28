@@ -5,8 +5,8 @@ import { config } from '../../constants/config';
 export default class ActiveSymbols {
     constructor(ws, trading_times) {
         this.active_symbols = [];
-        this.disabled_symbols = ['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK']; // These are only forward-starting.
-        this.disabled_submarkets = ['energy', 'step_index'];
+        this.disabled_symbols = config.DISABLED_SYMBOLS;
+        this.disabled_submarkets = config.DISABLED_SUBMARKETS;
         this.init_promise = new PendingPromise();
         this.is_initialised = false;
         this.processed_symbols = {};

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { WalletDeposit } from '../../flows/WalletDeposit';
+import { WalletFiatOnRamp } from '../../flows/WalletFiatOnRamp';
 import { WalletResetBalance } from '../../flows/WalletResetBalance';
 import { WalletTransactions } from '../../flows/WalletTransactions';
 import { WalletTransfer } from '../../flows/WalletTransfer';
@@ -10,6 +11,7 @@ const WalletCashierContent = () => {
     const history = useHistory();
 
     const isDeposit = useRouteMatch('/wallets/cashier/deposit');
+    const isFiatOnRamp = useRouteMatch('/wallets/cashier/on-ramp');
     const isResetBalance = useRouteMatch('/wallets/cashier/reset-balance');
     const isTransfer = useRouteMatch('/wallets/cashier/transfer');
     const isTransactions = useRouteMatch('/wallets/cashier/transactions');
@@ -17,12 +19,14 @@ const WalletCashierContent = () => {
 
     useEffect(() => {
         // redirect to deposit page if no other page is matched
-        if (!isTransfer && !isDeposit && !isTransactions && !isWithdraw && !isResetBalance) {
+        if (!isTransfer && !isDeposit && !isTransactions && !isWithdraw && !isResetBalance && !isFiatOnRamp) {
             history.push('/wallets/cashier/deposit');
         }
-    }, [isTransfer, isDeposit, isTransactions, isWithdraw, isResetBalance, history]);
+    }, [isTransfer, isDeposit, isTransactions, isWithdraw, isResetBalance, isFiatOnRamp, history]);
 
     if (isDeposit) return <WalletDeposit />;
+
+    if (isFiatOnRamp) return <WalletFiatOnRamp />;
 
     if (isResetBalance) return <WalletResetBalance />;
 

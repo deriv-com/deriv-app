@@ -85,13 +85,13 @@ describe('<ContractInfo />', () => {
             'trade-container__price-info trade-container__price-info--fade'
         );
     });
-    it('should apply a proper className and tooltip message if is_turbos is true and type is equal to TURBOS.LONG', () => {
+    it('should apply a proper className and specific tooltip message if is_turbos is true and type is TURBOS.LONG', () => {
         render(<ContractInfo {...default_mock_props} type={TURBOS.LONG} is_turbos />);
 
         expect(screen.getByTestId('dt_purchase_turboslong_price')).toHaveClass(
             'trade-container__price-info trade-container__price-info--turbos'
         );
-        expect(screen.getByText(test_message)).toBeInTheDocument();
+        expect(screen.getByText(/This is the amount you’ll receive at expiry/i)).toBeInTheDocument();
     });
     it('should render specific tooltip message if is_vanilla is true', () => {
         render(<ContractInfo {...default_mock_props} is_vanilla />);

@@ -1,18 +1,16 @@
-name: Deriv App Test Workflow
+name: Deriv App PR Test Workflow
 on:
   pull_request:
     branches:
     - master
-  push:
-    branches:
-      - master
+
 jobs:
   build_and_test:
     name: Build And Test
-    runs-on: Runner_16cores_Deriv-app
+    runs-on: Runner_8cores_Deriv-app
     environment: Preview
     steps:
-    - name: Checkout 
+    - name: Checkout
       uses: actions/checkout@v4
     - name: Setup Node
       uses: "./.github/actions/setup_node"
@@ -29,8 +27,6 @@ jobs:
       run: npx tsc --project packages/hooks/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/utils
       run: npx tsc --project packages/utils/tsconfig.json -noEmit
-    - name: Check TypeScript for @deriv/analytics
-      run: npx tsc --project packages/analytics/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/stores
       run: npx tsc --project packages/stores/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/wallets
@@ -43,7 +39,5 @@ jobs:
       run: bash ./scripts/check-tests.sh packages/hooks/src
     - name: Check tests for @deriv/utils
       run: bash ./scripts/check-tests.sh packages/utils/src
-    - name: Check tests for @deriv/analytics
-      run: bash ./scripts/check-tests.sh packages/analytics/src
     - name: Run tests
       run: npm run test:ci

@@ -10,6 +10,11 @@
 
     @include mobile {
         overflow-y: auto;
-        height: calc(100svh - 4rem); // 100svh - 4rem (header)
+        height: calc(var(--wallets-vh, 1vh) * 100 - 4rem); // 100vh - 4rem (header)
     }
+}
+
+.wallets-modal-show-header-root {
+    position: absolute;
+    z-index: 1;
 }

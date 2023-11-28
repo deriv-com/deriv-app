@@ -9,6 +9,7 @@ $color-map: (
     less-prominent: #999999,
     red: #ff444f,
     blue: #377cfc,
+    system-dark-2-general-text: #c2c2c2,
 );
 
 $desktop-font-size-map: (
@@ -34,7 +35,7 @@ $desktop-font-size-map: (
     ),
     'xl': (
         size: 2.4rem,
-        line_height: 3.4rem,
+        line_height: 3.6rem,
     ),
     '2xl': (
         size: 3.2rem,
@@ -125,6 +126,11 @@ $font-align-map: (
     right: right,
 );
 
+$font-style-map: (
+    italic: italic,
+    normal: normal,
+);
+
 .wallets-text {
     @each $color, $value in $color-map {
         &__color--#{$color} {
@@ -165,6 +171,12 @@ $font-align-map: (
     @each $align, $value in $font-align-map {
         &__align--#{$align} {
             text-align: $value;
+        }
+    }
+
+    @each $fontStyle, $value in $font-style-map {
+        &__font-style--#{$fontStyle} {
+            font-style: $value;
         }
     }
 }

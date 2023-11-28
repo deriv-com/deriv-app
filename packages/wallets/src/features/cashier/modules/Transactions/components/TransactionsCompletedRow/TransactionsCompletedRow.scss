@@ -5,63 +5,33 @@
     align-items: center;
     border-top: 0.1rem solid var(--system-light-3-border, #e5e5e5);
 
-    &-content {
+    @include mobile {
+        padding: 1.6rem 0;
+    }
+
+    &__type-and-wallet-name {
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &__wallet-name {
+        display: flex;
+        flex-direction: row;
+        gap: 0.4rem;
+        align-items: center;
     }
 
     &__account-details {
         display: flex;
         width: max-content;
         gap: 0.8rem;
-
-        &__action-type {
-            color: var(--system-light-3-less-prominent-text, #999);
-
-            /* desktop/small/S - regular */
-            font-size: 1.2rem;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 1.8rem; /* 150% */
-            text-transform: capitalize;
-        }
-
-        &__wallet-name {
-            color: var(--system-light-1-prominent-text, #333);
-
-            /* desktop/small/S - bold */
-            font-size: 1.2rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 1.8rem; /* 150% */
-        }
     }
 
     &__transaction-details {
-        &__amount {
-            color: var(--status-light-success, #4bb4b3);
-            text-align: right;
-
-            /* desktop/small/S - bold */
-            font-size: 1.2rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 1.8rem; /* 150% */
-
-            &--negative {
-                color: var(--status-light-danger, #ec3f3f);
-            }
-        }
-
-        &__balance {
-            color: var(--system-light-3-less-prominent-text, #999);
-            text-align: right;
-
-            /* desktop/extra small/XS - regular */
-            font-size: 1rem;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 1.4rem; /* 140% */
-        }
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.4rem;
     }
 }

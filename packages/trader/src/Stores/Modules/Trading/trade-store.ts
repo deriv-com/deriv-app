@@ -29,8 +29,9 @@ import {
     unsupported_contract_types_list,
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
+    hasBarrier,
 } from '@deriv/shared';
-import { RudderStack } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 import type { TEvents } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
@@ -118,7 +119,20 @@ type TChartLayout = {
     timeUnit: string;
     volumeUnderlay: boolean;
 };
-type TChartStateChangeOption = { symbol: string | undefined; isClosed: boolean };
+type TChartStateChangeOption = {
+    indicator_type_name?: string;
+    indicators_category_name?: string;
+    isClosed?: boolean;
+    is_favorite?: boolean;
+    is_info_open?: boolean;
+    is_open?: boolean;
+    chart_type_name?: string;
+    granularity?: number;
+    search_string?: string;
+    symbol?: string;
+    symbol_category?: string;
+    time_interval_name?: string;
+};
 type TContractDataForGTM = Omit<Partial<PriceProposalRequest>, 'cancellation' | 'limit_order'> &
     ReturnType<typeof getProposalInfo> & {
         buy_price: number;
@@ -197,6 +211,7 @@ export default class TradeStore extends BaseStore {
     contract_start_type = '';
     contract_type = '';
     contract_types_list: TContractTypesList = {};
+    non_available_contract_types_list: TContractTypesList = {};
     trade_types: { [key: string]: string } = {};
 
     // Amount
@@ -401,6 +416,7 @@ export default class TradeStore extends BaseStore {
             maximum_ticks: observable,
             multiplier_range_list: observable,
             multiplier: observable,
+            non_available_contract_types_list: observable,
             previous_symbol: observable,
             proposal_info: observable.ref,
             purchase_info: observable.ref,
@@ -481,8 +497,6 @@ export default class TradeStore extends BaseStore {
             setStakeBoundary: action.bound,
             setTradeStatus: action.bound,
             show_digits_stats: computed,
-            themeChangeListener: action.bound,
-            updateBarrierColor: action.bound,
             updateStore: action.bound,
             updateSymbol: action.bound,
         });
@@ -799,12 +813,6 @@ export default class TradeStore extends BaseStore {
         });
     }
 
-    updateBarrierColor(is_dark_mode: boolean) {
-        if (this.main_barrier) {
-            this.main_barrier.updateBarrierColor(is_dark_mode);
-        }
-    }
-
     onHoverPurchase(is_over: boolean, contract_type?: string) {
         if (this.is_accumulator) return;
         if (this.is_purchase_enabled && this.main_barrier && !this.is_multiplier) {
@@ -850,20 +858,17 @@ export default class TradeStore extends BaseStore {
         }
         const { contract_type, barrier, barrier2 } = proposal_info;
         if (isBarrierSupported(contract_type)) {
-            const color = this.root_store.ui.is_dark_mode_on ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY;
-
             // create barrier only when it's available in response
             this.main_barrier = new ChartBarrierStore(
                 this.hovered_barrier || barrier,
                 barrier2,
                 this.onChartBarrierChange,
                 {
-                    color: this.hovered_barrier ? getHoveredColor(contract_type) : color,
+                    color: this.hovered_barrier ? getHoveredColor(contract_type) : BARRIER_COLORS.BLUE,
                     line_style: this.hovered_barrier && BARRIER_LINE_STYLES.DASHED,
                     not_draggable: this.is_turbos || this.is_vanilla,
                 }
             );
-            // this.main_barrier.updateBarrierShade(true, contract_type);
         } else {
             this.main_barrier = null;
         }
@@ -1035,7 +1040,7 @@ export default class TradeStore extends BaseStore {
             updateChartType,
             updateGranularity,
         } = this.root_store.contract_trade || {};
-        if (obj_new_values.contract_type === 'accumulator') {
+        if (isAccumulatorContract(obj_new_values.contract_type) || isDigitTradeType(obj_new_values.contract_type)) {
             savePreviousChartMode(chart_type, granularity);
             updateGranularity(0);
             updateChartType(this.root_store.client.is_beta_chart ? 'line' : 'mountain');
@@ -1447,10 +1452,6 @@ export default class TradeStore extends BaseStore {
         this.setTradeStatus(is_online);
     }
 
-    themeChangeListener(is_dark_mode_on: boolean) {
-        this.updateBarrierColor(is_dark_mode_on);
-    }
-
     resetErrorServices() {
         this.root_store.ui.toggleServicesErrorModal(false);
     }
@@ -1466,7 +1467,6 @@ export default class TradeStore extends BaseStore {
         this.onLogout(this.logoutListener);
         this.onClientInit(this.clientInitListener);
         this.onNetworkStatusChange(this.networkStatusChangeListener);
-        this.onThemeChange(this.themeChangeListener);
         this.setChartStatus(true);
         runInAction(async () => {
             this.is_trade_component_mounted = true;
@@ -1601,6 +1601,9 @@ export default class TradeStore extends BaseStore {
             });
         }
         if ('active_symbols' in req) {
+            if (this.root_store.client.is_logged_in) {
+                return WS.authorized.activeSymbols('brief');
+            }
             return WS.activeSymbols('brief');
         }
         if ('trading_times' in req) {
@@ -1618,18 +1621,31 @@ export default class TradeStore extends BaseStore {
         ) {
             this.prepareTradeStore(false);
         }
+        if (state === STATE_TYPES.SET_CHART_MODE) {
+            if (!isNaN(Number(option?.granularity))) {
+                this.root_store.contract_trade.updateGranularity(Number(option?.granularity));
+            }
+            if (option?.chart_type_name) {
+                this.root_store.contract_trade.updateChartType(option?.chart_type_name);
+            }
+        }
         const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
         if (data) {
-            RudderStack.track(event_type, {
+            Analytics.trackEvent(event_type, {
                 ...data,
+                action: data.action as TEvents['ce_indicators_types_form']['action'],
                 device_type: isMobile() ? 'mobile' : 'desktop',
                 form_name: 'default',
-            } as TEvents['ce_chart_types_form']);
+            });
         }
     }
 
     get has_alternative_source() {
         return this.is_multiplier && !!this.hovered_contract_type;
+    }
+
+    get has_barrier() {
+        return hasBarrier(this.contract_type);
     }
 
     get is_accumulator() {

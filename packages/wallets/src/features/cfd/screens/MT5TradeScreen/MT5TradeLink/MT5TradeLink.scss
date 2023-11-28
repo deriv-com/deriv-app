@@ -1,0 +1,29 @@
+.wallets-mt5-trade-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 0.2rem solid #f2f3f4;
+    padding: 1.6rem 2.4rem;
+
+    &--left {
+        display: flex;
+        align-items: center;
+        gap: 1.6rem;
+
+        & svg {
+            width: 3.2rem;
+            height: 3.2rem;
+        }
+    }
+
+    &__platform {
+        border: none;
+        cursor: pointer;
+        background-color: #000000;
+        display: flex;
+        padding: 0.8rem;
+        align-items: center;
+        gap: 0.8rem;
+        border-radius: 0.4rem;
+    }
+}

@@ -3,6 +3,8 @@ import {
     getAvailableContractTypes,
     getContractCategoryKey,
     getContractTypes,
+    getCategoriesSortedByKey,
+    ordered_trade_categories,
 } from '../contract-type';
 
 const contract_types_test_list = {
@@ -46,6 +48,22 @@ const contract_category_list = [
         label: 'Multipliers',
     },
 ];
+const unavailable_trade_types_list = [
+    {
+        contract_types: [{ text: 'Vanillas', value: 'vanilla' }],
+        icon: 'IcVanillas',
+        is_unavailable: true,
+        key: 'Vanillas',
+        label: 'Vanillas',
+    },
+    {
+        contract_types: [{ text: 'Accumulators', value: 'accumulator' }],
+        icon: 'IcAccumulators',
+        is_unavailable: true,
+        key: 'Accumulators',
+        label: 'Accumulators',
+    },
+];
 
 describe('getContractTypeCategoryIcons', () => {
     it('should return an object with specific fields (like All, Options , Multipliers and etc.)', () => {
@@ -85,5 +103,14 @@ describe('getContractTypes', () => {
     });
     it('should return undefined if passed item has not the same value as some of the passed list', () => {
         expect(getContractTypes(contract_category_list, { value: 'match_diff' })).toEqual(undefined);
+    });
+});
+
+describe('getCategoriesSortedByKey', () => {
+    it('should return an array with contract type objects sorted based on ordered_trade_categories list', () => {
+        expect(getCategoriesSortedByKey(unavailable_trade_types_list)[0].key).toEqual(ordered_trade_categories[0]);
+    });
+    it('should return an empty array if a list is not received', () => {
+        expect(getCategoriesSortedByKey()).toEqual([]);
     });
 });

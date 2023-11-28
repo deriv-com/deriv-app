@@ -13,7 +13,7 @@ type TResponse<Req, Res extends { [key: string]: unknown }, K extends string> = 
     };
 };
 export const requestPreviewProposal = debounce(
-    (store: TTradeStore, override = {}, onProposalResponse: TTradeStore['onProposalResponse']) => {
+    (store: TTradeStore, onProposalResponse: TTradeStore['onProposalResponse'], override = {}) => {
         const new_store = { ...store, ...override };
         const requests = createProposalRequests(new_store);
         const subscription_map: { [key: string]: boolean } = {};

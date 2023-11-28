@@ -3,12 +3,15 @@ import { useHistory } from 'react-router-dom';
 import { useCtraderAccountsList } from '@deriv/api';
 import { TradingAccountCard } from '../../../../../components';
 import { WalletButton, WalletText } from '../../../../../components/Base';
+import { useModal } from '../../../../../components/ModalProvider';
 import CTrader from '../../../../../public/images/ctrader.svg';
+import { MT5TradeModal } from '../../../modals';
 import './AddedCTraderAccountsList.scss';
 
 const AddedCTraderAccountsList: React.FC = () => {
     const history = useHistory();
     const { data: cTraderAccounts } = useCtraderAccountsList();
+    const { show } = useModal();
 
     const leading = () => (
         <div className='wallets-added-ctrader-accounts__icon'>
@@ -25,7 +28,7 @@ const AddedCTraderAccountsList: React.FC = () => {
                 text='Transfer'
                 variant='outlined'
             />
-            <WalletButton text='Open' />
+            <WalletButton onClick={() => show(<MT5TradeModal platform='ctrader' />)} text='Open' />
         </div>
     );
 

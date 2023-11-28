@@ -12,18 +12,11 @@ const ClosingAccountPendingWrapper = ({
     description,
 }: React.PropsWithChildren<TClosingAccountPendingWrapperProps>) => (
     <div className='closing-account-error'>
-        <Text
-            as='div'
-            line_height='s'
-            size='xs'
-            weight='bold'
-            color='prominent'
-            className='closing-account-error__title'
-        >
+        <Text as='p' line_height='s' size='xs' weight='bold' color='prominent' className='closing-account-error__title'>
             {title}
         </Text>
         {description && (
-            <Text as='div' size='xxs' className='closing-account-error__description'>
+            <Text as='p' size='xxs' className='closing-account-error__description'>
                 {description}
             </Text>
         )}

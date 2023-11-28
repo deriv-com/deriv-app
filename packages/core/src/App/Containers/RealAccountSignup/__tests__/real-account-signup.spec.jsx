@@ -88,7 +88,10 @@ describe('<RealAccountSignup />', () => {
     it('should render RealAccountSignupModal if is_real_account_signup is true', () => {
         renderwithRouter(<RealAccountSignup {...mock_props} />);
         expect(screen.getByText('RealAccountModalContent')).toBeInTheDocument();
+    });
 
+    it('should call Analytics.trackEvent on mount if real account signup target is not maltainvest', () => {
+        renderwithRouter(<RealAccountSignup {...mock_props} real_account_signup_target='svg' />);
         expect(Analytics.trackEvent).toHaveBeenCalled();
     });
 

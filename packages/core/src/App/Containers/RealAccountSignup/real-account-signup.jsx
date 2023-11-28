@@ -278,25 +278,18 @@ const RealAccountSignup = ({
 
     const [assessment_decline, setAssessmentDecline] = React.useState(false);
 
-    const analytic_data = React.useMemo(
-        () => ({
-            form_source: document.referrer,
-            form_name: 'real_account_signup_form',
-            landing_company: real_account_signup_target,
-        }),
-        [real_account_signup_target]
-    );
-
     const trackEvent = React.useCallback(
         payload => {
             if (real_account_signup_target === 'maltainvest') return;
 
             Analytics.trackEvent('ce_real_account_signup_form', {
-                ...analytic_data,
+                form_source: document.referrer,
+                form_name: 'real_account_signup_form',
+                landing_company: real_account_signup_target,
                 ...payload,
             });
         },
-        [analytic_data, real_account_signup_target]
+        [real_account_signup_target]
     );
 
     React.useEffect(() => {

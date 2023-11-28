@@ -63,26 +63,19 @@ const AccountWizard = props => {
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
     const is_high_risk_client_for_mt5 = useIsClientHighRiskForMT5();
 
-    const analytic_data = React.useMemo(
-        () => ({
-            form_source: document.referrer,
-            form_name: 'real_account_signup_form',
-            landing_company: props.real_account_signup_target,
-        }),
-        [props.real_account_signup_target]
-    );
-
     const trackEvent = React.useCallback(
         payload => {
             if (props.real_account_signup_target === 'maltainvest') return;
 
             Analytics.trackEvent('ce_real_account_signup_form', {
                 current_step: STEP_IDENTIFIERS[payload.step_num],
-                ...analytic_data,
+                form_source: document.referrer,
+                form_name: 'real_account_signup_form',
+                landing_company: props.real_account_signup_target,
                 ...payload,
             });
         },
-        [analytic_data, props.real_account_signup_target]
+        [props.real_account_signup_target]
     );
 
     const {

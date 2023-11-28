@@ -11,21 +11,30 @@ import { useReadLocalStorage } from 'usehooks-ts';
 
 const Header = observer(() => {
     const { client } = useStore();
-    const { is_logged_in, setAccounts, setLoginId } = client;
+    const { accounts, is_logged_in, setAccounts, loginid, switchAccount } = client;
     const { pathname } = useLocation();
     const traders_hub_routes =
         [routes.traders_hub, routes.account, routes.cashier, routes.wallets, routes.compare_cfds].includes(pathname) ||
         pathname.startsWith(routes.compare_cfds);
 
-    const clientAccounts = useReadLocalStorage('client.accounts');
+    const client_accounts = useReadLocalStorage('client.accounts');
     const { is_next_wallet_enabled } = useFeatureFlags();
     const { has_wallet } = useStoreWalletAccountsList();
     const should_show_wallets = is_next_wallet_enabled && has_wallet;
 
     React.useEffect(() => {
-        setAccounts(clientAccounts as Record<string, ReturnType<typeof useStore>['client']['accounts'][number]>);
-        setLoginId(String(localStorage.getItem('active_loginid')));
-    }, [clientAccounts, setAccounts, setLoginId]);
+        if (is_logged_in) {
+            const accounts_as_string = JSON.stringify(accounts);
+            const client_accounts_as_string = JSON.stringify(client_accounts);
+            if (accounts_as_string !== client_accounts_as_string) {
+                setAccounts(
+                    client_accounts as Record<string, ReturnType<typeof useStore>['client']['accounts'][number]>
+                );
+                const active_loginig_from_local_storage = localStorage.getItem('active_loginid') ?? '';
+                if (loginid !== active_loginig_from_local_storage) switchAccount(active_loginig_from_local_storage);
+            }
+        }
+    }, [accounts, client_accounts, is_logged_in, loginid, setAccounts, switchAccount]);
 
     if (is_logged_in) {
         let result;

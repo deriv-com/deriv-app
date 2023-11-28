@@ -46,10 +46,13 @@ const DerivAppsGetAccount: React.FC = () => {
     }, [activeWallet?.display_balance, activeWallet?.wallet_currency_type, isDesktop, landingCompanyName, show]);
 
     useEffect(() => {
+        if (newTradingAccountData && isAccountCreationSuccess) {
+            addTradingAccountToLocalStorage(newTradingAccountData);
+        }
         if (isAccountCreationSuccess) {
             openSuccessModal();
         }
-    }, [isAccountCreationSuccess, openSuccessModal]);
+    }, [addTradingAccountToLocalStorage, isAccountCreationSuccess, newTradingAccountData, openSuccessModal]);
 
     const createTradingAccount = () => {
         createNewRealAccount({
@@ -62,12 +65,6 @@ const DerivAppsGetAccount: React.FC = () => {
             },
         });
     };
-
-    useEffect(() => {
-        if (newTradingAccountData && isAccountCreationSuccess) {
-            addTradingAccountToLocalStorage(newTradingAccountData);
-        }
-    }, [addTradingAccountToLocalStorage, isAccountCreationSuccess, newTradingAccountData]);
 
     return (
         <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>

@@ -282,18 +282,28 @@ const RealAccountSignup = ({
         () => ({
             form_source: document.referrer,
             form_name: 'real_account_signup_form',
+            landing_company: real_account_signup_target,
         }),
-        []
+        [real_account_signup_target]
+    );
+
+    const trackEvent = React.useCallback(
+        payload => {
+            if (real_account_signup_target === 'maltainvest') return;
+
+            Analytics.trackEvent('ce_real_account_signup_form', {
+                ...analytic_data,
+                ...payload,
+            });
+        },
+        [analytic_data, real_account_signup_target]
     );
 
     React.useEffect(() => {
         if (is_real_acc_signup_on) {
-            Analytics.trackEvent('ce_real_account_signup_form', {
-                action: 'open',
-                ...analytic_data,
-            });
+            trackEvent({ action: 'open' });
         }
-    }, [analytic_data, is_real_acc_signup_on]);
+    }, [is_real_acc_signup_on, trackEvent]);
 
     const getModalHeight = () => {
         if (is_from_restricted_country) return '304px';
@@ -374,10 +384,9 @@ const RealAccountSignup = ({
         setCurrentAction(modal_content[getActiveModalIndex()]?.action);
         setError(err);
 
-        Analytics.trackEvent('ce_real_account_signup_form', {
+        trackEvent({
             action: 'other_error',
             real_signup_error_message: err,
-            ...analytic_data,
         });
     };
 

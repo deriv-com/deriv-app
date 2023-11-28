@@ -9,15 +9,18 @@ const WarningMessageModal = ({
     setIsClosingCreateRealAccountModal,
     closeRealAccountSignup,
     routing_history,
+    real_account_signup_target,
 }) => {
     const closeModal = () => {
+        real_account_signup_target !== 'maltainvest' &&
+            Analytics.trackEvent('ce_real_account_signup_form', {
+                action: 'close',
+                form_source: document.referrer,
+                form_name: 'real_account_signup_form',
+            });
+
         setIsClosingCreateRealAccountModal(false);
 
-        Analytics.trackEvent('ce_real_account_signup_form', {
-            action: 'close',
-            form_source: document.referrer,
-            form_name: 'real_account_signup_form',
-        });
         closeRealAccountSignup();
 
         if (isNavigationFromExternalPlatform(routing_history, routes.smarttrader)) {

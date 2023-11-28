@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 
 import RealAccountSignup from '../real-account-signup.jsx';
+import { Analytics } from '@deriv/analytics';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,
@@ -87,6 +88,8 @@ describe('<RealAccountSignup />', () => {
     it('should render RealAccountSignupModal if is_real_account_signup is true', () => {
         renderwithRouter(<RealAccountSignup {...mock_props} />);
         expect(screen.getByText('RealAccountModalContent')).toBeInTheDocument();
+
+        expect(Analytics.trackEvent).toHaveBeenCalled();
     });
 
     it('should render TestWarningModal if should_show_appropriateness_warning_modal is set to true', () => {

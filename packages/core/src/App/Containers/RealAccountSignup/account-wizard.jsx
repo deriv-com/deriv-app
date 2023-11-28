@@ -63,12 +63,27 @@ const AccountWizard = props => {
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
     const is_high_risk_client_for_mt5 = useIsClientHighRiskForMT5();
 
-    const analytic_data = {
-        form_source: document.referrer,
-        form_name: 'real_account_signup_form',
-    };
+    const analytic_data = React.useMemo(
+        () => ({
+            form_source: document.referrer,
+            form_name: 'real_account_signup_form',
+            landing_company: props.real_account_signup_target,
+        }),
+        [props.real_account_signup_target]
+    );
 
-    const analytics_event = 'ce_real_account_signup_form';
+    const trackEvent = React.useCallback(
+        payload => {
+            if (props.real_account_signup_target === 'maltainvest') return;
+
+            Analytics.trackEvent('ce_real_account_signup_form', {
+                current_step: STEP_IDENTIFIERS[payload.step_num],
+                ...analytic_data,
+                ...payload,
+            });
+        },
+        [analytic_data, props.real_account_signup_target]
+    );
 
     const {
         setIsTradingAssessmentForNewUserEnabled,
@@ -208,11 +223,10 @@ const AccountWizard = props => {
             return;
         }
 
-        Analytics.trackEvent(analytics_event, {
+        trackEvent({
             action: 'step_back',
-            step_codename: STEP_IDENTIFIERS[current_step],
             step_num: current_step,
-            ...analytic_data,
+            step_codename: STEP_IDENTIFIERS[current_step],
         });
 
         goToPreviousStep();
@@ -264,11 +278,10 @@ const AccountWizard = props => {
         if (should_override || index + 1 >= state_items.length) {
             createRealAccount({});
         } else {
-            Analytics.trackEvent(analytics_event, {
+            trackEvent({
                 action: 'step_passed',
-                step_codename: STEP_IDENTIFIERS[index],
                 step_num: index,
-                ...analytic_data,
+                step_codename: STEP_IDENTIFIERS[index],
             });
             goToNextStep();
         }
@@ -307,17 +320,15 @@ const AccountWizard = props => {
             delete form_data.document_type;
         }
 
-        Analytics.trackEvent(analytics_event, {
+        trackEvent({
             action: 'save',
-            ...analytic_data,
         });
 
         submitForm(payload)
             .then(async response => {
-                Analytics.trackEvent(analytics_event, {
+                trackEvent({
                     action: 'real_signup_finished',
                     user_choice: JSON.stringify(response?.echo_req),
-                    ...analytic_data,
                 });
                 props.setIsRiskWarningVisible(false);
                 if (props.real_account_signup_target === 'maltainvest') {
@@ -340,10 +351,9 @@ const AccountWizard = props => {
                 }
             })
             .catch(error => {
-                Analytics.trackEvent(analytics_event, {
+                trackEvent({
                     action: 'real_signup_error',
                     real_signup_error_message: error,
-                    ...analytic_data,
                 });
                 if (error.code === 'show risk disclaimer') {
                     props.setIsRiskWarningVisible(true);
@@ -362,10 +372,6 @@ const AccountWizard = props => {
             .finally(() => {
                 setLoading(false);
                 localStorage.removeItem('current_question_index');
-                Analytics.trackEvent(analytics_event, {
-                    action: 'real_signup_finished',
-                    ...analytic_data,
-                });
             });
     };
 

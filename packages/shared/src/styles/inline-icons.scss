@@ -4,26 +4,31 @@
 
     e.g. style icon on parent hover:
         a:hover .inline-icon {
-            @extend %inline-icon.active;
+            @extend %inline-icon-active;
         }
 */
 
 %inline-icon {
     @include colorIcon(var(--text-general), none);
 
-    &.active {
+    &.active,
+    &-active {
         @include colorIcon(var(--text-prominent), none);
     }
-    &.disabled {
+    &.disabled,
+    &-disabled {
         @include colorIcon(var(--text-disabled), none);
     }
-    &.white {
+    &.white,
+    &-white {
         @include colorIcon(var(--text-prominent));
     }
-    &.border_hover_color {
+    &.border_hover_color,
+    &-border_hover_color {
         @include colorIcon(var(--text-prominent));
     }
-    &.secondary {
+    &.secondary,
+    &-secondary {
         @include colorIcon(var(--text-less-prominent));
     }
 }

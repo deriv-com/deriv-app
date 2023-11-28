@@ -1,42 +1,27 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-// Initialize i18n by importing it here
-// eslint-disable-next-line no-unused-vars
-import { withTranslation } from 'react-i18next';
-import { DesktopWrapper } from '@deriv/components';
-import {
-    setUrlLanguage,
-    initFormErrorMessages,
-    setSharedCFDText,
-    useOnLoadTranslation,
-    setWebsocket,
-} from '@deriv/shared';
-import { initializeTranslations, getLanguage } from '@deriv/translations';
+import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
-import { APIProvider } from '@deriv/api';
+import {
+    initFormErrorMessages,
+    setSharedCFDText,
+    setUrlLanguage,
+    setWebsocket,
+    useOnLoadTranslation,
+} from '@deriv/shared';
 import { StoreProvider } from '@deriv/stores';
+import { getLanguage, initializeTranslations } from '@deriv/translations';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
-import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
-import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
-import AppToastMessages from './Containers/app-toast-messages.jsx';
-import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
-import AppContents from './Containers/Layout/app-contents.jsx';
-import PlatformContainer from './Containers/PlatformContainer/PlatformContainer.jsx';
-import Footer from './Containers/Layout/footer.jsx';
-import Header from './Containers/Layout/header';
-import AppModals from './Containers/Modals';
-import Routes from './Containers/Routes/routes.jsx';
-import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
+import PropTypes from 'prop-types';
+import { withTranslation } from 'react-i18next';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { CFD_TEXT } from '../Constants/cfd-text';
-
-// TODO: Lazy load smartchart styles
-import '@deriv/deriv-charts/dist/smartcharts.css';
-// eslint-disable-next-line import/extensions
-// eslint-disable-next-line import/no-unresolved
+import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
+import AppContent from './AppContent';
 import 'Sass/app.scss';
+import { Analytics } from '@deriv/analytics';
+import initHotjar from '../Utils/Hotjar';
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
@@ -57,14 +42,39 @@ const AppWithoutTranslation = ({ root_store }) => {
     React.useEffect(initCFDStore, []);
 
     React.useEffect(() => {
+        const loadSmartchartsStyles = () => {
+            if (root_store.client.is_beta_chart) {
+                import('@deriv/deriv-charts-beta/dist/smartcharts.css');
+            } else {
+                import('@deriv/deriv-charts/dist/smartcharts.css');
+            }
+        };
+
         initializeTranslations();
+        if (
+            process.env.NODE_ENV === 'production' ||
+            process.env.NODE_ENV === 'staging' ||
+            process.env.NODE_ENV === 'test'
+        ) {
+            Analytics.initialise({
+                growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,
+                growthbookDecryptionKey: process.env.GROWTHBOOK_DECRYPTION_KEY,
+                rudderstackKey: process.env.RUDDERSTACK_KEY,
+                enableDevMode: process.env.NODE_ENV !== 'production',
+            });
+        }
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedCFDText(CFD_TEXT);
         root_store.common.setPlatform();
+        loadSmartchartsStyles();
         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
+        initHotjar(root_store.client);
     }, []);
 
     const platform_passthrough = {
@@ -79,28 +89,11 @@ const AppWithoutTranslation = ({ root_store }) => {
             {is_translation_loaded ? (
                 <Router basename={has_base ? `/${base}` : null}>
                     <MobxContentProvider store={root_store}>
-                        <StoreProvider store={root_store}>
-                            <APIProvider>
-                                <PlatformContainer>
-                                    <Header />
-                                    <ErrorBoundary>
-                                        <AppContents>
-                                            {/* TODO: [trader-remove-client-base] */}
-                                            <Routes passthrough={platform_passthrough} />
-                                        </AppContents>
-                                    </ErrorBoundary>
-                                    <DesktopWrapper>
-                                        <Footer />
-                                    </DesktopWrapper>
-                                    <ErrorBoundary>
-                                        <AppModals />
-                                    </ErrorBoundary>
-                                    <SmartTraderIFrame />
-                                    <BinaryBotIFrame />
-                                    <AppToastMessages />
-                                </PlatformContainer>
-                            </APIProvider>
-                        </StoreProvider>
+                        <APIProvider>
+                            <StoreProvider store={root_store}>
+                                <AppContent passthrough={platform_passthrough} />
+                            </StoreProvider>
+                        </APIProvider>
                     </MobxContentProvider>
                 </Router>
             ) : (

@@ -15,7 +15,7 @@ export type TFilterMessageValues = {
     className: string;
     date: string;
     extra: TExtraFilterMessage | TExtraJournal;
-    message: string;
+    message: string | ((value: () => void) => string);
     message_type: string;
     time: string;
     unique_id: string;
@@ -74,7 +74,7 @@ export type TJournalItemProps = {
     measure: () => void;
 };
 
-export type TJournalItemExtra = TExtraFilterMessage & TExtraJournal & { sold_for: string };
+export type TJournalItemExtra = TExtraFilterMessage & TExtraJournal & { sold_for: string; current_currency?: string };
 
 export type TFormatMessageProps = {
     logType: string;

@@ -6,7 +6,8 @@ const path = require('path');
 //TODO: Uncomment this line when type script migrations on all packages done
 //const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+const is_release =
+    process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
 const svg_loaders = [
     {
@@ -59,6 +60,7 @@ module.exports = function (env) {
                 Stores: path.resolve(__dirname, 'src/stores'),
                 Types: path.resolve(__dirname, 'src/types'),
                 Utils: path.resolve(__dirname, 'src/utils'),
+                Hooks: path.resolve(__dirname, 'src/hooks'),
             },
             extensions: ['.ts', '.tsx', '.js'],
         },
@@ -107,9 +109,6 @@ module.exports = function (env) {
                         'style-loader',
                         {
                             loader: 'css-loader',
-                            options: {
-                                url: false,
-                            },
                         },
                         {
                             loader: 'postcss-loader',
@@ -131,11 +130,22 @@ module.exports = function (env) {
                             loader: 'sass-resources-loader',
                             options: {
                                 // Provide path to the file with resources
-                                // eslint-disable-next-line global-require, import/no-dynamic-require
-                                resources: require('@deriv/shared/src/styles/index.js'),
+                                resources: [
+                                    // eslint-disable-next-line global-require, import/no-dynamic-require
+                                    ...require('@deriv/shared/src/styles/index.js'),
+                                ],
                             },
                         },
                     ],
+                },
+                {
+                    test: /\.svg$/,
+                    exclude: [/node_modules/, path.resolve('../', 'wallets')],
+                    include: /public\//,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'appstore/public/[name].[contenthash][ext]',
+                    },
                 },
                 {
                     test: /\.svg$/,
@@ -171,6 +181,7 @@ module.exports = function (env) {
                 '@deriv/account': true,
                 '@deriv/cashier': true,
                 '@deriv/cfd': true,
+                '@deriv/analytics': true,
             },
         ],
         //TODO: Uncomment this line when type script migrations on all packages done

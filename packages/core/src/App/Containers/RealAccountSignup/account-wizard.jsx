@@ -1,16 +1,16 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import classNames from 'classnames';
 import fromEntries from 'object.fromentries';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
-import { WS, getLocation, toMoment, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
+import { WS, getLocation, toMoment, formatIDVFormValues } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
+import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
 import 'Sass/details-form.scss';
 
 const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps, sub_section_index }) => {
@@ -58,6 +58,7 @@ const AccountWizard = props => {
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
+    const is_high_risk_client_for_mt5 = useIsClientHighRiskForMT5();
 
     const {
         setIsTradingAssessmentForNewUserEnabled,
@@ -78,12 +79,17 @@ const AccountWizard = props => {
         setLoading(false);
     };
 
+    const get_items_props = {
+        ...props,
+        is_high_risk_client_for_mt5,
+    };
+
     React.useEffect(() => {
         setIsTradingAssessmentForNewUserEnabled(true);
         getData();
         setStateItems(previous_state => {
             if (!previous_state.length) {
-                return getItems(props);
+                return getItems(get_items_props);
             }
             return previous_state;
         });
@@ -111,7 +117,7 @@ const AccountWizard = props => {
                 if (state_items.length) {
                     items = state_items;
                 } else {
-                    items = getItems(props);
+                    items = getItems(get_items_props);
                 }
 
                 if (items.length > 1 && 'phone' in items[1]?.form_value) {
@@ -213,6 +219,15 @@ const AccountWizard = props => {
         delete clone?.tax_identification_confirm;
         delete clone?.agreed_tnc;
         delete clone?.agreed_tos;
+        delete clone?.confirmation_checkbox;
+
+        // BE does not accept empty strings for TIN
+        // so we remove it from the payload if it is empty in case of optional TIN field
+        // as the value will be available from the form_values
+        if (clone?.tax_identification_number?.length === 0) {
+            delete clone.tax_identification_number;
+        }
+
         clone = processInputData(clone);
         props.setRealAccountFormData(clone);
         if (payload) {
@@ -250,7 +265,7 @@ const AccountWizard = props => {
         const passthrough = getCurrent('passthrough', step_index);
         const properties = getCurrent('props', step_index) || {};
 
-        if (passthrough && passthrough.length) {
+        if (passthrough?.length) {
             passthrough.forEach(item => {
                 Object.assign(properties, { [item]: props[item] });
             });
@@ -259,22 +274,17 @@ const AccountWizard = props => {
         return properties;
     };
 
-    const submitIDVData = async (document_type, document_number, document_additional = '', country_code) => {
-        const idv_submit_data = {
-            identity_verification_document_add: 1,
-            document_number,
-            document_additional,
-            document_type: document_type.id,
-            issuing_country: country_code,
-        };
-        await WS.send(idv_submit_data);
-    };
-
     const createRealAccount = (payload = undefined) => {
         setLoading(true);
         const form_data = { ...form_values() };
+        /**
+         * Remove document_type from payload if it is not present (For Non IDV supporting countries)
+         */
+        if (!form_data?.document_type?.id) {
+            delete form_data.document_type;
+        }
         submitForm(payload)
-            .then(response => {
+            .then(async response => {
                 props.setIsRiskWarningVisible(false);
                 if (props.real_account_signup_target === 'maltainvest') {
                     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
@@ -283,10 +293,16 @@ const AccountWizard = props => {
                 } else {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
-                const { document_type, document_number, document_additional } = { ...form_values() };
-                if (document_type && document_type.id !== IDV_NOT_APPLICABLE_OPTION.id && document_number) {
-                    const country_code = props.account_settings.citizen || props.residence;
-                    submitIDVData(document_type, document_number, document_additional, country_code);
+                const country_code = props.account_settings.citizen || props.residence;
+                /**
+                 * If IDV details are present, then submit IDV details
+                 */
+                if (form_data?.document_type) {
+                    const idv_submit_data = {
+                        identity_verification_document_add: 1,
+                        ...formatIDVFormValues(form_data, country_code),
+                    };
+                    await WS.send(idv_submit_data);
                 }
             })
             .catch(error => {
@@ -328,6 +344,8 @@ const AccountWizard = props => {
     if (!mounted) return null;
 
     if (!finished) {
+        const employment_status =
+            state_items.find(item => item.form_value.employment_status)?.form_value?.employment_status || '';
         const wizard_steps = state_items.map((step, step_index) => {
             const passthrough = getPropsForChild(step_index);
             const BodyComponent = step.body;
@@ -344,6 +362,7 @@ const AccountWizard = props => {
                     form_error={form_error}
                     {...passthrough}
                     key={step_index}
+                    employment_status={employment_status}
                 />
             );
         });

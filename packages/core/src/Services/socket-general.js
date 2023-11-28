@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { flow } from 'mobx';
-import { State, getActivePlatform, getPropertyValue, routes, getActionFromUrl } from '@deriv/shared';
+import { State, getSocketURL, getActivePlatform, getPropertyValue, routes, getActionFromUrl } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ServerTime from '_common/base/server_time';
 import BinarySocket from '_common/base/socket_base';
@@ -12,11 +12,31 @@ let client_store, common_store, gtm_store;
 const BinarySocketGeneral = (() => {
     let session_duration_limit, session_start_time, session_timeout;
 
+    let responseTimeoutErrorTimer = null;
+
     const onDisconnect = () => {
+        clearTimeout(responseTimeoutErrorTimer);
         common_store.setIsSocketOpened(false);
     };
 
     const onOpen = is_ready => {
+        responseTimeoutErrorTimer = setTimeout(() => {
+            const expectedResponseTypes = WS?.get?.()?.expect_response_types || {};
+            const pendingResponseTypes = Object.keys(expectedResponseTypes).filter(
+                key => expectedResponseTypes[key].state === 'pending'
+            );
+
+            const error = new Error('deriv-api: no message received after 30s');
+            error.userId = client_store?.loginid;
+
+            window.TrackJS?.console?.error({
+                message: error.message,
+                clientsCountry: client_store?.clients_country,
+                websocketUrl: getSocketURL(),
+                pendingResponseTypes,
+            });
+        }, 30000);
+
         if (is_ready) {
             if (!client_store.is_valid_login) {
                 client_store.logout();
@@ -39,6 +59,7 @@ const BinarySocketGeneral = (() => {
     };
 
     const onMessage = response => {
+        clearTimeout(responseTimeoutErrorTimer);
         handleError(response);
         // Header.hideNotification('CONNECTION_ERROR');
         switch (response.msg_type) {

@@ -1,0 +1,70 @@
+@import '../../../shared/src/styles/reset.scss';
+@import '../../../shared/src/styles/themes.scss';
+
+.p2p {
+    background: transparent;
+    height: 100%;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    & .dc-tabs {
+        width: 100%;
+        overflow-x: auto;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .dc-themed-scrollbars-wrapper li {
+            @include mobile {
+                flex: 1;
+            }
+        }
+
+        > .dc-tabs__content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+
+            @include mobile {
+                overflow-y: scroll;
+                overflow-x: hidden;
+            }
+        }
+    }
+
+    & .dc-button-menu {
+        &__wrapper {
+            background-color: var(--state-disabled);
+
+            .dc-button-menu {
+                &__button,
+                &__button--active {
+                    height: 100%;
+                }
+                &__button {
+                    span {
+                        color: var(--text-less-prominent);
+                    }
+                    &--active {
+                        span {
+                            color: var(--text-prominent);
+                        }
+                    }
+                }
+            }
+        }
+        &--highlight {
+            background-color: var(--state-normal) !important;
+        }
+    }
+
+    @include mobile {
+        .dc-autocomplete__field {
+            border: none;
+        }
+    }
+}

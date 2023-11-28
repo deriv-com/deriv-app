@@ -65,8 +65,6 @@ const OnfidoSdkView = ({
                     <HintBox
                         className='onfido-container__status-message'
                         icon='IcAlertAnnounce'
-                        icon_height={16}
-                        icon_width={16}
                         message={
                             <Text as='p' size='xxxs'>
                                 <Localize i18n_default_text='Your personal details have been saved successfully.' />
@@ -76,28 +74,29 @@ const OnfidoSdkView = ({
                     />
                 </CSSTransition>
             </div>
-            {is_onfido_disabled && is_onfido_initialized && (
-                <HintBox
-                    className='onfido-container__info-message'
-                    icon='IcInfoBlue'
-                    icon_height={16}
-                    icon_width={16}
-                    message={
-                        <Text as='p' size='xxxs'>
-                            <Localize i18n_default_text='Hit the checkbox above to choose your document.' />
-                        </Text>
-                    }
-                    is_info
+            <section>
+                {is_onfido_disabled && is_onfido_initialized && (
+                    <div className='onfido-container__info-message'>
+                        <HintBox
+                            icon='IcInfoBlue'
+                            message={
+                                <Text as='p' size='xxxs'>
+                                    <Localize i18n_default_text='Hit the checkbox above to choose your document.' />
+                                </Text>
+                            }
+                            is_info
+                        />
+                    </div>
+                )}
+                <div
+                    data-testid={data_testid}
+                    id={onfido_element_id}
+                    className={classNames({
+                        'onfido-container__disabled': is_onfido_disabled,
+                        'onfido-container__hidden': is_onfido_container_hidden,
+                    })}
                 />
-            )}
-            <div
-                data-testid={data_testid}
-                id={onfido_element_id}
-                className={classNames({
-                    'onfido-container__disabled': is_onfido_disabled,
-                    'onfido-container__hidden': is_onfido_container_hidden,
-                })}
-            />
+            </section>
         </div>
     );
 };

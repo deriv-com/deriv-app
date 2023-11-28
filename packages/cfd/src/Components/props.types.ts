@@ -1,9 +1,14 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+
 import { TCFDPasswordReset } from '../Containers/props.types';
 
-export type TCFDPlatform = 'dxtrade' | 'mt5';
+export type TMobilePlatforms = 'ios' | 'android' | 'huawei';
 
-export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
+export type TCFDPlatform = 'dxtrade' | 'mt5' | 'ctrader';
+
+export type TCFDsPlatformType = 'dxtrade' | 'mt5' | 'ctrader' | '';
+
+export type TShortcode = DetailsOfEachMT5Loginid['landing_company_short'];
 
 export type TCFDAccountCopy = {
     text: string | undefined;
@@ -41,10 +46,15 @@ export type TCFDDashboardContainer = {
         demo: string;
         real: string;
     };
-    derivez_tokens: {
+    ctrader_tokens: {
         demo: string;
         real: string;
     };
+};
+
+type TOpenAccountTransferMeta = {
+    category: string;
+    type?: string;
 };
 
 export type TCFDAccountCardActionProps = {
@@ -76,10 +86,15 @@ export type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    shortcode: 'bvi' | 'labuan' | 'maltainvest' | 'svg' | 'vanuatu';
+    shortcode?: TShortcode;
     sub_account_type: string;
     account_type?: 'real' | 'demo';
-    landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    landing_company_short?: TShortcode;
+};
+
+export type TModifiedTradingPlatformAvailableAccount = Omit<TTradingPlatformAvailableAccount, 'market_type'> & {
+    platform?: 'mt5' | 'dxtrade' | 'ctrader';
+    market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic';
 };
 
 export type TCardFlipStatus = {
@@ -93,6 +108,7 @@ export type TCardFlipStatus = {
 export type TClickableDescription = {
     type: 'text' | 'link';
     text: string;
+    onClick?: React.MouseEventHandler<HTMLSpanElement>;
 };
 
 export type TJurisdictionCardSectionTitleIndicators = {
@@ -129,6 +145,10 @@ export type TJurisdictionCardItems = {
     is_over_header_available: boolean;
     synthetic_verification_docs?: TJurisdictionCardItemVerification;
     financial_verification_docs?: TJurisdictionCardItemVerification;
+};
+
+export type TJurisdictionCardParams = {
+    toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
 };
 
 export type TJurisdictionVerificationSection = {
@@ -214,7 +234,7 @@ export type TTradingPlatformAccounts = {
     /**
      * Landing company shortcode of the DXTrade account.
      */
-    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu';
+    landing_company_short?: DetailsOfEachMT5Loginid['landing_company_short'];
     /**
      * Login of DXTrade account.
      */
@@ -227,4 +247,44 @@ export type TTradingPlatformAccounts = {
      * Name of trading platform.
      */
     platform?: 'dxtrade' | string;
+};
+
+export type TInstrumentsIcon = {
+    icon:
+        | 'DerivedFX'
+        | 'Synthetics'
+        | 'Baskets'
+        | 'Stocks'
+        | 'StockIndices'
+        | 'Commodities'
+        | 'Forex'
+        | 'Cryptocurrencies'
+        | 'ETF';
+    text: string;
+    highlighted: boolean;
+    className?: string;
+    is_asterisk?: boolean;
+};
+
+export type TCompareAccountsCard = {
+    trading_platforms: TModifiedTradingPlatformAvailableAccount;
+    is_eu_user?: boolean;
+    is_demo?: boolean;
+};
+
+export type TJurisdictionData = {
+    jurisdiction?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest' | 'malta';
+};
+
+export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
+    display_login?: string;
+    landing_company_short?: TShortcode;
+    short_code_and_region?: string;
+    mt5_acc_auth_status?: string | null;
+    selected_mt5_jurisdiction?: TOpenAccountTransferMeta &
+        TJurisdictionData & {
+            platform?: string;
+        };
+
+    openFailedVerificationModal?: (from_account: string) => void;
 };

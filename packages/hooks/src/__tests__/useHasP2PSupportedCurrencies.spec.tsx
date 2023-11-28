@@ -1,4 +1,4 @@
-import { useFetch } from '@deriv/api';
+import * as React from 'react';
 import { mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useHasP2PSupportedCurrencies from '../useHasP2PSupportedCurrencies';

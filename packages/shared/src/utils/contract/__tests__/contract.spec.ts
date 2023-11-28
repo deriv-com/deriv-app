@@ -1,5 +1,6 @@
+import { screen, render } from '@testing-library/react';
 import * as ContractUtils from '../contract';
-import { TContractInfo, TDigitsInfo, TTickItem } from '../contract-types';
+import { TContractInfo, TContractStore, TDigitsInfo, TTickItem } from '../contract-types';
 
 describe('getFinalPrice', () => {
     it("should return sell_price as final price when it's available", () => {
@@ -190,6 +191,15 @@ describe('isDigitContract', () => {
 
     it('should return false if contract is not digits', () => {
         expect(ContractUtils.isDigitContract('CALLPUT')).toEqual(false);
+    });
+});
+
+describe('isTurbosContract', () => {
+    it('should return true if contract_type includes TURBOS', () => {
+        expect(ContractUtils.isTurbosContract('TURBOS')).toEqual(true);
+    });
+    it('should return false if contract_type does not include TURBOS', () => {
+        expect(ContractUtils.isTurbosContract('CALL')).toEqual(false);
     });
 });
 
@@ -391,82 +401,93 @@ describe('getAccuBarriersDefaultTimeout', () => {
 });
 
 describe('getAccuBarriersDTraderTimeout', () => {
-    const barriers_update_timestamp = 1688134166649;
+    const interval = 250; // interval between receivals of tick data and barriers data
+    const shorter_interval = 50;
     const has_default_timeout = false;
-    const should_update_contract_barriers = false;
-    const tick_update_timestamp = 1688134166574;
-    const underlying = 'R_100';
+    const tick_update_timestamp = 1234567890800;
+    const barriers_update_timestamp = tick_update_timestamp + interval;
+    const symbol_1_sec = '1HZ10V';
+    const symbol_2_sec = 'R_100';
 
-    it(`should return a timeout equal to a difference between target time + 100ms (or -100ms for contract barriers)
-        and current barriers update time for 2-second symbol`, () => {
+    const getTargetTime = (underlying: string) => {
+        return (
+            tick_update_timestamp +
+            ContractUtils.getAccuBarriersDefaultTimeout(underlying) +
+            ContractUtils.ANIMATION_CORRECTION_TIME
+        );
+    };
+
+    it('should return a timeout equal to difference between target time and current barriers receival time for 2-second symbol', () => {
+        const sooner_barriers_receival_timestamp = tick_update_timestamp + shorter_interval;
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp,
                 has_default_timeout,
-                should_update_contract_barriers,
                 tick_update_timestamp,
-                underlying,
+                underlying: symbol_2_sec,
             })
-        ).toEqual(1175);
+        ).toEqual(getTargetTime(symbol_2_sec) - barriers_update_timestamp);
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
-                barriers_update_timestamp,
+                barriers_update_timestamp: sooner_barriers_receival_timestamp,
                 has_default_timeout,
-                should_update_contract_barriers: true,
                 tick_update_timestamp,
-                underlying,
+                underlying: symbol_2_sec,
             })
-        ).toEqual(675);
+        ).toEqual(getTargetTime(symbol_2_sec) - sooner_barriers_receival_timestamp);
     });
-    it(`should return a timeout equal to a difference between target time + 100ms (or -100ms for contract barriers)
-        and current barriers update time for 1-second symbol`, () => {
+    it('should return a timeout equal to difference between target time and current barriers receival time for 1-second symbol', () => {
+        const sooner_barriers_receival_timestamp = tick_update_timestamp + shorter_interval;
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
-                barriers_update_timestamp: 1688134341324,
+                barriers_update_timestamp,
                 has_default_timeout,
-                should_update_contract_barriers,
-                tick_update_timestamp: 1688134341301,
-                underlying: '1HZ10V',
+                tick_update_timestamp,
+                underlying: symbol_1_sec,
             })
-        ).toEqual(602);
+        ).toEqual(getTargetTime(symbol_1_sec) - barriers_update_timestamp);
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
-                barriers_update_timestamp: 1688134341324,
+                barriers_update_timestamp: sooner_barriers_receival_timestamp,
                 has_default_timeout,
-                should_update_contract_barriers: true,
-                tick_update_timestamp: 1688134341301,
-                underlying: '1HZ10V',
+                tick_update_timestamp,
+                underlying: symbol_1_sec,
             })
-        ).toEqual(352);
+        ).toEqual(getTargetTime(symbol_1_sec) - sooner_barriers_receival_timestamp);
     });
     it('should return a default timeout when has_default_timeout is true, or when tick_update_timestamp is null', () => {
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp,
                 has_default_timeout: true,
-                should_update_contract_barriers,
                 tick_update_timestamp,
-                underlying,
+                underlying: symbol_2_sec,
             })
-        ).toEqual(ContractUtils.getAccuBarriersDefaultTimeout(underlying));
+        ).toEqual(ContractUtils.getAccuBarriersDefaultTimeout(symbol_2_sec));
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp,
                 has_default_timeout,
-                should_update_contract_barriers,
                 tick_update_timestamp: null,
-                underlying,
+                underlying: symbol_2_sec,
             })
-        ).toEqual(ContractUtils.getAccuBarriersDefaultTimeout(underlying));
+        ).toEqual(ContractUtils.getAccuBarriersDefaultTimeout(symbol_2_sec));
     });
-    it('should return 0 timeout when current barriers update happens too late and timeout is no longer applicable', () => {
+    it('should return 0 timeout when current barriers receival happens too late (after/at target time) and timeout is no longer applicable', () => {
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
-                barriers_update_timestamp: 1688134167999,
+                barriers_update_timestamp: getTargetTime(symbol_1_sec) + 100,
                 has_default_timeout,
-                should_update_contract_barriers,
                 tick_update_timestamp,
-                underlying,
+                underlying: symbol_1_sec,
+            })
+        ).toEqual(0);
+        expect(
+            ContractUtils.getAccuBarriersDTraderTimeout({
+                barriers_update_timestamp: getTargetTime(symbol_1_sec),
+                has_default_timeout,
+                tick_update_timestamp,
+                underlying: symbol_1_sec,
             })
         ).toEqual(0);
     });
@@ -563,5 +584,48 @@ describe('getContractStatus', () => {
                 status: 'won',
             })
         ).toBe('won');
+    });
+});
+
+describe('getLastContractMarkerIndex', () => {
+    let markers: TContractStore[];
+    beforeEach(() => {
+        markers = [
+            {
+                contract_info: {
+                    date_start: 1001,
+                },
+            },
+            {
+                contract_info: {
+                    date_start: 1000,
+                },
+            },
+        ] as TContractStore[];
+    });
+    it('should return index of a marker that has the biggest date_start', () => {
+        expect(ContractUtils.getLastContractMarkerIndex(markers)).toEqual(0);
+    });
+    it('should return index of the last marker if a marker with the biggest date_start is not found', () => {
+        delete markers[0].contract_info.date_start;
+        delete markers[1].contract_info.date_start;
+        expect(ContractUtils.getLastContractMarkerIndex(markers)).toEqual(1);
+    });
+});
+
+describe('getLocalizedTurbosSubtype', () => {
+    it('should return an empty string for non-turbos contracts', () => {
+        render(ContractUtils.getLocalizedTurbosSubtype('CALL') as JSX.Element);
+        expect(screen.queryByText('Long')).not.toBeInTheDocument();
+        expect(screen.queryByText('Short')).not.toBeInTheDocument();
+        expect(ContractUtils.getLocalizedTurbosSubtype('CALL')).toBe('');
+    });
+    it('should render "Long" for TURBOSLONG contract', () => {
+        render(ContractUtils.getLocalizedTurbosSubtype('TURBOSLONG') as JSX.Element);
+        expect(screen.getByText('Long')).toBeInTheDocument();
+    });
+    it('should render "Short" for TURBOSSHORT contract', () => {
+        render(ContractUtils.getLocalizedTurbosSubtype('TURBOSSHORT') as JSX.Element);
+        expect(screen.getByText('Short')).toBeInTheDocument();
     });
 });

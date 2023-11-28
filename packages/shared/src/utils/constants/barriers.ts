@@ -15,9 +15,11 @@ export const CONTRACT_SHADES = {
     ASIAND: 'BELOW',
     MULTUP: 'ABOVE',
     MULTDOWN: 'BELOW',
+    TURBOSLONG: 'NONE_SINGLE',
+    TURBOSSHORT: 'NONE_SINGLE',
     VANILLALONGCALL: 'NONE_SINGLE',
     VANILLALONGPUT: 'NONE_SINGLE',
-};
+} as const;
 
 // Default non-shade according to number of barriers
 export const DEFAULT_SHADES = {
@@ -29,8 +31,7 @@ export const BARRIER_COLORS = {
     GREEN: '#4bb4b3',
     RED: '#ec3f3f',
     ORANGE: '#ff6444',
-    GRAY: '#999999',
-    DARK_GRAY: '#6E6E6E',
+    BLUE: '#377cfc',
 };
 
 export const BARRIER_LINE_STYLES = {

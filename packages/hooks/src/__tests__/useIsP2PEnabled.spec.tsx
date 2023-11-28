@@ -1,3 +1,4 @@
+import React from 'react';
 import { useFetch } from '@deriv/api';
 import { mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';

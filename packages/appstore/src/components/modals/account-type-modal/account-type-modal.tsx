@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { useStores } from 'Stores/index';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { TModalContent, TAccountCard, TTradingPlatformAvailableAccount } from './types';
 import { TIconTypes } from 'Types';
 import { CFD_PLATFORMS } from '@deriv/shared';
@@ -23,7 +23,7 @@ const AccountCard = ({ selectAccountTypeCard, account_type_card, title_and_type,
             onClick={() => cardSelection(title_and_type)}
         >
             <div className='account-type-card__image'>
-                <TradigPlatformIconProps icon={icon as TIconTypes} size={64} />
+                <TradingPlatformIconProps icon={icon as TIconTypes} size={64} />
             </div>
             <div className='account-type-card__header'>
                 <Text as='h2' weight='bold'>
@@ -177,7 +177,7 @@ const MT5AccountTypeModal = () => {
                             is_synthetic_available={is_synthetic_available}
                             is_swapfree_available={is_swapfree_available}
                         />
-                        <Modal.Footer has_separator>
+                        <Modal.Footer className='account-type-card__footer-button' has_separator>
                             <Button
                                 style={{ width: '100%' }}
                                 disabled={!account_type_card}

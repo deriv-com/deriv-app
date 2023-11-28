@@ -1,9 +1,9 @@
 import React from 'react';
+import { observer } from 'mobx-react';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import './index.scss';
-import { observer } from 'mobx-react';
 import { useDBotStore } from 'Stores/useDBotStore';
+import './index.scss';
 
 const RecentFooter = observer(() => {
     const { load_modal } = useDBotStore();

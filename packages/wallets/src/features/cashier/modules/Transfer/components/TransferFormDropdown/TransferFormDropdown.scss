@@ -1,0 +1,41 @@
+.wallets-transfer-form-dropdown {
+    all: unset;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding-left: 0.8rem;
+    border-left: 0.1rem solid var(--light-5-active-background, #d6dadb);
+
+    @include mobile {
+        flex-direction: column;
+        align-items: unset;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 0.4rem;
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+
+        @include mobile {
+            justify-content: space-between;
+        }
+    }
+
+    &__icon-dropdown {
+        margin-left: 1rem;
+
+        @include mobile {
+            margin-right: 0;
+        }
+    }
+
+    &__badge {
+        margin-left: 1rem;
+    }
+}

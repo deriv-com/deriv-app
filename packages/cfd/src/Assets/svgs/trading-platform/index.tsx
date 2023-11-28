@@ -1,8 +1,10 @@
 import React from 'react';
+
+import CFDs from './ic-appstore-cfds.svg';
+import CTrader from './ic-appstore-ctrader.svg';
+import DerivX from './ic-appstore-deriv-x.svg';
 import Derived from './ic-appstore-derived.svg';
 import Financial from './ic-appstore-financial.svg';
-import CFDs from './ic-appstore-cfds.svg';
-import DerivEz from './ic-appstore-derivez.svg';
 import SwapFree from './ic-appstore-swap-free.svg';
 
 export interface IconProps<T> {
@@ -16,8 +18,9 @@ export const PlatformIcons = {
     Derived,
     Financial,
     CFDs,
-    DerivEz,
+    CTrader,
     SwapFree,
+    DerivX,
 };
 
 const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof typeof PlatformIcons>) => {

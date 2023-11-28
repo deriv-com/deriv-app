@@ -1,20 +1,24 @@
-import { action, makeObservable, observable, reaction, computed } from 'mobx';
-import { getCFDAvailableAccount, CFD_PLATFORMS, ContentFlag, formatMoney, getAppstorePlatforms } from '@deriv/shared';
-import BaseStore from './base-store';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+
+import { CFD_PLATFORMS, ContentFlag, formatMoney, getAppstorePlatforms, getCFDAvailableAccount } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { isEuCountry } from '_common/utility';
+
 import { getMultipliersAccountStatus } from './Helpers/client';
+import BaseStore from './base-store';
+
+import { isEuCountry } from '_common/utility';
 
 export default class TradersHubStore extends BaseStore {
     available_platforms = [];
     available_cfd_accounts = [];
     available_mt5_accounts = [];
     available_dxtrade_accounts = [];
-    available_derivez_accounts = [];
+    available_ctrader_accounts = [];
     combined_cfd_mt5_accounts = [];
     selected_account_type;
     selected_region;
     is_onboarding_visited = false;
+    is_first_time_visit = true;
     is_failed_verification_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_mt5_notification_modal_visible = false;
@@ -29,6 +33,10 @@ export default class TradersHubStore extends BaseStore {
     };
     is_account_transfer_modal_open = false;
     selected_account = {};
+    is_real_wallets_upgrade_on = false;
+    is_wallet_migration_failed = false;
+    active_modal_tab;
+    active_modal_wallet_id;
 
     constructor(root_store) {
         super({ root_store });
@@ -37,7 +45,7 @@ export default class TradersHubStore extends BaseStore {
             account_type_card: observable,
             available_cfd_accounts: observable,
             available_dxtrade_accounts: observable,
-            available_derivez_accounts: observable,
+            available_ctrader_accounts: observable,
             available_mt5_accounts: observable,
             available_platforms: observable,
             combined_cfd_mt5_accounts: observable,
@@ -49,20 +57,26 @@ export default class TradersHubStore extends BaseStore {
             is_tour_open: observable,
             modal_data: observable,
             is_onboarding_visited: observable,
+            is_first_time_visit: observable,
             selected_account: observable,
             selected_account_type: observable,
             selected_platform_type: observable,
+            active_modal_tab: observable,
+            active_modal_wallet_id: observable,
             selected_region: observable,
             open_failed_verification_for: observable,
-            can_get_more_cfd_mt5_accounts: computed,
+            is_real_wallets_upgrade_on: observable,
+            is_wallet_migration_failed: observable,
             closeModal: action.bound,
             content_flag: computed,
             getAccount: action.bound,
             getAvailableCFDAccounts: action.bound,
             getAvailableDxtradeAccounts: action.bound,
-            getAvailableDerivEzAccounts: action.bound,
+            getAvailableCTraderAccounts: action.bound,
             getExistingAccounts: action.bound,
             handleTabItemClick: action.bound,
+            setWalletModalActiveTab: action.bound,
+            setWalletModalActiveWalletID: action.bound,
             has_any_real_account: computed,
             is_demo_low_risk: computed,
             is_demo: computed,
@@ -74,6 +88,7 @@ export default class TradersHubStore extends BaseStore {
             no_MF_account: computed,
             multipliers_account_status: computed,
             CFDs_restricted_countries: computed,
+            financial_restricted_countries: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -91,13 +106,15 @@ export default class TradersHubStore extends BaseStore {
             closeAccountTransferModal: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
             setIsOnboardingVisited: action.bound,
+            setIsFirstTimeVisit: action.bound,
             setMT5NotificationModal: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
             openFailedVerificationModal: action.bound,
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             showTopUpModal: action.bound,
-            financial_restricted_countries: computed,
+            toggleWalletsUpgrade: action.bound,
+            setWalletsMigrationFailedPopup: action.bound,
         });
 
         reaction(
@@ -107,7 +124,7 @@ export default class TradersHubStore extends BaseStore {
                 this.root_store.client.is_switching,
                 this.root_store.client.mt5_login_list,
                 this.root_store.client.dxtrade_accounts_list,
-                this.root_store.client.derivez_accounts_list,
+                this.root_store.client.ctrader_accounts_list,
                 this.is_demo_low_risk,
                 this.root_store.modules?.cfd?.current_list,
                 this.root_store.client.landing_companies,
@@ -137,16 +154,15 @@ export default class TradersHubStore extends BaseStore {
             () => [this.root_store.client.loginid, this.root_store.client.residence],
             () => {
                 const residence = this.root_store.client.residence;
-                const active_demo = /^VRT/.test(this.root_store.client.loginid);
-                const active_real_mf = /^MF/.test(this.root_store.client.loginid);
-
+                const active_demo = /^VRT|VRW/.test(this.root_store.client.loginid);
+                const active_real_mf = /^MF|MFW/.test(this.root_store.client.loginid);
                 const default_region = () => {
                     if (((active_demo || active_real_mf) && isEuCountry(residence)) || active_real_mf) {
                         return 'EU';
                     }
                     return 'Non-EU';
                 };
-                this.selected_account_type = !/^VRT/.test(this.root_store.client.loginid) ? 'real' : 'demo';
+                this.selected_account_type = !/^VRT|VRW/.test(this.root_store.client.loginid) ? 'real' : 'demo';
                 this.selected_region = default_region();
             }
         );
@@ -168,6 +184,14 @@ export default class TradersHubStore extends BaseStore {
                 setIsLoggingIn(false);
             });
         }
+    }
+
+    setWalletModalActiveTab(tab) {
+        this.active_modal_tab = tab;
+    }
+
+    setWalletModalActiveWalletID(wallet_id) {
+        this.active_modal_wallet_id = wallet_id;
     }
 
     get no_MF_account() {
@@ -315,6 +339,10 @@ export default class TradersHubStore extends BaseStore {
         this.is_onboarding_visited = is_visited;
     }
 
+    setIsFirstTimeVisit(is_first_time) {
+        this.is_first_time_visit = is_first_time;
+    }
+
     get is_eu_selected() {
         return this.selected_region === 'EU';
     }
@@ -357,14 +385,12 @@ export default class TradersHubStore extends BaseStore {
     getAvailableCFDAccounts() {
         const getAccountDesc = () => {
             return !this.is_eu_user || this.is_demo_low_risk
-                ? localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.')
-                : localize(
-                      'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
-                  );
+                ? localize('This account offers CFDs on financial instruments.')
+                : localize('This MFSA-regulated account offers CFDs on derived and financial instruments.');
         };
         const getSwapFreeAccountDesc = () => {
             return localize(
-                'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.'
+                'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities cryptocurrencies, ETFs and synthetic indices.'
             );
         };
 
@@ -394,7 +420,7 @@ export default class TradersHubStore extends BaseStore {
             };
         });
         this.getAvailableDxtradeAccounts();
-        this.getAvailableDerivEzAccounts();
+        this.getAvailableCTraderAccounts();
         this.getAvailableMt5Accounts();
         this.setCombinedCFDMT5Accounts();
     }
@@ -460,29 +486,23 @@ export default class TradersHubStore extends BaseStore {
             account => account.platform === CFD_PLATFORMS.DXTRADE
         );
     }
-
-    getAvailableDerivEzAccounts() {
+    getAvailableCTraderAccounts() {
         if (this.CFDs_restricted_countries || this.financial_restricted_countries) {
-            this.available_derivez_accounts = [];
+            this.available_ctrader_accounts = [];
             return;
         }
 
         if (this.is_eu_user && !this.is_demo_low_risk) {
-            this.available_derivez_accounts = this.available_cfd_accounts.filter(
+            this.available_ctrader_accounts = this.available_cfd_accounts.filter(
                 account =>
                     ['EU', 'All'].some(region => region === account.availability) &&
-                    account.platform === CFD_PLATFORMS.DERIVEZ
+                    account.platform === CFD_PLATFORMS.CTRADER
             );
             return;
         }
-        this.available_derivez_accounts = this.available_cfd_accounts.filter(
-            account => account.platform === CFD_PLATFORMS.DERIVEZ
+        this.available_ctrader_accounts = this.available_cfd_accounts.filter(
+            account => account.platform === CFD_PLATFORMS.CTRADER
         );
-    }
-
-    hasCFDAccount(platform, category, type) {
-        const current_list_keys = Object.keys(this.root_store.modules.cfd.current_list);
-        return current_list_keys.some(key => key.startsWith(`${platform}.${category}.${type}`));
     }
 
     getExistingAccounts(platform, market_type) {
@@ -503,7 +523,7 @@ export default class TradersHubStore extends BaseStore {
                 if (platform === CFD_PLATFORMS.DXTRADE && market_type === 'all') {
                     return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`);
                 }
-                if (platform === CFD_PLATFORMS.DERIVEZ && market_type === 'all') {
+                if (platform === CFD_PLATFORMS.CTRADER && market_type === 'all') {
                     return key.startsWith(`${platform}.${selected_account_type}.${platform}@${market_type}`);
                 }
                 if (
@@ -571,7 +591,7 @@ export default class TradersHubStore extends BaseStore {
 
         if (is_eu && !has_maltainvest_account && standpoint?.iom) {
             openAccountNeededModal('maltainvest', localize('Deriv Multipliers'), localize('demo CFDs'));
-        } else if (platform !== CFD_PLATFORMS.DERIVEZ) {
+        } else if (platform !== CFD_PLATFORMS.CTRADER) {
             enableCFDPasswordModal();
         } else {
             await createCFDAccount({ ...account_type, platform });
@@ -582,10 +602,9 @@ export default class TradersHubStore extends BaseStore {
         const { client, modules } = this.root_store;
         const { has_active_real_account } = client;
         const { createCFDAccount, enableCFDPasswordModal, toggleJurisdictionModal } = modules.cfd;
-
         if (has_active_real_account && platform === CFD_PLATFORMS.MT5) {
             toggleJurisdictionModal();
-        } else if (platform !== CFD_PLATFORMS.DERIVEZ) {
+        } else if (platform === CFD_PLATFORMS.DXTRADE) {
             enableCFDPasswordModal();
         } else {
             await createCFDAccount({ ...account_type, platform });
@@ -622,25 +641,6 @@ export default class TradersHubStore extends BaseStore {
         } else {
             this.openRealAccount(account_type, platform);
         }
-    }
-
-    get can_get_more_cfd_mt5_accounts() {
-        const {
-            client: { isEligibleForMoreRealMt5 },
-        } = this.root_store;
-        const { is_high_risk_client_for_mt5 } = this.root_store.modules.cfd;
-
-        return (
-            this.is_real &&
-            !this.is_eu_user &&
-            (this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'synthetic') ||
-                this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'financial') ||
-                this.hasCFDAccount(CFD_PLATFORMS.MT5, 'real', 'all')) &&
-            (isEligibleForMoreRealMt5('synthetic') ||
-                isEligibleForMoreRealMt5('financial') ||
-                isEligibleForMoreRealMt5('all')) &&
-            !is_high_risk_client_for_mt5
-        );
     }
 
     getServerName = account => {
@@ -779,5 +779,13 @@ export default class TradersHubStore extends BaseStore {
             type: data.market_type,
         });
         openTopUpModal();
+    }
+
+    toggleWalletsUpgrade(value) {
+        this.is_real_wallets_upgrade_on = value;
+    }
+
+    setWalletsMigrationFailedPopup(value) {
+        this.is_wallet_migration_failed = value;
     }
 }

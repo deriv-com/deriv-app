@@ -16,8 +16,27 @@ describe('JurisdictionModalContent', () => {
         account_type: '',
         is_non_idv_design: false,
         is_virtual: false,
+        toggleDynamicLeverage: jest.fn(),
         jurisdiction_selected_shortcode: '',
         setJurisdictionSelectedShortcode: jest.fn(),
+        all_market_type_available_accounts: [
+            {
+                market_type: 'all' as const,
+                name: '',
+                requirements: {
+                    after_first_deposit: {
+                        financial_assessment: [''],
+                    },
+                    compliance: {
+                        mt5: [''],
+                        tax_information: [''],
+                    },
+                    signup: [''],
+                },
+                shortcode: Jurisdiction.SVG,
+                sub_account_type: '',
+            },
+        ],
         synthetic_available_accounts: [
             {
                 market_type: 'gaming' as const,
@@ -182,7 +201,7 @@ describe('JurisdictionModalContent', () => {
     it('should display content of 3 types of jurisdiction correctly for synthetics account', () => {
         render(<JurisdictionModalContent {...mock_props} account_type='synthetic' />);
         expect(screen.getAllByText('Assets')).toHaveLength(3);
-        expect(screen.getAllByText('Synthetics, Baskets and Derived FX')).toHaveLength(3);
+        expect(screen.getAllByText('Synthetic indices, basket indices, and derived FX')).toHaveLength(3);
         expect(screen.getAllByText('40+')).toHaveLength(3);
         expect(screen.getAllByText('Leverage')).toHaveLength(3);
         expect(screen.getAllByText('1:1000')).toHaveLength(3);
@@ -217,9 +236,10 @@ describe('JurisdictionModalContent', () => {
     it('should display content of 4 types of jurisdiction correctly for synthetics account', () => {
         render(<JurisdictionModalContent {...mock_props} account_type='financial' />);
         expect(screen.getAllByText('Assets')).toHaveLength(4);
-        expect(screen.getAllByText('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')).toHaveLength(2);
-        expect(screen.getByText('Forex, Stock indices, Commodities and Cryptocurrencies')).toBeInTheDocument();
-        expect(screen.getByText('Forex and Cryptocurrencies')).toBeInTheDocument();
+        expect(
+            screen.getAllByText('Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs')
+        ).toHaveLength(3);
+        expect(screen.getByText('Forex (standard/exotic) and cryptocurrencies')).toBeInTheDocument();
         expect(screen.getAllByText('Leverage')).toHaveLength(4);
         expect(screen.getAllByText('1:1000')).toHaveLength(3);
         expect(screen.getByText('1:100')).toBeInTheDocument();
@@ -246,6 +266,7 @@ describe('JurisdictionModalContent', () => {
             { ...mock_props.financial_available_accounts[0], shortcode: Jurisdiction.MALTA_INVEST },
         ];
         mock_props.synthetic_available_accounts = [];
+        mock_props.all_market_type_available_accounts = [];
         render(<JurisdictionModalContent {...mock_props} account_type='financial' />);
         const container = screen.getByTestId('dt-jurisdiction-modal-content');
         expect(container).toHaveClass('cfd-jurisdiction-card--financial__wrapper');
@@ -257,7 +278,7 @@ describe('JurisdictionModalContent', () => {
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('140+')).toBeInTheDocument();
         expect(
-            screen.getByText('Synthetics, Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')
+            screen.getByText('Forex, stocks, stock indices, commodities, cryptocurrencies and synthetic indices.')
         ).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:30')).toBeInTheDocument();
@@ -297,7 +318,9 @@ describe('JurisdictionModalContent', () => {
         expect(screen.getByText('Regulator/EDR')).toBeInTheDocument();
         expect(screen.getByText('Deriv (SVG) LLC (company no. 273 LLC 2020)')).toBeInTheDocument();
         expect(screen.getByText('170+')).toBeInTheDocument();
-        expect(screen.getByText('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')).toBeInTheDocument();
+        expect(
+            screen.getByText('Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs')
+        ).toBeInTheDocument();
         expect(screen.getByText('Spreads from')).toBeInTheDocument();
         expect(screen.getByText('0.6 pips')).toBeInTheDocument();
     });
@@ -327,7 +350,7 @@ describe('JurisdictionModalContent', () => {
         expect(screen.getByText('Regulator/EDR')).toBeInTheDocument();
         expect(screen.getByText('Deriv (SVG) LLC (company no. 273 LLC 2020)')).toBeInTheDocument();
         expect(screen.getByText('40+')).toBeInTheDocument();
-        expect(screen.getByText('Synthetics, Baskets and Derived FX')).toBeInTheDocument();
+        expect(screen.getByText('Synthetic indices, basket indices, and derived FX')).toBeInTheDocument();
     });
 
     it('should display cfd-jurisdiction-card--all__wrapper in class name', () => {
@@ -348,7 +371,7 @@ describe('JurisdictionModalContent', () => {
         render(<JurisdictionModalContent {...mock_props} account_type='all' />);
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(
-            screen.getByText('Synthetics, Forex, Stocks, Stock Indices, Cryptocurrencies, and ETFs')
+            screen.getByText('Forex, stocks, stock indices, commodities, cryptocurrencies, ETFs and synthetic indices')
         ).toBeInTheDocument();
         expect(screen.getByText('40+')).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();

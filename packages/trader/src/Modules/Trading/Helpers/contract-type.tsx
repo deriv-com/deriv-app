@@ -1,25 +1,21 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { ActiveSymbols } from '@deriv/api-types';
+import { TContractType, TContractCategory, TList } from '../Components/Form/ContractType/types';
 
-type TCategory = { value: string; text: string };
-type TContractType = {
-    name: string;
-    categories: TCategory[];
+type TContractTypesList = {
+    [key: string]: {
+        name: string;
+        categories: DeepRequired<TContractType[]>;
+    };
 };
-type TcontractTypesList = {
-    [key: string]: TContractType;
-};
+
 type TItem = {
     value: string;
 };
-type TList = {
-    component?: null | React.ReactNode;
-    contract_types: TCategory[];
-    contract_categories?: TList[];
-    icon?: string;
-    key: string;
-    label: string;
-};
+
+export const isMajorPairsSymbol = (checked_symbol: string, active_symbols: ActiveSymbols) =>
+    active_symbols.some(({ submarket, symbol }) => /major_pairs/i.test(submarket) && checked_symbol === symbol);
 
 export const contract_category_icon = {
     [localize('Ups & Downs')]: 'IcUpsDowns',
@@ -31,12 +27,23 @@ export const contract_category_icon = {
     [localize('Accumulators')]: 'IcCatAccumulator',
 } as const;
 
+export const ordered_trade_categories = [
+    'Accumulators',
+    'Vanillas',
+    'Turbos',
+    'Multipliers',
+    'Ups & Downs',
+    'Highs & Lows',
+    'Digits',
+];
+
 export const getContractTypeCategoryIcons = () =>
     ({
         All: 'IcCatAll',
         Accumulators: 'IcCatAccumulator',
         Options: 'IcCatOptions',
         Multipliers: 'IcCatMultiplier',
+        Turbos: 'IcCatTurbos',
     } as const);
 
 /**
@@ -50,7 +57,10 @@ export const getContractTypeCategoryIcons = () =>
  * @param {array}  unsupported_list - list of unsupported contract types
  */
 
-export const getAvailableContractTypes = (contract_types_list: TcontractTypesList, unsupported_list: string[]) => {
+export const showLabelForMultipliers = (checked_symbol: string) =>
+    /R_|1HZ/i.test(checked_symbol) && !/1HZ150V|1HZ250V/i.test(checked_symbol);
+
+export const getAvailableContractTypes = (contract_types_list: TContractTypesList, unsupported_list: string[]) => {
     return Object.keys(contract_types_list)
         .map(key => {
             const contract_types = contract_types_list[key].categories;
@@ -77,7 +87,20 @@ export const getAvailableContractTypes = (contract_types_list: TcontractTypesLis
             }
             return undefined;
         })
-        .filter(Boolean);
+        .filter(Boolean) as {
+        key: string;
+        label: string;
+        contract_types: TContractType[];
+        icon:
+            | 'IcUpsDowns'
+            | 'IcHighsLows'
+            | 'IcInsOuts'
+            | 'IcLookbacks'
+            | 'IcDigits'
+            | 'IcMultiplier'
+            | 'IcCatAccumulator';
+        component: JSX.Element | null;
+    }[];
 };
 
 /**
@@ -130,9 +153,13 @@ export const getAvailableContractTypes = (contract_types_list: TcontractTypesLis
 //         )
 //     );
 
-export const findContractCategory = (list: TList[], item: TItem) =>
-    list?.find(list_item => list_item.contract_types.some(i => i.value === item.value)) || ({} as TList);
+export const findContractCategory = (list: Partial<TList[]>, item: TItem) =>
+    list?.find(list_item => list_item?.contract_types?.some(i => i.value.includes(item.value))) ||
+    ({} as TContractCategory);
 
 export const getContractCategoryKey = (list: TList[], item: TItem) => findContractCategory(list, item)?.key;
 
 export const getContractTypes = (list: TList[], item: TItem) => findContractCategory(list, item)?.contract_types;
+
+export const getCategoriesSortedByKey = (list: TContractCategory[] = []) =>
+    [...list].sort((a, b) => ordered_trade_categories.indexOf(a.key) - ordered_trade_categories.indexOf(b.key));

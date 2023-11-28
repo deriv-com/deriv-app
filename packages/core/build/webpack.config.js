@@ -12,9 +12,9 @@ module.exports = function (env) {
             publicPath: base,
             open: openChromeBasedOnPlatform(process.platform),
             openPage: sub_path,
-            host: 'localhost.binary.sx',
+            host: 'localhost',
             https: true,
-            port: 443,
+            port: 8443,
             historyApiFallback: true,
             stats: {
                 colors: true,
@@ -36,11 +36,12 @@ module.exports = function (env) {
             minimizer: MINIMIZERS,
             splitChunks: {
                 chunks: 'all',
-                minSize: 102400,
+                minSize: 100000,
                 minSizeReduction: 102400,
                 minChunks: 1,
-                maxAsyncRequests: 5,
-                maxInitialRequests: 3,
+                maxSize: 2500000,
+                maxAsyncRequests: 30,
+                maxInitialRequests: 30,
                 automaticNameDelimiter: '~',
                 enforceSizeThreshold: 500000,
                 cacheGroups: {

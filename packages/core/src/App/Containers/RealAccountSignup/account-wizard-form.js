@@ -1,4 +1,5 @@
 import {
+    FinancialDetails,
     PersonalDetails,
     TermsOfUse,
     TradingAssessmentNewUser,
@@ -10,18 +11,15 @@ import {
     tradingAssessmentConfig,
 } from '@deriv/account';
 
-import AddressDetails from './address-details';
-import CurrencySelector from './currency-selector.jsx';
-import FinancialDetails from './financial-details.jsx';
+import AddressDetails from '@deriv/account/src/Components/address-details';
+import CurrencySelector from '@deriv/account/src/Components/currency-selector';
 
 const isMaltaAccount = ({ real_account_signup_target }) => real_account_signup_target === 'maltainvest';
-const shouldShowPersonalAndAddressDetailsAndCurrency = ({ real_account_signup_target }) =>
-    real_account_signup_target !== 'samoa';
 
 export const getItems = props => [
-    ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [currencySelectorConfig(props, CurrencySelector)] : []),
-    ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [personalDetailsConfig(props, PersonalDetails)] : []),
-    ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [addressDetailsConfig(props, AddressDetails)] : []),
+    currencySelectorConfig(props, CurrencySelector),
+    personalDetailsConfig(props, PersonalDetails),
+    addressDetailsConfig(props, AddressDetails),
     ...(isMaltaAccount(props) ? [tradingAssessmentConfig(props, TradingAssessmentNewUser)] : []),
     ...(isMaltaAccount(props) ? [financialDetailsConfig(props, FinancialDetails)] : []),
     termsOfUseConfig(props, TermsOfUse),

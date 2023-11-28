@@ -1,73 +1,51 @@
-import React, { ComponentProps, PropsWithChildren, ReactNode, isValidElement } from 'react';
-import classNames from 'classnames';
-import WalletButton from '../Base/WalletButton/WalletButton';
+import React, { ComponentProps, isValidElement, PropsWithChildren, ReactElement, ReactNode } from 'react';
+import { WalletButton, WalletButtonGroup } from '../Base';
 import WalletText from '../Base/WalletText/WalletText';
 import './WalletsActionScreen.scss';
 
 type TProps = {
-    actionText?: ReactNode;
-    actionVariant?: ComponentProps<typeof WalletButton>['variant'];
     description: ReactNode;
-    disabled?: boolean;
+    descriptionSize?: ComponentProps<typeof WalletText>['size'];
     icon?: ReactNode;
-    onAction?: () => void;
+    renderButtons?: () =>
+        | ReactElement<ComponentProps<'div'>>
+        | ReactElement<ComponentProps<typeof WalletButton>>
+        | ReactElement<ComponentProps<typeof WalletButtonGroup>>;
     title?: string;
-    type?: 'modal' | 'page';
+    titleSize?: ComponentProps<typeof WalletText>['size'];
 };
 
 /**
  * Generic component to display status / action screen / final screen
  * As its common and repeated in many places,
  * at the moment of writing this, there are already 3 different patterns use to display ex
- *
- * @param icon
- * @param title
- * @param description
- * @param actionText
- * @param onAction
- * @constructor
  */
 const WalletsActionScreen: React.FC<PropsWithChildren<TProps>> = ({
-    actionText,
-    actionVariant = 'contained',
     description,
-    disabled = false,
+    descriptionSize = 'md',
     icon,
-    onAction,
+    renderButtons,
     title,
-    type = 'page',
+    titleSize = 'md',
 }) => {
     return (
-        <div
-            className={classNames('wallets-action-screen', {
-                'wallets-action-screen__modal': type === 'modal',
-            })}
-        >
+        <div className='wallets-action-screen'>
             {icon}
-            <div className='wallets-action-screen__content'>
+            <div className='wallets-action-screen__info'>
                 {title && (
-                    <WalletText align='center' size='md' weight='bold'>
+                    <WalletText align='center' size={titleSize} weight='bold'>
                         {title}
                     </WalletText>
                 )}
                 {isValidElement(description) ? (
                     description
                 ) : (
-                    <WalletText align='center' size='md'>
+                    <WalletText align='center' size={descriptionSize}>
                         {description}
                     </WalletText>
                 )}
             </div>
-            {actionText && (
-                <WalletButton
-                    color='primary'
-                    disabled={disabled}
-                    onClick={onAction}
-                    size='lg'
-                    text={actionText}
-                    variant={actionVariant}
-                />
-            )}
+            {renderButtons?.()}
         </div>
     );
 };

@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { Popover, Text } from '@deriv/components';
-import { useStore, observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 
 type TQSInputLabel = {
     children?: React.ReactNode;
@@ -22,12 +21,7 @@ const QSInputLabel: React.FC<TQSInputLabel> = observer(({ label, description, fu
                     {label}
                 </Text>
                 <span>
-                    <Popover
-                        message={description}
-                        zIndex='9999'
-                        alignment={is_mobile ? 'bottom' : 'right'}
-                        icon='info'
-                    />
+                    <Popover message={description} zIndex='9999' alignment={is_mobile ? 'top' : 'right'} icon='info' />
                 </span>
             </div>
         </div>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useActiveWalletAccount, useCreateOtherCFDAccount, useCtraderAccountsList } from '@deriv/api';
-import { TradingAccountCard, WalletsErrorScreen } from '../../../../../components';
+import { TradingAccountCard, WalletError } from '../../../../../components';
 import { ModalWrapper, WalletButton, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import CTrader from '../../../../../public/images/ctrader.svg';
-import { Success } from '../../../screens';
+import { CFDSuccess } from '../../../screens';
 import './AvailableCTraderAccountsList.scss';
 
 const ctraderMapper = [
@@ -17,7 +17,7 @@ const ctraderMapper = [
 
 const AvailableCTraderAccountsList: React.FC = () => {
     const { hide, show } = useModal();
-    const { isSuccess, mutate } = useCreateOtherCFDAccount();
+    const { error, isSuccess, mutate, status } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: cTraderAccounts } = useCtraderAccountsList();
 
@@ -35,22 +35,29 @@ const AvailableCTraderAccountsList: React.FC = () => {
 
     const onClickHandler = () => {
         onSubmit();
+        if (status === 'error' || !isSuccess) {
+            return show(
+                <ModalWrapper>
+                    <WalletError
+                        errorMessage={error?.error.message || 'Something went wrong. Please try again later.'}
+                        onClick={() => hide()}
+                        title={error?.error?.code || 'Sorry, an error occurred'}
+                    />
+                </ModalWrapper>
+            );
+        }
+
         show(
             <ModalWrapper>
                 {isSuccess && (
-                    <Success
+                    <CFDSuccess
                         description={`Transfer your virtual funds from your ${accountType} wallet to your ${ctraderMapper[0].title} ${accountType} account to practice trading.`}
                         displayBalance={cTraderAccounts?.find(account => account.login)?.display_balance}
                         marketType='all'
-                        platform='cTrader'
+                        platform='ctrader'
                         renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
                         title={`Your ${ctraderMapper[0].title} ${accountType} account is ready`}
                     />
-                )}
-                {!isSuccess && (
-                    <div className='wallets-error-screen'>
-                        <WalletsErrorScreen message='Sorry, an error occurred. Please try again later.' />
-                    </div>
                 )}
             </ModalWrapper>
         );

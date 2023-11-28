@@ -1,6 +1,3 @@
-@import './sidebar.scss';
-@import './dialog.scss';
-
 @mixin position-center {
     display: flex;
     justify-content: center;
@@ -13,7 +10,42 @@
 }
 
 .tutorials-wrap {
-    padding-bottom: 20rem;
+    .dc-dialog {
+        &__dialog {
+            width: 80vw;
+            height: 80vh;
+            max-width: unset;
+            max-height: unset;
+            padding: 0;
+            border-radius: 0;
+            position: relative;
+            z-index: 1;
+            @include mobile {
+                width: 94%;
+                height: auto;
+                max-height: 80%;
+            }
+        }
+
+        &__header-wrapper {
+            &--end {
+                position: absolute;
+                top: 0;
+                right: 1rem;
+                z-index: 90;
+            }
+        }
+
+        &__content {
+            max-width: unset;
+            margin-bottom: 0;
+            height: 100%;
+        }
+
+        &__footer {
+            display: none;
+        }
+    }
     &--placeholder {
         width: 28rem;
     }
@@ -103,7 +135,6 @@
 .faq {
     &__wrapper {
         overflow: auto;
-        height: calc(100vh - 180px);
         padding-bottom: 18px;
 
         @include mobile {
@@ -127,6 +158,9 @@
             &__item {
                 border: unset;
                 border-bottom: 0.1rem solid var(--general-section-1);
+                &:last-child {
+                    margin-bottom: 2rem;
+                }
                 &-header {
                     @include position-center;
                     justify-content: space-between;
@@ -153,6 +187,282 @@
         }
         &__header {
             margin: 0 0 1rem 0.5rem;
+        }
+    }
+}
+
+.tour-dialog {
+    transition: unset;
+    .dc-dialog__dialog {
+        transform: unset;
+        opacity: unset;
+        transition: unset;
+
+        @include mobile {
+            width: 90vw;
+            padding: 1.6rem;
+        }
+        @include tablet {
+            width: 90vw;
+            padding: 1.6rem;
+        }
+    }
+
+    .dc-dialog__content {
+        &__header {
+            text-align: left;
+            margin-bottom: 2.4rem;
+        }
+
+        &__description {
+            text-align: left;
+
+            &__text {
+                margin-bottom: 1.6rem;
+            }
+        }
+    }
+
+    .dc-dialog__footer {
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            height: unset;
+            align-content: flex-end;
+
+            button {
+                &:first-child {
+                    margin-bottom: unset;
+                    margin-right: 0.8rem;
+                }
+            }
+        }
+    }
+}
+
+.tutorials-wrapper {
+    width: 100%;
+    background: var(--general-main-1);
+    .dc-tabs {
+        &__wrapper {
+            padding: 1.6rem 0.8rem;
+
+            &__group {
+                display: flex;
+                width: 22.5rem;
+                position: relative;
+                justify-content: center;
+                align-items: center;
+                padding: 1.6rem 0;
+                z-index: 1;
+
+                .search-icon {
+                    cursor: pointer;
+                    position: absolute;
+                    left: 1.5rem;
+                    z-index: 1;
+                }
+                .close-icon {
+                    cursor: pointer;
+                    position: absolute;
+                    right: 1.5rem;
+                    z-index: 1;
+                }
+
+                &__search-input {
+                    width: 21rem;
+                    height: 3.2rem;
+                    border-radius: 0.4rem;
+                    outline: none;
+                    background-color: transparent;
+                    font-size: 1.4rem;
+                    padding: 0 3rem;
+                    border: solid 0.1rem var(--checkbox-disabled-grey);
+                    color: var(--text-general);
+
+                    ::placeholder {
+                        margin-left: 3.2rem;
+                    }
+                    @include mobile {
+                        width: 100%;
+                        margin-left: 17px;
+                        height: 4rem;
+                        padding-left: 13px;
+                        margin-right: 0;
+                    }
+                }
+            }
+
+            .dc-tabs {
+                .tutorials-search {
+                    .faq__wrapper {
+                        height: unset;
+                    }
+                }
+                &__content {
+                    margin: -6.5rem 2.4rem;
+                    width: 100%;
+                    max-height: calc(100vh - 20rem);
+                    overflow: auto;
+
+                    .tutorials-wrap {
+                        margin-bottom: 3rem;
+                    }
+                    &--no-result {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-start;
+
+                        align-items: center;
+                        height: 100vh;
+                        margin: unset;
+                        svg {
+                            margin-bottom: 2.4rem;
+                        }
+                        &__title,
+                        &__content {
+                            margin-bottom: 0.8rem;
+                            word-break: break-word;
+                            text-align: center;
+                        }
+                    }
+                }
+
+                &--top {
+                    display: flex;
+                    @include mobile {
+                        height: calc(100vh - 22rem);
+                    }
+                }
+                &__list {
+                    width: 22.5rem;
+                    display: flex;
+                    flex-direction: column;
+                    padding: 0 0.8rem;
+
+                    &--border-bottom {
+                        padding: 0 0.8rem;
+                        height: 100vh;
+
+                        &:first-child {
+                            margin-top: -7.2rem;
+                        }
+                        .tutorials-guide:nth-child(1),
+                        .tutorials-faq:nth-child(2) {
+                            background-color: var(--sidebar-tab);
+                            border-radius: 0.4rem 0.4rem 0 0;
+                            transition: all 0.6s;
+                            font-weight: bold;
+                            pointer-events: none;
+                        }
+                    }
+                }
+
+                &__item {
+                    width: 100% !important;
+                    &--top {
+                        &:first-child {
+                            margin-top: 7.5rem;
+                        }
+                        &:nth-child(4) {
+                            display: none;
+                        }
+                    }
+
+                    &--tutorials {
+                        display: flex;
+                        justify-content: flex-start;
+                        padding: 0 1.6rem;
+                        &:nth-child(3) {
+                            display: none;
+                        }
+                    }
+                }
+
+                &__active {
+                    background-color: var(--sidebar-tab);
+                    border-radius: 0.4rem 0.4rem 0 0;
+                    transition: all 0.6s;
+                }
+            }
+        }
+    }
+}
+
+.tutorials-mobile {
+    padding: 1.6rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    &__select {
+        height: 4rem;
+        margin-bottom: 1.5rem;
+        @include align-center;
+        @include mobile {
+            .dc-select-native {
+                position: relative;
+                margin-right: 17px;
+                transition: all 0.3s;
+            }
+            &--show-search {
+                .dc-select-native {
+                    width: 0;
+                    margin: 0;
+                    visibility: hidden;
+                }
+                .dc-tabs__wrapper__group__search-input {
+                    width: 100%;
+                }
+                .arrow-left-bold {
+                    display: block;
+                }
+                .close-icon {
+                    display: block;
+                    cursor: pointer;
+                    position: absolute;
+                    right: 2.5rem;
+                    z-index: 1;
+                }
+                .dc-select-native__display,
+                .dc-select-native__picker,
+                .search-icon {
+                    display: none;
+                }
+            }
+
+            &--hide-search {
+                .dc-tabs__wrapper__group__search-input {
+                    width: 0;
+                    display: none;
+                }
+                .arrow-left-bold,
+                .close-icon {
+                    display: none;
+                }
+                .search-icon {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    &__guide,
+    &__faq,
+    &__search {
+        @include mobile {
+            height: calc(var(--vh) - 280px);
+            overflow: auto;
+            .tutorials-wrap {
+                margin-bottom: 2rem;
+            }
+        }
+    }
+
+    &__search {
+        @include mobile {
+            .tutorials-wrap,
+            .faq__wrapper {
+                overflow: unset;
+            }
         }
     }
 }

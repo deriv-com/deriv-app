@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect } from 'react';
 import { useActiveWalletAccount, useCreateNewRealAccount, useSettings } from '@deriv/api';
 import { toMoment } from '../../../../shared/src/utils/date';
-import { Success } from '../../features/cfd/screens/Success';
+import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useDevice from '../../hooks/useDevice';
-import DerivApps from '../../public/images/deriv-apps.svg';
 import { ModalStepWrapper, WalletButton, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
+import { WalletResponsiveSvg } from '../WalletResponsiveSvg';
 import { DerivAppsSuccessFooter } from './DerivAppsSuccessFooter';
 
 const DerivAppsGetAccount: React.FC = () => {
@@ -23,15 +23,19 @@ const DerivAppsGetAccount: React.FC = () => {
         show(
             <ModalStepWrapper
                 renderFooter={isDesktop ? undefined : () => <DerivAppsSuccessFooter />}
+                shouldHideDerivAppHeader
                 shouldHideHeader={isDesktop}
             >
-                <Success
-                    description={`Transfer funds from ${activeWallet?.wallet_currency_type} Wallet to your Deriv Apps (${landingCompanyName}) account to start trading.`}
+                <CFDSuccess
+                    description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Deriv Apps (${landingCompanyName}) account to start trading.`}
                     displayBalance={activeWallet?.display_balance}
                     renderButton={() => <DerivAppsSuccessFooter />}
                     title={`Your Deriv Apps (${landingCompanyName}) account is ready`}
                 />
-            </ModalStepWrapper>
+            </ModalStepWrapper>,
+            {
+                defaultRootId: 'wallets_modal_root',
+            }
         );
     }, [activeWallet?.display_balance, activeWallet?.wallet_currency_type, isDesktop, landingCompanyName, show]);
 
@@ -54,19 +58,23 @@ const DerivAppsGetAccount: React.FC = () => {
     };
 
     return (
-        <div className='wallets-deriv-apps-section'>
-            <DerivApps />
-            <div className='wallets-deriv-apps-section__details'>
-                <WalletText size='sm' weight='bold'>
-                    Deriv Apps
-                </WalletText>
-                <WalletText lineHeight='2xs' size='2xs'>
-                    {activeWallet?.is_malta_wallet
-                        ? 'Get a Deriv Apps trading account regulated by MFSA to trade multipliers on Deriv Trader.'
-                        : 'Get a Deriv Apps trading account to trade options and multipliers on these apps.'}
-                </WalletText>
+        <div className='wallets-deriv-apps-section wallets-deriv-apps-section__get-account'>
+            <div className='wallets-deriv-apps-section__icon'>
+                <WalletResponsiveSvg icon='IcWalletOptionsLight' />
             </div>
-            <WalletButton color='primary-light' onClick={createTradingAccount} text='Get' />
+            <div className='wallets-deriv-apps-section__get-content'>
+                <div className='wallets-deriv-apps-section__details'>
+                    <WalletText size='sm' weight='bold'>
+                        Deriv Apps
+                    </WalletText>
+                    <WalletText size={isDesktop ? '2xs' : 'xs'}>
+                        {activeWallet?.is_malta_wallet
+                            ? 'Get a Deriv Apps trading account regulated by MFSA to trade multipliers on Deriv Trader.'
+                            : 'Get a Deriv Apps trading account to trade options and multipliers on these apps.'}
+                    </WalletText>
+                </div>
+                <WalletButton color='primary-light' onClick={createTradingAccount} text='Get' />
+            </div>
         </div>
     );
 };

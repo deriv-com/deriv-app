@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useCountdown } from 'usehooks-ts';
-import { useSettings, useVerifyEmail } from '@deriv/api';
+import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import ChangePassword from '../../public/images/change-password-email.svg';
@@ -56,6 +56,16 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
         if (count === 0) setHasCountdownStarted(false);
     }, [count]);
 
+    const { data: activeWallet } = useActiveWalletAccount();
+
+    let redirectTo = platform === 'mt5' ? 1 : 2;
+
+    if (!activeWallet?.is_virtual) {
+        redirectTo = Number(`${redirectTo}0`);
+    } else if (activeWallet?.is_virtual) {
+        redirectTo = Number(`${redirectTo}1`);
+    }
+
     return (
         <div className='wallets-sent-email-content'>
             <WalletsActionScreen
@@ -92,6 +102,9 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
                                         platform === 'mt5'
                                             ? 'trading_platform_mt5_password_reset'
                                             : 'trading_platform_dxtrade_password_reset',
+                                    url_parameters: {
+                                        redirect_to: redirectTo,
+                                    },
                                     verify_email: data?.email,
                                 });
                                 resetCountdown();

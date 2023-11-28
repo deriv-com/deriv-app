@@ -1,16 +1,17 @@
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAccountsList, useCreateWallet } from '@deriv/api';
+import { useCreateWallet, useDerivAccountsList } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import CheckIcon from '../../public/images/check.svg';
 import PlusIcon from '../../public/images/plus.svg';
 import { THooks } from '../../types';
-import { WalletButton, WalletText } from '../Base';
+import { WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletAddedSuccess } from '../WalletAddedSuccess';
 import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
 import { WalletError } from '../WalletError';
+import WalletListCardBadge from '../WalletListCardBadge/WalletListCardBadge';
 
 type TProps = THooks.AllWalletAccounts;
 
@@ -20,7 +21,7 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     is_crypto: isCrypto,
     landing_company_name: landingCompanyName,
 }: TProps) => {
-    const { switchAccount } = useAccountsList();
+    const { switchAccount } = useDerivAccountsList();
     const { data, error, isSuccess: isMutateSuccess, mutate, status } = useCreateWallet();
     const { isMobile } = useDevice();
     const history = useHistory();
@@ -83,20 +84,16 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
                 <span className='wallets-add-more__banner-logo'>
                     <WalletAddMoreCurrencyIcon currency={currency ? currency.toLowerCase() : ''} />
                 </span>
-                <div className='wallets-add-more__banner-landing-company'>
-                    <WalletText align='right' size='xs' weight='bold'>
-                        {landingCompanyName}
-                    </WalletText>
-                </div>
+                <WalletListCardBadge label={landingCompanyName} />
             </div>
             <WalletButton
                 color='white'
                 disabled={isAdded}
                 icon={
                     isAdded ? (
-                        <CheckIcon className='wallets-add-more__banner-button-icon' />
+                        <CheckIcon className='wallets-add-more__banner-button-icon' width={16} />
                     ) : (
-                        <PlusIcon className='wallets-add-more__banner-button-icon' />
+                        <PlusIcon className='wallets-add-more__banner-button-icon' width={16} />
                     )
                 }
                 onClick={e => {

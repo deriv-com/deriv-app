@@ -1,5 +1,6 @@
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
+
 import { CFD_PLATFORMS } from '../platform';
 import { Jurisdiction, JURISDICTION_MARKET_TYPES } from '../constants/jurisdictions-config';
 
@@ -11,7 +12,6 @@ export const CFD_text: { [key: string]: string } = {
     mt5_cfds: 'MT5 CFDs',
     cfd: 'CFDs',
     ctrader: 'Deriv cTrader',
-    derivez: 'DerivEz',
     synthetic: 'Derived',
     synthetic_demo: 'Derived Demo',
     synthetic_bvi: 'Derived BVI',
@@ -38,7 +38,7 @@ export const getMT5Title = (account_type: string) => {
     return CFD_text.financial;
 };
 
-type TPlatform = 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
+type TPlatform = 'dxtrade' | 'mt5' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
 type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu' | 'maltainvest';
 type TGetAccount = {
@@ -68,8 +68,6 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
     }
     if (market_type === 'all') {
         switch (platform) {
-            case CFD_PLATFORMS.DERIVEZ:
-                return 'derivez';
             case CFD_PLATFORMS.CTRADER:
                 return 'ctrader';
             default:
@@ -203,7 +201,6 @@ export const getCFDAccountDisplay = ({
     if (market_type === 'synthetic' && platform === CFD_PLATFORMS.DXTRADE) return localize('Synthetic');
     if (market_type === 'all' && platform === CFD_PLATFORMS.DXTRADE && is_transfer_form) return '';
     if (market_type === 'all' && platform === CFD_PLATFORMS.CTRADER && is_transfer_form) return '';
-    if (platform === CFD_PLATFORMS.DERIVEZ) return '';
     if (platform === CFD_PLATFORMS.CTRADER) return cfd_account_display;
 
     return cfd_account_display;
@@ -256,9 +253,7 @@ export const getAccountListKey = (account: TAccount, platform: TPlatform, shortc
         platform,
         shortcode,
     })}@${
-        platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.DERIVEZ || platform === CFD_PLATFORMS.CTRADER
-            ? account.market_type
-            : account.server
+        platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER ? account.market_type : account.server
     }`;
 };
 
@@ -268,8 +263,6 @@ export const getCFDPlatformLabel = (platform: TPlatform) => {
             return 'Deriv MT5';
         case CFD_PLATFORMS.DXTRADE:
             return 'Deriv X';
-        case CFD_PLATFORMS.DERIVEZ:
-            return 'Deriv EZ';
         case CFD_PLATFORMS.CTRADER:
             return 'Deriv cTrader';
         default:
@@ -285,8 +278,6 @@ export const getCFDPlatformNames = (platform: TPlatform) => {
             return 'Deriv X';
         case CFD_PLATFORMS.CTRADER:
             return 'cTrader';
-        case CFD_PLATFORMS.DERIVEZ:
-            return 'deriv EZ';
         default:
             return '';
     }
@@ -346,7 +337,7 @@ type TAuthenticationStatusInfo = {
 };
 
 export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): TAuthenticationStatusInfo => {
-    const risk_classification = account_status.risk_classification;
+    const risk_classification = account_status?.risk_classification;
 
     const poa_status: string = account_status?.authentication?.document?.status || '';
     const poi_status: string = account_status?.authentication?.identity?.status || '';

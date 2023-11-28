@@ -34,6 +34,7 @@ type TAutocompleteProps = {
     value: string;
     onSearch?: (value: string, items: TItem[]) => [];
     data_testid: string;
+    readOnly?: boolean;
 };
 
 const KEY_CODE = {

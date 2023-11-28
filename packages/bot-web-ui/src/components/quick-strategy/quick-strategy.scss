@@ -32,6 +32,7 @@
         @extend .x-center;
         justify-content: space-between;
         border-bottom: 1px solid var(--border-divider);
+
         &__title {
             @extend .x-center;
             padding: 0 2.4rem;
@@ -39,8 +40,10 @@
             background-color: var(--general-section-1);
             width: var(--sidebar-width);
         }
+
         &__action {
             padding: 0 2.4rem;
+
             span {
                 &:hover {
                     cursor: pointer;
@@ -48,31 +51,39 @@
             }
         }
     }
+
     &__body {
         display: flex;
+
         @include mobile() {
             display: block;
         }
+
         &__sidebar {
             background-color: var(--general-section-1);
             width: var(--sidebar-width);
+
             &__subtitle {
                 padding: 1rem 2.4rem;
             }
+
             &__items {
                 ul {
                     list-style: none;
                     padding: 0;
                     margin: 0;
+
                     li {
                         border-left: 4px solid transparent;
                         height: 4rem;
                         padding: 1rem 1.6rem 1rem 4rem;
                         user-select: none;
+
                         &:hover {
                             background-color: var(--general-main-1);
                             cursor: pointer;
                         }
+
                         &.active {
                             border-left: 4px solid var(--brand-red-coral);
                             background-color: var(--general-main-1);
@@ -81,29 +92,36 @@
                 }
             }
         }
+
         &__content {
             background-color: var(--general-main-1);
             width: calc(100% - var(--sidebar-width));
             position: relative;
             padding: 1rem;
+
             @include mobile() {
                 width: 100%;
                 padding: 0;
             }
+
             &__head {
                 @extend .xy-center;
+
                 @include mobile() {
                     padding: 0 1.6rem 1.6rem;
                 }
+
                 &__tabs {
                     @extend .x-center;
                     background-color: var(--general-section-1);
                     padding: 0.4rem;
                     border-radius: 0.6rem;
                     height: 4rem;
+
                     @include mobile() {
                         width: 100%;
                     }
+
                     &__tab {
                         display: inline-block;
                         text-align: center;
@@ -111,16 +129,20 @@
                         padding: 0.6rem 0.8rem;
                         border-radius: 0.4rem;
                         user-select: none;
+
                         @include mobile() {
                             min-width: auto;
                             width: 50%;
                         }
+
                         &:hover {
                             cursor: pointer;
                         }
+
                         &.active {
                             background-color: var(--general-main-1);
                         }
+
                         &.disabled {
                             cursor: pointer;
                             pointer-events: none;
@@ -129,20 +151,26 @@
                     }
                 }
             }
+
             &__description {
                 padding: 1rem 2.4rem;
             }
+
             &__select {
                 padding: 0 1.6rem;
             }
+
             &__title {
                 text-align: center;
             }
+
             &__form {
                 padding: 1rem;
+
                 @include mobile() {
                     padding: 0 1.6rem;
                 }
+
                 &__group {
                     width: 90%;
                     background-color: var(--general-section-1);
@@ -150,14 +178,17 @@
                     border-radius: 0.8rem;
                     padding: 1.1rem;
                     margin-bottom: 1rem;
+
                     &:last-child {
                         margin-bottom: 0;
                     }
+
                     @include mobile() {
                         width: 100%;
                     }
                 }
             }
+
             &__footer {
                 width: 100%;
                 height: var(--footer-height);
@@ -166,8 +197,10 @@
                 justify-content: flex-end;
                 padding: 1.6rem 2.4rem;
                 background-color: var(--general-main-1);
+
                 button {
                     margin-right: 1rem;
+
                     &:last-child {
                         margin-right: 0;
                     }
@@ -175,6 +208,7 @@
             }
         }
     }
+
     &__form {
         &__container {
             min-height: 10rem;
@@ -183,17 +217,20 @@
             margin-bottom: 1rem;
             height: auto;
             overflow-y: auto;
+
             @include mobile() {
                 margin-bottom: 0;
                 padding-bottom: 1.6rem;
                 max-height: calc(100vh - 12.2rem) !important;
             }
         }
+
         &__field {
             padding: 0.5rem;
             width: 50%;
             display: inline-block;
             vertical-align: middle;
+
             &.full-width {
                 width: 100%;
             }
@@ -218,15 +255,18 @@
                         border-bottom-right-radius: 0;
                     }
                 }
+
                 &.no-border-bottom-radius {
                     .qs__checkbox {
                         border-bottom-left-radius: 0;
                         border-bottom-right-radius: 0;
                     }
                 }
+
                 &.no-bottom-spacing {
                     padding-bottom: 0;
                 }
+
                 &.no-bottom-border-radius {
                     .dc-input__container {
                         border-bottom-left-radius: 0;
@@ -234,10 +274,12 @@
                     }
                 }
             }
+
             &__list {
                 margin: 0;
                 padding: 0;
                 display: flex;
+
                 &__item {
                     flex: 1;
                     height: var(--input-height);
@@ -245,18 +287,22 @@
                     line-height: var(--input-height);
                     text-align: center;
                     font-size: 12px;
+
                     &:first-child {
                         border-bottom-left-radius: 4px;
                     }
+
                     &:last-child {
                         border-bottom-right-radius: 4px;
                     }
+
                     &--active {
                         font-weight: bold;
                         background: var(--general-active);
                     }
                 }
             }
+
             .contract-type {
                 .dc-input__field {
                     font-weight: normal;
@@ -264,8 +310,10 @@
             }
         }
     }
+
     &__autocomplete {
         caret-color: transparent;
+
         .dc-input {
             &__container {
                 border: none;
@@ -283,6 +331,7 @@
                     left: 0;
                     transform: translateY(-50%);
                 }
+
                 .dc-icon {
                     margin-right: 0.6rem;
 
@@ -298,6 +347,10 @@
                 color: var(--text-general);
             }
 
+            &__field[name='symbol'] {
+                caret-color: auto;
+            }
+
             &__trailing-icon {
                 margin-right: 2.4rem;
             }
@@ -306,6 +359,7 @@
 
     &__select {
         caret-color: transparent;
+
         .dc-input {
             &__container {
                 border: none;
@@ -317,6 +371,7 @@
             &__field {
                 font-weight: bold;
                 color: var(--text-general);
+
                 @include mobile {
                     text-align: center;
                 }
@@ -339,6 +394,7 @@
                 margin-right: 2.4rem;
             }
         }
+
         &__option {
             @extend .x-center;
 
@@ -356,6 +412,7 @@
             }
         }
     }
+
     .seddle-actions {
         @extend .x-center;
         justify-content: center;
@@ -371,18 +428,22 @@
         margin: 0;
         top: 50%;
         transform: translateY(-50%);
+
         &:hover {
             background: var(--general-section-1);
             cursor: pointer;
         }
     }
+
     &__input {
         margin: 0;
+
         .dc-input {
             &__container {
                 height: var(--input-height);
                 border: 1px solid transparent;
                 background-color: var(--general-main-1);
+
                 &:hover {
                     border: 1px solid var(--border-hover);
                 }
@@ -392,12 +453,15 @@
                 @extend .seddle-actions;
                 left: 0.3rem;
                 color: var(--text-general);
+
                 @include mobile() {
                     left: 0.2rem;
                 }
+
                 &:hover {
                     background-color: var(--state-hover);
                 }
+
                 &:disabled {
                     opacity: 0.32;
                     pointer-events: none;
@@ -408,12 +472,15 @@
                 @extend .seddle-actions;
                 right: 0.3rem;
                 color: var(--text-general);
+
                 @include mobile() {
                     right: 0.2rem;
                 }
+
                 &:hover {
                     background-color: var(--state-hover);
                 }
+
                 &:disabled {
                     opacity: 0.32;
                     pointer-events: none;
@@ -426,6 +493,7 @@
                 color: var(--text-general);
             }
         }
+
         &.error {
             .dc-input {
                 &__container {
@@ -434,6 +502,7 @@
             }
         }
     }
+
     &__input-label {
         @extend .x-center;
         justify-content: space-between;
@@ -441,26 +510,31 @@
         background: var(--general-main-1);
         border-radius: 0.4rem;
         padding: 0 2.4rem;
+
         &__wrapper {
             margin-right: 2rem;
         }
+
         @include mobile() {
             background: transparent;
             margin-bottom: -1rem;
             justify-content: center;
         }
     }
+
     &__checkbox {
         height: var(--input-height);
         background: var(--general-main-1);
         border-radius: 0.4rem;
         @extend .x-center;
+
         &__container {
             @extend .x-center;
             justify-content: space-between;
             height: calc(var(--input-height) - 0.5rem);
             width: 100%;
             padding: 0 2.4rem 0 1.6rem;
+
             .dc-checkbox {
                 .dc-text {
                     font-weight: bold;

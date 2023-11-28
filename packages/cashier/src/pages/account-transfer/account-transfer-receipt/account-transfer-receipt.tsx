@@ -1,12 +1,15 @@
 import React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
 import classNames from 'classnames';
-import AccountPlatformIcon from '../../../components/account-platform-icon';
-import { withRouter, RouteComponentProps } from 'react-router';
-import { Button, Modal, Icon, Text } from '@deriv/components';
+
+import { Button, Icon, Modal, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, isMobile, routes } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import { useStore, observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+
+import AccountPlatformIcon from '../../../components/account-platform-icon';
 import { useCashierStore } from '../../../stores/useCashierStores';
+
 import './account-transfer-receipt.scss';
 
 type TSwitch = {
@@ -99,7 +102,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                             <Localize i18n_default_text={selected_from.text} />
                         </Text>
                     </div>
-                    {!(is_from_derivgo && selected_from.is_derivez) && (
+                    {!is_from_derivgo && (
                         <Text as='p' size='s' color='less-prominent' align='center'>
                             {selected_from.value}
                         </Text>
@@ -113,7 +116,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                             <Localize i18n_default_text={selected_to.text} />
                         </Text>
                     </div>
-                    {!(is_from_derivgo && selected_to.is_derivez) && (
+                    {!is_from_derivgo && (
                         <Text as='p' size='s' color='less-prominent' align='center'>
                             {selected_to.value}
                         </Text>

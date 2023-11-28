@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { APIProvider } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import FloatingRate from '../floating-rate';
-import { APIProvider } from '@deriv/api';
 
 const wrapper = ({ children }) => (
     <APIProvider>

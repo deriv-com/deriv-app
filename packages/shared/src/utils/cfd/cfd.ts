@@ -337,7 +337,7 @@ type TAuthenticationStatusInfo = {
 };
 
 export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): TAuthenticationStatusInfo => {
-    const risk_classification = account_status.risk_classification;
+    const risk_classification = account_status?.risk_classification;
 
     const poa_status: string = account_status?.authentication?.document?.status || '';
     const poi_status: string = account_status?.authentication?.identity?.status || '';

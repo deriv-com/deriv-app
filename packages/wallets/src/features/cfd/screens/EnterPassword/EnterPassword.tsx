@@ -4,7 +4,7 @@ import { WalletButton, WalletPasswordField, WalletText } from '../../../../compo
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/passwordUtils';
-import { PlatformDetails } from '../../constants';
+import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
 // TODO: Refactor the unnecessary props out once FlowProvider is integrated
@@ -31,7 +31,7 @@ const EnterPassword: React.FC<TProps> = ({
     const title = PlatformDetails[platform].title;
     const { data } = useActiveWalletAccount();
     const accountType = data?.is_virtual ? 'Demo' : 'Real';
-    const marketTypeTitle = platform === 'dxtrade' ? accountType : marketType;
+    const marketTypeTitle = platform === 'dxtrade' ? accountType : MarketTypeDetails[marketType].title;
 
     return (
         <div className='wallets-enter-password'>

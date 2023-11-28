@@ -10,6 +10,8 @@ const mocked_props = {
     removeError: jest.fn(),
 };
 
+jest.mock('../info-box-longcode.tsx', () => jest.fn(() => <div>{test_longcode}</div>));
+
 describe('InfoBox', () => {
     it('should not render the component if longcode field in contract_info is falsy', () => {
         const { container } = render(<InfoBox {...mocked_props} />);

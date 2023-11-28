@@ -32,7 +32,7 @@ const StrikeParamModal = ({
 
     return (
         <Modal
-            className='trade-params'
+            className='trade-params dc-modal-header--title-bar'
             is_open={is_open}
             should_header_stick_body={false}
             is_title_centered

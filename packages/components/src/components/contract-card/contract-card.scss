@@ -1,5 +1,6 @@
 .dc-contract-card {
     box-sizing: border-box;
+    border-radius: $BORDER_RADIUS;
     display: flex;
     flex-direction: column;
     text-decoration: none;
@@ -12,6 +13,7 @@
     &:before {
         content: '';
         position: absolute;
+        border-radius: $BORDER_RADIUS;
         height: 52px;
         width: 100%;
         left: 0;
@@ -109,7 +111,7 @@
         &:hover {
             background: 0 !important;
 
-            .dc-result__caption {
+            .dc-result__content {
                 opacity: 0;
             }
         }
@@ -392,6 +394,9 @@
         &__header {
             max-width: calc(100% - 2.4rem);
             line-height: 1.4;
+            @include mobile {
+                max-width: unset;
+            }
         }
         &__body {
             @include typeface(--small-left-bold-black);

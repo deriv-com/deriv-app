@@ -35,19 +35,11 @@ const BarrierSelector = observer(() => {
         setSelectedBarrier(barrier_1);
     }, [barrier_1]);
 
-    const header_tooltip_text = [localize('For Long:'), localize('For Short:')].map(title => (
-        <div key={title} className='trade-container__barriers-tooltip'>
-            <Localize
-                i18n_default_text="<0>{{title}}</0> You will get a payout if the market price stays {{price_position}} and doesn't touch or cross the barrier. Otherwise, your payout will be zero."
-                components={[<Text key={0} weight='bold' size='xxs' />]}
-                values={{
-                    title,
-                    price_position:
-                        title === localize('For Long:') ? localize('above the barrier') : localize('below the barrier'),
-                }}
-            />
+    const header_tooltip_text = (
+        <div className='trade-container__barriers-tooltip'>
+            <Localize i18n_default_text='You receive a payout at expiry if the spot price never touches or breaches the barrier throughout the contract duration. Otherwise, your contract will be terminated early.' />
         </div>
-    ));
+    );
 
     const barriers_header_mobile = (
         <div className='trade-container__barriers-table__header-wrapper'>

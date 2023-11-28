@@ -1,7 +1,7 @@
 import React from 'react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ContractCardDialog from './contract-card-dialog';
-import ContractUpdateForm from './contract-update-form';
+import ContractUpdateForm, { TGeneralContractCardBodyProps } from './contract-update-form';
 import PopoverMessageCheckbox from '../../popover-message-checkbox';
 import Icon from '../../icon';
 import DesktopWrapper from '../../desktop-wrapper';
@@ -10,7 +10,6 @@ import MobileWrapper from '../../mobile-wrapper';
 import Popover from '../../popover';
 import Div100vhContainer from '../../div100vh-container';
 import './sass/contract-card-dialog.scss';
-import { TGeneralContractCardBodyProps } from './contract-card-body';
 
 let ContractUpdateFormWrapper: React.ElementType;
 

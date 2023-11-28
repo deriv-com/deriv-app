@@ -95,7 +95,6 @@ const EditAdForm = () => {
     );
 
     React.useEffect(() => {
-        my_profile_store.getPaymentMethodsList();
         my_profile_store.getAdvertiserPaymentMethods();
         my_ads_store.setIsEditAdErrorModalVisible(false);
         my_ads_store.setEditAdFormError('');

@@ -94,41 +94,22 @@
 
         <!-- Start GTM Script -->
         <script>
-            var gtm_id = 'GTM-NF7884S';
-            if (window.location.hostname === 'deriv-app.binary.sx') gtm_id = 'GTM-TNX2ZKH';
-            (function (w, d, s, l, i) {
-                w[l] = w[l] || [];
-                w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-                var f = d.getElementsByTagName(s)[0],
-                    j = d.createElement(s),
-                    dl = l != 'dataLayer' ? '&l=' + l : '';
-                j.defer = true;
-                j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
-                f.parentNode.insertBefore(j, f);
-            })(window, document, 'script', 'dataLayer', gtm_id);
-        </script>
-        <!-- End GTM Script -->
-
-        <!-- Start GTM Script -->
-        <style>
-            .async-hide {
-                opacity: 0 !important;
+            try {
+                var gtm_id = 'GTM-NF7884S';
+                if (window.location.hostname === 'deriv-app.binary.sx') gtm_id = 'GTM-TNX2ZKH';
+                (function (w, d, s, l, i) {
+                    w[l] = w[l] || [];
+                    w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+                    var f = d.getElementsByTagName(s)[0],
+                        j = d.createElement(s),
+                        dl = l != 'dataLayer' ? '&l=' + l : '';
+                    j.defer = true;
+                    j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                    f.parentNode.insertBefore(j, f);
+                })(window, document, 'script', 'dataLayer', gtm_id);
+            } catch (err) {
+                console.log('Error inserting GTM script 1 ====>', err);
             }
-        </style>
-        <script>
-            var gtm_id = 'GTM-NF7884S';
-            if (window.location.hostname === 'deriv-app.binary.sx') gtm_id = 'GTM-TNX2ZKH';
-            (function (a, s, y, n, c, h, i, d, e) {
-                s.className += ' ' + y;
-                h.end = i = function () {
-                    s.className = s.className.replace(RegExp(' ?' + y), '');
-                };
-                (a[n] = a[n] || []).hide = h;
-                setTimeout(function () {
-                    i();
-                    h.end = null;
-                }, c);
-            })(window, document.documentElement, 'async-hide', 'dataLayer', 4000, { [gtm_id]: true });
         </script>
         <!-- End GTM Script -->
 
@@ -156,6 +137,10 @@
         </script>
         <!-- End URL Handler -->
 
+        <!--         TODO: Find alternative solution for Onfido dependency -->
+        <script src="https://assets.onfido.com/web-sdk-releases/latest/onfido.min.js"></script>
+        <link href="https://assets.onfido.com/web-sdk-releases/latest/style.css" rel="stylesheet" />
+
         <!-- Start Cookies script -->
         <script src="https://static.deriv.com/scripts/cookie.js" async></script>
         <!-- End Cookies script -->
@@ -175,11 +160,16 @@
         <meta name="dcterms.rightsHolder" content="Deriv" />
         <meta name="dcterms.rights" content="Deriv" />
         <meta name="google-site-verification" content="g5u3TyEdmYJ_HKZ6EmpW1nlKwD4XPVeLMhN9leeMfuw" />
-        <meta property="og:description" content="" />
+        <meta
+            property="og:description"
+            content="Deriv gives everyone an easy way to participate in the financial markets. Trade with as little as $1 USD on major currencies, stocks, indices, and commodities."
+        />
         <meta property="og:title" content="Deriv" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="" />
-        <!-- TODO: Use og_image.gif once the new design is ready -->
+        <meta
+            property="og:image"
+            content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR3qsyDtQ_1mlX1AoeV963gFP0UZBTcJOcdK0G802Vfg&s"
+        />
         <meta name="google" content="notranslate" />
         <meta name="referrer" content="origin" />
 

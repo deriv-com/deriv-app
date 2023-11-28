@@ -69,7 +69,7 @@ const WithdrawalCryptoForm: React.FC = () => {
                             />
                             <WalletText color='less-prominent' size='xs'>
                                 {!Number.isNaN(parseFloat(values.cryptoAmount)) && activeWallet?.balance
-                                    ? Math.round(parseFloat(values.cryptoAmount) / activeWallet?.balance)
+                                    ? Math.round((parseFloat(values.cryptoAmount) * 100) / activeWallet?.balance)
                                     : '0'}
                                 % of available balance ({activeWallet?.display_balance})
                             </WalletText>

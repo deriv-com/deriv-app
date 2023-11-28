@@ -18,6 +18,7 @@ const WithdrawalCrypto: React.FC = () => {
 
     return (
         <div className='wallets-withdrawal-crypto'>
+            <div className='wallets-withdrawal-crypto__side-pane' />
             <div className='wallets-withdrawal-crypto__content'>
                 <WalletText weight='bold'>
                     Withdraw {activeWallet?.currency ? getCurrencyConfig(activeWallet?.currency)?.name : ''} (
@@ -26,7 +27,9 @@ const WithdrawalCrypto: React.FC = () => {
                 <WithdrawalCryptoDisclaimer />
                 <WithdrawalCryptoForm />
             </div>
-            <TransactionStatus transactionType='withdrawal' />
+            <div className='wallets-withdrawal-crypto__side-pane'>
+                <TransactionStatus transactionType='withdrawal' />
+            </div>
         </div>
     );
 };

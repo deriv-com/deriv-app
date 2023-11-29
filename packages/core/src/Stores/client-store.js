@@ -1640,7 +1640,7 @@ export default class ClientStore extends BaseStore {
             });
         }
 
-        await this.setDeviceData();
+        this.setDeviceData();
 
         // On case of invalid token, no need to continue with additional api calls.
         if (authorize_response?.error) {
@@ -2349,8 +2349,8 @@ export default class ClientStore extends BaseStore {
         }
     }
 
-    async setDeviceData() {
-        setDeviceDataCookie('signup_device', (await isDesktopOs()) ? 'desktop' : 'mobile');
+    setDeviceData() {
+        setDeviceDataCookie('signup_device', isDesktopOs() ? 'desktop' : 'mobile');
     }
 
     getSignupParams() {

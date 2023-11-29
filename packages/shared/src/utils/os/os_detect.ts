@@ -45,22 +45,25 @@ export const systems = {
     windows: ['Win16', 'Win32', 'Win64', 'WinCE'],
 };
 
-export const isDesktopOs = async () => {
-    const os = await OSDetect();
+export const isDesktopOs = () => {
+    const os = OSDetect();
     return !!['windows', 'mac', 'linux'].find(system => system === os);
 };
 
 export const isMobileOs = () =>
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-export const OSDetect = async () => {
+export const OSDetect = () => {
     // For testing purposes or more compatibility, if we set 'config.os'
     // inside our localStorage, we ignore fetching information from
     // navigator object and return what we have straight away.
     if (localStorage.getItem('config.os')) {
         return localStorage.getItem('config.os');
     }
-    const user_agent_data = await getUserAgentData();
+    let user_agent_data: UADataValues | null | undefined;
+    (async () => {
+        user_agent_data = await getUserAgentData();
+    })();
     if (typeof navigator !== 'undefined') {
         const user_platform = user_agent_data ? user_agent_data.platform : navigator?.platform ?? '';
         return Object.keys(systems)

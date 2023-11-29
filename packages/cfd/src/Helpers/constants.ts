@@ -87,13 +87,7 @@ const getPlatformCTraderDownloadLink = (platform: TMobilePlatforms) => {
 };
 
 const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) => {
-    let os = platform;
-    if (!os) {
-        (async () => {
-            os = await OSDetect();
-        })();
-    }
-    switch (os) {
+    switch (platform || OSDetect()) {
         case DESKTOP_PLATFORMS.WINDOWS:
             return 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe';
         case DESKTOP_PLATFORMS.LINUX:

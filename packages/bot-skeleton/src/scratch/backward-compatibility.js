@@ -194,7 +194,7 @@ export default class BlockConversion {
             }
 
             if (has_prediction) {
-                block.createPredictionInput(null, null, [0]);
+                block.createPredictionInput();
             }
 
             fields.forEach(field_name => {

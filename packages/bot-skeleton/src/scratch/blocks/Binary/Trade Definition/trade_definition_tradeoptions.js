@@ -125,7 +125,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.getFieldValue('BARRIEROFFSETTYPE_LIST') || config.BARRIER_TYPES[0][1],
             this.getFieldValue('SECONDBARRIEROFFSETTYPE_LIST') || config.BARRIER_TYPES[1][1],
         ];
-        this.createPredictionInput(this.selected_trade_type_category, this.selected_trade_type);
 
         if (
             (event.type === Blockly.Events.BLOCK_CREATE && event.ids.includes(this.id)) ||
@@ -193,18 +192,16 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             }
         }
     },
-    createPredictionInput(selected_trade_type_category, selected_trade_type, prediction_range) {
+    createPredictionInput(selected_trade_type_category, selected_trade_type, is_digit_trade_type_category) {
         runIrreversibleEvents(() => {
             if (
-                (selected_trade_type_category &&
-                    ((selected_trade_type_category === 'digits' && selected_trade_type === 'evenodd') ||
-                        (selected_trade_type_category !== 'digits' &&
-                            selected_trade_type_category !== 'highlowticks'))) ||
-                (prediction_range && prediction_range.length === 0)
+                selected_trade_type_category &&
+                ((selected_trade_type_category === 'digits' && selected_trade_type === 'evenodd') ||
+                    (selected_trade_type_category !== 'digits' && selected_trade_type_category !== 'highlowticks'))
             ) {
                 this.removeInput('PREDICTION_LABEL', true);
                 this.removeInput('PREDICTION', true);
-            } else if (!this.getInput('PREDICTION')) {
+            } else if (!this.getInput('PREDICTION') || is_digit_trade_type_category) {
                 const {
                     DEFAULT: { prediction },
                 } = config.QUICK_STRATEGY;
@@ -426,13 +423,13 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         const { contracts_for } = ApiHelpers.instance;
 
         contracts_for.getPredictionRange(this.selected_symbol, this.selected_trade_type).then(prediction_range => {
-            this.createPredictionInput(this.selected_trade_type_category, this.selected_trade_type, prediction_range);
+            this.createPredictionInput(this.selected_trade_type_category, this.selected_trade_type);
 
-            if (prediction_range.length > 0) {
+            if (prediction_range.length > 0 && should_use_default_value) {
+                //here check why we need it
                 const prediction_input = this.getInput('PREDICTION');
-                const { connection } = prediction_input;
-
-                if (should_use_default_value && connection) {
+                if (prediction_input) {
+                    const { connection } = prediction_input;
                     const target_block = connection.targetBlock();
 
                     if (target_block && target_block.isShadow()) {
@@ -441,6 +438,10 @@ Blockly.Blocks.trade_definition_tradeoptions = {
                         runIrreversibleEvents(() => {
                             target_block.setFieldValue(initial_prediction, 'NUM');
                         });
+                    } else {
+                        this.removeInput('PREDICTION_LABEL', true);
+                        this.removeInput('PREDICTION', true);
+                        this.createPredictionInput(this.selected_trade_type_category, this.selected_trade_type, true);
                     }
                 }
             }
@@ -477,7 +478,7 @@ Blockly.Blocks.trade_definition_tradeoptions = {
         } else if (has_first_barrier) {
             this.createBarrierInputs({ values: [1] });
         } else if (has_prediction) {
-            this.createPredictionInput(null, null, [1]);
+            this.createPredictionInput();
         }
     },
     mutationToDom() {

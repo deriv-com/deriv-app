@@ -84,7 +84,11 @@ const Popover = ({
         >
             {relative_render && (
                 <div className='dc-popover__container' style={{ zIndex }}>
-                    <div ref={ref as RefObject<HTMLDivElement>} className='dc-popover__container-relative' />
+                    <div
+                        ref={ref as RefObject<HTMLDivElement>}
+                        className='dc-popover__container-relative'
+                        data-testid='dt_popover_relative_container'
+                    />
                 </div>
             )}
             {(popover_ref || !relative_render) && (

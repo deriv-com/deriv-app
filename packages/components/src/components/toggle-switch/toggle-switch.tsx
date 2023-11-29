@@ -8,12 +8,22 @@ type TToggleSwitch = {
     handleToggle: () => void;
     id: string;
     is_enabled: boolean;
+    name?: string;
 };
 
-const ToggleSwitch = ({ className, classNameButton, classNameLabel, handleToggle, id, is_enabled }: TToggleSwitch) => {
+const ToggleSwitch = ({
+    className,
+    classNameButton,
+    classNameLabel,
+    handleToggle,
+    id,
+    is_enabled,
+    name = 'toggle_switch',
+}: TToggleSwitch) => {
     return (
         <React.Fragment>
             <input
+                aria-label={name}
                 className={classNames('dc-toggle-switch', className)}
                 id={id}
                 type='checkbox'

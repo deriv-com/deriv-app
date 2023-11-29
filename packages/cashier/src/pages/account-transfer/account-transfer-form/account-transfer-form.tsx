@@ -83,6 +83,7 @@ let has_reached_maximum_daily_transfers = false;
 
 const AccountTransferForm = observer(
     ({ error, onClickDeposit, onClickNotes, setSideNotes, onClose }: TAccountTransferFormProps) => {
+        const [arrow_icon_direction, setArrowIconDirection] = React.useState<'right' | 'left'>('right');
         const {
             ui,
             client,
@@ -187,11 +188,13 @@ const AccountTransferForm = observer(
 
         React.useEffect(() => {
             if (selected_from?.currency && selected_to?.currency) {
-                const base_currency = selected_from.currency;
-                const target_currency = selected_to.currency;
+                const is_arrow_right = arrow_icon_direction === 'right';
+                const base_currency = is_arrow_right ? selected_from.currency : selected_to.currency;
+                const target_currency = is_arrow_right ? selected_to.currency : selected_from.currency;
                 handleSubscription(base_currency, target_currency);
             }
-        }, [selected_from, selected_to]);
+        }, [selected_from, selected_to, arrow_icon_direction, handleSubscription]);
+
         React.useEffect(() => {
             onMount();
         }, [onMount]);
@@ -595,6 +598,7 @@ const AccountTransferForm = observer(
                                                     />
                                                 </div>
                                                 <CryptoFiatConverter
+                                                    arrow_icon_direction={arrow_icon_direction}
                                                     from_currency={selected_from.currency || ''}
                                                     to_currency={selected_to.currency || ''}
                                                     hint={
@@ -623,6 +627,7 @@ const AccountTransferForm = observer(
                                                     onChangeConverterFromAmount={onChangeConverterFromAmount}
                                                     onChangeConverterToAmount={onChangeConverterToAmount}
                                                     resetConverter={resetConverter}
+                                                    setArrowIconDirection={setArrowIconDirection}
                                                     validateFromAmount={validateTransferFromAmount}
                                                     validateToAmount={validateTransferToAmount}
                                                 />

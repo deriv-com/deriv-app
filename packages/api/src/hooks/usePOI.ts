@@ -5,9 +5,9 @@ import useSettings from './useSettings';
 
 /** A custom hook to get the proof of identity verification info of the current user. */
 const usePOI = () => {
-    const { data: authentication_data, ...rest } = useAuthentication();
-    const { data: residence_list_data } = useResidenceList();
-    const { data: get_settings_data } = useSettings();
+    const { data: authentication_data, isSuccess: isAuthenticationSuccess, ...rest } = useAuthentication();
+    const { data: residence_list_data, isSuccess: isResidenceListSuccess } = useResidenceList();
+    const { data: get_settings_data, isSuccess: isGetSettingsSuccess } = useSettings();
 
     const previous_service = useMemo(() => {
         const latest_poi_attempt = authentication_data?.attempts?.latest;
@@ -47,7 +47,7 @@ const usePOI = () => {
         const user_country_code = get_settings_data?.citizen || get_settings_data?.country_code;
         const matching_residence_data = residence_list_data?.find(r => r.value === user_country_code);
         const is_idv_supported = matching_residence_data?.identity?.services?.idv?.is_country_supported;
-        const is_onfido_supported = matching_residence_data?.identity?.services?.onfido?.documents_supported;
+        const is_onfido_supported = matching_residence_data?.identity?.services?.onfido?.is_country_supported;
         const services = authentication_data?.identity?.services;
         const idv_submission_left = services?.idv?.submissions_left ?? 0;
         const onfido_submission_left = services?.onfido?.submissions_left ?? 0;
@@ -88,11 +88,17 @@ const usePOI = () => {
             ...authentication_data?.identity,
             previous: previous_poi,
             current: current_poi,
+            is_pending: authentication_data?.identity?.status === 'pending',
+            is_rejected: authentication_data?.identity?.status === 'rejected',
+            is_expired: authentication_data?.identity?.status === 'expired',
+            is_suspected: authentication_data?.identity?.status === 'suspected',
+            is_verified: authentication_data?.identity?.status === 'verified',
         };
     }, [authentication_data, current_poi, previous_poi]);
 
     return {
         data: modified_verification_data,
+        isSuccess: isAuthenticationSuccess && isGetSettingsSuccess && isResidenceListSuccess,
         ...rest,
     };
 };

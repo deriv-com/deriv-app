@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAccountsList } from '@deriv/api';
 import Joyride, { ACTIONS, CallBackProps } from '@deriv/react-joyride';
@@ -15,6 +15,7 @@ import './WalletTourGuide.scss';
 
 const WalletTourGuide = () => {
     const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key));
+    const [addMoreWalletsTransformValue, setAddMoreWalletsTransformValue] = useState('');
     const { isMobile } = useDevice();
 
     const { isFetching, isLoading, isSuccess, switchAccount } = useAuthorize();
@@ -22,15 +23,32 @@ const WalletTourGuide = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: availableWallets } = useAllWalletAccounts();
 
+    const addMoreWalletRef = useRef<HTMLElement | null>(document.getElementById('wallets_add_more_carousel_wrapper'));
+
     const fiatWalletLoginId = getFiatWalletLoginId(wallets);
     const walletIndex = getWalletIndexForTarget(fiatWalletLoginId, wallets);
     const activeWalletLoginId = activeWallet?.loginid;
 
+    const isDemoWallet = Boolean(activeWallet?.is_virtual);
+    const hasMT5Account = Boolean(activeWallet?.linked_to?.some(account => account.platform === 'mt5'));
+    const hasDerivAppsTradingAccount = Boolean(activeWallet?.dtrade_loginid);
+    const isAllWalletsAlreadyAdded = Boolean(availableWallets?.every(wallet => wallet.is_added));
+
     const callbackHandle = (data: CallBackProps) => {
-        const { action } = data;
+        const { action, index, lifecycle } = data;
+
+        if (index === 0 && !isAllWalletsAlreadyAdded) {
+            if (addMoreWalletRef.current && lifecycle === 'init' && action === 'start') {
+                setAddMoreWalletsTransformValue(addMoreWalletRef.current.style.transform);
+                addMoreWalletRef.current.style.transform = 'translate3d(0px, 0px, 0px)';
+            }
+        }
 
         if (action === ACTIONS.RESET) {
             setWalletsOnboarding('');
+            if (!isAllWalletsAlreadyAdded && addMoreWalletRef.current) {
+                addMoreWalletRef.current.style.transform = addMoreWalletsTransformValue;
+            }
         }
     };
 
@@ -47,10 +65,11 @@ const WalletTourGuide = () => {
         }
     }, [activeWalletLoginId, fiatWalletLoginId, switchAccount, walletsOnboarding]);
 
-    const isDemoWallet = Boolean(activeWallet?.is_virtual);
-    const hasMT5Account = Boolean(activeWallet?.linked_to?.some(account => account.platform === 'mt5'));
-    const hasDerivAppsTradingAccount = Boolean(activeWallet?.dtrade_loginid);
-    const isAllWalletsAlreadyAdded = Boolean(availableWallets?.every(wallet => wallet.is_added));
+    useEffect(() => {
+        if (!addMoreWalletRef.current) {
+            addMoreWalletRef.current = document.getElementById('wallets_add_more_carousel_wrapper');
+        }
+    }, []);
 
     if (isMobile) return null;
 

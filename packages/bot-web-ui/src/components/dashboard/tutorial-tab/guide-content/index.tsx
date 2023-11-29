@@ -21,7 +21,7 @@ type TGuideContent = {
     guide_list: TGuideList[];
 };
 
-const GuideContent = observer(({ guide_list }: TGuideContent) => {
+const GuideContent = observer(({ guide_tab_content, video_tab_content }: TGuideContent) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const { dashboard } = useDBotStore();
@@ -34,23 +34,7 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
         showVideoDialog,
         setActiveTour,
         setShowMobileTourDialog,
-        faq_search_value,
     } = dashboard;
-
-    const [video_guide, setVideoGuide] = React.useState(true);
-    const [tour_guides, setTourGuides] = React.useState(true);
-
-    const getLengthOfArrayForTabs = React.useCallback(() => {
-        const hasVideoGuide = guide_list.some(({ type }) => type !== 'Tour');
-        const hasTourGuide = guide_list.some(({ type }) => type === 'Tour');
-
-        setVideoGuide(hasVideoGuide);
-        setTourGuides(hasTourGuide);
-    }, [guide_list, video_guide, tour_guides]);
-
-    React.useEffect(() => {
-        getLengthOfArrayForTabs();
-    }, [getLengthOfArrayForTabs, faq_search_value]);
 
     const triggerTour = (type: string) => {
         if (type === 'OnBoard') {
@@ -73,30 +57,35 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
     return React.useMemo(
         () => (
             <div className='tutorials-wrap'>
-                {tour_guides && (
-                    <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
-                        <Localize i18n_default_text='Step-by-step guides' />
-                    </Text>
-                )}
-                {tour_guides && (
+                {guide_tab_content?.length !== 0 && (
                     <div className='tutorials-wrap__group'>
-                        {guide_list?.map(({ id, content, src, type, subtype }) => {
-                            return (
-                                type === 'Tour' && (
-                                    <div
-                                        className='tutorials-wrap__group__cards tutorials-wrap--tour'
-                                        key={id}
-                                        onClick={() => triggerTour(subtype)}
-                                        onKeyDown={handleKeyboardEvent}
-                                    >
+                        <Text
+                            align='center'
+                            weight='bold'
+                            color='prominent'
+                            line_height='s'
+                            size={is_mobile ? 'xxs' : 's'}
+                        >
+                            <Localize i18n_default_text='Step-by-step guides' />
+                        </Text>
+                        <div className='tutorials-wrap__group__guides'>
+                            {guide_tab_content?.map(({ id, content, src, subtype }) => {
+                                return (
+                                    <div className='tutorials-wrap__group__cards' key={id}>
                                         <div
-                                            className={classNames('tutorials-wrap__placeholder__tours', {
-                                                'tutorials-wrap__placeholder--disabled': !src,
-                                            })}
-                                            style={{
-                                                backgroundImage: `url(${src})`,
-                                            }}
-                                        />
+                                            className='tutorials-wrap--tour'
+                                            onClick={() => triggerTour(subtype)}
+                                            onKeyDown={handleKeyboardEvent}
+                                        >
+                                            <div
+                                                className={classNames('tutorials-wrap__placeholder__tours', {
+                                                    'tutorials-wrap__placeholder--disabled': !src,
+                                                })}
+                                                style={{
+                                                    backgroundImage: `url(${src})`,
+                                                }}
+                                            />
+                                        </div>
                                         <Text
                                             align='center'
                                             color='prominent'
@@ -106,23 +95,28 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
                                             {content}
                                         </Text>
                                     </div>
-                                )
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
                 )}
 
-                {video_guide && (
-                    <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
-                        <Localize i18n_default_text='Videos on Deriv Bot' />
-                    </Text>
-                )}
-                {video_guide && (
+                {video_tab_content?.length !== 0 && (
                     <div className='tutorials-wrap__group'>
-                        {guide_list?.map(({ id, content, url, type, src }) => {
-                            return (
-                                type !== 'Tour' && (
-                                    <div className='tutorials-wrap__group__cards tutorials-wrap--placeholder' key={id}>
+                        <Text
+                            align='center'
+                            weight='bold'
+                            color='prominent'
+                            line_height='s'
+                            size={is_mobile ? 'xxs' : 's'}
+                            className='tutorials-wrap__group--title'
+                        >
+                            <Localize i18n_default_text='Videos on Deriv Bot' />
+                        </Text>
+                        <div className='tutorials-wrap__group__guides'>
+                            {video_tab_content?.map(({ content, src, url, id }) => {
+                                return (
+                                    <div className='tutorials-wrap__group__cards' key={id}>
                                         <div
                                             className={classNames('tutorials-wrap__placeholder', {
                                                 'tutorials-wrap__placeholder--disabled': !url,
@@ -155,11 +149,12 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
                                             {content}
                                         </Text>
                                     </div>
-                                )
-                            );
-                        })}
+                                );
+                            })}
+                        </div>
                     </div>
                 )}
+
                 <Dialog
                     title={dialog_options.title}
                     is_visible={is_dialog_open}
@@ -176,7 +171,7 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
                 </Dialog>
             </div>
         ),
-        [guide_list, is_dialog_open, video_guide, tour_guides]
+        [guide_tab_content, video_tab_content, is_dialog_open]
     );
 });
 

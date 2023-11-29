@@ -53,9 +53,14 @@
         cursor: pointer;
     }
     &__group {
-        display: flex;
-        margin-top: 2.4rem;
         margin-bottom: 5.2rem;
+        &__guides {
+            display: flex;
+            margin-top: 2.4rem;
+            @include mobile {
+                display: unset;
+            }
+        }
         &__nosearch {
             @include position-center;
             width: 100%;

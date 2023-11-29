@@ -15,7 +15,6 @@ const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tuto
             value => {
                 filterTuotrialTab(value);
                 setActiveTabTutorial(2);
-                input_ref?.current?.focus();
                 if (value === '') {
                     setActiveTabTutorial(prev_active_tutorials);
                 }

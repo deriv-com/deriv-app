@@ -93,6 +93,7 @@ export default class DashboardStore implements IDashboardStore {
             toast_message: observable,
             guide_tab_content: observable,
             faq_tab_content: observable,
+            video_tab_content: observable,
             setStrategySaveType: action.bound,
             setShowMobileTourDialog: action.bound,
         });
@@ -182,12 +183,14 @@ export default class DashboardStore implements IDashboardStore {
     toast_message = '';
     is_web_socket_intialised = true;
     debounced_value = '';
-    guide_tab_content = [...user_guide_content, ...guide_content];
+    guide_tab_content = user_guide_content;
+    video_tab_content = guide_content;
     faq_tab_content = faq_content;
     filtered_tab_list = [];
 
     resetTutorialTabContent = () => {
-        this.guide_tab_content = [...user_guide_content, ...guide_content];
+        this.guide_tab_content = user_guide_content;
+        this.video_tab_content = guide_content;
         this.faq_tab_content = faq_content;
     };
 
@@ -198,6 +201,7 @@ export default class DashboardStore implements IDashboardStore {
         });
 
         const filtered_user_guide: [] = [];
+        const filter_video_guide: [] = [];
         const filtered_faq_content: [] = [];
 
         const filtered_tutorial_content = foundItems.map(item => {
@@ -207,7 +211,7 @@ export default class DashboardStore implements IDashboardStore {
                 filtered_user_guide.push(user_guide_content[Number(index)]);
                 return user_guide_content[Number(index)];
             } else if (identifier.includes('gc')) {
-                filtered_user_guide.push(guide_content[Number(index)]);
+                filter_video_guide.push(guide_content[Number(index)]);
                 return guide_content[Number(index)];
             }
             filtered_faq_content.push(faq_content[Number(index)]);
@@ -215,6 +219,7 @@ export default class DashboardStore implements IDashboardStore {
         });
 
         this.guide_tab_content = filtered_user_guide;
+        this.video_tab_content = filter_video_guide;
         this.faq_tab_content = filtered_faq_content;
 
         return filtered_tutorial_content;

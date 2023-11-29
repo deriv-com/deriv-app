@@ -15,7 +15,7 @@ export type TContent = {
     id: number;
     src?: string;
     subtype?: string;
-    title: string;
+    title?: string;
     type: string;
     url?: string;
     imageclass?: string;

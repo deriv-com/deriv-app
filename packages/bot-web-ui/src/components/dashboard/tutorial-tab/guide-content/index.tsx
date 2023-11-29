@@ -59,15 +59,17 @@ const GuideContent = observer(({ guide_tab_content, video_tab_content }: TGuideC
             <div className='tutorials-wrap'>
                 {guide_tab_content?.length !== 0 && (
                     <div className='tutorials-wrap__group'>
-                        <Text
-                            align='center'
-                            weight='bold'
-                            color='prominent'
-                            line_height='s'
-                            size={is_mobile ? 'xxs' : 's'}
-                        >
-                            <Localize i18n_default_text='Step-by-step guides' />
-                        </Text>
+                        <div className='tutorials-wrap__group__title'>
+                            <Text
+                                align='left'
+                                weight='bold'
+                                color='prominent'
+                                line_height='s'
+                                size={is_mobile ? 'xxs' : 's'}
+                            >
+                                <Localize i18n_default_text='Step-by-step guides' />
+                            </Text>
+                        </div>
                         <div className='tutorials-wrap__group__guides'>
                             {guide_tab_content?.map(({ id, content, src, subtype }) => {
                                 return (
@@ -103,16 +105,18 @@ const GuideContent = observer(({ guide_tab_content, video_tab_content }: TGuideC
 
                 {video_tab_content?.length !== 0 && (
                     <div className='tutorials-wrap__group'>
-                        <Text
-                            align='center'
-                            weight='bold'
-                            color='prominent'
-                            line_height='s'
-                            size={is_mobile ? 'xxs' : 's'}
-                            className='tutorials-wrap__group--title'
-                        >
-                            <Localize i18n_default_text='Videos on Deriv Bot' />
-                        </Text>
+                        <div className='tutorials-wrap__group__title'>
+                            <Text
+                                align='left'
+                                weight='bold'
+                                color='prominent'
+                                line_height='s'
+                                size={is_mobile ? 'xxs' : 's'}
+                            >
+                                <Localize i18n_default_text='Videos on Deriv Bot' />
+                            </Text>
+                        </div>
+
                         <div className='tutorials-wrap__group__guides'>
                             {video_tab_content?.map(({ content, src, url, id }) => {
                                 return (
@@ -140,14 +144,16 @@ const GuideContent = observer(({ guide_tab_content, video_tab_content }: TGuideC
                                                 />
                                             </div>
                                         </div>
-                                        <Text
-                                            align='center'
-                                            color='prominent'
-                                            line_height='s'
-                                            size={is_mobile ? 'xxs' : 's'}
-                                        >
-                                            {content}
-                                        </Text>
+                                        <div className='tutorials-wrap__placeholder__description'>
+                                            <Text
+                                                align='left'
+                                                color='prominent'
+                                                line_height='s'
+                                                size={is_mobile ? 'xxs' : 's'}
+                                            >
+                                                {content}
+                                            </Text>
+                                        </div>
                                     </div>
                                 );
                             })}

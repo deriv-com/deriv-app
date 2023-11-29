@@ -11,7 +11,6 @@ import { generateErrorDialogTitle } from 'Utils/adverts';
 import { api_error_codes } from '../constants/api-error-codes';
 
 export default class MyAdsStore extends BaseStore {
-    activate_deactivate_error_message = '';
     advert_details = null;
     adverts = [];
     adverts_archive_period = null;
@@ -33,7 +32,6 @@ export default class MyAdsStore extends BaseStore {
     selected_ad_id = '';
     should_show_add_payment_method = false;
     show_edit_ad_form = false;
-    update_payment_methods_error_message = '';
     required_ad_type;
     error_code = '';
 
@@ -45,7 +43,6 @@ export default class MyAdsStore extends BaseStore {
         super(root_store);
 
         makeObservable(this, {
-            activate_deactivate_error_message: observable,
             advert_details: observable,
             adverts: observable,
             adverts_archive_period: observable,
@@ -67,7 +64,6 @@ export default class MyAdsStore extends BaseStore {
             should_show_add_payment_method: observable,
             show_ad_form: observable,
             show_edit_ad_form: observable,
-            update_payment_methods_error_message: observable,
             required_ad_type: observable,
             error_code: observable,
             selected_ad_type: computed,
@@ -86,7 +82,6 @@ export default class MyAdsStore extends BaseStore {
             restrictLength: action.bound,
             restrictDecimalPlace: action.bound,
             showQuickAddModal: action.bound,
-            setActivateDeactivateErrorMessage: action.bound,
             setAdvertDetails: action.bound,
             setAdverts: action.bound,
             setAdvertsArchivePeriod: action.bound,
@@ -111,7 +106,6 @@ export default class MyAdsStore extends BaseStore {
             setShowEditAdForm: action.bound,
             onToggleSwitchModal: action.bound,
             setRequiredAdType: action.bound,
-            setUpdatePaymentMethodsErrorMessage: action.bound,
             validateCreateAdForm: action.bound,
             validateEditAdForm: action.bound,
         });
@@ -259,7 +253,6 @@ export default class MyAdsStore extends BaseStore {
                 if (response) {
                     if (response.error) {
                         this.setApiErrorCode(response.error.code);
-                        this.setActivateDeactivateErrorMessage(response.error.message);
                         this.root_store.general_store.showModal({
                             key: 'ErrorModal',
                             props: {
@@ -382,7 +375,6 @@ export default class MyAdsStore extends BaseStore {
                 this.loadMoreAds({ startIndex: 0 });
                 this.hideQuickAddModal();
             } else {
-                this.setUpdatePaymentMethodsErrorMessage(response.error.message);
                 this.root_store.general_store.hideModal();
                 this.root_store.general_store.showModal({
                     key: 'ErrorModal',
@@ -464,10 +456,6 @@ export default class MyAdsStore extends BaseStore {
     showQuickAddModal(advert) {
         this.setSelectedAdId(advert);
         this.root_store.general_store.showModal({ key: 'QuickAddModal', props: { advert } });
-    }
-
-    setActivateDeactivateErrorMessage(activate_deactivate_error_message) {
-        this.activate_deactivate_error_message = activate_deactivate_error_message;
     }
 
     setAdvertDetails(advert_details) {
@@ -556,9 +544,6 @@ export default class MyAdsStore extends BaseStore {
 
     setShowEditAdForm(show_edit_ad_form) {
         this.show_edit_ad_form = show_edit_ad_form;
-        if (!this.show_edit_ad_form) {
-            // this.setRequiredAdType(null);
-        }
     }
 
     onToggleSwitchModal(ad_id) {
@@ -568,10 +553,6 @@ export default class MyAdsStore extends BaseStore {
 
     setRequiredAdType(change_ad_type) {
         this.required_ad_type = change_ad_type;
-    }
-
-    setUpdatePaymentMethodsErrorMessage(update_payment_methods_error_message) {
-        this.update_payment_methods_error_message = update_payment_methods_error_message;
     }
 
     validateCreateAdForm(values) {

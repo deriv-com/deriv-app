@@ -41,19 +41,19 @@ export const getSortedAccountList = (account_list: TAccountProps, accounts: TAcc
 export const getDerivedAccount = (): TAccountType => ({
     title_and_type: localize('Derived'),
     icon: 'Derived',
-    description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
+    description: localize('Trade CFDs on MT5 with derived indices that simulate real-world market movements.'),
 });
 
 export const getFinancialAccount = (): TAccountType => ({
     title_and_type: localize('Financial'),
     icon: 'Financial',
-    description: localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.'),
+    description: localize('Trade CFDs on MT5 with forex, stocks and indices, commodities, cryptocurrencies, and ETFs.'),
 });
 
 export const getSwapFreeAccount = (): TAccountType => ({
     title_and_type: localize('Swap-Free'),
     icon: 'SwapFree',
     description: localize(
-        'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.'
+        'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities cryptocurrencies, ETFs and synthetic indices.'
     ),
 });

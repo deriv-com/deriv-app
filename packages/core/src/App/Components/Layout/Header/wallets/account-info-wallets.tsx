@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, WalletIcon, Text, AppLinkedWithWalletIcon } from '@deriv/components';
@@ -115,17 +115,10 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
     const linked_wallets_accounts = useStoreLinkedWalletsAccounts();
 
     const active_account = accounts?.[loginid ?? ''];
-    const [wallet_loginid, setWalletLoginID] = useState<string>();
+    const wallet_loginid = getActiveLoginIDFromLocalStorage();
     const active_wallet = wallet_list?.find(wallet => wallet.loginid === wallet_loginid);
 
     let linked_dtrade_trading_account_loginid = loginid;
-
-    useEffect(() => {
-        const active_loginid = getActiveLoginIDFromLocalStorage();
-        if (wallet_loginid !== active_loginid && loginid !== active_loginid) {
-            setWalletLoginID(active_loginid);
-        }
-    }, [loginid, wallet_loginid]);
 
     if (active_wallet) {
         // get 'dtrade' loginid account linked to the current wallet

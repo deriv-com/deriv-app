@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { platformPasswordResetRedirectLink } from 'src/utils/cfdUtils';
 import { useCountdown } from 'usehooks-ts';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { PlatformDetails } from '../../features/cfd/constants';
@@ -10,6 +9,7 @@ import EmailFirewallIcon from '../../public/images/ic-email-firewall.svg';
 import EmailSpamIcon from '../../public/images/ic-email-spam.svg';
 import EmailTypoIcon from '../../public/images/ic-email-typo.svg';
 import { TPlatforms } from '../../types';
+import { platformPasswordResetRedirectLink } from '../../utils/cfdUtils';
 import { WalletButton, WalletText } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './SentEmailContent.scss';

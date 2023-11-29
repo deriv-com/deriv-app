@@ -55,10 +55,6 @@ module.exports = async function (source) {
                     key += `-${counter}`;
                     counter += 1;
                 }
-                path.parent.attributes.find(attr => attr.name.name === 'defaults').value = {
-                    type: 'StringLiteral',
-                    value: key,
-                };
                 messages.set(key, value);
             }
         },

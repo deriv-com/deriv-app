@@ -36,13 +36,13 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
     const isDemo = data?.is_virtual;
     const landingCompanyName = landingCompany.toUpperCase();
 
-    const isMarketTypeAll = marketType === 'all';
+    const isAllDxtrade = marketType === 'all' && platform === 'dxtrade';
 
     let marketTypeTitle = 'Deriv Apps';
 
     if (marketType && platform) {
         const isPlatformValid = Object.keys(PlatformDetails).includes(platform);
-        if (isMarketTypeAll && isPlatformValid) {
+        if (isAllDxtrade && isPlatformValid) {
             marketTypeTitle = PlatformDetails[platform].title;
         } else {
             marketTypeTitle = MarketTypeDetails[marketType].title;

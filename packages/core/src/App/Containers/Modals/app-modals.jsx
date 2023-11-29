@@ -36,9 +36,6 @@ const SetResidenceModal = React.lazy(() =>
 const RealityCheckModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal'))
 );
-const WelcomeModal = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'))
-);
 const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-email-modal"  */ '../ResetEmailModal'));
 
 const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-email-modal"  */ '../UpdateEmailModal'));
@@ -151,8 +148,6 @@ const AppModals = observer(() => {
         ComponentToLoad = <WarningScamMessageModal />;
     } else if (is_closing_create_real_account_modal) {
         ComponentToLoad = <WarningCloseCreateRealAccountModal />;
-    } else if (is_welcome_modal_visible) {
-        ComponentToLoad = <WelcomeModal />;
     } else if (is_account_needed_modal_on) {
         ComponentToLoad = <MT5AccountNeededModal />;
     } else if (is_reality_check_visible) {

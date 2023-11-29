@@ -1,25 +1,29 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCreateOtherCFDAccount, useCtraderAccountsList } from '@deriv/api';
-import { TradingAccountCard, WalletsErrorScreen } from '../../../../../components';
-import { ModalWrapper, WalletButton, WalletText } from '../../../../../components/Base';
+import { TradingAccountCard } from '../../../../../components';
+import {
+    ModalStepWrapper,
+    ModalWrapper,
+    WalletButton,
+    WalletButtonGroup,
+    WalletText,
+} from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
+import { getStaticUrl } from '../../../../../helpers/urls';
+import useDevice from '../../../../../hooks/useDevice';
 import CTrader from '../../../../../public/images/ctrader.svg';
+import { PlatformDetails } from '../../../constants';
 import { CFDSuccess } from '../../../screens';
 import './AvailableCTraderAccountsList.scss';
-
-const ctraderMapper = [
-    {
-        description: 'This account offers CFDs on a feature-rich trading platform.',
-        icon: <CTrader />,
-        title: 'Deriv cTrader',
-    },
-];
 
 const AvailableCTraderAccountsList: React.FC = () => {
     const { hide, show } = useModal();
     const { isSuccess, mutate } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: cTraderAccounts } = useCtraderAccountsList();
+    const { isMobile } = useDevice();
+    const history = useHistory();
 
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
 
@@ -35,52 +39,102 @@ const AvailableCTraderAccountsList: React.FC = () => {
 
     const onClickHandler = () => {
         onSubmit();
+
+        const renderButtons = () => (
+            <WalletButtonGroup isFlex isFullWidth>
+                <WalletButton onClick={() => hide()} size='lg' text='Maybe later' variant='outlined' />
+                <WalletButton
+                    onClick={() => {
+                        hide();
+                        history.push('/wallets/cashier/transfer');
+                    }}
+                    size='lg'
+                    text='Transfer funds'
+                />
+            </WalletButtonGroup>
+        );
+
+        const description =
+            accountType === 'demo'
+                ? `Transfer virtual funds from your Demo Wallet to your ${PlatformDetails.ctrader.title} Demo account to practice trading.`
+                : `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${PlatformDetails.ctrader.title} account to start trading.`;
+
+        if (isMobile) {
+            show(
+                <ModalStepWrapper renderFooter={renderButtons} title={' '}>
+                    {isSuccess && (
+                        <CFDSuccess
+                            description={description}
+                            displayBalance={cTraderAccounts?.find(account => account.login)?.display_balance}
+                            marketType='all'
+                            platform='ctrader'
+                            renderButton={renderButtons}
+                            title={`Your ${PlatformDetails.ctrader.title} ${
+                                accountType === 'demo' ? accountType : ''
+                            } account is ready`}
+                        />
+                    )}
+                </ModalStepWrapper>
+            );
+        }
+
         show(
             <ModalWrapper>
                 {isSuccess && (
                     <CFDSuccess
-                        description={`Transfer your virtual funds from your ${accountType} wallet to your ${ctraderMapper[0].title} ${accountType} account to practice trading.`}
+                        description={description}
                         displayBalance={cTraderAccounts?.find(account => account.login)?.display_balance}
                         marketType='all'
                         platform='ctrader'
-                        renderButton={() => <WalletButton isFullWidth onClick={hide} size='lg' text='Continue' />}
-                        title={`Your ${ctraderMapper[0].title} ${accountType} account is ready`}
+                        renderButton={renderButtons}
+                        title={`Your ${PlatformDetails.ctrader.title} ${
+                            accountType === 'demo' ? accountType : ''
+                        } account is ready`}
                     />
-                )}
-                {!isSuccess && (
-                    <div className='wallets-error-screen'>
-                        <WalletsErrorScreen message='Sorry, an error occurred. Please try again later.' />
-                    </div>
                 )}
             </ModalWrapper>
         );
     };
 
+    const leadingIcon = () => (
+        <div
+            className='wallets-available-ctrader__icon'
+            onClick={() => {
+                window.open(getStaticUrl('/deriv-ctrader'));
+            }}
+            // Fix sonarcloud issue
+            onKeyDown={event => {
+                if (event.key === 'Enter') {
+                    window.open(getStaticUrl('/deriv-ctrader'));
+                }
+            }}
+        >
+            <CTrader />
+        </div>
+    );
+
+    const trailingButton = () => (
+        <WalletButton
+            color='primary-light'
+            // Disabling button until API is ready
+            disabled
+            onClick={() => {
+                onClickHandler();
+            }}
+            text='Get'
+        />
+    );
+
     return (
-        <div className='wallets-available-ctrader-accounts'>
-            {ctraderMapper.map(account => (
-                <TradingAccountCard
-                    {...account}
-                    key={`wallets-available-ctrader-accounts--${account.title}`}
-                    leading={() => <div>{account.icon}</div>}
-                    trailing={() => (
-                        <WalletButton
-                            color='primary-light'
-                            onClick={() => {
-                                onClickHandler();
-                            }}
-                            text='Get'
-                        />
-                    )}
-                >
-                    <div className='wallets-available-ctrader-accounts__details'>
-                        <WalletText size='sm' weight='bold'>
-                            {account.title}
-                        </WalletText>
-                        <WalletText size='xs'>{account.description}</WalletText>
-                    </div>
-                </TradingAccountCard>
-            ))}
+        <div className='wallets-available-ctrader'>
+            <TradingAccountCard leading={leadingIcon} trailing={trailingButton}>
+                <div className='wallets-available-ctrader__details'>
+                    <WalletText size='sm' weight='bold'>
+                        {PlatformDetails.ctrader.title}
+                    </WalletText>
+                    <WalletText size='xs'>This account offers CFDs on a feature-rich trading platform.</WalletText>
+                </div>
+            </TradingAccountCard>
         </div>
     );
 };

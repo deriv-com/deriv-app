@@ -23,7 +23,7 @@ import type {
     WebsiteStatus,
 } from '@deriv/api-types';
 
-import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
+import type { FeatureFlagsStore } from './src/stores';
 import { TContractInfo } from '../shared/src/utils/contract';
 
 type TRoutes =
@@ -1014,6 +1014,5 @@ export type TCoreStores = {
 };
 
 export type TStores = TCoreStores & {
-    exchange_rates: ExchangeRatesStore;
     feature_flags: FeatureFlagsStore;
 };

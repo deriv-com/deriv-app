@@ -58,7 +58,6 @@ const Trade = observer(() => {
     const {
         notification_messages_ui: NotificationMessages,
         has_only_forward_starting_contracts: is_market_unavailable_visible,
-        should_show_multipliers_onboarding,
         is_dark_mode_on: is_dark_theme,
         is_mobile,
     } = ui;
@@ -115,11 +114,11 @@ const Trade = observer(() => {
 
             onChange({ target: { name: 'contract_type', value: 'multiplier' } });
         };
-        if (should_show_multipliers_onboarding && !is_chart_loading && (is_synthetics_available || !is_market_closed)) {
+        if (!is_chart_loading && (is_synthetics_available || !is_market_closed)) {
             selectMultipliers();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [should_show_multipliers_onboarding, is_chart_loading]);
+    }, [is_chart_loading]);
 
     const bottomWidgets = React.useCallback(({ digits: d, tick: t }) => {
         return <BottomWidgetsMobile digits={d} tick={t} setTick={setTick} setDigits={setDigits} />;

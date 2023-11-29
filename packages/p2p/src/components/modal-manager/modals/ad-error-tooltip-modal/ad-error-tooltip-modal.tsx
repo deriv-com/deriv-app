@@ -1,46 +1,33 @@
 import React from 'react';
 import { Button, Modal, Text, ThemedScrollbars } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { buy_sell } from 'Constants/buy-sell';
-import { ad_type } from 'Constants/floating-rate';
+import AdRateError from './ad-rate-error';
 
-const AdRateError = () => {
-    const { floating_rate_store } = useStores();
-    const {
-        client: { local_currency_config },
-    } = useStore();
-
-    if (floating_rate_store.rate_type === ad_type.FLOAT) {
-        return floating_rate_store.reached_target_date ? (
-            <Localize i18n_default_text='Your ads with fixed rates have been deactivated. Set floating rates to reactivate them.' />
-        ) : (
-            <Localize
-                i18n_default_text={
-                    'Floating rates are enabled for {{local_currency}}. Ads with fixed rates will be deactivated. Switch to floating rates by {{end_date}}.'
-                }
-                values={{
-                    local_currency: local_currency_config.currency || '',
-                    end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
-                }}
-            />
-        );
-    }
-
-    return (
-        <Localize i18n_default_text='Your ads with floating rates have been deactivated. Set fixed rates to reactivate them.' />
-    );
+type TAdErrorTooltipModal = {
+    visibility_status: string[];
+    account_currency: string;
+    remaining_amount: number;
+    advert_type: string;
 };
 
-const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', remaining_amount, advert_type }) => {
+const AdErrorTooltipModal = ({
+    visibility_status = [],
+    account_currency = '',
+    remaining_amount,
+    advert_type,
+}: TAdErrorTooltipModal) => {
     const { my_ads_store, general_store } = useStores();
+    const {
+        ui: { is_mobile },
+    } = useStore();
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { daily_buy_limit, daily_sell_limit } = general_store.advertiser_info;
 
-    const getAdErrorMessage = error_code => {
+    const getAdErrorMessage = (error_code: string) => {
         switch (error_code) {
             case 'advert_inactive':
                 return <AdRateError />;
@@ -104,7 +91,7 @@ const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', re
         }
     };
 
-    const getMultipleErrorMessages = error_statuses =>
+    const getMultipleErrorMessages = (error_statuses: string[]) =>
         error_statuses.map((status, index) => (
             <div key={index}>
                 {index + 1}. {getAdErrorMessage(status)}
@@ -118,8 +105,8 @@ const AdErrorTooltipModal = ({ visibility_status = [], account_currency = '', re
                     <Text
                         as='div'
                         color='prominent'
-                        size={isMobile() ? 'xxs' : 'xs'}
-                        line_height={isMobile() ? 'l' : 'xl'}
+                        size={is_mobile ? 'xxs' : 'xs'}
+                        line_height={is_mobile ? 'l' : 'xl'}
                     >
                         {visibility_status.length === 1 ? (
                             getAdErrorMessage(visibility_status[0])

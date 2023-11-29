@@ -105,11 +105,22 @@ const App = () => {
         } else if (/\/advertiser$/.test(location.pathname)) {
             if (location.search || general_store.counterparty_advertiser_id) {
                 const url_params = new URLSearchParams(location.search);
-                general_store.setCounterpartyAdvertiserId(url_params.get('id'));
+                const id = url_params.get('id');
+                const advert_id = url_params.get('advert_id');
 
-                // DO NOT REMOVE. This will prevent the page from redirecting to buy sell on reload from advertiser page
-                // as it resets the URL search params
-                history.replace({ pathname: routes.p2p_advertiser_page, search: `?id=${url_params.get('id')}` });
+                general_store.setCounterpartyAdvertiserId(id);
+
+                if (advert_id) {
+                    general_store.setCounterpartyAdvertId(advert_id);
+                    history.replace({
+                        pathname: routes.p2p_advertiser_page,
+                        search: `?id=${id}&advert_id=${advert_id}`,
+                    });
+                } else {
+                    // DO NOT REMOVE. This will prevent the page from redirecting to buy sell on reload from advertiser page
+                    // as it resets the URL search params
+                    history.replace({ pathname: routes.p2p_advertiser_page, search: `?id=${id}` });
+                }
             } else {
                 history.push(routes.p2p_buy_sell);
             }

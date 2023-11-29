@@ -27,15 +27,7 @@ This workspace is the "app instance". It contains singleton services (such as th
 
 ## How to work with this workspace
 
-### Adding domain to your machine hosts config
-
--   Edit your `/etc/hosts` file to include this domain:
-
-```
-127.0.0.1   localhost.binary.sx
-```
-
--   To preview your changes locally for the first time, run `sudo npm start`:
+-   To preview your changes locally for the first time, run `npm start`:
     -   It will run all tests, compile all CSS, and JS/JSX as well as watch for further `js/jsx/css` changes and rebuild on every change you make.
 -   To preview your changes locally without any tests, run `npm run serve`
     -   It will watch for js/jsx/css changes and rebuild on every change you make.

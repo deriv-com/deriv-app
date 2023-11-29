@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { PropTypes } from 'prop-types';
 import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import FlyoutBlock from './flyout-block.jsx';
+import FlyoutBlock from './flyout-block';
 
 const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_display_name }) => {
     const block_type = block_node.getAttribute('type');
@@ -56,7 +56,7 @@ const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_disp
                     </>
                 )}
                 <div className='flyout__block-workspace__header'>
-                    <FlyoutBlock should_center_block block_node={block_node} should_hide_display_name />
+                    <FlyoutBlock block_node={block_node} should_hide_display_name />
                     {is_variables_get && <AddButton />}
                 </div>
             </div>

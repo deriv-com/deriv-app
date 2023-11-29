@@ -10,7 +10,7 @@ import {
     TContractStore,
     TTickSpotData,
 } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { Bounce, SlideIn } from 'App/Components/Animations';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
 import 'Sass/app/modules/contract/digits.scss';
@@ -25,7 +25,6 @@ type TOnLastDigitSpot = {
     is_latest: boolean;
     is_won?: boolean;
 };
-
 type TDigitsWrapper = TDigits & {
     onChangeStatus?: (params: TOnChangeStatus) => void;
     onLastDigitSpot?: (params: TOnLastDigitSpot) => void;
@@ -40,7 +39,7 @@ type TDigits = Pick<TContractStore, 'contract_info' | 'digits_info'> & {
     selected_digit?: TTraderStore['last_digit'];
     trade_type?: TTraderStore['contract_type'];
     tick?: TTickSpotData;
-    underlying: TTraderStore['symbol'];
+    underlying?: TTraderStore['symbol'];
 };
 type TTickStream = NonNullable<TContractStore['contract_info']['tick_stream']>[number];
 type TTickData =
@@ -147,11 +146,17 @@ const Digits = React.memo((props: TDigits) => {
 
     const getPopoverMessage = () => {
         const underlying_name = is_trade_page ? underlying : contract_info.underlying;
-
-        return localize('Last digit stats for latest 1000 ticks for {{underlying_name}}', {
-            underlying_name:
-                getMarketNamesMap()[underlying_name?.toUpperCase() as keyof ReturnType<typeof getMarketNamesMap>],
-        });
+        return (
+            <Localize
+                i18n_default_text='Last digit stats for latest 1000 ticks for {{underlying_name}}'
+                values={{
+                    underlying_name:
+                        getMarketNamesMap()[
+                            underlying_name?.toUpperCase() as keyof ReturnType<typeof getMarketNamesMap>
+                        ],
+                }}
+            />
+        );
     };
 
     return (

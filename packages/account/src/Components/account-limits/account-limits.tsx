@@ -36,7 +36,7 @@ const AccountLimits = observer(
         should_bypass_scrollbars,
         should_show_article = true,
     }: TAccountLimits) => {
-        const { client, common } = useStore();
+        const { client } = useStore();
         const {
             account_limits,
             account_status,
@@ -46,7 +46,6 @@ const AccountLimits = observer(
             is_virtual,
             is_switching,
         } = client;
-        const { is_from_derivgo } = common;
         const isMounted = useIsMounted();
         const [is_loading, setLoading] = React.useState(true);
         const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
@@ -132,9 +131,7 @@ const AccountLimits = observer(
                             'da-account-limits--app-settings': is_app_settings,
                         })}
                     >
-                        {should_show_article && isMobile() && (
-                            <AccountLimitsArticle is_from_derivgo={is_from_derivgo} />
-                        )}
+                        {should_show_article && isMobile() && <AccountLimitsArticle />}
                         <div className='da-account-limits__table-wrapper'>
                             <ThemedScrollbars is_bypassed={!!should_bypass_scrollbars || isMobile()}>
                                 <table className='da-account-limits__table' data-testid='trading_limit_item_table'>

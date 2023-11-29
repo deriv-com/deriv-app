@@ -1,38 +1,41 @@
 .wallets-options-and-multipliers-listing {
     width: 100%;
     height: 100%;
-    padding-top: 24px;
+    padding-top: 2.4rem;
 
     @include mobile {
         padding-top: unset;
     }
 
-    @include desktop {
-        border-top: 2px solid var(--system-light-7-secondary-background, #f2f3f4);
+    &--border {
+        @include desktop {
+            border-top: 0.2rem solid var(--system-light-7-secondary-background, #f2f3f4);
+        }
     }
 
     &__header {
-        padding-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        align-self: stretch;
+        padding-bottom: 2.4rem;
+        justify-content: space-between;
+
+        &-title {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
 
         @include mobile {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            margin: auto 1.8rem;
-        }
-
-        &-title {
-            font-weight: bold;
-            font-size: 24px;
-            line-height: 36px;
-            display: flex;
-            align-items: center;
+            padding-top: 1.6rem;
+            padding-bottom: 0;
         }
 
         &-subtitle {
-            font-size: 16px;
-            line-height: 24px;
-
             &__link {
                 color: var(--brand-coral, #ff444f);
             }
@@ -43,41 +46,28 @@
         display: grid;
         gap: 1.6rem 4.8rem;
         grid-template-columns: repeat(3, 1fr);
+        user-select: none;
 
         @include mobile {
-            margin: auto 2rem;
             grid-template-rows: repeat(5, 1fr);
             grid-template-columns: auto;
+            gap: 0;
         }
 
-        &__text {
-            color: #fff;
-            text-align: center;
+        &__icon {
+            cursor: pointer;
+        }
 
-            /* desktop/paragraph/P2 - bold */
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 20px; /* 142.857% */
+        &--without-trading-account {
+            @include mobile {
+                margin: auto 2rem;
+            }
         }
 
         &__details {
             flex-grow: 1;
-            &-title {
-                font-weight: bold;
-                font-size: 1.4rem;
-                line-height: 20px;
-            }
-
-            &-description {
-                font-size: 1.2rem;
-                line-height: 14px;
-
-                @include mobile {
-                    font-size: 1.4rem;
-                    line-height: 20px;
-                }
-            }
+            display: flex;
+            flex-direction: column;
         }
     }
 }

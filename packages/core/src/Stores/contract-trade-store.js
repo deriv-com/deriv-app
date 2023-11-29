@@ -29,7 +29,7 @@ export default class ContractTradeStore extends BaseStore {
 
     // Chart specific observables
     granularity = +LocalStore.get('contract_trade.granularity') || 0;
-    chart_type =  LocalStore.get('contract_trade.chart_style') || 'line';
+    chart_type = LocalStore.get('contract_trade.chart_style') || 'line';
     prev_chart_type = '';
     prev_granularity = null;
 
@@ -198,13 +198,13 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     updateChartType(type) {
-            LocalStore.set('contract_trade.chart_style', type);
+        LocalStore.set('contract_trade.chart_style', type);
         this.chart_type = type;
     }
 
     updateGranularity(granularity) {
-        const tick_chart_types = ['line', 'candles', 'hollow', 'ohlc']
-            
+        const tick_chart_types = ['line', 'candles', 'hollow', 'ohlc'];
+
         if (granularity === 0 && tick_chart_types.indexOf(this.chart_type) === -1) {
             this.chart_type = 'line';
         }
@@ -322,20 +322,19 @@ export default class ContractTradeStore extends BaseStore {
             {};
 
         if (trade_type === 'accumulator' && proposal_prev_spot_time && accumulators_high_barrier) {
-            
-                const is_open = isAccumulatorContractOpen(this.last_contract.contract_info);
-                markers.push(
-                    getAccumulatorMarkers({
-                        high_barrier: accumulators_high_barrier,
-                        low_barrier: accumulators_low_barrier,
-                        barrier_spot_distance,
-                        prev_epoch: proposal_prev_spot_time,
-                        has_crossed_accu_barriers: this.has_crossed_accu_barriers,
-                        is_dark_theme: this.root_store.ui.is_dark_mode_on,
-                        contract_info: is_open ? this.last_contract.contract_info : {},
-                        is_accumulator_trade_without_contract: !is_open || !entry_tick_time,
-                    })
-                );
+            const is_open = isAccumulatorContractOpen(this.last_contract.contract_info);
+            markers.push(
+                getAccumulatorMarkers({
+                    high_barrier: accumulators_high_barrier,
+                    low_barrier: accumulators_low_barrier,
+                    barrier_spot_distance,
+                    prev_epoch: proposal_prev_spot_time,
+                    has_crossed_accu_barriers: this.has_crossed_accu_barriers,
+                    is_dark_theme: this.root_store.ui.is_dark_mode_on,
+                    contract_info: is_open ? this.last_contract.contract_info : {},
+                    is_accumulator_trade_without_contract: !is_open || !entry_tick_time,
+                })
+            );
         }
         return markers;
     }

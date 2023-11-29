@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AccountsList } from '../AccountsList';
 import { WalletsCarouselContent } from '../WalletsCarouselContent';
-import './WalletsCarousel.scss';
 
 const WalletsCarousel: React.FC = () => {
+    const [isWalletSettled, setIsWalletSettled] = useState(true);
+
     return (
-        <div className='wallets-carousel'>
-            <WalletsCarouselContent />
-            <AccountsList />
-        </div>
+        <React.Fragment>
+            <WalletsCarouselContent onWalletSettled={setIsWalletSettled} />
+            <AccountsList isWalletSettled={isWalletSettled} />
+        </React.Fragment>
     );
 };
 

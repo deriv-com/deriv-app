@@ -6,6 +6,7 @@ import withI18n from './component';
 import ach from 'Translations/ach.json';
 import en from 'Translations/en.json';
 import es from 'Translations/es.json';
+import de from 'Translations/de.json';
 import fr from 'Translations/fr.json';
 import id from 'Translations/id.json';
 import it from 'Translations/it.json';
@@ -14,6 +15,7 @@ import pl from 'Translations/pl.json';
 import pt from 'Translations/pt.json';
 import ru from 'Translations/ru.json';
 import th from 'Translations/th.json';
+import tr from 'Translations/tr.json';
 import vi from 'Translations/vi.json';
 import zh_cn from 'Translations/zh_cn.json';
 import zh_tw from 'Translations/zh_tw.json';
@@ -35,6 +37,7 @@ const i18n_config = {
         ACH: { translations: { ...ach } },
         EN: { translations: { ...en } },
         ES: { translations: { ...es } },
+        DE: { translations: { ...de } },
         FR: { translations: { ...fr } },
         ID: { translations: { ...id } },
         IT: { translations: { ...it } },
@@ -43,6 +46,7 @@ const i18n_config = {
         PT: { translations: { ...pt } },
         RU: { translations: { ...ru } },
         TH: { translations: { ...th } },
+        TR: { translations: { ...tr } },
         VI: { translations: { ...vi } },
         ZH_CN: { translations: { ...zh_cn } },
         ZH_TW: { translations: { ...zh_tw } },

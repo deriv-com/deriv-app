@@ -2,6 +2,7 @@ import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction, makeObservable, override } from 'mobx';
 import { createTransformer } from 'mobx-utils';
 import {
+    isAccumulatorContract,
     isEmptyObject,
     isEnded,
     isUserSold,
@@ -10,6 +11,7 @@ import {
     getCurrentTick,
     getDisplayStatus,
     WS,
+    filterDisabledPositions,
     formatPortfolioPosition,
     contractCancelled,
     contractSold,
@@ -21,6 +23,7 @@ import {
     TURBOS,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
+import { Analytics } from '@deriv/analytics';
 import { ChartBarrierStore } from './chart-barrier-store';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
 
@@ -32,6 +35,9 @@ export default class PortfolioStore extends BaseStore {
     positions_map = {};
     is_loading = false;
     error = '';
+
+    //accumulators
+    open_accu_contract = null;
 
     // barriers
     barriers = [];
@@ -63,6 +69,7 @@ export default class PortfolioStore extends BaseStore {
             onBuyResponse: action.bound,
             transactionHandler: action.bound,
             proposalOpenContractHandler: action.bound,
+            open_accu_contract: observable,
             onClickCancel: action.bound,
             onClickSell: action.bound,
             handleSell: action.bound,
@@ -82,7 +89,6 @@ export default class PortfolioStore extends BaseStore {
             active_positions_count: computed,
             is_empty: computed,
             setPurchaseSpotBarrier: action,
-            updateBarrierColor: action,
             updateLimitOrderBarriers: action,
             setContractType: action,
             is_accumulator: computed,
@@ -126,6 +132,7 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         if (response.portfolio.contracts) {
             this.positions = response.portfolio.contracts
+                .filter(filterDisabledPositions)
                 .map(pos => formatPortfolioPosition(pos, this.root_store.active_symbols.active_symbols))
                 .sort((pos1, pos2) => pos2.reference - pos1.reference); // new contracts first
 
@@ -338,6 +345,12 @@ export default class PortfolioStore extends BaseStore {
             this.root_store.notifications.addNotificationMessage(
                 contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
             );
+
+            Analytics.trackEvent('ce_reports_form', {
+                action: 'close_contract',
+                form_name: 'default',
+                subform_name: 'open_positions_form',
+            });
         }
     }
 
@@ -511,6 +524,7 @@ export default class PortfolioStore extends BaseStore {
     setActivePositions() {
         this.active_positions = this.positions.filter(portfolio_pos => !getEndTime(portfolio_pos.contract_info));
         this.all_positions = [...this.positions];
+        this.open_accu_contract = this.active_positions.find(({ type }) => isAccumulatorContract(type));
     }
 
     updatePositions = () => {
@@ -554,16 +568,7 @@ export default class PortfolioStore extends BaseStore {
             purchase_spot_barrier.draggable = false;
             purchase_spot_barrier.hideOffscreenBarrier = true;
             purchase_spot_barrier.isSingleBarrier = true;
-            purchase_spot_barrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
             this.barriers.push(purchase_spot_barrier);
-        }
-    }
-
-    updateBarrierColor(is_dark_mode) {
-        const { main_barrier } = JSON.parse(localStorage.getItem('trade_store')) || {};
-        this.main_barrier = main_barrier;
-        if (this.main_barrier) {
-            this.main_barrier.updateBarrierColor(is_dark_mode);
         }
     }
 

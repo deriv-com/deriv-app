@@ -10,6 +10,7 @@ export default class RoutePromptDialogStore {
             onConfirm: action.bound,
             onCancel: action.bound,
             continueRoute: action.bound,
+            setShoudShow: action.bound,
         });
 
         this.root_store = root_store;
@@ -28,6 +29,10 @@ export default class RoutePromptDialogStore {
         }
 
         return true;
+    }
+
+    setShoudShow(should_show) {
+        this.should_show = should_show;
     }
 
     onConfirm() {

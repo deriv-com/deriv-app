@@ -21,7 +21,6 @@ import MyProfileSeparatorContainer from 'Pages/my-profile/my-profile-separator-c
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
 import { getDateAfterHours } from 'Utils/date-time';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import ChatMessage, { admin_message } from 'Utils/chat-message';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(() => {
@@ -66,11 +65,6 @@ const OrderDetails = observer(() => {
     } = order_store?.order_information;
 
     const { chat_channel_url } = sendbird_store;
-    const should_send_admin_message =
-        buy_sell_store.is_create_order_subscribed &&
-        sendbird_store.chat_messages.length === 0 &&
-        sendbird_store.chat_channel_url &&
-        !sendbird_store.is_chat_loading;
 
     const [should_expand_all, setShouldExpandAll] = React.useState(false);
     const [remaining_review_time, setRemainingReviewTime] = React.useState(null);
@@ -97,7 +91,6 @@ const OrderDetails = observer(() => {
         const disposeListeners = sendbird_store.registerEventListeners();
         const disposeReactions = sendbird_store.registerMobXReactions();
 
-        order_store.getSettings();
         order_store.getWebsiteStatus();
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);
@@ -201,10 +194,6 @@ const OrderDetails = observer(() => {
         formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
     );
     const rate_amount = removeTrailingZeros(formatMoney(local_currency, rate, true, 6));
-
-    if (should_send_admin_message) {
-        sendbird_store.sendMessage(admin_message, ChatMessage.TYPE_ADMIN);
-    }
 
     return (
         <OrderDetailsWrapper page_title={page_title}>

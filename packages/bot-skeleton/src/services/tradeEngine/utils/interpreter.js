@@ -1,4 +1,4 @@
-import { cloneThorough } from '@deriv/shared';
+import { cloneThorough, isMultiplierContract } from '@deriv/shared';
 import JSInterpreter from '@deriv/js-interpreter';
 import { createScope } from './cliTools';
 import Interface from '../Interface';
@@ -23,7 +23,7 @@ const shouldRestartOnError = (bot, errorName = '') =>
     !unrecoverable_errors.includes(errorName) && botInitialized(bot) && bot.tradeEngine.options.shouldRestartOnError;
 
 const shouldStopOnError = (bot, errorName = '') => {
-    const stopErrors = ['SellNotAvailableCustom', 'ContractCreationFailure'];
+    const stopErrors = ['SellNotAvailableCustom', 'ContractCreationFailure', 'InvalidtoBuy'];
     if (stopErrors.includes(errorName) && botInitialized(bot)) {
         return true;
     }
@@ -171,7 +171,11 @@ const Interpreter = () => {
                     // granted there is no active contract.
                     global_timeouts.forEach(timeout => clearTimeout(global_timeouts[timeout]));
                     terminateSession().then(() => resolve());
-                } else if (bot.tradeEngine.isSold === false && !$scope.is_error_triggered) {
+                } else if (
+                    bot.tradeEngine.isSold === false &&
+                    !$scope.is_error_triggered &&
+                    isMultiplierContract(bot?.tradeEngine?.data?.contract?.contract_type ?? '')
+                ) {
                     globalObserver.register('contract.status', async contractStatus => {
                         if (contractStatus.id === 'contract.sold') {
                             terminateSession().then(() => resolve());

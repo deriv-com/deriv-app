@@ -3,11 +3,12 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Dropdown, ButtonToggle, InputField } from '@deriv/components';
-import { toMoment, hasIntradayDurationUnit } from '@deriv/shared';
+import { getDurationMinMaxValues, getUnitMap, hasIntradayDurationUnit, toMoment } from '@deriv/shared';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import TradingDatePicker from '../../DatePicker';
 import TradingTimePicker from '../../TimePicker';
 import ExpiryText from './expiry-text.jsx';
+import DurationRangeText from './duration-range-text';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -32,8 +33,9 @@ const AdvancedDuration = observer(
     }) => {
         const { ui } = useStore();
         const { current_focus, setCurrentFocus } = ui;
-        const { contract_expiry_type, validation_errors } = useTraderStore();
+        const { contract_expiry_type, duration_min_max, is_vanilla, validation_errors } = useTraderStore();
 
+        const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, advanced_duration_unit);
         let is_24_hours_contract = false;
 
         if (expiry_type === 'endtime') {
@@ -55,6 +57,9 @@ const AdvancedDuration = observer(
         };
 
         const has_error = !!validation_errors?.duration?.length;
+
+        const { name_plural, name } = getUnitMap()[advanced_duration_unit];
+        const duration_unit_text = name_plural ?? name;
 
         return (
             <>
@@ -96,9 +101,6 @@ const AdvancedDuration = observer(
                                     is_24_hours_contract={is_24_hours_contract}
                                 />
                             )}
-                            {advanced_duration_unit === 'd' && (
-                                <ExpiryText expiry_epoch={expiry_epoch} has_error={has_error} />
-                            )}
                             {advanced_duration_unit !== 't' && advanced_duration_unit !== 'd' && (
                                 <InputField
                                     id='dt_advanced_duration_input'
@@ -113,6 +115,12 @@ const AdvancedDuration = observer(
                                     {...shared_input_props}
                                 />
                             )}
+                            {is_vanilla && (
+                                <DurationRangeText min={min} max={max} duration_unit_text={duration_unit_text} />
+                            )}
+                            {advanced_duration_unit === 'd' && (
+                                <ExpiryText expiry_epoch={expiry_epoch} has_error={has_error} />
+                            )}
                         </div>
                     </>
                 ) : (
@@ -122,7 +130,6 @@ const AdvancedDuration = observer(
                                 id='dt_advanced_duration_datepicker'
                                 name='expiry_date'
                                 is_24_hours_contract={is_24_hours_contract}
-                                value={expiry_date}
                             />
                             {
                                 is_24_hours_contract && <TradingTimePicker />

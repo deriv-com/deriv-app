@@ -1,9 +1,9 @@
 import { useStore } from '@deriv/stores';
 
-/** @deprecated Use `useMT5LoginList` for MT5 accounts and `useTradingPlatformAccounts` for Other CFD accounts from `@deriv/api` instead. */
+/** @deprecated Use `useMT5AccountsList` for MT5 accounts and `useDxtradeAccountsList` for Other CFD accounts from `@deriv/api` instead. */
 const useCFDAllAccounts = () => {
     const { client } = useStore();
-    const { dxtrade_accounts_list, mt5_login_list, derivez_accounts_list, ctrader_accounts_list } = client;
+    const { dxtrade_accounts_list, mt5_login_list, ctrader_accounts_list } = client;
 
     let cfd_accounts: typeof mt5_login_list = [];
     if (Array.isArray(mt5_login_list)) {
@@ -14,9 +14,6 @@ const useCFDAllAccounts = () => {
     }
     if (Array.isArray(ctrader_accounts_list)) {
         cfd_accounts = [...cfd_accounts, ...ctrader_accounts_list];
-    }
-    if (Array.isArray(derivez_accounts_list)) {
-        cfd_accounts = [...cfd_accounts, ...derivez_accounts_list];
     }
 
     return cfd_accounts;

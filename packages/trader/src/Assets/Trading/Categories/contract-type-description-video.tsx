@@ -10,7 +10,7 @@ type TContractTypeDescriptionVideo = {
 
 const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: TContractTypeDescriptionVideo) => {
     const { ui } = useStore();
-    const { is_dark_mode_on: is_dark_theme } = ui;
+    const { is_dark_mode_on: is_dark_theme, is_mobile } = ui;
     const getVideoSource = React.useCallback(
         (extension: 'mp4' | 'webm') => {
             return getUrlBase(
@@ -36,6 +36,8 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: T
             onContextMenu={e => e.preventDefault()}
             preload='auto'
             controls
+            width={is_mobile ? 328 : 480}
+            height={is_mobile ? 184.5 : 270}
             className='contract-type-info__video'
             data-testid={data_testid}
         >

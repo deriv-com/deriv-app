@@ -1,10 +1,12 @@
 import { localize } from 'Components/i18next';
 
+export const accepted_file_types = 'image/png, image/jpeg, image/jpg, application/pdf';
+
 export const convertToMB = bytes => bytes / (1024 * 1024);
 
 export const getPotSupportedFiles = filename => /^.*\.(png|PNG|jpg|JPG|jpeg|JPEG|pdf|PDF)$/.test(filename);
 
-export const max_pot_file_size = 2097152;
+export const max_pot_file_size = 5242880;
 
 export const isImageType = type => ['image/jpeg', 'image/png', 'image/gif'].includes(type);
 
@@ -15,5 +17,5 @@ const isFileSupported = files => files.filter(each_file => getPotSupportedFiles(
 
 export const getErrorMessage = files =>
     isFileTooLarge(files) && isFileSupported(files)
-        ? localize('Cannot upload a file over 2MB')
+        ? localize('Cannot upload a file over 5MB')
         : localize('File uploaded is not supported');

@@ -36,11 +36,18 @@ const AccountLimits = observer(
         should_bypass_scrollbars,
         should_show_article = true,
     }: TAccountLimits) => {
-        const { client, common } = useStore();
-        const { account_limits, currency, getLimits, is_virtual, is_switching } = client;
-        const { is_from_derivgo } = common;
+        const { client } = useStore();
+        const {
+            account_limits,
+            account_status,
+            currency,
+            getLimits,
+            is_fully_authenticated,
+            is_virtual,
+            is_switching,
+        } = client;
         const isMounted = useIsMounted();
-        const [is_loading, setLoading] = React.useState(false);
+        const [is_loading, setLoading] = React.useState(true);
         const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
         const { is_appstore } = React.useContext(PlatformContext);
 
@@ -58,10 +65,10 @@ const AccountLimits = observer(
         }, []);
 
         React.useEffect(() => {
-            if (!is_virtual && account_limits && is_loading) {
+            if (!is_virtual && account_limits && is_loading && Object.keys(account_status).length > 0) {
                 setLoading(false);
             }
-        }, [account_limits, is_virtual, is_loading]);
+        }, [account_limits, is_virtual, is_loading, account_status]);
 
         React.useEffect(() => {
             if (typeof setIsPopupOverlayShown === 'function') {
@@ -71,7 +78,7 @@ const AccountLimits = observer(
 
         const toggleOverlay = () => setIsOverlayShown(!is_overlay_shown);
 
-        if (is_switching) {
+        if (is_switching || is_loading) {
             return <Loading is_fullscreen={false} />;
         }
 
@@ -103,10 +110,6 @@ const AccountLimits = observer(
             return <LoadErrorMessage error_message={api_initial_load_error} />;
         }
 
-        if (is_switching || is_loading) {
-            return <Loading is_fullscreen={false} />;
-        }
-
         const { commodities, forex, indices, synthetic_index } = { ...market_specific };
         const forex_ordered = forex?.slice().sort((a: FormikValues, b: FormikValues) => a.name.localeCompare(b.name));
         const derived_ordered = synthetic_index
@@ -128,9 +131,7 @@ const AccountLimits = observer(
                             'da-account-limits--app-settings': is_app_settings,
                         })}
                     >
-                        {should_show_article && isMobile() && (
-                            <AccountLimitsArticle is_from_derivgo={is_from_derivgo} />
-                        )}
+                        {should_show_article && isMobile() && <AccountLimitsArticle />}
                         <div className='da-account-limits__table-wrapper'>
                             <ThemedScrollbars is_bypassed={!!should_bypass_scrollbars || isMobile()}>
                                 <table className='da-account-limits__table' data-testid='trading_limit_item_table'>

@@ -6,6 +6,13 @@
     height: $height;
     justify-content: center;
     width: $width;
+
+    @include desktop {
+        &:hover {
+            background-color: var(--general-hover);
+            border-radius: 0.5rem;
+        }
+    }
 }
 
 .my-ads-table {
@@ -81,7 +88,7 @@
         min-width: 14rem;
         padding: 1.6rem;
         position: absolute;
-        right: 0;
+        right: 5.5rem;
         top: 0;
 
         &--disable {
@@ -104,12 +111,6 @@
         &--activate {
             @include popoverIcons(none, 3.2rem, 3.2rem);
 
-            @include desktop {
-                &:hover {
-                    background-color: var(--general-hover);
-                }
-            }
-
             @include mobile {
                 @include popoverIcons(var(--status-warning), 100%, 6rem);
             }
@@ -117,12 +118,6 @@
 
         &--deactivate {
             @include popoverIcons(none, 3.2rem, 3.2rem);
-
-            @include desktop {
-                &:hover {
-                    background-color: var(--general-hover);
-                }
-            }
 
             @include mobile {
                 @include popoverIcons(#85acb0, 100%, 6rem);
@@ -132,12 +127,6 @@
         &-delete {
             @include popoverIcons(none, 3.2rem, 3.2rem);
 
-            @include desktop {
-                &:hover {
-                    background-color: var(--general-hover);
-                }
-            }
-
             @include mobile {
                 @include popoverIcons(var(--brand-red-coral), 100%, 6rem);
             }
@@ -146,14 +135,16 @@
         &-edit {
             @include popoverIcons(none, 3.2rem, 3.2rem);
 
-            @include desktop {
-                &:hover {
-                    background-color: var(--general-hover);
-                }
-            }
-
             @include mobile {
                 @include popoverIcons(var(--status-info), 100%, 6rem);
+            }
+        }
+
+        &-share {
+            @include popoverIcons(none, 3.2rem, 3.2rem);
+
+            @include mobile {
+                @include popoverIcons($color-green-1, 100%, 6rem);
             }
         }
     }
@@ -175,7 +166,11 @@
 
     &__row {
         padding: 1.6rem;
-        grid-template-columns: 1.7fr repeat(2, 2fr) repeat(2, 2.3fr) 1.5fr;
+        grid-template-columns: repeat(3, 1.6fr) 1.9fr 3fr 1.9fr;
+
+        .dc-table__head:nth-last-child(2) {
+            margin-left: 2rem;
+        }
 
         .dc-table__cell:last-child {
             word-break: unset;
@@ -227,13 +222,15 @@
 
     &__status {
         width: 100%;
+        margin-left: 1.9rem;
 
         &-warning {
             align-items: center;
             display: flex;
             flex-direction: row;
-            justify-content: space-between;
+            justify-content: space-around;
             width: 100%;
+            cursor: pointer;
 
             @include mobile {
                 align-items: center;
@@ -241,6 +238,14 @@
                 justify-content: unset;
                 width: unset;
                 gap: 1rem;
+            }
+            .dc-popover__target {
+                display: flex;
+            }
+            &__icon {
+                @include mobile {
+                    margin-bottom: 0.8rem;
+                }
             }
         }
     }

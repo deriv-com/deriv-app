@@ -1,20 +1,17 @@
-import React from 'react';
-import { useAuthorize } from '@deriv/api';
-import WalletsAddMore from './components/WalletsAddMoreCarousel';
-import useDevice from './hooks/useDevice';
-import { DesktopWalletsList, Loader, WalletsCarousel } from './components';
+import React, { useEffect } from 'react';
+import { defineViewportHeight } from './utils/utils';
+import { Router } from './routes';
 import './AppContent.scss';
 
 const AppContent: React.FC = () => {
-    const { is_mobile } = useDevice();
-    const { isLoading } = useAuthorize();
-
-    if (isLoading) return <Loader />;
+    useEffect(() => {
+        defineViewportHeight();
+    }, []);
 
     return (
         <div className='wallets-app'>
-            <div className='wallets-app__content'>{is_mobile ? <WalletsCarousel /> : <DesktopWalletsList />}</div>
-            <WalletsAddMore />
+            <div className='wallets-modal-show-header-root' id='wallets_modal_show_header_root' />
+            <Router />
         </div>
     );
 };

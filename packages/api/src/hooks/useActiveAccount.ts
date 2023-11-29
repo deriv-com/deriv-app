@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import useAccountsList from './useAccountsList';
+import useDerivAccountsList from './useDerivAccountsList';
 
 /** A custom hook that returns the account object for the current active account. */
 const useActiveAccount = () => {
-    const { data, ...rest } = useAccountsList();
+    const { data, ...rest } = useDerivAccountsList();
     const active_account = useMemo(() => data?.find(account => account.is_active), [data]);
 
     return {

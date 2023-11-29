@@ -49,7 +49,7 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transac
                 </React.Fragment>
             ) : (
                 <React.Fragment>
-                    <WalletText size='xs'>No recent transactions.</WalletText>
+                    <WalletText size='sm'>No recent transactions.</WalletText>
                     <Divider color='#d6dadb' /> {/* --color-grey-5 */}
                 </React.Fragment>
             )}

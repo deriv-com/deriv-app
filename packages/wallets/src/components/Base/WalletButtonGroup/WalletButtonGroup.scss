@@ -1,12 +1,15 @@
 .wallets-button-group {
     display: grid;
-    width: 100%;
     gap: 1.2rem;
     grid-auto-columns: minmax(0, 1fr);
     grid-auto-flow: column;
 
     &--flex {
         grid-auto-columns: auto;
+    }
+
+    &--full-width {
+        width: 100%;
     }
 
     &--vertical {

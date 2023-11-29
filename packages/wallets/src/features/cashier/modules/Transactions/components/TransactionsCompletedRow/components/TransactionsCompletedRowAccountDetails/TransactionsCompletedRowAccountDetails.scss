@@ -1,0 +1,18 @@
+.wallets-transactions-completed-row-account-details {
+    display: flex;
+    width: max-content;
+    gap: 0.8rem;
+
+    &__type-and-wallet-name {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    &__wallet-name {
+        display: flex;
+        flex-direction: row;
+        gap: 0.4rem;
+        align-items: center;
+    }
+}

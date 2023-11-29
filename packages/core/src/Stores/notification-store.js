@@ -16,7 +16,6 @@ import {
     isMobile,
     isMultiplierContract,
     LocalStore,
-    platform_name,
     routes,
     unique,
 } from '@deriv/shared';
@@ -279,6 +278,7 @@ export default class NotificationStore extends BaseStore {
             is_pending_proof_of_ownership,
             p2p_advertiser_info,
             is_p2p_enabled,
+            is_poa_expired,
         } = this.root_store.client;
         const { upgradable_daily_limits } = p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
@@ -339,7 +339,11 @@ export default class NotificationStore extends BaseStore {
             } else {
                 this.removeNotificationByKey({ key: this.client_notifications.poi_dob_mismatch });
             }
-
+            if (is_poa_expired) {
+                this.addNotificationMessage(this.client_notifications.poa_expired);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.poa_expired });
+            }
             if (loginid !== LocalStore.get('active_loginid')) return;
 
             if (is_financial_assessment_needed) {
@@ -544,9 +548,6 @@ export default class NotificationStore extends BaseStore {
                 } else if (svg_poi_expired) {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
-            }
-            if (client && this.root_store.client.mt5_login_list.length > 0) {
-                this.addNotificationMessage(this.client_notifications.mt5_notification);
             }
         }
 
@@ -1009,6 +1010,16 @@ export default class NotificationStore extends BaseStore {
                 type: 'announce',
                 should_hide_close_btn: false,
             },
+            poa_expired: {
+                key: 'poa_expired',
+                header: <Localize i18n_default_text='Lets get your address verified' />,
+                message: <Localize i18n_default_text='Please submit your proof of address' />,
+                type: 'warning',
+                action: {
+                    route: routes.proof_of_address,
+                    text: localize('Submit now'),
+                },
+            },
             poi_failed: {
                 action: {
                     route: routes.proof_of_identity,
@@ -1093,7 +1104,6 @@ export default class NotificationStore extends BaseStore {
                 type: 'info',
                 is_persistent: true,
                 should_show_again: true,
-                platform: [platform_name.DTrader],
                 is_disposable: true,
                 action: {
                     text: localize('Reset balance'),

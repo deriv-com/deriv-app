@@ -5,9 +5,13 @@ import { AddedMT5AccountsList, AvailableMT5AccountsList } from '../../flows/MT5'
 import { GetMoreMT5Accounts } from '../../screens';
 import './MT5PlatformsList.scss';
 
-const MT5PlatformsList: React.FC = () => {
+type TProps = {
+    onMT5PlatformListLoaded?: (value: boolean) => void;
+};
+
+const MT5PlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
     const { isFetching } = useAuthorize();
-    const { data, isFetchedAfterMount } = useSortedMT5Accounts();
+    const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts();
     const { data: activeWallet } = useActiveWalletAccount();
     const invalidate = useInvalidateQuery();
 
@@ -20,6 +24,11 @@ const MT5PlatformsList: React.FC = () => {
             invalidate('mt5_login_list');
         }
     }, [invalidate, isFetching]);
+
+    useEffect(() => {
+        onMT5PlatformListLoaded?.(isFetchedAfterMount);
+        return () => onMT5PlatformListLoaded?.(false);
+    }, [isFetchedAfterMount, onMT5PlatformListLoaded]);
 
     return (
         <React.Fragment>
@@ -47,7 +56,7 @@ const MT5PlatformsList: React.FC = () => {
                             />
                         );
                     })}
-                {hasMT5Account && !activeWallet?.is_virtual && <GetMoreMT5Accounts />}
+                {hasMT5Account && !activeWallet?.is_virtual && !areAllAccountsCreated && <GetMoreMT5Accounts />}
             </div>
         </React.Fragment>
     );

@@ -61,13 +61,13 @@ export default class GeneralStore extends BaseStore {
     is_deposit = false;
     is_loading = false;
     is_populating_values = false;
-    onRemount: VoidFunction | (() => Promise<void>) = () => this;
+    onRemount: VoidFunction = () => this;
     percentage = 0;
     payment_agent: PaymentAgentStore | null = null;
     should_percentage_reset = false;
     should_show_all_available_currencies = false;
 
-    setOnRemount(func: VoidFunction | (() => Promise<void>)): void {
+    setOnRemount(func: VoidFunction): void {
         this.onRemount = func;
     }
 
@@ -179,6 +179,11 @@ export default class GeneralStore extends BaseStore {
         if (!payment_agent.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
             routeTo(routes.cashier_deposit);
         }
+
+        if (!onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
+            routeTo(routes.cashier_deposit);
+        }
+
         if (
             !transaction_history.is_transactions_crypto_visible &&
             window.location.pathname.endsWith(routes.cashier_transactions_crypto)

@@ -61,16 +61,16 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     }, [activeWallet?.currency, activeWallet?.loginid, subscribe, unsubscribe]);
 
     const getConvertedCryptoAmount = (fiatInput: number | string) => {
-        const value = Number(fiatInput);
+        const value = typeof fiatInput === 'string' ? parseFloat(fiatInput) : fiatInput;
         const convertedValue =
-            value && exchangeRates?.rates && activeWallet?.currency
+            !Number.isNaN(value) && exchangeRates?.rates && activeWallet?.currency
                 ? (value * exchangeRates?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_CRYPTO)
                 : '';
         return convertedValue;
     };
 
     const getConvertedFiatAmount = (cryptoInput: number | string) => {
-        const value = Number(cryptoInput);
+        const value = typeof cryptoInput === 'string' ? parseFloat(cryptoInput) : cryptoInput;
         const convertedValue =
             !Number.isNaN(value) && exchangeRates?.rates && activeWallet?.currency
                 ? (value / exchangeRates?.rates[activeWallet?.currency]).toFixed(FRACTIONAL_DIGITS_FIAT)

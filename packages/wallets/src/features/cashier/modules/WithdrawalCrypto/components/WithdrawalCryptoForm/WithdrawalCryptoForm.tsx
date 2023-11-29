@@ -7,14 +7,8 @@ import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAm
 import './WithdrawalCryptoForm.scss';
 
 const WithdrawalCryptoForm: React.FC = () => {
-    const {
-        activeWallet,
-        exchangeRates,
-        fractionalDigits,
-        getConvertedCryptoAmount,
-        getConvertedFiatAmount,
-        requestCryptoWithdrawal,
-    } = useWithdrawalCryptoContext();
+    const { activeWallet, exchangeRates, fractionalDigits, getConvertedFiatAmount, requestCryptoWithdrawal } =
+        useWithdrawalCryptoContext();
     const { validateCryptoAddress } = useWithdrawalCryptoInput();
 
     return (
@@ -56,15 +50,19 @@ const WithdrawalCryptoForm: React.FC = () => {
                                 }
                                 balance={activeWallet?.balance ?? 0}
                                 onChangePercentage={percentage => {
-                                    const fraction = percentage / 100;
-                                    const cryptoAmount = getConvertedCryptoAmount(fraction);
-                                    const fiatAmount = getConvertedFiatAmount(fraction);
+                                    if (activeWallet?.balance) {
+                                        const fraction = percentage / 100;
+                                        const cryptoAmount = (activeWallet?.balance * fraction).toFixed(
+                                            fractionalDigits.crypto
+                                        );
+                                        const fiatAmount = getConvertedFiatAmount(cryptoAmount);
 
-                                    return setValues({
-                                        ...values,
-                                        cryptoAmount,
-                                        fiatAmount,
-                                    });
+                                        return setValues({
+                                            ...values,
+                                            cryptoAmount,
+                                            fiatAmount,
+                                        });
+                                    }
                                 }}
                             />
                             <WalletText color='less-prominent' size='xs'>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { WalletTextField } from '../../../../../../../../components';
@@ -9,26 +9,10 @@ import type { TWithdrawalForm } from '../../../../types';
 import './WithdrawalCryptoAmountConverter.scss';
 
 const WithdrawalCryptoAmountConverter: React.FC = () => {
-    const { activeWallet, exchangeRates, getConvertedCryptoAmount, getConvertedFiatAmount } =
-        useWithdrawalCryptoContext();
+    const { activeWallet, getConvertedCryptoAmount, getConvertedFiatAmount } = useWithdrawalCryptoContext();
     const { validateCryptoInput, validateFiatInput } = useWithdrawalCryptoInput();
     const [isCryptoInputActive, setIsCryptoInputActive] = useState(false);
-    const { errors, setValues, values } = useFormikContext<TWithdrawalForm>();
-
-    useEffect(() => {
-        // update the amount when the exchangeRate is updated.
-        if (isCryptoInputActive)
-            setValues({
-                ...values,
-                fiatAmount: getConvertedFiatAmount(values.cryptoAmount),
-            });
-        else
-            setValues({
-                ...values,
-                cryptoAmount: getConvertedCryptoAmount(values.fiatAmount),
-            });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeWallet?.currency, exchangeRates?.data?.rates]);
+    const { errors, setValues } = useFormikContext<TWithdrawalForm>();
 
     const onChangeCryptoInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const convertedValue = getConvertedFiatAmount(e.target.value);

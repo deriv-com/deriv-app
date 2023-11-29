@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { platformPasswordResetRedirectLink } from 'src/utils/cfdUtils';
 import { useCountdown } from 'usehooks-ts';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { PlatformDetails } from '../../features/cfd/constants';
@@ -58,18 +59,6 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
 
     const { data: activeWallet } = useActiveWalletAccount();
 
-    let redirectTo: number;
-
-    switch (platform) {
-        case 'mt5':
-            redirectTo = activeWallet?.is_virtual ? 11 : 10;
-            break;
-        case 'dxtrade':
-        default:
-            redirectTo = activeWallet?.is_virtual ? 21 : 20;
-            break;
-    }
-
     return (
         <div className='wallets-sent-email-content'>
             <WalletsActionScreen
@@ -107,7 +96,10 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
                                             ? 'trading_platform_mt5_password_reset'
                                             : 'trading_platform_dxtrade_password_reset',
                                     url_parameters: {
-                                        redirect_to: redirectTo,
+                                        redirect_to: platformPasswordResetRedirectLink(
+                                            platform || 'mt5',
+                                            activeWallet?.is_virtual
+                                        ),
                                     },
                                     verify_email: data?.email,
                                 });

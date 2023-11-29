@@ -4,8 +4,10 @@ import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from 
 import { useModal } from '../../../../components/ModalProvider';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TPlatforms } from '../../../../types';
+import { platformPasswordResetRedirectLink } from '../../../../utils/cfdUtils';
 
 type MT5ChangePasswordScreensProps = {
+    isVirtual?: boolean;
     platform: TPlatforms.All;
     platformTitle: string;
 };
@@ -20,18 +22,6 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
     const { mutate } = useVerifyEmail();
     const { data: activeWallet } = useActiveWalletAccount();
 
-    let redirectTo: number;
-
-    switch (platform) {
-        case 'mt5':
-            redirectTo = activeWallet?.is_virtual ? 11 : 10;
-            break;
-        case 'dxtrade':
-        default:
-            redirectTo = activeWallet?.is_virtual ? 21 : 20;
-            break;
-    }
-
     const handleSendEmail = async () => {
         if (data.email) {
             await mutate({
@@ -40,7 +30,7 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
                         ? 'trading_platform_mt5_password_reset'
                         : 'trading_platform_dxtrade_password_reset',
                 url_parameters: {
-                    redirect_to: redirectTo,
+                    redirect_to: platformPasswordResetRedirectLink(platform, activeWallet?.is_virtual),
                 },
                 verify_email: data.email,
             });

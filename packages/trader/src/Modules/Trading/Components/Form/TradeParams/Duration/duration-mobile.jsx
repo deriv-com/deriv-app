@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
 import { isEmptyObject, addComma, getDurationMinMaxValues, getUnitMap } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -115,7 +114,6 @@ const Numbers = observer(
             duration_unit: trade_duration_unit,
             basis: trade_basis,
             amount: trade_amount,
-            is_vanilla,
             onChangeMultiple,
         } = useTraderStore();
         const { value: duration_unit } = duration_unit_option;
@@ -198,12 +196,8 @@ const Numbers = observer(
 
         return (
             <div className='trade-params__amount-keypad'>
-                <div
-                    className={classNames('text-container', {
-                        'text-container--vanilla': is_vanilla,
-                    })}
-                >
-                    {is_vanilla && <DurationRangeText min={min} max={max} duration_unit_text={duration_unit_text} />}
+                <div className='text-container'>
+                    <DurationRangeText min={min} max={max} duration_unit_text={duration_unit_text} />
                     {show_expiry && <ExpiryText fixed_date={fixed_date} />}
                 </div>
                 <Numpad

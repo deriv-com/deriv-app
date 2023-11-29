@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
 import TradeParamsModal, { LastDigitMobile, BarrierMobile } from '../trade-params-mobile';
 import TraderProviders from '../../../../trader-providers';
 
@@ -11,7 +10,6 @@ const mock_default_props = {
     toggleModal: jest.fn(),
     tab_index: 0,
 };
-
 const default_mock_store = {
     modules: {
         trade: {
@@ -23,11 +21,15 @@ const default_mock_store = {
             duration_units_list: [{ text: '4', value: 'm' }],
             expiry_epoch: '123762300',
             form_components: ['duration', 'amount'],
-            is_vanilla: false,
             is_turbos: false,
         },
     },
 };
+
+const amount_mobile = 'Amount Mobile';
+const amount_error = 'Amount error';
+const duration_mobile = 'Duration Mobile';
+const duration_error = 'Duration error';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -39,10 +41,10 @@ jest.mock('@deriv/components', () => ({
 jest.mock('Modules/Trading/Components/Form/TradeParams/amount-mobile', () =>
     jest.fn(props => (
         <div>
-            <p>AmountMobile</p>
-            <p>{props.amount_tab_idx}</p>
-            <p>{props.stake_value}</p>
-            <p>{props.has_duration_error && 'Duration error'}</p>
+            <div>{amount_mobile}</div>
+            <div>{props.amount_tab_idx}</div>
+            <div>{props.stake_value}</div>
+            <div>{props.has_duration_error && duration_error}</div>
             <button onClick={() => props.setAmountTabIdx(1)}>setAmountTabIdx</button>
             <button onClick={() => props.setSelectedAmount('stake', 20)}>setSelectedAmount</button>
             <button onClick={() => props.setAmountError(true)}>setAmountError</button>
@@ -52,8 +54,8 @@ jest.mock('Modules/Trading/Components/Form/TradeParams/amount-mobile', () =>
 jest.mock('Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile', () =>
     jest.fn(props => (
         <div>
-            <p>DurationMobile</p>
-            <p>{props.has_amount_error && 'Amount error'}</p>
+            <div>{duration_mobile}</div>
+            <div>{props.has_amount_error && amount_error}</div>
             <button onClick={() => props.setDurationError(true)}>setDurationError</button>
         </div>
     ))
@@ -62,122 +64,112 @@ jest.mock('Modules/Trading/Components/Form/TradeParams/last-digit', () => jest.f
 jest.mock('Modules/Trading/Components/Form/TradeParams/barrier', () => jest.fn(() => <div>Barrier</div>));
 
 describe('<TradeParamsModal />', () => {
-    const mockTradeParamsModal = (
-        mocked_store: TCoreStores,
-        mocked_params: React.ComponentProps<typeof TradeParamsModal>
-    ) => {
+    const mockTradeParamsModal = () => {
         return (
-            <TraderProviders store={mocked_store}>
-                <TradeParamsModal {...mocked_params} />
+            <TraderProviders store={mockStore(default_mock_store)}>
+                <TradeParamsModal {...mock_default_props} />
             </TraderProviders>
         );
     };
 
     it('should not render children components if the form_components is an empty array', () => {
         default_mock_store.modules.trade.form_components = [];
-        render(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
+        render(mockTradeParamsModal());
 
-        expect(screen.queryByText('DurationMobile')).not.toBeInTheDocument();
-        expect(screen.queryByText('AmountMobile')).not.toBeInTheDocument();
+        expect(screen.queryByText(duration_mobile)).not.toBeInTheDocument();
+        expect(screen.queryByText(amount_mobile)).not.toBeInTheDocument();
     });
 
     it('should render DurationMobile and AmountMobile component if they are in the form_components array', () => {
         default_mock_store.modules.trade.form_components = ['amount', 'duration'];
-        render(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
+        render(mockTradeParamsModal());
 
-        expect(screen.getByText('DurationMobile')).toBeInTheDocument();
-        expect(screen.getByText('AmountMobile')).toBeInTheDocument();
-    });
-
-    it('should render Modal with specific height if is_vanilla === true', () => {
-        default_mock_store.modules.trade.is_vanilla = true;
-        render(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
-
-        expect(screen.getByTestId('53.8rem')).toBeInTheDocument();
+        expect(screen.getByText(duration_mobile)).toBeInTheDocument();
+        expect(screen.getByText(amount_mobile)).toBeInTheDocument();
     });
 
     it('function setAmountTabIdx call should change amount_tab_idx', () => {
-        const { rerender } = render(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
+        const { rerender } = render(mockTradeParamsModal());
         expect(screen.queryByText('1')).not.toBeInTheDocument();
 
         userEvent.click(screen.getByText('setAmountTabIdx'));
-        rerender(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
+        rerender(mockTradeParamsModal());
 
         expect(screen.getByText('1')).toBeInTheDocument();
     });
 
     it('function setSelectedAmount call should change stake_value', () => {
-        const { rerender } = render(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
+        const { rerender } = render(mockTradeParamsModal());
         expect(screen.getByText('10')).toBeInTheDocument();
 
         userEvent.click(screen.getByText('setSelectedAmount'));
-        rerender(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
+        rerender(mockTradeParamsModal());
 
         expect(screen.getByText('20')).toBeInTheDocument();
     });
 
     it('function setAmountError call should change amount_error', () => {
-        const { rerender } = render(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
-        expect(screen.queryByText('Amount error')).not.toBeInTheDocument();
+        const { rerender } = render(mockTradeParamsModal());
+        expect(screen.queryByText(amount_error)).not.toBeInTheDocument();
 
         userEvent.click(screen.getByText('setAmountError'));
-        rerender(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
+        rerender(mockTradeParamsModal());
 
-        expect(screen.getByText('Amount error')).toBeInTheDocument();
+        expect(screen.getByText(amount_error)).toBeInTheDocument();
     });
 
     it('function setDurationError call should change amount_error', () => {
-        const { rerender } = render(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
-        expect(screen.queryByText('Duration error')).not.toBeInTheDocument();
+        const { rerender } = render(mockTradeParamsModal());
+        expect(screen.queryByText(duration_error)).not.toBeInTheDocument();
 
         userEvent.click(screen.getByText('setDurationError'));
-        rerender(mockTradeParamsModal(mockStore(default_mock_store), mock_default_props));
+        rerender(mockTradeParamsModal());
 
-        expect(screen.getByText('Duration error')).toBeInTheDocument();
+        expect(screen.getByText(duration_error)).toBeInTheDocument();
     });
 });
 
 describe('<LastDigitMobile />', () => {
-    const mockLastDigitMobile = (mocked_store: TCoreStores) => {
+    const mockLastDigitMobile = () => {
         return (
-            <TraderProviders store={mocked_store}>
+            <TraderProviders store={mockStore(default_mock_store)}>
                 <LastDigitMobile />
             </TraderProviders>
         );
     };
 
     it('should not render LastDigit component if it is not in the form_components array', () => {
-        const { container } = render(mockLastDigitMobile(mockStore(default_mock_store)));
+        const { container } = render(mockLastDigitMobile());
 
         expect(container).toBeEmptyDOMElement();
     });
 
     it('should render LastDigit component if it is in the form_components array', () => {
         default_mock_store.modules.trade.form_components = ['last_digit'];
-        render(mockLastDigitMobile(mockStore(default_mock_store)));
+        render(mockLastDigitMobile());
 
         expect(screen.getByText('LastDigit')).toBeInTheDocument();
     });
 });
 
 describe('<BarrierMobile />', () => {
-    const mockLastDigitMobile = (mocked_store: TCoreStores) => {
+    const mockLastDigitMobile = () => {
         return (
-            <TraderProviders store={mocked_store}>
+            <TraderProviders store={mockStore(default_mock_store)}>
                 <BarrierMobile />
             </TraderProviders>
         );
     };
 
     it('should not render BarrierMobile component if it is not in the form_components array', () => {
-        const { container } = render(mockLastDigitMobile(mockStore(default_mock_store)));
+        const { container } = render(mockLastDigitMobile());
 
         expect(container).toBeEmptyDOMElement();
     });
 
     it('should render BarrierMobile component if it is in the form_components array', () => {
         default_mock_store.modules.trade.form_components = ['barrier'];
-        render(mockLastDigitMobile(mockStore(default_mock_store)));
+        render(mockLastDigitMobile());
 
         expect(screen.getByText('Barrier')).toBeInTheDocument();
     });

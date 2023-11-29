@@ -33,7 +33,7 @@ const AdvancedDuration = observer(
     }) => {
         const { ui } = useStore();
         const { current_focus, setCurrentFocus } = ui;
-        const { contract_expiry_type, duration_min_max, is_vanilla, validation_errors } = useTraderStore();
+        const { contract_expiry_type, duration_min_max, validation_errors } = useTraderStore();
 
         const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, advanced_duration_unit);
         let is_24_hours_contract = false;
@@ -115,7 +115,7 @@ const AdvancedDuration = observer(
                                     {...shared_input_props}
                                 />
                             )}
-                            {is_vanilla && (
+                            {advanced_duration_unit !== 't' && (
                                 <DurationRangeText min={min} max={max} duration_unit_text={duration_unit_text} />
                             )}
                             {advanced_duration_unit === 'd' && (

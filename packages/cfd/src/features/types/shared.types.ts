@@ -4,7 +4,11 @@ import { CFD_PLATFORMS, CATEGORY, MARKET_TYPE, MOBILE_PLATFORMS } from 'Helpers/
 
 export type TMobilePlatforms = keyof typeof MOBILE_PLATFORMS;
 
-export type TCFDPlatform = keyof typeof CFD_PLATFORMS;
+type ValueOf<T> = T[keyof T];
+
+export type TCFDPlatform = ValueOf<typeof CFD_PLATFORMS>;
+
+export type TAccountCategory = ValueOf<typeof CATEGORY>;
 
 export type TTokens = {
     demo: string;
@@ -16,8 +20,8 @@ export type TJurisdiction = typeof Jurisdiction[keyof typeof Jurisdiction];
 export type TTradingPlatformAvailableAccount = {
     name: string;
     sub_account_type: string;
-    account_type?: keyof typeof CATEGORY;
-    market_type: keyof typeof MARKET_TYPE;
+    account_type?: TAccountCategory;
+    market_type: ValueOf<typeof MARKET_TYPE>;
     requirements: {
         after_first_deposit: {
             financial_assessment: string[];

@@ -17,7 +17,7 @@ import {
     TModifiedTradingPlatformAvailableAccount,
 } from './components.types';
 import RootStore from 'Stores/index';
-import { TCFDPlatform, TTradingPlatformAvailableAccount, TTokens } from './shared.types';
+import { TCFDPlatform, TTradingPlatformAvailableAccount, TTokens, TAccountCategory } from './shared.types';
 import { CATEGORY } from 'Helpers/cfd-config';
 
 type TCFDPasswordFormValues = { password: string };
@@ -26,6 +26,7 @@ export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;
 };
 
+// cfd-change-password-confirmation
 export type TCFDChangePasswordConfirmationProps = {
     platform: string;
     className?: string;
@@ -114,7 +115,7 @@ export type TCountdownComponent = {
 
 export type TCFDPasswordReset = {
     server: string;
-    account_type: string;
+    account_type: TAccountCategory;
     password_type: string;
     account_group: 'demo' | 'real' | '';
     sendVerifyEmail: () => Promise<VerifyEmailResponse>;
@@ -136,19 +137,21 @@ export type TCFDPasswordManagerTabContent = {
     multi_step_ref: React.MutableRefObject<TMultiStepRefProps | undefined>;
 };
 
+// cfd-password-manager-modal
 export type TCFDPasswordManagerModal = {
     is_visible: boolean;
     platform: TCFDPlatform;
     selected_login: string;
     toggleModal: () => void;
     selected_server: string;
-    selected_account_type: string;
+    selected_account_type: TAccountCategory;
     selected_account_group: TCFDPasswordReset['account_group'];
 };
 
+// juriscdiction-modal
 export type TJurisdictionCardProps = {
     disabled: boolean;
-    account_type: string;
+    account_type: TAccountCategory;
     is_non_idv_design: boolean;
     account_status: GetAccountStatus;
     type_of_card: TJurisdictionCardType;
@@ -196,7 +199,7 @@ export type TJurisdictionCardType = DetailsOfEachMT5Loginid['landing_company_sho
 
 export type TVerificationStatusBannerProps = {
     disabled: boolean;
-    account_type: string;
+    account_type: TAccountCategory;
     type_of_card: string;
     card_classname: string;
     residence_list: ResidenceList;
@@ -232,7 +235,7 @@ export type TJurisdictionModalProps = {
 
 export type TJurisdictionModalContentProps = {
     is_virtual: boolean;
-    account_type: string;
+    account_type: TAccountCategory;
     is_non_idv_design: boolean;
     account_status: GetAccountStatus;
     jurisdiction_selected_shortcode: string;
@@ -247,7 +250,7 @@ export type TJurisdictionModalContentProps = {
 };
 
 export type TJurisdictionModalTitleProps = {
-    account_type: string;
+    account_type: TAccountCategory;
     platform: TCFDPlatform;
     show_eu_related_content: boolean;
 };
@@ -255,7 +258,7 @@ export type TJurisdictionModalTitleProps = {
 type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
 
 export type TJurisdictionModalFootNoteProps = {
-    account_type: string;
+    account_type: TAccountCategory;
     card_classname: string;
     account_status: TAccountStatus;
     jurisdiction_selected_shortcode: string;
@@ -329,6 +332,7 @@ export type TCFDDbviOnboardingProps = {
     has_created_account_for_selected_jurisdiction: boolean;
 };
 
+// dynamic-leverage
 type TDynamicLeverage = {
     to: number;
     from: number;

@@ -4,7 +4,7 @@ import { TCoreStores } from '@deriv/stores/types';
 import { ResidenceList, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { MARKET_TYPE } from 'Helpers/cfd-config';
 import { TCFDPasswordReset } from './containers.types';
-import { TCFDPlatform, TTokens, TTradingPlatformAvailableAccount } from './shared.types';
+import { TCFDPlatform, TTokens, TTradingPlatformAvailableAccount, TAccountCategory } from './shared.types';
 
 type TOnSubmit = (
     index: number,
@@ -143,6 +143,7 @@ export type TDxtradeDesktopDownloadProps = {
 
 export type TAccountIconValues = { [key: string]: string };
 
+// password-box
 export type TPasswordBoxProps = {
     platform: string;
     onClick: () => void;
@@ -159,6 +160,7 @@ type TOpenAccountTransferMeta = {
     category: string;
 };
 
+// cfd-account-card
 export type TCFDAccountCardActionProps = {
     type: TType;
     title: string;
@@ -293,7 +295,7 @@ export type TTradingPlatformAccounts = {
     /**
      * Account type.
      */
-    account_type?: 'demo' | 'real';
+    account_type?: TAccountCategory;
     /**
      * Balance of the DXTrade account.
      */

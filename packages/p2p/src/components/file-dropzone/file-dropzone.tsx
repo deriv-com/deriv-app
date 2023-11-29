@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import Dropzone, { DropzoneRef } from 'react-dropzone';
 import { Text } from '@deriv/components';
-import { TFileDropzone } from 'Types/file-dropzone.types';
+import { TFileDropzone } from 'Types';
 import { truncateFileName } from 'Utils/file-uploader';
 import FadeInMessage from './fade-in-message';
 import PreviewSingle from './preview-single';

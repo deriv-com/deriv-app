@@ -39,7 +39,6 @@ const DummyComponent = props => (
 | zIndex                        | {number}               | null    | Z-index for popover container                                                                                                                |
 | relative_render               | {boolean}              | null    | Set it true if you want to have popover dom next to the wrapped element                                                                      |
 | should_disable_pointer_events | {boolean}              | null    | Set it true if you want to disable all events of popover container                                                                           |
-| window_border                 | {number}               | null    | Distance between popover on window sides                                                                                                     |
 | onBubbleOpen                  | {function}             | null    |                                                                                                                                              |
 | onBubbleClose                 | {function}             | null    |                                                                                                                                              |
 

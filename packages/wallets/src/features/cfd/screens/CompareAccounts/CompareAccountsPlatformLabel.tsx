@@ -1,12 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import { WalletText } from '../../../../components';
+import { TPlatforms } from '../../../../types';
 import { getPlatformType } from './compareAccountsConfig';
-import { CFD_PLATFORMS, headerColor, platformLabel } from './constants';
+import { headerColor, platformLabel } from './constants';
 import './CompareAccountsPlatformLabel.scss';
 
 type TCompareAccountsPlatformLabel = {
-    platform: typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
+    platform: TPlatforms.All;
 };
 
 const CompareAccountsPlatformLabel = ({ platform }: TCompareAccountsPlatformLabel) => {

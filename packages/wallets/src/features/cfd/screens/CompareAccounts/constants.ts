@@ -13,8 +13,7 @@ export const MARKET_TYPE = {
     SYNTHETIC: 'synthetic',
 } as const;
 
-// Get the Account Icons based on the market type
-export const accountIcon = {
+export const ACCOUNT_ICONS = {
     [MARKET_TYPE.SYNTHETIC]: 'Derived',
     [MARKET_TYPE.FINANCIAL]: 'Financial',
     [MARKET_TYPE.ALL]: 'SwapFree',
@@ -43,11 +42,6 @@ export const JURISDICTION = {
     MALTA_INVEST: 'maltainvest',
     SVG: 'svg',
     VANUATU: 'vanuatu',
-} as const;
-
-export const REGION = {
-    EU: 'EU',
-    NON_EU: 'Non-EU',
 } as const;
 
 export const platformLabel = {

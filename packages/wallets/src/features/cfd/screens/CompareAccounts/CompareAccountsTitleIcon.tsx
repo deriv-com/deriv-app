@@ -2,41 +2,31 @@ import React, { useRef } from 'react';
 import { useHover } from 'usehooks-ts';
 import { Tooltip, WalletText } from '../../../../components';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
-import TradingPlatformIcons from '../../../../public/images/tradingPlatforms';
-import { CFD_PLATFORMS, MARKET_TYPE, MARKET_TYPE_SHORTCODE } from './constants';
+import { THooks, TPlatforms } from '../../../../types';
+import { ACCOUNT_ICONS, CFD_PLATFORMS, MARKET_TYPE_SHORTCODE } from './constants';
+import TradingPlatformIcons from './tradingPlatformIcons';
 import './CompareAccountsTitleIcon.scss';
 
-type TPlatforms = typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
-// type TShortCode = 'bvi' | 'labuan' | 'maltainvest' | 'svg' | 'vanuatu';
-type TMarketType = typeof MARKET_TYPE[keyof typeof MARKET_TYPE];
+type TMarketType = THooks.AvailableMT5Accounts['market_type'];
 
 type TCompareAccountsTitleIcon = {
     isDemo: boolean;
     isEuUser: boolean;
     marketType: TMarketType;
-    platform: TPlatforms;
-    shortCode: string;
+    platform: TPlatforms.All;
+    shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const accountIcon = {
-    [MARKET_TYPE.SYNTHETIC]: 'Derived',
-    [MARKET_TYPE.FINANCIAL]: 'Financial',
-    [MARKET_TYPE.ALL]: 'SwapFree',
-    [CFD_PLATFORMS.DXTRADE]: 'DerivX',
-    [CFD_PLATFORMS.CTRADER]: 'CTrader',
-    default: 'CFDs',
-} as const;
-
-const getAccountIcon = (platform: TPlatforms, marketType: TMarketType) => {
+const getAccountIcon = (platform: TPlatforms.All, marketType: TMarketType) => {
     if (platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER) {
-        return accountIcon[platform];
+        return ACCOUNT_ICONS[platform];
     }
-    return (marketType && accountIcon[marketType]) || accountIcon.default;
+    return (marketType && ACCOUNT_ICONS[marketType]) || ACCOUNT_ICONS.default;
 };
 
 type TMarketWithShortCode = `${TMarketType}_${string}`;
 
-const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms, isDemo?: boolean) => {
+const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherAccounts, isDemo?: boolean) => {
     switch (shortCode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
             return isDemo ? 'Derived Demo' : 'Derived - SVG';
@@ -63,9 +53,7 @@ const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms, isDem
     }
 };
 
-const CompareAccountsTitleIcon = ({ isDemo, isEuUser, marketType, platform, shortCode }: TCompareAccountsTitleIcon) => {
-    // const marketType = !isEuUser ? tradingPlatform.market_type : 'CFDs';
-    // const marketTypeShortCode = marketType.concat('_', shortCode);
+const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: TCompareAccountsTitleIcon) => {
     const marketTypeShortCode: TMarketWithShortCode = `${marketType}_${shortCode}`;
     const jurisdictionCardIcon = getAccountIcon(platform, marketType);
 

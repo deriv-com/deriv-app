@@ -1,6 +1,6 @@
 import InstrumentsIcons from '../../../../public/images/tradingInstruments';
-import { THooks } from '../../../../types';
-import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, MARKET_TYPE_SHORTCODE, REGION } from './constants';
+import { THooks, TPlatforms } from '../../../../types';
+import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, MARKET_TYPE_SHORTCODE } from './constants';
 
 type THighlightedIconLabel = {
     highlighted: boolean;
@@ -9,19 +9,19 @@ type THighlightedIconLabel = {
     text: string;
 };
 
-type TMarketTypes = typeof MARKET_TYPE[keyof typeof MARKET_TYPE];
-type TPlatforms = typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
+type TMarketTypes = THooks.AvailableMT5Accounts['market_type'];
+type TShortCode = THooks.AvailableMT5Accounts['shortcode'];
 
 const getHighlightedIconLabel = (
-    platform: TPlatforms,
-    marketType?: TMarketTypes,
-    shortCode?: string,
-    selectedRegion?: string
+    platform: TPlatforms.All,
+    isEuUser: boolean,
+    marketType: TMarketTypes,
+    shortCode: TShortCode
 ): THighlightedIconLabel[] => {
     const marketTypeShortCode = marketType?.concat('_', shortCode || '');
 
     const forexLabel = (() => {
-        if (selectedRegion === REGION.EU) {
+        if (isEuUser) {
             return 'Forex';
         } else if (marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN) {
             return 'Forex: standard/exotic';
@@ -112,19 +112,17 @@ const getHighlightedIconLabel = (
     }
 };
 
-const getPlatformType = (platform: TPlatforms) => {
+const getPlatformType = (platform: TPlatforms.All) => {
     switch (platform) {
+        case CFD_PLATFORMS.MT5:
+            return 'MT5';
         case CFD_PLATFORMS.DXTRADE:
         case CFD_PLATFORMS.CTRADER:
-        case CFD_PLATFORMS.CFDS:
-            return 'OtherCFDs';
-        case CFD_PLATFORMS.MT5:
         default:
-            return 'MT5';
+            return 'OtherCFDs';
     }
 };
 
-// Config for different Jurisdictions
 const cfdConfig = {
     counterparty_company: 'Deriv (SVG) LLC',
     counterparty_company_description: 'Counterparty company',
@@ -139,8 +137,7 @@ const cfdConfig = {
     spread_description: 'Spreads from',
 };
 
-// Map the Jurisdictions with the config
-const getJurisdictionDescription = (shortcode: string) => {
+const getJurisdictionDescription = (shortcode?: string) => {
     switch (shortcode) {
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
         case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
@@ -182,7 +179,6 @@ const getJurisdictionDescription = (shortcode: string) => {
                 regulator_description: '',
                 regulator_license: 'Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)',
             };
-        // Dxtrade
         case MARKET_TYPE_SHORTCODE.ALL_DXTRADE:
         case MARKET_TYPE_SHORTCODE.ALL_SVG:
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
@@ -223,7 +219,7 @@ const shouldRestrictVanuatuAccountCreation = (mt5Accounts: THooks.MT5AccountsLis
     !!mt5Accounts.filter(item => item?.landing_company_short === 'vanuatu' && item?.status === 'poa_failed').length;
 
 const getAccountVerificationStatus = (
-    shortCode: string,
+    shortCode: THooks.AvailableMT5Accounts['shortcode'],
     shouldRestrictBviAccountCreation: boolean,
     shouldRestrictVanuatuAccountCreation: boolean,
     hasSubmittedPersonalDetails: boolean,

@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useAuthentication, useCreateOtherCFDAccount, useMT5AccountsList, useSettings } from '@deriv/api';
 import { WalletButton } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
+import { THooks, TPlatforms } from '../../../../types';
 import { Verification } from '../../flows/Verification';
 import { DxtradeEnterPasswordModal, MT5PasswordModal } from '../../modals';
 import {
@@ -16,9 +17,9 @@ import './CompareAccountsButton.scss';
 type TCompareAccountButton = {
     isAccountAdded: boolean;
     isDemo: boolean;
-    marketType: typeof MARKET_TYPE[keyof typeof MARKET_TYPE];
-    platform: typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
-    shortCode: string;
+    marketType: THooks.AvailableMT5Accounts['market_type'];
+    platform: TPlatforms.All;
+    shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
 const CompareAccountsButton = ({ isAccountAdded, isDemo, marketType, platform, shortCode }: TCompareAccountButton) => {
@@ -68,7 +69,7 @@ const CompareAccountsButton = ({ isAccountAdded, isDemo, marketType, platform, s
     const onClickAdd = () => {
         if (platform === CFD_PLATFORMS.MT5) {
             if (isAccountStatusVerified) {
-                show(<MT5PasswordModal marketType={marketType} platform={platform} />);
+                show(<MT5PasswordModal marketType={marketType ?? 'synthetic'} platform={platform} />);
             } else {
                 show(<Verification selectedJurisdiction={shortCode} />);
             }
@@ -78,8 +79,8 @@ const CompareAccountsButton = ({ isAccountAdded, isDemo, marketType, platform, s
             createAccount({
                 payload: {
                     account_type: isDemo ? 'demo' : 'real',
-                    market_type: 'all',
-                    platform: 'ctrader',
+                    market_type: MARKET_TYPE.ALL,
+                    platform: CFD_PLATFORMS.CTRADER,
                 },
             });
         }

@@ -8,15 +8,15 @@ import { WalletsListingRoute } from './WalletsListingRoute';
 
 const prefix = '/wallets';
 
-type TRoutes =
-    | `${typeof prefix}/cashier/deposit`
-    | `${typeof prefix}/cashier/reset-balance`
-    | `${typeof prefix}/cashier/transactions`
-    | `${typeof prefix}/cashier/transfer`
-    | `${typeof prefix}/cashier/withdraw`
-    | `${typeof prefix}/cashier`
-    | `${typeof prefix}/compare-accounts`
-    | `${typeof prefix}`;
+type TRoutes = `${typeof prefix}${
+    | ''
+    | '/cashier'
+    | '/cashier/deposit'
+    | '/cashier/reset-balance'
+    | '/cashier/transaction'
+    | '/cashier/transfer'
+    | '/cashier/withdraw'
+    | '/compare-account'}`;
 
 declare module 'react-router-dom' {
     export function useHistory(): { push: (path: TRoutes | string) => void };

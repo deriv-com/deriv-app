@@ -37,16 +37,9 @@
         }
 
         &__card-list {
-            padding: 2rem;
-        }
-
-        &__card-count {
             display: flex;
             justify-content: center;
-            margin-left: 13rem;
-            &--mobile {
-                margin-left: 10.5rem;
-            }
+            padding: 2rem;
         }
     }
 

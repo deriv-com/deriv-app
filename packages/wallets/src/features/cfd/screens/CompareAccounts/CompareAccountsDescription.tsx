@@ -1,23 +1,20 @@
 import React from 'react';
 import classNames from 'classnames';
 import { WalletText } from '../../../../components';
+import { THooks } from '../../../../types';
 import { getJurisdictionDescription } from './compareAccountsConfig';
-import { MARKET_TYPE, REGION } from './constants';
 import './CompareAccountsDescription.scss';
 
 type TCompareAccountsDescription = {
     isDemo: boolean;
-    marketType: typeof MARKET_TYPE[keyof typeof MARKET_TYPE];
-    shortCode: string;
+    isEuUser: boolean;
+    marketType: THooks.AvailableMT5Accounts['market_type'];
+    shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const CompareAccountsDescription = ({ isDemo, marketType, shortCode }: TCompareAccountsDescription) => {
-    const marketTypeShortCode = marketType.concat('_', shortCode);
-    const jurisdictionData = getJurisdictionDescription(marketTypeShortCode);
-    // const { traders_hub } = useStore();
-    // const { selectedRegion } = traders_hub;
-
-    const selectedRegion = 'Non-EU';
+const CompareAccountsDescription = ({ isDemo, isEuUser, marketType, shortCode }: TCompareAccountsDescription) => {
+    const marketTypeShortCode = marketType?.concat('_', shortCode ?? '');
+    const jurisdictionData = getJurisdictionDescription(marketTypeShortCode ?? '');
 
     return (
         <div
@@ -30,10 +27,10 @@ const CompareAccountsDescription = ({ isDemo, marketType, shortCode }: TCompareA
                     {'Up to'} {jurisdictionData.leverage}
                 </WalletText>
                 <WalletText align='center' as='p' size='2xs'>
-                    {selectedRegion === REGION.NON_EU ? jurisdictionData.leverage_description : 'Leverage'}
+                    {!isEuUser ? jurisdictionData.leverage_description : 'Leverage'}
                 </WalletText>
             </div>
-            {selectedRegion === REGION.NON_EU && (
+            {!isEuUser && (
                 <div className='wallets-compare-accounts-text-container__separator'>
                     <WalletText align='center' as='h1' size='xl' weight='bold'>
                         {jurisdictionData.spread}

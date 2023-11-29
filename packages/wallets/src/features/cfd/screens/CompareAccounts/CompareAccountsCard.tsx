@@ -1,6 +1,6 @@
 import React from 'react';
 import { WalletText } from '../../../../components';
-import { THooks } from '../../../../types';
+import { THooks, TPlatforms } from '../../../../types';
 import CompareAccountsButton from './CompareAccountsButton';
 import CompareAccountsDescription from './CompareAccountsDescription';
 import CompareAccountsPlatformLabel from './CompareAccountsPlatformLabel';
@@ -14,7 +14,7 @@ type TCompareAccountsCard = {
     isDemo: boolean;
     isEuUser: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
-    platform: typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
+    platform: TPlatforms.All;
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
@@ -30,7 +30,7 @@ const CompareAccountsCard = ({
         <div className='wallets-compare-accounts-main-container'>
             <div className='wallets-compare-accounts-card-container'>
                 <CompareAccountsPlatformLabel platform={platform} />
-                {(platform === CFD_PLATFORMS.DERIVEZ || platform === CFD_PLATFORMS.CTRADER) && (
+                {platform === CFD_PLATFORMS.CTRADER && (
                     <div className='compare-cfd-account-card-container__banner'>
                         <WalletText size='xs' weight='bold'>
                             New!
@@ -40,16 +40,21 @@ const CompareAccountsCard = ({
                 <CompareAccountsTitleIcon
                     isDemo={isDemo}
                     isEuUser={isEuUser}
-                    marketType={marketType!}
+                    marketType={marketType}
                     platform={platform}
-                    shortCode={shortCode!}
+                    shortCode={shortCode}
                 />
-                <CompareAccountsDescription isDemo={isDemo} marketType={marketType!} shortCode={shortCode!} />
-                <InstrumentsLabelHighlighted
+                <CompareAccountsDescription
                     isDemo={isDemo}
-                    marketType={marketType!}
+                    isEuUser={isEuUser}
+                    marketType={marketType}
+                    shortCode={shortCode}
+                />
+                <InstrumentsLabelHighlighted
+                    isEuUser={isEuUser}
+                    marketType={marketType}
                     platform={platform}
-                    shortCode={shortCode!}
+                    shortCode={shortCode}
                 />
                 {isEuUser && (
                     <div className='compare-cfd-account-card-container__eu-clients'>
@@ -61,9 +66,9 @@ const CompareAccountsCard = ({
                 <CompareAccountsButton
                     isAccountAdded={isAccountAdded}
                     isDemo={isDemo}
-                    marketType={marketType!}
+                    marketType={marketType}
                     platform={platform}
-                    shortCode={shortCode!}
+                    shortCode={shortCode}
                 />
             </div>
         </div>

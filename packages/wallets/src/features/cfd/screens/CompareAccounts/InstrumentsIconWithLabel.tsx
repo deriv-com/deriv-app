@@ -4,18 +4,17 @@ import InstrumentsIcons from '../../../../public/images/tradingInstruments';
 import './InstrumentsIconWithLabel.scss';
 
 type TInstrumentsIcon = {
-    className: string;
     highlighted: boolean;
     icon: keyof typeof InstrumentsIcons;
     isAsterisk?: boolean;
     text: string;
 };
 
-const InstrumentsIconWithLabel = ({ className, highlighted, icon, isAsterisk, text }: TInstrumentsIcon) => {
+const InstrumentsIconWithLabel = ({ highlighted, icon, isAsterisk, text }: TInstrumentsIcon) => {
     const InstrumentIcon = InstrumentsIcons[icon];
     return (
         <div
-            className={className}
+            className='wallets-compare-accounts-instrument-icon'
             data-testid='dt_instruments_icon_container'
             style={{
                 opacity: highlighted ? '' : '0.2',
@@ -27,15 +26,7 @@ const InstrumentsIconWithLabel = ({ className, highlighted, icon, isAsterisk, te
                     {text}
                 </WalletText>
             </div>
-            {/* TODO: isAsterisk not needed in style block  */}
-            {isAsterisk && (
-                <span
-                    className='wallets-compare-accounts-trading-instruments__span'
-                    style={{ display: isAsterisk ? 'block' : 'none' }}
-                >
-                    *
-                </span>
-            )}
+            {isAsterisk && <span className='wallets-compare-accounts-trading-instruments__span'>*</span>}
         </div>
     );
 };

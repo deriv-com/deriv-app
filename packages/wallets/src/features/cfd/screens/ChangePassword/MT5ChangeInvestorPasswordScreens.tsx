@@ -1,5 +1,5 @@
-import React, { ErrorInfo, useEffect, useState } from 'react';
-import { Field, FieldProps, Form, Formik } from 'formik';
+import React, { useState } from 'react';
+import { Formik } from 'formik';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
 import {
     SentEmailContent,
@@ -14,18 +14,18 @@ import MT5PasswordUpdatedIcon from '../../../../public/images/ic-mt5-password-up
 import { validPassword } from '../../../../utils/passwordUtils';
 
 type TChangeInvestorPasswordScreenIndex = 'emailVerification' | 'introScreen' | 'savedScreen';
-// type TFormValues = Record<'new_password' | 'old_password', string>;
+type TFormInitialValues = {
+    currentPassword: string;
+    newPassword: string;
+};
 
 const MT5ChangeInvestorPasswordScreens = () => {
-    const [currentInvestorPassword, setCurrentInvestorPassword] = useState('');
-    const [newInvestorPassword, setNewInvestorPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
-
     const [activeScreen, setActiveScreen] = useState<TChangeInvestorPasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangeInvestorPasswordScreenIndex) => setActiveScreen(nextScreen);
 
     const { isMobile } = useDevice();
-    const { hide } = useModal();
+    const { getModalState, hide } = useModal();
+    const mt5AccountId = getModalState('accountId') || '';
 
     const {
         error: changeInvestorPasswordError,
@@ -33,35 +33,17 @@ const MT5ChangeInvestorPasswordScreens = () => {
         status: changeInvestorPasswordStatus,
     } = useTradingPlatformInvestorPasswordChange();
 
-    // console.log('changeInvestorPasswordError = ', changeInvestorPasswordError);
-    // console.log('changeInvestorPasswordStatus = ', changeInvestorPasswordStatus);
+    const initialValues: TFormInitialValues = { currentPassword: '', newPassword: '' };
 
-    const initialValues = { currentPassword: '', newPassword: '' };
-
-    const onSubmitHandler = () => {};
-
-    const onChangeButtonClickHandler = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        event.preventDefault();
-
-        // try {
-        setErrorMessage('');
+    const onChangeButtonClickHandler = async (values: TFormInitialValues) => {
         await changeInvestorPassword({
-            account_id: 'MT2142',
-            new_password: newInvestorPassword,
-            old_password: currentInvestorPassword,
+            account_id: mt5AccountId,
+            new_password: values.newPassword,
+            old_password: values.currentPassword,
             platform: 'mt5',
         });
         handleClick('savedScreen');
-        // } catch (error) {
-        //     console.log('error = ', error, ', changeInvestorPasswordError = ', changeInvestorPasswordError);
-        //     setErrorMessage(error.error?.message);
-        // }
     };
-
-    // useEffect(() => {
-    //     if (changeInvestorPasswordError) setErrorMessage(changeInvestorPasswordError?.error?.message);
-    //     else setErrorMessage('');
-    // }, [changeInvestorPasswordError]);
 
     const ChangeInvestorPasswordScreens = {
         introScreen: {
@@ -75,49 +57,54 @@ const MT5ChangeInvestorPasswordScreens = () => {
                         If this is the first time you try to create a password, or you have forgotten your password,
                         please reset it.
                     </WalletText>
-                    {errorMessage && (
+                    {changeInvestorPasswordError && (
                         <WalletText align='center' color='error' size='sm'>
-                            {/* {changeInvestorPasswordError?.error?.message} */}
-                            {errorMessage}
+                            {changeInvestorPasswordError?.error?.message}
                         </WalletText>
                     )}
                 </>
             ),
             button: (
-                <form className='wallets-change-password__investor-password'>
-                    <div className='wallets-change-password__investor-password-fields'>
-                        <WalletPasswordField
-                            autoComplete='new-password'
-                            label='Current investor password'
-                            name='currentPassword'
-                            onChange={e => setCurrentInvestorPassword(e.target.value)}
-                            password={currentInvestorPassword}
-                        />
-                        <WalletPasswordField
-                            autoComplete='new-password'
-                            label='New investor password'
-                            name='newPassword'
-                            onChange={e => setNewInvestorPassword(e.target.value)}
-                            password={newInvestorPassword}
-                        />
-                        <input autoComplete='username' hidden name='username' type='text' />
-                    </div>
-                    <div className='wallets-change-password__investor-password-buttons'>
-                        <WalletButton
-                            disabled={!validPassword(newInvestorPassword) || !validPassword(newInvestorPassword)}
-                            isLoading={changeInvestorPasswordStatus === 'loading'}
-                            onClick={onChangeButtonClickHandler}
-                            size={isMobile ? 'lg' : 'md'}
-                            text='Change investor password'
-                        />
-                        <WalletButton
-                            onClick={() => handleClick('emailVerification')}
-                            size={isMobile ? 'lg' : 'md'}
-                            text='Create or reset investor password'
-                            variant='ghost'
-                        />
-                    </div>
-                </form>
+                <Formik initialValues={initialValues} onSubmit={onChangeButtonClickHandler}>
+                    {({ handleChange, handleSubmit, values }) => (
+                        <form className='wallets-change-password__investor-password' onSubmit={handleSubmit}>
+                            <div className='wallets-change-password__investor-password-fields'>
+                                <WalletPasswordField
+                                    autoComplete='current-password'
+                                    label='Current investor password'
+                                    name='currentPassword'
+                                    onChange={handleChange}
+                                    password={values.currentPassword}
+                                />
+                                <WalletPasswordField
+                                    autoComplete='new-password'
+                                    label='New investor password'
+                                    name='newPassword'
+                                    onChange={handleChange}
+                                    password={values.newPassword}
+                                />
+                                <input autoComplete='username' hidden name='username' type='text' />
+                            </div>
+                            <div className='wallets-change-password__investor-password-buttons'>
+                                <WalletButton
+                                    disabled={
+                                        !validPassword(values.currentPassword) || !validPassword(values.newPassword)
+                                    }
+                                    isLoading={changeInvestorPasswordStatus === 'loading'}
+                                    size={isMobile ? 'lg' : 'md'}
+                                    text='Change investor password'
+                                    type='submit'
+                                />
+                                <WalletButton
+                                    onClick={() => handleClick('emailVerification')}
+                                    size={isMobile ? 'lg' : 'md'}
+                                    text='Create or reset investor password'
+                                    variant='ghost'
+                                />
+                            </div>
+                        </form>
+                    )}
+                </Formik>
             ),
             headingText: undefined,
             icon: undefined,

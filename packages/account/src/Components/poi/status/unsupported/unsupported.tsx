@@ -1,8 +1,6 @@
 import React from 'react';
-import classNames from 'classnames';
-import { localize } from '@deriv/translations';
-import { Timeline } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { Button, Text } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import { identity_status_codes } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 import DetailComponent from './detail-component';
 import { Documents } from './documents';
@@ -12,6 +10,7 @@ import { FormikValues } from 'formik';
 import Verified from '../verified';
 import Limited from '../limited';
 import Expired from '../expired';
+import FormFooter from '../../../form-footer';
 
 const checkNimcStep = (documents: FormikValues) => {
     let has_nimc = false;
@@ -31,6 +30,7 @@ type TUnsupported = {
     };
     redirect_button: React.ReactElement;
     needs_poa: boolean;
+    handleBack: () => void;
     handleRequireSubmission: () => void;
     handleViewComplete: () => void;
     allow_poi_resubmission: boolean;
@@ -45,12 +45,13 @@ const Unsupported = ({
     manual,
     redirect_button,
     needs_poa,
+    handleBack,
     handleRequireSubmission,
     allow_poi_resubmission,
     handleViewComplete,
     onfido,
     ...props
-}: Partial<TUnsupported>) => {
+}: TUnsupported) => {
     const [detail, setDetail] = React.useState<number | null>(null);
     const toggleDetail = (index: number) => setDetail(index);
 
@@ -61,7 +62,9 @@ const Unsupported = ({
     if (manual) {
         if (manual.status === identity_status_codes.pending)
             return <UploadComplete is_manual_upload needs_poa={needs_poa} redirect_button={redirect_button} />;
-        else if ([identity_status_codes.rejected, identity_status_codes.suspected].includes(manual.status)) {
+        else if (
+            [identity_status_codes.rejected, identity_status_codes.suspected].some(status => status === manual.status)
+        ) {
             if (!allow_poi_resubmission) return <Limited />;
         } else if (manual.status === identity_status_codes.verified) {
             return <Verified needs_poa={needs_poa} redirect_button={redirect_button} />;
@@ -91,19 +94,17 @@ const Unsupported = ({
     }
 
     return (
-        <Timeline
-            className={classNames('manual-poi', {
-                'manual-poi--mobile': isMobile(),
-            })}
-            disabled_items={[2]}
-        >
-            <Timeline.Item item_title={localize('Please upload one of the following documents:')}>
-                <Documents documents={documents} toggleDetail={toggleDetail} />
-            </Timeline.Item>
-            <Timeline.Item item_title={localize('Upload your selfie')}>
-                <div />
-            </Timeline.Item>
-        </Timeline>
+        <div className='manual-poi'>
+            <Text as='h2' color='prominent' size='xs'>
+                <Localize i18n_default_text='Please upload one of the following documents:' />
+            </Text>
+            <Documents documents={documents} toggleDetail={toggleDetail} />
+            <FormFooter className='proof-of-identity__footer'>
+                <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
+                    <Localize i18n_default_text='Back' />
+                </Button>
+            </FormFooter>
+        </div>
     );
 };
 export default Unsupported;

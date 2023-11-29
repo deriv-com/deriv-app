@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import useAccountsList from './useAccountsList';
+import useDerivAccountsList from './useDerivAccountsList';
 
 /** A custom hook that gets the list of all trading accounts for the current user. */
 const useTradingAccountsList = () => {
-    const { data: account_list_data, ...rest } = useAccountsList();
+    const { data: account_list_data, ...rest } = useDerivAccountsList();
 
     // Filter out non-trading accounts.
     const filtered_accounts = useMemo(

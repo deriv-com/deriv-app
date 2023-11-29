@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { Text, StaticUrl } from '@deriv/components';
-import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
+import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction, MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import AddOptionsAccount from 'Components/add-options-account';
@@ -80,14 +80,14 @@ const CFDsListing = observer(() => {
                             current_acc_status === 'proof_failed',
                         ])
                     ) {
-                        return 'failed';
+                        return MT5_ACCOUNT_STATUS.FAILED;
                     } else if (
                         getAuthStatus([
                             poi_pending_for_bvi_labuan_vanuatu,
                             current_acc_status === 'verification_pending',
                         ])
                     ) {
-                        return 'pending';
+                        return MT5_ACCOUNT_STATUS.PENDING;
                     }
                     return null;
                 }
@@ -100,26 +100,30 @@ const CFDsListing = observer(() => {
                             current_acc_status === 'proof_failed',
                         ])
                     ) {
-                        return 'failed';
+                        return MT5_ACCOUNT_STATUS.FAILED;
                     } else if (
                         getAuthStatus([
                             poi_pending_for_bvi_labuan_vanuatu,
                             current_acc_status === 'verification_pending',
                         ])
                     ) {
-                        return 'pending';
+                        return MT5_ACCOUNT_STATUS.PENDING;
                     }
                     return null;
                 }
                 default:
                     if (current_acc_status === 'proof_failed') {
-                        return 'failed';
+                        return MT5_ACCOUNT_STATUS.FAILED;
                     } else if (current_acc_status === 'verification_pending') {
-                        return 'pending';
+                        return MT5_ACCOUNT_STATUS.PENDING;
                     } else if (current_acc_status === 'needs_verification') {
-                        return 'needs_verification';
+                        return MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
+                    } else if (current_acc_status === 'migrated_with_position') {
+                        return MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;
+                    } else if (current_acc_status === 'migrated_without_position') {
+                        return MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
                     }
-                    return current_acc_status;
+                    return null;
             }
         }
         return null;

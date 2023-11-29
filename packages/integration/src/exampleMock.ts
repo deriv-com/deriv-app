@@ -11,12 +11,13 @@ async function main() {
         accounts: DEFAULT_ACCOUNTS,
     };
 
-    const url = generateOauthLoginFromAccounts('https://localhost:8443', state.accounts);
+    const oauthLoginUrl = generateOauthLoginFromAccounts('https://localhost:8443', state.accounts);
+    const query = Object.fromEntries(oauthLoginUrl.searchParams);
 
     // eslint-disable-next-line no-console
-    console.log(`You can login at:\n${url}`);
+    console.log(`You can login at:\n${oauthLoginUrl}`);
 
-    await createMockServer(state, {}, [general, auth, residentsList, statesList], { port: 10443 });
+    await createMockServer(state, query, [general, auth, residentsList, statesList], { port: 10443 });
     process.stdout.write('Listening on localhost:10443');
 }
 

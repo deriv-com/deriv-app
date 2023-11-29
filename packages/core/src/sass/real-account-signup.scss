@@ -203,6 +203,8 @@
             justify-content: end;
             display: flex;
             border-top: 1px solid var(--general-section-1);
+            max-width: initial;
+
             @include mobile {
                 width: 100%;
                 position: relative;

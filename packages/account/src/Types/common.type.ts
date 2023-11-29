@@ -168,7 +168,7 @@ export type TFile = File & { file: Blob };
 
 export type TPaymentMethod = keyof ReturnType<typeof getPaymentMethodsConfig>;
 
-export type TProofOfOwnershipFormValue = Record<TPaymentMethod, Array<TProofOfOwnershipData>>;
+export type TProofOfOwnershipFormValue = Record<TPaymentMethod, Record<number | string, TProofOfOwnershipData>>;
 
 export type TProofOfOwnershipData = {
     documents_required: number;
@@ -178,5 +178,10 @@ export type TProofOfOwnershipData = {
     files: Array<TFile>;
     payment_method_identifier: string;
 };
+
+export type TProofOfOwnershipErrors = Record<
+    TPaymentMethod,
+    Array<{ payment_method_identifier?: string; files?: Array<string> }>
+>;
 
 export type TVerificationStatus = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];

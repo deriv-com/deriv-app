@@ -4,13 +4,13 @@ import { useFormikContext } from 'formik';
 import { Button, Input, Icon } from '@deriv/components';
 import { compressImageFiles } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TPaymentMethod, TProofOfOwnershipFormValue } from 'Types';
+import { TPaymentMethod, TProofOfOwnershipFormValue, TProofOfOwnershipErrors } from 'Types';
 
 type TFileUploaderProps = {
     class_name?: string;
     name: TPaymentMethod;
-    sub_index: number;
-    index: number;
+    sub_index: number | string;
+    payment_id: number | string;
 };
 
 /**
@@ -19,14 +19,16 @@ type TFileUploaderProps = {
  * @param class_name - To add custom styles to class
  * @param name - Payment method name
  * @param sub_index - Index of the file
- * @param index - Index of the payment method
+ * @param payment_id - Index of the payment method
  * @returns React Component
  */
 
-const FileUploader = ({ class_name, name, sub_index, index }: TFileUploaderProps) => {
+const FileUploader = ({ class_name, name, sub_index, payment_id }: TFileUploaderProps) => {
     const { values, setFieldValue, errors, setFieldError } = useFormikContext<Partial<TProofOfOwnershipFormValue>>();
 
-    const [show_browse_button, setShowBrowseButton] = React.useState(!values[name]?.[index]?.files?.[sub_index]?.name);
+    const [show_browse_button, setShowBrowseButton] = React.useState(
+        !values[name]?.[payment_id]?.files?.[sub_index]?.name
+    );
     // Create a reference to the hidden file input element
     const hidden_file_input = React.useRef(null);
     const handleClick = e => {
@@ -41,25 +43,36 @@ const FileUploader = ({ class_name, name, sub_index, index }: TFileUploaderProps
         event.nativeEvent.stopPropagation();
         event.nativeEvent.stopImmediatePropagation();
         const file_to_upload = await compressImageFiles([event.target.files[0]]);
-        const payment_file_data = [...(values[name]?.[index]?.files ?? [])];
+        const payment_file_data = [...(values[name]?.[payment_id]?.files ?? [])];
         payment_file_data[sub_index] = file_to_upload[0];
         const selected_payment_method = values?.[name];
         if (!selected_payment_method) {
             return;
         }
-
-        selected_payment_method[index] = {
-            ...selected_payment_method[index],
-            files: payment_file_data,
+        selected_payment_method[payment_id] = {
+            ...selected_payment_method[payment_id],
+            files: payment_file_data ?? [],
         };
-        await setFieldValue(name, [...selected_payment_method]);
+        await setFieldValue(name, { ...selected_payment_method });
         setShowBrowseButton(!file_to_upload[0]);
     };
 
     const updateError = () => {
-        const payment_method_error = errors?.[name]?.[index]?.files;
-        delete payment_method_error?.[sub_index];
-        setFieldError(name, { ...(errors?.[name]?.[index] ?? {}), files: payment_method_error });
+        const payment_method_error = errors?.[name] ?? {};
+        const payment_method_file_error = payment_method_error?.[payment_id]?.files ?? {};
+        delete payment_method_file_error?.[sub_index];
+        // @ts-expect-error Error is an object
+        payment_method_error[payment_id] = {
+            // @ts-expect-error Error is an object
+            ...(payment_method_error[payment_id] ?? {}),
+            files: payment_method_file_error,
+        };
+        if (Object.keys(payment_method_error[payment_id]?.files).length === 0) {
+            delete payment_method_error[payment_id]?.payment_method_identifier;
+        }
+
+        // @ts-expect-error Error is an array
+        setFieldError(name, { ...payment_method_error });
     };
 
     const handleIconClick = async e => {
@@ -69,17 +82,17 @@ const FileUploader = ({ class_name, name, sub_index, index }: TFileUploaderProps
         if (hidden_file_input.current && 'value' in hidden_file_input.current) {
             hidden_file_input.current.value = '';
         }
-        const payment_file_data = values[name]?.[index]?.files ?? [];
-        payment_file_data[sub_index] = undefined;
+        const payment_file_data = values[name]?.[payment_id]?.files ?? [];
+        const filtered_file_data = payment_file_data.filter((_, i) => i !== sub_index);
         const selected_payment_method = values?.[name];
         if (!selected_payment_method) {
             return;
         }
-        selected_payment_method[index] = {
-            ...selected_payment_method[index],
-            files: payment_file_data ?? [],
+        selected_payment_method[payment_id] = {
+            ...selected_payment_method[payment_id],
+            files: filtered_file_data ?? [],
         };
-        await setFieldValue(name, [...selected_payment_method]);
+        await setFieldValue(name, { ...selected_payment_method });
         setShowBrowseButton(prevState => !prevState);
         updateError();
     };
@@ -99,12 +112,12 @@ const FileUploader = ({ class_name, name, sub_index, index }: TFileUploaderProps
                 label={localize('Choose a photo')}
                 maxLength={255}
                 hint={localize('Accepted formats: pdf, jpeg, jpg, and png. Max file size: 8MB')}
-                value={values[name]?.[index]?.files?.[sub_index]?.name ?? ''}
+                value={values[name]?.[payment_id]?.files?.[sub_index]?.name ?? ''}
                 readOnly
                 color='less-prominent'
                 type={'text'}
                 tabIndex={-1}
-                error={errors?.[name]?.[index]?.files?.[sub_index]}
+                error={errors?.[name]?.[payment_id]?.files?.[sub_index]}
                 trailing_icon={
                     <Icon
                         onClick={handleIconClick}

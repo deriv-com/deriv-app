@@ -51,11 +51,11 @@ describe('expanded-card.jsx', () => {
         render(
             <Formik
                 initialValues={{
-                    visa: [
-                        {
+                    visa: {
+                        '4': {
                             payment_method_identifier: '1234 56XX XXXX 1121',
                         },
-                    ],
+                    },
                 }}
                 onSubmit={jest.fn()}
             >

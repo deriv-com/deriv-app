@@ -13,6 +13,7 @@ interface WalletPasswordFieldProps extends WalletTextFieldProps {
 
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     label,
+    name = 'walletPasswordField',
     onChange,
     password,
     shouldDisablePasswordMeter = false,
@@ -38,6 +39,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 label={label}
                 message={isTouched ? errorMessage : ''}
                 messageVariant='warning'
+                name={name}
                 onChange={handleChange}
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setIsPasswordVisible} viewPassword={isPasswordVisible} />

@@ -21,7 +21,7 @@
         "@zxcvbn-ts/language-common": "^3.0.4",
         "classnames": "^2.2.6",
         "downshift": "^8.2.2",
-        "embla-carousel-react": "^8.0.0-rc12",
+        "embla-carousel-react": "8.0.0-rc12",
         "formik": "^2.1.4",
         "moment": "^2.29.2",
         "qrcode.react": "^3.1.0",

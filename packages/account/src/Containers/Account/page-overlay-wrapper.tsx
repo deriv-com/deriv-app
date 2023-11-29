@@ -37,8 +37,13 @@ const PageOverlayWrapper = observer(({ routes, subroutes }: PageOverlayWrapperPr
     const selected_route = getSelectedRoute({ routes: subroutes as Array<TRoute>, pathname: location.pathname });
 
     const onClickLogout = () => {
+        console.log('onClickLogout shared_routes.index', shared_routes.index)
         history.push(shared_routes.index);
-        logout().then(() => (window.location.href = getStaticUrl('/')));
+        logout().then((res) => {
+            console.log('onClickLogout res', res);
+            
+            window.location.href = getStaticUrl('/')
+        });
     };
 
     if (is_mobile && selected_route) {

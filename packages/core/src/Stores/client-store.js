@@ -2087,6 +2087,7 @@ export default class ClientStore extends BaseStore {
     async logout() {
         // TODO: [add-client-action] - Move logout functionality to client store
         const response = await requestLogout();
+        console.log('logout res', res);
 
         if (response?.logout === 1) {
             this.cleanUp();

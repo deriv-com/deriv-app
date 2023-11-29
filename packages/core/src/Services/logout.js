@@ -9,6 +9,7 @@ function endChat() {
 }
 
 const doLogout = response => {
+    console.log('doLogout response', response);
     if (response.logout !== 1) return undefined;
     removeCookies('affiliate_token', 'affiliate_tracking', 'onfido_token');
     SocketCache.clear();

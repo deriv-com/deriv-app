@@ -5,7 +5,7 @@ import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components
 import { formatMoney, isDesktop, isMobile, routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
-import { api_error_codes } from '../../constants/api-error-codes.js';
+import { api_error_codes } from 'Constants/api-error-codes';
 import Chat from 'Pages/orders/chat/chat.jsx';
 import StarRating from 'Components/star-rating';
 import UserRatingButton from 'Components/user-rating-button';

@@ -4,6 +4,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { api_error_codes } from 'Constants/api-error-codes';
 import { buy_sell } from 'Constants/buy-sell';
 import AdRateError from './ad-rate-error';
 
@@ -29,9 +30,9 @@ const AdErrorTooltipModal = ({
 
     const getAdErrorMessage = (error_code: string) => {
         switch (error_code) {
-            case 'advert_inactive':
+            case api_error_codes.ADVERT_INACTIVE:
                 return <AdRateError />;
-            case 'advert_max_limit':
+            case api_error_codes.ADVERT_MAX_LIMIT:
                 return (
                     <Localize
                         i18n_default_text='This ad is not listed on Buy/Sell because its minimum order is higher than {{maximum_order_amount}} {{currency}}.'
@@ -41,11 +42,11 @@ const AdErrorTooltipModal = ({
                         }}
                     />
                 );
-            case 'advert_min_limit':
+            case api_error_codes.ADVERT_MIN_LIMIT:
                 return (
                     <Localize i18n_default_text='This ad is not listed on Buy/Sell because its maximum order is lower than the minimum amount you can specify for orders in your ads.' />
                 );
-            case 'advert_remaining':
+            case api_error_codes.ADVERT_REMAINING:
                 return (
                     <Localize
                         i18n_default_text='This ad is not listed on Buy/Sell because its minimum order is higher than the ad’s remaining amount ({{remaining_amount}} {{currency}}).'
@@ -55,11 +56,11 @@ const AdErrorTooltipModal = ({
                         }}
                     />
                 );
-            case 'advertiser_ads_paused':
+            case api_error_codes.ADVERTISER_ADS_PAUSED:
                 return (
                     <Localize i18n_default_text='This ad is not listed on Buy/Sell because you have paused all your ads.' />
                 );
-            case 'advertiser_balance':
+            case api_error_codes.AD_EXCEEDS_BALANCE:
                 return (
                     <Localize
                         i18n_default_text='This ad is not listed on Buy/Sell because its minimum order is higher than your Deriv P2P available balance ({{balance}} {{currency}}).'
@@ -69,7 +70,7 @@ const AdErrorTooltipModal = ({
                         }}
                     />
                 );
-            case 'advertiser_daily_limit': {
+            case api_error_codes.AD_EXCEEDS_DAILY_LIMIT: {
                 const remaining_limit =
                     advert_type === buy_sell.BUY ? localize(daily_buy_limit) : localize(daily_sell_limit);
                 return (
@@ -82,7 +83,7 @@ const AdErrorTooltipModal = ({
                     />
                 );
             }
-            case 'advertiser_temp_ban':
+            case api_error_codes.ADVERTISER_TEMP_BAN:
                 return (
                     <Localize i18n_default_text='You’re not allowed to use Deriv P2P to advertise. Please contact us via live chat for more information.' />
                 );

@@ -66,7 +66,7 @@ const ProofOfOwnershipForm = ({
                 const is_generic_pm = grouped_payment_method_data[payment_method]?.is_generic_pm;
                 const items = grouped_payment_method_data[payment_method]?.items;
                 acc[payment_method] = [];
-                items?.forEach((item, idx) => {
+                items?.forEach(item => {
                     acc[payment_method]?.push({
                         ...default_value,
                         id: item.id,
@@ -165,7 +165,7 @@ const ProofOfOwnershipForm = ({
         values: Partial<TProofOfOwnershipFormValue>,
         action: FormikHelpers<Partial<TProofOfOwnershipFormValue>>
     ) => {
-        const { setFieldError, setStatus } = action;
+        const { setFieldError, setStatus, resetForm } = action;
         try {
             setStatus({ is_btn_loading: true });
             const uploader = new DocumentUploader({ connection: WS.getSocket() });
@@ -195,6 +195,7 @@ const ProofOfOwnershipForm = ({
                                     setFieldError(card_key, { files: upload_error });
                                 }
                             } else {
+                                resetForm();
                                 updateAccountStatus();
                                 refreshNotifications();
                             }

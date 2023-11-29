@@ -32,20 +32,20 @@ export const getCurrentLanguage = () => currentLanguage;
 const resources = {
     EN: {
         translations: {
-            Deposit: 'Deposit',
-            'Reset balance': 'Reset balance',
-            Transactions: 'Transactions',
-            Transfer: 'Transfer',
-            Withdraw: 'Withdraw',
+            deposit: 'Deposit',
+            'reset.balance': 'Reset balance',
+            transactions: 'Transactions',
+            transfer: 'Transfer',
+            withdraw: 'Withdraw',
         },
     },
     FR: {
         translations: {
-            Deposit: 'Dépôt',
-            'Reset balance': 'Réinitialiser le solde',
-            Transactions: 'Transactions',
-            Transfer: 'Transfert',
-            Withdraw: 'Retirer',
+            deposit: 'Dépôt',
+            'reset.balance': 'Réinitialiser le solde',
+            transactions: 'Transactions',
+            transfer: 'Transfert',
+            withdraw: 'Retirer',
         },
     },
 };

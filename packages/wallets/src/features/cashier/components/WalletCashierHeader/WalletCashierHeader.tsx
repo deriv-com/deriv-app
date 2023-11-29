@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount, useActiveWalletBalance } from '@deriv/api';
 import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../../components';
@@ -12,6 +11,7 @@ import IcCashierStatement from '../../../../public/images/ic-cashier-statement.s
 import IcCashierTransfer from '../../../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../../../public/images/ic-cashier-withdrawal.svg';
 import ResetBalance from '../../../../public/images/plus-thin.svg';
+import i18n from '../../../../translations/i18n';
 import './WalletCashierHeader.scss';
 
 type TProps = {
@@ -22,22 +22,22 @@ const realAccountTabs = [
     {
         icon: <IcCashierDeposit />,
         path: 'deposit',
-        text: 'Deposit',
+        text: i18n.t('deposit'),
     },
     {
         icon: <IcCashierWithdrawal />,
         path: 'withdraw',
-        text: 'Withdraw',
+        text: i18n.t('withdraw'),
     },
     {
         icon: <IcCashierTransfer />,
         path: 'transfer',
-        text: 'Transfer',
+        text: i18n.t('transfer'),
     },
     {
         icon: <IcCashierStatement />,
         path: 'transactions',
-        text: 'Transactions',
+        text: i18n.t('transactions'),
     },
 ] as const;
 
@@ -45,28 +45,28 @@ const virtualAccountTabs = [
     {
         icon: <IcCashierTransfer />,
         path: 'transfer',
-        text: 'Transfer',
+        text: i18n.t('transactions'),
     },
     {
         icon: <IcCashierStatement />,
         path: 'transactions',
-        text: 'Transactions',
+        text: i18n.t('transactions'),
     },
     {
         icon: <ResetBalance />,
         path: 'reset-balance',
-        text: 'Reset balance',
+        text: i18n.t('reset.balance'),
     },
 ] as const;
 
 const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
-    const { t } = useTranslation();
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
     const { displayBalance } = useActiveWalletBalance();
+
     const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
 
     useEffect(() => {
@@ -158,7 +158,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                                     size='sm'
                                     weight={isActiveTab ? 'bold' : 'normal'}
                                 >
-                                    {t(tab.text)}
+                                    {tab.text}
                                 </WalletText>
                             </button>
                         );

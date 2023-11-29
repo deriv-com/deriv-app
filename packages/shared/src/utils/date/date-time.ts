@@ -51,7 +51,7 @@ export const toLocalFormat = (time: moment.MomentInput) => moment.utc(time).loca
  * @param  {String} time        24 hours format, may or may not include seconds
  * @return {moment} a new moment object of result
  */
-export const setTime = (moment_obj: moment.Moment, time: string) => {
+export const setTime = (moment_obj: moment.Moment, time: string | null) => {
     const [hour, minute, second] = time ? time.split(':') : [0, 0, 0];
     moment_obj
         .hour(+hour)
@@ -73,7 +73,8 @@ export const toGMTFormat = (time?: moment.MomentInput) =>
         .utc()
         .format('YYYY-MM-DD HH:mm:ss [GMT]');
 
-export const formatDate = (date?: moment.MomentInput, date_format = 'YYYY-MM-DD') => toMoment(date).format(date_format);
+export const formatDate = (date?: moment.MomentInput, date_format = 'YYYY-MM-DD', should_format_null = true) =>
+    !should_format_null && date === null ? undefined : toMoment(date).format(date_format);
 
 export const formatTime = (epoch: number | string, time_format = 'HH:mm:ss [GMT]') =>
     toMoment(epoch).format(time_format);

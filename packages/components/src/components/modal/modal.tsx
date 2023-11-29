@@ -32,10 +32,11 @@ type TModalElement = {
     onUnmount?: () => void;
     portalId?: string;
     renderTitle?: () => React.ReactNode;
+    should_close_on_click_outside?: boolean;
     should_header_stick_body?: boolean;
     small?: boolean;
     title?: string | React.ReactNode;
-    toggleModal?: (e?: React.MouseEvent<HTMLElement>) => void;
+    toggleModal?: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
     width?: string;
 };
 
@@ -60,6 +61,7 @@ const ModalElement = ({
     onUnmount,
     portalId,
     renderTitle,
+    should_close_on_click_outside,
     should_header_stick_body = true,
     small,
     title,
@@ -85,11 +87,12 @@ const ModalElement = ({
         const is_absolute_modal_visible = document.getElementById('popup_root')?.hasChildNodes();
         const path = e.path ?? e.composedPath?.();
         return (
-            has_close_icon &&
-            !isPortalElementVisible() &&
-            is_open &&
-            !is_absolute_modal_visible &&
-            !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el as HTMLElement)))
+            should_close_on_click_outside ||
+            (has_close_icon &&
+                !isPortalElementVisible() &&
+                is_open &&
+                !is_absolute_modal_visible &&
+                !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el as HTMLElement))))
         );
     };
 
@@ -194,7 +197,7 @@ const ModalElement = ({
                     )}
                     {has_close_icon && (
                         <div onClick={toggleModal} className='dc-modal-header__close' role='button'>
-                            <Icon icon='IcCross' color={close_icon_color} />
+                            <Icon icon='IcCross' color={close_icon_color} data_testid='dt_modal_close_icon' />
                         </div>
                     )}
                 </div>
@@ -209,6 +212,7 @@ type TModal = TModalElement & {
     exit_classname?: string;
     onEntered?: () => void;
     onExited?: () => void;
+    transition_timeout?: React.ComponentProps<typeof CSSTransition>['timeout'];
 };
 
 const Modal = ({
@@ -235,16 +239,18 @@ const Modal = ({
     onUnmount,
     portalId,
     renderTitle,
+    should_close_on_click_outside = false,
     should_header_stick_body = true,
     small,
     title,
+    transition_timeout,
     toggleModal,
     width,
 }: React.PropsWithChildren<TModal>) => (
     <CSSTransition
         appear
         in={is_open}
-        timeout={250}
+        timeout={transition_timeout || 250}
         classNames={{
             appear: 'dc-modal__container--enter',
             enter: 'dc-modal__container--enter',
@@ -277,6 +283,7 @@ const Modal = ({
             onUnmount={onUnmount}
             portalId={portalId}
             renderTitle={renderTitle}
+            should_close_on_click_outside={should_close_on_click_outside}
             small={small}
             width={width}
             elements_to_ignore={elements_to_ignore}

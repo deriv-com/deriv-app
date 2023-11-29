@@ -1,0 +1,1201 @@
+.wallets-gradient {
+    position: relative;
+
+    &__content {
+        position: relative;
+    }
+
+    &__shine {
+        position: absolute;
+        inset: 0;
+        clip-path: polygon(40% 10%, 104% -6.94%, 92.5% 100%, 28% 100%);
+        mix-blend-mode: overlay;
+        opacity: 0.16;
+        border-top-right-radius: 0.8rem;
+        background-color: #fff;
+    }
+
+    &__palette {
+        &--grey {
+            background: radial-gradient(
+                    100% 277.78% at 0% 100%,
+                    rgba(153, 153, 153, 0.08) 0%,
+                    rgba(153, 153, 153, 0.32) 100%
+                )
+                #ffffff;
+        }
+    }
+
+    &--USD {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(244, 67, 54, 0.24) 0%,
+                        rgba(40, 57, 145, 0.48) 100%
+                    );
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(244, 67, 54, 0.24) 0%,
+                            rgba(40, 57, 145, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(244, 67, 54, 0.4) 0%,
+                            rgba(244, 67, 54, 0.16) 50.52%,
+                            rgba(40, 57, 145, 0.56) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(244, 67, 54, 0.24) 0%,
+                        rgba(40, 57, 145, 0.48) 100%
+                    );
+                }
+            }
+        }
+
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            160% 190% at 0% 100%,
+                            rgba(244, 67, 54, 0.5) 0%,
+                            rgba(244, 67, 54, 0.4) 50.52%,
+                            rgba(40, 57, 145, 0.56) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(244, 67, 54, 0.4) 0%,
+                            rgba(244, 67, 54, 0.16) 50.52%,
+                            rgba(40, 57, 145, 0.56) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(244, 67, 54, 0.4) 0%,
+                            rgba(244, 67, 54, 0.16) 50.52%,
+                            rgba(40, 57, 145, 0.56) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(244, 67, 54, 0.24) 0%,
+                        rgba(40, 57, 145, 0.48) 100%
+                    );
+                }
+            }
+        }
+    }
+    &--AUD {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(13, 180, 61, 0.24) 0%,
+                            rgba(255, 205, 0, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(13, 180, 61, 0.24) 0%,
+                            rgba(255, 205, 0, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(13, 180, 61, 0.4) 0%,
+                            rgba(13, 180, 61, 0.16) 50.52%,
+                            rgba(255, 205, 0, 0.56) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(13, 180, 61, 0.4) 0%,
+                            rgba(13, 180, 61, 0.16) 50.52%,
+                            rgba(255, 205, 0, 0.56) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            160% 190% at 0% 100%,
+                            rgba(13, 180, 61, 0.5) 0%,
+                            rgba(13, 180, 61, 0.4) 50.52%,
+                            rgba(255, 205, 0, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(13, 180, 61, 0.24) 0%,
+                            rgba(255, 205, 0, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(13, 180, 61, 0.4) 0%,
+                            rgba(13, 180, 61, 0.16) 50.52%,
+                            rgba(255, 205, 0, 0.56) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(13, 180, 61, 0.4) 0%,
+                            rgba(13, 180, 61, 0.16) 50.52%,
+                            rgba(255, 205, 0, 0.56) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+    }
+    &--EUR {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.24) 0%,
+                            rgba(248, 209, 46, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.24) 0%,
+                            rgba(248, 209, 46, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.4) 0%,
+                            rgba(40, 57, 145, 0.16) 50.52%,
+                            rgba(248, 209, 46, 0.56) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.4) 0%,
+                            rgba(40, 57, 145, 0.16) 50.52%,
+                            rgba(248, 209, 46, 0.56) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            160% 190% at 0% 100%,
+                            rgba(40, 57, 145, 0.5) 0%,
+                            rgba(40, 57, 145, 0.4) 50.52%,
+                            rgba(248, 209, 46, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.24) 0%,
+                            rgba(248, 209, 46, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.4) 0%,
+                            rgba(40, 57, 145, 0.16) 50.52%,
+                            rgba(248, 209, 46, 0.56) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.4) 0%,
+                            rgba(40, 57, 145, 0.16) 50.52%,
+                            rgba(248, 209, 46, 0.56) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+    }
+    &--GBP {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.24) 0%,
+                            rgba(40, 57, 145, 0.24) 0.01%,
+                            rgba(244, 67, 54, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.24) 0%,
+                            rgba(40, 57, 145, 0.24) 0.01%,
+                            rgba(244, 67, 54, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.4) 0%,
+                            rgba(40, 57, 145, 0.16) 50.52%,
+                            rgba(244, 67, 54, 0.56) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.4) 0%,
+                            rgba(40, 57, 145, 0.16) 50.52%,
+                            rgba(244, 67, 54, 0.56) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            160% 190% at 0% 100%,
+                            rgba(40, 57, 145, 0.5) 0%,
+                            rgba(40, 57, 145, 0.4) 50.52%,
+                            rgba(244, 67, 54, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.24) 0%,
+                            rgba(40, 57, 145, 0.24) 0.01%,
+                            rgba(244, 67, 54, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.4) 0%,
+                            rgba(40, 57, 145, 0.16) 50.52%,
+                            rgba(244, 67, 54, 0.56) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(40, 57, 145, 0.4) 0%,
+                            rgba(40, 57, 145, 0.16) 50.52%,
+                            rgba(244, 67, 54, 0.56) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+    }
+    &--BTC {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(247, 147, 27, 0.24) 0%,
+                            rgba(247, 199, 27, 0.477) 99.99%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(247, 147, 27, 0.24) 0%,
+                            rgba(247, 199, 27, 0.477) 99.99%,
+                            rgba(255, 100, 68, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(247, 147, 27, 0.4) 0%,
+                            rgba(247, 147, 27, 0.16) 50.52%,
+                            rgba(247, 199, 27, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(247, 147, 27, 0.4) 0%,
+                            rgba(247, 147, 27, 0.16) 50.52%,
+                            rgba(247, 199, 27, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            160% 190% at 0% 100%,
+                            rgba(247, 147, 27, 0.5) 0%,
+                            rgba(247, 147, 27, 0.4) 50.52%,
+                            rgba(247, 199, 27, 0.477) 99.99%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(247, 147, 27, 0.24) 0%,
+                            rgba(247, 199, 27, 0.477) 99.99%,
+                            rgba(255, 100, 68, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(247, 147, 27, 0.4) 0%,
+                            rgba(247, 147, 27, 0.16) 50.52%,
+                            rgba(247, 199, 27, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(247, 147, 27, 0.4) 0%,
+                            rgba(247, 147, 27, 0.16) 50.52%,
+                            rgba(247, 199, 27, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+    }
+    &--ETH {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(82, 86, 127, 0.24) 0%,
+                            rgba(130, 140, 173, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(82, 86, 127, 0.24) 0%,
+                            rgba(130, 140, 173, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(82, 86, 127, 0.4) 0%,
+                            rgba(82, 86, 127, 0.16) 50.52%,
+                            rgba(130, 140, 173, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(82, 86, 127, 0.4) 0%,
+                            rgba(82, 86, 127, 0.16) 50.52%,
+                            rgba(130, 140, 173, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            160% 190% at 0% 100%,
+                            rgba(82, 86, 127, 0.4) 0%,
+                            rgba(82, 86, 127, 0.5) 50.52%,
+                            rgba(130, 140, 173, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(82, 86, 127, 0.24) 0%,
+                            rgba(130, 140, 173, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(82, 86, 127, 0.24) 0%,
+                            rgba(130, 140, 173, 0.48) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(82, 86, 127, 0.24) 0%,
+                            rgba(130, 140, 173, 0.48) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+    }
+    &--LTC {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(165, 168, 169, 0.24) 0%,
+                            rgba(193, 204, 207, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(165, 168, 169, 0.4) 0%,
+                            rgba(165, 168, 169, 0.16) 50.52%,
+                            rgba(193, 204, 207, 0.4) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(165, 168, 169, 0.4) 0%,
+                            rgba(165, 168, 169, 0.16) 50.52%,
+                            rgba(193, 204, 207, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(165, 168, 169, 0.4) 0%,
+                            rgba(165, 168, 169, 0.16) 50.52%,
+                            rgba(193, 204, 207, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            160% 190% at 0% 100%,
+                            rgba(165, 168, 169, 0.4) 0%,
+                            rgba(165, 168, 169, 0.4) 50.52%,
+                            rgba(193, 204, 207, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(165, 168, 169, 0.24) 0%,
+                            rgba(193, 204, 207, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(165, 168, 169, 0.4) 0%,
+                            rgba(165, 168, 169, 0.16) 50.52%,
+                            rgba(193, 204, 207, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(165, 168, 169, 0.4) 0%,
+                            rgba(165, 168, 169, 0.16) 50.52%,
+                            rgba(193, 204, 207, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+    }
+    &--UST {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(0, 147, 147, 0.24) 0%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(0, 147, 147, 0.24) 0%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            160% 190% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.5) 50.52%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(0, 147, 147, 0.24) 0%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+    }
+    &--USDT {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(0, 147, 147, 0.24) 0%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(0, 147, 147, 0.24) 0%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            160% 190% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.5) 50.52%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(0, 147, 147, 0.24) 0%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #151717;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+        }
+    }
+    &--tUSDT {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(0, 147, 147, 0.24) 0%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(0, 147, 147, 0.24) 0%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            160% 190% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.5) 50.52%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(0, 147, 147, 0.24) 0%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+    }
+    &--eUSDT {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(0, 147, 147, 0.24) 0%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(0, 147, 147, 0.24) 0%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            160% 190% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.5) 50.52%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(0, 147, 147, 0.24) 0%,
+                            rgba(0, 147, 147, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(0, 147, 147, 0.4) 0%,
+                            rgba(0, 147, 147, 0.16) 50.52%,
+                            rgba(4, 217, 217, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+    }
+    &--USDC {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(39, 117, 202, 0.24) 0%,
+                            rgba(34, 76, 225, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(39, 117, 202, 0.24) 0%,
+                            rgba(34, 76, 225, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(39, 117, 202, 0.4) 0%,
+                            rgba(39, 117, 202, 0.16) 50.52%,
+                            rgba(34, 76, 225, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(39, 117, 202, 0.4) 0%,
+                            rgba(39, 117, 202, 0.16) 50.52%,
+                            rgba(34, 76, 225, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            160% 190% at 0% 100%,
+                            rgba(39, 117, 202, 0.4) 0%,
+                            rgba(39, 117, 202, 0.5) 50.52%,
+                            rgba(34, 76, 225, 0.48) 100%
+                        )
+                        #ffffff;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(39, 117, 202, 0.24) 0%,
+                            rgba(34, 76, 225, 0.48) 100%
+                        )
+                        #151717;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(39, 117, 202, 0.4) 0%,
+                            rgba(39, 117, 202, 0.16) 50.52%,
+                            rgba(34, 76, 225, 0.4) 100%
+                        )
+                        #ffffff;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(39, 117, 202, 0.4) 0%,
+                            rgba(39, 117, 202, 0.16) 50.52%,
+                            rgba(34, 76, 225, 0.4) 100%
+                        )
+                        #151717;
+                }
+            }
+        }
+    }
+    &--demo {
+        &-desktop {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(255, 100, 68, 0.24) 0%,
+                            rgba(255, 68, 79, 0.48) 100%
+                        )
+                        #212329;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(255, 100, 68, 0.24) 0%,
+                            rgba(255, 68, 79, 0.48) 100%
+                        )
+                        #fbdddd;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(255, 100, 68, 0.4) 0%,
+                            rgba(255, 100, 68, 0.16) 50.52%,
+                            rgba(255, 68, 79, 0.4) 100%
+                        )
+                        #212329;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(255, 100, 68, 0.4) 0%,
+                            rgba(255, 100, 68, 0.16) 50.52%,
+                            rgba(255, 68, 79, 0.4) 100%
+                        )
+                        #fbdddd;
+                }
+            }
+        }
+        &-mobile {
+            &-card {
+                &-light {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(255, 100, 68, 0.24) 0%,
+                            rgba(255, 68, 79, 0.68) 100%
+                        )
+                        #212329;
+                    border-radius: 0.8rem;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 277.78% at 0% 100%,
+                            rgba(255, 100, 68, 0.24) 0%,
+                            rgba(255, 68, 79, 0.48) 100%
+                        )
+                        #fbdddd;
+                    border-radius: 0.8rem;
+                }
+            }
+
+            &-header {
+                &-light {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(255, 100, 68, 0.4) 0%,
+                            rgba(255, 100, 68, 0.16) 50.52%,
+                            rgba(255, 68, 79, 0.4) 100%
+                        )
+                        #212329;
+                }
+                &-dark {
+                    background: radial-gradient(
+                            100% 4130.74% at 0% 100%,
+                            rgba(255, 100, 68, 0.4) 0%,
+                            rgba(255, 100, 68, 0.16) 50.52%,
+                            rgba(255, 68, 79, 0.4) 100%
+                        )
+                        #fbdddd;
+                }
+            }
+        }
+        &-desktop-header-light,
+        &-mobile-header-light,
+        &-mobile-card-light {
+            &:before {
+                content: '';
+                display: block;
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                background-image: url('../../public/images/wallet-demo-bg-light.svg');
+                background-repeat: repeat;
+                background-size: 7rem;
+                mix-blend-mode: overlay;
+                opacity: 0.24;
+            }
+        }
+    }
+}

@@ -13,32 +13,7 @@ import AccumulatorCardBody from './accumulator-card-body';
 import MultiplierCardBody from './multiplier-card-body';
 import TurbosCardBody from './turbos-card-body';
 import VanillaOptionsCardBody from './vanilla-options-card-body';
-import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
-import { TToastConfig } from '../../types/contract.types';
-import { TGetCardLables } from '../../types/common.types';
-
-export type TGeneralContractCardBodyProps = {
-    addToast: (toast_config: TToastConfig) => void;
-    contract_info: TContractInfo;
-    contract_update: TContractInfo['contract_update'];
-    connectWithContractUpdate?: (contract_update_form: React.ElementType) => React.ElementType;
-    currency: string;
-    current_focus?: string;
-    error_message_alignment?: string;
-    getCardLabels: TGetCardLables;
-    getContractById: (contract_id?: number) => TContractStore;
-    should_show_cancellation_warning: boolean;
-    has_progress_slider: boolean;
-    is_mobile: boolean;
-    is_sold: boolean;
-    onMouseLeave: () => void;
-    removeToast: (toast_id: string) => void;
-    setCurrentFocus: (name: string) => void;
-    status?: string;
-    toggleCancellationWarning: () => void;
-    progress_slider?: React.ReactNode;
-    is_positions?: boolean;
-};
+import { TGeneralContractCardBodyProps } from './contract-update-form';
 
 export type TContractCardBodyProps = {
     is_accumulator?: boolean;
@@ -122,7 +97,7 @@ const ContractCardBody = ({
                 {...toggle_card_dialog_props}
             />
         );
-    } else if (is_accumulator) {
+    } else if (is_accumulator && indicative !== null) {
         card_body = (
             <AccumulatorCardBody
                 contract_info={contract_info}

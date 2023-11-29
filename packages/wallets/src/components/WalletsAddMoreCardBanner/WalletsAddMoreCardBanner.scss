@@ -1,0 +1,67 @@
+.wallets-add-more {
+    &__banner {
+        border-radius: 0.8rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 20rem;
+        height: 12rem;
+        padding: 1.6rem;
+        background: none;
+
+        @include mobile {
+            width: 16rem;
+            height: 9.6rem;
+            padding: 1rem;
+            flex-shrink: 0;
+        }
+        &-header {
+            display: flex;
+            justify-content: space-between;
+        }
+        &-button {
+            background-color: #ffffff;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 1rem;
+            font-weight: 700;
+
+            @include mobile {
+                padding: 0.3rem 0.8rem;
+            }
+
+            &-icon {
+                margin-right: 0.5rem;
+            }
+
+            &--is-added {
+                opacity: 0.3;
+                cursor: default;
+            }
+        }
+    }
+
+    &__success-footer {
+        width: 24rem;
+
+        @include mobile {
+            width: 100%;
+        }
+    }
+
+    &__success-card {
+        & .wallets-card__details {
+            padding: 1.6rem;
+            width: 24rem;
+
+            @include mobile {
+                width: 21.6rem;
+            }
+        }
+    }
+}

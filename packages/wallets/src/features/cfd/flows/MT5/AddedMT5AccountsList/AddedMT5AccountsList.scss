@@ -1,0 +1,55 @@
+.wallets-added-mt5 {
+    &__icon {
+        cursor: pointer;
+    }
+    &__actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    &__details {
+        flex-grow: 1;
+        user-select: none;
+
+        &-title {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            align-self: stretch;
+
+            &-landing-company {
+                display: flex;
+                height: 2.4rem;
+                padding: 0rem 0.4rem;
+                align-items: center;
+                gap: 0.4rem;
+                border-radius: 0.4rem;
+                background: var(--system-light-7-secondary-background, #f2f3f4);
+            }
+        }
+
+        &-badge {
+            width: fit-content;
+
+            & a {
+                cursor: pointer;
+                text-decoration: underline;
+            }
+
+            & > .wallets-inline-message {
+                padding: 0.5rem 0.8rem;
+            }
+        }
+
+        &-description {
+            font-size: 1.2rem;
+            line-height: 1.4rem;
+
+            @include mobile {
+                font-size: 1.4rem;
+                line-height: 2rem;
+            }
+        }
+    }
+}

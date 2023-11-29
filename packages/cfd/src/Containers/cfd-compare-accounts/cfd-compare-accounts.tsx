@@ -11,15 +11,19 @@ import {
     getEUAvailableAccounts,
     getMT5DemoData,
     getDxtradeDemoData,
+    getCtraderDemoData,
     dxtrade_data,
+    ctrader_data,
 } from '../../Helpers/compare-accounts-config';
+import { REGION } from '../../Helpers/cfd-config';
 
 const CompareCFDs = observer(() => {
     const history = useHistory();
     const store = useStore();
     const { client, traders_hub } = store;
     const { trading_platform_available_accounts } = client;
-    const { is_demo, is_eu_user, available_dxtrade_accounts, selected_region } = traders_hub;
+    const { is_demo, is_eu_user, available_dxtrade_accounts, selected_region, available_ctrader_accounts } =
+        traders_hub;
 
     const sorted_available_accounts = !is_eu_user
         ? getSortedCFDAvailableAccounts(trading_platform_available_accounts)
@@ -27,6 +31,8 @@ const CompareCFDs = observer(() => {
 
     // Check if dxtrade data is available
     const has_dxtrade_account_available = available_dxtrade_accounts.length > 0;
+
+    const has_ctrader_account_available = available_ctrader_accounts.length > 0;
 
     const sorted_cfd_available_eu_accounts =
         is_eu_user && sorted_available_accounts.length ? [...sorted_available_accounts] : [];
@@ -40,6 +46,7 @@ const CompareCFDs = observer(() => {
     const demo_cfd_available_accounts = [
         ...getMT5DemoData(all_real_sorted_cfd_available_accounts),
         ...getDxtradeDemoData(all_real_sorted_cfd_available_accounts),
+        ...getCtraderDemoData(all_real_sorted_cfd_available_accounts),
     ];
 
     const all_cfd_available_accounts =
@@ -48,9 +55,24 @@ const CompareCFDs = observer(() => {
             : all_real_sorted_cfd_available_accounts;
 
     // Calculate the card count for alignment of card in center
-    const card_count = has_dxtrade_account_available
-        ? all_cfd_available_accounts.length + 1
-        : all_cfd_available_accounts.length;
+    const card_count =
+        has_dxtrade_account_available || has_ctrader_account_available
+            ? all_cfd_available_accounts.length + 1
+            : all_cfd_available_accounts.length;
+
+    const CompareAccountsHeader = (
+        <Localize
+            i18n_default_text={
+                selected_region === REGION.EU
+                    ? 'Deriv MT5 CFDs {{real_title}} account'
+                    : 'Compare CFDs {{demo_title}} accounts'
+            }
+            values={{
+                demo_title: is_demo ? localize('demo') : '',
+                real_title: is_demo ? localize('Demo') : localize('real'),
+            }}
+        />
+    );
 
     const DesktopHeader = (
         <div className='compare-cfd-header'>
@@ -67,17 +89,7 @@ const CompareCFDs = observer(() => {
             </div>
             <h1 className='compare-cfd-header-title'>
                 <Text size='m' weight='bold' color='prominent'>
-                    <Localize
-                        i18n_default_text={
-                            selected_region === 'EU'
-                                ? 'Deriv MT5 CFDs {{real_title}} account'
-                                : 'Compare CFDs {{demo_title}} accounts'
-                        }
-                        values={{
-                            demo_title: is_demo ? localize('demo') : '',
-                            real_title: is_demo ? localize('Demo') : localize('real'),
-                        }}
-                    />
+                    {CompareAccountsHeader}
                 </Text>
             </h1>
         </div>
@@ -103,6 +115,14 @@ const CompareCFDs = observer(() => {
                                         is_demo={is_demo}
                                     />
                                 ))}
+                                {/* Renders cTrader data */}
+                                {all_cfd_available_accounts.length > 0 && has_ctrader_account_available && (
+                                    <CFDCompareAccountsCard
+                                        trading_platforms={ctrader_data}
+                                        is_eu_user={is_eu_user}
+                                        is_demo={is_demo}
+                                    />
+                                )}
                                 {/* Renders Deriv X data */}
                                 {all_cfd_available_accounts.length > 0 && has_dxtrade_account_available && (
                                     <CFDCompareAccountsCard
@@ -118,14 +138,7 @@ const CompareCFDs = observer(() => {
             </DesktopWrapper>
             <MobileWrapper>
                 <PageOverlay
-                    header={
-                        <Localize
-                            i18n_default_text='Compare CFDs {{demo_title}} accounts'
-                            values={{
-                                demo_title: is_demo ? localize('demo') : '',
-                            }}
-                        />
-                    }
+                    header={CompareAccountsHeader}
                     header_classname='compare-cfd-header-title'
                     is_from_app={!routes.traders_hub}
                     onClickClose={() => history.push(routes.traders_hub)}
@@ -144,6 +157,14 @@ const CompareCFDs = observer(() => {
                                     is_demo={is_demo}
                                 />
                             ))}
+                            {/* Renders cTrader data */}
+                            {all_cfd_available_accounts.length > 0 && has_ctrader_account_available && (
+                                <CFDCompareAccountsCard
+                                    trading_platforms={ctrader_data}
+                                    is_eu_user={is_eu_user}
+                                    is_demo={is_demo}
+                                />
+                            )}
                             {/* Renders Deriv X data */}
                             {all_cfd_available_accounts.length > 0 && has_dxtrade_account_available && (
                                 <CFDCompareAccountsCard

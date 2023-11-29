@@ -1,6 +1,15 @@
 .wallets-accounts-list {
-    height: 60vh;
-    width: 100vw;
-    margin-top: 2rem;
-    background-color: #add8e6;
+    height: 100%;
+    width: 100%;
+
+    @include desktop {
+        border-radius: 0 0 1.6rem 1.6rem;
+    }
+
+    @include mobile {
+        padding: 1.6rem;
+        width: 100%;
+        height: auto;
+        background: #ffffff;
+    }
 }

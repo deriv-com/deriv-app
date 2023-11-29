@@ -1,0 +1,815 @@
+// As these currencies have the same color, will use this variable for them in the map
+$usdt-color: (
+    'card': (
+        'light': (
+            'mobile': radial-gradient(100% 277.78% at 0% 100%, rgba(0, 147, 147, 0.24) 0%, rgba(0, 147, 147, 0.48) 100%)
+                #ffffff,
+            'desktop':
+                radial-gradient(100% 277.78% at 0% 100%, rgba(0, 147, 147, 0.24) 0%, rgba(0, 147, 147, 0.48) 100%)
+                #ffffff,
+        ),
+        'dark': (
+            'mobile': radial-gradient(100% 277.78% at 0% 100%, rgba(0, 147, 147, 0.24) 0%, rgba(0, 147, 147, 0.48) 100%)
+                #151717,
+            'desktop':
+                radial-gradient(100% 277.78% at 0% 100%, rgba(0, 147, 147, 0.24) 0%, rgba(0, 147, 147, 0.48) 100%)
+                #151717,
+        ),
+    ),
+    'header': (
+        'light': (
+            'mobile':
+                radial-gradient(
+                    100% 4130.74% at 0% 100%,
+                    rgba(0, 147, 147, 0.4) 0%,
+                    rgba(0, 147, 147, 0.16) 50.52%,
+                    rgba(4, 217, 217, 0.4) 100%
+                )
+                #ffffff,
+            'desktop':
+                radial-gradient(
+                    100% 4130.74% at 0% 100%,
+                    rgba(0, 147, 147, 0.4) 0%,
+                    rgba(0, 147, 147, 0.16) 50.52%,
+                    rgba(4, 217, 217, 0.4) 100%
+                )
+                #ffffff,
+        ),
+        'dark': (
+            'mobile':
+                radial-gradient(
+                    100% 4130.74% at 0% 100%,
+                    rgba(0, 147, 147, 0.4) 0%,
+                    rgba(0, 147, 147, 0.16) 50.52%,
+                    rgba(4, 217, 217, 0.4) 100%
+                )
+                #151717,
+            'desktop':
+                radial-gradient(
+                    100% 4130.74% at 0% 100%,
+                    rgba(0, 147, 147, 0.4) 0%,
+                    rgba(0, 147, 147, 0.16) 50.52%,
+                    rgba(4, 217, 217, 0.4) 100%
+                )
+                #151717,
+        ),
+    ),
+);
+
+$wallet-bg-color: (
+    'usd': (
+        'card': (
+            'light': (
+                'mobile':
+                    radial-gradient(100% 4130.74% at 0% 100%, rgba(244, 67, 54, 0.24) 0%, rgba(40, 57, 145, 0.48) 100%)
+                    #ffffff,
+                'desktop':
+                    radial-gradient(100% 4130.74% at 0% 100%, rgba(244, 67, 54, 0.24) 0%, rgba(40, 57, 145, 0.48) 100%)
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(244, 67, 54, 0.4) 0%,
+                        rgba(244, 67, 54, 0.16) 50.52%,
+                        rgba(40, 57, 145, 0.56) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(100% 4130.74% at 0% 100%, rgba(244, 67, 54, 0.24) 0%, rgba(40, 57, 145, 0.48) 100%)
+                    #151717,
+            ),
+        ),
+        'header': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(244, 67, 54, 0.4) 0%,
+                        rgba(244, 67, 54, 0.16) 50.52%,
+                        rgba(40, 57, 145, 0.56) 100%
+                    )
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(244, 67, 54, 0.4) 0%,
+                        rgba(244, 67, 54, 0.16) 50.52%,
+                        rgba(40, 57, 145, 0.56) 100%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(244, 67, 54, 0.4) 0%,
+                        rgba(244, 67, 54, 0.16) 50.52%,
+                        rgba(40, 57, 145, 0.56) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(244, 67, 54, 0.4) 0%,
+                        rgba(244, 67, 54, 0.16) 50.52%,
+                        rgba(40, 57, 145, 0.56) 100%
+                    )
+                    #151717,
+            ),
+        ),
+    ),
+    'aud': (
+        'card': (
+            'light': (
+                'mobile':
+                    radial-gradient(100% 4130.74% at 0% 100%, rgba(13, 180, 61, 0.24) 0%, rgba(255, 205, 0, 0.48) 100%)
+                    #ffffff,
+                'desktop':
+                    radial-gradient(100% 4130.74% at 0% 100%, rgba(13, 180, 61, 0.24) 0%, rgba(255, 205, 0, 0.48) 100%)
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(100% 4130.74% at 0% 100%, rgba(13, 180, 61, 0.24) 0%, rgba(255, 205, 0, 0.48) 100%)
+                    #151717,
+                'desktop':
+                    radial-gradient(100% 4130.74% at 0% 100%, rgba(13, 180, 61, 0.24) 0%, rgba(255, 205, 0, 0.48) 100%)
+                    #151717,
+            ),
+        ),
+        'header': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(13, 180, 61, 0.4) 0%,
+                        rgba(13, 180, 61, 0.16) 50.52%,
+                        rgba(255, 205, 0, 0.56) 100%
+                    )
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(13, 180, 61, 0.4) 0%,
+                        rgba(13, 180, 61, 0.16) 50.52%,
+                        rgba(255, 205, 0, 0.56) 100%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(13, 180, 61, 0.4) 0%,
+                        rgba(13, 180, 61, 0.16) 50.52%,
+                        rgba(255, 205, 0, 0.56) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(13, 180, 61, 0.4) 0%,
+                        rgba(13, 180, 61, 0.16) 50.52%,
+                        rgba(255, 205, 0, 0.56) 100%
+                    )
+                    #151717,
+            ),
+        ),
+    ),
+    'eur': (
+        'card': (
+            'light': (
+                'mobile':
+                    radial-gradient(100% 4130.74% at 0% 100%, rgba(40, 57, 145, 0.24) 0%, rgba(248, 209, 46, 0.48) 100%)
+                    #ffffff,
+                'desktop':
+                    radial-gradient(100% 4130.74% at 0% 100%, rgba(40, 57, 145, 0.24) 0%, rgba(248, 209, 46, 0.48) 100%)
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(100% 4130.74% at 0% 100%, rgba(40, 57, 145, 0.24) 0%, rgba(248, 209, 46, 0.48) 100%)
+                    #151717,
+                'desktop':
+                    radial-gradient(100% 4130.74% at 0% 100%, rgba(40, 57, 145, 0.24) 0%, rgba(248, 209, 46, 0.48) 100%)
+                    #151717,
+            ),
+        ),
+        'header': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(40, 57, 145, 0.4) 0%,
+                        rgba(40, 57, 145, 0.16) 50.52%,
+                        rgba(248, 209, 46, 0.56) 100%
+                    )
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(40, 57, 145, 0.4) 0%,
+                        rgba(40, 57, 145, 0.16) 50.52%,
+                        rgba(248, 209, 46, 0.56) 100%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(40, 57, 145, 0.4) 0%,
+                        rgba(40, 57, 145, 0.16) 50.52%,
+                        rgba(248, 209, 46, 0.56) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(40, 57, 145, 0.4) 0%,
+                        rgba(40, 57, 145, 0.16) 50.52%,
+                        rgba(248, 209, 46, 0.56) 100%
+                    )
+                    #151717,
+            ),
+        ),
+    ),
+    'gbp': (
+        'card': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(40, 57, 145, 0.24) 0%,
+                        rgba(40, 57, 145, 0.24) 0.01%,
+                        rgba(244, 67, 54, 0.48) 100%
+                    )
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(40, 57, 145, 0.24) 0%,
+                        rgba(40, 57, 145, 0.24) 0.01%,
+                        rgba(244, 67, 54, 0.48) 100%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(40, 57, 145, 0.24) 0%,
+                        rgba(40, 57, 145, 0.24) 0.01%,
+                        rgba(244, 67, 54, 0.48) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(40, 57, 145, 0.24) 0%,
+                        rgba(40, 57, 145, 0.24) 0.01%,
+                        rgba(244, 67, 54, 0.48) 100%
+                    )
+                    #151717,
+            ),
+        ),
+        'header': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(40, 57, 145, 0.4) 0%,
+                        rgba(40, 57, 145, 0.16) 50.52%,
+                        rgba(244, 67, 54, 0.56) 100%
+                    )
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(40, 57, 145, 0.4) 0%,
+                        rgba(40, 57, 145, 0.16) 50.52%,
+                        rgba(244, 67, 54, 0.56) 100%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(40, 57, 145, 0.4) 0%,
+                        rgba(40, 57, 145, 0.16) 50.52%,
+                        rgba(244, 67, 54, 0.56) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(40, 57, 145, 0.4) 0%,
+                        rgba(40, 57, 145, 0.16) 50.52%,
+                        rgba(244, 67, 54, 0.56) 100%
+                    )
+                    #151717,
+            ),
+        ),
+    ),
+    'p2p': (
+        'card': (
+            'light': (
+                'mobile':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 100, 68, 0.48) 100%)
+                    #ffffff,
+                'desktop':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 100, 68, 0.48) 100%)
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 100, 68, 0.48) 100%)
+                    #151717,
+                'desktop':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 100, 68, 0.48) 100%)
+                    #151717,
+            ),
+        ),
+        'header': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(255, 68, 79, 0.4) 0%,
+                        rgba(255, 68, 79, 0.16) 50.52%,
+                        rgba(255, 100, 68, 0.56) 100%
+                    )
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(255, 68, 79, 0.4) 0%,
+                        rgba(255, 68, 79, 0.16) 50.52%,
+                        rgba(255, 100, 68, 0.56) 100%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(255, 68, 79, 0.4) 0%,
+                        rgba(255, 68, 79, 0.16) 50.52%,
+                        rgba(255, 100, 68, 0.56) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(255, 68, 79, 0.4) 0%,
+                        rgba(255, 68, 79, 0.16) 50.52%,
+                        rgba(255, 100, 68, 0.56) 100%
+                    )
+                    #151717,
+            ),
+        ),
+    ),
+    'payment-agent': (
+        'card': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 277.78% at 0% 100%,
+                        rgba(151, 151, 151, 0.24) 0%,
+                        rgba(178, 194, 195, 0.48) 100%
+                    )
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 277.78% at 0% 100%,
+                        rgba(151, 151, 151, 0.24) 0%,
+                        rgba(178, 194, 195, 0.48) 100%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 277.78% at 0% 100%,
+                        rgba(151, 151, 151, 0.24) 0%,
+                        rgba(178, 194, 195, 0.48) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 277.78% at 0% 100%,
+                        rgba(151, 151, 151, 0.24) 0%,
+                        rgba(178, 194, 195, 0.48) 100%
+                    )
+                    #151717,
+            ),
+        ),
+        'header': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(151, 151, 151, 0.4) 0%,
+                        rgba(151, 151, 151, 0.16) 50.52%,
+                        rgba(178, 194, 195, 0.56) 100%
+                    )
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(151, 151, 151, 0.4) 0%,
+                        rgba(151, 151, 151, 0.16) 50.52%,
+                        rgba(178, 194, 195, 0.56) 100%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(151, 151, 151, 0.4) 0%,
+                        rgba(151, 151, 151, 0.16) 50.52%,
+                        rgba(178, 194, 195, 0.56) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(151, 151, 151, 0.4) 0%,
+                        rgba(151, 151, 151, 0.16) 50.52%,
+                        rgba(178, 194, 195, 0.56) 100%
+                    )
+                    #151717,
+            ),
+        ),
+    ),
+    'btc': (
+        'card': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 277.78% at 0% 100%,
+                        rgba(247, 147, 27, 0.24) 0%,
+                        rgba(247, 199, 27, 0.477) 99.99%
+                    )
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 277.78% at 0% 100%,
+                        rgba(247, 147, 27, 0.24) 0%,
+                        rgba(247, 199, 27, 0.477) 99.99%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 277.78% at 0% 100%,
+                        rgba(247, 147, 27, 0.24) 0%,
+                        rgba(247, 199, 27, 0.477) 99.99%,
+                        rgba(255, 100, 68, 0.48) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 277.78% at 0% 100%,
+                        rgba(247, 147, 27, 0.24) 0%,
+                        rgba(247, 199, 27, 0.477) 99.99%,
+                        rgba(255, 100, 68, 0.48) 100%
+                    )
+                    #151717,
+            ),
+        ),
+        'header': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(247, 147, 27, 0.4) 0%,
+                        rgba(247, 147, 27, 0.16) 50.52%,
+                        rgba(247, 199, 27, 0.4) 100%
+                    )
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(247, 147, 27, 0.4) 0%,
+                        rgba(247, 147, 27, 0.16) 50.52%,
+                        rgba(247, 199, 27, 0.4) 100%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(247, 147, 27, 0.4) 0%,
+                        rgba(247, 147, 27, 0.16) 50.52%,
+                        rgba(247, 199, 27, 0.4) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(247, 147, 27, 0.4) 0%,
+                        rgba(247, 147, 27, 0.16) 50.52%,
+                        rgba(247, 199, 27, 0.4) 100%
+                    )
+                    #151717,
+            ),
+        ),
+    ),
+    'eth': (
+        'card': (
+            'light': (
+                'mobile':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(82, 86, 127, 0.24) 0%, rgba(130, 140, 173, 0.48) 100%)
+                    #ffffff,
+                'desktop':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(82, 86, 127, 0.24) 0%, rgba(130, 140, 173, 0.48) 100%)
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(82, 86, 127, 0.24) 0%, rgba(130, 140, 173, 0.48) 100%)
+                    #151717,
+                'desktop':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(82, 86, 127, 0.24) 0%, rgba(130, 140, 173, 0.48) 100%)
+                    #151717,
+            ),
+        ),
+        'header': (
+            'light': (
+                'mobile':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(82, 86, 127, 0.24) 0%, rgba(130, 140, 173, 0.48) 100%)
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(82, 86, 127, 0.4) 0%,
+                        rgba(82, 86, 127, 0.16) 50.52%,
+                        rgba(130, 140, 173, 0.4) 100%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(82, 86, 127, 0.24) 0%, rgba(130, 140, 173, 0.48) 100%)
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(82, 86, 127, 0.4) 0%,
+                        rgba(82, 86, 127, 0.16) 50.52%,
+                        rgba(130, 140, 173, 0.4) 100%
+                    )
+                    #151717,
+            ),
+        ),
+    ),
+    'ltc': (
+        'card': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 277.78% at 0% 100%,
+                        rgba(165, 168, 169, 0.24) 0%,
+                        rgba(193, 204, 207, 0.48) 100%
+                    )
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 277.78% at 0% 100%,
+                        rgba(165, 168, 169, 0.24) 0%,
+                        rgba(193, 204, 207, 0.48) 100%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 277.78% at 0% 100%,
+                        rgba(165, 168, 169, 0.24) 0%,
+                        rgba(193, 204, 207, 0.48) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(165, 168, 169, 0.4) 0%,
+                        rgba(165, 168, 169, 0.16) 50.52%,
+                        rgba(193, 204, 207, 0.4) 100%
+                    )
+                    #151717,
+            ),
+        ),
+        'header': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(165, 168, 169, 0.4) 0%,
+                        rgba(165, 168, 169, 0.16) 50.52%,
+                        rgba(193, 204, 207, 0.4) 100%
+                    )
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(165, 168, 169, 0.4) 0%,
+                        rgba(165, 168, 169, 0.16) 50.52%,
+                        rgba(193, 204, 207, 0.4) 100%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(165, 168, 169, 0.4) 0%,
+                        rgba(165, 168, 169, 0.16) 50.52%,
+                        rgba(193, 204, 207, 0.4) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(165, 168, 169, 0.4) 0%,
+                        rgba(165, 168, 169, 0.16) 50.52%,
+                        rgba(193, 204, 207, 0.4) 100%
+                    )
+                    #151717,
+            ),
+        ),
+    ),
+    'ust': $usdt-color,
+    'usdt': $usdt-color,
+    'tusdt': $usdt-color,
+    'eusdt': $usdt-color,
+    'usdc': (
+        'card': (
+            'light': (
+                'mobile':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(39, 117, 202, 0.24) 0%, rgba(34, 76, 225, 0.48) 100%)
+                    #ffffff,
+                'desktop':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(39, 117, 202, 0.24) 0%, rgba(34, 76, 225, 0.48) 100%)
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(39, 117, 202, 0.24) 0%, rgba(34, 76, 225, 0.48) 100%)
+                    #151717,
+                'desktop':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(39, 117, 202, 0.24) 0%, rgba(34, 76, 225, 0.48) 100%)
+                    #151717,
+            ),
+        ),
+        'header': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(39, 117, 202, 0.4) 0%,
+                        rgba(39, 117, 202, 0.16) 50.52%,
+                        rgba(34, 76, 225, 0.4) 100%
+                    )
+                    #ffffff,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(39, 117, 202, 0.4) 0%,
+                        rgba(39, 117, 202, 0.16) 50.52%,
+                        rgba(34, 76, 225, 0.4) 100%
+                    )
+                    #ffffff,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(39, 117, 202, 0.4) 0%,
+                        rgba(39, 117, 202, 0.16) 50.52%,
+                        rgba(34, 76, 225, 0.4) 100%
+                    )
+                    #151717,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(39, 117, 202, 0.4) 0%,
+                        rgba(39, 117, 202, 0.16) 50.52%,
+                        rgba(34, 76, 225, 0.4) 100%
+                    )
+                    #151717,
+            ),
+        ),
+    ),
+    'demo': (
+        'card': (
+            'light': (
+                'mobile':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(255, 100, 68, 0.24) 0%, rgba(255, 68, 79, 0.48) 100%)
+                    #212329,
+                'desktop':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(255, 100, 68, 0.24) 0%, rgba(255, 68, 79, 0.48) 100%)
+                    #212329,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(255, 100, 68, 0.24) 0%, rgba(255, 68, 79, 0.48) 100%)
+                    #fbdddd,
+                'desktop':
+                    radial-gradient(100% 277.78% at 0% 100%, rgba(255, 100, 68, 0.24) 0%, rgba(255, 68, 79, 0.48) 100%)
+                    #fbdddd,
+            ),
+        ),
+        'header': (
+            'light': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(255, 100, 68, 0.4) 0%,
+                        rgba(255, 100, 68, 0.16) 50.52%,
+                        rgba(255, 68, 79, 0.4) 100%
+                    )
+                    #212329,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(255, 100, 68, 0.4) 0%,
+                        rgba(255, 100, 68, 0.16) 50.52%,
+                        rgba(255, 68, 79, 0.4) 100%
+                    )
+                    #212329,
+            ),
+            'dark': (
+                'mobile':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(255, 100, 68, 0.4) 0%,
+                        rgba(255, 100, 68, 0.16) 50.52%,
+                        rgba(255, 68, 79, 0.4) 100%
+                    )
+                    #fbdddd,
+                'desktop':
+                    radial-gradient(
+                        100% 4130.74% at 0% 100%,
+                        rgba(255, 100, 68, 0.4) 0%,
+                        rgba(255, 100, 68, 0.16) 50.52%,
+                        rgba(255, 68, 79, 0.4) 100%
+                    )
+                    #fbdddd,
+            ),
+        ),
+    ),
+);
+
+/// Wallet background color generator
+///
+/// This mixin will generate a helper classes for wallet background color based on the given map
+///
+/// @example
+///     .wallet-header__usd-bg
+///     .wallet-header__usd-bg--dark
+@mixin wallet-bg-color($currencies-map: $wallet-bg-color) {
+    @each $currency, $types in $currencies-map {
+        @each $type, $themes in $types {
+            @each $theme, $colors in $themes {
+                $t: if($theme == 'dark', '--dark', '');
+
+                .wallet-#{$type}__#{to-lower-case($currency)}-bg#{$t} {
+                    background: map-get($colors, 'desktop');
+
+                    @if $currency == 'demo' {
+                        position: relative;
+                        $demo-icon: if($theme == 'dark', 'wallet-demo-bg-dark', 'wallet-demo-bg-light');
+
+                        &:not([class*='--hide-watermark']):not([class*='--small']) {
+                            &:before {
+                                content: '';
+                                display: block;
+                                position: absolute;
+                                inset: 0;
+                                background-image: url('~Images/app/wallet/#{$demo-icon}.svg');
+                                background-repeat: repeat;
+                                background-size: 70px;
+                                mix-blend-mode: overlay;
+                                opacity: 0.24;
+                            }
+                        }
+                    }
+
+                    @include mobile {
+                        background: map-get($colors, 'mobile');
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Init mixins
+@include wallet-bg-color();

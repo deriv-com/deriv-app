@@ -11,6 +11,7 @@ import ContractType from '../contract-type';
 
 type TDialog = {
     categories: TList[];
+    info_banner?: React.ReactNode;
     item: React.ComponentProps<typeof ContractType.Info>['item'];
     selected?: string;
     children?: React.ReactNode;
@@ -19,19 +20,22 @@ type TDialog = {
     onBackButtonClick?: () => void;
     onCategoryClick?: (e: React.ComponentProps<typeof VerticalTab.Headers>['selected']) => void;
     onChangeInput?: (e: string) => void;
+    onSearchBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | null>;
     show_loading?: boolean;
 };
 
 const Dialog = ({
     categories,
-    item,
-    selected,
     children,
+    info_banner,
     is_info_dialog_open,
     is_open,
+    item,
     onBackButtonClick,
     onCategoryClick,
     onChangeInput,
+    onSearchBlur,
+    selected,
     show_loading,
 }: React.PropsWithChildren<TDialog>) => {
     const input_ref = React.useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(null);
@@ -74,6 +78,7 @@ const Dialog = ({
             ref={input_ref}
             onChange={onChangeInputValue}
             onClickClearInput={onClickClearInput}
+            onBlur={onSearchBlur}
             value={input_value}
         />
     );
@@ -103,11 +108,11 @@ const Dialog = ({
                                         onChange={onChange}
                                         selectedKey='key'
                                     />
-
                                     <div className='dc-vertical-tab__content'>
                                         <div className='dc-vertical-tab__action-bar'>{action_bar_item}</div>
                                         <div className='dc-vertical-tab__content-container'>
                                             {selected_category_contract && <NoResultsMessage text={input_value} />}
+                                            {info_banner}
                                             {renderChildren()}
                                         </div>
                                     </div>

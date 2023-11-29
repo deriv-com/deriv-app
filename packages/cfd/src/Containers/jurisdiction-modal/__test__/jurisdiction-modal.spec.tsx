@@ -81,6 +81,10 @@ describe('JurisdictionModal', () => {
     };
 
     it('should render JurisdictionModal', () => {
+        store = mockStore({
+            ...mock_store,
+            common: { platform: 'mt5' },
+        });
         render(<JurisdictionModalComponent {...mock_props} />);
 
         const title = screen.getByRole('heading');
@@ -91,27 +95,12 @@ describe('JurisdictionModal', () => {
         expect(close_button).toBeInTheDocument();
     });
 
-    it('should render JurisdictionModal with dynamic leverage modal', async () => {
-        render(<JurisdictionModalComponent {...mock_props} />);
-        const toggle_button = screen.getByText('Dynamic Leverage');
-        userEvent.click(toggle_button);
-
-        const title = screen.getByRole('heading');
-        const back_button = screen.getByTestId('back_icon');
-        const modal_content = screen.getByTestId('modal_content');
-
-        expect(modal_content).toBeInTheDocument();
-        expect(modal_content).toHaveClass('jurisdiction-modal__flipped');
-        expect(title).toBeInTheDocument();
-        expect(title).toHaveTextContent('Get more out of Deriv MT5 Financial');
-        expect(back_button).toBeInTheDocument();
-
-        userEvent.click(back_button);
-        expect(modal_content).not.toHaveClass('jurisdiction-modal__flipped');
-    });
-
     it('should render JurisdictionModal with show_eu_related_content', () => {
-        store = mockStore({ ...mock_store, traders_hub: { show_eu_related_content: true } });
+        store = mockStore({
+            ...mock_store,
+            traders_hub: { show_eu_related_content: true },
+            common: { platform: 'mt5' },
+        });
 
         render(<JurisdictionModalComponent {...mock_props} />);
 

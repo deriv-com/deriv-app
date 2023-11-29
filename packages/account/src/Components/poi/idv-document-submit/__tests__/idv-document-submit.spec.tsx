@@ -1,30 +1,39 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { isDesktop, isMobile } from '@deriv/shared';
+import { StoreProvider, mockStore } from '@deriv/stores';
+import { isDocumentNumberValid } from 'Helpers/utils';
 import IdvDocumentSubmit from '../idv-document-submit';
 
-jest.mock('react-router');
+const mock_store = mockStore({
+    client: {
+        getChangeableFields: jest.fn(() => []),
+    },
+    ui: { is_desktop: true },
+});
+
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
-jest.mock('Helpers/utils.ts', () => ({
-    ...jest.requireActual('Helpers/utils.ts'),
+jest.mock('Helpers/utils', () => ({
+    ...jest.requireActual('Helpers/utils'),
     getDocumentData: jest.fn((country_code, key) => {
         const data = {
             tc: {
                 document_1: {
                     new_display_name: '',
                     example_format: '5436454364243',
-                    sample_image: '',
                 },
                 document_2: {
                     new_display_name: '',
                     example_format: 'A-52431',
-                    sample_image: '',
                 },
             },
         };
-        return data[country_code][key];
+
+        const document = data[country_code as keyof typeof data];
+        return document[key as keyof typeof document];
     }),
-    getRegex: jest.fn(() => /5436454364243/i),
+    isDocumentNumberValid: jest.fn(),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -49,8 +58,9 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<IdvDocumentSubmit/>', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof IdvDocumentSubmit> = {
         handleBack: jest.fn(),
+        handleSelectionNext: jest.fn(),
         handleViewComplete: jest.fn(),
         selected_country: {
             value: 'tc',
@@ -58,21 +68,29 @@ describe('<IdvDocumentSubmit/>', () => {
                 services: {
                     idv: {
                         documents_supported: {
-                            document_1: { display_name: 'Test document 1 name', format: '5436454364243' },
-                            document_2: { display_name: 'Test document 2 name', format: 'A54321' },
+                            document_1: {
+                                display_name: 'Test document 1 name',
+                                format: '5436454364243',
+                            },
+                            document_2: {
+                                display_name: 'Test document 2 name',
+                                format: 'A54321',
+                            },
                         },
                         has_visual_sample: 1,
                     },
                 },
             },
         },
-        is_from_external: false,
-        account_settings: {},
         getChangeableFields: jest.fn(() => []),
     };
 
     it('should render IdvDocumentSubmit component', () => {
-        render(<IdvDocumentSubmit {...mock_props} />);
+        render(
+            <StoreProvider store={mock_store}>
+                <IdvDocumentSubmit {...mock_props} />
+            </StoreProvider>
+        );
 
         expect(screen.getByText(/Identity verification/i)).toBeInTheDocument();
         expect(screen.getByText(/details/i)).toBeInTheDocument();
@@ -86,24 +104,28 @@ describe('<IdvDocumentSubmit/>', () => {
     });
 
     it('should  trigger "go back" button, inputs and check document_type validation after rendering IdvDocumentSubmit component', async () => {
-        render(<IdvDocumentSubmit {...mock_props} />);
+        render(
+            <StoreProvider store={mock_store}>
+                <IdvDocumentSubmit {...mock_props} />
+            </StoreProvider>
+        );
 
-        const backBtn = screen.getByRole('button', { name: /go back/i });
-        fireEvent.click(backBtn);
+        const backBtn = screen.getByRole('button', { name: /back/i });
+        userEvent.click(backBtn);
         expect(mock_props.handleBack).toHaveBeenCalledTimes(1);
 
         const document_type_input = screen.getByLabelText('Choose the document type');
-        const document_number_input = screen.getByLabelText('Enter your document number');
+        const document_number_input = screen.getByPlaceholderText('Enter your document number');
         expect(document_number_input).toBeDisabled();
         expect(screen.queryByText('Test document 1 name')).not.toBeInTheDocument();
         expect(screen.queryByText('Test document 2 name')).not.toBeInTheDocument();
 
-        fireEvent.click(document_type_input);
+        userEvent.click(document_type_input);
         expect(await screen.findByText('Test document 1 name')).toBeInTheDocument();
         expect(await screen.findByText('Test document 2 name')).toBeInTheDocument();
         expect(screen.queryByText('Please select a document type.')).not.toBeInTheDocument();
 
-        fireEvent.blur(document_type_input);
+        userEvent.tab();
         expect(await screen.findByText('Please select a document type.')).toBeInTheDocument();
         await waitFor(() => {
             expect(screen.queryByText('Test document 1 name')).not.toBeInTheDocument();
@@ -115,36 +137,48 @@ describe('<IdvDocumentSubmit/>', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        render(<IdvDocumentSubmit {...mock_props} />);
+        render(
+            <StoreProvider store={mock_store}>
+                <IdvDocumentSubmit {...mock_props} />
+            </StoreProvider>
+        );
 
         const verifyBtn = screen.getByRole('button', { name: /verify/i });
         expect(verifyBtn).toBeDisabled();
 
+        const confirmation_checkbox = screen.getByLabelText(/i confirm that the name and date of birth/i);
+
         const document_type_input = screen.getByRole<HTMLTextAreaElement>('combobox');
         expect(document_type_input.name).toBe('document_type');
-        const document_number_input = screen.getByLabelText<HTMLTextAreaElement>('Enter your document number');
+        const document_number_input = screen.getByPlaceholderText<HTMLTextAreaElement>('Enter your document number');
         expect(document_number_input.name).toBe('document_number');
         expect(document_number_input).toBeDisabled();
 
-        fireEvent.change(document_type_input, { target: { value: 'Test document 2 name' } });
-        expect(document_number_input).toBeEnabled();
+        userEvent.selectOptions(document_type_input, 'Test document 2 name');
+        await waitFor(() => {
+            expect(document_number_input).toBeEnabled();
+        });
         expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
-
+        (isDocumentNumberValid as jest.Mock).mockReturnValueOnce('please enter your document number');
         fireEvent.blur(document_number_input);
         expect(await screen.findByText(/please enter your document number/i)).toBeInTheDocument();
 
-        fireEvent.keyUp(document_number_input);
+        (isDocumentNumberValid as jest.Mock).mockReturnValueOnce('please enter the correct format');
         fireEvent.change(document_number_input, { target: { value: 'A-32523' } });
         expect(await screen.findByText(/please enter the correct format/i)).toBeInTheDocument();
 
-        fireEvent.change(document_number_input, { target: { value: '5436454364243' } });
+        userEvent.type(document_number_input, '5436454364234');
         await waitFor(() => {
             expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
             expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();
+            expect(confirmation_checkbox).toBeEnabled();
+        });
+        fireEvent.click(confirmation_checkbox);
+
+        await waitFor(() => {
             expect(verifyBtn).toBeEnabled();
         });
-
-        fireEvent.click(verifyBtn);
+        userEvent.click(verifyBtn);
         await waitFor(() => {
             expect(mock_props.handleViewComplete).toHaveBeenCalledTimes(1);
         });

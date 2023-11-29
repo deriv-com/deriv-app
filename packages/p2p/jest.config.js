@@ -9,9 +9,12 @@ module.exports = {
         '^Assets/(.*)$': '<rootDir>/src/assets/$1',
         '^Components/(.*)$': '<rootDir>/src/components/$1',
         '^Constants/(.*)$': '<rootDir>/src/constants/$1',
+        '^Hooks$': '<rootDir>/src/hooks/index',
+        '^Pages/(.*)$': '<rootDir>/src/pages/$1',
         '^Stores/(.*)$': '<rootDir>/src/stores/$1',
         '^Stores$': '<rootDir>/src/stores/index',
         '^Translations/(.*)$': '<rootDir>/src/translations/$1',
+        '^Types/(.*)$': '<rootDir>/src/types/$1',
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
     },
     testPathIgnorePatterns: [

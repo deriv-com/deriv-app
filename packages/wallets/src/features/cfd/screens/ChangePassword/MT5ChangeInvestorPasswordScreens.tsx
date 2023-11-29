@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { ErrorInfo, useEffect, useState } from 'react';
+import { Field, FieldProps, Form, Formik } from 'formik';
+import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
 import {
     SentEmailContent,
     WalletButton,
@@ -9,18 +11,57 @@ import {
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import MT5PasswordUpdatedIcon from '../../../../public/images/ic-mt5-password-updated.svg';
+import { validPassword } from '../../../../utils/passwordUtils';
 
 type TChangeInvestorPasswordScreenIndex = 'emailVerification' | 'introScreen' | 'savedScreen';
+// type TFormValues = Record<'new_password' | 'old_password', string>;
 
 const MT5ChangeInvestorPasswordScreens = () => {
     const [currentInvestorPassword, setCurrentInvestorPassword] = useState('');
     const [newInvestorPassword, setNewInvestorPassword] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const [activeScreen, setActiveScreen] = useState<TChangeInvestorPasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangeInvestorPasswordScreenIndex) => setActiveScreen(nextScreen);
 
     const { isMobile } = useDevice();
     const { hide } = useModal();
+
+    const {
+        error: changeInvestorPasswordError,
+        mutateAsync: changeInvestorPassword,
+        status: changeInvestorPasswordStatus,
+    } = useTradingPlatformInvestorPasswordChange();
+
+    // console.log('changeInvestorPasswordError = ', changeInvestorPasswordError);
+    // console.log('changeInvestorPasswordStatus = ', changeInvestorPasswordStatus);
+
+    const initialValues = { currentPassword: '', newPassword: '' };
+
+    const onSubmitHandler = () => {};
+
+    const onChangeButtonClickHandler = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.preventDefault();
+
+        // try {
+        setErrorMessage('');
+        await changeInvestorPassword({
+            account_id: 'MT2142',
+            new_password: newInvestorPassword,
+            old_password: currentInvestorPassword,
+            platform: 'mt5',
+        });
+        handleClick('savedScreen');
+        // } catch (error) {
+        //     console.log('error = ', error, ', changeInvestorPasswordError = ', changeInvestorPasswordError);
+        //     setErrorMessage(error.error?.message);
+        // }
+    };
+
+    // useEffect(() => {
+    //     if (changeInvestorPasswordError) setErrorMessage(changeInvestorPasswordError?.error?.message);
+    //     else setErrorMessage('');
+    // }, [changeInvestorPasswordError]);
 
     const ChangeInvestorPasswordScreens = {
         introScreen: {
@@ -34,28 +75,38 @@ const MT5ChangeInvestorPasswordScreens = () => {
                         If this is the first time you try to create a password, or you have forgotten your password,
                         please reset it.
                     </WalletText>
+                    {errorMessage && (
+                        <WalletText align='center' color='error' size='sm'>
+                            {/* {changeInvestorPasswordError?.error?.message} */}
+                            {errorMessage}
+                        </WalletText>
+                    )}
                 </>
             ),
             button: (
-                <div className='wallets-change-password__investor-password'>
+                <form className='wallets-change-password__investor-password'>
                     <div className='wallets-change-password__investor-password-fields'>
                         <WalletPasswordField
+                            autoComplete='new-password'
                             label='Current investor password'
                             name='currentPassword'
                             onChange={e => setCurrentInvestorPassword(e.target.value)}
                             password={currentInvestorPassword}
                         />
                         <WalletPasswordField
+                            autoComplete='new-password'
                             label='New investor password'
                             name='newPassword'
                             onChange={e => setNewInvestorPassword(e.target.value)}
                             password={newInvestorPassword}
                         />
+                        <input autoComplete='username' hidden name='username' type='text' />
                     </div>
                     <div className='wallets-change-password__investor-password-buttons'>
                         <WalletButton
-                            disabled={currentInvestorPassword.length < 8 || newInvestorPassword.length < 8}
-                            onClick={() => handleClick('savedScreen')}
+                            disabled={!validPassword(newInvestorPassword) || !validPassword(newInvestorPassword)}
+                            isLoading={changeInvestorPasswordStatus === 'loading'}
+                            onClick={onChangeButtonClickHandler}
                             size={isMobile ? 'lg' : 'md'}
                             text='Change investor password'
                         />
@@ -66,7 +117,7 @@ const MT5ChangeInvestorPasswordScreens = () => {
                             variant='ghost'
                         />
                     </div>
-                </div>
+                </form>
             ),
             headingText: undefined,
             icon: undefined,

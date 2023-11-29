@@ -200,6 +200,7 @@ export default class RunPanelStore {
             this.unregisterBotListeners();
             return;
         }
+
         ui.setAccountSwitcherDisabledMessage(
             localize(
                 'Account switching is disabled while your bot is running. Please stop your bot before switching accounts.'

@@ -20,12 +20,16 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
     const { mutate } = useVerifyEmail();
     const { data: activeWallet } = useActiveWalletAccount();
 
-    let redirectTo = platform === 'mt5' ? 1 : 2;
+    let redirectTo: number;
 
-    if (activeWallet?.is_virtual) {
-        redirectTo = Number(`${redirectTo}1`);
-    } else {
-        redirectTo = Number(`${redirectTo}0`);
+    switch (platform) {
+        case 'mt5':
+            redirectTo = activeWallet?.is_virtual ? 11 : 10;
+            break;
+        case 'dxtrade':
+        default:
+            redirectTo = activeWallet?.is_virtual ? 21 : 20;
+            break;
     }
 
     const handleSendEmail = async () => {

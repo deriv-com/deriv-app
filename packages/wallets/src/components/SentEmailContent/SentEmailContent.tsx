@@ -58,12 +58,16 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
 
     const { data: activeWallet } = useActiveWalletAccount();
 
-    let redirectTo = platform === 'mt5' ? 1 : 2;
+    let redirectTo: number;
 
-    if (activeWallet?.is_virtual) {
-        redirectTo = Number(`${redirectTo}1`);
-    } else {
-        redirectTo = Number(`${redirectTo}0`);
+    switch (platform) {
+        case 'mt5':
+            redirectTo = activeWallet?.is_virtual ? 11 : 10;
+            break;
+        case 'dxtrade':
+        default:
+            redirectTo = activeWallet?.is_virtual ? 21 : 20;
+            break;
     }
 
     return (

@@ -61,19 +61,27 @@ export const formatPortfolioPosition = (
 export type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];
 
 //formatIDVError is parsing errors messages from BE (strings) and returns error codes for using it on FE
-export const formatIDVError = (errors: string[], status_code: string) => {
+export const formatIDVError = (errors: string[], status_code: string, is_high_risk?: boolean) => {
     /**
      * Check required incase of DIEL client
      */
-    if (errors.length === 0 && (status_code === STATUS_CODES.NONE || status_code === STATUS_CODES.VERIFIED))
+    if (
+        errors.length === 0 &&
+        (status_code === STATUS_CODES.NONE || status_code === STATUS_CODES.VERIFIED) &&
+        !is_high_risk
+    ) {
         return null;
+    }
+    if (is_high_risk && status_code === STATUS_CODES.VERIFIED) {
+        return idv_error_statuses.poi_high_risk;
+    }
     const error_keys: Record<string, TIDVErrorStatus> = {
         name: 'POI_NAME_MISMATCH',
         birth: 'POI_DOB_MISMATCH',
         rejected: 'POI_FAILED',
     };
     if (status_code === STATUS_CODES.EXPIRED) {
-        return 'POI_EXPIRED';
+        return idv_error_statuses.poi_expired;
     }
     const status: TIDVErrorStatus[] = [];
     errors.forEach(error => {
@@ -85,8 +93,8 @@ export const formatIDVError = (errors: string[], status_code: string) => {
     return status.includes(error_keys.name) &&
         status.includes(error_keys.birth) &&
         !status.includes(error_keys.rejected)
-        ? 'POI_NAME_DOB_MISMATCH'
-        : status[0] ?? 'POI_FAILED';
+        ? idv_error_statuses.poi_name_dob_mismatch
+        : status[0] ?? idv_error_statuses.poi_failed;
 };
 
 export const isVerificationServiceSupported = (

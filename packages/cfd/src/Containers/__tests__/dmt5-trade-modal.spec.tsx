@@ -103,6 +103,20 @@ describe('<DMT5TradeModal/>', () => {
         expect(status_badge).toBeInTheDocument();
     });
 
+    it('should not render status badge if mt5_acc_auth_status value is poa_pending', () => {
+        const new_mock_props = {
+            ...mock_props,
+            mt5_trade_account: {
+                status: 'poa_pending',
+            },
+        };
+        renderComponent({ props: new_mock_props });
+
+        expect(screen.queryByText(/Pending verification/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/No new positions/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Account closed/)).not.toBeInTheDocument();
+    });
+
     it('should not render status badge if mt5_acc_auth_status value is null', () => {
         const new_mock_props = {
             ...mock_props,

@@ -18,7 +18,6 @@ export default class MyProfileStore extends BaseStore {
     has_more_items_to_load = false;
     is_block_user_table_loading = false;
     is_button_loading = false;
-    is_confirm_delete_modal_open = false;
     is_daily_limit_modal_open = false;
     is_daily_limit_success_modal_open = false;
     is_error_modal_open = false;
@@ -62,7 +61,6 @@ export default class MyProfileStore extends BaseStore {
             has_more_items_to_load: observable,
             is_block_user_table_loading: observable,
             is_button_loading: observable,
-            is_confirm_delete_modal_open: observable,
             is_daily_limit_modal_open: observable,
             is_daily_limit_success_modal_open: observable,
             is_error_modal_open: observable,
@@ -124,7 +122,6 @@ export default class MyProfileStore extends BaseStore {
             setFullName: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsBlockUserTableLoading: action.bound,
-            setIsConfirmDeleteModalOpen: action.bound,
             setIsDailyLimitModalOpen: action.bound,
             setIsDailyLimitSuccessModalOpen: action.bound,
             setIsErrorModalOpen: action.bound,
@@ -670,10 +667,6 @@ export default class MyProfileStore extends BaseStore {
 
     setIsBlockUserTableLoading(is_block_user_table_loading) {
         this.is_block_user_table_loading = is_block_user_table_loading;
-    }
-
-    setIsConfirmDeleteModalOpen(is_confirm_delete_modal_open) {
-        this.is_confirm_delete_modal_open = is_confirm_delete_modal_open;
     }
 
     setIsDailyLimitModalOpen(is_daily_limit_modal_open) {

@@ -51,11 +51,20 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            padding: 1.6rem 0;
+        }
+
+        &-compare-accounts {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
         }
 
         &-description {
-            font-size: 1.6rem;
-            line-height: 2.4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+            align-items: start;
 
             &__link {
                 color: var(--brand-coral, #ff444f);

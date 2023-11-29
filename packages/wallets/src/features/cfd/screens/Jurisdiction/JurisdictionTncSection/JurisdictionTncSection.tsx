@@ -22,6 +22,8 @@ const JurisdictionTncSection: React.FC<TProps> = ({
     const { isMobile } = useDevice();
     const { getModalState } = useModal();
     const marketType = getModalState('marketType') || 'all';
+    const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
+
     return (
         <div className='wallets-jurisdiction-tnc'>
             {selectedJurisdiction && (
@@ -40,18 +42,11 @@ const JurisdictionTncSection: React.FC<TProps> = ({
                     />
                     <label className='wallets-jurisdiction-tnc-checkbox-label' htmlFor='tnc-checkbox'>
                         <WalletText size={isMobile ? 'sm' : 'md'}>
-                            I confirm and accept Deriv (V) Ltd&lsquo;s{' '}
+                            I confirm and accept {selectedCompany.name}&lsquo;s{' '}
                             <a
                                 className='wallets-jurisdiction-tnc-checkbox__link'
                                 onClick={() => {
-                                    window.open(
-                                        getStaticUrl(
-                                            companyNamesAndUrls[
-                                                selectedJurisdiction as keyof typeof companyNamesAndUrls
-                                            ].tncUrl
-                                        ),
-                                        '_blank'
-                                    );
+                                    window.open(getStaticUrl(selectedCompany.tncUrl), '_blank');
                                 }}
                                 // Reason: To fix sonarcloud issue
                                 onKeyDown={(event: React.KeyboardEvent<HTMLAnchorElement>) => {

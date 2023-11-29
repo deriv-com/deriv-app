@@ -19,10 +19,18 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
     return (
         <div className='wallets-cfd-list'>
             <section className='wallets-cfd-list__header'>
-                {!isMobile && (
-                    <div className='wallets-cfd-list__header-title'>
-                        <WalletText size='xl' weight='bold'>
-                            <h1>CFDs</h1>
+                {isMobile ? (
+                    <div className='wallets-cfd-list__header-description'>
+                        <WalletText size='sm'>
+                            Trade with leverage and tight spreads for better returns on trades.{' '}
+                            <a
+                                className='wallets-cfd-list__header-description__link'
+                                href='https://deriv.com/trade-types/cfds/'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                            >
+                                Learn more
+                            </a>
                         </WalletText>
                         <WalletButton
                             onClick={() => {
@@ -30,23 +38,38 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                             }}
                             size='sm'
                             text='Compare accounts'
+                            textSize='sm'
                             variant='ghost'
                         />
                     </div>
+                ) : (
+                    <div>
+                        <div className='wallets-cfd-list__header-compare-accounts'>
+                            <WalletText size='xl' weight='bold'>
+                                CFDs
+                            </WalletText>
+                            <WalletButton
+                                onClick={() => {
+                                    history.push('/wallets/compare-accounts');
+                                }}
+                                size='sm'
+                                text='Compare accounts'
+                                variant='ghost'
+                            />
+                        </div>
+                        <WalletText size='md'>
+                            Trade with leverage and tight spreads for better returns on trades.{' '}
+                            <a
+                                className='wallets-cfd-list__header-description__link'
+                                href='https://deriv.com/trade-types/cfds/'
+                                rel='noopener noreferrer'
+                                target='_blank'
+                            >
+                                Learn more
+                            </a>
+                        </WalletText>
+                    </div>
                 )}
-                <div className='wallets-cfd-list__header-description'>
-                    <h1>
-                        Trade with leverage and tight spreads for better returns on trades.{' '}
-                        <a
-                            className='wallets-cfd-list__header-description__link'
-                            href='https://deriv.com/trade-types/cfds/'
-                            rel='noopener noreferrer'
-                            target='_blank'
-                        >
-                            Learn more
-                        </a>
-                    </h1>
-                </div>
             </section>
             {activeWallet?.currency_config?.is_crypto ? (
                 <CFDPlatformsListEmptyState />

@@ -183,13 +183,15 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
 
     const { api_tokens, is_loading, is_success, error_message, is_overlay_shown } = state;
 
-    if (is_loading || is_switching) {
-        return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    }
-
-    if (error_message) {
-        return <LoadErrorMessage error_message={error_message} />;
-    }
+    // const context_value = React.useMemo(() => {
+    //     return {
+    //         api_tokens,
+    //         toggleOverlay,
+    //         deleteToken,
+    //         footer_ref,
+    //         overlay_ref,
+    //     };
+    // }, [api_tokens]);
 
     const context_value = {
         api_tokens,
@@ -198,6 +200,14 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
         footer_ref,
         overlay_ref,
     };
+
+    if (is_loading || is_switching) {
+        return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    }
+
+    if (error_message) {
+        return <LoadErrorMessage error_message={error_message} />;
+    }
 
     return (
         <React.Fragment>

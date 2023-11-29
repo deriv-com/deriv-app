@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
-import { useCtraderServiceToken, useDerivezServiceToken } from '@deriv/api';
+import { useCtraderServiceToken } from '@deriv/api';
 import { WalletButton, WalletText } from '../../../../../components/Base';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import CTraderLabelIcon from '../../../../../public/images/ctrader-label.svg';
-import DerivEZLabelIcon from '../../../../../public/images/derivez-label.svg';
 import DerivXLabelIcon from '../../../../../public/images/derivx-label.svg';
 import LinuxIcon from '../../../../../public/images/ic-linux-logo.svg';
 import MacOSIcon from '../../../../../public/images/ic-macos-logo.svg';
@@ -48,7 +47,6 @@ const AppToContentMapper = {
 
 const PlatformToLabelIconMapper = {
     ctrader: <CTraderLabelIcon />,
-    derivez: <DerivEZLabelIcon />,
     dxtrade: <DerivXLabelIcon />,
 };
 
@@ -62,7 +60,6 @@ type TMT5TradeLinkProps = {
 const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform, webtraderUrl = '' }) => {
     const content = AppToContentMapper[app];
     const { data: ctraderToken } = useCtraderServiceToken();
-    const { data: derivezToken } = useDerivezServiceToken();
 
     const onClickWebTerminal = () => {
         const { isStaging, isTestLink } = getPlatformFromUrl();
@@ -74,10 +71,6 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
             case 'ctrader':
                 url = isTestLink || isStaging ? 'https://ct-uat.deriv.com' : 'https://ct.deriv.com';
                 if (ctraderToken) url += `?token=${ctraderToken}`;
-                break;
-            case 'derivez':
-                url = 'https://dqwsqxuu0r6t9.cloudfront.net';
-                if (derivezToken) url += `?token=${derivezToken}`;
                 break;
             default:
                 url = '';
@@ -96,7 +89,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                 )}
                 {platform !== 'mt5' && app !== 'ctrader' && (
                     <WalletText size='sm'>
-                        Run {PlatformDetails[platform || 'derivez'].title} on your browser
+                        Run {PlatformDetails[platform || 'ctrader'].title} on your browser
                     </WalletText>
                 )}
             </div>
@@ -110,7 +103,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
             )}
             {platform !== 'mt5' && app !== 'ctrader' && (
                 <button className='wallets-mt5-trade-link__platform' onClick={onClickWebTerminal}>
-                    {PlatformToLabelIconMapper[platform || 'derivez']}
+                    {PlatformToLabelIconMapper[platform || 'ctrader']}
                     <WalletText color='white' size='xs' weight='bold'>
                         Web terminal
                     </WalletText>

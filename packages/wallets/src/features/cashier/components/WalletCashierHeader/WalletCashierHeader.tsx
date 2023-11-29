@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount, useActiveWalletBalance } from '@deriv/api';
 import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useDevice from '../../../../hooks/useDevice';
@@ -66,6 +66,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
+    const { displayBalance } = useActiveWalletBalance();
     const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
 
     useEffect(() => {
@@ -104,7 +105,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                             )}
                         </div>
                         <WalletText color={activeWallet?.is_virtual ? 'white' : 'general'} size='xl' weight='bold'>
-                            {activeWallet?.display_balance}
+                            {displayBalance}
                         </WalletText>
                     </div>
                     <div className='wallets-cashier-header__top-right-info'>

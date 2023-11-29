@@ -1,10 +1,9 @@
 import React from 'react';
+import CTraderIcon from '../../public/images/ctrader.svg';
+import DerivXIcon from '../../public/images/derivx.svg';
 import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
 import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
-import DerivXIcon from '../../public/images/derivx.svg';
-import DerivEZIcon from '../../public/images/derivez.svg';
-import CTraderIcon from '../../public/images/ctrader.svg';
 
 export const MarketTypeDetails = {
     all: {
@@ -31,11 +30,6 @@ export const PlatformDetails = {
         link: 'https://onelink.to/hyqpv7',
         title: 'Deriv cTrader',
     },
-    derivez: {
-        icon: <DerivEZIcon />,
-        link: 'https://onelink.to/bkdwkd',
-        title: 'Deriv EZ',
-    },
     dxtrade: {
         icon: <DerivXIcon />,
         link: 'https://onelink.to/grmtyx',
@@ -47,3 +41,15 @@ export const PlatformDetails = {
         title: 'Deriv MT5',
     },
 };
+
+export const companyNamesAndUrls = {
+    bvi: { name: 'Deriv (BVI) Ltd', shortcode: 'BVI', tncUrl: 'tnc/deriv-(bvi)-ltd.pdf' },
+    labuan: { name: 'Deriv (FX) Ltd', shortcode: 'Labuan', tncUrl: 'tnc/deriv-(fx)-ltd.pdf' },
+    maltainvest: {
+        name: 'Deriv Investments (Europe) Limited',
+        shortcode: 'Maltainvest',
+        tncUrl: 'tnc/deriv-investments-(europe)-limited.pdf',
+    },
+    svg: { name: 'Deriv (SVG) LLC', shortcode: 'SVG', tncUrl: 'tnc/deriv-(svg)-llc.pdf' },
+    vanuatu: { name: 'Deriv (V) Ltd', shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
+} as const;

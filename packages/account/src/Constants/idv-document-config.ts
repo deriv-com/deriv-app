@@ -93,6 +93,7 @@ const getIDVDocumentConfig = () => ({
         national_id_no_photo: {
             new_display_name: localize('National ID (No Photo)'),
             example_format: 'CM12345678PE1D',
+            additional_document_example_format: '0123456789',
         },
     },
     zw: {

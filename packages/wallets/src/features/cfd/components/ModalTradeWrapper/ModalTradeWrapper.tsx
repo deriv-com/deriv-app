@@ -1,14 +1,14 @@
 import React, { FC, PropsWithChildren } from 'react';
+import QRCode from 'qrcode.react';
+import { WalletText } from '../../../../components/Base';
 import { ModalStepWrapper } from '../../../../components/Base/ModalStepWrapper';
+import useDevice from '../../../../hooks/useDevice';
 import InstallationAppleIcon from '../../../../public/images/ic-installation-apple.svg';
 import InstallationGoogleIcon from '../../../../public/images/ic-installation-google.svg';
 import InstallationHuaweiIcon from '../../../../public/images/ic-installation-huawei.svg';
-import './ModalTradeWrapper.scss';
-import { WalletText } from '../../../../components/Base';
-import QRCode from 'qrcode.react';
-import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
+import './ModalTradeWrapper.scss';
 
 const LinksMapper: Record<
     TPlatforms.All,
@@ -21,11 +21,6 @@ const LinksMapper: Record<
     ctrader: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
         ios: 'https://apps.apple.com/cy/app/ctrader/id767428811',
-    },
-    derivez: {
-        android: 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1',
-        huawei: 'https://appgallery.huawei.com/#/app/C103801913',
-        ios: 'https://apps.apple.com/my/app/deriv-go/id1550561298',
     },
     dxtrade: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.dx',
@@ -58,7 +53,8 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                 return (
                     <div className='wallets-modal-trade-wrapper__footer'>
                         <WalletText align='center' size='sm' weight='bold'>
-                            Download Deriv MT5 on your phone to trade with the Deriv MT5 account
+                            Download {PlatformDetails[platform].title} on your phone to trade with the{' '}
+                            {PlatformDetails[platform].title} account
                         </WalletText>
                         <div className='wallets-modal-trade-wrapper__footer-installations'>
                             <div className='wallets-modal-trade-wrapper__footer-installations-icons'>
@@ -72,7 +68,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                                 <div className='wallets-modal-trade-wrapper__footer-installations-qr'>
                                     <QRCode size={80} value={PlatformDetails[platform].link} />
                                     <WalletText align='center' size='xs'>
-                                        Scan the QR code to download Deriv {PlatformDetails[platform].title}
+                                        Scan the QR code to download {PlatformDetails[platform].title}
                                     </WalletText>
                                 </div>
                             )}

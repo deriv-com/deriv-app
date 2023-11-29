@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
-import { getDecimalPlaces, isDesktop } from '@deriv/shared';
+import { isDesktop } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay';
@@ -35,29 +35,29 @@ const Trade = observer(() => {
     const {
         form_components,
         getFirstOpenMarket,
-        should_show_active_symbols_loading,
+        has_barrier,
+        is_accumulator,
         is_chart_loading,
         is_market_closed,
+        is_synthetics_available,
+        is_synthetics_trading_market_available,
         is_trade_enabled,
+        is_turbos,
+        is_vanilla,
         onChange,
         onMount,
         onUnmount,
         prepareTradeStore,
         setContractTypes,
-        setMobileDigitView,
         setIsDigitsWidgetActive,
+        setMobileDigitView,
+        should_show_active_symbols_loading,
         show_digits_stats,
-        is_accumulator,
         symbol,
-        is_synthetics_available,
-        is_synthetics_trading_market_available,
-        is_turbos,
-        is_vanilla,
     } = useTraderStore();
     const {
         notification_messages_ui: NotificationMessages,
         has_only_forward_starting_contracts: is_market_unavailable_visible,
-        should_show_multipliers_onboarding,
         is_dark_mode_on: is_dark_theme,
         is_mobile,
     } = ui;
@@ -114,11 +114,11 @@ const Trade = observer(() => {
 
             onChange({ target: { name: 'contract_type', value: 'multiplier' } });
         };
-        if (should_show_multipliers_onboarding && !is_chart_loading && (is_synthetics_available || !is_market_closed)) {
+        if (!is_chart_loading && (is_synthetics_available || !is_market_closed)) {
             selectMultipliers();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [should_show_multipliers_onboarding, is_chart_loading]);
+    }, [is_chart_loading]);
 
     const bottomWidgets = React.useCallback(({ digits: d, tick: t }) => {
         return <BottomWidgetsMobile digits={d} tick={t} setTick={setTick} setDigits={setDigits} />;
@@ -212,6 +212,7 @@ const Trade = observer(() => {
                                 charts_ref={charts_ref}
                                 bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
                                 is_accumulator={is_accumulator}
+                                has_barrier={has_barrier}
                             />
                         </SwipeableWrapper>
                     </MobileWrapper>
@@ -273,7 +274,7 @@ const ChartMarkers = observer(config => {
 });
 
 const ChartTrade = observer(props => {
-    const { is_accumulator, end_epoch, topWidgets, charts_ref } = props;
+    const { is_accumulator, has_barrier, end_epoch, topWidgets, charts_ref } = props;
     const { client, ui, common, contract_trade, portfolio } = useStore();
     const {
         accumulator_barriers_data,
@@ -316,6 +317,7 @@ const ChartTrade = observer(props => {
         position: is_chart_layout_default ? 'bottom' : 'left',
         theme: is_dark_mode_on ? 'dark' : 'light',
         ...(is_accumulator ? { whitespace: 190, minimumLeftBars: is_mobile ? 3 : undefined } : {}),
+        ...(has_barrier ? { whitespace: 110 } : {}),
     };
 
     const { current_spot, current_spot_time } = accumulator_barriers_data || {};
@@ -424,10 +426,7 @@ const ChartTrade = observer(props => {
                     current_spot={current_spot}
                     current_spot_time={current_spot_time}
                     has_crossed_accu_barriers={has_crossed_accu_barriers}
-                    should_show_profit_text={
-                        !!accumulator_contract_barriers_data.accumulators_high_barrier &&
-                        getDecimalPlaces(currency) <= 2
-                    }
+                    should_show_profit_text={!!accumulator_contract_barriers_data.accumulators_high_barrier}
                     symbol={symbol}
                     is_beta_chart={is_beta_chart}
                 />

@@ -20,6 +20,8 @@
     &__values {
         display: flex;
         align-items: center;
+        gap: 0.8rem;
+        padding-right: 0.8rem;
 
         & .wallets-text {
             font-family: 'Courier', serif;
@@ -32,7 +34,6 @@
     }
 
     &__edit {
-        margin: 0 0.5rem;
         cursor: pointer;
     }
 }

@@ -1,5 +1,6 @@
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
+import { MARTINGALE } from './strategy-descriptions/martingale-description';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [
@@ -161,6 +162,7 @@ export const STRATEGIES: TStrategies = {
         description: localize(
             'The Martingale strategy multiplies the stake by the chosen multiplier after every losing trade. The stake for the next trade resets to the initial stake after a successful trade. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake.'
         ),
+        long_description: MARTINGALE,
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, LABEL_DURATION, DURATION_TYPE, DURATION],
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_SIZE, SIZE, CHECKBOX_MAX_STAKE, MAX_STAKE],

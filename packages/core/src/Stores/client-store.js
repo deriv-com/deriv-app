@@ -2266,13 +2266,13 @@ export default class ClientStore extends BaseStore {
             const redirect_url = sessionStorage.getItem('redirect_url');
             const is_next_wallet_enabled = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
 
-            const wallet_redirect_url = is_next_wallet_enabled ? routes.wallets : routes.traders_hub;
+            const target_url = is_next_wallet_enabled ? routes.wallets : routes.traders_hub;
 
             if (
                 (redirect_url?.endsWith('/') || redirect_url?.endsWith(routes.bot)) &&
                 (isTestLink() || isProduction() || isLocal() || isStaging() || isTestDerivApp())
             ) {
-                window.history.replaceState({}, document.title, wallet_redirect_url);
+                window.history.replaceState({}, document.title, target_url);
             } else {
                 window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
             }

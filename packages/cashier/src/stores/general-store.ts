@@ -151,12 +151,7 @@ export default class GeneralStore extends BaseStore {
         const { is_from_derivgo, routeTo } = common;
         const { account_transfer, onramp, payment_agent, transaction_history } = modules.cashier;
 
-        if (!client.is_logged_in) {
-            return;
-        }
-
-        // avoid calling this again
-        if (this.is_populating_values) {
+        if (!client.is_logged_in || this.is_populating_values) {
             return;
         }
 

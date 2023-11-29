@@ -1710,6 +1710,118 @@ type TPrivateSocketEndpoints = {
             req_id?: number;
         };
     };
+    trading_platform_deposit: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_deposit: 1;
+            /**
+             * Amount to deposit (in the currency of from_wallet).
+             */
+            amount?: number;
+            /**
+             * Wallet account to transfer money from.
+             */
+            from_account?: string;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'dxtrade' | 'derivez' | 'ctrader';
+            /**
+             * Trading account login to deposit money to.
+             */
+            to_account: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            trading_platform_deposit?:
+                | {
+                      /**
+                       * The reference number for the related deposit to the trading account
+                       */
+                      transaction_id?: number;
+                      [k: string]: unknown;
+                  }
+                | 1;
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'trading_platform_deposit';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
+    mt5_deposit: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            mt5_deposit: 1;
+            /**
+             * Amount to deposit (in the currency of from_binary); min = $1 or an equivalent amount, max = $20000 or an equivalent amount
+             */
+            amount?: number;
+            /**
+             * Binary account loginid to transfer money from
+             */
+            from_binary?: string;
+            /**
+             * MT5 account login to deposit money to
+             */
+            to_mt5: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            mt5_deposit?: number;
+            /**
+             * Withdrawal reference ID of Binary account
+             */
+            binary_transaction_id?: number;
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'mt5_deposit';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
 };
 
 type TSocketEndpoints = {

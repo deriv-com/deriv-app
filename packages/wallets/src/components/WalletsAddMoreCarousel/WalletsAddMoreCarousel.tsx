@@ -53,7 +53,7 @@ const WalletsAddMoreCarousel: React.FC = () => {
                 </WalletText>
             </div>
             <div className='wallets-add-more__carousel' data-testid='dt-wallets-add-more' ref={walletsAddMoreEmblaRef}>
-                <div className='wallets-add-more__carousel-wrapper'>
+                <div className='wallets-add-more__carousel-wrapper' id='wallets_add_more_carousel_wrapper'>
                     {(isLoading || isAuthorizeLoading) &&
                         Array.from({ length: 8 }).map((_, idx) => (
                             <WalletsAddMoreLoader key={`wallets-add-more-loader-${idx}`} />

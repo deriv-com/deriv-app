@@ -55,6 +55,15 @@ describe('<WithdrawalCryptoForm />', () => {
         );
     };
 
+    it('should render arrow left icon when the user focused on the left input', () => {
+        renderWithdrawalCryptoForm();
+
+        const el = screen.getByTestId('dt_converter_to_amount_input');
+        fireEvent.focus(el);
+
+        expect(screen.getByTestId('dti_arrow_left_bold')).toBeInTheDocument();
+    });
+
     it('component and header should be rendered', () => {
         renderWithdrawalCryptoForm();
 

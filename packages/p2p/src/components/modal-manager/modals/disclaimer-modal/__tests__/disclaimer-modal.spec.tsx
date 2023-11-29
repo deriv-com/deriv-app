@@ -33,6 +33,7 @@ describe('DisclaimerModal', () => {
         document.body.appendChild(modal_root_el);
         Object.defineProperty(window, 'localStorage', {
             value: {
+                getItem: jest.fn(),
                 setItem: jest.fn(),
             },
         });

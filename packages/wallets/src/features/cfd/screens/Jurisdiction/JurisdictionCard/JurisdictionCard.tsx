@@ -4,7 +4,6 @@ import { WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
-import NotApplicableIcon from '../../../../../public/images/ic-not-applicable.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
 import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
@@ -26,7 +25,7 @@ type TJurisdictionCardProps = {
 type TVerificationDocumentsMapper = {
     [key: string]: {
         category: 'poa' | 'poi' | null;
-        icon: JSX.Element;
+        icon?: JSX.Element;
     };
 };
 
@@ -41,7 +40,6 @@ const verificationDocumentsMapper: TVerificationDocumentsMapper = {
     },
     notApplicable: {
         category: null,
-        icon: <NotApplicableIcon />,
     },
     selfie: {
         category: 'poi',

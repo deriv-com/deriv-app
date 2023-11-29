@@ -1,15 +1,16 @@
 import React, { FC, useEffect } from 'react';
 import { useModal } from '../../../../components/ModalProvider';
-import { TMarketTypes, TPlatforms } from '../../../../types';
+import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { ModalTradeWrapper } from '../../components';
 import { MT5TradeScreen } from '../../screens';
 
 type TMT5TradeModalProps = {
     marketType?: TMarketTypes.All;
+    mt5Account?: THooks.MT5AccountsList;
     platform: TPlatforms.All;
 };
 
-const MT5TradeModal: FC<TMT5TradeModalProps> = ({ marketType, platform }) => {
+const MT5TradeModal: FC<TMT5TradeModalProps> = ({ marketType, mt5Account, platform }) => {
     const { setModalState } = useModal();
     useEffect(() => {
         setModalState('marketType', marketType);
@@ -20,7 +21,7 @@ const MT5TradeModal: FC<TMT5TradeModalProps> = ({ marketType, platform }) => {
 
     return (
         <ModalTradeWrapper platform={platform}>
-            <MT5TradeScreen />
+            <MT5TradeScreen mt5Account={mt5Account} />
         </ModalTradeWrapper>
     );
 };

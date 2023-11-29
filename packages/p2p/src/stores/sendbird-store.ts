@@ -53,6 +53,7 @@ export default class SendbirdStore extends BaseStore {
             createChatForNewOrder: action.bound,
             onMessagesScroll: action.bound,
             replaceChannelMessage: action.bound,
+            sendFile: action.bound,
             setActiveChatChannel: action.bound,
             setChatChannelUrl: action.bound,
             setChatInfo: action.bound,
@@ -295,7 +296,7 @@ export default class SendbirdStore extends BaseStore {
 
     onMessagesScroll() {
         if (this.scroll_debounce) {
-            clearInterval(this.scroll_debounce);
+            clearTimeout(this.scroll_debounce);
         }
 
         this.scroll_debounce = setTimeout(() => {
@@ -333,6 +334,10 @@ export default class SendbirdStore extends BaseStore {
 
     registerEventListeners() {
         const markMessagesAsReadCheckScroll = () => {
+            if (this.scroll_debounce) {
+                return null;
+            }
+
             (async () => {
                 await this.markMessagesAsRead(true);
             })();

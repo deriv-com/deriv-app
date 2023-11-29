@@ -83,7 +83,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 ];
             } else if (location === routes.traders_hub || is_trading_hub_category) {
                 primary_routes = [routes.account, routes.cashier];
-            } else if (location === routes.wallets) {
+            } else if (location === routes.wallets || is_next_wallet_enabled) {
                 primary_routes = [routes.reports, routes.account];
             } else {
                 primary_routes = [routes.reports, routes.account, routes.cashier];
@@ -96,7 +96,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
 
         return () => clearTimeout(timeout);
-    }, [is_appstore, account_status, should_allow_authentication, is_trading_hub_category]);
+    }, [is_appstore, account_status, should_allow_authentication, is_trading_hub_category, is_next_wallet_enabled]);
 
     const toggleDrawer = React.useCallback(() => {
         if (is_mobile_language_menu_open) setMobileLanguageMenuOpen(false);

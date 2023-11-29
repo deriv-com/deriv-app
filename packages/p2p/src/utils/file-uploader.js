@@ -1,5 +1,7 @@
 import { localize } from 'Components/i18next';
 
+export const accepted_file_types = 'image/png, image/jpeg, image/jpg, application/pdf';
+
 export const convertToMB = bytes => bytes / (1024 * 1024);
 
 export const getPotSupportedFiles = filename => /^.*\.(png|PNG|jpg|JPG|jpeg|JPEG|pdf|PDF)$/.test(filename);

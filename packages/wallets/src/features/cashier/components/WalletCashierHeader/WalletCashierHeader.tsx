@@ -22,22 +22,22 @@ const realAccountTabs = [
     {
         icon: <IcCashierDeposit />,
         path: 'deposit',
-        text: i18n.t('deposit'),
+        text: i18n.t('Deposit'),
     },
     {
         icon: <IcCashierWithdrawal />,
         path: 'withdraw',
-        text: i18n.t('withdraw'),
+        text: i18n.t('Withdraw'),
     },
     {
         icon: <IcCashierTransfer />,
         path: 'transfer',
-        text: i18n.t('transfer'),
+        text: i18n.t('Transfer'),
     },
     {
         icon: <IcCashierStatement />,
         path: 'transactions',
-        text: i18n.t('transactions'),
+        text: i18n.t('Transactions'),
     },
 ] as const;
 
@@ -45,17 +45,17 @@ const virtualAccountTabs = [
     {
         icon: <IcCashierTransfer />,
         path: 'transfer',
-        text: i18n.t('transactions'),
+        text: i18n.t('Transfer'),
     },
     {
         icon: <IcCashierStatement />,
         path: 'transactions',
-        text: i18n.t('transactions'),
+        text: i18n.t('Transactions'),
     },
     {
         icon: <ResetBalance />,
         path: 'reset-balance',
-        text: i18n.t('reset.balance'),
+        text: i18n.t('Reset Balance'),
     },
 ] as const;
 

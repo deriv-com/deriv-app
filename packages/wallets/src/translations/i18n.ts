@@ -1,5 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import x from './messages.json';
 
 const DEFAULT_LANGUAGE = 'EN';
 
@@ -31,22 +32,10 @@ export const getCurrentLanguage = () => currentLanguage;
 
 const resources = {
     EN: {
-        translations: {
-            deposit: 'Deposit',
-            'reset.balance': 'Reset balance',
-            transactions: 'Transactions',
-            transfer: 'Transfer',
-            withdraw: 'Withdraw',
-        },
+        translations: x,
     },
     FR: {
-        translations: {
-            deposit: 'Dépôt',
-            'reset.balance': 'Réinitialiser le solde',
-            transactions: 'Transactions',
-            transfer: 'Transfert',
-            withdraw: 'Retirer',
-        },
+        translations: x,
     },
 };
 

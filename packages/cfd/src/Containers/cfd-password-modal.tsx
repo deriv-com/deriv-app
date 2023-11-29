@@ -852,7 +852,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. '
+                i18n_default_text='Congratulations, you have successfully created your {{category}} Deriv <0>{{platform}}</0> <1>{{type}}</1> account. '
                 values={{
                     type: accountTypes(),
                     platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),

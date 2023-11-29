@@ -61,6 +61,7 @@ const AccountActions = React.memo(
                                 enableApp={enableApp}
                                 is_eu={is_eu}
                                 is_virtual={is_virtual}
+                                is_mobile
                                 currency={currency}
                                 country_standpoint={country_standpoint}
                                 is_dialog_on={is_acc_switcher_on}
@@ -139,7 +140,7 @@ const AccountActions = React.memo(
 AccountActions.displayName = 'AccountActions';
 
 AccountActions.propTypes = {
-    acc_switcher_disabled_message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    acc_switcher_disabled_message: PropTypes.string,
     account_type: PropTypes.string,
     balance: PropTypes.any,
     currency: PropTypes.any,

@@ -16,13 +16,4 @@
     --zindex-modal: 6;
     --zindex-draggable-modal: 7;
     --zindex-snackbar: 8;
-
-    &__account-switcher-disabled-message {
-        @include tablet-down {
-            display: block;
-            width: 40vw;
-            margin: -1px;
-            padding: 1rem;
-        }
-    }
 }

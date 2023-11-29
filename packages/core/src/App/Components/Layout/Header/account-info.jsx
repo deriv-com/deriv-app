@@ -7,11 +7,11 @@ import { Localize } from '@deriv/translations';
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import { getCurrencyDisplayCode } from '@deriv/shared';
+import { getCurrencyDisplayCode, isBot } from '@deriv/shared';
 
-const AccountInfoWrapper = ({ is_disabled, disabled_message, children }) =>
+const AccountInfoWrapper = ({ is_disabled, is_mobile, disabled_message, children }) =>
     is_disabled && disabled_message ? (
-        <Popover alignment='left' message={disabled_message} zIndex={99999}>
+        <Popover alignment={isBot() && is_mobile ? 'bottom' : 'left'} message={disabled_message} zIndex={99999}>
             {children}
         </Popover>
     ) : (
@@ -56,13 +56,18 @@ const AccountInfo = ({
     is_virtual,
     toggleDialog,
     is_disabled,
+    is_mobile,
 }) => {
     const currency_lower = currency?.toLowerCase();
 
     return (
         <div className='acc-info__wrapper'>
             <div className='acc-info__separator' />
-            <AccountInfoWrapper is_disabled={is_disabled} disabled_message={acc_switcher_disabled_message}>
+            <AccountInfoWrapper
+                is_disabled={is_disabled}
+                disabled_message={acc_switcher_disabled_message}
+                is_mobile={is_mobile}
+            >
                 <div
                     data-testid='dt_acc_info'
                     id='dt_core_account-info_acc-info'
@@ -146,7 +151,7 @@ const AccountInfo = ({
 };
 
 AccountInfo.propTypes = {
-    acc_switcher_disabled_message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+    acc_switcher_disabled_message: PropTypes.string,
     account_type: PropTypes.string,
     balance: PropTypes.string,
     currency: PropTypes.string,
@@ -157,6 +162,7 @@ AccountInfo.propTypes = {
     is_disabled: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_virtual: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     loginid: PropTypes.string,
     toggleDialog: PropTypes.func,
 };

@@ -201,10 +201,8 @@ export default class RunPanelStore {
             return;
         }
 
-        ui.setAccountSwitcherDisabledMessage(
-            <span className='bot__account-switcher-disabled-message'>
-                <Localize i18n_default_text='Account switching is disabled while your bot is running. Please stop your bot before switching accounts.' />
-            </span>
+        localize(
+            'Account switching is disabled while your bot is running. Please stop your bot before switching accounts.'
         );
         runInAction(() => {
             this.setIsRunning(true);

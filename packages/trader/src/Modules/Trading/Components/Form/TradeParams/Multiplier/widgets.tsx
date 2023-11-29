@@ -116,20 +116,19 @@ const RadioGroupOptionsWidget = ({
                     <span className='mobile-widget__item-value'>{displayed_trade_param}</span>
                 </div>
                 {!!tooltip_message && (
-                    <span
+                    <Popover
+                        alignment='left'
                         className='mobile-widget__item-tooltip'
-                        onClick={e => e.stopPropagation()}
-                        onKeyDown={e => e.stopPropagation()}
-                    >
-                        <Popover
-                            alignment='left'
-                            classNameBubble='mobile-widget__item-popover'
-                            icon='info'
-                            is_bubble_hover_enabled
-                            zIndex='9999'
-                            message={tooltip_message}
-                        />
-                    </span>
+                        classNameBubble='mobile-widget__item-popover'
+                        icon='info'
+                        is_bubble_hover_enabled
+                        message={tooltip_message}
+                        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                            e.stopPropagation();
+                        }}
+                        should_toggle_on_target_click
+                        zIndex='9999'
+                    />
                 )}
                 {should_show_new_label && (
                     <Text

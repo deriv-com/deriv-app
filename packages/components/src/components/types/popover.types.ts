@@ -20,11 +20,11 @@ export type TPopoverProps = {
     message: React.ReactNode;
     onBubbleOpen?: () => void;
     onBubbleClose?: () => void;
-    onClick?: () => void;
+    onClick?: React.MouseEventHandler<HTMLDivElement>;
     should_disable_pointer_events?: boolean;
     should_show_cursor?: boolean;
+    should_toggle_on_target_click?: boolean;
     zIndex?: string;
-    window_border?: number;
     data_testid?: string;
     arrow_styles?: React.CSSProperties;
 };

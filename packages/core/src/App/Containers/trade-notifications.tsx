@@ -46,7 +46,7 @@ const TradeNotifications = observer(({ show_trade_notifications }: { show_trade_
                                     <Money
                                         amount={is_open ? buy_price : profit}
                                         currency={currency}
-                                        has_sign
+                                        has_sign={!is_open}
                                         should_format
                                         show_currency
                                     />

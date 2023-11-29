@@ -3,9 +3,20 @@ import general from './mocks/general';
 import auth from './mocks/auth';
 import residentsList from './mocks/general/residentsList';
 import statesList from './mocks/general/statesList';
+import { DEFAULT_ACCOUNTS } from './mocks/auth/authorize';
+import generateOauthLoginFromAccounts from './utils/mocks/generateOauthLoginFromAccounts';
 
 async function main() {
-    await createMockServer({}, {}, [general, auth, residentsList, statesList], { port: 10443 });
+    const state = {
+        accounts: DEFAULT_ACCOUNTS,
+    };
+
+    const url = generateOauthLoginFromAccounts('https://localhost:8443', state.accounts);
+
+    // eslint-disable-next-line no-console
+    console.log(`You can login at:\n${url}`);
+
+    await createMockServer(state, {}, [general, auth, residentsList, statesList], { port: 10443 });
     process.stdout.write('Listening on localhost:10443');
 }
 

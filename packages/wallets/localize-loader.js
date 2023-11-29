@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-/* eslint-disable sort-keys */
 import fs from 'fs';
 
 const parser = require('@babel/parser');
@@ -18,7 +16,7 @@ const values = new Set();
 let counter = 0;
 
 module.exports = async function (source) {
-    let should_gen = false;
+    let shouldGen = false;
     const ast = parser.parse(source, {
         plugins: ['jsx', 'typescript'],
         sourceType: 'module',
@@ -34,7 +32,7 @@ module.exports = async function (source) {
             ) {
                 const value = path.node.arguments[0].value;
                 values.add(value);
-                should_gen = true;
+                shouldGen = true;
                 let key = generateKey(path.node.arguments[0].value);
                 if (messages.has(key)) {
                     key += `-${counter}`;
@@ -47,9 +45,26 @@ module.exports = async function (source) {
                 messages.set(key, value);
             }
         },
+        JSXIdentifier(path) {
+            const value = path.parent?.attributes?.find(attr => attr.name?.name === 'defaults')?.value?.value;
+            if (path.node.name === 'Trans' && !values.has(value)) {
+                values.add(value);
+                shouldGen = true;
+                let key = generateKey(value);
+                if (messages.has(key)) {
+                    key += `-${counter}`;
+                    counter += 1;
+                }
+                path.parent.attributes.find(attr => attr.name.name === 'defaults').value = {
+                    type: 'StringLiteral',
+                    value: key,
+                };
+                messages.set(key, value);
+            }
+        },
     });
 
-    if (should_gen) {
+    if (shouldGen) {
         fs.writeFileSync('./src/translations/messages.json', JSON.stringify(Object.fromEntries(messages)));
         return generate(ast).code;
     }

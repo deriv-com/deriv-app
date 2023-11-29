@@ -133,7 +133,7 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
         case CFD_PLATFORMS.DXTRADE:
             return is_demo ? localize('Deriv X Demo') : localize('Deriv X');
         case CFD_PLATFORMS.CTRADER:
-            return is_demo ? localize('cTrader Demo') : localize('cTrader');
+            return is_demo ? localize('Deriv cTrader Demo') : localize('Deriv cTrader');
         default:
             return is_demo ? localize('CFDs Demo') : localize('CFDs');
     }
@@ -143,9 +143,10 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
 const getPlatformLabel = (shortcode?: string) => {
     switch (shortcode) {
         case CFD_PLATFORMS.DXTRADE:
-        case CFD_PLATFORMS.CTRADER:
         case CFD_PLATFORMS.CFDS:
             return localize('Other CFDs Platform');
+        case CFD_PLATFORMS.CTRADER:
+            return localize('Deriv cTrader');
         case CFD_PLATFORMS.MT5:
         default:
             return localize('MT5 Platform');
@@ -153,8 +154,9 @@ const getPlatformLabel = (shortcode?: string) => {
 };
 
 // Object to map the platform label
-const platfromsHeaderLabel = {
+const platformsHeaderLabel = {
     mt5: localize('MT5 Platform'),
+    ctrader: localize('Deriv cTrader'),
     other_cfds: localize('Other CFDs Platform'),
 };
 
@@ -184,9 +186,10 @@ const getMarketType = (trading_platforms: TModifiedTradingPlatformAvailableAccou
 // Get the color of Header based on the platform
 const getHeaderColor = (shortcode: string) => {
     switch (shortcode) {
-        case platfromsHeaderLabel.other_cfds:
+        case platformsHeaderLabel.other_cfds:
+        case platformsHeaderLabel.ctrader:
             return 'green';
-        case platfromsHeaderLabel.mt5:
+        case platformsHeaderLabel.mt5:
         default:
             return 'blue';
     }
@@ -452,7 +455,7 @@ export {
     dxtrade_data,
     ctrader_data,
     getHeaderColor,
-    platfromsHeaderLabel,
+    platformsHeaderLabel,
     getAccountVerficationStatus,
     isMt5AccountAdded,
     isDxtradeAccountAdded,

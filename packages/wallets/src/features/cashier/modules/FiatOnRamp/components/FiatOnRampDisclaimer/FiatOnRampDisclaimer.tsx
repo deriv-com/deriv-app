@@ -1,5 +1,5 @@
-import React, { MouseEventHandler, useCallback } from 'react';
-import { useQuery } from '@deriv/api';
+import React, { MouseEventHandler, useCallback, useEffect } from 'react';
+import { useMutation } from '@deriv/api';
 import { WalletButton, WalletText } from '../../../../../../components';
 import './FiatOnRampDisclaimer.scss';
 
@@ -8,9 +8,7 @@ type TFiatOnRampDisclaimer = {
 };
 
 const FiatOnRampDisclaimer: React.FC<TFiatOnRampDisclaimer> = ({ handleDisclaimer }) => {
-    const { data: provider } = useQuery('service_token', {
-        payload: { referrer: window.location.href, service: 'banxa' },
-    });
+    const { data: provider, isLoading, mutate } = useMutation('service_token');
 
     const redirectToBanxa = useCallback(() => {
         const banxaUrl = provider?.service_token?.banxa?.url ?? '';
@@ -22,19 +20,23 @@ const FiatOnRampDisclaimer: React.FC<TFiatOnRampDisclaimer> = ({ handleDisclaime
         }
     }, [provider?.service_token?.banxa?.url]);
 
+    useEffect(() => {
+        mutate({ payload: { referrer: window.location.href, service: 'banxa' } });
+    }, [mutate]);
+
     return (
         <div className='wallets-fiat-onramp-disclaimer'>
-            <WalletText color='prominent' size='md' weight='bold'>
+            <WalletText color='prominent' size='xs' weight='bold'>
                 Disclaimer
             </WalletText>
-            <WalletText size='sm'>
+            <WalletText size='xs'>
                 By clicking <strong>Continue</strong>, you&apos;ll be redirected to Banxa, a third-party payment service
                 provider. Please note that Deriv is not responsible for the content or services provided by Banxa. If
                 you encounter any issues related to Banxa services, you should contact Banxa directly.
             </WalletText>
             <div className='wallets-fiat-onramp-disclaimer__buttons'>
                 <WalletButton color='white' onClick={handleDisclaimer} size='md' text={'Back'} variant='outlined' />
-                <WalletButton onClick={() => redirectToBanxa()} size='md' text={'Continue'} />
+                <WalletButton isLoading={isLoading} onClick={() => redirectToBanxa()} size='md' text={'Continue'} />
             </div>
         </div>
     );

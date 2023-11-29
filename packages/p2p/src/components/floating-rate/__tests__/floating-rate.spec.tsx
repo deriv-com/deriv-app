@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { mockStore, StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
-import FloatingRate from '../floating-rate';
 import { APIProvider } from '@deriv/api';
+import { ExchangeRatesProvider, mockStore, StoreProvider } from '@deriv/stores';
+import FloatingRate from '../floating-rate';
 import { useP2PConfig } from '@deriv/hooks';
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (

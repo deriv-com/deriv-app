@@ -142,6 +142,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
                     is_sell_requested={active_accu_contract?.is_sell_requested}
                     current_stake={indicative}
                     currency={currency}
+                    key={type}
                 />
             );
         }

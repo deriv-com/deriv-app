@@ -1,4 +1,5 @@
 export * from './AccountsList';
+export * from './AppCard';
 export * from './Base';
 export * from './DerivAppsSection';
 export * from './DesktopWalletsList';

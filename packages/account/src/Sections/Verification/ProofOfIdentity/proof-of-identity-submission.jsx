@@ -39,10 +39,11 @@ const POISubmission = observer(
 
         const { client, notifications } = useStore();
 
-        const { account_settings, getChangeableFields } = client;
+        const { account_settings, getChangeableFields, account_status } = client;
         const { refreshNotifications } = notifications;
+        const is_high_risk = account_status.risk_classification === 'high';
 
-        const handleSelectionNext = () => {
+        const handleSelectionNext = (should_show_manual = false) => {
             if (Object.keys(selected_country).length) {
                 const { submissions_left: idv_submissions_left } = idv;
                 const { submissions_left: onfido_submissions_left } = onfido;
@@ -50,9 +51,9 @@ const POISubmission = observer(
                 const is_onfido_supported =
                     selected_country.identity.services.onfido.is_country_supported && selected_country.value !== 'ng';
 
-                if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
+                if (!should_show_manual && is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
                     setSubmissionService(service_code.idv);
-                } else if (Number(onfido_submissions_left) > 0 && is_onfido_supported) {
+                } else if (!should_show_manual && Number(onfido_submissions_left) > 0 && is_onfido_supported) {
                     setSubmissionService(service_code.onfido);
                 } else {
                     setSubmissionService(service_code.manual);
@@ -81,11 +82,12 @@ const POISubmission = observer(
 
         const needs_resubmission = has_require_submission || allow_poi_resubmission;
 
-        const mismatch_status = formatIDVError(idv.last_rejected, idv.status);
+        const mismatch_status = formatIDVError(idv.last_rejected, idv.status, is_high_risk);
 
         const setIdentityService = React.useCallback(
             identity_last_attempt => {
                 const { service, country_code } = identity_last_attempt;
+                setSelectedCountry(getCountryFromResidence(country_code));
                 switch (service) {
                     case service_code.idv:
                     case service_code.onfido: {
@@ -98,7 +100,6 @@ const POISubmission = observer(
                         break;
                     }
                     case service_code.manual: {
-                        setSelectedCountry(getCountryFromResidence(country_code));
                         setSubmissionService(service_code.manual);
                         setSubmissionStatus(submission_status_code.submitting);
                         break;
@@ -114,6 +115,7 @@ const POISubmission = observer(
                 setSelectedCountry,
                 setSubmissionService,
                 setSubmissionStatus,
+                is_idv_disallowed,
             ]
         );
 
@@ -125,7 +127,11 @@ const POISubmission = observer(
                 setIdentityService(identity_last_attempt);
             } else if (
                 mismatch_status &&
-                ![idv_error_statuses.poi_expired, idv_error_statuses.poi_failed].includes(mismatch_status) &&
+                ![
+                    idv_error_statuses.poi_expired,
+                    idv_error_statuses.poi_failed,
+                    idv_error_statuses.poi_high_risk,
+                ].includes(mismatch_status) &&
                 idv.submissions_left > 0
             ) {
                 setSubmissionService(service_code.idv);
@@ -168,9 +174,11 @@ const POISubmission = observer(
                                 handleSubmit={handleViewComplete}
                                 latest_status={identity_last_attempt}
                                 selected_country={selected_country}
+                                handleSelectionNext={handleSelectionNext}
                             />
                         ) : (
                             <IdvDocumentSubmit
+                                handleSelectionNext={handleSelectionNext}
                                 handleViewComplete={handleViewComplete}
                                 handleBack={handleBack}
                                 selected_country={selected_country}
@@ -200,6 +208,7 @@ const POISubmission = observer(
                                 allow_poi_resubmission={allow_poi_resubmission}
                                 handleViewComplete={handleViewComplete}
                                 onfido={onfido}
+                                handleBack={handleBack}
                             />
                         );
                     default:

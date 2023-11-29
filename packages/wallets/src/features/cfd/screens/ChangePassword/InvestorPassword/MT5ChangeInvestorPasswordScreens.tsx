@@ -3,6 +3,7 @@ import { SentEmailContent } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import MT5ChangeInvestorPasswordInputsScreen from './MT5ChangeInvestorPasswordInputsScreen';
 import MT5ChangeInvestorPasswordSavedScreen from './MT5ChangeInvestorPasswordSavedScreen';
+import './MT5ChangeInvestorPasswordScreens.scss';
 
 type TChangeInvestorPasswordScreenIndex = 'emailVerification' | 'introScreen' | 'savedScreen';
 
@@ -13,20 +14,26 @@ const MT5ChangeInvestorPasswordScreens = () => {
 
     switch (activeScreen) {
         case 'savedScreen':
-            return <MT5ChangeInvestorPasswordSavedScreen setNextScreen={hide} />;
+            return (
+                <div className='wallets-change-investor-password-screens__content'>
+                    <MT5ChangeInvestorPasswordSavedScreen setNextScreen={hide} />
+                </div>
+            );
         case 'emailVerification':
             return (
-                <div className='wallets-change-password__sent-email-wrapper'>
+                <div className='wallets-change-investor-password-screens__sent-email-wrapper'>
                     <SentEmailContent description='Please click on the link in the email to reset your password.' />
                 </div>
             );
         case 'introScreen':
         default:
             return (
-                <MT5ChangeInvestorPasswordInputsScreen
-                    sendEmail={() => handleClick('emailVerification')}
-                    setNextScreen={() => handleClick('savedScreen')}
-                />
+                <div className='wallets-change-investor-password-screens__content'>
+                    <MT5ChangeInvestorPasswordInputsScreen
+                        sendEmail={() => handleClick('emailVerification')}
+                        setNextScreen={() => handleClick('savedScreen')}
+                    />
+                </div>
             );
     }
 };

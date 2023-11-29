@@ -8,19 +8,17 @@ type TProps = {
 
 const MT5ChangeInvestorPasswordSavedScreen: React.FC<TProps> = ({ setNextScreen }) => {
     return (
-        <div className='wallets-change-password__content'>
-            <WalletsActionScreen
-                description={
-                    <WalletText align='center' size='sm'>
-                        Your investor password has been changed.
-                    </WalletText>
-                }
-                descriptionSize='sm'
-                icon={<MT5PasswordUpdatedIcon />}
-                renderButtons={() => <WalletButton onClick={setNextScreen} size='lg' text='Okay' />}
-                title='Password saved'
-            />
-        </div>
+        <WalletsActionScreen
+            description={
+                <WalletText align='center' size='sm'>
+                    Your investor password has been changed.
+                </WalletText>
+            }
+            descriptionSize='sm'
+            icon={<MT5PasswordUpdatedIcon />}
+            renderButtons={() => <WalletButton onClick={setNextScreen} size='lg' text='Okay' />}
+            title='Password saved'
+        />
     );
 };
 

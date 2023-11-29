@@ -8,6 +8,7 @@ jest.mock('@deriv/analytics', () => ({
         trackEvent: jest.fn(),
         pageView: jest.fn(),
         reset: jest.fn(),
+        setAttributes: jest.fn(),
     },
 }));
 

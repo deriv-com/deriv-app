@@ -126,7 +126,6 @@ const RadioGroupOptionsWidget = ({
                         onClick={(e: React.MouseEvent<HTMLDivElement>) => {
                             e.stopPropagation();
                         }}
-                        should_toggle_on_target_click
                         zIndex='9999'
                     />
                 )}

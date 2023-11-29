@@ -827,7 +827,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                     <Localize
                         i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
                         values={{
-                            // TODO: remove below condition once deriv x changes are completed
                             type: accountTypes(),
                             platform:
                                 platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : getCFDPlatformLabel(platform),
@@ -852,11 +851,12 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} Deriv <0>{{platform}}</0> <1>{{type}}</1> account. '
+                i18n_default_text='Congratulations, you have successfully created your {{category}} {{deriv}} <0>{{platform}}</0> <1>{{type}}</1> account. '
                 values={{
                     type: accountTypes(),
                     platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
                     category: category_label,
+                    deriv: platform === CFD_PLATFORMS.MT5 ? 'Deriv' : '',
                 }}
                 components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
             />

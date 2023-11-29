@@ -1,15 +1,18 @@
 import React from 'react';
+import classNames from 'classnames';
+import { Field, FieldProps, Formik, FormikProps } from 'formik';
+
 import { Button, Icon, Input, Loading, Text } from '@deriv/components';
-import { useCurrentAccountDetails } from '@deriv/hooks';
+import { useCurrentAccountDetails, useExchangeRate } from '@deriv/hooks';
 import { CryptoConfig, getCurrencyName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import classNames from 'classnames';
-import { Field, FieldProps, Formik, FormikProps } from 'formik';
+
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import PercentageSelector from '../../../components/percentage-selector';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import { TReactChangeEvent } from '../../../types';
+
 import './withdrawal-crypto-form.scss';
 
 type THeaderProps = {
@@ -48,12 +51,13 @@ const Header = ({ currency }: THeaderProps) => {
 };
 
 const WithdrawalCryptoForm = observer(() => {
+    const [arrow_icon_direction, setArrowIconDirection] = React.useState<'right' | 'left'>('right');
     const { client, ui } = useStore();
     const { is_mobile } = ui;
     const {
         balance,
         currency,
-        current_fiat_currency,
+        current_fiat_currency = 'USD',
         verification_code: { payment_withdraw: verification_code },
     } = client;
     const { crypto_fiat_converter, general_store, withdraw } = useCashierStore();
@@ -77,6 +81,16 @@ const WithdrawalCryptoForm = observer(() => {
     } = crypto_fiat_converter;
     const { is_loading, percentage, percentageSelectorSelectionStatus, should_percentage_reset } = general_store;
     const account_details = useCurrentAccountDetails();
+    const { handleSubscription } = useExchangeRate();
+
+    React.useEffect(() => {
+        if (current_fiat_currency && crypto_currency) {
+            const is_arrow_right = arrow_icon_direction === 'right';
+            const base_currency = is_arrow_right ? crypto_currency : current_fiat_currency;
+            const target_currency = is_arrow_right ? current_fiat_currency : crypto_currency;
+            handleSubscription(base_currency, target_currency);
+        }
+    }, [current_fiat_currency, crypto_currency, handleSubscription, arrow_icon_direction]);
 
     React.useEffect(() => {
         onMountWithdraw(verification_code);
@@ -161,10 +175,12 @@ const WithdrawalCryptoForm = observer(() => {
                                 />
                             </div>
                             <CryptoFiatConverter
+                                arrow_icon_direction={arrow_icon_direction}
                                 from_currency={crypto_currency}
                                 onChangeConverterFromAmount={onChangeConverterFromAmount}
                                 onChangeConverterToAmount={onChangeConverterToAmount}
                                 resetConverter={resetConverter}
+                                setArrowIconDirection={setArrowIconDirection}
                                 to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
                                 validateFromAmount={validateWithdrawFromAmount}
                                 validateToAmount={validateWithdrawToAmount}

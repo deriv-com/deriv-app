@@ -9,3 +9,8 @@ export const platformPasswordResetRedirectLink = (platform: TPlatforms.All, isVi
             return isVirtual ? 21 : 20;
     }
 };
+
+export const platformMapping = {
+    trading_platform_dxtrade_password_reset: 'dxtrade',
+    trading_platform_mt5_password_reset: 'mt5',
+};

@@ -6,7 +6,7 @@ import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
-interface WalletPasswordFieldProps extends WalletTextFieldProps {
+export interface WalletPasswordFieldProps extends WalletTextFieldProps {
     password: string;
     shouldDisablePasswordMeter?: boolean;
 }

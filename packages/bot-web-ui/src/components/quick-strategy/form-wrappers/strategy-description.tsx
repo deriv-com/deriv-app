@@ -3,16 +3,11 @@ import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
+import { TDescriptionItem } from '../types';
 
 type TStrategyDescription = {
     formfields: React.ReactNode;
     active_tab: string;
-};
-
-type TDescriptionItem = {
-    content: string[];
-    type: string;
-    src?: string;
 };
 
 const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfields, active_tab }) => {
@@ -37,6 +32,23 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
             case 'text': {
                 return data?.content?.map(text => (
                     <div className='long_description__content' key={text}>
+                        <Text size={is_mobile ? 'xxs' : 'xs'} dangerouslySetInnerHTML={{ __html: text }} />
+                    </div>
+                ));
+            }
+            case 'subtitle_italic':
+                return data?.content?.map(text => (
+                    <div className='long_description__title italic' key={text}>
+                        <Text
+                            size={is_mobile ? 'xxs' : 'xs'}
+                            weight='bold'
+                            dangerouslySetInnerHTML={{ __html: text }}
+                        />
+                    </div>
+                ));
+            case 'text_italic': {
+                return data?.content?.map(text => (
+                    <div className='long_description__content italic' key={text}>
                         <Text size={is_mobile ? 'xxs' : 'xs'} dangerouslySetInnerHTML={{ __html: text }} />
                     </div>
                 ));

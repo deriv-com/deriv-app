@@ -5,15 +5,6 @@ YELLOW='\033[0;33m'
 WHITE='\033[1;37m'
 RESET='\033[0m'
 
-if ! [ -x "$(command -v crowdin)" ]; then
-    if [ -f /usr/local/bin/crowdin-cli.jar ]; then
-        alias crowdin="java -jar /usr/local/bin/crowdin-cli.jar"
-    else
-        echo ${YELLOW}"crowdin-cli not found. Please follow the instructions here: https://support.crowdin.com/cli-tool-v2/#installation"${RESET}
-        exit 1
-    fi
-fi
-
 function message {
     echo ${GREEN}"  >"${RESET} $1
 }
@@ -41,6 +32,15 @@ function retry {
 }
 
 if [ "$NODE_ENV" = "staging" ]; then
+    if ! [ -x "$(command -v crowdin)" ]; then
+        if [ -f /usr/local/bin/crowdin-cli.jar ]; then
+            alias crowdin="java -jar /usr/local/bin/crowdin-cli.jar"
+        else
+            echo "Installing Crowdin CLI..."
+            sudo npm i -g @crowdin/cli
+        fi
+    fi
+
     echo "Running commands for staging environment..."
     message "Uploading source file to Crowdin" &&
     retry crowdin upload sources &&

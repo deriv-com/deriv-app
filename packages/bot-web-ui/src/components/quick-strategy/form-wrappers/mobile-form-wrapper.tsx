@@ -6,6 +6,7 @@ import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
 import '../quick-strategy.scss';
+import { Analytics } from '@deriv/analytics';
 
 type TMobileFormWrapper = {
     children: React.ReactNode;
@@ -17,6 +18,13 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
     const { quick_strategy, run_panel } = useDBotStore();
     const { selected_strategy, setSelectedStrategy, toggleStopBotDialog } = quick_strategy;
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
+
+    const sendEventToRudderstack = () => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'run_strategy',
+            form_source: 'ce_bot_quick_strategy_form',
+        });
+    };
 
     React.useEffect(() => {
         validateForm();
@@ -41,6 +49,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
             await setFieldValue('action', 'RUN');
             submitForm();
         }
+        sendEventToRudderstack();
     };
 
     return (

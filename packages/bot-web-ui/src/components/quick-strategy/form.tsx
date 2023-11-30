@@ -13,7 +13,10 @@ import QSInputLabel from './inputs/qs-input-label';
 import { STRATEGIES } from './config';
 import { TConfigItem, TFormData } from './types';
 import { useFormikContext } from 'formik';
+import debounce from 'lodash.debounce';
+import { Analytics } from '@deriv/analytics';
 
+const DEBOUNCE_INTERVAL_TIME = 300;
 const QuickStrategyForm = observer(() => {
     const { ui } = useStore();
     const { quick_strategy } = useDBotStore();
@@ -21,6 +24,22 @@ const QuickStrategyForm = observer(() => {
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_mobile } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
+
+    const sendInitialStakeValueToruddetack = (key: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'change_parameter_value',
+            parameter_value: key,
+            parameter_type: key,
+        });
+    };
+
+    const throttleChange = React.useCallback(
+        debounce(sendInitialStakeValueToruddetack, DEBOUNCE_INTERVAL_TIME, {
+            trailing: true,
+            leading: false,
+        }),
+        []
+    );
 
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
@@ -33,6 +52,7 @@ const QuickStrategyForm = observer(() => {
         setValue(key, value);
         await setFieldTouched(key, true, true);
         await setFieldValue(key, value);
+        throttleChange(key);
     };
 
     const handleEnter = (event: KeyboardEvent) => {

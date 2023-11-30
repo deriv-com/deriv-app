@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
+import { Analytics } from '@deriv/analytics';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
@@ -28,10 +28,9 @@ const Dashboard = observer(() => {
     const { is_open } = quick_strategy;
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
-    const is_mobile = isMobile();
     const init_render = React.useRef(true);
     const { ui } = useStore();
-    const { url_hashed_values } = ui;
+    const { url_hashed_values, is_mobile } = ui;
     const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
 
     let tab_value: number | string = active_tab;
@@ -76,6 +75,10 @@ const Dashboard = observer(() => {
 
     React.useEffect(() => {
         if (active_tab === BOT_BUILDER) {
+            Analytics.trackEvent('ce_bot_builder_form', {
+                action: 'open',
+                form_source: 'bot_header_form',
+            });
             if (is_drawer_open) {
                 initTrashCan(400, -748);
             } else {

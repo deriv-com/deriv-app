@@ -2,17 +2,39 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import React from 'react';
+import { Analytics } from '@deriv/analytics';
+import debounce from 'lodash.debounce';
 
-const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tutorials }) => {
+const DEBOUNCE_INTERVAL_TIME = 300;
+const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tutorials, setDebouncedValue }) => {
     const { dashboard } = useDBotStore();
     const { setActiveTabTutorial } = dashboard;
     const input_ref = React.useRef(null);
+
+    const throttleChange = React.useCallback(
+        debounce(
+            value => {
+                setDebouncedValue(value);
+                Analytics.trackEvent('ce_bot_tutorial_form', {
+                    action: 'search',
+                    search_string: value,
+                });
+            },
+            DEBOUNCE_INTERVAL_TIME,
+            {
+                trailing: true,
+                leading: false,
+            }
+        ),
+        []
+    );
 
     const onSearch = event => {
         if (faq_value !== '') {
             onFocusSearch();
         }
         setFaqSearchContent(event.target.value);
+        throttleChange(event.target.value);
     };
 
     const onFocusSearch = () => {

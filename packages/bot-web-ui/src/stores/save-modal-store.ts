@@ -12,6 +12,7 @@ import { localize } from '@deriv/translations';
 import { MAX_STRATEGIES } from 'Constants/bot-contents';
 import { button_status } from 'Constants/button-status';
 import { TStrategy } from 'Types';
+import { Analytics } from '@deriv/analytics';
 
 type IOnConfirmProps = {
     is_local: boolean;
@@ -158,6 +159,14 @@ export default class SaveModalStore implements ISaveModalStore {
             });
             this.setButtonStatus(button_status.COMPLETED);
         }
+
+        const { is_mobile } = this.root_store.app.core;
+
+        /* Send the event on rudderstack on strategy save */
+        Analytics.trackEvent('ce_bot_dashboard_form', {
+            bot_name,
+            form_source: 'ce_bot_dashboard_form',
+        });
 
         this.updateBotName(bot_name);
 

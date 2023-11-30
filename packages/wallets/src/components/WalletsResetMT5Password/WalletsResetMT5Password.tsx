@@ -40,23 +40,25 @@ const WalletsResetMT5Password = ({ onChange, password, platform, verificationCod
         }
     }, [hide, platform, title, show, status]);
 
+    const renderFooter = () => {
+        return isMobile ? (
+            <WalletButtonGroup isFullWidth>
+                <WalletButton onClick={() => hide()} size='lg' text='Cancel' variant='outlined' />
+                <WalletButton
+                    disabled={!validPassword(password)}
+                    isLoading={status === 'loading'}
+                    onClick={handleSubmit}
+                    size='lg'
+                    text='Create'
+                    variant='contained'
+                />
+            </WalletButtonGroup>
+        ) : null;
+    };
+
     return (
         <ModalStepWrapper
-            renderFooter={() =>
-                isMobile && (
-                    <WalletButtonGroup isFullWidth>
-                        <WalletButton onClick={() => hide()} size='lg' text='Cancel' variant='outlined' />
-                        <WalletButton
-                            disabled={!validPassword(password)}
-                            isLoading={status === 'loading'}
-                            onClick={handleSubmit}
-                            size='lg'
-                            text='Create'
-                            variant='contained'
-                        />
-                    </WalletButtonGroup>
-                )
-            }
+            renderFooter={renderFooter}
             shouldHideFooter={isDesktop}
             shouldHideHeader={isDesktop}
             title={`Manage ${title} password`}

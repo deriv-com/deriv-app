@@ -10,7 +10,7 @@ export const platformPasswordResetRedirectLink = (platform: TPlatforms.All, isVi
     }
 };
 
-export const platformMapping = {
+export const platformMapping: Record<string, Exclude<TPlatforms.All, 'ctrader'>> = {
     trading_platform_dxtrade_password_reset: 'dxtrade',
     trading_platform_mt5_password_reset: 'mt5',
 };

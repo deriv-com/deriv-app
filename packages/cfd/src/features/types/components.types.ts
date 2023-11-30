@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import { FormikHelpers as FormikActions, FormikValues } from 'formik';
 import { TCoreStores } from '@deriv/stores/types';
-import { ResidenceList, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { MARKET_TYPE } from 'Helpers/cfd-config';
+import { ResidenceList, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TCFDPasswordReset } from './containers.types';
 import { TCFDPlatform, TTokens, TTradingPlatformAvailableAccount, TAccountCategory } from './shared.types';
 
@@ -145,7 +145,7 @@ export type TAccountIconValues = { [key: string]: string };
 
 // password-box
 export type TPasswordBoxProps = {
-    platform: string;
+    platform: TCFDPlatform;
     onClick: () => void;
 };
 
@@ -249,7 +249,7 @@ export type TJurisdictionVerificationItems = {
     identity_document?: TJurisdictionVerificationSection;
 };
 
-type TJurisdictionVerificationColors = 'yellow' | 'red' | 'green';
+type TJurisdictionVerificationColors = React.CSSProperties['color'];
 
 export type TJurisdictionVerificationStatus = {
     icon: string;

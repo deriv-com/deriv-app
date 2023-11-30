@@ -28,7 +28,7 @@ export type TCFDPersonalDetailsContainerProps = {
 
 // cfd-change-password-confirmation
 export type TCFDChangePasswordConfirmationProps = {
-    platform: string;
+    platform: TCFDPlatform;
     className?: string;
     context?: RootStore;
     onCancel: () => void;
@@ -155,7 +155,7 @@ export type TJurisdictionCardProps = {
     is_non_idv_design: boolean;
     account_status: GetAccountStatus;
     type_of_card: TJurisdictionCardType;
-    jurisdiction_selected_shortcode: string;
+    jurisdiction_selected_shortcode: DetailsOfEachMT5Loginid['landing_company_short'];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
 };
 
@@ -181,7 +181,7 @@ export type TJurisdictionClickableDescriptionProps = {
 };
 
 export type TJurisdictionTitleIndicatorProps = {
-    account_status: GetAccountStatus;
+    account_status: GetAccountStatus['status'];
     type_of_card: TJurisdictionCardType;
     title_indicators: TJurisdictionCardSectionTitleIndicators;
     verification_docs: TJurisdictionCardItemVerification | undefined;
@@ -216,7 +216,7 @@ export type TJurisdictionCheckBoxProps = {
     class_name: string;
     is_checked: boolean;
     onCheck: () => void;
-    jurisdiction_selected_shortcode: string;
+    jurisdiction_selected_shortcode: DetailsOfEachMT5Loginid['landing_company_short'];
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
 };
@@ -238,7 +238,7 @@ export type TJurisdictionModalContentProps = {
     account_type: TAccountCategory;
     is_non_idv_design: boolean;
     account_status: GetAccountStatus;
-    jurisdiction_selected_shortcode: string;
+    jurisdiction_selected_shortcode: DetailsOfEachMT5Loginid['landing_company_short'];
     real_swapfree_accounts_existing_data: TExistingData;
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
@@ -261,7 +261,7 @@ export type TJurisdictionModalFootNoteProps = {
     account_type: TAccountCategory;
     card_classname: string;
     account_status: TAccountStatus;
-    jurisdiction_selected_shortcode: string;
+    jurisdiction_selected_shortcode: DetailsOfEachMT5Loginid['landing_company_short'];
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
 };
@@ -278,7 +278,7 @@ export type TCompareAccountContentValues = Record<
 >;
 
 export type TCompareAccountRowProps = TCompareAccountContentProps & {
-    residence: string;
+    residence: ResidenceList;
     content_flag: string;
     pre_appstore_class: string;
     is_high_risk_for_mt5: boolean;
@@ -326,7 +326,7 @@ export type TCFDDbviOnboardingProps = {
     account_status: GetAccountStatus;
     fetchAccountSettings: () => void;
     toggleCFDVerificationModal: () => void;
-    jurisdiction_selected_shortcode: string;
+    jurisdiction_selected_shortcode: DetailsOfEachMT5Loginid['landing_company_short'];
     is_cfd_verification_modal_visible: boolean;
     has_submitted_cfd_personal_details: boolean;
     has_created_account_for_selected_jurisdiction: boolean;

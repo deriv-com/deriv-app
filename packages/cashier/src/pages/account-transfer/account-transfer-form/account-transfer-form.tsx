@@ -43,6 +43,7 @@ const AccountOption = ({
     idx,
     is_pending_verification,
     is_selected_from,
+    is_verification_failed,
     is_verification_needed,
 }: TAccountsList) => {
     const is_cfd_account = account.is_dxtrade || account.is_ctrader || account.is_mt || account.is_derivez;
@@ -58,6 +59,12 @@ const AccountOption = ({
             return (
                 <Text color='info-blue' size='xs'>
                     <Localize i18n_default_text='Needs verification' />
+                </Text>
+            );
+        } else if (is_verification_failed) {
+            return (
+                <Text color='red' size='xs'>
+                    <Localize i18n_default_text='Verification failed' />
                 </Text>
             );
         }
@@ -81,7 +88,7 @@ const AccountOption = ({
             </div>
 
             <span className='account-transfer-form__balance'>
-                {(is_pending_verification || is_verification_needed) && is_selected_from ? (
+                {(is_pending_verification || is_verification_needed || is_verification_failed) && is_selected_from ? (
                     getAccountStatusText()
                 ) : (
                     <Money
@@ -174,7 +181,9 @@ const AccountTransferForm = observer(
 
         const is_mf_status_pending = mf_account_status === MT5_ACCOUNT_STATUS.PENDING;
         const is_mf_status_need_verification = mf_account_status === MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
-        const is_mf_status_pending_or_needs_verification = is_mf_status_pending || is_mf_status_need_verification;
+        const is_mf_status_verification_failed = mf_account_status === MT5_ACCOUNT_STATUS.FAILED;
+        const is_mf_status_pending_or_needs_verification =
+            is_mf_status_pending || is_mf_status_need_verification || is_mf_status_verification_failed;
 
         const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
@@ -183,7 +192,7 @@ const AccountTransferForm = observer(
         const validateAmount = (amount: string) => {
             if (!amount) return localize('This field is required.');
 
-            if (is_mf_status_need_verification)
+            if (is_mf_status_need_verification || is_mf_status_verification_failed)
                 return (
                     <Localize
                         i18n_default_text='<0>Verify your account to transfer funds.</0> <1>Verify now</1>'
@@ -272,6 +281,7 @@ const AccountTransferForm = observer(
                         account={account}
                         is_pending_verification={is_mf_status_pending}
                         is_selected_from={is_selected_from}
+                        is_verification_failed={is_mf_status_verification_failed}
                         is_verification_needed={is_mf_status_need_verification}
                     />
                 );
@@ -713,7 +723,12 @@ const AccountTransferForm = observer(
                                         >
                                             {is_from_outside_cashier && <NotesLink />}
                                             <div className='account-transfer-form__form-buttons__default'>
-                                                <Button secondary large onClick={depositClick}>
+                                                <Button
+                                                    is_disabled={is_mf_status_verification_failed}
+                                                    secondary
+                                                    large
+                                                    onClick={depositClick}
+                                                >
                                                     <Localize i18n_default_text='Deposit' />
                                                 </Button>
 

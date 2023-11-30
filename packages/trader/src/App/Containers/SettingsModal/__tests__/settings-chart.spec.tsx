@@ -1,20 +1,20 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
+import userEvent from '@testing-library/user-event';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import ChartSettings from '../settings-chart';
-import TraderProviders from '../../../../trader-providers';
 
-jest.mock('Assets/SvgComponents/settings/dark/interval-enabled.svg', () =>
-    jest.fn(() => 'IntervalDurationEnabledDarkIcon')
-);
-jest.mock('Assets/SvgComponents/settings/dark/interval-disabled.svg', () =>
-    jest.fn(() => 'IntervalDurationDisabledDarkIcon')
+jest.mock('Assets/SvgComponents/settings/interval-disabled.svg', () =>
+    jest.fn(() => <div>IntervalDurationDisabledLightIcon</div>)
 );
 jest.mock('Assets/SvgComponents/settings/interval-enabled.svg', () =>
-    jest.fn(() => 'IntervalDurationEnabledLightIcon')
+    jest.fn(() => <div>IntervalDurationEnabledLightIcon</div>)
 );
-jest.mock('Assets/SvgComponents/settings/interval-disabled.svg', () =>
-    jest.fn(() => 'IntervalDurationDisabledLightIcon')
+jest.mock('Assets/SvgComponents/settings/dark/interval-disabled.svg', () =>
+    jest.fn(() => <div>IntervalDurationDisabledDarkIcon</div>)
+);
+jest.mock('Assets/SvgComponents/settings/dark/interval-enabled.svg', () =>
+    jest.fn(() => <div>IntervalDurationEnabledDarkIcon</div>)
 );
 
 describe('<ChartSettings/>', () => {
@@ -25,25 +25,24 @@ describe('<ChartSettings/>', () => {
 
     const mockChartSettings = () => {
         return (
-            <TraderProviders store={default_mock_store}>
+            <StoreProvider store={default_mock_store}>
                 <ChartSettings />
-            </TraderProviders>
+            </StoreProvider>
         );
     };
 
-    it('should render component with media heading, icon for light mode (as it chosen by default) and checkbox with label', () => {
+    it('should render component with media heading and checkbox with label', () => {
         render(mockChartSettings());
 
         expect(screen.getByText('Interval duration')).toBeInTheDocument();
-        expect(screen.getByText('IntervalDurationDisabledLightIcon')).toBeInTheDocument();
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
         expect(screen.getByText('Display remaining time for each interval')).toBeInTheDocument();
     });
-    // it('should render component with icon for dark mode if is_dark_mode_on === true', () => {
-    //     default_mock_store.ui.is_dark_mode_on = true;
-    //     render(mockChartSettings());
-    //     screen.debug();
-    //     expect(screen.queryByText('IntervalDurationDisabledLightIcon')).not.toBeInTheDocument();
-    //     expect(screen.getByText('IntervalDurationDisabledDarkIcon')).toBeInTheDocument();
-    // });
+    it('should call setChartCountdown function if user checked checkbox', () => {
+        render(mockChartSettings());
+
+        userEvent.click(screen.getByRole('checkbox'));
+
+        expect(default_mock_store.ui.setChartCountdown).toBeCalled();
+    });
 });

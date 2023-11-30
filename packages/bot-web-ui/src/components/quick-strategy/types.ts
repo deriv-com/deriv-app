@@ -40,17 +40,17 @@ export type TConfigItem = {
     }[];
 };
 
-export type TLongDescription = {
-    title?: ReactNode;
-    content?: ReactNode;
-    image?: string;
+export type TDescriptionItem = {
+    type: string;
+    content?: string[];
+    src?: string;
 };
 
 export type TStrategy = {
     name: string;
     label: string;
     description: string;
-    long_description?: TLongDescription[];
+    long_description?: TDescriptionItem[];
     fields: TConfigItem[][];
 };
 

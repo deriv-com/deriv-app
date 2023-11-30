@@ -70,7 +70,6 @@ const WithdrawalCryptoForm = observer(() => {
         setWithdrawPercentageSelectorResult,
         validateWithdrawFromAmount,
         validateWithdrawToAmount,
-        resetWithdrawForm,
     } = withdraw;
     const {
         converter_from_error,
@@ -97,7 +96,6 @@ const WithdrawalCryptoForm = observer(() => {
 
         return () => {
             percentageSelectorSelectionStatus(false);
-            resetWithdrawForm();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

@@ -51,16 +51,11 @@ const AppWithoutTranslation = ({ root_store }) => {
         };
 
         initializeTranslations();
-        if (
-            process.env.NODE_ENV === 'production' ||
-            process.env.NODE_ENV === 'staging' ||
-            process.env.NODE_ENV === 'test'
-        ) {
+        if (process.env.RUDDERSTACK_KEY) {
             Analytics.initialise({
                 growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,
                 growthbookDecryptionKey: process.env.GROWTHBOOK_DECRYPTION_KEY,
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
-                enableDevMode: process.env.NODE_ENV !== 'production',
             });
         }
 

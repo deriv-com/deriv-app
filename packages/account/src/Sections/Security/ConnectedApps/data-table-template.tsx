@@ -4,13 +4,13 @@ import { OauthApps } from '@deriv/api-types';
 import { Button, Text } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { CONNECTED_APPS_COLUMN_NAMES, getConnectedAppsScopes } from './template-helper';
+import { getConnectedAppsColumnNames, getConnectedAppsScopes } from './template-helper';
 
 type TDataTableTemplate = { connected_apps: OauthApps; handleToggleModal: (app_id: number) => void };
 
 const DataTableTemplate = ({ connected_apps, handleToggleModal }: TDataTableTemplate) => (
     <div className='connected-apps__tabular--wrapper'>
-        {CONNECTED_APPS_COLUMN_NAMES.map((column_name, index) => (
+        {getConnectedAppsColumnNames().map((column_name, index) => (
             <Text
                 size='xs'
                 weight='bold'

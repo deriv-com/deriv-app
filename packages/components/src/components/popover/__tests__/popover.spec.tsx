@@ -1,10 +1,9 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
-import Popover from '../popover';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import Icon from '../../icon';
 import userEvent from '@testing-library/user-event';
-import { TCoreStores } from '@deriv/stores/types';
+import Popover from '../popover';
+import Icon from '../../icon';
+import { MAX_MOBILE_WIDTH } from '../../../hooks';
 
 const blue_info_icon = 'IcInfoBlue';
 const children = 'Children';
@@ -29,12 +28,8 @@ jest.mock('../../icon', () =>
 );
 
 describe('<Popover/>', () => {
-    const mockPopover = (mocked_props = default_mocked_props, mocked_store: TCoreStores = mockStore({})) => {
-        return (
-            <StoreProvider store={mocked_store}>
-                <Popover {...mocked_props}>{children}</Popover>
-            </StoreProvider>
-        );
+    const mockPopover = (mocked_props = default_mocked_props) => {
+        return <Popover {...mocked_props}>{children}</Popover>;
     };
     it('should render an info icon, display tooltip on hover/click, hide only after unfocusing in desktop', () => {
         render(mockPopover());
@@ -52,7 +47,8 @@ describe('<Popover/>', () => {
         expect(screen.queryByText(tooltip_message)).not.toBeInTheDocument();
     });
     it('should render a question icon, display tooltip upon tap & hide it upon the second tap on mobile', () => {
-        render(mockPopover({ ...default_mocked_props, icon: 'question' }, mockStore({ ui: { is_mobile: true } })));
+        window.innerWidth = MAX_MOBILE_WIDTH;
+        render(mockPopover({ ...default_mocked_props, icon: 'question' }));
         const unknown_icon = screen.getByText('IcUnknown');
         expect(unknown_icon).toBeInTheDocument();
         expect(screen.queryByText(tooltip_message)).not.toBeInTheDocument();
@@ -122,14 +118,10 @@ describe('<Popover/>', () => {
         expect(onBubbleClose).toBeCalled();
     });
     it('should call onBubbleOpen when bubble is focused & onBubbleClose when bubble is unfocused in uncontrolled popover in mobile', () => {
+        window.innerWidth = MAX_MOBILE_WIDTH;
         const onBubbleClose = jest.fn();
         const onBubbleOpen = jest.fn();
-        render(
-            mockPopover(
-                { ...default_mocked_props, onBubbleClose, onBubbleOpen },
-                mockStore({ ui: { is_mobile: true } })
-            )
-        );
+        render(mockPopover({ ...default_mocked_props, onBubbleClose, onBubbleOpen }));
         const info_icon = screen.getByText(target_info_icon);
         userEvent.click(info_icon);
         const message = screen.getByText(tooltip_message);

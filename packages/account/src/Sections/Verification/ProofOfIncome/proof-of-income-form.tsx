@@ -197,6 +197,7 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                             className='account-form__footer-btn'
                             type='submit'
                             is_disabled={
+                                !values.document_type ||
                                 isSubmitting ||
                                 !isValid ||
                                 !document_file.length ||

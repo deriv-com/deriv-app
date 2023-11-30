@@ -1,12 +1,6 @@
 import { getImageLocation } from '../../../public-path';
 import { localize } from '@deriv/translations';
-import '../quick-strategy.scss';
-
-type TDescriptionItem = {
-    type: string;
-    content?: string[];
-    src?: string;
-};
+import { TDescriptionItem } from '../types';
 
 export const MARTINGALE: TDescriptionItem[] = [
     {

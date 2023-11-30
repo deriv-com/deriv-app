@@ -78,6 +78,7 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
         not_found_text = NO_SEARCH_RESULT,
         onHideDropdownList,
         onItemSelection,
+        onSearch,
         onScrollStop,
         onShowDropdownList,
         should_filter_by_char,
@@ -106,8 +107,8 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
             let new_filtered_items = [];
 
             if (is_list_visible) {
-                if (typeof other_props.onSearch === 'function') {
-                    new_filtered_items = other_props.onSearch(value.toLowerCase(), list_items);
+                if (typeof onSearch === 'function') {
+                    new_filtered_items = onSearch(value.toLowerCase(), list_items);
                 } else {
                     new_filtered_items = getFilteredItems(value.toLowerCase(), list_items);
                 }
@@ -303,8 +304,8 @@ const Autocomplete = React.memo((props: TAutocompleteProps) => {
         const val = (e.target as HTMLInputElement).value.toLowerCase();
         let new_filtered_items = [];
 
-        if (typeof other_props.onSearch === 'function') {
-            new_filtered_items = other_props.onSearch(val, list_items);
+        if (typeof onSearch === 'function') {
+            new_filtered_items = onSearch(val, list_items);
         } else {
             new_filtered_items = getFilteredItems(val, list_items, should_filter_by_char);
         }

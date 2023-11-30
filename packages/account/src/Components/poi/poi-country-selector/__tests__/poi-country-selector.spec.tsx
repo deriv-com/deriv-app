@@ -128,7 +128,7 @@ describe('<CountrySelector/>', () => {
     });
 
     it('should render high risk error message', () => {
-        mock_props.mismatch_status = 'POI_HIGH_RISK';
+        mock_props.mismatch_status = IDV_ERROR_STATUS.HighRisk.code;
 
         renderComponent({ props: mock_props });
 

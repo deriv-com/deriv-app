@@ -1,16 +1,18 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { isDesktop, isMobile } from '@deriv/shared';
-import IdvDocumentSubmit from '../idv-document-submit';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { isDocumentNumberValid } from 'Helpers/utils';
+import IdvDocumentSubmit from '../idv-document-submit';
 
 const mock_store = mockStore({
     client: {
         getChangeableFields: jest.fn(() => []),
     },
+    ui: { is_desktop: true },
 });
 
-jest.mock('react-router');
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
 jest.mock('Helpers/utils', () => ({
     ...jest.requireActual('Helpers/utils'),
@@ -27,9 +29,11 @@ jest.mock('Helpers/utils', () => ({
                 },
             },
         };
-        return data[country_code][key];
+
+        const document = data[country_code as keyof typeof data];
+        return document[key as keyof typeof document];
     }),
-    getRegex: jest.fn(() => /5436454364243/i),
+    isDocumentNumberValid: jest.fn(),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -54,8 +58,9 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<IdvDocumentSubmit/>', () => {
-    const mock_props = {
+    const mock_props: React.ComponentProps<typeof IdvDocumentSubmit> = {
         handleBack: jest.fn(),
+        handleSelectionNext: jest.fn(),
         handleViewComplete: jest.fn(),
         selected_country: {
             value: 'tc',
@@ -63,15 +68,21 @@ describe('<IdvDocumentSubmit/>', () => {
                 services: {
                     idv: {
                         documents_supported: {
-                            document_1: { display_name: 'Test document 1 name', format: '5436454364243' },
-                            document_2: { display_name: 'Test document 2 name', format: 'A54321' },
+                            document_1: {
+                                display_name: 'Test document 1 name',
+                                format: '5436454364243',
+                            },
+                            document_2: {
+                                display_name: 'Test document 2 name',
+                                format: 'A54321',
+                            },
                         },
                         has_visual_sample: 1,
                     },
                 },
             },
         },
-        is_from_external: false,
+        getChangeableFields: jest.fn(() => []),
     };
 
     it('should render IdvDocumentSubmit component', () => {
@@ -99,8 +110,8 @@ describe('<IdvDocumentSubmit/>', () => {
             </StoreProvider>
         );
 
-        const backBtn = screen.getByRole('button', { name: /go back/i });
-        fireEvent.click(backBtn);
+        const backBtn = screen.getByRole('button', { name: /back/i });
+        userEvent.click(backBtn);
         expect(mock_props.handleBack).toHaveBeenCalledTimes(1);
 
         const document_type_input = screen.getByLabelText('Choose the document type');
@@ -109,12 +120,12 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(screen.queryByText('Test document 1 name')).not.toBeInTheDocument();
         expect(screen.queryByText('Test document 2 name')).not.toBeInTheDocument();
 
-        fireEvent.click(document_type_input);
+        userEvent.click(document_type_input);
         expect(await screen.findByText('Test document 1 name')).toBeInTheDocument();
         expect(await screen.findByText('Test document 2 name')).toBeInTheDocument();
         expect(screen.queryByText('Please select a document type.')).not.toBeInTheDocument();
 
-        fireEvent.blur(document_type_input);
+        userEvent.tab();
         expect(await screen.findByText('Please select a document type.')).toBeInTheDocument();
         await waitFor(() => {
             expect(screen.queryByText('Test document 1 name')).not.toBeInTheDocument();
@@ -143,18 +154,20 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(document_number_input.name).toBe('document_number');
         expect(document_number_input).toBeDisabled();
 
-        fireEvent.change(document_type_input, { target: { value: 'Test document 2 name' } });
-        expect(document_number_input).toBeEnabled();
+        userEvent.selectOptions(document_type_input, 'Test document 2 name');
+        await waitFor(() => {
+            expect(document_number_input).toBeEnabled();
+        });
         expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
-
+        (isDocumentNumberValid as jest.Mock).mockReturnValueOnce('please enter your document number');
         fireEvent.blur(document_number_input);
         expect(await screen.findByText(/please enter your document number/i)).toBeInTheDocument();
 
-        fireEvent.keyUp(document_number_input);
+        (isDocumentNumberValid as jest.Mock).mockReturnValueOnce('please enter the correct format');
         fireEvent.change(document_number_input, { target: { value: 'A-32523' } });
         expect(await screen.findByText(/please enter the correct format/i)).toBeInTheDocument();
 
-        fireEvent.change(document_number_input, { target: { value: 'A54321' } });
+        userEvent.type(document_number_input, '5436454364234');
         await waitFor(() => {
             expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
             expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();
@@ -165,7 +178,7 @@ describe('<IdvDocumentSubmit/>', () => {
         await waitFor(() => {
             expect(verifyBtn).toBeEnabled();
         });
-        fireEvent.click(verifyBtn);
+        userEvent.click(verifyBtn);
         await waitFor(() => {
             expect(mock_props.handleViewComplete).toHaveBeenCalledTimes(1);
         });

@@ -4,7 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useCurrentAccountDetails } from '@deriv/hooks';
 import WithdrawalCryptoForm from '../withdrawal-crypto-form';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -38,7 +38,6 @@ describe('<WithdrawalCryptoForm />', () => {
                         requestWithdraw: jest.fn(),
                         setBlockchainAddress: jest.fn(),
                         setWithdrawPercentageSelectorResult: jest.fn(),
-                        resetWithdrawForm: jest.fn(),
                     },
                 },
             },
@@ -48,10 +47,21 @@ describe('<WithdrawalCryptoForm />', () => {
     const renderWithdrawalCryptoForm = () => {
         return render(
             <CashierProviders store={mockRootStore}>
-                <WithdrawalCryptoForm />
+                <ExchangeRatesProvider>
+                    <WithdrawalCryptoForm />
+                </ExchangeRatesProvider>
             </CashierProviders>
         );
     };
+
+    it('should render arrow left icon when the user focused on the left input', () => {
+        renderWithdrawalCryptoForm();
+
+        const el = screen.getByTestId('dt_converter_to_amount_input');
+        fireEvent.focus(el);
+
+        expect(screen.getByTestId('dti_arrow_left_bold')).toBeInTheDocument();
+    });
 
     it('component and header should be rendered', () => {
         renderWithdrawalCryptoForm();
@@ -105,6 +115,13 @@ describe('<WithdrawalCryptoForm />', () => {
     });
 
     it("requestWithdraw func should be called if value provided from 'converter_from_amount' input and withdraw button is clicked", async () => {
+        const mockJson = {
+            BTC: {
+                USD: 2.2,
+            },
+        };
+        window.localStorage.setItem('exchange_rates', JSON.stringify(mockJson));
+
         renderWithdrawalCryptoForm();
 
         const address_field = screen.getByTestId('dt_address_input');
@@ -125,6 +142,13 @@ describe('<WithdrawalCryptoForm />', () => {
     });
 
     it("requestWithdraw func should be called if value provided from 'converter_to_amount' input and withdraw button is clicked", async () => {
+        const mockJson = {
+            BTC: {
+                USD: 2.2,
+            },
+        };
+        window.localStorage.setItem('exchange_rates', JSON.stringify(mockJson));
+
         renderWithdrawalCryptoForm();
 
         const address_field = screen.getByTestId('dt_address_input');

@@ -9,7 +9,7 @@ import { REGION } from '../../Helpers/cfd-config';
 
 const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareAccountsCard) => {
     const market_type = getMarketType(trading_platforms);
-    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
+    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode ?? '');
     const juridisction_data = getJuridisctionDescription(market_type_shortcode);
     const { traders_hub } = useStore();
     const { selected_region } = traders_hub;
@@ -21,7 +21,7 @@ const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareA
         >
             <div className='compare-cfd-account-text-container__separator'>
                 <Text as='h1' weight='bold' size='m' align='center'>
-                    {juridisction_data.leverage}
+                    {localize('Up to')} {juridisction_data.leverage}
                 </Text>
                 <Text as='p' size='xxxs' align='center'>
                     {selected_region === REGION.NON_EU ? juridisction_data.leverage_description : localize('Leverage')}

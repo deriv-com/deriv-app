@@ -4,12 +4,12 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { Field, Form } from 'formik';
 import { Button, Icon, Input, Loading, Text } from '@deriv/components';
+import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import ModalForm from 'Components/modal-manager/modal-form';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import './add-payment-method-form.scss';
 
 const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {

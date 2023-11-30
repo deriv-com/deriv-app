@@ -1,8 +1,10 @@
+import { FormikHelpers } from 'formik';
+
 import { DetailsOfEachMT5Loginid, Mt5NewAccount, VerifyEmailResponse } from '@deriv/api-types';
+
 import { TTradingPlatformAvailableAccount } from 'Components/props.types';
 import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal';
-import { TDerivezCompanies, TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
-import { FormikHelpers } from 'formik';
+import { TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 
 export type TCFDStore = {
     setMT5TradeAccount: <T>(arg: T) => void;
@@ -10,10 +12,6 @@ export type TCFDStore = {
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     setAccountType: (account_type: { category: string; type?: string }) => void;
     dxtrade_tokens: {
-        demo: string;
-        real: string;
-    };
-    derivez_tokens: {
         demo: string;
         real: string;
     };
@@ -40,7 +38,6 @@ export type TCFDStore = {
     is_compare_accounts_visible: boolean;
     toggleCompareAccountsModal: () => void;
     dxtrade_companies: TDxCompanies;
-    derivez_companies: TDerivezCompanies;
     mt5_companies: TMtCompanies;
     platform: string;
     topUpVirtual: (platform: string) => void;
@@ -51,14 +48,18 @@ export type TCFDStore = {
     };
     sendVerifyEmail: () => Promise<VerifyEmailResponse>;
     account_title: string;
+    migrated_mt5_accounts: Record<string, string>[];
     disableCFDPasswordModal: () => void;
     error_message: string;
     error_type?: string;
     getAccountStatus: (platform: string) => void;
+    mt5_migration_error: string;
     has_cfd_error: boolean;
     is_cfd_password_modal_enabled: boolean;
     is_cfd_success_dialog_enabled: boolean;
     setCFDSuccessDialog: (value: boolean) => void;
+    setMT5MigrationError: (value: string) => void;
+    setMigratedMT5Accounts: (value: Record<string, string>[]) => void;
     setError: (state: boolean, obj?: Error) => void;
     submitMt5Password: (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => void;
     submitCFDPassword: (

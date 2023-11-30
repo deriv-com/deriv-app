@@ -46,6 +46,7 @@ type TModalTradeWrapper = {
 
 const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children, platform }) => {
     const { isDesktop } = useDevice();
+    const appOrder = ['ios', 'android', 'huawei'];
 
     return (
         <ModalStepWrapper
@@ -58,10 +59,13 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                         </WalletText>
                         <div className='wallets-modal-trade-wrapper__footer-installations'>
                             <div className='wallets-modal-trade-wrapper__footer-installations-icons'>
-                                {Object.keys(LinksMapper[platform]).map(app => {
-                                    const AppIcon = AppToIconMapper[app];
-                                    const appLink = LinksMapper[platform][app as 'android' | 'huawei' | 'ios'];
-                                    return <AppIcon key={app} onClick={() => window.open(appLink)} />;
+                                {appOrder.map(app => {
+                                    if (LinksMapper[platform][app as 'android' | 'huawei' | 'ios']) {
+                                        const AppIcon = AppToIconMapper[app];
+                                        const appLink = LinksMapper[platform][app as 'android' | 'huawei' | 'ios'];
+                                        return <AppIcon key={app} onClick={() => window.open(appLink)} />;
+                                    }
+                                    return null;
                                 })}
                             </div>
                             {isDesktop && (

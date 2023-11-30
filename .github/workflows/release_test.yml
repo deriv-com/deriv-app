@@ -20,6 +20,7 @@ jobs:
       uses: "./.github/actions/build"
       with:
         NODE_ENV: staging
+        CROWDIN_WALLETS_API_KEY: ${{ secrets.CROWDIN_WALLETS_API_KEY }}
         DATADOG_APPLICATION_ID: ${{ vars.DATADOG_APPLICATION_ID }} 
         DATADOG_CLIENT_TOKEN: ${{ vars.DATADOG_CLIENT_TOKEN }}
         DATADOG_CLIENT_TOKEN_LOGS: ${{ vars.DATADOG_CLIENT_TOKEN_LOGS }}

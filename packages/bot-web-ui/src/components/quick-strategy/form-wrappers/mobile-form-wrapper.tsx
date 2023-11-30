@@ -6,7 +6,7 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { FORM_TABS, STRATEGIES } from '../config';
-import QSTabContent from '../qs-tab-content';
+import QSTabContent from './strategy-description';
 import '../quick-strategy.scss';
 
 type TMobileFormWrapper = {

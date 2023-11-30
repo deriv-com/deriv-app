@@ -224,6 +224,9 @@
                 padding-bottom: 1.6rem;
                 max-height: calc(100vh - 12.2rem) !important;
             }
+            &--no-footer {
+                max-height: calc(100vh - 16.2rem) !important;
+            }
         }
 
         &__field {

@@ -1,6 +1,6 @@
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
-import { MARTINGALE } from './strategy-descriptions/martingale-description';
+import { MARTINGALE } from './descriptions/martingale';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [

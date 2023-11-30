@@ -194,10 +194,11 @@ Blockly.Blocks.trade_definition_tradeoptions = {
     },
     createPredictionInput(selected_trade_type_category, selected_trade_type, is_digit_trade_type_category) {
         runIrreversibleEvents(() => {
+            const is_digits = selected_trade_type_category === 'digits';
             if (
                 selected_trade_type_category &&
-                ((selected_trade_type_category === 'digits' && selected_trade_type === 'evenodd') ||
-                    (selected_trade_type_category !== 'digits' && selected_trade_type_category !== 'highlowticks'))
+                ((is_digits && selected_trade_type === 'evenodd') ||
+                    (!is_digits && selected_trade_type_category !== 'highlowticks'))
             ) {
                 this.removeInput('PREDICTION_LABEL', true);
                 this.removeInput('PREDICTION', true);

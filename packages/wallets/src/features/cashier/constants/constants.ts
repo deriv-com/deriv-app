@@ -80,6 +80,10 @@ export const appIconMapper = {
                 dark: 'IcWalletMt5Financial',
                 light: 'IcWalletMt5Financial',
             },
+            virtual: {
+                dark: 'IcWalletMt5Financial',
+                light: 'IcWalletMt5Financial',
+            },
         },
         synthetic: {
             dark: 'IcWalletMt5Derived',

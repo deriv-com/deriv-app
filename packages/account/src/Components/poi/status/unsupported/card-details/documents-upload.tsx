@@ -8,6 +8,8 @@ import InputField from './input-field';
 import Uploader from './uploader';
 import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS, date_field, getDocumentIndex } from '../constants';
+import FormFooter from '../../../../form-footer';
+import FormBody from '../../../../form-body';
 
 const icons = [
     {
@@ -88,53 +90,57 @@ const DocumentsUpload = ({ initial_values, is_from_external, data, goToCards, on
 
                     return (
                         <Form className={`${ROOT_CLASS}__form`}>
-                            <div className={`${ROOT_CLASS}__fields-content`}>
-                                <Text as='h3' size='s' color='prominent'>
-                                    {fields_title}
-                                </Text>
-                                <div className={`${ROOT_CLASS}__fields-wrap`}>
-                                    {fields?.map((field: FormikValues) => (
-                                        <InputField key={field.name} data={field} />
-                                    ))}
+                            <FormBody className='form-body' scroll_offset={isMobile() ? '180px' : '80px'}>
+                                <div className={`${ROOT_CLASS}__fields-content`}>
+                                    <Text as='h3' size='s' color='prominent'>
+                                        {fields_title}
+                                    </Text>
+                                    <div className={`${ROOT_CLASS}__fields-wrap`}>
+                                        {fields?.map((field: FormikValues) => (
+                                            <InputField key={field.name} data={field} />
+                                        ))}
+                                    </div>
+                                    <div className={`${ROOT_CLASS}__divider`} />
+                                    <Text as='h3' size='s' color='prominent'>
+                                        {documents_title}
+                                    </Text>
+                                    <div className={`${ROOT_CLASS}__uploaders-wrap`}>
+                                        {documents?.map((item: FormikValues) => (
+                                            <Uploader
+                                                key={item.name}
+                                                data={item}
+                                                value={values[item.name]}
+                                                is_full={documents.length === 1 || is_from_external}
+                                            />
+                                        ))}
+                                    </div>
+                                    <div className={`${ROOT_CLASS}__icons`}>
+                                        {icons.map(item =>
+                                            item.icon === 'IcPoiDocExpiry' && !is_expiry_date_required ? null : (
+                                                <IconsItem key={item.icon} data={item} />
+                                            )
+                                        )}
+                                    </div>
                                 </div>
-                                <div className={`${ROOT_CLASS}__divider`} />
-                                <Text as='h3' size='s' color='prominent'>
-                                    {documents_title}
-                                </Text>
-                                <div className={`${ROOT_CLASS}__uploaders-wrap`}>
-                                    {documents?.map((item: FormikValues) => (
-                                        <Uploader
-                                            key={item.name}
-                                            data={item}
-                                            value={values[item.name]}
-                                            is_full={documents.length === 1 || is_from_external}
-                                        />
-                                    ))}
+                            </FormBody>
+                            <FormFooter>
+                                <div className={`${ROOT_CLASS}__btns`}>
+                                    <Button
+                                        onClick={goToCards}
+                                        secondary
+                                        large
+                                        text={localize('Back')}
+                                        icon={<Icon icon='IcButtonBack' />}
+                                    />
+                                    <Button
+                                        type='submit'
+                                        primary
+                                        large
+                                        is_disabled={!isValid || (!is_form_touched && is_form_empty)}
+                                        text={localize('Next')}
+                                    />
                                 </div>
-                                <div className={`${ROOT_CLASS}__icons`}>
-                                    {icons.map(item =>
-                                        item.icon === 'IcPoiDocExpiry' && !is_expiry_date_required ? null : (
-                                            <IconsItem key={item.icon} data={item} />
-                                        )
-                                    )}
-                                </div>
-                            </div>
-                            <div className={`${ROOT_CLASS}__btns`}>
-                                <Button
-                                    onClick={goToCards}
-                                    secondary
-                                    large
-                                    text={localize('Go back')}
-                                    icon={<Icon icon={'IcButtonBack'} size={16} />}
-                                />
-                                <Button
-                                    type='submit'
-                                    primary
-                                    large
-                                    is_disabled={!isValid || (!is_form_touched && is_form_empty)}
-                                    text={localize('Next')}
-                                />
-                            </div>
+                            </FormFooter>
                         </Form>
                     );
                 }}

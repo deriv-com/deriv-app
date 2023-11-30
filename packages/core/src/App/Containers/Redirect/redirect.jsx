@@ -79,28 +79,28 @@ const Redirect = ({
             if (redirect_to) {
                 let pathname = '';
                 let hash = '';
-                const wallet_route = is_next_wallet ? routes.wallets : routes.traders_hub;
+                const main_screen_route = is_next_wallet ? routes.wallets : routes.traders_hub;
                 switch (redirect_to) {
                     case '1':
                         pathname = routes.traders_hub;
                         break;
                     case '10':
-                        pathname = wallet_route;
+                        pathname = main_screen_route;
                         hash = 'real';
                         break;
                     case '11':
-                        pathname = wallet_route;
+                        pathname = main_screen_route;
                         hash = 'demo';
                         break;
                     case '2':
                         pathname = routes.traders_hub;
                         break;
                     case '20':
-                        pathname = wallet_route;
+                        pathname = main_screen_route;
                         hash = 'real';
                         break;
                     case '21':
-                        pathname = wallet_route;
+                        pathname = main_screen_route;
                         hash = 'demo';
                         break;
                     case '3':

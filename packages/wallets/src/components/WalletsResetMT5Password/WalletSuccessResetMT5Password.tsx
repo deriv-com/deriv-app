@@ -23,7 +23,7 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
 
     return (
         <ModalStepWrapper renderFooter={renderFooter} shouldHideFooter={isDesktop} title={`Manage ${title} password`}>
-            <div className='wallets-reset-popup'>
+            <div className='wallets-reset-mt5-password'>
                 <WalletsActionScreen
                     description={`You have a new ${title} password to log in to your ${title} accounts on the web and mobile apps.`}
                     descriptionSize='sm'

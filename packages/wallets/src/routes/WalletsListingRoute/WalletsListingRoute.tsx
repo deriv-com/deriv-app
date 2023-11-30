@@ -26,10 +26,7 @@ const WalletsListingRoute: React.FC = () => {
     const firstLoginid = walletAccounts?.[0]?.loginid;
 
     useEffect(() => {
-        let platformKey;
-        if (resetTradingPlatformActionParams !== null) {
-            platformKey = platformMapping[resetTradingPlatformActionParams];
-        }
+        const platformKey = resetTradingPlatformActionParams ? platformMapping[resetTradingPlatformActionParams] : null;
         if (platformKey) {
             const verificationCode = localStorage.getItem(
                 `verification_code.trading_platform_${platformKey}_password_reset`

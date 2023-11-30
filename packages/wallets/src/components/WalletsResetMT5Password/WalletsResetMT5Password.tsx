@@ -63,7 +63,7 @@ const WalletsResetMT5Password = ({ onChange, password, platform, verificationCod
             shouldHideHeader={isDesktop}
             title={`Manage ${title} password`}
         >
-            <div className='wallets-reset-popup'>
+            <div className='wallets-reset-mt5-password'>
                 <WalletText weight='bold'>Create a new {title} Password</WalletText>
                 <WalletPasswordField label={`${title} password`} onChange={onChange} password={password} />
                 <WalletText size='sm'>
@@ -71,7 +71,7 @@ const WalletsResetMT5Password = ({ onChange, password, platform, verificationCod
                     and symbols.
                 </WalletText>
                 {isDesktop && (
-                    <div className='wallets-reset-popup__button-group'>
+                    <div className='wallets-reset-mt5-password__button-group'>
                         <WalletButton onClick={() => hide()} text='Cancel' variant='outlined' />
                         <WalletButton
                             disabled={!validPassword(password)}

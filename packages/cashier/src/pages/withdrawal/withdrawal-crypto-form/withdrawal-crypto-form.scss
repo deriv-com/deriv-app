@@ -46,6 +46,8 @@
     }
 
     & .withdraw__input {
-        margin-bottom: 3.2rem !important;
+        @include mobile {
+            margin-bottom: 3.2rem !important;
+        }
     }
 }

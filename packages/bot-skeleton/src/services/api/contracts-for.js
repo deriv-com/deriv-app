@@ -445,19 +445,17 @@ export default class ContractsFor {
     }
 
     getHiddenCategories = trade_types => {
-        // TODO: Temporary filtering of barrier + prediction types. Should later
+        // TODO: Temporary filtering of barrier types. Should later
         // render more inputs for these types. We should only filter out trade type
-        // categories which only feature prediction/barrier trade types. e.g.
+        // categories which only feature barrier trade types. e.g.
         // in Digits category, users can still purchase Even/Odd types.
         let hidden_categories = 0;
 
         for (let j = 0; j < trade_types.length; j++) {
             const trade_type = trade_types[j];
             const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
-            const has_prediction =
-                config.PREDICTION_TRADE_TYPES.includes(trade_type.value) && trade_type.value === 'highlowticks';
 
-            if (has_barrier || has_prediction) {
+            if (has_barrier) {
                 hidden_categories++;
             }
         }

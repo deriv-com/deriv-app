@@ -39,7 +39,6 @@ const RecentComponent = observer(() => {
                     bot_last_modified_time: recent_strategies?.[0]?.timestamp,
                     form_source: 'bot_header_form',
                     action: 'open',
-                    device_type: is_mobile ? 'mobile' : 'desktop',
                 });
             };
             getStratagiesForRudderStack();

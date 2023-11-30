@@ -25,10 +25,11 @@ const QuickStrategyForm = observer(() => {
     const { is_mobile } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
 
-    const sendInitialStakeValueToruddetack = (value, key) => {
+    const sendInitialStakeValueToruddetack = key => {
         Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'change_parameter_value',
+            parameter_value: key,
             parameter_type: key,
-            change_parameter_value: value,
         });
     };
 
@@ -51,7 +52,7 @@ const QuickStrategyForm = observer(() => {
         setValue(key, value);
         await setFieldTouched(key, true, true);
         await setFieldValue(key, value);
-        throttleChange(value, key);
+        throttleChange(key);
     };
 
     const handleEnter = (event: KeyboardEvent) => {

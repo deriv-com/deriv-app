@@ -4,6 +4,7 @@ import TutorialsTabMobile from './tutorials-tab-mobile';
 import TutorialsTabDesktop from './tutorials-tab-desktop';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { generateTutorialTabs } from './common/common-tabs';
+import { Analytics } from '@deriv/analytics';
 
 let timeoutId;
 
@@ -52,6 +53,19 @@ const TutorialsTab = observer(() => {
     React.useEffect(() => {
         generateAllTabs();
     }, [active_tab_tutorials]);
+
+    React.useEffect(() => {
+        Analytics.trackEvent('ce_bot_tutorial_form', {
+            action: 'open',
+            form_source: 'bot_header_form',
+        });
+        return () => {
+            Analytics.trackEvent('ce_bot_tutorial_form', {
+                action: 'close',
+                form_source: 'bot_header_form',
+            });
+        };
+    }, []);
 
     React.useEffect(() => {
         const _active_tab = [0, 1];

@@ -20,7 +20,6 @@ const SearchIcon = observer(({ search, is_search_loading, onClick }: TSearchIcon
                 Analytics.trackEvent('ce_bot_builder_form', {
                     search_string: search,
                     action: 'search',
-                    device_type: is_mobile ? 'mobile' : 'desktop',
                 });
             }
         }, 2000)();

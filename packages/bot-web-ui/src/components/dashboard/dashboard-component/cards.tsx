@@ -42,7 +42,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             shortcut_name: type,
             form_source: 'bot_dashboard_form-shortcut',
             action: 'choose_shortcut',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 
@@ -51,7 +50,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
         Analytics.trackEvent('ce_bot_quick_strategy_form', {
             shortcut_name: 'quick-strategy',
             form_source: 'bot_dashboard',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 
@@ -61,7 +59,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             shortcut_name: type,
             action: 'choose_shortcut',
             form_source: 'ce_bot_dashboard_form',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 

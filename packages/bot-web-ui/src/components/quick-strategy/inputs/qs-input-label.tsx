@@ -19,7 +19,6 @@ const QSInputLabel: React.FC<TQSInputLabel> = observer(({ label, description, fu
         Analytics.trackEvent('ce_bot_quick_strategy_form', {
             action: 'info_popup_open',
             form_source: 'ce_bot_quick_strategy_form',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 

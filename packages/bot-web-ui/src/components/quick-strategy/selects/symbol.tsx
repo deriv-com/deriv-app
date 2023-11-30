@@ -46,7 +46,6 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
             action: 'choose_asset',
             asset_type: item,
             form_source: 'ce_bot_quick_strategy_form',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 

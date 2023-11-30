@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import { Analytics, TActions } from '@deriv/analytics';
+import { Analytics, BotTActions } from '@deriv/analytics';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
@@ -44,11 +44,10 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         setPreviewedStrategyId,
     } = load_modal;
 
-    const sendToRudderStack = (action: TActions) => {
+    const sendToRudderStack = (action: BotTActions) => {
         Analytics.trackEvent('ce_bot_builder_form', {
             action,
             form_source: 'ce_bot_dashboard_form',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
@@ -101,7 +100,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         Analytics.trackEvent('ce_bot_builder_form', {
             action: 'open',
             form_source: 'bot_dashboard_form-open',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 
@@ -111,7 +109,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         Analytics.trackEvent('ce_bot_builder_form', {
             action: 'close',
             form_source: 'bot_dashboard_form-edit',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 

@@ -39,7 +39,6 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
         Analytics.trackEvent('ce_bot_quick_strategy_form', {
             action: 'run_strategy',
             form_source: 'ce_bot_quick_strategy_form',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 

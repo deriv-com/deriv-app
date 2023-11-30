@@ -27,13 +27,11 @@ const LocalComponent = observer(() => {
         Analytics.trackEvent('ce_bot_dashboard_form', {
             action: 'push_open_button',
             form_source: 'ce_bot_dashboard_form',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
 
         //this is to track from which open button user has come to bot builder tab
-        Analytics.trackEvent('bot_dashboard_form_open', {
+        Analytics.trackEvent('ce_bot_builder_form', {
             form_source: 'bot_dashboard_form_open',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 
@@ -41,7 +39,6 @@ const LocalComponent = observer(() => {
         Analytics.trackEvent('ce_bot_dashboard_form', {
             action: 'push_user_guide',
             form_source: 'ce_bot_dashboard_form',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 

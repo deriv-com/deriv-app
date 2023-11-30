@@ -165,7 +165,6 @@ export default class SaveModalStore implements ISaveModalStore {
         Analytics.trackEvent('ce_bot_dashboard_form', {
             bot_name,
             form_source: 'ce_bot_dashboard_form',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
 
         this.updateBotName(bot_name);

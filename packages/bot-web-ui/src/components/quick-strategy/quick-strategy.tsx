@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Form as FormikForm, Formik } from 'formik';
 import * as Yup from 'yup';
-import { Analytics } from '@deriv/analytics';
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { MobileFullPageModal, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
@@ -161,13 +160,6 @@ const QuickStrategy = observer(() => {
     const handleClose = () => {
         setFormVisibility(false);
     };
-
-    React.useEffect(() => {
-        Analytics.trackEvent('ce_bot_quick_strategy_form', {
-            action: is_open ? 'open' : 'close',
-            device_type: is_mobile ? 'mobile' : 'desktop',
-        });
-    }, [is_open]);
 
     return (
         <FormikWrapper>

@@ -9,7 +9,7 @@ import QuickStrategy1 from '../../quick-strategy';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../dbot-tours/bot-builder-tour';
 import WorkspaceWrapper from './workspace-wrapper';
-import { Analytics, TActions } from '@deriv/analytics';
+import { Analytics, BotTActions } from '@deriv/analytics';
 import { DBOT_TABS } from 'Constants/bot-contents';
 
 const BotBuilder = observer(() => {
@@ -25,11 +25,10 @@ const BotBuilder = observer(() => {
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);
 
-    const trackRudderStackForBotBuilder = (action: TActions) => {
+    const trackRudderStackForBotBuilder = (action: BotTActions) => {
         Analytics.trackEvent('ce_bot_builder_form', {
             action,
             form_source: 'ce_bot_builder_form',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 

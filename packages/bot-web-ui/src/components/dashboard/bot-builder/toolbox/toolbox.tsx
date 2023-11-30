@@ -49,7 +49,6 @@ const Toolbox = observer(() => {
         Analytics.trackEvent('ce_bot_quick_strategy_form', {
             action: 'open',
             form_source: 'bot_builder_form',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 

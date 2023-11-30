@@ -20,6 +20,10 @@ type TContractTypes = {
     attached?: boolean;
 };
 
+type RudderStackActionType = {
+    text: string;
+};
+
 const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, name }) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
@@ -29,11 +33,12 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
     const { setFieldValue, validateForm, values } = useFormikContext<TFormData>();
     const { symbol, tradetype } = values;
     const selected = values?.type;
-    const sendTradeTypeToRudderStack = (item: string) => {
+
+    const sendTradeTypeToRudderStack = (item: RudderStackActionType) => {
         Analytics.trackEvent('ce_bot_quick_strategy_form', {
-            choose_trade_type: item.text,
+            action: 'choose_trade_type',
+            trade_type: item.text,
             form_source: 'ce_bot_quick_strategy_form',
-            device_type: is_mobile ? 'mobile' : 'desktop',
         });
     };
 
@@ -62,6 +67,14 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
 
     const key = `qs-contract-type-${name}`;
 
+    const sendTradeTypeValueToRudderStack = (item: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_trade_type_mode',
+            trade_type_mode: item,
+            form_source: 'ce_bot_quick_strategy_form',
+        });
+    };
+
     return (
         <div
             className={classNames('qs__form__field no-top-border-radius no-top-spacing', {
@@ -83,6 +96,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
                                                 'qs__form__field__list__item--active': is_active,
                                             })}
                                             onClick={() => {
+                                                sendTradeTypeValueToRudderStack(item.text);
                                                 handleChange(item.value);
                                             }}
                                         >

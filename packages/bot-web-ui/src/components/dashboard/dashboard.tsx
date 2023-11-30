@@ -78,7 +78,6 @@ const Dashboard = observer(() => {
             Analytics.trackEvent('ce_bot_builder_form', {
                 action: 'open',
                 form_source: 'bot_header_form',
-                device_type: is_mobile ? 'mobile' : 'desktop',
             });
             if (is_drawer_open) {
                 initTrashCan(400, -748);

@@ -1,4 +1,4 @@
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { Analytics } from '@deriv/analytics';
@@ -8,14 +8,16 @@ import debounce from 'lodash.debounce';
 const DEBOUNCE_INTERVAL_TIME = 2000;
 const SearchInput = observer(({ ref, faq_value, setFaqSearchContent, prev_active_tutorials, setDebouncedValue }) => {
     const { dashboard } = useDBotStore();
-    const { ui } = useStore();
-    const { is_mobile } = ui;
     const { setActiveTabTutorial } = dashboard;
 
     const throttleChange = React.useCallback(
         debounce(
             value => {
                 setDebouncedValue(value);
+                Analytics.trackEvent('ce_bot_tutorial_form', {
+                    action: 'search',
+                    search_string: value,
+                });
             },
             DEBOUNCE_INTERVAL_TIME,
             {
@@ -54,7 +56,6 @@ const SearchInput = observer(({ ref, faq_value, setFaqSearchContent, prev_active
         if (ref?.current?.value) {
             Analytics.trackEvent('ce_bot_builder_form', {
                 search_string: ref?.current?.value,
-                device_type: is_mobile ? 'mobile' : 'desktop',
             });
         }
     };

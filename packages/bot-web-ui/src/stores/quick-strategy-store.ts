@@ -4,6 +4,7 @@ import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { STRATEGIES } from 'Components/quick-strategy/config';
 import { TFormData } from 'Components/quick-strategy/types';
 import RootStore from './root-store';
+import { Analytics } from '@deriv/analytics';
 
 export type TActiveSymbol = {
     group: string;
@@ -74,6 +75,10 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     }
 
     setFormVisibility = (is_open: boolean) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: is_open ? 'open' : 'close',
+            form_source: 'ce_bot_quick_strategy_form',
+        });
         this.is_open = is_open;
     };
 

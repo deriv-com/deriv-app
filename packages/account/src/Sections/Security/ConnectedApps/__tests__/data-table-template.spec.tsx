@@ -1,11 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import DataListTemplate from '../data-list-template';
+import DataTableTemplate from '../data-table-template';
 import { getConnectedAppsScopes } from '../template-helper';
 
-describe('DataListTemplate', () => {
-    it("should render the 'DataListTemplate' component with correct details", () => {
-        const mock_props: React.ComponentProps<typeof DataListTemplate> = {
+describe('DataTableTemplate', () => {
+    it("should render the 'DataTableTemplate' component with correct details", () => {
+        const mock_props: React.ComponentProps<typeof DataTableTemplate> = {
             connected_apps: [
                 {
                     app_id: 99,
@@ -25,7 +25,7 @@ describe('DataListTemplate', () => {
             handleToggleModal: () => undefined,
         };
         const mock_permissions = getConnectedAppsScopes(mock_props.connected_apps[0]?.scopes);
-        render(<DataListTemplate {...mock_props} />);
+        render(<DataTableTemplate {...mock_props} />);
 
         expect(screen.getByText(mock_props.connected_apps[0].name)).toBeInTheDocument();
         if (mock_props.connected_apps[0]?.last_used) {

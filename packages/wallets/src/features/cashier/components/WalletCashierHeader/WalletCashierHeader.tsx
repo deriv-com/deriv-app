@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { t } from 'i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount, useActiveWalletBalance } from '@deriv/api';
 import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../../components';

@@ -1,6 +1,6 @@
 import { FastMarker } from 'Modules/SmartChart';
 import { toJS } from 'mobx';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 type TChartMarker = {
     marker_config: {
@@ -37,11 +37,12 @@ const ChartMarker = ({ marker_config, marker_content_props }: TChartMarker) => {
             });
         }
     };
-    const getMemoizedComponent = React.useCallback(() => {
-        return <ContentComponent {...toJS(marker_content_props)} />;
-    }, [marker_content_props]);
-
-    return <FastMarker markerRef={onRef}>{getMemoizedComponent()}</FastMarker>;
+    const Component = useMemo(() => ContentComponent, []);
+    return (
+        <FastMarker markerRef={onRef}>
+            <Component {...toJS(marker_content_props)} />
+        </FastMarker>
+    );
 };
 
 export default ChartMarker;

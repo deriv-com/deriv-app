@@ -13,7 +13,7 @@ type TDesktopFormWrapper = {
     children: React.ReactNode;
 };
 
-const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
+const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }: TDesktopFormWrapper) => {
     // const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
     const { submitForm, isValid, setFieldValue, validateForm } = useFormikContext();
     const { quick_strategy, run_panel } = useDBotStore();

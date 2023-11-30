@@ -11,7 +11,7 @@ type TMobileFormWrapper = {
     children: React.ReactNode;
 };
 
-const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) => {
+const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }: TMobileFormWrapper) => {
     // const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
     const { submitForm, isValid, setFieldValue, validateForm } = useFormikContext();
     const { quick_strategy, run_panel } = useDBotStore();

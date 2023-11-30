@@ -8,16 +8,13 @@ import TraderProviders from '../../../trader-providers';
 Loadable.preloadAll();
 
 describe('<TradeSettingsExtensions/>', () => {
-    let default_mock_store: ReturnType<typeof mockStore>;
-    beforeEach(() => {
-        default_mock_store = {
-            ...mockStore({}),
-            ui: {
-                ...mockStore({}).ui,
-                populateSettingsExtensions: jest.fn(menu_items => menu_items && menu_items[0].value(mockStore({}))),
-            },
-        };
-    });
+    const default_mock_store = {
+        ...mockStore({}),
+        ui: {
+            ...mockStore({}).ui,
+            populateSettingsExtensions: jest.fn(menu_items => menu_items && menu_items[0].value(mockStore({}))),
+        },
+    };
 
     const mockTradeSettingsExtensions = () => {
         return (

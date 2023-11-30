@@ -39,8 +39,9 @@ const POISubmission = observer(
 
         const { client, notifications } = useStore();
 
-        const { account_settings, getChangeableFields } = client;
+        const { account_settings, getChangeableFields, account_status } = client;
         const { refreshNotifications } = notifications;
+        const is_high_risk = account_status.risk_classification === 'high';
 
         const handleSelectionNext = () => {
             if (Object.keys(selected_country).length) {
@@ -81,11 +82,12 @@ const POISubmission = observer(
 
         const needs_resubmission = has_require_submission || allow_poi_resubmission;
 
-        const mismatch_status = formatIDVError(idv.last_rejected, idv.status);
+        const mismatch_status = formatIDVError(idv.last_rejected, idv.status, is_high_risk);
 
         const setIdentityService = React.useCallback(
             identity_last_attempt => {
                 const { service, country_code } = identity_last_attempt;
+                setSelectedCountry(getCountryFromResidence(country_code));
                 switch (service) {
                     case service_code.idv:
                     case service_code.onfido: {
@@ -98,7 +100,6 @@ const POISubmission = observer(
                         break;
                     }
                     case service_code.manual: {
-                        setSelectedCountry(getCountryFromResidence(country_code));
                         setSubmissionService(service_code.manual);
                         setSubmissionStatus(submission_status_code.submitting);
                         break;
@@ -114,6 +115,7 @@ const POISubmission = observer(
                 setSelectedCountry,
                 setSubmissionService,
                 setSubmissionStatus,
+                is_idv_disallowed,
             ]
         );
 
@@ -125,7 +127,11 @@ const POISubmission = observer(
                 setIdentityService(identity_last_attempt);
             } else if (
                 mismatch_status &&
-                ![idv_error_statuses.poi_expired, idv_error_statuses.poi_failed].includes(mismatch_status) &&
+                ![
+                    idv_error_statuses.poi_expired,
+                    idv_error_statuses.poi_failed,
+                    idv_error_statuses.poi_high_risk,
+                ].includes(mismatch_status) &&
                 idv.submissions_left > 0
             ) {
                 setSubmissionService(service_code.idv);

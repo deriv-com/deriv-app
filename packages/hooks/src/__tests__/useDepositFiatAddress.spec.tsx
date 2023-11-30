@@ -1,8 +1,7 @@
-import * as React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import { APIProvider } from '@deriv/api';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import useDepositFiatAddress from '../useDepositFiatAddress';
+import { withMockAPIProvider } from '../mocks';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -13,11 +12,7 @@ describe('useDepositFiatAddress', () => {
     it('should get the iframe url when cashier API is called', () => {
         const mock = mockStore({ ui: { is_dark_mode_on: false } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => useDepositFiatAddress(), { wrapper });
 
@@ -29,11 +24,7 @@ describe('useDepositFiatAddress', () => {
     it('should get the iframe url for dark mode', () => {
         const mock = mockStore({ ui: { is_dark_mode_on: true } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => useDepositFiatAddress(), { wrapper });
 
@@ -45,11 +36,7 @@ describe('useDepositFiatAddress', () => {
     it('should get the iframe url for light mode', () => {
         const mock = mockStore({ ui: { is_dark_mode_on: false } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => useDepositFiatAddress(), { wrapper });
 

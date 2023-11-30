@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
-import { isDesktop, TRADE_TYPES } from '@deriv/shared';
+import { isDesktop } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay';
@@ -44,11 +44,9 @@ const Trade = observer(() => {
         is_trade_enabled,
         is_turbos,
         is_vanilla,
-        onChange,
         onMount,
         onUnmount,
         prepareTradeStore,
-        setContractTypes,
         setIsDigitsWidgetActive,
         setMobileDigitView,
         should_show_active_symbols_loading,
@@ -58,7 +56,6 @@ const Trade = observer(() => {
     const {
         notification_messages_ui: NotificationMessages,
         has_only_forward_starting_contracts: is_market_unavailable_visible,
-        should_show_multipliers_onboarding,
         is_dark_mode_on: is_dark_theme,
         is_mobile,
     } = ui;
@@ -108,18 +105,6 @@ const Trade = observer(() => {
         setTrySyntheticIndices(false);
         setTryOpenMarkets(false);
     }, [is_mobile, symbol, setDigits, setTrySyntheticIndices, is_synthetics_available]);
-
-    React.useEffect(() => {
-        const selectMultipliers = async () => {
-            await setContractTypes();
-
-            onChange({ target: { name: 'contract_type', value: TRADE_TYPES.MULTIPLIER } });
-        };
-        if (should_show_multipliers_onboarding && !is_chart_loading && (is_synthetics_available || !is_market_closed)) {
-            selectMultipliers();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [should_show_multipliers_onboarding, is_chart_loading]);
 
     const bottomWidgets = React.useCallback(({ digits: d, tick: t }) => {
         return <BottomWidgetsMobile digits={d} tick={t} setTick={setTick} setDigits={setDigits} />;

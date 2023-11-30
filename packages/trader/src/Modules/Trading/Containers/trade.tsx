@@ -50,11 +50,9 @@ const Trade = observer(() => {
         is_trade_enabled,
         is_turbos,
         is_vanilla,
-        onChange,
         onMount,
         onUnmount,
         prepareTradeStore,
-        setContractTypes,
         setIsDigitsWidgetActive,
         setMobileDigitView,
         should_show_active_symbols_loading,
@@ -113,18 +111,6 @@ const Trade = observer(() => {
         setTryOpenMarkets(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [symbol, setDigits, setTrySyntheticIndices, is_synthetics_available]);
-
-    React.useEffect(() => {
-        const selectMultipliers = async () => {
-            await setContractTypes();
-
-            onChange({ target: { name: 'contract_type', value: 'multiplier' } });
-        };
-        if (!is_chart_loading && (is_synthetics_available || !is_market_closed)) {
-            selectMultipliers();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_chart_loading]);
 
     const bottomWidgets = React.useCallback(({ digits: d, tick: t }: TBottomWidgetsParams) => {
         return <BottomWidgetsMobile digits={d} tick={t} setTick={setTick} setDigits={setDigits} />;

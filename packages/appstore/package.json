@@ -24,7 +24,7 @@
     "author": "Deriv",
     "license": "Apache-2.0",
     "dependencies": {
-        "@deriv/analytics": "^1.4.1",
+        "@deriv/analytics": "^1.4.4",
         "@deriv/api": "^1.0.0",
         "@deriv/account": "^1.0.0",
         "@deriv/api-types": "^1.0.118",
@@ -52,7 +52,7 @@
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
         "react-transition-group": "4.4.2",
-        "embla-carousel-react": "^8.0.0-rc12"
+        "embla-carousel-react": "8.0.0-rc12"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",

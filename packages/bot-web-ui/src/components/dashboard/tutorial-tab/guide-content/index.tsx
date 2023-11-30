@@ -59,7 +59,7 @@ const GuideContent = observer(({ guide_tab_content, video_tab_content }: TGuideC
         () =>
             has_guide_content && (
                 <div className='tutorials-wrap'>
-                    {guide_tab_content?.length !== 0 && (
+                    {guide_tab_content?.length && (
                         <div className='tutorials-wrap__group'>
                             <div className='tutorials-wrap__group__title'>
                                 <Text
@@ -105,7 +105,7 @@ const GuideContent = observer(({ guide_tab_content, video_tab_content }: TGuideC
                         </div>
                     )}
 
-                    {video_tab_content?.length !== 0 && (
+                    {video_tab_content?.length && (
                         <div className='tutorials-wrap__group'>
                             <div className='tutorials-wrap__group__title'>
                                 <Text

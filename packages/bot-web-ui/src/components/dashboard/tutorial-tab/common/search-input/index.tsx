@@ -4,7 +4,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import React from 'react';
 import debounce from 'lodash.debounce';
 
-const DEBOUNCE_INTERVAL_TIME = 1000;
+const DEBOUNCE_INTERVAL_TIME = 300;
 const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tutorials }) => {
     const { dashboard } = useDBotStore();
     const input_ref = React.useRef(null);

@@ -1,77 +1,62 @@
-.dc-form-progress {
-    width: 100%;
+.stepper {
     position: relative;
+    display: flex;
+    justify-content: center;
 
-    &__header {
-        align-items: center;
+    &__layout {
+        @include desktop {
+            display: flex;
+            width: fit-content;
+            align-items: flex-end;
+            gap: 1.6rem;
+        }
+        @include mobile {
+            display: grid;
+            grid-auto-flow: column;
+            column-gap: 0.1rem;
+        }
+    }
+
+    &__line {
+        height: 0.2rem;
+        @include desktop {
+            width: 0.2rem;
+            height: 4rem;
+        }
+        display: block;
+        background-color: var(--text-less-prominent);
+        &--active {
+            background-color: var(--brand-red-coral);
+        }
+    }
+
+    &__bullet {
+        height: 1.6rem;
+        width: 1.6rem;
+        border-radius: 50%;
+        box-sizing: border-box;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin-bottom: 3.2rem;
-
-        & > h2 {
-            text-transform: none;
-            margin: 2rem 0 0;
-        }
-    }
-    &__step {
         align-items: center;
-        display: flex;
-        flex-direction: column;
-        height: 6rem;
-        justify-content: space-around;
-        width: 160px;
-        z-index: 2;
-
-        & .identifier {
-            border-radius: 50%;
-            display: block;
-            width: 24px;
-            background-color: var(--text-less-prominent);
-            border: 1px solid var(--text-less-prominent);
-
-            &--active {
-                background-color: var(--brand-red-coral) !important;
-                border: 1px solid var(--brand-red-coral) !important;
-            }
+        outline: solid 2px var(--text-less-prominent);
+        z-index: 1;
+        &--active {
+            border-color: var(--brand-red-coral);
+        }
+        &--filled {
+            background-color: var(--brand-red-coral);
         }
     }
-    &__steps {
-        align-items: center;
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-        position: relative;
+}
 
-        &--before {
-            bottom: 0;
-            content: '';
-            left: 0;
-            margin: 0 auto; /* this centers the line to the full width specified */
-            position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
-            right: 0;
-            top: 1.7rem;
-            border-top: 2px solid var(--text-less-prominent);
-        }
-        &--after {
-            border-top: 2px solid var(--brand-red-coral);
-            transition: width 0.3s ease;
-            @include desktop {
-                bottom: 0;
-                content: '';
-                left: 0;
-                margin: 0 auto; /* this centers the line to the full width specified */
-                position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
-                top: 1.7rem;
-            }
-            @include mobile {
-                position: absolute;
-                top: 0;
-            }
-        }
-    }
+.bullet__layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-    &--initial {
-        border-top: 2px solid var(--checkbox-disabled-grey);
-    }
+.mobile__layout {
+    display: grid;
+    grid-auto-flow: column;
+    width: 100px;
+    column-gap: 1px;
 }

@@ -19,14 +19,23 @@
 
     &__line {
         height: 0.2rem;
+        display: block;
+        background: linear-gradient(to right, var(--brand-red-coral) 50%, var(--text-less-prominent) 50%);
+        background-size: 200% 100%;
+        background-position: right;
         @include desktop {
             width: 0.2rem;
             height: 4rem;
+            background: linear-gradient(to bottom, var(--brand-red-coral) 50%, var(--text-less-prominent) 50%);
+            background-size: 100% 200%;
+            background-position: bottom;
         }
-        display: block;
-        background-color: var(--text-less-prominent);
+        transition: all 0.7s ease-out;
         &--active {
-            background-color: var(--brand-red-coral);
+            background-position: left;
+            @include desktop {
+                background-position: top;
+            }
         }
     }
 
@@ -40,7 +49,8 @@
         outline: solid 2px var(--text-less-prominent);
         z-index: 1;
         &--active {
-            border-color: var(--brand-red-coral);
+            transition: all 0.7s ease-out 0.7s;
+            outline-color: var(--brand-red-coral);
         }
         &--filled {
             background-color: var(--brand-red-coral);
@@ -57,6 +67,5 @@
 .mobile__layout {
     display: grid;
     grid-auto-flow: column;
-    width: 100px;
-    column-gap: 1px;
+    column-gap: 0.1rem;
 }

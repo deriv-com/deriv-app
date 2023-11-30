@@ -3,7 +3,6 @@ import { toJS } from 'mobx';
 import React from 'react';
 
 type TChartMarker = {
-    is_bottom_widget_visible?: boolean;
     marker_config: {
         ContentComponent: 'div';
         x: string | number;
@@ -16,7 +15,7 @@ type TRef = {
     div: HTMLDivElement;
 };
 
-const ChartMarker = ({ marker_config, marker_content_props, is_bottom_widget_visible }: TChartMarker) => {
+const ChartMarker = ({ marker_config, marker_content_props }: TChartMarker) => {
     const { ContentComponent, ...marker_props } = marker_config;
 
     // TODO:
@@ -38,12 +37,11 @@ const ChartMarker = ({ marker_config, marker_content_props, is_bottom_widget_vis
             });
         }
     };
+    const getMemoizedComponent = React.useCallback(() => {
+        return <ContentComponent {...toJS(marker_content_props)} />;
+    }, [marker_content_props]);
 
-    return (
-        <FastMarker markerRef={onRef}>
-            <ContentComponent {...toJS(marker_content_props)} />
-        </FastMarker>
-    );
+    return <FastMarker markerRef={onRef}>{getMemoizedComponent()}</FastMarker>;
 };
 
 export default ChartMarker;

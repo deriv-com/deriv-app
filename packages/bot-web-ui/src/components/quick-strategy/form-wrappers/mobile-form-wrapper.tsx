@@ -49,7 +49,12 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
         <div className='qs'>
             <div className='qs__body'>
                 <div className='qs__body__content'>
-                    <ThemedScrollbars className='qs__form__container' autohide={false}>
+                    <ThemedScrollbars
+                        className={classNames('qs__form__container', {
+                            'qs__form__container--no-footer': active_tab !== 'TRADE_PARAMETERS',
+                        })}
+                        autohide={false}
+                    >
                         <div className='qs__body__content__title'>
                             <div className='qs__body__content__description'>
                                 <Text size='xxs'>

@@ -5,12 +5,12 @@ import { Router } from './routes';
 import './AppContent.scss';
 
 const AppContent: React.FC = () => {
-    const [isPanelOpen, setPanelOpen] = useState(false);
+    const [isPanelOpen, setIsPanelOpen] = useState(false);
 
     useEffect(() => {
         const handleShortcutKey = (event: globalThis.KeyboardEvent) => {
             if (event.ctrlKey && event.key === 'p') {
-                setPanelOpen(prev => !prev);
+                setIsPanelOpen(prev => !prev);
             }
         };
 
@@ -19,7 +19,7 @@ const AppContent: React.FC = () => {
         return () => {
             window.removeEventListener('keydown', handleShortcutKey);
         };
-    }, [setPanelOpen]);
+    }, [setIsPanelOpen]);
 
     useEffect(() => {
         defineViewportHeight();

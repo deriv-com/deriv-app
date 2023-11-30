@@ -23,20 +23,26 @@ const WalletLanguageSidePanel: React.FC = () => {
                 Languages
             </WalletText>
             <ul className='wallets-language-side-panel__language-list'>
-                {Object.keys(languages).map((language, index) => {
+                {Object.keys(languages).map(language => {
                     const languageCode = languages[language as keyof typeof languages];
                     return (
-                        <li
-                            className='wallets-language-side-panel__language-item'
-                            key={index}
+                        <div
+                            key={`wallets-language-side-panel__language-item-${languageCode}`}
                             onClick={() => {
                                 setCurrentLanguage(languageCode);
                             }}
                         >
-                            <WalletText weight={currentLanguage === languageCode ? 'bold' : 'normal'}>
-                                {language}
-                            </WalletText>
-                        </li>
+                            <li
+                                className='wallets-language-side-panel__language-item'
+                                onClick={() => {
+                                    setCurrentLanguage(languageCode);
+                                }}
+                            >
+                                <WalletText weight={currentLanguage === languageCode ? 'bold' : 'normal'}>
+                                    {language}
+                                </WalletText>
+                            </li>
+                        </div>
                     );
                 })}
             </ul>

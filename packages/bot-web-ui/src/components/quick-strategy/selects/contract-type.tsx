@@ -30,7 +30,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
     const selected = values?.type;
 
     React.useEffect(() => {
-        if (tradetype && symbol) {
+        if (tradetype && symbol && selected !== '') {
             const getContractTypes = async () => {
                 const { contracts_for } = ApiHelpers.instance;
                 const categories = await contracts_for.getContractTypes(tradetype);
@@ -45,7 +45,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
             getContractTypes();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [symbol, tradetype]);
+    }, [symbol, tradetype, selected]);
 
     const handleChange = (value: string) => {
         setFieldValue?.(name, value);

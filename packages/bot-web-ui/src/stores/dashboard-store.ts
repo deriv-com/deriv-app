@@ -100,26 +100,22 @@ export default class DashboardStore implements IDashboardStore {
         this.root_store = root_store;
         const removeHTMLTagsFromString = (param = '') => param.replace(/<.*?>/g, '');
 
-        const getUserGuideContent = () => {
-            return [...user_guide_content].map(item => `${item.search_id}# ${item.content.toLowerCase()}`);
-        };
+        const getUserGuideContent = [...user_guide_content].map(
+            item => `${item.search_id}# ${item.content.toLowerCase()}`
+        );
 
-        const getVideoContent = () => {
-            return [...guide_content].map(item => `${item.search_id}# ${item.content.toLowerCase()}`);
-        };
+        const getVideoContent = [...guide_content].map(item => `${item.search_id}# ${item.content.toLowerCase()}`);
 
-        const getFaqContent = () => {
-            return faq_content.map(item => {
-                return `${item.search_id}# ${item.title.toLowerCase()} ${item.description
-                    .map(inner_item => {
-                        const itemWithoutHTML = removeHTMLTagsFromString(inner_item.content);
-                        return itemWithoutHTML?.toLowerCase();
-                    })
-                    .join(' ')}`;
-            });
-        };
+        const getFaqContent = faq_content.map(item => {
+            return `${item.search_id}# ${item.title.toLowerCase()} ${item.description
+                .map(inner_item => {
+                    const itemWithoutHTML = removeHTMLTagsFromString(inner_item.content);
+                    return itemWithoutHTML?.toLowerCase();
+                })
+                .join(' ')}`;
+        });
 
-        this.combined_search = [...getUserGuideContent(), ...getVideoContent(), ...getFaqContent()];
+        this.combined_search = [...getUserGuideContent, ...getVideoContent, ...getFaqContent];
 
         const {
             load_modal: { previewRecentStrategy, current_workspace_id },
@@ -182,7 +178,7 @@ export default class DashboardStore implements IDashboardStore {
     strategy_save_type = 'unsaved';
     toast_message = '';
     is_web_socket_intialised = true;
-    debounced_value = '';
+    search_param = '';
     guide_tab_content = user_guide_content;
     video_tab_content = guide_content;
     faq_tab_content = faq_content;
@@ -194,10 +190,10 @@ export default class DashboardStore implements IDashboardStore {
         this.faq_tab_content = faq_content;
     };
 
-    filterTuotrialTab = (debounced_value: string) => {
-        this.debounced_value = debounced_value;
+    filterTuotrialTab = (search_param: string) => {
+        this.search_param = search_param;
         const foundItems = this.combined_search.filter(item => {
-            return item.includes(debounced_value.toLowerCase());
+            return item.includes(search_param.toLowerCase());
         });
 
         const filtered_user_guide: [] = [];

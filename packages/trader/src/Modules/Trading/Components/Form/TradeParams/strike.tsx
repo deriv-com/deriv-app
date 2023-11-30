@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import BarriersList from './barriers-list';
 import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { toMoment, VANILLALONG } from '@deriv/shared';
+import { clickAndKeyEventHandler, toMoment, VANILLALONG } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
 import { observer, useStore } from '@deriv/stores';
@@ -32,14 +32,16 @@ const Strike = observer(() => {
         setSelectedValue(barrier_1);
     }, [barrier_1]);
 
-    const toggleWidget = () => setIsOpen(!is_open);
+    const toggleWidget = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        clickAndKeyEventHandler(() => setIsOpen(!is_open), e);
+    };
 
     const is_24_hours_contract = expiry_date ? toMoment(expiry_date).isSame(toMoment(server_time), 'day') : false;
 
     const is_relative_strike_applicable =
         expiry_type === 'endtime' ? is_24_hours_contract : advanced_duration_unit !== 'd';
 
-    const strike_price_list = strike_price_choices.map(strike_price => ({
+    const strike_price_list = strike_price_choices.map((strike_price: string) => ({
         text: strike_price,
         value: strike_price,
     }));
@@ -51,7 +53,7 @@ const Strike = observer(() => {
             <DesktopWrapper>
                 <Fieldset
                     className='trade-container__fieldset trade-container__barriers'
-                    header={localize('Strike price')}
+                    header={<Localize i18n_default_text='Strike price' />}
                     header_tooltip={
                         <Localize
                             i18n_default_text='If you buy a "<0>{{trade_type}}</0>" option, you receive a payout at expiry if the final price is {{payout_status}} the strike price. Otherwise, your “<0>{{trade_type}}</0>” option will expire worthless.'
@@ -68,6 +70,7 @@ const Strike = observer(() => {
                         <InputField
                             type='number'
                             name='barrier_1'
+                            data_testid='dt_strike_input'
                             value={selected_value}
                             className='trade-container__barriers-single'
                             classNameInput={classNames(
@@ -86,7 +89,7 @@ const Strike = observer(() => {
                     ) : (
                         <div className='trade-container__strike-field'>
                             <Text size='s' className='strike-field--text'>
-                                {localize('Spot')}
+                                <Localize i18n_default_text='Spot' />
                             </Text>
                             <Dropdown
                                 classNameDisplay='dc-dropdown__display--duration'
@@ -106,11 +109,11 @@ const Strike = observer(() => {
                 {should_open_dropdown && (
                     <BarriersList
                         className='trade-container__barriers-table'
-                        header={localize('Strike Prices')}
+                        header={<Localize i18n_default_text='Strike Prices' />}
                         barriers_list={strike_price_choices}
                         selected_item={selected_value}
                         show_table={should_open_dropdown}
-                        onClick={strike => {
+                        onClick={(strike: string) => {
                             setSelectedValue(strike);
                             setShouldOpenDropdown(false);
                             onChange({ target: { name: 'barrier_1', value: strike } });
@@ -121,12 +124,18 @@ const Strike = observer(() => {
             </DesktopWrapper>
             <MobileWrapper>
                 <div className='mobile-widget__wrapper'>
-                    <div className='strike-widget' onClick={toggleWidget}>
+                    <div className='strike-widget' onClick={toggleWidget} onKeyDown={toggleWidget}>
                         {should_show_spot && (
-                            <div className='mobile-widget__spot'>{<Text size='xs'>{localize('Spot')}</Text>}</div>
+                            <div className='mobile-widget__spot'>
+                                <Text size='xs'>
+                                    <Localize i18n_default_text='Spot' />
+                                </Text>
+                            </div>
                         )}
                         <div className='mobile-widget__amount'>{barrier_1}</div>
-                        <div className='mobile-widget__type'>{localize('Strike price')}</div>
+                        <div className='mobile-widget__type'>
+                            <Localize i18n_default_text='Strike price' />
+                        </div>
                     </div>
                     <StrikeParamModal
                         contract_type={contract_type}

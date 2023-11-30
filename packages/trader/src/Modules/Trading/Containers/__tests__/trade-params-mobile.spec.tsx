@@ -39,24 +39,26 @@ jest.mock('@deriv/components', () => ({
     Tabs: jest.fn(({ children }) => <div>{children}</div>),
 }));
 jest.mock('Modules/Trading/Components/Form/TradeParams/amount-mobile', () =>
-    jest.fn(props => (
-        <div>
-            <div>{amount_mobile}</div>
-            <div>{props.amount_tab_idx}</div>
-            <div>{props.stake_value}</div>
-            <div>{props.has_duration_error && duration_error}</div>
-            <button onClick={() => props.setAmountTabIdx(1)}>setAmountTabIdx</button>
-            <button onClick={() => props.setSelectedAmount('stake', 20)}>setSelectedAmount</button>
-            <button onClick={() => props.setAmountError(true)}>setAmountError</button>
-        </div>
-    ))
+    jest.fn(
+        ({ amount_tab_idx, has_duration_error, stake_value, setAmountTabIdx, setAmountError, setSelectedAmount }) => (
+            <div>
+                <div>{amount_mobile}</div>
+                <div>{amount_tab_idx}</div>
+                <div>{stake_value}</div>
+                <div>{has_duration_error && duration_error}</div>
+                <button onClick={() => setAmountTabIdx(1)}>setAmountTabIdx</button>
+                <button onClick={() => setSelectedAmount('stake', 20)}>setSelectedAmount</button>
+                <button onClick={() => setAmountError(true)}>setAmountError</button>
+            </div>
+        )
+    )
 );
 jest.mock('Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile', () =>
-    jest.fn(props => (
+    jest.fn(({ has_amount_error, setDurationError }) => (
         <div>
             <div>{duration_mobile}</div>
-            <div>{props.has_amount_error && amount_error}</div>
-            <button onClick={() => props.setDurationError(true)}>setDurationError</button>
+            <div>{has_amount_error && amount_error}</div>
+            <button onClick={() => setDurationError(true)}>setDurationError</button>
         </div>
     ))
 );

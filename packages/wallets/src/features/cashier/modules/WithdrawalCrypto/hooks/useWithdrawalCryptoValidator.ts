@@ -1,4 +1,4 @@
-import { TWithdrawalCryptoContext } from '../provider/WithdrawalCryptoProvider';
+import { TWithdrawalCryptoContext } from '../provider';
 
 const MIN_ADDRESS_LENGTH = 25;
 const MAX_ADDRESS_LENGTH = 64;

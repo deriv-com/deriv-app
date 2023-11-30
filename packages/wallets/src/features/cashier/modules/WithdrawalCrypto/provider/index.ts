@@ -1,4 +1,7 @@
-import WithdrawalCryptoProvider, { TWithdrawalCrypto, useWithdrawalCryptoContext } from './WithdrawalCryptoProvider';
+import WithdrawalCryptoProvider, {
+    TWithdrawalCryptoContext,
+    useWithdrawalCryptoContext,
+} from './WithdrawalCryptoProvider';
 
 export { useWithdrawalCryptoContext, WithdrawalCryptoProvider };
-export type { TWithdrawalCrypto };
+export type { TWithdrawalCryptoContext };

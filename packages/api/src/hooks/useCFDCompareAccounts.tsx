@@ -7,15 +7,12 @@ import useMT5AccountsList from './useMT5AccountsList';
 export const MARKET_TYPE = {
     ALL: 'all',
     FINANCIAL: 'financial',
-    GAMING: 'gaming',
     SYNTHETIC: 'synthetic',
 } as const;
 
 export const CFD_PLATFORMS = {
-    CFD: 'cfd',
     CFDS: 'CFDs',
     CTRADER: 'ctrader',
-    DERIVEZ: 'derivez',
     DXTRADE: 'dxtrade',
     MT5: 'mt5',
 } as const;
@@ -23,7 +20,7 @@ export const CFD_PLATFORMS = {
 export const JURISDICTION = {
     BVI: 'bvi',
     LABUAN: 'labuan',
-    MALTA_INVEST: 'maltainvest',
+    MALTAINVEST: 'maltainvest',
     SVG: 'svg',
     VANUATU: 'vanuatu',
 } as const;

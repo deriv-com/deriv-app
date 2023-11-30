@@ -49,7 +49,7 @@ const getHighlightedIconLabel = (
             ];
         case MARKET_TYPE.FINANCIAL:
             switch (shortCode) {
-                case JURISDICTION.MALTA_INVEST:
+                case JURISDICTION.MALTAINVEST:
                     return [
                         { highlighted: true, icon: 'Forex', text: forexLabel },
                         { highlighted: true, icon: 'Stocks', text: 'Stocks' },
@@ -169,7 +169,7 @@ const getJurisdictionDescription = (shortcode?: string) => {
                 regulator_description: 'Regulator/External dispute resolution',
                 regulator_license: '(License no. MB/18/0024)',
             };
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_MALTA_INVEST:
+        case MARKET_TYPE_SHORTCODE.FINANCIAL_MALTAINVEST:
             return {
                 ...cfdConfig,
                 counterparty_company: 'Deriv Investments (Europe) Limited',
@@ -261,7 +261,7 @@ const getAccountVerificationStatus = (
     if (shortCode === JURISDICTION.LABUAN) {
         return poiAcknowledgedForBviLabuanVanuatu && poaAcknowledged && hasSubmittedPersonalDetails;
     }
-    if (shortCode === JURISDICTION.MALTA_INVEST) {
+    if (shortCode === JURISDICTION.MALTAINVEST) {
         return (poiAcknowledgedForMaltainvest && poaAcknowledged) || isDemo;
     }
 };

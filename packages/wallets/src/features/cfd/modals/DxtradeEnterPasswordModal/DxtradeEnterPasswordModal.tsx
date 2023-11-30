@@ -36,8 +36,8 @@ const DxtradeEnterPasswordModal = () => {
 
     const successDescription = useMemo(() => {
         return accountType === 'demo'
-            ? 'Transfer virtual funds from your Demo Wallet to your Deriv X Demo account to practise trading.'
-            : `Transfer funds from your ${activeWallet?.currency} Wallet to your Deriv X account to start trading.`;
+            ? "Let's practise trading with 10,000 USD virtual funds."
+            : `Transfer funds from your ${activeWallet?.currency} Wallet to your ${PlatformDetails.dxtrade.title} account to start trading.`;
     }, [accountType, activeWallet?.currency]);
 
     const dxtradeBalance = useMemo(() => {
@@ -46,6 +46,18 @@ const DxtradeEnterPasswordModal = () => {
 
     const renderFooter = useMemo(() => {
         if (isSuccess) {
+            if (accountType === 'demo') {
+                return (
+                    <WalletButton
+                        isFullWidth
+                        onClick={() => {
+                            hide();
+                        }}
+                        size='lg'
+                        text='OK'
+                    />
+                );
+            }
             return (
                 <WalletButtonGroup isFlex isFullWidth>
                     <WalletButton onClick={() => hide()} size='lg' text='Maybe later' variant='outlined' />
@@ -99,7 +111,7 @@ const DxtradeEnterPasswordModal = () => {
                 text={`Create ${PlatformDetails.dxtrade.title} password`}
             />
         );
-    }, [hide, history, isDxtradePasswordNotSet, isLoading, isSuccess, onSubmit, password, show]);
+    }, [accountType, hide, history, isDxtradePasswordNotSet, isLoading, isSuccess, onSubmit, password, show]);
 
     const successComponent = useMemo(() => {
         if (isSuccess && dxtradeAccountListSuccess) {
@@ -110,7 +122,9 @@ const DxtradeEnterPasswordModal = () => {
                     marketType='all'
                     platform='dxtrade'
                     renderButton={() => renderFooter}
-                    title={`Your Deriv X${accountType === 'demo' ? ` ${accountType}` : ''} account is ready`}
+                    title={`Your ${PlatformDetails.dxtrade.title}${
+                        accountType === 'demo' ? ` ${accountType}` : ''
+                    } account is ready`}
                 />
             );
         }

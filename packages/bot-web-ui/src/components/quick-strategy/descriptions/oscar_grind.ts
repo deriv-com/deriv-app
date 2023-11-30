@@ -1,4 +1,4 @@
-// import { getImageLocation } from '../../../public-path';
+import { getImageLocation } from '../../../public-path';
 import { localize } from '@deriv/translations';
 import { TDescriptionItem } from '../types';
 
@@ -46,6 +46,10 @@ export const OSCAR_GRIND: TDescriptionItem[] = [
     {
         type: 'subtitle',
         content: [localize('An example of Oscar’s Grind strategy')],
+    },
+    {
+        type: 'media',
+        src: getImageLocation('oscar-grind.svg'),
     },
     {
         type: 'subtitle',

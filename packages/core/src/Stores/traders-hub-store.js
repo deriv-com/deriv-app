@@ -23,6 +23,7 @@ export default class TradersHubStore extends BaseStore {
     is_account_type_modal_visible = false;
     account_type_card = '';
     selected_platform_type = 'options';
+    mt5_existing_account = {};
     open_failed_verification_for = '';
     modal_data = {
         active_modal: '',
@@ -61,6 +62,7 @@ export default class TradersHubStore extends BaseStore {
             active_modal_tab: observable,
             active_modal_wallet_id: observable,
             selected_region: observable,
+            mt5_existing_account: observable,
             open_failed_verification_for: observable,
             is_real_wallets_upgrade_on: observable,
             is_wallet_migration_failed: observable,
@@ -104,6 +106,7 @@ export default class TradersHubStore extends BaseStore {
             setIsFirstTimeVisit: action.bound,
             setMT5NotificationModal: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
+            setMT5ExistingAccount: action.bound,
             openFailedVerificationModal: action.bound,
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
@@ -728,6 +731,10 @@ export default class TradersHubStore extends BaseStore {
         this.is_failed_verification_modal_visible = !this.is_failed_verification_modal_visible;
     }
 
+    setMT5ExistingAccount(existing_account) {
+        this.mt5_existing_account = existing_account;
+    }
+
     openFailedVerificationModal(selected_account_type) {
         const {
             common,
@@ -742,6 +749,7 @@ export default class TradersHubStore extends BaseStore {
                 category: selected_account_type.category,
                 type: selected_account_type.type,
             });
+            this.setMT5ExistingAccount(selected_account_type);
             setJurisdictionSelectedShortcode(selected_account_type.jurisdiction);
         } else {
             setJurisdictionSelectedShortcode('');

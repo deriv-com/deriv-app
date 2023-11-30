@@ -71,12 +71,14 @@ const FailedVerificationModal = () => {
     } = useStores();
     const {
         is_failed_verification_modal_visible,
+        mt5_existing_account,
         toggleFailedVerificationModalVisibility,
         open_failed_verification_for,
+        startTrade,
     } = traders_hub;
     const { account_status } = client;
     const { toggleCFDVerificationModal, current_list } = cfd;
-    const { disableApp, enableApp } = ui;
+    const { disableApp, enableApp, is_mt5_verification_failed_modal, setIsMT5VerificationFailedModal } = ui;
     const is_from_multipliers = open_failed_verification_for === 'multipliers';
     const has_mf_mt5_account = Object.keys(current_list)
         .map(key => current_list[key])
@@ -87,10 +89,17 @@ const FailedVerificationModal = () => {
     const history = useHistory();
 
     const closeModal = () => {
+        setIsMT5VerificationFailedModal(false);
+        if (is_mt5_verification_failed_modal) {
+            toggleFailedVerificationModalVisibility();
+            startTrade(mt5_existing_account.platform, mt5_existing_account);
+            return;
+        }
         toggleFailedVerificationModalVisibility();
     };
 
     const onConfirmModal = () => {
+        setIsMT5VerificationFailedModal(false);
         toggleFailedVerificationModalVisibility();
         if (is_from_multipliers) {
             if (should_resubmit_poi()) {

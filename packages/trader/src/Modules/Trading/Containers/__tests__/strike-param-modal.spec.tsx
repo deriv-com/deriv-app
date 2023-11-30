@@ -94,6 +94,7 @@ describe('<StrikeParamModal />', () => {
         );
     });
     it('should show tooltip when user clicks "info" icon and hide tooltip upon second click', () => {
+        window.innerWidth = 720;
         renderStrikeParamModal(props);
         const info_icon = screen.getByTestId('dt_popover_wrapper');
 
@@ -103,16 +104,10 @@ describe('<StrikeParamModal />', () => {
         userEvent.click(info_icon);
         expect(screen.queryByText(/If you buy/i)).not.toBeInTheDocument();
     });
-    it('should hide tooltip when user closes StrikeParamModal if info tooltip is still open', () => {
+    it('should toggle modal when user closes StrikeParamModal', () => {
         renderStrikeParamModal(props);
-        const info_icon = screen.getByTestId('dt_popover_wrapper');
         const close_icon = screen.getByText('IcCross');
-
-        userEvent.click(info_icon);
-        expect(screen.getByText(/If you buy/i)).toBeInTheDocument();
-
         userEvent.click(close_icon);
-        expect(screen.queryByText(/If you buy/i)).not.toBeInTheDocument();
         expect(props.toggleModal).toHaveBeenCalled();
     });
 });

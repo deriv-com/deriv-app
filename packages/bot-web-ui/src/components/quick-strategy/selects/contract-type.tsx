@@ -19,7 +19,7 @@ type TContractTypes = {
     attached?: boolean;
 };
 
-const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, name }) => {
+const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, name }: TContractTypes) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const [list, setList] = React.useState<TContractTypesItem[]>([]);
@@ -62,11 +62,11 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
         >
             <Field name={name} key={key} id={key}>
                 {({ field }: FieldProps) => {
-                    const selected_item = list?.find(item => item.value === field.value);
+                    const selected_item = list?.find((item: TContractTypesItem) => item.value === field.value);
                     if (is_mobile) {
                         return (
                             <ul className='qs__form__field__list' data-testid='dt-qs-contract-types'>
-                                {list.map(item => {
+                                {list.map((item: TContractTypesItem) => {
                                     const is_active = selected_item?.value === item.value;
                                     return (
                                         <li

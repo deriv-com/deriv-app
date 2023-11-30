@@ -20,7 +20,7 @@ type TTradeTypeOption = {
     trade_type: TTradeType;
 };
 
-const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type }) => (
+const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type }: TTradeTypeOption) => (
     <div key={trade_type.value} className='qs__select__option'>
         <IconTradeTypes type={trade_type.icon[0]} className='qs__select__option__icon' />
         <IconTradeTypes type={trade_type.icon[1]} className='qs__select__option__icon' />
@@ -75,7 +75,7 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ fullWidth = false }) => {
             <Field name='tradetype' key='tradetype' id='tradetype'>
                 {({ field }: FieldProps) => {
                     const selected_trade_type = trade_type_dropdown_options?.find(
-                        trade_type => trade_type.value === field.value
+                        (trade_type: TTradeType) => trade_type.value === field.value
                     );
                     return (
                         <Autocomplete

@@ -19,7 +19,7 @@ type TDurationUnit = {
     attached?: boolean;
 };
 
-const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }) => {
+const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }: TDurationUnit) => {
     const [list, setList] = React.useState<TDurationUnitItem[]>([]);
     const { quick_strategy } = useDBotStore();
     const { setValue, setCurrentDurationMinMax } = quick_strategy;

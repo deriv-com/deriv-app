@@ -1,12 +1,12 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
 
-export const CONNECTED_APPS_COLUMN_NAMES = [
+export const getConnectedAppsColumnNames = () => [
     <Localize key='name' i18n_default_text='Name' />,
     <Localize key='permission' i18n_default_text='Permission' />,
     <Localize key='last_login' i18n_default_text='Last login' />,
     <Localize key='action' i18n_default_text='Action' />,
-] as const;
+];
 
 type Permissions = {
     [key: string]: string;

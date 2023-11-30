@@ -1,14 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, FormikProps, FormikValues } from 'formik';
-import { Localize, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { Button, Icon, Text } from '@deriv/components';
 import Uploader from './uploader';
 import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS, SELFIE_DOCUMENT } from '../constants';
-import FormBody from '../../../../form-body';
-import FormFooter from '../../../../form-footer';
 
 type TSelfieUpload = {
     initial_values?: FormikValues;
@@ -40,45 +38,43 @@ const SelfieUpload = ({ initial_values, goBack, onConfirm, onFileDrop }: TSelfie
 
                     return (
                         <Form className={`${ROOT_CLASS}__form`}>
-                            <FormBody className='form-body' scroll_offset={isMobile() ? '18rem' : '8rem'}>
-                                <div className={`${ROOT_CLASS}__fields-content`}>
-                                    <Text as='h3' size='s' weight='bold' color='prominent'>
-                                        <Localize i18n_default_text='Upload your selfie' />
+                            <div className={`${ROOT_CLASS}__fields-content`}>
+                                <Text as='h3' size='s' weight='bold' color='prominent'>
+                                    {localize('Upload your selfie')}
+                                </Text>
+                                <div className={`${ROOT_CLASS}__uploaders-wrap`}>
+                                    <Uploader
+                                        data={SELFIE_DOCUMENT}
+                                        value={values ? values[SELFIE_DOCUMENT.name] : ''}
+                                        is_full={true}
+                                        onChange={onFileDrop}
+                                        has_frame
+                                    />
+                                </div>
+                                <div className={`${ROOT_CLASS}__notice`}>
+                                    <Text as='p' size='xs' color='general'>
+                                        {localize(
+                                            'Before uploading, please ensure that you’re facing forward in the selfie, your face is within the frame, and your eyes are clearly visible even if you’re wearing glasses.'
+                                        )}
                                     </Text>
-                                    <div className={`${ROOT_CLASS}__uploaders-wrap`}>
-                                        <Uploader
-                                            data={SELFIE_DOCUMENT}
-                                            value={values ? values[SELFIE_DOCUMENT.name] : ''}
-                                            is_full
-                                            onChange={onFileDrop}
-                                            has_frame
-                                        />
-                                    </div>
-                                    <div className={`${ROOT_CLASS}__notice`}>
-                                        <Text as='p' size='xs' color='general'>
-                                            <Localize i18n_default_text='Before uploading, please ensure that you’re facing forward in the selfie, your face is within the frame, and your eyes are clearly visible even if you’re wearing glasses.' />
-                                        </Text>
-                                    </div>
                                 </div>
-                            </FormBody>
-                            <FormFooter>
-                                <div className={`${ROOT_CLASS}__btns`}>
-                                    <Button
-                                        onClick={goBack}
-                                        secondary
-                                        large
-                                        text={localize('Go back')}
-                                        icon={<Icon icon='IcButtonBack' />}
-                                    />
-                                    <Button
-                                        type='submit'
-                                        primary
-                                        large
-                                        is_disabled={!isValid || isSubmitting || (!is_form_touched && is_form_empty)}
-                                        text={localize('Confirm and upload')}
-                                    />
-                                </div>
-                            </FormFooter>
+                            </div>
+                            <div className={`${ROOT_CLASS}__btns`}>
+                                <Button
+                                    onClick={goBack}
+                                    secondary
+                                    large
+                                    text={localize('Go back')}
+                                    icon={<Icon icon={'IcButtonBack'} size={16} />}
+                                />
+                                <Button
+                                    type='submit'
+                                    primary
+                                    large
+                                    is_disabled={!isValid || isSubmitting || (!is_form_touched && is_form_empty)}
+                                    text={localize('Confirm and upload')}
+                                />
+                            </div>
                         </Form>
                     );
                 }}

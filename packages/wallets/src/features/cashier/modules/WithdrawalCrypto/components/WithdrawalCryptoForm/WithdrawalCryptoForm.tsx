@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { WalletButton, WalletsPercentageSelector, WalletText, WalletTextField } from '../../../../../../components';
-import { useWithdrawalCryptoInput } from '../../hooks';
+import { useWithdrawalCryptoValidator } from '../../hooks';
 import { useWithdrawalCryptoContext } from '../../provider/WithdrawalCryptoProvider';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
 import './WithdrawalCryptoForm.scss';
@@ -9,7 +9,7 @@ import './WithdrawalCryptoForm.scss';
 const WithdrawalCryptoForm: React.FC = () => {
     const { activeWallet, exchangeRates, fractionalDigits, getConvertedFiatAmount, requestCryptoWithdrawal } =
         useWithdrawalCryptoContext();
-    const { validateCryptoAddress } = useWithdrawalCryptoInput();
+    const { validateCryptoAddress } = useWithdrawalCryptoValidator(activeWallet, fractionalDigits);
 
     return (
         <Formik

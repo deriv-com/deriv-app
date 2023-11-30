@@ -3,14 +3,15 @@ import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { WalletTextField } from '../../../../../../../../components';
 import ArrowBold from '../../../../../../../../public/images/ic-back-arrow.svg';
-import { useWithdrawalCryptoInput } from '../../../../hooks';
+import { useWithdrawalCryptoValidator } from '../../../../hooks';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import type { TWithdrawalForm } from '../../../../types';
 import './WithdrawalCryptoAmountConverter.scss';
 
 const WithdrawalCryptoAmountConverter: React.FC = () => {
-    const { activeWallet, getConvertedCryptoAmount, getConvertedFiatAmount } = useWithdrawalCryptoContext();
-    const { validateCryptoInput, validateFiatInput } = useWithdrawalCryptoInput();
+    const { activeWallet, fractionalDigits, getConvertedCryptoAmount, getConvertedFiatAmount } =
+        useWithdrawalCryptoContext();
+    const { validateCryptoInput, validateFiatInput } = useWithdrawalCryptoValidator(activeWallet, fractionalDigits);
     const [isCryptoInputActive, setIsCryptoInputActive] = useState(false);
     const { errors, setValues } = useFormikContext<TWithdrawalForm>();
 

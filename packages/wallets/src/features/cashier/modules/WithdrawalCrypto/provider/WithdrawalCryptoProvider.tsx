@@ -3,7 +3,7 @@ import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig, useExch
 import { THooks } from '../../../../../types';
 import { TWithdrawalReceipt } from '../types';
 
-export type TWithdrawalCrypto = {
+export type TWithdrawalCryptoContext = {
     activeWallet: ReturnType<typeof useActiveWalletAccount>['data'];
     exchangeRates: Partial<ReturnType<typeof useExchangeRate>>;
     fractionalDigits: {
@@ -20,11 +20,11 @@ export type TWithdrawalCrypto = {
 };
 
 type TWithdrawalCryptoContextProps = {
-    onClose: TWithdrawalCrypto['onClose'];
+    onClose: TWithdrawalCryptoContext['onClose'];
     verificationCode: string;
 };
 
-const WithdrawalCryptoContext = createContext<TWithdrawalCrypto | null>(null);
+const WithdrawalCryptoContext = createContext<TWithdrawalCryptoContext | null>(null);
 
 export const useWithdrawalCryptoContext = () => {
     const context = useContext(WithdrawalCryptoContext);

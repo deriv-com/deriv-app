@@ -1,4 +1,4 @@
-import { useWithdrawalCryptoContext } from '../provider';
+import { TWithdrawalCryptoContext } from '../provider/WithdrawalCryptoProvider';
 
 const MIN_ADDRESS_LENGTH = 25;
 const MAX_ADDRESS_LENGTH = 64;
@@ -12,8 +12,10 @@ const helperMessageMapper = {
     },
 };
 
-const useWithdrawalCryptoInput = () => {
-    const { activeWallet, fractionalDigits } = useWithdrawalCryptoContext();
+const useWithdrawalCryptoValidator = (
+    activeWallet: TWithdrawalCryptoContext['activeWallet'],
+    fractionalDigits: TWithdrawalCryptoContext['fractionalDigits']
+) => {
     const MINIMUM_WITHDRAWAL_AMOUNT = activeWallet?.currency_config?.minimum_withdrawal;
 
     const validateCryptoAddress = (address: string) => {
@@ -69,4 +71,4 @@ const useWithdrawalCryptoInput = () => {
     };
 };
 
-export default useWithdrawalCryptoInput;
+export default useWithdrawalCryptoValidator;

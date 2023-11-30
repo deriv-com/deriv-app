@@ -1,1 +1,1 @@
-export { default as useWithdrawalCryptoInput } from './useWithdrawalCryptoInput';
+export { default as useWithdrawalCryptoValidator } from './useWithdrawalCryptoValidator';

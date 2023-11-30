@@ -179,9 +179,9 @@ const AccountTransferForm = observer(
         const is_ctrader_transfer = selected_to.is_ctrader || selected_from.is_ctrader;
         const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
 
-        const is_mf_status_pending = mf_account_status === MT5_ACCOUNT_STATUS.PENDING;
-        const is_mf_status_need_verification = mf_account_status === MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
-        const is_mf_status_verification_failed = mf_account_status === MT5_ACCOUNT_STATUS.FAILED;
+        const is_mf_status_pending = mf_account_status === 'pending';
+        const is_mf_status_need_verification = mf_account_status === 'needs_verification';
+        const is_mf_status_verification_failed = mf_account_status === 'failed';
         const is_mf_status_pending_or_needs_verification =
             is_mf_status_pending || is_mf_status_need_verification || is_mf_status_verification_failed;
 

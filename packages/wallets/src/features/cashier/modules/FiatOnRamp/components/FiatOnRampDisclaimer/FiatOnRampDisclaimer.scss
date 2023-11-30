@@ -2,17 +2,22 @@
     align-items: flex-start;
     display: flex;
     flex-direction: column;
-    gap: 1.6rem;
     max-width: 79.2rem;
 
     @include mobile {
         justify-content: flex-start;
+        gap: 0.8rem;
     }
 
     &__buttons {
         display: flex;
         gap: 0.8rem;
         justify-content: flex-end;
+        padding-top: 4.2rem;
         width: 100%;
+
+        @include mobile {
+            padding-top: 0.8rem;
+        }
     }
 }

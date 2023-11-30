@@ -11,6 +11,7 @@ type TProps = {
     label: string;
     locale?: Intl.LocalesArgument;
     maxDigits?: number;
+    onBlur: VoidFunction;
     onChange?: (value: number) => void;
     onFocus?: VoidFunction;
     value: number;
@@ -23,6 +24,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
     label,
     locale,
     maxDigits,
+    onBlur,
     onChange,
     onFocus,
     value,
@@ -49,6 +51,11 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
         onFocus?.();
     }, [onFocus]);
 
+    const onBlurHandler = useCallback(() => {
+        setIsFocused(false);
+        onBlur?.();
+    }, [onBlur]);
+
     return (
         <div className='wallets-atm-amount-input'>
             <WalletText size='sm'>{label}</WalletText>
@@ -62,7 +69,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
                     <input
                         className='wallets-atm-amount-input__input'
                         disabled={disabled}
-                        onBlur={() => setIsFocused(false)}
+                        onBlur={onBlurHandler}
                         onChange={formatOnChange}
                         onFocus={onFocusHandler}
                         onPaste={formatOnPaste}

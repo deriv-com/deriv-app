@@ -9,6 +9,7 @@ const DEBOUNCE_INTERVAL_TIME = 2000;
 const SearchInput = observer(({ ref, faq_value, setFaqSearchContent, prev_active_tutorials, setDebouncedValue }) => {
     const { dashboard } = useDBotStore();
     const { setActiveTabTutorial } = dashboard;
+    const input_ref = React.useRef(null);
 
     const throttleChange = React.useCallback(
         debounce(
@@ -39,17 +40,17 @@ const SearchInput = observer(({ ref, faq_value, setFaqSearchContent, prev_active
     const onFocusSearch = () => {
         if (faq_value !== '') {
             setActiveTabTutorial(2);
-            ref?.current?.focus();
+            input_ref?.current?.focus();
         }
     };
 
     React.useEffect(() => {
         if (faq_value !== '') {
-            ref?.current?.focus();
             setActiveTabTutorial(2);
         } else {
             setActiveTabTutorial(prev_active_tutorials);
         }
+        input_ref?.current?.focus();
     }, [faq_value]);
 
     const sendToRudderStack = () => {
@@ -79,7 +80,7 @@ const SearchInput = observer(({ ref, faq_value, setFaqSearchContent, prev_active
     return (
         <>
             <input
-                ref={ref}
+                ref={input_ref}
                 data-testid='id-test-input-search'
                 type='text'
                 placeholder={localize('Search')}

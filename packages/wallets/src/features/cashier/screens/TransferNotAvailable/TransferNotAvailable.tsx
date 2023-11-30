@@ -21,6 +21,7 @@ const TransferNotAvailable: React.FC<React.PropsWithChildren<TProps>> = ({ accou
         hasAccountsForTransfer,
         hasTransferAccountsWithFunds,
         history,
+        isVirtual: activeWallet?.is_virtual,
     });
 
     if (state) {

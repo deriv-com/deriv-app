@@ -33,7 +33,7 @@ const QSInputLabel: React.FC<TQSInputLabel> = observer(({ label, description, fu
                         onClick={sendEventToRudderstack}
                         message={description}
                         zIndex='9999'
-                        alignment={is_mobile ? 'top' : 'right'}
+                        alignment='top'
                         icon='info'
                     />
                 </span>

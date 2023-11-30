@@ -10,14 +10,13 @@ import { TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
 import './ModalTradeWrapper.scss';
 
-const LinksMapper: Record<
-    TPlatforms.All,
-    {
-        android: string;
-        huawei?: string;
-        ios: string;
-    }
-> = {
+type TAppLinks = {
+    android: string;
+    huawei?: string;
+    ios: string;
+};
+
+const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
     ctrader: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
         ios: 'https://apps.apple.com/cy/app/ctrader/id767428811',
@@ -60,7 +59,7 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                         <div className='wallets-modal-trade-wrapper__footer-installations'>
                             <div className='wallets-modal-trade-wrapper__footer-installations-icons'>
                                 {appOrder.map(app => {
-                                    const AppsLinkMapper = LinksMapper[platform][app as 'android' | 'huawei' | 'ios'];
+                                    const AppsLinkMapper = LinksMapper[platform][app as keyof TAppLinks];
                                     if (AppsLinkMapper) {
                                         const AppIcon = AppToIconMapper[app];
                                         const appLink = AppsLinkMapper;

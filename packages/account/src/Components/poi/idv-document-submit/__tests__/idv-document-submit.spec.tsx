@@ -10,6 +10,7 @@ const mock_store = mockStore({
     client: {
         getChangeableFields: jest.fn(() => []),
     },
+    ui: { is_desktop: true },
 });
 
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
@@ -59,6 +60,7 @@ jest.mock('@deriv/shared', () => ({
 describe('<IdvDocumentSubmit/>', () => {
     const mock_props: React.ComponentProps<typeof IdvDocumentSubmit> = {
         handleBack: jest.fn(),
+        handleSelectionNext: jest.fn(),
         handleViewComplete: jest.fn(),
         selected_country: {
             value: 'tc',
@@ -81,7 +83,6 @@ describe('<IdvDocumentSubmit/>', () => {
             },
         },
         getChangeableFields: jest.fn(() => []),
-        is_from_external: false,
     };
 
     it('should render IdvDocumentSubmit component', () => {
@@ -109,7 +110,7 @@ describe('<IdvDocumentSubmit/>', () => {
             </StoreProvider>
         );
 
-        const backBtn = screen.getByRole('button', { name: /go back/i });
+        const backBtn = screen.getByRole('button', { name: /back/i });
         userEvent.click(backBtn);
         expect(mock_props.handleBack).toHaveBeenCalledTimes(1);
 

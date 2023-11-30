@@ -10,6 +10,7 @@ import './DepositCrypto.scss';
 const DepositCrypto = () => {
     return (
         <div className='wallets-deposit-crypto'>
+            <div className='wallets-deposit-crypto__side-pane' />
             <div className='wallets-deposit-crypto__main-content'>
                 <DepositCryptoCurrencyDetails />
                 <DepositCryptoAddress />
@@ -17,7 +18,9 @@ const DepositCrypto = () => {
                 <Divider />
                 <DepositCryptoTryFiatOnRamp />
             </div>
-            <TransactionStatus transactionType='deposit' />
+            <div className='wallets-deposit-crypto__side-pane'>
+                <TransactionStatus transactionType='deposit' />
+            </div>
         </div>
     );
 };

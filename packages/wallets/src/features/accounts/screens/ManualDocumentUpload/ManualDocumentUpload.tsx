@@ -1,25 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useFlow } from '../../../../components/FlowProvider';
 import { DocumentSelection } from './components/DocumentSelection';
-import { DrivingLicenseDocumentUpload } from './components/DrivingLicenseDocumentUpload';
-import { IdentityCardDocumentUpload } from './components/IdentityCardDocumentUpload';
-import { NIMCSlipDocumentUpload } from './components/NIMCSlipDocumentUpload';
-import { PassportDocumentUpload } from './components/PassportDocumentUpload';
+import {
+    DrivingLicenseDocumentUpload,
+    IdentityCardDocumentUpload,
+    NIMCSlipDocumentUpload,
+    PassportDocumentUpload,
+} from './components';
+import './ManualDocumentUpload.scss';
 
-const ManualDocumentUpload = () => {
-    // will use formik here in the future!
-    const [selectedDocument, setSelectedDocument] = useState('');
+const ManualDocumentUploadContent = () => {
+    const { formValues, setFormValues } = useFlow();
 
-    if (selectedDocument === 'passport') {
+    if (formValues.selectedManualDocument === 'passport') {
         return <PassportDocumentUpload />;
-    } else if (selectedDocument === 'driving-license') {
+    } else if (formValues.selectedManualDocument === 'driving-license') {
         return <DrivingLicenseDocumentUpload />;
-    } else if (selectedDocument === 'identity-card') {
+    } else if (formValues.selectedManualDocument === 'identity-card') {
         return <IdentityCardDocumentUpload />;
-    } else if (selectedDocument === 'nimc-slip') {
+    } else if (formValues.selectedManualDocument === 'nimc-slip') {
         return <NIMCSlipDocumentUpload />;
     }
 
-    return <DocumentSelection setSelectedDocument={setSelectedDocument} />;
+    return <DocumentSelection setSelectedDocument={(doc: string) => setFormValues('selectedManualDocument', doc)} />;
+};
+
+const ManualDocumentUpload = () => {
+    return (
+        <div className='wallets-manual-document-upload'>
+            <ManualDocumentUploadContent />
+        </div>
+    );
 };
 
 export default ManualDocumentUpload;

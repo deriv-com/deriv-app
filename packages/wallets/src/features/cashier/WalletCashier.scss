@@ -4,7 +4,7 @@
     height: calc(100vh - (4.8rem + 3.6rem));
 
     @include mobile {
-        height: calc(100svh - 4rem);
+        height: calc(var(--wallets-vh, 1vh) * 100 - 4rem);
     }
 }
 

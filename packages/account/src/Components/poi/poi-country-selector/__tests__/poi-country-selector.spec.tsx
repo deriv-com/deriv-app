@@ -126,4 +126,16 @@ describe('<CountrySelector/>', () => {
             expect(mock_props.handleSelectionNext).toHaveBeenCalledTimes(1);
         });
     });
+
+    it('should render high risk error message', () => {
+        mock_props.mismatch_status = 'POI_HIGH_RISK';
+
+        renderComponent({ props: mock_props });
+
+        expect(
+            screen.getByText(
+                'For enhanced security, we need to reverify your identity. Kindly resubmit your proof of identity to unlock your account.'
+            )
+        ).toBeInTheDocument();
+    });
 });

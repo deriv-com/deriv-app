@@ -9,7 +9,7 @@ import { POIContext } from '../../../Helpers/poi-context';
 import { useResidenceList } from '@deriv/api';
 
 type TCountrySelector = {
-    handleSelectionNext: () => void;
+    handleSelectionNext?: () => void;
     is_from_external: boolean;
     mismatch_status?: TIDVErrorStatus;
 };
@@ -66,7 +66,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
             }) => (
                 <React.Fragment>
                     <div
-                        className={classNames('proof-of-identity__container', {
+                        className={classNames('proof-of-identity__container proof-of-identity__country-container', {
                             'min-height': !is_from_external,
                         })}
                     >

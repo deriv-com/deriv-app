@@ -49,4 +49,7 @@
             }
         }
     }
+    * {
+        color: $color-black-1; // text color is unchanged for both themes
+    }
 }

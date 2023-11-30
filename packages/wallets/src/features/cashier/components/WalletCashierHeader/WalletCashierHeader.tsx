@@ -22,13 +22,13 @@ type TProps = {
 const realAccountTabs = [
     {
         icon: <IcCashierDeposit />,
-        path: t('deposit'),
-        text: i18n.t('Deposiasdt'),
+        path: 'deposit',
+        text: i18n.t('Deposit'),
     },
     {
         icon: <IcCashierWithdrawal />,
         path: 'withdraw',
-        text: i18n.t('Withdrawxmasdasdao'),
+        text: i18n.t('Withdraw'),
     },
     {
         icon: <IcCashierTransfer />,

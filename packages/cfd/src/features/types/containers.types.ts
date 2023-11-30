@@ -18,7 +18,6 @@ import {
 } from './components.types';
 import RootStore from 'Stores/index';
 import { TCFDPlatform, TTradingPlatformAvailableAccount, TTokens, TAccountCategory } from './shared.types';
-import { CATEGORY } from 'Helpers/cfd-config';
 
 type TCFDPasswordFormValues = { password: string };
 
@@ -117,7 +116,7 @@ export type TCFDPasswordReset = {
     server: string;
     account_type: TAccountCategory;
     password_type: string;
-    account_group: 'demo' | 'real' | '';
+    account_group: TAccountCategory;
     sendVerifyEmail: () => Promise<VerifyEmailResponse>;
 };
 
@@ -222,7 +221,7 @@ export type TJurisdictionCheckBoxProps = {
 };
 type TOpenAccountTransferMeta = {
     type?: string;
-    category: keyof typeof CATEGORY;
+    category: TAccountCategory;
 };
 
 export type TJurisdictionModalContentWrapperProps = {

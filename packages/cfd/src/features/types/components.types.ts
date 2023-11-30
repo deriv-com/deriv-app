@@ -70,20 +70,16 @@ export type TCFDPOA = {
 };
 
 // cfd-poi
-type TCFDValue = {
-    poi_state: string;
-};
-
-type TPOIFormValues = {
+type TPOIState = {
     poi_state?: string;
 };
 
 export type TCFDPOIProps = {
     index: number;
     height: string;
-    value: TCFDValue;
-    onSubmit: (index: number, value: TCFDValue) => void;
-    onSave: (index: number, values: TPOIFormValues) => void;
+    value: TPOIState;
+    onSave: (index: number, values: TPOIState) => void;
+    onSubmit: (index: number, value: TPOIState) => void;
     removeNotificationByKey: TCoreStores['notifications']['removeNotificationByKey'];
     jurisdiction_selected_shortcode: DetailsOfEachMT5Loginid['landing_company_short'];
     removeNotificationMessage: TCoreStores['notifications']['removeNotificationMessage'];

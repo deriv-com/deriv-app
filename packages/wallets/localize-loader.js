@@ -1,4 +1,3 @@
-import { execSync } from 'child_process';
 import crypto from 'crypto';
 import fs from 'fs';
 
@@ -27,16 +26,8 @@ async function generateKey(inputString) {
 
 const messages = new Map();
 const values = new Set();
-const changedFiles = execSync('git diff --name-only master', { encoding: 'utf-8' }).trim().split('\n');
-let tries = 0;
+
 module.exports = async function (source) {
-    // eslint-disable-next-line no-console
-    if (tries < 20) console.log(changedFiles);
-    tries += 1;
-    if (!changedFiles.some(filePath => filePath.includes(this.resourcePath) || this.resourcePath.includes(filePath)))
-        return source;
-    // eslint-disable-next-line no-console
-    console.log('Extracting strings from', this.resourcePath);
     let shouldGen = false;
     const ast = parser.parse(source, {
         plugins: ['jsx', 'typescript'],

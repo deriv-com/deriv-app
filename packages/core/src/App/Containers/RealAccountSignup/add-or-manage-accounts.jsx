@@ -61,13 +61,12 @@ const AddOrManageAccounts = props => {
         setActiveIndex(index);
     };
 
-    const manageOrChangeAccount = (obj, setSubmitting) => {
+    const manageOrChangeAccount = currency_object => {
         setLoading(true);
-        Object.entries(obj).map(([key, value]) => {
+        Object.entries(currency_object).map(([key, value]) => {
             if (key === 'fiat') {
                 setCurrency(value)
                     .then(response => {
-                        setSubmitting(false);
                         onSuccessSetAccountCurrency(
                             response.passthrough.previous_currency,
                             response.echo_req.set_account_currency,
@@ -83,7 +82,6 @@ const AddOrManageAccounts = props => {
                 createCryptoAccount(value)
                     .then(() => {
                         onSuccessSetAccountCurrency('', value, deposit_target);
-                        setSubmitting(false);
                         resetRealAccountSignupTarget();
                         setIsDeposit(true);
                     })
@@ -93,10 +91,6 @@ const AddOrManageAccounts = props => {
                     .finally(() => setLoading(false));
             }
         });
-    };
-
-    const updateValue = (index, value, setSubmitting) => {
-        manageOrChangeAccount(value, setSubmitting);
     };
 
     const hasNoAvailableCrypto = () => {
@@ -113,7 +107,7 @@ const AddOrManageAccounts = props => {
         >
             <ChangeAccountCurrency
                 className='account-wizard__body'
-                onSubmit={updateValue}
+                onSubmit={manageOrChangeAccount}
                 value={form_value}
                 form_error={form_error}
                 can_change_fiat_currency={can_change_fiat_currency}
@@ -126,7 +120,7 @@ const AddOrManageAccounts = props => {
     if (is_add_currency || is_add_crypto || is_add_fiat) {
         return (
             <AddCurrency
-                onSubmit={updateValue}
+                onSubmit={manageOrChangeAccount}
                 value={form_value}
                 form_error={form_error}
                 should_show_crypto_only
@@ -160,7 +154,7 @@ const AddOrManageAccounts = props => {
                         >
                             <AddCryptoCurrency
                                 className='account-wizard__body'
-                                onSubmit={updateValue}
+                                onSubmit={manageOrChangeAccount}
                                 value={form_value}
                                 form_error={form_error}
                                 should_show_crypto_only
@@ -174,7 +168,7 @@ const AddOrManageAccounts = props => {
                         ) : (
                             <AddCryptoCurrency
                                 className='account-wizard__body'
-                                onSubmit={updateValue}
+                                onSubmit={manageOrChangeAccount}
                                 value={form_value}
                                 form_error={form_error}
                                 should_show_fiat_only={true}

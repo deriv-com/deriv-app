@@ -3,6 +3,7 @@ import { ApiHelpers, config as qs_config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { STRATEGIES } from 'Components/quick-strategy/config';
 import { TFormData } from 'Components/quick-strategy/types';
+import { addDinamicallyBlockToDOM } from 'Utils/xml-dom-quick-strategy';
 import RootStore from './root-store';
 
 export type TActiveSymbol = {
@@ -92,46 +93,6 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         };
     };
 
-    addDinamicallyBlockToDOM = (
-        name_block: string,
-        strategy_value: string,
-        trade_type_cat: string,
-        strategy_dom: HTMLElement
-    ) => {
-        if (trade_type_cat === 'digits' || trade_type_cat === 'highlowticks') {
-            const block = document.createElement('value');
-            block.setAttribute('name', name_block);
-            block.setAttribute('strategy_value', strategy_value);
-
-            const shadow_block = document.createElement('shadow');
-            shadow_block.setAttribute('type', 'math_number_positive');
-            shadow_block.setAttribute('id', 'p0O]7-M{ZORlORxGuIEb');
-
-            const field_block = document.createElement('field');
-            field_block.setAttribute('name', 'NUM');
-            field_block.textContent = '0';
-
-            shadow_block.appendChild(field_block);
-            block.appendChild(shadow_block);
-
-            const amount_block = strategy_dom.querySelector('value[name="AMOUNT"]');
-            if (amount_block) {
-                const parent_node = amount_block.parentNode;
-                if (parent_node) {
-                    parent_node.insertBefore(block, amount_block.nextSibling);
-                }
-            }
-        }
-        if (name_block === 'PREDICTION' && strategy_dom) {
-            const mutation_element = strategy_dom.querySelector(
-                'block[type="trade_definition_tradeoptions"] > mutation'
-            );
-            if (mutation_element) {
-                mutation_element.setAttribute('has_prediction', 'true');
-            }
-        }
-    };
-
     onSubmit = async (data: TFormData) => {
         const { contracts_for } = ApiHelpers.instance;
         const market = await contracts_for.getMarketBySymbol(data.symbol);
@@ -140,7 +101,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         const selected_strategy = STRATEGIES[this.selected_strategy];
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
         const strategy_dom = Blockly.Xml.textToDom(strategy_xml.default);
-        this.addDinamicallyBlockToDOM('PREDICTION', 'last_digit_prediction', trade_type_cat, strategy_dom);
+        addDinamicallyBlockToDOM('PREDICTION', 'last_digit_prediction', trade_type_cat, strategy_dom);
 
         const modifyValueInputs = (key: string, value: number) => {
             const el_value_inputs = strategy_dom?.querySelectorAll(`value[strategy_value="${key}"]`);

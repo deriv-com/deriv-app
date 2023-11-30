@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
+import { t } from 'i18next';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useActiveWalletAccount, useActiveWalletBalance } from '@deriv/api';
 import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../../components';
@@ -21,13 +22,13 @@ type TProps = {
 const realAccountTabs = [
     {
         icon: <IcCashierDeposit />,
-        path: 'deposit',
-        text: i18n.t('Deposit'),
+        path: t('deposit'),
+        text: i18n.t('Deposiasdt'),
     },
     {
         icon: <IcCashierWithdrawal />,
         path: 'withdraw',
-        text: i18n.t('Withdraw'),
+        text: i18n.t('Withdrawxmasdasdao'),
     },
     {
         icon: <IcCashierTransfer />,

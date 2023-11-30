@@ -1,21 +1,39 @@
+import { execSync } from 'child_process';
+import crypto from 'crypto';
 import fs from 'fs';
 
 const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 const generate = require('@babel/generator').default;
 
-function generateKey(value) {
-    return value
-        ?.split(' ')
-        .map(c => c.charAt(0))
-        .join('');
+async function generateKey(inputString) {
+    // Convert the string to an array buffer
+    const encoder = new TextEncoder();
+    const data = encoder.encode(inputString);
+
+    // Calculate the SHA-256 hash
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+
+    // Convert the hash buffer to a hex string
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+
+    // Take a substring to get a shorter key (adjust the length as needed)
+    // NOTE: If there is hash collision, increase the substring length
+    const shortKey = hashHex.substring(0, 8);
+
+    return shortKey;
 }
 
 const messages = new Map();
 const values = new Set();
-let counter = 0;
+const changedFiles = execSync('git diff --name-only master', { encoding: 'utf-8' }).trim().split('\n');
 
 module.exports = async function (source) {
+    if (!changedFiles.some(filePath => filePath.includes(this.resourcePath) || this.resourcePath.includes(filePath)))
+        return source;
+    // eslint-disable-next-line no-console
+    console.log('Extracting strings from', this.resourcePath);
     let shouldGen = false;
     const ast = parser.parse(source, {
         plugins: ['jsx', 'typescript'],
@@ -30,19 +48,16 @@ module.exports = async function (source) {
                     path.node.callee.property.name === 't' &&
                     !values.has(path.node.arguments[0].value))
             ) {
+                shouldGen = true;
                 const value = path.node.arguments[0].value;
                 values.add(value);
-                shouldGen = true;
-                let key = generateKey(path.node.arguments[0].value);
-                if (messages.has(key)) {
-                    key += `-${counter}`;
-                    counter += 1;
-                }
-                path.node.arguments[0] = {
-                    type: 'StringLiteral',
-                    value: key,
-                };
-                messages.set(key, value);
+                generateKey(path.node.arguments[0].value).then(key => {
+                    path.node.arguments[0] = {
+                        type: 'StringLiteral',
+                        value: key,
+                    };
+                    messages.set(key, value);
+                });
             }
         },
         JSXIdentifier(path) {
@@ -50,12 +65,9 @@ module.exports = async function (source) {
             if (path.node.name === 'Trans' && !values.has(value)) {
                 values.add(value);
                 shouldGen = true;
-                let key = generateKey(value);
-                if (messages.has(key)) {
-                    key += `-${counter}`;
-                    counter += 1;
-                }
-                messages.set(key, value);
+                generateKey(value).then(key => {
+                    messages.set(key, value);
+                });
             }
         },
     });

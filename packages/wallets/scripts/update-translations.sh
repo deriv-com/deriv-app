@@ -5,16 +5,16 @@ YELLOW='\033[0;33m'
 WHITE='\033[1;37m'
 RESET='\033[0m'
 
-function message {
+message() {
     echo ${GREEN}"  >"${RESET} $1
 }
 
-function fail {
+fail() {
   echo $1 >&2
   exit 1
 }
 
-function retry {
+retry() {
   local max=5
   local delay=2
   local attempt=1
@@ -37,7 +37,7 @@ if [ "$NODE_ENV" = "staging" ]; then
             alias crowdin="java -jar /usr/local/bin/crowdin-cli.jar"
         else
             echo "Installing Crowdin CLI..."
-            sudo npm i -g @crowdin/cli
+            npm i -g @crowdin/cli
         fi
     fi
 
@@ -49,4 +49,7 @@ if [ "$NODE_ENV" = "staging" ]; then
     retry crowdin download && rm -rf src/translations/messages.json &&
 
     echo ${GREEN}"\nSuccessfully Done."
+else
+    rm -rf src/translations/messages.json &&
+    echo ${YELLOW}"\nSkipping translations update..."
 fi

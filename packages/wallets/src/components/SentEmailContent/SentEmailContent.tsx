@@ -16,6 +16,7 @@ import './SentEmailContent.scss';
 
 type TProps = {
     description?: string;
+    isInvestorPassword?: boolean;
     platform?: TPlatforms.All;
 };
 
@@ -38,13 +39,13 @@ const REASONS = [
     },
 ];
 
-const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
+const SentEmailContent: React.FC<TProps> = ({ description, isInvestorPassword = false, platform = 'mt5' }) => {
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { data } = useSettings();
     const { mutate: verifyEmail } = useVerifyEmail();
     const { isMobile } = useDevice();
-    const title = PlatformDetails[platform || 'mt5'].title;
+    const title = PlatformDetails[platform].title;
     const titleSize = 'md';
     const descriptionSize = 'sm';
     const emailLinkSize = isMobile ? 'lg' : 'md';
@@ -58,6 +59,10 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
     }, [count]);
 
     const { data: activeWallet } = useActiveWalletAccount();
+
+    const mt5ResetType = isInvestorPassword
+        ? 'trading_platform_investor_password_reset'
+        : 'trading_platform_mt5_password_reset';
 
     return (
         <div className='wallets-sent-email-content'>
@@ -91,13 +96,10 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
                         onClick={() => {
                             if (data?.email) {
                                 verifyEmail({
-                                    type:
-                                        platform === 'mt5'
-                                            ? 'trading_platform_mt5_password_reset'
-                                            : 'trading_platform_dxtrade_password_reset',
+                                    type: platform === 'mt5' ? mt5ResetType : 'trading_platform_dxtrade_password_reset',
                                     url_parameters: {
                                         redirect_to: platformPasswordResetRedirectLink(
-                                            platform || 'mt5',
+                                            platform,
                                             activeWallet?.is_virtual
                                         ),
                                     },

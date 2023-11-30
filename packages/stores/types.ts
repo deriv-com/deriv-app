@@ -23,7 +23,7 @@ import type {
     WebsiteStatus,
 } from '@deriv/api-types';
 
-import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
+import type { FeatureFlagsStore } from './src/stores';
 
 type TRoutes =
     | '/404'
@@ -999,6 +999,5 @@ export type TCoreStores = {
 };
 
 export type TStores = TCoreStores & {
-    exchange_rates: ExchangeRatesStore;
     feature_flags: FeatureFlagsStore;
 };

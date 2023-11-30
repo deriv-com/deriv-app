@@ -12,7 +12,6 @@ type TTutorialsTabDesktop = {
 };
 
 const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: TTutorialsTabDesktop) => {
-    const input_ref = React.useRef(null);
     const { dashboard } = useDBotStore();
 
     const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue } = dashboard;
@@ -26,7 +25,6 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
     React.useEffect(() => {
         if (faq_search_value !== '') {
             setActiveTabTutorial(2);
-            input_ref?.current?.focus();
         }
     }, [active_tab_tutorials]);
 
@@ -41,7 +39,6 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
                     icon='IcSearch'
                 />
                 <SearchInput
-                    ref={input_ref}
                     faq_value={faq_search_value}
                     setFaqSearchContent={setFAQSearchValue}
                     prev_active_tutorials={prev_active_tutorials}

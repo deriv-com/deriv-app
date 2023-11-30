@@ -5,7 +5,6 @@
         position: relative;
         background-color: #f2f3f4;
         height: 5rem;
-        margin-top: 1rem;
         border-radius: 0.7rem;
 
         &-item {
@@ -23,6 +22,7 @@
                 background-color: #ffffff;
                 margin: 0.6rem;
                 border-radius: 0.5rem;
+                color: var(--system-light-1-prominent-text, #333);
             }
 
             &--disabled {

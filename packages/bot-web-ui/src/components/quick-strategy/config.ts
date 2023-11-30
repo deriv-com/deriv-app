@@ -165,6 +165,7 @@ const LAST_DIGIT_PREDICTION: TConfigItem = {
     type: 'text',
     name: 'last_digit_prediction',
     validation: ['text-number'],
+    regex: /^\d*(\.\d*)?$/,
 };
 
 export const STRATEGIES: TStrategies = {

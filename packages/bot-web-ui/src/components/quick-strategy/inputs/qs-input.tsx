@@ -12,10 +12,11 @@ type TQSInput = {
     attached?: boolean;
     should_have?: { key: string; value: string | number | boolean }[];
     disabled?: boolean;
+    regex?: RegExp;
 };
 
 const QSInput: React.FC<TQSInput> = observer(
-    ({ name, onChange, type = 'text', fullwidth = false, attached = false, disabled = false }) => {
+    ({ name, onChange, regex, type = 'text', fullwidth = false, attached = false, disabled = false }: TQSInput) => {
         const {
             ui: { is_mobile },
         } = useStore();
@@ -32,7 +33,7 @@ const QSInput: React.FC<TQSInput> = observer(
 
         const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const input_value = e.target.value;
-            if (/^\d*(\.\d*)?$/.test(input_value)) {
+            if (regex && regex.test(input_value)) {
                 if (input_value === '') {
                     e.target.value = '0';
                     onChange(name, '0');

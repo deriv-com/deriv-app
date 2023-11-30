@@ -22,21 +22,25 @@ export type TValidationItem =
           value: number | string;
       } & ValidationObject);
 
-export type TConfigItem = {
-    type: string;
-    name?: keyof TFormData;
-    fullWidth?: boolean;
-    dependencies?: string[];
-    label?: string;
-    description?: string;
-    attached?: boolean;
-    hide?: string[];
-    validation?: TValidationItem[];
-    should_have?: {
+type TPartialConfigItem = Partial<{
+    name: keyof TFormData;
+    fullWidth: boolean;
+    dependencies: string[];
+    label: string;
+    description: string;
+    attached: boolean;
+    hide: string[];
+    validation: TValidationItem[];
+    should_have: {
         key: string;
         value: string | number | boolean;
     }[];
-};
+    regex: RegExp;
+}>;
+
+export type TConfigItem = {
+    type: string;
+} & TPartialConfigItem;
 
 export type TStrategy = {
     name: string;

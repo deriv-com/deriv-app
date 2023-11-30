@@ -352,6 +352,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleCashier: jest.fn(),
             setDarkMode: jest.fn(),
             setReportsTabIndex: jest.fn(),
+            setIsMT5VerificationFailedModal: jest.fn(),
             has_real_account_signup_ended: false,
             real_account_signup_target: '',
             real_account_signup: {

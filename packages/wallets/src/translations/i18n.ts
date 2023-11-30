@@ -54,6 +54,8 @@ i18n.use(initReactI18next).init({
     lng: currentLanguage,
     ns: ['translations'],
     react: {
+        bindI18n: 'loaded languageChanged',
+        bindI18nStore: 'added',
         hashTransKey(defaultValue: string) {
             // FIX: replace this temporary key finding until we have a better key generation
             return Object.entries(EN).find(([, value]) => value === defaultValue)?.[0] ?? defaultValue;

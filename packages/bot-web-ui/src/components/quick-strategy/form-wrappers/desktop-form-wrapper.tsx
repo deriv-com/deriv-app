@@ -7,7 +7,7 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { FORM_TABS, STRATEGIES } from '../config';
-import QSTabContent from '../qs-tab-content';
+import StrategyDescription from './strategy-description';
 import '../quick-strategy.scss';
 
 type TDesktopFormWrapper = {
@@ -87,7 +87,12 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                     </div>
                 </div>
                 <div className='qs__body__content'>
-                    <ThemedScrollbars className='qs__form__container' autohide={false}>
+                    <ThemedScrollbars
+                        className={classNames('qs__form__container', {
+                            'qs__form__container--no-footer': active_tab !== 'TRADE_PARAMETERS',
+                        })}
+                        autohide={false}
+                    >
                         <div className='qs__body__content__head'>
                             <div className='qs__body__content__head__tabs'>
                                 {FORM_TABS.map(tab => {
@@ -110,7 +115,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                                 })}
                             </div>
                         </div>
-                        <QSTabContent formfields={children} active_tab={active_tab} />
+                        <StrategyDescription formfields={children} active_tab={active_tab} />
                     </ThemedScrollbars>
                     {active_tab === 'TRADE_PARAMETERS' && (
                         <div className='qs__body__content__footer'>

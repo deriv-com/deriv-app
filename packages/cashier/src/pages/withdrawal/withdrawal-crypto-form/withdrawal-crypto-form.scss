@@ -29,9 +29,6 @@
     &__percentage {
         &-container {
             margin-top: 2.4rem;
-            @include mobile {
-                margin-top: 0;
-            }
         }
         &-selector {
             margin-bottom: 1.6rem;
@@ -42,12 +39,6 @@
                 align-items: center;
                 width: 100%;
             }
-        }
-    }
-
-    & .withdraw__input {
-        @include mobile {
-            margin-bottom: 3.2rem !important;
         }
     }
 }

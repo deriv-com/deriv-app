@@ -8,6 +8,7 @@ import { splitValidationResultTypes } from '../../real-account-signup/helpers/ut
 import PersonalDetails from '../personal-details';
 import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumentValid } from 'Helpers/utils';
 import { StoreProvider, mockStore, ExchangeRatesProvider } from '@deriv/stores';
+import { Analytics } from '@deriv/analytics';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -295,6 +296,11 @@ describe('<PersonalDetails/>', () => {
             </StoreProvider>
         );
     };
+
+    it('should have called trackEvent on mount', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
+        expect(Analytics.trackEvent).toHaveBeenCalledTimes(1);
+    });
 
     it('should have validation errors on form fields', async () => {
         isMobile.mockReturnValue(false);

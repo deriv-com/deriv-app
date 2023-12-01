@@ -18,6 +18,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     onChange,
     password,
     shouldDisablePasswordMeter = false,
+    showMessage,
 }) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isTouched, setIsTouched] = useState(false);
@@ -46,7 +47,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setIsPasswordVisible} viewPassword={isPasswordVisible} />
                 )}
-                showMessage
+                showMessage={showMessage}
                 type={isPasswordVisible ? 'text' : 'password'}
                 value={password}
             />

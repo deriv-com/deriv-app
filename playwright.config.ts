@@ -57,7 +57,7 @@ export default defineConfig({
             testDir: './packages/account/integration-tests',
         },
         {
-            name: 'component',
+            name: 'integration',
             testDir: './packages/integration/integration-tests',
         },
         {

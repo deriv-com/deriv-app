@@ -551,7 +551,7 @@
     }
     .long_description {
         &__title {
-            margin: 0.8rem 0;
+            margin-bottom: 0.8rem;
             &.italic {
                 font-style: italic;
                 margin-bottom: 0;
@@ -562,25 +562,15 @@
             &.italic {
                 font-style: italic;
             }
+            &.no-margin {
+                margin-bottom: 0;
+                &:last-child {
+                    margin-bottom: 0.8rem;
+                }
+            }
         }
         &__image {
             width: 100%;
         }
     }
 }
-
-// .qs__body__content__description {
-//     div {
-//         div:nth-child(15) {
-//             div.long_description__content:nth-child(n + 2):nth-child(-n + 5) {
-//                 margin: 0;
-//             }
-//         }
-//         div:nth-child(17) {
-//             div.long_description__content:nth-child(n + 3):nth-child(-n + 6) {
-//                 margin: 0;
-//             }
-//         }
-
-//     }
-// }

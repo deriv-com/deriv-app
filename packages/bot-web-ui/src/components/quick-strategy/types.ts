@@ -43,6 +43,7 @@ export type TDescriptionItem = {
     content?: string[];
     src?: string;
     alt?: string;
+    className?: string;
 };
 
 export type TStrategy = {

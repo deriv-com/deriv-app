@@ -17,6 +17,7 @@ import {
     isEmptyObject,
     isMarketClosed,
     isMobile,
+    isMultiplierContract,
     isTurbosContract,
     isVanillaFxContract,
     isVanillaContract,
@@ -500,6 +501,7 @@ export default class TradeStore extends BaseStore {
                 }
                 this.setDefaultGrowthRate();
                 this.resetAccumulatorData();
+                this.root_store.notifications.removeTradeNotifications();
             }
         );
         reaction(
@@ -533,6 +535,7 @@ export default class TradeStore extends BaseStore {
                     delete this.validation_rules.take_profit;
                 }
                 this.resetAccumulatorData();
+                this.root_store.notifications.removeTradeNotifications();
             }
         );
         reaction(
@@ -902,6 +905,7 @@ export default class TradeStore extends BaseStore {
                             const shortcode = response.buy.shortcode;
                             const { category, underlying } = extractInfoFromShortcode(shortcode);
                             const is_digit_contract = isDigitContractType(category?.toUpperCase() ?? '');
+                            const is_multiplier = isMultiplierContract(category);
                             const contract_type = category?.toUpperCase();
                             this.root_store.contract_trade.addContract({
                                 contract_id,
@@ -933,12 +937,14 @@ export default class TradeStore extends BaseStore {
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
                             if (this.root_store.ui.is_mobile) {
+                                const shortcode = response.buy.shortcode;
                                 this.root_store.notifications.addTradeNotification({
-                                    buy_price: response.buy.buy_price,
+                                    buy_price: is_multiplier ? this.amount : response.buy.buy_price,
                                     contract_id: response.buy.contract_id,
+                                    contract_type: extractInfoFromShortcode(shortcode).category,
                                     currency: getCurrencyDisplayCode(this.root_store.client.currency),
                                     purchase_time: response.buy.purchase_time,
-                                    shortcode: response.buy.shortcode,
+                                    shortcode,
                                     status: 'open',
                                 });
                             }

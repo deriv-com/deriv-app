@@ -8,6 +8,9 @@
     justify-content: space-between;
     text-decoration: none;
 
+    * {
+        color: $color-black-1; // text color is unchanged for both themes
+    }
     &--failure {
         background-color: $color-red-11;
     }
@@ -48,8 +51,5 @@
                 transform: translateX(100vw);
             }
         }
-    }
-    * {
-        color: $color-black-1; // text color is unchanged for both themes
     }
 }

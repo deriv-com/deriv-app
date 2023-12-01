@@ -145,6 +145,7 @@ describe('ProofOfIncome', () => {
         const file = new File(['test document'], 'test_document.png', { type: 'image/png' });
 
         userEvent.upload(file_input, [file]);
+        userEvent.type(dropdown_input, 'Tax return');
 
         await waitFor(() => {
             expect(file_input?.files?.[0]).toBe(file);

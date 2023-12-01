@@ -18,6 +18,7 @@ export * from './WalletCardIcon';
 export * from './WalletCurrencyCard';
 export * from './WalletError';
 export * from './WalletGradientBackground';
+export * from './WalletLanguageSidePanel';
 export * from './WalletListCard';
 export * from './WalletListCardActions';
 export * from './WalletListCardBadge';

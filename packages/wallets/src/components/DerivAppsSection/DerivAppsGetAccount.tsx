@@ -1,5 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
-import { useActiveWalletAccount, useCreateNewRealAccount, useSettings } from '@deriv/api';
+import {
+    useActiveLinkedToTradingAccount,
+    useActiveWalletAccount,
+    useCreateNewRealAccount,
+    useSettings,
+} from '@deriv/api';
 import { toMoment } from '../../../../shared/src/utils/date';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useDevice from '../../hooks/useDevice';
@@ -23,6 +28,8 @@ const DerivAppsGetAccount: React.FC = () => {
     } = useSettings();
     const { addTradingAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
 
+    const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
+
     const landingCompanyName = activeWallet?.landing_company_name?.toLocaleUpperCase();
 
     const openSuccessModal = useCallback(() => {
@@ -34,7 +41,7 @@ const DerivAppsGetAccount: React.FC = () => {
             >
                 <CFDSuccess
                     description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Deriv Apps (${landingCompanyName}) account to start trading.`}
-                    displayBalance={activeWallet?.display_balance}
+                    displayBalance={activeLinkedToTradingAccount?.display_balance ?? '0.00'}
                     renderButton={() => <DerivAppsSuccessFooter />}
                     title={`Your Deriv Apps (${landingCompanyName}) account is ready`}
                 />
@@ -43,7 +50,13 @@ const DerivAppsGetAccount: React.FC = () => {
                 defaultRootId: 'wallets_modal_root',
             }
         );
-    }, [activeWallet?.display_balance, activeWallet?.wallet_currency_type, isDesktop, landingCompanyName, show]);
+    }, [
+        activeLinkedToTradingAccount?.display_balance,
+        activeWallet?.wallet_currency_type,
+        isDesktop,
+        landingCompanyName,
+        show,
+    ]);
 
     useEffect(() => {
         if (newTradingAccountData && isAccountCreationSuccess) {

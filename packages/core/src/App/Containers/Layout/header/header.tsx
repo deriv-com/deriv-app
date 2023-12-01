@@ -24,9 +24,9 @@ const Header = observer(() => {
 
     React.useEffect(() => {
         if (should_show_wallets && is_logged_in) {
-            const accounts_as_string = JSON.stringify(accounts);
-            const client_accounts_as_string = JSON.stringify(client_accounts);
-            if (accounts_as_string !== client_accounts_as_string) {
+            const accounts_keys = Object.keys(accounts ?? {});
+            const client_accounts_keys = Object.keys(client_accounts ?? {});
+            if (client_accounts_keys.length > accounts_keys.length) {
                 setAccounts(
                     client_accounts as Record<string, ReturnType<typeof useStore>['client']['accounts'][number]>
                 );

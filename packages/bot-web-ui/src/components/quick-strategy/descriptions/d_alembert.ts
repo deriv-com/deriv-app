@@ -62,6 +62,7 @@ export const D_ALEMBERT: TDescriptionItem[] = [
     {
         type: 'media',
         src: getImageLocation('dalembert.svg'),
+        alt: localize("An example of D’Alembert's Grind strategy"),
     },
     {
         type: 'text',
@@ -101,11 +102,22 @@ export const D_ALEMBERT: TDescriptionItem[] = [
             localize(
                 'The D’Alembert strategy is less risky than Martingale, but you can still determine how long your funds will last with this strategy before trading. Simply use this formula.'
             ),
+        ],
+    },
+    {
+        type: 'text',
+        content: [
             localize('B = Loss threshold'),
             localize('s = initial stake'),
             localize('R = number of rounds'),
             localize('f = unit increment'),
             localize('B = s*(R+(((R-1)/2)*R*f))'),
+        ],
+        className: 'no-margin',
+    },
+    {
+        type: 'text',
+        content: [
             localize(
                 'For instance, if you have a loss threshold (B) of 100 USD, with an initial stake (s) of 1 USD and 2 units of increment (f), the calculation would be as follows:'
             ),

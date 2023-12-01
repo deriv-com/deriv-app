@@ -23,7 +23,7 @@ const Header = observer(() => {
     const should_show_wallets = is_next_wallet_enabled && has_wallet;
 
     React.useEffect(() => {
-        if (is_logged_in) {
+        if (should_show_wallets && is_logged_in) {
             const accounts_as_string = JSON.stringify(accounts);
             const client_accounts_as_string = JSON.stringify(client_accounts);
             if (accounts_as_string !== client_accounts_as_string) {
@@ -34,7 +34,7 @@ const Header = observer(() => {
                 if (loginid !== active_loginig_from_local_storage) switchAccount(active_loginig_from_local_storage);
             }
         }
-    }, [accounts, client_accounts, is_logged_in, loginid, setAccounts, switchAccount]);
+    }, [accounts, client_accounts, is_logged_in, loginid, setAccounts, should_show_wallets, switchAccount]);
 
     if (is_logged_in) {
         let result;

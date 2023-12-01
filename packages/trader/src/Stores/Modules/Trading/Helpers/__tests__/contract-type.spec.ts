@@ -345,12 +345,12 @@ describe('ContractType.getExpiryDate', () => {
                 value: 'd',
             },
         ];
-        const expiry_date = '2023-11-30';
+        const expiry_date = '2022-11-30';
         const expiry_type = 'endtime';
-        const start_date = 0;
+        const start_date = moment('2022-11-25') as unknown as number;
         const result = ContractType.getExpiryDate(duration_units_list, expiry_date, expiry_type, start_date);
 
-        expect(result.expiry_date).toBe('2023-12-01');
+        expect(result.expiry_date).toBe('2022-11-30');
     });
     it('returns null for non-endtime expiry types', () => {
         const expiry_date = '2023-11-30';

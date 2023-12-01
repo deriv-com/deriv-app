@@ -5,9 +5,9 @@ import useSettings from './useSettings';
 
 /** A custom hook to get the proof of identity verification info of the current user. */
 const usePOI = () => {
-    const { data: authentication_data, ...rest } = useAuthentication();
-    const { data: residence_list_data } = useResidenceList();
-    const { data: get_settings_data } = useSettings();
+    const { data: authentication_data, isSuccess: isAuthenticationSuccess, ...rest } = useAuthentication();
+    const { data: residence_list_data, isSuccess: isResidenceListSuccess } = useResidenceList();
+    const { data: get_settings_data, isSuccess: isGetSettingsSuccess } = useSettings();
 
     const previous_service = useMemo(() => {
         const latest_poi_attempt = authentication_data?.attempts?.latest;
@@ -98,6 +98,7 @@ const usePOI = () => {
 
     return {
         data: modified_verification_data,
+        isSuccess: isAuthenticationSuccess && isGetSettingsSuccess && isResidenceListSuccess,
         ...rest,
     };
 };

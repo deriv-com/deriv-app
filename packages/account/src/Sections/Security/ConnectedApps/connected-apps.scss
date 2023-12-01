@@ -59,7 +59,25 @@
 
     &__tabular {
         &--wrapper {
-            height: 36rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 10rem min-content;
+        }
+
+        &--cell {
+            padding: 1rem;
+            border-bottom: 1px solid var(--general-section-1);
+            min-height: 5.2rem;
+        }
+
+        &--skip-left-padding {
+            padding-left: 0;
+            word-wrap: anywhere;
+        }
+
+        &--header {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--general-section-1);
         }
     }
 
@@ -116,41 +134,6 @@
             gap: 0.8rem;
             @include mobile {
                 gap: 0.4rem;
-            }
-        }
-    }
-
-    // Styling for DataTable displayed in Desktop view
-    .table__body .table__row {
-        border-bottom: 1px solid var(--general-section-1);
-    }
-
-    .table__head .table__row {
-        font-weight: bold;
-    }
-
-    &__table {
-        height: 100%;
-        flex: 1;
-    }
-
-    &__row {
-        grid-template-columns: 16rem 20rem 8rem 10rem;
-        padding: 0;
-        column-gap: 4.2rem;
-        text-align: left;
-
-        .table__cell {
-            min-height: 5.6rem;
-            white-space: pre-wrap;
-            padding: 0;
-
-            .name {
-                &__content {
-                    text-overflow: ellipsis;
-                    width: 100%;
-                    overflow: hidden;
-                }
             }
         }
     }

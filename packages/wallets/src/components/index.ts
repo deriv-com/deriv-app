@@ -1,4 +1,5 @@
 export * from './AccountsList';
+export * from './AppCard';
 export * from './Base';
 export * from './DerivAppsSection';
 export * from './DesktopWalletsList';
@@ -17,6 +18,7 @@ export * from './WalletCardIcon';
 export * from './WalletCurrencyCard';
 export * from './WalletError';
 export * from './WalletGradientBackground';
+export * from './WalletLanguageSidePanel';
 export * from './WalletListCard';
 export * from './WalletListCardActions';
 export * from './WalletListCardBadge';

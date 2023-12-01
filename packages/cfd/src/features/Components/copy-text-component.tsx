@@ -3,12 +3,12 @@ import { Clipboard } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 
-type TCopyTextIcon = {
+type TCopyTextComponent = {
     text: string | undefined;
     className: string;
 };
 
-const CopyTextIcon = ({ text, className }: TCopyTextIcon) => {
+const CopyTextComponent = ({ text, className }: TCopyTextComponent) => {
     return (
         <div className={className} data-testid='cfd_account_copy_main_div'>
             <Clipboard
@@ -21,4 +21,4 @@ const CopyTextIcon = ({ text, className }: TCopyTextIcon) => {
     );
 };
 
-export { CopyTextIcon };
+export { CopyTextComponent };

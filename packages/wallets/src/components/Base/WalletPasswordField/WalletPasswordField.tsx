@@ -12,6 +12,7 @@ interface WalletPasswordFieldProps extends WalletTextFieldProps {
 }
 
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
+    autoComplete,
     label,
     name = 'walletPasswordField',
     onChange,
@@ -34,6 +35,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     return (
         <div className='wallets-password'>
             <WalletTextField
+                autoComplete={autoComplete}
                 errorMessage={errorMessage}
                 isInvalid={!validPassword(password) && isTouched}
                 label={label}

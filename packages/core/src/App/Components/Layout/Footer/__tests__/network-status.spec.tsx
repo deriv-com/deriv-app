@@ -19,6 +19,7 @@ describe('network-status component', () => {
     });
 
     it('should has correct class based on class passed in the "status" property', () => {
+        store.common.network_status.class = 'offline';
         render(
             <StoreProvider store={store}>
                 <NetworkStatus />

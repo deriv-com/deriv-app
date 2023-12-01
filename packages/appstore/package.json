@@ -35,6 +35,7 @@
         "@deriv/stores": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
+        "@deriv/quill-icons": "^1.0.14",
         "@deriv/utils": "^1.0.0",
         "@testing-library/jest-dom": "^5.12.0",
         "@deriv/hooks": "^1.0.0",

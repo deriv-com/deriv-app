@@ -107,6 +107,7 @@
         "@deriv/stores": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
+        "@deriv/quill-icons": "^1.0.14",
         "@deriv/utils": "^1.0.0",
         "@livechat/customer-sdk": "^2.0.4",
         "acorn": "^6.1.1",

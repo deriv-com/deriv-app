@@ -81,6 +81,7 @@
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
+        "@deriv/quill-icons": "^1.0.14",
         "@types/react": "^18.0.7",
         "@types/react-dom": "^18.0.0",
         "@types/react-loadable": "^5.5.6",

@@ -45,6 +45,7 @@
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "@deriv/ui": "^0.6.0",
+        "@deriv/quill-icons": "^1.0.14",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "framer-motion": "^6.5.1",

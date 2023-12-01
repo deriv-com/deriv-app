@@ -69,7 +69,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
                     <div className='qs__body__content__form'>{formfields}</div>
                 </>
             ) : (
-                <div className={`qs__body__content__description ${strategy.name}`}>
+                <div className='qs__body__content__description'>
                     <div>
                         {strategy?.long_description?.map(data => (
                             <div key={data?.content?.[0]}>{renderDescription(data)}</div>

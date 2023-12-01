@@ -1,10 +1,10 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { FormikHelpers as FormikActions, FormikValues } from 'formik';
 import { TCoreStores } from '@deriv/stores/types';
 import { MARKET_TYPE } from 'Helpers/cfd-config';
-import { ResidenceList, DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { ResidenceList, DetailsOfEachMT5Loginid, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { TCFDPasswordReset } from './containers.types';
-import { TCFDPlatform, TTokens, TTradingPlatformAvailableAccount, TAccountCategory } from './shared.types';
+import { TCFDPlatform, TTokens, TTradingPlatformAvailableAccount, TAccountCategory, TMarketType } from './shared.types';
 
 type TOnSubmit = (
     index: number,
@@ -37,27 +37,18 @@ export type TValidatePersonalDetailsParams = {
 };
 
 export type TFindDefaultValuesInResidenceList = (params: {
-    citizen_text: string;
-    tax_residence_text: string;
-    place_of_birth_text?: string;
+    citizen_text: GetSettings['citizen'];
+    tax_residence_text: GetSettings['tax_residence'];
+    place_of_birth_text?: GetSettings['place_of_birth'];
     residence_list: ResidenceList;
 }) => {
-    citizen?: ResidenceList[0];
-    tax_residence?: ResidenceList[0];
-    place_of_birth?: ResidenceList[0];
+    citizen?: GetSettings['citizen'];
+    tax_residence?: GetSettings['tax_residence'];
+    place_of_birth?: GetSettings['place_of_birth'];
 };
 
-export type TCFDInputFieldProps = {
-    id?: string;
-    name: string;
-    label: string;
-    value?: string;
-    maxLength?: number;
+export type TCFDInputFieldProps = React.ComponentProps<'input'> & {
     optional?: boolean;
-    required?: boolean;
-    disabled?: boolean;
-    placeholder: string;
-    onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
 };
 
 export type TFormValues = { [key: string]: string };
@@ -71,7 +62,7 @@ export type TCFDPOA = {
 
 // cfd-poi
 type TPOIState = {
-    poi_state?: string;
+    poi_state?: GetAccountStatus['authentication'];
 };
 
 export type TCFDPOIProps = {
@@ -146,19 +137,19 @@ export type TPasswordBoxProps = {
 };
 
 export type TType = {
-    type: string;
+    type: TMarketType;
     platform: TCFDPlatform;
     category: TCFDPasswordReset['account_group'];
 };
 
 type TOpenAccountTransferMeta = {
-    type?: string;
-    category: string;
+    type?: TType['type'];
+    category: TAccountCategory;
 };
 
 // cfd-account-card
 export type TCFDAccountCardActionProps = {
-    type: TType;
+    type: TType['type'];
     title: string;
     platform: TCFDPlatform;
     is_disabled: boolean;
@@ -337,8 +328,8 @@ export type TJurisdictionData = {
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     display_login?: string;
     landing_company_short?: DetailsOfEachMT5Loginid['landing_company_short'];
-    short_code_and_region?: string;
-    mt5_acc_auth_status?: string | null;
+    short_code_and_region?: DetailsOfEachMT5Loginid['landing_company_short'] & DetailsOfEachMT5Loginid['server_info'];
+    mt5_acc_auth_status?: GetAccountStatus['authentication'];
     selected_mt5_jurisdiction?: TOpenAccountTransferMeta &
         TJurisdictionData & {
             platform?: TCFDPlatform;

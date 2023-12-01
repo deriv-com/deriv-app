@@ -17,7 +17,7 @@ import {
     TModifiedTradingPlatformAvailableAccount,
 } from './components.types';
 import RootStore from 'Stores/index';
-import { TCFDPlatform, TTradingPlatformAvailableAccount, TTokens, TAccountCategory } from './shared.types';
+import { TCFDPlatform, TTradingPlatformAvailableAccount, TTokens, TAccountCategory, TMarketType } from './shared.types';
 
 type TCFDPasswordFormValues = { password: string };
 
@@ -113,7 +113,7 @@ export type TCountdownComponent = {
 };
 
 export type TCFDPasswordReset = {
-    server: string;
+    server: DetailsOfEachMT5Loginid['server'];
     account_type: TAccountCategory;
     password_type: string;
     account_group: TAccountCategory;
@@ -142,7 +142,7 @@ export type TCFDPasswordManagerModal = {
     platform: TCFDPlatform;
     selected_login: string;
     toggleModal: () => void;
-    selected_server: string;
+    selected_server: DetailsOfEachMT5Loginid['server'];
     selected_account_type: TAccountCategory;
     selected_account_group: TCFDPasswordReset['account_group'];
 };
@@ -168,7 +168,7 @@ export type TJurisdictionCardBackProps = {
 
 export type TJurisdictionCardFrontProps = TJurisdictionCardBackProps & {
     disabled: boolean;
-    account_status: GetAccountStatus;
+    account_status: GetAccountStatus['status'];
     card_values: TJurisdictionCardItems;
     type_of_card: TJurisdictionCardType;
     card_data: TJurisdictionCardSection[];
@@ -220,7 +220,7 @@ export type TJurisdictionCheckBoxProps = {
     should_restrict_vanuatu_account_creation: boolean;
 };
 type TOpenAccountTransferMeta = {
-    type?: string;
+    type?: TMarketType;
     category: TAccountCategory;
 };
 
@@ -236,7 +236,7 @@ export type TJurisdictionModalContentProps = {
     is_virtual: boolean;
     account_type: TAccountCategory;
     is_non_idv_design: boolean;
-    account_status: GetAccountStatus;
+    account_status: GetAccountStatus['status'];
     jurisdiction_selected_shortcode: DetailsOfEachMT5Loginid['landing_company_short'];
     real_swapfree_accounts_existing_data: TExistingData;
     real_synthetic_accounts_existing_data: TExistingData;

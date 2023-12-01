@@ -10,6 +10,8 @@ export type TCFDPlatform = ValueOf<typeof CFD_PLATFORMS>;
 
 export type TAccountCategory = ValueOf<typeof CATEGORY>;
 
+export type TMarketType = ValueOf<typeof MARKET_TYPE>;
+
 export type TTokens = {
     demo: string;
     real: string;

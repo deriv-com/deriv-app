@@ -155,6 +155,26 @@
 
             &__description {
                 padding: 1rem 2.4rem;
+
+                &.martingale_max-stake {
+                    div {
+                        div:nth-child(17) {
+                            div.long_description__content:nth-child(n + 3):nth-child(-n + 6) {
+                                margin: 0;
+                            }
+                        }
+                    }
+                }
+
+                &.dalembert_max-stake {
+                    div {
+                        div:nth-child(15) {
+                            div.long_description__content:nth-child(n + 2):nth-child(-n + 5) {
+                                margin: 0;
+                            }
+                        }
+                    }
+                }
             }
 
             &__select {
@@ -224,6 +244,7 @@
                 padding-bottom: 1.6rem;
                 max-height: calc(100vh - 12.2rem) !important;
             }
+
             &--no-footer {
                 max-height: calc(100vh - 16.2rem) !important;
             }
@@ -546,22 +567,43 @@
             }
         }
     }
+
     .long_description {
         &__title {
             margin: 0.8rem 0;
+
             &.italic {
                 font-style: italic;
                 margin-bottom: 0;
             }
         }
+
         &__content {
             margin-bottom: 0.8rem;
+
             &.italic {
                 font-style: italic;
             }
         }
+
         &__image {
             width: 100%;
         }
     }
 }
+
+// .qs__body__content__description {
+//     div {
+//         div:nth-child(15) {
+//             div.long_description__content:nth-child(n + 2):nth-child(-n + 5) {
+//                 margin: 0;
+//             }
+//         }
+//         div:nth-child(17) {
+//             div.long_description__content:nth-child(n + 3):nth-child(-n + 6) {
+//                 margin: 0;
+//             }
+//         }
+
+//     }
+// }

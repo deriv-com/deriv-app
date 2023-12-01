@@ -57,7 +57,7 @@ jest.mock('Assets/SvgComponents/launch/ic-chart-launch.svg', () => jest.fn(() =>
 jest.mock('Assets/SvgComponents/launch/ic-chart-launch-dark.svg', () => jest.fn(() => <div>Chart Svg</div>));
 jest.mock('Modules/Trading/Components/Form/form-layout', () => jest.fn(() => <div>Chart Form Layout</div>));
 jest.mock('App/Components/Elements/market-is-closed-overlay', () => jest.fn(() => <div>MarketIsClosedOverlay</div>));
-jest.mock('Modules/Trading/Containers/smart-chart-switcher.jsx', () => jest.fn(() => <div>Switcher</div>));
+jest.mock('Modules/SmartChart/index.js', () => ({ SmartChart: jest.fn(() => <div>Smartchart</div>) }));
 
 const renderTradeComponent = () => {
     render(

@@ -27,6 +27,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
 
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
+        setActiveTab('TRADE_PARAMETERS');
     };
 
     const handleTabChange = (tab: string) => {

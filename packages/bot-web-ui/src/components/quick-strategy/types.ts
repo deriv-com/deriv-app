@@ -1,5 +1,3 @@
-import { ReactElement, ReactNode } from 'react';
-
 export type TDurationItemRaw = {
     display: string;
     unit: string;
@@ -44,6 +42,7 @@ export type TDescriptionItem = {
     type: string;
     content?: string[];
     src?: string;
+    alt?: string;
 };
 
 export type TStrategy = {

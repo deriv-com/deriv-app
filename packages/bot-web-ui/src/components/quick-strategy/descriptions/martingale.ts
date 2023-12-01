@@ -73,6 +73,7 @@ export const MARTINGALE: TDescriptionItem[] = [
     {
         type: 'media',
         src: getImageLocation('martingale.svg'),
+        alt: localize('An example of Martingale strategy'),
     },
     {
         type: 'text',

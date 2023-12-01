@@ -85,7 +85,6 @@ export default class ClientStore extends BaseStore {
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
     landing_companies = {};
-    is_beta_chart = false;
 
     // All possible landing companies of user between all
     standpoint = {
@@ -405,8 +404,6 @@ export default class ClientStore extends BaseStore {
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
-            is_beta_chart: observable,
-            setIsBetaChart: action.bound,
         });
 
         reaction(
@@ -440,8 +437,6 @@ export default class ClientStore extends BaseStore {
             () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
             () => this.root_store.ui.closeRealAccountSignup()
         );
-
-        this.setIsBetaChart();
     }
 
     get balance() {
@@ -2729,22 +2724,4 @@ export default class ClientStore extends BaseStore {
 
         return is_p2p_visible;
     }
-
-    setIsBetaChart = () => {
-        const website_status = Cookies.get('website_status');
-        if (!website_status) return;
-
-        try {
-            const cookie_value = JSON.parse(website_status);
-
-            if (cookie_value && cookie_value.clients_country) {
-                const client_country = cookie_value.clients_country;
-                /// Show beta chart only for these countries
-                this.is_beta_chart = ['ke', 'in', 'pk'].includes(client_country);
-            }
-        } catch {
-            this.is_beta_chart = false;
-        }
-    };
 }
-/* eslint-enable */

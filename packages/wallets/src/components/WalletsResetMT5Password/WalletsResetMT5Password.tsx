@@ -33,7 +33,7 @@ const WalletsResetMT5Password = ({ onChange, password, platform, verificationCod
 
     useEffect(() => {
         if (status === 'success') {
-            localStorage.removeItem(`verification_code.trading_platform_${platform}_password_reset`);
+            localStorage.removeItem(`verification_code.trading_platform_${platform}_password_reset`); // TODO:Remove verification code from local storage
             show(<WalletSuccessResetMT5Password title={title} />);
         } else if (status === 'error') {
             hide();

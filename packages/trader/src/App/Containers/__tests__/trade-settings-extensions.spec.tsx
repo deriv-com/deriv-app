@@ -12,7 +12,7 @@ describe('<TradeSettingsExtensions/>', () => {
         ...mockStore({}),
         ui: {
             ...mockStore({}).ui,
-            populateSettingsExtensions: jest.fn(menu_items => menu_items && menu_items[0].value(mockStore({}))),
+            populateSettingsExtensions: jest.fn(menu_items => menu_items[0].value(mockStore({}))),
         },
     };
 

@@ -50,6 +50,7 @@ export const OSCAR_GRIND: TDescriptionItem[] = [
     {
         type: 'media',
         src: getImageLocation('oscar-grind.svg'),
+        alt: localize('An example of Oscar’s Grind strategy'),
     },
     {
         type: 'subtitle',

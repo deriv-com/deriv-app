@@ -5,7 +5,8 @@ import { Button, SelectNative, Text, ThemedScrollbars } from '@deriv/components'
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { FORM_TABS, STRATEGIES } from '../config';
+import { STRATEGIES } from '../config';
+import FormTabs from './form-tabs';
 import QSTabContent from './strategy-description';
 import '../quick-strategy.scss';
 
@@ -26,6 +27,10 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
 
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
+    };
+
+    const handleTabChange = (tab: string) => {
+        setActiveTab(tab);
     };
 
     const dropdown_list = Object.keys(STRATEGIES).map(key => ({
@@ -73,28 +78,11 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                 />
                             </div>
                         </div>
-                        <div className='qs__body__content__head'>
-                            <div className='qs__body__content__head__tabs'>
-                                {FORM_TABS.map(tab => {
-                                    const active = tab.value === active_tab;
-                                    const cs = 'qs__body__content__head__tabs__tab';
-                                    return (
-                                        <span
-                                            className={classNames(cs, {
-                                                active,
-                                                disabled: !strategy.long_description ? tab?.disabled : false,
-                                            })}
-                                            key={tab.value}
-                                            onClick={() => setActiveTab(tab.value)}
-                                        >
-                                            <Text size='xs' weight={active ? 'bold' : 'lighter'}>
-                                                {tab.label}
-                                            </Text>
-                                        </span>
-                                    );
-                                })}
-                            </div>
-                        </div>
+                        <FormTabs
+                            active_tab={active_tab}
+                            onChange={handleTabChange}
+                            description={strategy?.long_description}
+                        />
                         <QSTabContent formfields={children} active_tab={active_tab} />
                     </ThemedScrollbars>
                     {active_tab === 'TRADE_PARAMETERS' && (

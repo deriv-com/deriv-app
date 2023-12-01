@@ -33,7 +33,7 @@ const useJurisdictionStatus = (
 
     const isSuccess = useMemo(() => {
         return isSuccessAuthenticationStatus && poiStatus?.current?.service;
-    }, [isSuccessAuthenticationStatus, poiStatus?.current?.service]);
+    }, [isSuccessAuthenticationStatus, poiStatus]);
 
     const verification_status = useMemo(() => {
         const isPOIServiceStatus = (...statuses: TServiceStatus[]) => {
@@ -43,6 +43,9 @@ const useJurisdictionStatus = (
                 return statuses.includes(service.status);
             }
         };
+
+        const pendingStatuses = ['poa_pending', 'verification_pending'];
+        const isStatusPending = pendingStatuses.includes(mt5_account_status ?? '');
 
         const status = {
             is_failed: false,
@@ -57,7 +60,7 @@ const useJurisdictionStatus = (
                     mt5_account_status === 'proof_failed'
                 ) {
                     status.is_failed = true;
-                } else if (isPOIServiceStatus('pending') || mt5_account_status === 'verification_pending') {
+                } else if (isPOIServiceStatus('pending') || isStatusPending) {
                     status.is_pending = true;
                 }
                 break;
@@ -70,7 +73,7 @@ const useJurisdictionStatus = (
                     mt5_account_status === 'proof_failed'
                 ) {
                     status.is_failed = true;
-                } else if (isPOIServiceStatus('pending') || mt5_account_status === 'verification_pending') {
+                } else if (isPOIServiceStatus('pending') || isStatusPending) {
                     status.is_pending = true;
                 }
                 break;
@@ -81,18 +84,18 @@ const useJurisdictionStatus = (
                 // for other jurisdictions, MT5 account status already checks for POA status in BE
                 if (mt5_account_status === 'proof_failed') {
                     status.is_failed = true;
-                } else if (mt5_account_status === 'verification_pending') {
+                } else if (isStatusPending) {
                     status.is_pending = true;
                 }
         }
 
         return status;
     }, [
-        authenticationStatus?.is_idv_revoked,
-        poiStatus?.services,
-        poiStatus?.current?.service,
-        mt5_account_status,
         jurisdiction,
+        poiStatus,
+        authenticationStatus?.is_idv_revoked,
+        authenticationStatus?.is_authenticated_with_idv_photoid,
+        mt5_account_status,
     ]);
 
     return {

@@ -22,13 +22,14 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const isSameCurrency = fromAccount?.currency === toAccount?.currency;
     const amountValue = isFromAmountFieldName ? fromAmount : toAmount;
     const debouncedAmountValue = useDebounce(values.activeAmountFieldName === fieldName ? amountValue : undefined, 500);
-    const toAmountLabel = isSameCurrency ? 'Amount you receive' : 'Estimated amount';
+    const toAmountLabel = isSameCurrency || !toAccount ? 'Amount you receive' : 'Estimated amount';
     const amountLabel = isFromAmountFieldName ? 'Amount you send' : toAmountLabel;
     const currency = isFromAmountFieldName ? fromAccount?.currency : toAccount?.currency;
     const fractionDigits = isFromAmountFieldName
         ? fromAccount?.currencyConfig?.fractional_digits
         : toAccount?.currencyConfig?.fractional_digits;
     const isAmountInputDisabled = fieldName === 'toAmount' && !toAccount;
+    const isAmountFieldActive = fieldName === values.activeAmountFieldName;
 
     useEffect(() => {
         if (!fromAccount?.currency || !toAccount?.currency || !activeWallet?.loginid) return;
@@ -49,7 +50,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
 
     const amountConverterHandler = useCallback(
         (value: number) => {
-            if (!toAccount?.currency || !exchangeRate?.rates) return;
+            if (!toAccount?.currency || !exchangeRate?.rates || !isAmountFieldActive) return;
 
             const toRate = exchangeRate.rates[toAccount.currency];
 
@@ -68,6 +69,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
         [
             exchangeRate?.rates,
             fromAccount?.currencyConfig?.fractional_digits,
+            isAmountFieldActive,
             isFromAmountFieldName,
             setFieldValue,
             toAccount?.currency,
@@ -76,12 +78,15 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     );
 
     useEffect(() => {
-        if (debouncedAmountValue) amountConverterHandler(debouncedAmountValue);
+        if (debouncedAmountValue) {
+            amountConverterHandler(debouncedAmountValue);
+        }
     }, [amountConverterHandler, debouncedAmountValue]);
 
     const onChangeHandler = useCallback(
         (value: number) => {
-            if (fieldName !== values.activeAmountFieldName) return;
+            if (!isAmountFieldActive) return;
+
             if (isSameCurrency) {
                 setValues(prev => ({ ...prev, fromAmount: value, toAmount: value }));
             } else {
@@ -92,12 +97,16 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
                 setFieldValue(fieldName, value);
             }
         },
-        [fieldName, isSameCurrency, setFieldValue, setValues, values.activeAmountFieldName]
+        [fieldName, isAmountFieldActive, isSameCurrency, setFieldValue, setValues]
     );
 
     const onFocusHandler = useCallback(() => {
         setFieldValue('activeAmountFieldName', fieldName);
     }, [fieldName, setFieldValue]);
+
+    const onBlurHandler = useCallback(() => {
+        setFieldValue('activeAmountFieldName', undefined);
+    }, [setFieldValue]);
 
     return (
         <ATMAmountInput
@@ -106,6 +115,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
             fractionDigits={fractionDigits}
             label={amountLabel}
             maxDigits={MAX_DIGITS}
+            onBlur={onBlurHandler}
             onChange={onChangeHandler}
             onFocus={onFocusHandler}
             value={amountValue}

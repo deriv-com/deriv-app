@@ -1,5 +1,5 @@
-import React, { MouseEventHandler, useCallback } from 'react';
-import { useQuery } from '@deriv/api';
+import React, { MouseEventHandler, useCallback, useEffect } from 'react';
+import { useMutation } from '@deriv/api';
 import { WalletButton, WalletText } from '../../../../../../components';
 import './FiatOnRampDisclaimer.scss';
 
@@ -8,9 +8,7 @@ type TFiatOnRampDisclaimer = {
 };
 
 const FiatOnRampDisclaimer: React.FC<TFiatOnRampDisclaimer> = ({ handleDisclaimer }) => {
-    const { data: provider, isLoading } = useQuery('service_token', {
-        payload: { referrer: window.location.href, service: 'banxa' },
-    });
+    const { data: provider, isLoading, mutate } = useMutation('service_token');
 
     const redirectToBanxa = useCallback(() => {
         const banxaUrl = provider?.service_token?.banxa?.url ?? '';
@@ -21,6 +19,10 @@ const FiatOnRampDisclaimer: React.FC<TFiatOnRampDisclaimer> = ({ handleDisclaime
             link.click();
         }
     }, [provider?.service_token?.banxa?.url]);
+
+    useEffect(() => {
+        mutate({ payload: { referrer: window.location.href, service: 'banxa' } });
+    }, [mutate]);
 
     return (
         <div className='wallets-fiat-onramp-disclaimer'>

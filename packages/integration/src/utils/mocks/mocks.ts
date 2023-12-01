@@ -3,6 +3,7 @@ import { EventEmitter } from 'events';
 import { Server as WsServer } from 'ws';
 import { generate } from 'selfsigned';
 import { Page, expect } from '@playwright/test';
+import generateOauthLoginFromAccounts from './generateOauthLoginFromAccounts';
 
 import type {
     APITokenRequest,
@@ -555,15 +556,8 @@ async function setupMocks({ baseURL, page, state, mocks }: SetupMocksOptions) {
         throw new Error('baseURL is required');
     }
 
-    const query = state?.accounts?.reduce((query, account, index) => {
-        return {
-            ...query,
-            [`acct${index + 1}`]: account.id,
-            [`token${index + 1}`]: account.token,
-            [`cur${index + 1}`]: account.currency,
-        };
-    }, {});
-
+    const oauthLoginUrl = generateOauthLoginFromAccounts(baseURL, state?.accounts);
+    const query = Object.fromEntries(oauthLoginUrl.searchParams);
     const mockServer = await createMockServer(state || {}, query, mocks);
 
     page.addListener('close', () => {
@@ -579,16 +573,7 @@ async function setupMocks({ baseURL, page, state, mocks }: SetupMocksOptions) {
         );
     }, mockServer.url);
 
-    const url = new URL('/', baseURL);
-    const params = new URLSearchParams();
-
-    Object.entries(query || {}).forEach(([key, value]) => {
-        params.append(key, String(value));
-    });
-
-    url.search = params.toString();
-
-    await page.goto(url.href);
+    await page.goto(oauthLoginUrl.href);
 
     await expect
         .poll(

@@ -31,6 +31,7 @@ const LocalComponent = observer(() => {
 
         //this is to track from which open button user has come to bot builder tab
         Analytics.trackEvent('ce_bot_builder_form', {
+            action: 'open',
             form_source: 'bot_dashboard_form_open',
         });
     };

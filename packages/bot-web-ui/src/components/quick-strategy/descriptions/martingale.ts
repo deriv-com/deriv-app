@@ -118,12 +118,26 @@ export const MARTINGALE: TDescriptionItem[] = [
             localize(
                 "If you're about to start trading and haven't established a Maximum Stake as part of your risk management strategy, you can determine how long your funds will last by employing the Martingale strategy. Simply use this formula."
             ),
-            localize('R = log(B/s) / log(m)'),
+        ],
+    },
+    {
+        type: 'text',
+        content: [localize('R = log(B/s) / log(m)')],
+    },
+    {
+        type: 'text',
+        content: [
             localize('Where:'),
             localize('R represents the number of rounds a trader can sustain given a specific loss threshold.'),
             localize('B is the loss threshold.'),
             localize('s is the initial stake.'),
             localize('m is the Martingale multiplier.'),
+        ],
+        className: 'no-margin',
+    },
+    {
+        type: 'text',
+        content: [
             localize(
                 'For instance, if a trader sets the loss threshold (B) is $1000, initial stake (s) is $1, and the Martingale multiplier (m) is 2, the calculation would be as follows:'
             ),

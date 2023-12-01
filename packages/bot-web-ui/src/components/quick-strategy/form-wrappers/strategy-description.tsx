@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -27,8 +28,9 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
                     </div>
                 ));
             case 'text': {
+                const class_names = classNames(`long_description__content ${data?.className || ''}`);
                 return data?.content?.map(text => (
-                    <div className='long_description__content' key={text}>
+                    <div className={class_names} key={text}>
                         <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
                     </div>
                 ));
@@ -40,8 +42,9 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
                     </div>
                 ));
             case 'text_italic': {
+                const class_names = classNames(`long_description__content italic ${data?.className || ''}`);
                 return data?.content?.map(text => (
-                    <div className='long_description__content italic' key={text}>
+                    <div className={class_names} key={text}>
                         <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
                     </div>
                 ));

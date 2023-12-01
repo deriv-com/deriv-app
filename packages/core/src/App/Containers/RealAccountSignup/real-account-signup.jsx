@@ -17,6 +17,7 @@ import FinishedSetCurrency from './finished-set-currency.jsx';
 import SetCurrency from './set-currency.jsx';
 import SignupErrorContent from './signup-error-content.jsx';
 import StatusDialogContainer from './status-dialog-container.jsx';
+import { Analytics } from '@deriv/analytics';
 
 import 'Sass/account-wizard.scss';
 import 'Sass/real-account-signup.scss';
@@ -276,6 +277,26 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
 
     const [assessment_decline, setAssessmentDecline] = React.useState(false);
 
+    const trackEvent = React.useCallback(
+        payload => {
+            if (real_account_signup_target === 'maltainvest') return;
+
+            Analytics.trackEvent('ce_real_account_signup_form', {
+                form_source: document.referrer,
+                form_name: 'real_account_signup_form',
+                landing_company: real_account_signup_target,
+                ...payload,
+            });
+        },
+        [real_account_signup_target]
+    );
+
+    React.useEffect(() => {
+        if (is_real_acc_signup_on) {
+            trackEvent({ action: 'open' });
+        }
+    }, [is_real_acc_signup_on, trackEvent]);
+
     const getModalHeight = () => {
         if (is_from_restricted_country) return '304px';
         else if ([invalid_input_error, status_dialog].includes(getActiveModalIndex())) return 'auto';
@@ -354,6 +375,11 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
 
         setCurrentAction(modal_content[getActiveModalIndex()]?.action);
         setError(err);
+
+        trackEvent({
+            action: 'other_error',
+            real_signup_error_message: err,
+        });
     };
 
     React.useEffect(() => {

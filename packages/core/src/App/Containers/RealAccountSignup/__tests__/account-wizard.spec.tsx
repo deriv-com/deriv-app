@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import AccountWizard from '../account-wizard';
 import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { Analytics } from '@deriv/analytics';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -250,12 +251,13 @@ describe('<AccountWizard />', () => {
         expect(screen.getByText('TestComponent')).toBeInTheDocument();
     });
 
-    // it('should invoke Create account and IDV data submission APIs on click of Submit button', async () => {
-    //     renderComponent(store);
-    //     const ele_submit_btn = screen.getByRole('button', { name: 'Submit' });
-    //     await waitFor(() => {
-    //         userEvent.click(ele_submit_btn);
-    //     });
-    //     expect(WS.send).toHaveBeenCalled();
-    // });
+    it('should invoke Create account and IDV data submission APIs on click of Submit button', async () => {
+        render(<AccountWizard {...mock_props} />);
+        const ele_submit_btn = screen.getByRole('button', { name: 'Submit' });
+        await waitFor(() => {
+            userEvent.click(ele_submit_btn);
+        });
+        expect(WS.send).toHaveBeenCalled();
+        expect(Analytics.trackEvent).toHaveBeenCalled();
+    });
 });

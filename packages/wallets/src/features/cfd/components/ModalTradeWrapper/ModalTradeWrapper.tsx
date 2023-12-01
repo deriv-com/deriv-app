@@ -10,14 +10,13 @@ import { TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
 import './ModalTradeWrapper.scss';
 
-const LinksMapper: Record<
-    TPlatforms.All,
-    {
-        android: string;
-        huawei?: string;
-        ios: string;
-    }
-> = {
+type TAppLinks = {
+    android: string;
+    huawei?: string;
+    ios: string;
+};
+
+const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
     ctrader: {
         android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
         ios: 'https://apps.apple.com/cy/app/ctrader/id767428811',
@@ -46,6 +45,7 @@ type TModalTradeWrapper = {
 
 const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children, platform }) => {
     const { isDesktop } = useDevice();
+    const appOrder = ['ios', 'android', 'huawei'];
 
     return (
         <ModalStepWrapper
@@ -58,10 +58,14 @@ const ModalTradeWrapper: FC<PropsWithChildren<TModalTradeWrapper>> = ({ children
                         </WalletText>
                         <div className='wallets-modal-trade-wrapper__footer-installations'>
                             <div className='wallets-modal-trade-wrapper__footer-installations-icons'>
-                                {Object.keys(LinksMapper[platform]).map(app => {
-                                    const AppIcon = AppToIconMapper[app];
-                                    const appLink = LinksMapper[platform][app as 'android' | 'huawei' | 'ios'];
-                                    return <AppIcon key={app} onClick={() => window.open(appLink)} />;
+                                {appOrder.map(app => {
+                                    const AppsLinkMapper = LinksMapper[platform][app as keyof TAppLinks];
+                                    if (AppsLinkMapper) {
+                                        const AppIcon = AppToIconMapper[app];
+                                        const appLink = AppsLinkMapper;
+                                        return <AppIcon key={app} onClick={() => window.open(appLink)} />;
+                                    }
+                                    return null;
                                 })}
                             </div>
                             {isDesktop && (

@@ -49,6 +49,31 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         return details?.login;
     }, [details, platform]);
 
+    const serviceMaintenanceDescription = useMemo(() => {
+        switch (platform) {
+            case 'mt5':
+                return 'Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.';
+            case 'dxtrade':
+                return 'Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.';
+            case 'ctrader':
+                return 'Server maintenance occurs every first Saturday of the month from 7 to 10 GMT time. You may experience service disruption during this time.';
+            default:
+                return '';
+        }
+    }, [platform]);
+
+    const showNoNewPositionsMessage = useMemo(() => {
+        return (
+            !activeWalletData?.is_virtual &&
+            details?.landing_company_short === 'svg' &&
+            ['synthetic', 'financial'].includes(marketType || '') && (
+                <InlineMessage type='warning' variant='outlined'>
+                    No new positions
+                </InlineMessage>
+            )
+        );
+    }, [activeWalletData?.is_virtual, details?.landing_company_short, marketType]);
+
     return (
         <div className='wallets-mt5-trade-screen'>
             <div className='wallets-mt5-trade-screen__details'>
@@ -74,19 +99,13 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                     </div>
                     <div className='wallets-mt5-trade-screen__details-description--right'>
                         <WalletText weight='bold'>{details?.display_balance}</WalletText>
-                        {!activeWalletData?.is_virtual &&
-                            details?.landing_company_short === 'svg' &&
-                            ['synthetic', 'financial'].includes(marketType || '') && (
-                                <InlineMessage type='warning' variant='outlined'>
-                                    No new positions
-                                </InlineMessage>
-                            )}
+                        {showNoNewPositionsMessage}
                     </div>
                 </div>
 
                 <div className='wallets-mt5-trade-screen__details-clipboards'>
                     {getModalState('platform') === 'mt5' && (
-                        <>
+                        <React.Fragment>
                             <MT5TradeDetailsItem label='Broker' value='Deriv Holdings (Guernsey) Ltd' />
                             <MT5TradeDetailsItem
                                 label='Server'
@@ -94,13 +113,13 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                             />
                             <MT5TradeDetailsItem label='Login ID' value={loginId || '12345678'} />
                             <MT5TradeDetailsItem label='Password' value='********' variant='password' />
-                        </>
+                        </React.Fragment>
                     )}
                     {getModalState('platform') === 'dxtrade' && (
-                        <>
+                        <React.Fragment>
                             <MT5TradeDetailsItem label='Username' value={details?.login || '12345678'} />
                             <MT5TradeDetailsItem label='Password' value='********' variant='password' />
-                        </>
+                        </React.Fragment>
                     )}
                     {getModalState('platform') === 'ctrader' && (
                         <MT5TradeDetailsItem
@@ -113,14 +132,13 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 <div className='wallets-mt5-trade-screen__details-maintainance'>
                     <ImportantIcon />
                     <WalletText color='less-prominent' size='2xs'>
-                        Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to
-                        complete. Service may be disrupted during this time.
+                        {serviceMaintenanceDescription}
                     </WalletText>
                 </div>
             </div>
             <div className='wallets-mt5-trade-screen__links'>
                 {isDesktop && platform === 'mt5' && (
-                    <>
+                    <React.Fragment>
                         <MT5TradeLink
                             app='web'
                             platform='mt5'
@@ -129,14 +147,14 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         <MT5TradeLink app='windows' platform='mt5' />
                         <MT5TradeLink app='macos' platform='mt5' />
                         <MT5TradeLink app='linux' platform='mt5' />
-                    </>
+                    </React.Fragment>
                 )}
                 {platform === 'dxtrade' && <MT5TradeLink isDemo={activeWalletData?.is_virtual} platform='dxtrade' />}
                 {platform === 'ctrader' && (
-                    <>
-                        <MT5TradeLink app='ctrader' platform='ctrader' />
+                    <React.Fragment>
                         <MT5TradeLink platform='ctrader' />
-                    </>
+                        <MT5TradeLink app='ctrader' platform='ctrader' />
+                    </React.Fragment>
                 )}
             </div>
         </div>

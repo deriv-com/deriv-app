@@ -9,6 +9,7 @@ type TMessageFnOptions = {
     limits?: ReturnType<typeof useAccountLimits>['data'];
 };
 
+// this function in blocked by BE WALL-1440
 const unverifiedFirstTransferBetweenWalletsMessageFn = (
     fromAccount: NonNullable<TAccount>,
     toAccount: NonNullable<TAccount>,
@@ -37,24 +38,31 @@ const unverifiedFirstTransferBetweenWalletsMessageFn = (
         allowedSumUSD === availableSumUSD;
     const message = {
         text: `The lifetime transfer limit between cryptocurrency Wallets is up to ${formattedAvailableSumUSD} (${formattedAvailableSumSourceCurrency})`,
-        type: 'success' as const,
+        type: sourceAmount > availableSumUSD ? ('error' as const) : ('success' as const),
     };
     return condition ? message : null;
 };
 
-const verifiedFirstTransferBetweenWalletsMessageFn = (
+const verifiedTransferBetweenWalletsMessageFn = (
     sourceAccount: NonNullable<TAccount>,
     targetAccount: NonNullable<TAccount>,
     sourceAmount: number,
     options?: TMessageFnOptions
 ) => {
+    if (sourceAccount.account_category !== 'wallet' || targetAccount.account_category !== 'wallet') return null;
+
     //@ts-expect-error needs backend type
-    const allowedSumUSD = options?.limits?.daily_cumulative_amount_transfers?.wallets.allowed;
+    const allowedSumUSD = options?.limits?.daily_cumulative_amount_transfers?.wallets.allowed as number;
     //@ts-expect-error needs backend type
-    const availableSumUSD = options?.limits?.daily_cumulative_amount_transfers?.wallets.available;
+    const availableSumUSD = options?.limits?.daily_cumulative_amount_transfers?.wallets.available as number;
 
     const sourceCurrencyLimit = allowedSumUSD / (options?.exchangeRates?.rates?.[sourceAccount.currency ?? 'USD'] ?? 1);
     const targetCurrencyLimit = allowedSumUSD / (options?.exchangeRates?.rates?.[targetAccount.currency ?? 'USD'] ?? 1);
+
+    const sourceCurrencyRemainder =
+        availableSumUSD / (options?.exchangeRates?.rates?.[sourceAccount.currency ?? 'USD'] ?? 1);
+    const targetCurrencyRemainder =
+        availableSumUSD / (options?.exchangeRates?.rates?.[targetAccount.currency ?? 'USD'] ?? 1);
 
     const formattedSourceCurrencyLimit = options?.displayMoney?.(
         sourceCurrencyLimit,
@@ -67,20 +75,38 @@ const verifiedFirstTransferBetweenWalletsMessageFn = (
         targetAccount.currencyConfig?.fractional_digits ?? 2
     );
 
-    const condition =
-        sourceAccount.account_category === 'wallet' &&
-        targetAccount.account_category === 'wallet' &&
-        allowedSumUSD === availableSumUSD;
-    const message = {
-        text: `The daily transfer limit between your Wallets is ${formattedSourceCurrencyLimit} (${formattedTargetCurrencyLimit}).`,
-        type: sourceAmount > sourceCurrencyLimit ? ('error' as const) : ('success' as const),
+    const formattedSourceCurrencyRemainder = options?.displayMoney?.(
+        sourceCurrencyRemainder,
+        sourceAccount.currencyConfig?.display_code ?? 'USD',
+        sourceAccount.currencyConfig?.fractional_digits ?? 2
+    );
+    const formattedTargetCurrencyRemainder = options?.displayMoney?.(
+        targetCurrencyRemainder,
+        targetAccount.currencyConfig?.display_code ?? 'USD',
+        targetAccount.currencyConfig?.fractional_digits ?? 2
+    );
+
+    if (availableSumUSD === 0)
+        return {
+            text: `You have reached your daily transfer limit of ${formattedSourceCurrencyLimit} (${formattedTargetCurrencyLimit}) between your Wallets. The limit will reset at 00:00 GMT.`,
+            type: 'error' as const,
+        };
+
+    if (allowedSumUSD === availableSumUSD)
+        return {
+            text: `The daily transfer limit between your Wallets is ${formattedSourceCurrencyRemainder} (${formattedTargetCurrencyRemainder}).`,
+            type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
+        };
+
+    return {
+        text: `The remaining daily transfer limit between Wallets is ${formattedSourceCurrencyRemainder} (${formattedTargetCurrencyRemainder}).`,
+        type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
     };
-    return condition ? message : null;
 };
 
 const UNVERIFIED_ACCOUNT_MESSAGE_FUNCTIONS = [unverifiedFirstTransferBetweenWalletsMessageFn];
 
-const VERIFIED_ACCOUNT_MESSAGE_FUNCTIONS = [verifiedFirstTransferBetweenWalletsMessageFn];
+const VERIFIED_ACCOUNT_MESSAGE_FUNCTIONS = [verifiedTransferBetweenWalletsMessageFn];
 
 const useTransferMessages = (
     fromAccount: NonNullable<TAccount>,

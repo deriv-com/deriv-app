@@ -4,7 +4,13 @@
 
 module.exports = {
     collectCoverage: false,
-    collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/node_modules/**', '!**/dist/**', '!/integration-tests/'],
+    collectCoverageFrom: [
+        '**/*.{js,jsx,ts,tsx}',
+        '!**/node_modules/**',
+        '!**/dist/**',
+        '!/integration-tests/',
+        '!/component-tests/',
+    ],
     coverageReporters: ['lcov'],
     coverageDirectory: './coverage/',
     testRegex: '(/__tests__/.*|(\\.)(test|spec))\\.(js|jsx|tsx|ts)?$',

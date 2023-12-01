@@ -33,7 +33,7 @@ const QSInput: React.FC<TQSInput> = observer(
 
         const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const input_value = e.target.value;
-            if (regex && regex.test(input_value)) {
+            if (regex?.test(input_value)) {
                 if (input_value === '') {
                     e.target.value = '0';
                     onChange(name, '0');

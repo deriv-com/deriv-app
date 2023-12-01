@@ -42,7 +42,7 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ fullWidth = false }) => {
     const selected = values?.tradetype;
 
     React.useEffect(() => {
-        if (values && values.symbol && selected !== '') {
+        if (values?.symbol && selected !== '') {
             const { contracts_for } = ApiHelpers.instance;
             const getTradeTypes = async () => {
                 const trade_types = await contracts_for.getTradeTypesForQuickStrategy(values.symbol);

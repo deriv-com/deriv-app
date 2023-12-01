@@ -86,6 +86,10 @@ const Endpoint = () => {
                     errors.app_id = 'Please enter a valid app ID.';
                 }
 
+                if (!values.server) {
+                    errors.server = 'Server is required.';
+                }
+
                 return errors;
             }}
             onSubmit={values => {

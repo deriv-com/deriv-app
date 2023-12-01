@@ -108,7 +108,14 @@ describe('<RealAccountSignup />', () => {
     });
 
     it('should call Analytics.trackEvent on mount if real account signup target is not maltainvest', () => {
-        renderwithRouter(<RealAccountSignup {...mock_props} real_account_signup_target='svg' />);
+        const updatedStore = {
+            ...store,
+            ui: {
+                ...store.ui,
+                real_account_signup_target: 'svg',
+            },
+        };
+        renderComponent(updatedStore);
         expect(Analytics.trackEvent).toHaveBeenCalled();
     });
 

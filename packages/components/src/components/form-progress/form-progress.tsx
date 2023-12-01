@@ -28,7 +28,7 @@ const FormProgress = ({ steps = [] }: TFormProgressProps) => {
             <DesktopWrapper>
                 {steps.map((step, idx) => (
                     <Stepper
-                        key={idx}
+                        key={step.title}
                         step={step}
                         step_count={idx}
                         is_active={idx <= active_step}
@@ -38,8 +38,8 @@ const FormProgress = ({ steps = [] }: TFormProgressProps) => {
             </DesktopWrapper>
             <MobileWrapper>
                 <div className='stepper__layout'>
-                    {steps.map((_, idx) => (
-                        <StepConnectorLine is_active={idx <= active_step} key={idx} />
+                    {steps.map((step, idx) => (
+                        <StepConnectorLine is_active={idx <= active_step} key={step.title} />
                     ))}
                 </div>
             </MobileWrapper>

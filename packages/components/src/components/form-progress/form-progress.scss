@@ -55,6 +55,9 @@
         &--filled {
             background-color: var(--brand-red-coral);
         }
+        &--filled-not-active {
+            background-color: var(--text-disabled-1);
+        }
     }
 }
 

@@ -10,7 +10,7 @@ type TStepperProps = {
     is_active: boolean;
     step: TStep;
     step_count: number;
-    onClick: (index: number) => void;
+    onClick: React.MouseEventHandler<HTMLParagraphElement>;
 };
 /**
  * Renders a step in the form progress
@@ -29,6 +29,7 @@ const Stepper = ({ is_active, step, step_count, onClick }: TStepperProps) => (
                 className={classNames('stepper__bullet', {
                     'stepper__bullet--active': is_active,
                     'stepper__bullet--filled': step.is_filled && is_active,
+                    'stepper__bullet--filled-not-active': step.is_filled && !is_active,
                 })}
             >
                 {step.is_filled ? <Icon icon='IcCheckmarkBold' color='active' /> : null}

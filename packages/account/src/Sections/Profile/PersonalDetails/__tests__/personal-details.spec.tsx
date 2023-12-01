@@ -62,9 +62,13 @@ describe('<PersonalDetailsForm />', () => {
     it('should render successfully', async () => {
         renderComponent();
         expect(screen.queryByText(/Loading/)).not.toBeInTheDocument();
-        await screen.findByText(
-            /Please make sure your information is correct or it may affect your trading experience./i
-        );
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    /Please make sure your information is correct or it may affect your trading experience./i
+                )
+            ).toBeInTheDocument();
+        });
     });
 
     it('should render all the personal details fields', () => {

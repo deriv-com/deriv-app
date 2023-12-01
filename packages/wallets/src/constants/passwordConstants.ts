@@ -21,7 +21,7 @@ export const passwordErrorMessage = {
 };
 
 export const warningMessages: Record<passwordKeys, string> = {
-    common: 'This is a commonly used password.',
+    common: 'This is a very common password.',
     commonNames: 'Common names and surnames are easy to guess.',
     dates: 'Dates are easy to guess.',
     extendedRepeat: 'Repeated character patterns like "abcabcabc" are easy to guess.',

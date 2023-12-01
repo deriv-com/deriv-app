@@ -15,18 +15,20 @@ import {
 } from '../../Stores/Modules/CFD/Helpers/cfd-config';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS } from '../../Helpers/cfd-config';
-import { useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
+import { useDxtradeAccountsList, useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import useIsEuRegion from '../hooks/useIsEuRegion.js';
+import useIsEuRegion from '../hooks/useIsEuRegion';
 
 type TTopUpDemoModalProps = {
-    platform: string;
+    platform: typeof CFD_PLATFORMS.DXTRADE | typeof CFD_PLATFORMS.CTRADER | typeof CFD_PLATFORMS.MT5;
 };
+
+type TDxtrade = NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[0];
 
 type TCFDOtherPlatform = typeof CFD_PLATFORMS.DXTRADE | typeof CFD_PLATFORMS.CTRADER;
 
 type TCurrentAccount = DetailsOfEachMT5Loginid & {
-    account_id: string;
+    account_id: Exclude<TDxtrade['account_id'], undefined>;
     category: string;
     type: string;
 };

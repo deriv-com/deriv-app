@@ -1634,7 +1634,6 @@ export default class TradeStore extends BaseStore {
             Analytics.trackEvent(event_type, {
                 ...data,
                 action: data.action as TEvents['ce_indicators_types_form']['action'],
-                device_type: isMobile() ? 'mobile' : 'desktop',
                 form_name: 'default',
             });
         }

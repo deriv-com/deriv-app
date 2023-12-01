@@ -246,7 +246,10 @@
             }
 
             &--no-footer {
-                max-height: calc(100vh - 16.2rem) !important;
+                max-height: calc(100vh - 23rem + var(--footer-height)) !important;
+                @include mobile() {
+                    max-height: calc(100vh - 8rem) !important;
+                }
             }
         }
 

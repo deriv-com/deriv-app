@@ -630,7 +630,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 is_turbos: false,
                 is_vanilla: false,
                 is_vanilla_fx: false,
-                last_digit: 9,
+                last_digit: 5,
                 market_close_times: [],
                 market_open_times: [],
                 maximum_payout: 0,

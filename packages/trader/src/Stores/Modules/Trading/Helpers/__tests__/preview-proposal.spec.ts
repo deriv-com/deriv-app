@@ -1,6 +1,3 @@
-// import { mockStore } from '@deriv/stores';
-// import { requestPreviewProposal } from '../preview-proposal';
-// import { WS } from '@deriv/shared';
 import debounce from 'lodash.debounce';
 import { requestPreviewProposal } from '../preview-proposal';
 import { mockStore } from '@deriv/stores';

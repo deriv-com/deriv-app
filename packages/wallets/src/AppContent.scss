@@ -11,6 +11,10 @@
     @include mobile {
         overflow-y: auto;
         height: calc(var(--wallets-vh, 1vh) * 100 - 4rem); // 100vh - 4rem (header)
+
+        @supports (height: 100svh) {
+            height: calc(100svh - 4rem); // 100vh - 4rem (header)
+        }
     }
 }
 

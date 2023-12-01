@@ -1,4 +1,4 @@
-import { getLimitOrder, LIMIT_ORDER_TYPES, setLimitOrderBarriers } from '../limit-orders'; // Replace 'yourFile' with the correct file path
+import { getLimitOrder, LIMIT_ORDER_TYPES, setLimitOrderBarriers } from '../limit-orders';
 
 describe('getLimitOrder', () => {
     it('should return correct limit order when values change', () => {

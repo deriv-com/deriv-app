@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useCountdown } from 'usehooks-ts';
-import { useSettings, useVerifyEmail } from '@deriv/api';
+import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import ChangePassword from '../../public/images/change-password-email.svg';
@@ -9,11 +9,13 @@ import EmailFirewallIcon from '../../public/images/ic-email-firewall.svg';
 import EmailSpamIcon from '../../public/images/ic-email-spam.svg';
 import EmailTypoIcon from '../../public/images/ic-email-typo.svg';
 import { TPlatforms } from '../../types';
+import { platformPasswordResetRedirectLink } from '../../utils/cfdUtils';
 import { WalletButton, WalletText } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './SentEmailContent.scss';
 
 type TProps = {
+    description?: string;
     platform?: TPlatforms.All;
 };
 
@@ -36,14 +38,16 @@ const REASONS = [
     },
 ];
 
-const SentEmailContent: React.FC<TProps> = ({ platform }) => {
+const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { data } = useSettings();
     const { mutate: verifyEmail } = useVerifyEmail();
     const { isMobile } = useDevice();
     const title = PlatformDetails[platform || 'mt5'].title;
-    const deviceSize = isMobile ? 'lg' : 'md';
+    const titleSize = 'md';
+    const descriptionSize = 'sm';
+    const emailLinkSize = isMobile ? 'lg' : 'md';
     const [count, { resetCountdown, startCountdown }] = useCountdown({
         countStart: 60,
         intervalMs: 1000,
@@ -53,24 +57,26 @@ const SentEmailContent: React.FC<TProps> = ({ platform }) => {
         if (count === 0) setHasCountdownStarted(false);
     }, [count]);
 
+    const { data: activeWallet } = useActiveWalletAccount();
+
     return (
         <div className='wallets-sent-email-content'>
             <WalletsActionScreen
-                description={`Please click on the link in the email to change your ${title} password.`}
-                descriptionSize={deviceSize}
+                description={description ?? `Please click on the link in the email to change your ${title} password.`}
+                descriptionSize={descriptionSize}
                 icon={<ChangePassword />}
                 renderButtons={() => (
                     <WalletButton
                         onClick={() => {
                             setShouldShowResendEmailReasons(true);
                         }}
-                        size={deviceSize}
+                        size={emailLinkSize}
                         text="Didn't receive the email?"
                         variant='ghost'
                     />
                 )}
                 title='We’ve sent you an email'
-                titleSize={deviceSize}
+                titleSize={titleSize}
             />
             {shouldShowResendEmailReasons && (
                 <div className='wallets-sent-email-content__reasons'>
@@ -89,6 +95,12 @@ const SentEmailContent: React.FC<TProps> = ({ platform }) => {
                                         platform === 'mt5'
                                             ? 'trading_platform_mt5_password_reset'
                                             : 'trading_platform_dxtrade_password_reset',
+                                    url_parameters: {
+                                        redirect_to: platformPasswordResetRedirectLink(
+                                            platform || 'mt5',
+                                            activeWallet?.is_virtual
+                                        ),
+                                    },
                                     verify_email: data?.email,
                                 });
                                 resetCountdown();

@@ -47,7 +47,7 @@ describe('<ContractTypeDescriptionVideo />', () => {
         const video = screen.getByTestId(/description_video/i);
 
         expect(video).toBeInTheDocument();
-        expect(video).toHaveAttribute('width', '328');
+        expect(video).toHaveAttribute('width', '100%');
         expect(video).toHaveAttribute('height', '184.5');
     });
 });

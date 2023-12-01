@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import useAccountsList from './useAccountsList';
+import useDerivAccountsList from './useDerivAccountsList';
 import useActiveWalletAccount from './useActiveWalletAccount';
 
 /** A custom hook that gets the active linked trading account for the current user. */
 const useActiveLinkedToTradingAccount = () => {
-    const { data: account_list_data } = useAccountsList();
+    const { data: account_list_data } = useDerivAccountsList();
     const { data: wallet_account_data } = useActiveWalletAccount();
 
     const linkedDtradeLoginId = wallet_account_data?.linked_to?.find(

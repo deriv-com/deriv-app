@@ -45,7 +45,7 @@ const DisplayAccountType = ({ account_type, country_standpoint, is_eu }) => {
 
 const AccountInfo = ({
     acc_switcher_disabled_message,
-    account_type,
+    account_type = '',
     balance,
     currency,
     country_standpoint,

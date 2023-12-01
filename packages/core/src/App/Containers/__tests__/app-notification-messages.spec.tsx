@@ -1,15 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AppNotificationMessages from '../app-notification-messages';
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect:
-        () =>
-        <T,>(Component: T) =>
-            Component,
-}));
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('react-router-dom', () => ({
     useLocation: jest.fn(() => ({
@@ -25,10 +17,9 @@ jest.mock('react-transition-group', () => ({
 jest.mock('../../Components/Elements/NotificationMessage', () => jest.fn(() => 'mockedNotification'));
 
 describe('AppNotificationMessages', () => {
-    it('should render the component', () => {
-        const mock_props = {
-            marked_notifications: [],
-            notification_messages: [
+    const store = mockStore({
+        notifications: {
+            notifications: [
                 {
                     action: {
                         route: '/account/financial-assessment',
@@ -41,13 +32,23 @@ describe('AppNotificationMessages', () => {
                     type: 'warning',
                 },
             ],
-            landing_company_shortcode: 'svg',
-            has_iom_account: false,
-            has_malta_account: false,
-            is_logged_in: true,
+            marked_notifications: [],
             should_show_popups: true,
-        };
-        render(<AppNotificationMessages {...mock_props} />);
+        },
+        landing_company_shortcode: 'svg',
+        has_iom_account: false,
+        has_malta_account: false,
+        is_logged_in: true,
+    });
+    const renderComponent = (mock_store = mockStore({})) => {
+        return render(
+            <StoreProvider store={mock_store}>
+                <AppNotificationMessages />
+            </StoreProvider>
+        );
+    };
+    it('should render the component', () => {
+        renderComponent(store);
         expect(screen.getByText('mockedNotification')).toBeInTheDocument();
     });
 });

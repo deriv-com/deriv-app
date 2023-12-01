@@ -19,7 +19,6 @@ const FormTabs: React.FC<TFormTabs> = observer(({ active_tab, onChange, descript
                 const cs = 'qs__body__content__head__tabs__tab';
                 return (
                     <span
-                        role='button'
                         tabIndex={index}
                         className={classNames(cs, {
                             active,

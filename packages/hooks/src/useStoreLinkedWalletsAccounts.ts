@@ -3,7 +3,7 @@ import useStoreWalletAccountsList from './useStoreWalletAccountsList';
 
 type TLinkedAccount = {
     loginid?: string;
-    platform?: 'derivez' | 'dtrade' | 'dwallet' | 'dxtrade' | 'mt5';
+    platform?: 'ctrader' | 'derivez' | 'dtrade' | 'dwallet' | 'dxtrade' | 'mt5';
 };
 
 type TReturnObjectType = {
@@ -16,7 +16,14 @@ const useStoreLinkedWalletsAccounts = () => {
 
     // define object with accounts
     const linked_trading_accounts = useMemo(() => {
-        const linked_accounts: TReturnObjectType = { derivez: [], dtrade: [], dwallet: [], dxtrade: [], mt5: [] };
+        const linked_accounts: TReturnObjectType = {
+            ctrader: [],
+            derivez: [],
+            dtrade: [],
+            dwallet: [],
+            dxtrade: [],
+            mt5: [],
+        };
 
         wallets_list?.forEach(account => {
             const linked = account.linked_to;

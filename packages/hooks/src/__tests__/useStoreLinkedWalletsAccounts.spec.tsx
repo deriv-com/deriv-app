@@ -41,6 +41,7 @@ describe('useStoreLinkedWalletsAccounts', () => {
         const { result } = renderHook(() => useStoreLinkedWalletsAccounts(), { wrapper });
 
         expect(result.current).toMatchObject({
+            ctrader: [],
             derivez: [{ loginid: 'CR777', platform: 'derivez' }],
             dtrade: [{ loginid: 'CR456', platform: 'dtrade' }],
             dwallet: [],

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useActiveWalletAccount } from '@deriv/api';
 import { TradingAccountCard, WalletButton } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
@@ -34,6 +35,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { setModalState, show } = useModal();
     const { description, title } = MarketTypeDetails[account.market_type || 'all'];
+    const { t } = useTranslation();
 
     return (
         <TradingAccountCard
@@ -54,7 +56,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                             )
                         );
                     }}
-                    text='Get'
+                    text={t('Get')}
                 />
             )}
         >

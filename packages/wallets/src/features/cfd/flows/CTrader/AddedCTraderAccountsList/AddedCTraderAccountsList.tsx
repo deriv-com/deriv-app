@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useCtraderAccountsList } from '@deriv/api';
 import { TradingAccountCard } from '../../../../../components';
@@ -14,6 +15,7 @@ const AddedCTraderAccountsList: React.FC = () => {
     const history = useHistory();
     const { data: cTraderAccounts } = useCtraderAccountsList();
     const { show } = useModal();
+    const { t } = useTranslation();
 
     const leading = () => (
         <div
@@ -38,10 +40,11 @@ const AddedCTraderAccountsList: React.FC = () => {
                 onClick={() => {
                     history.push('/wallets/cashier/transfer');
                 }}
-                text='Transfer'
+                text={t('Transfer')}
                 variant='outlined'
             />
-            <WalletButton onClick={() => show(<MT5TradeModal platform='ctrader' />)} text='Open' />
+
+            <WalletButton onClick={() => show(<MT5TradeModal platform='ctrader' />)} text={t('Open')} />
         </div>
     );
 

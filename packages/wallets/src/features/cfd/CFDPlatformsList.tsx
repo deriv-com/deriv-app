@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletButton, WalletText } from '../../components/Base';
 import useDevice from '../../hooks/useDevice';
@@ -13,6 +14,7 @@ type TProps = {
 const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
+    const { t } = useTranslation();
 
     return (
         <div className='wallets-cfd-list'>
@@ -20,35 +22,35 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                 {isMobile ? (
                     <div className='wallets-cfd-list__header-description'>
                         <WalletText size='sm'>
-                            Trade with leverage and tight spreads for better returns on trades.{' '}
+                            {t('Trade with leverage and tight spreads for better returns on trades.')}{' '}
                             <a
                                 className='wallets-cfd-list__header-description__link'
                                 href='https://deriv.com/trade-types/cfds/'
                                 rel='noopener noreferrer'
                                 target='_blank'
                             >
-                                Learn more
+                                {t('Learn more')}
                             </a>
                         </WalletText>
-                        <WalletButton size='sm' text='Compare accounts' textSize='sm' variant='ghost' />
+                        <WalletButton size='sm' text={t('Compare accounts')} textSize='sm' variant='ghost' />
                     </div>
                 ) : (
                     <div>
                         <div className='wallets-cfd-list__header-compare-accounts'>
                             <WalletText size='xl' weight='bold'>
-                                CFDs
+                                {t('CFDs')}
                             </WalletText>
-                            <WalletButton size='sm' text='Compare accounts' variant='ghost' />
+                            <WalletButton size='sm' text={t('Compare accounts')} variant='ghost' />
                         </div>
                         <WalletText size='md'>
-                            Trade with leverage and tight spreads for better returns on trades.{' '}
+                            {t('Trade with leverage and tight spreads for better returns on trades.')}{' '}
                             <a
                                 className='wallets-cfd-list__header-description__link'
                                 href='https://deriv.com/trade-types/cfds/'
                                 rel='noopener noreferrer'
                                 target='_blank'
                             >
-                                Learn more
+                                {t('Learn more')}
                             </a>
                         </WalletText>
                     </div>

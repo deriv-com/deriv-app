@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCreateOtherCFDAccount, useCtraderAccountsList } from '@deriv/api';
 import { TradingAccountCard, WalletError } from '../../../../../components';
@@ -24,6 +25,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
     const { isMobile } = useDevice();
     const history = useHistory();
+    const { t } = useTranslation();
 
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
 
@@ -51,13 +53,25 @@ const AvailableCTraderAccountsList: React.FC = () => {
                 />
             </WalletButtonGroup>
         ),
+
         [hide, history]
     );
 
     const description =
         accountType === 'demo'
-            ? `Transfer virtual funds from your Demo Wallet to your ${PlatformDetails.ctrader.title} Demo account to practice trading.`
-            : `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${PlatformDetails.ctrader.title} account to start trading.`;
+            ? t(
+                  'Transfer virtual funds from your Demo Wallet to your {{platformTitle}} Demo account to practice trading.',
+                  {
+                      platformTitle: PlatformDetails.ctrader.title,
+                  }
+              )
+            : t(
+                  'Transfer funds from your {{currencyType}} Wallet to your {{platformTitle}} account to start trading.',
+                  {
+                      currencyType: activeWallet?.wallet_currency_type,
+                      platformTitle: PlatformDetails.ctrader.title,
+                  }
+              );
 
     const leadingIcon = () => (
         <div
@@ -82,7 +96,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
             onClick={() => {
                 onSubmit();
             }}
-            text='Get'
+            text={t('Get')}
         />
     );
 
@@ -96,9 +110,10 @@ const AvailableCTraderAccountsList: React.FC = () => {
                         marketType='all'
                         platform='ctrader'
                         renderButton={renderButtons}
-                        title={`Your ${PlatformDetails.ctrader.title} ${
-                            accountType === 'demo' ? accountType : ''
-                        } account is ready`}
+                        title={t('Your {{platformTitle}} {{accountType}} account is ready', {
+                            accountType: accountType === t('demo') ? accountType : '',
+                            platformTitle: PlatformDetails.ctrader.title,
+                        })}
                     />
                     ;
                 </ModalStepWrapper>
@@ -112,13 +127,14 @@ const AvailableCTraderAccountsList: React.FC = () => {
                     marketType='all'
                     platform='ctrader'
                     renderButton={renderButtons}
-                    title={`Your ${PlatformDetails.ctrader.title} ${
-                        accountType === 'demo' ? accountType : ''
-                    } account is ready`}
+                    title={t('Your {{platformTitle}} {{accountType}} account is ready', {
+                        accountType: accountType === t('demo') ? accountType : '',
+                        platformTitle: PlatformDetails.ctrader.title,
+                    })}
                 />
             </ModalWrapper>
         );
-    }, [accountType, cTraderAccounts, description, isMobile, renderButtons]);
+    }, [accountType, cTraderAccounts, description, isMobile, renderButtons, t]);
 
     useEffect(() => {
         if (status === 'success') {
@@ -142,7 +158,9 @@ const AvailableCTraderAccountsList: React.FC = () => {
                     <WalletText size='sm' weight='bold'>
                         {PlatformDetails.ctrader.title}
                     </WalletText>
-                    <WalletText size='xs'>This account offers CFDs on a feature-rich trading platform.</WalletText>
+                    <WalletText size='xs'>
+                        {t('This account offers CFDs on a feature-rich trading platform.')}
+                    </WalletText>
                 </div>
             </TradingAccountCard>
         </div>

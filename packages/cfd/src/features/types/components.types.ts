@@ -1,8 +1,8 @@
 import React, { ReactElement } from 'react';
 import { FormikHelpers as FormikActions, FormikValues } from 'formik';
 import { TCoreStores } from '@deriv/stores/types';
+import { ResidenceList, DetailsOfEachMT5Loginid, GetSettings, GetAccountStatus, KycAuthStatus } from '@deriv/api-types';
 import { MARKET_TYPE } from 'Helpers/cfd-config';
-import { ResidenceList, DetailsOfEachMT5Loginid, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { TCFDPasswordReset } from './containers.types';
 import { TCFDPlatform, TTokens, TTradingPlatformAvailableAccount, TAccountCategory, TMarketType } from './shared.types';
 
@@ -325,11 +325,14 @@ export type TJurisdictionData = {
     jurisdiction?: DetailsOfEachMT5Loginid['landing_company_short'];
 };
 
+type TServerInfo = Exclude<DetailsOfEachMT5Loginid['server_info'], undefined>;
+
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     display_login?: string;
     landing_company_short?: DetailsOfEachMT5Loginid['landing_company_short'];
-    short_code_and_region?: DetailsOfEachMT5Loginid['landing_company_short'] & DetailsOfEachMT5Loginid['server_info'];
-    mt5_acc_auth_status?: GetAccountStatus['authentication'];
+    short_code_and_region?: DetailsOfEachMT5Loginid['landing_company_short'] &
+        Exclude<TServerInfo['geolocation'], undefined>['region'];
+    mt5_acc_auth_identity?: KycAuthStatus['identity'];
     selected_mt5_jurisdiction?: TOpenAccountTransferMeta &
         TJurisdictionData & {
             platform?: TCFDPlatform;

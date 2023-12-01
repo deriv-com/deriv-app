@@ -89,7 +89,7 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     } as const;
 
     return (
-        <button className={buttonClassNames} disabled={disabled} onClick={onClick} type={type}>
+        <button className={buttonClassNames} disabled={disabled || isLoading} onClick={onClick} type={type}>
             {isLoading && (
                 <div className='wallets-button__loader'>
                     <Loader color={isContained ? loaderColorMapper[color] : '#85ACB0'} isFullScreen={false} />

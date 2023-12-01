@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { APIProvider, useFetch } from '@deriv/api';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { useFetch } from '@deriv/api';
+import { mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import usePaymentAgentList from '../usePaymentAgentList';
+import { withMockAPIProvider } from '../mocks';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -18,11 +18,7 @@ describe('usePaymentAgentList', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({});
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <APIProvider>{children}</APIProvider>
-            </StoreProvider>
-        );
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => usePaymentAgentList(), { wrapper });
 
@@ -35,11 +31,7 @@ describe('usePaymentAgentList', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({ data: { paymentagent_list: { list: [] } } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <APIProvider>{children}</APIProvider>
-            </StoreProvider>
-        );
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => usePaymentAgentList(), { wrapper });
 
@@ -52,11 +44,7 @@ describe('usePaymentAgentList', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({ data: { paymentagent_list: { list: ['PAYMENT AGENT 1', 'PAYMENT AGENT 2'] } } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>
-                <APIProvider>{children}</APIProvider>
-            </StoreProvider>
-        );
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => usePaymentAgentList(), { wrapper });
 

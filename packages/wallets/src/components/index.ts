@@ -35,5 +35,6 @@ export * from './WalletsCarouselContent';
 export * from './WalletsErrorScreen';
 export * from './WalletsPercentageSelector';
 export * from './WalletsPrimaryTabs';
+export * from './WalletsResetMT5Password';
 export * from './WalletSuccess';
 export * from './WalletTourGuide';

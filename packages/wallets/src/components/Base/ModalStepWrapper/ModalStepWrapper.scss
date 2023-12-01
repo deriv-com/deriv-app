@@ -1,5 +1,5 @@
 .wallets-modal-step-wrapper {
-    background-color: #ffffff;
+    background: var(--system-light-8-primary-background, #fff);
     border-radius: 0.8rem;
 
     @include mobile {

@@ -16,7 +16,7 @@ type TDesktopFormWrapper = {
 };
 
 const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
-    const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
+    const [activeTab, setActiveTab] = React.useState('TRADE_PARAMETERS');
     const { submitForm, isValid, setFieldValue, validateForm } = useFormikContext();
     const { quick_strategy, run_panel } = useDBotStore();
     const { selected_strategy, setSelectedStrategy, setFormVisibility, toggleStopBotDialog } = quick_strategy;
@@ -94,18 +94,18 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                 <div className='qs__body__content'>
                     <ThemedScrollbars
                         className={classNames('qs__form__container', {
-                            'qs__form__container--no-footer': active_tab !== 'TRADE_PARAMETERS',
+                            'qs__form__container--no-footer': activeTab !== 'TRADE_PARAMETERS',
                         })}
                         autohide={false}
                     >
                         <FormTabs
-                            active_tab={active_tab}
+                            active_tab={activeTab}
                             onChange={handleTabChange}
                             description={strategy?.long_description}
                         />
-                        <StrategyDescription formfields={children} active_tab={active_tab} />
+                        <StrategyDescription formfields={children} active_tab={activeTab} />
                     </ThemedScrollbars>
-                    {active_tab === 'TRADE_PARAMETERS' && (
+                    {activeTab === 'TRADE_PARAMETERS' && (
                         <div className='qs__body__content__footer'>
                             <Button secondary disabled={!isValid} onClick={onEdit}>
                                 {localize('Edit')}

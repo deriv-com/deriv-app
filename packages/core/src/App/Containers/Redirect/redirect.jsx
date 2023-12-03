@@ -176,7 +176,14 @@ const Redirect = ({
         case 'trading_platform_investor_password_reset': {
             localStorage.setItem('cfd_reset_password_code', code_param);
             const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
-            history.push(`${routes.traders_hub}#${is_demo ? 'demo' : 'real'}#reset-password`);
+            if (is_next_wallet) {
+                history.push({
+                    pathname: routes.wallets,
+                    search: url_query_string,
+                });
+            } else {
+                history.push(`${routes.traders_hub}#${is_demo ? 'demo' : 'real'}#reset-password`);
+            }
             redirected_to_route = true;
             break;
         }

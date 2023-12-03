@@ -12,10 +12,11 @@ type TChangeInvestorPasswordScreenIndex = 'emailVerification' | 'introScreen' | 
 const MT5ChangeInvestorPasswordScreens = () => {
     const [activeScreen, setActiveScreen] = useState<TChangeInvestorPasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangeInvestorPasswordScreenIndex) => setActiveScreen(nextScreen);
-    const { hide } = useModal();
+    const { getModalState, hide } = useModal();
     const { data } = useSettings();
     const { mutate } = useVerifyEmail();
     const { data: activeWallet } = useActiveWalletAccount();
+    const mt5AccountId = getModalState('accountId') || '';
 
     const handleSendEmail = async () => {
         if (data.email) {
@@ -26,6 +27,8 @@ const MT5ChangeInvestorPasswordScreens = () => {
                 },
                 verify_email: data.email,
             });
+
+            localStorage.setItem('trading_platform_investor_password_reset_account_id', mt5AccountId);
         }
     };
 

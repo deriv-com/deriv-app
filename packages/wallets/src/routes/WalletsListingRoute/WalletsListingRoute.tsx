@@ -1,16 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api';
-import {
-    DesktopWalletsList,
-    WalletsAddMoreCarousel,
-    WalletsCarousel,
-    WalletsResetMT5Password,
-    WalletTourGuide,
-} from '../../components';
-import { useModal } from '../../components/ModalProvider';
-import { getActionFromUrl } from '../../helpers/urls';
+import { DesktopWalletsList, WalletsAddMoreCarousel, WalletsCarousel, WalletTourGuide } from '../../components';
+import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import useDevice from '../../hooks/useDevice';
-import { TPlatforms } from '../../types';
 import './WalletsListingRoute.scss';
 
 const WalletsListingRoute: React.FC = () => {
@@ -18,38 +10,8 @@ const WalletsListingRoute: React.FC = () => {
     const { data: walletAccounts } = useWalletAccountsList();
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { show } = useModal();
-
-    const [password, setPassword] = useState('');
-    const resetTradingPlatformActionParams = getActionFromUrl();
 
     const firstLoginid = walletAccounts?.[0]?.loginid;
-
-    const platformMapping: Record<string, Exclude<TPlatforms.All, 'ctrader'>> = {
-        trading_platform_dxtrade_password_reset: 'dxtrade',
-        trading_platform_mt5_password_reset: 'mt5',
-    };
-
-    useEffect(() => {
-        const platformKey = resetTradingPlatformActionParams ? platformMapping[resetTradingPlatformActionParams] : null;
-        if (platformKey) {
-            const verificationCode = localStorage.getItem(
-                `verification_code.trading_platform_${platformKey}_password_reset`
-            );
-
-            if (verificationCode) {
-                show(
-                    <WalletsResetMT5Password
-                        onChange={e => setPassword(e.target.value)}
-                        password={password}
-                        platform={platformKey}
-                        verificationCode={verificationCode}
-                    />
-                );
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [password]);
 
     useEffect(() => {
         if (!activeWallet && firstLoginid) {
@@ -62,6 +24,7 @@ const WalletsListingRoute: React.FC = () => {
             {isMobile ? <WalletsCarousel /> : <DesktopWalletsList />}
             <WalletsAddMoreCarousel />
             {!isMobile && <WalletTourGuide />}
+            <ResetMT5PasswordHandler />
         </div>
     );
 };

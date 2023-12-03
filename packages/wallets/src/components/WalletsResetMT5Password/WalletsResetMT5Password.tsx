@@ -46,8 +46,9 @@ const WalletsResetMT5Password = ({
 
     const handleSubmit = () => {
         if (isInvestorPassword) {
+            const accountId = localStorage.getItem('trading_platform_investor_password_reset_account_id') ?? '';
             changeInvestorPassword({
-                account_id: localStorage.getItem('trading_platform_investor_password_reset_account_id') ?? '',
+                account_id: accountId,
                 new_password: password,
                 platform: 'mt5',
                 verification_code: verificationCode,
@@ -87,7 +88,7 @@ const WalletsResetMT5Password = ({
                 <WalletButton onClick={() => hide()} size='lg' text='Cancel' variant='outlined' />
                 <WalletButton
                     disabled={!validPassword(password)}
-                    isLoading={status === 'loading'}
+                    isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
                     onClick={handleSubmit}
                     size='lg'
                     text='Create'

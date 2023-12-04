@@ -20,10 +20,6 @@ type TContractTypes = {
     attached?: boolean;
 };
 
-type RudderStackActionType = {
-    text: string;
-};
-
 const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, name }) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
@@ -34,10 +30,10 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
     const { symbol, tradetype } = values;
     const selected = values?.type;
 
-    const sendTradeTypeToRudderStack = (item: RudderStackActionType) => {
+    const sendTradeTypeToRudderStack = (item: string) => {
         Analytics.trackEvent('ce_bot_quick_strategy_form', {
             action: 'choose_trade_type',
-            trade_type: item.text,
+            trade_type: item,
             form_source: 'ce_bot_quick_strategy_form',
         });
     };
@@ -121,7 +117,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
                             onItemSelection={(item: TItem) => {
                                 if ((item as TContractTypesItem)?.value) {
                                     handleChange((item as TContractTypesItem)?.value as string);
-                                    sendTradeTypeToRudderStack(item);
+                                    sendTradeTypeToRudderStack(item?.text);
                                 }
                             }}
                         />

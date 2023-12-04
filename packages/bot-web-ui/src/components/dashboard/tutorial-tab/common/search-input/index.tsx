@@ -4,8 +4,8 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import React from 'react';
 import { Analytics } from '@deriv/analytics';
 import debounce from 'lodash.debounce';
+import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 
-const DEBOUNCE_INTERVAL_TIME = 300;
 const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tutorials, setDebouncedValue }) => {
     const { dashboard } = useDBotStore();
     const { setActiveTabTutorial } = dashboard;

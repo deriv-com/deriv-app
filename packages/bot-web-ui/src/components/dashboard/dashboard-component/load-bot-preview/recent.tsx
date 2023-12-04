@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { MobileWrapper, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -20,30 +19,38 @@ const RecentComponent = observer(() => {
     const { setStrategySaveType, strategy_save_type } = dashboard;
     const { ui } = useStore();
     const { is_mobile } = ui;
-    const check_rudder_stack_instance = React.useRef(false);
+    const get_first_strategy_info = React.useRef(false);
+    const get_instacee = React.useRef(false);
 
     React.useEffect(() => {
         setStrategySaveType('');
         const getStrategies = async () => {
             const recent_strategies = await getSavedWorkspaces();
             setDashboardStrategies(recent_strategies);
+            if (!get_instacee.current) {
+                const param = recent_strategies?.length > 0 ? 'yes' : 'no';
+                Analytics.trackEvent('ce_bot_dashboard_form', {
+                    action: param,
+                    form_source: 'ce_bot_dashboard_form',
+                });
+                get_instacee.current = true;
+            }
         };
         getStrategies();
         //this dependency is used when we use the save modal popup
     }, [strategy_save_type]);
 
     React.useEffect(() => {
-        if (!dashboard_strategies?.length && !check_rudder_stack_instance.current) {
+        if (!dashboard_strategies?.length && !get_first_strategy_info.current) {
             const getStratagiesForRudderStack = async () => {
                 const recent_strategies = await getSavedWorkspaces();
                 Analytics.trackEvent('ce_bot_dashboard_form', {
                     bot_last_modified_time: recent_strategies?.[0]?.timestamp,
                     form_source: 'bot_header_form',
-                    action: 'open',
                 });
             };
             getStratagiesForRudderStack();
-            check_rudder_stack_instance.current = true;
+            get_first_strategy_info.current = true;
         }
     }, []);
 

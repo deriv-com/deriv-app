@@ -5,7 +5,7 @@ import { Analytics } from '@deriv/analytics'; //BotTActions need to add after an
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 import { DBOT_TABS } from 'Constants/bot-contents';

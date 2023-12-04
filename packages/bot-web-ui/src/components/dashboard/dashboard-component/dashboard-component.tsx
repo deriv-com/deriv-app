@@ -68,28 +68,24 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
     const has_dashboard_strategies = !!dashboard_strategies?.length;
     const { ui } = useStore();
     const { is_mobile } = ui;
+    const get_first_strategy_info = React.useRef(false);
 
     React.useEffect(() => {
-        const param = dashboard_strategies?.length > 0 ? 'yes' : 'no';
-        Analytics.trackEvent('ce_bot_dashboard_form', {
-            action: param,
-            form_source: 'ce_bot_dashboard_form',
-        });
-    }, [dashboard_strategies]);
-
-    React.useEffect(() => {
-        //on dashbord umount fire close event for rudderstack
-        Analytics.trackEvent('ce_bot_dashboard_form', {
-            action: 'open',
-            form_source: 'ce_bot_dashboard_form',
-        });
-        return () => {
+        if (!get_first_strategy_info.current) {
+            //on dashbord umount fire close event for rudderstack
+            get_first_strategy_info.current = true;
             Analytics.trackEvent('ce_bot_dashboard_form', {
-                action: 'close',
+                action: 'open',
                 form_source: 'ce_bot_dashboard_form',
             });
-        };
-    }, [active_tab]);
+            return () => {
+                Analytics.trackEvent('ce_bot_dashboard_form', {
+                    action: 'close',
+                    form_source: 'ce_bot_dashboard_form',
+                });
+            };
+        }
+    }, []);
 
     return (
         <React.Fragment>

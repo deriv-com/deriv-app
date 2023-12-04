@@ -15,8 +15,8 @@ import { TConfigItem, TFormData } from './types';
 import { useFormikContext } from 'formik';
 import debounce from 'lodash.debounce';
 import { Analytics } from '@deriv/analytics';
+import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 
-const DEBOUNCE_INTERVAL_TIME = 300;
 const QuickStrategyForm = observer(() => {
     const { ui } = useStore();
     const { quick_strategy } = useDBotStore();
@@ -25,10 +25,10 @@ const QuickStrategyForm = observer(() => {
     const { is_mobile } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
 
-    const sendInitialStakeValueToruddetack = (key: string) => {
+    const sendInitialStakeValueToruddetack = (key: string, value: string | number | boolean) => {
         Analytics.trackEvent('ce_bot_quick_strategy_form', {
             action: 'change_parameter_value',
-            parameter_value: key,
+            parameter_value: value,
             parameter_type: key,
         });
     };
@@ -52,7 +52,7 @@ const QuickStrategyForm = observer(() => {
         setValue(key, value);
         await setFieldTouched(key, true, true);
         await setFieldValue(key, value);
-        throttleChange(key);
+        throttleChange(key, value);
     };
 
     const handleEnter = (event: KeyboardEvent) => {

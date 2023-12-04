@@ -5,6 +5,7 @@ import { Input, Popover } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Analytics } from '@deriv/analytics';
 import debounce from 'lodash.debounce';
+import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 
 type TQSInput = {
     name: string;
@@ -15,8 +16,6 @@ type TQSInput = {
     should_have?: { key: string; value: string | number | boolean }[];
     disabled?: boolean;
 };
-
-const DEBOUNCE_INTERVAL_TIME = 300;
 const QSInput: React.FC<TQSInput> = observer(
     ({ name, onChange, type = 'text', fullwidth = false, attached = false, disabled = false }) => {
         const {

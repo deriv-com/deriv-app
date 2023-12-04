@@ -109,6 +109,14 @@
             border-bottom: 2px solid var(--general-section-5) !important;
         }
 
+        &__icon {
+            margin-right: 1rem;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
         &__title {
             padding: 1.6rem 2.4rem;
             display: flex;

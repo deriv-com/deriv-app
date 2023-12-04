@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { SentEmailContent } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
-import { platformPasswordResetRedirectLink } from '../../../../../utils/cfdUtils';
+import { platformPasswordResetRedirectLink } from '../../../../../utils/cfd';
 import MT5ChangeInvestorPasswordInputsScreen from './MT5ChangeInvestorPasswordInputsScreen';
 import MT5ChangeInvestorPasswordSavedScreen from './MT5ChangeInvestorPasswordSavedScreen';
 import './MT5ChangeInvestorPasswordScreens.scss';

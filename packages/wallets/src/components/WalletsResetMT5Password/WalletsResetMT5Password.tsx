@@ -3,7 +3,7 @@ import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordRese
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
-import { validPassword } from '../../utils/passwordUtils';
+import { validPassword } from '../../utils/password';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup, WalletPasswordField, WalletText } from '../Base';
 import { WalletPasswordFieldProps } from '../Base/WalletPasswordField/WalletPasswordField';
 import { useModal } from '../ModalProvider';

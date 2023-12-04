@@ -1,4 +1,4 @@
-import React, { ComponentProps, CSSProperties, ReactElement, ReactNode } from 'react';
+import React, { ComponentProps, CSSProperties, FC, PropsWithChildren, ReactElement } from 'react';
 import classNames from 'classnames';
 import { Loader } from '../../Loader';
 import { TGenericSizes } from '../types';
@@ -9,7 +9,6 @@ type TVariant = 'contained' | 'ghost' | 'outlined';
 type TColor = 'black' | 'primary-light' | 'primary' | 'white';
 
 interface WalletButtonProps {
-    children: ReactNode;
     color?: TColor;
     disabled?: ComponentProps<'button'>['disabled'];
     icon?: ReactElement;
@@ -23,7 +22,7 @@ interface WalletButtonProps {
     variant?: TVariant;
 }
 
-const WalletButton: React.FC<WalletButtonProps> = ({
+const WalletButton: FC<PropsWithChildren<WalletButtonProps>> = ({
     children,
     color = 'primary',
     disabled = false,

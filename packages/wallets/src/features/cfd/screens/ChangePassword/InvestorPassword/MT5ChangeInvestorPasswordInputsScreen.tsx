@@ -4,7 +4,7 @@ import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
 import { WalletButton, WalletPasswordField, WalletsActionScreen, WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
-import { validPassword } from '../../../../../utils/passwordUtils';
+import { validPassword } from '../../../../../utils/password';
 import { PlatformDetails } from '../../../constants';
 
 type TFormInitialValues = {

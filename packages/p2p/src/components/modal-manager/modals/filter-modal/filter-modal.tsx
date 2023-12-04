@@ -41,6 +41,8 @@ const FilterModal = () => {
         selected_payment_method_text ?? []
     );
     const [has_made_changes, setHasMadeChanges] = useSavedState('has_made_changes', false);
+    // eslint-disable-next-line no-unused-vars
+    const [is_matching_ads_toggled, _] = useSavedState('has_made_changes', buy_sell_store.should_use_client_limits);
 
     // if user has previously already selected some payment methods and clicked Apply
     const has_already_selected_payment_methods =
@@ -92,6 +94,7 @@ const FilterModal = () => {
                                 )
                             );
                         }
+                        buy_sell_store.setShouldUseClientLimits(is_matching_ads_toggled);
                         setSelectedMethods(selected_payment_method_value);
                         setSelectedMethodsText(selected_payment_method_text);
                         hideModal({
@@ -140,6 +143,11 @@ const FilterModal = () => {
         hideModal();
     };
 
+    const onToggle = () => {
+        buy_sell_store.setShouldUseClientLimits(!buy_sell_store.should_use_client_limits);
+        if (!has_made_changes) setHasMadeChanges(is_matching_ads_toggled !== buy_sell_store.should_use_client_limits);
+    };
+
     React.useEffect(() => {
         getPaymentMethodsList();
 
@@ -175,10 +183,10 @@ const FilterModal = () => {
                 >
                     <Modal.Body>
                         <FilterModalBody
+                            handleToggle={onToggle}
                             onChange={onChange}
                             selected_methods={selected_methods}
                             selected_methods_text={selected_methods_text}
-                            setHasMadeChanges={setHasMadeChanges}
                         />
                     </Modal.Body>
                     <Modal.Footer has_separator>
@@ -219,10 +227,10 @@ const FilterModal = () => {
                     }}
                 >
                     <FilterModalBody
+                        handleToggle={onToggle}
                         onChange={onChange}
                         selected_methods={selected_methods}
                         selected_methods_text={selected_methods_text}
-                        setHasMadeChanges={setHasMadeChanges}
                     />
                 </MobileFullPageModal>
             </MobileWrapper>

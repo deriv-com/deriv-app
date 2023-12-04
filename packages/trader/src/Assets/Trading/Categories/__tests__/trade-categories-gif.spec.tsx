@@ -328,17 +328,17 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageTurbos to be rendered when trade category is turboslong', async () => {
+    it('expect VideoTurbos to be rendered when trade category is turboslong', async () => {
         jest.isolateModules(() => {
-            jest.doMock('Assets/SvgComponents/trade_explanations/turboslong.svg', () => ({
+            jest.doMock('../contract-type-description-video', () => ({
                 __esModule: true,
-                default: jest.fn(() => 'ImageTurbos'),
+                default: jest.fn(() => 'VideoTurbos'),
             }));
 
             import('../trade-categories-gif')
                 .then(moduleName => {
                     render(<moduleName.default category='turboslong' selected_contract_type='turboslong' />);
-                    expect(screen.getByText(/imageturbos/i)).toBeInTheDocument();
+                    expect(screen.getByText(/videoturbos/i)).toBeInTheDocument();
                 })
                 .catch(error => {
                     throw new Error(error);

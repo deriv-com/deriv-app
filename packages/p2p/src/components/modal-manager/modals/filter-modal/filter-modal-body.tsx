@@ -8,25 +8,20 @@ import FilterModalResult from './filter-modal-result';
 import FilterModalSearch from './filter-modal-search';
 
 type TFilterModalBodyProps = {
+    handleToggle: () => void;
     onChange: (payment_method: TPaymentMethod) => void;
     selected_methods: string[];
     selected_methods_text: string[];
-    setHasMadeChanges: (has_made_changes: boolean) => void;
 };
 
 const FilterModalBody = ({
+    handleToggle,
     onChange,
     selected_methods,
     selected_methods_text,
-    setHasMadeChanges,
 }: TFilterModalBodyProps) => {
     const { buy_sell_store, my_profile_store } = useStores();
-    const {
-        setShowFilterPaymentMethods,
-        setShouldUseClientLimits,
-        show_filter_payment_methods,
-        should_use_client_limits,
-    } = buy_sell_store;
+    const { setShowFilterPaymentMethods, show_filter_payment_methods, should_use_client_limits } = buy_sell_store;
     const { payment_methods_list_items } = my_profile_store;
 
     return (
@@ -79,10 +74,7 @@ const FilterModalBody = ({
                             id='toggle-filter-modal'
                             classNameButton='filter-modal__toggle-button'
                             classNameLabel='filter-modal__toggle-label'
-                            handleToggle={() => {
-                                setShouldUseClientLimits(!should_use_client_limits);
-                                setHasMadeChanges(true);
-                            }}
+                            handleToggle={handleToggle}
                             is_enabled={should_use_client_limits}
                             name='matching_ads_toggler'
                         />

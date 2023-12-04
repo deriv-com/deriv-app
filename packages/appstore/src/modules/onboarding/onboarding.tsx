@@ -28,7 +28,14 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const history = useHistory();
     const steps_list = Object.keys(contents);
     const { traders_hub, client, ui } = useStore();
-    const { is_eu_country, is_landing_company_loaded, is_logged_in, prev_account_type, setPrevAccountType } = client;
+    const {
+        is_eu_country,
+        is_landing_company_loaded,
+        is_logged_in,
+        prev_account_type,
+        setPrevAccountType,
+        is_mt5_allowed,
+    } = client;
     const { is_mobile } = ui;
     const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
     const [step, setStep] = React.useState<number>(1);
@@ -41,11 +48,19 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
             trackStepBack(step);
             setStep(step - 1);
         }
+        if (!is_mt5_allowed && step === 4) {
+            trackStepBack(step);
+            setStep(step - 2);
+        }
     };
 
     const nextStep = () => {
         if (step < steps_list.length) {
             setStep(step + 1);
+            trackStepForward(step);
+        }
+        if (!is_mt5_allowed && step === 2) {
+            setStep(step + 2);
             trackStepForward(step);
         }
         if (step === steps_list.length) {

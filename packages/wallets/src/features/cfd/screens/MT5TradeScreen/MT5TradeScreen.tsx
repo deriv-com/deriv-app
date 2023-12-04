@@ -35,7 +35,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
     const ctraderPlatform = PlatformDetails.ctrader.platform;
 
     const marketType = getModalState('marketType');
-    const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
+    const platform = getModalState('platform') ?? mt5Platform;
 
     const platformToAccountsListMapper = useMemo(
         () => ({

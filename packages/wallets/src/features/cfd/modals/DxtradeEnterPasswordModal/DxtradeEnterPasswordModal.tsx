@@ -159,7 +159,7 @@ const DxtradeEnterPasswordModal = () => {
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
                     password={password}
-                    platform={PlatformDetails.dxtrade.platform}
+                    platform={dxtradePlatform}
                 />
             ) : (
                 <EnterPassword

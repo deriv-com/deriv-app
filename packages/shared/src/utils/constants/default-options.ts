@@ -3,11 +3,9 @@ import { localize } from '@deriv/translations';
  * Returns an object that allows user to skip IDV
  */
 
-export const getIDVNotApplicableOption = (is_for_real_account_signup_modal?: boolean) => ({
+export const getIDVNotApplicableOption = () => ({
     id: 'none',
-    text: is_for_real_account_signup_modal
-        ? localize('I want to do this later')
-        : localize("I don't have any of these"),
+    text: localize('I want to do this later'),
     value: 'none',
 });
 

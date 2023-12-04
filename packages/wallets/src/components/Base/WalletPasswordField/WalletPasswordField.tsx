@@ -12,11 +12,13 @@ interface WalletPasswordFieldProps extends WalletTextFieldProps {
 }
 
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
+    autoComplete,
     label,
     name = 'walletPasswordField',
     onChange,
     password,
     shouldDisablePasswordMeter = false,
+    showMessage,
 }) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isTouched, setIsTouched] = useState(false);
@@ -34,6 +36,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     return (
         <div className='wallets-password'>
             <WalletTextField
+                autoComplete={autoComplete}
                 errorMessage={errorMessage}
                 isInvalid={!validPassword(password) && isTouched}
                 label={label}
@@ -44,7 +47,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setIsPasswordVisible} viewPassword={isPasswordVisible} />
                 )}
-                showMessage
+                showMessage={showMessage}
                 type={isPasswordVisible ? 'text' : 'password'}
                 value={password}
             />

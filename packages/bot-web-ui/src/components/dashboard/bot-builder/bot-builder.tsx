@@ -78,6 +78,7 @@ const BotBuilder = observer(() => {
                 {is_preview_on_popup ? null : (
                     <div
                         id='scratch_div'
+                        data-testid='preview-container'
                         ref={el_ref}
                         style={{
                             width: 'calc(100vw - 3.2rem)',

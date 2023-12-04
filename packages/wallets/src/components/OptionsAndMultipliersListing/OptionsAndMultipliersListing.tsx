@@ -93,8 +93,8 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
                             Options & Multipliers
                         </WalletText>
                     )}
-                    <div className='wallets-options-and-multipliers-listing__header-subtitle'>
-                        <h1>
+                    <div>
+                        <WalletText size={isMobile ? 'sm' : 'md'}>
                             Earn a range of payouts by correctly predicting market price movements with{' '}
                             <a
                                 className='wallets-options-and-multipliers-listing__header-subtitle__link'
@@ -116,19 +116,28 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
                                 multipliers
                             </a>
                             .
-                        </h1>
+                        </WalletText>
                     </div>
                 </div>
                 <DerivAppsSection />
             </section>
-            <div className='wallets-options-and-multipliers-listing__content'>
+            <div
+                className={classNames('wallets-options-and-multipliers-listing__content', {
+                    'wallets-options-and-multipliers-listing__content--without-trading-account': !data?.dtrade_loginid,
+                })}
+            >
                 {optionsAndMultipliersContent.map(account => {
                     const title = account.title;
                     return (
                         <TradingAccountCard
                             {...account}
                             key={`trading-account-card-${account.title}`}
-                            leading={() => <LinkTitle icon={account.icon} title={title} />}
+                            leading={() => (
+                                <LinkTitle
+                                    icon={data?.dtrade_loginid || !isMobile ? account.icon : account.smallIcon}
+                                    title={title}
+                                />
+                            )}
                             trailing={() => (
                                 <ShowOpenButton isExternal={account.isExternal} redirect={account.redirect} />
                             )}

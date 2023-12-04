@@ -3,12 +3,15 @@ import classNames from 'classnames';
 import { useDynamicLeverage } from '@deriv/api';
 import { WalletText } from '../../../../components';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
+import { PlatformDetails } from '../../constants';
 import { DynamicLeverageMarketCard } from './DynamicLeverageMarketCard';
 import './DynamicLeverageScreen.scss';
 
 const DynamicLeverageScreen = () => {
-    const { data: dynamicLeverages } = useDynamicLeverage();
+    const { data: dynamicLeverages } = useDynamicLeverage(PlatformDetails.mt5.platform);
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
+
+    if (!dynamicLeverages) return null;
 
     return (
         <div
@@ -22,15 +25,25 @@ const DynamicLeverageScreen = () => {
                 your trading position, based on asset type and trading volume.
             </WalletText>
             <div className='wallets-dynamic-leverage-screen__content'>
-                {dynamicLeverages.map(market => (
-                    <DynamicLeverageMarketCard
-                        data={market.data}
-                        description={market.description}
-                        key={`dynamic-leverage-screen__${market.key}`}
-                        leverage={market.leverage}
-                        title={market.title}
-                    />
-                ))}
+                {(['forex', 'metals', 'cryptocurrencies', 'stock_indices'] as const).map(key => {
+                    const {
+                        display_name: displayName,
+                        instruments,
+                        max,
+                        min,
+                        volume: { data },
+                    } = dynamicLeverages[key];
+                    return (
+                        <DynamicLeverageMarketCard
+                            data={data}
+                            displayName={displayName}
+                            instruments={instruments}
+                            key={`dynamic-leverage-screen__${key}`}
+                            max={max}
+                            min={min}
+                        />
+                    );
+                })}
             </div>
         </div>
     );

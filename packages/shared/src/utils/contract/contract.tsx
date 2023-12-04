@@ -77,6 +77,8 @@ export const isValidToSell = (contract_info: TContractInfo) =>
 
 export const hasContractEntered = (contract_info: TContractInfo) => !!contract_info.entry_spot;
 
+export const hasBarrier = (contract_type = '') => /VANILLA|TURBOS|HIGH_LOW|TOUCH/i.test(contract_type);
+
 export const hasTwoBarriers = (contract_type = '') => /EXPIRY|RANGE|UPORDOWN/i.test(contract_type);
 
 export const isAccumulatorContract = (contract_type = '') => /ACCU/i.test(contract_type);
@@ -253,4 +255,18 @@ export const getLocalizedTurbosSubtype = (contract_type = '') => {
     ) : (
         <Localize i18n_default_text='Short' />
     );
+};
+
+export const clickAndKeyEventHandler = (
+    callback: () => void,
+    e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>
+) => {
+    if (e) {
+        e.preventDefault();
+        if (e.type !== 'keydown' || (e.type === 'keydown' && (e as React.KeyboardEvent).key === 'Enter')) {
+            callback();
+        }
+    } else {
+        callback();
+    }
 };

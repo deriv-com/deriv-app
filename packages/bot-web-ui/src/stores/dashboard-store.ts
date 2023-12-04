@@ -3,6 +3,14 @@ import { setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { clearInjectionDiv } from 'Constants/load-modal';
 import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
+import {
+    faq_content,
+    guide_content,
+    user_guide_content,
+    TFaqContent,
+    TGuideContent,
+    TUserGuideContent,
+} from 'Components/dashboard/tutorial-tab/config';
 
 export interface IDashboardStore {
     active_tab: number;
@@ -37,6 +45,7 @@ export interface IDashboardStore {
 
 export default class DashboardStore implements IDashboardStore {
     root_store: any;
+    tutorials_combined_content: (TFaqContent | TGuideContent | TUserGuideContent)[] = [];
 
     constructor(root_store: any) {
         makeObservable(this, {
@@ -56,6 +65,7 @@ export default class DashboardStore implements IDashboardStore {
             is_tour_dialog_visible: observable,
             is_web_socket_intialised: observable,
             is_dark_mode: computed,
+            tutorials_combined_content: observable,
             onCloseDialog: action.bound,
             onCloseTour: action.bound,
             onTourEnd: action.bound,
@@ -81,6 +91,8 @@ export default class DashboardStore implements IDashboardStore {
             is_chart_modal_visible: observable,
         });
         this.root_store = root_store;
+        this.tutorials_combined_content = [...user_guide_content, ...guide_content, ...faq_content];
+
         const {
             load_modal: { previewRecentStrategy, current_workspace_id },
         } = this.root_store;

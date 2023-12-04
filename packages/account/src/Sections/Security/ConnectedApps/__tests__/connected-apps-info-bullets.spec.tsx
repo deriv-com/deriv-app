@@ -7,7 +7,7 @@ describe('ConnectedAppsInfoBullets', () => {
     it('should render the 3 informative ordered list items', () => {
         render(
             <StoreProvider store={mockStore({})}>
-                <ConnectedAppsInfoBullets class_name_dynamic_suffix='with-apps' />{' '}
+                <ConnectedAppsInfoBullets class_name='connected-apps__bullets--with-apps' />{' '}
             </StoreProvider>
         );
 

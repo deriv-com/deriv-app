@@ -1,14 +1,17 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { mockContractInfo } from '@deriv/shared';
 import InfoBox from '../info-box';
 
 const test_longcode = 'test longcode';
 const test_contract_type = 'test contract type';
 const mocked_props = {
-    contract_info: { longcode: '', contract_type: '' },
+    contract_info: mockContractInfo({ longcode: '', contract_type: '' }),
     error_message: 'some error',
     removeError: jest.fn(),
 };
+
+jest.mock('../info-box-longcode.tsx', () => jest.fn(() => <div>{test_longcode}</div>));
 
 describe('InfoBox', () => {
     it('should not render the component if longcode field in contract_info is falsy', () => {

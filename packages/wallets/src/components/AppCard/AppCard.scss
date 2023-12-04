@@ -1,0 +1,70 @@
+.wallets-app-card {
+    width: fit-content;
+    height: fit-content;
+    overflow: hidden;
+
+    &--border-radius {
+        &--sm {
+            border-radius: 0.4rem;
+        }
+
+        &--md,
+        &--lg {
+            border-radius: 0.8rem;
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        &--mobile,
+        &--desktop {
+            &--sm {
+                width: 6.4rem;
+                height: 4rem;
+                padding: 0.2rem;
+            }
+        }
+
+        &--mobile {
+            &--md {
+                width: 16rem;
+                height: 9.6rem;
+                padding: 0.8rem;
+            }
+
+            &--lg {
+                width: 21.6rem;
+                height: 12.8rem;
+                padding: 1.6rem;
+            }
+        }
+
+        &--desktop {
+            &--md {
+                width: 20rem;
+                height: 12rem;
+                padding: 1.6rem;
+            }
+
+            &--lg {
+                width: 24rem;
+                height: 14.4rem;
+                padding: 1.6rem;
+            }
+        }
+    }
+
+    &__badge {
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
+
+    &__bottom {
+        display: flex;
+        flex-direction: column;
+    }
+}

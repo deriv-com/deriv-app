@@ -34,7 +34,7 @@ const JurisdictionFootNoteTitle: FC<TJurisdictionFootNoteTitle> = ({ marketType,
     }
 
     return (
-        <WalletText size='sm' weight='bold'>
+        <WalletText align='center' size='sm' weight='bold'>
             {footnoteText}
         </WalletText>
     );

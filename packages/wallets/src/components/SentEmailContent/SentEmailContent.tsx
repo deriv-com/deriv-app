@@ -9,7 +9,7 @@ import EmailFirewallIcon from '../../public/images/ic-email-firewall.svg';
 import EmailSpamIcon from '../../public/images/ic-email-spam.svg';
 import EmailTypoIcon from '../../public/images/ic-email-typo.svg';
 import { TPlatforms } from '../../types';
-import { platformPasswordResetRedirectLink } from '../../utils/cfdUtils';
+import { platformPasswordResetRedirectLink } from '../../utils/cfd';
 import { WalletButton, WalletText } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './SentEmailContent.scss';
@@ -39,13 +39,14 @@ const REASONS = [
     },
 ];
 
-const SentEmailContent: React.FC<TProps> = ({ description, isInvestorPassword = false, platform = 'mt5' }) => {
+const SentEmailContent: React.FC<TProps> = ({ description, isInvestorPassword = false, platform }) => {
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { data } = useSettings();
     const { mutate: verifyEmail } = useVerifyEmail();
     const { isMobile } = useDevice();
-    const { title } = PlatformDetails[platform];
+    const mt5Platform = PlatformDetails.mt5.platform;
+    const { title } = PlatformDetails[platform ?? mt5Platform];
     const titleSize = 'md';
     const descriptionSize = 'sm';
     const emailLinkSize = isMobile ? 'lg' : 'md';
@@ -96,10 +97,13 @@ const SentEmailContent: React.FC<TProps> = ({ description, isInvestorPassword = 
                         onClick={() => {
                             if (data?.email) {
                                 verifyEmail({
-                                    type: platform === 'mt5' ? mt5ResetType : 'trading_platform_dxtrade_password_reset',
+                                    type:
+                                        platform === mt5Platform
+                                            ? mt5ResetType
+                                            : 'trading_platform_dxtrade_password_reset',
                                     url_parameters: {
                                         redirect_to: platformPasswordResetRedirectLink(
-                                            platform,
+                                            platform ?? mt5Platform,
                                             activeWallet?.is_virtual
                                         ),
                                     },

@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { HorizontalSwipe, Icon, Popover, ProgressIndicator, Table, Text } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { useP2PExchangeRate } from '@deriv/hooks';
-import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
@@ -41,6 +41,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     // Use separate is_advert_active state to ensure value is updated
     const [is_advert_active, setIsAdvertActive] = React.useState(is_active);
     const [is_popover_actions_visible, setIsPopoverActionsVisible] = React.useState(false);
+    const [show_warning_icon, setShowWarningIcon] = React.useState(false);
     const amount_dealt = amount - remaining_amount;
     const enable_action_point = floating_rate_store.change_ad_alert && floating_rate_store.rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
@@ -90,9 +91,10 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         enable_action_point && floating_rate_store.rate_type !== rate_type ? onClickSwitchAd() : onClickEdit();
 
     const should_show_tooltip_icon =
-        (visibility_status?.length === 1 && visibility_status[0] !== 'advert_inactive') || visibility_status.length > 1;
-
-    const show_warning_icon = enable_action_point || should_show_tooltip_icon || !general_store.is_listed;
+        (visibility_status?.length === 1 &&
+            visibility_status[0] !== 'advert_inactive' &&
+            visibility_status[0] !== 'advertiser_ads_paused') ||
+        visibility_status.length > 1;
 
     const getErrorCodes = () => {
         let updated_visibility_status = [...visibility_status];
@@ -107,6 +109,10 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         my_profile_store.getAdvertiserPaymentMethods();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        setShowWarningIcon(enable_action_point || should_show_tooltip_icon || !general_store.is_listed);
+    }, [enable_action_point, general_store.is_listed, should_show_tooltip_icon]);
 
     const onClickTooltipIcon = () => {
         showModal({

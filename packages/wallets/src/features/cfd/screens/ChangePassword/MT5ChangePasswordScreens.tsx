@@ -4,7 +4,8 @@ import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from 
 import { useModal } from '../../../../components/ModalProvider';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TPlatforms } from '../../../../types';
-import { platformPasswordResetRedirectLink } from '../../../../utils/cfdUtils';
+import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
+import { PlatformDetails } from '../../constants';
 
 type MT5ChangePasswordScreensProps = {
     isVirtual?: boolean;
@@ -26,7 +27,7 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
         if (data.email) {
             await mutate({
                 type:
-                    platform === 'mt5'
+                    platform === PlatformDetails.mt5.platform
                         ? 'trading_platform_mt5_password_reset'
                         : 'trading_platform_dxtrade_password_reset',
                 url_parameters: {

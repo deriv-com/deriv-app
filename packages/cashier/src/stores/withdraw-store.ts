@@ -351,14 +351,6 @@ export default class WithdrawStore {
                     { format_min_withdraw_amount, format_max_withdraw_amount, currency }
                 );
             }
-
-            if (isMobile() && (error_message as string).length > 35) {
-                const error_content = error_message;
-                const openDialog = () => {
-                    this.error.setErrorMessage({ code: 'CryptoWithdrawalReadMore', message: error_content as string });
-                };
-                error_message = ReadMoreWrapper({ error_content, openDialog });
-            }
         }
         setConverterFromError(error_message);
     }

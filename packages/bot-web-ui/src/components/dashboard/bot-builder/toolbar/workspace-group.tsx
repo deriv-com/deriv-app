@@ -1,5 +1,5 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { DesktopWrapper } from '@deriv/components';
 import { useDBotStore } from 'Stores/useDBotStore';

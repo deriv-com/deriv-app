@@ -58,7 +58,7 @@ describe('StopBotModalContent', () => {
     });
     it('should render the StopBotModalContent component with close contract message', () => {
         const close_contract = /Close your contract now or keep it running./i;
-        render(<StopBotModalContent {...mocked_props} is_contract_dialog_open={true} is_multiplier={true} />, {
+        render(<StopBotModalContent {...mocked_props} is_contract_dialog_open is_multiplier />, {
             wrapper,
         });
         expect(screen.getByText(close_contract)).toBeInTheDocument();

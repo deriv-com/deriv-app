@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, Fragment, useMemo } from 'react';
 import { useActiveWalletAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
 import { WalletListCardBadge } from '../../../../components';
 import { InlineMessage, WalletText } from '../../../../components/Base';
@@ -104,7 +104,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
 
                 <div className='wallets-mt5-trade-screen__details-clipboards'>
                     {getModalState('platform') === mt5Platform && (
-                        <React.Fragment>
+                        <Fragment>
                             <MT5TradeDetailsItem label='Broker' value='Deriv Holdings (Guernsey) Ltd' />
                             <MT5TradeDetailsItem
                                 label='Server'
@@ -112,13 +112,13 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                             />
                             <MT5TradeDetailsItem label='Login ID' value={loginId ?? '12345678'} />
                             <MT5TradeDetailsItem label='Password' value='********' variant='password' />
-                        </React.Fragment>
+                        </Fragment>
                     )}
                     {getModalState('platform') === dxtradePlatform && (
-                        <React.Fragment>
+                        <Fragment>
                             <MT5TradeDetailsItem label='Username' value={details?.login ?? '12345678'} />
                             <MT5TradeDetailsItem label='Password' value='********' variant='password' />
-                        </React.Fragment>
+                        </Fragment>
                     )}
                     {getModalState('platform') === ctraderPlatform && (
                         <MT5TradeDetailsItem
@@ -137,7 +137,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
             </div>
             <div className='wallets-mt5-trade-screen__links'>
                 {isDesktop && platform === mt5Platform && (
-                    <React.Fragment>
+                    <Fragment>
                         <MT5TradeLink
                             app='web'
                             platform={mt5Platform}
@@ -146,16 +146,16 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         <MT5TradeLink app='windows' platform={mt5Platform} />
                         <MT5TradeLink app='macos' platform={mt5Platform} />
                         <MT5TradeLink app='linux' platform={mt5Platform} />
-                    </React.Fragment>
+                    </Fragment>
                 )}
                 {platform === dxtradePlatform && (
                     <MT5TradeLink isDemo={activeWalletData?.is_virtual} platform={dxtradePlatform} />
                 )}
                 {platform === ctraderPlatform && (
-                    <React.Fragment>
+                    <Fragment>
                         <MT5TradeLink platform={ctraderPlatform} />
                         <MT5TradeLink app={ctraderPlatform} platform={ctraderPlatform} />
-                    </React.Fragment>
+                    </Fragment>
                 )}
             </div>
         </div>

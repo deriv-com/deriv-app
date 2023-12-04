@@ -274,7 +274,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_any_real_account: false,
             setPrevAccountType: jest.fn(),
             prev_account_type: 'demo',
-            is_beta_chart: true,
             setLoginInformation: jest.fn(),
             init: jest.fn(),
             setLoginId: jest.fn(),
@@ -584,11 +583,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setAccountType: jest.fn(),
                 setMigratedMT5Accounts: jest.fn(),
             },
-        },
-        exchange_rates: {
-            data: undefined,
-            update: jest.fn(),
-            unmount: jest.fn(),
         },
         feature_flags: {
             data: undefined,

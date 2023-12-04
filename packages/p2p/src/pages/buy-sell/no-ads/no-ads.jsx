@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';

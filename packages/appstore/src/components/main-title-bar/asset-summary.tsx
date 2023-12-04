@@ -9,7 +9,7 @@ import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
 import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts, useExchangeRate } from '@deriv/hooks';
 
 const AssetSummary = observer(() => {
-    const { last_update } = useExchangeRate();
+    const { exchange_rates } = useExchangeRate();
 
     const { traders_hub, client, common, modules } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
@@ -37,7 +37,7 @@ const AssetSummary = observer(() => {
     const should_show_loader =
         ((is_switching || is_logging_in) && (eu_account || cr_account)) ||
         !is_landing_company_loaded ||
-        !last_update ||
+        !exchange_rates ||
         is_loading ||
         is_transfer_confirm;
 

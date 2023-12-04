@@ -25,6 +25,7 @@ import PersonalDetailsForm from '../forms/personal-details-form';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import { useStore, observer } from '@deriv/stores';
+import { Analytics } from '@deriv/analytics';
 
 const PersonalDetails = observer(
     ({
@@ -61,6 +62,29 @@ const PersonalDetails = observer(
             onCancel(current_step, goToPreviousStep);
         };
         const citizen = residence || account_settings?.citizen;
+
+        const trackEvent = React.useCallback(
+            payload => {
+                if (is_eu_user) return;
+                Analytics.trackEvent('ce_real_account_signup_identity_form', {
+                    ...payload,
+                    step_codename: 'identity',
+                    landing_company: real_account_signup_target,
+                });
+            },
+            [is_eu_user, real_account_signup_target]
+        );
+
+        React.useEffect(() => {
+            trackEvent({
+                action: 'open',
+            });
+
+            return () =>
+                trackEvent({
+                    action: 'close',
+                });
+        }, [trackEvent]);
 
         //is_rendered_for_idv is used for configuring the components when they are used in idv page
         const is_rendered_for_idv = shouldShowIdentityInformation({
@@ -133,6 +157,10 @@ const PersonalDetails = observer(
                 validateOnMount
                 enableReinitialize
                 onSubmit={(values, actions) => {
+                    trackEvent({
+                        action: 'save',
+                        user_choice: JSON.stringify(values),
+                    });
                     onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
                 }}
             >

@@ -1,13 +1,11 @@
 import React from 'react';
-
 import { isDesktop, isMobile } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import PurchaseButton from '../purchase-button';
-import { JsxElement } from 'typescript';
 
-const default_mocked_props = {
+const default_mocked_props: React.ComponentProps<typeof PurchaseButton> = {
     basis: '',
     buy_info: { error: '' },
     currency: '',
@@ -20,6 +18,19 @@ const default_mocked_props = {
         message: 'test_message',
         growth_rate: 0.03,
         stake: '10',
+        spot_time: 0,
+        commission: 0.44,
+        cancellation: undefined,
+        has_error_details: false,
+        error_code: '',
+        error_field: '',
+        has_increased: false,
+        limit_order: undefined,
+        obj_contract_basis: { text: 'mocked text', value: 'mocked value' },
+        payout: 0,
+        profit: '',
+        returns: '',
+        spot: 0,
     },
     is_accumulator: false,
     is_disabled: false,
@@ -34,7 +45,7 @@ const default_mocked_props = {
     should_fade: false,
     setPurchaseState: jest.fn(),
     type: 'VANILLALONGCALL',
-} as unknown as React.ComponentProps<typeof PurchaseButton>;
+};
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

@@ -4,16 +4,15 @@ import { observer } from '@deriv/stores';
 import { isDesktop } from '@deriv/shared';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 type TBuySellModalTitleProps = {
     is_buy?: boolean;
+    onReturn: () => void;
 };
 
-const BuySellModalTitle = ({ is_buy = false }: TBuySellModalTitleProps) => {
-    const { general_store, buy_sell_store, my_profile_store } = useStores();
+const BuySellModalTitle = ({ is_buy = false, onReturn }: TBuySellModalTitleProps) => {
+    const { buy_sell_store, my_profile_store } = useStores();
     const { selected_ad_state } = buy_sell_store;
-    const { showModal } = useModalManagerContext();
 
     const { account_currency } = selected_ad_state;
 
@@ -25,16 +24,7 @@ const BuySellModalTitle = ({ is_buy = false }: TBuySellModalTitleProps) => {
                         <Icon
                             icon='IcArrowLeftBold'
                             data_testid='dt_buy_sell_modal_back_icon'
-                            onClick={() => {
-                                if (general_store.is_form_modified) {
-                                    showModal({
-                                        key: 'CancelAddPaymentMethodModal',
-                                        props: {},
-                                    });
-                                } else {
-                                    my_profile_store.setShouldShowAddPaymentMethodForm(false);
-                                }
-                            }}
+                            onClick={onReturn}
                             className='buy-sell-modal-title__icon'
                         />
                         <Localize i18n_default_text='Add payment method' />

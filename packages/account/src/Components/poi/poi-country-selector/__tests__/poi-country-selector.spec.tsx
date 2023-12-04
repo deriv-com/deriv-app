@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { IDV_ERROR_STATUS, isDesktop, isMobile, POIContext } from '@deriv/shared';
+import { isDesktop, isMobile, POIContext } from '@deriv/shared';
 import CountrySelector from '../poi-country-selector';
 import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
@@ -89,7 +89,7 @@ describe('<CountrySelector/>', () => {
     });
 
     it('should render error status and country selector when error is verification failed or expired', () => {
-        mock_props.mismatch_status = IDV_ERROR_STATUS.Failed.code;
+        mock_props.mismatch_status = 'POI_FAILED';
 
         renderComponent({ props: mock_props });
 
@@ -127,7 +127,7 @@ describe('<CountrySelector/>', () => {
     });
 
     it('should render high risk error message', () => {
-        mock_props.mismatch_status = IDV_ERROR_STATUS.HighRisk.code;
+        mock_props.mismatch_status = 'POI_HIGH_RISK';
 
         renderComponent({ props: mock_props });
 

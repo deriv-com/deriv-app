@@ -1,9 +1,9 @@
 import React from 'react';
 import UploadComplete from '../../../Components/poi/status/upload-complete';
+import Expired from '../../../Components/poi/status/expired';
 import Verified from '../../../Components/poi/status/verified';
 import RejectedReasons from '../../../Components/poi/status/rejected-reasons';
 import Unsupported from '../../../Components/poi/status/unsupported';
-import { formatOnfidoError } from '@deriv/shared';
 import { identity_status_codes } from './proof-of-identity-utils';
 
 const Onfido = ({
@@ -30,8 +30,6 @@ const Onfido = ({
             );
         case identity_status_codes.rejected:
         case identity_status_codes.suspected:
-        case identity_status_codes.expired: {
-            const submission_errors = formatOnfidoError(status, rejected_reasons);
             if (Number(submissions_left) < 1) {
                 return (
                     <Unsupported
@@ -46,14 +44,21 @@ const Onfido = ({
             }
             return (
                 <RejectedReasons
-                    rejected_reasons={submission_errors}
+                    rejected_reasons={rejected_reasons}
                     handleRequireSubmission={handleRequireSubmission}
                 />
             );
-        }
         case identity_status_codes.verified:
             return (
                 <Verified is_from_external={is_from_external} needs_poa={needs_poa} redirect_button={redirect_button} />
+            );
+        case identity_status_codes.expired:
+            return (
+                <Expired
+                    is_from_external={is_from_external}
+                    redirect_button={redirect_button}
+                    handleRequireSubmission={handleRequireSubmission}
+                />
             );
         default:
             return null;

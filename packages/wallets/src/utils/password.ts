@@ -1,6 +1,6 @@
 import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
 import { dictionary } from '@zxcvbn-ts/language-common';
-import { passwordErrorMessage, passwordRegex, passwordValues, warningMessages } from '../constants/passwordConstants';
+import { passwordErrorMessage, passwordRegex, passwordValues, warningMessages } from '../constants/password';
 
 export type Score = 0 | 1 | 2 | 3 | 4;
 export type passwordKeys =

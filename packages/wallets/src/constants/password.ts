@@ -1,4 +1,4 @@
-import { passwordKeys } from '../utils/passwordUtils';
+import { passwordKeys } from '../utils/password';
 
 export const passwordRegex = {
     hasLowerCase: /[a-z]/,

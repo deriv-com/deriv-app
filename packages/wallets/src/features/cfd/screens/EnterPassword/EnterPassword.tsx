@@ -3,7 +3,7 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { validPassword } from '../../../../utils/passwordUtils';
+import { validPassword } from '../../../../utils/password';
 import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 

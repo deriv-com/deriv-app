@@ -45,7 +45,7 @@ const SentEmailContent: React.FC<TProps> = ({ description, isInvestorPassword = 
     const { data } = useSettings();
     const { mutate: verifyEmail } = useVerifyEmail();
     const { isMobile } = useDevice();
-    const title = PlatformDetails[platform].title;
+    const { title } = PlatformDetails[platform];
     const titleSize = 'md';
     const descriptionSize = 'sm';
     const emailLinkSize = isMobile ? 'lg' : 'md';

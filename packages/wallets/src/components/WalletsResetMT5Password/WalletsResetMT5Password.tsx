@@ -62,7 +62,6 @@ const WalletsResetMT5Password = ({
         }
     };
 
-    // change MT5 password
     useEffect(() => {
         if (isChangePasswordSuccess) {
             localStorage.removeItem(`verification_code.${actionParams}`); // TODO:Remove verification code from local storage
@@ -72,7 +71,6 @@ const WalletsResetMT5Password = ({
         }
     }, [hide, platform, title, show, actionParams, isChangePasswordSuccess, isChangePasswordError]);
 
-    // change MT5 investor password
     useEffect(() => {
         if (isChangeInvestorPasswordSuccess) {
             localStorage.removeItem(`verification_code.${actionParams}`); // TODO:Remove verification code from local storage

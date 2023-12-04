@@ -464,6 +464,7 @@ const RealAccountSignup = ({
 
     const onErrorConfirm = err_code => {
         const addOrManageAccountErrorType = ['CurrencyTypeNotAllowed', 'DuplicateCurrency'];
+        setLoading(true);
         setParams({
             active_modal_index:
                 current_action === 'multi' || addOrManageAccountErrorType.includes(err_code)

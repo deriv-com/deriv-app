@@ -78,9 +78,10 @@ const WithdrawalCryptoForm: React.FC = () => {
                                 disabled={Object.keys(errors).length !== 0 || !values.cryptoAmount || isSubmitting}
                                 isLoading={isSubmitting}
                                 size='lg'
-                                text='Withdraw'
                                 type='submit'
-                            />
+                            >
+                                Withdraw
+                            </WalletButton>
                         </div>
                     </form>
                 );

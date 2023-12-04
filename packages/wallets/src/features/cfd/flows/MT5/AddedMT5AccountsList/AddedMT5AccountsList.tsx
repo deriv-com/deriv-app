@@ -49,9 +49,10 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         onClick={() => {
                             history.push('/wallets/cashier/transfer');
                         }}
-                        text='Transfer'
                         variant='outlined'
-                    />
+                    >
+                        Transfer
+                    </WalletButton>
                     <WalletButton
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() =>
@@ -63,8 +64,9 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                 />
                             )
                         }
-                        text='Open'
-                    />
+                    >
+                        Open
+                    </WalletButton>
                 </div>
             )}
         >

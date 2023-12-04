@@ -71,9 +71,10 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
                             setShouldShowResendEmailReasons(true);
                         }}
                         size={emailLinkSize}
-                        text="Didn't receive the email?"
                         variant='ghost'
-                    />
+                    >
+                        Didn&apos;t receive the email?
+                    </WalletButton>
                 )}
                 title='We’ve sent you an email'
                 titleSize={titleSize}
@@ -108,8 +109,9 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
                                 setHasCountdownStarted(true);
                             }
                         }}
-                        text={hasCountdownStarted ? `Resend email in ${count}` : 'Resend email'}
-                    />
+                    >
+                        {hasCountdownStarted ? `Resend email in ${count}` : 'Resend email'}
+                    </WalletButton>
                 </div>
             )}
         </div>

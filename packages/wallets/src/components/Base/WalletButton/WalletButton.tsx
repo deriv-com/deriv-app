@@ -1,4 +1,4 @@
-import React, { ComponentProps, CSSProperties, ReactElement } from 'react';
+import React, { ComponentProps, CSSProperties, ReactElement, ReactNode } from 'react';
 import classNames from 'classnames';
 import { Loader } from '../../Loader';
 import { TGenericSizes } from '../types';
@@ -9,6 +9,7 @@ type TVariant = 'contained' | 'ghost' | 'outlined';
 type TColor = 'black' | 'primary-light' | 'primary' | 'white';
 
 interface WalletButtonProps {
+    children?: ReactNode;
     color?: TColor;
     disabled?: ComponentProps<'button'>['disabled'];
     icon?: ReactElement;
@@ -17,13 +18,13 @@ interface WalletButtonProps {
     onClick?: ComponentProps<'button'>['onClick'];
     rounded?: Extract<TGenericSizes, 'md' | 'sm'>;
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
-    text?: React.ReactNode;
     textSize?: ComponentProps<typeof WalletText>['size'];
     type?: ComponentProps<'button'>['type'];
     variant?: TVariant;
 }
 
 const WalletButton: React.FC<WalletButtonProps> = ({
+    children,
     color = 'primary',
     disabled = false,
     icon,
@@ -32,7 +33,6 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     onClick,
     rounded = 'sm',
     size = 'md',
-    text,
     textSize,
     type,
     variant = 'contained',
@@ -96,14 +96,14 @@ const WalletButton: React.FC<WalletButtonProps> = ({
                 </div>
             )}
             {icon && !isLoading && icon}
-            {text && !isLoading && (
+            {children && !isLoading && (
                 <WalletText
                     align='center'
                     color={fontColorMapper[variant][color]}
                     size={textSize || buttonFontSizeMapper[size] || 'sm'}
                     weight='bold'
                 >
-                    {text}
+                    {children}
                 </WalletText>
             )}
         </button>

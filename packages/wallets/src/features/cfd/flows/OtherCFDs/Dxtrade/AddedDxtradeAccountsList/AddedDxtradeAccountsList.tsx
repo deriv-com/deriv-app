@@ -32,10 +32,11 @@ const AddedDxtradeAccountsList: React.FC = () => {
                         onClick={() => {
                             history.push('/wallets/cashier/transfer');
                         }}
-                        text='Transfer'
                         variant='outlined'
-                    />
-                    <WalletButton onClick={() => show(<MT5TradeModal platform='dxtrade' />)} text='Open' />
+                    >
+                        Transfer
+                    </WalletButton>
+                    <WalletButton onClick={() => show(<MT5TradeModal platform='dxtrade' />)}>Open</WalletButton>
                 </div>
             )}
         >

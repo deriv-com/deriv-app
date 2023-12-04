@@ -86,7 +86,9 @@ const DerivAppsGetAccount: React.FC = () => {
                             : 'Get a Deriv Apps trading account to trade options and multipliers on these apps.'}
                     </WalletText>
                 </div>
-                <WalletButton color='primary-light' onClick={createTradingAccount} text='Get' />
+                <WalletButton color='primary-light' onClick={createTradingAccount}>
+                    Get
+                </WalletButton>
             </div>
         </div>
     );

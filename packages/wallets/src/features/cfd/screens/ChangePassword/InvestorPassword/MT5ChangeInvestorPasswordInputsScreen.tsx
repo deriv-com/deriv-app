@@ -86,15 +86,13 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                     }
                                     isLoading={changeInvestorPasswordStatus === 'loading'}
                                     size={isMobile ? 'lg' : 'md'}
-                                    text='Change investor password'
                                     type='submit'
-                                />
-                                <WalletButton
-                                    onClick={sendEmail}
-                                    size={isMobile ? 'lg' : 'md'}
-                                    text='Create or reset investor password'
-                                    variant='ghost'
-                                />
+                                >
+                                    Change investor password
+                                </WalletButton>
+                                <WalletButton onClick={sendEmail} size={isMobile ? 'lg' : 'md'} variant='ghost'>
+                                    Create or reset investor password
+                                </WalletButton>
                             </div>
                         </form>
                     )}

@@ -9,17 +9,7 @@
     gap: 1.6rem;
 
     @include mobile {
-        min-width: 32.8rem;
-    }
-
-    &__get-account {
-        @include mobile {
-            padding: 0;
-        }
-    }
-
-    @include mobile {
-        min-width: 32.8rem;
+        width: 100%;
     }
 
     &__border {
@@ -35,6 +25,7 @@
 
         @include mobile {
             border-bottom: 0.1rem solid var(--system-light-6-hover-background, #e6e9e9);
+            gap: 1.6rem;
         }
     }
 

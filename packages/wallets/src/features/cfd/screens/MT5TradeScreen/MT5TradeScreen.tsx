@@ -154,7 +154,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 {platform === ctraderPlatform && (
                     <React.Fragment>
                         <MT5TradeLink platform={ctraderPlatform} />
-                        <MT5TradeLink app='ctrader' platform={ctraderPlatform} />
+                        <MT5TradeLink app={ctraderPlatform} platform={ctraderPlatform} />
                     </React.Fragment>
                 )}
             </div>

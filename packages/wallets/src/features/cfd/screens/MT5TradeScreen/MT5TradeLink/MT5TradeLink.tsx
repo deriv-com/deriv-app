@@ -12,7 +12,18 @@ import { THooks, TPlatforms } from '../../../../../types';
 import { PlatformDetails } from '../../../constants';
 import './MT5TradeLink.scss';
 
-const AppToContentMapper = {
+type TAppContent = {
+    icon: JSX.Element;
+    link: string;
+    text: string;
+    title: string;
+};
+
+type AppToContentMapperType = {
+    [key: string]: TAppContent;
+};
+
+const AppToContentMapper: AppToContentMapperType = {
     ctrader: {
         icon: <WindowsIcon />,
         link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',

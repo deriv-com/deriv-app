@@ -12,7 +12,7 @@ type TRate = Record<string, Record<string, number>>;
 const ExchangeRatesProvider = ({ children }: TExchangeRatesProvider) => {
     const [exchange_rates, setExchangeRates] = useLocalStorage<TRate>('exchange_rates', {});
 
-    const { subscribe, data, unsubscribe, ...rest } = useSubscription('exchange_rates');
+    const { subscribe, data, ...rest } = useSubscription('exchange_rates');
 
     const handleSubscription = (base_currency: string, target_currency: string) => {
         if (base_currency === '' || target_currency === '' || base_currency === target_currency) return;
@@ -39,10 +39,6 @@ const ExchangeRatesProvider = ({ children }: TExchangeRatesProvider) => {
             });
         }
     }, [data, setExchangeRates]);
-
-    React.useEffect(() => {
-        return () => unsubscribe();
-    }, [unsubscribe]);
 
     return (
         <ExchangeRatesContext.Provider value={{ handleSubscription, exchange_rates, rest }}>

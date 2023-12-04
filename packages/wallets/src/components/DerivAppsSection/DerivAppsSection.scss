@@ -9,7 +9,13 @@
     gap: 1.6rem;
 
     @include mobile {
-        width: 100%;
+        min-width: 32.8rem;
+    }
+
+    &__get-account {
+        @include mobile {
+            padding: 0;
+        }
     }
 
     &__border {

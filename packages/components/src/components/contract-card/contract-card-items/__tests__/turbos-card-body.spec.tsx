@@ -9,8 +9,8 @@ const contract_info = mockContractInfo({
     bid_price: 1044.02,
     buy_price: 1044.0,
     profit: 50,
-    barrier: '10904.80',
-    entry_spot_display_value: '1046.80',
+    barrier: '10904.803',
+    entry_spot_display_value: '1046.800',
     sell_price: 1046.8,
 });
 
@@ -53,12 +53,12 @@ describe('TurbosCardBody', () => {
 
         const entry_spot_header = screen.getByText(getCardLabels().ENTRY_SPOT);
         expect(entry_spot_header).toBeInTheDocument();
-        const entry_spot_amount = screen.getByText('1,046.80');
+        const entry_spot_amount = screen.getByText('1,046.800');
         expect(entry_spot_amount).toBeInTheDocument();
 
         const barrier_header = screen.getByText(getCardLabels().BARRIER);
         expect(barrier_header).toBeInTheDocument();
-        const barrier_level = screen.getByText('10,904.80');
+        const barrier_level = screen.getByText('10,904.803');
         expect(barrier_level).toBeInTheDocument();
 
         const take_profit_header = screen.getByText(getCardLabels().TAKE_PROFIT);

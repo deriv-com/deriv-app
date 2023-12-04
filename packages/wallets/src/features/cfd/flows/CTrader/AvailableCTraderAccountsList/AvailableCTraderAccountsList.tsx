@@ -32,7 +32,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
             payload: {
                 account_type: accountType,
                 market_type: 'all',
-                platform: 'ctrader',
+                platform: PlatformDetails.ctrader.platform,
             },
         });
     };
@@ -94,7 +94,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
                         description={description}
                         displayBalance={cTraderAccounts?.find(account => account.login)?.formatted_balance}
                         marketType='all'
-                        platform='ctrader'
+                        platform={PlatformDetails.ctrader.platform}
                         renderButton={renderButtons}
                         title={`Your ${PlatformDetails.ctrader.title} ${
                             accountType === 'demo' ? accountType : ''
@@ -110,7 +110,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
                     description={description}
                     displayBalance={cTraderAccounts?.find(account => account.login)?.formatted_balance}
                     marketType='all'
-                    platform='ctrader'
+                    platform={PlatformDetails.ctrader.platform}
                     renderButton={renderButtons}
                     title={`Your ${PlatformDetails.ctrader.title} ${
                         accountType === 'demo' ? accountType : ''

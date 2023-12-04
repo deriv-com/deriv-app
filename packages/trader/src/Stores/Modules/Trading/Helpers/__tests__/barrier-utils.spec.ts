@@ -8,7 +8,7 @@ describe('getHoveredColor', () => {
     it('should return green color (#4bb4b3) if passed value is TRADE_TYPES.TURBOS.LONG', () => {
         expect(getHoveredColor(CONTRACT_TYPES.TURBOS.LONG)).toEqual('#4bb4b3');
     });
-    it('should return gray color (#377cfc) if passed value not TRADE_TYPES.TURBOS.LONG or TRADE_TYPES.TURBOS.SHORT', () => {
+    it('should return blue color (#377cfc) if passed value not TRADE_TYPES.TURBOS.LONG or TRADE_TYPES.TURBOS.SHORT', () => {
         expect(getHoveredColor('TESTTYPE')).toEqual('#377cfc');
     });
 });

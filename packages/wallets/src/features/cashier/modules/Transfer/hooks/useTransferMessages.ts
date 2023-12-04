@@ -4,7 +4,13 @@ import { displayMoney as displayMoney_ } from '@deriv/api/src/utils';
 import { THooks } from '../../../../../types';
 import { TAccount, TInitialTransferFormValues } from '../types';
 
+type TMessage = {
+    text: string;
+    type: 'error' | 'success';
+};
+
 type TMessageFnProps = {
+    activeWallet: THooks.ActiveWalletAccount;
     displayMoney?: (amount: number, currency: string, fractionalDigits: number) => string;
     exchangeRates?: THooks.ExchangeRate;
     limits?: THooks.AccountLimits;
@@ -13,8 +19,9 @@ type TMessageFnProps = {
     targetAccount: NonNullable<TAccount>;
 };
 
-// this function in blocked by BE WALL-1440
-const unverifiedAccountLimitsBetweenWalletsMessageFn = ({
+// this function should work once BE WALL-1440 is delivered
+const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
+    activeWallet,
     displayMoney,
     exchangeRates,
     limits,
@@ -22,34 +29,85 @@ const unverifiedAccountLimitsBetweenWalletsMessageFn = ({
     sourceAmount,
     targetAccount,
 }: TMessageFnProps) => {
+    if (sourceAccount?.account_category !== 'wallet' || targetAccount?.account_category !== 'wallet') return null;
+
     const sourceWalletType = sourceAccount.account_type === 'crypto' ? 'crypto' : 'fiat';
     const targetWalletType = targetAccount.account_type === 'crypto' ? 'crypto' : 'fiat';
     const limitsCaseKey = `${sourceWalletType}_to_${targetWalletType}` as const;
 
     //@ts-expect-error needs backend type
-    const allowedSumUSD = limits?.lifetime_transfers?.[limitsCaseKey].allowed as number;
+    const allowedSumActiveWalletCurrency = limits?.lifetime_transfers?.[limitsCaseKey].allowed as number;
     //@ts-expect-error needs backend type
-    const availableSumUSD = limits?.lifetime_transfers?.[limitsCaseKey].available as number;
+    const availableSumActiveWalletCurrency = limits?.lifetime_transfers?.[limitsCaseKey].available as number;
 
-    const formattedAvailableSumUSD = displayMoney?.(availableSumUSD, 'USD', 2);
-    const formattedAvailableSumSourceCurrency = displayMoney?.(
-        allowedSumUSD / (exchangeRates?.rates?.[sourceAccount?.currency ?? 'USD'] ?? 1),
-        sourceAccount.currencyConfig?.display_code ?? '',
-        sourceAccount.currencyConfig?.fractional_digits ?? 2
+    if (
+        !sourceAccount.currency ||
+        !exchangeRates?.rates?.[sourceAccount.currency] ||
+        !targetAccount.currency ||
+        !exchangeRates?.rates?.[targetAccount.currency] ||
+        !sourceAccount.currencyConfig ||
+        !targetAccount.currencyConfig
+    )
+        return null;
+
+    const transferDirection = activeWallet.loginid === sourceAccount.loginid ? 'from' : 'to';
+
+    const allowedSumConverted =
+        allowedSumActiveWalletCurrency *
+        (exchangeRates?.rates[transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency] ?? 1);
+    const availableSumConverted =
+        availableSumActiveWalletCurrency *
+        (exchangeRates?.rates[transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency] ?? 1);
+
+    const sourceCurrencyLimit = transferDirection === 'from' ? allowedSumActiveWalletCurrency : allowedSumConverted;
+    const targetCurrencyLimit = transferDirection === 'from' ? allowedSumConverted : allowedSumActiveWalletCurrency;
+
+    const sourceCurrencyRemainder =
+        transferDirection === 'from' ? availableSumActiveWalletCurrency : availableSumConverted;
+    const targetCurrencyRemainder =
+        transferDirection === 'from' ? availableSumConverted : availableSumActiveWalletCurrency;
+
+    const formattedSourceCurrencyLimit = displayMoney?.(
+        sourceCurrencyLimit,
+        sourceAccount.currencyConfig.display_code,
+        sourceAccount.currencyConfig.fractional_digits
+    );
+    const formattedTargetCurrencyLimit = displayMoney?.(
+        targetCurrencyLimit,
+        targetAccount.currencyConfig.display_code,
+        targetAccount.currencyConfig?.fractional_digits
     );
 
-    const condition =
-        sourceAccount?.account_category === 'wallet' &&
-        targetAccount?.account_category === 'wallet' &&
-        allowedSumUSD === availableSumUSD;
-    const message = {
-        text: `The lifetime transfer limit between cryptocurrency Wallets is up to ${formattedAvailableSumUSD} (${formattedAvailableSumSourceCurrency})`,
-        type: sourceAmount > availableSumUSD ? ('error' as const) : ('success' as const),
+    const formattedSourceCurrencyRemainder = displayMoney?.(
+        sourceCurrencyRemainder,
+        sourceAccount.currencyConfig.display_code,
+        sourceAccount.currencyConfig.fractional_digits
+    );
+    const formattedTargetCurrencyRemainder = displayMoney?.(
+        targetCurrencyRemainder,
+        targetAccount.currencyConfig?.display_code,
+        targetAccount.currencyConfig?.fractional_digits
+    );
+
+    if (availableSumActiveWalletCurrency === 0)
+        return {
+            text: `You've reached the lifetime transfer limit from your ${sourceAccount.accountName} to any ${targetWalletType} Wallet. Verify your account to upgrade the limit.`,
+            type: 'error' as const,
+        };
+
+    if (allowedSumActiveWalletCurrency === availableSumActiveWalletCurrency)
+        return {
+            text: `The lifetime transfer limit from ${sourceAccount.accountName} to any ${targetWalletType} Wallet is ${formattedSourceCurrencyLimit} (${formattedTargetCurrencyLimit}).`,
+            type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
+        };
+
+    return {
+        text: `Remaining lifetime transfer limit is ${formattedSourceCurrencyRemainder} (${formattedTargetCurrencyRemainder}). Verify your account to upgrade the limit.`,
+        type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
     };
-    return condition ? message : null;
 };
 
-const verifiedAccountLimitsMessageFn = ({
+const cumulativeAccountLimitsMessageFn = ({
     displayMoney,
     exchangeRates,
     limits,
@@ -74,7 +132,9 @@ const verifiedAccountLimitsMessageFn = ({
         !sourceAccount.currency ||
         !exchangeRates?.rates?.[sourceAccount.currency] ||
         !targetAccount.currency ||
-        !exchangeRates?.rates?.[targetAccount.currency]
+        !exchangeRates?.rates?.[targetAccount.currency] ||
+        !sourceAccount.currencyConfig ||
+        !targetAccount.currencyConfig
     )
         return null;
 
@@ -86,29 +146,29 @@ const verifiedAccountLimitsMessageFn = ({
 
     const formattedSourceCurrencyLimit = displayMoney?.(
         sourceCurrencyLimit,
-        sourceAccount.currencyConfig?.display_code ?? 'USD',
-        sourceAccount.currencyConfig?.fractional_digits ?? 2
+        sourceAccount.currencyConfig.display_code,
+        sourceAccount.currencyConfig.fractional_digits
     );
     const formattedTargetCurrencyLimit = displayMoney?.(
         targetCurrencyLimit,
-        targetAccount.currencyConfig?.display_code ?? 'USD',
-        targetAccount.currencyConfig?.fractional_digits ?? 2
+        targetAccount.currencyConfig.display_code,
+        targetAccount.currencyConfig?.fractional_digits
     );
 
     const formattedSourceCurrencyRemainder = displayMoney?.(
         sourceCurrencyRemainder,
-        sourceAccount.currencyConfig?.display_code ?? 'USD',
-        sourceAccount.currencyConfig?.fractional_digits ?? 2
+        sourceAccount.currencyConfig.display_code,
+        sourceAccount.currencyConfig.fractional_digits
     );
     const formattedTargetCurrencyRemainder = displayMoney?.(
         targetCurrencyRemainder,
-        targetAccount.currencyConfig?.display_code ?? 'USD',
-        targetAccount.currencyConfig?.fractional_digits ?? 2
+        targetAccount.currencyConfig?.display_code,
+        targetAccount.currencyConfig?.fractional_digits
     );
 
     if (availableSumUSD === 0)
         return {
-            text: `You have reached your daily transfer limit of ${formattedSourceCurrencyLimit}${
+            text: `You have reached your daily transfer limit of ${formattedSourceCurrencyLimit} ${
                 !isSameCurrency ? ` (${formattedTargetCurrencyLimit})` : ''
             } between your ${
                 isBetweenWallets ? 'Wallets' : `${sourceAccount.accountName} and ${targetAccount.accountName}`
@@ -132,10 +192,6 @@ const verifiedAccountLimitsMessageFn = ({
     };
 };
 
-const UNVERIFIED_ACCOUNT_MESSAGE_FUNCTIONS = [unverifiedAccountLimitsBetweenWalletsMessageFn];
-
-const VERIFIED_ACCOUNT_MESSAGE_FUNCTIONS = [verifiedAccountLimitsMessageFn];
-
 const useTransferMessages = (
     fromAccount: NonNullable<TAccount> | undefined,
     toAccount: NonNullable<TAccount> | undefined,
@@ -150,26 +206,49 @@ const useTransferMessages = (
 
     const [exchangeRates, setExchangeRates] = useState<THooks.ExchangeRate>();
 
+    const isBetweenWallets = fromAccount?.account_category === 'wallet' && toAccount?.account_category === 'wallet';
+    const isAccountVerified = poi?.is_verified;
+
     useEffect(
         () => setExchangeRates(prev => ({ ...prev, rates: { ...prev?.rates, ...exchangeRatesRaw?.rates } })),
         [exchangeRatesRaw?.rates]
     );
 
     useEffect(() => {
-        if (!fromAccount?.currency || !toAccount?.currency || !activeWallet?.loginid) return;
-        subscribe({
-            base_currency: 'USD',
-            loginid: activeWallet.loginid,
-            target_currency: toAccount.currency,
-        });
-        if (fromAccount.currency !== toAccount.currency)
+        if (!fromAccount?.currency || !toAccount?.currency || !activeWallet?.currency || !activeWallet?.loginid) return;
+        unsubscribe();
+        if (!isAccountVerified && isBetweenWallets) {
+            subscribe({
+                base_currency: activeWallet.currency,
+                loginid: activeWallet.loginid,
+                target_currency:
+                    activeWallet.loginid === fromAccount.loginid ? toAccount.currency : fromAccount.currency,
+            });
+        } else {
             subscribe({
                 base_currency: 'USD',
                 loginid: activeWallet.loginid,
-                target_currency: fromAccount.currency,
+                target_currency: toAccount.currency,
             });
-        return unsubscribe;
-    }, [activeWallet?.loginid, fromAccount?.currency, subscribe, toAccount?.currency, unsubscribe]);
+            if (fromAccount.currency !== toAccount.currency)
+                subscribe({
+                    base_currency: 'USD',
+                    loginid: activeWallet.loginid,
+                    target_currency: fromAccount.currency,
+                });
+            return unsubscribe;
+        }
+    }, [
+        activeWallet?.currency,
+        activeWallet?.loginid,
+        fromAccount?.currency,
+        fromAccount?.loginid,
+        isAccountVerified,
+        isBetweenWallets,
+        subscribe,
+        toAccount?.currency,
+        unsubscribe,
+    ]);
 
     const displayMoney = useCallback(
         (amount: number, currency: string, fractionalDigits: number) =>
@@ -180,38 +259,32 @@ const useTransferMessages = (
         [preferredLanguage]
     );
 
-    if (!fromAccount || !toAccount) return [];
-
-    const isAccountVerified = poi?.is_verified;
+    if (!activeWallet || !fromAccount || !toAccount) return [];
 
     const sourceAmount = formData.fromAmount;
 
-    const messages: { text: string; type: 'error' | 'success' }[] = [];
+    const messageFns: ((props: TMessageFnProps) => TMessage | null)[] = [];
+    const messages: TMessage[] = [];
 
-    if (!isAccountVerified)
-        UNVERIFIED_ACCOUNT_MESSAGE_FUNCTIONS.forEach(messageFn => {
-            const message = messageFn({
-                displayMoney,
-                exchangeRates,
-                limits: accountLimits,
-                sourceAccount: fromAccount,
-                sourceAmount,
-                targetAccount: toAccount,
-            });
-            if (message) messages.push(message);
+    if (isAccountVerified || (!isAccountVerified && !isBetweenWallets)) {
+        messageFns.push(cumulativeAccountLimitsMessageFn);
+    }
+    if (!isAccountVerified && isBetweenWallets) {
+        messageFns.push(lifetimeAccountLimitsBetweenWalletsMessageFn);
+    }
+
+    messageFns.forEach(messageFn => {
+        const message = messageFn({
+            activeWallet,
+            displayMoney,
+            exchangeRates,
+            limits: accountLimits,
+            sourceAccount: fromAccount,
+            sourceAmount,
+            targetAccount: toAccount,
         });
-    else
-        VERIFIED_ACCOUNT_MESSAGE_FUNCTIONS.forEach(messageFn => {
-            const message = messageFn({
-                displayMoney,
-                exchangeRates,
-                limits: accountLimits,
-                sourceAccount: fromAccount,
-                sourceAmount,
-                targetAccount: toAccount,
-            });
-            if (message) messages.push(message);
-        });
+        if (message) messages.push(message);
+    });
 
     return messages;
 };

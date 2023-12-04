@@ -14,6 +14,7 @@ describe('<DurationWrapper />', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
     beforeEach(() => {
         default_mock_store = {
+            ...mockStore({}),
             modules: {
                 trade: {
                     contract_expiry_type: 'intraday',
@@ -69,6 +70,7 @@ describe('<DurationWrapper />', () => {
                 },
             },
             ui: {
+                ...mockStore({}).ui,
                 advanced_expiry_type: 'duration',
                 advanced_duration_unit: 'm',
                 duration_t: 5,
@@ -77,7 +79,7 @@ describe('<DurationWrapper />', () => {
                 onChangeUiStore: jest.fn(),
                 simple_duration_unit: 't',
             },
-        } as unknown as ReturnType<typeof mockStore>;
+        };
     });
     const mockDurationWrapper = (mocked_store: TCoreStores) => {
         return (

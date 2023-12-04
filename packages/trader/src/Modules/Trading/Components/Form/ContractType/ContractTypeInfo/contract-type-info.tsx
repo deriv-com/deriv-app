@@ -44,7 +44,7 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
             i.value !== RISE_FALL_EQUAL && i.value !== TURBOS.SHORT && i.value !== VANILLA.PUT
     );
     const has_toggle_buttons = /accumulator|turboslong|vanilla|multiplier/i.test(item.value);
-    const should_show_video = /accumulator|vanilla/i.test(item.value);
+    const should_show_video = /accumulator|turboslong|vanilla/i.test(item.value);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = is_mobile ? '328' : '528';

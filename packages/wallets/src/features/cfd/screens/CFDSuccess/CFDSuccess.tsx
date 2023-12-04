@@ -36,13 +36,13 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
     const isDemo = data?.is_virtual;
     const landingCompanyName = landingCompany.toUpperCase();
 
-    const isAllDxtrade = marketType === 'all' && platform === 'dxtrade';
+    const isDxtradeOrCtrader = marketType === 'all' && (platform === 'dxtrade' || platform === 'ctrader');
 
     let marketTypeTitle = 'Deriv Apps';
 
     if (marketType && platform) {
         const isPlatformValid = Object.keys(PlatformDetails).includes(platform);
-        if (isAllDxtrade && isPlatformValid) {
+        if (isDxtradeOrCtrader && isPlatformValid) {
             marketTypeTitle = PlatformDetails[platform].title;
         } else {
             marketTypeTitle = MarketTypeDetails[marketType].title;
@@ -82,7 +82,8 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                             />
                             <div className='wallets-cfd-success__info'>
                                 <WalletText size='2xs'>
-                                    {platformTitlePrefix} {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
+                                    {platformTitlePrefix} {marketTypeTitle}{' '}
+                                    {!isDemo && !isDxtradeOrCtrader && `(${landingCompanyName})`}
                                 </WalletText>
                                 <WalletText color='primary' size='2xs'>
                                     {data?.currency} Wallet

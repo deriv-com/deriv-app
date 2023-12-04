@@ -8,7 +8,7 @@ import { ChartTitle, SmartChart } from './v1';
 const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) => {
     const barriers: [] = [];
     const { common, ui } = useStore();
-    const { chart_store, run_panel } = useDBotStore();
+    const { chart_store, run_panel, dashboard } = useDBotStore();
 
     const {
         chart_type,
@@ -57,8 +57,8 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                     <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
                 )}
                 chartType={chart_type}
-                isMobile={isMobile()}
-                enabledNavigationWidget={isDesktop()}
+                isMobile={is_mobile}
+                enabledNavigationWidget={is_desktop}
                 granularity={granularity}
                 requestAPI={wsSendRequest}
                 requestForget={wsForget}

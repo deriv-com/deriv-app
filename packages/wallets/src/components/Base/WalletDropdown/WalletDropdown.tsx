@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useCombobox } from 'downshift';
 import ArrowIcon from '../../../public/images/pointed-down-arrow-icon.svg';
-import reactNodeToString from '../../../utils/reactNodeToString';
+import reactNodeToString from '../../../utils/react-node-to-string';
 import { TGenericSizes } from '../types';
 import { WalletText } from '../WalletText';
 import WalletTextField, { WalletTextFieldProps } from '../WalletTextField/WalletTextField';

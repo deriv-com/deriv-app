@@ -6,6 +6,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Analytics } from '@deriv/analytics';
 import debounce from 'lodash.debounce';
 import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 type TQSInput = {
     name: string;
@@ -21,6 +22,9 @@ const QSInput: React.FC<TQSInput> = observer(
         const {
             ui: { is_mobile },
         } = useStore();
+        const { quick_strategy } = useDBotStore();
+        const { loss_threshold_warning_data } = quick_strategy;
+
         const [has_focus, setFocus] = React.useState(false);
         const { setFieldValue, setFieldTouched } = useFormikContext();
         const is_number = type === 'number';
@@ -93,7 +97,11 @@ const QSInput: React.FC<TQSInput> = observer(
                                 >
                                     <Input
                                         data_testId='qs-input'
-                                        className={classNames('qs__input', { error: has_error })}
+                                        className={classNames(
+                                            'qs__input',
+                                            { error: has_error },
+                                            { highlight: loss_threshold_warning_data?.highlight_field?.includes(name) }
+                                        )}
                                         type={type}
                                         leading_icon={
                                             is_number ? (

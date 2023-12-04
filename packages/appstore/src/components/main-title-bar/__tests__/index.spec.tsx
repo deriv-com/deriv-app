@@ -125,7 +125,7 @@ describe('MainTitleBar', () => {
         expect(screen.getByText(/Trader's Hub/)).toBeInTheDocument();
     });
 
-    it('should shouw total assets loader when platforms are not yet loaded', () => {
+    it('should show total assets loader when platforms are not yet loaded', () => {
         render_container();
         expect(screen.getByText(/Loading/)).toBeInTheDocument();
     });

@@ -28,9 +28,12 @@ const mockGetBoundingClientRect = jest.fn(() => ({
 }));
 
 window.Blockly = {
-    svgBlockCanvas_: {
-        getBoundingClientRect: mockGetBoundingClientRect,
+    derivWorkspace: {
+        svgBlockCanvas_: {
+            getBoundingClientRect: mockGetBoundingClientRect,
+        },
     },
+    Xml: { textToDom: () => ({}) },
     Colours: { RootBlock: {} },
 };
 
@@ -54,26 +57,8 @@ describe('Toolbox component', () => {
         );
     });
 
-    // it('should render Toolbox with content wrapper is open', () => {
-    //render(<Toolbox />, { wrapper });
-    // screen.debug()
-    // expect(screen.getByTestId('dashboard__toolbox')).toBeInTheDocument();
-    // expect(screen.getByTestId('db-toolbox__content-wrapper')).toHaveClass('db-toolbox__content-wrapper active');
-    //});
-    // it('should render Toolbox with content wrapper is open', () => {
-    //     const setVisibility = jest.fn();
-    //     (useDBotStore as jest.Mock).mockReturnValue({ ...mockDbotStore, flyout: { setVisibility } });
-    //     render(<Toolbox />, { wrapper });
-    //     expect(screen.getByTestId('db-toolbox__title')).toBeInTheDocument();
-
-    //     userEvent.click(screen.getByTestId('db-toolbox__title'));
-    //     expect(screen.getByTestId('db-toolbox__content-wrapper')).not.toHaveClass('db-toolbox__content-wrapper active');
-    //     expect(setVisibility).toHaveBeenCalled();
-    // });
-    // it('should not render Toolbox if it is mobile version', () => {
-    //     render(<Toolbox />, { wrapper });
-    //     if (isMobile()) {
-    //         expect(screen.getByRole('dashboard__toolbox')).toBeEmptyDOMElement();
-    //     }
-    // });
+    it('should render Toolbox component', () => {
+        const { container } = render(<Toolbox />, { wrapper });
+        expect(container).toBeInTheDocument();
+    });
 });

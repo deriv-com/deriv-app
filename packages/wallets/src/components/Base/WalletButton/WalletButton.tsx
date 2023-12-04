@@ -9,7 +9,7 @@ type TVariant = 'contained' | 'ghost' | 'outlined';
 type TColor = 'black' | 'primary-light' | 'primary' | 'white';
 
 interface WalletButtonProps {
-    children?: ReactNode;
+    children: ReactNode;
     color?: TColor;
     disabled?: ComponentProps<'button'>['disabled'];
     icon?: ReactElement;

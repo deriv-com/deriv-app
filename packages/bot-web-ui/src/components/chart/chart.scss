@@ -2,14 +2,12 @@
     &__chart-container {
         position: relative;
         top: 0;
-
         &-wrapper {
             position: absolute;
             top: 0;
             width: 100vw;
             background-color: var(--general-main-1);
         }
-
         .cq-context {
             div.ciq-chart {
                 div.stx_jump_today.home > svg {
@@ -20,12 +18,10 @@
                 }
             }
         }
-
         .injectionDiv {
             // Hide scratch workspace when switch to chart
             display: none;
         }
-
         .cq-dialog-portal {
             position: absolute;
         }
@@ -42,7 +38,6 @@
                 &.ciq-disabled {
                     display: none;
                 }
-
                 @include mobile {
                     min-width: 17rem;
                     max-width: 26rem;
@@ -51,7 +46,6 @@
                     .cq-menu-btn {
                         padding: 0.2rem;
                     }
-
                     .cq-symbol-select-btn {
                         margin: 0.2rem;
 
@@ -59,11 +53,9 @@
                             transform: scale(1);
                             margin-left: auto;
                         }
-
                         .cq-symbol {
                             font-size: 1.2rem;
                         }
-
                         .cq-chart-price {
                             display: none;
                         }
@@ -107,14 +99,12 @@
                             top: 0.8rem;
                             left: 0.8rem;
                         }
-
                         & > .ic-icon {
                             top: 0.6rem;
                         }
                     }
                 }
             }
-
             .app-contents .ciq-menu {
                 margin: 0;
             }
@@ -124,7 +114,6 @@
     .smartcharts-mobile {
         .cq-context {
             z-index: 99;
-
             .sc-mcd__category:last-child {
                 margin-bottom: 3rem !important;
             }
@@ -133,13 +122,10 @@
         & .cq-chart-title .cq-menu-dropdown {
             position: fixed;
             height: 100% !important;
-
             .sc-dialog {
                 height: 100% !important;
-
                 &__body {
                     height: inherit !important;
-
                     .sc-mcd {
                         height: inherit !important;
                         min-width: auto !important;

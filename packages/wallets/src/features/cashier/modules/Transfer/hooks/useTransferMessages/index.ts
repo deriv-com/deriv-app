@@ -1,1 +1,3 @@
-export { default as useTransferMessages } from './useTransferMessages';
+import useTransferMessages from './useTransferMessages';
+
+export default useTransferMessages;

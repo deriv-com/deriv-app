@@ -44,7 +44,8 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
     const { data } = useSettings();
     const { mutate: verifyEmail } = useVerifyEmail();
     const { isMobile } = useDevice();
-    const title = PlatformDetails[platform || 'mt5'].title;
+    const mt5Platform = PlatformDetails.mt5.platform;
+    const title = PlatformDetails[platform ?? mt5Platform].title;
     const titleSize = 'md';
     const descriptionSize = 'sm';
     const emailLinkSize = isMobile ? 'lg' : 'md';
@@ -93,12 +94,12 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
                             if (data?.email) {
                                 verifyEmail({
                                     type:
-                                        platform === 'mt5'
+                                        platform === mt5Platform
                                             ? 'trading_platform_mt5_password_reset'
                                             : 'trading_platform_dxtrade_password_reset',
                                     url_parameters: {
                                         redirect_to: platformPasswordResetRedirectLink(
-                                            platform || 'mt5',
+                                            platform ?? mt5Platform,
                                             activeWallet?.is_virtual
                                         ),
                                     },

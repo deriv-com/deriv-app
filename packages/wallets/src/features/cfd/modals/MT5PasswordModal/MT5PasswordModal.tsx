@@ -59,7 +59,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         if (isMT5PasswordNotSet) {
             await tradingPasswordChange({
                 new_password: password,
-                platform: 'mt5',
+                platform: PlatformDetails.mt5.platform,
             });
         }
 
@@ -210,7 +210,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
                     password={password}
-                    platform='mt5'
+                    platform={PlatformDetails.mt5.platform}
                 />
             ) : (
                 <EnterPassword
@@ -226,7 +226,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                         )
                     }
                     password={password}
-                    platform='mt5'
+                    platform={PlatformDetails.mt5.platform}
                 />
             );
     }, [

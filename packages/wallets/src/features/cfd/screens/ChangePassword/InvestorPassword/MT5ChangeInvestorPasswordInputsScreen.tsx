@@ -5,6 +5,7 @@ import { WalletButton, WalletPasswordField, WalletsActionScreen, WalletText } fr
 import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
 import { validPassword } from '../../../../../utils/password';
+import { PlatformDetails } from '../../../constants';
 
 type TFormInitialValues = {
     currentPassword: string;
@@ -19,7 +20,7 @@ type TProps = {
 const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, setNextScreen }) => {
     const { isMobile } = useDevice();
     const { getModalState } = useModal();
-    const mt5AccountId = getModalState('accountId') || '';
+    const mt5AccountId = getModalState('accountId') ?? '';
 
     const {
         error: changeInvestorPasswordError,
@@ -34,7 +35,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
             account_id: mt5AccountId,
             new_password: values.newPassword,
             old_password: values.currentPassword,
-            platform: 'mt5',
+            platform: PlatformDetails.mt5.platform,
         });
         setNextScreen?.();
     };

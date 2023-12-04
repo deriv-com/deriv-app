@@ -6,10 +6,17 @@
     padding: 0rem 1.6rem;
     align-items: center;
     gap: 1.6rem;
-    min-width: 35.2rem;
 
     @include mobile {
         min-width: 100%;
+    }
+
+    &__get-account {
+        min-width: 35.2rem;
+
+        @include mobile {
+            padding: 0;
+        }
     }
 
     &__border {

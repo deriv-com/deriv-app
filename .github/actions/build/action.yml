@@ -36,9 +36,6 @@ inputs:
   RUDDERSTACK_KEY:
     description: 'Rudderstack key'
     required: false
-  RUDDERSTACK_URL:
-    description: 'Rudderstack url'
-    required: false
   DATADOG_SESSION_SAMPLE_RATE_LOGS:
     description: 'Datadog session sample rate for logs'
     required: false
@@ -59,7 +56,6 @@ runs:
       GD_APP_ID: ${{ inputs.GD_APP_ID }}
       GD_CLIENT_ID: ${{ inputs.GD_CLIENT_ID }}
       RUDDERSTACK_KEY: ${{ inputs.RUDDERSTACK_KEY }}
-      RUDDERSTACK_URL: ${{ inputs.RUDDERSTACK_URL }}
       REF_NAME: ${{ inputs.REF_NAME }}
     run: npm run build:all
     shell: bash

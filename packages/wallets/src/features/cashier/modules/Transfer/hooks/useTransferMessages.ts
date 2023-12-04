@@ -1,5 +1,5 @@
-import { useCallback } from 'react';
-import { useAccountLimits, useAuthorize, useExchangeRate, usePOI } from '@deriv/api';
+import { useCallback, useEffect, useState } from 'react';
+import { useAccountLimits, useActiveWalletAccount, useAuthorize, useExchangeRate, usePOI } from '@deriv/api';
 import { displayMoney as displayMoney_ } from '@deriv/api/src/utils';
 import { THooks } from '../../../../../types';
 import { TAccount, TInitialTransferFormValues } from '../types';
@@ -70,11 +70,19 @@ const verifiedAccountLimitsMessageFn = ({
     //@ts-expect-error needs backend type
     const availableSumUSD = limits?.daily_cumulative_amount_transfers?.[platformKey].available as number;
 
-    const sourceCurrencyLimit = allowedSumUSD / (exchangeRates?.rates?.[sourceAccount.currency ?? 'USD'] ?? 1);
-    const targetCurrencyLimit = allowedSumUSD / (exchangeRates?.rates?.[targetAccount.currency ?? 'USD'] ?? 1);
+    if (
+        !sourceAccount.currency ||
+        !exchangeRates?.rates?.[sourceAccount.currency] ||
+        !targetAccount.currency ||
+        !exchangeRates?.rates?.[targetAccount.currency]
+    )
+        return null;
 
-    const sourceCurrencyRemainder = availableSumUSD / (exchangeRates?.rates?.[sourceAccount.currency ?? 'USD'] ?? 1);
-    const targetCurrencyRemainder = availableSumUSD / (exchangeRates?.rates?.[targetAccount.currency ?? 'USD'] ?? 1);
+    const sourceCurrencyLimit = allowedSumUSD * (exchangeRates.rates[sourceAccount.currency] ?? 1);
+    const targetCurrencyLimit = allowedSumUSD * (exchangeRates.rates[targetAccount.currency] ?? 1);
+
+    const sourceCurrencyRemainder = availableSumUSD * (exchangeRates.rates[sourceAccount.currency] ?? 1);
+    const targetCurrencyRemainder = availableSumUSD * (exchangeRates.rates[targetAccount.currency] ?? 1);
 
     const formattedSourceCurrencyLimit = displayMoney?.(
         sourceCurrencyLimit,
@@ -100,8 +108,8 @@ const verifiedAccountLimitsMessageFn = ({
 
     if (availableSumUSD === 0)
         return {
-            text: `You have reached your daily transfer limit of ${formattedSourceCurrencyLimit} ${
-                !isSameCurrency ? `(${formattedTargetCurrencyLimit}` : ''
+            text: `You have reached your daily transfer limit of ${formattedSourceCurrencyLimit}${
+                !isSameCurrency ? ` (${formattedTargetCurrencyLimit})` : ''
             } between your ${
                 isBetweenWallets ? 'Wallets' : `${sourceAccount.accountName} and ${targetAccount.accountName}`
             }. The limit will reset at 00:00 GMT.`,
@@ -112,14 +120,14 @@ const verifiedAccountLimitsMessageFn = ({
         return {
             text: `The daily transfer limit between your ${
                 isBetweenWallets ? 'Wallets' : `${sourceAccount.accountName} and ${targetAccount.accountName}`
-            } is ${formattedSourceCurrencyLimit} ${!isSameCurrency ? `(${formattedTargetCurrencyLimit}` : ''}.`,
+            } is ${formattedSourceCurrencyLimit}${!isSameCurrency ? ` (${formattedTargetCurrencyLimit})` : ''}.`,
             type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
         };
 
     return {
         text: `The remaining daily transfer limit between ${
             isBetweenWallets ? 'Wallets' : `your ${sourceAccount.accountName} and ${targetAccount.accountName}`
-        } is ${formattedSourceCurrencyRemainder} ${!isSameCurrency ? `(${formattedTargetCurrencyRemainder}` : ''}.`,
+        } is ${formattedSourceCurrencyRemainder}${!isSameCurrency ? ` (${formattedTargetCurrencyRemainder})` : ''}.`,
         type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
     };
 };
@@ -129,15 +137,39 @@ const UNVERIFIED_ACCOUNT_MESSAGE_FUNCTIONS = [unverifiedAccountLimitsBetweenWall
 const VERIFIED_ACCOUNT_MESSAGE_FUNCTIONS = [verifiedAccountLimitsMessageFn];
 
 const useTransferMessages = (
-    fromAccount: NonNullable<TAccount>,
-    toAccount: NonNullable<TAccount>,
+    fromAccount: NonNullable<TAccount> | undefined,
+    toAccount: NonNullable<TAccount> | undefined,
     formData: TInitialTransferFormValues
 ) => {
     const { data: authorizeData } = useAuthorize();
+    const { data: activeWallet } = useActiveWalletAccount();
     const { preferred_language: preferredLanguage } = authorizeData;
     const { data: poi } = usePOI();
     const { data: accountLimits } = useAccountLimits();
-    const { data: exchangeRates } = useExchangeRate();
+    const { data: exchangeRatesRaw, subscribe, unsubscribe } = useExchangeRate();
+
+    const [exchangeRates, setExchangeRates] = useState<THooks.ExchangeRate>();
+
+    useEffect(
+        () => setExchangeRates(prev => ({ ...prev, rates: { ...prev?.rates, ...exchangeRatesRaw?.rates } })),
+        [exchangeRatesRaw?.rates]
+    );
+
+    useEffect(() => {
+        if (!fromAccount?.currency || !toAccount?.currency || !activeWallet?.loginid) return;
+        subscribe({
+            base_currency: 'USD',
+            loginid: activeWallet.loginid,
+            target_currency: toAccount.currency,
+        });
+        if (fromAccount.currency !== toAccount.currency)
+            subscribe({
+                base_currency: 'USD',
+                loginid: activeWallet.loginid,
+                target_currency: fromAccount.currency,
+            });
+        return unsubscribe;
+    }, [activeWallet?.loginid, fromAccount?.currency, subscribe, toAccount?.currency, unsubscribe]);
 
     const displayMoney = useCallback(
         (amount: number, currency: string, fractionalDigits: number) =>
@@ -147,6 +179,8 @@ const useTransferMessages = (
             }),
         [preferredLanguage]
     );
+
+    if (!fromAccount || !toAccount) return [];
 
     const isAccountVerified = poi?.is_verified;
 

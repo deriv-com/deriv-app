@@ -1,0 +1,45 @@
+import { TContractInfo } from './contract-types';
+
+export const mockContractInfo = (obj: Partial<TContractInfo> = {}): TContractInfo => {
+    return {
+        account_id: 84780920,
+        barrier_count: 1,
+        bid_price: 19.32,
+        buy_price: 10,
+        contract_id: 224304409908,
+        contract_type: 'CALL',
+        currency: 'USD',
+        current_spot: 2415.18,
+        current_spot_display_value: '2415.18',
+        current_spot_time: 1700481935,
+        date_expiry: 1700482235,
+        date_settlement: 1700482235,
+        date_start: 1700481935,
+        display_name: 'Volatility 100 (1s) Index',
+        expiry_time: 1700482235,
+        id: '1498e9ed-ef07-a793-76aa-4bee79cab438',
+        is_expired: 0,
+        is_forward_starting: 0,
+        is_intraday: 1,
+        is_path_dependent: 0,
+        is_settleable: 0,
+        is_sold: 0,
+        is_valid_to_cancel: 0,
+        is_valid_to_sell: 0,
+        longcode:
+            'Win payout if Volatility 100 (1s) Index is strictly higher than entry spot at 5 minutes after contract start time.',
+        payout: 19.55,
+        profit: 9.32,
+        profit_percentage: 93.2,
+        purchase_time: 1700481935,
+        shortcode: 'CALL_1HZ100V_19.55_1700481935_1700482235_S0P_0',
+        status: 'open',
+        transaction_ids: {
+            buy: 447576512008,
+        },
+        underlying: '1HZ100V',
+        validation_error: 'Waiting for entry tick.',
+        validation_error_code: 'General',
+        ...obj,
+    };
+};

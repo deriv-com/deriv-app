@@ -20,18 +20,17 @@ const BotBuilder = observer(() => {
     const is_blockly_listener_registered = React.useRef(false);
     const [show_snackbar, setShowSnackbar] = React.useState(false);
 
-    const trackRudderStackForBotBuilder = action => {
-        Analytics.trackEvent('ce_bot_builder_form', {
-            action,
-            form_source: 'ce_bot_builder_form',
-        });
-    };
-
     React.useEffect(() => {
         if (active_tab === DBOT_TABS.BOT_BUILDER) {
-            trackRudderStackForBotBuilder('open');
+            Analytics.trackEvent('ce_bot_builder_form', {
+                action: 'open',
+                form_source: 'ce_bot_builder_form',
+            });
             return () => {
-                trackRudderStackForBotBuilder('close');
+                Analytics.trackEvent('ce_bot_builder_form', {
+                    action: 'close',
+                    form_source: 'ce_bot_builder_form',
+                });
             };
         }
     }, [active_tab]);

@@ -1,12 +1,12 @@
-$value-cubic-bezier: cubic-bezier(0.25, 0.1, 0.1, 0.25);
-$modal-height: 48.1vh;
-
-@mixin align-items-center {
-    display: flex;
-    align-items: center;
-}
-
 .bot-dashboard:has(.chart-modal-dialog) {
+    --value-cubic-bezier: cubic-bezier(0.25, 0.1, 0.1, 0.25);
+    --modal-height: 48.1vh;
+
+    @mixin align-items-center {
+        display: flex;
+        align-items: center;
+    }
+
     #id-charts {
         color: var(--fill-normal-1);
         stroke-opacity: 30%;
@@ -14,16 +14,15 @@ $modal-height: 48.1vh;
     }
 
     .chart-modal-dialog {
-        height: $modal-height;
-        max-height: $modal-height;
-
+        height: var(--modal-height);
+        max-height: var(--modal-height);
         @include align-items-center;
         justify-content: center;
         z-index: 999;
-        transition: opacity 0.25s $value-cubic-bezier;
+        transition: opacity 0.25s var(--value-cubic-bezier);
 
         .dashboard__chart-wrapper--modal {
-            height: $modal-height;
+            height: var(--modal-height);
         }
 
         .sc-navigation-widget {

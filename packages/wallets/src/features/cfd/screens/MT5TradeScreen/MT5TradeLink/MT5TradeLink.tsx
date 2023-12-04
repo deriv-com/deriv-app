@@ -97,10 +97,10 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
         <div className='wallets-mt5-trade-link'>
             <div className='wallets-mt5-trade-link--left'>
                 {(platform === mt5Platform || app === ctraderPlatform) && (
-                    <>
+                    <React.Fragment>
                         <div className='wallets-mt5-trade-link--left-icon'>{content.icon}</div>
                         <WalletText size='sm'>{content.title}</WalletText>
-                    </>
+                    </React.Fragment>
                 )}
                 {platform !== mt5Platform && app !== ctraderPlatform && (
                     <WalletText size='sm'>

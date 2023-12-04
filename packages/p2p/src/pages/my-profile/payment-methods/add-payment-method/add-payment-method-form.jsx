@@ -118,6 +118,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }) => {
                                                 onChange={handleChange}
                                                 name={payment_method_field[0]}
                                                 required={!!payment_method_field[1].required}
+                                                value={field.value || ''}
                                             />
                                         )}
                                     </Field>

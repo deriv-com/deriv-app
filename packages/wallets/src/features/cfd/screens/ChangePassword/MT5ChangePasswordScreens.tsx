@@ -4,7 +4,7 @@ import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from 
 import { useModal } from '../../../../components/ModalProvider';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TPlatforms } from '../../../../types';
-import { platformPasswordResetRedirectLink } from '../../../../utils/cfdUtils';
+import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 
 type MT5ChangePasswordScreensProps = {
     isVirtual?: boolean;

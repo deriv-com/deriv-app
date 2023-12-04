@@ -17,6 +17,7 @@ type TModalElement = {
     close_icon_color?: string;
     elements_to_ignore?: HTMLElement[];
     has_close_icon?: boolean;
+    has_return_icon?: boolean;
     header?: React.ReactNode;
     header_background_color?: string;
     height?: string;
@@ -29,6 +30,7 @@ type TModalElement = {
     is_vertical_centered?: boolean;
     is_vertical_top?: boolean;
     onMount?: () => void;
+    onReturn?: () => void;
     onUnmount?: () => void;
     portalId?: string;
     renderTitle?: () => React.ReactNode;
@@ -46,6 +48,7 @@ const ModalElement = ({
     close_icon_color,
     elements_to_ignore,
     has_close_icon = true,
+    has_return_icon = false,
     header,
     header_background_color,
     height,
@@ -58,6 +61,7 @@ const ModalElement = ({
     is_vertical_centered,
     is_vertical_top,
     onMount,
+    onReturn,
     onUnmount,
     portalId,
     renderTitle,
@@ -183,6 +187,9 @@ const ModalElement = ({
                                 [`dc-modal-header__title--${className}`]: className,
                             })}
                         >
+                            {has_return_icon && (
+                                <Icon icon='IcArrowLeftBold' onClick={onReturn} className='dc-modal-header__icon' />
+                            )}
                             {title}
                         </Text>
                     )}
@@ -222,6 +229,7 @@ const Modal = ({
     elements_to_ignore,
     exit_classname,
     has_close_icon = true,
+    has_return_icon = false,
     header,
     header_background_color,
     height,
@@ -236,6 +244,7 @@ const Modal = ({
     onEntered,
     onExited,
     onMount,
+    onReturn,
     onUnmount,
     portalId,
     renderTitle,
@@ -265,6 +274,7 @@ const Modal = ({
             className={className}
             close_icon_color={close_icon_color}
             should_header_stick_body={should_header_stick_body}
+            has_return_icon={has_return_icon}
             header={header}
             header_background_color={header_background_color}
             id={id}
@@ -280,6 +290,7 @@ const Modal = ({
             has_close_icon={has_close_icon}
             height={height}
             onMount={onMount}
+            onReturn={onReturn}
             onUnmount={onUnmount}
             portalId={portalId}
             renderTitle={renderTitle}

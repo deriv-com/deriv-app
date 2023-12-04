@@ -19,19 +19,12 @@ import Tutorial from './tutorial-tab';
 
 const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
-    const {
-        active_tab,
-        active_tour,
-        is_chart_modal_visible,
-        setActiveTab,
-        setWebSocketState,
-        setActiveTour,
-        setTourDialogVisibility,
-    } = dashboard;
+    const { active_tab, active_tour, setActiveTab, setWebSocketState, setActiveTour, setTourDialogVisibility } =
+        dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
-    const { is_open, is_strategy_modal_open } = quick_strategy;
+    const { is_open } = quick_strategy;
     const { cancel_button_text, ok_button_text, title, message } = dialog_options as { [key: string]: string };
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;

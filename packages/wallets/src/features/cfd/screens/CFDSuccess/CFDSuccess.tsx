@@ -36,7 +36,9 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
     const isDemo = data?.is_virtual;
     const landingCompanyName = landingCompany.toUpperCase();
 
-    const isDxtradeOrCtrader = marketType === 'all' && (platform === 'dxtrade' || platform === 'ctrader');
+    const isDxtradeOrCtrader =
+        marketType === 'all' &&
+        (platform === PlatformDetails.dxtrade.platform || platform === PlatformDetails.ctrader.platform);
 
     let marketTypeTitle = 'Deriv Apps';
 
@@ -49,7 +51,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
         }
     }
 
-    const platformTitlePrefix = platform === 'mt5' ? PlatformDetails.mt5.title : '';
+    const platformTitlePrefix = platform === PlatformDetails.mt5.platform ? PlatformDetails.mt5.title : '';
 
     return (
         <WalletSuccess
@@ -58,7 +60,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
             renderIcon={() => (
                 <WalletGradientBackground
                     bodyClassName='wallets-cfd-success__gradient'
-                    currency={data?.currency || 'USD'}
+                    currency={data?.currency ?? 'USD'}
                     hasShine
                     theme='grey'
                 >
@@ -75,8 +77,8 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                                 </WalletText>
                             </div>
                             <WalletMarketCurrencyIcon
-                                currency={data?.currency || 'USD'}
-                                isDemo={isDemo || false}
+                                currency={data?.currency ?? 'USD'}
+                                isDemo={isDemo ?? false}
                                 marketType={marketType}
                                 platform={platform}
                             />

@@ -1,32 +1,65 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
-import TogglePositionsMobile from '../toggle-positions-mobile';
-import TraderProviders from '../../../../../trader-providers';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { BrowserRouter } from 'react-router-dom';
+import { mockContractInfo } from '@deriv/shared';
+import TogglePositionsMobile from '../toggle-positions-mobile';
+import TraderProviders from '../../../../../trader-providers';
 
-const default_mocked_props = {
+const default_mocked_props: React.ComponentProps<typeof TogglePositionsMobile> = {
     active_positions_count: 0,
-    filtered_positions: [],
     currency: 'USD',
-    disableApp: jest.fn(),
-    enableApp: jest.fn(),
     error: '',
+    filtered_positions: [
+        {
+            contract_info: mockContractInfo({
+                contract_id: 215925907928,
+                contract_type: 'CALL',
+                is_sold: 0,
+                shortcode: 'CALL_1HZ100V_76.33_1692187938_1692188838_S0P_0',
+                underlying: '1HZ100V',
+            }),
+            contract_update: {},
+            display_name: 'Volatility 100 (1s) Index',
+            indicative: 29.55,
+            reference: 430851089968,
+            is_sell_requested: false,
+            is_unsupported: false,
+            profit_loss: -9.45,
+        },
+        {
+            contract_info: mockContractInfo({
+                contract_id: 2,
+                contract_type: 'PUT',
+                is_sold: 0,
+                shortcode: 'PUT_R_10_19.53_1691443887_1691444787_S0P_0',
+                underlying: 'R_100',
+            }),
+            contract_update: {},
+            display_name: 'Volatility 100 (1s) Index',
+            indicative: 29.55,
+            reference: 430851089968,
+            is_sell_requested: false,
+            is_unsupported: false,
+            profit_loss: -9.45,
+        },
+    ],
     is_empty: true,
     onClickSell: jest.fn(),
     onClickCancel: jest.fn(),
-    toggleUnsupportedContractModal: jest.fn(),
 };
+
 const default_mock_store = {
     ui: {
         togglePositionsDrawer: jest.fn(),
+        toggleUnsupportedContractModal: jest.fn(),
         is_positions_drawer_on: false,
     },
 };
 
-jest.mock('App/Components/Elements/PositionsDrawer/positions-modal-card.jsx', () =>
+jest.mock('App/Components/Elements/PositionsDrawer/positions-modal-card', () =>
     jest.fn(props => <div key={props.key}>PositionsModalCard</div>)
 );
 
@@ -68,29 +101,47 @@ describe('TogglePositionsMobile component', () => {
         expect(screen.getByText(/You have no open positions for this asset./i)).toBeInTheDocument();
     });
     it('should display 2 positions when is_positions_drawer_on === true, is_empty === false, and has 2 active positions', () => {
-        const new_mocked_props = {
+        const new_mocked_props: React.ComponentProps<typeof TogglePositionsMobile> = {
             active_positions_count: 2,
+            currency: 'USD',
+            error: '',
             filtered_positions: [
                 {
-                    contract_info: {
-                        contract_id: '1',
+                    contract_info: mockContractInfo({
+                        contract_id: 1,
                         contract_type: 'CALL',
                         is_sold: 0,
                         shortcode: 'CALL_R_10_19.54_1691443851_1691444751_S0P_0',
                         underlying: 'R_100',
-                    },
+                    }),
+                    contract_update: {},
+                    display_name: 'Volatility 100 (1s) Index',
+                    indicative: 29.55,
+                    reference: 430851089968,
+                    is_sell_requested: false,
+                    is_unsupported: false,
+                    profit_loss: -9.45,
                 },
                 {
-                    contract_info: {
-                        contract_id: '2',
+                    contract_info: mockContractInfo({
+                        contract_id: 2,
                         contract_type: 'PUT',
                         is_sold: 0,
                         shortcode: 'PUT_R_10_19.53_1691443887_1691444787_S0P_0',
                         underlying: 'R_100',
-                    },
+                    }),
+                    contract_update: {},
+                    display_name: 'Volatility 100 (1s) Index',
+                    indicative: 29.55,
+                    reference: 430851089968,
+                    is_sell_requested: false,
+                    is_unsupported: false,
+                    profit_loss: -9.45,
                 },
             ],
             is_empty: false,
+            onClickSell: jest.fn(),
+            onClickCancel: jest.fn(),
         };
         const mock_root_store = mockStore({
             ...default_mock_store,
@@ -101,29 +152,47 @@ describe('TogglePositionsMobile component', () => {
         expect(screen.getAllByText(/PositionsModalCard/i)).toHaveLength(2);
     });
     it('should display 1 of 2 positions after closing the modal if one of the 2 positions is sold', async () => {
-        const new_mocked_props = {
+        const new_mocked_props: React.ComponentProps<typeof TogglePositionsMobile> = {
             active_positions_count: 1,
+            currency: 'USD',
+            error: '',
             filtered_positions: [
                 {
-                    contract_info: {
-                        contract_id: '1',
+                    contract_info: mockContractInfo({
+                        contract_id: 1,
                         contract_type: 'CALL',
                         is_sold: 0,
                         shortcode: 'CALL_R_10_19.54_1691443851_1691444751_S0P_0',
                         underlying: 'R_100',
-                    },
+                    }),
+                    contract_update: {},
+                    display_name: 'Volatility 100 (1s) Index',
+                    indicative: 29.55,
+                    reference: 430851089968,
+                    is_sell_requested: false,
+                    is_unsupported: false,
+                    profit_loss: -9.45,
                 },
                 {
-                    contract_info: {
-                        contract_id: '2',
+                    contract_info: mockContractInfo({
+                        contract_id: 2,
                         contract_type: 'PUT',
                         is_sold: 1,
                         shortcode: 'PUT_R_10_19.53_1691443887_1691444787_S0P_0',
                         underlying: 'R_100',
-                    },
+                    }),
+                    contract_update: {},
+                    display_name: 'Volatility 100 (1s) Index',
+                    indicative: 29.55,
+                    reference: 430851089968,
+                    is_sell_requested: false,
+                    is_unsupported: false,
+                    profit_loss: -9.45,
                 },
             ],
             is_empty: false,
+            onClickSell: jest.fn(),
+            onClickCancel: jest.fn(),
         };
         const mock_root_store = mockStore({
             ...default_mock_store,
@@ -140,24 +209,38 @@ describe('TogglePositionsMobile component', () => {
         });
     });
     it('should display no more than 5 recent positions', () => {
-        const positions_pair = [
+        const positions_pair: React.ComponentProps<typeof TogglePositionsMobile>['filtered_positions'] = [
             {
-                contract_info: {
-                    contract_id: '1',
+                contract_info: mockContractInfo({
+                    contract_id: 1,
                     contract_type: 'CALL',
                     is_sold: 0,
                     shortcode: 'CALL_R_10_19.54_1691443851_1691444751_S0P_0',
                     underlying: 'R_100',
-                },
+                }),
+                contract_update: {},
+                display_name: 'Volatility 100 (1s) Index',
+                indicative: 29.55,
+                reference: 430851089968,
+                is_sell_requested: false,
+                is_unsupported: false,
+                profit_loss: -9.45,
             },
             {
-                contract_info: {
-                    contract_id: '2',
+                contract_info: mockContractInfo({
+                    contract_id: 2,
                     contract_type: 'PUT',
                     is_sold: 0,
                     shortcode: 'PUT_R_10_19.53_1691443887_1691444787_S0P_0',
                     underlying: 'R_100',
-                },
+                }),
+                contract_update: {},
+                display_name: 'Volatility 100 (1s) Index',
+                indicative: 29.55,
+                reference: 430851089968,
+                is_sell_requested: false,
+                is_unsupported: false,
+                profit_loss: -9.45,
             },
         ];
         const new_mocked_props = {

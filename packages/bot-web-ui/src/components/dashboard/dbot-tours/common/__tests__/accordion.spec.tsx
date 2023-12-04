@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+
 import Accordion from '../accordion';
 
 const mocked_props = {

@@ -11,7 +11,7 @@ import { BOT_BUILDER_MOBILE } from '../config';
 import { highlightLoadModalButton } from '../utils';
 
 const BotBuilderTourMobile = observer(() => {
-    const { dashboard, load_modal } = useDBotStore();
+    const { dashboard, load_modal, quick_strategy } = useDBotStore();
     const { toggleTourLoadModal } = load_modal;
     const {
         onTourEnd,
@@ -22,6 +22,7 @@ const BotBuilderTourMobile = observer(() => {
         setShowMobileTourDialog,
         setTourDialogVisibility,
     } = dashboard;
+    const { is_open } = quick_strategy;
     const [tour_step, setTourStep] = React.useState<number>(1);
     const content_data = BOT_BUILDER_MOBILE.find(({ tour_step_key }) => {
         return tour_step_key === tour_step;
@@ -36,8 +37,12 @@ const BotBuilderTourMobile = observer(() => {
         else toggleTourLoadModal(false);
         const token = getSetting('bot_builder_token');
         if (!token && active_tab === 1) {
+            if (is_open) {
+                setTourDialogVisibility(false);
+            } else {
+                setTourDialogVisibility(true);
+            }
             setShowMobileTourDialog(true);
-            setTourDialogVisibility(true);
         }
     }, [tour_step, show_mobile_tour_dialog]);
 
@@ -55,7 +60,7 @@ const BotBuilderTourMobile = observer(() => {
                                 <ProgressBarTracker
                                     step={tour_step}
                                     steps_list={BOT_BUILDER_MOBILE.map(v => v.tour_step_key.toString())}
-                                    setStep={setTourStep}
+                                    onStepChange={setTourStep}
                                 />
                             }
                         </div>

@@ -1,9 +1,12 @@
 import React from 'react';
+
 import { Dialog, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+
 import { DBOT_TABS } from 'Constants/bot-contents';
+
 import { useDBotStore } from '../../../../stores/useDBotStore';
 import { bot_builder_tour_header, onboarding_tour_header, tourDialogAction, tourDialogInfo } from '../config';
 import { setTourSettings, tour_list } from '../utils';

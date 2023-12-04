@@ -85,6 +85,7 @@
         --text-less-prominent: #{$color-grey-1};
         --text-prominent: #{$color-black-1};
         --text-disabled: #{$color-grey-1};
+        --text-disabled-1: #{$color-grey-6};
         --text-loss-danger: #{$color-red-1};
         --text-profit-success: #{$color-green-1};
         --text-warning: #{$color-yellow};
@@ -199,6 +200,22 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        //TradersHub Banner
+        --traders-hub-banner-border-color: #{$color-grey-4};
+        // wallets
+        --wallets-banner-ready-bg-color: #{$ready-banner-bg-color};
+        --wallets-banner-ready-tick-bg-color: #{$ready-banner-tick-bg-color};
+        --wallets-banner-border-color: #{$color-grey-4};
+        --wallets-banner-dot-color: #{$color-grey-6};
+        --wallets-banner-active-dot-color: #{$color-red};
+        --wallets-card-active-gradient-background: #{$gradient-color-black-5};
+        --wallet-demo-bg-color: #{$wallet-demo-bg-color};
+        --wallet-demo-divider-color: #{$wallet-demo-divider-color};
+        --wallet-eu-disclaimer: #{$color-grey-4};
+        --wallet-box-shadow: #{$wallet-box-shadow};
+        // Demo view
+        --demo-text-color-1: #{$color-grey};
+        --demo-text-color-2: #{$color-white};
         // Header
         --header-background-mt5: #{$color-blue-8};
         --header-background-others: #{$color-green-7};
@@ -225,6 +242,7 @@
         --text-less-prominent: #{$color-grey-7};
         --text-primary: #{$color-grey-1};
         --text-disabled: #{$color-black-6};
+        --text-disabled-1: #{$color-black-6};
         --text-profit-success: #{$color-green-3};
         --text-loss-danger: #{$color-red-2};
         --text-red: #{$color-red};
@@ -318,6 +336,22 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        //TradersHub Banner
+        --traders-hub-banner-border-color: #{$color-black-5};
+        // wallets
+        --wallets-banner-ready-bg-color: #{$ready-banner-bg-color};
+        --wallets-banner-ready-tick-bg-color: #{$ready-banner-tick-bg-color};
+        --wallets-banner-border-color: #{$color-grey-4};
+        --wallets-banner-dot-color: #{$color-grey-6};
+        --wallets-banner-active-dot-color: #{$color-red};
+        --wallets-card-active-gradient-background: #{$gradient-color-white-2};
+        --wallet-demo-bg-color: #{$wallet-dark-demo-bg-color};
+        --wallet-demo-divider-color: #{$color-black-8};
+        --wallet-eu-disclaimer: #{$color-grey-4};
+        --wallet-box-shadow: #{$wallet-box-shadow};
+        // Demo view
+        --demo-text-color-1: #{$color-black-1};
+        --demo-text-color-2: #{$color-black-1};
         // Header
         --header-background-mt5: #{$color-blue-8};
         --header-background-others: #{$color-green-7};

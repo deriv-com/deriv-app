@@ -20,11 +20,12 @@ import Tutorial from './tutorial-tab';
 
 const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
-    const { active_tab, active_tour, setActiveTab, setWebSocketState, setActiveTour } = dashboard;
+    const { active_tab, active_tour, setActiveTab, setWebSocketState, setActiveTour, setTourDialogVisibility } =
+        dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
-    const { is_strategy_modal_open } = quick_strategy;
+    const { is_open } = quick_strategy;
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const is_mobile = isMobile();
@@ -57,6 +58,10 @@ const Dashboard = observer(() => {
     }, []);
 
     React.useEffect(() => {
+        if (is_open) {
+            setTourDialogVisibility(false);
+        }
+
         if (init_render.current) {
             setActiveTab(Number(active_hash_tab));
             if (is_mobile) handleTabChange(Number(active_hash_tab));
@@ -148,7 +153,7 @@ const Dashboard = observer(() => {
                     <RunPanel />
                 </div>
             </DesktopWrapper>
-            <MobileWrapper>{!is_strategy_modal_open && <RunPanel />}</MobileWrapper>
+            <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
             <Dialog
                 cancel_button_text={dialog_options.cancel_button_text || localize('Cancel')}
                 className={'dc-dialog__wrapper--fixed'}

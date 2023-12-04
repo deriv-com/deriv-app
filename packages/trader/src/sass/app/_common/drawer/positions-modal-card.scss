@@ -32,6 +32,7 @@
         transition: opacity 0.25s ease;
         cursor: pointer;
         width: 100%;
+        gap: 0.4rem;
 
         &--won {
             color: var(--text-profit-success);

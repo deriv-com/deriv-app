@@ -1,21 +1,23 @@
-import { useCallback, useContext } from 'react';
-import APIContext from './APIContext';
+import { useCallback } from 'react';
+
 import type {
     TSocketEndpointNames,
+    TSocketPaginateableEndpointNames,
     TSocketRequestPayload,
     TSocketResponseData,
     TSocketSubscribableEndpointNames,
 } from '../types';
+import { useAPIContext } from './APIProvider';
 
 const useAPI = () => {
-    const api = useContext(APIContext);
+    const { derivAPI } = useAPIContext();
 
     const send = useCallback(
-        async <T extends TSocketEndpointNames>(
+        async <T extends TSocketEndpointNames | TSocketPaginateableEndpointNames = TSocketEndpointNames>(
             name: T,
             payload?: TSocketRequestPayload<T>
         ): Promise<TSocketResponseData<T>> => {
-            const response = await api?.send({ [name]: 1, ...(payload || {}) });
+            const response = await derivAPI?.send({ [name]: 1, ...(payload || {}) });
 
             if (response.error) {
                 throw response.error;
@@ -23,7 +25,7 @@ const useAPI = () => {
 
             return response;
         },
-        [api]
+        [derivAPI]
     );
 
     const subscribe = useCallback(
@@ -39,8 +41,8 @@ const useAPI = () => {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onError: (response: any) => void
             ) => { unsubscribe?: VoidFunction };
-        } => api?.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) }),
-        [api]
+        } => derivAPI?.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) }),
+        [derivAPI]
     );
 
     return {

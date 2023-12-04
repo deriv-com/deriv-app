@@ -216,7 +216,7 @@ describe('<AccountLimits/>', () => {
         expect(screen.queryByTestId('account_limits_data')).toBeInTheDocument();
     });
 
-    it('should render AccountLimitsArticle component if should_show_article is true  and is_from_derivgo is false  in mobile mode', () => {
+    it('should render AccountLimitsArticle component if should_show_article is true in mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
         render(
@@ -225,29 +225,7 @@ describe('<AccountLimits/>', () => {
             </StoreProvider>
         );
         expect(screen.getByRole('heading', { name: /account limits/i })).toBeInTheDocument();
-        expect(
-            screen.queryByText(/to learn more about trading limits and how they apply, please go to the/i)
-        ).toBeInTheDocument();
-    });
-
-    it('should render AccountLimitsArticle component if should_show_article is true and is_from_derivgo is true in mobile mode', () => {
-        store = mockStore({
-            ...mock,
-            common: {
-                is_from_derivgo: true,
-            },
-        });
-        (isMobile as jest.Mock).mockReturnValue(true);
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        render(
-            <StoreProvider store={store}>
-                <AccountLimits {...props} should_show_article />
-            </StoreProvider>
-        );
-        expect(screen.getByRole('heading', { name: /account limits/i })).toBeInTheDocument();
-        expect(
-            screen.queryByText(/to learn more about trading limits and how they apply, please go to the/i)
-        ).not.toBeInTheDocument();
+        expect(screen.getByText(/these are default limits that we apply to your accounts\./i)).toBeInTheDocument();
     });
 
     it('should not render AccountLimitsArticle component if should_show_article is false', () => {
@@ -526,14 +504,6 @@ describe('<AccountLimits/>', () => {
         );
         expect(screen.getByRole('heading', { name: /account limits/i })).toBeInTheDocument();
         expect(screen.getByText(/these are default limits that we apply to your accounts\./i)).toBeInTheDocument();
-        expect(
-            screen.getByText(/to learn more about trading limits and how they apply, please go to the/i)
-        ).toBeInTheDocument();
-        expect(
-            screen.getByRole('link', {
-                name: /help centre/i,
-            })
-        ).toHaveAttribute('href', 'https://deriv.com/help-centre/trading/#trading-limits');
     });
 
     it('should show AccountLimitsFooter if footer_ref is passed', () => {

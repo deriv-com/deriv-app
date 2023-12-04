@@ -20,8 +20,6 @@ export const getCardLabels = () => ({
     POTENTIAL_PAYOUT: 'Payout limit:',
     TICK: 'Tick ',
     TICKS: 'Ticks',
-    WON: 'Won',
-    LOST: 'Lost',
     DAYS: 'Days',
     DAY: 'Day',
     SELL: 'Sell',

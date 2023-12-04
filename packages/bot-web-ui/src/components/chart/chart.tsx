@@ -1,13 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-// TODO Remove this after smartcharts is replaced
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarWidgets from './toolbar-widgets';
+import { ChartTitle, SmartChart } from './v1';
 
 const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) => {
     const barriers: [] = [];
@@ -51,7 +48,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 showLastDigitStats={show_digits_stats}
                 chartControlsWidgets={null}
                 enabledChartFooter={false}
-                chartStatusListener={v => setChartStatus(!v)}
+                chartStatusListener={(v: boolean) => setChartStatus(!v)}
                 toolbarWidget={() => (
                     <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
                 )}
@@ -68,6 +65,8 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
                 isConnectionOpened={is_socket_opened}
                 getMarketsOrder={getMarketsOrder}
+                isLive
+                leftMargin={80}
             />
         </div>
     );

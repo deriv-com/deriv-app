@@ -1,7 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
+
 import { TStepMobile } from '../config';
 
 type TAccordion = {

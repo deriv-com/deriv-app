@@ -4,7 +4,7 @@ import { useFetch } from '@deriv/api';
 /** @deprecated Use `useCurrencyConfig` from `@deriv/api` package instead. */
 const useCurrencyConfig = () => {
     const { data: website_status_data } = useFetch('website_status');
-    const { data: crypto_config_data } = useFetch('crypto_config');
+    const { data: crypto_config_data, ...rest } = useFetch('crypto_config');
 
     const currencies_config = useMemo(() => {
         if (!website_status_data?.website_status?.currencies_config) return undefined;
@@ -82,6 +82,7 @@ const useCurrencyConfig = () => {
         getConfig,
         /** Available currencies and their information */
         currencies_config,
+        ...rest,
     };
 };
 

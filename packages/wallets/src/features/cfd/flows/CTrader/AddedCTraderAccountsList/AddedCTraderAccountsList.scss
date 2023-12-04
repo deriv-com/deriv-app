@@ -1,0 +1,17 @@
+.wallets-added-ctrader {
+    &__icon {
+        cursor: pointer;
+    }
+
+    &__actions {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+}

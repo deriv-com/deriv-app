@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
-import { useStore, observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import './balance-text.scss';
 
 // Todo: this definitely needs to be somewhere else
@@ -32,7 +32,7 @@ const BalanceText = observer(({ balance, currency, size = 'm', underline_style =
     return (
         <div
             className={classNames('balance-text__container', { 'balance-text--dotted': underline_style === 'dotted' })}
-            data-testid='dt_balance-text__container'
+            data-testid='dt_balance_text_container'
         >
             <Text weight='bold' size={size} className={getTextClassName()}>
                 {formatMoney(currency, balance, true)}

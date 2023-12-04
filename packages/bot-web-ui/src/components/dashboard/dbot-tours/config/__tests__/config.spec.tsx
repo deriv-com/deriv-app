@@ -1,9 +1,12 @@
 import React from 'react';
+
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
-import { mock_ws } from 'Utils/mock';
+
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
+import { mock_ws } from 'Utils/mock';
+
 import OnboardingTourMobile from '../../onboarding-tour/onboarding-tour-mobile';
 import { DBOT_ONBOARDING_MOBILE } from '../index';
 

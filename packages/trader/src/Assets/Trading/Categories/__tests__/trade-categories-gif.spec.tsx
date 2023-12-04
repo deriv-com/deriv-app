@@ -260,7 +260,7 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('expect ImageAccumulator to be rendered when trade category is accumulator', async () => {
+    it('expect VideoAccumulator to be rendered when trade category is accumulator', async () => {
         jest.isolateModules(() => {
             jest.doMock('../contract-type-description-video', () => ({
                 __esModule: true,
@@ -328,10 +328,41 @@ describe('<TradeCategoriesGIF />', () => {
                 });
         });
     });
-    it('component should return null if category is not defined correctly', async () => {
+    it('expect VideoTurbos to be rendered when trade category is turboslong', async () => {
+        jest.isolateModules(() => {
+            jest.doMock('../contract-type-description-video', () => ({
+                __esModule: true,
+                default: jest.fn(() => 'VideoTurbos'),
+            }));
+
+            import('../trade-categories-gif')
+                .then(moduleName => {
+                    render(<moduleName.default category='turboslong' selected_contract_type='turboslong' />);
+                    expect(screen.getByText(/videoturbos/i)).toBeInTheDocument();
+                })
+                .catch(error => {
+                    throw new Error(error);
+                });
+        });
+    });
+    it('component should return null if category is not equal to selected_contract_type', async () => {
         import('../trade-categories-gif')
             .then(moduleName => {
-                const { container } = render(<moduleName.default category='wrong_trade_category' />);
+                const { container } = render(
+                    <moduleName.default category='wrong_trade_category' selected_contract_type='wrong_contract_type' />
+                );
+                expect(container).toBeEmptyDOMElement();
+            })
+            .catch(error => {
+                throw new Error(error);
+            });
+    });
+    it('component should return null if category and selected_contract_type are not defined correctly', async () => {
+        import('../trade-categories-gif')
+            .then(moduleName => {
+                const { container } = render(
+                    <moduleName.default category='wrong_test' selected_contract_type='wrong_test' />
+                );
                 expect(container).toBeEmptyDOMElement();
             })
             .catch(error => {

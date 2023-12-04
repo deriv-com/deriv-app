@@ -1,9 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
+
 import { Button, Drawer, Modal, Money, Tabs, Text, ThemedScrollbars } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+
 import Journal from 'Components/journal';
 import SelfExclusion from 'Components/self-exclusion';
 import Summary from 'Components/summary';
@@ -26,7 +27,6 @@ type TStatisticsSummary = {
     number_of_runs: number;
     total_stake: number;
     total_payout: number;
-    active_tour: string;
     toggleStatisticsInfoModal: () => void;
     total_profit: number;
     won_contracts: number;
@@ -70,14 +70,12 @@ export const StatisticsSummary = ({
     number_of_runs,
     total_stake,
     total_payout,
-    active_tour,
     toggleStatisticsInfoModal,
     total_profit,
     won_contracts,
 }: TStatisticsSummary) => (
     <div
         className={classNames('run-panel__stat', {
-            'run-panel__stat--tour-active': active_tour,
             'run-panel__stat--mobile': is_mobile,
         })}
     >
@@ -140,7 +138,7 @@ const DrawerContent = ({ active_index, is_drawer_open, active_tour, setActiveTab
                     <Journal />
                 </div>
             </Tabs>
-            {is_drawer_open && active_index !== 2 && <StatisticsSummary active_tour={active_tour} {...props} />}
+            {((is_drawer_open && active_index !== 2) || active_tour) && <StatisticsSummary {...props} />}
         </>
     );
 };
@@ -230,7 +228,10 @@ const StatisticsInfoModal = ({
 
 const RunPanel = observer(() => {
     const { run_panel, dashboard } = useDBotStore();
-    const { client } = useStore();
+    const {
+        client,
+        ui: { is_mobile },
+    } = useStore();
     const { currency } = client;
     const {
         active_index,
@@ -249,8 +250,6 @@ const RunPanel = observer(() => {
     const { active_tour, active_tab } = dashboard;
     const { total_payout, total_profit, total_stake, won_contracts, lost_contracts, number_of_runs } = statistics;
     const { BOT_BUILDER, CHART } = DBOT_TABS;
-
-    const is_mobile = isMobile();
 
     React.useEffect(() => {
         onMount();
@@ -302,7 +301,7 @@ const RunPanel = observer(() => {
                     anchor='right'
                     className={classNames('run-panel', {
                         'run-panel__container': !is_mobile,
-                        'run-panel__container--tour-active': !is_mobile,
+                        'run-panel__container--tour-active': !is_mobile && active_tour,
                     })}
                     contentClassName='run-panel__content'
                     header={header}

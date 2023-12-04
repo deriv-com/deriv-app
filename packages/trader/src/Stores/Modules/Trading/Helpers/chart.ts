@@ -1,16 +1,13 @@
-type TPayload = {
-    data?: {
+import type { TEvents } from '@deriv/analytics';
+
+export type TPayload = {
+    data: Omit<
+        Partial<TEvents['ce_chart_types_form'] & TEvents['ce_market_types_form'] & TEvents['ce_indicators_types_form']>,
+        'action'
+    > & {
         action: string;
-        chart_type_name?: string;
-        indicator_type_name?: string;
-        indicators_category_name?: string;
-        market_type_name?: string;
-        search_string?: string;
-        subform_name?: string;
-        tab_market_name?: string;
-        time_interval_name?: string;
     };
-    event_type: string;
+    event_type: 'ce_chart_types_form' | 'ce_market_types_form' | 'ce_indicators_types_form';
 };
 
 type TStateChangeOption = {
@@ -64,6 +61,7 @@ export const STATE_TYPES = {
     MARKETS_LIST_TOGGLE: 'MARKETS_LIST_TOGGLE',
     READY: 'READY',
     SCROLL_TO_LEFT: 'SCROLL_TO_LEFT',
+    SET_CHART_MODE: 'SET_CHART_MODE',
     SYMBOL_CHANGE: 'SYMBOL_CHANGE',
 } as const;
 
@@ -75,7 +73,7 @@ export const SUBFORM_NAME = {
 const getChartTypeFormAnalyticsData = (state: keyof typeof STATE_TYPES, option: TStateChangeOption = {}) => {
     const { chart_type_name = '', is_open, time_interval_name } = option;
     const chart_event_type = 'ce_chart_types_form';
-    const payload = {
+    const payload: TPayload = {
         data: {
             action: '',
             chart_type_name,
@@ -107,9 +105,9 @@ const getIndicatorTypeFormAnalyticsData = (state: keyof typeof STATE_TYPES, opti
     const indicators_subform = is_info_open ? SUBFORM_NAME.INDICATORS_INFO : SUBFORM_NAME.INDICATORS_TYPE;
     const info_open_close_action = is_info_open ? ACTION.INFO_OPEN : ACTION.INFO_CLOSE;
     const open_close_action = is_open ? ACTION.OPEN : ACTION.CLOSE;
-    const payload: TPayload = {
+    const payload = {
         event_type: indicators_event_type,
-    };
+    } as TPayload;
     if (
         (state === STATE_TYPES.INDICATOR_SEARCH && !option.search_string) ||
         ((state === STATE_TYPES.INDICATOR_ADDED ||
@@ -183,9 +181,9 @@ const getMarketTypeFormAnalyticsData = (state: keyof typeof STATE_TYPES, option:
     const market_event_type = 'ce_market_types_form';
     const favorites_action = is_favorite ? ACTION.ADD_TO_FAVORITES : ACTION.DELETE_FROM_FAVORITES;
     const open_close_action = is_open ? ACTION.OPEN : ACTION.CLOSE;
-    const payload: TPayload = {
+    const payload = {
         event_type: market_event_type,
-    };
+    } as TPayload;
     if (
         (state === STATE_TYPES.MARKET_SEARCH && !option.search_string) ||
         (state === STATE_TYPES.FAVORITE_MARKETS_TOGGLE && !market_type_name)

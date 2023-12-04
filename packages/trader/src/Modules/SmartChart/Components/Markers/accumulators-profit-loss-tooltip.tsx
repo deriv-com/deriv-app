@@ -3,23 +3,18 @@ import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { FastMarker } from 'Modules/SmartChart';
 import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
-import { ProposalOpenContract } from '@deriv/api-types';
-import { isMobile } from '@deriv/shared';
+import { FastMarker } from 'Modules/SmartChart';
+import { getDecimalPlaces, isMobile } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 
-type TPickProposalOpenContract = Pick<
-    ProposalOpenContract,
-    'current_spot' | 'current_spot_time' | 'currency' | 'exit_tick' | 'exit_tick_time' | 'high_barrier' | 'is_sold'
->;
-
-type TAccumulatorsProfitLossText = React.ComponentProps<typeof AccumulatorsProfitLossText>;
+type TContractInfo = ReturnType<typeof useStore>['portfolio']['all_positions'][number]['contract_info'];
 
 type TAccumulatorsProfitLossTooltip = {
     alignment?: string;
+    className?: string;
     should_show_profit_text?: boolean;
-} & TPickProposalOpenContract &
-    TAccumulatorsProfitLossText;
+} & TContractInfo;
 
 export type TRef = {
     setPosition: (position: { epoch: number | null; price: number | null }) => void;
@@ -36,11 +31,13 @@ const AccumulatorsProfitLossTooltip = ({
     high_barrier,
     is_sold,
     profit,
+    profit_percentage,
     should_show_profit_text,
 }: TAccumulatorsProfitLossTooltip) => {
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(false);
-    const won = profit >= 0;
+    const won = Number(profit) >= 0;
     const tooltip_timeout = React.useRef<ReturnType<typeof setTimeout>>();
+    const should_show_profit_percentage = getDecimalPlaces(currency) > 2 && !!profit_percentage;
 
     React.useEffect(() => {
         return () => {
@@ -94,9 +91,11 @@ const AccumulatorsProfitLossTooltip = ({
                 currency={currency}
                 current_spot={current_spot}
                 current_spot_time={current_spot_time}
-                profit={profit}
+                profit_value={should_show_profit_percentage ? profit_percentage : profit}
+                should_show_profit_percentage={should_show_profit_percentage}
             />
         );
+
     return is_sold && exit_tick_time ? (
         <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
             <span

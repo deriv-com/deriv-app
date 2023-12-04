@@ -1,7 +1,10 @@
 import React from 'react';
+
 import { observer } from '@deriv/stores';
-import { getSetting } from 'Utils/settings';
+
 import { useDBotStore } from 'Stores/useDBotStore';
+import { getSetting } from 'Utils/settings';
+
 import ReactJoyrideWrapper from '../common/react-joyride-wrapper';
 import TourStartDialog from '../common/tour-start-dialog';
 import { DBOT_ONBOARDING } from '../config';

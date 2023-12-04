@@ -47,7 +47,8 @@
 @import 'app/_common/components/cookie-banner';
 @import 'app/_common/components/notification-banner';
 @import 'app/_common/components/notification-promo';
-@import 'app/_common/components/onfido-container';
+@import 'app/_common/components/account-common';
+@import 'app/_common/components/wallet';
 @import 'app/_common/components/cfd-poa';
 // Modules
 @import 'app/modules/page-404';
@@ -58,4 +59,3 @@
 //@import 'app/modules/contract';
 //@import 'app/modules/contract/bottom-widgets';
 @import 'app/modules/external-link';
-@import 'app/modules/welcome';

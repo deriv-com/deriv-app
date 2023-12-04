@@ -1,15 +1,17 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import UserAvatar from 'Components/user/user-avatar';
-import { useStores } from 'Stores';
+
+import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { daysSince, isMobile } from '@deriv/shared';
+
 import { Localize } from 'Components/i18next';
-import TradeBadge from 'Components/trade-badge';
-import MyProfilePrivacy from 'Pages/my-profile/my-profile-stats/my-profile-privacy/my-profile-privacy';
-import StarRating from 'Components/star-rating';
 import RecommendedBy from 'Components/recommended-by';
+import StarRating from 'Components/star-rating';
+import TradeBadge from 'Components/trade-badge';
+import UserAvatar from 'Components/user/user-avatar';
 import BlockUserCount from 'Pages/advertiser-page/block-user/block-user-count';
+import MyProfilePrivacy from 'Pages/my-profile/my-profile-stats/my-profile-privacy/my-profile-privacy';
+import { useStores } from 'Stores';
 
 const MyProfileName = () => {
     const { general_store } = useStores();

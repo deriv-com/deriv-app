@@ -1,18 +1,35 @@
-import React from 'react';
-import { useAuthorize, useCurrencyConfig } from '@deriv/api';
-import { Loader } from './components';
+import React, { useEffect, useState } from 'react';
+import { defineViewportHeight } from './utils/utils';
+import { WalletLanguageSidePanel } from './components';
 import { Router } from './routes';
 import './AppContent.scss';
 
 const AppContent: React.FC = () => {
-    const { isLoading: isAuthorizeLoading } = useAuthorize();
-    const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
+    const [isPanelOpen, setIsPanelOpen] = useState(false);
 
-    if (isAuthorizeLoading || isCurrencyConfigLoading) return <Loader />;
+    useEffect(() => {
+        const handleShortcutKey = (event: globalThis.KeyboardEvent) => {
+            if (event.ctrlKey && event.key === 'p') {
+                setIsPanelOpen(prev => !prev);
+            }
+        };
+
+        window.addEventListener('keydown', handleShortcutKey);
+
+        return () => {
+            window.removeEventListener('keydown', handleShortcutKey);
+        };
+    }, [setIsPanelOpen]);
+
+    useEffect(() => {
+        defineViewportHeight();
+    }, []);
 
     return (
         <div className='wallets-app'>
+            <div className='wallets-modal-show-header-root' id='wallets_modal_show_header_root' />
             <Router />
+            {isPanelOpen && <WalletLanguageSidePanel />}
         </div>
     );
 };

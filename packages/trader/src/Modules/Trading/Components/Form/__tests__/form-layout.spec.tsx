@@ -1,9 +1,11 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import FormLayout from '../form-layout';
 import Loadable from 'react-loadable';
-import TraderProviders from '../../../../../trader-providers';
+
 import { mockStore } from '@deriv/stores';
+import { render, screen } from '@testing-library/react';
+
+import TraderProviders from '../../../../../trader-providers';
+import FormLayout from '../form-layout';
 
 Loadable.preloadAll();
 

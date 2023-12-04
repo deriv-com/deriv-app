@@ -1,4 +1,4 @@
-import Sidebar from './sidebar';
+import TutorialTab from './tutorial-tab';
 import './index.scss';
 
-export default Sidebar;
+export default TutorialTab;

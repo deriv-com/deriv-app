@@ -1,9 +1,8 @@
-import { initSurvicate, initSurvicateCalled } from '../../public-path';
 import React from 'react';
 import moment from 'moment';
 import { mockStore } from '@deriv/stores';
+import { TStores } from '@deriv/stores/types';
 import { render } from '@testing-library/react';
-import { TRootStore } from 'Types';
 import { mock_ws } from '../../utils/mock';
 import App from '../app-main';
 
@@ -29,15 +28,7 @@ jest.mock('@deriv/deriv-charts', () => ({
 
 jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading...</div>,
-    initSurvicate: () => <div>script...</div>,
 }));
-
-const mockDOM = `
-  <div id="dbot-survicate">
-    <div id="survicate-box" style="display: block;"></div>
-  </div>
-`;
-document.body.innerHTML = mockDOM;
 
 describe('App', () => {
     //mock for blockly
@@ -51,16 +42,11 @@ describe('App', () => {
         const { container } = render(
             <App
                 passthrough={{
-                    root_store: root_store as unknown as TRootStore,
+                    root_store: root_store as TStores,
                     WS: mock_ws,
                 }}
             />
         );
         expect(container).toBeInTheDocument();
-    });
-    it('check survicate script appended', () => {
-        initSurvicate();
-
-        expect(initSurvicateCalled).toBe(true);
     });
 });

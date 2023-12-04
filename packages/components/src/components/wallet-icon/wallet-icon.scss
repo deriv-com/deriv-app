@@ -1,0 +1,39 @@
+.wallet-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $BORDER_RADIUS;
+    overflow: hidden;
+
+    &__default-bg {
+        // Default Background
+        background: radial-gradient(100% 4130.74% at 0% 100%, rgba(244, 67, 54, 0.24) 0%, rgba(40, 57, 145, 0.48) 100%)
+            #ffffff;
+    }
+
+    &--xsmall {
+        width: 2.4rem;
+        height: 1.4rem;
+    }
+
+    &--small {
+        width: 4rem;
+        height: 2.4rem;
+    }
+
+    &--medium {
+        width: 6.4rem;
+        height: 4rem;
+    }
+
+    &--large {
+        width: 8.4rem;
+        height: 5.2rem;
+    }
+
+    &--xlarge {
+        width: 12.8rem;
+        height: 8rem;
+    }
+}

@@ -1,23 +1,23 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { ContentFlag, routes, moduleLoader, SessionStore } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import MT5Notification from './mt5-notification';
+
+import { ContentFlag, moduleLoader, routes, SessionStore } from '@deriv/shared';
+
+import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
-import CooldownWarningModal from './cooldown-warning-modal.jsx';
-import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
+import { connect } from 'Stores/connect';
+
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
-import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
+import CooldownWarningModal from './cooldown-warning-modal.jsx';
+import MT5Notification from './mt5-notification';
+import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
-import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
+import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
-);
-const AcuityDownloadModal = React.lazy(() =>
-    import(/* webpackChunkName: "acuity-download-modal"  */ '../AcuityDownloadModal')
 );
 const ResetOrUnlinkPasswordModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal'))
@@ -36,9 +36,6 @@ const SetResidenceModal = React.lazy(() =>
 const RealityCheckModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal'))
 );
-const WelcomeModal = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'))
-);
 const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-email-modal"  */ '../ResetEmailModal'));
 
 const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-email-modal"  */ '../UpdateEmailModal'));
@@ -51,11 +48,18 @@ const WarningCloseCreateRealAccountModal = React.lazy(() =>
     import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
 );
 
+const AdditionalKycInfoModal = React.lazy(() =>
+    import(
+        /* webpackChunkName: "additional-kyc-info-modal" */ '@deriv/account/src/Components/additional-kyc-info-modal'
+    )
+);
+const InformationSubmittedModal = React.lazy(() =>
+    import(/* webpackChunkName: "information-submitted-modal" */ './information-submitted-modal')
+);
+
 const AppModals = ({
     is_account_needed_modal_on,
-    is_acuity_modal_open,
     is_closing_create_real_account_modal,
-    is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
     is_logged_in,
@@ -74,6 +78,8 @@ const AppModals = ({
     is_trading_experience_incomplete,
     should_show_risk_accept_modal,
     is_need_real_account_for_cashier_modal_visible,
+    is_additional_kyc_info_modal_open,
+    is_kyc_information_submitted_modal_open,
 }) => {
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -131,14 +137,10 @@ const AppModals = ({
         content_flag !== ContentFlag.LOW_RISK_CR_NON_EU
     ) {
         ComponentToLoad = <TradingAssessmentExistingUser />;
-    } else if (is_acuity_modal_open) {
-        ComponentToLoad = <AcuityDownloadModal />;
     } else if (is_warning_scam_message_modal_visible) {
         ComponentToLoad = <WarningScamMessageModal />;
     } else if (is_closing_create_real_account_modal) {
         ComponentToLoad = <WarningCloseCreateRealAccountModal />;
-    } else if (is_welcome_modal_visible) {
-        ComponentToLoad = <WelcomeModal />;
     } else if (is_account_needed_modal_on) {
         ComponentToLoad = <MT5AccountNeededModal />;
     } else if (is_reality_check_visible) {
@@ -162,6 +164,14 @@ const AppModals = ({
         ComponentToLoad = <NeedRealAccountForCashierModal />;
     }
 
+    if (is_additional_kyc_info_modal_open) {
+        ComponentToLoad = <AdditionalKycInfoModal />;
+    }
+
+    if (is_kyc_information_submitted_modal_open) {
+        ComponentToLoad = <InformationSubmittedModal />;
+    }
+
     return (
         <>
             <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu_user} portal_id='popup_root' />
@@ -171,9 +181,7 @@ const AppModals = ({
 };
 
 export default connect(({ client, ui, traders_hub }) => ({
-    is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
-    is_acuity_modal_open: ui.is_acuity_modal_open,
     is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
@@ -196,4 +204,6 @@ export default connect(({ client, ui, traders_hub }) => ({
     content_flag: traders_hub.content_flag,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
+    is_additional_kyc_info_modal_open: ui.is_additional_kyc_info_modal_open,
+    is_kyc_information_submitted_modal_open: ui.is_kyc_information_submitted_modal_open,
 }))(AppModals);

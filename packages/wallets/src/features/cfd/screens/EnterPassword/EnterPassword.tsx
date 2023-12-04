@@ -3,7 +3,7 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { validPassword } from '../../../../utils/passwordUtils';
+import { validPassword } from '../../../../utils/password';
 import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
@@ -42,7 +42,13 @@ const EnterPassword: React.FC<TProps> = ({
                 <WalletText size='sm'>
                     Enter your {title} password to add a {title} {marketTypeTitle} account.
                 </WalletText>
-                <WalletPasswordField label={`${title} password`} onChange={onPasswordChange} password={password} />
+                <WalletPasswordField
+                    label={`${title} password`}
+                    onChange={onPasswordChange}
+                    password={password}
+                    shouldDisablePasswordMeter
+                    showMessage={false}
+                />
             </div>
             {isDesktop && (
                 <div className='wallets-enter-password__buttons'>

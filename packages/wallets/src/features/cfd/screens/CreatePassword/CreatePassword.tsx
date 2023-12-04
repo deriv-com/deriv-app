@@ -2,7 +2,7 @@ import React from 'react';
 import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
-import { validPassword } from '../../../../utils/passwordUtils';
+import { validPassword } from '../../../../utils/password';
 import { PlatformDetails } from '../../constants';
 import './CreatePassword.scss';
 

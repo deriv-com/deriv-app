@@ -261,14 +261,14 @@ describe('getOnfidoSupportedLocaleCode', () => {
 
 describe('verifyFields', () => {
     it('should return date field in the list when the error is date of birth', () => {
-        expect(verifyFields('POI_DOB_MISMATCH')).toEqual(['date_of_birth']);
+        expect(verifyFields('DobMismatch')).toEqual(['date_of_birth']);
     });
 
     it('should return first and last name in the list when the error is name', () => {
-        expect(verifyFields('POI_NAME_MISMATCH')).toEqual(['first_name', 'last_name']);
+        expect(verifyFields('NameMismatch')).toEqual(['first_name', 'last_name']);
     });
 
     it('should return first name, last name and dob in the list when the the error is regarding rejection', () => {
-        expect(verifyFields('POI_FAILED')).toEqual(['first_name', 'last_name', 'date_of_birth']);
+        expect(verifyFields('Expired')).toEqual(['first_name', 'last_name', 'date_of_birth']);
     });
 });

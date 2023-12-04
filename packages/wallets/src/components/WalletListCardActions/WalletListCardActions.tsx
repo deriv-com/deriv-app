@@ -1,13 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuthorize } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
 import IcCashierWithdrawal from '../../public/images/ic-cashier-withdrawal.svg';
 import { THooks } from '../../types';
-import { WalletButton, WalletText } from '../Base';
+import { IconButton, WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
 const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
@@ -57,6 +57,7 @@ type TProps = {
 
 const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) => {
     const { switchAccount } = useAuthorize();
+    const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();
 
@@ -66,15 +67,19 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                 <div className='wallets-mobile-actions'>
                     {getWalletHeaderButtons(isDemo).map(button => (
                         <div className='wallets-mobile-actions-content' key={button.name}>
-                            <button
+                            <IconButton
                                 className='wallets-mobile-actions-content-icon'
-                                key={button.name}
+                                color='transparent'
+                                icon={button.icon}
+                                isRound
                                 onClick={() => {
+                                    if (activeWallet?.loginid !== loginid) {
+                                        switchAccount(loginid);
+                                    }
                                     history.push(`/wallets/cashier/${button.name}`);
                                 }}
-                            >
-                                {button.icon}
-                            </button>
+                                size='lg'
+                            />
                             <WalletText size='sm'>{button.text}</WalletText>
                         </div>
                     ))}

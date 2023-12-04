@@ -10,46 +10,8 @@
     }
 
     &__details {
+        display: flex;
+        flex-direction: column;
         flex-grow: 1;
-
-        &-loginid {
-            color: var(--system-light-3-less-prominent-text, #999);
-
-            /* desktop/small/S - bold */
-            font-size: 1.2rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 1.8rem; /* 150% */
-        }
-
-        &-title {
-            color: var(--system-light-2-general-text, #333);
-
-            /* desktop/paragraph/P2 - bold */
-            font-size: 1.4rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 2rem; /* 142.857% */
-        }
-
-        &-balance {
-            color: var(--system-light-1-prominent-text, #333);
-
-            /* desktop/paragraph/P2 - bold */
-            font-size: 1.4rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 2rem; /* 142.857% */
-        }
-
-        &-description {
-            font-size: 1.2rem;
-            line-height: 1.4rem;
-
-            @include mobile {
-                font-size: 1.4rem;
-                line-height: 2rem;
-            }
-        }
     }
 }

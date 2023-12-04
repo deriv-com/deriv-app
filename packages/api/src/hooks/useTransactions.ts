@@ -3,14 +3,24 @@ import useInfiniteQuery from '../useInfiniteQuery';
 import { TSocketRequestPayload } from '../../types';
 import useAuthorize from './useAuthorize';
 import useInvalidateQuery from '../useInvalidateQuery';
+import useActiveAccount from './useActiveAccount';
+import { displayMoney } from '../utils';
 
 type TFilter = NonNullable<TSocketRequestPayload<'statement'>['payload']>['action_type'];
 
 /** A custom hook to get the summary of account transactions */
 const useTransactions = () => {
-    const { isFetching, isSuccess } = useAuthorize();
+    const {
+        data: { preferred_language },
+        isFetching,
+        isSuccess,
+    } = useAuthorize();
+
+    const { data: account } = useActiveAccount();
+    const display_code = account?.currency_config?.display_code || 'USD';
+    const fractional_digits = account?.currency_config?.fractional_digits || 2;
+
     const [filter, setFilter] = useState<TFilter>();
-    const invalidate = useInvalidateQuery();
     const { data, fetchNextPage, remove, ...rest } = useInfiniteQuery('statement', {
         options: {
             enabled: !isFetching && isSuccess,
@@ -22,9 +32,12 @@ const useTransactions = () => {
         },
         payload: {
             action_type: filter,
+            // TODO: remove this once backend adds `to` and `from` for Deriv X transfers
+            description: 1,
         },
     });
 
+    const invalidate = useInvalidateQuery();
     useEffect(() => {
         invalidate('statement');
     }, [filter, invalidate]);
@@ -48,8 +61,18 @@ const useTransactions = () => {
 
         return flatten_data?.map(transaction => ({
             ...transaction,
+            /** The transaction amount in currency format. */
+            display_amount: displayMoney(transaction?.amount || 0, display_code, {
+                fractional_digits,
+                preferred_language,
+            }),
+            /** The balance of account after the transaction in currency format. */
+            display_balance_after: displayMoney(transaction?.balance_after || 0, display_code, {
+                fractional_digits,
+                preferred_language,
+            }),
         }));
-    }, [flatten_data]);
+    }, [flatten_data, preferred_language, fractional_digits, display_code]);
 
     return {
         /** List of account transactions */

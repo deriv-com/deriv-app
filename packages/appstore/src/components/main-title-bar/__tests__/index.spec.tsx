@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { StoreProvider, mockStore, ExchangeRatesProvider } from '@deriv/stores';
 import { APIProvider /*useFetch*/ } from '@deriv/api';
 import MainTitleBar from '..';
 
@@ -74,7 +74,9 @@ describe('MainTitleBar', () => {
     const render_container = (mock_store_override?: ReturnType<typeof mockStore>) => {
         const wrapper = ({ children }: React.PropsWithChildren) => (
             <APIProvider>
-                <StoreProvider store={mock_store_override ?? mock_store}>{children}</StoreProvider>
+                <StoreProvider store={mock_store_override ?? mock_store}>
+                    <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
+                </StoreProvider>
             </APIProvider>
         );
 

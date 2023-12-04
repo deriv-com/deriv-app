@@ -10,19 +10,19 @@ import {
 import {
     AccumulatorOptionsWidget,
     MultiplierOptionsWidget,
-} from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx';
+} from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets';
 import AccumulatorsAmountMobile from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-amount-mobile';
 import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display';
 import { BarrierMobile, LastDigitMobile } from 'Modules/Trading/Containers/trade-params-mobile';
 import ContractType from 'Modules/Trading/Containers/contract-type';
-import MobileWidget from 'Modules/Trading/Components/Elements/mobile-widget.jsx';
+import MobileWidget from 'Modules/Trading/Components/Elements/mobile-widget';
 import Purchase from 'Modules/Trading/Containers/purchase';
 import RiskManagementInfo from 'Modules/Trading/Components/Elements/Multiplier/risk-management-info';
-import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
+import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit';
 import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
 import AccumulatorsStats from 'Modules/Contract/Components/AccumulatorsStats';
-import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
+import Strike from 'Modules/Trading/Components/Form/TradeParams/strike';
 import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector';
 import PayoutPerPointMobile from 'Modules/Trading/Components/Elements/payout-per-point-mobile';
 import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
@@ -143,7 +143,6 @@ const CollapsibleTradeParams = ({
                     className={classNames('take-profit', 'mobile-widget')}
                 >
                     <TakeProfit
-                        //@ts-expect-error Observer wrapped component needs to be ts migrated before props can be detected
                         take_profit={take_profit}
                         has_take_profit={has_take_profit}
                         onChange={onChange}
@@ -157,7 +156,6 @@ const CollapsibleTradeParams = ({
             {is_turbos && (
                 <div data-collapsible='true' className={classNames('take-profit', 'mobile-widget')}>
                     <TakeProfit
-                        //@ts-expect-error Observer wrapped component needs to be ts migrated before props can be detected
                         take_profit={take_profit}
                         has_take_profit={has_take_profit}
                         onChange={onChange}

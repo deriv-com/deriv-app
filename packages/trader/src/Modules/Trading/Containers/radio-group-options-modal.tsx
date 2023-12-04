@@ -9,7 +9,7 @@ import { observer } from '@deriv/stores';
 
 type TRadioGroupOptionsModal = {
     is_open: boolean;
-    modal_title: string;
+    modal_title: React.ReactNode;
     toggleModal: () => void;
 };
 

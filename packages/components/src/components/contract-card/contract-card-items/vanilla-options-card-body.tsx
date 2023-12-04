@@ -48,9 +48,7 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
                         {entry_spot_display_value && <Money amount={entry_spot_display_value} />}
                     </ContractCardItem>
 
-                    <ContractCardItem header={STRIKE}>
-                        {barrier && <Money amount={barrier} />}
-                    </ContractCardItem>
+                    <ContractCardItem header={STRIKE}>{barrier && <Money amount={barrier} />}</ContractCardItem>
                 </div>
                 <ContractCardItem
                     className='dc-contract-card-item__total-profit-loss'

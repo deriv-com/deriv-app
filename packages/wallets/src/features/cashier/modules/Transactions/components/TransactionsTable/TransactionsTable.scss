@@ -1,27 +1,22 @@
 .wallets-transactions-table {
     width: 100%;
+    max-width: 80rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-block: 0 0.8rem;
-    height: 65vh;
-    overflow: auto;
+    gap: 1.6rem;
 
-    @include mobile {
-        height: 75vh;
+    @include desktop {
+        overflow: auto;
     }
 
-    &__content {
-        width: 100%;
-        max-width: 80rem;
-        display: flex;
-        flex-direction: column;
-        gap: 1.6rem;
+    &::-webkit-scrollbar {
+        display: none;
     }
 
     &__row {
+        width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 0.8rem;
     }
 }

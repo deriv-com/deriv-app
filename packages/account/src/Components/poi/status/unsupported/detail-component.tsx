@@ -63,11 +63,11 @@ const DetailComponent = ({
                 const expiration_date =
                     typeof data.expiry_date?.format === 'function' ? data.expiry_date.format('YYYY-MM-DD') : undefined;
                 uploadFile(file, WS.getSocket, {
-                    documentType: document_type,
-                    pageType,
-                    expirationDate: expiration_date,
-                    documentId: data.document_id || '',
-                    lifetimeValid: +(lifetime_valid && !expiration_date),
+                    document_type,
+                    page_type: pageType,
+                    expiration_date,
+                    document_id: data.document_id || '',
+                    lifetime_valid: +(lifetime_valid && !expiration_date),
                     document_issuing_country: country_code_key,
                 })
                     .then(response => {

@@ -4,6 +4,7 @@
     align-items: center;
     gap: 2.4rem;
     min-height: 6rem;
+    width: 100%;
 
     &__loader {
         width: 100%;
@@ -22,7 +23,6 @@
 
         @include mobile {
             width: 100%;
-            max-width: 32.8rem;
         }
 
         &-text {
@@ -38,14 +38,10 @@
             gap: 0.8rem;
 
             & .wallets-clipboard {
-                padding: 0.8rem 0.8rem 0.8rem 0;
+                padding: 1rem;
+                border-left: 1px solid #e6e6e6;
+                box-sizing: border-box;
             }
-        }
-
-        &-divider {
-            width: 1px;
-            height: 100%;
-            background: #e6e6e6;
         }
     }
 }

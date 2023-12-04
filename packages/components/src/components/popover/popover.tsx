@@ -53,17 +53,11 @@ const Popover = ({
     }, [is_hovered, should_toggle_on_target_tap]);
 
     const onMouseEnter = () => {
-        if (onBubbleOpen) {
-            if (should_toggle_on_target_tap) setIsBubbleVisible(true);
-            onBubbleOpen();
-        }
+        if (onBubbleOpen) onBubbleOpen();
     };
 
     const onMouseLeave = () => {
-        if (onBubbleClose) {
-            if (should_toggle_on_target_tap) setIsBubbleVisible(false);
-            onBubbleClose();
-        }
+        if (onBubbleClose) onBubbleClose();
     };
 
     const icon_class_name = classNames(classNameTargetIcon, icon);

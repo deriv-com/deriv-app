@@ -1,23 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useAccountLimits, useActiveWalletAccount, useAuthorize, useExchangeRate, usePOI } from '@deriv/api';
-import { displayMoney as displayMoney_ } from '@deriv/api/src/utils';
-import { THooks } from '../../../../../types';
-import { TAccount, TInitialTransferFormValues } from '../types';
-
-type TMessage = {
-    text: string;
-    type: 'error' | 'success';
-};
-
-type TMessageFnProps = {
-    activeWallet: THooks.ActiveWalletAccount;
-    displayMoney?: (amount: number, currency: string, fractionalDigits: number) => string;
-    exchangeRates?: THooks.ExchangeRate;
-    limits?: THooks.AccountLimits;
-    sourceAccount: NonNullable<TAccount>;
-    sourceAmount: number;
-    targetAccount: NonNullable<TAccount>;
-};
+import { TMessageFnProps } from '../types';
 
 // this function should work once BE WALL-1440 is delivered
 const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
@@ -115,7 +96,8 @@ const cumulativeAccountLimitsMessageFn = ({
     sourceAmount,
     targetAccount,
 }: TMessageFnProps) => {
-    const isBetweenWallets = sourceAccount.account_category === 'wallet' && targetAccount.account_category === 'wallet';
+    const isTransferBetweenWallets =
+        sourceAccount.account_category === 'wallet' && targetAccount.account_category === 'wallet';
     const isSameCurrency = sourceAccount.currency === targetAccount.currency;
 
     const keyAccountType =
@@ -171,7 +153,7 @@ const cumulativeAccountLimitsMessageFn = ({
             text: `You have reached your daily transfer limit of ${formattedSourceCurrencyLimit} ${
                 !isSameCurrency ? ` (${formattedTargetCurrencyLimit})` : ''
             } between your ${
-                isBetweenWallets ? 'Wallets' : `${sourceAccount.accountName} and ${targetAccount.accountName}`
+                isTransferBetweenWallets ? 'Wallets' : `${sourceAccount.accountName} and ${targetAccount.accountName}`
             }. The limit will reset at 00:00 GMT.`,
             type: 'error' as const,
         };
@@ -179,114 +161,17 @@ const cumulativeAccountLimitsMessageFn = ({
     if (allowedSumUSD === availableSumUSD)
         return {
             text: `The daily transfer limit between your ${
-                isBetweenWallets ? 'Wallets' : `${sourceAccount.accountName} and ${targetAccount.accountName}`
+                isTransferBetweenWallets ? 'Wallets' : `${sourceAccount.accountName} and ${targetAccount.accountName}`
             } is ${formattedSourceCurrencyLimit}${!isSameCurrency ? ` (${formattedTargetCurrencyLimit})` : ''}.`,
             type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
         };
 
     return {
         text: `The remaining daily transfer limit between ${
-            isBetweenWallets ? 'Wallets' : `your ${sourceAccount.accountName} and ${targetAccount.accountName}`
+            isTransferBetweenWallets ? 'Wallets' : `your ${sourceAccount.accountName} and ${targetAccount.accountName}`
         } is ${formattedSourceCurrencyRemainder}${!isSameCurrency ? ` (${formattedTargetCurrencyRemainder})` : ''}.`,
         type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
     };
 };
 
-const useTransferMessages = (
-    fromAccount: NonNullable<TAccount> | undefined,
-    toAccount: NonNullable<TAccount> | undefined,
-    formData: TInitialTransferFormValues
-) => {
-    const { data: authorizeData } = useAuthorize();
-    const { data: activeWallet } = useActiveWalletAccount();
-    const { preferred_language: preferredLanguage } = authorizeData;
-    const { data: poi } = usePOI();
-    const { data: accountLimits } = useAccountLimits();
-    const { data: exchangeRatesRaw, subscribe, unsubscribe } = useExchangeRate();
-
-    const [exchangeRates, setExchangeRates] = useState<THooks.ExchangeRate>();
-
-    const isBetweenWallets = fromAccount?.account_category === 'wallet' && toAccount?.account_category === 'wallet';
-    const isAccountVerified = poi?.is_verified;
-
-    useEffect(
-        () => setExchangeRates(prev => ({ ...prev, rates: { ...prev?.rates, ...exchangeRatesRaw?.rates } })),
-        [exchangeRatesRaw?.rates]
-    );
-
-    useEffect(() => {
-        if (!fromAccount?.currency || !toAccount?.currency || !activeWallet?.currency || !activeWallet?.loginid) return;
-        unsubscribe();
-        if (!isAccountVerified && isBetweenWallets) {
-            subscribe({
-                base_currency: activeWallet.currency,
-                loginid: activeWallet.loginid,
-                target_currency:
-                    activeWallet.loginid === fromAccount.loginid ? toAccount.currency : fromAccount.currency,
-            });
-        } else {
-            subscribe({
-                base_currency: 'USD',
-                loginid: activeWallet.loginid,
-                target_currency: toAccount.currency,
-            });
-            if (fromAccount.currency !== toAccount.currency)
-                subscribe({
-                    base_currency: 'USD',
-                    loginid: activeWallet.loginid,
-                    target_currency: fromAccount.currency,
-                });
-            return unsubscribe;
-        }
-    }, [
-        activeWallet?.currency,
-        activeWallet?.loginid,
-        fromAccount?.currency,
-        fromAccount?.loginid,
-        isAccountVerified,
-        isBetweenWallets,
-        subscribe,
-        toAccount?.currency,
-        unsubscribe,
-    ]);
-
-    const displayMoney = useCallback(
-        (amount: number, currency: string, fractionalDigits: number) =>
-            displayMoney_(amount, currency, {
-                fractional_digits: fractionalDigits,
-                preferred_language: preferredLanguage,
-            }),
-        [preferredLanguage]
-    );
-
-    if (!activeWallet || !fromAccount || !toAccount) return [];
-
-    const sourceAmount = formData.fromAmount;
-
-    const messageFns: ((props: TMessageFnProps) => TMessage | null)[] = [];
-    const messages: TMessage[] = [];
-
-    if (isAccountVerified || (!isAccountVerified && !isBetweenWallets)) {
-        messageFns.push(cumulativeAccountLimitsMessageFn);
-    }
-    if (!isAccountVerified && isBetweenWallets) {
-        messageFns.push(lifetimeAccountLimitsBetweenWalletsMessageFn);
-    }
-
-    messageFns.forEach(messageFn => {
-        const message = messageFn({
-            activeWallet,
-            displayMoney,
-            exchangeRates,
-            limits: accountLimits,
-            sourceAccount: fromAccount,
-            sourceAmount,
-            targetAccount: toAccount,
-        });
-        if (message) messages.push(message);
-    });
-
-    return messages;
-};
-
-export default useTransferMessages;
+export { cumulativeAccountLimitsMessageFn, lifetimeAccountLimitsBetweenWalletsMessageFn };

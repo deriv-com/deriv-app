@@ -1,11 +1,18 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
+
+export const getConnectedAppsColumnNames = () => [
+    <Localize key='name' i18n_default_text='Name' />,
+    <Localize key='permission' i18n_default_text='Permission' />,
+    <Localize key='last_login' i18n_default_text='Last login' />,
+    <Localize key='action' i18n_default_text='Action' />,
+];
 
 type Permissions = {
     [key: string]: string;
 };
 
-export const generatePermissions = (): Permissions => ({
+const generatePermissions = (): Permissions => ({
     read: localize('Read'),
     trade: localize('Trade'),
     trading_information: localize('Trading information'),
@@ -13,22 +20,5 @@ export const generatePermissions = (): Permissions => ({
     admin: localize('Admin'),
 });
 
-export const getConnectedAppsScopes = (permissions_list: string[]) => {
-    const is_trading_information = permissions_list.includes('trading_information');
-    let oauth_apps_list = [];
-    if (is_trading_information) {
-        oauth_apps_list = permissions_list.filter(permission => permission !== 'trading_information');
-        oauth_apps_list.push('trading_information');
-    } else {
-        oauth_apps_list = permissions_list;
-    }
-    const sorted_app_list: string[] = [];
-    oauth_apps_list.forEach((permission, index) => {
-        if (permissions_list.length - 1 !== index) {
-            sorted_app_list.push(`${generatePermissions()[permission]}, `);
-        } else {
-            sorted_app_list.push(generatePermissions()[permission]);
-        }
-    });
-    return <div>{sorted_app_list}</div>;
-};
+export const getConnectedAppsScopes = (permission_list: string[] = []) =>
+    permission_list.map(permission => generatePermissions()[permission]).join(', ');

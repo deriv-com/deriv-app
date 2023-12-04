@@ -1043,7 +1043,7 @@ export default class TradeStore extends BaseStore {
         if (isAccumulatorContract(obj_new_values.contract_type) || isDigitTradeType(obj_new_values.contract_type)) {
             savePreviousChartMode(chart_type, granularity);
             updateGranularity(0);
-            updateChartType(this.root_store.client.is_beta_chart ? 'line' : 'mountain');
+            updateChartType('line');
         } else if (
             (obj_new_values.contract_type || obj_new_values.symbol) &&
             prev_chart_type &&
@@ -1634,7 +1634,6 @@ export default class TradeStore extends BaseStore {
             Analytics.trackEvent(event_type, {
                 ...data,
                 action: data.action as TEvents['ce_indicators_types_form']['action'],
-                device_type: isMobile() ? 'mobile' : 'desktop',
                 form_name: 'default',
             });
         }

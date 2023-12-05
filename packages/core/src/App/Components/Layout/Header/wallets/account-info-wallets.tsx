@@ -30,9 +30,9 @@ type TBalanceLabel = {
 };
 
 type TInfoIcons = {
-    gradients: ReturnType<typeof useStoreWalletAccountsList>['data'][number]['gradients'];
-    icons: ReturnType<typeof useStoreWalletAccountsList>['data'][number]['icons'];
-    icon_type: ReturnType<typeof useStoreWalletAccountsList>['data'][number]['icon_type'];
+    gradients: Exclude<ReturnType<typeof useStoreWalletAccountsList>['data'], undefined>[number]['gradients'];
+    icons: Exclude<ReturnType<typeof useStoreWalletAccountsList>['data'], undefined>[number]['icons'];
+    icon_type: Exclude<ReturnType<typeof useStoreWalletAccountsList>['data'], undefined>[number]['icon_type'];
 };
 
 const DropdownArrow = ({ is_disabled = false }: TDropdownArrow) =>
@@ -141,6 +141,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
         <div className='acc-info__wrapper'>
             <div className='acc-info__separator' />
             <AccountInfoWrapper
+                is_mobile={is_mobile}
                 is_disabled={Boolean(active_account?.is_disabled)}
                 disabled_message={account_switcher_disabled_message}
             >

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { CTraderSuccessModal } from 'src/features/cfd/modals/CTraderSuccessModal';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api';
 import { TradingAccountCard, WalletError } from '../../../../../components';
 import { WalletButton, WalletText } from '../../../../../components/Base';
@@ -7,6 +6,7 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import CTrader from '../../../../../public/images/ctrader.svg';
 import { PlatformDetails } from '../../../constants';
+import { CTraderSuccessModal } from '../../../modals/CTraderSuccessModal';
 import './AvailableCTraderAccountsList.scss';
 
 const AvailableCTraderAccountsList: React.FC = () => {

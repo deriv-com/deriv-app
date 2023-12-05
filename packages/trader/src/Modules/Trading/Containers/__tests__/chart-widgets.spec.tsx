@@ -50,9 +50,6 @@ describe('<ChartTopWidgets>', () => {
                 is_digits_widget_active: true,
                 onChange: jest.fn(),
             },
-            client: {
-                is_beta_chart: true,
-            },
             ui: {
                 is_dark_mode_on: true,
                 is_mobile: true,

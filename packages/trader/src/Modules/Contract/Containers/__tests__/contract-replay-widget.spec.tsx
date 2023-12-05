@@ -60,11 +60,7 @@ describe('<InfoBoxWidget />', () => {
 });
 
 describe('<ChartTopWidgets>', () => {
-    const mocked_store_props = {
-        client: {
-            is_beta_chart: true,
-        },
-    };
+    const mocked_store_props = {};
     const store = mockStore(mocked_store_props);
 
     const mockChartTopWidget = () => (

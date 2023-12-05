@@ -16,9 +16,6 @@ describe('<RecentTradeInfo />', () => {
 
     beforeEach(() => {
         mocked_store_props = mockStore({
-            client: {
-                is_beta_chart: true,
-            },
             contract_trade: {
                 filtered_contracts: [
                     {
@@ -102,7 +99,6 @@ describe('<RecentTradeInfo />', () => {
         expect(container).toBeEmptyDOMElement();
     });
     it('Should render empty container if granularity is more than 0', () => {
-        mocked_store_props.client.is_beta_chart = false;
         mocked_store_props.contract_trade.granularity = 60;
         const { container } = renderComponent({ mocked_store_props });
         expect(container).toBeEmptyDOMElement();
@@ -111,12 +107,6 @@ describe('<RecentTradeInfo />', () => {
         mocked_store_props.contract_trade.filtered_contracts[0].contract_info.status = 'won';
         const { container } = renderComponent({ mocked_store_props });
         expect(container).toBeEmptyDOMElement();
-    });
-    it('Should use marker_array if is_beta_chart is false and should render "tick 5/6"', () => {
-        mocked_store_props.client.is_beta_chart = false;
-        mocked_store_props.contract_trade.markers_array[0].contract_info.tick_count = 6;
-        renderComponent({ mocked_store_props });
-        expect(screen.getByText('Tick 5/6')).toBeInTheDocument();
     });
     it('Should render "Tick 4/7" contract type is digit contract', () => {
         renderComponent({ mocked_store_props });

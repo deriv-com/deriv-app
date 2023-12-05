@@ -10,10 +10,6 @@ jest.mock('Modules/SmartChart', () => ({
     ...jest.requireActual('Modules/SmartChart'),
     ChartTitle: () => <div>MockedChartTitle</div>,
 }));
-jest.mock('Modules/SmartChartBeta', () => ({
-    ...jest.requireActual('Modules/SmartChartBeta'),
-    ChartTitleBeta: () => <div>MockedChartTitleBeta</div>,
-}));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isMobile: jest.fn(() => false),
@@ -39,7 +35,6 @@ describe('<TopWidgets />', () => {
             },
             open: true,
             is_digits_widget_active: true,
-            is_beta_chart: false,
         };
     });
     it('Should render info box and mocked chart title and should not render toast notification or recent trade info for Desktop', () => {
@@ -64,10 +59,5 @@ describe('<TopWidgets />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         render(<TopWidgets {...mocked_props} />);
         expect(screen.getByText(/mockedrecenttradeinfo/i)).toBeInTheDocument();
-    });
-    it('Should render mocked chart title beta when is_beta_chart is true', () => {
-        mocked_props.is_beta_chart = true;
-        render(<TopWidgets {...mocked_props} />);
-        expect(screen.getByText(/mockedcharttitlebeta/i)).toBeInTheDocument();
     });
 });

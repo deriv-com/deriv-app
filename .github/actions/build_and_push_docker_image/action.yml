@@ -1,0 +1,66 @@
+name: build_and_push_docker_image_and_k8s
+description: Build docker image and push to docker hub and K8S
+inputs:
+  DOCKERHUB_ORGANISATION:
+    description: "Dockerhub Organisation"
+    required: true
+  DOCKERHUB_USERNAME:
+    description: "Dockerhub Username"
+    required: true
+  DOCKERHUB_PASSWORD:
+    description: "Dockerhub Password"
+    required: true
+  K8S_NAMESPACE:
+    description: "K8S namespace"
+    required: true
+  K8S_SERVICE:
+    description: "K8S service"
+    required: true
+  KUBE_SERVER:
+    description: "K8S server"
+    required: true
+  SERVICEACCOUNT_TOKEN:
+    description: "K8S service account token"
+    required: true
+  CA_CRT:
+    description: "K8S CA_CRT"
+    required: true
+  APP_VERSION:
+    description: "App version"
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Setup Environment variables
+      run: |
+        echo "NAMESPACE=${{ inputs.K8S_NAMESPACE }}" >> "$GITHUB_ENV"
+        echo "KUBE_SERVER=${{ inputs.KUBE_SERVER }}" >> "$GITHUB_ENV"
+        echo "SERVICEACCOUNT_TOKEN=${{ inputs.SERVICEACCOUNT_TOKEN }}" >> "$GITHUB_ENV"
+        echo "DOCKERHUB_ORGANISATION=${{ inputs.DOCKERHUB_ORGANISATION }}" >> "$GITHUB_ENV"
+        echo "CA_CRT=${{ inputs.CA_CRT }}" >> "$GITHUB_ENV"
+        echo "APP_NAME=deriv-app" >> "$GITHUB_ENV"
+        echo "APP_VERSION=${{ inputs.APP_VERSION }}" >> "$GITHUB_ENV"
+      shell: bash
+    - name: Build docker image 🐳
+      run: docker build -t ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${APP_VERSION} -t ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }} .
+      shell: bash
+    - name: Verify nginx image
+      run: |
+        set -e
+        docker run --rm ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }} nginx -t
+        echo "docker image validated successfully"
+      shell: bash
+    - name: Pushing Image to docker hub 🐳
+      run: |
+        echo ${{ inputs.DOCKERHUB_PASSWORD }}| docker login -u ${{ inputs.DOCKERHUB_USERNAME }} --password-stdin
+        docker push ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${APP_VERSION}
+        docker push ${DOCKERHUB_ORGANISATION}/${APP_NAME}:${{ github.ref_name }}
+      shell: bash
+    - name: Deploy 🚀
+      run: |
+        git clone https://github.com/binary-com/devops-ci-scripts
+        cd devops-ci-scripts/k8s-build_tools
+        echo $CA_CRT | base64 --decode > ca.crt
+        export CA="ca.crt"
+        ./release.sh ${APP_NAME} ${{ github.ref_name }}
+      shell: bash

@@ -3,7 +3,7 @@ import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 type TEmptyPortfolioMessage = {
-    error: string;
+    error?: string;
 };
 
 const EmptyPortfolioMessage = ({ error }: TEmptyPortfolioMessage) => (

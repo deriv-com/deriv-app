@@ -1,8 +1,8 @@
 /** Add types that are shared between components */
 import React from 'react';
-import { FormikHandlers, FormikProps, FormikValues } from 'formik';
-import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
+import { Authorize, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
+import { Platforms } from '@deriv/shared';
 
 export type TToken = {
     display_name: string;
@@ -66,8 +66,9 @@ export type TRoute = {
     icon?: string;
     default?: boolean;
     to?: string;
-    component?: ((cashier_routes?: TRoute[]) => JSX.Element) | typeof Redirect;
+    component?: ((routes?: TRoute[]) => JSX.Element) | typeof Redirect;
     getTitle?: () => string;
+    is_disabled?: boolean;
     subroutes?: TRoute[];
 };
 
@@ -103,15 +104,6 @@ type TIdentity = {
     };
 };
 
-export type TResidenseList = {
-    identity: TIdentity;
-    phone_idd: string;
-    tin_format: string[];
-    disabled: string;
-    text: string;
-    value: string;
-};
-
 export type TFile = {
     path: string;
     lastModified: number;
@@ -130,44 +122,30 @@ export type TPOIStatus = {
 };
 
 export type TPersonalDetailsForm = {
-    warning_items?: Record<string, string>;
-    is_virtual?: boolean;
-    is_mf?: boolean;
-    is_svg?: boolean;
-    is_qualified_for_idv?: boolean;
-    should_hide_helper_image: boolean;
-    is_appstore?: boolean;
-    editable_fields: Array<string>;
-    has_real_account?: boolean;
-    residence_list?: ResidenceList;
-    is_fully_authenticated?: boolean;
-    account_opening_reason_list?: Record<string, string>[];
-    closeRealAccountSignup: () => void;
-    salutation_list?: Record<string, string>[];
-    is_rendered_for_onfido?: boolean;
-    should_close_tooltip?: boolean;
-    setShouldCloseTooltip?: (should_close_tooltip: boolean) => void;
-} & FormikProps<FormikValues>;
+    first_name: string;
+    last_name: string;
+    date_of_birth: string;
+    confirmation_checkbox?: boolean;
+};
 
 export type TInputFieldValues = Record<string, string>;
 
 export type TIDVVerificationResponse = IdentityVerificationAddDocumentResponse & { error: { message: string } };
 
-export type TVerificationStatus = Readonly<
-    Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
->;
-
 export type TDocument = {
     id: string;
     text: string;
     value?: string;
-    sample_image?: string;
     example_format?: string;
     additional?: {
         display_name?: string;
         example_format?: string;
     };
 };
+
+export type TVerificationStatus = Readonly<
+    Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
+>;
 
 export type TIDVFormValues = {
     document_type: TDocument;
@@ -176,13 +154,7 @@ export type TIDVFormValues = {
     error_message?: string;
 };
 
-export type TIDVForm = {
-    selected_country: ResidenceList[0];
-    hide_hint?: boolean;
-    class_name?: string;
-    can_skip_document_verification: boolean;
-} & Partial<FormikHandlers> &
-    FormikProps<TIDVFormValues>;
+export type TPlatforms = typeof Platforms[keyof typeof Platforms];
 
 export type TServerError = {
     code: string;

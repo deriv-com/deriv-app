@@ -75,8 +75,9 @@
         "webpack-node-externals": "^2.5.2"
     },
     "dependencies": {
+        "@deriv/analytics": "^1.4.4",
         "@deriv/components": "^1.0.0",
-        "@deriv/deriv-api": "^1.0.11",
+        "@deriv/deriv-api": "^1.0.13",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
@@ -95,8 +96,6 @@
         "lodash.debounce": "^4.0.8",
         "lodash.throttle": "^4.1.1",
         "mobx": "^6.6.1",
-        "mobx-react": "^7.5.1",
-        "mobx-utils": "^6.0.5",
         "moment": "^2.29.2",
         "null-loader": "^4.0.1",
         "object.fromentries": "^2.0.0",

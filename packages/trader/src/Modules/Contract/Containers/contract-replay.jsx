@@ -12,12 +12,15 @@ import {
     usePrevious,
 } from '@deriv/components';
 import {
+    getContractTypeFeatureFlag,
     getDurationPeriod,
     getDurationUnitText,
+    getEndTime,
     getPlatformRedirect,
     isAccumulatorContract,
     isDesktop,
     isEmptyObject,
+    isHighLow,
     isMobile,
     isMultiplierContract,
     isTurbosContract,
@@ -26,19 +29,19 @@ import {
     urlFor,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { useFeatureFlags } from '@deriv/hooks';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
-import { SmartChart } from 'Modules/SmartChart';
-import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
-import ChartMarker from 'Modules/SmartChart/Components/Markers/marker.jsx';
-import DelayedAccuBarriersMarker from 'Modules/SmartChart/Components/Markers/delayed-accu-barriers-marker';
-import allMarkers from 'Modules/SmartChart/Components/all-markers.jsx';
+import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { SmartChart } from 'Modules/SmartChart';
+import ChartMarker from 'Modules/SmartChart/Components/Markers/marker';
 
 const ContractReplay = observer(({ contract_id }) => {
     const { common, contract_replay, ui } = useStore();
+    const [swipe_index, setSwipeIndex] = React.useState(0);
     const { contract_store } = contract_replay;
     const {
         is_market_closed,
@@ -55,7 +58,9 @@ const ContractReplay = observer(({ contract_id }) => {
     const { contract_info, contract_update, contract_update_history, is_digit_contract } = contract_store;
     const { routeBackInApp } = common;
     const { is_dark_mode_on: is_dark_theme, notification_messages_ui: NotificationMessages, toggleHistoryTab } = ui;
-
+    const trade_type_feature_flag =
+        contract_info.shortcode && getContractTypeFeatureFlag(contract_info.contract_type, isHighLow(contract_info));
+    const is_trade_type_disabled = useFeatureFlags()[`is_${trade_type_feature_flag}_enabled`] === false;
     const [is_visible, setIsVisible] = React.useState(false);
     const history = useHistory();
 
@@ -71,10 +76,21 @@ const ContractReplay = observer(({ contract_id }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contract_id, location, onMount, onUnmount]);
 
-    const onClickClose = () => {
+    const onClickClose = React.useCallback(() => {
         setIsVisible(false);
         const is_from_table_row = !isEmptyObject(location.state) ? location.state.from_table_row : false;
         return is_from_table_row ? history.goBack() : routeBackInApp(history);
+    }, [history, routeBackInApp]);
+
+    React.useEffect(() => {
+        // don't open Contract details page for trade types with disabled feature flag:
+        if (is_trade_type_disabled && is_visible) {
+            onClickClose();
+        }
+    }, [is_trade_type_disabled, is_visible, onClickClose]);
+
+    const onChangeSwipeableIndex = index => {
+        setSwipeIndex(index);
     };
 
     if (!contract_info.underlying) return null;
@@ -164,7 +180,11 @@ const ContractReplay = observer(({ contract_id }) => {
                                 {is_digit_contract ? (
                                     <React.Fragment>
                                         <InfoBoxWidget />
-                                        <SwipeableWrapper className='replay-chart__container-swipeable-wrapper'>
+                                        <SwipeableWrapper
+                                            className='replay-chart__container-swipeable-wrapper'
+                                            is_swipe_disabled={swipe_index === 1}
+                                            onChange={onChangeSwipeableIndex}
+                                        >
                                             <DigitsWidget />
                                             <ReplayChart />
                                         </SwipeableWrapper>
@@ -196,15 +216,8 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const trade = useTraderStore();
     const { contract_replay, common, ui } = useStore();
     const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
-    const {
-        accumulator_previous_spot_time,
-        contract_config,
-        marker: accumulators_barriers_marker,
-        is_digit_contract,
-        barriers_array,
-        markers_array,
-        contract_info,
-    } = contract_store;
+    const { contract_config, is_digit_contract, barriers_array, getContractsArray, markers_array, contract_info } =
+        contract_store;
     const { underlying: symbol, audit_details } = contract_info;
     const allow_scroll_to_epoch = chart_state === 'READY' || chart_state === 'SCROLL_TO_LEFT';
     const { app_routing_history, current_language, is_socket_opened } = common;
@@ -230,8 +243,6 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const all_ticks = audit_details ? audit_details.all_ticks : [];
     const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
 
-    const accu_barriers_marker_component = allMarkers[accumulators_barriers_marker?.type];
-
     const isBottomWidgetVisible = () => {
         return isDesktop() && is_digit_contract;
     };
@@ -243,6 +254,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
         };
 
         if (isMobile()) {
+            chart_margin.top = 48;
             chart_margin.bottom = 48;
         }
 
@@ -250,8 +262,11 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     };
     const prev_start_epoch = usePrevious(start_epoch);
 
+    const has_ended = !!getEndTime(contract_info);
+
     return (
         <SmartChart
+            id={'replay'}
             barriers={barriers_array}
             bottomWidgets={isBottomWidgetVisible() ? ChartBottomWidgets : null}
             chartControlsWidgets={null}
@@ -281,6 +296,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                 is_accumulator_contract && end_epoch && start_epoch < prev_start_epoch
             }
             shouldFetchTradingTimes={false}
+            should_zoom_out_on_yaxis={is_accumulator_contract}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
             shouldFetchTickHistory={
@@ -288,6 +304,9 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             }
             shouldDrawTicksFromContractInfo={is_accumulator_contract}
             contractInfo={contract_info}
+            contracts_array={getContractsArray()}
+            isLive={!has_ended}
+            startWithDataFitMode={true}
         >
             {markers_array.map(({ content_config, marker_config, react_key }) => (
                 <ChartMarker
@@ -297,17 +316,6 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                     is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             ))}
-            {is_accumulator_contract && !!markers_array && (
-                <DelayedAccuBarriersMarker
-                    marker_component={accu_barriers_marker_component}
-                    key={accumulators_barriers_marker.key}
-                    is_dark_theme={is_dark_theme}
-                    granularity={granularity}
-                    is_in_contract_details
-                    previous_spot_time={accumulator_previous_spot_time}
-                    {...accumulators_barriers_marker}
-                />
-            )}
         </SmartChart>
     );
 });

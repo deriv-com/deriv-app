@@ -1,16 +1,26 @@
 import React from 'react';
-import { useAvailableWallets } from '@deriv/api';
+import { THooks } from '../../types';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import WalletsAddMoreCardBanner from '../WalletsAddMoreCardBanner';
 import WalletsAddMoreCardContent from '../WalletsAddMoreCardContent';
 
-type TWalletsAddMoreCard = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[0];
+type TProps = THooks.AllWalletAccounts;
 
-const WalletsAddMoreCard = ({ currency, is_added, landing_company_name }: TWalletsAddMoreCard) => {
+const WalletsAddMoreCard: React.FC<TProps> = ({
+    currency,
+    is_added: isAdded,
+    is_crypto: isCrypto,
+    landing_company_name: landingCompanyName,
+}) => {
     return (
         <div className='wallets-add-more__card'>
-            <WalletGradientBackground currency={currency || 'USD'} type='card' device='mobile' has_shine>
-                <WalletsAddMoreCardBanner is_added={is_added} landing_company_name={landing_company_name ?? ''} />
+            <WalletGradientBackground currency={currency || 'USD'} device='mobile' hasShine type='card'>
+                <WalletsAddMoreCardBanner
+                    currency={currency || 'USD'}
+                    is_added={isAdded}
+                    is_crypto={isCrypto}
+                    landing_company_name={landingCompanyName ?? ''}
+                />
             </WalletGradientBackground>
             <WalletsAddMoreCardContent currency={currency ?? ''} />
         </div>

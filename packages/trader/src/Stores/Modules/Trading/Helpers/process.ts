@@ -23,7 +23,7 @@ const processInSequence = async (
     });
 };
 
-export const processTradeParams = async (store: TTradeStore, new_state: DeepPartial<TTradeStore>) => {
+export const processTradeParams = async (store: TTradeStore, new_state: Partial<TTradeStore>) => {
     const functions = getMethodsList(store, new_state);
     await processInSequence(store, functions);
 

@@ -1,0 +1,94 @@
+.wallets-mt5-trade-screen {
+    $root: &;
+    width: 45vw;
+    max-width: 60rem;
+    min-width: 51.2rem;
+    @include mobile {
+        width: 100%;
+        min-width: 100%;
+        height: auto;
+    }
+
+    &__label {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__title {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        gap: 0.6rem;
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        padding: 2.4rem;
+        gap: 1.6rem;
+
+        &-description {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+
+            &--left {
+                display: flex;
+                align-items: center;
+
+                & > svg {
+                    transform: scale(0.7) translateX(-0.7rem);
+                }
+
+                .wallets-mt5-trade-screen__details-title {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.4rem;
+                }
+            }
+
+            &--right {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+            }
+        }
+
+        &-clipboards {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+
+            & .wallets-mt5-trade-details-item:first-child {
+                border-radius: 0.7rem 0.7rem 0 0;
+            }
+
+            & .wallets-mt5-trade-details-item:last-child {
+                border-radius: 0 0 0.7rem 0.7rem;
+            }
+
+            & .wallets-mt5-trade-details-item--info:last-child {
+                border-radius: 0.4rem;
+            }
+        }
+
+        &-maintainance {
+            display: grid;
+            grid-template-columns: 2.5rem auto;
+        }
+    }
+
+    &__links {
+        width: 100%;
+
+        &-link {
+            align-items: center;
+            display: grid;
+            grid-template-columns: 10% auto 10%;
+            grid-gap: 1.6rem;
+            border-top: 0.2rem solid #f2f3f4;
+            padding: 1.6rem 2.4rem;
+        }
+    }
+}

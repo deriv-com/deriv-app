@@ -1,12 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
-import { Link } from 'react-router-dom';
+
 import {
     Autocomplete,
     Checkbox,
-    Dropdown,
     DesktopWrapper,
+    Dropdown,
+    InlineMessage,
     MobileWrapper,
     Popover,
     RadioGroup,
@@ -15,21 +17,20 @@ import {
 } from '@deriv/components';
 import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import FormSubHeader from '../form-sub-header';
-import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
-import InlineNoteWithIcon from '../inline-note-with-icon';
-import FormBodySection from '../form-body-section';
-import { DateOfBirthField, FormInputField } from './form-fields.jsx';
+import { isFieldImmutable, verifyFields } from '../../Helpers/utils';
 import { getEmploymentStatusList } from '../../Sections/Assessment/FinancialAssessment/financial-information-list';
-import { isFieldImmutable } from '../../Helpers/utils';
+import FormBodySection from '../form-body-section';
+import { DateOfBirthField, FormInputField } from './form-fields';
+import FormSubHeader from '../form-sub-header';
+import InlineNoteWithIcon from '../inline-note-with-icon';
 
 const PersonalDetailsForm = props => {
     const {
+        inline_note_text,
         is_virtual,
         is_mf,
         is_svg,
-        is_qualified_for_idv,
-        should_hide_helper_image,
+        is_rendered_for_idv,
         editable_fields = [],
         has_real_account,
         residence_list,
@@ -43,9 +44,13 @@ const PersonalDetailsForm = props => {
         setShouldCloseTooltip,
         class_name,
         states_list,
+        side_note,
+        no_confirmation_needed,
+        mismatch_status,
     } = props;
     const autocomplete_value = 'none';
-    const PoiNameDobExampleIcon = PoiNameDobExample;
+    // need to put this check related to DIEL clients
+    const is_svg_only = is_svg && !is_mf;
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
@@ -60,7 +65,7 @@ const PersonalDetailsForm = props => {
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
     const getNameAndDobLabels = () => {
-        const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
+        const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_rendered_for_idv;
         const first_name_label = is_asterisk_needed ? localize('First name*') : localize('First name');
         const last_name_label = is_asterisk_needed ? localize('Last name*') : localize('Last name');
         const dob_label = is_asterisk_needed ? localize('Date of birth*') : localize('Date of birth');
@@ -72,8 +77,10 @@ const PersonalDetailsForm = props => {
         };
     };
 
+    const is_rendered_for_idv_or_onfido = is_rendered_for_idv || is_rendered_for_onfido;
+
     const getFieldHint = field_name =>
-        is_qualified_for_idv || is_rendered_for_onfido ? (
+        is_svg_only || is_rendered_for_idv_or_onfido ? (
             <Localize
                 i18n_default_text={'Your {{ field_name }} as in your identity document'}
                 values={{ field_name }}
@@ -94,32 +101,32 @@ const PersonalDetailsForm = props => {
         }
     }, [is_tax_residence_popover_open, is_tin_popover_open]);
 
-    const name_dob_clarification_message = (
-        <Localize
-            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
-            components={[<strong key={0} />]}
-        />
-    );
+    const handleSalutationSelection = event => {
+        if (event.target?.type === 'radio') {
+            setFieldValue('salutation', event.target?.value);
+        }
+    };
 
     const poa_clarification_message = (
         <Localize i18n_default_text='For faster verification, input the same address here as in your proof of address document (see section below)' />
     );
 
-    // need to put this check related to DIEL clients
-    const is_svg_only = is_svg && !is_mf;
+    // need to disable the checkbox if the user has not filled in the name and dob fields initially
+    const is_confirmation_checkbox_disabled = verifyFields(mismatch_status).some(
+        field => !values[field] || errors[field]
+    );
 
     return (
         <React.Fragment>
             <div
                 className={classNames(class_name, {
-                    'account-form__poi-confirm-example': is_qualified_for_idv,
+                    'account-form__poi-confirm-example': is_rendered_for_idv,
                 })}
             >
-                {(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image && (
-                    <InlineNoteWithIcon
-                        message={name_dob_clarification_message}
-                        font_size={isMobile() ? 'xxxs' : 'xs'}
-                    />
+                {(is_svg_only || is_rendered_for_idv_or_onfido) && (
+                    <div className='account-form__poi-inline-message'>
+                        <InlineMessage message={inline_note_text} size='md' />
+                    </div>
                 )}
                 {is_qualified_for_poa && (
                     <InlineNoteWithIcon
@@ -129,8 +136,10 @@ const PersonalDetailsForm = props => {
                     />
                 )}
                 <FormBodySection
-                    has_side_note={(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image}
-                    side_note={<PoiNameDobExampleIcon />}
+                    has_side_note={is_rendered_for_idv_or_onfido || is_svg_only}
+                    side_note={side_note}
+                    side_note_position='right'
+                    type='image'
                 >
                     <fieldset className='account-form__fieldset'>
                         {'salutation' in values && (
@@ -156,33 +165,36 @@ const PersonalDetailsForm = props => {
                                 </Text>
                             </div>
                         )}
-                        {!is_qualified_for_idv && !is_rendered_for_onfido && !is_qualified_for_poa && (
+                        {is_mf && !is_rendered_for_onfido && !is_qualified_for_poa && (
                             <FormSubHeader
                                 title={'salutation' in values ? localize('Title and name') : localize('Name')}
                             />
                         )}
                         {'salutation' in values && (
-                            <RadioGroup
-                                className='dc-radio__input'
-                                name='salutation'
-                                selected={values.salutation}
-                                onToggle={e => {
-                                    e.persist();
-                                    setFieldValue('salutation', e.target.value);
-                                }}
-                                required
-                            >
-                                {salutation_list.map(item => (
-                                    <RadioGroup.Item
-                                        key={item.value}
-                                        label={item.label}
-                                        value={item.value}
-                                        disabled={
-                                            !!values.salutation && isFieldImmutable('salutation', editable_fields)
-                                        }
-                                    />
-                                ))}
-                            </RadioGroup>
+                            <span onClick={handleSalutationSelection}>
+                                <RadioGroup
+                                    className='dc-radio__input'
+                                    name='salutation'
+                                    selected={values.salutation}
+                                    onToggle={e => {
+                                        e.persist();
+                                        setFieldValue('salutation', e.target.value);
+                                    }}
+                                    required
+                                >
+                                    {salutation_list.map(item => (
+                                        <RadioGroup.Item
+                                            key={item.value}
+                                            label={item.label}
+                                            value={item.value}
+                                            disabled={
+                                                !!values.salutation && isFieldImmutable('salutation', editable_fields)
+                                            }
+                                            has_error={!!(touched.salutation && errors.salutation)}
+                                        />
+                                    ))}
+                                </RadioGroup>
+                            </span>
                         )}
                         {'first_name' in values && (
                             <FormInputField
@@ -212,9 +224,7 @@ const PersonalDetailsForm = props => {
                                 data-testid='last_name'
                             />
                         )}
-                        {!is_qualified_for_idv && !is_rendered_for_onfido && !is_qualified_for_poa && (
-                            <FormSubHeader title={localize('Other details')} />
-                        )}
+                        {is_mf && !is_qualified_for_poa && <FormSubHeader title={localize('Other details')} />}
                         {'date_of_birth' in values && (
                             <DateOfBirthField
                                 name='date_of_birth'
@@ -495,13 +505,11 @@ const PersonalDetailsForm = props => {
                                                 legal_entity_name: getLegalEntityName('maltainvest'),
                                             }
                                         )}
-                                        renderlabel={title => (
-                                            <Text size='xs' line_height='s'>
-                                                {title}
-                                            </Text>
-                                        )}
                                         withTabIndex={0}
                                         data-testid='tax_identification_confirm'
+                                        has_error={
+                                            !!(touched.tax_identification_confirm && errors.tax_identification_confirm)
+                                        }
                                     />
                                 )}
                             </React.Fragment>
@@ -519,6 +527,20 @@ const PersonalDetailsForm = props => {
                         )}
                     </fieldset>
                 </FormBodySection>
+                {!no_confirmation_needed && is_rendered_for_idv && (
+                    <Checkbox
+                        name='confirmation_checkbox'
+                        className='formik__confirmation-checkbox'
+                        value={values.confirmation_checkbox}
+                        label={
+                            <Localize i18n_default_text='I confirm that the name and date of birth above match my chosen identity document' />
+                        }
+                        label_font_size={isMobile() ? 'xxs' : 'xs'}
+                        disabled={is_confirmation_checkbox_disabled}
+                        onChange={handleChange}
+                        has_error={!!(touched.confirmation_checkbox && errors.confirmation_checkbox)}
+                    />
+                )}
             </div>
 
             {is_svg_only && (

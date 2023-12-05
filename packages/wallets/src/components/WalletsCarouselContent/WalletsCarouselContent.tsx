@@ -1,44 +1,99 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useWalletAccountsList } from '@deriv/api';
-import { ProgressBar } from '../ProgressBar';
+import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useWalletAccountsList } from '@deriv/api';
+import { ProgressBar } from '../Base';
+import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
-import { WalletListCardIActions } from '../WalletListCardIActions';
+import { WalletListCardActions } from '../WalletListCardActions';
 import './WalletsCarouselContent.scss';
 
-const WalletsCarouselContent: React.FC = () => {
-    const [wallet_embla_ref, emblaApi] = useEmblaCarousel({ skipSnaps: true, containScroll: false });
-    const [active_index, setActiveIndex] = useState(0);
-    const { data: wallet_accounts_list } = useWalletAccountsList();
+type TProps = {
+    onWalletSettled?: (value: boolean) => void;
+};
 
-    React.useEffect(() => {
-        emblaApi?.scrollTo(active_index);
-    }, [active_index, emblaApi]);
+const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
+    const { isLoading: isAuthorizeLoading, switchAccount } = useAuthorize();
+    const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
+    const { data: walletAccountsList } = useWalletAccountsList();
+    const [isCarouselInitialized, setIsCarouselInitialized] = useState(false);
+    const [walletsCarouselEmblaRef, walletsCarouselEmblaApi] = useEmblaCarousel({
+        containScroll: false,
+        skipSnaps: true,
+    });
 
-    React.useEffect(() => {
-        emblaApi?.on('select', () => {
-            const scroll_snap_index = emblaApi.selectedScrollSnap();
-            setActiveIndex(scroll_snap_index);
+    useEffect(() => {
+        if (walletsCarouselEmblaApi) {
+            setIsCarouselInitialized(true);
+        }
+    }, [walletsCarouselEmblaApi]);
+
+    const { data: activeWallet } = useActiveWalletAccount();
+    const activeWalletIndex = useMemo(
+        () =>
+            walletAccountsList?.findIndex(wallet => wallet.loginid === activeWallet?.loginid) ??
+            walletsCarouselEmblaApi?.selectedScrollSnap() ??
+            0,
+        [activeWallet?.loginid, walletAccountsList, walletsCarouselEmblaApi]
+    );
+
+    const [progressBarActiveIndex, setProgressBarActiveIndex] = useState(activeWalletIndex + 1);
+
+    useEffect(() => {
+        if (isCarouselInitialized) {
+            walletsCarouselEmblaApi?.scrollTo(activeWalletIndex);
+            setProgressBarActiveIndex(activeWalletIndex + 1);
+        }
+    }, [activeWalletIndex, isCarouselInitialized, walletsCarouselEmblaApi]);
+
+    useEffect(() => {
+        walletsCarouselEmblaApi?.on('settle', () => {
+            const scrollSnapIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
+            const loginid = walletAccountsList?.[scrollSnapIndex]?.loginid;
+            if (activeWallet?.loginid !== loginid) {
+                switchAccount(loginid || '');
+            }
+            onWalletSettled?.(true);
         });
-    }, [emblaApi]);
-    const amount_of_steps = Array.from({ length: wallet_accounts_list?.length || 0 }, (_, idx) => idx + 1);
+
+        walletsCarouselEmblaApi?.on('select', () => {
+            const scrollSnapIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
+            setProgressBarActiveIndex(scrollSnapIndex + 1);
+            onWalletSettled?.(false);
+        });
+    }, [walletsCarouselEmblaApi, switchAccount, walletAccountsList, activeWallet?.loginid, onWalletSettled]);
+
+    const amountOfSteps = useMemo(() => walletAccountsList?.map(wallet => wallet.loginid), [walletAccountsList]);
+
+    if (isAuthorizeLoading || isCurrencyConfigLoading) {
+        return <WalletsCarouselLoader />;
+    }
 
     return (
-        <div className='wallets-carousel-content' ref={wallet_embla_ref}>
+        <div className='wallets-carousel-content' ref={walletsCarouselEmblaRef}>
             <div className='wallets-carousel-content__container'>
-                {wallet_accounts_list?.map(wallet => (
-                    <WalletCard key={`wallet-card-${wallet.loginid}`} account={wallet} />
+                {walletAccountsList?.map(account => (
+                    <WalletCard
+                        balance={account.display_balance}
+                        currency={account.currency || 'USD'}
+                        isDemo={account.is_virtual}
+                        key={`wallet-card-${account.loginid}`}
+                        landingCompanyName={account.landing_company_name}
+                    />
                 ))}
             </div>
             <div className='wallets-carousel-content__progress-bar'>
                 <ProgressBar
-                    active_index={active_index + 1}
-                    indexes={amount_of_steps}
-                    setActiveIndex={setActiveIndex}
-                    is_transition
+                    activeIndex={progressBarActiveIndex}
+                    indexes={amountOfSteps || []}
+                    isTransition
+                    setActiveIndex={switchAccount}
                 />
             </div>
-            <WalletListCardIActions />
+            <WalletListCardActions
+                isActive={activeWallet?.is_active || false}
+                isDemo={activeWallet?.is_virtual || false}
+                loginid={activeWallet?.loginid || ''}
+            />
         </div>
     );
 };

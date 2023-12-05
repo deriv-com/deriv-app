@@ -27,6 +27,7 @@ export default class RunPanelStore {
             is_stop_button_disabled: computed,
             is_clear_stat_disabled: computed,
             onStopButtonClick: action.bound,
+            onStopBotClick: action.bound,
             stopBot: action.bound,
             onClearStatClick: action.bound,
             clearStat: action.bound,
@@ -141,7 +142,7 @@ export default class RunPanelStore {
         return (
             this.is_running ||
             this.has_open_contract ||
-            (journal.unfiltered_messages.length === 0 && transactions.elements.length === 0)
+            (journal.unfiltered_messages.length === 0 && transactions?.transactions?.length === 0)
         );
     }
 
@@ -219,6 +220,16 @@ export default class RunPanelStore {
     }
 
     onStopButtonClick() {
+        const { is_multiplier } = this.root_store.summary_card;
+
+        if (is_multiplier) {
+            this.showStopMultiplierContractDialog();
+        } else {
+            this.stopBot();
+        }
+    }
+
+    onStopBotClick() {
         const { is_multiplier } = this.root_store.summary_card;
         const { summary_card } = this.root_store;
 
@@ -448,10 +459,10 @@ export default class RunPanelStore {
     }
 
     registerReactions() {
-        const { client, common, notifications } = this.core;
+        const { client, notifications } = this.core;
 
         const registerIsSocketOpenedListener = () => {
-            if (common.is_socket_opened) {
+            if (client.email) {
                 this.disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
                     loginid => {
@@ -470,7 +481,7 @@ export default class RunPanelStore {
         registerIsSocketOpenedListener();
 
         this.disposeLogoutListener = reaction(
-            () => common.is_socket_opened,
+            () => client.email,
             () => registerIsSocketOpenedListener()
         );
 

@@ -25,6 +25,7 @@ const TradingAssessmentRadioButton = ({
                     <RadioGroup
                         className='trading-assessment__wrapper__question--radio-group'
                         is_left
+                        name={form_control}
                         should_wrap_items
                         required
                         selected={values[form_control]}

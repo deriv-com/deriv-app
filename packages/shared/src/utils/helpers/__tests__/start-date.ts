@@ -1,9 +1,10 @@
+import { ContractsFor } from '@deriv/api-types';
 import { buildForwardStartingConfig } from '../start-date';
 
 describe('start_date', () => {
     describe('buildForwardStartingConfig', () => {
         it('Returns empty object when forward_starting_options and forward_starting_dates are both empties', () => {
-            const contract = {
+            const contract: ContractsFor['available'][number] = {
                 barrier_category: 'euro_atm',
                 barriers: 0,
                 contract_category: 'callput',
@@ -19,7 +20,7 @@ describe('start_date', () => {
                 start_type: 'spot',
                 submarket: 'major_pairs',
                 underlying_symbol: 'frxAUDJPY',
-                forward_starting_options: [],
+                forward_starting_options: undefined,
             };
             /* eslint-disable no-unused-expressions */
             expect(buildForwardStartingConfig(contract, [])).toHaveLength(0);

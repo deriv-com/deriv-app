@@ -1,15 +1,20 @@
 import React from 'react';
 import classnames from 'classnames';
+
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+
 import { DBOT_TABS } from 'Constants/bot-contents';
-import { waitForDomElement } from 'Utils/dom-observer';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { waitForDomElement } from 'Utils/dom-observer';
+
 import { useComponentVisibility } from '../../hooks/useComponentVisibility';
+
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from './constants';
+
 import './index.scss';
 
 type TRecentWorkspace = {
@@ -23,7 +28,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
     const { toggleSaveModal, updateBotName } = save_modal;
     const {
-        dashboard_strategies,
+        dashboard_strategies = [],
         getRecentFileIcon,
         getSaveType,
         getSelectedStrategyID,
@@ -46,7 +51,10 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
 
     React.useEffect(() => {
         let timer: ReturnType<typeof setTimeout>;
-        if (dashboard_strategies && dashboard_strategies.length && index === 0 && !is_div_triggered_once.current) {
+
+        const select_first_strategy = dashboard_strategies?.length && index === 0 && !is_div_triggered_once.current;
+
+        if (select_first_strategy) {
             timer = setTimeout(() => {
                 is_div_triggered_once.current = true;
                 trigger_div_ref?.current?.click();
@@ -63,46 +71,67 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         setSelectedStrategyId(workspace.id);
     };
 
+    const handleInit = () => {
+        setPreviewedStrategyId(workspace?.id);
+        // Fires for desktop
+        if (active_tab === 0) {
+            previewRecentStrategy(workspace.id);
+        }
+    };
+
+    const handlePreviewList = () => {
+        setPreviewedStrategyId(workspace.id);
+        // Fires for mobile on clicking preview button
+        if (is_mobile) {
+            setPreviewOnDialog(true);
+            const dashboard_tab_dom_element = document.getElementsByClassName('tab__dashboard')?.[0];
+            waitForDomElement('#load-strategy__blockly-container', dashboard_tab_dom_element).then(() => {
+                previewRecentStrategy(workspace.id);
+            });
+        }
+    };
+
+    const handleEdit = async () => {
+        await loadFileFromRecent();
+        setActiveTab(DBOT_TABS.BOT_BUILDER);
+    };
+
+    const handleSave = () => {
+        updateBotName(workspace?.name);
+        toggleSaveModal();
+    };
+
     const viewRecentStrategy = async (type: string) => {
         setSelectedStrategyId(workspace.id);
+
         switch (type) {
-            case STRATEGY.INIT: {
-                setPreviewedStrategyId(workspace?.id);
-                // Fires for desktop
-                if (active_tab === 0) {
-                    previewRecentStrategy(workspace.id);
-                }
+            case STRATEGY.INIT:
+                handleInit();
                 break;
-            }
-            case STRATEGY.PREVIEW_LIST: {
-                setPreviewedStrategyId(workspace.id);
-                // Fires for mobile on clicking preview button
-                if (is_mobile) setPreviewOnDialog(true);
-                const dashboard_tab_dom_element = document.getElementsByClassName('tab__dashboard')?.[0];
-                await waitForDomElement('#load-strategy__blockly-container', dashboard_tab_dom_element);
-                previewRecentStrategy(workspace.id);
+
+            case STRATEGY.PREVIEW_LIST:
+                handlePreviewList();
                 break;
-            }
-            case STRATEGY.EDIT: {
-                await loadFileFromRecent();
-                setActiveTab(DBOT_TABS.BOT_BUILDER);
+
+            case STRATEGY.EDIT:
+                await handleEdit();
                 break;
-            }
-            case STRATEGY.SAVE: {
-                updateBotName(workspace?.name);
-                toggleSaveModal();
+
+            case STRATEGY.SAVE:
+                handleSave();
                 break;
-            }
-            case STRATEGY.DELETE: {
+
+            case STRATEGY.DELETE:
                 onToggleDeleteDialog(true);
                 break;
-            }
+
             default:
                 break;
         }
     };
 
     const is_active_mobile = selected_strategy_id === workspace.id && is_dropdown_visible;
+    const text_size = is_desktop ? 'xs' : 'xxs';
 
     return (
         <div
@@ -122,13 +151,13 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         >
             <div className='load-strategy__recent-item-text'>
                 <div className='load-strategy__recent-item-title'>
-                    <Text align='left' as='p' size={is_desktop ? 'xs' : 'xxs'} line_height='l'>
+                    <Text align='left' as='p' size={text_size} line_height='l'>
                         {workspace.name}
                     </Text>
                 </div>
             </div>
             <div className='load-strategy__recent-item-time'>
-                <Text align='left' as='p' size={is_desktop ? 'xs' : 'xxs'} line_height='l'>
+                <Text align='left' as='p' size={text_size} line_height='l'>
                     {timeSince(workspace.timestamp)}
                 </Text>
             </div>
@@ -140,7 +169,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                     })}
                 />
                 <div className='load-strategy__recent-item-saved'>
-                    <Text align='left' as='p' size={is_desktop ? 'xs' : 'xxs'} line_height='l'>
+                    <Text align='left' as='p' size={text_size} line_height='l'>
                         {getSaveType(workspace.save_type)}
                     </Text>
                 </div>

@@ -127,8 +127,8 @@ describe('setLimitOrderBarriers', () => {
         if (
             contract_info &&
             contract_info.limit_order &&
-            contract_info.limit_order.take_profit !== undefined &&
-            contract_info.limit_order.stop_loss !== undefined
+            contract_info?.limit_order?.take_profit &&
+            contract_info?.limit_order?.stop_loss
         ) {
             contract_info.limit_order.take_profit.value = '15';
             contract_info.limit_order.stop_loss.value = '5';

@@ -18,7 +18,12 @@ const CFDCompareAccountsCard = ({ trading_platforms, is_eu_user, is_demo }: TCom
             <div className='compare-cfd-account-card-container'>
                 <CFDCompareAccountsPlatformLabel trading_platforms={trading_platforms} />
                 {trading_platforms.platform === CFD_PLATFORMS.CTRADER && (
-                    <Text className='compare-cfd-account-card-container__banner' weight='bold' size='xs'>
+                    <Text
+                        className='compare-cfd-account-card-container__banner'
+                        weight='bold'
+                        size='xs'
+                        color='colored-background'
+                    >
                         <Localize i18n_default_text='New!' />
                     </Text>
                 )}

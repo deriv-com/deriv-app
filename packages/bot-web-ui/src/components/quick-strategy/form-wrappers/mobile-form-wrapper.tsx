@@ -8,6 +8,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
 import FormTabs from './form-tabs';
 import QSTabContent from './strategy-description';
+import useQsSubmitHandler from './useQsSubmitHandler';
 import '../quick-strategy.scss';
 
 type TMobileFormWrapper = {
@@ -19,6 +20,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
     const { submitForm, isValid, setFieldValue, validateForm } = useFormikContext();
     const { quick_strategy, run_panel } = useDBotStore();
     const { selected_strategy, setSelectedStrategy, toggleStopBotDialog } = quick_strategy;
+    const { handleSubmit } = useQsSubmitHandler();
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
 
     React.useEffect(() => {
@@ -39,17 +41,6 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
         text: STRATEGIES[key as keyof typeof STRATEGIES].label,
         description: STRATEGIES[key as keyof typeof STRATEGIES].description,
     }));
-
-    const handleSubmit = async () => {
-        if (run_panel.is_running) {
-            await setFieldValue('action', 'EDIT');
-            submitForm();
-            toggleStopBotDialog();
-        } else {
-            await setFieldValue('action', 'RUN');
-            submitForm();
-        }
-    };
 
     return (
         <div className='qs'>

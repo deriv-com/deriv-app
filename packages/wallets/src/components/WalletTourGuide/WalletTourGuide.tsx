@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useLocalStorage, useReadLocalStorage } from 'usehooks-ts';
 import { useActiveWalletAccount, useAllWalletAccounts, useAuthorize, useWalletAccountsList } from '@deriv/api';
 import Joyride, { ACTIONS, CallBackProps } from '@deriv/react-joyride';
+import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import {
     getFiatWalletLoginId,
@@ -30,7 +31,9 @@ const WalletTourGuide = () => {
     const activeWalletLoginId = activeWallet?.loginid;
 
     const isDemoWallet = Boolean(activeWallet?.is_virtual);
-    const hasMT5Account = Boolean(activeWallet?.linked_to?.some(account => account.platform === 'mt5'));
+    const hasMT5Account = Boolean(
+        activeWallet?.linked_to?.some(account => account.platform === PlatformDetails.mt5.platform)
+    );
     const hasDerivAppsTradingAccount = Boolean(activeWallet?.dtrade_loginid);
     const isAllWalletsAlreadyAdded = Boolean(availableWallets?.every(wallet => wallet.is_added));
 

@@ -444,7 +444,9 @@
 
     &__input {
         margin: 0;
-
+        &.highlight {
+            border: 1px solid var(--status-warning);
+        }
         .dc-input {
             &__container {
                 height: var(--input-height);

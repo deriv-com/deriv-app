@@ -12,6 +12,7 @@ import {
 import { WalletButton, WalletError } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks, TPlatforms } from '../../../../types';
+import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
 import { Verification } from '../../flows/Verification';
 import { DxtradeEnterPasswordModal, MT5PasswordModal } from '../../modals';
 import { CTraderSuccessModal } from '../../modals/CTraderSuccessModal';
@@ -20,7 +21,7 @@ import {
     shouldRestrictBviAccountCreation,
     shouldRestrictVanuatuAccountCreation,
 } from './compareAccountsConfig';
-import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE } from './constants';
+import { JURISDICTION } from './constants';
 import './CompareAccountsButton.scss';
 
 type TCompareAccountButton = {

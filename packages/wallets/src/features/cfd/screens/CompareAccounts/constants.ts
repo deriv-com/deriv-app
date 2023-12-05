@@ -1,15 +1,4 @@
-export const CFD_PLATFORMS = {
-    CFDS: 'CFDs',
-    CTRADER: 'ctrader',
-    DXTRADE: 'dxtrade',
-    MT5: 'mt5',
-} as const;
-
-export const MARKET_TYPE = {
-    ALL: 'all',
-    FINANCIAL: 'financial',
-    SYNTHETIC: 'synthetic',
-} as const;
+import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
 
 export const ACCOUNT_ICONS = {
     [MARKET_TYPE.SYNTHETIC]: 'Derived',

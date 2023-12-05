@@ -1,6 +1,7 @@
 import InstrumentsIcons from '../../../../public/images/tradingInstruments';
 import { THooks, TPlatforms } from '../../../../types';
-import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE, MARKET_TYPE_SHORTCODE } from './constants';
+import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
+import { JURISDICTION, MARKET_TYPE_SHORTCODE } from './constants';
 
 type THighlightedIconLabel = {
     highlighted: boolean;

@@ -3,7 +3,8 @@ import { useHover } from 'usehooks-ts';
 import { Tooltip, WalletText } from '../../../../components';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
-import { ACCOUNT_ICONS, CFD_PLATFORMS, MARKET_TYPE_SHORTCODE } from './constants';
+import { CFD_PLATFORMS } from '../../constants';
+import { ACCOUNT_ICONS, MARKET_TYPE_SHORTCODE } from './constants';
 import TradingPlatformIcons from './tradingPlatformIcons';
 import './CompareAccountsTitleIcon.scss';
 

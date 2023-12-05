@@ -1,11 +1,11 @@
 import React from 'react';
 import { WalletText } from '../../../../components';
 import { THooks, TPlatforms } from '../../../../types';
+import { CFD_PLATFORMS } from '../../constants';
 import CompareAccountsButton from './CompareAccountsButton';
 import CompareAccountsDescription from './CompareAccountsDescription';
 import CompareAccountsPlatformLabel from './CompareAccountsPlatformLabel';
 import CompareAccountsTitleIcon from './CompareAccountsTitleIcon';
-import { CFD_PLATFORMS } from './constants';
 import InstrumentsLabelHighlighted from './InstrumentsLabelHighlighted';
 import './CompareAccountsCard.scss';
 

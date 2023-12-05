@@ -40,6 +40,7 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
     const onClickBackButton = () => {
         setFAQSearchValue('');
         setShowSearchBar(!showSearchBar);
+        resetTutorialTabContent();
         setActiveTabTutorial(prev_active_tutorials);
         setSelectedTab(tutorial_tabs[prev_active_tutorials] || {});
     };
@@ -47,7 +48,7 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
     const onCloseHandleSearch = () => {
         onFocusSearch();
         setFAQSearchValue('');
-        setActiveTabTutorial(2);
+        setActiveTabTutorial(prev_active_tutorials);
         resetTutorialTabContent();
     };
 

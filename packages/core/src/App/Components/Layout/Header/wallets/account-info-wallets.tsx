@@ -5,7 +5,6 @@ import { Icon, WalletIcon, Text, AppLinkedWithWalletIcon } from '@deriv/componen
 import { Localize } from '@deriv/translations';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { TStores } from '@deriv/stores/types';
 import { useStoreWalletAccountsList, useStoreLinkedWalletsAccounts } from '@deriv/hooks';
 import { AccountSwitcherWallet, AccountSwitcherWalletMobile } from 'App/Containers/AccountSwitcherWallet';
 import { AccountsInfoLoader } from '../Components/Preloader';
@@ -29,11 +28,11 @@ type TBalanceLabel = {
 };
 
 type TMobileInfoIcon = {
-    wallet_account: ReturnType<typeof useStoreWalletAccountsList>['data'][number];
+    wallet_account: Exclude<ReturnType<typeof useStoreWalletAccountsList>['data'], undefined>[number];
 };
 
 type TDesktopInfoIcons = {
-    wallet_account: ReturnType<typeof useStoreWalletAccountsList>['data'][number];
+    wallet_account: Exclude<ReturnType<typeof useStoreWalletAccountsList>['data'], undefined>[number];
 };
 
 const DropdownArrow = ({ is_disabled = false }: TDropdownArrow) =>
@@ -141,6 +140,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
         <div className='acc-info__wrapper'>
             <div className='acc-info__separator' />
             <AccountInfoWrapper
+                is_mobile={is_mobile}
                 is_disabled={Boolean(active_account?.is_disabled)}
                 disabled_message={account_switcher_disabled_message}
             >

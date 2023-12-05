@@ -32,7 +32,7 @@ describe('ArrowIndicator', () => {
         expect(screen.queryByText('IcProfit')).not.toBeInTheDocument();
         expect(screen.getByText('IcLoss')).toBeInTheDocument();
     });
-    it('should appear when the value changes and disappear after 3 seconds if not changed again', () => {
+    it('should appear when the value changes, disappear after 3 seconds & reappear if value changes again', () => {
         jest.useFakeTimers();
         const { rerender } = render(<ArrowIndicator value='123.94' />);
         expect(screen.queryByText('IcProfit')).not.toBeInTheDocument();
@@ -42,6 +42,8 @@ describe('ArrowIndicator', () => {
             jest.advanceTimersByTime(3000);
         });
         expect(screen.queryByText('IcProfit')).not.toBeInTheDocument();
+        rerender(<ArrowIndicator value='123.96' />);
+        expect(screen.getByText('IcProfit')).toBeInTheDocument();
         jest.useRealTimers();
     });
 });

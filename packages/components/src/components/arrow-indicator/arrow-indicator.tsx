@@ -23,15 +23,16 @@ const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
     const { icon, previous_icon, previous_value } = data;
     const has_defined_values = !isNaN(Number(previous_value)) && !isNaN(Number(value));
     const timeout_id = React.useRef<ReturnType<typeof setTimeout>>();
+
     React.useEffect(() => {
         setHidden(false);
 
         if (previous_value !== Number(value)) {
             setData(prev_data => {
                 const has_increased = Number(prev_data.previous_value) < Number(value);
-                const defined_icon = has_increased ? 'IcProfit' : 'IcLoss';
+                const icon_name = has_increased ? 'IcProfit' : 'IcLoss';
                 return {
-                    icon: has_defined_values ? defined_icon : '',
+                    icon: has_defined_values ? icon_name : '',
                     previous_icon: prev_data.icon,
                     previous_value: prev_data.value,
                     value,

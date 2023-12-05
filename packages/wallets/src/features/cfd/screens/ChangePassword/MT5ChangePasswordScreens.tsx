@@ -47,15 +47,18 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
             ),
             button: (
                 <div className='wallets-change-password__btn'>
-                    <WalletButton onClick={() => hide()} size='lg' text='Cancel' variant='outlined' />
+                    <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                        Cancel
+                    </WalletButton>
                     <WalletButton
                         onClick={() => {
                             handleSendEmail();
                             handleClick('emailVerification');
                         }}
                         size='lg'
-                        text='Confirm'
-                    />
+                    >
+                        Confirm
+                    </WalletButton>
                 </div>
             ),
             headingText: `Confirm to change your ${platformTitle} password`,
@@ -63,7 +66,11 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
         },
         introScreen: {
             bodyText: `Use this password to log in to your ${platformTitle} accounts on the desktop, web, and mobile apps.`,
-            button: <WalletButton onClick={() => handleClick('confirmationScreen')} size='lg' text='Change password' />,
+            button: (
+                <WalletButton onClick={() => handleClick('confirmationScreen')} size='lg'>
+                    Change password
+                </WalletButton>
+            ),
             headingText: `${platformTitle} password`,
             icon: <MT5PasswordIcon />,
         },

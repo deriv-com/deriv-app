@@ -7,7 +7,7 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
-import { MarketTypeDetails } from '../../../constants';
+import { MarketTypeDetails, PlatformDetails } from '../../../constants';
 import { MT5TradeModal, VerificationFailedModal } from '../../../modals';
 import './AddedMT5AccountsList.scss';
 
@@ -37,7 +37,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
     const history = useHistory();
     const { data: jurisdictionStatus } = useJurisdictionStatus(account.landing_company_short || 'svg', account.status);
-    const { title } = MarketTypeDetails[account.market_type || 'all'];
+    const { title } = MarketTypeDetails[account.market_type ?? 'all'];
     const { show } = useModal();
     const { t } = useTranslation();
 
@@ -51,23 +51,24 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         onClick={() => {
                             history.push('/wallets/cashier/transfer');
                         }}
-                        text={t('Transfer')}
                         variant='outlined'
-                    />
-
+                    >
+                        {t('Transfer')}
+                    </WalletButton>
                     <WalletButton
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() =>
                             show(
                                 <MT5TradeModal
-                                    marketType={account.market_type || 'all'}
+                                    marketType={account.market_type ?? 'all'}
                                     mt5Account={account}
-                                    platform='mt5'
+                                    platform={PlatformDetails.mt5.platform}
                                 />
                             )
                         }
-                        text={t('Open')}
-                    />
+                    >
+                        {t('Open')}
+                    </WalletButton>
                 </div>
             )}
         >

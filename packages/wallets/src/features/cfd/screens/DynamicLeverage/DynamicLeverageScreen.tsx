@@ -3,11 +3,12 @@ import classNames from 'classnames';
 import { useDynamicLeverage } from '@deriv/api';
 import { WalletText } from '../../../../components';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
+import { PlatformDetails } from '../../constants';
 import { DynamicLeverageMarketCard } from './DynamicLeverageMarketCard';
 import './DynamicLeverageScreen.scss';
 
 const DynamicLeverageScreen = () => {
-    const { data: dynamicLeverages } = useDynamicLeverage('mt5');
+    const { data: dynamicLeverages } = useDynamicLeverage(PlatformDetails.mt5.platform);
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
 
     if (!dynamicLeverages) return null;

@@ -33,7 +33,9 @@ const Transfer: React.FC = () => {
                 <WalletText as='p' color='error' size='md'>
                     {error?.error.message}
                 </WalletText>
-                <WalletButton onClick={() => resetTransfer()} text='Reset error' variant='contained' />
+                <WalletButton onClick={() => resetTransfer()} variant='contained'>
+                    Reset error
+                </WalletButton>
             </div>
         );
 

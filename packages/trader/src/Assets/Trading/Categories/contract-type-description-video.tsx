@@ -1,51 +1,50 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
-import { getUrlBase } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
+import { getDescriptionVideoId } from 'Modules/Trading/Helpers/video-config';
+import VideoStream from 'App/Components/Elements/VideoStream';
 
 type TContractTypeDescriptionVideo = {
-    selected_contract_type?: string;
     data_testid?: string;
+    selected_contract_type?: string;
 };
 
-const ContractTypeDescriptionVideo = ({ selected_contract_type, data_testid }: TContractTypeDescriptionVideo) => {
+const ContractTypeDescriptionVideo = ({ data_testid, selected_contract_type }: TContractTypeDescriptionVideo) => {
     const { ui } = useStore();
     const { is_dark_mode_on: is_dark_theme, is_mobile } = ui;
-    const getVideoSource = React.useCallback(
-        (extension: 'mp4' | 'webm') => {
-            return getUrlBase(
-                `/public/videos/${selected_contract_type}_description${is_dark_theme ? '_dark' : '_light'}.${extension}`
-            );
-        },
-        [is_dark_theme, selected_contract_type]
-    );
-
-    // memoize file paths for videos and open the modal only after we get them
-    const mp4_src = React.useMemo(() => getVideoSource('mp4'), [getVideoSource]);
-    const webm_src = React.useMemo(() => getVideoSource('webm'), [getVideoSource]);
     if (!selected_contract_type) {
         return null;
     }
     return (
-        <video
-            autoPlay
-            loop
-            playsInline
-            disablePictureInPicture
-            controlsList='nodownload'
-            onContextMenu={e => e.preventDefault()}
-            preload='auto'
-            controls
-            width={is_mobile ? 328 : 480}
-            height={is_mobile ? 184.5 : 270}
-            className='contract-type-info__video'
-            data-testid={data_testid}
-        >
-            {/* a browser will select a source with extension it recognizes */}
-            <source src={mp4_src} type='video/mp4' />
-            <source src={webm_src} type='video/webm' />
-            {localize('Unfortunately, your browser does not support the video.')}
-        </video>
+        <div className='contract-type-info__video'>
+            {/* In order to create a custom player later, please install @cloudflare/stream-react,
+                use the official Stream component, and remove the temporary VideoStream.
+                Official Stream component methods can be used via its streamRef prop, e.g.:
+                    const ref = React.useRef<StreamPlayerApi>();
+                    // Call ref.current.play() or other methods when needed
+                    <Stream
+                        autoplay
+                        controls
+                        height={is_mobile ? '184.5px' : '270px'} // applied to iframe
+                        letterboxColor='transparent' // unsets the default black background of the iframe
+                        loop
+                        preload='auto'
+                        responsive={false} // unsets default styles of the iframe
+                        src={getDescriptionVideoId(selected_contract_type, is_dark_theme)}
+                        streamRef={ref}
+                        width='100%' // applied to iframe
+                    />                    
+                More: https://www.npmjs.com/package/@cloudflare/stream-react
+                API: https://developers.cloudflare.com/stream/viewing-videos/using-the-stream-player/using-the-player-api/ */}
+            <VideoStream
+                autoplay
+                controls
+                disable_picture_in_picture
+                height={is_mobile ? 184.5 : 270}
+                loop
+                src={getDescriptionVideoId(selected_contract_type, is_dark_theme)}
+                test_id={data_testid}
+            />
+        </div>
     );
 };
 

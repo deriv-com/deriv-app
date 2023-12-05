@@ -35,7 +35,7 @@ const useTransferMessages = (
     useEffect(() => {
         if (!fromAccount?.currency || !toAccount?.currency || !activeWallet?.currency || !activeWallet?.loginid) return;
         unsubscribe();
-        if (isAccountVerified && isTransferBetweenWallets) {
+        if (!isAccountVerified && isTransferBetweenWallets) {
             subscribe({
                 base_currency: activeWallet.currency,
                 loginid: activeWallet.loginid,

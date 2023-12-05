@@ -4,7 +4,7 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { ToggleSwitch, WalletDropdown, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import FilterIcon from '../../../../public/images/filter.svg';
-import { TransactionsCompleted, TransactionsPending } from './components';
+import { TransactionsCompleted, TransactionsCompletedDemoResetBalance, TransactionsPending } from './components';
 import './Transactions.scss';
 
 type TTransactionsPendingFilter = React.ComponentProps<typeof TransactionsPending>['filter'];
@@ -84,8 +84,11 @@ const Transactions = () => {
                     value={filterValue}
                 />
             </div>
-            {isPendingActive ? (
+            {isPendingActive && (
                 <TransactionsPending filter={filtersMapper.pending[filterValue] as TTransactionsPendingFilter} />
+            )}
+            {wallet?.is_virtual && filterValue === 'deposit' ? (
+                <TransactionsCompletedDemoResetBalance />
             ) : (
                 <TransactionsCompleted filter={filtersMapper.completed[filterValue] as TTransactionCompletedFilter} />
             )}

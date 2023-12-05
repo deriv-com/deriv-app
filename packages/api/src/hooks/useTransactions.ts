@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import useInfiniteQuery from '../useInfiniteQuery';
 import { TSocketRequestPayload } from '../../types';
 import useAuthorize from './useAuthorize';
+import useQuery from '../useQuery';
 import useInvalidateQuery from '../useInvalidateQuery';
 import useActiveAccount from './useActiveAccount';
 import { displayMoney } from '../utils';
@@ -21,7 +21,7 @@ const useTransactions = () => {
     const fractional_digits = account?.currency_config?.fractional_digits || 2;
 
     const [filter, setFilter] = useState<TFilter>();
-    const { data, fetchNextPage, remove, ...rest } = useInfiniteQuery('statement', {
+    const { data, remove, ...rest } = useQuery('statement', {
         options: {
             enabled: !isFetching && isSuccess,
             getNextPageParam: (lastPage, pages) => {
@@ -43,23 +43,14 @@ const useTransactions = () => {
     }, [filter, invalidate]);
 
     useEffect(() => {
-        return () => {
-            remove();
-        };
+        return remove;
     }, [remove]);
-
-    // Flatten the data array.
-    const flatten_data = useMemo(() => {
-        if (!data?.pages?.length) return;
-
-        return data?.pages?.flatMap(page => page?.statement?.transactions);
-    }, [data?.pages]);
 
     // Modify the data.
     const modified_data = useMemo(() => {
-        if (!flatten_data?.length) return;
+        if (!data?.statement?.transactions?.length) return;
 
-        return flatten_data?.map(transaction => ({
+        return data?.statement?.transactions?.map(transaction => ({
             ...transaction,
             /** The transaction amount in currency format. */
             display_amount: displayMoney(transaction?.amount || 0, display_code, {
@@ -72,13 +63,11 @@ const useTransactions = () => {
                 preferred_language,
             }),
         }));
-    }, [flatten_data, preferred_language, fractional_digits, display_code]);
+    }, [data?.statement?.transactions, display_code, fractional_digits, preferred_language]);
 
     return {
         /** List of account transactions */
         data: modified_data,
-        /** Fetch the next page of transactions */
-        fetchNextPage,
         /** Filter the transactions by type */
         setFilter,
         ...rest,

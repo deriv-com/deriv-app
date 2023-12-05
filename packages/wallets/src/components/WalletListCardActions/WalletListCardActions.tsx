@@ -100,7 +100,7 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                     rounded='md'
                     variant='outlined'
                 >
-                    {isActive ? button.text : undefined}
+                    {isActive ? button.text : ''}
                 </WalletButton>
             ))}
         </div>

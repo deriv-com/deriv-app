@@ -16,12 +16,6 @@ const mockUseIsClientHighRiskForMT5 = useIsClientHighRiskForMT5 as jest.MockedFu
     typeof useIsClientHighRiskForMT5
 >;
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => (Component: React.ReactElement) => Component,
-}));
-
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Wizard: jest.fn(({ children }) => <div data-testid='dt_wizard'>{children}</div>),

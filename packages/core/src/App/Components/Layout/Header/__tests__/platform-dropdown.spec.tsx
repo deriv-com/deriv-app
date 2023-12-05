@@ -14,14 +14,6 @@ type TMockPlatformDropdown = {
     }[];
 };
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect:
-        () =>
-        <T,>(Component: T) =>
-            Component,
-}));
 const store = mockStore();
 
 const MockPlatformDropdown = ({ platform_config }: TMockPlatformDropdown) => {

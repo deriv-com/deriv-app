@@ -4,12 +4,6 @@ import { screen, render } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { AccountSwitcher } from '../account-switcher.jsx';
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('@deriv/hooks', () => {
     return {
         ...jest.requireActual('@deriv/hooks'),

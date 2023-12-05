@@ -37,9 +37,10 @@ const WalletActionModal: React.FC<TWalletActionModal> = ({
                             key={action.text}
                             onClick={action.onClick}
                             size='lg'
-                            text={action.text}
                             variant={action.isPrimary ? 'contained' : 'outlined'}
-                        />
+                        >
+                            {action.text}
+                        </WalletButton>
                     ))}
                 </div>
             </div>

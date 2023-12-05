@@ -15,7 +15,9 @@ const ErrorState: React.FC<TProps> = ({
             description={message}
             icon={<IcCashierError />}
             renderButtons={() => (
-                <WalletButton onClick={() => window.location.reload()} size='lg' text='Try again' variant='ghost' />
+                <WalletButton onClick={() => window.location.reload()} size='lg' variant='ghost'>
+                    Try again
+                </WalletButton>
             )}
             title='Oops, something went wrong!'
         />

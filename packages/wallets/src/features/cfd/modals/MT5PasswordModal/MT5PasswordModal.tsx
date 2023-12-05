@@ -124,19 +124,26 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
 
     const renderSuccessButton = useCallback(() => {
         if (isDemo) {
-            return <WalletButton isFullWidth onClick={() => hide()} size='lg' text='Continue' />;
+            return (
+                <WalletButton isFullWidth onClick={() => hide()} size='lg'>
+                    Continue
+                </WalletButton>
+            );
         }
         return (
             <WalletButtonGroup isFlex isFullWidth>
-                <WalletButton onClick={() => hide()} size='lg' text='Maybe later' variant='outlined' />
+                <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                    Maybe later
+                </WalletButton>
                 <WalletButton
                     onClick={() => {
                         hide();
                         history.push('/wallets/cashier/transfer');
                     }}
                     size='lg'
-                    text='Transfer funds'
-                />
+                >
+                    Transfer funds
+                </WalletButton>
             </WalletButtonGroup>
         );
     }, [history, isDemo, hide]);
@@ -156,17 +163,19 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                             );
                         }}
                         size='lg'
-                        text='Forgot password?'
                         variant='outlined'
-                    />
+                    >
+                        Forgot password?
+                    </WalletButton>
                     <WalletButton
                         disabled={!password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading}
                         isFullWidth
                         isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                         onClick={onSubmit}
                         size='lg'
-                        text='Add account'
-                    />
+                    >
+                        Add account
+                    </WalletButton>
                 </WalletButtonGroup>
             );
         return (
@@ -176,8 +185,9 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                 onClick={onSubmit}
                 size='lg'
-                text='Create Deriv MT5 password'
-            />
+            >
+                Create Deriv MT5 password
+            </WalletButton>
         );
     }, [
         createMT5AccountLoading,

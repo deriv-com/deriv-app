@@ -602,7 +602,7 @@ export default class MyAdsStore extends BaseStore {
                         : true,
                 v =>
                     floating_rate_store.rate_type === ad_type.FLOAT
-                        ? rangeValidator(parseFloat(v), floating_rate_store.float_rate_offset_limit)
+                        ? rangeValidator(parseFloat(v), parseFloat(floating_rate_store.float_rate_offset_limit))
                         : true,
             ],
         };
@@ -749,7 +749,7 @@ export default class MyAdsStore extends BaseStore {
                         : true,
                 v =>
                     this.required_ad_type === ad_type.FLOAT
-                        ? rangeValidator(v, parseFloat(floating_rate_store.float_rate_offset_limit))
+                        ? rangeValidator(parseFloat(v), parseFloat(floating_rate_store.float_rate_offset_limit))
                         : true,
             ],
         };

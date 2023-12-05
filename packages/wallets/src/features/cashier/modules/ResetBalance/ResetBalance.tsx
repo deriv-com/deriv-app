@@ -24,8 +24,9 @@ const ResetBalance = () => {
                 <WalletButton
                     onClick={isResetBalanceSuccess ? () => history.push(`/wallets/cashier/transfer`) : resetBalance}
                     size='lg'
-                    text={isResetBalanceSuccess ? 'Transfer funds' : 'Reset balance'}
-                />
+                >
+                    {isResetBalanceSuccess ? 'Transfer funds' : 'Reset balance'}
+                </WalletButton>
             )}
             title={isResetBalanceSuccess ? 'Success' : 'Reset balance'}
         />

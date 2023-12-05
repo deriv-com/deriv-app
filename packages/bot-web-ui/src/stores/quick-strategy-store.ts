@@ -12,6 +12,14 @@ export type TActiveSymbol = {
     value: string;
 };
 
+export type TLossThresholdWarningData = {
+    show: boolean;
+    loss_amount?: string | number;
+    currency?: string;
+    highlight_field?: Array<string>;
+    already_shown?: boolean;
+};
+
 interface IQuickStrategyStore {
     current_duration_min_max: {
         min: number;
@@ -21,8 +29,12 @@ interface IQuickStrategyStore {
     is_open: boolean;
     selected_strategy: string;
     form_data: TFormData;
+    loss_threshold_warning_data: {
+        show: boolean;
+    };
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
+    setLossThresholdWarningData: (data: TLossThresholdWarningData) => void;
     setFormVisibility: (is_open: boolean) => void;
     setSelectedStrategy: (strategy: string) => void;
     setValue: (name: string, value: string) => void;
@@ -47,6 +59,9 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         min: 0,
         max: 10,
     };
+    loss_threshold_warning_data: TLossThresholdWarningData = {
+        show: false,
+    };
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
@@ -55,11 +70,14 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             is_contract_dialog_open: observable,
             is_open: observable,
             is_stop_bot_dialog_open: observable,
+            initializeLossThresholdWarningData: action,
             selected_strategy: observable,
+            loss_threshold_warning_data: observable,
             onSubmit: action,
             setCurrentDurationMinMax: action,
             setFormVisibility: action,
             setSelectedStrategy: action,
+            setLossThresholdWarningData: action,
             setValue: action,
             toggleStopBotDialog: action,
         });
@@ -73,6 +91,21 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             }
         );
     }
+
+    setLossThresholdWarningData = (data: TLossThresholdWarningData) => {
+        this.loss_threshold_warning_data = {
+            ...this.loss_threshold_warning_data,
+            ...data,
+        };
+    };
+
+    initializeLossThresholdWarningData = () => {
+        this.loss_threshold_warning_data = {
+            show: false,
+            highlight_field: [],
+            already_shown: false,
+        };
+    };
 
     setFormVisibility = (is_open: boolean) => {
         this.is_open = is_open;

@@ -53,14 +53,6 @@
             color: var(--text-general);
         }
     }
-    &__payout {
-        &--won {
-            color: var(--text-profit-success);
-        }
-        &--lost {
-            color: var(--text-loss-danger);
-        }
-    }
     &__positions-overlay {
         max-width: 218px;
     }

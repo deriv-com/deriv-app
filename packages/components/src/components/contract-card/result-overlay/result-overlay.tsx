@@ -100,13 +100,10 @@ const ResultOverlay = ({
                     <div className='dc-result__content'>
                         <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={is_contract_won} />
                         <Text
-                            className={classNames('dc-result__payout', {
-                                'dc-result__payout--won': is_contract_won,
-                                'dc-result__payout--lost': !is_contract_won,
-                            })}
                             weight='bold'
                             size='s'
                             line_height='xxl'
+                            color={is_contract_won ? 'profit-success' : 'loss-danger'}
                         >
                             <Money amount={payout_info} currency={currency} has_sign show_currency />
                         </Text>

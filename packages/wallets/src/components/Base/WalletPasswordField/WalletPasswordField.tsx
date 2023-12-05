@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Score, validatePassword, validPassword } from '../../../utils/passwordUtils';
+import { Score, validatePassword, validPassword } from '../../../utils/password';
 import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import PasswordMeter from './PasswordMeter';
@@ -18,6 +18,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     onChange,
     password,
     shouldDisablePasswordMeter = false,
+    showMessage,
 }) => {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isTouched, setIsTouched] = useState(false);
@@ -46,7 +47,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setIsPasswordVisible} viewPassword={isPasswordVisible} />
                 )}
-                showMessage
+                showMessage={showMessage}
                 type={isPasswordVisible ? 'text' : 'password'}
                 value={password}
             />

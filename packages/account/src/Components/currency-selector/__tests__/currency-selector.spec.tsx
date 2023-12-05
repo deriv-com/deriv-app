@@ -414,8 +414,8 @@ describe('<CurrencySelector/>', () => {
         };
         renderComponent({ store_config: new_store });
 
-    //     expect(screen.getByTestId('currency_selector_form').childNodes[0]).toHaveStyle('height: calc(150px - 89px);');
-    // });
+        expect(screen.getByTestId('currency_selector_form').childNodes[0]).toHaveStyle('height: calc(150px - 89px);');
+    });
 
     it('should call handleCancel when previous button is called', () => {
         const new_props: React.ComponentProps<typeof CurrencySelector> = {

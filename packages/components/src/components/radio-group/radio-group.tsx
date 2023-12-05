@@ -8,6 +8,7 @@ type TItem = React.HTMLAttributes<HTMLDivElement> & {
     label: string;
     disabled?: boolean;
     hidden?: boolean;
+    has_error?: boolean;
 };
 type TItemWrapper = {
     should_wrap_items?: boolean;
@@ -75,12 +76,14 @@ const RadioGroup = ({
                                     className={classNames('dc-radio-group__circle', {
                                         'dc-radio-group__circle--selected': selected_option === item.props.value,
                                         'dc-radio-group__circle--disabled': item.props.disabled,
+                                        'dc-radio-group__circle--error': item.props.has_error,
                                     })}
                                 />
                                 <Text
                                     size='xs'
                                     className={classNames('dc-radio-group__label', {
                                         'dc-radio-group__label--disabled': item.props.disabled,
+                                        'dc-radio-group__label--error': item.props.has_error,
                                     })}
                                 >
                                     {item.props.label}

@@ -31,7 +31,7 @@ import {
     toMoment,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { RudderStack, getRudderstackConfig } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getContractDurationType } from '../Helpers/market-underlying';
 
@@ -259,12 +259,11 @@ export const OpenPositionsTable = ({
     row_size,
     totals,
 }: TOpenPositionsTable) => {
-    const { action_names, event_names, form_names, subform_names } = getRudderstackConfig();
     React.useEffect(() => {
-        RudderStack.track(event_names.reports, {
-            action: action_names.choose_report_type,
-            form_name: form_names.default,
-            subform_name: subform_names.open_positions,
+        Analytics.trackEvent('ce_reports_form', {
+            action: 'choose_report_type',
+            form_name: 'default',
+            subform_name: 'open_positions_form',
             trade_type_filter: contract_type_value,
             growth_type_filter: accumulator_rate,
         });
@@ -522,7 +521,6 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         is_multiplier_selected,
         is_accumulator_selected
     );
-    const { action_names, event_names, form_names, subform_names } = getRudderstackConfig();
 
     React.useEffect(() => {
         /*
@@ -542,10 +540,10 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
 
     React.useEffect(() => {
         if (prev_contract_type_value) {
-            RudderStack.track(event_names.reports, {
-                action: action_names.filter_trade_type,
-                form_name: form_names.default,
-                subform_name: subform_names.open_positions,
+            Analytics.trackEvent('ce_reports_form', {
+                action: 'filter_trade_type',
+                form_name: 'default',
+                subform_name: 'open_positions_form',
                 trade_type_filter: contract_type_value,
             });
         }
@@ -553,10 +551,10 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
 
     React.useEffect(() => {
         if (prev_accumulator_rate) {
-            RudderStack.track(event_names.reports, {
-                action: action_names.filter_growth_rate,
-                form_name: form_names.default,
-                subform_name: subform_names.open_positions,
+            Analytics.trackEvent('ce_reports_form', {
+                action: 'filter_growth_rate',
+                form_name: 'default',
+                subform_name: 'open_positions_form',
                 growth_type_filter: accumulator_rate,
             });
         }

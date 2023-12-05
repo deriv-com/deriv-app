@@ -13,35 +13,6 @@
         align-items: center;
         gap: 2.4rem;
         align-self: stretch;
-
-        &__description {
-            color: #333;
-            text-align: center;
-            font-size: 1.6rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 2.4rem; /* 150% */
-        }
-
-        &__transfer-button {
-            all: unset;
-            cursor: pointer;
-            display: flex;
-            height: 4rem;
-            padding: 0 1.6rem;
-            justify-content: center;
-            align-items: center;
-            border-radius: 0.4rem;
-            background: var(--button-primary-light-default, rgba(255, 68, 79, 0.16));
-            color: var(--brand-coral, #ff444f);
-            text-align: center;
-
-            /* desktop/paragraph/P2 - bold */
-            font-size: 1.4rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 2rem; /* 142.857% */
-        }
     }
 
     &__header {
@@ -51,22 +22,24 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            padding: 1.6rem 0;
         }
 
-        &-title {
-            font-weight: bold;
-            font-size: 2.4rem;
-            line-height: 3.6rem;
+        &-compare-accounts {
             display: flex;
             align-items: center;
+            gap: 0.4rem;
         }
 
         &-description {
-            font-size: 1.6rem;
-            line-height: 2.4rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+            align-items: start;
 
             &__link {
                 color: var(--brand-coral, #ff444f);
+                text-underline-offset: 0.3rem;
             }
         }
     }

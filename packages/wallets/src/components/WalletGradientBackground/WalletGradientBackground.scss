@@ -1,6 +1,10 @@
 .wallets-gradient {
     position: relative;
 
+    &__content {
+        position: relative;
+    }
+
     &__shine {
         position: absolute;
         inset: 0;
@@ -14,10 +18,11 @@
     &__palette {
         &--grey {
             background: radial-gradient(
-                100% 4130.74% at 0% 100%,
-                rgb(214, 218, 219, 0.24) 0%,
-                rgba(207, 207, 207, 1) 100%
-            );
+                    100% 277.78% at 0% 100%,
+                    rgba(153, 153, 153, 0.08) 0%,
+                    rgba(153, 153, 153, 0.32) 100%
+                )
+                #ffffff;
         }
     }
 
@@ -1142,20 +1147,6 @@
                         )
                         #212329;
                     border-radius: 0.8rem;
-                    &:before {
-                        content: '';
-                        display: block;
-                        position: absolute;
-                        left: 0;
-                        top: 0;
-                        width: 100%;
-                        height: 100%;
-                        background-image: url('../../public/images/wallet-demo-bg-light.svg');
-                        background-repeat: repeat;
-                        background-size: 7rem;
-                        mix-blend-mode: overlay;
-                        opacity: 0.24;
-                    }
                 }
                 &-dark {
                     background: radial-gradient(
@@ -1187,6 +1178,23 @@
                         )
                         #fbdddd;
                 }
+            }
+        }
+        &-desktop-header-light,
+        &-mobile-header-light,
+        &-mobile-card-light {
+            &:before {
+                content: '';
+                display: block;
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                background-image: url('../../public/images/wallet-demo-bg-light.svg');
+                background-repeat: repeat;
+                background-size: 7rem;
+                mix-blend-mode: overlay;
+                opacity: 0.24;
             }
         }
     }

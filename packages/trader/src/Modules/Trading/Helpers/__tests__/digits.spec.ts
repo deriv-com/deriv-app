@@ -7,6 +7,9 @@ describe('isDigitTradeType', () => {
     it('should return false if trade type is not digit', () => {
         expect(isDigitTradeType('test_trade_type')).toBeFalsy();
     });
+    it('should return false if trade type is undefined', () => {
+        expect(isDigitTradeType()).toBeFalsy();
+    });
 });
 
 describe('isDigitContractType', () => {

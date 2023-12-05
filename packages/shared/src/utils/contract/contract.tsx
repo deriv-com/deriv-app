@@ -12,6 +12,17 @@ type TGetAccuBarriersDTraderTimeout = (params: {
     underlying: string;
 }) => number;
 
+// Trade types that are considered as vanilla financials
+export const VANILLA_FX_SYMBOLS = [
+    'frxAUDUSD',
+    'frxEURUSD',
+    'frxGBPUSD',
+    'frxUSDCAD',
+    'frxUSDJPY',
+    'frxXAUUSD',
+    'frxXAGUSD',
+] as const;
+
 // animation correction time is an interval in ms between ticks receival from API and their actual visual update on the chart
 export const ANIMATION_CORRECTION_TIME = 200;
 export const DELAY_TIME_1S_SYMBOL = 500;
@@ -26,6 +37,7 @@ export const TURBOS = {
 export const VANILLALONG = {
     CALL: 'vanillalongcall',
     PUT: 'vanillalongput',
+    FX: 'vanilla_fx',
 } as const;
 
 export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {
@@ -65,6 +77,8 @@ export const isValidToSell = (contract_info: TContractInfo) =>
 
 export const hasContractEntered = (contract_info: TContractInfo) => !!contract_info.entry_spot;
 
+export const hasBarrier = (contract_type = '') => /VANILLA|TURBOS|HIGH_LOW|TOUCH/i.test(contract_type);
+
 export const hasTwoBarriers = (contract_type = '') => /EXPIRY|RANGE|UPORDOWN/i.test(contract_type);
 
 export const isAccumulatorContract = (contract_type = '') => /ACCU/i.test(contract_type);
@@ -80,6 +94,9 @@ export const isTouchContract = (contract_type: string) => /TOUCH/i.test(contract
 export const isTurbosContract = (contract_type = '') => /TURBOS/i.test(contract_type);
 
 export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
+
+export const isVanillaFxContract = (contract_type = '', symbol = '') =>
+    isVanillaContract(contract_type) && VANILLA_FX_SYMBOLS.includes(symbol as typeof VANILLA_FX_SYMBOLS[number]);
 
 export const isSmartTraderContract = (contract_type = '') => /RUN|EXPIRY|RANGE|UPORDOWN|ASIAN/i.test(contract_type);
 
@@ -238,4 +255,18 @@ export const getLocalizedTurbosSubtype = (contract_type = '') => {
     ) : (
         <Localize i18n_default_text='Short' />
     );
+};
+
+export const clickAndKeyEventHandler = (
+    callback: () => void,
+    e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>
+) => {
+    if (e) {
+        e.preventDefault();
+        if (e.type !== 'keydown' || (e.type === 'keydown' && (e as React.KeyboardEvent).key === 'Enter')) {
+            callback();
+        }
+    } else {
+        callback();
+    }
 };

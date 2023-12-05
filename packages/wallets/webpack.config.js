@@ -2,7 +2,8 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 
-const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+const is_release =
+    process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
 const svg_loaders = [
     {
@@ -21,6 +22,7 @@ const svg_loaders = [
                     { removeTitle: false },
                     { removeUselessStrokeAndFill: false },
                     { removeUknownsAndDefaults: false },
+                    { removeViewBox: false },
                 ],
                 floatPrecision: 3,
             },
@@ -68,6 +70,9 @@ module.exports = function (env) {
                                 cacheDirectory: true,
                                 rootMode: 'upward',
                             },
+                        },
+                        {
+                            loader: path.resolve(__dirname, './localize-loader.js'),
                         },
                     ],
                 },

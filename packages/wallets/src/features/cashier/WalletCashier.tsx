@@ -1,20 +1,37 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
+import { Loader } from '../../components';
 import { WalletCashierContent, WalletCashierHeader } from './components';
+import { CashierScrollContext } from './context';
 import './WalletCashier.scss';
 
 const WalletCashier = () => {
-    const { isLoading } = useActiveWalletAccount();
+    const { isFetchedAfterMount, isLoading } = useActiveWalletAccount();
 
-    if (isLoading) return <p>Loading...</p>;
+    const [onCashierScroll, setOnCashierScroll] = useState<React.UIEventHandler<HTMLDivElement> | null>(null);
+
+    const [isContentScrolled, setIsContentScrolled] = useState(false);
+
+    const onContentScroll = useCallback(
+        (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+            const target = e.currentTarget as HTMLDivElement;
+            setIsContentScrolled(target.scrollTop > 0);
+            onCashierScroll?.(e);
+        },
+        [onCashierScroll]
+    );
+
+    if (isLoading || !isFetchedAfterMount) return <Loader />;
 
     return (
-        <>
-            <WalletCashierHeader />
-            <div className='wallets-cashier-content'>
-                <WalletCashierContent />
-            </div>
-        </>
+        <div className='wallets-cashier'>
+            <WalletCashierHeader hideWalletDetails={isContentScrolled} />
+            <CashierScrollContext.Provider value={{ onCashierScroll, setOnCashierScroll }}>
+                <div className='wallets-cashier-content' onScroll={onContentScroll}>
+                    <WalletCashierContent />
+                </div>
+            </CashierScrollContext.Provider>
+        </div>
     );
 };
 

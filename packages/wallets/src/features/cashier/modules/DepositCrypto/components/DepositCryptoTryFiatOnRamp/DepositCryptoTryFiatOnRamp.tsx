@@ -8,9 +8,12 @@ const DepositCryptoTryFiatOnRamp = () => {
 
     return (
         <div className='wallets-deposit-crypto-try-fiat-onramp'>
-            <WalletText size='xs'>
+            <WalletText align='center' size='xs'>
                 Looking for a way to buy cryptocurrencies?&nbsp;
-                <a className='link' onClick={() => history.push('/wallets/cashier/on-ramp')}>
+                <a
+                    className='link wallets-deposit-crypto-try-fiat-onramp__link'
+                    onClick={() => history.push('/wallets/cashier/on-ramp')}
+                >
                     Try Fiat onramp
                 </a>
                 .

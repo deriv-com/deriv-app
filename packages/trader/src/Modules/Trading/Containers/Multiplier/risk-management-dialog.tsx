@@ -5,8 +5,8 @@ import { isDeepEqual, pick } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss.jsx';
-import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
+import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss';
+import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit';
 import CancelDeal from 'Modules/Trading/Components/Elements/Multiplier/cancel-deal-mobile';
 
 type TRiskManagementDialog = {
@@ -108,20 +108,26 @@ const RiskManagementDialog = observer(({ is_open, onClose, toggleDialog }: TRisk
                     height_offset='54px'
                 >
                     <TakeProfit
-                        // @ts-expect-error TODO: ts migration of <TakeProfit />
                         take_profit={state.take_profit}
                         has_take_profit={state.has_take_profit}
-                        onChange={onChange}
-                        onChangeMultiple={onChangeMultipleLocal}
+                        onChange={onChange as React.ComponentProps<typeof TakeProfit>['onChange']}
+                        onChangeMultiple={
+                            onChangeMultipleLocal as unknown as React.ComponentProps<
+                                typeof TakeProfit
+                            >['onChangeMultiple']
+                        }
                         validation_errors={validation_errors}
                     />
                     {!is_turbos && (
                         <StopLoss
-                            // @ts-expect-error TODO: ts migration of <StopLoss />
                             stop_loss={state.stop_loss}
                             has_stop_loss={state.has_stop_loss}
-                            onChange={onChange}
-                            onChangeMultiple={onChangeMultipleLocal}
+                            onChange={onChange as React.ComponentProps<typeof StopLoss>['onChange']}
+                            onChangeMultiple={
+                                onChangeMultipleLocal as unknown as React.ComponentProps<
+                                    typeof StopLoss
+                                >['onChangeMultiple']
+                            }
                             validation_errors={validation_errors}
                         />
                     )}

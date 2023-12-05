@@ -1,4 +1,8 @@
 .wallets-available-mt5 {
+    &__icon {
+        cursor: pointer;
+    }
+
     &__text {
         color: var(--brand-coral, #ff444f);
         text-align: center;

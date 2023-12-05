@@ -9,6 +9,7 @@ import { BaseMessage, FileMessage, MessageType, MessageTypeFilter, UserMessage }
 
 import BaseStore from 'Stores/base_store';
 import ChatMessage, { convertFromChannelMessage } from 'Utils/chat-message';
+import { renameFile } from 'Utils/file-uploader';
 import { requestWS } from 'Utils/websocket';
 
 type TChatInfo = { app_id: string; user_id: string; token?: string };
@@ -52,6 +53,7 @@ export default class SendbirdStore extends BaseStore {
             createChatForNewOrder: action.bound,
             onMessagesScroll: action.bound,
             replaceChannelMessage: action.bound,
+            sendFile: action.bound,
             setActiveChatChannel: action.bound,
             setChatChannelUrl: action.bound,
             setChatInfo: action.bound,
@@ -203,7 +205,7 @@ export default class SendbirdStore extends BaseStore {
 
         const is_inclusive_of_timestamp = false;
         const reverse_results = this.chat_messages.length > 0;
-        const custom_type = ['', 'admin'];
+        const custom_type = [''];
         const result_size = 50;
 
         const messages_timestamp =
@@ -294,7 +296,7 @@ export default class SendbirdStore extends BaseStore {
 
     onMessagesScroll() {
         if (this.scroll_debounce) {
-            clearInterval(this.scroll_debounce);
+            clearTimeout(this.scroll_debounce);
         }
 
         this.scroll_debounce = setTimeout(() => {
@@ -332,6 +334,10 @@ export default class SendbirdStore extends BaseStore {
 
     registerEventListeners() {
         const markMessagesAsReadCheckScroll = () => {
+            if (this.scroll_debounce) {
+                return null;
+            }
+
             (async () => {
                 await this.markMessagesAsRead(true);
             })();
@@ -403,9 +409,10 @@ export default class SendbirdStore extends BaseStore {
     sendFile(file: File) {
         if (!file) return;
 
+        const updated_file = renameFile(file);
         this.active_chat_channel
             ?.sendFileMessage({
-                file,
+                file: updated_file,
                 fileName: file.name,
                 fileSize: file.size,
                 mimeType: file.type,

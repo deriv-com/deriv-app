@@ -3,15 +3,27 @@
     border-radius: 0.8rem;
 
     @include mobile {
-        height: 100vh;
+        height: calc(var(--wallets-vh, 1vh) * 100 - 4rem);
         width: 100vw;
         margin: 0;
         border-radius: 0;
         display: grid;
-        grid-template-rows: 9% auto;
+        grid-template-rows: 6rem auto;
 
-        &--fixed {
-            grid-template-rows: 7% auto 8%;
+        &--hide-deriv-app-header {
+            height: calc(var(--wallets-vh, 1vh) * 100);
+        }
+
+        &--fixed-footer {
+            grid-template-rows: 6rem auto 7rem;
+        }
+
+        &--no-header {
+            grid-template-rows: auto;
+        }
+
+        &--no-header--fixed-footer {
+            grid-template-rows: auto 7rem;
         }
     }
 
@@ -22,13 +34,13 @@
         justify-content: space-between;
         align-items: center;
 
-        &--close-icon {
+        &-close-icon {
             cursor: pointer;
         }
 
         @include mobile {
             display: grid;
-            grid-template-columns: auto 5%;
+            grid-template-columns: auto 2rem;
             background-color: #ffffff;
             position: relative;
             z-index: 99;

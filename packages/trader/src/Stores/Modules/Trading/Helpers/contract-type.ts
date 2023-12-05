@@ -11,12 +11,12 @@ import {
     hasIntradayDurationUnit,
     buildForwardStartingConfig,
     unsupported_contract_types_list,
+    getCleanedUpCategories,
     getContractCategoriesConfig,
     getContractTypesConfig,
     getContractSubtype,
     getLocalizedBasis,
-    LocalStore,
-    TRADE_FEATURE_FLAGS,
+    TTradeTypesCategories,
 } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
@@ -24,12 +24,6 @@ import { isSessionAvailable } from './start-date';
 import { ContractsFor, ContractsForSymbolResponse, TradingTimes, TradingTimesResponse } from '@deriv/api-types';
 import { TTradeStore } from '../../../../Types/common-prop.type';
 
-type TAvailableCategories = {
-    [key: string]: {
-        name: string;
-        categories: Array<string | TTextValueStrings>;
-    };
-};
 type TBarriers = Record<
     keyof TTradeStore['duration_min_max'],
     {
@@ -51,6 +45,7 @@ type TConfig = ReturnType<typeof getContractTypesConfig>[string]['config'] & {
     cancellation_range?: string[];
     barrier_choices?: string[];
 };
+type TNonAvailableContractsList = Record<'contract_category' | 'contract_display_name' | 'contract_type', string>[];
 type TTextValueStrings = {
     text: string;
     value: string;
@@ -83,8 +78,9 @@ export const ContractType = (() => {
         ReturnType<typeof getEqualProps>;
 
     let available_contract_types: ReturnType<typeof getContractTypesConfig> = {};
-    let available_categories: TAvailableCategories = {};
+    let available_categories: TTradeTypesCategories = {};
     let contract_types: ReturnType<typeof getContractTypesConfig>;
+    let non_available_categories: TTradeTypesCategories = {};
     const trading_events: { [key: string]: Record<string, TEvents | undefined> } = {};
     const trading_times: { [key: string]: Record<string, TTimes> } = {};
     let has_only_forward_starting_contracts = false;
@@ -140,22 +136,34 @@ export const ContractType = (() => {
 
                 available_contract_types[type].config = config;
             });
-            const hidden_trade_types = Object.entries(LocalStore.getObject('FeatureFlagsStore')?.data ?? {})
-                .filter(([key, value]) => TRADE_FEATURE_FLAGS.includes(key) && !value)
-                .map(([key]) => key);
-            // cleanup categories
-            Object.keys(available_categories).forEach(key => {
-                available_categories[key].categories = available_categories[key].categories?.filter(item => {
-                    return (
-                        typeof item === 'object' &&
-                        // hide trade types with disabled feature flag:
-                        hidden_trade_types?.every(hidden_type => !item.value.startsWith(hidden_type))
+            available_categories = getCleanedUpCategories(available_categories);
+
+            non_available_categories = {};
+            const mutable_contracts_config = cloneObject(contract_categories);
+            const getCategories = (key = ''): string[] => mutable_contracts_config[key]?.categories ?? [];
+            const non_available_contracts = r.contracts_for.non_available as TNonAvailableContractsList;
+
+            if (non_available_contracts) {
+                non_available_contracts.forEach(({ contract_type }) => {
+                    const type =
+                        Object.keys(contract_types).find(key =>
+                            contract_types[key].trade_types.includes(contract_type)
+                        ) ?? '';
+                    const key = Object.keys(mutable_contracts_config).find(key => getCategories(key).includes(type));
+                    const categories: Array<string | TTextValueStrings> = getCategories(key);
+                    const title = contract_types[type]?.title;
+                    const is_available = !!available_categories[key as keyof TTradeTypesCategories]?.categories?.find(
+                        el => (el as TTextValueStrings).text === title
                     );
+                    if (categories.includes(type) && !is_available) {
+                        categories[categories.indexOf(type)] = { value: type, text: title };
+                    }
+                    if (key) {
+                        non_available_categories[key] = mutable_contracts_config[key];
+                    }
                 });
-                if (available_categories[key].categories?.length === 0) {
-                    delete available_categories[key];
-                }
-            });
+            }
+            non_available_categories = getCleanedUpCategories(non_available_categories);
         });
 
     const buildTradeTypesConfig = (
@@ -238,7 +246,7 @@ export const ContractType = (() => {
         };
     };
 
-    const getContractType = (list: TAvailableCategories, contract_type: string) => {
+    const getContractType = (list: TTradeTypesCategories, contract_type: string) => {
         const arr_list: string[] = Object.keys(list || {})
             .reduce<string[]>((k, l) => [...k, ...(list[l].categories as TTextValueStrings[]).map(ct => ct.value)], [])
             .filter(type => unsupported_contract_types_list.indexOf(type) === -1)
@@ -699,6 +707,7 @@ export const ContractType = (() => {
         getContractCategories: () => ({
             contract_types_list: available_categories,
             has_only_forward_starting_contracts,
+            non_available_contract_types_list: non_available_categories,
         }),
     };
 })();

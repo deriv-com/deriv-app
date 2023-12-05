@@ -28,7 +28,6 @@ export default class OrderStore {
             order_payment_method_details: observable,
             order_rerender_timeout: observable,
             rating_value: observable,
-            user_email_address: observable,
             verification_code: observable,
             verification_link_error_message: observable,
             should_navigate_to_buy_sell: observable,
@@ -38,7 +37,6 @@ export default class OrderStore {
             confirmOrderRequest: action.bound,
             confirmOrder: action.bound,
             getP2POrderList: action.bound,
-            getSettings: action.bound,
             getWebsiteStatus: action.bound,
             handleDateChange: action.bound,
             handleRating: action.bound,
@@ -67,14 +65,12 @@ export default class OrderStore {
             setOrders: action.bound,
             setOrderRendererTimeout: action.bound,
             setQueryDetails: action.bound,
-            setData: action.bound,
             setOrderRating: action.bound,
             subscribeToCurrentOrder: action.bound,
             syncOrder: action.bound,
             unsubscribeFromCurrentOrder: action.bound,
             verifyEmailVerificationCode: action.bound,
             setRatingValue: action.bound,
-            setUserEmailAddress: action.bound,
             setVerificationCode: action.bound,
             setVerificationLinkErrorMessage: action.bound,
         });
@@ -110,7 +106,6 @@ export default class OrderStore {
     order_payment_method_details = null;
     order_rerender_timeout = null;
     rating_value = 0;
-    user_email_address = '';
     verification_code = '';
     verification_link_error_message = '';
 
@@ -231,14 +226,6 @@ export default class OrderStore {
                         this.setOrders(list);
                     }
                 }
-            }
-        });
-    }
-
-    getSettings() {
-        requestWS({ get_settings: 1 }).then(response => {
-            if (response && !response.error) {
-                this.setUserEmailAddress(response.get_settings.email);
             }
         });
     }
@@ -581,10 +568,6 @@ export default class OrderStore {
         this.should_navigate_to_buy_sell = should_navigate_to_buy_sell;
     }
 
-    setData(data) {
-        this.data = data;
-    }
-
     setErrorCode(error_code) {
         this.error_code = error_code;
     }
@@ -632,10 +615,6 @@ export default class OrderStore {
 
     setRatingValue(rating_value) {
         this.rating_value = rating_value;
-    }
-
-    setUserEmailAddress(user_email_address) {
-        this.user_email_address = user_email_address;
     }
 
     // This is only for the order confirmation request,

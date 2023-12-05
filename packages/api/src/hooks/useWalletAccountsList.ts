@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
-import useAccountsList from './useAccountsList';
+import useDerivAccountsList from './useDerivAccountsList';
 
 /** A custom hook that gets the list of all wallet accounts for the current user. */
 const useWalletAccountsList = () => {
-    const { data: account_list_data, ...rest } = useAccountsList();
+    const { data: account_list_data, ...rest } = useDerivAccountsList();
 
     // Filter out non-wallet accounts.
     const filtered_accounts = useMemo(
@@ -24,9 +24,11 @@ const useWalletAccountsList = () => {
                 /** Landing company shortcode the account belongs to. */
                 landing_company_name: wallet.landing_company_name?.replace('maltainvest', 'malta'),
                 /** Indicating whether the wallet is a maltainvest wallet. */
-                is_malta_wallet: wallet.landing_company_name === 'malta',
+                is_malta_wallet: wallet.landing_company_name === 'maltainvest',
                 /** The DTrade account ID of this wallet */
                 dtrade_loginid,
+                /** Returns if the wallet is a crypto wallet. */
+                is_crypto: wallet.currency_config?.is_crypto,
             } as const;
         });
     }, [filtered_accounts]);

@@ -1,6 +1,7 @@
 .wallets-add-more {
     display: flex;
     flex-direction: column;
+    max-width: 123.2rem;
     width: 100%;
     padding-top: 2.4rem;
 
@@ -20,10 +21,9 @@
     &__carousel {
         overflow: hidden;
         background-color: #fff;
-        padding: 3.2rem 1.6rem;
+        padding: 3.2rem 2.4rem;
         border-radius: 0.8rem;
         position: relative;
-        border: 0.1rem solid #d6dadb;
         height: 100%;
 
         @include mobile {
@@ -41,21 +41,16 @@
         &-btn {
             z-index: 1;
             position: absolute;
-            height: 4rem;
-            width: 4rem;
-            border-radius: 50%;
-            cursor: pointer;
             top: 45%;
-
+            box-shadow: 0px 24px 24px 0px rgba(0, 0, 0, 0.08), 0px 0px 24px 0px rgba(0, 0, 0, 0.08);
+            &:disabled {
+                display: none;
+            }
             &--prev {
                 left: 1.6rem;
             }
             &--next {
                 right: 1.6rem;
-            }
-            &:disabled {
-                opacity: 0.3;
-                display: none;
             }
         }
     }

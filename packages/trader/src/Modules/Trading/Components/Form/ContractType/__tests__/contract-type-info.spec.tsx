@@ -269,6 +269,7 @@ const default_mock_store = {
         trade: {
             cached_multiplier_cancellation_list: [],
             symbol: 'test_symbol',
+            is_vanilla_fx: false,
         },
     },
     active_symbols: {

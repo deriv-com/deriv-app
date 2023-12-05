@@ -2,8 +2,8 @@ import { datadogLogs } from '@datadog/browser-logs';
 import { formatDate, formatTime } from '@deriv/shared';
 
 const DATADOG_CLIENT_TOKEN_LOGS = process.env.DATADOG_CLIENT_TOKEN_LOGS ?? '';
-const isProduction = process.env.CIRCLE_JOB === 'release_production';
-const isStaging = process.env.CIRCLE_JOB === 'release_staging';
+const isProduction = process.env.NODE_ENV === 'production';
+const isStaging = process.env.NODE_ENV === 'staging';
 let dataDogSessionSampleRate = 0;
 
 dataDogSessionSampleRate = +process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS ?? 1;
@@ -11,7 +11,7 @@ let dataDogVersion = '';
 let dataDogEnv = '';
 
 if (isProduction) {
-    dataDogVersion = `deriv-app-${process.env.CIRCLE_TAG}`;
+    dataDogVersion = `deriv-app-${process.env.REF_NAME}`;
     dataDogEnv = 'production';
 } else if (isStaging) {
     dataDogVersion = `deriv-app-staging-v${formatDate(new Date(), 'YYYYMMDD')}-${formatTime(Date.now(), 'HH:mm')}`;

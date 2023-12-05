@@ -9,7 +9,7 @@ import {
     setWebsocket,
     useOnLoadTranslation,
 } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
+import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
@@ -20,6 +20,8 @@ import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
 import 'Sass/app.scss';
+import { Analytics } from '@deriv/analytics';
+import initHotjar from '../Utils/Hotjar';
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
@@ -41,14 +43,17 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     React.useEffect(() => {
         const loadSmartchartsStyles = () => {
-            if (root_store.client.is_beta_chart) {
-                import('@deriv/deriv-charts-beta/dist/smartcharts.css');
-            } else {
-                import('@deriv/deriv-charts/dist/smartcharts.css');
-            }
+            import('@deriv/deriv-charts/dist/smartcharts.css');
         };
 
         initializeTranslations();
+        if (process.env.RUDDERSTACK_KEY) {
+            Analytics.initialise({
+                growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,
+                growthbookDecryptionKey: process.env.GROWTHBOOK_DECRYPTION_KEY,
+                rudderstackKey: process.env.RUDDERSTACK_KEY,
+            });
+        }
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());
@@ -57,6 +62,10 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.common.setPlatform();
         loadSmartchartsStyles();
         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
+        initHotjar(root_store.client);
     }, []);
 
     const platform_passthrough = {
@@ -73,7 +82,9 @@ const AppWithoutTranslation = ({ root_store }) => {
                     <MobxContentProvider store={root_store}>
                         <APIProvider>
                             <StoreProvider store={root_store}>
-                                <AppContent passthrough={platform_passthrough} />
+                                <ExchangeRatesProvider>
+                                    <AppContent passthrough={platform_passthrough} />
+                                </ExchangeRatesProvider>
                             </StoreProvider>
                         </APIProvider>
                     </MobxContentProvider>

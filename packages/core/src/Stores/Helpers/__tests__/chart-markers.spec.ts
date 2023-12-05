@@ -34,7 +34,7 @@ describe('createTickMarkers', () => {
     it('should return an array with markers for every tick in tick_stream when contract is open', () => {
         contract_info.tick_count = 10;
         const result = createTickMarkers(contract_info);
-        expect(result.length).toBe(10);
+        expect(result).toHaveLength(10);
         expect(result[0].content_config.className).toBe('chart-spot__entry');
         expect(result[1].content_config.is_value_hidden).toBe(false);
         expect(result[1].content_config.spot_className).toBe('chart-spot__spot');
@@ -49,13 +49,13 @@ describe('createTickMarkers', () => {
         contract_info.exit_tick_time = 10;
         contract_info.exit_tick_display_value = '1.239';
         const result = createTickMarkers(contract_info);
-        expect(result.length).toBe(10);
+        expect(result).toHaveLength(10);
         expect(result[result.length - 1].content_config.spot_value).toBe('1.239');
         expect(result[result.length - 1].type).toBe('SPOT_EXIT');
 
         contract_info.contract_type = 'ACCU';
         const result_for_accumulator = createTickMarkers(contract_info);
-        expect(result_for_accumulator.length).toBe(10);
+        expect(result_for_accumulator).toHaveLength(10);
         expect(result_for_accumulator[result_for_accumulator.length - 1].content_config.spot_value).toBe('1.239');
         expect(result_for_accumulator[result_for_accumulator.length - 1].type).toBe('SPOT_EXIT');
     });
@@ -63,7 +63,7 @@ describe('createTickMarkers', () => {
         contract_info.contract_type = 'ACCU';
         contract_info.status = 'open';
         const result = createTickMarkers(contract_info);
-        expect(result.length).toBe(9); // exit tick should not be marked for an ongoing accumulator contract
+        expect(result).toHaveLength(9); // exit tick should not be marked for an ongoing accumulator contract
         expect(result[result.length - 1].content_config.spot_value).toBe('1.2385');
         expect(result[result.length - 1].type).toBe('SPOT_MIDDLE_8');
     });

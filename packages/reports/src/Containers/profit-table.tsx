@@ -11,7 +11,7 @@ import {
     isForwardStarting,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { RudderStack, getRudderstackConfig } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import CompositeCalendar from '../Components/Form/CompositeCalendar';
 import { TSupportedContractType, TUnsupportedContractType } from 'Types';
@@ -69,14 +69,13 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
     } = profit_table;
     const prev_date_from = usePrevious(date_from);
     const prev_date_to = usePrevious(date_to);
-    const { action_names, event_names, form_names, subform_names } = getRudderstackConfig();
 
     React.useEffect(() => {
         onMount();
-        RudderStack.track(event_names.reports, {
-            action: action_names.choose_report_type,
-            form_name: form_names.default,
-            subform_name: subform_names.trade_table,
+        Analytics.trackEvent('ce_reports_form', {
+            action: 'choose_report_type',
+            form_name: 'default',
+            subform_name: 'trade_table_form',
             start_date_filter: formatDate(date_from, 'DD/MM/YYYY', false),
             end_date_filter: formatDate(date_to, 'DD/MM/YYYY', false),
         });
@@ -88,10 +87,10 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
 
     React.useEffect(() => {
         if (prev_date_from !== undefined && prev_date_to !== undefined) {
-            RudderStack.track(event_names.reports, {
-                action: action_names.filter_dates,
-                form_name: form_names.default,
-                subform_name: subform_names.trade_table,
+            Analytics.trackEvent('ce_reports_form', {
+                action: 'filter_dates',
+                form_name: 'default',
+                subform_name: 'trade_table_form',
                 start_date_filter: formatDate(date_from, 'DD/MM/YYYY', false),
                 end_date_filter: formatDate(date_to, 'DD/MM/YYYY', false),
             });

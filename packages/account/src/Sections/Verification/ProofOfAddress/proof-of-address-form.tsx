@@ -1,11 +1,7 @@
-//TODO all file upload process has to be checked and refactored with TS. skipping checks for passing CFD build
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
-import { DocumentUploadResponse } from '@deriv/api-types';
 import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv/components';
-import { isMobile, validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
+import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../../Components/form-footer';
@@ -18,37 +14,50 @@ import FileUploaderContainer from '../../../Components/file-uploader-container';
 import CommonMistakeExamples from '../../../Components/poa/common-mistakes/common-mistake-examples';
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
+import { useFileUploader } from '@deriv/hooks';
 
-const FilesDescription = () => {
-    const descriptions = [
-        <Localize key={1} i18n_default_text='Utility bill: electricity, water, gas, or landline phone bill.' />,
-        <Localize
-            key={2}
-            i18n_default_text='Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.'
-        />,
-        <Localize key={3} i18n_default_text='Home rental agreement: valid and current agreement.' />,
-    ];
+const descriptions: {
+    key: string;
+    value: JSX.Element;
+}[] = [
+    {
+        key: 'utility_bill',
+        value: <Localize i18n_default_text='Utility bill: electricity, water, gas, or landline phone bill.' />,
+    },
+    {
+        key: 'financial_legal_government_document',
+        value: (
+            <Localize i18n_default_text='Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.' />
+        ),
+    },
+    {
+        key: 'home_rental_agreement',
+        value: <Localize i18n_default_text='Home rental agreement: valid and current agreement.' />,
+    },
+];
+
+const FilesDescription = observer(() => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
     return (
         <div className='files-description'>
-            <Text size={isMobile() ? 'xxs' : 'xs'} as='div' className='files-description__title' weight='bold'>
+            <Text size={is_mobile ? 'xxs' : 'xs'} as='div' className='files-description__title' weight='bold'>
                 <Localize i18n_default_text='We accept only these types of documents as proof of your address. The document must be recent (issued within last 6 months) and include your name and address:' />
             </Text>
             <ul>
                 {descriptions.map(item => (
-                    <li key={item.props.key}>
-                        <Text size={isMobile() ? 'xxs' : 'xs'}>{item}</Text>
+                    <li key={item.key}>
+                        <Text size={is_mobile ? 'xxs' : 'xs'}>{item.value}</Text>
                     </li>
                 ))}
             </ul>
         </div>
     );
-};
-
-export type TFileRef = React.RefObject<null | { upload: () => Promise<DocumentUploadResponse> }> | undefined;
-
-let file_uploader_ref: TFileRef;
+});
 
 type TProofOfAddressForm = {
+    className?: string;
     is_resubmit: boolean;
     is_for_cfd_modal?: boolean;
     onCancel?: () => void;
@@ -65,15 +74,24 @@ type TFormInitialValues = Record<
 type TFormState = Record<'is_btn_loading' | 'is_submit_success' | 'should_allow_submit' | 'should_show_form', boolean>;
 
 const ProofOfAddressForm = observer(
-    ({ is_resubmit, is_for_cfd_modal, onSubmit, onSubmitForCFDModal, step_index }: Partial<TProofOfAddressForm>) => {
-        const { client, notifications } = useStore();
+    ({
+        is_resubmit,
+        is_for_cfd_modal,
+        onSubmit,
+        onSubmitForCFDModal,
+        step_index,
+        className,
+    }: Partial<TProofOfAddressForm>) => {
+        const { client, notifications, ui } = useStore();
         const { account_settings, fetchResidenceList, fetchStatesList, getChangeableFields, states_list } = client;
         const {
             addNotificationMessageByKey: addNotificationByKey,
             removeNotificationMessage,
             removeNotificationByKey,
         } = notifications;
-        const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
+        const { is_mobile } = ui;
+        const [document_files, setDocumentFiles] = React.useState<File[]>([]);
+        const [file_selection_error, setFileSelectionError] = React.useState<string | null>(null);
         const [is_loading, setIsLoading] = React.useState(true);
         const [form_values, setFormValues] = React.useState<TFormInitialValues>({
             address_line_1: '',
@@ -89,6 +107,8 @@ const ProofOfAddressForm = observer(
             should_allow_submit: true,
             should_show_form: true,
         });
+
+        const { upload } = useFileUploader();
 
         React.useEffect(() => {
             fetchResidenceList?.().then(() => {
@@ -202,7 +222,7 @@ const ProofOfAddressForm = observer(
 
             // upload files
             try {
-                const api_response = await file_uploader_ref?.current?.upload();
+                const api_response = await upload(document_files);
                 if (api_response?.warning) {
                     setStatus({ msg: api_response?.message });
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
@@ -273,37 +293,32 @@ const ProofOfAddressForm = observer(
         }
         const setOffset = (status: { msg: string }) => {
             const mobile_scroll_offset = status?.msg ? '200px' : '154px';
-            return isMobile() && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
+            return is_mobile && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
         };
         return (
-            <Formik initialValues={form_initial_values} onSubmit={onSubmitValues} validate={validateFields}>
-                {({
-                    values,
-                    errors,
-                    status,
-                    touched,
-                    handleChange,
-                    handleBlur,
-                    handleSubmit,
-                    isSubmitting,
-                    setFieldValue,
-                    setFieldTouched,
-                    isValid,
-                }) => (
+            <Formik
+                initialValues={form_initial_values}
+                onSubmit={onSubmitValues}
+                validate={validateFields}
+                enableReinitialize
+            >
+                {({ status, handleSubmit, isSubmitting, isValid }) => (
                     <>
-                        <LeaveConfirm onDirty={isMobile() ? showForm : undefined} />
+                        <LeaveConfirm onDirty={is_mobile ? showForm : undefined} />
                         {form_state.should_show_form && (
                             <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
-                                <ThemedScrollbars height='572px' is_bypassed={!is_for_cfd_modal || isMobile()}>
+                                <ThemedScrollbars
+                                    height='572px'
+                                    is_bypassed={!is_for_cfd_modal || is_mobile}
+                                    className={className}
+                                >
                                     <FormBody scroll_offset={setOffset(status)}>
                                         {status?.msg && (
                                             <HintBox
                                                 className='account-form_poa-submit-error'
                                                 icon='IcAlertDanger'
-                                                icon_height={16}
-                                                icon_width={16}
                                                 message={
-                                                    <Text as='p' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                    <Text as='p' size={is_mobile ? 'xxxs' : 'xs'}>
                                                         {status.msg}
                                                     </Text>
                                                 }
@@ -311,34 +326,23 @@ const ProofOfAddressForm = observer(
                                             />
                                         )}
                                         {is_resubmit && (
-                                            <Text size={isMobile() ? 'xxs' : 'xs'} align='left' color='loss-danger'>
+                                            <Text size={is_mobile ? 'xxs' : 'xs'} align='left' color='loss-danger'>
                                                 <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
                                             </Text>
                                         )}
                                         <FormSubHeader title={localize('Address')} title_text_size='s' />
                                         <PersonalDetailsForm
                                             is_qualified_for_poa
-                                            errors={errors}
-                                            touched={touched}
-                                            values={values}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            setFieldValue={setFieldValue}
-                                            setFieldTouched={setFieldTouched}
                                             editable_fields={changeable_fields}
                                             states_list={states_list}
                                         />
                                         <FormSubHeader title={localize('Document submission')} title_text_size='s' />
                                         <FormBodySection>
                                             <FileUploaderContainer
-                                                onRef={ref => (file_uploader_ref = ref)}
-                                                onFileDrop={df => {
-                                                    setDocumentFile({
-                                                        files: df.files,
-                                                        error_message: df.error_message,
-                                                    });
+                                                onFileDrop={files => {
+                                                    setDocumentFiles(files);
                                                 }}
-                                                getSocket={WS.getSocket}
+                                                onError={setFileSelectionError}
                                                 files_description={<FilesDescription />}
                                                 examples={<CommonMistakeExamples />}
                                             />
@@ -351,11 +355,11 @@ const ProofOfAddressForm = observer(
                                             is_disabled={
                                                 isSubmitting ||
                                                 !isValid ||
-                                                (document_file.files && document_file.files.length < 1) ||
-                                                !!document_file.error_message
+                                                (document_files && document_files.length < 1) ||
+                                                !!file_selection_error
                                             }
                                             label={localize('Continue')}
-                                            is_absolute={isMobile()}
+                                            is_absolute={is_mobile}
                                             is_loading={isSubmitting}
                                             form_error={status?.msg}
                                         />
@@ -368,8 +372,8 @@ const ProofOfAddressForm = observer(
                                             is_disabled={
                                                 isSubmitting ||
                                                 !isValid ||
-                                                (document_file.files && document_file.files.length < 1) ||
-                                                !!document_file.error_message
+                                                (document_files && document_files.length < 1) ||
+                                                !!file_selection_error
                                             }
                                             has_effect
                                             is_loading={form_state.is_btn_loading}

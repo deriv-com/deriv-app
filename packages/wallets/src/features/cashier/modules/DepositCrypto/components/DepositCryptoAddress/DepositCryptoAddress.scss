@@ -4,29 +4,44 @@
     align-items: center;
     gap: 2.4rem;
     min-height: 6rem;
+    width: 100%;
+
+    &__loader {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
     &__hash {
-        color: #000;
-        text-align: center;
-        font-size: 1.4rem;
-        font-weight: 700;
-        padding: 0.8rem 1rem;
-        border-radius: 0.4rem 0rem 0rem 0.4rem;
-        border: 0.1rem solid #e6e9e9;
+        width: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 0.1rem solid #e6e6e6;
+        border-radius: 0.4rem;
 
         @include mobile {
-            font-size: 1.2rem;
+            width: 100%;
+        }
+
+        &-text {
+            overflow-x: hidden;
+            padding: 0.8rem;
             text-overflow: ellipsis;
         }
 
-        &-container {
+        &-clipboard {
             display: flex;
             align-items: center;
-        }
-    }
+            height: 100%;
+            gap: 0.8rem;
 
-    &__loader {
-        position: relative;
-        height: 6rem;
+            & .wallets-clipboard {
+                padding: 1rem;
+                border-left: 1px solid #e6e6e6;
+                box-sizing: border-box;
+            }
+        }
     }
 }

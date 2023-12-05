@@ -110,18 +110,6 @@ export const OSCAR_GRIND: TDescriptionItem[] = [
     },
     {
         type: 'subtitle',
-        content: [localize('An example of Oscar’s Grind strategy')],
-    },
-    {
-        type: 'text',
-        content: [
-            localize(
-                'The table above demonstrates this principle by showing that when a successful trade occurs and meets the target of one unit of profit which is 1 USD in this example, the session ends. If trading continues, a new session will begin.'
-            ),
-        ],
-    },
-    {
-        type: 'subtitle',
         content: [localize('Profit and Loss Thresholds')],
     },
     {

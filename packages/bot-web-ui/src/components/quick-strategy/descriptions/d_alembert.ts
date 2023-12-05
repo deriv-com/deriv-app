@@ -70,10 +70,10 @@ export const D_ALEMBERT: TDescriptionItem[] = [
             localize('1. Start with the initial stake. In this example, we’ll use 1 USD.'),
             localize('2. Set your preferred unit. In this example, it is 2 units or 2 USD.'),
             localize(
-                '3. If the first trade results in profit, the stake for the following trade will not reduce but remain at the initial stake.'
+                '3. If the first trade results in profit, the stake for the following trade will not reduce but remain at the initial stake. The strategy minimally trades at the initial stake of 1 USD. See A1.'
             ),
             localize(
-                '4. The strategy minimally trades at the initial stake of 1 USD. See A1. If the second trade results in a loss, the Deriv Bot will automatically increase your stake for the next trade by 2 USD. Deriv Bot will continue to add 2 USD to the previous round’s stake after every losing trade. See A2.'
+                '4. If the second trade results in a loss, the Deriv Bot will automatically increase your stake for the next trade by 2 USD. Deriv Bot will continue to add 2 USD to the previous round’s stake after every losing trade. See A2.'
             ),
             localize(
                 '5. If the next trades are profitable, the stake for the following trade will be reduced by $2.This can be shown above where the stake of 3 USD is reduced to 1 USD.See A3.'

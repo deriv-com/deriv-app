@@ -109,7 +109,7 @@ describe('setLimitOrderBarriers', () => {
     });
     it('should update barriers with changed obj_limit_order values', () => {
         barriers = [{ ...mock_barrier, key: LIMIT_ORDER_TYPES.STOP_OUT, high: 10 }];
-        if (contract_info && contract_info.limit_order && contract_info.limit_order.stop_out !== undefined) {
+        if (contract_info?.limit_order?.stop_out) {
             contract_info.limit_order.stop_out.value = '15';
         }
 
@@ -124,12 +124,7 @@ describe('setLimitOrderBarriers', () => {
     });
     it('should create and add a new barrier if conditions are met', () => {
         barriers = [];
-        if (
-            contract_info &&
-            contract_info.limit_order &&
-            contract_info?.limit_order?.take_profit &&
-            contract_info?.limit_order?.stop_loss
-        ) {
+        if (contract_info?.limit_order?.take_profit && contract_info?.limit_order?.stop_loss) {
             contract_info.limit_order.take_profit.value = '15';
             contract_info.limit_order.stop_loss.value = '5';
         }

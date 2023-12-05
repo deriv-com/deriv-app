@@ -31,7 +31,7 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                                   size='lg'
                                   variant='ghost'
                               >
-                                  Didn’t receive the email?
+                                  Didn&apos;t receive the email?
                               </WalletButton>
                           )
                         : undefined

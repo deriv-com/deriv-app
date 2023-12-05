@@ -58,7 +58,7 @@ describe('network-status component', () => {
     it('should contain "Tooltip" message passed in the status property', () => {
         const status = {
             class: 'online',
-            tooltip: 'online',
+            tooltip: 'Online',
         };
         store.common.network_status = status;
         render(

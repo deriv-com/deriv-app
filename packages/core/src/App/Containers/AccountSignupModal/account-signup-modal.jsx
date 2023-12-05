@@ -8,7 +8,7 @@ import { localize } from '@deriv/translations';
 
 import { WS } from 'Services';
 import { Analytics } from '@deriv/analytics';
-import { observer,useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
@@ -218,7 +218,7 @@ const AccountSignupModal = observer(() => {
         residence_list,
         clients_country,
         logout,
-    } =client
+    } = client
     const {
     is_account_signup_modal_visible:is_visible,
     toggleAccountSignupModal,
@@ -226,7 +226,7 @@ const AccountSignupModal = observer(() => {
     disableApp,
     is_loading,
     is_mobile,
-    } =ui
+    } = ui
 
     React.useEffect(() => {
         // a logged in user should not be able to create a new account

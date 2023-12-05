@@ -5,6 +5,7 @@
     "main": "src/index.ts",
     "dependencies": {
         "@deriv/api": "1.0.0",
+        "@deriv/deriv-api": "^1.0.13",
         "lodash.merge": "^4.6.2",
         "mobx": "^6.6.1",
         "mobx-persist-store": "1.1.2",

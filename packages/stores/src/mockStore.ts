@@ -274,7 +274,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_any_real_account: false,
             setPrevAccountType: jest.fn(),
             prev_account_type: 'demo',
-            is_beta_chart: true,
             setLoginInformation: jest.fn(),
             init: jest.fn(),
             setLoginId: jest.fn(),
@@ -283,6 +282,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_already_attempted: false,
             is_bot_allowed: false,
             account_open_date: undefined,
+            setAccounts: jest.fn(),
         },
         common: {
             error: common_store_error,
@@ -496,6 +496,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setWalletModalActiveWalletID: jest.fn(),
             available_ctrader_accounts: [],
             toggleIsTourOpen: jest.fn(),
+            is_tour_open: false,
             is_demo_low_risk: false,
             is_mt5_notification_modal_visible: false,
             setMT5NotificationModal: jest.fn(),
@@ -584,11 +585,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setAccountType: jest.fn(),
                 setMigratedMT5Accounts: jest.fn(),
             },
-        },
-        exchange_rates: {
-            data: undefined,
-            update: jest.fn(),
-            unmount: jest.fn(),
         },
         feature_flags: {
             data: undefined,

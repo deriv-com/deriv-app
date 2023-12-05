@@ -34,9 +34,8 @@ const AccountActionsWallets = observer(() => {
     if (is_mobile) {
         return (
             <React.Fragment>
-                <React.Suspense fallback={<div />}>
-                    <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
-                </React.Suspense>
+                <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
+
                 <div className='acc-info__wallets-notification-icon'>
                     <ToggleNotifications
                         count={notifications_count}

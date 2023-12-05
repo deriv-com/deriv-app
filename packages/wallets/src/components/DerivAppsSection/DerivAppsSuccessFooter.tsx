@@ -12,7 +12,9 @@ const DerivAppsSuccessFooter = () => {
 
     return (
         <div className='wallets-deriv-apps-success-footer'>
-            <WalletButton isFullWidth={!isDesktop} onClick={hide} size='lg' text='Maybe later' variant='outlined' />
+            <WalletButton isFullWidth={!isDesktop} onClick={hide} size='lg' variant='outlined'>
+                Maybe later
+            </WalletButton>
             <WalletButton
                 isFullWidth={!isDesktop}
                 onClick={() => {
@@ -20,8 +22,9 @@ const DerivAppsSuccessFooter = () => {
                     hide();
                 }}
                 size='lg'
-                text='Transfer funds'
-            />
+            >
+                Transfer funds
+            </WalletButton>
         </div>
     );
 };

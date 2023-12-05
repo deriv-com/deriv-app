@@ -24,13 +24,18 @@ const AccountInfo = ({
     is_virtual,
     toggleDialog,
     is_disabled,
+    is_mobile,
 }) => {
     const currency_lower = currency?.toLowerCase();
 
     return (
         <div className='acc-info__wrapper'>
             <div className='acc-info__separator' />
-            <AccountInfoWrapper is_disabled={is_disabled} disabled_message={acc_switcher_disabled_message}>
+            <AccountInfoWrapper
+                is_disabled={is_disabled}
+                disabled_message={acc_switcher_disabled_message}
+                is_mobile={is_mobile}
+            >
                 <div
                     data-testid='dt_acc_info'
                     id='dt_core_account-info_acc-info'
@@ -125,6 +130,7 @@ AccountInfo.propTypes = {
     is_disabled: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_virtual: PropTypes.bool,
+    is_mobile: PropTypes.bool,
     loginid: PropTypes.string,
     toggleDialog: PropTypes.func,
 };

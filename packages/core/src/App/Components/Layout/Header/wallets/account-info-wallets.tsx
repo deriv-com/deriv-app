@@ -196,7 +196,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                     }}
                     unmountOnExit
                 >
-                    <div className='acc-switcher__wrapper'>
+                    <div className='acc-switcher__wrapper acc-switcher__wrapper--wallets'>
                         <AccountSwitcherWallet is_visible={is_dialog_on} toggle={toggleDialog} />
                     </div>
                 </CSSTransition>

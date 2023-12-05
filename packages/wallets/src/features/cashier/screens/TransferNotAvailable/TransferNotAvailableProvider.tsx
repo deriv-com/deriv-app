@@ -28,12 +28,9 @@ const getMessage = ({
 
         return {
             actionButton: () => (
-                <WalletButton
-                    onClick={() => history.push('/wallets')}
-                    size='lg'
-                    text="Back to Trader's hub"
-                    variant='contained'
-                />
+                <WalletButton onClick={() => history.push('/wallets')} size='lg'>
+                    Back to Trader&apos;s hub
+                </WalletButton>
             ),
             description,
             title,
@@ -52,12 +49,9 @@ const getMessage = ({
 
         return {
             actionButton: () => (
-                <WalletButton
-                    onClick={() => history.push(locationPathName)}
-                    size='lg'
-                    text={buttonText}
-                    variant='contained'
-                />
+                <WalletButton onClick={() => history.push(locationPathName)} size='lg'>
+                    {buttonText}
+                </WalletButton>
             ),
             description,
             title,

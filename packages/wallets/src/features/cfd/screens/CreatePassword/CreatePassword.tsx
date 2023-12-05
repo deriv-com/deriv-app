@@ -43,8 +43,9 @@ const CreatePassword: React.FC<TProps> = ({
                     isLoading={isLoading}
                     onClick={onPrimaryClick}
                     size='lg'
-                    text={`Create ${title} password`}
-                />
+                >
+                    {`Create ${title} password`}
+                </WalletButton>
             )}
         </div>
     );

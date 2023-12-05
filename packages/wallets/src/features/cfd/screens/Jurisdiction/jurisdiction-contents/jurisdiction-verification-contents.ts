@@ -9,15 +9,15 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
     requiredVerificationDocs: {
         documentNumber: {
             icon: 'IcDocumentNumberVerification',
-            text: 'Document number (identity card, passport)',
+            text: `Document number (eg. identity card, passport, driver's license)`,
         },
         identityNumber: {
             icon: 'IcIdentityDocumentVerification',
-            text: 'A copy of your identity document (identity card, passport)',
+            text: `A copy of your identity document (eg. identity card, passport, deiver's license)`,
         },
         nameAndAddress: {
             icon: 'IcNameAndAddressVerification',
-            text: 'A recent utility bill (electricity, water or gas) or recent bank statement or government-issued letter with your name and address.',
+            text: 'A recent utility bill (eg. electricity, water or gas) or recent bank statement or government-issued letter with your name and address.',
         },
         notApplicable: {
             icon: 'IcNotApplicableVerification',
@@ -33,17 +33,17 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
         {
             color: 'yellow',
             icon: 'verificationPendingStatusIcon',
-            text: 'Your document is pending for verification.',
+            text: 'Verification in review.',
         },
         {
             color: 'red',
             icon: 'verificationFailedStatusIcon',
-            text: 'Verification failed. Resubmit during account creation.',
+            text: 'Verification failed. Resubmit your details.',
         },
         {
             color: 'green',
             icon: 'verificationSuccessStatusIcon',
-            text: 'Your document is verified.',
+            text: 'Verification successful.',
         },
     ],
 });

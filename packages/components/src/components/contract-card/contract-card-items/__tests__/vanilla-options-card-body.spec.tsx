@@ -8,8 +8,8 @@ describe('VanillaOptionsCardBody', () => {
         contract_info: mockContractInfo({
             buy_price: 100,
             bid_price: 105,
-            entry_spot_display_value: '110',
-            barrier: '120',
+            entry_spot_display_value: '1100.00',
+            barrier: '1200.00',
             sell_price: 95,
             profit: -5,
             status: 'lost',
@@ -29,8 +29,10 @@ describe('VanillaOptionsCardBody', () => {
         // Test that the correct elements are present in the component
         expect(screen.getByText(getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().ENTRY_SPOT)).toBeInTheDocument();
+        expect(screen.getByText('1,100.00')).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().PURCHASE_PRICE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().STRIKE)).toBeInTheDocument();
+        expect(screen.getByText('1,200.00')).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
         expect(indicative_movement).toHaveClass('dc-contract-card__indicative--movement-complete');
     });

@@ -9,6 +9,7 @@ import { BaseMessage, FileMessage, MessageType, MessageTypeFilter, UserMessage }
 
 import BaseStore from 'Stores/base_store';
 import ChatMessage, { convertFromChannelMessage } from 'Utils/chat-message';
+import { renameFile } from 'Utils/file-uploader';
 import { requestWS } from 'Utils/websocket';
 
 type TChatInfo = { app_id: string; user_id: string; token?: string };
@@ -408,9 +409,10 @@ export default class SendbirdStore extends BaseStore {
     sendFile(file: File) {
         if (!file) return;
 
+        const updated_file = renameFile(file);
         this.active_chat_channel
             ?.sendFileMessage({
-                file,
+                file: updated_file,
                 fileName: file.name,
                 fileSize: file.size,
                 mimeType: file.type,

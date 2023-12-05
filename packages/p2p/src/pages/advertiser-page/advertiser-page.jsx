@@ -5,7 +5,7 @@ import { useP2PAdvertiserAdverts } from 'Hooks';
 import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { useP2PAdvertInfo } from '@deriv/hooks';
-import { daysSince, isDesktop, isMobile, routes } from '@deriv/shared';
+import { daysSince, isDesktop, isEmptyObject, isMobile, routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 
 import { Localize, localize } from 'Components/i18next';
@@ -170,6 +170,7 @@ const AdvertiserPage = () => {
             disposeCounterpartyAdvertiserIdReaction();
             advertiser_page_store.onUnmount();
             buy_sell_store.setShowAdvertiserPage(false);
+            advertiser_page_store.setCounterpartyAdvertiserInfo({});
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -319,9 +320,9 @@ const AdvertiserPage = () => {
                                     </div>
                                 </div>
                             </MobileWrapper>
-                            <div className='advertiser-page__rating'>
-                                <DesktopWrapper>
-                                    <React.Fragment>
+                            {!isEmptyObject(info) && (
+                                <div className='advertiser-page__rating'>
+                                    <DesktopWrapper>
                                         <div className='advertiser-page__rating--row'>
                                             <OnlineStatusIcon is_online={is_online} />
                                             <OnlineStatusLabel
@@ -345,56 +346,56 @@ const AdvertiserPage = () => {
                                                 )}
                                             </Text>
                                         </div>
-                                    </React.Fragment>
-                                </DesktopWrapper>
-                                {rating_average ? (
-                                    <React.Fragment>
-                                        <div className='advertiser-page__rating--row'>
-                                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                                {rating_average_decimal}
-                                            </Text>
-                                            <StarRating
-                                                empty_star_className='advertiser-page__rating--star'
-                                                empty_star_icon='IcEmptyStar'
-                                                full_star_className='advertiser-page__rating--star'
-                                                full_star_icon='IcFullStar'
-                                                initial_value={rating_average_decimal}
-                                                is_readonly
-                                                number_of_stars={5}
-                                                should_allow_hover_effect={false}
-                                                star_size={isMobile() ? 17 : 20}
-                                            />
-                                            <div className='advertiser-page__rating--text'>
-                                                <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                                    {rating_count === 1 ? (
-                                                        <Localize
-                                                            i18n_default_text='({{number_of_ratings}} rating)'
-                                                            values={{ number_of_ratings: rating_count }}
-                                                        />
-                                                    ) : (
-                                                        <Localize
-                                                            i18n_default_text='({{number_of_ratings}} ratings)'
-                                                            values={{ number_of_ratings: rating_count }}
-                                                        />
-                                                    )}
+                                    </DesktopWrapper>
+                                    {rating_average ? (
+                                        <React.Fragment>
+                                            <div className='advertiser-page__rating--row'>
+                                                <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                    {rating_average_decimal}
                                                 </Text>
+                                                <StarRating
+                                                    empty_star_className='advertiser-page__rating--star'
+                                                    empty_star_icon='IcEmptyStar'
+                                                    full_star_className='advertiser-page__rating--star'
+                                                    full_star_icon='IcFullStar'
+                                                    initial_value={rating_average_decimal}
+                                                    is_readonly
+                                                    number_of_stars={5}
+                                                    should_allow_hover_effect={false}
+                                                    star_size={isMobile() ? 17 : 20}
+                                                />
+                                                <div className='advertiser-page__rating--text'>
+                                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                        {rating_count === 1 ? (
+                                                            <Localize
+                                                                i18n_default_text='({{number_of_ratings}} rating)'
+                                                                values={{ number_of_ratings: rating_count }}
+                                                            />
+                                                        ) : (
+                                                            <Localize
+                                                                i18n_default_text='({{number_of_ratings}} ratings)'
+                                                                values={{ number_of_ratings: rating_count }}
+                                                            />
+                                                        )}
+                                                    </Text>
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div className='advertiser-page__rating--row'>
+                                                <RecommendedBy
+                                                    recommended_average={recommended_average}
+                                                    recommended_count={recommended_count}
+                                                />
+                                            </div>
+                                        </React.Fragment>
+                                    ) : (
                                         <div className='advertiser-page__rating--row'>
-                                            <RecommendedBy
-                                                recommended_average={recommended_average}
-                                                recommended_count={recommended_count}
-                                            />
+                                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                <Localize i18n_default_text='Not rated yet' />
+                                            </Text>
                                         </div>
-                                    </React.Fragment>
-                                ) : (
-                                    <div className='advertiser-page__rating--row'>
-                                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                            <Localize i18n_default_text='Not rated yet' />
-                                        </Text>
-                                    </div>
-                                )}
-                            </div>
+                                    )}
+                                </div>
+                            )}
                             <div className='advertiser-page__row'>
                                 <TradeBadge
                                     is_poa_verified={!!full_verification}

@@ -12,8 +12,8 @@ import {
 } from '@deriv/shared';
 import ContractCardItem from './contract-card-item';
 import ToggleCardDialog from './toggle-card-dialog';
-import Icon from '../../icon';
 import Money from '../../money';
+import ArrowIndicator from '../../arrow-indicator';
 
 const MultiplierCardBody = ({
     addToast,
@@ -132,14 +132,7 @@ const MultiplierCardBody = ({
                 is_won={total_profit > 0}
             >
                 <Money amount={Math.abs(total_profit)} currency={currency} />
-                <div
-                    className={classNames('dc-contract-card__indicative--movement', {
-                        'dc-contract-card__indicative--movement-complete': is_sold,
-                    })}
-                    data-testid={`dt_indicative_movement_${total_profit > 0 ? 'profit' : 'loss'}`}
-                >
-                    {total_profit > 0 ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />}
-                </div>
+                <ArrowIndicator classname='dc-contract-card__indicative--movement' value={total_profit} />
             </ContractCardItem>
         </React.Fragment>
     );

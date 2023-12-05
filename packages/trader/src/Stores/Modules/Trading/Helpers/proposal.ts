@@ -72,15 +72,6 @@ export const getProposalInfo = (
     const is_stake = contract_basis?.value === 'stake';
 
     const price = is_stake ? stake : (proposal[contract_basis?.value as keyof Proposal] as string | number);
-    let has_increased = false;
-
-    if (price !== undefined && price !== null) {
-        has_increased = price > obj_prev_contract_basis.value;
-    }
-
-    if (!obj_prev_contract_basis.value || price === obj_prev_contract_basis.value) {
-        has_increased = !!null;
-    }
 
     const obj_contract_basis = {
         text: contract_basis?.text || '',
@@ -103,7 +94,6 @@ export const getProposalInfo = (
         has_error_details: !!getProposalErrorField(response),
         error_code: response?.error?.code,
         error_field: response?.error?.details?.field,
-        has_increased,
         limit_order: proposal.limit_order,
         message: proposal.longcode || response?.error?.message,
         obj_contract_basis,

@@ -11,12 +11,12 @@ import {
     getTotalProfit,
 } from '@deriv/shared';
 import Button from '../../button';
-import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 import { TGetCardLables, TToastConfig } from '../../types';
+import ArrowIndicator from '../../arrow-indicator';
 
 export type TGeneralContractCardBodyProps = {
     addToast: (toast_config: TToastConfig) => void;
@@ -221,14 +221,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
                         )}
                     >
                         <Money amount={total_profit} currency={currency} />
-                        <div
-                            className={classNames('dc-contract-card__indicative--movement', {
-                                'dc-contract-card__indicative--movement-complete': is_sold,
-                            })}
-                        >
-                            {status === 'profit' && <Icon icon='IcProfit' />}
-                            {status === 'loss' && <Icon icon='IcLoss' />}
-                        </div>
+                        <ArrowIndicator classname='dc-contract-card__indicative--movement' value={total_profit} />
                     </div>
                 </div>
             </MobileWrapper>

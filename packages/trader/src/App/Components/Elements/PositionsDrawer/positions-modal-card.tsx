@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
+import { ArrowIndicator, ContractCard, CurrencyBadge, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
     addComma,
     getContractPath,
@@ -187,14 +187,7 @@ const PositionsModalCard = observer(
                         })}
                     >
                         <Money amount={total_profit} currency={currency} />
-                        <div
-                            className={classNames('dc-contract-card__indicative--movement', {
-                                'dc-contract-card__indicative--movement-complete': !!contract_info.is_sold,
-                            })}
-                        >
-                            {status === 'profit' && <Icon icon='IcProfit' />}
-                            {status === 'loss' && <Icon icon='IcLoss' />}
-                        </div>
+                        <ArrowIndicator classname='dc-contract-card__indicative--movement' value={total_profit} />
                     </div>
                 </div>
                 <ContractCard.Footer

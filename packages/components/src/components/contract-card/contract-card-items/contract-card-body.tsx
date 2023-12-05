@@ -4,7 +4,6 @@ import { isCryptocurrency, getIndicativePrice, getCurrentTick, getDisplayStatus 
 import ContractCardItem from './contract-card-item';
 import CurrencyBadge from '../../currency-badge';
 import DesktopWrapper from '../../desktop-wrapper';
-import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
@@ -14,6 +13,7 @@ import MultiplierCardBody from './multiplier-card-body';
 import TurbosCardBody from './turbos-card-body';
 import VanillaOptionsCardBody from './vanilla-options-card-body';
 import { TGeneralContractCardBodyProps } from './contract-update-form';
+import ArrowIndicator from '../../arrow-indicator';
 
 export type TContractCardBodyProps = {
     is_accumulator?: boolean;
@@ -146,25 +146,14 @@ const ContractCardBody = ({
                         is_won={Number(profit) > 0}
                     >
                         <Money amount={profit} currency={currency} />
-                        <div
-                            className={classNames('dc-contract-card__indicative--movement', {
-                                'dc-contract-card__indicative--movement-complete': is_sold,
-                            })}
-                        >
-                            {status === 'profit' && <Icon icon='IcProfit' />}
-                            {status === 'loss' && <Icon icon='IcLoss' />}
-                        </div>
+                        <ArrowIndicator classname='dc-contract-card__indicative--movement' value={profit} />
                     </ContractCardItem>
                     <ContractCardItem header={is_sold ? PAYOUT : INDICATIVE_PRICE}>
                         <Money currency={currency} amount={Number(sell_price || indicative)} />
-                        <div
-                            className={classNames('dc-contract-card__indicative--movement', {
-                                'dc-contract-card__indicative--movement-complete': is_sold,
-                            })}
-                        >
-                            {status === 'profit' && <Icon icon='IcProfit' />}
-                            {status === 'loss' && <Icon icon='IcLoss' />}
-                        </div>
+                        <ArrowIndicator
+                            classname='dc-contract-card__indicative--movement'
+                            value={Number(sell_price || indicative)}
+                        />
                     </ContractCardItem>
                     <ContractCardItem header={PURCHASE_PRICE}>
                         <Money amount={buy_price} currency={currency} />

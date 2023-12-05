@@ -36,7 +36,6 @@ describe('Proposal', () => {
                 message: 'This is error',
                 has_error: true,
                 has_error_details: false,
-                has_increased: false,
                 obj_contract_basis: {
                     text: 'Stake',
                     value: '',
@@ -71,7 +70,6 @@ describe('Proposal', () => {
                 message: 'This is a longcode',
                 has_error: false,
                 has_error_details: false,
-                has_increased: false,
                 obj_contract_basis: {
                     text: 'Stake',
                     value: 200,

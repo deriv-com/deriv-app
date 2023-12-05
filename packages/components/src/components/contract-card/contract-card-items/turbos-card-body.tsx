@@ -3,11 +3,11 @@ import React from 'react';
 import { addComma, getLimitOrderAmount, isCryptocurrency, isValidToSell } from '@deriv/shared';
 import ContractCardItem from './contract-card-item';
 import ToggleCardDialog from './toggle-card-dialog';
-import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
 import { TGeneralContractCardBodyProps } from './contract-update-form';
+import ArrowIndicator from '../../arrow-indicator';
 
 type TTurbosCardBody = Pick<
     TGeneralContractCardBodyProps,
@@ -101,7 +101,6 @@ const TurbosCardBody = ({
                     </div>
                 </MobileWrapper>
             </div>
-
             <ContractCardItem
                 className='dc-contract-card-item__total-profit-loss'
                 header={TOTAL_PROFIT_LOSS}
@@ -110,14 +109,7 @@ const TurbosCardBody = ({
                 is_won={Number(profit) > 0}
             >
                 <Money amount={profit} currency={currency} />
-                <div
-                    className={classNames('dc-contract-card__indicative--movement', {
-                        'dc-contract-card__indicative--movement-complete': is_sold,
-                    })}
-                >
-                    {status === 'profit' && <Icon icon='IcProfit' />}
-                    {status === 'loss' && <Icon icon='IcLoss' />}
-                </div>
+                <ArrowIndicator classname='dc-contract-card__indicative--movement' value={profit} />
             </ContractCardItem>
         </React.Fragment>
     );

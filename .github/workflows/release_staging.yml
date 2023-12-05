@@ -36,7 +36,7 @@ jobs:
     - name: Versioning
       uses: "./.github/actions/versioning"
       with:
-        release_type: production
+        release_type: staging
     - name: Publish to Cloudflare Pages Staging 
       uses: "./.github/actions/publish_to_pages_staging"
       with:       

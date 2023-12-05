@@ -75,7 +75,6 @@ export const getDurationUnitText = (obj_duration: moment.Duration, should_ignore
 
 export const formatResetDuration = (contract_info: TContractInfo) => {
     const time_duration = getUnitMap();
-
     const duration_ms = getDurationPeriod(contract_info).asMilliseconds() / TIME.SECOND / 2;
     const reset_hours =
         duration_ms === TIME.HOUR ? `h [${time_duration.h.name_singular}] ` : `h [${time_duration.h.name_plural}]`;

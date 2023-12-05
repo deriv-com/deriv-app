@@ -353,7 +353,7 @@ export default class ContractStore extends BaseStore {
                     });
                     const is_reset_call = /CALL/i.test(contract_type);
 
-                    // Gradient logic: shade to the lowest barrier for CALL and shade the the highest barrier for PUT
+                    // Gradient logic: when reset_time has come we need to reapply gradient. For CALL shade will be applied to the lowest barrier, for PUT - the the highest barrier
                     if (
                         (is_reset_call && entry_spot > reset_barrier) ||
                         (!is_reset_call && reset_barrier > entry_spot)

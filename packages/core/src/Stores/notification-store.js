@@ -212,7 +212,7 @@ export default class NotificationStore extends BaseStore {
             contract_id,
             contract_type: getTradeTypeName(contract_type, isHighLow({ shortcode }), isTurbosContract(contract_type)),
             currency,
-            profit: isMultiplierContract(contract_type) && profit ? getTotalProfit(contract_info) : profit,
+            profit: isMultiplierContract(contract_type) && !isNaN(profit) ? getTotalProfit(contract_info) : profit,
             status,
             symbol: getMarketName(underlying ?? extractInfoFromShortcode(shortcode).underlying),
             timestamp: status === 'open' ? purchase_time : getEndTime(contract_info),

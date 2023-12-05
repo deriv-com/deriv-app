@@ -23,7 +23,7 @@ jest.mock('Utils/server-time.js', () => ({
 }));
 
 jest.mock('Utils/date-time', () => ({
-    secondsToTimer: jest.fn().mockReturnValue(17),
+    millisecondsToTimer: jest.fn().mockReturnValue(17),
 }));
 
 describe('<OrderDetailsTimer/>', () => {

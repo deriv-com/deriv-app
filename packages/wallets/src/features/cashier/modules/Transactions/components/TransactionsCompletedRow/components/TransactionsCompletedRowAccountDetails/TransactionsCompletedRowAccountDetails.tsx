@@ -11,7 +11,7 @@ import './TransactionsCompletedRowAccountDetails.scss';
 
 type TProps = {
     accountType: string;
-    actionType: NonNullable<THooks.Transactions['action_type']>;
+    actionType: NonNullable<(THooks.InfiniteTransactions | THooks.Transactions)['action_type']>;
     currency: string;
     displayAccountName: string;
     displayActionType: string;

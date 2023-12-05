@@ -16,7 +16,11 @@ const MT5ChangeInvestorPasswordSavedScreen: React.FC<TProps> = ({ setNextScreen 
             }
             descriptionSize='sm'
             icon={<MT5PasswordUpdatedIcon />}
-            renderButtons={() => <WalletButton onClick={setNextScreen} size='lg' text='Okay' />}
+            renderButtons={() => (
+                <WalletButton onClick={setNextScreen} size='lg'>
+                    Okay
+                </WalletButton>
+            )}
             title='Password saved'
         />
     );

@@ -25,11 +25,14 @@ describe('DTraderHeader', () => {
 
     it('should render Platform switcher, Traders Home button, Menu Links, Account actions and Real Account SignUp components, in Desktop view', () => {
         renderComponent();
-        expect(screen.getByText('Mocked Platform Switcher')).toBeInTheDocument();
-        expect(screen.getByText('Mocked Traders Home Button')).toBeInTheDocument();
-        expect(screen.getByText('Mocked Menu Links')).toBeInTheDocument();
-        expect(screen.getByText('Mocked Header Account Action')).toBeInTheDocument();
-        expect(screen.getByText('Mocked Real Account SignUp')).toBeInTheDocument();
+        const desktop_view_text_content = [
+            'Mocked Platform Switcher',
+            'Mocked Traders Home Button',
+            'Mocked Menu Links',
+            'Mocked Header Account Action',
+            'Mocked Real Account SignUp',
+        ];
+        desktop_view_text_content.forEach(text => expect(screen.getByText(text)).toBeInTheDocument());
     });
 
     it('should render Toggle Menu Drawer, Menu Links, Header Account Action and Real Account SignUp components, in Mobile view', () => {
@@ -39,9 +42,12 @@ describe('DTraderHeader', () => {
                 modules: { cashier: { payment_agent: 'MOCK_PAYMENT_AGENT' } },
             })
         );
-        expect(screen.getByText('Mocked Toggle Menu Drawer')).toBeInTheDocument();
-        expect(screen.getByText('Mocked Menu Links')).toBeInTheDocument();
-        expect(screen.getByText('Mocked Header Account Action')).toBeInTheDocument();
-        expect(screen.getByText('Mocked Real Account SignUp')).toBeInTheDocument();
+        const mobile_view_text_content = [
+            'Mocked Toggle Menu Drawer',
+            'Mocked Menu Links',
+            'Mocked Header Account Action',
+            'Mocked Real Account SignUp',
+        ];
+        mobile_view_text_content.forEach(text => expect(screen.getByText(text)).toBeInTheDocument());
     });
 });

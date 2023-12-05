@@ -4,18 +4,17 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat';
 
-type TLiveChatProps = { is_mobile_drawer?: boolean };
-
-const LiveChat = observer(({ is_mobile_drawer }: TLiveChatProps) => {
-    const { client } = useStore();
+const LiveChat = observer(() => {
+    const { client, ui } = useStore();
     const { has_cookie_account, loginid } = client;
+    const { is_mobile } = ui;
     const liveChat = useLiveChat(has_cookie_account, loginid);
 
     if (!liveChat.isReady) return null;
 
     const liveChatClickHandler = () => liveChat.widget?.call('maximize');
 
-    if (is_mobile_drawer)
+    if (is_mobile)
         return (
             <div
                 className='livechat gtm-deriv-livechat'

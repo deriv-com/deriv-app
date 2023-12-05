@@ -263,6 +263,7 @@ export default class GeneralStore extends BaseStore {
                 daily_sell_limit,
                 id,
                 is_approved,
+                is_listed,
                 name: advertiser_name,
             } = p2p_advertiser_create || {};
 
@@ -274,6 +275,7 @@ export default class GeneralStore extends BaseStore {
                 this.setAdvertiserBuyLimit(daily_buy_limit - daily_buy);
                 this.setAdvertiserSellLimit(daily_sell_limit - daily_sell);
                 this.setIsAdvertiser(!!is_approved);
+                this.setIsListed(!!is_listed);
                 this.setNickname(advertiser_name);
                 this.setNicknameError(undefined);
                 sendbird_store.handleP2pAdvertiserInfo(response);

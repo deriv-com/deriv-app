@@ -4,12 +4,14 @@ import useAvailableMT5Accounts from './useAvailableMT5Accounts';
 import useLandingCompany from './useLandingCompany';
 import useMT5AccountsList from './useMT5AccountsList';
 
+// Remove the hardcoded values and use the values from the API once it's ready
 export const MARKET_TYPE = {
     ALL: 'all',
     FINANCIAL: 'financial',
     SYNTHETIC: 'synthetic',
 } as const;
 
+// Remove the hardcoded values and use the values from the API once it's ready
 export const CFD_PLATFORMS = {
     CFDS: 'CFDs',
     CTRADER: 'ctrader',
@@ -17,6 +19,7 @@ export const CFD_PLATFORMS = {
     MT5: 'mt5',
 } as const;
 
+// Remove the hardcoded values and use the values from the API once it's ready
 export const JURISDICTION = {
     BVI: 'bvi',
     LABUAN: 'labuan',
@@ -25,6 +28,7 @@ export const JURISDICTION = {
     VANUATU: 'vanuatu',
 } as const;
 
+// Remove the hardcoded values and use the values from the API once it's ready
 const dxtradeAccount = {
     leverage: 0,
     market_type: MARKET_TYPE.ALL,
@@ -43,6 +47,7 @@ const dxtradeAccount = {
     shortcode: JURISDICTION.SVG,
 };
 
+// Remove the hardcoded values and use the values from the API once it's ready
 const ctraderAccount = {
     leverage: 0,
     market_type: MARKET_TYPE.ALL,

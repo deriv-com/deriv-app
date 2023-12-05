@@ -11,7 +11,11 @@ import './CompareAccountsScreen.scss';
 const CompareAccountsScreen = () => {
     const history = useHistory();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { is_malta_wallet: isEuUser = false, is_virtual: isDemo = false } = activeWallet || {};
+    const {
+        is_crypto: isCrypto = false,
+        is_malta_wallet: isEuUser = false,
+        is_virtual: isDemo = false,
+    } = activeWallet || {};
 
     const { data: compareAccounts, hasCTraderAccountAvailable, hasDxtradeAccountAvailable } = useCFDCompareAccounts();
     const { data: cfdAccounts } = useCFDAccountsList();
@@ -52,6 +56,7 @@ const CompareAccountsScreen = () => {
                     {mt5Accounts?.map(item => (
                         <CFDCompareAccountsCard
                             isAccountAdded={item?.is_added}
+                            isCrypto={isCrypto}
                             isDemo={isDemo}
                             isEuUser={isEuUser}
                             key={`${item?.market_type} ${item?.shortcode}`}
@@ -64,6 +69,7 @@ const CompareAccountsScreen = () => {
                     {mt5Accounts?.length && hasDxtradeAccountAvailable && dxtradeAccount && (
                         <CFDCompareAccountsCard
                             isAccountAdded={isDxtradeAdded}
+                            isCrypto={isCrypto}
                             isDemo={isDemo}
                             isEuUser={isEuUser}
                             marketType={dxtradeAccount.market_type}
@@ -75,6 +81,7 @@ const CompareAccountsScreen = () => {
                     {mt5Accounts?.length && hasCTraderAccountAvailable && ctraderAccount && (
                         <CFDCompareAccountsCard
                             isAccountAdded={isCtraderAdded}
+                            isCrypto={isCrypto}
                             isDemo={isDemo}
                             isEuUser={isEuUser}
                             marketType={ctraderAccount.market_type}

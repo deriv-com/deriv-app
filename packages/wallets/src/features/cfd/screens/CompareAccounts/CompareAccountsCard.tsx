@@ -11,6 +11,7 @@ import './CompareAccountsCard.scss';
 
 type TCompareAccountsCard = {
     isAccountAdded: boolean;
+    isCrypto: boolean;
     isDemo: boolean;
     isEuUser: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
@@ -20,6 +21,7 @@ type TCompareAccountsCard = {
 
 const CompareAccountsCard = ({
     isAccountAdded,
+    isCrypto,
     isDemo,
     isEuUser,
     marketType,
@@ -65,6 +67,7 @@ const CompareAccountsCard = ({
                 )}
                 <CompareAccountsButton
                     isAccountAdded={isAccountAdded}
+                    isCrypto={isCrypto}
                     isDemo={isDemo}
                     marketType={marketType}
                     platform={platform}

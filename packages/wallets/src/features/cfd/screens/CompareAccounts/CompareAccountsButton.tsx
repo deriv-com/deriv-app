@@ -1,35 +1,59 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuthentication, useCreateOtherCFDAccount, useMT5AccountsList, useSettings } from '@deriv/api';
-import { WalletButton } from '../../../../components';
+import {
+    useActiveWalletAccount,
+    useAuthentication,
+    useAuthorize,
+    useCreateOtherCFDAccount,
+    useMT5AccountsList,
+    useSettings,
+    useWalletAccountsList,
+} from '@deriv/api';
+import { WalletButton, WalletError } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import { THooks, TPlatforms } from '../../../../types';
 import { Verification } from '../../flows/Verification';
 import { DxtradeEnterPasswordModal, MT5PasswordModal } from '../../modals';
+import { CTraderSuccessModal } from '../../modals/CTraderSuccessModal';
 import {
     getAccountVerificationStatus,
     shouldRestrictBviAccountCreation,
     shouldRestrictVanuatuAccountCreation,
 } from './compareAccountsConfig';
-import { CFD_PLATFORMS, MARKET_TYPE } from './constants';
+import { CFD_PLATFORMS, JURISDICTION, MARKET_TYPE } from './constants';
 import './CompareAccountsButton.scss';
 
 type TCompareAccountButton = {
     isAccountAdded: boolean;
+    isCrypto: boolean;
     isDemo: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
     platform: TPlatforms.All;
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const CompareAccountsButton = ({ isAccountAdded, isDemo, marketType, platform, shortCode }: TCompareAccountButton) => {
+const CompareAccountsButton = ({
+    isAccountAdded,
+    isCrypto,
+    isDemo,
+    marketType,
+    platform,
+    shortCode,
+}: TCompareAccountButton) => {
     const history = useHistory();
     const { show } = useModal();
 
+    const { switchAccount } = useAuthorize();
     const { data: accountSettings } = useSettings();
     const { data: authenticationInfo } = useAuthentication();
-    const { mutate: createAccount } = useCreateOtherCFDAccount();
+    const {
+        error: createAccountError,
+        isSuccess: isAccountCreated,
+        mutate: createAccount,
+    } = useCreateOtherCFDAccount();
     const { data: mt5Accounts } = useMT5AccountsList();
+    const { data: walletAccounts } = useWalletAccountsList();
+    const { data: activeWallet } = useActiveWalletAccount();
 
     const {
         account_opening_reason: accountOpeningReason,
@@ -66,7 +90,35 @@ const CompareAccountsButton = ({ isAccountAdded, isDemo, marketType, platform, s
         isDemo
     );
 
+    const USDSVGWallet = useMemo(
+        () =>
+            walletAccounts?.find(
+                account => account.currency_config?.is_USD && account.landing_company_name === JURISDICTION.SVG
+            ),
+        [walletAccounts]
+    );
+
+    useEffect(() => {
+        if (isAccountCreated) {
+            show(
+                <CTraderSuccessModal isDemo={isDemo} walletCurrencyType={activeWallet?.wallet_currency_type ?? 'USD'} />
+            );
+        }
+        if (createAccountError) {
+            show(
+                <WalletError
+                    errorMessage={createAccountError?.error?.message ?? 'Something went wrong. Please try again'}
+                    title={createAccountError?.error?.message ?? 'Error'}
+                />
+            );
+        }
+    }, [activeWallet?.wallet_currency_type, createAccountError, isAccountCreated, isDemo, show]);
+
     const onClickAdd = () => {
+        if (isCrypto && USDSVGWallet) {
+            switchAccount(USDSVGWallet.loginid);
+            history.push('/wallets');
+        }
         if (platform === CFD_PLATFORMS.MT5) {
             if (isAccountStatusVerified) {
                 show(<MT5PasswordModal marketType={marketType ?? 'synthetic'} platform={platform} />);

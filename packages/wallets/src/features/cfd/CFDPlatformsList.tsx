@@ -59,7 +59,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
             ) : (
                 <React.Fragment>
                     <MT5PlatformsList onMT5PlatformListLoaded={onMT5PlatformListLoaded} />
-                    {activeWallet?.is_virtual && <CTraderList />}
+                    <CTraderList />
                     <OtherCFDPlatformsList />
                 </React.Fragment>
             )}

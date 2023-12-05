@@ -9,6 +9,7 @@ const languages = {
     IT: 'Italiano',
     KO: '한국어',
     PL: 'Polish',
+    PT: 'Português',
     RU: 'Русский',
     TR: 'Türkçe',
     VI: 'Tiếng Việt',

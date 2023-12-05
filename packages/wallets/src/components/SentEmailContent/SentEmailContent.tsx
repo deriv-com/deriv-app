@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useCountdown } from 'usehooks-ts';
-import { useSettings, useVerifyEmail } from '@deriv/api';
+import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import ChangePassword from '../../public/images/change-password-email.svg';
@@ -9,6 +9,7 @@ import EmailFirewallIcon from '../../public/images/ic-email-firewall.svg';
 import EmailSpamIcon from '../../public/images/ic-email-spam.svg';
 import EmailTypoIcon from '../../public/images/ic-email-typo.svg';
 import { TPlatforms } from '../../types';
+import { platformPasswordResetRedirectLink } from '../../utils/cfdUtils';
 import { WalletButton, WalletText } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './SentEmailContent.scss';
@@ -56,6 +57,8 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
         if (count === 0) setHasCountdownStarted(false);
     }, [count]);
 
+    const { data: activeWallet } = useActiveWalletAccount();
+
     return (
         <div className='wallets-sent-email-content'>
             <WalletsActionScreen
@@ -92,6 +95,12 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
                                         platform === 'mt5'
                                             ? 'trading_platform_mt5_password_reset'
                                             : 'trading_platform_dxtrade_password_reset',
+                                    url_parameters: {
+                                        redirect_to: platformPasswordResetRedirectLink(
+                                            platform || 'mt5',
+                                            activeWallet?.is_virtual
+                                        ),
+                                    },
                                     verify_email: data?.email,
                                 });
                                 resetCountdown();

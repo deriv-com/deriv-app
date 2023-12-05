@@ -185,7 +185,7 @@ const AddCurrency = ({
             initialValues={{
                 currency: form_value.currency,
             }}
-            onSubmit={values => onSubmit(values)}
+            onSubmit={onSubmit}
         >
             {({ handleSubmit, values, isSubmitting }) => (
                 <form onSubmit={handleSubmit}>

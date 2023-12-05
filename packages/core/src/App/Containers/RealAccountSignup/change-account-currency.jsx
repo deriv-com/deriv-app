@@ -57,7 +57,7 @@ const ChangeAccountCurrency = ({
             initialValues={{
                 fiat: value.fiat,
             }}
-            onSubmit={values => onSubmit(values)}
+            onSubmit={onSubmit}
         >
             {({ handleSubmit, values, errors, touched, isSubmitting }) => (
                 <form

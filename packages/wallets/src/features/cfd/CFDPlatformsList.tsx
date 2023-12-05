@@ -30,7 +30,9 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                                 Learn more
                             </a>
                         </WalletText>
-                        <WalletButton size='sm' text='Compare accounts' textSize='sm' variant='ghost' />
+                        <WalletButton size='sm' textSize='sm' variant='ghost'>
+                            Compare accounts
+                        </WalletButton>
                     </div>
                 ) : (
                     <div>
@@ -38,7 +40,9 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                             <WalletText size='xl' weight='bold'>
                                 CFDs
                             </WalletText>
-                            <WalletButton size='sm' text='Compare accounts' variant='ghost' />
+                            <WalletButton size='sm' variant='ghost'>
+                                Compare accounts
+                            </WalletButton>
                         </div>
                         <WalletText size='md'>
                             Trade with leverage and tight spreads for better returns on trades.{' '}
@@ -59,7 +63,7 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
             ) : (
                 <React.Fragment>
                     <MT5PlatformsList onMT5PlatformListLoaded={onMT5PlatformListLoaded} />
-                    {activeWallet?.is_virtual && <CTraderList />}
+                    <CTraderList />
                     <OtherCFDPlatformsList />
                 </React.Fragment>
             )}

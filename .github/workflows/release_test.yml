@@ -30,7 +30,6 @@ jobs:
         GD_APP_ID: ${{ secrets.GD_APP_ID }}
         GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
         RUDDERSTACK_KEY: ${{ vars.RUDDERSTACK_KEY }}
-        RUDDERSTACK_URL: ${{ vars.RUDDERSTACK_URL }}
         REF_NAME: ${{ github.ref_name }}
     - name: Run tests
       run: npm test

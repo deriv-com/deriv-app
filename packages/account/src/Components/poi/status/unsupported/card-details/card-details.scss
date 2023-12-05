@@ -15,10 +15,6 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-
-        .account-form__footer {
-            max-width: 68rem;
-        }
     }
     &__fields-content {
         flex: auto;
@@ -181,11 +177,13 @@
         }
     }
     &__btns {
+        height: 15.2rem;
         flex: none;
         border-top: 2px solid var(--general-section-1);
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        padding-bottom: 8rem;
 
         .dc-btn:not(:last-of-type) {
             margin-right: 0.8rem;
@@ -194,10 +192,6 @@
             height: auto;
             padding-bottom: unset;
             padding-top: 2rem;
-
-            .dc-btn {
-                width: 50%;
-            }
         }
     }
 }

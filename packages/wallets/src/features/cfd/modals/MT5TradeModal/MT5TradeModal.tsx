@@ -15,7 +15,7 @@ const MT5TradeModal: FC<TMT5TradeModalProps> = ({ marketType, mt5Account, platfo
     useEffect(() => {
         setModalState('marketType', marketType);
         setModalState('platform', platform);
-
+        setModalState('accountId', mt5Account?.loginid);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

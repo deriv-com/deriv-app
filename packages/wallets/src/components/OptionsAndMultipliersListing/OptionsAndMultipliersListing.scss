@@ -38,6 +38,7 @@
         &-subtitle {
             &__link {
                 color: var(--brand-coral, #ff444f);
+                text-underline-offset: 0.3rem;
             }
         }
     }

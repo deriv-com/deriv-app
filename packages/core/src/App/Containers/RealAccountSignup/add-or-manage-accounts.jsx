@@ -61,7 +61,7 @@ const AddOrManageAccounts = props => {
         setActiveIndex(index);
     };
 
-    const manageOrChangeAccount = currency_object => {
+    const setCurrencyOrAddCryptoAccount = currency_object => {
         setLoading(true);
         Object.entries(currency_object).map(([key, value]) => {
             if (key === CURRENCY_TYPE.FIAT) {
@@ -107,7 +107,7 @@ const AddOrManageAccounts = props => {
         >
             <ChangeAccountCurrency
                 className='account-wizard__body'
-                onSubmit={manageOrChangeAccount}
+                onSubmit={setCurrencyOrAddCryptoAccount}
                 value={form_value}
                 form_error={form_error}
                 can_change_fiat_currency={can_change_fiat_currency}
@@ -120,7 +120,7 @@ const AddOrManageAccounts = props => {
     if (is_add_currency || is_add_crypto || is_add_fiat) {
         return (
             <AddCurrency
-                onSubmit={manageOrChangeAccount}
+                onSubmit={setCurrencyOrAddCryptoAccount}
                 value={form_value}
                 form_error={form_error}
                 should_show_crypto_only
@@ -154,7 +154,7 @@ const AddOrManageAccounts = props => {
                         >
                             <AddCryptoCurrency
                                 className='account-wizard__body'
-                                onSubmit={manageOrChangeAccount}
+                                onSubmit={setCurrencyOrAddCryptoAccount}
                                 value={form_value}
                                 form_error={form_error}
                                 should_show_crypto_only
@@ -168,7 +168,7 @@ const AddOrManageAccounts = props => {
                         ) : (
                             <AddCryptoCurrency
                                 className='account-wizard__body'
-                                onSubmit={manageOrChangeAccount}
+                                onSubmit={setCurrencyOrAddCryptoAccount}
                                 value={form_value}
                                 form_error={form_error}
                                 should_show_fiat_only={true}

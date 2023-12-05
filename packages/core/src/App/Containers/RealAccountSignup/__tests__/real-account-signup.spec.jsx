@@ -7,12 +7,6 @@ import RealAccountSignup from '../real-account-signup.jsx';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { Analytics } from '@deriv/analytics';
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
-
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Modal: () => <div>RealAccountModalContent</div>,

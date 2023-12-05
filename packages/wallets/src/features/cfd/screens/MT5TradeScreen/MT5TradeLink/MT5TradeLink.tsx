@@ -112,9 +112,10 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
                 <WalletButton
                     onClick={() => window.open(app === 'web' ? webtraderUrl : content.link)}
                     size='sm'
-                    text={content.text}
                     variant='outlined'
-                />
+                >
+                    {content.text}
+                </WalletButton>
             )}
             {platform !== mt5Platform && app !== ctraderPlatform && (
                 <button className='wallets-mt5-trade-link__platform' onClick={onClickWebTerminal}>

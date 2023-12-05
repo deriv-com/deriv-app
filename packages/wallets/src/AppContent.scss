@@ -6,7 +6,7 @@
     width: 100%;
     align-self: stretch;
     background: var(--system-light-7-secondary-background, #f2f3f4);
-    min-height: calc(100vh - 8.4rem); // 100vh - (4.8rem header + 3.6rem footer)
+    min-height: calc(var(--wallets-vh, 1vh) * 100 - 8.4rem); // 100vh - (4.8rem header + 3.6rem footer)
 
     @include mobile {
         overflow-y: auto;

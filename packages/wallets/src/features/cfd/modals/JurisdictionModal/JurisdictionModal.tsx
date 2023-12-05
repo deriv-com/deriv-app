@@ -46,8 +46,9 @@ const JurisdictionModal = () => {
                   disabled={!selectedJurisdiction || (selectedJurisdiction !== 'svg' && !isCheckBoxChecked)}
                   isFullWidth={isMobile}
                   onClick={() => show(<JurisdictionFlow />)}
-                  text='Next'
-              />
+              >
+                  Next
+              </WalletButton>
           );
 
     useEffect(() => {

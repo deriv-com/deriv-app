@@ -22,16 +22,15 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
 }) => {
     const { isMobile } = useDevice();
     const description = 'Make a deposit into your new Wallet.';
-    const title = useMemo(
-        () => `Your ${currency} wallet (${landingCompany?.toUpperCase()}) is ready`,
-        [currency, landingCompany]
-    );
+    const title = useMemo(() => `Your ${currency} wallet is ready`, [currency]);
     const renderFooter = useCallback(
         () => (
             <div className='wallets-add-more__success-footer'>
                 <WalletButtonGroup isFlex isFullWidth>
-                    <WalletButton onClick={onSecondaryButtonClick} text='Maybe later' variant='outlined' />
-                    <WalletButton onClick={onPrimaryButtonClick} text='Deposit' />
+                    <WalletButton onClick={onSecondaryButtonClick} variant='outlined'>
+                        Maybe later
+                    </WalletButton>
+                    <WalletButton onClick={onPrimaryButtonClick}>Deposit</WalletButton>
                 </WalletButtonGroup>
             </div>
         ),

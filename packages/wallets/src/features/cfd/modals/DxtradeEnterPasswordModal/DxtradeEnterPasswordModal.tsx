@@ -55,21 +55,25 @@ const DxtradeEnterPasswordModal = () => {
                             hide();
                         }}
                         size='lg'
-                        text='OK'
-                    />
+                    >
+                        OK
+                    </WalletButton>
                 );
             }
             return (
                 <WalletButtonGroup isFlex isFullWidth>
-                    <WalletButton onClick={() => hide()} size='lg' text='Maybe later' variant='outlined' />
+                    <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                        Maybe later
+                    </WalletButton>
                     <WalletButton
                         onClick={() => {
                             hide();
                             history.push('/wallets/cashier/transfer');
                         }}
                         size='lg'
-                        text='Transfer funds'
-                    />
+                    >
+                        Transfer funds
+                    </WalletButton>
                 </WalletButtonGroup>
             );
         }
@@ -87,17 +91,19 @@ const DxtradeEnterPasswordModal = () => {
                             );
                         }}
                         size='lg'
-                        text='Forgot password?'
                         variant='outlined'
-                    />
+                    >
+                        Forgot password?
+                    </WalletButton>
                     <WalletButton
                         disabled={!password || isLoading}
                         isFullWidth
                         isLoading={isLoading}
                         onClick={onSubmit}
                         size='lg'
-                        text='Add account'
-                    />
+                    >
+                        Add account
+                    </WalletButton>
                 </WalletButtonGroup>
             );
         }
@@ -109,8 +115,9 @@ const DxtradeEnterPasswordModal = () => {
                 isLoading={isLoading}
                 onClick={onSubmit}
                 size='lg'
-                text={`Create ${PlatformDetails.dxtrade.title} password`}
-            />
+            >
+                {`Create ${PlatformDetails.dxtrade.title} password`}
+            </WalletButton>
         );
     }, [
         accountType,

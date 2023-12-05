@@ -1,0 +1,17 @@
+.ad-create-edit-error-modal {
+    &--form {
+        height: fit-content !important;
+    }
+    .dc-modal-header__title--create-ad-error-modal {
+        padding: 2.4rem 2.4rem 0 !important;
+    }
+    .dc-modal__container_create-ad-error-modal {
+        .dc-modal-footer {
+            padding-top: 0 !important;
+        }
+
+        .dc-modal-header {
+            padding-bottom: 1rem;
+        }
+    }
+}

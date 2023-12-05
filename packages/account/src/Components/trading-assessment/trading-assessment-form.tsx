@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import React from 'react';
 import { Formik, Form, FormikErrors } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
-import { isEmptyObject } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
 import TradingAssessmentDropdown from './trading-assessment-dropdown';
@@ -125,10 +124,14 @@ const TradingAssessmentForm = ({
     const isAssessmentCompleted = (answers: TTradingAssessmentForm) =>
         Object.values(answers).every(answer => Boolean(answer));
 
-    const nextButtonHandler = (values: TTradingAssessmentForm) => {
+    const nextButtonHandler = (values: TTradingAssessmentForm, { setTouched }) => {
         if (is_section_filled) {
-            if (isAssessmentCompleted(values) && stored_items === last_question_index) onSubmit(values);
-            else displayNextPage();
+            if (isAssessmentCompleted(values) && stored_items === last_question_index) {
+                onSubmit(values);
+            } else {
+                setTouched({});
+                displayNextPage();
+            }
         }
     };
 
@@ -179,20 +182,14 @@ const TradingAssessmentForm = ({
             <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
                 <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you.' />
             </Text>
-            <Formik
-                initialValues={{ ...form_value }}
-                validate={handleValidate}
-                onSubmit={values => {
-                    nextButtonHandler(values);
-                }}
-            >
-                {({ errors, setFieldValue, values }) => {
+            <Formik initialValues={{ ...form_value }} validate={handleValidate} onSubmit={nextButtonHandler}>
+                {({ errors, setFieldValue, values, setErrors, touched }) => {
                     const { question_text, form_control, answer_options, questions } =
                         current_question_details.current_question;
                     const has_long_question = questions?.some(
                         question => question.question_text.length > MAX_QUESTION_TEXT_LENGTH
                     );
-
+                    const is_section_required = Object.keys(values).some(field => !!errors[field] && !!touched[field]);
                     return (
                         <React.Fragment>
                             <Text weight='bold' size='xs' className='trading-assessment__question-counter'>
@@ -204,7 +201,7 @@ const TradingAssessmentForm = ({
                                     }}
                                 />
                                 <Text color='loss-danger' size='xxs'>
-                                    * {!isEmptyObject(errors) && <Localize i18n_default_text={'This is required'} />}
+                                    {is_section_required && <Localize i18n_default_text={'* This is required'} />}
                                 </Text>
                             </Text>
                             <section className={'trading-assessment__form'}>
@@ -251,7 +248,10 @@ const TradingAssessmentForm = ({
                                             {should_display_previous_button && (
                                                 <Button
                                                     has_effect
-                                                    onClick={displayPreviousPage}
+                                                    onClick={() => {
+                                                        setErrors({});
+                                                        displayPreviousPage();
+                                                    }}
                                                     text={localize('Previous')}
                                                     type='button'
                                                     secondary

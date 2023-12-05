@@ -1,18 +1,31 @@
 import React from 'react';
-import { Divider, Dropzone, WalletText, WalletTextField } from '../../../../../../components';
+import { Divider, Dropzone, FlowTextField, useFlow, WalletText } from '../../../../../../components';
 import DrivingLicenseCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
-import Calendar from '../../../../../../public/images/calendar.svg';
+import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
 import { DocumentRuleHints } from '../DocumentRuleHints';
 import './DrivingLicenseDocumentUpload.scss';
 
 const DrivingLicenseDocumentUpload = () => {
+    const { formValues, setFormValues } = useFlow();
+
     return (
         <div className='wallets-driving-license-document-upload' data-testid='dt_driving-license-document-upload'>
             <WalletText>First, enter your Driving licence number and the expiry date.</WalletText>
             <div className='wallets-driving-license-document-upload__input-group'>
-                <WalletTextField label='Driving licence number*' />
-                <WalletTextField label='Expiry date*' renderRightIcon={() => <Calendar />} type='date' />
+                <FlowTextField
+                    defaultValue={formValues.drivingLicenceNumber ?? ''}
+                    label='Driving licence number*'
+                    name='drivingLicenceNumber'
+                    validationSchema={documentRequiredValidator('Driving licence number')}
+                />
+                <FlowTextField
+                    defaultValue={formValues.drivingLicenseExpiryDate ?? ''}
+                    label='Expiry date*'
+                    name='drivingLicenseExpiryDate'
+                    type='date'
+                    validationSchema={expiryDateValidator}
+                />
             </div>
             <Divider />
             <div className='wallets-driving-license-document-upload__document-section'>
@@ -21,19 +34,23 @@ const DrivingLicenseDocumentUpload = () => {
                     <div className='wallets-driving-license-document-upload__dropzones--left'>
                         <Dropzone
                             buttonText='Drop file or click here to upload'
+                            defaultFile={formValues.drivingLicenseCardFront}
                             description='Upload the front of your driving licence.'
                             fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                             icon={<DrivingLicenseCardFront />}
                             maxSize={8388608}
+                            onFileChange={(file: File) => setFormValues('drivingLicenseCardFront', file)}
                         />
                     </div>
                     <div className='wallets-driving-license-document-upload__dropzones--right'>
                         <Dropzone
                             buttonText='Drop file or click here to upload'
+                            defaultFile={formValues.drivingLicenseCardBack}
                             description='Upload the back of your driving licence.'
                             fileFormats={['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf']}
                             icon={<DrivingLicenseCardBack />}
                             maxSize={8388608}
+                            onFileChange={(file: File) => setFormValues('drivingLicenseCardBack', file)}
                         />
                     </div>
                 </div>

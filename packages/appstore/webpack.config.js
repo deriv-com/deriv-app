@@ -181,6 +181,7 @@ module.exports = function (env) {
                 '@deriv/account': true,
                 '@deriv/cashier': true,
                 '@deriv/cfd': true,
+                '@deriv/analytics': true,
             },
         ],
         //TODO: Uncomment this line when type script migrations on all packages done

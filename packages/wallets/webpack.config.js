@@ -71,6 +71,9 @@ module.exports = function (env) {
                                 rootMode: 'upward',
                             },
                         },
+                        {
+                            loader: path.resolve(__dirname, './localize-loader.js'),
+                        },
                     ],
                 },
                 //TODO: Uncomment this line when type script migrations on all packages done

@@ -1,8 +1,8 @@
 import React from 'react';
 import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from './types';
-import ChangePasswordConfirmation from '../../../Containers/cfd-change-password-confirmation';
+import ChangePasswordConfirmation from 'Containers/cfd-change-password-confirmation';
 import { CreatePassword } from './create-password';
-import { CFD_PLATFORMS } from '../../../Helpers/cfd-config';
+import { CFD_PLATFORMS } from 'Helpers/cfd-config';
 
 import { FormikHelpers } from 'formik';
 import { MultiStep } from '@deriv/components';

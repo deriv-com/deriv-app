@@ -10,17 +10,26 @@ const ChangePassword = () => {
     const { getModalState } = useModal();
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
     const platformTitle = PlatformDetails[platform].title;
+
+    const isDerivX = platform === PlatformDetails.dxtrade.platform;
+
     return (
         <ModalStepWrapper title={`Manage ${platformTitle} password`}>
             <div className='wallets-change-password__modal-wrapper'>
-                <Tabs wrapperClassName='wallets-change-password__container'>
-                    <Tab title={`${platformTitle} Password`}>
+                <div className='wallets-change-password__container'>
+                    {!isDerivX ? (
                         <MT5ChangePasswordScreens platform={platform} platformTitle={platformTitle} />
-                    </Tab>
-                    <Tab title='Investor Password'>
-                        <MT5ChangeInvestorPasswordScreens />
-                    </Tab>
-                </Tabs>
+                    ) : (
+                        <Tabs wrapperClassName='wallets-change-password__tab'>
+                            <Tab title={`${platformTitle} Password`}>
+                                <MT5ChangePasswordScreens platform={platform} platformTitle={platformTitle} />
+                            </Tab>
+                            <Tab title='Investor Password'>
+                                <MT5ChangeInvestorPasswordScreens />
+                            </Tab>
+                        </Tabs>
+                    )}
+                </div>
             </div>
         </ModalStepWrapper>
     );

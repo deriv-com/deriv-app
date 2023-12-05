@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
+import DerivXPasswordIcon from '../../../../public/images/ic-derivx-password-updated.svg';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
@@ -23,13 +24,12 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
     const { mutate } = useVerifyEmail();
     const { data: activeWallet } = useActiveWalletAccount();
 
+    const isMt5 = platform === PlatformDetails.mt5.platform;
+
     const handleSendEmail = async () => {
         if (data.email) {
             await mutate({
-                type:
-                    platform === PlatformDetails.mt5.platform
-                        ? 'trading_platform_mt5_password_reset'
-                        : 'trading_platform_dxtrade_password_reset',
+                type: isMt5 ? 'trading_platform_mt5_password_reset' : 'trading_platform_dxtrade_password_reset',
                 url_parameters: {
                     redirect_to: platformPasswordResetRedirectLink(platform, activeWallet?.is_virtual),
                 },
@@ -62,7 +62,6 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
                 </div>
             ),
             headingText: `Confirm to change your ${platformTitle} password`,
-            icon: <MT5PasswordIcon />,
         },
         introScreen: {
             bodyText: `Use this password to log in to your ${platformTitle} accounts on the desktop, web, and mobile apps.`,
@@ -72,7 +71,6 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
                 </WalletButton>
             ),
             headingText: `${platformTitle} password`,
-            icon: <MT5PasswordIcon />,
         },
     };
 
@@ -88,7 +86,7 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
             <WalletsActionScreen
                 description={ChangePasswordScreens[activeScreen].bodyText}
                 descriptionSize='sm'
-                icon={ChangePasswordScreens[activeScreen].icon}
+                icon={isMt5 ? <MT5PasswordIcon /> : <DerivXPasswordIcon />}
                 renderButtons={() => ChangePasswordScreens[activeScreen].button}
                 title={ChangePasswordScreens[activeScreen].headingText}
             />

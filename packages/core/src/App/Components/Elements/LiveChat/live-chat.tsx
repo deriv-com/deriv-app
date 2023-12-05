@@ -20,6 +20,7 @@ const LiveChat = observer(() => {
                 className='livechat gtm-deriv-livechat'
                 onKeyDown={liveChatClickHandler}
                 onClick={liveChatClickHandler}
+                role='button'
             >
                 <div className='livechat__icon-wrapper'>
                     <Icon icon='IcLiveChat' className='livechat__icon' />
@@ -31,7 +32,7 @@ const LiveChat = observer(() => {
         );
 
     return (
-        <div onKeyDown={liveChatClickHandler} onClick={liveChatClickHandler}>
+        <div onKeyDown={liveChatClickHandler} onClick={liveChatClickHandler} role='button'>
             <Popover
                 className='footer__link'
                 classNameBubble='help-centre__tooltip'

@@ -20,6 +20,7 @@ const CalendarRadioButton = ({ id, className, selected_value, value, label, onCh
                 'calendar-radio-button--selected': is_selected,
             })}
             onClick={() => onChange({ label, value })}
+            onKeyDown={() => onChange({ label, value })}
         >
             <input className='calendar-radio-button__input' id={id} type='radio' value={value} />
             <span

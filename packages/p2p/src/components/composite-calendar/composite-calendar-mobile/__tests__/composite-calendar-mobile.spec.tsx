@@ -18,7 +18,11 @@ const mock_props = {
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    InputField: jest.fn(({ onClick }) => <div onClick={onClick}>Input Field</div>),
+    InputField: jest.fn(({ onClick }) => (
+        <div onClick={onClick} onKeyDown={onClick}>
+            Input Field
+        </div>
+    )),
     MobileDialog: jest.fn(({ children }) => <div>{children}</div>),
     DatePicker: jest.fn(({ onChange }) => <div onChange={onChange}>DatePicker</div>),
 }));

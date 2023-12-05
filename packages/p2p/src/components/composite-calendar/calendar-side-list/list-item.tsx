@@ -14,6 +14,7 @@ const ListItem = ({ onClick, is_active, label }: TListItem) => (
             'calendar-side-list--is-active': is_active,
         })}
         onClick={onClick}
+        onKeyDown={onClick}
     >
         <Text weight={is_active ? 'bold' : 'normal'} size='xs' line_height='xl'>
             {label}

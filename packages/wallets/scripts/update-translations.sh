@@ -11,6 +11,7 @@ message() {
 
 fail() {
   echo $1 >&2
+  break
 }
 
 retry() {

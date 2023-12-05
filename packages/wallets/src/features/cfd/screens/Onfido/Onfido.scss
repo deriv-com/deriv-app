@@ -1,11 +1,17 @@
 .wallets-onfido {
     width: 99.6rem;
-    height: 47.2rem;
+    min-height: 47.2rem;
     padding: 1.6rem 0;
     overflow-y: auto;
 
     @include mobile {
         width: auto;
         height: auto;
+    }
+
+    &--success {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 }

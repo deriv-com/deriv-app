@@ -9,7 +9,7 @@ type TPageOverlay = {
     id?: string;
     is_from_app?: boolean;
     is_open?: boolean;
-    onClickClose: (event: MouseEvent) => void;
+    onClickClose?: (event: MouseEvent) => void;
     portal_id?: string;
     header_classname?: string;
 };

@@ -99,7 +99,7 @@ const CreateAdForm = () => {
         const disposeApiErrorReaction = reaction(
             () => my_ads_store.api_error_message,
             () => {
-                if (my_ads_store.api_error_message) general_store.showModal({ key: 'CreateAdErrorModal', props: {} });
+                if (my_ads_store.api_error_message) general_store.showModal({ key: 'AdCreateEditErrorModal' });
             }
         );
         // P2P configuration is not subscribable. Hence need to fetch it on demand

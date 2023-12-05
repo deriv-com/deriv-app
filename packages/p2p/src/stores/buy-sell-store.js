@@ -85,7 +85,6 @@ export default class BuySellStore extends BaseStore {
             is_buy_advert: computed,
             is_sell_advert: computed,
             modal_title: computed,
-            should_filter_by_payment_method: computed,
             getWebsiteStatus: action.bound,
             handleAdvertInfoResponse: action.bound,
             handleChange: action.bound,
@@ -169,11 +168,6 @@ export default class BuySellStore extends BaseStore {
         return localize('Sell {{ account_currency }}', { account_currency: this.account_currency });
     }
 
-    get should_filter_by_payment_method() {
-        const { my_profile_store } = this.root_store;
-        return my_profile_store.payment_methods_list_values !== this.selected_payment_method_value;
-    }
-
     // eslint-disable-next-line class-methods-use-this
     get sort_list() {
         return [
@@ -236,10 +230,8 @@ export default class BuySellStore extends BaseStore {
         }
     };
 
-    handleSubmit = async (isMountedFn, values, { setSubmitting }) => {
-        if (isMountedFn()) {
-            setSubmitting(true);
-        }
+    handleSubmit = async (values, { setSubmitting }) => {
+        setSubmitting(true);
 
         this.form_props.setErrorMessage(null);
 
@@ -262,9 +254,7 @@ export default class BuySellStore extends BaseStore {
 
         this.create_order_subscription = subscribeWS({ ...payload }, [this.handleResponse]);
 
-        if (isMountedFn()) {
-            setSubmitting(false);
-        }
+        setSubmitting(false);
     };
 
     hideAdvertiserPage() {

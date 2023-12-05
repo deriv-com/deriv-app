@@ -1,15 +1,8 @@
 import { test, expect } from '@playwright/test';
-import {
-    mock_residents_list,
-    mock_states_list,
-    mock_general,
-    mock_loggedIn,
-    setupMocks,
-    assertField,
-} from '@deriv/integration';
+import { DEFAULT_ACCOUNTS, mockGeneral, mockLoggedIn, setupMocks, assertField } from '@deriv/integration';
 import { Context } from '@deriv/integration/src/utils/mocks/mocks';
 
-const mock_set_settings = (context: Context) => {
+const mockSetSettings = (context: Context) => {
     if ('set_settings' in context.request) {
         context.response = {
             echo_req: context.request,
@@ -31,8 +24,11 @@ test.describe('Personal Details', () => {
     test('the initial render', async ({ page, baseURL }) => {
         await setupMocks({
             baseURL,
+            state: {
+                accounts: DEFAULT_ACCOUNTS,
+            },
             page,
-            mocks: [mock_general, mock_loggedIn, mock_residents_list, mock_states_list],
+            mocks: [mockGeneral, mockLoggedIn],
         });
         await page.goto(`${baseURL}/account/personal-details`);
 
@@ -57,8 +53,11 @@ test.describe('Personal Details', () => {
     test('submitting the changed form', async ({ page, baseURL }) => {
         await setupMocks({
             baseURL,
+            state: {
+                accounts: DEFAULT_ACCOUNTS,
+            },
             page,
-            mocks: [mock_general, mock_loggedIn, mock_residents_list, mock_states_list, mock_set_settings],
+            mocks: [mockGeneral, mockLoggedIn, mockSetSettings],
         });
         await page.goto(`${baseURL}/account/personal-details`);
 

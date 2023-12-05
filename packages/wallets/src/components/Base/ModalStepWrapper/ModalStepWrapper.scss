@@ -3,7 +3,7 @@
     border-radius: 0.8rem;
 
     @include mobile {
-        height: calc(100svh - 4rem);
+        height: calc(var(--wallets-vh, 1vh) * 100 - 4rem);
         width: 100vw;
         margin: 0;
         border-radius: 0;
@@ -11,7 +11,7 @@
         grid-template-rows: 6rem auto;
 
         &--hide-deriv-app-header {
-            height: 100svh;
+            height: calc(var(--wallets-vh, 1vh) * 100);
         }
 
         &--fixed-footer {

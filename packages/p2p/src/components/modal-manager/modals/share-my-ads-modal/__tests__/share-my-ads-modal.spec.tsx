@@ -65,7 +65,7 @@ describe('<ShareMyAdsModal />', () => {
     it('should toggle the modal', () => {
         render(<ShareMyAdsModal advert={mock_advert} />);
 
-        const close_icon = screen.getByTestId('dt-close-modal-icon');
+        const close_icon = screen.getByTestId('dt_modal_close_icon');
         userEvent.click(close_icon);
 
         expect(mock_modal_manager.hideModal).toHaveBeenCalled();

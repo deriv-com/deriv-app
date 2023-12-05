@@ -1,5 +1,5 @@
 import useRealTotalAssetCurrency from './useTotalAssetCurrency';
-import { useExchangeRate } from './useExchangeRate';
+import useExchangeRate from './useExchangeRate';
 /**
  * we can use this hook to get the total balance of the given accounts list.
  * it loops through the accounts list and adds the balance of each account

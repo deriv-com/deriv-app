@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import { secondsToTimer } from 'Utils/date-time';
+import { millisecondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
 import './order-details-timer.scss';
@@ -13,7 +13,7 @@ const OrderDetailsTimer = observer(() => {
         const distance = ServerTime.getDistanceToServerTime(time);
         return {
             distance,
-            label: secondsToTimer(Math.max(0, distance)),
+            label: millisecondsToTimer(Math.max(0, distance)),
         };
     };
 

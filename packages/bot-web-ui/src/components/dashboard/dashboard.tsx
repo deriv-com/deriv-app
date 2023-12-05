@@ -7,14 +7,14 @@ import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../run-panel';
 import RunStrategy from './dashboard-component/run-strategy';
 import { tour_list } from './dbot-tours/utils';
-import DashboardComponent from './dashboard-component';
+import { ChartModal, DashboardComponent } from './dashboard-component';
 import StrategyNotification from './strategy-notification';
 import Tutorial from './tutorial-tab';
 
@@ -26,6 +26,7 @@ const Dashboard = observer(() => {
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
     const { is_open } = quick_strategy;
+    const { cancel_button_text, ok_button_text, title, message } = dialog_options as { [key: string]: string };
     const { clear } = summary_card;
     const { DASHBOARD, BOT_BUILDER } = DBOT_TABS;
     const init_render = React.useRef(true);
@@ -135,14 +136,26 @@ const Dashboard = observer(() => {
                         onTabItemClick={handleTabChange}
                         top
                     >
-                        <div icon='IcDashboardComponentTab' label={localize('Dashboard')} id='id-dbot-dashboard'>
+                        <div
+                            icon='IcDashboardComponentTab'
+                            label={<Localize i18n_default_text='Dashboard' />}
+                            id='id-dbot-dashboard'
+                        >
                             <DashboardComponent handleTabChange={handleTabChange} />
                         </div>
-                        <div icon='IcBotBuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder' />
-                        <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
+                        <div
+                            icon='IcBotBuilderTabIcon'
+                            label={<Localize i18n_default_text='Bot Builder' />}
+                            id='id-bot-builder'
+                        />
+                        <div icon='IcChartsTabDbot' label={<Localize i18n_default_text='Charts' />} id='id-charts'>
                             <Chart />
                         </div>
-                        <div icon='IcTutorialsTabs' label={localize('Tutorials')} id='id-tutorials'>
+                        <div
+                            icon='IcTutorialsTabs'
+                            label={<Localize i18n_default_text='Tutorials' />}
+                            id='id-tutorials'
+                        >
                             <div className='tutorials-wrapper'>
                                 <Tutorial />
                             </div>
@@ -155,12 +168,13 @@ const Dashboard = observer(() => {
                     <RunStrategy />
                     <RunPanel />
                 </div>
+                <ChartModal />
             </DesktopWrapper>
             <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
             <Dialog
-                cancel_button_text={dialog_options.cancel_button_text || localize('Cancel')}
+                cancel_button_text={cancel_button_text || <Localize i18n_default_text='Cancel' />}
                 className={'dc-dialog__wrapper--fixed'}
-                confirm_button_text={dialog_options.ok_button_text || localize('OK')}
+                confirm_button_text={ok_button_text || <Localize i18n_default_text='OK' />}
                 has_close_icon
                 is_mobile_full_width={false}
                 is_visible={is_dialog_open}
@@ -168,9 +182,9 @@ const Dashboard = observer(() => {
                 onClose={onCloseDialog}
                 onConfirm={onOkButtonClick || onCloseDialog}
                 portal_element_id='modal_root'
-                title={dialog_options.title}
+                title={title}
             >
-                {dialog_options.message}
+                {message}
             </Dialog>
             <StrategyNotification />
         </React.Fragment>

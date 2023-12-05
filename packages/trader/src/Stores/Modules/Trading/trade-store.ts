@@ -31,8 +31,6 @@ import {
     BARRIER_LINE_STYLES,
     hasBarrier,
 } from '@deriv/shared';
-import { Analytics } from '@deriv/analytics';
-import type { TEvents } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
@@ -1628,14 +1626,6 @@ export default class TradeStore extends BaseStore {
             if (option?.chart_type_name) {
                 this.root_store.contract_trade.updateChartType(option?.chart_type_name);
             }
-        }
-        const { data, event_type } = getChartAnalyticsData(state as keyof typeof STATE_TYPES, option) as TPayload;
-        if (data) {
-            Analytics.trackEvent(event_type, {
-                ...data,
-                action: data.action as TEvents['ce_indicators_types_form']['action'],
-                form_name: 'default',
-            });
         }
     }
 

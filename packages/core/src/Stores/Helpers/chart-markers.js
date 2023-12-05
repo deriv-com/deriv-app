@@ -28,14 +28,14 @@ import { localize } from '@deriv/translations';
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';
 import { getChartType } from './logic';
 
-export const createChartMarkers = (contract_info, is_delayed_markers_update, is_beta_chart) => {
+export const createChartMarkers = (contract_info, is_delayed_markers_update) => {
     const { tick_stream } = contract_info;
     const should_show_10_last_ticks = isAccumulatorContractOpen(contract_info) && tick_stream.length === 10;
 
     let markers = [];
     if (contract_info) {
         const end_time = getEndTime(contract_info);
-        const chart_type = getChartType(contract_info.date_start, end_time, is_beta_chart);
+        const chart_type = getChartType(contract_info.date_start, end_time);
 
         if (contract_info.tick_count) {
             const tick_markers = createTickMarkers(contract_info, is_delayed_markers_update);

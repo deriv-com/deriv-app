@@ -207,6 +207,10 @@
         &--expanded {
             width: calc(100vw - 39.8rem);
         }
+
+        &--modal {
+            width: 40rem;
+        }
     }
 
     &__toolbox {

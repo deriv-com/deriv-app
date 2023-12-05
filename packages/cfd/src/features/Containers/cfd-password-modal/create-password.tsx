@@ -1,10 +1,10 @@
 import { Formik, FormikErrors } from 'formik';
 import React from 'react';
-import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from './types';
 import { Text, Icon, PasswordMeter, PasswordInput, FormSubmitButton } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { getCFDPlatformLabel, getErrorMessages } from '@deriv/shared';
-import { CFD_PLATFORMS } from '../../../Helpers/cfd-config';
+import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from './types';
+import { CFD_PLATFORMS } from 'Helpers/cfd-config';
 
 type TCFDCreatePasswordProps = TCFDPasswordFormReusedProps & {
     password: string;

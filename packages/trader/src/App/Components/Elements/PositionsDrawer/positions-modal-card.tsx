@@ -3,6 +3,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
+    addComma,
     getContractPath,
     getContractTypeDisplay,
     getCardLabels,
@@ -145,7 +146,7 @@ const PositionsModalCard = observer(
                                 {localize('Entry spot:')}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__purchase-value'>
-                                <Money amount={Number(contract_info.entry_spot)} currency={currency} />
+                                {addComma(contract_info.entry_spot)}
                             </Text>
                         </div>
                         <div className='positions-modal-card__payout-price'>
@@ -153,7 +154,7 @@ const PositionsModalCard = observer(
                                 {localize('Strike:')}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__payout-value'>
-                                <Money amount={Number(contract_info.barrier)} currency={currency} />
+                                {addComma(contract_info.barrier)}
                             </Text>
                         </div>
                     </div>

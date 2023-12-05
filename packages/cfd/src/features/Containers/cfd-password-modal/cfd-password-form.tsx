@@ -1,7 +1,6 @@
 import React from 'react';
-import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from './types';
-import { localize, Localize } from '@deriv/translations';
 import { Formik, FormikErrors } from 'formik';
+import { localize, Localize } from '@deriv/translations';
 import {
     isDesktop,
     isMobile,
@@ -11,8 +10,9 @@ import {
     getLegalEntityName,
 } from '@deriv/shared';
 import { Text, FormSubmitButton, PasswordInput } from '@deriv/components';
+import { TCFDPasswordFormReusedProps, TCFDPasswordFormValues, TOnSubmitPassword } from './types';
 import { CFDCreatePasswordForm } from './cfd-create-password-form';
-import { CFD_PLATFORMS } from '../../../Helpers/cfd-config';
+import { CFD_PLATFORMS } from 'Helpers/cfd-config';
 
 const getCancelButtonLabel = ({
     should_set_trading_password,

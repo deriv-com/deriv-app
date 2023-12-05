@@ -57,6 +57,10 @@ const DisclaimerModal = ({ handleDisclaimerTimeout }: TDisclaimerModalProps) => 
         handleDisclaimerTimeout(0);
     };
 
+    const onToggleCheckbox = React.useCallback(() => {
+        setIsChecked(prev_state => !prev_state);
+    }, []);
+
     return (
         <Modal
             className='disclaimer-modal'
@@ -77,7 +81,7 @@ const DisclaimerModal = ({ handleDisclaimerTimeout }: TDisclaimerModalProps) => 
                     ))}
                 </ul>
                 <Checkbox
-                    onChange={() => setIsChecked(prev_state => !prev_state)}
+                    onChange={onToggleCheckbox}
                     name='disclaimer-checkbox'
                     value={is_checked}
                     label={

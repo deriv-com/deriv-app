@@ -351,8 +351,16 @@ export default class ContractStore extends BaseStore {
                         ...common_props,
                         line_style: BARRIER_LINE_STYLES.DASHED,
                     });
+                    const is_reset_call = /CALL/i.test(contract_type);
 
-                    main_barrier.updateBarrierShade(false, contract_type);
+                    // Gradient logic: shade to the lowest barrier for CALL and shade the the highest barrier for PUT
+                    if (
+                        (is_reset_call && entry_spot > reset_barrier) ||
+                        (!is_reset_call && reset_barrier > entry_spot)
+                    ) {
+                        main_barrier.updateBarrierShade(false, contract_type);
+                        reset_barrier_instance.updateBarrierShade(true, contract_type);
+                    }
 
                     barriers.push(reset_barrier_instance);
                 }

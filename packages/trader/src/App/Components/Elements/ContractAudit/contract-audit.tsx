@@ -20,7 +20,6 @@ type TContractAudit = Partial<
     has_result: boolean;
     is_dark_theme: boolean;
     is_open: boolean;
-    reset_barrier: TContractInfo['reset_barrier'];
     toggleHistoryTab: (state_change?: boolean) => void;
 };
 

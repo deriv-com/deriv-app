@@ -35,7 +35,6 @@ type TContractDetails = {
     duration_unit: string;
     exit_spot?: string;
     is_vanilla?: boolean;
-    reset_barrier?: TContractInfo['reset_barrier'];
 };
 
 const ContractDetails = ({
@@ -45,7 +44,6 @@ const ContractDetails = ({
     duration_unit,
     exit_spot,
     is_vanilla,
-    reset_barrier,
 }: TContractDetails) => {
     const {
         commission,
@@ -62,6 +60,7 @@ const ContractDetails = ({
         tick_count,
         tick_passed,
         transaction_ids: { buy, sell } = {},
+        reset_barrier,
         reset_time,
         underlying,
     } = contract_info;
@@ -157,20 +156,20 @@ const ContractDetails = ({
                                     label={getBarrierLabel(contract_info)}
                                     value={
                                         (isResetContract(contract_type)
-                                            ? addCommaToNumber(Number(entry_spot_display_value))
+                                            ? addComma(entry_spot_display_value)
                                             : getBarrierValue(contract_info)) || ' - '
                                     }
                                 />
                                 {reset_time && (
                                     <React.Fragment>
                                         <ContractAuditItem
-                                            id='dt_bt_label'
+                                            id='dt_reset_barrier_label'
                                             icon={<Icon icon='IcContractResetBarrier' size={24} />}
                                             label={localize('Reset barrier')}
-                                            value={addCommaToNumber(Number(reset_barrier)) || ' - '}
+                                            value={reset_barrier ? addComma(reset_barrier) : ' - '}
                                         />
                                         <ContractAuditItem
-                                            id='dt_start_time_label'
+                                            id='dt_reset_time_label'
                                             icon={<Icon icon='IcContractResetTime' size={24} />}
                                             label={localize('Reset time')}
                                             value={toGMTFormat(epochToMoment(reset_time))}

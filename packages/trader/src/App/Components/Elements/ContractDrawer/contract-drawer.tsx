@@ -60,7 +60,7 @@ const ContractDrawer = observer(
         const { common, ui } = useStore();
         const { server_time } = common;
         const { is_mobile } = ui;
-        const { currency, exit_tick_display_value, is_sold, reset_barrier } = contract_info;
+        const { currency, exit_tick_display_value, is_sold } = contract_info;
         const contract_drawer_ref = React.useRef<HTMLDivElement>(null);
         const contract_drawer_card_ref = React.useRef<HTMLDivElement>(null);
         const [should_show_contract_audit, setShouldShowContractAudit] = React.useState(false);
@@ -86,7 +86,6 @@ const ContractDrawer = observer(
                 is_open
                 is_turbos={is_turbos}
                 is_vanilla={is_vanilla}
-                reset_barrier={reset_barrier}
                 toggleHistoryTab={toggleHistoryTab}
             />
         );

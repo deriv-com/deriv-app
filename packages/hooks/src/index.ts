@@ -70,3 +70,4 @@ export { default as useServiceToken } from './useServiceToken';
 export { default as useFileUploader } from './useFileUploader';
 export { default as useStoreWalletAccountsList } from './useStoreWalletAccountsList';
 export { default as useStoreLinkedWalletsAccounts } from './useStoreLinkedWalletsAccounts';
+export { default as useLandingCompanyDetails } from './useLandingCompanyDetails';

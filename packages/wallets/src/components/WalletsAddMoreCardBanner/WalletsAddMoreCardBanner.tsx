@@ -31,8 +31,10 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     const renderButtons = useCallback(
         () => (
             <div className='wallets-add-more__success-footer'>
-                <WalletButton color='black' onClick={() => modal.hide()} text='Maybe later' variant='outlined' />
-                <WalletButton onClick={() => history.push('wallets/cashier/deposit')} text='Deposit now' />
+                <WalletButton color='black' onClick={() => modal.hide()} variant='outlined'>
+                    Maybe later
+                </WalletButton>
+                <WalletButton onClick={() => history.push('wallets/cashier/deposit')}>Deposit now</WalletButton>
             </div>
         ),
         [history] // eslint-disable-line react-hooks/exhaustive-deps
@@ -101,8 +103,9 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
                     currency && mutate({ account_type: isCrypto ? 'crypto' : 'doughflow', currency });
                 }}
                 size={isMobile ? 'sm' : 'lg'}
-                text={isAdded ? 'Added' : 'Add'}
-            />
+            >
+                {isAdded ? 'Added' : 'Add'}
+            </WalletButton>
         </div>
     );
 };

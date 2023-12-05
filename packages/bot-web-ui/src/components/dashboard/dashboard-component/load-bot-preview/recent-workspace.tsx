@@ -55,6 +55,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         Analytics.trackEvent('ce_bot_builder_form', {
             action,
             form_source: 'ce_bot_dashboard_form',
+            bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
         });
     };
 

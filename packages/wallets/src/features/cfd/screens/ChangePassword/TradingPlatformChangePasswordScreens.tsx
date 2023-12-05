@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
@@ -8,13 +8,16 @@ import { TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
 import { PlatformDetails } from '../../constants';
 
-type MT5ChangePasswordScreensProps = {
+type TradingPlatformChangePasswordScreensProps = {
     isVirtual?: boolean;
     platform: TPlatforms.All;
     platformTitle: string;
 };
 
-const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ platform, platformTitle }) => {
+const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScreensProps> = ({
+    platform,
+    platformTitle,
+}) => {
     type TChangePasswordScreenIndex = 'confirmationScreen' | 'emailVerification' | 'introScreen';
     const [activeScreen, setActiveScreen] = useState<TChangePasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangePasswordScreenIndex) => setActiveScreen(nextScreen);
@@ -94,4 +97,4 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
     );
 };
 
-export default MT5ChangePasswordScreens;
+export default TradingPlatformChangePasswordScreens;

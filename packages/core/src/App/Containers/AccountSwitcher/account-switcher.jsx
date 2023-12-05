@@ -26,12 +26,8 @@ import { BinaryLink } from 'App/Components/Routes';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { Analytics } from '@deriv/analytics';
 
-const AccountSwitcher = observer(({
-    history,
-    is_mobile,
-    is_visible
-}) => {
-    const { client, ui, traders_hub } = useStore()
+const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
+    const { client, ui, traders_hub } = useStore();
     const {
         available_crypto_currencies,
         loginid: account_loginid,
@@ -58,12 +54,8 @@ const AccountSwitcher = observer(({
         real_account_creation_unlock_date,
         has_any_real_account,
         virtual_account_loginid,
-    } = client
-    const {
-        show_eu_related_content,
-        content_flag,
-        setTogglePlatformType,
-    } = traders_hub
+    } = client;
+    const { show_eu_related_content, content_flag, setTogglePlatformType } = traders_hub;
     const {
         is_dark_mode_on,
         is_positions_drawer_on,
@@ -73,7 +65,7 @@ const AccountSwitcher = observer(({
         toggleSetCurrencyModal,
         should_show_real_accounts_list,
         setShouldShowCooldownModal,
-    } = ui
+    } = ui;
     const [active_tab_index, setActiveTabIndex] = React.useState(!is_virtual || should_show_real_accounts_list ? 0 : 1);
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
@@ -559,4 +551,5 @@ AccountSwitcher.propTypes = {
     history: PropTypes.object,
 };
 
-export default withRouter(AccountSwitcher);
+const account_switcher = withRouter(AccountSwitcher);
+export { account_switcher as AccountSwitcher };

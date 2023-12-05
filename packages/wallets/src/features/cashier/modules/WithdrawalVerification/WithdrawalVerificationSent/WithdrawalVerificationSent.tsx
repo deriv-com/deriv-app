@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { WalletButton } from '../../../../../components';
-import WalletsActionScreen from '../../../../../components/WalletsActionScreen/WalletsActionScreen';
+import { WalletButton, WalletsActionScreen } from '../../../../../components';
 import EmailSent from '../../../../../public/images/email-sent.svg';
 import './WithdrawalVerificationSent.scss';
 
@@ -30,9 +29,10 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                                       setShowResend(!showResend);
                                   }}
                                   size='lg'
-                                  text='Didn’t receive the email?'
                                   variant='ghost'
-                              />
+                              >
+                                  Didn&apos;t receive the email?
+                              </WalletButton>
                           )
                         : undefined
                 }
@@ -43,12 +43,9 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                     <WalletsActionScreen
                         description='Check your spam or junk folder. If it’s not there, try resending the email.'
                         renderButtons={() => (
-                            <WalletButton
-                                disabled={!!counter}
-                                onClick={sendEmail}
-                                size='lg'
-                                text={`Resend email${counter ? ` in ${counter}s` : ''}`}
-                            />
+                            <WalletButton disabled={!!counter} onClick={sendEmail} size='lg'>
+                                {`Resend email${counter ? ` in ${counter}s` : ''}`}
+                            </WalletButton>
                         )}
                         title='Didn’t receive the email?'
                     />

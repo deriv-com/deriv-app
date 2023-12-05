@@ -33,14 +33,8 @@ inputs:
   GD_CLIENT_ID: 
     description: 'Google drive client id'
     required: false
-  RUDDERSTACK_STAGING_KEY:
-    description: 'Rudderstack staging key'
-    required: false
-  RUDDERSTACK_PRODUCTION_KEY:
-    description: 'Rudderstack production key'
-    required: false
-  RUDDERSTACK_URL:
-    description: 'Rudderstack url'
+  RUDDERSTACK_KEY:
+    description: 'Rudderstack key'
     required: false
   DATADOG_SESSION_SAMPLE_RATE_LOGS:
     description: 'Datadog session sample rate for logs'
@@ -61,8 +55,7 @@ runs:
       GD_API_KEY: ${{ inputs.GD_API_KEY }}
       GD_APP_ID: ${{ inputs.GD_APP_ID }}
       GD_CLIENT_ID: ${{ inputs.GD_CLIENT_ID }}
-      RUDDERSTACK_STAGING_KEY: ${{ inputs.RUDDERSTACK_STAGING_KEY }}
-      RUDDERSTACK_URL: ${{ inputs.RUDDERSTACK_URL }}
+      RUDDERSTACK_KEY: ${{ inputs.RUDDERSTACK_KEY }}
       REF_NAME: ${{ inputs.REF_NAME }}
     run: npm run build:all
     shell: bash

@@ -10,6 +10,7 @@ import {
     isFieldImmutable,
     preventEmptyClipboardPaste,
     shouldShowIdentityInformation,
+    getOnfidoSupportedLocaleCode,
     verifyFields,
 } from '../utils';
 
@@ -29,15 +30,29 @@ describe('generatePlaceholderText', () => {
     it('should return the correct placeholder text for passport', () => {
         expect(generatePlaceholderText('passport')).toEqual('Enter your document number');
     });
+
+    it('should return the correct placeholder text for NIN for Uganda', () => {
+        expect(generatePlaceholderText('national_id_no_photo')).toEqual(
+            'Enter your National Identification Number (NIN)'
+        );
+    });
 });
 
 describe('documentAdditionalError', () => {
+    const config = {
+        format: /^[a-z]+$/,
+        display_name: 'additional doc number',
+    };
     it('should set the correct additional document error when format is incorrect', () => {
-        expect(documentAdditionalError('testdoc', '/[a-z]/')).toEqual('Please enter the correct format. ');
+        expect(documentAdditionalError('test1doc', config)).toEqual('Please enter the correct format. ');
     });
 
     it('should set the correct additional document error when value is not provided', () => {
-        expect(documentAdditionalError('', '/[a-z]+/')).toEqual('Please enter your document number. ');
+        expect(documentAdditionalError('', config)).toEqual('Please enter your additional doc number. ');
+    });
+
+    it('should return no error when input matches the config', () => {
+        expect(documentAdditionalError('testdoc', config)).toBeNull();
     });
 });
 
@@ -230,16 +245,30 @@ describe('isDocumentNumberValid', () => {
     });
 });
 
+describe('getOnfidoSupportedLocaleCode', () => {
+    it('should return the correct language tag for German', () => {
+        expect(getOnfidoSupportedLocaleCode('DE')).toEqual('de');
+    });
+
+    it('should return the correct language tag for Indonesian', () => {
+        expect(getOnfidoSupportedLocaleCode('ID')).toEqual('id_ID');
+    });
+
+    it('should return the correct language tag for Chinese', () => {
+        expect(getOnfidoSupportedLocaleCode('Zh_CN')).toEqual('zh_CN');
+    });
+});
+
 describe('verifyFields', () => {
     it('should return date field in the list when the error is date of birth', () => {
-        expect(verifyFields('POI_DOB_MISMATCH')).toEqual(['date_of_birth']);
+        expect(verifyFields('DobMismatch')).toEqual(['date_of_birth']);
     });
 
     it('should return first and last name in the list when the error is name', () => {
-        expect(verifyFields('POI_NAME_MISMATCH')).toEqual(['first_name', 'last_name']);
+        expect(verifyFields('NameMismatch')).toEqual(['first_name', 'last_name']);
     });
 
     it('should return first name, last name and dob in the list when the the error is regarding rejection', () => {
-        expect(verifyFields('POI_FAILED')).toEqual(['first_name', 'last_name', 'date_of_birth']);
+        expect(verifyFields('Expired')).toEqual(['first_name', 'last_name', 'date_of_birth']);
     });
 });

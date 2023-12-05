@@ -200,7 +200,6 @@ $MIN_HEIGHT_FLOATING: calc(
         overflow: hidden;
     }
 
-
     &-form {
         overflow: hidden;
         height: 100%;
@@ -628,9 +627,14 @@ $MIN_HEIGHT_FLOATING: calc(
         &__list {
             &-container {
                 margin-top: 1.6rem;
-                max-width: 50.6rem;
+                width: 100%;
                 display: flex;
                 flex-direction: column;
+                border-radius: 0.8rem;
+                background: $color-status-error;
+                padding: 0.8rem;
+                align-items: flex-start;
+                gap: 0.8rem;
             }
 
             &-icon {
@@ -669,6 +673,10 @@ $MIN_HEIGHT_FLOATING: calc(
                 align-items: center;
                 flex-direction: column;
 
+                @include mobile {
+                    justify-content: center;
+                }
+
                 .dc-btn {
                     height: 4rem;
                     margin-top: 3.2rem;
@@ -676,7 +684,6 @@ $MIN_HEIGHT_FLOATING: calc(
                     @include mobile {
                         margin: 1.6rem 0;
                         padding: 1.6rem;
-                        width: 100%;
                     }
                 }
             }
@@ -684,15 +691,9 @@ $MIN_HEIGHT_FLOATING: calc(
             &-icon {
                 width: 12.8rem;
                 height: 12.8rem;
-                margin-top: 8rem;
 
-                @include mobile {
-                    margin-top: 4rem;
-
-                    /* iPhone SE screen height fixes due to UI space restrictions */
-                    @media only screen and (max-height: 480px) {
-                        margin-top: 3.2rem;
-                    }
+                @include desktop {
+                    margin-top: 8rem;
                 }
             }
 
@@ -1449,29 +1450,6 @@ $MIN_HEIGHT_FLOATING: calc(
         display: grid;
         grid-gap: 2.4rem;
         grid-template-columns: 1fr 1fr 1fr;
-    }
-}
-
-/** @define onfido-container; weak */
-.onfido-container {
-    &__hidden {
-        display: none;
-    }
-
-    @include mobile {
-        .onfido-sdk-ui-PageTitle {
-            &-titleWrapper {
-                margin: 0 1.5em 0.4em;
-            }
-
-            &-title {
-                text-align: left;
-            }
-
-            &-subTitle {
-                text-align: left;
-            }
-        }
     }
 }
 

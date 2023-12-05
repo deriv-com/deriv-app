@@ -5,12 +5,10 @@ import ServerTime from 'Utils/server-time';
 import { countDecimalPlaces } from 'Utils/string';
 
 export default class FloatingRateStore extends BaseStore {
-    fixed_rate_adverts_status;
     float_rate_adverts_status;
     float_rate_offset_limit;
     fixed_rate_adverts_end_date;
     change_ad_alert = false;
-    is_loading;
     api_error_message = '';
 
     constructor(root_store) {
@@ -18,22 +16,18 @@ export default class FloatingRateStore extends BaseStore {
         super(root_store);
 
         makeObservable(this, {
-            fixed_rate_adverts_status: observable,
             float_rate_adverts_status: observable,
             float_rate_offset_limit: observable,
             fixed_rate_adverts_end_date: observable,
             change_ad_alert: observable,
-            is_loading: observable,
             api_error_message: observable,
             rate_type: computed,
             reached_target_date: computed,
-            setFixedRateAdvertStatus: action.bound,
             setFloatingRateAdvertStatus: action.bound,
             setFloatRateOffsetLimit: action.bound,
             setFixedRateAdvertsEndDate: action.bound,
             setChangeAdAlert: action.bound,
             setApiErrorMessage: action.bound,
-            setIsLoading: action.bound,
         });
     }
 
@@ -51,9 +45,6 @@ export default class FloatingRateStore extends BaseStore {
         return current_date > cutoff_date;
     }
 
-    setFixedRateAdvertStatus(fixed_rate_advert_status) {
-        this.fixed_rate_adverts_status = fixed_rate_advert_status;
-    }
     setFloatingRateAdvertStatus(floating_rate_advert_status) {
         this.float_rate_adverts_status = floating_rate_advert_status;
     }
@@ -72,8 +63,5 @@ export default class FloatingRateStore extends BaseStore {
     }
     setApiErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
-    }
-    setIsLoading(state) {
-        this.is_loading = state;
     }
 }

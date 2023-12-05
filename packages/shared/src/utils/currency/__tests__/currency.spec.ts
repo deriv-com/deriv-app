@@ -86,8 +86,12 @@ describe('CurrencyUtils', () => {
             expect(CurrencyUtils.getDecimalPlaces('BTC')).toBe(8);
         });
 
-        it('works with undefined currencies', () => {
+        it('works with dummy currencies', () => {
             expect(CurrencyUtils.getDecimalPlaces('ZZZ')).toBe(2);
+        });
+
+        it('works with undefined', () => {
+            expect(CurrencyUtils.getDecimalPlaces()).toBe(2);
         });
     });
 

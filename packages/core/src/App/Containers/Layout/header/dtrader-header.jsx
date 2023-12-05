@@ -34,6 +34,7 @@ const DTraderHeader = ({
     is_acc_switcher_disabled,
     is_acc_switcher_on,
     is_app_disabled,
+    is_dark_mode,
     is_bot_allowed,
     is_dxtrade_allowed,
     is_eu,
@@ -122,7 +123,7 @@ const DTraderHeader = ({
                         )}
                     </MobileWrapper>
                     <DesktopWrapper>
-                        <TradersHubHomeButton />
+                        <TradersHubHomeButton is_dark_mode={is_dark_mode} />
                     </DesktopWrapper>
                     <MenuLinks />
                 </div>
@@ -194,6 +195,7 @@ DTraderHeader.propTypes = {
     is_acc_switcher_disabled: PropTypes.bool,
     is_acc_switcher_on: PropTypes.bool,
     is_app_disabled: PropTypes.bool,
+    is_dark_mode: PropTypes.bool,
     is_bot_allowed: PropTypes.bool,
     is_eu: PropTypes.bool,
     is_loading: PropTypes.bool,
@@ -234,6 +236,7 @@ export default connect(({ client, common, ui, notifications, traders_hub }) => (
     is_acc_switcher_disabled: ui.is_account_switcher_disabled,
     is_acc_switcher_on: !!ui.is_accounts_switcher_on,
     is_app_disabled: ui.is_app_disabled,
+    is_dark_mode: ui.is_dark_mode_on,
     is_bot_allowed: client.is_bot_allowed,
     is_eu: client.is_eu,
     is_loading: ui.is_loading,

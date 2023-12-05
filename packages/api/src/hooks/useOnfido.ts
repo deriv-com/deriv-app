@@ -28,6 +28,7 @@ const useOnfido = () => {
     const [isOnfidoLoaded, setIsOnfidoLoaded] = useState(false);
     // use to check that we do not re-attempt to reload the onfido script while its still loading
     const [isOnfidoLoading, setIsOnfidoLoading] = useState(false);
+    const [hasSubmitted, setHasSubmitted] = useState(false);
 
     /**
      * A reference to the Onfido SDK
@@ -79,11 +80,14 @@ const useOnfido = () => {
         return [];
     }, [residenceList, countryCode]);
 
-    const onComplete = useCallback((data: Omit<SdkResponse, 'data'> & { data?: { id?: string } }) => {
-        const document_ids = Object.keys(data).map(key => data[key as keyof SdkResponse]?.id || '');
-        submitDocuments(document_ids);
-        onfidoRef?.current?.safeTearDown();
-    }, []);
+    const onComplete = useCallback(
+        (data: Omit<SdkResponse, 'data'> & { data?: { id?: string } }) => {
+            const document_ids = Object.keys(data).map(key => data[key as keyof SdkResponse]?.id || '');
+            submitDocuments(document_ids);
+            setHasSubmitted(true);
+        },
+        [submitDocuments]
+    );
 
     const loadOnfidoSdkScript = () => {
         const onfidoScriptNode = document.getElementById('onfido_sdk');
@@ -164,6 +168,7 @@ const useOnfido = () => {
         data: {
             onfidoRef,
             onfidoContainerId,
+            hasSubmitted,
         },
     };
 };

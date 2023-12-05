@@ -31,7 +31,6 @@ export const InfoBoxWidget = observer(() => {
 
 // Chart widgets passed into SmartCharts
 export const ChartTopWidgets = () => {
-    const { client } = useStore();
-    return <TopWidgets InfoBox={<InfoBoxWidget />} is_title_enabled={false} is_beta_chart={client.is_beta_chart} />;
+    return <TopWidgets InfoBox={<InfoBoxWidget />} is_title_enabled={false} />;
 };
 export const ChartBottomWidgets = () => <BottomWidgets Widget={<DigitsWidget />} />;

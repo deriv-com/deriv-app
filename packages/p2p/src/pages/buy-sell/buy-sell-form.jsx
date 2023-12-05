@@ -197,188 +197,6 @@ const BuySellForm = props => {
                 </div>
             )}
 
-<<<<<<< HEAD
-                    return (
-                        <Form noValidate>
-                            <div className='buy-sell-form__content'>
-                                <div className='buy-sell-form__field-wrapper'>
-                                    <div className='buy-sell-form__field'>
-                                        <Text as='p' color='less-prominent' size='xxs'>
-                                            {buy_sell_store.is_buy_advert ? (
-                                                <Localize i18n_default_text='Seller' />
-                                            ) : (
-                                                <Localize i18n_default_text='Buyer' />
-                                            )}
-                                        </Text>
-                                        <Text as='p' size='xs'>
-                                            {advertiser_details.name}
-                                        </Text>
-                                    </div>
-                                    <div className='buy-sell-form__field'>
-                                        <Text as='p' color='less-prominent' size='xxs'>
-                                            <Localize
-                                                i18n_default_text='Rate (1 {{ currency }})'
-                                                values={{ currency: buy_sell_store.account_currency }}
-                                            />
-                                        </Text>
-                                        <Text as='p' size='xs'>
-                                            {display_effective_rate} {local_currency}
-                                        </Text>
-                                    </div>
-                                </div>
-                                <div className='buy-sell-form-payment-method--container'>
-                                    {payment_method_names && (
-                                        <Text
-                                            as='p'
-                                            className='buy-sell-form-payment-method--title'
-                                            color='less-prominent'
-                                            size='xxs'
-                                        >
-                                            <Localize i18n_default_text='Payment methods' />
-                                        </Text>
-                                    )}
-                                    {payment_method_names &&
-                                        payment_method_names.map((payment_method, key) => (
-                                            <div className='buy-sell-form-payment-method--row' key={key}>
-                                                <PaymentMethodIcon
-                                                    className='buy-sell-form-payment-method--icon'
-                                                    display_name={payment_method}
-                                                />
-                                                <Text as='p' size='xs'>
-                                                    {payment_method}
-                                                </Text>
-                                            </div>
-                                        ))}
-                                </div>
-                                <div className='buy-sell-form__field-wrapper'>
-                                    <div className='buy-sell-form__field'>
-                                        <Text as='p' color='less-prominent' size='xxs'>
-                                            {buy_sell_store.is_buy_advert ? (
-                                                <Localize i18n_default_text="Seller's instructions" />
-                                            ) : (
-                                                <Localize i18n_default_text="Buyer's instructions" />
-                                            )}
-                                        </Text>
-                                        {description
-                                            .trim()
-                                            .replace(/([\r\n]){2,}/g, '\n\n')
-                                            .split('\n')
-                                            .map((text, idx) => (
-                                                <Text key={idx} as='p' size='xs'>
-                                                    {text || '-'}
-                                                </Text>
-                                            ))}
-                                    </div>
-                                </div>
-                                <div className='buy-sell-form__field-wrapper'>
-                                    <div className='buy-sell-form-field'>
-                                        <Text as='p' color='less-prominent' size='xxs'>
-                                            <Localize i18n_default_text='Order Completion time' />
-                                        </Text>
-                                        <Text as='p' color='general' size='xs'>
-                                            {formatTime(order_completion_time)}
-                                        </Text>
-                                    </div>
-                                </div>
-                                <div className='buy-sell-form-line' />
-                                {buy_sell_store.is_sell_advert && payment_method_names && (
-                                    <React.Fragment>
-                                        <div className='buy-sell-form-payment-method'>
-                                            <Text
-                                                as='p'
-                                                className='buy-sell-form-payment-method--title'
-                                                color='less-prominent'
-                                                size='xxs'
-                                            >
-                                                <Localize i18n_default_text='Receive payment to' />
-                                            </Text>
-                                            <Text as='p' color='prominent' size='xxs'>
-                                                {my_profile_store.advertiser_has_payment_methods ? (
-                                                    <Localize i18n_default_text='You may choose up to 3.' />
-                                                ) : (
-                                                    <Localize i18n_default_text='To place an order, add one of the advertiser’s preferred payment methods:' />
-                                                )}
-                                            </Text>
-                                            <Observer>
-                                                {() => (
-                                                    <div
-                                                        className={classNames('buy-sell-form--sell-payment-methods', {
-                                                            'buy-sell-form--sell-payment-methods--disable':
-                                                                should_disable_field,
-                                                        })}
-                                                    >
-                                                        {payment_method_names
-                                                            ?.map((add_payment_method, key) => {
-                                                                const {
-                                                                    setSelectedPaymentMethodDisplayName,
-                                                                    setShouldShowAddPaymentMethodForm,
-                                                                } = my_profile_store;
-                                                                const matching_payment_methods =
-                                                                    p2p_advertiser_payment_methods?.filter(
-                                                                        advertiser_payment_method =>
-                                                                            advertiser_payment_method.display_name ===
-                                                                            add_payment_method
-                                                                    );
-
-                                                                return matching_payment_methods?.length > 0 ? (
-                                                                    matching_payment_methods.map(payment_method => (
-                                                                        <PaymentMethodCard
-                                                                            is_vertical_ellipsis_visible={false}
-                                                                            key={key}
-                                                                            medium
-                                                                            onClick={async () => {
-                                                                                onClickPaymentMethodCard(
-                                                                                    payment_method
-                                                                                );
-                                                                                await validateForm();
-                                                                            }}
-                                                                            payment_method={payment_method}
-                                                                            style={
-                                                                                selected_methods.includes(
-                                                                                    payment_method.id
-                                                                                )
-                                                                                    ? style
-                                                                                    : {}
-                                                                            }
-                                                                            disabled={should_disable_field}
-                                                                        />
-                                                                    ))
-                                                                ) : (
-                                                                    <PaymentMethodCard
-                                                                        add_payment_method={add_payment_method}
-                                                                        is_add
-                                                                        key={key}
-                                                                        medium
-                                                                        onClickAdd={() => {
-                                                                            if (!should_disable_field) {
-                                                                                setSelectedPaymentMethodDisplayName(
-                                                                                    add_payment_method
-                                                                                );
-                                                                                setShouldShowAddPaymentMethodForm(true);
-                                                                            }
-                                                                        }}
-                                                                        disabled={should_disable_field}
-                                                                        style={{
-                                                                            cursor: should_disable_field
-                                                                                ? 'not-allowed'
-                                                                                : 'pointer',
-                                                                        }}
-                                                                    />
-                                                                );
-                                                            })
-                                                            .sort(payment_method_card_node =>
-                                                                Array.isArray(payment_method_card_node) &&
-                                                                !payment_method_card_node[0].props?.is_add
-                                                                    ? -1
-                                                                    : 1
-                                                            )}
-                                                    </div>
-                                                )}
-                                            </Observer>
-                                        </div>
-                                        <div className='buy-sell-form-line' />
-                                    </React.Fragment>
-=======
             <form noValidate onSubmit={submitForm}>
                 <div className='buy-sell-form__content'>
                     <div className='buy-sell-form__field-wrapper'>
@@ -388,7 +206,6 @@ const BuySellForm = props => {
                                     <Localize i18n_default_text='Seller' />
                                 ) : (
                                     <Localize i18n_default_text='Buyer' />
->>>>>>> master
                                 )}
                             </Text>
                             <Text as='p' size='xs'>
@@ -452,8 +269,17 @@ const BuySellForm = props => {
                                     ))}
                         </div>
                     </div>
+                    <div className='buy-sell-form__field-wrapper'>
+                        <div className='buy-sell-form-field'>
+                            <Text as='p' color='less-prominent' size='xxs'>
+                                <Localize i18n_default_text='Order Completion time' />
+                            </Text>
+                            <Text as='p' color='general' size='xs'>
+                                {formatTime(order_completion_time)}
+                            </Text>
+                        </div>
+                    </div>
                     <div className='buy-sell-form-line' />
-
                     {buy_sell_store.is_sell_advert && payment_method_names && (
                         <React.Fragment>
                             <div className='buy-sell-form-payment-method'>

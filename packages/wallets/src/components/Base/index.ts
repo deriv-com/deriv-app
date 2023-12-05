@@ -1,5 +1,6 @@
 export * from '../WalletsPrimaryTabs';
 export * from './ATMAmountInput';
+export * from './Badge';
 export * from './Divider';
 export * from './IconButton';
 export * from './InlineMessage';

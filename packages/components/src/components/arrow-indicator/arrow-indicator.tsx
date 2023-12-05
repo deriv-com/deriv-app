@@ -29,7 +29,7 @@ const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
 
         if (previous_value !== Number(value)) {
             setData(prev_data => {
-                const has_increased = Number(prev_data.previous_value) < Number(value);
+                const has_increased = Number(prev_data.value) < Number(value);
                 const icon_name = has_increased ? 'IcProfit' : 'IcLoss';
                 return {
                     icon: has_defined_values ? icon_name : '',

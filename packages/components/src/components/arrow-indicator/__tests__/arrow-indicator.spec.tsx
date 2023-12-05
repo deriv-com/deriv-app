@@ -42,8 +42,8 @@ describe('ArrowIndicator', () => {
             jest.advanceTimersByTime(3000);
         });
         expect(screen.queryByText('IcProfit')).not.toBeInTheDocument();
-        rerender(<ArrowIndicator value='123.96' />);
-        expect(screen.getByText('IcProfit')).toBeInTheDocument();
+        rerender(<ArrowIndicator value='123.92' />);
+        expect(screen.getByText('IcLoss')).toBeInTheDocument();
         jest.useRealTimers();
     });
 });

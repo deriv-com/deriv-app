@@ -31,15 +31,8 @@ const IDVForm = ({
 
     const { documents_supported: document_data } = selected_country?.identity?.services?.idv ?? {};
 
-    const {
-        errors,
-        touched,
-        values,
-        handleBlur,
-        handleChange,
-        setFieldValue,
-        setFieldTouched,
-    }: FormikProps<TIDVFormValues> = useFormikContext();
+    const { errors, touched, values, handleBlur, handleChange, setFieldValue }: FormikProps<TIDVFormValues> =
+        useFormikContext();
     const default_document = {
         id: '',
         text: '',

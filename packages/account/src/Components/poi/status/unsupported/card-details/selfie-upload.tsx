@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Formik, Form, FormikProps, FormikValues } from 'formik';
+import { Form, Formik, FormikProps, FormikValues } from 'formik';
 import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
-import { Button, Icon, Text } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import Uploader from './uploader';
 import { setInitialValues, validateFields } from './utils';
 import { ROOT_CLASS, SELFIE_DOCUMENT } from '../constants';

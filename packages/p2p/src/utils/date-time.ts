@@ -8,7 +8,12 @@
  * @param {boolean} has_seconds - Whether to include seconds in the time.
  * @returns {String} The formatted date string.
  */
-export const getFormattedDateString = (date_obj: Date, is_local = false, has_seconds = false, only_date = false): string => {
+export const getFormattedDateString = (
+    date_obj: Date,
+    is_local = false,
+    has_seconds = false,
+    only_date = false
+): string => {
     const date_string = is_local ? date_obj.toString().split(' ') : date_obj.toUTCString().split(' ');
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, day, month, year, time] = date_string;

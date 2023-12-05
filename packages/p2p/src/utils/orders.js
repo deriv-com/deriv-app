@@ -349,7 +349,12 @@ export default class ExtendedOrderDetails {
     }
 
     get purchase_time() {
-        return getFormattedDateString(new Date(convertToMillis(this.order_details.created_time)), true, false, this.is_inactive_order);
+        return getFormattedDateString(
+            new Date(convertToMillis(this.order_details.created_time)),
+            true,
+            false,
+            this.is_inactive_order
+        );
     }
 }
 

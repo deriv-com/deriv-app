@@ -475,7 +475,7 @@ const RealAccountSignup = ({
             return active_modal_index_no;
         }
         if (state_value.active_modal_index === -1) {
-            if (has_real_account && currency && getIsManageTarget()) {
+            if (has_real_account && currency && getIsManageTarget() && !is_loading) {
                 active_modal_index_no = modal_pages_indices.add_or_manage_account;
             } else {
                 active_modal_index_no =

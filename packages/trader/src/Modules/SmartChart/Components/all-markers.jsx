@@ -3,18 +3,11 @@
 // 2- Please read RawMarker.jsx in https://github.com/binary-com/SmartCharts
 // 3- Please read contract-store.js & trade.jsx carefully
 import React from 'react';
-import {
-    getContractStatus,
-    getDecimalPlaces,
-    isAccumulatorContract,
-    isVanillaContract,
-    isResetContract,
-} from '@deriv/shared';
+import { getContractStatus, getDecimalPlaces, isAccumulatorContract, isVanillaContract } from '@deriv/shared';
 import { RawMarker } from 'Modules/SmartChart';
 import * as ICONS from './icons';
 
 const is_firefox = navigator.userAgent.search('Firefox') > 0;
-const GRADIENT_HEIGHT = 96;
 
 const RawMarkerMaker = draw_callback => {
     const Marker = ({ epoch_array, price_array, ...rest }) => (
@@ -51,11 +44,6 @@ const light_theme = {
     open: '#377cfc',
     sold: '#ffad3a',
     won: '#4bb4b3',
-};
-
-const gradient_color = {
-    intensive: 'rgba(75, 180, 179, 0.16)',
-    blurred: 'rgba(75, 180, 179, 0.00)',
 };
 
 function getColor({ status, profit, is_dark_theme, is_vanilla }) {
@@ -245,62 +233,6 @@ const drawAccuBarrierRange = ({
     ctx.restore();
 };
 
-const drawResetBarrier = ({ ctx, start_left, top, bottom, stroke_color, barrier_gradient, reset_barrier, scale }) => {
-    ctx.save();
-    const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
-    const end_top = ctx.canvas.offsetHeight - ctx.canvas.parentElement.stx.xaxisHeight;
-    const is_top_visible = top < end_top;
-    const is_bottom_visible = bottom < end_top;
-    // using 2 instead of 0 to distance the top barrier line from the top of the chart and make it clearly visible in C.Details:
-    const persistent_top = top < 0 && end_top;
-    const displayed_top = is_top_visible ? top : persistent_top;
-    const displayed_bottom = is_bottom_visible ? bottom : end_top;
-    const is_start_left_visible = start_left < end_left;
-
-    if (!is_start_left_visible) return;
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = stroke_color;
-    ctx.setLineDash([]);
-    ctx.textAlign = 'right';
-
-    if (is_top_visible && barrier_gradient === top) {
-        ctx.fillStyle = stroke_color;
-        ctx.beginPath();
-        ctx.setLineDash([2, 3]);
-        ctx.moveTo(start_left + 1.5 * scale, reset_barrier);
-        ctx.lineTo(end_left, reset_barrier);
-        ctx.fill();
-        ctx.stroke();
-    }
-
-    if (is_bottom_visible && barrier_gradient === bottom) {
-        ctx.fillStyle = stroke_color;
-        ctx.beginPath();
-        ctx.setLineDash([2, 3]);
-        ctx.moveTo(start_left + 1.5 * scale, reset_barrier);
-        ctx.lineTo(end_left, reset_barrier);
-        ctx.fill();
-        ctx.stroke();
-    }
-    let gradient;
-    //This case is for Reset Call
-    if (barrier_gradient === bottom) {
-        gradient = ctx.createLinearGradient(start_left, displayed_bottom, start_left, displayed_top);
-        gradient.addColorStop(0.02, gradient_color.intensive);
-        gradient.addColorStop(0.98, gradient_color.blurred);
-    }
-    //This case is for Reset Put
-    if (barrier_gradient === top) {
-        gradient = ctx.createLinearGradient(start_left, displayed_top, start_left, displayed_bottom);
-        gradient.addColorStop(0.02, gradient_color.intensive);
-        gradient.addColorStop(0.98, gradient_color.blurred);
-    }
-
-    ctx.fillStyle = gradient;
-    ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
-    ctx.restore();
-};
-
 const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
     const scale = calc_scale(zoom);
     const size = Math.floor(scale * 3 + 7);
@@ -402,26 +334,6 @@ const TickContract = RawMarkerMaker(
             });
             return;
         }
-
-        if (isResetContract(contract_type)) {
-            const is_reset_call_contract = /RESETCALL/i.test(contract_type);
-            const lowest_barrier = Math.max(barrier, barrier_2);
-            const highest_barrier = Math.min(barrier, barrier_2);
-            // for Reset Call we are showing gradient to the lowest barrier (the biggest one), for put - the highest (smallest)
-            const barrier_gradient = is_reset_call_contract ? lowest_barrier : highest_barrier;
-            drawResetBarrier({
-                ctx,
-                stroke_color: '#999999',
-                start_left: start.left,
-                top: is_reset_call_contract ? barrier_gradient - GRADIENT_HEIGHT : barrier_gradient,
-                bottom: is_reset_call_contract ? barrier_gradient : barrier_gradient + GRADIENT_HEIGHT,
-                barrier_gradient,
-                reset_barrier: barrier_2,
-                scale,
-            });
-            return;
-        }
-
         if (
             barrier &&
             barrier_2 &&
@@ -677,25 +589,6 @@ const NonTickContract = RawMarkerMaker(
         const canvas_height = canvas_fixed_height / window.devicePixelRatio;
         if (barrier) {
             barrier = Math.min(Math.max(barrier, 2), canvas_height - 32); // eslint-disable-line
-        }
-
-        if (isResetContract(contract_type)) {
-            const is_reset_call_contract = /RESETCALL/i.test(contract_type);
-            const lowest_barrier = Math.max(barrier, entry_tick_top);
-            const highest_barrier = Math.min(barrier, entry_tick_top);
-            // for Reset Call we are showing gradient to the lowest barrier (the biggest one), for put - the highest (smallest)
-            const barrier_gradient = is_reset_call_contract ? lowest_barrier : highest_barrier;
-            drawResetBarrier({
-                ctx,
-                stroke_color: '#999999',
-                start_left: start.left,
-                top: is_reset_call_contract ? barrier_gradient - GRADIENT_HEIGHT : barrier_gradient,
-                bottom: is_reset_call_contract ? barrier_gradient : barrier_gradient + GRADIENT_HEIGHT,
-                barrier_gradient,
-                reset_barrier: entry_tick_top,
-                scale,
-            });
-            return;
         }
 
         if (draw_start_line) {

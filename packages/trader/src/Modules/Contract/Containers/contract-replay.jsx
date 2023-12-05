@@ -26,7 +26,6 @@ import {
     isTurbosContract,
     isVanillaContract,
     isSmartTraderContract,
-    isResetContract,
     urlFor,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -223,19 +222,18 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const {
         accumulator_previous_spot_time,
         contract_config,
-        marker: barriers_marker,
+        marker: accumulators_barriers_marker,
         is_digit_contract,
         barriers_array,
         getContractsArray,
         markers_array,
         contract_info,
     } = contract_store;
-    const { underlying: symbol, audit_details, reset_time } = contract_info;
+    const { underlying: symbol, audit_details } = contract_info;
     const allow_scroll_to_epoch = chart_state === 'READY' || chart_state === 'SCROLL_TO_LEFT';
     const { app_routing_history, current_language, is_socket_opened } = common;
     const { is_dark_mode_on: is_dark_theme, is_chart_layout_default, is_chart_countdown_visible } = ui;
     const { end_epoch, chart_type, start_epoch, granularity } = contract_config;
-    const is_reset_contract = isResetContract(contract_info.contract_type);
     /**
      * TODO: remove forcing light theme once DBot supports dark theme
      * DBot does not support for dark theme since till now,
@@ -257,7 +255,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
     const { is_beta_chart } = client;
 
-    const MarkerComponent = is_beta_chart ? undefined : allMarkers[barriers_marker?.type];
+    const accu_barriers_marker_component = !is_beta_chart ? allMarkers[accumulators_barriers_marker?.type] : undefined;
 
     const isBottomWidgetVisible = () => {
         return isDesktop() && is_digit_contract;
@@ -347,21 +345,13 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                 ))}
             {!is_beta_chart && is_accumulator_contract && !!markers_array && (
                 <DelayedAccuBarriersMarker
-                    marker_component={MarkerComponent}
-                    key={barriers_marker.key}
+                    marker_component={accu_barriers_marker_component}
+                    key={accumulators_barriers_marker.key}
                     is_dark_theme={is_dark_theme}
                     granularity={granularity}
                     is_in_contract_details
                     previous_spot_time={accumulator_previous_spot_time}
-                    {...barriers_marker}
-                />
-            )}
-            {is_reset_contract && !!markers_array && reset_time && (
-                <MarkerComponent
-                    is_dark_theme={is_dark_theme}
-                    granularity={granularity}
-                    is_in_contract_details
-                    {...barriers_marker}
+                    {...accumulators_barriers_marker}
                 />
             )}
         </SmartChartSwitcher>

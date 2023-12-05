@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { screen, render } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { AccountSwitcher } from '../account-switcher.jsx';
+import AccountSwitcher from '../account-switcher.jsx';
 
 jest.mock('@deriv/hooks', () => {
     return {

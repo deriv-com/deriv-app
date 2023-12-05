@@ -1,6 +1,6 @@
 import { DesktopWrapper, Icon, MobileWrapper, Popover, Text } from '@deriv/components';
 
-import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
+import AccountSwitcher from 'App/Containers/AccountSwitcher';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile.jsx';
 import { CSSTransition } from 'react-transition-group';
 import { Localize } from '@deriv/translations';

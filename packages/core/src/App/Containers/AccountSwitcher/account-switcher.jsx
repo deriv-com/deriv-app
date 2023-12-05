@@ -552,4 +552,5 @@ AccountSwitcher.propTypes = {
 };
 
 const account_switcher = withRouter(AccountSwitcher);
-export { account_switcher as AccountSwitcher };
+
+export default account_switcher;

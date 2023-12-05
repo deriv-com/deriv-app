@@ -18,6 +18,7 @@ export default class TradersHubStore extends BaseStore {
     selected_account_type;
     selected_region;
     is_onboarding_visited = false;
+    is_first_time_visit = true;
     is_failed_verification_modal_visible = false;
     is_regulators_compare_modal_visible = false;
     is_mt5_notification_modal_visible = false;
@@ -56,6 +57,7 @@ export default class TradersHubStore extends BaseStore {
             is_tour_open: observable,
             modal_data: observable,
             is_onboarding_visited: observable,
+            is_first_time_visit: observable,
             selected_account: observable,
             selected_account_type: observable,
             selected_platform_type: observable,
@@ -104,6 +106,7 @@ export default class TradersHubStore extends BaseStore {
             closeAccountTransferModal: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
             setIsOnboardingVisited: action.bound,
+            setIsFirstTimeVisit: action.bound,
             setMT5NotificationModal: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
             openFailedVerificationModal: action.bound,
@@ -336,6 +339,10 @@ export default class TradersHubStore extends BaseStore {
         this.is_onboarding_visited = is_visited;
     }
 
+    setIsFirstTimeVisit(is_first_time) {
+        this.is_first_time_visit = is_first_time;
+    }
+
     get is_eu_selected() {
         return this.selected_region === 'EU';
     }
@@ -378,14 +385,12 @@ export default class TradersHubStore extends BaseStore {
     getAvailableCFDAccounts() {
         const getAccountDesc = () => {
             return !this.is_eu_user || this.is_demo_low_risk
-                ? localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.')
-                : localize(
-                      'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
-                  );
+                ? localize('This account offers CFDs on financial instruments.')
+                : localize('This MFSA-regulated account offers CFDs on derived and financial instruments.');
         };
         const getSwapFreeAccountDesc = () => {
             return localize(
-                'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.'
+                'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities cryptocurrencies, ETFs and synthetic indices.'
             );
         };
 

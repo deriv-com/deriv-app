@@ -18,6 +18,8 @@ interface WalletButtonProps {
     rounded?: Extract<TGenericSizes, 'md' | 'sm'>;
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
     text?: React.ReactNode;
+    textSize?: ComponentProps<typeof WalletText>['size'];
+    type?: ComponentProps<'button'>['type'];
     variant?: TVariant;
 }
 
@@ -31,6 +33,8 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     rounded = 'sm',
     size = 'md',
     text,
+    textSize,
+    type,
     variant = 'contained',
 }) => {
     const isContained = variant === 'contained';
@@ -79,13 +83,13 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     };
 
     const buttonFontSizeMapper = {
-        lg: 'sm',
+        lg: 'md',
         md: 'sm',
         sm: 'xs',
     } as const;
 
     return (
-        <button className={buttonClassNames} disabled={disabled} onClick={onClick}>
+        <button className={buttonClassNames} disabled={disabled || isLoading} onClick={onClick} type={type}>
             {isLoading && (
                 <div className='wallets-button__loader'>
                     <Loader color={isContained ? loaderColorMapper[color] : '#85ACB0'} isFullScreen={false} />
@@ -96,7 +100,7 @@ const WalletButton: React.FC<WalletButtonProps> = ({
                 <WalletText
                     align='center'
                     color={fontColorMapper[variant][color]}
-                    size={buttonFontSizeMapper[size] || 'sm'}
+                    size={textSize || buttonFontSizeMapper[size] || 'sm'}
                     weight='bold'
                 >
                     {text}

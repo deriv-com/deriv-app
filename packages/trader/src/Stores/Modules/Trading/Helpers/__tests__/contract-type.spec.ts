@@ -333,10 +333,10 @@ describe('ContractType.getExpiryDate', () => {
     it('returns proper expiry date for endtime expiry type with intraday duration units', () => {
         const expiry_date = '2023-12-01';
         const expiry_type = 'endtime';
-        const start_date = moment('2023-12-03') as unknown as number;
+        const start_date = moment('2023-12-03T11:00:00') as unknown as number;
         const result = ContractType.getExpiryDate(duration_units_list, expiry_date, expiry_type, start_date);
 
-        expect(result.expiry_date).toBe('2023-12-02');
+        expect(result.expiry_date).toBe('2023-12-03');
     });
     it('returns proper expiry date for endtime expiry type without intraday duration units', () => {
         duration_units_list = [

@@ -30,8 +30,10 @@ const WalletAddedSuccess: React.FC<TWalletAddedSuccessProps> = ({
         () => (
             <div className='wallets-add-more__success-footer'>
                 <WalletButtonGroup isFlex isFullWidth>
-                    <WalletButton onClick={onSecondaryButtonClick} text='Maybe later' variant='outlined' />
-                    <WalletButton onClick={onPrimaryButtonClick} text='Deposit' />
+                    <WalletButton onClick={onSecondaryButtonClick} variant='outlined'>
+                        Maybe later
+                    </WalletButton>
+                    <WalletButton onClick={onPrimaryButtonClick}>Deposit</WalletButton>
                 </WalletButtonGroup>
             </div>
         ),

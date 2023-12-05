@@ -4,7 +4,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { useTraderStore } from 'Stores/useTraderStores';
 import { isDesktop, isMobile } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 import Barrier from '../barrier';
@@ -27,11 +26,9 @@ const mock_default_store = {
             barrier_pipsize: 1,
             duration_unit: 'm',
             onChange: jest.fn(),
-            validation_errors: {} as ReturnType<typeof useTraderStore>['validation_errors'],
-            proposal_info: { CALL: { spot: 2015.99, barrier: '2017.07' } } as unknown as ReturnType<
-                typeof useTraderStore
-            >['proposal_info'],
-            trade_types: { CALL: 'Higher', PUT: 'Lower' } as ReturnType<typeof useTraderStore>['trade_types'],
+            validation_errors: {},
+            proposal_info: { CALL: { spot: 2015.99, barrier: '2017.07' } },
+            trade_types: { CALL: 'Higher', PUT: 'Lower' },
         },
     },
 };

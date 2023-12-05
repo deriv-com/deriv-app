@@ -2,14 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
 import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
-import { idv_error_statuses, isMobile, TIDVErrorStatus } from '@deriv/shared';
+import { IDV_ERROR_STATUS, isMobile, TIDVErrorStatus } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from 'Components/form-footer';
 import { POIContext } from '../../../Helpers/poi-context';
 import { useResidenceList } from '@deriv/api';
 
 type TCountrySelector = {
-    handleSelectionNext?: () => void;
+    handleSelectionNext: () => void;
     is_from_external: boolean;
     mismatch_status?: TIDVErrorStatus;
 };
@@ -48,20 +48,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
         handleSelectionNext?.();
     };
 
-    let failed_message: JSX.Element | null = null;
-    if (mismatch_status === idv_error_statuses.poi_expired) {
-        failed_message = <Localize i18n_default_text='Your identity document has expired.' />;
-    }
-    if (mismatch_status === idv_error_statuses.poi_failed) {
-        failed_message = (
-            <Localize i18n_default_text='We were unable to verify the identity document with the details provided.' />
-        );
-    }
-    if (mismatch_status === idv_error_statuses.poi_high_risk) {
-        failed_message = (
-            <Localize i18n_default_text='For enhanced security, we need to reverify your identity. Kindly resubmit your proof of identity to unlock your account.' />
-        );
-    }
+    const failed_message: React.ReactNode = mismatch_status ? IDV_ERROR_STATUS[mismatch_status]?.message ?? null : null;
 
     return (
         <Formik initialValues={initial_form_values} validate={validateFields} onSubmit={submitHandler}>
@@ -79,13 +66,13 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
             }) => (
                 <React.Fragment>
                     <div
-                        className={classNames('proof-of-identity__container proof-of-identity__country-container', {
+                        className={classNames('proof-of-identity__container', {
                             'min-height': !is_from_external,
                         })}
                     >
                         {failed_message ? (
                             <React.Fragment>
-                                <Text className='' align='center' weight='bold' size={isMobile() ? 'xs' : 's'}>
+                                <Text align='center' weight='bold' size={isMobile() ? 'xs' : 's'}>
                                     <Localize i18n_default_text='Your identity verification failed because:' />
                                 </Text>
                                 <HintBox

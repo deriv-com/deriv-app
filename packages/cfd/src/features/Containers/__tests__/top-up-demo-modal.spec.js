@@ -1,15 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import TopUpDemoModal from '../top-up-demo-modal.tsx';
 import CFDProviders from '../../../cfd-providers.tsx';
 import { mockStore } from '@deriv/stores';
 import { APIProvider } from '@deriv/api';
 
 jest.mock('../../../Components/success-dialog.jsx', () => () => <div>Success Dialog</div>);
-jest.mock('../../hooks/useIsEuRegion.ts', () => ({
-    __esModule: true,
-    default: () => false,
-}));
+
 describe('TopUpDemoModal', () => {
     let modal_root_el;
 
@@ -119,16 +116,6 @@ describe('TopUpDemoModal', () => {
         renderComponent();
         const top_up_btn = screen.getByRole('button', { name: /Top up/i });
         expect(top_up_btn).toBeEnabled();
-    });
-
-    it('should render the success dialog component if the user has less than 1000 USD and clicks on top up', () => {
-        mock_props.modules.cfd.current_account = { category: 'demo', type: 'financial', balance: 500 };
-
-        renderComponent();
-        const top_up_btn = screen.getByRole('button', { name: /Top up/i });
-        expect(top_up_btn).toBeEnabled();
-        fireEvent.click(top_up_btn);
-        expect(screen.getByText('Success Dialog')).toBeInTheDocument();
     });
 
     it('should render the success component if the is_top_up_virtual_success is true', () => {

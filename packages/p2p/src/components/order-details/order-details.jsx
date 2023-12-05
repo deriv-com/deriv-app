@@ -91,7 +91,6 @@ const OrderDetails = observer(() => {
         const disposeListeners = sendbird_store.registerEventListeners();
         const disposeReactions = sendbird_store.registerMobXReactions();
 
-        order_store.getSettings();
         order_store.getWebsiteStatus();
         order_store.setRatingValue(0);
         order_store.setIsRecommended(undefined);

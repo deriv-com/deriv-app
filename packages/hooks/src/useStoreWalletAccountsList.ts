@@ -112,11 +112,26 @@ const useStoreWalletAccountsList = () => {
             });
     }, [accounts, is_crypto]);
 
+    // Sort wallet accounts alphabetically by fiat, crypto, then virtual.
+    const sorted_wallets = useMemo(() => {
+        if (!wallets) return;
+
+        return [...wallets].sort((a, b) => {
+            if (a.is_virtual !== b.is_virtual) {
+                return a.is_virtual ? 1 : -1;
+            } else if (is_crypto(a.currency) !== is_crypto(b.currency)) {
+                return is_crypto(a.currency) ? 1 : -1;
+            }
+
+            return (a.currency || 'USD').localeCompare(b.currency || 'USD');
+        });
+    }, [is_crypto, wallets]);
+
     return {
         /** List of wallets for current user. */
-        data: wallets,
+        data: sorted_wallets,
         /** Indicating whether the user has a wallet */
-        has_wallet: wallets && wallets.length > 0,
+        has_wallet: sorted_wallets && sorted_wallets.length > 0,
     };
 };
 

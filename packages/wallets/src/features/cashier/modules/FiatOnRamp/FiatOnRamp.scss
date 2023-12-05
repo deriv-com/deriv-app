@@ -1,14 +1,23 @@
 .wallets-fiat-onramp {
+    position: relative;
     align-items: flex-start;
     display: flex;
     flex: 1 0 0;
-    flex-direction: row;
-    padding: 0 24.4rem 1.2rem 4rem;
 
     @include mobile {
         flex: unset;
         flex-direction: column;
         padding: 0;
+    }
+
+    &__actions {
+        position: absolute;
+        top: -2.4rem;
+        left: 0.4rem;
+
+        @include mobile {
+            top: -0.8rem;
+        }
     }
 
     &__content {
@@ -20,7 +29,7 @@
         @include mobile {
             flex-direction: column-reverse;
             justify-content: space-between;
-            padding-top: 1rem;
+            padding-top: 4rem;
             flex: 1;
         }
     }
@@ -32,7 +41,7 @@
         max-width: 79.2rem;
 
         @include mobile {
-            padding: 1.6rem;
+            padding: 1.6rem 0 0;
             box-shadow: 0 0.2rem 0 0 #f2f3f4 inset;
         }
     }

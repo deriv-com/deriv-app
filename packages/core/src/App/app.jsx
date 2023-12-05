@@ -9,7 +9,7 @@ import {
     setWebsocket,
     useOnLoadTranslation,
 } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
+import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
@@ -43,27 +43,15 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     React.useEffect(() => {
         const loadSmartchartsStyles = () => {
-            if (root_store.client.is_beta_chart) {
-                import('@deriv/deriv-charts-beta/dist/smartcharts.css');
-            } else {
-                import('@deriv/deriv-charts/dist/smartcharts.css');
-            }
+            import('@deriv/deriv-charts/dist/smartcharts.css');
         };
 
         initializeTranslations();
-        if (
-            process.env.NODE_ENV === 'production' ||
-            process.env.NODE_ENV === 'staging' ||
-            process.env.NODE_ENV === 'test'
-        ) {
+        if (process.env.RUDDERSTACK_KEY) {
             Analytics.initialise({
                 growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,
                 growthbookDecryptionKey: process.env.GROWTHBOOK_DECRYPTION_KEY,
-                rudderstackKey:
-                    process.env.NODE_ENV === 'production'
-                        ? process.env.RUDDERSTACK_PRODUCTION_KEY
-                        : process.env.RUDDERSTACK_STAGING_KEY,
-                enableDevMode: process.env.NODE_ENV !== 'production',
+                rudderstackKey: process.env.RUDDERSTACK_KEY,
             });
         }
 
@@ -94,7 +82,9 @@ const AppWithoutTranslation = ({ root_store }) => {
                     <MobxContentProvider store={root_store}>
                         <APIProvider>
                             <StoreProvider store={root_store}>
-                                <AppContent passthrough={platform_passthrough} />
+                                <ExchangeRatesProvider>
+                                    <AppContent passthrough={platform_passthrough} />
+                                </ExchangeRatesProvider>
                             </StoreProvider>
                         </APIProvider>
                     </MobxContentProvider>

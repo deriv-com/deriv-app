@@ -25,9 +25,8 @@ const AccountActionsWallets = observer(() => {
     if (is_logged_in) {
         return is_mobile ? (
             <React.Fragment>
-                <React.Suspense fallback={<div />}>
-                    <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
-                </React.Suspense>
+                <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
+
                 <div className='acc-info__wallets-notification-icon'>
                     <ToggleNotifications
                         count={notifications_count}
@@ -57,9 +56,7 @@ const AccountActionsWallets = observer(() => {
                         <Icon icon='IcUserOutline' />
                     </BinaryLink>
                 </Popover>
-                <React.Suspense fallback={<div />}>
-                    <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
-                </React.Suspense>
+                <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
                 {!is_virtual && !currency && (
                     <div className='set-currency'>
                         <Button

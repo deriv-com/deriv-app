@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { ChartTitle } from 'Modules/SmartChart';
-import { ChartTitleBeta } from 'Modules/SmartChartBeta';
 import BuyToastNotification from './buy-toast-notification';
 import { useTraderStore } from 'Stores/useTraderStores';
 import RecentTradeInfo from './recent-trade-info';
@@ -12,7 +11,6 @@ type TTopWidgets = {
     is_digits_widget_active?: boolean;
     is_mobile?: boolean;
     is_title_enabled?: boolean;
-    is_beta_chart?: boolean;
     onSymbolChange?: ReturnType<typeof useTraderStore>['onChange'];
     open?: boolean;
     open_market?: {
@@ -33,11 +31,9 @@ const TopWidgets = ({
     open_market,
     open,
     is_digits_widget_active,
-    is_beta_chart,
 }: TTopWidgets) => {
-    const ChartTitleComponent = is_beta_chart ? ChartTitleBeta : ChartTitle;
     const ChartTitleLocal = (
-        <ChartTitleComponent
+        <ChartTitle
             open_market={open_market}
             open={open}
             enabled={is_title_enabled}

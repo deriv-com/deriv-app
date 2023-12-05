@@ -1,12 +1,15 @@
 import React from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@deriv/components';
-import { getCurrencyDisplayCode } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import { observer } from '@deriv/stores';
-import { TReactChangeEvent } from '../../types';
-import { useCashierStore } from '../../stores/useCashierStores';
+
+import { DesktopWrapper, Icon, Input, MobileWrapper, Text, useInterval } from '@deriv/components';
 import { useExchangeRate } from '@deriv/hooks';
+import { getCurrencyDisplayCode } from '@deriv/shared';
+import { observer } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+
+import { useCashierStore } from '../../stores/useCashierStores';
+import { TReactChangeEvent } from '../../types';
+
 import './crypto-fiat-converter.scss';
 
 type TTimerProps = {
@@ -18,6 +21,7 @@ type TInputGroupProps = React.PropsWithChildren<{
 }>;
 
 type TCryptoFiatConverterProps = {
+    arrow_icon_direction: 'right' | 'left';
     from_currency: string;
     hint?: React.ReactNode;
     onChangeConverterFromAmount: (
@@ -33,6 +37,7 @@ type TCryptoFiatConverterProps = {
         converted_amount?: number
     ) => void;
     resetConverter: VoidFunction;
+    setArrowIconDirection: React.Dispatch<React.SetStateAction<'right' | 'left'>>;
     to_currency: string;
     validateFromAmount: VoidFunction;
     validateToAmount: VoidFunction;
@@ -72,11 +77,13 @@ const InputGroup = ({ children, className }: TInputGroupProps) => {
 
 const CryptoFiatConverter = observer(
     ({
+        arrow_icon_direction,
         from_currency,
         hint,
         onChangeConverterFromAmount,
         onChangeConverterToAmount,
         resetConverter,
+        setArrowIconDirection,
         to_currency,
         validateFromAmount,
         validateToAmount,
@@ -88,7 +95,6 @@ const CryptoFiatConverter = observer(
             crypto_fiat_converter;
 
         const { handleChange } = useFormikContext();
-        const [arrow_icon_direction, setArrowIconDirection] = React.useState<string>('right');
 
         React.useEffect(() => {
             return () => resetConverter();

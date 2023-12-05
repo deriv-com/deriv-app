@@ -72,8 +72,9 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
                         history.push(redirect);
                     }
                 }}
-                text='Open'
-            />
+            >
+                Open
+            </WalletButton>
         );
     }
     return null;

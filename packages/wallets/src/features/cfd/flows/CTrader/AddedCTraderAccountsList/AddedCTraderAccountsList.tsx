@@ -40,11 +40,11 @@ const AddedCTraderAccountsList: React.FC = () => {
                 onClick={() => {
                     history.push('/wallets/cashier/transfer');
                 }}
-                text={t('Transfer')}
                 variant='outlined'
             />
-
-            <WalletButton onClick={() => show(<MT5TradeModal platform='ctrader' />)} text={t('Open')} />
+            <WalletButton onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}>
+                {t('Open')}
+            </WalletButton>
         </div>
     );
 

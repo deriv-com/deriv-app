@@ -29,7 +29,9 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                 {isMobile ? (
                     <div className='wallets-cfd-list__header-description'>
                         <WalletText size='sm'>{descriptionLink}</WalletText>
-                        <WalletButton size='sm' text={t('Compare accounts')} textSize='sm' variant='ghost' />
+                        <WalletButton size='sm' textSize='sm' variant='ghost'>
+                            {t('Compare accounts')}
+                        </WalletButton>
                     </div>
                 ) : (
                     <div>
@@ -37,7 +39,9 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                             <WalletText size='xl' weight='bold'>
                                 {t('CFDs')}
                             </WalletText>
-                            <WalletButton size='sm' text={t('Compare accounts')} variant='ghost' />
+                            <WalletButton size='sm' variant='ghost'>
+                                {t('Compare accounts')}
+                            </WalletButton>
                         </div>
                         <WalletText size='md'>{descriptionLink}</WalletText>
                     </div>

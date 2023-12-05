@@ -23,8 +23,9 @@ const FiatOnRamp = () => {
                             color='white'
                             icon={<BackArrow />}
                             onClick={() => history.push('/wallets/cashier/deposit')}
-                            text='Back'
-                        />
+                        >
+                            Back
+                        </WalletButton>
                     </div>
                     <div className='wallets-fiat-onramp__content'>
                         <div className='wallets-fiat-onramp__description'>

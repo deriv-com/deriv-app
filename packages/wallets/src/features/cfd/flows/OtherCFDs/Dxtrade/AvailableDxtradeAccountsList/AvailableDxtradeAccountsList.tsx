@@ -25,11 +25,9 @@ const AvailableDxtradeAccountsList: React.FC = () => {
                 </div>
             )}
             trailing={() => (
-                <WalletButton
-                    color='primary-light'
-                    onClick={() => show(<DxtradeEnterPasswordModal />)}
-                    text={t('Get')}
-                />
+                <WalletButton color='primary-light' onClick={() => show(<DxtradeEnterPasswordModal />)}>
+                    {t('Get')}
+                </WalletButton>
             )}
         >
             <div className='wallets-available-dxtrade__details'>

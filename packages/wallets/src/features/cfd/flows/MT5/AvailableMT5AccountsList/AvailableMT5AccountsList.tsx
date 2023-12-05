@@ -56,8 +56,9 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                             )
                         );
                     }}
-                    text={t('Get')}
-                />
+                >
+                    {t('Get')}
+                </WalletButton>
             )}
         >
             <div className='wallets-available-mt5__details'>

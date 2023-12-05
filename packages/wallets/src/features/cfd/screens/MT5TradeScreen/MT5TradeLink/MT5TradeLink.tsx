@@ -14,7 +14,18 @@ import { THooks, TPlatforms } from '../../../../../types';
 import { PlatformDetails } from '../../../constants';
 import './MT5TradeLink.scss';
 
-const AppToContentMapper = {
+type TAppContent = {
+    icon: JSX.Element;
+    link: string;
+    text: string;
+    title: string;
+};
+
+type AppToContentMapperType = {
+    [key: string]: TAppContent;
+};
+
+const AppToContentMapper: AppToContentMapperType = {
     ctrader: {
         icon: <WindowsIcon />,
         link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
@@ -64,14 +75,18 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
     const { data: ctraderToken } = useCtraderServiceToken();
     const { t } = useTranslation();
 
+    const mt5Platform = PlatformDetails.mt5.platform;
+    const dxtradePlatform = PlatformDetails.dxtrade.platform;
+    const ctraderPlatform = PlatformDetails.ctrader.platform;
+
     const onClickWebTerminal = () => {
         const { isStaging, isTestLink } = getPlatformFromUrl();
         let url;
         switch (platform) {
-            case 'dxtrade':
+            case dxtradePlatform:
                 url = isDemo ? 'https://dx-demo.deriv.com' : 'https://dx.deriv.com';
                 break;
-            case 'ctrader':
+            case ctraderPlatform:
                 url = isTestLink || isStaging ? 'https://ct-uat.deriv.com' : 'https://ct.deriv.com';
                 if (ctraderToken) url += `?token=${ctraderToken}`;
                 break;
@@ -85,33 +100,32 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
     return (
         <div className='wallets-mt5-trade-link'>
             <div className='wallets-mt5-trade-link--left'>
-                {(platform === 'mt5' || app === 'ctrader') && (
-                    <>
+                {(platform === mt5Platform || app === ctraderPlatform) && (
+                    <React.Fragment>
                         <div className='wallets-mt5-trade-link--left-icon'>{content.icon}</div>
                         <WalletText size='sm'>{content.title}</WalletText>
-                    </>
+                    </React.Fragment>
                 )}
-
-                {platform !== 'mt5' && app !== 'ctrader' && (
+                {platform !== mt5Platform && app !== ctraderPlatform && (
                     <WalletText size='sm'>
-                        {t('Run {{platformTitle}} on your browser', {
-                            platformTitle: PlatformDetails[platform || 'ctrader'].title,
+                        {t('Run {{platform}} on your browser', {
+                            platform: PlatformDetails[platform ?? dxtradePlatform].title,
                         })}
                     </WalletText>
                 )}
             </div>
-            {(platform === 'mt5' || app === 'ctrader') && (
+            {(platform === mt5Platform || app === ctraderPlatform) && (
                 <WalletButton
                     onClick={() => window.open(app === 'web' ? webtraderUrl : content.link)}
                     size='sm'
-                    text={content.text}
                     variant='outlined'
-                />
+                >
+                    {content.text}
+                </WalletButton>
             )}
-
-            {platform !== 'mt5' && app !== 'ctrader' && (
+            {platform !== mt5Platform && app !== ctraderPlatform && (
                 <button className='wallets-mt5-trade-link__platform' onClick={onClickWebTerminal}>
-                    {PlatformToLabelIconMapper[platform || 'ctrader']}
+                    {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}
                     <WalletText color='white' size='xs' weight='bold'>
                         {t('Web terminal')}
                     </WalletText>

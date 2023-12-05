@@ -55,7 +55,7 @@ describe('TradersHub', () => {
     it('should display disclaimer if the user is from low risk eu country', () => {
         render_container({
             client: { is_logged_in: true },
-            traders_hub: { content_flag: ContentFlag.LOW_RISK_CR_EU },
+            traders_hub: { content_flag: ContentFlag.LOW_RISK_CR_EU, is_eu_user: true },
         });
         const disclaimer = screen.getByTestId('dt_traders_hub_disclaimer');
         expect(disclaimer).toBeInTheDocument();

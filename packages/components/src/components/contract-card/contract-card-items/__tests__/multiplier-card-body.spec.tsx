@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { mockContractInfo, getCardLabels } from '@deriv/shared';
 import MultiplierCardBody from '../multiplier-card-body';
 
 type TMockedMultiplierCardBodyProps = Partial<React.ComponentProps<typeof MultiplierCardBody>>;
@@ -13,7 +14,7 @@ describe('MultiplierCardBody', () => {
     beforeEach(() => {
         mock_props = {
             addToast: jest.fn(),
-            contract_info: {
+            contract_info: mockContractInfo({
                 // 'Total profit/loss' equals to bid_price - buy_price;
                 buy_price: 10.44,
                 bid_price: 10,
@@ -28,24 +29,15 @@ describe('MultiplierCardBody', () => {
                         value: '1942.71',
                     },
                 },
-                sell_price: '10',
+                sell_price: 10,
                 status: 'cancelled',
                 profit: 0,
                 underlying: '1HZ100V',
-            },
+            }),
             contract_update: {},
             currency: 'USD',
             current_focus: '',
-            getCardLabels: () => ({
-                BUY_PRICE: 'Buy price:',
-                CURRENT_STAKE: 'Current stake:',
-                DEAL_CANCEL_FEE: 'Deal cancel. fee:',
-                NOT_AVAILABLE: 'N/A',
-                STAKE: 'Stake:',
-                STOP_LOSS: 'Stop loss:',
-                TAKE_PROFIT: 'Take profit:',
-                TOTAL_PROFIT_LOSS: 'Total Profit/Loss:',
-            }),
+            getCardLabels: () => getCardLabels(),
             getContractById: jest.fn(),
             has_progress_slider: false,
             is_mobile: false,
@@ -60,21 +52,21 @@ describe('MultiplierCardBody', () => {
         };
     });
 
-    const testCardContent = (props: TMockedMultiplierCardBodyProps) => {
-        expect(screen.getByText(props.getCardLabels().BUY_PRICE)).toBeInTheDocument();
-        expect(screen.getByText(props.getCardLabels().CURRENT_STAKE)).toBeInTheDocument();
-        expect(screen.getByText(props.getCardLabels().DEAL_CANCEL_FEE)).toBeInTheDocument();
-        expect(screen.queryByText(props.getCardLabels().NOT_AVAILABLE)).not.toBeInTheDocument();
-        expect(screen.getByText(props.getCardLabels().STAKE)).toBeInTheDocument();
-        expect(screen.getByText(props.getCardLabels().STOP_LOSS)).toBeInTheDocument();
-        expect(screen.getByText(props.getCardLabels().TAKE_PROFIT)).toBeInTheDocument();
-        expect(screen.getByText(props.getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
+    const testCardContent = () => {
+        expect(screen.getByText(getCardLabels().BUY_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().CURRENT_STAKE)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().DEAL_CANCEL_FEE)).toBeInTheDocument();
+        expect(screen.queryByText(getCardLabels().NOT_AVAILABLE)).not.toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().STAKE)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().STOP_LOSS)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().TAKE_PROFIT)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
     };
 
     it('should render the correct content for a Cancelled contract with Deal cancel.fee and negative Total profit/loss', () => {
         render(<MultiplierCardBody {...mock_props} />);
 
-        testCardContent(mock_props);
+        testCardContent();
         expect(screen.getByTestId(red_indicative_movement_testid)).toBeInTheDocument();
     });
     it('should render a green price movement indicator when Won with positive Total profit/loss', () => {
@@ -87,7 +79,7 @@ describe('MultiplierCardBody', () => {
 
         render(<MultiplierCardBody {...mock_props} />);
 
-        testCardContent(mock_props);
+        testCardContent();
         expect(screen.getByTestId(green_indicative_movement_testid)).toBeInTheDocument();
     });
     it('should render correct content for an open contract with negative Total profit/loss in mobile', () => {
@@ -105,7 +97,7 @@ describe('MultiplierCardBody', () => {
 
         render(<MultiplierCardBody {...mock_props} />);
 
-        testCardContent(mock_props);
+        testCardContent();
         expect(screen.getByTestId(red_indicative_movement_testid)).toBeInTheDocument();
     });
     it('should render progress_slider and N/A in Deal Cancel.fee when contract is open for a crypto asset in mobile', () => {

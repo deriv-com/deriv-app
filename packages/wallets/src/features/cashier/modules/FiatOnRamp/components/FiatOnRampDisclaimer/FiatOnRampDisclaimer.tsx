@@ -35,8 +35,12 @@ const FiatOnRampDisclaimer: React.FC<TFiatOnRampDisclaimer> = ({ handleDisclaime
                 you encounter any issues related to Banxa services, you should contact Banxa directly.
             </WalletText>
             <div className='wallets-fiat-onramp-disclaimer__buttons'>
-                <WalletButton color='white' onClick={handleDisclaimer} size='md' text={'Back'} variant='outlined' />
-                <WalletButton isLoading={isLoading} onClick={() => redirectToBanxa()} size='md' text={'Continue'} />
+                <WalletButton color='white' onClick={handleDisclaimer} size='md' variant='outlined'>
+                    Back
+                </WalletButton>
+                <WalletButton isLoading={isLoading} onClick={() => redirectToBanxa()} size='md'>
+                    Continue
+                </WalletButton>
             </div>
         </div>
     );

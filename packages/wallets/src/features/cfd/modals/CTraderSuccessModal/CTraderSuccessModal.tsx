@@ -22,15 +22,18 @@ const CTraderSuccessModal = ({ isDemo, walletCurrencyType }: TCTraderSuccessModa
     const renderButtons = useCallback(
         () => (
             <WalletButtonGroup isFlex isFullWidth>
-                <WalletButton onClick={() => hide()} size='lg' text='Maybe later' variant='outlined' />
+                <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                    Maybe later
+                </WalletButton>
                 <WalletButton
                     onClick={() => {
                         hide();
                         history.push('/wallets/cashier/transfer');
                     }}
                     size='lg'
-                    text='Transfer funds'
-                />
+                >
+                    Transfer funds
+                </WalletButton>
             </WalletButtonGroup>
         ),
         [hide, history]
@@ -61,7 +64,7 @@ const CTraderSuccessModal = ({ isDemo, walletCurrencyType }: TCTraderSuccessModa
                 description={description}
                 displayBalance={cTraderAccounts?.find(account => account.login)?.formatted_balance}
                 marketType='all'
-                platform='ctrader'
+                platform={PlatformDetails.ctrader.platform}
                 renderButton={renderButtons}
                 title={`Your ${PlatformDetails.ctrader.title} ${isDemo ? 'demo' : ''} account is ready`}
             />

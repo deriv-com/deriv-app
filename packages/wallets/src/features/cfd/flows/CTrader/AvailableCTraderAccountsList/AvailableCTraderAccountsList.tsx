@@ -21,7 +21,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
             payload: {
                 account_type: accountType,
                 market_type: 'all',
-                platform: 'ctrader',
+                platform: PlatformDetails.ctrader.platform,
             },
         });
     };
@@ -49,8 +49,9 @@ const AvailableCTraderAccountsList: React.FC = () => {
             onClick={() => {
                 onSubmit();
             }}
-            text='Get'
-        />
+        >
+            Get
+        </WalletButton>
     );
 
     useEffect(() => {

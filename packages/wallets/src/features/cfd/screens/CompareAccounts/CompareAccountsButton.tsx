@@ -147,8 +147,9 @@ const CompareAccountsButton = ({
                 disabled={isAccountAdded}
                 isFullWidth
                 onClick={onClickAdd}
-                text={isAccountAdded ? 'Added' : 'Add'}
-            />
+            >
+                {isAccountAdded ? 'Added' : 'Add'}
+            </WalletButton>
         </div>
     );
 };

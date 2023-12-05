@@ -38,7 +38,9 @@ const FiatOnRampProviderCard: React.FC<TFiatOnRampProvider> = ({
                     <div key={`payment-method-icon-${index}`}>{paymentIcon}</div>
                 ))}
             </div>
-            <WalletButton onClick={handleDisclaimer} size='md' text={'Select'} />
+            <WalletButton onClick={handleDisclaimer} size='md'>
+                Select
+            </WalletButton>
         </div>
     );
 };

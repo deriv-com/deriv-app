@@ -20,8 +20,7 @@ describe('start_date', () => {
                 start_type: 'spot',
                 submarket: 'major_pairs',
                 underlying_symbol: 'frxAUDJPY',
-                forward_starting_options:
-                    [] as unknown as ContractsFor['available'][number]['forward_starting_options'],
+                forward_starting_options: undefined,
             };
             /* eslint-disable no-unused-expressions */
             expect(buildForwardStartingConfig(contract, [])).toHaveLength(0);

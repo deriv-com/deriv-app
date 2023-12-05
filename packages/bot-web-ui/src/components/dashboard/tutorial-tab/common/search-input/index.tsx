@@ -11,7 +11,7 @@ const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tuto
     const { setActiveTabTutorial } = dashboard;
     const input_ref = React.useRef(null);
 
-    const throttleChange = React.useCallback(
+    const debounceChange = React.useCallback(
         debounce(
             value => {
                 setDebouncedValue(value);
@@ -34,7 +34,7 @@ const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tuto
             onFocusSearch();
         }
         setFaqSearchContent(event.target.value);
-        throttleChange(event.target.value);
+        debounceChange(event.target.value);
     };
 
     const onFocusSearch = () => {

@@ -33,7 +33,7 @@ const QuickStrategyForm = observer(() => {
         });
     };
 
-    const throttleChange = React.useCallback(
+    const debounceChange = React.useCallback(
         debounce(sendInitialStakeValueToruddetack, DEBOUNCE_INTERVAL_TIME, {
             trailing: true,
             leading: false,
@@ -52,7 +52,7 @@ const QuickStrategyForm = observer(() => {
         setValue(key, value);
         await setFieldTouched(key, true, true);
         await setFieldValue(key, value);
-        throttleChange(key, value);
+        debounceChange(key, value);
     };
 
     const handleEnter = (event: KeyboardEvent) => {

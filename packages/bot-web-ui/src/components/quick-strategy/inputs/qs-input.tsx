@@ -45,7 +45,7 @@ const QSInput: React.FC<TQSInput> = observer(
             });
         };
 
-        const throttleChangePlus = React.useCallback(
+        const debounceChangePlus = React.useCallback(
             debounce(sendMinusValueToRudderstack, DEBOUNCE_INTERVAL_TIME, {
                 trailing: true,
                 leading: false,
@@ -53,7 +53,7 @@ const QSInput: React.FC<TQSInput> = observer(
             []
         );
 
-        const throttleChangeMinus = React.useCallback(
+        const debounceChangeMinus = React.useCallback(
             debounce(sendPlusValueToRudderstack, DEBOUNCE_INTERVAL_TIME, {
                 trailing: true,
                 leading: false,
@@ -110,7 +110,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) - 1;
                                                         handleChange(e, String(value % 1 ? value.toFixed(2) : value));
-                                                        throttleChangeMinus(
+                                                        debounceChangeMinus(
                                                             e,
                                                             String(value % 1 ? value.toFixed(2) : value)
                                                         );
@@ -127,7 +127,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) + 1;
                                                         handleChange(e, String(value % 1 ? value.toFixed(2) : value));
-                                                        throttleChangePlus(
+                                                        debounceChangePlus(
                                                             e,
                                                             String(value % 1 ? value.toFixed(2) : value)
                                                         );

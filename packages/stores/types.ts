@@ -23,7 +23,7 @@ import type {
     WebsiteStatus,
 } from '@deriv/api-types';
 
-import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
+import type { FeatureFlagsStore } from './src/stores';
 
 type TRoutes =
     | '/404'
@@ -514,7 +514,6 @@ type TClientStore = {
     is_already_attempted: boolean;
     prev_account_type: string;
     account_open_date: number | undefined;
-    is_beta_chart: boolean;
 };
 
 type TCommonStoreError = {
@@ -1000,6 +999,5 @@ export type TCoreStores = {
 };
 
 export type TStores = TCoreStores & {
-    exchange_rates: ExchangeRatesStore;
     feature_flags: FeatureFlagsStore;
 };

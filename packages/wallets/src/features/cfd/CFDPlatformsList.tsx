@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trans } from 'react-i18next';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletButton, WalletText } from '../../components/Base';
 import useDevice from '../../hooks/useDevice';
@@ -20,17 +21,22 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                 {isMobile ? (
                     <div className='wallets-cfd-list__header-description'>
                         <WalletText size='sm'>
-                            Trade with leverage and tight spreads for better returns on trades.{' '}
-                            <a
-                                className='wallets-cfd-list__header-description__link'
-                                href='https://deriv.com/trade-types/cfds/'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                            >
-                                Learn more
-                            </a>
+                            <Trans
+                                components={[
+                                    <a
+                                        className='wallets-cfd-list__header-description__link'
+                                        href='https://deriv.com/trade-types/cfds/'
+                                        key={0}
+                                        rel='noopener noreferrer'
+                                        target='_blank'
+                                    />,
+                                ]}
+                                defaults='Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
+                            />
                         </WalletText>
-                        <WalletButton size='sm' text='Compare accounts' textSize='sm' variant='ghost' />
+                        <WalletButton size='sm' textSize='sm' variant='ghost'>
+                            Compare accounts
+                        </WalletButton>
                     </div>
                 ) : (
                     <div>
@@ -38,18 +44,23 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                             <WalletText size='xl' weight='bold'>
                                 CFDs
                             </WalletText>
-                            <WalletButton size='sm' text='Compare accounts' variant='ghost' />
+                            <WalletButton size='sm' variant='ghost'>
+                                Compare accounts
+                            </WalletButton>
                         </div>
                         <WalletText size='md'>
-                            Trade with leverage and tight spreads for better returns on trades.{' '}
-                            <a
-                                className='wallets-cfd-list__header-description__link'
-                                href='https://deriv.com/trade-types/cfds/'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                            >
-                                Learn more
-                            </a>
+                            <Trans
+                                components={[
+                                    <a
+                                        className='wallets-cfd-list__header-description__link'
+                                        href='https://deriv.com/trade-types/cfds/'
+                                        key={0}
+                                        rel='noopener noreferrer'
+                                        target='_blank'
+                                    />,
+                                ]}
+                                defaults='Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
+                            />
                         </WalletText>
                     </div>
                 )}

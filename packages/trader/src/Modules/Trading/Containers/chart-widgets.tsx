@@ -49,8 +49,9 @@ export const DigitsWidget = observer(({ digits, tick }: { digits: TDigits['digit
 
 // Chart widgets passed into SmartCharts
 export const ChartTopWidgets = observer(({ charts_ref, open_market, open }: TChartTopWidgets) => {
-    const { ui } = useStore();
+    const { client, ui } = useStore();
     const { is_digits_widget_active, onChange: onSymbolChange } = useTraderStore();
+    const { is_beta_chart } = client;
     const { is_dark_mode_on, is_mobile } = ui;
     const theme = is_dark_mode_on ? 'dark' : 'light';
     let yAxiswidth;
@@ -66,6 +67,7 @@ export const ChartTopWidgets = observer(({ charts_ref, open_market, open }: TCha
             onSymbolChange={symbolChange(onSymbolChange)}
             theme={theme}
             y_axis_width={yAxiswidth}
+            is_beta_chart={is_beta_chart}
         />
     );
 });

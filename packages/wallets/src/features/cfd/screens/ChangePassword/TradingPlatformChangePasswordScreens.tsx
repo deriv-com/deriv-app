@@ -11,13 +11,9 @@ import { PlatformDetails } from '../../constants';
 type TradingPlatformChangePasswordScreensProps = {
     isVirtual?: boolean;
     platform: TPlatforms.All;
-    platformTitle: string;
 };
 
-const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScreensProps> = ({
-    platform,
-    platformTitle,
-}) => {
+const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScreensProps> = ({ platform }) => {
     type TChangePasswordScreenIndex = 'confirmationScreen' | 'emailVerification' | 'introScreen';
     const [activeScreen, setActiveScreen] = useState<TChangePasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangePasswordScreenIndex) => setActiveScreen(nextScreen);
@@ -27,12 +23,14 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
     const { mutate } = useVerifyEmail();
     const { data: activeWallet } = useActiveWalletAccount();
 
-    const isMt5 = platform === PlatformDetails.mt5.platform;
+    const { title } = PlatformDetails[platform];
+
+    const isDerivX = platform === PlatformDetails.dxtrade.platform;
 
     const handleSendEmail = async () => {
         if (data.email) {
             await mutate({
-                type: isMt5 ? 'trading_platform_mt5_password_reset' : 'trading_platform_dxtrade_password_reset',
+                type: isDerivX ? 'trading_platform_dxtrade_password_reset' : 'trading_platform_mt5_password_reset',
                 url_parameters: {
                     redirect_to: platformPasswordResetRedirectLink(platform, activeWallet?.is_virtual),
                 },
@@ -45,7 +43,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
         confirmationScreen: {
             bodyText: (
                 <WalletText align='center' color='error' size='sm'>
-                    This will change the password to all of your {platformTitle} accounts.
+                    This will change the password to all of your {title} accounts.
                 </WalletText>
             ),
             button: (
@@ -64,16 +62,16 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
                     </WalletButton>
                 </div>
             ),
-            headingText: `Confirm to change your ${platformTitle} password`,
+            headingText: `Confirm to change your ${title} password`,
         },
         introScreen: {
-            bodyText: `Use this password to log in to your ${platformTitle} accounts on the desktop, web, and mobile apps.`,
+            bodyText: `Use this password to log in to your ${title} accounts on the desktop, web, and mobile apps.`,
             button: (
                 <WalletButton onClick={() => handleClick('confirmationScreen')} size='lg'>
                     Change password
                 </WalletButton>
             ),
-            headingText: `${platformTitle} password`,
+            headingText: `${title} password`,
         },
     };
 
@@ -89,7 +87,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
             <WalletsActionScreen
                 description={ChangePasswordScreens[activeScreen].bodyText}
                 descriptionSize='sm'
-                icon={isMt5 ? <MT5PasswordIcon /> : <DerivXPasswordIcon />}
+                icon={isDerivX ? <DerivXPasswordIcon /> : <MT5PasswordIcon />}
                 renderButtons={() => ChangePasswordScreens[activeScreen].button}
                 title={ChangePasswordScreens[activeScreen].headingText}
             />

@@ -589,6 +589,11 @@
         animation: 0.5s spot-emphasizer 0.2s;
     }
 }
+.sc-reset_barrier {
+    width: 100vw;
+    height: 1px;
+    border-bottom: 1px dashed #377cfc;
+}
 
 //Vanilla specific styles
 .vanilla-trade-chart {

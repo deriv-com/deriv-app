@@ -337,6 +337,7 @@ export default class ContractStore extends BaseStore {
                 if (reset_time) {
                     const reset_barrier_instance = new ChartBarrierStore(reset_barrier, low_barrier, null, {
                         ...common_props,
+                        hideBarrierLine: true,
                         line_style: BARRIER_LINE_STYLES.DASHED,
                     });
                     const is_reset_call = /CALL/i.test(contract_type);

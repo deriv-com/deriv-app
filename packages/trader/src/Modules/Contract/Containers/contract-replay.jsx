@@ -354,6 +354,18 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                     {...accumulators_barriers_marker}
                 />
             )}
+            {contract_info?.reset_time && (
+                <ChartMarker
+                    key='reset_barrier'
+                    marker_config={{
+                        ContentComponent: 'div',
+                        x: contract_info.reset_time,
+                        y: contract_info.reset_barrier,
+                    }}
+                    marker_content_props={{ className: 'sc-reset_barrier' }}
+                    is_bottom_widget_visible={isBottomWidgetVisible()}
+                />
+            )}
         </SmartChartSwitcher>
     );
 });

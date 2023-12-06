@@ -1,6 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 import classNames from 'classnames';
-import { WalletClipboard, WalletText } from '../../../../../components/Base';
+import { useHover } from 'usehooks-ts';
+import { Tooltip, WalletClipboard, WalletText } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
 import EditIcon from '../../../../../public/images/ic-edit.svg';
@@ -15,6 +16,8 @@ type TMT5TradeDetailsItemProps = {
 
 const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, variant = 'clipboard' }) => {
     const { isDesktop } = useDevice();
+    const hoverRef = useRef(null);
+    const isHovered = useHover(hoverRef);
     const { show } = useModal();
     return (
         <div
@@ -35,10 +38,14 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ label, value, vari
                             <WalletClipboard popoverAlignment='right' successMessage='' textCopy={value} />
                         )}
                         {variant === 'password' && (
-                            <EditIcon
-                                className='wallets-mt5-trade-details-item__edit'
-                                onClick={() => show(<ChangePassword />)}
-                            />
+                            <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>
+                                <div ref={hoverRef}>
+                                    <EditIcon
+                                        className='wallets-mt5-trade-details-item__edit'
+                                        onClick={() => show(<ChangePassword />)}
+                                    />
+                                </div>
+                            </Tooltip>
                         )}
                     </div>
                 </React.Fragment>

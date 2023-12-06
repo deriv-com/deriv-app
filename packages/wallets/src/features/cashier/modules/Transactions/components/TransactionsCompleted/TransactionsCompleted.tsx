@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect } from 'react';
 import moment from 'moment';
-import { useActiveWalletAccount, useAllAccountsList, useTransactions } from '@deriv/api';
+import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv/api';
 import { TSocketRequestPayload } from '@deriv/api/types';
 import { Loader } from '../../../../../../components';
 import { WalletText } from '../../../../../../components/Base';
+import { useCashierScroll } from '../../../../context';
 import { TransactionsCompletedRow } from '../TransactionsCompletedRow';
 import { TransactionsNoDataState } from '../TransactionsNoDataState';
 import { TransactionsTable } from '../TransactionsTable';
@@ -22,17 +23,19 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
         isFetching,
         isLoading: isTransactionListLoading,
         setFilter,
-    } = useTransactions();
+    } = useInfiniteTransactions();
     const { data: wallet, isLoading: isWalletLoading } = useActiveWalletAccount();
     const { data: accounts, isLoading: isAccountsListLoading } = useAllAccountsList();
 
     const isLoading = isTransactionListLoading || isWalletLoading || isAccountsListLoading;
 
+    const { setOnCashierScroll } = useCashierScroll();
+
     const fetchMoreOnBottomReached = useCallback(
-        (containerRefElement?: HTMLDivElement | null) => {
-            if (containerRefElement) {
-                const { clientHeight, scrollHeight, scrollTop } = containerRefElement;
-                //once the user has scrolled within 300px of the bottom of the table, fetch more data if there is any
+        (e: React.UIEvent<HTMLDivElement>) => {
+            if (e && e.currentTarget) {
+                const { clientHeight, scrollHeight, scrollTop } = e.currentTarget;
+                // once the user has scrolled within 300px of the bottom of the table, fetch more data if there is any
                 if (scrollHeight - scrollTop - clientHeight < 300 && !isFetching) {
                     fetchNextPage();
                 }
@@ -40,6 +43,11 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
         },
         [fetchNextPage, isFetching]
     );
+
+    useEffect(() => {
+        if (fetchMoreOnBottomReached) setOnCashierScroll(() => fetchMoreOnBottomReached);
+        return () => setOnCashierScroll(null);
+    }, [fetchMoreOnBottomReached, setOnCashierScroll]);
 
     useEffect(() => {
         setFilter(filter);
@@ -59,7 +67,6 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
                 },
             ]}
             data={transactions}
-            fetchMore={fetchMoreOnBottomReached}
             groupBy={['date']}
             rowGroupRender={transaction => (
                 <div className='wallets-transactions-completed__group-title'>

@@ -39,9 +39,10 @@ const DerivAppsTradingAccount: React.FC = () => {
                 onClick={() => {
                     history.push('wallets/cashier/transfer');
                 }}
-                text='Transfer'
                 variant='outlined'
-            />
+            >
+                Transfer
+            </WalletButton>
         </div>
     );
 };

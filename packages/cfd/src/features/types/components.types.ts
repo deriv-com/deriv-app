@@ -332,7 +332,7 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     landing_company_short?: DetailsOfEachMT5Loginid['landing_company_short'];
     short_code_and_region?: DetailsOfEachMT5Loginid['landing_company_short'] &
         Exclude<TServerInfo['geolocation'], undefined>['region'];
-    mt5_acc_auth_identity?: KycAuthStatus['identity'];
+    mt5_acc_auth_identity?: DetailsOfEachMT5Loginid['status'];
     selected_mt5_jurisdiction?: TOpenAccountTransferMeta &
         TJurisdictionData & {
             platform?: TCFDPlatform;

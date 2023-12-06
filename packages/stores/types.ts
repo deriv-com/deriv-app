@@ -514,6 +514,7 @@ type TClientStore = {
     is_already_attempted: boolean;
     prev_account_type: string;
     account_open_date: number | undefined;
+    is_beta_chart: boolean;
 };
 
 type TCommonStoreError = {

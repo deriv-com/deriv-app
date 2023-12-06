@@ -1,5 +1,5 @@
 import React from 'react';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, CONTRACT_TYPES } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import PurchaseButton from '../purchase-button';
@@ -24,7 +24,7 @@ const default_mocked_props: React.ComponentProps<typeof PurchaseButton> = {
         error_code: '',
         error_field: '',
         limit_order: undefined,
-        obj_contract_basis: { text: 'mocked text', value: 'mocked value' },
+        obj_contract_basis: { text: 'stake', value: 10 },
         payout: 0,
         profit: '',
         returns: '',
@@ -42,7 +42,7 @@ const default_mocked_props: React.ComponentProps<typeof PurchaseButton> = {
     purchased_states_arr: [true, false],
     should_fade: false,
     setPurchaseState: jest.fn(),
-    type: 'VANILLALONGCALL',
+    type: CONTRACT_TYPES.VANILLA.CALL,
 };
 
 jest.mock('@deriv/shared', () => ({
@@ -85,20 +85,29 @@ describe('<PurchaseButton />', () => {
     });
 
     it('should render the button with <Money /> component inside for multipliers contract', () => {
-        render(<PurchaseButton {...default_mocked_props} is_multiplier type='MULTUP' />);
+        render(<PurchaseButton {...default_mocked_props} is_multiplier type={CONTRACT_TYPES.MULTIPLIER.UP} />);
 
         expect(screen.getByText(/UP/i)).toBeInTheDocument();
         expect(screen.getByText(/MoneyComponent/i)).toBeInTheDocument();
     });
 
     it('should render the button for accumulators', () => {
-        render(<PurchaseButton {...default_mocked_props} is_accumulator type='ACCU' />);
+        render(<PurchaseButton {...default_mocked_props} is_accumulator type={CONTRACT_TYPES.ACCUMULATOR} />);
 
         expect(screen.getByText(/Buy/i)).toBeInTheDocument();
     });
 
     it('should render icon with specific type if is_high_low === true', () => {
-        render(<PurchaseButton {...default_mocked_props} is_disabled is_loading is_high_low should_fade type='CALL' />);
+        render(
+            <PurchaseButton
+                {...default_mocked_props}
+                is_disabled
+                is_loading
+                is_high_low
+                should_fade
+                type={CONTRACT_TYPES.CALL}
+            />
+        );
 
         expect(screen.getByText(/Higher/i)).toBeInTheDocument();
         expect(screen.getByTestId(/call_barrier/i)).toBeInTheDocument();
@@ -107,7 +116,7 @@ describe('<PurchaseButton />', () => {
     it('should render ContractInfo for mobile if contract type is not accumulators, turbos or vanillas', () => {
         (isMobile as jest.Mock).mockReturnValueOnce(true);
         (isDesktop as jest.Mock).mockReturnValueOnce(false);
-        render(<PurchaseButton {...default_mocked_props} is_multiplier type='MULTUP' />);
+        render(<PurchaseButton {...default_mocked_props} is_multiplier type={CONTRACT_TYPES.MULTIPLIER.UP} />);
 
         expect(screen.getByText(/ContractInfo/i)).toBeInTheDocument();
     });

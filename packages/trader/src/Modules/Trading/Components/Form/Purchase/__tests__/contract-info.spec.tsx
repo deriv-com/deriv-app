@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { getLocalizedBasis, TURBOS } from '@deriv/shared';
+import { getLocalizedBasis, TRADE_TYPES } from '@deriv/shared';
 import ContractInfo from '../contract-info';
 
 const test_message = 'Some test message';
@@ -95,7 +95,7 @@ describe('<ContractInfo />', () => {
         );
     });
     it('should apply a proper className and specific tooltip message if is_turbos is true and type is TURBOS.LONG', () => {
-        render(<ContractInfo {...default_mock_props} type={TURBOS.LONG} is_turbos />);
+        render(<ContractInfo {...default_mock_props} type={TRADE_TYPES.TURBOS.LONG} is_turbos />);
 
         expect(screen.getByTestId('dt_purchase_turboslong_price')).toHaveClass(
             'trade-container__price-info trade-container__price-info--turbos'

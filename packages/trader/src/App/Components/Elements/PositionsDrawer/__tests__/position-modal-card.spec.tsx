@@ -3,7 +3,7 @@ import moment from 'moment';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { mockContractInfo, VANILLALONG, TURBOS } from '@deriv/shared';
+import { mockContractInfo, TRADE_TYPES } from '@deriv/shared';
 import { ActiveSymbols } from '@deriv/api-types';
 import PositionsModalCard from '../positions-modal-card';
 import TraderProviders from '../../../../../trader-providers';
@@ -11,7 +11,7 @@ import TraderProviders from '../../../../../trader-providers';
 const default_mock_props: React.ComponentProps<typeof PositionsModalCard> = {
     className: 'test_className',
     contract_info: mockContractInfo({
-        contract_type: VANILLALONG.CALL,
+        contract_type: TRADE_TYPES.VANILLA.CALL,
         underlying: '',
         contract_id: 123386875,
         currency: 'USD',
@@ -131,7 +131,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/35.68/i)).toBeInTheDocument();
     });
     it('should render specific contract card for Turbos', () => {
-        default_mock_props.contract_info.contract_type = TURBOS.LONG;
+        default_mock_props.contract_info.contract_type = TRADE_TYPES.TURBOS.LONG;
         render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
 
         expect(screen.queryByText(PositionsCardLoader)).not.toBeInTheDocument();
@@ -149,7 +149,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/2,650.0/i)).toBeInTheDocument();
     });
     it('should render contract card for Rise/Fall', () => {
-        default_mock_props.contract_info.contract_type = 'rise_fall';
+        default_mock_props.contract_info.contract_type = TRADE_TYPES.RISE_FALL;
         render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
 
         expect(screen.queryByText(PositionsCardLoader)).not.toBeInTheDocument();
@@ -163,7 +163,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/Payout limit:/i)).toBeInTheDocument();
     });
     it('should render the same contract card for Touch/No Touch as for Rise/Fall', () => {
-        default_mock_props.contract_info.contract_type = 'touch';
+        default_mock_props.contract_info.contract_type = TRADE_TYPES.TOUCH;
         render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
 
         expect(screen.queryByText(PositionsCardLoader)).not.toBeInTheDocument();
@@ -177,7 +177,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/Payout limit:/i)).toBeInTheDocument();
     });
     it('should render the contract card for Multipliers', () => {
-        default_mock_props.contract_info.contract_type = 'multiplier';
+        default_mock_props.contract_info.contract_type = TRADE_TYPES.MULTIPLIER;
         render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
 
         expect(screen.queryByText(PositionsCardLoader)).not.toBeInTheDocument();

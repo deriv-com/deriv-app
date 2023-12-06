@@ -1564,6 +1564,11 @@ $MIN_HEIGHT_FLOATING: calc(
 .proof-of-income {
     width: 100%;
 
+    &,
+    .account-form__footer {
+        max-width: 68rem;
+    }
+
     .account__scrollbars_container {
         padding: 0;
     }

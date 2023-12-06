@@ -17,6 +17,6 @@ export const getPoincDocumentsList = () =>
         { text: localize('Business proof of address'), value: 'business_poa' },
         { text: localize('Article of association'), value: 'article_of_association' },
         { text: localize('Memorandum'), value: 'memorandum' },
-        { text: localize('Authorisation letter'), value: 'authorisation_letter' },
+        { text: localize('Authorization letter'), value: 'authorisation_letter' },
         { text: localize('Declarations'), value: 'declarations' },
     ] as const;

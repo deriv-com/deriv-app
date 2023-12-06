@@ -62,16 +62,16 @@ const SentEmailContent: React.FC<TProps> = ({ description, isInvestorPassword = 
             />
             {shouldShowResendEmailReasons && (
                 <>
-                    <div className='wallets-sent-email-content__resend'>
-                        {isInvestorPassword && (
+                    {isInvestorPassword && (
+                        <div className='wallets-sent-email-content__resend'>
                             <WalletsActionScreen
                                 description="Check your spam or junk folder. If it's not there, try resending the email."
                                 descriptionSize={descriptionSize}
                                 title="Didn't receive the email?"
                                 titleSize={titleSize}
                             />
-                        )}
-                    </div>
+                        </div>
+                    )}
                     <WalletButton
                         disabled={hasCountdownStarted}
                         onClick={() => {

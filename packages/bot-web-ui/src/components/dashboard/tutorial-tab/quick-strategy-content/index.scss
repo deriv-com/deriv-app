@@ -1,0 +1,60 @@
+.tutorials-quick-strategy {
+    &__title {
+        margin-bottom: 1.6rem;
+    }
+    &__cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+
+        @include mobile {
+            width: 100%;
+            grid-template-columns: 1fr;
+        }
+        gap: 3.2rem;
+    }
+    &__placeholder {
+        display: grid;
+        grid-template-columns: 10fr 1fr;
+        align-items: center;
+        padding: 1.6rem;
+        border: 2px solid var(--system-light-5-active-background, #d6dadb);
+        border-radius: 8px;
+
+        &__title {
+            margin-bottom: 1.6rem;
+        }
+
+        &__content {
+            display: grid;
+            grid-template-columns: 10fr 1fr;
+            align-items: baseline;
+            ul {
+                list-style: disc;
+                margin-left: 1.6rem;
+            }
+
+            li:not(:last-child) {
+                margin-bottom: 1.6rem;
+            }
+        }
+        svg {
+            cursor: pointer;
+        }
+    }
+    &__breadcrumb {
+        display: flex;
+        margin-bottom: 1rem;
+
+        &--click {
+            cursor: pointer;
+            margin-right: 0.5rem;
+        }
+    }
+    .qs__body__content__description {
+        padding: 1rem 0;
+    }
+    .qs .long_description__image {
+        width: 55%;
+        margin-bottom: 4rem;
+    }
+}

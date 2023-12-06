@@ -381,7 +381,7 @@
                         &:first-child {
                             margin-top: 7.5rem;
                         }
-                        &:nth-child(4) {
+                        &:nth-last-child(2) {
                             display: none;
                         }
                     }
@@ -390,9 +390,6 @@
                         display: flex;
                         justify-content: flex-start;
                         padding: 0 1.6rem;
-                        &:nth-child(3) {
-                            display: none;
-                        }
                     }
                 }
 

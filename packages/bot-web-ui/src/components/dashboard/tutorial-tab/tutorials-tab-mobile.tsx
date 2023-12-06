@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { Icon, SelectNative } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { TContent } from './config';
 import SearchInput from './common/search-input';
+import { TContent } from './config';
 
 type TTutorialsTabMobile = {
     tutorial_tabs: TContent;
@@ -56,7 +56,7 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
         const selectElement = document.getElementById('dt_components_select-native_select-tag');
 
         if (selectElement) {
-            selectElement.removeChild(selectElement?.options[2]);
+            selectElement.removeChild(selectElement?.options[3]);
         }
     }, []);
 

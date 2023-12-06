@@ -9,6 +9,12 @@ export type TGuideContent = Omit<TContent, 'title' | 'description'>;
 
 export type TUserGuideContent = Omit<TContent, 'title' | 'description'>;
 
+export type TQuickStrategyContent = {
+    qs_name: string;
+    type: string;
+    content: string[];
+};
+
 export type TContent = {
     content?: string;
     description: TDescription[];
@@ -465,5 +471,32 @@ export const faq_content: TFaqContent[] = [
         ],
         tab_id: 2,
         search_id: 'faq-17',
+    },
+];
+
+export const quick_strategy_content: TQuickStrategyContent[] = [
+    {
+        qs_name: 'MARTINGALE',
+        type: localize('About Martingale'),
+        content: [
+            localize('Exploring the Martingale strategy in Deriv Bot'),
+            localize('An example of Martingale strategy'),
+        ],
+    },
+    {
+        qs_name: 'D_ALEMBERT',
+        type: localize("About D'Alembert"),
+        content: [
+            localize('Exploring the D’Alembert strategy in Deriv Bot'),
+            localize('An example of D’Alembert strategy'),
+        ],
+    },
+    {
+        qs_name: 'OSCARS_GRIND',
+        type: localize("About Oscar's Grind"),
+        content: [
+            localize('Exploring the Oscar’s Grind strategy in Deriv Bot'),
+            localize('An example of Oscar’s Grind strategy'),
+        ],
     },
 ];

@@ -171,7 +171,7 @@ jest.mock('_common/base/server_time', () => ({
     })),
 }));
 
-const serverTimeGetSpy = jest.spyOn(ServerTime, 'get');
+const server_time_get_spy = jest.spyOn(ServerTime, 'get');
 describe('ContractType.getBarriers', () => {
     it('should return barriers based on contract type and expiry type', async () => {
         const contract_type = 'end';
@@ -398,7 +398,7 @@ describe('ContractType.getExpiryTime', () => {
     });
     it('end_time should be first item in market_close_times array return null if its not undefined', () => {
         market_close_times = ['21:00:00'];
-        serverTimeGetSpy.mockImplementation(
+        server_time_get_spy.mockImplementation(
             jest.fn(() => ({
                 isBefore: jest.fn(() => true),
             }))
@@ -416,7 +416,7 @@ describe('ContractType.getExpiryTime', () => {
         expect(result).toEqual({ expiry_time: '21:00:00' });
     });
     it('should return expiry_time to be 23:55', () => {
-        serverTimeGetSpy.mockImplementation(
+        server_time_get_spy.mockImplementation(
             jest.fn(() => ({
                 isBefore: jest.fn(() => false),
                 clone: jest.fn(() => ({
@@ -536,24 +536,23 @@ describe('ContractType.getTradingEvents', () => {
     });
 });
 describe('ContractType.getTradingTimes', () => {
+    const mocked_response = { close: ['23:59:59'], open: ['00:00:00'] };
     it('return empty object if date is empty', async () => {
         const result = await ContractType.getTradingTimes('', 'frxAUDJPY');
         expect(result).toEqual({});
     });
     it('return proper array trading times for specific symbol if date and underlying are not empty', async () => {
         const result = await ContractType.getTradingTimes('2023-12-01', 'frxAUDJPY');
-        expect(result).toEqual({ close: ['23:59:59'], open: ['00:00:00'] });
+        expect(result).toEqual(mocked_response);
     });
     it('return array trading times for all symbols if underlying is empty', async () => {
         const result = await ContractType.getTradingTimes('2023-12-01', '');
         expect(result).toEqual({
             frxAUDAED: {
-                close: ['23:59:59'],
-                open: ['00:00:00'],
+                ...mocked_response,
             },
             frxAUDJPY: {
-                close: ['23:59:59'],
-                open: ['00:00:00'],
+                ...mocked_response,
             },
         });
     });

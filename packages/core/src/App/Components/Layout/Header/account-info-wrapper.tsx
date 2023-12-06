@@ -4,7 +4,7 @@ import { isBot } from '@deriv/shared';
 
 type TAccountInfoWrapper = {
     is_disabled?: boolean;
-    is_mobile: boolean;
+    is_mobile?: boolean;
     disabled_message?: string;
 };
 

@@ -131,8 +131,7 @@ export type TJurisdictionCardItemVerificationItem =
     | 'document_number'
     | 'selfie'
     | 'identity_document'
-    | 'name_and_address'
-    | 'not_applicable';
+    | 'name_and_address';
 
 export type TJurisdictionCardItemVerification = Array<TJurisdictionCardItemVerificationItem>;
 
@@ -161,7 +160,6 @@ export type TJurisdictionVerificationItems = {
     selfie?: TJurisdictionVerificationSection;
     identity_document?: TJurisdictionVerificationSection;
     name_and_address?: TJurisdictionVerificationSection;
-    not_applicable?: TJurisdictionVerificationSection;
 };
 
 type TJurisdictionVerificationColors = 'yellow' | 'red' | 'green';

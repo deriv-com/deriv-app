@@ -2,9 +2,7 @@ import moment from 'moment';
 import { isSessionAvailable } from '../start-date';
 
 jest.mock('_common/base/server_time', () => ({
-    get: jest.fn(() => ({
-        unix: jest.fn(() => 1687046399),
-    })),
+    get: jest.fn(() => 1687046399),
 }));
 
 describe('isSessionAvailable', () => {
@@ -30,7 +28,7 @@ describe('isSessionAvailable', () => {
     });
     it('should returns true when sessions are not empty and within range', () => {
         const sessions = [{ open: moment('2023-12-05T08:00:00'), close: moment('2023-12-05T12:00:00') }];
-        const compare_moment = moment('2023-12-05T09:30:00');
+        const compare_moment = moment('2023-12-05T10:30:00');
         const start_moment = moment('2023-12-05T09:00:00');
         const result = isSessionAvailable(sessions, compare_moment, start_moment, false);
         expect(result).toBeTruthy();

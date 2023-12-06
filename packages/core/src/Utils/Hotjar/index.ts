@@ -36,6 +36,7 @@ const initHotjar = (client: TCoreStores['client']) => {
             'Account created': account_open_date ? toMoment(account_open_date).format('YYYY-MM-DD') : '',
             'Account type': account_type,
             'User country': client.clients_country,
+            'Beta chart': client.is_beta_chart,
         });
     })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
 };

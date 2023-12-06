@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TPlatforms } from '../../../../types';
+import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
+import { PlatformDetails } from '../../constants';
 
 type MT5ChangePasswordScreensProps = {
+    isVirtual?: boolean;
     platform: TPlatforms.All;
     platformTitle: string;
 };
@@ -15,6 +19,24 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
     const handleClick = (nextScreen: TChangePasswordScreenIndex) => setActiveScreen(nextScreen);
 
     const { hide } = useModal();
+    const { data } = useSettings();
+    const { mutate } = useVerifyEmail();
+    const { data: activeWallet } = useActiveWalletAccount();
+
+    const handleSendEmail = async () => {
+        if (data.email) {
+            await mutate({
+                type:
+                    platform === PlatformDetails.mt5.platform
+                        ? 'trading_platform_mt5_password_reset'
+                        : 'trading_platform_dxtrade_password_reset',
+                url_parameters: {
+                    redirect_to: platformPasswordResetRedirectLink(platform, activeWallet?.is_virtual),
+                },
+                verify_email: data.email,
+            });
+        }
+    };
 
     const ChangePasswordScreens = {
         confirmationScreen: {
@@ -25,8 +47,18 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
             ),
             button: (
                 <div className='wallets-change-password__btn'>
-                    <WalletButton onClick={() => hide()} size='lg' text='Cancel' variant='outlined' />
-                    <WalletButton onClick={() => handleClick('emailVerification')} size='lg' text='Confirm' />
+                    <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                        Cancel
+                    </WalletButton>
+                    <WalletButton
+                        onClick={() => {
+                            handleSendEmail();
+                            handleClick('emailVerification');
+                        }}
+                        size='lg'
+                    >
+                        Confirm
+                    </WalletButton>
                 </div>
             ),
             headingText: `Confirm to change your ${platformTitle} password`,
@@ -34,7 +66,11 @@ const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ pla
         },
         introScreen: {
             bodyText: `Use this password to log in to your ${platformTitle} accounts on the desktop, web, and mobile apps.`,
-            button: <WalletButton onClick={() => handleClick('confirmationScreen')} size='lg' text='Change password' />,
+            button: (
+                <WalletButton onClick={() => handleClick('confirmationScreen')} size='lg'>
+                    Change password
+                </WalletButton>
+            ),
             headingText: `${platformTitle} password`,
             icon: <MT5PasswordIcon />,
         },

@@ -1,10 +1,14 @@
 import React from 'react';
+import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { Button, SelectNative, Text, ThemedScrollbars } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
+import FormTabs from './form-tabs';
+import QSTabContent from './strategy-description';
+import useQsSubmitHandler from './useQsSubmitHandler';
 import '../quick-strategy.scss';
 
 type TMobileFormWrapper = {
@@ -12,10 +16,11 @@ type TMobileFormWrapper = {
 };
 
 const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) => {
-    // const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
+    const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
     const { submitForm, isValid, setFieldValue, validateForm } = useFormikContext();
     const { quick_strategy, run_panel } = useDBotStore();
     const { selected_strategy, setSelectedStrategy, toggleStopBotDialog } = quick_strategy;
+    const { handleSubmit } = useQsSubmitHandler();
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
 
     React.useEffect(() => {
@@ -24,6 +29,11 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
 
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
+        setActiveTab('TRADE_PARAMETERS');
+    };
+
+    const handleTabChange = (tab: string) => {
+        setActiveTab(tab);
     };
 
     const dropdown_list = Object.keys(STRATEGIES).map(key => ({
@@ -32,22 +42,16 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
         description: STRATEGIES[key as keyof typeof STRATEGIES].description,
     }));
 
-    const handleSubmit = async () => {
-        if (run_panel.is_running) {
-            await setFieldValue('action', 'EDIT');
-            submitForm();
-            toggleStopBotDialog();
-        } else {
-            await setFieldValue('action', 'RUN');
-            submitForm();
-        }
-    };
-
     return (
         <div className='qs'>
             <div className='qs__body'>
                 <div className='qs__body__content'>
-                    <ThemedScrollbars className='qs__form__container' autohide={false}>
+                    <ThemedScrollbars
+                        className={classNames('qs__form__container', {
+                            'qs__form__container--no-footer': active_tab !== 'TRADE_PARAMETERS',
+                        })}
+                        autohide={false}
+                    >
                         <div className='qs__body__content__title'>
                             <div className='qs__body__content__description'>
                                 <Text size='xxs'>
@@ -58,7 +62,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                 <SelectNative
                                     list_items={dropdown_list}
                                     value={selected_strategy}
-                                    // label={localize(label)}
+                                    label={localize('Strategy')}
                                     should_show_empty_option={false}
                                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                         onChangeStrategy(e.target.value);
@@ -66,43 +70,26 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                                 />
                             </div>
                         </div>
-                        <div className='qs__body__content__description'>
-                            <div>
-                                <Text size='xxs'>{strategy.description}</Text>
-                            </div>
-                        </div>
-                        {/* <div className='qs__body__content__head'>
-                            <div className='qs__body__content__head__tabs'>
-                                {FORM_TABS.map(tab => {
-                                    const active = tab.value === active_tab;
-                                    const cs = 'qs__body__content__head__tabs__tab';
-                                    return (
-                                        <span
-                                            className={classNames(cs, { active, disabled: tab?.disabled })}
-                                            key={tab.value}
-                                            onClick={() => setActiveTab(tab.value)}
-                                        >
-                                            <Text size='xs' weight={active ? 'bold' : 'normal'}>
-                                                {tab.label}
-                                            </Text>
-                                        </span>
-                                    );
-                                })}
-                            </div>
-                        </div> */}
-                        <div className='qs__body__content__form'>{children}</div>
+                        <FormTabs
+                            active_tab={active_tab}
+                            onChange={handleTabChange}
+                            description={strategy?.long_description}
+                        />
+                        <QSTabContent formfields={children} active_tab={active_tab} />
                     </ThemedScrollbars>
-                    <div className='qs__body__content__footer'>
-                        <Button
-                            primary
-                            data-testid='qs-run-button'
-                            type='submit'
-                            onClick={handleSubmit}
-                            disabled={!isValid}
-                        >
-                            {localize('Run')}
-                        </Button>
-                    </div>
+                    {active_tab === 'TRADE_PARAMETERS' && (
+                        <div className='qs__body__content__footer'>
+                            <Button
+                                primary
+                                data-testid='qs-run-button'
+                                type='submit'
+                                onClick={handleSubmit}
+                                disabled={!isValid}
+                            >
+                                {localize('Run')}
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

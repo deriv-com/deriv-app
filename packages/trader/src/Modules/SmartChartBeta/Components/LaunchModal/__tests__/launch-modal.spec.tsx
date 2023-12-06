@@ -3,7 +3,7 @@ import { mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TraderProviders from '../../../../../trader-providers';
-import { LocalStore, TURBOS, WS } from '@deriv/shared';
+import { LocalStore, TRADE_TYPES, WS } from '@deriv/shared';
 import Trade from 'Modules/Trading';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { BrowserRouter } from 'react-router-dom';
@@ -31,7 +31,7 @@ const default_mocked_store = mockStore({
             is_trade_enabled: true,
             should_show_active_symbols_loading: false,
             duration: 3,
-            stake_boundary: { [TURBOS.LONG]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
+            stake_boundary: { [TRADE_TYPES.TURBOS.LONG]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
                 typeof useTraderStore
             >['stake_boundary'],
             show_digits_stats: true,

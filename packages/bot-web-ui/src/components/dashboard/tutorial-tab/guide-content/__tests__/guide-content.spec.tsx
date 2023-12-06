@@ -9,6 +9,39 @@ jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
+export const mock_user_guide_content = [
+    {
+        id: 1,
+        type: 'Tour',
+        subtype: 'OnBoard',
+        content: 'Get started on Deriv Bot',
+        src: 'dbot-onboard-tour.png',
+        tab_id: 0,
+        search_id: 'ugc-0',
+    },
+    {
+        id: 2,
+        type: 'Tour',
+        subtype: 'BotBuilder',
+        content: 'Let’s build a bot!',
+        src: 'bot-builder-tour.png',
+        tab_id: 0,
+        search_id: 'ugc-1',
+    },
+];
+
+export const mock_guide_content = [
+    {
+        id: 1,
+        type: 'DBotVideo',
+        content: 'Deriv Bot - your automated trading partner',
+        url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
+        src: 'video_dbot.webp',
+        tab_id: 0,
+        search_id: 'gc-0',
+    },
+];
+
 const guide_list = [
     {
         id: 1,
@@ -50,7 +83,7 @@ describe('<FAQContent />', () => {
                 </DBotStoreProvider>
             </StoreProvider>
         );
-        render(<GuideContent guide_list={guide_list} />, {
+        render(<GuideContent guide_tab_content={mock_user_guide_content} video_tab_content={mock_guide_content} />, {
             wrapper,
         });
     });

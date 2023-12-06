@@ -53,9 +53,19 @@
         cursor: pointer;
     }
     &__group {
-        display: flex;
-        margin-top: 2.4rem;
         margin-bottom: 5.2rem;
+        &__guides {
+            display: flex;
+            margin-top: 2.4rem;
+            @include mobile {
+                display: unset;
+            }
+        }
+        &__title {
+            @include mobile {
+                margin-bottom: 1.4rem;
+            }
+        }
         &__nosearch {
             @include position-center;
             width: 100%;
@@ -71,14 +81,12 @@
                 width: auto;
                 span {
                     text-align: left;
-                    padding-left: 0.8rem;
-                    width: calc(100% - 14.8rem);
+                    width: 100%;
                 }
             }
         }
         @include mobile {
             flex-direction: column;
-            margin-top: 1.4rem;
             margin-bottom: 2.2rem;
         }
         &:last-child {
@@ -94,15 +102,24 @@
         height: 16rem;
         width: 28rem;
         background-size: 100% 100%;
+        &__description {
+            width: 28rem;
+            @include mobile {
+                text-align: left;
+                width: calc(100% - 14.8rem);
+            }
+        }
         @include mobile {
             height: 8.7rem;
             width: 14.8rem;
             margin: 0;
+            margin-right: 0.8rem;
         }
         &__tours {
             height: 13.5rem;
             background-size: contain;
             margin-bottom: 0.8rem;
+            margin-right: 0.8rem;
             width: 21.5rem;
             cursor: pointer;
             @include mobile {

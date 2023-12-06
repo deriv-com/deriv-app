@@ -42,8 +42,10 @@ const VerificationFailed = () => {
                 Click <strong>Resubmit documents</strong> to find out more and submit your documents again.
             </WalletText>
             <div className='wallets-verification-failed__footer'>
-                <WalletButton onClick={() => hide()} size='lg' text='Maybe later' variant='outlined' />
-                <WalletButton size='lg' text='Resubmit documents' />
+                <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                    Maybe later
+                </WalletButton>
+                <WalletButton size='lg'>Resubmit documents</WalletButton>
             </div>
         </div>
     );

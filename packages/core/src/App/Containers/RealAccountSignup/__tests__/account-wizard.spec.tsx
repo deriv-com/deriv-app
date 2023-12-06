@@ -4,6 +4,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import AccountWizard from '../account-wizard';
 import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
+import { Analytics } from '@deriv/analytics';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -227,5 +228,6 @@ describe('<AccountWizard />', () => {
             userEvent.click(ele_submit_btn);
         });
         expect(WS.send).toHaveBeenCalled();
+        expect(Analytics.trackEvent).toHaveBeenCalled();
     });
 });

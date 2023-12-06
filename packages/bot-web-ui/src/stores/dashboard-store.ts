@@ -1,10 +1,7 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-
 import { setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
-
 import { clearInjectionDiv } from 'Constants/load-modal';
-
 import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
 import {
     faq_content,
@@ -14,6 +11,7 @@ import {
     TGuideContent,
     TUserGuideContent,
 } from 'Components/dashboard/tutorial-tab/config';
+import RootStore from './root-store';
 
 export interface IDashboardStore {
     active_tab: number;
@@ -43,13 +41,14 @@ export interface IDashboardStore {
     showVideoDialog: (param: { [key: string]: string }) => void;
     strategy_save_type: string;
     toast_message: string;
+    is_chart_modal_visible: boolean;
 }
 
 export default class DashboardStore implements IDashboardStore {
-    root_store: any;
+    root_store: RootStore;
     tutorials_combined_content: (TFaqContent | TGuideContent | TUserGuideContent)[] = [];
 
-    constructor(root_store: any) {
+    constructor(root_store: RootStore) {
         makeObservable(this, {
             active_tab_tutorials: observable,
             active_tab: observable,
@@ -90,6 +89,7 @@ export default class DashboardStore implements IDashboardStore {
             toast_message: observable,
             setStrategySaveType: action.bound,
             setShowMobileTourDialog: action.bound,
+            is_chart_modal_visible: observable,
         });
         this.root_store = root_store;
         this.tutorials_combined_content = [...user_guide_content, ...guide_content, ...faq_content];
@@ -155,6 +155,7 @@ export default class DashboardStore implements IDashboardStore {
     strategy_save_type = 'unsaved';
     toast_message = '';
     is_web_socket_intialised = true;
+    is_chart_modal_visible = false;
 
     get is_dark_mode() {
         const {
@@ -178,6 +179,10 @@ export default class DashboardStore implements IDashboardStore {
     setOpenSettings = (toast_message: string, show_toast = true) => {
         this.toast_message = toast_message;
         this.show_toast = show_toast;
+    };
+
+    setChartModalVisibility = () => {
+        this.is_chart_modal_visible = !this.is_chart_modal_visible;
     };
 
     setIsFileSupported = (is_file_supported: boolean) => {

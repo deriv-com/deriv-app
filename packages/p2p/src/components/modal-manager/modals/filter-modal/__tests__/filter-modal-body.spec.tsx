@@ -22,10 +22,10 @@ const mock_store_values: DeepPartial<ReturnType<typeof useStores>> = {
 };
 
 const mock_props = {
+    handleToggle: jest.fn(),
     onChange: jest.fn(),
     selected_methods: ['skrill'],
     selected_methods_text: ['Skrill'],
-    setHasMadeChanges: jest.fn(),
 };
 
 jest.mock('Stores', () => ({
@@ -50,8 +50,7 @@ describe('<FilterModalBody />', () => {
     it('should handle toggle button click', () => {
         render(<FilterModalBody {...mock_props} />);
         userEvent.click(screen.getByRole('checkbox', { name: 'matching_ads_toggler' }));
-        expect(mock_store_values.buy_sell_store.setShouldUseClientLimits).toHaveBeenCalledWith(true);
-        expect(mock_props.setHasMadeChanges).toHaveBeenCalledWith(true);
+        expect(mock_props.handleToggle).toBeCalled();
     });
     it('should show the result section and search section when payment method section was already clicked', () => {
         mock_store_values.buy_sell_store.show_filter_payment_methods = true;

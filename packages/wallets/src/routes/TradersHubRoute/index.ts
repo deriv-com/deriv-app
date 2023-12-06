@@ -1,1 +1,1 @@
-export { default as TraderHubRoute } from './TradersHubRoute';
+export { default as TradesHubRoute } from './TradersHubRoute';

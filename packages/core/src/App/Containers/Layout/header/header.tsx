@@ -10,9 +10,11 @@ const Header = observer(() => {
     const { client } = useStore();
     const { is_logged_in } = client;
     const { pathname } = useLocation();
+    const traders_hub_v2 = pathname.startsWith('/wallets/traders-hub');
     const traders_hub_routes =
         [routes.traders_hub, routes.account, routes.cashier, routes.wallets, routes.compare_cfds].includes(pathname) ||
-        pathname.startsWith(routes.compare_cfds);
+        pathname.startsWith(routes.compare_cfds) ||
+        traders_hub_v2;
 
     if (is_logged_in) {
         let result;

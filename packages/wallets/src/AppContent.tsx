@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import classNames from 'classnames';
 import { defineViewportHeight } from './utils/utils';
 import { WalletLanguageSidePanel } from './components';
 import { Router } from './routes';
@@ -25,8 +26,14 @@ const AppContent: React.FC = () => {
         defineViewportHeight();
     }, []);
 
+    const tradersHubV2Route = window.location.pathname === '/wallets/traders-hub';
+
     return (
-        <div className='wallets-app'>
+        <div
+            className={classNames('wallets-app', {
+                'wallets-traders-hub-v2': tradersHubV2Route,
+            })}
+        >
             <div className='wallets-modal-show-header-root' id='wallets_modal_show_header_root' />
             <Router />
             {isPanelOpen && <WalletLanguageSidePanel />}

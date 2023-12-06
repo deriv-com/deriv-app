@@ -1,0 +1,72 @@
+.wallets-traders-hub-route {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    @include desktop {
+        padding: 4rem;
+    }
+
+    &__content {
+        display: flex;
+        padding: 0rem 4rem;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        background: #fff;
+
+        &__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            width: 100%;
+
+            &__title {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex: 1 0 0;
+            }
+
+            &__regulation {
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                justify-content: center;
+
+                &__tabs {
+                    display: flex;
+                    width: 200px;
+                    height: 40px;
+                    padding: 4px;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 6px;
+                    background: var(--system-light-7-secondary-background, #f2f3f4);
+                }
+            }
+        }
+
+        &__options-and-multipliers {
+            display: flex;
+            flex-direction: column;
+            padding: 0 2.4rem 1rem;
+            align-items: flex-start;
+            gap: 2.4rem;
+            align-self: stretch;
+            border-radius: 2.4rem;
+            border: 0.1rem solid var(--system-light-6-hover-background, #e6e9e9);
+        }
+
+        &__cfds {
+            display: flex;
+            padding: 0 2.4rem 1rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 24px;
+            border-radius: 24px;
+            border: 1px solid var(--system-light-6-hover-background, #e6e9e9);
+        }
+    }
+}

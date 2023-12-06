@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { CONTRACT_TYPES } from '@deriv/shared';
 import AccumulatorsChartElements from '../accumulators-chart-elements';
 
 jest.mock('App/Components/Elements/PositionsDrawer/helpers/positions-helper', () => ({
@@ -14,7 +15,7 @@ describe('AccumulatorsChartElements', () => {
             {
                 contract_info: {
                     underlying: 'test symbol',
-                    contract_type: 'ACCU',
+                    contract_type: CONTRACT_TYPES.ACCUMULATOR,
                     entry_spot: 9454.1,
                     contract_id: 1,
                     shortcode: 'test',
@@ -24,7 +25,7 @@ describe('AccumulatorsChartElements', () => {
             {
                 contract_info: {
                     underlying: 'test symbol',
-                    contract_type: 'ACCU',
+                    contract_type: CONTRACT_TYPES.ACCUMULATOR,
                     entry_spot: 9467.78,
                     contract_id: 2,
                     shortcode: 'test',

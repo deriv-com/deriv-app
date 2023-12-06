@@ -109,6 +109,7 @@
 
                 @include mobile() {
                     padding: 0 1.6rem 1.6rem;
+                    margin-top: 1.6rem;
                 }
 
                 &__tabs {
@@ -222,6 +223,12 @@
                 margin-bottom: 0;
                 padding-bottom: 1.6rem;
                 max-height: calc(100vh - 12.2rem) !important;
+            }
+            &--no-footer {
+                max-height: calc(100vh - 23rem + var(--footer-height)) !important;
+                @include mobile() {
+                    max-height: calc(100vh - 8rem) !important;
+                }
             }
         }
 
@@ -437,7 +444,9 @@
 
     &__input {
         margin: 0;
-
+        &.highlight {
+            border: 1px solid var(--status-warning);
+        }
         .dc-input {
             &__container {
                 height: var(--input-height);
@@ -540,6 +549,31 @@
                     font-weight: bold;
                 }
             }
+        }
+    }
+    .long_description {
+        &__title {
+            margin-bottom: 0.8rem;
+            &.italic {
+                font-style: italic;
+                margin-bottom: 0;
+            }
+        }
+        &__content {
+            margin-bottom: 0.8rem;
+            &.italic {
+                font-style: italic;
+            }
+            &.no-margin {
+                margin-bottom: 0;
+                &:last-child {
+                    margin-bottom: 0.8rem;
+                }
+            }
+        }
+        &__image {
+            width: 100%;
+            margin-bottom: 2rem;
         }
     }
 }

@@ -61,6 +61,7 @@ const AccountActions = React.memo(
                                 enableApp={enableApp}
                                 is_eu={is_eu}
                                 is_virtual={is_virtual}
+                                is_mobile
                                 currency={currency}
                                 country_standpoint={country_standpoint}
                                 is_dialog_on={is_acc_switcher_on}

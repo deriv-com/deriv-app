@@ -35,10 +35,15 @@
     }
     &__footer-button {
         background-color: var(--general-main-1);
+        button {
+            height: 4rem;
+            @include mobile {
+                width: 100%;
+            }
+        }
         @include mobile {
             position: sticky;
             bottom: 0;
-            width: 100%;
         }
     }
     &__wrapper {
@@ -1047,16 +1052,23 @@
 .cfd-personal-details-modal {
     grid-template-rows: 8rem minmax(10rem, 1fr);
     overflow-y: scroll;
+    height: 100%;
+
+    &__body {
+        height: calc(100% - 5rem);
+    }
 
     &__heading-container {
         padding-top: 2.4rem;
     }
 
     &__form {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
         .dc-modal-footer {
             width: 100%;
             padding: 1.6rem 2.4rem;
-            margin-top: 7.7rem;
             bottom: 0;
             right: 0;
             display: flex;

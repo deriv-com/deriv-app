@@ -23,7 +23,7 @@ import type {
     WebsiteStatus,
 } from '@deriv/api-types';
 
-import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
+import type { FeatureFlagsStore } from './src/stores';
 
 type TRoutes =
     | '/404'
@@ -514,6 +514,8 @@ type TClientStore = {
     is_already_attempted: boolean;
     prev_account_type: string;
     account_open_date: number | undefined;
+    is_bot_allowed: boolean;
+    setAccounts: (accounts: Record<string, TActiveAccount>) => void;
     is_beta_chart: boolean;
 };
 
@@ -834,7 +836,7 @@ type TContractStore = {
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
     addNotificationMessageByKey: (key: string) => void;
-    client_notifications: object;
+    client_notifications: Record<string, TNotificationMessage>;
     is_notifications_empty: boolean;
     is_notifications_visible: boolean;
     filterNotificationMessages: () => void;
@@ -938,6 +940,7 @@ type TTradersHubStore = {
     available_dxtrade_accounts: TAvailableCFDAccounts[];
     available_ctrader_accounts: TAvailableCFDAccounts[];
     toggleIsTourOpen: (is_tour_open: boolean) => void;
+    is_tour_open: boolean;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;
@@ -1000,6 +1003,5 @@ export type TCoreStores = {
 };
 
 export type TStores = TCoreStores & {
-    exchange_rates: ExchangeRatesStore;
     feature_flags: FeatureFlagsStore;
 };

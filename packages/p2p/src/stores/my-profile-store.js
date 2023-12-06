@@ -108,7 +108,6 @@ export default class MyProfileStore extends BaseStore {
             hideAddPaymentMethodForm: action.bound,
             onClear: action.bound,
             validatePaymentMethodFields: action.bound,
-            updatePaymentMethod: action.bound,
             showAddPaymentMethodForm: action.bound,
             onSubmit: action.bound,
             onClickUnblock: action.bound,
@@ -530,29 +529,6 @@ export default class MyProfileStore extends BaseStore {
 
     showAddPaymentMethodForm() {
         this.setShouldShowAddPaymentMethodForm(true);
-    }
-
-    updatePaymentMethod(values, { setSubmitting }) {
-        this.setIsLoading(true);
-        requestWS({
-            p2p_advertiser_payment_methods: 1,
-            update: {
-                [this.payment_method_to_edit.id]: {
-                    ...values,
-                },
-            },
-        }).then(response => {
-            if (response?.error) {
-                this.setAddPaymentMethodErrorMessage(response.error.message);
-                this.root_store.general_store.showModal({
-                    key: 'AddPaymentMethodErrorModal',
-                });
-            } else {
-                this.setShouldShowEditPaymentMethodForm(false);
-            }
-            this.setIsLoading(false);
-            setSubmitting(false);
-        });
     }
 
     validateForm = values => {

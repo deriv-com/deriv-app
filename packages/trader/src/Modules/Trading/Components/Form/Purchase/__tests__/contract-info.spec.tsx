@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { TProposalTypeInfo } from 'Types';
-import { getLocalizedBasis, TURBOS } from '@deriv/shared';
+import { getLocalizedBasis, TRADE_TYPES } from '@deriv/shared';
 import ContractInfo from '../contract-info';
 
 const test_message = 'Some test message';
@@ -9,7 +8,7 @@ const value_movement = 'ValueMovement';
 const cancel_deal_info = 'CancelDealInfo';
 const test_id = 'dt_purchase_test_contract_type_price';
 const localized_basis = getLocalizedBasis();
-const default_mock_props = {
+const default_mock_props: React.ComponentProps<typeof ContractInfo> = {
     basis: 'stake',
     currency: 'USD',
     growth_rate: 0.03,
@@ -24,10 +23,22 @@ const default_mock_props = {
         id: '129106862',
         cancellation: { ask_price: 1023, date_expiry: 1907128726 },
         has_error: false,
-        obj_contract_basis: { text: 'payout' },
+        obj_contract_basis: { text: 'payout', value: 10 },
         message: test_message,
         stake: '10',
-    } as unknown as TProposalTypeInfo,
+        growth_rate: 0,
+        spot_time: 0,
+        commission: 0.44,
+        has_error_details: false,
+        error_code: '',
+        error_field: '',
+        has_increased: false,
+        limit_order: undefined,
+        payout: 0,
+        profit: '',
+        returns: '',
+        spot: 0,
+    },
     type: 'test_contract_type',
 };
 
@@ -86,7 +97,7 @@ describe('<ContractInfo />', () => {
         );
     });
     it('should apply a proper className and specific tooltip message if is_turbos is true and type is TURBOS.LONG', () => {
-        render(<ContractInfo {...default_mock_props} type={TURBOS.LONG} is_turbos />);
+        render(<ContractInfo {...default_mock_props} type={TRADE_TYPES.TURBOS.LONG} is_turbos />);
 
         expect(screen.getByTestId('dt_purchase_turboslong_price')).toHaveClass(
             'trade-container__price-info trade-container__price-info--turbos'

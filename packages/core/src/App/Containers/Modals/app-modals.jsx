@@ -36,9 +36,6 @@ const SetResidenceModal = React.lazy(() =>
 const RealityCheckModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reality-check-modal"  */ '../RealityCheckModal'))
 );
-const WelcomeModal = React.lazy(() =>
-    moduleLoader(() => import(/* webpackChunkName: "welcome-modal"  */ '../WelcomeModal'))
-);
 const ResetEmailModal = React.lazy(() => import(/* webpackChunkName: "reset-email-modal"  */ '../ResetEmailModal'));
 
 const UpdateEmailModal = React.lazy(() => import(/* webpackChunkName: "update-email-modal"  */ '../UpdateEmailModal'));
@@ -63,7 +60,6 @@ const InformationSubmittedModal = React.lazy(() =>
 const AppModals = ({
     is_account_needed_modal_on,
     is_closing_create_real_account_modal,
-    is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
     is_logged_in,
@@ -145,8 +141,6 @@ const AppModals = ({
         ComponentToLoad = <WarningScamMessageModal />;
     } else if (is_closing_create_real_account_modal) {
         ComponentToLoad = <WarningCloseCreateRealAccountModal />;
-    } else if (is_welcome_modal_visible) {
-        ComponentToLoad = <WelcomeModal />;
     } else if (is_account_needed_modal_on) {
         ComponentToLoad = <MT5AccountNeededModal />;
     } else if (is_reality_check_visible) {
@@ -187,7 +181,6 @@ const AppModals = ({
 };
 
 export default connect(({ client, ui, traders_hub }) => ({
-    is_welcome_modal_visible: ui.is_welcome_modal_visible,
     is_account_needed_modal_on: ui.is_account_needed_modal_on,
     is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,

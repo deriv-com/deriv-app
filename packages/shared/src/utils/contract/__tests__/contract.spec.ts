@@ -1,6 +1,7 @@
 import { screen, render } from '@testing-library/react';
 import * as ContractUtils from '../contract';
 import { TContractStore, TDigitsInfo, TTickItem } from '../contract-types';
+import { CONTRACT_TYPES } from '../contract';
 import { mockContractInfo } from '../contract-info';
 
 describe('getFinalPrice', () => {
@@ -191,7 +192,7 @@ describe('getLastTickFromTickStream', () => {
 
 describe('isDigitContract', () => {
     it('should return true if contract is digits', () => {
-        expect(ContractUtils.isDigitContract('DIGITMATCH')).toEqual(true);
+        expect(ContractUtils.isDigitContract(CONTRACT_TYPES.MATCH_DIFF.MATCH)).toEqual(true);
     });
 
     it('should return false if contract is not digits', () => {
@@ -201,10 +202,10 @@ describe('isDigitContract', () => {
 
 describe('isTurbosContract', () => {
     it('should return true if contract_type includes TURBOS', () => {
-        expect(ContractUtils.isTurbosContract('TURBOS')).toEqual(true);
+        expect(ContractUtils.isTurbosContract(CONTRACT_TYPES.TURBOS.LONG)).toEqual(true);
     });
     it('should return false if contract_type does not include TURBOS', () => {
-        expect(ContractUtils.isTurbosContract('CALL')).toEqual(false);
+        expect(ContractUtils.isTurbosContract(CONTRACT_TYPES.CALL)).toEqual(false);
     });
 });
 
@@ -220,7 +221,7 @@ describe('getDigitInfo', () => {
             current_spot_time: 10000000,
             current_spot: 456.99,
             exit_tick_time: 10000001,
-            contract_type: 'DIGITMATCH',
+            contract_type: CONTRACT_TYPES.MATCH_DIFF.MATCH,
             barrier: '9',
             tick_stream: [
                 {
@@ -299,18 +300,18 @@ describe('getDisplayStatus', () => {
 });
 
 describe('isAccumulatorContract', () => {
-    it('should return true if contract_type includes ACCU', () => {
-        expect(ContractUtils.isAccumulatorContract('ACCU')).toEqual(true);
+    it('should return true if contract_type includes CONTRACT_TYPES.ACCUMULATOR', () => {
+        expect(ContractUtils.isAccumulatorContract(CONTRACT_TYPES.ACCUMULATOR)).toEqual(true);
     });
-    it('should return false if contract_type is not ACCU', () => {
-        expect(ContractUtils.isAccumulatorContract('CALL')).toEqual(false);
+    it('should return false if contract_type is not CONTRACT_TYPES.ACCUMULATOR', () => {
+        expect(ContractUtils.isAccumulatorContract(CONTRACT_TYPES.CALL)).toEqual(false);
     });
 });
 
 describe('isAccumulatorContractOpen', () => {
-    it('should return true if contract_type includes ACCU, status is open, and current spot has NOT crossed barriers', () => {
+    it('should return true if contract_type includes CONTRACT_TYPES.ACCUMULATOR, status is open, and current spot has NOT crossed barriers', () => {
         const contract_info = mockContractInfo({
-            contract_type: 'ACCU',
+            contract_type: CONTRACT_TYPES.ACCUMULATOR,
             current_spot: 1232.44,
             high_barrier: '1232.555',
             low_barrier: '1232.222',
@@ -318,9 +319,9 @@ describe('isAccumulatorContractOpen', () => {
         });
         expect(ContractUtils.isAccumulatorContractOpen(contract_info)).toEqual(true);
     });
-    it('should return false if contract_type is not ACCU', () => {
+    it('should return false if contract_type is not CONTRACT_TYPES.ACCUMULATOR', () => {
         const contract_info = mockContractInfo({
-            contract_type: 'CALL',
+            contract_type: CONTRACT_TYPES.CALL,
             current_spot: 1232.44,
             high_barrier: '1232.555',
             low_barrier: '1232.222',
@@ -330,7 +331,7 @@ describe('isAccumulatorContractOpen', () => {
     });
     it('should return false if status is not open', () => {
         const contract_info = mockContractInfo({
-            contract_type: 'ACCU',
+            contract_type: CONTRACT_TYPES.ACCUMULATOR,
             current_spot: 1232.44,
             high_barrier: '1232.555',
             low_barrier: '1232.222',
@@ -340,7 +341,7 @@ describe('isAccumulatorContractOpen', () => {
     });
     it('should return false if exit_tick_time is present', () => {
         const contract_info = mockContractInfo({
-            contract_type: 'ACCU',
+            contract_type: CONTRACT_TYPES.ACCUMULATOR,
             current_spot: 1232.44,
             high_barrier: '1232.555',
             low_barrier: '1232.333',
@@ -355,7 +356,7 @@ describe('isOpen', () => {
     it('isOpen returns true for an open contract', () => {
         expect(
             ContractUtils.isOpen({
-                contract_type: 'CALL',
+                contract_type: CONTRACT_TYPES.CALL,
                 exit_tick_time: undefined,
                 profit: undefined,
                 status: 'open',
@@ -365,7 +366,7 @@ describe('isOpen', () => {
     it('isOpen returns false for a closed contract', () => {
         expect(
             ContractUtils.isOpen({
-                contract_type: 'CALL',
+                contract_type: CONTRACT_TYPES.CALL,
                 exit_tick_time: 1608098748,
                 profit: 10,
                 status: 'won',
@@ -375,7 +376,7 @@ describe('isOpen', () => {
     it('isOpen returns false for an accumulator contract that has recently lost', () => {
         expect(
             ContractUtils.isOpen({
-                contract_type: 'ACCU',
+                contract_type: CONTRACT_TYPES.ACCUMULATOR,
                 exit_tick_time: 1608098748,
                 profit: -10,
                 status: 'open',
@@ -385,7 +386,7 @@ describe('isOpen', () => {
     it('isOpen returns false for an accumulator contract that has recently won', () => {
         expect(
             ContractUtils.isOpen({
-                contract_type: 'ACCU',
+                contract_type: CONTRACT_TYPES.ACCUMULATOR,
                 exit_tick_time: 1608098748,
                 profit: 10,
                 status: 'open',
@@ -500,7 +501,7 @@ describe('getAccuBarriersDTraderTimeout', () => {
 
 describe('getAccuBarriersForContractDetails', () => {
     const mocked_contract_info = mockContractInfo({
-        contract_type: 'ACCU',
+        contract_type: CONTRACT_TYPES.ACCUMULATOR,
         high_barrier: '1232.666',
         low_barrier: '1232.222',
         status: 'open',
@@ -509,7 +510,7 @@ describe('getAccuBarriersForContractDetails', () => {
         accu_high_barrier: mocked_contract_info.high_barrier,
         accu_low_barrier: mocked_contract_info.low_barrier,
     };
-    it('should return an object { accu_high_barrier: current_spot_high_barrier, accu_low_barrier: current_spot_low_barrier } while ACCU contract is open', () => {
+    it('should return an object { accu_high_barrier: current_spot_high_barrier, accu_low_barrier: current_spot_low_barrier } while ACCUMULATOR contract is open', () => {
         const contract_info = mockContractInfo({
             ...mocked_contract_info,
             current_spot: 1232.555,
@@ -541,9 +542,9 @@ describe('getAccuBarriersForContractDetails', () => {
         });
         expect(ContractUtils.getAccuBarriersForContractDetails(contract_info)).toEqual(previous_spot_barriers);
     });
-    it('should return an empty object if contract type is not ACCU', () => {
+    it('should return an empty object if contract type is not ACCUMULATOR', () => {
         const contract_info = mockContractInfo({
-            contract_type: 'CALL',
+            contract_type: CONTRACT_TYPES.CALL,
             current_spot: 1232.555,
         });
         expect(ContractUtils.getAccuBarriersForContractDetails(contract_info)).toEqual({});
@@ -554,7 +555,7 @@ describe('getContractStatus', () => {
     it('should return original status for non-accumulator contracts', () => {
         expect(
             ContractUtils.getContractStatus({
-                contract_type: 'CALL',
+                contract_type: CONTRACT_TYPES.CALL,
                 exit_tick_time: 0,
                 profit: 100,
                 status: 'lost',
@@ -564,7 +565,7 @@ describe('getContractStatus', () => {
     it('should return "open" for accumulator contracts without exit_tick_time and with open status', () => {
         expect(
             ContractUtils.getContractStatus({
-                contract_type: 'ACCU',
+                contract_type: CONTRACT_TYPES.ACCUMULATOR,
                 profit: 0,
                 status: 'open',
             })
@@ -573,7 +574,7 @@ describe('getContractStatus', () => {
     it('should return "lost" for accumulator contracts with profit less than 0 and exit_tick_time present', () => {
         expect(
             ContractUtils.getContractStatus({
-                contract_type: 'ACCU',
+                contract_type: CONTRACT_TYPES.ACCUMULATOR,
                 exit_tick_time: 10000001,
                 profit: -100,
                 status: 'open',
@@ -583,7 +584,7 @@ describe('getContractStatus', () => {
     it('should return "won" for accumulator contracts with profit >= 0 and status !== "open"', () => {
         expect(
             ContractUtils.getContractStatus({
-                contract_type: 'ACCU',
+                contract_type: CONTRACT_TYPES.ACCUMULATOR,
                 exit_tick_time: 10000001,
                 profit: 100,
                 status: 'won',
@@ -620,17 +621,17 @@ describe('getLastContractMarkerIndex', () => {
 
 describe('getLocalizedTurbosSubtype', () => {
     it('should return an empty string for non-turbos contracts', () => {
-        render(ContractUtils.getLocalizedTurbosSubtype('CALL') as JSX.Element);
+        render(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.CALL) as JSX.Element);
         expect(screen.queryByText('Long')).not.toBeInTheDocument();
         expect(screen.queryByText('Short')).not.toBeInTheDocument();
-        expect(ContractUtils.getLocalizedTurbosSubtype('CALL')).toBe('');
+        expect(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.CALL)).toBe('');
     });
-    it('should render "Long" for TURBOSLONG contract', () => {
-        render(ContractUtils.getLocalizedTurbosSubtype('TURBOSLONG') as JSX.Element);
+    it('should render "Long" for CONTRACT_TYPES.TURBOS.LONG contract', () => {
+        render(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.TURBOS.LONG) as JSX.Element);
         expect(screen.getByText('Long')).toBeInTheDocument();
     });
-    it('should render "Short" for TURBOSSHORT contract', () => {
-        render(ContractUtils.getLocalizedTurbosSubtype('TURBOSSHORT') as JSX.Element);
+    it('should render "Short" for CONTRACT_TYPES.TURBOS.SHORT contract', () => {
+        render(ContractUtils.getLocalizedTurbosSubtype(CONTRACT_TYPES.TURBOS.SHORT) as JSX.Element);
         expect(screen.getByText('Short')).toBeInTheDocument();
     });
 });

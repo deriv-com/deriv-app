@@ -38,10 +38,19 @@ export type TConfigItem = {
     }[];
 };
 
+export type TDescriptionItem = {
+    type: string;
+    content?: string[];
+    src?: string;
+    alt?: string;
+    className?: string;
+};
+
 export type TStrategy = {
     name: string;
     label: string;
     description: string;
+    long_description?: TDescriptionItem[];
     fields: TConfigItem[][];
 };
 

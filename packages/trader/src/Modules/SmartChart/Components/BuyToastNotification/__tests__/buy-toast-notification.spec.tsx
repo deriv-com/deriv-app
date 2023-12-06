@@ -2,15 +2,19 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import BuyToastNotification from '../../buy-toast-notification';
 import { mockStore, StoreProvider } from '@deriv/stores';
+import { TRADE_TYPES } from '@deriv/shared';
 
 describe('BuyToastNotification component', () => {
     const mockActionToastbox = {
         buy_price: '100',
         currency: 'USD',
-        contract_type: 'rise_fall',
+        contract_type: TRADE_TYPES.RISE_FALL,
         list: [
-            { contract_category: 'up_down', contract_types: [{ text: 'Rise/Fall', value: 'rise_fall' }] },
-            { contract_category: 'high_low', contract_types: [{ text: 'Higher/Lower', value: 'higher_lower' }] },
+            { contract_category: 'up_down', contract_types: [{ text: 'Rise/Fall', value: TRADE_TYPES.RISE_FALL }] },
+            {
+                contract_category: TRADE_TYPES.HIGH_LOW,
+                contract_types: [{ text: 'Higher/Lower', value: 'higher_lower' }],
+            },
         ],
         key: true,
     };

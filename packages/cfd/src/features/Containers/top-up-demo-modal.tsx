@@ -1,6 +1,7 @@
 import React from 'react';
 import SuccessDialog from '../../Components/success-dialog.jsx';
 import { getTopUpConfig } from '../../Helpers/constants';
+import { useIsEuRegion, useDxtradeAccountsList, useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
 import { getCFDPlatformLabel } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -15,9 +16,7 @@ import {
 } from '../../Stores/Modules/CFD/Helpers/cfd-config';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS } from '../../Helpers/cfd-config';
-import { useDxtradeAccountsList, useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import useIsEuRegion from '../hooks/useIsEuRegion';
 
 type TTopUpDemoModalProps = {
     platform: typeof CFD_PLATFORMS.DXTRADE | typeof CFD_PLATFORMS.CTRADER | typeof CFD_PLATFORMS.MT5;

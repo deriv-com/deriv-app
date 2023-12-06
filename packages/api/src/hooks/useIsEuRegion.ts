@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useLandingCompany } from '@deriv/api';
+import useLandingCompany from './useLandingCompany';
 
 const useIsEuRegion = () => {
     const { data: landing_company, ...rest } = useLandingCompany();

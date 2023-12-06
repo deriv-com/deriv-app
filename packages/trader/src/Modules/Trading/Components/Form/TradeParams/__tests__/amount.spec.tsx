@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import { VANILLALONG, TURBOS } from '@deriv/shared';
+import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
 import { TCoreStores } from '@deriv/stores/types';
 import { useTraderStore } from 'Stores/useTraderStores';
 import TraderProviders from '../../../../../../trader-providers';
@@ -14,7 +14,7 @@ const default_mock_store = {
             basis: 'stake',
             basis_list: [{ text: 'Stake', value: 'stake' }],
             contract_start_type: 'spot',
-            contract_type: TURBOS.LONG as string,
+            contract_type: TRADE_TYPES.TURBOS.LONG,
             contract_types_list: {} as ReturnType<typeof useTraderStore>['contract_types_list'],
             duration_unit: 'm',
             expiry_type: 'endtime',
@@ -25,7 +25,7 @@ const default_mock_store = {
             is_vanilla: false,
             has_equals_only: false,
             has_open_accu_contract: false,
-            stake_boundary: { [TURBOS.LONG.toUpperCase()]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
+            stake_boundary: { [CONTRACT_TYPES.TURBOS.LONG]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
                 typeof useTraderStore
             >['stake_boundary'],
             onChange: jest.fn(),
@@ -86,9 +86,9 @@ describe('<Amount />', () => {
         expect(screen.queryByText(mocked_button_toggle)).not.toBeInTheDocument();
     });
     it('should render only specific for Vanillas components if it is a Vanillas contract type', () => {
-        default_mock_store.modules.trade.contract_type = VANILLALONG.CALL;
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.VANILLA.CALL;
         default_mock_store.modules.trade.stake_boundary = {
-            [VANILLALONG.CALL.toUpperCase()]: { min_stake: 1, max_stake: 10000 },
+            [CONTRACT_TYPES.VANILLA.CALL]: { min_stake: 1, max_stake: 10000 },
         } as ReturnType<typeof useTraderStore>['stake_boundary'];
         default_mock_store.modules.trade.is_turbos = false;
         default_mock_store.modules.trade.is_vanilla = true;
@@ -105,7 +105,7 @@ describe('<Amount />', () => {
         expect(screen.queryByText(mocked_button_toggle)).not.toBeInTheDocument();
     });
     it('should render only specific for Multipliers components if it is a Multiplier contract type', () => {
-        default_mock_store.modules.trade.contract_type = 'multiplier';
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.MULTIPLIER;
         default_mock_store.modules.trade.is_multiplier = true;
         default_mock_store.modules.trade.is_vanilla = false;
         render(mockAmount(mockStore(default_mock_store)));
@@ -120,8 +120,8 @@ describe('<Amount />', () => {
         expect(screen.queryByText(allow_equals)).not.toBeInTheDocument();
         expect(screen.queryByText(mocked_button_toggle)).not.toBeInTheDocument();
     });
-    it('should render only specific for RiseFallEquals components if it is a RiseFallEquals contract type', () => {
-        default_mock_store.modules.trade.contract_type = 'rise_fall_equal';
+    it('should render only specific for RiseFallEquals components if it is a TRADE_TYPES.RISE_FALL_EQUAL contract type', () => {
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.RISE_FALL_EQUAL;
         default_mock_store.modules.trade.is_multiplier = false;
         default_mock_store.modules.trade.basis_list = [
             { text: 'Stake', value: 'stake' },

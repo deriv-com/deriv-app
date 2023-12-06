@@ -94,7 +94,7 @@ export default class IframeStore {
                 client.setVerificationCode('', Constants.map_action[container_key]);
             }
         } else {
-            this.iframe_url = url || '';
+            this.iframe_url = '';
         }
     }
 

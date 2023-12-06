@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { APIProvider, useFetch } from '@deriv/api';
+import { useFetch } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useCurrencyConfig from '../useCurrencyConfig';
+import { withMockAPIProvider } from '../mocks';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -9,13 +9,12 @@ jest.mock('@deriv/api', () => ({
 }));
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'website_status'>>;
-
 describe('useCurrencyConfig', () => {
     test("should return undefined if the currency doesn't exist in currencies_config", () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({});
 
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        const wrapper = withMockAPIProvider();
 
         const { result } = renderHook(() => useCurrencyConfig(), { wrapper });
 
@@ -28,7 +27,7 @@ describe('useCurrencyConfig', () => {
             data: { website_status: { currencies_config: { USD: { type: 'fiat', name: 'US Dollar' } } } },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        const wrapper = withMockAPIProvider();
 
         const { result } = renderHook(() => useCurrencyConfig(), { wrapper });
 

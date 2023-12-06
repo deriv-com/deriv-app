@@ -399,6 +399,11 @@
     margin: 2.4rem;
     align-items: center;
     gap: 0.8rem;
+    &__acc_status {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
     &--paragraph {
         @include typeface(--paragraph-left-normal-black, none);
         color: var(--text-less-prominent);
@@ -733,6 +738,9 @@
     }
     &__new-password {
         margin-bottom: 8.6rem;
+        .dc-input__hint {
+            margin: 0 0 -5.3rem 1.3rem;
+        }
     }
     &__actions {
         align-items: center;
@@ -878,6 +886,26 @@
     position: relative;
     width: 100%;
 
+    .poi-form-on-signup__fields {
+        .dc-autocomplete {
+            margin-bottom: 0;
+        }
+    }
+
+    .upload-layout {
+        @include desktop {
+            height: 100%;
+        }
+    }
+
+    .account-form__poi-confirm-example {
+        gap: 1.6rem;
+
+        @include mobile {
+            gap: 0;
+        }
+    }
+
     &__body {
         width: 100%;
         .poi-form-on-signup {
@@ -934,6 +962,18 @@
                 padding-top: 1.6rem;
             }
         }
+
+        .proof-of-identity__mismatch-container {
+            max-width: 70.2rem;
+            margin-inline: auto;
+
+            .account__scrollbars_container {
+                padding-top: 2.4rem;
+            }
+            .dc-themed-scrollbars {
+                padding-inline: 1.6rem;
+            }
+        }
     }
 
     &__form {
@@ -962,9 +1002,6 @@
         .dc-form-submit-button {
             background-color: var(--color-white);
         }
-    }
-    .dc-autocomplete {
-        margin-bottom: 2.4rem;
     }
     .account-management {
         &__message-icon {
@@ -1010,16 +1047,23 @@
 .cfd-personal-details-modal {
     grid-template-rows: 8rem minmax(10rem, 1fr);
     overflow-y: scroll;
+    height: 100%;
+
+    &__body {
+        height: calc(100% - 5rem);
+    }
 
     &__heading-container {
         padding-top: 2.4rem;
     }
 
     &__form {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
         .dc-modal-footer {
             width: 100%;
             padding: 1.6rem 2.4rem;
-            margin-top: 7.7rem;
             bottom: 0;
             right: 0;
             display: flex;
@@ -1307,27 +1351,40 @@
     }
 }
 .dc-modal__container_cfd-success-dialog {
-    .success-change__icon-area {
-        width: 128px;
-        margin: 0 auto;
-        position: relative;
+    .success {
+        &-change__icon-area {
+            width: 12.8rem;
+            margin: 0 auto;
+            position: relative;
 
-        &--large .bottom-right-overlay {
-            position: absolute;
-            left: 76px;
-            top: 76px;
+            &--large .bottom-right-overlay {
+                position: absolute;
+                left: 7.6rem;
+                top: 7.6rem;
 
-            @include mobile {
-                left: 78px;
-                top: 58px;
+                @include mobile {
+                    left: 7.8rem;
+                    top: 5.8rem;
+                }
+            }
+            &--xlarge .bottom-right-overlay {
+                position: absolute;
+                bottom: 0.8rem;
+                right: -2.8rem;
+                height: 5.2rem;
+                width: 5.2rem;
             }
         }
-        &--xlarge .bottom-right-overlay {
-            position: absolute;
-            bottom: 0.8rem;
-            right: -2.8rem;
-            height: 5.2rem;
-            width: 5.2rem;
+
+        &-migrated {
+            &--text-wrapper {
+                display: flex;
+                flex-direction: column;
+                gap: 1.2rem;
+                @include mobile {
+                    gap: 0.8rem;
+                }
+            }
         }
     }
     .dc-modal-body {

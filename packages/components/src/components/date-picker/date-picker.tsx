@@ -44,6 +44,7 @@ const DatePicker = React.memo((props: TDatePicker) => {
         id,
         label,
         has_range_selection,
+        has_today_btn,
         mode = 'date',
         max_date,
         min_date,
@@ -52,6 +53,7 @@ const DatePicker = React.memo((props: TDatePicker) => {
         onBlur,
         onChange,
         onFocus,
+        onChangeCalendarMonth,
         portal_id,
         placeholder,
         required,
@@ -204,7 +206,6 @@ const DatePicker = React.memo((props: TDatePicker) => {
         display_format,
         error,
         footer,
-        has_range_selection,
         label,
         mode,
         max_date,
@@ -256,10 +257,13 @@ const DatePicker = React.memo((props: TDatePicker) => {
                             is_datepicker_visible={is_datepicker_visible}
                             onHover={has_range_selection ? onHover : undefined}
                             onSelect={onSelectCalendar}
+                            onChangeCalendarMonth={onChangeCalendarMonth}
+                            has_today_btn={has_today_btn}
                             placement={placement}
                             style={style}
                             value={getCalendarValue(date) || ''} // Calendar accepts date format yyyy-mm-dd
                             start_date=''
+                            has_range_selection={has_range_selection}
                             {...common_props}
                         />
                     </div>

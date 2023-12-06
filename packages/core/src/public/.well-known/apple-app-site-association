@@ -26,6 +26,24 @@
                     "/cashier/p2p/advertiser",
                     "/redirect/p2p"
                 ]
+            },
+            {
+                "appID": "36S5Q8S4V5.com.deriv.blanc",
+                "paths": [
+                    "/redirect/dblanc"
+                ]
+            },
+            {
+                "appID": "36S5Q8S4V5.com.deriv.blanc.dev",
+                "paths": [
+                    "/redirect/dblanc"
+                ]
+            },
+            {
+                "appID": "36S5Q8S4V5.com.deriv.blanc.stg",
+                "paths": [
+                    "/redirect/dblanc"
+                ]
             }
         ]
     }

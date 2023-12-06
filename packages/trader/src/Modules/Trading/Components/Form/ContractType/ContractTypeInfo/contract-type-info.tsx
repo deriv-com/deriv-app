@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, ThemedScrollbars, ButtonToggle } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { TURBOS, VANILLALONG } from '@deriv/shared';
+import { clickAndKeyEventHandler, TURBOS, VANILLALONG } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
@@ -43,12 +43,14 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
             i.value !== 'rise_fall_equal' && i.value !== TURBOS.SHORT && i.value !== VANILLALONG.PUT
     );
     const has_toggle_buttons = /accumulator|turboslong|vanilla|multiplier/i.test(item.value);
-    const should_show_video = /accumulator|vanilla/i.test(item.value);
+    const should_show_video = /accumulator|turboslong|vanilla/i.test(item.value);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = is_mobile ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
-    const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
+    const onClickGlossary = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+        clickAndKeyEventHandler(() => setSelectedTab(TABS.GLOSSARY), e);
+    };
 
     React.useEffect(() => {
         return () => {

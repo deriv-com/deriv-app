@@ -1,27 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form as FormikForm, Formik } from 'formik';
 import * as Yup from 'yup';
-import { ApiHelpers, config as qs_config } from '@deriv/bot-skeleton';
+import { config as qs_config } from '@deriv/bot-skeleton';
 import { MobileFullPageModal, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
+import LossThresholdWarningDialog from './parts/loss-threshold-warning-dialog';
 import { STRATEGIES } from './config';
 import Form from './form';
-import { TConfigItem, TDurationItemRaw, TFormData } from './types';
+import { TConfigItem, TFormData } from './types';
 import './quick-strategy.scss';
 
 type TFormikWrapper = {
     children: React.ReactNode;
 };
 
+const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') => {
+    const errors: { [key: string]: { MIN: string; MAX: string } } = {
+        DURATION: {
+            MIN: localize('Minimum duration: {{ value }}', { value }),
+            MAX: localize('Maximum duration: {{ value }}', { value }),
+        },
+        DEFAULT: {
+            MIN: localize('The value must be equal or greater than {{ value }}', { value }),
+            MAX: localize('The value must be equal or less than {{ value }}', { value }),
+        },
+    };
+    return errors[type][dir];
+};
+
 const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     const { quick_strategy } = useDBotStore();
-    const [duration, setDuration] = React.useState<TDurationItemRaw | null>(null);
-    const { selected_strategy, form_data, onSubmit } = quick_strategy;
+    const {
+        selected_strategy,
+        form_data,
+        onSubmit,
+        setValue,
+        current_duration_min_max,
+        initializeLossThresholdWarningData,
+    } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
+    const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
 
     const initial_value: TFormData = {
         symbol: qs_config.QUICK_STRATEGY.DEFAULT.symbol,
@@ -34,27 +56,21 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         duration: '1',
         unit: String(qs_config.QUICK_STRATEGY.DEFAULT.unit),
         action: 'RUN',
+        max_stake: 10,
+        boolean_max_stake: false,
     };
 
     React.useEffect(() => {
         const data = JSON.parse(localStorage.getItem('qs-fields') || '{}');
         Object.keys(data).forEach(key => {
             initial_value[key as keyof TFormData] = data[key];
+            setValue(key, data[key]);
         });
+        initializeLossThresholdWarningData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    React.useEffect(() => {
-        const getDurations = async () => {
-            const { contracts_for } = ApiHelpers.instance;
-            const durations = await contracts_for.getDurations(form_data.symbol, form_data.tradetype);
-            const d = durations.find((duration: TDurationItemRaw) => duration.unit === form_data.durationtype);
-            setDuration(d);
-        };
-        getDurations();
-    }, [form_data.symbol, form_data.tradetype, form_data.durationtype]);
-
-    const getErrors = () => {
+    const getErrors = (formikData: TFormData) => {
         const sub_schema: Record<string, any> = {};
         config.forEach(group => {
             if (!group?.length) return null;
@@ -64,52 +80,64 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                         let schema: Record<string, any> = Yup.number().typeError(localize('Must be a number'));
                         let min = 0;
                         let max = 10;
-                        if (field.name === 'duration' && duration) {
-                            min = duration.min;
-                            max = duration.max;
+                        let min_error = getErrorMessage('MIN', min);
+                        let max_error = getErrorMessage('MAX', max);
+                        if (field.name === 'duration' && current_duration_min_max) {
+                            min = current_duration_min_max.min;
+                            max = current_duration_min_max.max;
+                            min_error = getErrorMessage('MIN', min, 'DURATION');
+                            max_error = getErrorMessage('MAX', max, 'DURATION');
                         }
-                        field.validation.forEach(validation => {
-                            if (typeof validation === 'string') {
-                                switch (validation) {
-                                    case 'required':
-                                        schema = schema.required(localize('Field cannot be empty'));
-                                        break;
-                                    case 'min':
-                                        schema = schema.min(
-                                            min,
-                                            localize('Minimum duration: {{ value }}', { value: min })
-                                        );
-                                        break;
-                                    case 'max':
-                                        schema = schema.max(
-                                            max,
-                                            localize('Maximum duration: {{ value }}', { value: max })
-                                        );
-                                        break;
-                                    case 'ceil':
-                                        schema = schema.round('ceil');
-                                        break;
-                                    case 'floor':
-                                        schema = schema.round('floor');
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            } else if (typeof validation === 'object') {
-                                if (validation?.type) {
-                                    schema = schema[validation.type](
-                                        validation.value,
-                                        localize(validation.getMessage(validation.value))
-                                    );
-                                }
+                        const should_validate = field.should_have
+                            ? field.should_have?.every(item => {
+                                  return formikData?.[item.key] === item.value;
+                              })
+                            : true;
+                        if (should_validate && field.name === 'max_stake') {
+                            min = +form_data?.stake;
+                            if (isNaN(min)) {
+                                min = +initial_value.stake;
                             }
-                        });
+                            min_error = getErrorMessage('MIN', min);
+                        }
+                        if (should_validate) {
+                            field.validation.forEach(validation => {
+                                if (typeof validation === 'string') {
+                                    switch (validation) {
+                                        case 'required':
+                                            schema = schema.required(localize('Field cannot be empty'));
+                                            break;
+                                        case 'min':
+                                            schema = schema.min(min, min_error);
+                                            break;
+                                        case 'max':
+                                            schema = schema.max(max, max_error);
+                                            break;
+                                        case 'ceil':
+                                            schema = schema.round('ceil');
+                                            break;
+                                        case 'floor':
+                                            schema = schema.round('floor');
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                } else if (typeof validation === 'object') {
+                                    if (validation?.type) {
+                                        schema = schema[validation.type](
+                                            validation.value,
+                                            localize(validation.getMessage(validation.value))
+                                        );
+                                    }
+                                }
+                            });
+                        }
                         sub_schema[field.name] = schema;
                     }
                 }
             });
         });
-        return Yup.object().shape(sub_schema);
+        setDynamicSchema(Yup.object().shape(sub_schema));
     };
 
     const handleSubmit = (form_data: TFormData) => {
@@ -118,7 +146,15 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     };
 
     return (
-        <Formik initialValues={initial_value} validationSchema={getErrors()} onSubmit={handleSubmit} validateOnBlur>
+        <Formik
+            initialValues={initial_value}
+            validationSchema={dynamic_schema}
+            onSubmit={handleSubmit}
+            validate={values => getErrors(values)}
+            validateOnBlur
+            validateOnChange
+            validateOnMount
+        >
             {children}
         </Formik>
     );
@@ -137,6 +173,7 @@ const QuickStrategy = observer(() => {
     return (
         <FormikWrapper>
             <FormikForm>
+                <LossThresholdWarningDialog />
                 {is_mobile ? (
                     <MobileFullPageModal
                         is_modal_open={is_open}

@@ -1,0 +1,52 @@
+.wallets-transfer-receipt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+    &__cards {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 1.7rem;
+
+        & .wallets-card__details {
+            padding: 1.6rem;
+            width: 20rem;
+
+            @include mobile {
+                width: 16rem;
+                padding: 0.8rem;
+            }
+        }
+
+        @include mobile {
+            flex-direction: column;
+        }
+    }
+
+    &__arrow-icon {
+        rotate: 180deg;
+
+        @include mobile {
+            rotate: -90deg;
+        }
+    }
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+
+        &--with-fee {
+            gap: 1.6rem;
+        }
+    }
+
+    &__amount {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}

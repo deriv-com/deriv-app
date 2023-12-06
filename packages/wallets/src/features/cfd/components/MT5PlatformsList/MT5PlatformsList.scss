@@ -5,6 +5,7 @@
         font-style: normal;
         font-weight: 700;
         line-height: 2.4rem; /* 150% */
+        padding-bottom: 0.8rem;
     }
 
     &__content {
@@ -16,6 +17,7 @@
         @include mobile {
             grid-template-rows: repeat(3, 1fr);
             grid-template-columns: auto;
+            padding-bottom: 1.6rem;
         }
 
         &__details {

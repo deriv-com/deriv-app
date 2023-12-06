@@ -13,7 +13,13 @@ function generateKey(inputString) {
     return key.substring(0, 8);
 }
 
-const messages = new Map();
+let messages;
+if (fs.existsSync('./src/translations/messages.json')) {
+    const initialMessages = JSON.parse(fs.readFileSync('./src/translations/messages.json', 'utf-8'));
+    messages = new Map(initialMessages);
+} else {
+    messages = new Map();
+}
 const values = new Set();
 
 module.exports = async function (source) {

@@ -30,14 +30,7 @@ type TContractDrawerCardProps = {
     toggleContractAuditDrawer: () => void;
 } & Pick<
     TContractCardBodyProps,
-    | 'contract_info'
-    | 'contract_update'
-    | 'is_accumulator'
-    | 'is_mobile'
-    | 'is_multiplier'
-    | 'is_turbos'
-    | 'is_vanilla'
-    | 'status'
+    'contract_info' | 'contract_update' | 'is_accumulator' | 'is_mobile' | 'is_multiplier' | 'is_turbos' | 'is_vanilla'
 > &
     Pick<TContractCardFooterProps, 'is_sell_requested' | 'onClickCancel' | 'onClickSell'> &
     Pick<TSwipeableContractDrawerProps, 'onSwipedDown' | 'onSwipedUp'>;
@@ -62,7 +55,6 @@ const ContractDrawerCard = observer(
         onSwipedDown,
         result,
         server_time = toMoment(),
-        status,
         toggleContractAuditDrawer,
     }: TContractDrawerCardProps) => {
         const { ui, contract_trade } = useStore();
@@ -123,7 +115,6 @@ const ContractDrawerCard = observer(
                 server_time={server_time}
                 setCurrentFocus={setCurrentFocus}
                 should_show_cancellation_warning={should_show_cancellation_warning}
-                status={status ?? ''}
                 toggleCancellationWarning={toggleCancellationWarning}
             />
         );

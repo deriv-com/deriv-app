@@ -42,7 +42,6 @@ type TPositionsModalCard = TPickPortfolioStore &
         current_tick?: React.ComponentProps<typeof ProgressSliderMobile>['current_tick'];
         is_loading?: boolean;
         result?: React.ComponentProps<typeof PositionsResultMobile>['result'];
-        status?: string;
         togglePositions: TUiStore['togglePositionsDrawer'];
         toggleUnsupportedContractModal: TUiStore['toggleUnsupportedContractModal'];
     };
@@ -62,7 +61,6 @@ const PositionsModalCard = observer(
         profit_loss,
         onClickCancel,
         result,
-        status,
         togglePositions,
         toggleUnsupportedContractModal,
     }: TPositionsModalCard) => {
@@ -236,7 +234,6 @@ const PositionsModalCard = observer(
                 server_time={server_time as moment.Moment}
                 setCurrentFocus={setCurrentFocus}
                 should_show_cancellation_warning={should_show_cancellation_warning}
-                status={status}
                 toggleCancellationWarning={toggleCancellationWarning}
             />
         );

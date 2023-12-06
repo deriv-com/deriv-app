@@ -6,6 +6,8 @@ import {
     isCallPut,
     isVanillaContract,
     TContractInfo,
+    CONTRACT_TYPES,
+    TRADE_TYPES,
 } from '@deriv/shared';
 
 export const addCommaToNumber = (
@@ -41,12 +43,12 @@ export const isDigitType = (contract_type: TContractInfo['contract_type']) =>
     contract_type && /digit/.test(contract_type.toLowerCase());
 
 const digitTypeMap = (contract_info: TContractInfo) => ({
-    DIGITDIFF: localize('Not {{barrier}}', { barrier: contract_info.barrier }),
-    DIGITEVEN: localize('Even'),
-    DIGITMATCH: localize('Equals {{barrier}}', { barrier: contract_info.barrier }),
-    DIGITODD: localize('Odd'),
-    DIGITOVER: localize('Over {{barrier}}', { barrier: contract_info.barrier }),
-    DIGITUNDER: localize('Under {{barrier}}', { barrier: contract_info.barrier }),
+    [CONTRACT_TYPES.MATCH_DIFF.DIFF]: localize('Not {{barrier}}', { barrier: contract_info.barrier }),
+    [CONTRACT_TYPES.EVEN_ODD.EVEN]: localize('Even'),
+    [CONTRACT_TYPES.MATCH_DIFF.MATCH]: localize('Equals {{barrier}}', { barrier: contract_info.barrier }),
+    [CONTRACT_TYPES.EVEN_ODD.ODD]: localize('Odd'),
+    [CONTRACT_TYPES.OVER_UNDER.OVER]: localize('Over {{barrier}}', { barrier: contract_info.barrier }),
+    [CONTRACT_TYPES.OVER_UNDER.UNDER]: localize('Under {{barrier}}', { barrier: contract_info.barrier }),
 });
 
 export const filterByContractType = (
@@ -56,10 +58,11 @@ export const filterByContractType = (
     const is_call_put = isCallPut(trade_contract_type as Parameters<typeof isCallPut>[0]);
     const is_high_low = isHighLow({ shortcode });
     const is_vanilla = isVanillaContract(contract_type);
+    const { CALL, CALLE, PUT, PUTE } = CONTRACT_TYPES;
     const trade_types = is_call_put
-        ? ['CALL', 'CALLE', 'PUT', 'PUTE']
+        ? [CALL, CALLE, PUT, PUTE]
         : getContractTypesConfig()[trade_contract_type]?.trade_types;
     const match = trade_types?.includes(contract_type ?? '');
-    if (trade_contract_type === 'high_low') return is_high_low;
+    if (trade_contract_type === TRADE_TYPES.HIGH_LOW) return is_high_low;
     return match && (is_vanilla || !is_high_low);
 };

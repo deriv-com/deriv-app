@@ -516,6 +516,9 @@ type TClientStore = {
     is_already_attempted: boolean;
     prev_account_type: string;
     account_open_date: number | undefined;
+    is_bot_allowed: boolean;
+    setAccounts: (accounts: Record<string, TActiveAccount>) => void;
+    is_beta_chart: boolean;
 };
 
 type TCommonStoreError = {
@@ -837,7 +840,7 @@ type TContractStore = {
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
     addNotificationMessageByKey: (key: string) => void;
-    client_notifications: object;
+    client_notifications: Record<string, TNotificationMessage>;
     is_notifications_empty: boolean;
     is_notifications_visible: boolean;
     filterNotificationMessages: () => void;

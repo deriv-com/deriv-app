@@ -4,6 +4,11 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import Header from '../header';
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useFeatureFlags: jest.fn(() => ({ is_next_wallet_enabled: false })),
+    useStoreWalletAccountsList: jest.fn(() => ({ data: [], has_wallet: false })),
+}));
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useLocation: jest.fn().mockReturnValue({ pathname: '' }),

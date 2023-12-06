@@ -2,34 +2,35 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import React from 'react';
+import debounce from 'lodash.debounce';
 
+const DEBOUNCE_INTERVAL_TIME = 300;
 const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tutorials }) => {
     const { dashboard } = useDBotStore();
-    const { setActiveTabTutorial } = dashboard;
     const input_ref = React.useRef(null);
+    const { setActiveTabTutorial, filterTuotrialTab } = dashboard;
 
+    const debounceChange = React.useCallback(
+        debounce(
+            value => {
+                filterTuotrialTab(value);
+                setActiveTabTutorial(2);
+                if (value === '') {
+                    setActiveTabTutorial(prev_active_tutorials);
+                }
+            },
+            DEBOUNCE_INTERVAL_TIME,
+            {
+                trailing: true,
+                leading: false,
+            }
+        ),
+        []
+    );
     const onSearch = event => {
-        if (faq_value !== '') {
-            onFocusSearch();
-        }
         setFaqSearchContent(event.target.value);
+        debounceChange(event.target.value);
     };
-
-    const onFocusSearch = () => {
-        if (faq_value !== '') {
-            setActiveTabTutorial(2);
-            input_ref?.current?.focus();
-        }
-    };
-
-    React.useEffect(() => {
-        if (faq_value !== '') {
-            setActiveTabTutorial(2);
-        } else {
-            setActiveTabTutorial(prev_active_tutorials);
-        }
-        input_ref?.current?.focus();
-    }, [faq_value]);
 
     return (
         <>
@@ -40,7 +41,6 @@ const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tuto
                 placeholder={localize('Search')}
                 className='dc-tabs__wrapper__group__search-input'
                 onChange={event => onSearch(event)}
-                onFocus={onFocusSearch}
                 value={faq_value}
             />
         </>

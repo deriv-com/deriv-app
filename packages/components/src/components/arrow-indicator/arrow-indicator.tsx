@@ -18,12 +18,10 @@ const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
     const [data, setData] = React.useState<TData>({
         icon: '',
         previous_icon: '',
-        value,
     });
     const { icon, previous_icon, previous_value } = data;
-    const has_defined_values = !isNaN(Number(previous_value)) && !isNaN(Number(value));
+    const has_comparable_values = !isNaN(Number(data.value)) && !isNaN(Number(value));
     const timeout_id = React.useRef<ReturnType<typeof setTimeout>>();
-
     React.useEffect(() => {
         setIsHidden(false);
 
@@ -32,7 +30,7 @@ const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
                 const has_increased = Number(prev_data.value) < Number(value);
                 const icon_name = has_increased ? 'IcProfit' : 'IcLoss';
                 return {
-                    icon: has_defined_values ? icon_name : '',
+                    icon: has_comparable_values ? icon_name : '',
                     previous_icon: prev_data.icon,
                     previous_value: prev_data.value,
                     value,
@@ -48,7 +46,7 @@ const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
-    if (!has_defined_values || is_hidden) return <div className={classname} />;
+    if (!has_comparable_values || is_hidden) return <div className={classname} />;
     return (
         <div className={classname}>
             <Icon icon={previous_value === Number(value) ? previous_icon : icon} />

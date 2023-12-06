@@ -11,18 +11,35 @@ export type TActiveSymbol = {
     value: string;
 };
 
+export type TLossThresholdWarningData = {
+    show: boolean;
+    loss_amount?: string | number;
+    currency?: string;
+    highlight_field?: Array<string>;
+    already_shown?: boolean;
+};
+
 interface IQuickStrategyStore {
+    current_duration_min_max: {
+        min: number;
+        max: number;
+    };
     root_store: RootStore;
     is_open: boolean;
     selected_strategy: string;
     form_data: TFormData;
+    loss_threshold_warning_data: {
+        show: boolean;
+    };
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
+    setLossThresholdWarningData: (data: TLossThresholdWarningData) => void;
     setFormVisibility: (is_open: boolean) => void;
     setSelectedStrategy: (strategy: string) => void;
     setValue: (name: string, value: string) => void;
     onSubmit: (data: TFormData) => void;
     toggleStopBotDialog: () => void;
+    setCurrentDurationMinMax: (min: number, max: number) => void;
 }
 
 export default class QuickStrategyStore implements IQuickStrategyStore {
@@ -37,19 +54,31 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     };
     is_contract_dialog_open = false;
     is_stop_bot_dialog_open = false;
+    current_duration_min_max = {
+        min: 0,
+        max: 10,
+    };
+    loss_threshold_warning_data: TLossThresholdWarningData = {
+        show: false,
+    };
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
-            is_open: observable,
-            selected_strategy: observable,
+            current_duration_min_max: observable,
             form_data: observable,
+            is_contract_dialog_open: observable,
+            is_open: observable,
+            is_stop_bot_dialog_open: observable,
+            initializeLossThresholdWarningData: action,
+            selected_strategy: observable,
+            loss_threshold_warning_data: observable,
+            onSubmit: action,
+            setCurrentDurationMinMax: action,
             setFormVisibility: action,
             setSelectedStrategy: action,
-            onSubmit: action,
-            is_contract_dialog_open: observable,
-            is_stop_bot_dialog_open: observable,
-            toggleStopBotDialog: action,
+            setLossThresholdWarningData: action,
             setValue: action,
+            toggleStopBotDialog: action,
         });
         this.root_store = root_store;
         reaction(
@@ -62,6 +91,21 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         );
     }
 
+    setLossThresholdWarningData = (data: TLossThresholdWarningData) => {
+        this.loss_threshold_warning_data = {
+            ...this.loss_threshold_warning_data,
+            ...data,
+        };
+    };
+
+    initializeLossThresholdWarningData = () => {
+        this.loss_threshold_warning_data = {
+            show: false,
+            highlight_field: [],
+            already_shown: false,
+        };
+    };
+
     setFormVisibility = (is_open: boolean) => {
         this.is_open = is_open;
     };
@@ -70,8 +114,15 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         this.selected_strategy = strategy;
     };
 
-    setValue = (name: string, value: string) => {
+    setValue = (name: string, value: string | number | boolean) => {
         this.form_data[name as keyof TFormData] = value;
+    };
+
+    setCurrentDurationMinMax = (min = 0, max = 10) => {
+        this.current_duration_min_max = {
+            min,
+            max,
+        };
     };
 
     onSubmit = async (data: TFormData) => {
@@ -82,11 +133,17 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         const selected_strategy = STRATEGIES[this.selected_strategy];
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
         const strategy_dom = Blockly.Xml.textToDom(strategy_xml.default);
+
         const modifyValueInputs = (key: string, value: number) => {
             const el_value_inputs = strategy_dom?.querySelectorAll(`value[strategy_value="${key}"]`);
-
             el_value_inputs?.forEach((el_value_input: HTMLElement) => {
-                el_value_input.innerHTML = `<shadow type="math_number"><field name="NUM">${value}</field></shadow>`;
+                if (key.includes('boolean'))
+                    if (value)
+                        el_value_input.innerHTML = `<block type="logic_boolean"><field name="BOOL">TRUE</field></block>`;
+                    else
+                        el_value_input.innerHTML = `<block type="logic_boolean"><field name="BOOL">FALSE</field></block>`;
+                else
+                    el_value_input.innerHTML = `<shadow type="math_number"><field name="NUM">${value}</field></shadow>`;
             });
         };
 
@@ -103,7 +160,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             market,
             submarket,
             tradetypecat: trade_type_cat,
-            alembert_unit: unit,
+            dalembert_unit: unit,
             oscar_unit: unit,
             ...rest_data,
         };
@@ -136,7 +193,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
 
         await load({
             block_string: Blockly.Xml.domToText(strategy_dom),
-            file_name: selected_strategy.name,
+            file_name: selected_strategy.label,
             workspace,
             from: save_types.UNSAVED,
             drop_event: null,

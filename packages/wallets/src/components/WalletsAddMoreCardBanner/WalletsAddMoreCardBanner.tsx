@@ -1,18 +1,19 @@
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAccountsList, useCreateWallet } from '@deriv/api';
-import { Success } from '../../features/cfd';
+import { useCreateWallet, useDerivAccountsList } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import CheckIcon from '../../public/images/check.svg';
 import PlusIcon from '../../public/images/plus.svg';
 import { THooks } from '../../types';
-import { ModalStepWrapper, ModalWrapper, WalletButton, WalletText } from '../Base';
+import { WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
+import { WalletAddedSuccess } from '../WalletAddedSuccess';
 import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
 import { WalletError } from '../WalletError';
+import WalletListCardBadge from '../WalletListCardBadge/WalletListCardBadge';
 
-type TProps = THooks.AvailableWallets;
+type TProps = THooks.AllWalletAccounts;
 
 const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     currency,
@@ -20,18 +21,20 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     is_crypto: isCrypto,
     landing_company_name: landingCompanyName,
 }: TProps) => {
-    const { switchAccount } = useAccountsList();
+    const { switchAccount } = useDerivAccountsList();
     const { data, error, isSuccess: isMutateSuccess, mutate, status } = useCreateWallet();
     const { isMobile } = useDevice();
     const history = useHistory();
     const modal = useModal();
-    const syncLocalStorageClientAccounts = useSyncLocalStorageClientAccounts();
+    const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
 
     const renderButtons = useCallback(
         () => (
             <div className='wallets-add-more__success-footer'>
-                <WalletButton color='black' onClick={() => modal.hide()} text='Maybe later' variant='outlined' />
-                <WalletButton onClick={() => history.push('wallets/cashier/deposit')} text='Deposit now' />
+                <WalletButton color='black' onClick={() => modal.hide()} variant='outlined'>
+                    Maybe later
+                </WalletButton>
+                <WalletButton onClick={() => history.push('wallets/cashier/deposit')}>Deposit now</WalletButton>
             </div>
         ),
         [history] // eslint-disable-line react-hooks/exhaustive-deps
@@ -39,56 +42,43 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
 
     useEffect(() => {
         if (data && isMutateSuccess) {
-            syncLocalStorageClientAccounts(data);
+            addWalletAccountToLocalStorage(data);
             switchAccount(data?.client_id);
         }
-    }, [data, isMutateSuccess, switchAccount, syncLocalStorageClientAccounts]);
+    }, [addWalletAccountToLocalStorage, data, isMutateSuccess, switchAccount]);
 
-    useEffect(() => {
-        if (status === 'error') {
-            modal.show(
-                <WalletError
-                    buttonText='Close'
-                    errorMessage={error.error.message}
-                    onClick={() => modal.hide()}
-                    type='modal'
-                />
-            );
-        } else if (status === 'success') {
-            modal.show(
-                <React.Fragment>
-                    {isMobile && (
-                        <ModalStepWrapper renderFooter={renderButtons} title=''>
-                            <Success
-                                description='Make a deposit into your new Wallet.'
-                                displayBalance={`0 ${data?.currency}`}
-                                marketType='all'
-                                platform='mt5'
-                                renderButton={() => null}
-                                title={`Your ${
-                                    data?.currency
-                                } wallet (${data?.landing_company_shortcode?.toUpperCase()}) is ready`}
-                            />
-                        </ModalStepWrapper>
-                    )}
-                    {!isMobile && (
-                        <ModalWrapper>
-                            <Success
-                                description='Make a deposit into your new Wallet.'
-                                displayBalance={`0 ${data?.currency}`}
-                                marketType='all'
-                                platform='mt5'
-                                renderButton={renderButtons}
-                                title={`Your ${
-                                    data?.currency
-                                } wallet (${data?.landing_company_shortcode?.toUpperCase()}) is ready`}
-                            />
-                        </ModalWrapper>
-                    )}
-                </React.Fragment>
-            );
-        }
-    }, [data?.currency, data?.landing_company_shortcode, error?.error.message, isMobile, renderButtons, status]); // eslint-disable-line react-hooks/exhaustive-deps
+    useEffect(
+        () => {
+            if (status === 'error') {
+                modal.show(
+                    <WalletError buttonText='Close' errorMessage={error.error.message} onClick={() => modal.hide()} />
+                );
+            } else if (status === 'success') {
+                modal.show(
+                    <WalletAddedSuccess
+                        currency={data?.currency}
+                        displayBalance={data?.display_balance ?? `0.00 ${data?.currency}`}
+                        landingCompany={data?.landing_company_shortcode}
+                        onPrimaryButtonClick={() => {
+                            history.push('wallets/cashier/deposit');
+                            modal.hide();
+                        }}
+                        onSecondaryButtonClick={() => modal.hide()}
+                    />
+                );
+            }
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [
+            data?.currency,
+            data?.display_balance,
+            data?.landing_company_shortcode,
+            error?.error.message,
+            isMobile,
+            renderButtons,
+            status,
+        ]
+    );
 
     return (
         <div className='wallets-add-more__banner'>
@@ -96,28 +86,26 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
                 <span className='wallets-add-more__banner-logo'>
                     <WalletAddMoreCurrencyIcon currency={currency ? currency.toLowerCase() : ''} />
                 </span>
-                <div className='wallets-add-more__banner-landing-company'>
-                    <WalletText align='right' size='xs' weight='bold'>
-                        {landingCompanyName}
-                    </WalletText>
-                </div>
+                <WalletListCardBadge label={landingCompanyName} />
             </div>
-            <button
-                className={`wallets-add-more__banner-button ${
-                    isAdded ? 'wallets-add-more__banner-button--is-added' : ''
-                }`}
+            <WalletButton
+                color='white'
+                disabled={isAdded}
+                icon={
+                    isAdded ? (
+                        <CheckIcon className='wallets-add-more__banner-button-icon' width={16} />
+                    ) : (
+                        <PlusIcon className='wallets-add-more__banner-button-icon' width={16} />
+                    )
+                }
                 onClick={e => {
                     e.stopPropagation();
                     currency && mutate({ account_type: isCrypto ? 'crypto' : 'doughflow', currency });
                 }}
+                size={isMobile ? 'sm' : 'lg'}
             >
-                {isAdded ? (
-                    <CheckIcon className='wallets-add-more__banner-button-icon' />
-                ) : (
-                    <PlusIcon className='wallets-add-more__banner-button-icon' />
-                )}
                 {isAdded ? 'Added' : 'Add'}
-            </button>
+            </WalletButton>
         </div>
     );
 };

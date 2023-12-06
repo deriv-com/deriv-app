@@ -54,24 +54,4 @@
             padding: 2rem 0;
         }
     }
-
-    &__tnc {
-        display: flex;
-        flex-direction: column;
-        font-size: 1.4rem;
-        font-weight: 700;
-        gap: 1.2rem;
-        height: 8%;
-        justify-content: center;
-        text-align: center;
-        margin-top: 2rem;
-
-        &-checkbox {
-            align-items: center;
-            display: flex;
-            font-weight: 400;
-            gap: 0.4rem;
-            justify-content: center;
-        }
-    }
 }

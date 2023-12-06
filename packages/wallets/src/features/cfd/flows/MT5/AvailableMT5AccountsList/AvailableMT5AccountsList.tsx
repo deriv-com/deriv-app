@@ -42,9 +42,7 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                 <WalletButton
                     color='primary-light'
                     onClick={() => {
-                        setModalState({
-                            marketType: account.market_type,
-                        });
+                        setModalState('marketType', account.market_type);
                         show(
                             activeWallet?.is_virtual ? (
                                 <MT5PasswordModal
@@ -56,8 +54,9 @@ const AvailableMT5AccountsList: React.FC<TProps> = ({ account }) => {
                             )
                         );
                     }}
-                    text='Get'
-                />
+                >
+                    Get
+                </WalletButton>
             )}
         >
             <div className='wallets-available-mt5__details'>

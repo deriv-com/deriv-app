@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAuthorize } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
@@ -57,6 +57,7 @@ type TProps = {
 
 const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) => {
     const { switchAccount } = useAuthorize();
+    const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();
 
@@ -72,7 +73,9 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                                 icon={button.icon}
                                 isRound
                                 onClick={() => {
-                                    switchAccount(loginid);
+                                    if (activeWallet?.loginid !== loginid) {
+                                        switchAccount(loginid);
+                                    }
                                     history.push(`/wallets/cashier/${button.name}`);
                                 }}
                                 size='lg'
@@ -95,9 +98,10 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                         history.push(`/wallets/cashier/${button.name}`);
                     }}
                     rounded='md'
-                    text={isActive ? button.text : undefined}
                     variant='outlined'
-                />
+                >
+                    {isActive ? button.text : ''}
+                </WalletButton>
             ))}
         </div>
     );

@@ -10,7 +10,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import BotPreview from './bot-preview';
 import './index.scss';
 
-const LocalComponent = observer(() => {
+const Local = observer(() => {
     const { load_modal, save_modal, dashboard } = useDBotStore();
     const { handleFileChange, loadFileFromRecent, dashboard_strategies } = load_modal;
     const { onConfirmSave } = save_modal;
@@ -120,4 +120,4 @@ const LocalComponent = observer(() => {
     );
 });
 
-export default LocalComponent;
+export default Local;

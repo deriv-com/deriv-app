@@ -1,24 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
 import { useDBotStore } from 'Stores/useDBotStore';
-
 import OnboardTourHandler from '../dbot-tours/onboarding-tour';
-
 import Local from './load-bot-preview/local';
 import Cards from './cards';
 import InfoPanel from './info-panel';
 import UserGuide from './user-guide';
-
-type TMobileIconGuide = {
-    has_dashboard_strategies: boolean;
-    handleTabChange: (active_number: number) => void;
-};
 
 type TDashboardMobileCommonProps = {
     is_mobile: boolean;
@@ -37,14 +27,6 @@ const DashboardTitle = ({ is_mobile, has_dashboard_strategies }: TDashboardMobil
     </div>
 );
 
-const MobileIconGuide = ({ handleTabChange }: TMobileIconGuide) => (
-    <MobileWrapper>
-        <div>
-            <Local handleTabChange={handleTabChange} />
-        </div>
-    </MobileWrapper>
-);
-
 const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboardMobileCommonProps) => (
     <div
         className={classNames('tab__dashboard__description', {
@@ -61,12 +43,13 @@ const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboar
     </div>
 );
 
-const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
+const DashboardComponent = observer(() => {
+    const { ui } = useStore();
     const { load_modal, dashboard } = useDBotStore();
     const { dashboard_strategies } = load_modal;
     const { setActiveTab, setActiveTabTutorial, active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
-    const is_mobile = isMobile();
+    const { is_mobile } = ui;
 
     return (
         <React.Fragment>
@@ -110,10 +93,11 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                                         has_dashboard_strategies={has_dashboard_strategies}
                                     />
                                 )}
-                                <MobileIconGuide
-                                    handleTabChange={handleTabChange}
-                                    has_dashboard_strategies={has_dashboard_strategies}
-                                />
+                                <MobileWrapper>
+                                    <div>
+                                        <Local />
+                                    </div>
+                                </MobileWrapper>
                             </div>
                             {is_mobile && !has_dashboard_strategies && (
                                 <DashboardDescription
@@ -127,7 +111,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
 
                     {has_dashboard_strategies && !is_mobile && (
                         <div className='tab__dashboard__preview'>
-                            <Local handleTabChange={handleTabChange} />
+                            <Local />
                         </div>
                     )}
                 </div>

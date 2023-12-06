@@ -1,17 +1,17 @@
 import React from 'react';
-import { isDesktop, isMobile } from '@deriv/shared';
 import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from './v1';
 
 type TToolbarWidgetsProps = {
     updateChartType: (chart_type: string) => void;
     updateGranularity: (updateGranularity: number) => void;
+    is_mobile: boolean;
 };
 
-const ToolbarWidgets = ({ updateChartType, updateGranularity }: TToolbarWidgetsProps) => {
+const ToolbarWidgets = ({ updateChartType, updateGranularity, is_mobile }: TToolbarWidgetsProps) => {
     return (
-        <ToolbarWidget position={isMobile() ? 'bottom' : null}>
+        <ToolbarWidget position={is_mobile ? 'bottom' : null}>
             <ChartMode portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
-            {isDesktop() && (
+            {!is_mobile && (
                 <>
                     <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
                     <Views portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />

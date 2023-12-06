@@ -54,7 +54,11 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 enabledChartFooter={false}
                 chartStatusListener={(v: boolean) => setChartStatus(!v)}
                 toolbarWidget={() => (
-                    <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                    <ToolbarWidgets
+                        updateChartType={updateChartType}
+                        updateGranularity={updateGranularity}
+                        is_mobile={is_mobile}
+                    />
                 )}
                 chartType={chart_type}
                 isMobile={is_mobile}

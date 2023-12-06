@@ -22,7 +22,10 @@ const MT5ChangeInvestorPasswordScreens = () => {
         case 'emailVerification':
             return (
                 <div className='wallets-change-investor-password-screens__sent-email-wrapper'>
-                    <SentEmailContent description='Please click on the link in the email to reset your password.' />
+                    <SentEmailContent
+                        description='Please click on the link in the email to reset your password.'
+                        isInvestorPassword
+                    />
                 </div>
             );
         case 'introScreen':

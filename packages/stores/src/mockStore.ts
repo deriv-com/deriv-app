@@ -275,6 +275,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_any_real_account: false,
             setPrevAccountType: jest.fn(),
             prev_account_type: 'demo',
+            is_beta_chart: true,
             setLoginInformation: jest.fn(),
             init: jest.fn(),
             setLoginId: jest.fn(),

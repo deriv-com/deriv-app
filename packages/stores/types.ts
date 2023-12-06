@@ -373,7 +373,6 @@ type TClientStore = {
     has_restricted_mt5_account: boolean;
     initialized_broadcast: boolean;
     is_account_setting_loaded: boolean;
-    is_bot_allowed: boolean;
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_eu_country: boolean;

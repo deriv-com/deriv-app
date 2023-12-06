@@ -7,12 +7,12 @@ import './CompareAccountsDescription.scss';
 
 type TCompareAccountsDescription = {
     isDemo: boolean;
-    isEuUser: boolean;
+    isEuRegion: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const CompareAccountsDescription = ({ isDemo, isEuUser, marketType, shortCode }: TCompareAccountsDescription) => {
+const CompareAccountsDescription = ({ isDemo, isEuRegion, marketType, shortCode }: TCompareAccountsDescription) => {
     const marketTypeShortCode = marketType?.concat('_', shortCode ?? '');
     const jurisdictionData = getJurisdictionDescription(marketTypeShortCode ?? '');
 
@@ -27,10 +27,10 @@ const CompareAccountsDescription = ({ isDemo, isEuUser, marketType, shortCode }:
                     {'Up to'} {jurisdictionData.leverage}
                 </WalletText>
                 <WalletText align='center' as='p' size='2xs'>
-                    {!isEuUser ? jurisdictionData.leverage_description : 'Leverage'}
+                    {!isEuRegion ? jurisdictionData.leverage_description : 'Leverage'}
                 </WalletText>
             </div>
-            {!isEuUser && (
+            {!isEuRegion && (
                 <div className='wallets-compare-accounts-text-container__separator'>
                     <WalletText align='center' as='h1' size='xl' weight='bold'>
                         {jurisdictionData.spread}

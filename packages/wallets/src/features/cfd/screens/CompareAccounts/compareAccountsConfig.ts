@@ -15,14 +15,14 @@ type TShortCode = THooks.AvailableMT5Accounts['shortcode'];
 
 const getHighlightedIconLabel = (
     platform: TPlatforms.All,
-    isEuUser: boolean,
+    isEuRegion: boolean,
     marketType: TMarketTypes,
     shortCode: TShortCode
 ): THighlightedIconLabel[] => {
     const marketTypeShortCode = marketType?.concat('_', shortCode || '');
 
     const forexLabel = (() => {
-        if (isEuUser) {
+        if (isEuRegion) {
             return 'Forex';
         } else if (marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN) {
             return 'Forex: standard/exotic';

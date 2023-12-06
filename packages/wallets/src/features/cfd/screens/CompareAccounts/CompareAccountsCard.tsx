@@ -13,6 +13,7 @@ type TCompareAccountsCard = {
     isAccountAdded: boolean;
     isCrypto: boolean;
     isDemo: boolean;
+    isEuRegion: boolean;
     isEuUser: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
     platform: TPlatforms.All;
@@ -23,6 +24,7 @@ const CompareAccountsCard = ({
     isAccountAdded,
     isCrypto,
     isDemo,
+    isEuRegion,
     isEuUser,
     marketType,
     platform,
@@ -41,19 +43,18 @@ const CompareAccountsCard = ({
                 )}
                 <CompareAccountsTitleIcon
                     isDemo={isDemo}
-                    isEuUser={isEuUser}
                     marketType={marketType}
                     platform={platform}
                     shortCode={shortCode}
                 />
                 <CompareAccountsDescription
                     isDemo={isDemo}
-                    isEuUser={isEuUser}
+                    isEuRegion={isEuRegion}
                     marketType={marketType}
                     shortCode={shortCode}
                 />
                 <InstrumentsLabelHighlighted
-                    isEuUser={isEuUser}
+                    isEuRegion={isEuRegion}
                     marketType={marketType}
                     platform={platform}
                     shortCode={shortCode}

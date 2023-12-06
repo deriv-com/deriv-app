@@ -137,7 +137,6 @@ const CompareAccountsButton = ({
                 },
             });
         }
-        history.push('/wallets');
     };
     return (
         <div className='wallets-compare-accounts-button'>

@@ -11,6 +11,8 @@ import './CompareAccountsScreen.scss';
 const CompareAccountsScreen = () => {
     const history = useHistory();
     const { data: activeWallet } = useActiveWalletAccount();
+    // Temporary false until we have useIsEuRegion() ready
+    const isEuRegion = false;
     const {
         is_crypto: isCrypto = false,
         is_malta_wallet: isEuUser = false,
@@ -32,7 +34,7 @@ const CompareAccountsScreen = () => {
         [cfdAccounts, isDemo]
     );
 
-    const headerTitle = isEuUser
+    const headerTitle = isEuRegion
         ? `Deriv MT5 CFDs ${isDemo ? 'Demo' : 'real'} account`
         : `Compare CFDs ${isDemo ? 'demo ' : ''}accounts`;
 
@@ -58,6 +60,7 @@ const CompareAccountsScreen = () => {
                             isAccountAdded={item?.is_added}
                             isCrypto={isCrypto}
                             isDemo={isDemo}
+                            isEuRegion={isEuRegion}
                             isEuUser={isEuUser}
                             key={`${item?.market_type} ${item?.shortcode}`}
                             marketType={item?.market_type}
@@ -71,6 +74,7 @@ const CompareAccountsScreen = () => {
                             isAccountAdded={isDxtradeAdded}
                             isCrypto={isCrypto}
                             isDemo={isDemo}
+                            isEuRegion={isEuRegion}
                             isEuUser={isEuUser}
                             marketType={dxtradeAccount.market_type}
                             platform={dxtradeAccount.platform}
@@ -83,6 +87,7 @@ const CompareAccountsScreen = () => {
                             isAccountAdded={isCtraderAdded}
                             isCrypto={isCrypto}
                             isDemo={isDemo}
+                            isEuRegion={isEuRegion}
                             isEuUser={isEuUser}
                             marketType={ctraderAccount.market_type}
                             platform={ctraderAccount.platform}

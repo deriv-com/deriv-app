@@ -5,14 +5,14 @@ import InstrumentsIconWithLabel from './InstrumentsIconWithLabel';
 import './InstrumentsLabelHighlighted.scss';
 
 type TInstrumentsLabelHighlighted = {
-    isEuUser: boolean;
+    isEuRegion: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
     platform: TPlatforms.All;
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const InstrumentsLabelHighlighted = ({ isEuUser, marketType, platform, shortCode }: TInstrumentsLabelHighlighted) => {
-    const iconData = [...getHighlightedIconLabel(platform, isEuUser, marketType, shortCode)];
+const InstrumentsLabelHighlighted = ({ isEuRegion, marketType, platform, shortCode }: TInstrumentsLabelHighlighted) => {
+    const iconData = [...getHighlightedIconLabel(platform, isEuRegion, marketType, shortCode)];
 
     return (
         <div className={'wallets-compare-accounts-outline'} data-testid='dt_compare_cfd_account_outline__container'>

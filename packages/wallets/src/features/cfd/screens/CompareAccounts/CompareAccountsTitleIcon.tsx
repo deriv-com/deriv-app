@@ -12,7 +12,6 @@ type TMarketType = THooks.AvailableMT5Accounts['market_type'];
 
 type TCompareAccountsTitleIcon = {
     isDemo: boolean;
-    isEuUser: boolean;
     marketType: TMarketType;
     platform: TPlatforms.All;
     shortCode: THooks.AvailableMT5Accounts['shortcode'];

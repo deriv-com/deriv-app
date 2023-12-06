@@ -3,6 +3,7 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import Info from '../ContractTypeInfo/contract-type-info';
+import { TRADE_TYPES } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 
 jest.mock('Assets/Trading/Categories/trade-categories-gif', () => jest.fn(() => 'TradeCategoriesGif'));
@@ -17,7 +18,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
     handleSelect: jest.fn(),
     item: {
         text: 'Multipliers',
-        value: 'multiplier',
+        value: TRADE_TYPES.MULTIPLIER,
     },
     list: [
         {
@@ -26,7 +27,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Multipliers',
-                            value: 'multiplier',
+                            value: TRADE_TYPES.MULTIPLIER,
                         },
                     ],
                     icon: 'IcMultiplier',
@@ -37,11 +38,11 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall',
+                            value: TRADE_TYPES.RISE_FALL,
                         },
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall_equal',
+                            value: TRADE_TYPES.RISE_FALL_EQUAL,
                         },
                     ],
                     icon: 'IcUpsDowns',
@@ -52,11 +53,11 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Higher/Lower',
-                            value: 'high_low',
+                            value: TRADE_TYPES.HIGH_LOW,
                         },
                         {
                             text: 'Touch/No Touch',
-                            value: 'touch',
+                            value: TRADE_TYPES.TOUCH,
                         },
                     ],
                     icon: 'IcHighsLows',
@@ -67,15 +68,15 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Matches/Differs',
-                            value: 'match_diff',
+                            value: TRADE_TYPES.MATCH_DIFF,
                         },
                         {
                             text: 'Even/Odd',
-                            value: 'even_odd',
+                            value: TRADE_TYPES.EVEN_ODD,
                         },
                         {
                             text: 'Over/Under',
-                            value: 'over_under',
+                            value: TRADE_TYPES.OVER_UNDER,
                         },
                     ],
                     icon: 'IcDigits',
@@ -86,7 +87,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Call/Put',
-                            value: 'vanillalongcall',
+                            value: TRADE_TYPES.VANILLA.CALL,
                         },
                     ],
                     icon: 'IcVanilla',
@@ -97,39 +98,39 @@ const mocked_props: React.ComponentProps<typeof Info> = {
             contract_types: [
                 {
                     text: 'Multipliers',
-                    value: 'multiplier',
+                    value: TRADE_TYPES.MULTIPLIER,
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall',
+                    value: TRADE_TYPES.RISE_FALL,
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall_equal',
+                    value: TRADE_TYPES.RISE_FALL_EQUAL,
                 },
                 {
                     text: 'Higher/Lower',
-                    value: 'high_low',
+                    value: TRADE_TYPES.HIGH_LOW,
                 },
                 {
                     text: 'Touch/No Touch',
-                    value: 'touch',
+                    value: TRADE_TYPES.TOUCH,
                 },
                 {
                     text: 'Matches/Differs',
-                    value: 'match_diff',
+                    value: TRADE_TYPES.MATCH_DIFF,
                 },
                 {
                     text: 'Even/Odd',
-                    value: 'even_odd',
+                    value: TRADE_TYPES.EVEN_ODD,
                 },
                 {
                     text: 'Over/Under',
-                    value: 'over_under',
+                    value: TRADE_TYPES.OVER_UNDER,
                 },
                 {
                     text: 'Call/Put',
-                    value: 'vanillalongcall',
+                    value: TRADE_TYPES.VANILLA.CALL,
                 },
             ],
             icon: 'IcCatAll',
@@ -142,7 +143,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Multipliers',
-                            value: 'multiplier',
+                            value: TRADE_TYPES.MULTIPLIER,
                         },
                     ],
                     icon: 'IcMultiplier',
@@ -153,7 +154,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
             contract_types: [
                 {
                     text: 'Multipliers',
-                    value: 'multiplier',
+                    value: TRADE_TYPES.MULTIPLIER,
                 },
             ],
             icon: 'IcCatMultiplier',
@@ -166,11 +167,11 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall',
+                            value: TRADE_TYPES.RISE_FALL,
                         },
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall_equal',
+                            value: TRADE_TYPES.RISE_FALL_EQUAL,
                         },
                     ],
                     icon: 'IcUpsDowns',
@@ -181,11 +182,11 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Higher/Lower',
-                            value: 'high_low',
+                            value: TRADE_TYPES.HIGH_LOW,
                         },
                         {
                             text: 'Touch/No Touch',
-                            value: 'touch',
+                            value: TRADE_TYPES.TOUCH,
                         },
                     ],
                     icon: 'IcHighsLows',
@@ -196,15 +197,15 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Matches/Differs',
-                            value: 'match_diff',
+                            value: TRADE_TYPES.MATCH_DIFF,
                         },
                         {
                             text: 'Even/Odd',
-                            value: 'even_odd',
+                            value: TRADE_TYPES.EVEN_ODD,
                         },
                         {
                             text: 'Over/Under',
-                            value: 'over_under',
+                            value: TRADE_TYPES.OVER_UNDER,
                         },
                     ],
                     icon: 'IcDigits',
@@ -215,7 +216,7 @@ const mocked_props: React.ComponentProps<typeof Info> = {
                     contract_types: [
                         {
                             text: 'Call/Put',
-                            value: 'vanillalongcall',
+                            value: TRADE_TYPES.VANILLA.CALL,
                         },
                     ],
                     icon: 'IcVanilla',
@@ -226,35 +227,35 @@ const mocked_props: React.ComponentProps<typeof Info> = {
             contract_types: [
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall',
+                    value: TRADE_TYPES.RISE_FALL,
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall_equal',
+                    value: TRADE_TYPES.RISE_FALL_EQUAL,
                 },
                 {
                     text: 'Higher/Lower',
-                    value: 'high_low',
+                    value: TRADE_TYPES.HIGH_LOW,
                 },
                 {
                     text: 'Touch/No Touch',
-                    value: 'touch',
+                    value: TRADE_TYPES.TOUCH,
                 },
                 {
                     text: 'Matches/Differs',
-                    value: 'match_diff',
+                    value: TRADE_TYPES.MATCH_DIFF,
                 },
                 {
                     text: 'Even/Odd',
-                    value: 'even_odd',
+                    value: TRADE_TYPES.EVEN_ODD,
                 },
                 {
                     text: 'Over/Under',
-                    value: 'over_under',
+                    value: TRADE_TYPES.OVER_UNDER,
                 },
                 {
                     text: 'Call/Put',
-                    value: 'vanillalongcall',
+                    value: TRADE_TYPES.VANILLA.CALL,
                 },
             ],
             icon: 'IcCatOptions',
@@ -303,18 +304,18 @@ describe('<Info />', () => {
         expect(trade_type_button).toBeInTheDocument();
         expect(mocked_props.handleSelect).toHaveBeenCalled();
     });
-    it('Should render toggle buttons if vanilla info page is open', () => {
+    it('Should render toggle buttons if TRADE_TYPES.VANILLA.CALL info page is open', () => {
         mocked_props.item.text = 'Call/Put';
-        mocked_props.item.value = 'vanillalongcall';
+        mocked_props.item.value = TRADE_TYPES.VANILLA.CALL;
         render(mockInfoProvider());
 
         expect(screen.getByText(description)).toBeInTheDocument();
         expect(screen.getByText(glossary)).toBeInTheDocument();
         expect(screen.getByText('Choose Call/Put')).toBeInTheDocument();
     });
-    it('Should render toggle buttons if multiplier info page is open', () => {
+    it('Should render toggle buttons if TRADE_TYPES.MULTIPLIER info page is open', () => {
         mocked_props.item.text = 'Multipliers';
-        mocked_props.item.value = 'multiplier';
+        mocked_props.item.value = TRADE_TYPES.MULTIPLIER;
         render(mockInfoProvider());
 
         expect(screen.getByText(description)).toBeInTheDocument();

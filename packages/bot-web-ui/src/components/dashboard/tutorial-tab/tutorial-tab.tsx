@@ -3,20 +3,10 @@ import { observer, useStore } from '@deriv/stores';
 import TutorialsTabMobile from './tutorials-tab-mobile';
 import TutorialsTabDesktop from './tutorials-tab-desktop';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { generateTutorialTabs } from './common/common-tabs';
-
-let timeoutId;
-
-const debounce = (func, delay) => {
-    return (...args) => {
-        if (timeoutId) {
-            clearTimeout(timeoutId);
-        }
-        timeoutId = setTimeout(() => {
-            func(...args);
-        }, delay);
-    };
-};
+import GuideContent from './guide-content';
+import FAQContent from './faq-content';
+import NoSearchResult from './common/no-search-result-found';
+import { localize } from '@deriv/translations';
 
 const TutorialsTab = observer(() => {
     const { ui } = useStore();
@@ -24,34 +14,7 @@ const TutorialsTab = observer(() => {
     const { dashboard } = useDBotStore();
     const [prev_active_tutorials, setPrevActiveTutorialsTab] = React.useState<number | null>(0);
 
-    const { tutorials_combined_content, faq_search_value, active_tab_tutorials } = dashboard;
-
-    const [guide_tab_content, setGuideContent] = React.useState([]);
-    const [faq_tab_content, setFaqContent] = React.useState([]);
-    const [filtered_tab_list, setCombinedList] = React.useState([]);
-    const removeHTMLTagsFromString = (param = '') => param.replace(/<.*?>/g, '');
-
-    const filterContentBySearch = (content, search) => removeHTMLTagsFromString(content).toLowerCase().includes(search);
-
-    const search = faq_search_value.toLowerCase().trim();
-
-    const unified_filtered_list = React.useMemo(() => {
-        return tutorials_combined_content.filter(({ title, description = [], content }) => {
-            const descriptionMatch = description
-                .filter(item => item.type === 'text')
-                .map(item => item.content)
-                .join(' ')
-                .toLowerCase();
-            const titleMatch = removeHTMLTagsFromString(title).toLowerCase().includes(search);
-            const contentMatch = filterContentBySearch(content, search);
-            const descriptionMatchFiltered = filterContentBySearch(descriptionMatch, search);
-            return descriptionMatchFiltered || titleMatch || contentMatch;
-        });
-    }, [search, tutorials_combined_content]);
-
-    React.useEffect(() => {
-        generateAllTabs();
-    }, [active_tab_tutorials]);
+    const { active_tab_tutorials, video_tab_content, guide_tab_content, faq_tab_content } = dashboard;
 
     React.useEffect(() => {
         const _active_tab = [0, 1];
@@ -60,30 +23,30 @@ const TutorialsTab = observer(() => {
         }
     }, [active_tab_tutorials]);
 
-    const generateAllTabs = () => {
-        const filtered_guide_list = unified_filtered_list?.filter(item => item.tab_id === 0);
-        const filtered_faq_list = unified_filtered_list?.filter(item => item.tab_id === 2);
-        setGuideContent(filtered_guide_list);
-        setFaqContent(filtered_faq_list);
-        setCombinedList([...filtered_guide_list, ...filtered_faq_list]);
-    };
+    const has_content_guide_tab =
+        guide_tab_content.length > 0 || video_tab_content.length > 0 || faq_tab_content.length > 0;
 
-    React.useEffect(() => {
-        debounce(() => {
-            generateAllTabs();
-        }, 300)();
-    }, [search, tutorials_combined_content]);
-
-    const tutorial_tabs = generateTutorialTabs(
+    const tutorial_tabs = [
         {
-            guide_tab_content,
-            faq_tab_content,
-            filtered_tab_list,
+            label: localize('Guide'),
+            content: <GuideContent guide_tab_content={guide_tab_content} video_tab_content={video_tab_content} />,
         },
-        is_mobile,
-        search,
-        prev_active_tutorials
-    );
+        {
+            label: localize('FAQ'),
+            content: <FAQContent faq_list={faq_tab_content} />,
+        },
+        {
+            label: localize('Search'),
+            content: has_content_guide_tab ? (
+                <>
+                    <GuideContent guide_tab_content={guide_tab_content} video_tab_content={video_tab_content} />
+                    <FAQContent faq_list={faq_tab_content} />
+                </>
+            ) : (
+                <NoSearchResult />
+            ),
+        },
+    ];
 
     return is_mobile ? (
         <TutorialsTabMobile tutorial_tabs={tutorial_tabs} prev_active_tutorials={prev_active_tutorials} />

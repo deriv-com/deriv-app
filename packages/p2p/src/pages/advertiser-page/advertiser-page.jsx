@@ -173,6 +173,7 @@ const AdvertiserPage = () => {
             advertiser_page_store.onUnmount();
             buy_sell_store.setShowAdvertiserPage(false);
             advertiser_page_store.setCounterpartyAdvertiserInfo({});
+            setCounterpartyAdvertId('');
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

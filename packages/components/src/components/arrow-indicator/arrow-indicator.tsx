@@ -27,7 +27,7 @@ const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
     React.useEffect(() => {
         setIsHidden(false);
 
-        if (previous_value !== Number(value)) {
+        if (data.value !== Number(value)) {
             setData(prev_data => {
                 const has_increased = Number(prev_data.value) < Number(value);
                 const icon_name = has_increased ? 'IcProfit' : 'IcLoss';

@@ -18,7 +18,6 @@ describe('VanillaOptionsCardBody', () => {
         getCardLabels: () => getCardLabels(),
         is_sold: true,
         progress_slider: null,
-        status: 'loss',
     };
     it('should render the correct content for a sold contract', async () => {
         // Render the component with the provided props
@@ -42,7 +41,6 @@ describe('VanillaOptionsCardBody', () => {
         mock_props.contract_info.status = 'won';
         mock_props.is_sold = false;
         mock_props.progress_slider = <div />;
-        mock_props.status = 'profit';
         delete mock_props.contract_info.sell_price;
 
         // Render the component with the provided props

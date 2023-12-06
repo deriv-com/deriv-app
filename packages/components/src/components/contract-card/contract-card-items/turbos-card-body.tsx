@@ -24,7 +24,6 @@ type TTurbosCardBody = Pick<
     | 'onMouseLeave'
     | 'removeToast'
     | 'setCurrentFocus'
-    | 'status'
 > & {
     progress_slider_mobile_el: React.ReactNode;
 };
@@ -36,7 +35,6 @@ const TurbosCardBody = ({
     getCardLabels,
     is_sold,
     progress_slider_mobile_el,
-    status,
     ...toggle_card_dialog_props
 }: TTurbosCardBody) => {
     const {
@@ -82,7 +80,6 @@ const TurbosCardBody = ({
                                 contract_id={contract_info.contract_id}
                                 getCardLabels={getCardLabels}
                                 is_turbos
-                                status={status}
                                 {...toggle_card_dialog_props}
                             />
                         )}

@@ -47,7 +47,6 @@ describe('MultiplierCardBody', () => {
             removeToast: jest.fn(),
             setCurrentFocus: jest.fn(),
             should_show_cancellation_warning: false,
-            status: 'profit',
             toggleCancellationWarning: jest.fn(),
         };
     });
@@ -91,7 +90,6 @@ describe('MultiplierCardBody', () => {
         mock_props.contract_info.is_valid_to_sell = 1;
         mock_props.contract_info.profit = 0.2;
         mock_props.contract_info.status = 'open';
-        mock_props.status = 'profit';
         mock_props.is_sold = false;
         delete mock_props.contract_info.sell_price;
 

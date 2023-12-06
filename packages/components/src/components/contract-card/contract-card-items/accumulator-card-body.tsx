@@ -27,7 +27,6 @@ type TAccumulatorCardBody = {
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (value: string) => void;
-    status?: string;
     is_positions?: boolean;
 };
 
@@ -46,7 +45,6 @@ const AccumulatorCardBody = ({
     onMouseLeave,
     removeToast,
     setCurrentFocus,
-    status,
     is_positions,
 }: TAccumulatorCardBody) => {
     const { buy_price, profit, limit_order, sell_price } = contract_info;
@@ -103,7 +101,6 @@ const AccumulatorCardBody = ({
                             onMouseLeave={onMouseLeave}
                             removeToast={removeToast}
                             setCurrentFocus={setCurrentFocus}
-                            status={status}
                         />
                     )}
                 </ContractCardItem>

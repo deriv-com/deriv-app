@@ -33,7 +33,6 @@ const MultiplierCardBody = ({
     removeToast,
     setCurrentFocus,
     should_show_cancellation_warning,
-    status,
     toggleCancellationWarning,
 }) => {
     const { buy_price, bid_price, limit_order, underlying } = contract_info;
@@ -118,7 +117,6 @@ const MultiplierCardBody = ({
                             removeToast={removeToast}
                             setCurrentFocus={setCurrentFocus}
                             should_show_cancellation_warning={should_show_cancellation_warning}
-                            status={status}
                             toggleCancellationWarning={toggleCancellationWarning}
                         />
                     )}
@@ -155,7 +153,6 @@ MultiplierCardBody.propTypes = {
     removeToast: PropTypes.func,
     setCurrentFocus: PropTypes.func,
     should_show_cancellation_warning: PropTypes.bool,
-    status: PropTypes.string,
     toggleCancellationWarning: PropTypes.func,
     has_progress_slider: PropTypes.bool,
 };

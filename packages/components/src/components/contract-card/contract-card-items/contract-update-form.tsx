@@ -35,7 +35,6 @@ export type TGeneralContractCardBodyProps = {
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (name: string) => void;
-    status?: string;
     toggleCancellationWarning: (state_change?: boolean) => void;
     progress_slider?: React.ReactNode;
     is_positions?: boolean;
@@ -49,7 +48,6 @@ export type TContractUpdateFormProps = Pick<
     | 'onMouseLeave'
     | 'removeToast'
     | 'setCurrentFocus'
-    | 'status'
 > & {
     contract: TContractStore;
     error_message_alignment?: string;
@@ -57,7 +55,6 @@ export type TContractUpdateFormProps = Pick<
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (name: string | null) => void;
-    status: string;
     toggleDialog: (e: React.MouseEvent<HTMLButtonElement>) => void;
     getContractById: (contract_id: number) => TContractStore;
     is_accumulator?: boolean;
@@ -76,7 +73,6 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         onMouseLeave,
         removeToast,
         setCurrentFocus,
-        status,
         toggleDialog,
     } = props;
 

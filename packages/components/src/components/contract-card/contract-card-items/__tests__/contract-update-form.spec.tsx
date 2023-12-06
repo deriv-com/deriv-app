@@ -43,7 +43,6 @@ describe('ContractUpdateForm', () => {
         onMouseLeave: jest.fn(),
         removeToast: jest.fn(),
         setCurrentFocus: jest.fn(),
-        status: 'profit',
         toggleDialog: jest.fn(),
     };
     beforeAll(() => {

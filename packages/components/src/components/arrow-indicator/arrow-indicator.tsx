@@ -14,7 +14,7 @@ type TData = {
 };
 
 const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
-    const [is_hidden, setHidden] = React.useState(true);
+    const [is_hidden, setIsHidden] = React.useState(true);
     const [data, setData] = React.useState<TData>({
         icon: '',
         previous_icon: '',
@@ -25,7 +25,7 @@ const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
     const timeout_id = React.useRef<ReturnType<typeof setTimeout>>();
 
     React.useEffect(() => {
-        setHidden(false);
+        setIsHidden(false);
 
         if (previous_value !== Number(value)) {
             setData(prev_data => {
@@ -41,7 +41,7 @@ const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
 
             clearTimeout(timeout_id.current);
             timeout_id.current = setTimeout(() => {
-                setHidden(true);
+                setIsHidden(true);
             }, 3000);
         }
         return () => clearTimeout(timeout_id.current);

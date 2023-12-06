@@ -46,7 +46,6 @@ const ContractCardBody = ({
     server_time,
     setCurrentFocus,
     should_show_cancellation_warning,
-    status,
     toggleCancellationWarning,
 }: TContractCardBodyProps) => {
     const indicative = getIndicativePrice(contract_info);
@@ -91,7 +90,6 @@ const ContractCardBody = ({
                 progress_slider={progress_slider_mobile_el}
                 is_mobile={is_mobile}
                 is_sold={is_sold}
-                status={status}
                 should_show_cancellation_warning={should_show_cancellation_warning}
                 toggleCancellationWarning={toggleCancellationWarning}
                 {...toggle_card_dialog_props}
@@ -106,7 +104,6 @@ const ContractCardBody = ({
                 getCardLabels={getCardLabels}
                 indicative={indicative}
                 is_sold={is_sold}
-                status={status}
                 is_positions={is_positions}
                 {...toggle_card_dialog_props}
             />
@@ -119,7 +116,6 @@ const ContractCardBody = ({
                 currency={currency}
                 getCardLabels={getCardLabels}
                 is_sold={is_sold}
-                status={status}
                 progress_slider_mobile_el={progress_slider_mobile_el}
                 {...toggle_card_dialog_props}
             />
@@ -132,7 +128,6 @@ const ContractCardBody = ({
                 getCardLabels={getCardLabels}
                 is_sold={is_sold}
                 progress_slider={progress_slider_mobile_el}
-                status={status}
             />
         );
     } else {

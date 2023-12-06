@@ -15,7 +15,6 @@ export type TVanillaOptionsCardBodyProps = {
     getCardLabels: TGetCardLables;
     is_sold: boolean;
     progress_slider: React.ReactNode;
-    status?: string;
 };
 
 const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
@@ -24,7 +23,6 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
     getCardLabels,
     is_sold,
     progress_slider,
-    status,
 }) => {
     const { buy_price, bid_price, entry_spot_display_value, barrier, sell_price, profit }: TContractInfo =
         contract_info;

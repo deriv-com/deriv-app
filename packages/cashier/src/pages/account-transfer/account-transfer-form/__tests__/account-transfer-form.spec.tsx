@@ -3,7 +3,7 @@ import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
+import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
 import { TError } from '../../../../types';
 import AccountTransferForm from '../account-transfer-form';
 
@@ -123,7 +123,11 @@ describe('<AccountTransferForm />', () => {
 
     const renderAccountTransferForm = () => {
         render(<AccountTransferForm {...props} />, {
-            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+            wrapper: ({ children }) => (
+                <CashierProviders store={mockRootStore}>
+                    <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
+                </CashierProviders>
+            ),
         });
     };
 
@@ -361,15 +365,6 @@ describe('<AccountTransferForm />', () => {
             is_dxtrade: false,
         };
 
-        const currency_btc_account = {
-            text: 'BTC',
-            value: 'CR90000249',
-            currency: 'BTC',
-            is_crypto: true,
-            is_mt: false,
-            is_dxtrade: false,
-        };
-
         const mt5_account = {
             text: 'USD',
             currency: 'USD',
@@ -389,17 +384,6 @@ describe('<AccountTransferForm />', () => {
 
                 renderAccountTransferForm();
                 expect(screen.getByTestId('dt_account_platform_icon_currency_usd')).toBeInTheDocument();
-            });
-
-            it('should check for icon BTC when BTC is selected in from dropdown', () => {
-                mockRootStore.modules.cashier.account_transfer.accounts_list = accountsList;
-                mockRootStore.modules.cashier.account_transfer.selected_from = currency_btc_account;
-                mockRootStore.modules.cashier.account_transfer.setTransferPercentageSelectorResult = jest
-                    .fn()
-                    .mockReturnValue(100.0);
-
-                renderAccountTransferForm();
-                expect(screen.getByTestId('dt_account_platform_icon_currency_btc')).toBeInTheDocument();
             });
 
             it('should check for MT5 icon when MT5 is selected in from_dropdown', () => {

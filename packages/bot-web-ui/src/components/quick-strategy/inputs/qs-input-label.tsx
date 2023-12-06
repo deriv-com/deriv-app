@@ -21,7 +21,7 @@ const QSInputLabel: React.FC<TQSInputLabel> = observer(({ label, description, fu
                     {label}
                 </Text>
                 <span>
-                    <Popover message={description} zIndex='9999' alignment={is_mobile ? 'top' : 'right'} icon='info' />
+                    <Popover message={description} zIndex='9999' alignment='top' icon='info' />
                 </span>
             </div>
         </div>

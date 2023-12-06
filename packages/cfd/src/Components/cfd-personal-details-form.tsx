@@ -19,6 +19,9 @@ import {
 } from '@deriv/components';
 import { isDeepEqual, isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { useStore } from '@deriv/stores';
+import { useLandingCompanyDetails } from '@deriv/hooks';
 
 type TCFDPersonalDetailsFormProps = {
     changeable_fields?: string[];
@@ -34,6 +37,7 @@ type TValidatePersonalDetailsParams = {
     values: TFormValues;
     residence_list: ResidenceList;
     account_opening_reason: TAccountOpeningReasonList;
+    is_tin_mandatory: boolean;
 };
 
 type TFindDefaultValuesInResidenceList = (params: {
@@ -123,6 +127,7 @@ const validatePersonalDetails = ({
     values,
     residence_list,
     account_opening_reason,
+    is_tin_mandatory,
 }: TValidatePersonalDetailsParams) => {
     const tin_format = residence_list.find(res => res.text === values.tax_residence)?.tin_format;
 
@@ -131,17 +136,20 @@ const validatePersonalDetails = ({
     const validations: { [key: string]: ((v: string) => boolean | RegExpMatchArray | null)[] } = {
         citizen: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
         tax_residence: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
-        tax_identification_number: [
-            (v: string) => !!v,
-            (v: string) => (tin_regex ? tin_regex?.some(regex => v.match(regex)) : true),
-            () => !!values.tax_residence,
-        ],
         account_opening_reason: [
             (v: string) => !!v,
             (v: string) => account_opening_reason.map(i => i.value).includes(v),
         ],
         place_of_birth: [(v: string) => !!v, (v: string) => residence_list.map(i => i.text).includes(v)],
     };
+
+    if (is_tin_mandatory) {
+        validations.tax_identification_number = [
+            (v: string) => !!v,
+            (v: string) => (tin_regex ? tin_regex?.some(regex => v.match(regex)) : true),
+            () => !!values.tax_residence,
+        ];
+    }
     const mappedKey: { [key: string]: string } = {
         citizen: localize('Citizenship'),
         tax_residence: localize('Tax residence'),
@@ -217,24 +225,45 @@ const CFDPersonalDetailsForm = ({
     form_error,
 }: TCFDPersonalDetailsFormProps) => {
     const account_opening_reason = getAccountOpeningReasonList();
+    const { jurisdiction_selected_shortcode } = useCfdStore();
+    const {
+        client: { account_settings },
+    } = useStore();
+
+    const residence = residence_list?.find(item => item.text === account_settings?.residence);
+    const { data, isLoading: is_landing_company_details_loading } = useLandingCompanyDetails({
+        // @ts-expect-error jurisdiction_selected_shortcode type should be updated in cfd-store types
+        landing_company_details: jurisdiction_selected_shortcode,
+        country: residence?.value,
+    });
+
+    // tin_not_mandatory is 0 when tin field should be mandatory
+    const is_tin_mandatory = data?.tin_not_mandatory === 0;
 
     const onSubmitForm = (values: TFormValues, actions: FormikActions<TFormValues>) =>
         submitForm(values, actions, index, onSubmit, !isDeepEqual(initial_values, values), residence_list);
 
     const isFieldDisabled = (field: string) => !!initial_values[field] && !changeable_fields?.includes(field);
 
-    if (is_loading || residence_list.length === 0) return <Loading is_fullscreen={false} />;
+    if (is_landing_company_details_loading || is_loading || residence_list.length === 0)
+        return <Loading is_fullscreen={false} />;
+    const { tax_identification_number, ...rest } = initial_values;
+    const form_initial_values = { ...rest };
+
+    if (is_tin_mandatory) form_initial_values.tax_identification_number = tax_identification_number;
 
     return (
         <Formik
-            initialValues={{ ...initial_values }}
+            initialValues={form_initial_values}
             validateOnChange
+            enableReinitialize
             validateOnBlur
             validate={values =>
                 validatePersonalDetails({
                     values,
                     residence_list,
                     account_opening_reason,
+                    is_tin_mandatory,
                 })
             }
             onSubmit={onSubmitForm}
@@ -408,18 +437,20 @@ const CFDPersonalDetailsForm = ({
                                                     />
                                                 </MobileWrapper>
                                             </fieldset>
-                                            <fieldset className='account-form__fieldset'>
-                                                <InputField
-                                                    id='real_mt5_tax_identification_number'
-                                                    name='tax_identification_number'
-                                                    label={localize('Tax identification number*')}
-                                                    placeholder={localize('Tax identification number*')}
-                                                    value={values.tax_identification_number}
-                                                    onBlur={handleBlur}
-                                                    disabled={isFieldDisabled('tax_identification_number')}
-                                                    optional
-                                                />
-                                            </fieldset>
+                                            {is_tin_mandatory && (
+                                                <fieldset className='account-form__fieldset'>
+                                                    <InputField
+                                                        id='real_mt5_tax_identification_number'
+                                                        name='tax_identification_number'
+                                                        label={localize('Tax identification number*')}
+                                                        placeholder={localize('Tax identification number*')}
+                                                        value={values.tax_identification_number}
+                                                        onBlur={handleBlur}
+                                                        disabled={isFieldDisabled('tax_identification_number')}
+                                                        optional
+                                                    />
+                                                </fieldset>
+                                            )}
                                             <Field name='account_opening_reason'>
                                                 {({
                                                     field,

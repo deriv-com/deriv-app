@@ -1,12 +1,8 @@
 .wallets-transaction-status {
     width: 100%;
 
-    /* This positioning is temporary, ideally it should be determined by the parent component whenever we use `TransactionStatus` */
     @include desktop {
-        position: absolute;
-        top: -2.4rem;
-        right: 2.4rem;
-        max-width: 28.2rem;
+        width: 28.2rem;
     }
 
     display: flex;

@@ -98,9 +98,10 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                         history.push(`/wallets/cashier/${button.name}`);
                     }}
                     rounded='md'
-                    text={isActive ? button.text : undefined}
                     variant='outlined'
-                />
+                >
+                    {isActive ? button.text : ''}
+                </WalletButton>
             ))}
         </div>
     );

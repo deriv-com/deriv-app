@@ -1,4 +1,5 @@
 .react-rnd-wrapper {
+    transform: none !important;
     z-index: var(--zindex-draggable-modal);
     transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
     cursor: default !important;

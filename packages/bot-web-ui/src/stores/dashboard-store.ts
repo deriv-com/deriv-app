@@ -1,10 +1,7 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-
 import { setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
-
 import { clearInjectionDiv } from 'Constants/load-modal';
-
 import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
 import {
     faq_content,
@@ -14,6 +11,7 @@ import {
     TGuideContent,
     TUserGuideContent,
 } from 'Components/dashboard/tutorial-tab/config';
+import RootStore from './root-store';
 
 export interface IDashboardStore {
     active_tab: number;
@@ -43,13 +41,15 @@ export interface IDashboardStore {
     showVideoDialog: (param: { [key: string]: string }) => void;
     strategy_save_type: string;
     toast_message: string;
+    is_chart_modal_visible: boolean;
 }
 
 export default class DashboardStore implements IDashboardStore {
-    root_store: any;
+    root_store: RootStore;
     tutorials_combined_content: (TFaqContent | TGuideContent | TUserGuideContent)[] = [];
+    combined_search: string[] = [];
 
-    constructor(root_store: any) {
+    constructor(root_store: RootStore) {
         makeObservable(this, {
             active_tab_tutorials: observable,
             active_tab: observable,
@@ -83,16 +83,39 @@ export default class DashboardStore implements IDashboardStore {
             setActiveTour: action.bound,
             setTourDialogVisibility: action.bound,
             setOpenSettings: action.bound,
+            resetTutorialTabContent: action.bound,
+            filterTuotrialTab: action.bound,
             show_toast: observable,
             show_mobile_tour_dialog: observable,
             showVideoDialog: action.bound,
             strategy_save_type: observable,
             toast_message: observable,
+            guide_tab_content: observable,
+            faq_tab_content: observable,
+            video_tab_content: observable,
             setStrategySaveType: action.bound,
             setShowMobileTourDialog: action.bound,
+            is_chart_modal_visible: observable,
         });
         this.root_store = root_store;
-        this.tutorials_combined_content = [...user_guide_content, ...guide_content, ...faq_content];
+        const removeHTMLTagsFromString = (param = '') => param.replace(/<.*?>/g, '');
+
+        const getUserGuideContent = [...user_guide_content].map(
+            item => `${item.search_id}# ${item.content.toLowerCase()}`
+        );
+
+        const getVideoContent = [...guide_content].map(item => `${item.search_id}# ${item.content.toLowerCase()}`);
+
+        const getFaqContent = faq_content.map(item => {
+            return `${item.search_id}# ${item.title.toLowerCase()} ${item.description
+                .map(inner_item => {
+                    const itemWithoutHTML = removeHTMLTagsFromString(inner_item.content);
+                    return itemWithoutHTML?.toLowerCase();
+                })
+                .join(' ')}`;
+        });
+
+        this.combined_search = [...getUserGuideContent, ...getVideoContent, ...getFaqContent];
 
         const {
             load_modal: { previewRecentStrategy, current_workspace_id },
@@ -155,6 +178,49 @@ export default class DashboardStore implements IDashboardStore {
     strategy_save_type = 'unsaved';
     toast_message = '';
     is_web_socket_intialised = true;
+    search_param = '';
+    guide_tab_content = user_guide_content;
+    video_tab_content = guide_content;
+    faq_tab_content = faq_content;
+    filtered_tab_list = [];
+    is_chart_modal_visible = false;
+
+    resetTutorialTabContent = () => {
+        this.guide_tab_content = user_guide_content;
+        this.video_tab_content = guide_content;
+        this.faq_tab_content = faq_content;
+    };
+
+    filterTuotrialTab = (search_param: string) => {
+        this.search_param = search_param;
+        const foundItems = this.combined_search.filter(item => {
+            return item.includes(search_param.toLowerCase());
+        });
+
+        const filtered_user_guide: [] = [];
+        const filter_video_guide: [] = [];
+        const filtered_faq_content: [] = [];
+
+        const filtered_tutorial_content = foundItems.map(item => {
+            const identifier = item.split('#')[0];
+            const index: string = identifier.split('-')[1];
+            if (identifier.includes('ugc')) {
+                filtered_user_guide.push(user_guide_content[Number(index)]);
+                return user_guide_content[Number(index)];
+            } else if (identifier.includes('gc')) {
+                filter_video_guide.push(guide_content[Number(index)]);
+                return guide_content[Number(index)];
+            }
+            filtered_faq_content.push(faq_content[Number(index)]);
+            return faq_content[Number(index)];
+        });
+
+        this.guide_tab_content = filtered_user_guide;
+        this.video_tab_content = filter_video_guide;
+        this.faq_tab_content = filtered_faq_content;
+
+        return filtered_tutorial_content;
+    };
 
     get is_dark_mode() {
         const {
@@ -178,6 +244,10 @@ export default class DashboardStore implements IDashboardStore {
     setOpenSettings = (toast_message: string, show_toast = true) => {
         this.toast_message = toast_message;
         this.show_toast = show_toast;
+    };
+
+    setChartModalVisibility = () => {
+        this.is_chart_modal_visible = !this.is_chart_modal_visible;
     };
 
     setIsFileSupported = (is_file_supported: boolean) => {

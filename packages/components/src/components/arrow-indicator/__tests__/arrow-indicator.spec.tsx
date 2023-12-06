@@ -8,7 +8,7 @@ jest.mock('../../icon/icon', () => jest.fn((props: React.ComponentProps<typeof I
 describe('ArrowIndicator', () => {
     it('should render without an icon if value is undefined', () => {
         render(<ArrowIndicator />);
-        expect(screen.queryByTestId('dt_arrow_indicator')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_arrow_indicator')).toBeInTheDocument();
         expect(screen.queryByText('IcProfit')).not.toBeInTheDocument();
         expect(screen.queryByText('IcLoss')).not.toBeInTheDocument();
     });

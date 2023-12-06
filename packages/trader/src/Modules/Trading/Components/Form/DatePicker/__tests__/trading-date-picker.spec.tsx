@@ -5,12 +5,10 @@ import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../../../trader-providers';
 import { render, screen } from '@testing-library/react';
 
-jest.mock('@deriv/components', () => {
-    return {
-        ...jest.requireActual('@deriv/components'),
-        DatePicker: jest.fn(() => 'MockedDatePicker'),
-    };
-});
+// jest.mock('@deriv/components', () => ({
+//     ...jest.requireActual('@deriv/components'),
+//     DatePicker: jest.fn(() => 'MockedDatePicker'),
+// }));
 jest.mock('Stores/Modules/Trading/Helpers/contract-type', () => ({
     ContractType: {
         getTradingEvents: jest.fn(() => [
@@ -80,8 +78,10 @@ describe('<TradingTimePicker />', () => {
             </TraderProviders>
         );
     };
-    it('Should render Mocked Date Picker', () => {
+    it('Should render Mocked Date Picker and tooltip should be rendered', () => {
         render(mockTradingDatePicker(default_mocked_store));
-        expect(screen.getByText(/mockeddatepicker/i)).toBeInTheDocument();
+        const date_picker = screen.getByText(/mockeddatepicker/i);
+        expect(date_picker).toBeInTheDocument();
+        expect(date_picker).toHaveClass('trade-container__tooltip');
     });
 });

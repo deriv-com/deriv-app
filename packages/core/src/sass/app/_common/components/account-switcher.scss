@@ -53,6 +53,10 @@
         z-index: 2;
         background: var(--general-main-1);
 
+        &--wallets {
+            width: 47rem;
+        }
+
         &:before {
             content: '';
             position: absolute;
@@ -183,6 +187,30 @@
             height: 2.8rem !important;
         }
     }
+
+    &__wallets {
+        padding: 1.2rem 1.6rem;
+
+        &-container {
+            align-items: center;
+            display: flex;
+            gap: 0.8rem;
+            margin-right: 0.8rem;
+        }
+
+        &-account-type-and-balance {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0;
+            pointer-events: none;
+        }
+
+        &-balance {
+            color: var(--text-general);
+            margin-right: 0;
+        }
+    }
 }
 
 /* @define acc-switcher; weak */
@@ -214,6 +242,11 @@
         top: calc(100% + 4px);
         width: 320px;
         background-color: var(--general-main-2);
+
+        &--wallets {
+            width: 32rem;
+            right: -3.2rem;
+        }
 
         &--enter-done {
             opacity: 1;

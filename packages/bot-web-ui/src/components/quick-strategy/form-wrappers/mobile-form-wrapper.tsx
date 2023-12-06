@@ -5,6 +5,7 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
+import useQsSubmitHandler from './useQsSubmitHandler';
 import '../quick-strategy.scss';
 
 type TMobileFormWrapper = {
@@ -13,9 +14,11 @@ type TMobileFormWrapper = {
 
 const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) => {
     // const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
-    const { submitForm, isValid, setFieldValue, validateForm } = useFormikContext();
-    const { quick_strategy, run_panel } = useDBotStore();
-    const { selected_strategy, setSelectedStrategy, toggleStopBotDialog } = quick_strategy;
+    const { isValid, validateForm } = useFormikContext();
+    const { quick_strategy } = useDBotStore();
+    const { selected_strategy, setSelectedStrategy } = quick_strategy;
+    const { handleSubmit } = useQsSubmitHandler();
+
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
 
     React.useEffect(() => {
@@ -31,17 +34,6 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
         text: STRATEGIES[key as keyof typeof STRATEGIES].label,
         description: STRATEGIES[key as keyof typeof STRATEGIES].description,
     }));
-
-    const handleSubmit = async () => {
-        if (run_panel.is_running) {
-            await setFieldValue('action', 'EDIT');
-            submitForm();
-            toggleStopBotDialog();
-        } else {
-            await setFieldValue('action', 'RUN');
-            submitForm();
-        }
-    };
 
     return (
         <div className='qs'>
@@ -96,7 +88,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                         <Button
                             primary
                             data-testid='qs-run-button'
-                            type='submit'
+                            type='button'
                             onClick={handleSubmit}
                             disabled={!isValid}
                         >

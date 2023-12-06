@@ -7,7 +7,7 @@ import './TransactionsCompletedRow.scss';
 
 type TProps = {
     accounts: THooks.AllAccountsList;
-    transaction: THooks.Transactions;
+    transaction: THooks.InfiniteTransactions | THooks.Transactions;
     wallet: THooks.ActiveWalletAccount;
 };
 
@@ -34,6 +34,10 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
 
     const displayCurrency = wallet?.currency_config?.display_code || 'USD';
     const displayWalletName = `${displayCurrency} Wallet`;
+    const displayActionType =
+        wallet.is_virtual && ['deposit', 'withdrawal'].includes(transaction.action_type)
+            ? 'Reset balance'
+            : transaction.action_type.replace(/^\w/, c => c.toUpperCase());
 
     return (
         <div className='wallets-transactions-completed-row'>
@@ -43,7 +47,7 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
                     actionType={transaction.action_type}
                     currency={wallet?.currency ?? 'USD'}
                     displayAccountName={displayWalletName}
-                    displayActionType={transaction.action_type.replace(/^\w/, c => c.toUpperCase())}
+                    displayActionType={displayActionType}
                     isDemo={Boolean(wallet?.is_virtual)}
                 />
             ) : (

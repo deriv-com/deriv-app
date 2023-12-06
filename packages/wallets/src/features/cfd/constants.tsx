@@ -4,6 +4,7 @@ import DerivXIcon from '../../public/images/derivx.svg';
 import DerivedMT5Icon from '../../public/images/mt5-derived.svg';
 import FinancialMT5Icon from '../../public/images/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/mt5-swap-free.svg';
+import { TPlatforms } from '../../types';
 
 export const MarketTypeDetails = {
     all: {
@@ -28,16 +29,19 @@ export const PlatformDetails = {
     ctrader: {
         icon: <CTraderIcon />,
         link: 'https://onelink.to/hyqpv7',
+        platform: 'ctrader' as TPlatforms.OtherAccounts,
         title: 'Deriv cTrader',
     },
     dxtrade: {
         icon: <DerivXIcon />,
         link: 'https://onelink.to/grmtyx',
+        platform: 'dxtrade' as TPlatforms.OtherAccounts,
         title: 'Deriv X',
     },
     mt5: {
         icon: <DerivedMT5Icon />,
         link: 'https://onelink.to/grmtyx',
+        platform: 'mt5' as TPlatforms.MT5,
         title: 'Deriv MT5',
     },
 };

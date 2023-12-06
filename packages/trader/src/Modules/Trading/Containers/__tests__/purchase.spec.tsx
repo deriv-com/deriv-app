@@ -1,11 +1,10 @@
 import React from 'react';
-
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { render, screen } from '@testing-library/react';
-
-import TraderProviders from '../../../../trader-providers';
+import { mockContractInfo, TContractInfo } from '@deriv/shared';
 import Purchase from '../purchase';
+import TraderProviders from '../../../../trader-providers';
 
 const default_mock_store = {
     modules: {
@@ -35,7 +34,7 @@ const default_mock_store = {
 };
 
 type TNewMockedProps = typeof default_mock_store &
-    Partial<{ portfolio: { active_positions: { contract_info: { underlying: string }; type: string }[] } }>;
+    Partial<{ portfolio: { active_positions: { contract_info: TContractInfo; type: string }[] } }>;
 
 jest.mock('Modules/Trading/Components/Elements/purchase-fieldset', () =>
     jest.fn(() => <div>PurchaseField component</div>)
@@ -67,7 +66,9 @@ describe('<Purchase />', () => {
         const new_mocked_store: TNewMockedProps = {
             ...default_mock_store,
             portfolio: {
-                active_positions: [{ contract_info: { underlying: 'test_symbol' }, type: 'accumulator' }],
+                active_positions: [
+                    { contract_info: mockContractInfo({ underlying: 'test_symbol' }), type: 'accumulator' },
+                ],
             },
         };
         new_mocked_store.modules.trade.trade_types = { ACCU: 'Accumulator Up' };

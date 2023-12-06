@@ -132,7 +132,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_restricted_mt5_account: false,
             initialized_broadcast: false,
             is_account_setting_loaded: false,
-            is_bot_allowed: false,
             is_authorize: false,
             is_deposit_lock: false,
             is_dxtrade_allowed: false,

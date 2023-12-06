@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useWalletAccountsList } from '@deriv/api';
 import { WalletNoWalletFoundState } from '../components';
 import { CashierModalRoute } from './CashierModalRoute';
+import { TraderHubRoute } from './TradersHubRoute';
 import { WalletsListingRoute } from './WalletsListingRoute';
 
 const prefix = '/wallets';
@@ -23,13 +24,18 @@ declare module 'react-router-dom' {
 }
 
 const Router: React.FC = () => {
+    const [flag, setFlag] = useState(false); // Initialize the flag state
+
     const { data: walletAccounts, isLoading } = useWalletAccountsList();
+    const toggleFlag = () => setFlag(prevFlag => !prevFlag); // Function to toggle the flag
 
     if ((!walletAccounts || !walletAccounts.length) && !isLoading)
         return <Route component={WalletNoWalletFoundState} path={prefix} />;
 
     return (
         <Switch>
+            <button onClick={toggleFlag}>Toggle</button>
+            {flag && <Route component={TraderHubRoute} path='/traders-hub' />}
             <Route component={CashierModalRoute} path={`${prefix}/cashier`} />
             <Route component={WalletsListingRoute} path={prefix} />
         </Switch>

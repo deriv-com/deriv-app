@@ -79,8 +79,12 @@ export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: stri
         return null;
     }
 
-    if (is_high_risk && status_code === STATUS_CODES.VERIFIED) {
-        return IDV_ERROR_STATUS.HighRisk.code;
+    if (is_high_risk) {
+        if (status_code === STATUS_CODES.NONE) {
+            return null;
+        } else if (status_code === STATUS_CODES.VERIFIED) {
+            return IDV_ERROR_STATUS.HighRisk.code;
+        }
     }
 
     if (status_code === STATUS_CODES.EXPIRED) {

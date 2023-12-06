@@ -28,10 +28,6 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
                 'A recent utility bill (electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
             ),
         },
-        not_applicable: {
-            icon: 'IcNotApplicableVerification',
-            text: '',
-        },
     },
     status_references: [
         {

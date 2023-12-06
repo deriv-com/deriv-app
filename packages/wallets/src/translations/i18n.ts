@@ -1,6 +1,10 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import x from './messages.json';
+import { sha256 as SHA256 } from 'sha.js';
+import DE from './de.json';
+import EN from './en.json';
+import ID from './id.json';
+import MS from './ms.json';
 
 const DEFAULT_LANGUAGE = 'EN';
 
@@ -31,19 +35,41 @@ export const setLanguage = (lang: string) => {
 export const getCurrentLanguage = () => currentLanguage;
 
 const resources = {
-    EN: {
-        translations: x,
+    DE: {
+        translations: DE,
     },
-    FR: {
-        translations: x,
+    EN: {
+        translations: EN,
+    },
+    ID: {
+        translations: ID,
+    },
+    MS: {
+        translations: MS,
     },
 };
+
+function generateKey(inputString: string) {
+    // Convert the string to an array buffer
+    const key = new SHA256().update(inputString).digest('hex');
+
+    // NOTE: If there are key collisions, increase the substring length
+    return key.substring(0, 8);
+}
 
 i18n.use(initReactI18next).init({
     defaultNS: 'translations',
     fallbackLng: 'EN',
     lng: currentLanguage,
     ns: ['translations'],
+    react: {
+        bindI18n: 'loaded languageChanged',
+        bindI18nStore: 'added',
+        hashTransKey(defaultValue: string) {
+            return generateKey(defaultValue);
+        },
+        useSuspense: false,
+    },
     resources,
 });
 

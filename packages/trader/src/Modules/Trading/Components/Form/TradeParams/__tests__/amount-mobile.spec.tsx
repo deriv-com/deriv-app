@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { TURBOS } from '@deriv/shared';
+import { CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 import TraderProviders from '../../../../../../trader-providers';
 import Amount from '../amount-mobile';
@@ -26,14 +26,14 @@ const default_mock_store = {
         trade: {
             basis: 'stake',
             basis_list: [{ text: 'Payout', value: 'payout' }],
-            contract_type: 'rise_fall',
+            contract_type: TRADE_TYPES.RISE_FALL as string,
             is_turbos: false,
             is_vanilla: false,
             onChangeMultiple: jest.fn(),
             amount: 10,
             duration_unit: 'm',
             duration: 3,
-            stake_boundary: { [TURBOS.LONG.toUpperCase()]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
+            stake_boundary: { [CONTRACT_TYPES.TURBOS.LONG]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
                 typeof useTraderStore
             >['stake_boundary'],
         },
@@ -104,7 +104,7 @@ describe('<Amount/>', () => {
     });
     it('should render MinMaxStakeInfo for Turbos', () => {
         default_mock_store.modules.trade.basis_list = [{ text: 'Stake', value: 'stake' }];
-        default_mock_store.modules.trade.contract_type = TURBOS.LONG;
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.TURBOS.LONG;
         default_mock_store.modules.trade.is_turbos = true;
         render(mockAmount(mockStore(default_mock_store), default_props));
 

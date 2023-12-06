@@ -1,4 +1,4 @@
-import { TContractInfo } from '@deriv/shared';
+import { TContractInfo, CONTRACT_TYPES } from '@deriv/shared';
 import { createTickMarkers, getMarkerContractType, getStartText } from '../chart-markers';
 
 describe('createTickMarkers', () => {
@@ -6,7 +6,7 @@ describe('createTickMarkers', () => {
     let contract_info: TContractInfo;
     beforeEach(() => {
         contract_info = {
-            contract_type: 'CALL',
+            contract_type: CONTRACT_TYPES.CALL,
             status: 'open',
             tick_stream: [
                 { epoch: 1, tick: 1.2345, tick_display_value: '1.2345' },
@@ -53,14 +53,14 @@ describe('createTickMarkers', () => {
         expect(result[result.length - 1].content_config.spot_value).toBe('1.239');
         expect(result[result.length - 1].type).toBe('SPOT_EXIT');
 
-        contract_info.contract_type = 'ACCU';
+        contract_info.contract_type = CONTRACT_TYPES.ACCUMULATOR;
         const result_for_accumulator = createTickMarkers(contract_info);
         expect(result_for_accumulator).toHaveLength(10);
         expect(result_for_accumulator[result_for_accumulator.length - 1].content_config.spot_value).toBe('1.239');
         expect(result_for_accumulator[result_for_accumulator.length - 1].type).toBe('SPOT_EXIT');
     });
     it('should correctly handle accumulator contract markers when contract is open', () => {
-        contract_info.contract_type = 'ACCU';
+        contract_info.contract_type = CONTRACT_TYPES.ACCUMULATOR;
         contract_info.status = 'open';
         const result = createTickMarkers(contract_info);
         expect(result).toHaveLength(9); // exit tick should not be marked for an ongoing accumulator contract
@@ -68,7 +68,7 @@ describe('createTickMarkers', () => {
         expect(result[result.length - 1].type).toBe('SPOT_MIDDLE_8');
     });
     it('should append --preexit class to previous spot of accumulator contract to highlight it when is_delayed_markers_update=false or contract is closed', () => {
-        contract_info.contract_type = 'ACCU';
+        contract_info.contract_type = CONTRACT_TYPES.ACCUMULATOR;
         contract_info.status = 'open';
         const result = createTickMarkers(contract_info, false);
         expect(result[result.length - 1].content_config.spot_className).toBe(`${previous_spot_classname}--preexit`);
@@ -82,7 +82,7 @@ describe('createTickMarkers', () => {
         );
     });
     it('should not append --preexit class to previous spot of accumulator contract when is_delayed_markers_update=true for open contract only', () => {
-        contract_info.contract_type = 'ACCU';
+        contract_info.contract_type = CONTRACT_TYPES.ACCUMULATOR;
         contract_info.status = 'open';
         const result = createTickMarkers(contract_info, true);
         expect(result[result.length - 1].content_config.spot_className).toBe(previous_spot_classname);
@@ -97,22 +97,22 @@ describe('createTickMarkers', () => {
     });
 
     it('should get the correct contract type', () => {
-        contract_info.contract_type = 'ACCU';
+        contract_info.contract_type = CONTRACT_TYPES.ACCUMULATOR;
         expect(getMarkerContractType(contract_info)).toBe('AccumulatorContract');
 
-        contract_info.contract_type = 'DIGITMATCH';
+        contract_info.contract_type = CONTRACT_TYPES.MATCH_DIFF.MATCH;
         expect(getMarkerContractType(contract_info)).toBe('DigitContract');
 
-        contract_info.contract_type = 'CALL';
+        contract_info.contract_type = CONTRACT_TYPES.CALL;
         contract_info.tick_count = 1;
         expect(getMarkerContractType(contract_info)).toBe('TickContract');
     });
 
     it('should get the correct start text', () => {
-        contract_info.contract_type = 'ACCU';
+        contract_info.contract_type = CONTRACT_TYPES.ACCUMULATOR;
         contract_info.tick_count = undefined;
         Object.assign(contract_info, {
-            contract_type: 'CALL',
+            contract_type: CONTRACT_TYPES.CALL,
             tick_count: undefined,
             profit: '1',
             barrier: '1000',

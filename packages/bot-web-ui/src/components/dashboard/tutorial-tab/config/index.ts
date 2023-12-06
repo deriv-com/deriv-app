@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 
 export type TDescription = Pick<TContent, 'type' | 'content' | 'src' | 'imageclass'>;
 
-export type TFaqContent = Pick<TContent, 'title' | 'description' | 'src' | 'tab_id' | 'search_id'>;
+export type TFaqContent = Pick<TContent, 'title' | 'description' | 'src' | 'search_id'>;
 
 export type TGuideContent = Omit<TContent, 'title' | 'description'>;
 
@@ -25,7 +25,6 @@ export type TContent = {
     type: string;
     url?: string;
     imageclass?: string;
-    tab_id: number;
     search_id: string;
 };
 
@@ -36,7 +35,6 @@ export const user_guide_content: TUserGuideContent[] = [
         subtype: 'OnBoard',
         content: localize('Get started on Deriv Bot'),
         src: getImageLocation('dbot-onboard-tour.png'),
-        tab_id: 0,
         search_id: 'ugc-0',
     },
     {
@@ -45,7 +43,6 @@ export const user_guide_content: TUserGuideContent[] = [
         subtype: 'BotBuilder',
         content: localize('Let’s build a bot!'),
         src: getImageLocation('bot-builder-tour.png'),
-        tab_id: 0,
         search_id: 'ugc-1',
     },
 ];
@@ -57,7 +54,6 @@ export const guide_content: TGuideContent[] = [
         content: localize('Deriv Bot - your automated trading partner'),
         url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
         src: getImageLocation('video_dbot.webp'),
-        tab_id: 0,
         search_id: 'gc-0',
     },
 ];
@@ -73,7 +69,6 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-0',
     },
     {
@@ -114,7 +109,6 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-1',
     },
     {
@@ -127,7 +121,6 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-2',
     },
     {
@@ -150,7 +143,6 @@ export const faq_content: TFaqContent[] = [
                 content: localize('3. Choose the block you want and drag it to the workspace.'),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-3',
     },
     {
@@ -163,7 +155,6 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-4',
     },
     {
@@ -204,7 +195,6 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-5',
     },
     {
@@ -217,7 +207,6 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-6',
     },
     {
@@ -266,7 +255,6 @@ export const faq_content: TFaqContent[] = [
                 content: localize('3. Your bot will be loaded accordingly.'),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-7',
     },
     {
@@ -279,7 +267,6 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-8',
     },
     {
@@ -302,7 +289,6 @@ export const faq_content: TFaqContent[] = [
                 src: getImageLocation('reset_transaction_log_message.png'),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-9',
     },
     {
@@ -382,7 +368,6 @@ export const faq_content: TFaqContent[] = [
                 src: getImageLocation('loss_control_restart_trade_conditions.png'),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-10',
     },
     {
@@ -395,7 +380,6 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-11',
     },
     {
@@ -406,7 +390,6 @@ export const faq_content: TFaqContent[] = [
                 content: localize("No, we don't offer cryptocurrencies on Deriv Bot."),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-12',
     },
     {
@@ -419,7 +402,6 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-13',
     },
     {
@@ -432,7 +414,6 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-14',
     },
     {
@@ -443,7 +424,6 @@ export const faq_content: TFaqContent[] = [
                 content: localize('No, Deriv Bot will stop running when your web browser is closed.'),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-15',
     },
     {
@@ -456,7 +436,6 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-16',
     },
     {
@@ -469,7 +448,6 @@ export const faq_content: TFaqContent[] = [
                 ),
             },
         ],
-        tab_id: 2,
         search_id: 'faq-17',
     },
 ];

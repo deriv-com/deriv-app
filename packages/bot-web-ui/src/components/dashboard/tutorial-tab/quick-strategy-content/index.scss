@@ -19,6 +19,7 @@
         padding: 1.6rem;
         border: 2px solid var(--system-light-5-active-background, #d6dadb);
         border-radius: 8px;
+        cursor: pointer;
 
         &__title {
             margin-bottom: 1.6rem;
@@ -36,9 +37,6 @@
             li:not(:last-child) {
                 margin-bottom: 1.6rem;
             }
-        }
-        svg {
-            cursor: pointer;
         }
     }
     &__breadcrumb {

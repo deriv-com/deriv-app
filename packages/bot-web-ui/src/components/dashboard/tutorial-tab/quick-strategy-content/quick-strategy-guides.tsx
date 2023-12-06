@@ -25,7 +25,11 @@ const QuickStrategyContent = observer(({ quick_strategy_content }: TQuickStrateg
                 {tutorial_selected_strategy === '' ? (
                     <div className='tutorials-quick-strategy__cards'>
                         {quick_strategy_content?.map(({ qs_name, content, type }) => (
-                            <div className='tutorials-quick-strategy__placeholder' key={type}>
+                            <div
+                                className='tutorials-quick-strategy__placeholder'
+                                key={type}
+                                onClick={() => setTutorialSelectedStrategy(qs_name)}
+                            >
                                 <div>
                                     <div className='tutorials-quick-strategy__placeholder__title'>
                                         <Text
@@ -55,7 +59,7 @@ const QuickStrategyContent = observer(({ quick_strategy_content }: TQuickStrateg
                                         </ul>
                                     </div>
                                 </div>
-                                <Icon icon='IcChevronRightBold' onClick={() => setTutorialSelectedStrategy(qs_name)} />
+                                <Icon icon='IcChevronRightBold' />
                             </div>
                         ))}
                     </div>

@@ -90,7 +90,7 @@ export type TCheckmark = {
 };
 
 export type TSuccessDialog = {
-    width: string;
+    width: React.CSSProperties['width'];
     title?: string;
     is_open: boolean;
     icon_size: string;

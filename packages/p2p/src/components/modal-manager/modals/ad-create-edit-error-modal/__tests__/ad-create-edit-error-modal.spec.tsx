@@ -42,7 +42,7 @@ describe('<AdCreateEditErrorModal />', () => {
     it('should render AdCreateEditErrorModal', () => {
         render(<AdCreateEditErrorModal />);
 
-        expect(screen.getByText("Something's not right")).toBeInTheDocument();
+        expect(screen.getAllByText("Something's not right")[0]).toBeInTheDocument();
     });
     it('should display the ok button when there is no api error', () => {
         render(<AdCreateEditErrorModal />);

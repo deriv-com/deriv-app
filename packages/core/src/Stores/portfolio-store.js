@@ -19,8 +19,8 @@ import {
     getDurationTime,
     getDurationUnitText,
     getEndTime,
+    TRADE_TYPES,
     removeBarrier,
-    TURBOS,
     routes,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
@@ -599,14 +599,14 @@ export default class PortfolioStore extends BaseStore {
     }
 
     get is_accumulator() {
-        return this.contract_type === 'accumulator';
+        return this.contract_type === TRADE_TYPES.ACCUMULATOR;
     }
 
     get is_multiplier() {
-        return this.contract_type === 'multiplier';
+        return this.contract_type === TRADE_TYPES.MULTIPLIER;
     }
 
     get is_turbos() {
-        return this.contract_type === TURBOS.LONG || this.contract_type === TURBOS.SHORT;
+        return this.contract_type === TRADE_TYPES.TURBOS.LONG || this.contract_type === TRADE_TYPES.TURBOS.SHORT;
     }
 }

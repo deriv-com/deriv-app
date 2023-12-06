@@ -66,6 +66,7 @@ const AccountSwitcher = ({
     content_flag,
     virtual_account_loginid,
     setTogglePlatformType,
+    currency,
 }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(!is_virtual || should_show_real_accounts_list ? 0 : 1);
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
@@ -520,7 +521,7 @@ const AccountSwitcher = ({
                                 className='acc-switcher__btn--traders_hub'
                                 secondary
                                 onClick={
-                                    has_any_real_account && !hasSetCurrency
+                                    has_any_real_account && (!hasSetCurrency || !currency)
                                         ? setAccountCurrency
                                         : () => openRealAccountSignup('manage')
                                 }
@@ -594,6 +595,7 @@ const account_switcher = withRouter(
     connect(({ client, ui, traders_hub }) => ({
         available_crypto_currencies: client.available_crypto_currencies,
         account_loginid: client.loginid,
+        currency: client.currency,
         accounts: client.accounts,
         account_type: client.account_type,
         account_list: client.account_list,

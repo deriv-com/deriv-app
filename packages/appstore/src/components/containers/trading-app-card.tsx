@@ -114,7 +114,8 @@ const TradingAppCard = ({
         else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
         else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
         else if (platform === CFD_PLATFORMS.CTRADER) window.open(getStaticUrl(`/deriv-ctrader`));
-        else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
+        else if (icon === 'Options' && !is_eu_user)
+            window.open(getStaticUrl(`trade-types/options/digital-options/up-and-down/`));
         else;
     };
 

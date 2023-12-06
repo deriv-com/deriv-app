@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { TCoreStores } from '@deriv/stores/types';
 import { mockStore } from '@deriv/stores';
+import { TRADE_TYPES } from '@deriv/shared';
 import userEvent from '@testing-library/user-event';
 import DurationWrapper from '../duration-wrapper';
 import TraderProviders from '../../../../../../../trader-providers';
@@ -13,10 +14,11 @@ describe('<DurationWrapper />', () => {
     let default_mock_store: ReturnType<typeof mockStore>;
     beforeEach(() => {
         default_mock_store = {
+            ...mockStore({}),
             modules: {
                 trade: {
                     contract_expiry_type: 'intraday',
-                    contract_type: 'rise_fall',
+                    contract_type: TRADE_TYPES.RISE_FALL,
                     duration: 3,
                     duration_unit: 'm',
                     duration_units_list: [
@@ -68,6 +70,7 @@ describe('<DurationWrapper />', () => {
                 },
             },
             ui: {
+                ...mockStore({}).ui,
                 advanced_expiry_type: 'duration',
                 advanced_duration_unit: 'm',
                 duration_t: 5,
@@ -76,7 +79,7 @@ describe('<DurationWrapper />', () => {
                 onChangeUiStore: jest.fn(),
                 simple_duration_unit: 't',
             },
-        } as unknown as ReturnType<typeof mockStore>;
+        };
     });
     const mockDurationWrapper = (mocked_store: TCoreStores) => {
         return (

@@ -7,6 +7,9 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
+import FormTabs from './form-tabs';
+import StrategyDescription from './strategy-description';
+import useQsSubmitHandler from './useQsSubmitHandler';
 import '../quick-strategy.scss';
 
 type TDesktopFormWrapper = {
@@ -14,11 +17,12 @@ type TDesktopFormWrapper = {
 };
 
 const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
-    // const [active_tab, setActiveTab] = React.useState('TRADE_PARAMETERS');
+    const [activeTab, setActiveTab] = React.useState('TRADE_PARAMETERS');
     const { submitForm, isValid, setFieldValue, validateForm } = useFormikContext();
-    const { quick_strategy, run_panel } = useDBotStore();
-    const { selected_strategy, setSelectedStrategy, setFormVisibility, toggleStopBotDialog } = quick_strategy;
+    const { quick_strategy } = useDBotStore();
+    const { selected_strategy, setSelectedStrategy, setFormVisibility } = quick_strategy;
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
+    const { handleSubmit } = useQsSubmitHandler();
     const handleClose = () => {
         setFormVisibility(false);
     };
@@ -29,22 +33,16 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
 
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
+        setActiveTab('TRADE_PARAMETERS');
+    };
+
+    const handleTabChange = (tab: string) => {
+        setActiveTab(tab);
     };
 
     const onEdit = async () => {
         await setFieldValue('action', 'EDIT');
         submitForm();
-    };
-
-    const handleSubmit = async () => {
-        if (run_panel.is_running) {
-            await setFieldValue('action', 'EDIT');
-            submitForm();
-            toggleStopBotDialog();
-        } else {
-            await setFieldValue('action', 'RUN');
-            submitForm();
-        }
     };
 
     return (
@@ -85,41 +83,29 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                     </div>
                 </div>
                 <div className='qs__body__content'>
-                    <ThemedScrollbars className='qs__form__container' autohide={false}>
-                        {/* <div className='qs__body__content__head'>
-                            <div className='qs__body__content__head__tabs'>
-                                {FORM_TABS.map(tab => {
-                                    const active = tab.value === active_tab;
-                                    const cs = 'qs__body__content__head__tabs__tab';
-                                    return (
-                                        <span
-                                            className={classNames(cs, { active, disabled: tab?.disabled })}
-                                            key={tab.value}
-                                            onClick={() => setActiveTab(tab.value)}
-                                        >
-                                            <Text size='xs' weight={active ? 'bold' : 'normal'}>
-                                                {tab.label}
-                                            </Text>
-                                        </span>
-                                    );
-                                })}
-                            </div>
-                        </div> */}
-                        <div className='qs__body__content__description'>
-                            <div>
-                                <Text size='xs'>{strategy.description}</Text>
-                            </div>
-                        </div>
-                        <div className='qs__body__content__form'>{children}</div>
+                    <ThemedScrollbars
+                        className={classNames('qs__form__container', {
+                            'qs__form__container--no-footer': activeTab !== 'TRADE_PARAMETERS',
+                        })}
+                        autohide={false}
+                    >
+                        <FormTabs
+                            active_tab={activeTab}
+                            onChange={handleTabChange}
+                            description={strategy?.long_description}
+                        />
+                        <StrategyDescription formfields={children} active_tab={activeTab} />
                     </ThemedScrollbars>
-                    <div className='qs__body__content__footer'>
-                        <Button secondary disabled={!isValid} onClick={onEdit}>
-                            {localize('Edit')}
-                        </Button>
-                        <Button data-testid='qs-run-button' primary onClick={handleSubmit} disabled={!isValid}>
-                            {localize('Run')}
-                        </Button>
-                    </div>
+                    {activeTab === 'TRADE_PARAMETERS' && (
+                        <div className='qs__body__content__footer'>
+                            <Button secondary disabled={!isValid} onClick={onEdit}>
+                                {localize('Edit')}
+                            </Button>
+                            <Button data-testid='qs-run-button' primary onClick={handleSubmit} disabled={!isValid}>
+                                {localize('Run')}
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

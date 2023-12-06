@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatIDVError, WS, idv_error_statuses } from '@deriv/shared';
+import { formatIDVError, WS, IDV_ERROR_STATUS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import CountrySelector from 'Components/poi/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
@@ -43,7 +43,7 @@ const POISubmission = observer(
         const { refreshNotifications } = notifications;
         const is_high_risk = account_status.risk_classification === 'high';
 
-        const handleSelectionNext = (should_show_manual = false) => {
+        const handleSelectionNext = () => {
             if (Object.keys(selected_country).length) {
                 const { submissions_left: idv_submissions_left } = idv;
                 const { submissions_left: onfido_submissions_left } = onfido;
@@ -51,9 +51,9 @@ const POISubmission = observer(
                 const is_onfido_supported =
                     selected_country.identity.services.onfido.is_country_supported && selected_country.value !== 'ng';
 
-                if (!should_show_manual && is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
+                if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
                     setSubmissionService(service_code.idv);
-                } else if (!should_show_manual && Number(onfido_submissions_left) > 0 && is_onfido_supported) {
+                } else if (Number(onfido_submissions_left) > 0 && is_onfido_supported) {
                     setSubmissionService(service_code.onfido);
                 } else {
                     setSubmissionService(service_code.manual);
@@ -127,10 +127,11 @@ const POISubmission = observer(
                 setIdentityService(identity_last_attempt);
             } else if (
                 mismatch_status &&
-                ![
-                    idv_error_statuses.poi_expired,
-                    idv_error_statuses.poi_failed,
-                    idv_error_statuses.poi_high_risk,
+                [
+                    IDV_ERROR_STATUS.DobMismatch.code,
+                    IDV_ERROR_STATUS.NameMismatch.code,
+                    IDV_ERROR_STATUS.NameDobMismatch.code,
+                    IDV_ERROR_STATUS.HighRisk.code,
                 ].includes(mismatch_status) &&
                 idv.submissions_left > 0
             ) {
@@ -174,11 +175,9 @@ const POISubmission = observer(
                                 handleSubmit={handleViewComplete}
                                 latest_status={identity_last_attempt}
                                 selected_country={selected_country}
-                                handleSelectionNext={handleSelectionNext}
                             />
                         ) : (
                             <IdvDocumentSubmit
-                                handleSelectionNext={handleSelectionNext}
                                 handleViewComplete={handleViewComplete}
                                 handleBack={handleBack}
                                 selected_country={selected_country}
@@ -188,7 +187,6 @@ const POISubmission = observer(
                         const country_code = selected_country.value;
                         const doc_obj = selected_country.identity.services.onfido.documents_supported;
                         const documents_supported = Object.keys(doc_obj).map(d => doc_obj[d].display_name);
-
                         return (
                             <OnfidoSdkViewContainer
                                 country_code={country_code}
@@ -208,7 +206,6 @@ const POISubmission = observer(
                                 allow_poi_resubmission={allow_poi_resubmission}
                                 handleViewComplete={handleViewComplete}
                                 onfido={onfido}
-                                handleBack={handleBack}
                             />
                         );
                     default:

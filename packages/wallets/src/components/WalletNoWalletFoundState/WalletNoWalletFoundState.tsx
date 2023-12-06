@@ -22,7 +22,9 @@ const WalletNoWalletFoundState: React.FC = () => {
                         feature flag to see Trader&apos;s Hub.
                     </WalletText>
                 </div>
-                <WalletButton onClick={() => history.push('/endpoint')} size='lg' text='Endpoint' />
+                <WalletButton onClick={() => history.push('/endpoint')} size='lg'>
+                    Endpoint
+                </WalletButton>
             </div>
         </div>
     );

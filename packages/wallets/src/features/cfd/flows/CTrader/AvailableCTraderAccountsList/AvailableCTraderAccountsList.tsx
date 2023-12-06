@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCreateOtherCFDAccount, useCtraderAccountsList } from '@deriv/api';
-import { TradingAccountCard } from '../../../../../components';
+import { TradingAccountCard, WalletError } from '../../../../../components';
 import {
     ModalStepWrapper,
     ModalWrapper,
@@ -19,7 +19,7 @@ import './AvailableCTraderAccountsList.scss';
 
 const AvailableCTraderAccountsList: React.FC = () => {
     const { hide, show } = useModal();
-    const { isSuccess, mutate } = useCreateOtherCFDAccount();
+    const { error, mutate, status } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: cTraderAccounts } = useCtraderAccountsList();
     const { isMobile } = useDevice();
@@ -32,69 +32,35 @@ const AvailableCTraderAccountsList: React.FC = () => {
             payload: {
                 account_type: accountType,
                 market_type: 'all',
-                platform: 'ctrader',
+                platform: PlatformDetails.ctrader.platform,
             },
         });
     };
 
-    const onClickHandler = () => {
-        onSubmit();
-
-        const renderButtons = () => (
+    const renderButtons = useCallback(
+        () => (
             <WalletButtonGroup isFlex isFullWidth>
-                <WalletButton onClick={() => hide()} size='lg' text='Maybe later' variant='outlined' />
+                <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                    Maybe later
+                </WalletButton>
                 <WalletButton
                     onClick={() => {
                         hide();
                         history.push('/wallets/cashier/transfer');
                     }}
                     size='lg'
-                    text='Transfer funds'
-                />
+                >
+                    Transfer funds
+                </WalletButton>
             </WalletButtonGroup>
-        );
+        ),
+        [hide, history]
+    );
 
-        const description =
-            accountType === 'demo'
-                ? `Transfer virtual funds from your Demo Wallet to your ${PlatformDetails.ctrader.title} Demo account to practice trading.`
-                : `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${PlatformDetails.ctrader.title} account to start trading.`;
-
-        if (isMobile) {
-            show(
-                <ModalStepWrapper renderFooter={renderButtons} title={' '}>
-                    {isSuccess && (
-                        <CFDSuccess
-                            description={description}
-                            displayBalance={cTraderAccounts?.find(account => account.login)?.display_balance}
-                            marketType='all'
-                            platform='ctrader'
-                            renderButton={renderButtons}
-                            title={`Your ${PlatformDetails.ctrader.title} ${
-                                accountType === 'demo' ? accountType : ''
-                            } account is ready`}
-                        />
-                    )}
-                </ModalStepWrapper>
-            );
-        }
-
-        show(
-            <ModalWrapper>
-                {isSuccess && (
-                    <CFDSuccess
-                        description={description}
-                        displayBalance={cTraderAccounts?.find(account => account.login)?.display_balance}
-                        marketType='all'
-                        platform='ctrader'
-                        renderButton={renderButtons}
-                        title={`Your ${PlatformDetails.ctrader.title} ${
-                            accountType === 'demo' ? accountType : ''
-                        } account is ready`}
-                    />
-                )}
-            </ModalWrapper>
-        );
-    };
+    const description =
+        accountType === 'demo'
+            ? `Transfer virtual funds from your Demo Wallet to your ${PlatformDetails.ctrader.title} Demo account to practice trading.`
+            : `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${PlatformDetails.ctrader.title} account to start trading.`;
 
     const leadingIcon = () => (
         <div
@@ -116,14 +82,62 @@ const AvailableCTraderAccountsList: React.FC = () => {
     const trailingButton = () => (
         <WalletButton
             color='primary-light'
-            // Disabling button until API is ready
-            disabled
             onClick={() => {
-                onClickHandler();
+                onSubmit();
             }}
-            text='Get'
-        />
+        >
+            Get
+        </WalletButton>
     );
+
+    const successComponent = useCallback(() => {
+        if (isMobile) {
+            return (
+                <ModalStepWrapper renderFooter={renderButtons} title={' '}>
+                    <CFDSuccess
+                        description={description}
+                        displayBalance={cTraderAccounts?.find(account => account.login)?.formatted_balance}
+                        marketType='all'
+                        platform={PlatformDetails.ctrader.platform}
+                        renderButton={renderButtons}
+                        title={`Your ${PlatformDetails.ctrader.title} ${
+                            accountType === 'demo' ? accountType : ''
+                        } account is ready`}
+                    />
+                    ;
+                </ModalStepWrapper>
+            );
+        }
+        return (
+            <ModalWrapper>
+                <CFDSuccess
+                    description={description}
+                    displayBalance={cTraderAccounts?.find(account => account.login)?.formatted_balance}
+                    marketType='all'
+                    platform={PlatformDetails.ctrader.platform}
+                    renderButton={renderButtons}
+                    title={`Your ${PlatformDetails.ctrader.title} ${
+                        accountType === 'demo' ? accountType : ''
+                    } account is ready`}
+                />
+            </ModalWrapper>
+        );
+    }, [accountType, cTraderAccounts, description, isMobile, renderButtons]);
+
+    useEffect(() => {
+        if (status === 'success') {
+            show(successComponent());
+        }
+        if (status === 'error') {
+            show(
+                <WalletError
+                    errorMessage={error?.error?.message ?? 'Something went wrong. Please try again'}
+                    onClick={() => hide()}
+                    title={error?.error?.message ?? 'Error'}
+                />
+            );
+        }
+    }, [error?.error?.message, hide, show, status, successComponent]);
 
     return (
         <div className='wallets-available-ctrader'>

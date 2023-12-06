@@ -5,10 +5,10 @@ import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../../../trader-providers';
 import { render, screen } from '@testing-library/react';
 
-// jest.mock('@deriv/components', () => ({
-//     ...jest.requireActual('@deriv/components'),
-//     DatePicker: jest.fn(() => 'MockedDatePicker'),
-// }));
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    DatePicker: jest.fn(() => 'MockedDatePicker'),
+}));
 jest.mock('Stores/Modules/Trading/Helpers/contract-type', () => ({
     ContractType: {
         getTradingEvents: jest.fn(() => [

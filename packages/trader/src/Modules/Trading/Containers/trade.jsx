@@ -8,15 +8,12 @@ import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-over
 import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets';
 import FormLayout from 'Modules/Trading/Components/Form/form-layout';
-import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements';
-import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets';
-import ToolbarWidgetsBeta from '../../SmartChartBeta/Components/toolbar-widgets.jsx';
+import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.tsx';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 
 import LaunchModal from 'Modules/SmartChartBeta/Components/LaunchModal/launch-modal.tsx';
-import SmartChartSwitcher from 'Modules/Trading/Containers/smart-chart-switcher.jsx';
 
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
     React.useEffect(() => {
@@ -255,29 +252,9 @@ export default Trade;
 // CHART (ChartTrade)--------------------------------------------------------
 
 /* eslint-disable */
+import { SmartChart } from 'Modules/SmartChart/index.js';
 
-const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChartSwitcher innerRef={ref} {...props} />);
-
-// ChartMarkers --------------------------
-const ChartMarkers = observer(config => {
-    const { ui, client, contract_trade } = useStore();
-    const { markers_array, granularity } = contract_trade;
-    const { is_dark_mode_on: is_dark_theme } = ui;
-    const { currency } = client;
-    return markers_array.map(marker => {
-        const Marker = AllMarkers[marker.type];
-        return (
-            <Marker
-                key={marker.key}
-                is_dark_theme={is_dark_theme}
-                granularity={granularity}
-                currency={currency}
-                config={config}
-                {...marker}
-            />
-        );
-    });
-});
+const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
 
 const ChartTrade = observer(props => {
     const { is_accumulator, has_barrier, end_epoch, topWidgets, charts_ref } = props;
@@ -296,7 +273,7 @@ const ChartTrade = observer(props => {
     const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on, is_positions_drawer_on, is_mobile } =
         ui;
     const { is_socket_opened, current_language } = common;
-    const { currency, is_beta_chart, should_show_eu_content } = client;
+    const { currency, should_show_eu_content } = client;
     const {
         chartStateChange,
         is_trade_enabled,
@@ -399,18 +376,13 @@ const ChartTrade = observer(props => {
             isConnectionOpened={is_socket_opened}
             clearChart={false}
             toolbarWidget={() => {
-                if (is_beta_chart) {
-                    return (
-                        <ToolbarWidgetsBeta updateChartType={updateChartType} updateGranularity={updateGranularity} />
-                    );
-                } else
-                    return (
-                        <ToolbarWidgets
-                            is_mobile={is_mobile}
-                            updateChartType={updateChartType}
-                            updateGranularity={updateGranularity}
-                        />
-                    );
+                return (
+                    <ToolbarWidgets
+                        updateChartType={updateChartType}
+                        updateGranularity={updateGranularity}
+                        is_mobile={is_mobile}
+                    />
+                );
             }}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}
@@ -423,9 +395,7 @@ const ChartTrade = observer(props => {
             }}
             isLive={true}
             leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
-            is_beta={is_beta_chart}
         >
-            {!is_beta_chart && <ChartMarkers />}
             {is_accumulator && (
                 <AccumulatorsChartElements
                     all_positions={all_positions}
@@ -434,7 +404,6 @@ const ChartTrade = observer(props => {
                     has_crossed_accu_barriers={has_crossed_accu_barriers}
                     should_show_profit_text={!!accumulator_contract_barriers_data.accumulators_high_barrier}
                     symbol={symbol}
-                    is_beta_chart={is_beta_chart}
                 />
             )}
         </SmartChartWithRef>

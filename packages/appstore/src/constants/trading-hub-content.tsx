@@ -139,8 +139,8 @@ export const getTradingHubContents = (): TTradingHubContents => ({
                 }}
             />
         ),
-        footer_header: localize('‘Get’ the accounts you want'),
-        footer_text: localize('Click the ‘Get’ button to create an account'),
+        footer_header: localize('‘Get’ your Deriv account'),
+        footer_text: localize('Click ‘Get’ to create a trading account'),
         has_next_content: false,
     },
     step5: {

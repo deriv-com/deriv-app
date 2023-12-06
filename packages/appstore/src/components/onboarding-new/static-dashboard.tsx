@@ -101,7 +101,8 @@ const StaticDashboard = observer(
         }, [index]);
 
         const is_eu_title = eu_user ? localize('Multipliers') : localize('Options & Multipliers');
-        const is_eu_account_title = eu_user ? localize('Multipliers account') : localize('Deriv account');
+        const is_eu_account_title =
+            eu_user && is_mt5_allowed ? localize('Multipliers account') : localize('Deriv account');
         const compare_accounts_title = eu_user ? localize('Account Information') : localize('Compare accounts');
 
         return (
@@ -275,6 +276,7 @@ const StaticDashboard = observer(
                                         is_item_blurry={is_blurry.platformlauncher}
                                         has_divider={!eu_user && !financial_restricted_countries}
                                         is_animated={is_onboarding_animated.button}
+                                        is_mt5_allowed={is_mt5_allowed}
                                     />
                                 </div>
 

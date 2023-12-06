@@ -589,6 +589,7 @@ AccountSwitcher.propTypes = {
     content_flag: PropTypes.string,
     virtual_account_loginid: PropTypes.string,
     setTogglePlatformType: PropTypes.func,
+    currency: PropTypes.string,
 };
 
 const account_switcher = withRouter(

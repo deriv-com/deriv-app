@@ -11,7 +11,6 @@ import './CompareAccountsCard.scss';
 
 type TCompareAccountsCard = {
     isAccountAdded: boolean;
-    isCrypto: boolean;
     isDemo: boolean;
     isEuRegion: boolean;
     isEuUser: boolean;
@@ -22,7 +21,6 @@ type TCompareAccountsCard = {
 
 const CompareAccountsCard = ({
     isAccountAdded,
-    isCrypto,
     isDemo,
     isEuRegion,
     isEuUser,

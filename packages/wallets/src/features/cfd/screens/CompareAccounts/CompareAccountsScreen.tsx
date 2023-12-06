@@ -13,11 +13,7 @@ const CompareAccountsScreen = () => {
     const { data: activeWallet } = useActiveWalletAccount();
     // Temporary false until we have useIsEuRegion() ready
     const isEuRegion = false;
-    const {
-        is_crypto: isCrypto = false,
-        is_malta_wallet: isEuUser = false,
-        is_virtual: isDemo = false,
-    } = activeWallet || {};
+    const { is_malta_wallet: isEuUser = false, is_virtual: isDemo = false } = activeWallet || {};
 
     const { data: compareAccounts, hasCTraderAccountAvailable, hasDxtradeAccountAvailable } = useCFDCompareAccounts();
     const { data: cfdAccounts } = useCFDAccountsList();
@@ -58,7 +54,6 @@ const CompareAccountsScreen = () => {
                     {mt5Accounts?.map(item => (
                         <CFDCompareAccountsCard
                             isAccountAdded={item?.is_added}
-                            isCrypto={isCrypto}
                             isDemo={isDemo}
                             isEuRegion={isEuRegion}
                             isEuUser={isEuUser}
@@ -72,7 +67,6 @@ const CompareAccountsScreen = () => {
                     {mt5Accounts?.length && hasDxtradeAccountAvailable && dxtradeAccount && (
                         <CFDCompareAccountsCard
                             isAccountAdded={isDxtradeAdded}
-                            isCrypto={isCrypto}
                             isDemo={isDemo}
                             isEuRegion={isEuRegion}
                             isEuUser={isEuUser}
@@ -85,7 +79,6 @@ const CompareAccountsScreen = () => {
                     {mt5Accounts?.length && hasCTraderAccountAvailable && ctraderAccount && (
                         <CFDCompareAccountsCard
                             isAccountAdded={isCtraderAdded}
-                            isCrypto={isCrypto}
                             isDemo={isDemo}
                             isEuRegion={isEuRegion}
                             isEuUser={isEuUser}

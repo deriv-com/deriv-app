@@ -53,7 +53,11 @@ export const AccountSwitcherWalletItem = observer(
                 data-testid='account-switcher-wallet-item'
                 onClick={onAccountSwitch}
                 // SonarLint offers to add handler for onKeyDown event if we have onClick event handler
-                onKeyDown={onAccountSwitch}
+                onKeyDown={event => {
+                    if (event.key === 'Enter') {
+                        onAccountSwitch();
+                    }
+                }}
             >
                 <div>
                     <AppLinkedWithWalletIcon

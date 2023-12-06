@@ -21,8 +21,8 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
     return (
         <React.Suspense fallback={<Loading />}>
             <Switch>
-                {getRoutesConfig().map(route => (
-                    <RouteWithSubRoutes key={route.id} {...route} {...props} />
+                {getRoutesConfig().map((route, idx) => (
+                    <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>
         </React.Suspense>

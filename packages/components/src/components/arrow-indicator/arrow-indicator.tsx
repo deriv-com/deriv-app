@@ -14,7 +14,7 @@ type TData = {
 };
 
 const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
-    const [is_hidden, setIsHidden] = React.useState(true);
+    const [is_visible, setIsVisible] = React.useState(false);
     const [data, setData] = React.useState<TData>({
         icon: '',
         previous_icon: '',
@@ -23,7 +23,7 @@ const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
     const has_comparable_values = !isNaN(Number(data.value)) && !isNaN(Number(value));
     const timeout_id = React.useRef<ReturnType<typeof setTimeout>>();
     React.useEffect(() => {
-        setIsHidden(false);
+        setIsVisible(true);
 
         if (data.value !== Number(value)) {
             setData(prev_data => {
@@ -39,17 +39,18 @@ const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
 
             clearTimeout(timeout_id.current);
             timeout_id.current = setTimeout(() => {
-                setIsHidden(true);
+                setIsVisible(false);
             }, 3000);
         }
         return () => clearTimeout(timeout_id.current);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
-    if (!has_comparable_values || is_hidden) return <div className={classname} />;
     return (
-        <div className={classname}>
-            <Icon icon={previous_value === Number(value) ? previous_icon : icon} />
+        <div className={classname} data-testid='dt_arrow_indicator'>
+            {has_comparable_values && is_visible ? (
+                <Icon icon={previous_value === Number(value) ? previous_icon : icon} />
+            ) : null}
         </div>
     );
 };

@@ -7,7 +7,6 @@ import ContractUpdateForm from '../contract-update-form';
 const contract_info = mockContractInfo({
     contract_id: 1,
     contract_type: CONTRACT_TYPES.ACCUMULATOR,
-    is_sold: 0,
     is_valid_to_cancel: 1,
     profit: 50,
 });

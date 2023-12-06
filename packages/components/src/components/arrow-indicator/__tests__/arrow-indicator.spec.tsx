@@ -6,13 +6,9 @@ import Icon from '../../icon/icon';
 jest.mock('../../icon/icon', () => jest.fn((props: React.ComponentProps<typeof Icon>) => <div>{props.icon}</div>));
 
 describe('ArrowIndicator', () => {
-    it('should not render if value is undefined', () => {
+    it('should render without an icon if value is undefined', () => {
         render(<ArrowIndicator />);
-        expect(screen.queryByText('IcProfit')).not.toBeInTheDocument();
-        expect(screen.queryByText('IcLoss')).not.toBeInTheDocument();
-    });
-    it('should not render if value is null', () => {
-        render(<ArrowIndicator />);
+        expect(screen.queryByTestId('dt_arrow_indicator')).toBeInTheDocument();
         expect(screen.queryByText('IcProfit')).not.toBeInTheDocument();
         expect(screen.queryByText('IcLoss')).not.toBeInTheDocument();
     });

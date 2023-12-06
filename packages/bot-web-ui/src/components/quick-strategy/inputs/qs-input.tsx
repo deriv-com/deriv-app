@@ -29,24 +29,24 @@ const QSInput: React.FC<TQSInput> = observer(
         const { setFieldValue, setFieldTouched } = useFormikContext();
         const is_number = type === 'number';
 
-        const sendPlusValueToRudderstack = (key: string, value: string) => {
+        const sendPlusValueToRudderstack = (value: string) => {
             Analytics.trackEvent('ce_bot_quick_strategy_form', {
                 action: 'change_parameter_value',
-                parameter_value: key,
+                parameter_value: value,
                 plus_push_amount: value,
             });
         };
 
-        const sendMinusValueToRudderstack = (key: string, value: string) => {
+        const sendMinusValueToRudderstack = (value: string) => {
             Analytics.trackEvent('ce_bot_quick_strategy_form', {
                 action: 'change_parameter_value',
-                parameter_value: key,
+                parameter_value: value,
                 minus_push_amount: value,
             });
         };
 
         const debounceChangePlus = React.useCallback(
-            debounce(sendMinusValueToRudderstack, DEBOUNCE_INTERVAL_TIME, {
+            debounce(sendPlusValueToRudderstack, DEBOUNCE_INTERVAL_TIME, {
                 trailing: true,
                 leading: false,
             }),
@@ -54,7 +54,7 @@ const QSInput: React.FC<TQSInput> = observer(
         );
 
         const debounceChangeMinus = React.useCallback(
-            debounce(sendPlusValueToRudderstack, DEBOUNCE_INTERVAL_TIME, {
+            debounce(sendMinusValueToRudderstack, DEBOUNCE_INTERVAL_TIME, {
                 trailing: true,
                 leading: false,
             }),
@@ -111,7 +111,6 @@ const QSInput: React.FC<TQSInput> = observer(
                                                         const value = Number(field.value) - 1;
                                                         handleChange(e, String(value % 1 ? value.toFixed(2) : value));
                                                         debounceChangeMinus(
-                                                            e,
                                                             String(value % 1 ? value.toFixed(2) : value)
                                                         );
                                                     }}
@@ -128,7 +127,6 @@ const QSInput: React.FC<TQSInput> = observer(
                                                         const value = Number(field.value) + 1;
                                                         handleChange(e, String(value % 1 ? value.toFixed(2) : value));
                                                         debounceChangePlus(
-                                                            e,
                                                             String(value % 1 ? value.toFixed(2) : value)
                                                         );
                                                     }}

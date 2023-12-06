@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 
 export type TDescription = Pick<TContent, 'type' | 'content' | 'src' | 'imageclass'>;
 
-export type TFaqContent = Pick<TContent, 'title' | 'description' | 'src' | 'tab_id'>;
+export type TFaqContent = Pick<TContent, 'title' | 'description' | 'src' | 'tab_id' | 'search_id'>;
 
 export type TGuideContent = Omit<TContent, 'title' | 'description'>;
 
@@ -15,11 +15,12 @@ export type TContent = {
     id: number;
     src?: string;
     subtype?: string;
-    title: string;
+    title?: string;
     type: string;
     url?: string;
     imageclass?: string;
     tab_id: number;
+    search_id: string;
 };
 
 export const user_guide_content: TUserGuideContent[] = [
@@ -30,6 +31,7 @@ export const user_guide_content: TUserGuideContent[] = [
         content: localize('Get started on Deriv Bot'),
         src: getImageLocation('dbot-onboard-tour.png'),
         tab_id: 0,
+        search_id: 'ugc-0',
     },
     {
         id: 2,
@@ -38,6 +40,7 @@ export const user_guide_content: TUserGuideContent[] = [
         content: localize('Let’s build a bot!'),
         src: getImageLocation('bot-builder-tour.png'),
         tab_id: 0,
+        search_id: 'ugc-1',
     },
 ];
 
@@ -49,6 +52,7 @@ export const guide_content: TGuideContent[] = [
         url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
         src: getImageLocation('video_dbot.webp'),
         tab_id: 0,
+        search_id: 'gc-0',
     },
 ];
 
@@ -64,6 +68,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-0',
     },
     {
         title: localize('Where do I find the blocks I need?'),
@@ -104,6 +109,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-1',
     },
     {
         title: localize('How do I remove blocks from the workspace?'),
@@ -116,6 +122,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-2',
     },
     {
         title: localize('How do I create variables?'),
@@ -138,6 +145,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-3',
     },
     {
         title: localize('Do you offer pre-built trading bots on Deriv Bot?'),
@@ -150,6 +158,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-4',
     },
     {
         title: localize('What is a quick strategy?'),
@@ -190,6 +199,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-5',
     },
     {
         title: localize('How do I save my strategy?'),
@@ -202,6 +212,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-6',
     },
     {
         title: localize('How do I import my own trading bot into Deriv Bot?'),
@@ -250,6 +261,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-7',
     },
     {
         title: localize('How do I reset the workspace?'),
@@ -262,6 +274,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-8',
     },
     {
         title: localize('How do I clear my transaction log?'),
@@ -284,6 +297,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-9',
     },
     {
         title: localize('How do I control my losses with Deriv Bot?'),
@@ -363,6 +377,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-10',
     },
     {
         title: localize('Can I run Deriv Bot on multiple tabs in my web browser?'),
@@ -375,6 +390,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-11',
     },
     {
         title: localize('Can I trade cryptocurrencies on Deriv Bot?'),
@@ -385,6 +401,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-12',
     },
     {
         title: localize('Do you sell trading bots?'),
@@ -397,6 +414,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-13',
     },
     {
         title: localize('In which countries is Deriv Bot available?'),
@@ -409,6 +427,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-14',
     },
     {
         title: localize('If I close my web browser, will Deriv Bot continue to run?'),
@@ -419,6 +438,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-15',
     },
     {
         title: localize('What are the most popular strategies for automated trading?'),
@@ -431,6 +451,7 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-16',
     },
     {
         title: localize('How do I build a trading bot?'),
@@ -443,5 +464,6 @@ export const faq_content: TFaqContent[] = [
             },
         ],
         tab_id: 2,
+        search_id: 'faq-17',
     },
 ];

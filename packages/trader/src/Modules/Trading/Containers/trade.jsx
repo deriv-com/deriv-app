@@ -201,7 +201,7 @@ const Trade = observer(() => {
                                     is_disabled={
                                         !show_digits_stats ||
                                         !is_trade_enabled ||
-                                        form_components.length ||
+                                        form_components.length === 0 ||
                                         is_chart_loading ||
                                         should_show_active_symbols_loading
                                     }

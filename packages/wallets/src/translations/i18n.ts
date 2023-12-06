@@ -1,5 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { sha256 as SHA256 } from 'sha.js';
 import DE from './de.json';
 import EN from './en.json';
 import ID from './id.json';
@@ -48,6 +49,14 @@ const resources = {
     },
 };
 
+function generateKey(inputString: string) {
+    // Convert the string to an array buffer
+    const key = new SHA256().update(inputString).digest('hex');
+
+    // NOTE: If there are key collisions, increase the substring length
+    return key.substring(0, 8);
+}
+
 i18n.use(initReactI18next).init({
     defaultNS: 'translations',
     fallbackLng: 'EN',
@@ -57,8 +66,7 @@ i18n.use(initReactI18next).init({
         bindI18n: 'loaded languageChanged',
         bindI18nStore: 'added',
         hashTransKey(defaultValue: string) {
-            // FIX: replace this temporary key finding until we have a better key generation
-            return Object.entries(EN).find(([, value]) => value === defaultValue)?.[0] ?? defaultValue;
+            return generateKey(defaultValue);
         },
         useSuspense: false,
     },

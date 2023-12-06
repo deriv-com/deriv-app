@@ -73,12 +73,10 @@ const BotBuilder = observer(() => {
                     'bot-builder--inactive': is_preview_on_popup,
                     'bot-builder--tour-active': active_tour,
                 })}
-                data-testid='bot-builder-container'
             >
                 {is_preview_on_popup ? null : (
                     <div
                         id='scratch_div'
-                        data-testid='preview-container'
                         ref={el_ref}
                         style={{
                             width: 'calc(100vw - 3.2rem)',

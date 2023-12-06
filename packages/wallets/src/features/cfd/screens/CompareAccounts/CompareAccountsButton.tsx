@@ -26,21 +26,12 @@ import './CompareAccountsButton.scss';
 
 type TCompareAccountButton = {
     isAccountAdded: boolean;
-    isCrypto: boolean;
-    isDemo: boolean;
     marketType: THooks.AvailableMT5Accounts['market_type'];
     platform: TPlatforms.All;
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const CompareAccountsButton = ({
-    isAccountAdded,
-    isCrypto,
-    isDemo,
-    marketType,
-    platform,
-    shortCode,
-}: TCompareAccountButton) => {
+const CompareAccountsButton = ({ isAccountAdded, marketType, platform, shortCode }: TCompareAccountButton) => {
     const history = useHistory();
     const { show } = useModal();
 
@@ -55,6 +46,12 @@ const CompareAccountsButton = ({
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: walletAccounts } = useWalletAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
+
+    const {
+        is_crypto: isCrypto,
+        is_virtual: isDemo = false,
+        wallet_currency_type: walletCurrencyType,
+    } = activeWallet ?? {};
 
     const {
         account_opening_reason: accountOpeningReason,
@@ -101,9 +98,7 @@ const CompareAccountsButton = ({
 
     useEffect(() => {
         if (isAccountCreated) {
-            show(
-                <CTraderSuccessModal isDemo={isDemo} walletCurrencyType={activeWallet?.wallet_currency_type ?? 'USD'} />
-            );
+            show(<CTraderSuccessModal isDemo={isDemo} walletCurrencyType={walletCurrencyType ?? 'USD'} />);
         }
         if (createAccountError) {
             show(
@@ -113,7 +108,7 @@ const CompareAccountsButton = ({
                 />
             );
         }
-    }, [activeWallet?.wallet_currency_type, createAccountError, isAccountCreated, isDemo, show]);
+    }, [createAccountError, isAccountCreated, isDemo, show, walletCurrencyType]);
 
     const onClickAdd = () => {
         if (isCrypto && USDSVGWallet) {

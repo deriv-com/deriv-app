@@ -68,8 +68,6 @@ const CompareAccountsCard = ({
                 )}
                 <CompareAccountsButton
                     isAccountAdded={isAccountAdded}
-                    isCrypto={isCrypto}
-                    isDemo={isDemo}
                     marketType={marketType}
                     platform={platform}
                     shortCode={shortCode}

@@ -3,8 +3,9 @@ import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
 import { FastMarker } from 'Modules/SmartChart';
+import { FastMarkerBeta } from 'Modules/SmartChartBeta';
+import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
 import { getDecimalPlaces, isMobile } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
@@ -14,6 +15,7 @@ type TAccumulatorsProfitLossTooltip = {
     alignment?: string;
     className?: string;
     should_show_profit_text?: boolean;
+    is_beta_chart?: boolean;
 } & TContractInfo;
 
 export type TRef = {
@@ -33,6 +35,7 @@ const AccumulatorsProfitLossTooltip = ({
     profit,
     profit_percentage,
     should_show_profit_text,
+    is_beta_chart,
 }: TAccumulatorsProfitLossTooltip) => {
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(false);
     const won = Number(profit) >= 0;
@@ -91,13 +94,15 @@ const AccumulatorsProfitLossTooltip = ({
                 currency={currency}
                 current_spot={current_spot}
                 current_spot_time={current_spot_time}
+                is_beta_chart={is_beta_chart}
                 profit_value={should_show_profit_percentage ? profit_percentage : profit}
                 should_show_profit_percentage={should_show_profit_percentage}
             />
         );
 
+    const FastMarkerComponent = is_beta_chart ? FastMarkerBeta : FastMarker;
     return is_sold && exit_tick_time ? (
-        <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
+        <FastMarkerComponent markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')}>
             <span
                 className={`${className}__spot-circle`}
                 onMouseEnter={() => setIsTooltipOpen(true)}
@@ -123,7 +128,7 @@ const AccumulatorsProfitLossTooltip = ({
                     </Text>
                 </div>
             </CSSTransition>
-        </FastMarker>
+        </FastMarkerComponent>
     ) : null;
 };
 

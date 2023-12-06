@@ -4,6 +4,7 @@ import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isEnded, isAccumulatorContract, isDigitContract } from '@deriv/shared';
 import { ChartTitle } from 'Modules/SmartChart';
+import { ChartTitleBeta } from 'Modules/SmartChartBeta';
 import BuyToastNotification from './buy-toast-notification';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -13,6 +14,7 @@ type TTopWidgets = {
     is_digits_widget_active?: boolean;
     is_mobile?: boolean;
     is_title_enabled?: boolean;
+    is_beta_chart?: boolean;
     onSymbolChange?: ReturnType<typeof useTraderStore>['onChange'];
     open?: boolean;
     open_market?: {
@@ -24,11 +26,12 @@ type TTopWidgets = {
 };
 
 const RecentTradeInfo = observer(() => {
-    const { contract_trade } = useStore();
-    const { granularity, filtered_contracts } = contract_trade;
+    const { contract_trade, client } = useStore();
+    const { granularity, filtered_contracts, markers_array } = contract_trade;
 
-    const latest_tick_contract = filtered_contracts[filtered_contracts.length - 1];
-
+    const latest_tick_contract = client.is_beta_chart
+        ? filtered_contracts[filtered_contracts.length - 1]
+        : markers_array[markers_array.length - 1];
     if (
         !latest_tick_contract?.contract_info.tick_stream ||
         isAccumulatorContract(latest_tick_contract.contract_info.contract_type)
@@ -57,9 +60,11 @@ const TopWidgets = ({
     open_market,
     open,
     is_digits_widget_active,
+    is_beta_chart,
 }: TTopWidgets) => {
+    const ChartTitleComponent = is_beta_chart ? ChartTitleBeta : ChartTitle;
     const ChartTitleLocal = (
-        <ChartTitle
+        <ChartTitleComponent
             open_market={open_market}
             open={open}
             enabled={is_title_enabled}

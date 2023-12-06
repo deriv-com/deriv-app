@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletButton, WalletText } from '../../components/Base';
@@ -22,15 +23,18 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                 {isMobile ? (
                     <div className='wallets-cfd-list__header-description'>
                         <WalletText size='sm'>
-                            Trade with leverage and tight spreads for better returns on trades.{' '}
-                            <a
-                                className='wallets-cfd-list__header-description__link'
-                                href='https://deriv.com/trade-types/cfds/'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                            >
-                                Learn more
-                            </a>
+                            <Trans
+                                components={[
+                                    <a
+                                        className='wallets-cfd-list__header-description__link'
+                                        href='https://deriv.com/trade-types/cfds/'
+                                        key={0}
+                                        rel='noopener noreferrer'
+                                        target='_blank'
+                                    />,
+                                ]}
+                                defaults='Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
+                            />
                         </WalletText>
                         <WalletButton
                             onClick={() => {
@@ -60,15 +64,18 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                             </WalletButton>
                         </div>
                         <WalletText size='md'>
-                            Trade with leverage and tight spreads for better returns on trades.{' '}
-                            <a
-                                className='wallets-cfd-list__header-description__link'
-                                href='https://deriv.com/trade-types/cfds/'
-                                rel='noopener noreferrer'
-                                target='_blank'
-                            >
-                                Learn more
-                            </a>
+                            <Trans
+                                components={[
+                                    <a
+                                        className='wallets-cfd-list__header-description__link'
+                                        href='https://deriv.com/trade-types/cfds/'
+                                        key={0}
+                                        rel='noopener noreferrer'
+                                        target='_blank'
+                                    />,
+                                ]}
+                                defaults='Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
+                            />
                         </WalletText>
                     </div>
                 )}

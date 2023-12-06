@@ -2,12 +2,12 @@ import moment from 'moment';
 import { isAccumulatorContract, isEmptyObject, getEndTime } from '@deriv/shared';
 import ServerTime from '../../_common/base/server_time';
 
-export const getChartConfig = contract_info => {
+export const getChartConfig = (contract_info, is_beta_chart) => {
     if (isEmptyObject(contract_info)) return null;
     const start = contract_info.date_start;
     const end = getEndTime(contract_info);
     const granularity = getChartGranularity(start, end || null);
-    const chart_type = getChartType(start, end || null);
+    const chart_type = getChartType(start, end || null, is_beta_chart);
     const is_accumulator_contract = isAccumulatorContract(contract_info.contract_type);
     // setting start_epoch and scroll_to_epoch for accumulator contracts
     // when contract is open, we get no more than 10 last ticks from BE, so we show 10 ticks when tick_stream.length === 10
@@ -18,7 +18,7 @@ export const getChartConfig = contract_info => {
     const start_epoch = should_show_10_last_ticks ? first_tick_epoch : start;
     const scroll_to_epoch = should_show_10_last_ticks ? first_tick_epoch : contract_info.purchase_time;
     return {
-        chart_type: contract_info.tick_count ? 'line' : chart_type,
+        chart_type: contract_info.tick_count ? (is_beta_chart ? 'line' : 'mountain') : chart_type,
         granularity: contract_info.tick_count ? 0 : granularity,
         end_epoch: end,
         start_epoch,
@@ -37,10 +37,10 @@ const hour_to_granularity_map = [
 
 const getExpiryTime = time => time || ServerTime.get().unix();
 
-export const getChartType = (start_time, expiry_time) => {
+export const getChartType = (start_time, expiry_time, is_beta_chart) => {
     const duration = moment.duration(moment.unix(getExpiryTime(expiry_time)).diff(moment.unix(start_time))).asHours();
     // use line chart if duration is equal or less than 1 hour
-    return duration <= 1 ? 'line' : 'candle';
+    return duration <= 1 ? (is_beta_chart ? 'line' : 'mountain') : 'candle';
 };
 
 export const getChartGranularity = (start_time, expiry_time) =>

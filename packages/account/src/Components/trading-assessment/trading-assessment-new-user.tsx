@@ -56,7 +56,7 @@ const TradingAssessmentNewUser = observer(
                     return { ...accumulator };
                 }, {});
             }
-            onSubmit(getCurrentStep() - 1, process_form_values, goToNextStep, null, should_override);
+            onSubmit(getCurrentStep() - 1, process_form_values, null, goToNextStep, should_override);
         };
 
         return (

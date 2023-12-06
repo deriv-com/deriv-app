@@ -54,6 +54,11 @@ const getMockBlockly = (type: string) => ({
 describe('BotBuilder', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
     beforeEach(() => {
+        Object.defineProperty(window, 'performance', {
+            value: {
+                clearMeasures: jest.fn(),
+            },
+        });
         const mock_store = mockStore({
             ui: {
                 setAccountSwitcherDisabledMessage: jest.fn(),

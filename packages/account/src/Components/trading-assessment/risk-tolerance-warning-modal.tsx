@@ -41,7 +41,7 @@ const RiskToleranceWarningModal = ({
                         <Button
                             type='button'
                             large
-                            text={button_text || localize('OK')}
+                            text={button_text ?? localize('OK')}
                             primary
                             onClick={handleAcceptRisk}
                         />
@@ -79,7 +79,7 @@ const RiskToleranceWarningModal = ({
                         <Button
                             type='button'
                             large
-                            text={button_text || localize('OK')}
+                            text={button_text ?? localize('OK')}
                             primary
                             onClick={handleAcceptRisk}
                         />

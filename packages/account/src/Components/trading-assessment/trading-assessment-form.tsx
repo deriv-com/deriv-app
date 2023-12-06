@@ -34,7 +34,7 @@ const TradingAssessmentForm = ({
     is_mobile,
 }: TradingAssessmentFormProps) => {
     const assessment_questions = getTradingAssessmentQuestions();
-    const stored_items = parseInt(localStorage.getItem('current_question_index') || '0');
+    const stored_items = parseInt(localStorage.getItem('current_question_index') ?? '0');
     const [is_section_filled, setIsSectionFilled] = React.useState(false);
     const [current_question_details, setCurrentQuestionDetails] = React.useState({
         current_question_index: 0,
@@ -112,9 +112,7 @@ const TradingAssessmentForm = ({
     const handleValueSelection = (
         e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>,
         form_control: keyof TTradingAssessmentForm,
-        callBackFn: {
-            (form_control: keyof TTradingAssessmentForm, value: string): void;
-        }
+        callBackFn: (form_control: keyof TTradingAssessmentForm, value: string) => void
     ) => {
         if (typeof e.persist === 'function') e.persist();
         callBackFn(form_control, e.target.value);
@@ -227,7 +225,7 @@ const TradingAssessmentForm = ({
                                                 list={answer_options ?? []}
                                                 onChange={e => {
                                                     handleValueSelection(
-                                                        e as React.ChangeEvent<HTMLInputElement>,
+                                                        e,
                                                         form_control as keyof TTradingAssessmentForm,
                                                         setFieldValue
                                                     );

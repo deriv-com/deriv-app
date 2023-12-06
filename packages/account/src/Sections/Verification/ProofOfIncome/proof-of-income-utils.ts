@@ -13,7 +13,7 @@ export const getPoincDocumentsList = () =>
         { text: localize('Tax return'), value: 'tax_return' },
         { text: localize('Employment contract'), value: 'employment_contract' },
         { text: localize('Payslip'), value: 'payslip' },
-        { text: localize('Country of issue'), value: 'coi' },
+        { text: localize('Certificate of incorporation'), value: 'coi' },
         { text: localize('Business proof of address'), value: 'business_poa' },
         { text: localize('Article of association'), value: 'article_of_association' },
         { text: localize('Memorandum'), value: 'memorandum' },

@@ -8,6 +8,10 @@ describe('Dropzone', () => {
         global.URL.createObjectURL = jest.fn();
     });
 
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
+
     it('should open file explorer when clicking on the button', async () => {
         const file = new File(['foo'], 'foo.txt', { type: 'text/plain' });
         render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone-icon'>icon</i>} />);

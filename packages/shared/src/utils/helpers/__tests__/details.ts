@@ -18,14 +18,14 @@ describe('formatResetDuration', () => {
             date_expiry: 1698850564,
             date_start: 1698843364,
         } as Parameters<typeof formatResetDuration>[0];
-        expect(formatResetDuration(contract_info_mock)).toEqual('1 hour ');
+        expect(formatResetDuration(contract_info_mock)).toEqual('1 hour');
     });
     it('should return correct reset time if duration is 1 hour', () => {
         const contract_info_mock = {
             date_expiry: 1698848317,
             date_start: 1698844717,
         } as Parameters<typeof formatResetDuration>[0];
-        expect(formatResetDuration(contract_info_mock)).toEqual('30 minutes ');
+        expect(formatResetDuration(contract_info_mock)).toEqual('30 minutes');
     });
     it('should return correct reset time if duration is 1 minute', () => {
         const contract_info_mock = {
@@ -39,7 +39,7 @@ describe('formatResetDuration', () => {
             date_expiry: 1698845083,
             date_start: 1698844963,
         } as Parameters<typeof formatResetDuration>[0];
-        expect(formatResetDuration(contract_info_mock)).toEqual('1 minute ');
+        expect(formatResetDuration(contract_info_mock)).toEqual('1 minute');
     });
     it('should return correct reset time if duration is 3 minutes', () => {
         const contract_info_mock = {
@@ -53,21 +53,21 @@ describe('formatResetDuration', () => {
             date_expiry: 1698848874,
             date_start: 1698845274,
         } as Parameters<typeof formatResetDuration>[0];
-        expect(formatResetDuration(contract_info_mock)).toEqual('30 minutes ');
+        expect(formatResetDuration(contract_info_mock)).toEqual('30 minutes');
     });
     it('should return correct reset time if duration is 110 minutes', () => {
         const contract_info_mock = {
             date_expiry: 1698851951,
             date_start: 1698845351,
         } as Parameters<typeof formatResetDuration>[0];
-        expect(formatResetDuration(contract_info_mock)).toEqual('55 minutes ');
+        expect(formatResetDuration(contract_info_mock)).toEqual('55 minutes');
     });
     it('should return correct reset time if duration is 120 minutes', () => {
         const contract_info_mock = {
             date_expiry: 1698852623,
             date_start: 1698845423,
         } as Parameters<typeof formatResetDuration>[0];
-        expect(formatResetDuration(contract_info_mock)).toEqual('1 hour ');
+        expect(formatResetDuration(contract_info_mock)).toEqual('1 hour');
     });
     it('should return correct reset time if duration is 20 seconds', () => {
         const contract_info_mock = {
@@ -95,6 +95,6 @@ describe('formatResetDuration', () => {
             date_expiry: 1698852946,
             date_start: 1698845746,
         } as Parameters<typeof formatResetDuration>[0];
-        expect(formatResetDuration(contract_info_mock)).toEqual('1 hour ');
+        expect(formatResetDuration(contract_info_mock)).toEqual('1 hour');
     });
 });

@@ -584,11 +584,11 @@
     opacity: 0.3;
 
     &--to-bottom {
-        background-image: linear-gradient(to bottom, transparent, #39b19d);
+        background-image: linear-gradient(to bottom, transparent, $COLOR_GREEN_1);
         bottom: 0;
     }
     &--to-top {
-        background-image: linear-gradient(to top, transparent, #39b19d);
+        background-image: linear-gradient(to top, transparent, $COLOR_GREEN_1);
     }
 }
 

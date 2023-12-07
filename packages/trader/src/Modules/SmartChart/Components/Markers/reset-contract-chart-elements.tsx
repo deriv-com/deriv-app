@@ -12,11 +12,9 @@ const ResetContractChartElements = ({ contract_info, is_bottom_widget_visible }:
     const is_reset_call = /CALL/i.test(contract_type ?? '');
 
     // Gradient logic: when reset_time has come we need to reapply gradient. For CALL shade will be applied to the lowest barrier, for PUT - the the highest barrier
-    let y_axis_coordinates: number;
+    let y_axis_coordinates = Math.max(Number(entry_spot), Number(reset_barrier));
     if (is_reset_call) {
         y_axis_coordinates = Math.min(Number(entry_spot), Number(reset_barrier));
-    } else {
-        y_axis_coordinates = Math.max(Number(entry_spot), Number(reset_barrier));
     }
 
     return (

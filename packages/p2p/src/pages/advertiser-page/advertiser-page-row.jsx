@@ -16,6 +16,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
     const { getRate } = useExchangeRate();
     const {
         client: { currency },
+        ui: { is_mobile },
     } = useStore();
     const {
         effective_rate,
@@ -41,11 +42,25 @@ const AdvertiserPageRow = ({ row: advert }) => {
         market_rate: effective_rate,
     });
 
-    const showAdForm = () => {
+    const showBuySellForm = () => {
         buy_sell_store.setSelectedAdState(advert);
         showModal({
             key: 'BuySellModal',
         });
+    };
+
+    const onBuySellButtonClick = () => {
+        if (general_store.is_advertiser) {
+            showBuySellForm();
+        } else {
+            showModal({
+                key: 'NicknameModal',
+                props: {
+                    onConfirm: showBuySellForm,
+                    should_hide_close_btn: !is_mobile,
+                },
+            });
+        }
     };
 
     if (isMobile()) {
@@ -93,7 +108,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
                     <Table.Cell />
                 ) : (
                     <Table.Cell className='advertiser-page-adverts__button'>
-                        <Button primary large onClick={showAdForm} is_disabled={general_store.is_barred}>
+                        <Button primary large onClick={onBuySellButtonClick} is_disabled={general_store.is_barred}>
                             {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
                         </Button>
                     </Table.Cell>
@@ -129,7 +144,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
                 <Table.Cell />
             ) : (
                 <Table.Cell className='advertiser-page-adverts__button'>
-                    <Button is_disabled={general_store.is_barred} onClick={showAdForm} primary small>
+                    <Button is_disabled={general_store.is_barred} onClick={onBuySellButtonClick} primary small>
                         {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
                     </Button>
                 </Table.Cell>

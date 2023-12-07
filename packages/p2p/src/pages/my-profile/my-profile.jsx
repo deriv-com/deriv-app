@@ -12,6 +12,10 @@ import MyProfileHeader from './my-profile-header';
 
 const MyProfile = () => {
     const { general_store, my_profile_store } = useStores();
+    const is_poi_poa_verified =
+        general_store.poi_status === 'verified' &&
+        general_store.p2p_poa_required &&
+        general_store.poa_status === 'verified';
 
     React.useEffect(() => {
         if (general_store.active_index !== 3) general_store.setActiveIndex(3);
@@ -43,26 +47,26 @@ const MyProfile = () => {
         );
     }
 
-    if (!general_store.is_advertiser) {
-        return <Verification />;
+    if (general_store.is_advertiser || is_poi_poa_verified) {
+        return (
+            <AutoSizer>
+                {({ height, width }) => (
+                    <div className='my-profile' style={{ height, width }}>
+                        <div className='my-profile__content'>
+                            <DailyLimitModal />
+                            <MyProfileDetailsContainer />
+                            <DesktopWrapper>
+                                <MyProfileHeader />
+                            </DesktopWrapper>
+                            <MyProfileContent />
+                        </div>
+                    </div>
+                )}
+            </AutoSizer>
+        );
     }
 
-    return (
-        <AutoSizer>
-            {({ height, width }) => (
-                <div className='my-profile' style={{ height, width }}>
-                    <div className='my-profile__content'>
-                        <DailyLimitModal />
-                        <MyProfileDetailsContainer />
-                        <DesktopWrapper>
-                            <MyProfileHeader />
-                        </DesktopWrapper>
-                        <MyProfileContent />
-                    </div>
-                </div>
-            )}
-        </AutoSizer>
-    );
+    return <Verification />;
 };
 
 export default observer(MyProfile);

@@ -105,6 +105,7 @@ const AppNotificationMessages = ({
                   'poi_expired',
                   'poi_failed',
                   'poi_verified',
+                  'p2p_advertiser_nickname_added',
                   'p2p_daily_limit_increase',
                   'resticted_mt5_with_failed_poa',
                   'resticted_mt5_with_pending_poa',

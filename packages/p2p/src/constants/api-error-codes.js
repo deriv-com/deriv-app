@@ -1,6 +1,7 @@
 export const api_error_codes = Object.freeze({
     ADVERT_SAME_LIMITS: 'AdvertSameLimits',
     ADVERTISER_NOT_FOUND: 'AdvertiserNotFound',
+    ADVERTISER_NOT_REGISTERED: 'AdvertiserNotRegistered',
     DUPLICATE_ADVERT: 'DuplicateAdvert',
     EXCESSIVE_VERIFICATION_FAILURES: 'ExcessiveVerificationFailures',
     EXCESSIVE_VERIFICATION_REQUESTS: 'ExcessiveVerificationRequests',

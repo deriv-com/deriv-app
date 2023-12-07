@@ -423,7 +423,7 @@ export default class MyAdsStore extends BaseStore {
                     }
                 } else if (response.error.code === api_error_codes.PERMISSION_DENIED) {
                     general_store.setIsBlocked(true);
-                } else {
+                } else if (response.error.code !== api_error_codes.ADVERTISER_NOT_REGISTERED) {
                     this.setApiErrorMessage(response.error.message);
                 }
 

@@ -9,6 +9,7 @@ import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 import { Localize, localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { OnlineStatusAvatar } from 'Components/online-status';
 import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
@@ -20,8 +21,10 @@ import './buy-sell-row.scss';
 
 const BuySellRow = ({ row: advert }) => {
     const { buy_sell_store, general_store } = useStores();
+    const { showModal } = useModalManagerContext();
     const {
         client: { currency },
+        ui: { is_mobile },
     } = useStore();
     const history = useHistory();
     const { getRate } = useExchangeRate();
@@ -70,12 +73,31 @@ const BuySellRow = ({ row: advert }) => {
         exchange_rate: getRate(local_currency),
         market_rate: effective_rate,
     });
+    const is_poi_poa_verified =
+        general_store.poi_status === 'verified' &&
+        general_store.p2p_poa_required &&
+        general_store.poa_status === 'verified';
     const onClickRow = () => {
-        if (!general_store.is_advertiser) {
-            buy_sell_store.setShouldShowVerification(true);
-        } else if (!general_store.is_barred) {
+        if ((general_store.is_advertiser || is_poi_poa_verified) && !general_store.is_barred) {
             buy_sell_store.showAdvertiserPage(advert);
             history.push({ pathname: routes.p2p_advertiser_page, search: `?id=${advert.advertiser_details.id}` });
+        } else if (!general_store.is_advertiser) {
+            buy_sell_store.setShouldShowVerification(true);
+        }
+    };
+
+    const onClickBuySell = () => {
+        if (general_store.is_advertiser) buy_sell_store.setSelectedAdvert(advert);
+        else if (is_poi_poa_verified) {
+            showModal({
+                key: 'NicknameModal',
+                props: {
+                    onConfirm: () => buy_sell_store.setSelectedAdvert(advert),
+                    should_hide_close_btn: !is_mobile,
+                },
+            });
+        } else {
+            buy_sell_store.setShouldShowVerification(true);
         }
     };
 
@@ -169,7 +191,7 @@ const BuySellRow = ({ row: advert }) => {
                             className='buy-sell-row__button'
                             is_disabled={general_store.is_barred}
                             large
-                            onClick={() => buy_sell_store.setSelectedAdvert(advert)}
+                            onClick={onClickBuySell}
                             primary
                         >
                             {is_buy_advert ? (
@@ -271,12 +293,7 @@ const BuySellRow = ({ row: advert }) => {
                 <Table.Cell />
             ) : (
                 <Table.Cell className='buy-sell__button'>
-                    <Button
-                        is_disabled={general_store.is_barred}
-                        onClick={() => buy_sell_store.setSelectedAdvert(advert)}
-                        primary
-                        small
-                    >
+                    <Button is_disabled={general_store.is_barred} onClick={onClickBuySell} primary small>
                         {is_buy_advert
                             ? localize('Buy {{account_currency}}', { account_currency })
                             : localize('Sell {{account_currency}}', { account_currency })}

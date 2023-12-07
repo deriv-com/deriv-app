@@ -18,6 +18,10 @@ const MyAdsState = ({ message }) => (
 
 const MyAds = () => {
     const { general_store, my_ads_store, my_profile_store } = useStores();
+    const is_poi_poa_verified =
+        general_store.poi_status === 'verified' &&
+        general_store.p2p_poa_required &&
+        general_store.poa_status === 'verified';
 
     React.useEffect(() => {
         my_ads_store.setIsLoading(true);
@@ -28,7 +32,6 @@ const MyAds = () => {
 
         return () => {
             my_ads_store.setShowAdForm(false);
-            general_store.setShouldShowPopup(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -45,7 +48,7 @@ const MyAds = () => {
         return <MyAdsState message={my_ads_store.error_message} />;
     }
 
-    if (general_store.is_advertiser) {
+    if (general_store.is_advertiser || is_poi_poa_verified) {
         if (my_ads_store.show_ad_form) {
             return (
                 <div className='my-ads'>

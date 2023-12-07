@@ -135,16 +135,18 @@ const DxtradeEnterPasswordModal = () => {
     const successComponent = useMemo(() => {
         if (isSuccess && dxtradeAccountListSuccess) {
             return (
-                <CFDSuccess
-                    description={successDescription}
-                    displayBalance={dxtradeBalance ?? ''}
-                    marketType='all'
-                    platform={dxtradePlatform}
-                    renderButton={() => renderFooter}
-                    title={`Your ${PlatformDetails.dxtrade.title}${
-                        accountType === 'demo' ? ` ${accountType}` : ''
-                    } account is ready`}
-                />
+                <div className='wallets-success-btn'>
+                    <CFDSuccess
+                        description={successDescription}
+                        displayBalance={dxtradeBalance ?? ''}
+                        marketType='all'
+                        platform={dxtradePlatform}
+                        renderButton={() => renderFooter}
+                        title={`Your ${PlatformDetails.dxtrade.title}${
+                            accountType === 'demo' ? ` ${accountType}` : ''
+                        } account is ready`}
+                    />
+                </div>
             );
         }
     }, [

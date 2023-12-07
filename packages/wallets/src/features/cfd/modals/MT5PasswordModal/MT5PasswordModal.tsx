@@ -125,9 +125,11 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const renderSuccessButton = useCallback(() => {
         if (isDemo) {
             return (
-                <WalletButton isFullWidth onClick={() => hide()} size='lg'>
-                    Continue
-                </WalletButton>
+                <div className='wallets-success-btn'>
+                    <WalletButton isFullWidth onClick={() => hide()} size='lg'>
+                        OK
+                    </WalletButton>
+                </div>
             );
         }
         return (

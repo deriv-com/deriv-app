@@ -266,7 +266,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     </DesktopWrapper>
                     <MobileWrapper>
                         <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>
-                            {selected_route && selected_route.component && (
+                            {selected_route?.component && (
                                 <selected_route.component
                                     component_icon={selected_route.icon_component}
                                     history={history}

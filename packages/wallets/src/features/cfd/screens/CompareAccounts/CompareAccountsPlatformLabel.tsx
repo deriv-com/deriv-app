@@ -16,7 +16,8 @@ const CompareAccountsPlatformLabel = ({ platform }: TCompareAccountsPlatformLabe
     return (
         <div
             className={classNames('wallets-compare-accounts-platform-label', {
-                'wallet-compare-accounts-platform-label--other-cfds': platformType === 'OtherCFDs',
+                'wallets-compare-accounts-platform-label--ctrader': platformType === 'CTrader',
+                'wallets-compare-accounts-platform-label--other-cfds': platformType === 'OtherCFDs',
             })}
         >
             <WalletText align='center' as='p' color={headerColor[platformType]} size='xs' weight='bold'>

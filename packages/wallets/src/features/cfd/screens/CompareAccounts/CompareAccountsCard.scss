@@ -1,13 +1,11 @@
-.wallets-compare-accounts-main-container {
-    padding: 0 1rem;
-}
-
-.wallets-compare-accounts-card-container {
+.wallets-compare-accounts-card {
     position: relative;
     overflow: hidden;
     width: 27rem;
     border: 1px solid var(--general-hover);
     border-radius: 2.4rem;
+    margin: 0 1rem;
+
     &:hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
     }
@@ -31,5 +29,10 @@
         background: var(--status-transfer);
         color: var(--text-colored-background);
         transform: translateX(17rem) translateY(-2rem) rotate(45deg);
+
+        @include mobile {
+            padding: 0.1rem;
+            transform: translateX(8rem) translateY(-2rem) rotate(45deg);
+        }
     }
 }

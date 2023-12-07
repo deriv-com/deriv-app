@@ -1,15 +1,12 @@
 import React, { useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCFDAccountsList, useCFDCompareAccounts } from '@deriv/api';
-import { WalletText } from '../../../../components';
-import CloseIcon from '../../../../public/images/ic-close-dark.svg';
 import { CompareAccountsCarousel } from '../../components';
 import CFDCompareAccountsCard from './CompareAccountsCard';
 import { isCTraderAccountAdded, isDxtradeAccountAdded } from './compareAccountsConfig';
+import CompareAccountsHeader from './CompareAccountsHeader';
 import './CompareAccountsScreen.scss';
 
 const CompareAccountsScreen = () => {
-    const history = useHistory();
     const { data: activeWallet } = useActiveWalletAccount();
     // Temporary false until we have useIsEuRegion() ready
     const isEuRegion = false;
@@ -30,26 +27,10 @@ const CompareAccountsScreen = () => {
         [cfdAccounts, isDemo]
     );
 
-    const headerTitle = isEuRegion
-        ? `Deriv MT5 CFDs ${isDemo ? 'Demo' : 'real'} account`
-        : `Compare CFDs ${isDemo ? 'demo ' : ''}accounts`;
-
     return (
-        <div className='wallets-compare-accounts-container'>
-            <div className='wallets-compare-accounts-header'>
-                <div className='wallets-compare-accounts-header__title'>
-                    <WalletText size='xl' weight='bold'>
-                        {headerTitle}
-                    </WalletText>
-                </div>
-                <CloseIcon
-                    className='wallets-compare-accounts-header__close-icon'
-                    onClick={() => {
-                        history.push('/wallets');
-                    }}
-                />
-            </div>
-            <div className='wallets-compare-accounts-container__card-list'>
+        <div className='wallets-compare-accounts'>
+            <CompareAccountsHeader isDemo={isDemo} isEuRegion={isEuRegion} />
+            <div className='wallets-compare-accounts__card-list'>
                 <CompareAccountsCarousel>
                     {mt5Accounts?.map(item => (
                         <CFDCompareAccountsCard
@@ -63,18 +44,6 @@ const CompareAccountsScreen = () => {
                             shortCode={item?.shortcode}
                         />
                     ))}
-                    {/* Renders Deriv X data */}
-                    {mt5Accounts?.length && hasDxtradeAccountAvailable && dxtradeAccount && (
-                        <CFDCompareAccountsCard
-                            isAccountAdded={isDxtradeAdded}
-                            isDemo={isDemo}
-                            isEuRegion={isEuRegion}
-                            isEuUser={isEuUser}
-                            marketType={dxtradeAccount.market_type}
-                            platform={dxtradeAccount.platform}
-                            shortCode={dxtradeAccount.shortcode}
-                        />
-                    )}
                     {/* Renders cTrader data */}
                     {mt5Accounts?.length && hasCTraderAccountAvailable && ctraderAccount && (
                         <CFDCompareAccountsCard
@@ -85,6 +54,18 @@ const CompareAccountsScreen = () => {
                             marketType={ctraderAccount.market_type}
                             platform={ctraderAccount.platform}
                             shortCode={ctraderAccount.shortcode}
+                        />
+                    )}
+                    {/* Renders Deriv X data */}
+                    {mt5Accounts?.length && hasDxtradeAccountAvailable && dxtradeAccount && (
+                        <CFDCompareAccountsCard
+                            isAccountAdded={isDxtradeAdded}
+                            isDemo={isDemo}
+                            isEuRegion={isEuRegion}
+                            isEuUser={isEuUser}
+                            marketType={dxtradeAccount.market_type}
+                            platform={dxtradeAccount.platform}
+                            shortCode={dxtradeAccount.shortcode}
                         />
                     )}
                 </CompareAccountsCarousel>

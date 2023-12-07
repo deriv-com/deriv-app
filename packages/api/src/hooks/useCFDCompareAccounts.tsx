@@ -119,7 +119,7 @@ const useCFDCompareAccounts = () => {
     const { data: landingCompany } = useLandingCompany();
 
     const hasDxtradeAccountAvailable = landingCompany?.dxtrade_all_company;
-    const hasCTraderAccountAvailable = landingCompany?.ctrader?.all?.standard === 'svg';
+    const hasCTraderAccountAvailable = landingCompany?.ctrader?.all?.standard === JURISDICTION.SVG;
 
     const demoAvailableAccounts = useMemo(() => {
         if (!sortedMt5Accounts) return;

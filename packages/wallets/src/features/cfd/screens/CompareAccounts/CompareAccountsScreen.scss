@@ -1,61 +1,18 @@
-.wallets-compare-accounts-header {
-    display: flex;
-    align-items: center;
-    padding: 0 1rem;
-    height: 5rem;
-    border-bottom: 0.2rem solid #f2f3f4;
-    position: sticky;
-    top: 0;
-    background-color: #ffffff;
-    z-index: 999;
-
-    &__title {
-        display: flex;
-        width: 100%;
-        justify-content: center;
-    }
-
-    &__close-icon {
-        cursor: pointer;
-    }
-}
-
 .wallets-compare-accounts {
-    max-width: 123.2rem;
-    margin: auto;
+    width: 100vw;
+    height: 100vh;
 
-    &-container {
-        width: 100vw;
-        height: 100vh;
-
-        @include mobile {
-            margin: 0;
-            overflow-x: auto;
-            overflow-y: scroll;
-            padding: 0 0 20.1rem;
-            max-height: 80rem;
-        }
-
-        &__card-list {
-            display: flex;
-            justify-content: center;
-            padding: 2rem;
-        }
+    @include mobile {
+        margin: 0;
+        overflow-x: auto;
+        overflow-y: scroll;
+        padding: 0 0 20.1rem;
+        max-height: 80rem;
     }
 
-    &-labuan-tooltip {
-        position: relative;
-        left: 0.5rem;
-        top: 0.2rem;
-        &--msg {
-            position: relative;
-            width: 62%;
-            @include mobile {
-                display: block;
-                position: fixed;
-                width: 15.2rem;
-                right: 0;
-            }
-        }
+    &__card-list {
+        display: flex;
+        justify-content: center;
+        padding: 2rem;
     }
 }

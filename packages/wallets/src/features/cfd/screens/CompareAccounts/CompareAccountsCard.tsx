@@ -29,12 +29,12 @@ const CompareAccountsCard = ({
     shortCode,
 }: TCompareAccountsCard) => {
     return (
-        <div className='wallets-compare-accounts-main-container'>
-            <div className='wallets-compare-accounts-card-container'>
+        <div>
+            <div className='wallets-compare-accounts-card'>
                 <CompareAccountsPlatformLabel platform={platform} />
                 {platform === CFD_PLATFORMS.CTRADER && (
-                    <div className='compare-cfd-account-card-container__banner'>
-                        <WalletText size='xs' weight='bold'>
+                    <div className='wallets-compare-accounts-card__banner'>
+                        <WalletText color='white' size='xs' weight='bold'>
                             New!
                         </WalletText>
                     </div>
@@ -58,7 +58,7 @@ const CompareAccountsCard = ({
                     shortCode={shortCode}
                 />
                 {isEuUser && (
-                    <div className='compare-cfd-account-card-container__eu-clients'>
+                    <div className='wallets-compare-accounts-card__eu-clients'>
                         <WalletText color='red' size='2xs' weight='bold'>
                             *Boom 300 and Crash 300 Index
                         </WalletText>

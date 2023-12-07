@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import ArrowIcon from '../../../../public/images/ic-back-arrow.svg';
+import './CompareAccountsCarouselButton.scss';
 
 type TPrevNextButtonProps = {
     enabled: boolean;
@@ -13,16 +14,16 @@ const CFDCompareAccountsCarouselButton = (props: TPrevNextButtonProps) => {
 
     return (
         <button
-            className={classNames('wallets-compare-accounts-carousel__button', {
-                'wallets-compare-accounts-carousel__button--next': isNext,
-                'wallets-compare-accounts-carousel__button--prev': !isNext,
+            className={classNames('wallets-compare-accounts-carousel-button', {
+                'wallets-compare-accounts-carousel-button--next': isNext,
+                'wallets-compare-accounts-carousel-button--prev': !isNext,
             })}
             disabled={!enabled}
             onClick={onClick}
         >
             <ArrowIcon
-                className={classNames('wallets-compare-accounts-carousel__button__svg', {
-                    'wallets-compare-accounts-carousel__button__svg--next': isNext,
+                className={classNames('wallets-compare-accounts-carousel-button__svg', {
+                    'wallets-compare-accounts-carousel-button__svg--next': isNext,
                 })}
             />
         </button>

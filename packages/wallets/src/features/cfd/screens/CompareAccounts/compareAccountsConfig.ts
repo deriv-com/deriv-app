@@ -117,8 +117,9 @@ const getPlatformType = (platform: TPlatforms.All) => {
     switch (platform) {
         case CFD_PLATFORMS.MT5:
             return 'MT5';
-        case CFD_PLATFORMS.DXTRADE:
         case CFD_PLATFORMS.CTRADER:
+            return 'CTrader';
+        case CFD_PLATFORMS.DXTRADE:
         default:
             return 'OtherCFDs';
     }

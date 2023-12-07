@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useHover } from 'usehooks-ts';
 import { Tooltip, WalletText } from '../../../../components';
+import useDevice from '../../../../hooks/useDevice';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFD_PLATFORMS } from '../../constants';
@@ -59,6 +60,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
 
     const hoverRef = useRef(null);
     const isHovered = useHover(hoverRef);
+    const { isDesktop } = useDevice();
 
     const jurisdictionCardTitle =
         platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER
@@ -71,17 +73,17 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
 
     return (
         <React.Fragment>
-            <div className={'wallets-compare-accounts-icon-title'}>
+            <div className={'wallets-compare-accounts-title-icon'}>
                 <TradingPlatformIcon height={48} width={48} />
-                <div className='wallets-compare-accounts-icon-title__separator'>
+                <div className='wallets-compare-accounts-title-icon__separator'>
                     <WalletText align='center' as='h1' size='sm' weight='bold'>
                         {jurisdictionCardTitle}
                     </WalletText>
                     {marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN && (
                         <Tooltip
                             alignment='bottom'
-                            className='wallets-compare-accounts-tooltip'
-                            isVisible={isHovered}
+                            className='wallets-compare-accounts-title-icon__tooltip'
+                            isVisible={isHovered && isDesktop}
                             message={labuanJurisdictionMessage}
                         >
                             <div ref={hoverRef}>

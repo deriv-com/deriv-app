@@ -205,9 +205,10 @@ export default function mockWalletsAuthorize(context: Context) {
             throw new Error('authorize has not been prepopulated');
         }
 
-        const account = context.state.accounts.find(account => account.token === context.request.authorize);
+        const accountByToken = context.state.accounts.find(account => account.token === context.state.currentToken);
+        const accountByAuthorise = context.state.accounts.find(account => account.token === context.request.authorize);
 
         context.response.authorize.account_list = ACCOUNTS_LIST;
-        context.response.authorize.loginid = account.id;
+        context.response.authorize.loginid = accountByToken?.id || accountByAuthorise.id;
     }
 }

@@ -516,6 +516,7 @@ type TClientStore = {
     account_open_date: number | undefined;
     is_bot_allowed: boolean;
     setAccounts: (accounts: Record<string, TActiveAccount>) => void;
+    is_beta_chart: boolean;
 };
 
 type TCommonStoreError = {
@@ -686,6 +687,7 @@ type TUiStore = {
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
     toggleAdditionalKycInfoModal: () => void;
     toggleKycInformationSubmittedModal: () => void;
+    setAccountSwitcherDisabledMessage: () => void;
 };
 
 type TPortfolioStore = {

@@ -46,7 +46,7 @@ const default_mocked_store = mockStore({
             setContractTypes: jest.fn(),
             setMobileDigitView: jest.fn(),
             setIsDigitsWidgetActive: jest.fn(),
-            wsSendRequest: jest.fn(() => WS.storage.send([])),
+            wsSendRequest: jest.fn(() => jest.fn()),
             active_symbols: [{ symbol: 'R_10', pip: 2 }] as ActiveSymbols,
         },
     },

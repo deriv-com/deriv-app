@@ -132,11 +132,33 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         const trade_type_cat = await contracts_for.getTradeTypeCategoryByTradeType(data.tradetype);
         const selected_strategy = STRATEGIES[this.selected_strategy];
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
-        const strategy_dom = Blockly.Xml.textToDom(strategy_xml.default);
+        const parser = new DOMParser();
+        const strategy_dom = parser.parseFromString(strategy_xml.default, 'text/xml');
+
+        const addPredictionBlock = (value: string) => {
+            const tradeOptionsBlock = strategy_dom.querySelector('block[type="trade_definition_tradeoptions"]');
+            if (tradeOptionsBlock) {
+                // Update the has_prediction attribute
+                tradeOptionsBlock.querySelector('mutation')?.setAttribute('has_prediction', 'true');
+                // Create the <value name="PREDICTION"> block
+                const predictionValue = strategy_dom.createElement('value');
+                predictionValue.setAttribute('name', 'PREDICTION');
+                const shadowBlock = strategy_dom.createElement('shadow');
+                shadowBlock.setAttribute('type', 'math_number_positive');
+                shadowBlock.setAttribute('id', 'Vm_LKDLthv@XZ7iqJ?Z1');
+                const fieldBlock = strategy_dom.createElement('field');
+                fieldBlock.setAttribute('name', 'NUM');
+                fieldBlock.appendChild(strategy_dom.createTextNode(value));
+                shadowBlock.appendChild(fieldBlock);
+                predictionValue.appendChild(shadowBlock);
+                // Append the <value name="PREDICTION"> block as the last child
+                tradeOptionsBlock.appendChild(predictionValue);
+            }
+        };
 
         const modifyValueInputs = (key: string, value: number) => {
             const el_value_inputs = strategy_dom?.querySelectorAll(`value[strategy_value="${key}"]`);
-            el_value_inputs?.forEach((el_value_input: HTMLElement) => {
+            el_value_inputs?.forEach(el_value_input => {
                 if (key.includes('boolean'))
                     if (value)
                         el_value_input.innerHTML = `<block type="logic_boolean"><field name="BOOL">TRUE</field></block>`;
@@ -151,7 +173,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             const name_list = `${name.toUpperCase()}_LIST`;
             const el_blocks = strategy_dom?.querySelectorAll(`field[name="${name_list}"]`);
 
-            el_blocks?.forEach((el_block: HTMLElement) => {
+            el_blocks?.forEach(el_block => {
                 el_block.innerHTML = value;
             });
         };
@@ -167,9 +189,12 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
 
         Object.keys(fields_to_update).forEach(key => {
             const value = fields_to_update[key as keyof typeof fields_to_update];
-
             if (!isNaN(value as number)) {
-                modifyValueInputs(key, value as number);
+                if (key === 'last_digit_prediction') {
+                    addPredictionBlock(value);
+                } else {
+                    modifyValueInputs(key, value as number);
+                }
             } else if (typeof value === 'string') {
                 modifyFieldDropdownValues(key, value);
             }
@@ -190,9 +215,10 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         }
 
         this.setFormVisibility(false);
+        const modifiedXmlString = new XMLSerializer().serializeToString(strategy_dom);
 
         await load({
-            block_string: Blockly.Xml.domToText(strategy_dom),
+            block_string: modifiedXmlString,
             file_name: selected_strategy.label,
             workspace,
             from: save_types.UNSAVED,

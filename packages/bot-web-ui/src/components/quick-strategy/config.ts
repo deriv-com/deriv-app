@@ -1,6 +1,6 @@
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
-import { MARTINGALE, D_ALEMBERT, OSCAR_GRIND } from './descriptions';
+import { D_ALEMBERT, MARTINGALE, OSCAR_GRIND } from './descriptions';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [
@@ -148,6 +148,37 @@ const MAX_STAKE: TConfigItem = {
     attached: true,
 };
 
+const LABEL_LAST_DIGIT_PREDICTION: TConfigItem = {
+    type: 'label',
+    name: 'label_last_digit_prediction',
+    label: localize('Last Digit Prediction'),
+    description: localize('Your prediction of the last digit of the asset price.'),
+    should_have: [{ key: 'tradetype', value: '', multiple: ['matchesdiffers', 'overunder'] }],
+    hide_without_should_have: true,
+};
+
+const LAST_DIGIT_PREDICTION: TConfigItem = {
+    type: 'number',
+    name: 'last_digit_prediction',
+    validation: [
+        'number',
+        'required',
+        {
+            type: 'min',
+            value: 0,
+            getMessage: (min: string | number) =>
+                localize('The value must be equal or greater than {{ min }}', { min }),
+        },
+        {
+            type: 'max',
+            value: 9,
+            getMessage: (max: string | number) => localize('The value must be equal or less than {{ max }}', { max }),
+        },
+    ],
+    should_have: [{ key: 'tradetype', value: '', multiple: ['matchesdiffers', 'overunder'] }],
+    hide_without_should_have: true,
+};
+
 export const STRATEGIES: TStrategies = {
     MARTINGALE: {
         name: 'martingale_max-stake',
@@ -158,7 +189,18 @@ export const STRATEGIES: TStrategies = {
         long_description: MARTINGALE,
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, LABEL_DURATION, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_SIZE, SIZE, CHECKBOX_MAX_STAKE, MAX_STAKE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                LABEL_SIZE,
+                SIZE,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
+            ],
         ],
     },
     D_ALEMBERT: {
@@ -170,7 +212,18 @@ export const STRATEGIES: TStrategies = {
         long_description: D_ALEMBERT,
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_DALEMBERT_UNIT, UNIT, CHECKBOX_MAX_STAKE, MAX_STAKE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                LABEL_DALEMBERT_UNIT,
+                UNIT,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
+            ],
         ],
     },
     OSCARS_GRIND: {
@@ -182,7 +235,16 @@ export const STRATEGIES: TStrategies = {
         long_description: OSCAR_GRIND,
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, CHECKBOX_MAX_STAKE, MAX_STAKE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
+            ],
         ],
     },
     REVERSE_MARINGALE: {
@@ -193,7 +255,18 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, LABEL_DURATION, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_SIZE, SIZE, CHECKBOX_MAX_STAKE, MAX_STAKE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                LABEL_SIZE,
+                SIZE,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
+            ],
         ],
     },
     REVERSE_D_ALEMBERT: {
@@ -204,7 +277,18 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, LABEL_DURATION, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_DALEMBERT_UNIT, UNIT, CHECKBOX_MAX_STAKE, MAX_STAKE],
+            [
+                LABEL_PROFIT,
+                PROFIT,
+                LABEL_LOSS,
+                LOSS,
+                LABEL_DALEMBERT_UNIT,
+                UNIT,
+                CHECKBOX_MAX_STAKE,
+                MAX_STAKE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
+            ],
         ],
     },
     '1_3_2_6': {
@@ -215,7 +299,7 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [SYMBOL, TRADETYPE, CONTRACT_TYPE, LABEL_STAKE, STAKE, DURATION_TYPE, DURATION],
-            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS],
+            [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_LAST_DIGIT_PREDICTION, LAST_DIGIT_PREDICTION],
         ],
     },
 };

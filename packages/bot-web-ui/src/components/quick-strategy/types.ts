@@ -21,7 +21,11 @@ export type TValidationItem =
           type: TValidationType;
           value: number | string;
       } & ValidationObject);
-
+export type TShouldHave = {
+    key: string;
+    value: string | number | boolean;
+    multiple?: string[];
+};
 export type TConfigItem = {
     type: string;
     name?: keyof TFormData;
@@ -32,10 +36,8 @@ export type TConfigItem = {
     attached?: boolean;
     hide?: string[];
     validation?: TValidationItem[];
-    should_have?: {
-        key: string;
-        value: string | number | boolean;
-    }[];
+    should_have?: TShouldHave[];
+    hide_without_should_have?: boolean;
 };
 
 export type TDescriptionItem = {

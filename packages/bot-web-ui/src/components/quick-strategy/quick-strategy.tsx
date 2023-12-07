@@ -58,6 +58,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
         action: 'RUN',
         max_stake: 10,
         boolean_max_stake: false,
+        last_digit_prediction: '1',
     };
 
     React.useEffect(() => {
@@ -90,6 +91,8 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                         }
                         const should_validate = field.should_have
                             ? field.should_have?.every(item => {
+                                  const item_value = formikData?.[item.key]?.toString();
+                                  if (item.multiple) return item.multiple.includes(item_value);
                                   return formikData?.[item.key] === item.value;
                               })
                             : true;

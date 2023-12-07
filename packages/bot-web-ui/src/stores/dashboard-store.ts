@@ -1,16 +1,16 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
-import { clearInjectionDiv } from 'Constants/load-modal';
-import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
 import {
     faq_content,
     guide_content,
-    user_guide_content,
     TFaqContent,
     TGuideContent,
     TUserGuideContent,
+    user_guide_content,
 } from 'Components/dashboard/tutorial-tab/config';
+import { clearInjectionDiv } from 'Constants/load-modal';
+import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
 import RootStore from './root-store';
 
 export interface IDashboardStore {

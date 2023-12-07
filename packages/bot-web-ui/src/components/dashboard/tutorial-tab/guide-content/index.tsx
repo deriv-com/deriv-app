@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dialog, Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { removeKeyValue } from 'Utils/settings';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -27,9 +27,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content }: TGuideContent) =
     const { is_mobile } = ui;
     const { dashboard } = useDBotStore();
     const {
-        dialog_options,
         is_dialog_open,
-        onCloseDialog: onOkButtonClick,
         setActiveTab,
         setTourDialogVisibility,
         showVideoDialog,
@@ -138,12 +136,12 @@ const GuideContent = ({ guide_tab_content, video_tab_content }: TGuideContent) =
                                                         width='4rem'
                                                         height='4rem'
                                                         icon={'IcPlayOutline'}
-                                                        onClick={() =>
+                                                        onClick={() => {
                                                             showVideoDialog({
                                                                 type: 'url',
                                                                 url,
-                                                            })
-                                                        }
+                                                            });
+                                                        }}
                                                     />
                                                 </div>
                                             </div>
@@ -163,21 +161,6 @@ const GuideContent = ({ guide_tab_content, video_tab_content }: TGuideContent) =
                             </div>
                         </div>
                     )}
-
-                    <Dialog
-                        title={dialog_options.title}
-                        is_visible={is_dialog_open}
-                        cancel_button_text={localize('Cancel')}
-                        onCancel={onOkButtonClick}
-                        confirm_button_text={localize('OK')}
-                        onConfirm={onOkButtonClick}
-                        is_mobile_full_width
-                        className={'dc-dialog'}
-                        has_close_icon
-                        onClose={onOkButtonClick}
-                    >
-                        <iframe width='100%' height='100%' src={dialog_options.url} frameBorder='0' allowFullScreen />
-                    </Dialog>
                 </div>
             ),
         [guide_tab_content, video_tab_content, is_dialog_open]

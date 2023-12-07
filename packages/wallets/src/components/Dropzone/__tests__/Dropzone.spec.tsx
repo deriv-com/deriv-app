@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Dropzone from '../Dropzone';
 
@@ -73,5 +73,33 @@ describe('Dropzone', () => {
             userEvent.upload(input, file);
         });
         expect(screen.getByText('File is larger than 1 bytes')).toBeInTheDocument();
+    });
+
+    it('should show hover message when dragging the file', async () => {
+        const file = new File(['foo'], 'foo.txt', { type: 'text/plain' });
+        render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone-icon'>icon</i>} />);
+        const input: HTMLInputElement = screen.getByTestId('dt_dropzone-input');
+        await waitFor(() => {
+            Object.defineProperty(input, 'files', {
+                value: [file],
+            });
+            fireEvent.dragEnter(input);
+            fireEvent.dragLeave(input);
+        });
+        expect(screen.getByText('Drop file here')).toBeInTheDocument();
+    });
+
+    it('should be able to drop the file', async () => {
+        const file = new File(['foo'], 'foo.txt', { type: 'text/plain' });
+        render(<Dropzone buttonText='Find file' icon={<i data-testid='dt_dropzone-icon'>icon</i>} />);
+        const input: HTMLInputElement = screen.getByTestId('dt_dropzone-input');
+        await waitFor(() => {
+            Object.defineProperty(input, 'files', {
+                value: [file],
+            });
+            fireEvent.drop(input);
+        });
+
+        expect(input.files).toHaveLength(1);
     });
 });

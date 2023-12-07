@@ -1,6 +1,6 @@
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
-import { MARTINGALE, D_ALEMBERT, OSCAR_GRIND } from './descriptions';
+import { D_ALEMBERT, MARTINGALE, OSCAR_GRIND } from './descriptions';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [
@@ -153,12 +153,16 @@ const LABEL_LAST_DIGIT_PREDICTION: TConfigItem = {
     name: 'label_last_digit_prediction',
     label: localize('Last Digit Prediction'),
     description: localize('Your prediction of the last digit of the asset price.'),
+    should_have: [{ key: 'tradetype', value: '', multiple: ['matchesdiffers', 'overunder'] }],
+    hide_without_should_have: true,
 };
 
 const LAST_DIGIT_PREDICTION: TConfigItem = {
     type: 'text',
     name: 'last_digit_prediction',
     validation: ['text-number'],
+    should_have: [{ key: 'tradetype', value: '', multiple: ['matchesdiffers', 'overunder'] }],
+    hide_without_should_have: true,
     regex: /^\d*(\.\d*)?$/,
 };
 

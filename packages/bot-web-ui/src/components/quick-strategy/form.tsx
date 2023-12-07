@@ -11,7 +11,7 @@ import QSInput from './inputs/qs-input';
 import QSCheckbox from './inputs/qs-checkbox';
 import QSInputLabel from './inputs/qs-input-label';
 import { STRATEGIES } from './config';
-import { TConfigItem, TFormData } from './types';
+import { TConfigItem, TFormData, TShouldHave } from './types';
 import { useFormikContext } from 'formik';
 
 const QuickStrategyForm = observer(() => {
@@ -41,6 +41,13 @@ const QuickStrategyForm = observer(() => {
             event.stopPropagation();
         }
     };
+
+    const shouldEnable = (should_have: TShouldHave[]) =>
+        should_have.every(item => {
+            const item_value = values?.[item.key]?.toString();
+            if (item.multiple) return item.multiple.includes(item_value);
+            return values[item.key as keyof TFormData] === item.value;
+        });
 
     const renderForm = () => {
         return config.map((group, group_index) => {
@@ -72,12 +79,10 @@ const QuickStrategyForm = observer(() => {
                             // Generic or common fields
                             case 'number': {
                                 if (!field.name) return null;
-                                const { should_have = [] } = field;
+                                const { should_have = [], hide_without_should_have = false } = field;
+                                const should_enable = shouldEnable(should_have);
                                 if (should_have?.length) {
-                                    const should_enable = should_have.every((item: TFormData) => {
-                                        return values[item.key as keyof TFormData] === item.value;
-                                    });
-                                    if (!should_enable && is_mobile) {
+                                    if (!should_enable && (is_mobile || hide_without_should_have)) {
                                         return null;
                                     }
                                     return (
@@ -104,11 +109,17 @@ const QuickStrategyForm = observer(() => {
                                     />
                                 );
                             }
-                            case 'label':
+                            case 'label': {
                                 if (!field.label) return null;
+                                const { should_have = [], hide_without_should_have = false } = field;
+                                const should_enable = shouldEnable(should_have);
+                                if (!should_enable && hide_without_should_have) {
+                                    return null;
+                                }
                                 return (
                                     <QSInputLabel key={key} label={field.label} description={field.description || ''} />
                                 );
+                            }
                             case 'checkbox':
                                 return (
                                     <QSCheckbox

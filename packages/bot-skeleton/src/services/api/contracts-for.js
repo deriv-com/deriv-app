@@ -445,17 +445,18 @@ export default class ContractsFor {
     }
 
     getHiddenCategories = trade_types => {
-        // TODO: Temporary filtering of barrier types. Should later
+        // TODO: Temporary filtering of barrier + prediction types. Should later
         // render more inputs for these types. We should only filter out trade type
-        // categories which only feature barrier trade types. e.g.
+        // categories which only feature prediction/barrier trade types. e.g.
         // in Digits category, users can still purchase Even/Odd types.
         let hidden_categories = 0;
 
         for (let j = 0; j < trade_types.length; j++) {
             const trade_type = trade_types[j];
-            const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
+            const has_barrier = config.QUICK_STRATEGY.DISABLED.BARRIER_TRADE_TYPES.includes(trade_type.value);
+            const has_prediction = config.QUICK_STRATEGY.DISABLED.PREDICTION_TRADE_TYPES.includes(trade_type.value);
 
-            if (has_barrier) {
+            if (has_barrier || has_prediction) {
                 hidden_categories++;
             }
         }
@@ -466,9 +467,8 @@ export default class ContractsFor {
     getTradeTypeOptions = (trade_types, trade_type_category) => {
         const trade_type_options = [];
         trade_types.forEach(trade_type => {
-            const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
-            const has_prediction =
-                config.PREDICTION_TRADE_TYPES.includes(trade_type.value) && trade_type.value === 'highlowticks';
+            const has_barrier = config.QUICK_STRATEGY.DISABLED.BARRIER_TRADE_TYPES.includes(trade_type.value);
+            const has_prediction = config.QUICK_STRATEGY.DISABLED.PREDICTION_TRADE_TYPES.includes(trade_type.value);
             const is_muliplier = ['multiplier'].includes(trade_type.value);
 
             // TODO: Render extra inputs for barrier + prediction and multiplier types.

@@ -31,12 +31,16 @@ type TPartialConfigItem = Partial<{
     attached: boolean;
     hide: string[];
     validation: TValidationItem[];
-    should_have: {
-        key: string;
-        value: string | number | boolean;
-    }[];
+    should_have?: TShouldHave[];
+    hide_without_should_have?: boolean;
     regex: RegExp;
 }>;
+
+export type TShouldHave = {
+    key: string;
+    value: string | number | boolean;
+    multiple?: string[];
+};
 
 export type TConfigItem = {
     type: string;

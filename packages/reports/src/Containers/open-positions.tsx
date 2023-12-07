@@ -654,7 +654,7 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         );
     };
 
-    if (is_dtrader_v2_enabled) return <Text size='l'>And I&apos;m Open positions for DTrader 2.0.</Text>;
+    if (is_dtrader_v2_enabled) return <Text size='l'>And I am Open positions for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
             <NotificationMessages />

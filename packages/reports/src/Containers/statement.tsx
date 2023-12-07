@@ -240,7 +240,7 @@ const Statement = observer(({ component_icon }: TStatement) => {
         </React.Fragment>
     );
 
-    if (is_dtrader_v2_enabled) return <Text size='l'>And I&apos;m Statement for DTrader 2.0.</Text>;
+    if (is_dtrader_v2_enabled) return <Text size='l'>And I am Statement for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
             <ReportsMeta

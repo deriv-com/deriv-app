@@ -90,7 +90,7 @@ const Reports = observer(({ history, location, routes }: TReports) => {
         return (
             <React.Fragment>
                 <Text as='p' size='xl'>
-                    Hello! I&apos;m Reports page for DTrader 2.0.
+                    Hello! I am Reports page for DTrader 2.0.
                 </Text>
                 <div>
                     {selected_route?.component && (

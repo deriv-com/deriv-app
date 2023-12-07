@@ -172,7 +172,7 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
         );
     };
 
-    if (is_dtrader_v2_enabled) return <Text size='l'>And I&apos;m Profit Table for DTrader 2.0.</Text>;
+    if (is_dtrader_v2_enabled) return <Text size='l'>And I am Profit Table for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
             <ReportsMeta filter_component={filter_component} className='profit-table__filter' />

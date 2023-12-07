@@ -139,7 +139,7 @@ const ContractReplay = observer(({ contract_id }) => {
         window.open(statementws_url, '_blank');
     };
 
-    if (is_dtrader_v2_enabled) return <Text size='xl'>Hello! I&apos;m Contract Details page for DTrader 2.0.</Text>;
+    if (is_dtrader_v2_enabled) return <Text size='xl'>Hello! I am Contract Details page for DTrader 2.0.</Text>;
     return (
         <FadeWrapper is_visible={is_visible} className='contract-details-wrapper' keyname='contract-details-wrapper'>
             <MobileWrapper>

@@ -147,7 +147,7 @@ const Trade = observer(() => {
         return '259px';
     }, [is_turbos, is_accumulator]);
 
-    if (is_dtrader_v2_enabled) return <Text size='xl'>Hello! I&apos;m DTrader 2.0.</Text>;
+    if (is_dtrader_v2_enabled) return <Text size='xl'>Hello! I am DTrader 2.0.</Text>;
     return (
         <div
             id='trade_container'

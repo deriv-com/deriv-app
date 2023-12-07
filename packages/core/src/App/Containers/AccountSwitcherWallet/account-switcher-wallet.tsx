@@ -22,8 +22,14 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
 
     const validateClickOutside = (event: MouseEvent) => {
-        // cause of issue here!!!
-        return is_visible && !(event.target as unknown as HTMLElement).classList.contains('acc-info');
+        const checkAllParentNodes = (node: HTMLElement): boolean => {
+            if (node?.classList?.contains('acc-info__wallets')) return true;
+            const parent = node?.parentNode as HTMLElement;
+            if (parent) return checkAllParentNodes(parent);
+            return false;
+        };
+
+        return is_visible && !checkAllParentNodes(event.target as unknown as HTMLElement);
     };
 
     const closeAccountsDialog = React.useCallback(() => {

@@ -43,7 +43,11 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     React.useEffect(() => {
         const loadSmartchartsStyles = () => {
-            import('@deriv/deriv-charts/dist/smartcharts.css');
+            if (root_store.client.is_beta_chart) {
+                import('@deriv/deriv-charts-beta/dist/smartcharts.css');
+            } else {
+                import('@deriv/deriv-charts/dist/smartcharts.css');
+            }
         };
 
         initializeTranslations();
@@ -74,6 +78,12 @@ const AppWithoutTranslation = ({ root_store }) => {
     };
 
     setWebsocket(WS);
+
+    React.useEffect(() => {
+        if (!root_store.client.email) {
+            Analytics.reset();
+        }
+    }, [root_store.client.email]);
 
     return (
         <>

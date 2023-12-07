@@ -9,7 +9,6 @@ import RecentComponent from '../recent';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => true),
 }));
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
@@ -34,7 +33,11 @@ describe('RecentComponent', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
 
     beforeEach(() => {
-        const mock_store = mockStore({});
+        const mock_store = mockStore({
+            ui: {
+                is_mobile: true,
+            },
+        });
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 
         mock_DBot_store?.load_modal.setDashboardStrategies(dashboard_strategies);

@@ -11,6 +11,7 @@ export * from './Loader';
 export * from './OptionsAndMultipliersListing';
 export * from './SentEmailContent';
 export * from './SkeletonLoader';
+export * from './Timer';
 export * from './ToggleSwitch';
 export * from './TradingAccountCard';
 export * from './WalletCard';

@@ -11,7 +11,7 @@ type TProps = {
     label: string;
     locale?: Intl.LocalesArgument;
     maxDigits?: number;
-    onBlur: VoidFunction;
+    onBlur?: VoidFunction;
     onChange?: (value: number) => void;
     onFocus?: VoidFunction;
     value: number;

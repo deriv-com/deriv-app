@@ -459,10 +459,10 @@ export default class RunPanelStore {
     }
 
     registerReactions() {
-        const { client, notifications } = this.core;
+        const { client, common, notifications } = this.core;
 
         const registerIsSocketOpenedListener = () => {
-            if (client.email) {
+            if (common.is_socket_opened) {
                 this.disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
                     loginid => {
@@ -481,7 +481,7 @@ export default class RunPanelStore {
         registerIsSocketOpenedListener();
 
         this.disposeLogoutListener = reaction(
-            () => client.email,
+            () => common.is_socket_opened,
             () => registerIsSocketOpenedListener()
         );
 

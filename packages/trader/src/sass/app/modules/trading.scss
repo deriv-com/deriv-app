@@ -107,7 +107,7 @@
                     }
 
                     .btn-purchase__effect-detail--arrow {
-                        left: 12rem;
+                        inset-inline-start: 12rem;
                     }
                 }
 
@@ -117,7 +117,7 @@
                     }
 
                     .btn-purchase__effect-detail--arrow {
-                        left: 12rem;
+                        inset-inline-start: 12rem;
                     }
                 }
             }
@@ -212,7 +212,7 @@
     &__currency {
         position: absolute;
         height: 3.2rem;
-        right: 4rem;
+        inset-inline-end: 4rem;
         align-items: center;
         justify-content: center;
         display: flex;
@@ -578,10 +578,10 @@
                 top: 1px;
 
                 &--increment {
-                    right: 1px;
+                    inset-inline-end: 1px;
                 }
                 &--decrement {
-                    left: 1px;
+                    inset-inline-start: 1px;
                 }
             }
             &:hover {

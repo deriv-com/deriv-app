@@ -45,6 +45,7 @@
         "lint-staged": "^10.4.0",
         "nx": "^14.5.10",
         "postcss": "^8.4.24",
+        "postcss-rtlcss": "^4.0.9",
         "prettier": "^2.1.2",
         "stylelint": "^13.13.1",
         "stylelint-config-prettier": "^8.0.2",

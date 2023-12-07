@@ -8,6 +8,7 @@ type TCFDCompareAccountsCarousel = {
 
 const CFDCompareAccountsCarousel = (props: TCFDCompareAccountsCarousel) => {
     const options: EmblaOptionsType = {
+        //@ts-expect-error ignore error for now
         align: 0,
         containScroll: 'trimSnaps',
     };

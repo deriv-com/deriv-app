@@ -12,7 +12,7 @@
 
     &__wrapper {
         position: absolute;
-        right: calc(100% + 10px);
+        inset-inline-end: calc(100% + 10px);
         top: -66px;
         display: flex;
         flex-direction: column;
@@ -24,6 +24,10 @@
         width: 290px;
         height: 680px;
         overflow: hidden;
+
+        &[dir='rtl'] {
+            left: calc(100% + 10px);
+        }
 
         /* postcss-bem-linter: ignore */
         .dc-vertical-tab {
@@ -104,6 +108,10 @@
         opacity: 1;
         pointer-events: auto;
     }
+}
+
+[dir='rtl'] .contract-type-info__wrapper {
+    left: calc(100% + 10px);
 }
 
 .contract-type-widget__header ~ .dc-mobile-dialog__content {

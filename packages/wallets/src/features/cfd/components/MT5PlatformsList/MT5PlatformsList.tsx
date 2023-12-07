@@ -11,7 +11,7 @@ type TProps = {
 
 const MT5PlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
     const { isFetching } = useAuthorize();
-    const { data, isFetchedAfterMount } = useSortedMT5Accounts();
+    const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts();
     const { data: activeWallet } = useActiveWalletAccount();
     const invalidate = useInvalidateQuery();
 
@@ -56,7 +56,7 @@ const MT5PlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                             />
                         );
                     })}
-                {hasMT5Account && !activeWallet?.is_virtual && <GetMoreMT5Accounts />}
+                {hasMT5Account && !activeWallet?.is_virtual && !areAllAccountsCreated && <GetMoreMT5Accounts />}
             </div>
         </React.Fragment>
     );

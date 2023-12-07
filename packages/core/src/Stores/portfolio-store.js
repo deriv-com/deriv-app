@@ -20,7 +20,7 @@ import {
     getDurationUnitText,
     getEndTime,
     removeBarrier,
-    TURBOS,
+    TRADE_TYPES,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
 import { Analytics } from '@deriv/analytics';
@@ -89,7 +89,6 @@ export default class PortfolioStore extends BaseStore {
             active_positions_count: computed,
             is_empty: computed,
             setPurchaseSpotBarrier: action,
-            updateBarrierColor: action,
             updateLimitOrderBarriers: action,
             setContractType: action,
             is_accumulator: computed,
@@ -569,16 +568,7 @@ export default class PortfolioStore extends BaseStore {
             purchase_spot_barrier.draggable = false;
             purchase_spot_barrier.hideOffscreenBarrier = true;
             purchase_spot_barrier.isSingleBarrier = true;
-            purchase_spot_barrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
             this.barriers.push(purchase_spot_barrier);
-        }
-    }
-
-    updateBarrierColor(is_dark_mode) {
-        const { main_barrier } = JSON.parse(localStorage.getItem('trade_store')) || {};
-        this.main_barrier = main_barrier;
-        if (this.main_barrier) {
-            this.main_barrier.updateBarrierColor(is_dark_mode);
         }
     }
 
@@ -598,14 +588,14 @@ export default class PortfolioStore extends BaseStore {
     }
 
     get is_accumulator() {
-        return this.contract_type === 'accumulator';
+        return this.contract_type === TRADE_TYPES.ACCUMULATOR;
     }
 
     get is_multiplier() {
-        return this.contract_type === 'multiplier';
+        return this.contract_type === TRADE_TYPES.MULTIPLIER;
     }
 
     get is_turbos() {
-        return this.contract_type === TURBOS.LONG || this.contract_type === TURBOS.SHORT;
+        return this.contract_type === TRADE_TYPES.TURBOS.LONG || this.contract_type === TRADE_TYPES.TURBOS.SHORT;
     }
 }

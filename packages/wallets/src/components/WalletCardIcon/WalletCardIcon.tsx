@@ -1,3 +1,4 @@
+/* eslint-disable sort-keys */
 import React from 'react';
 import useDevice from '../../hooks/useDevice';
 import { TGenericSizes } from '../../types';
@@ -29,15 +30,15 @@ const typeToIconMapper = {
 
 const typeToWidthMapper = {
     rectangleIcon: {
-        lg: { desktop: 90, mobile: 45 },
-        md: { desktop: 72, mobile: 36 },
         sm: { desktop: 60, mobile: 60 },
+        md: { desktop: 72, mobile: 36 },
+        lg: { desktop: 90, mobile: 45 },
         xl: { desktop: 120, mobile: 80 },
     },
     roundedIcon: {
-        lg: { desktop: 48, mobile: 32 },
-        md: { desktop: 24, mobile: 24 },
         sm: { desktop: 16, mobile: 16 },
+        md: { desktop: 32, mobile: 24 },
+        lg: { desktop: 48, mobile: 32 },
         xl: { desktop: 64, mobile: 48 },
     },
 };

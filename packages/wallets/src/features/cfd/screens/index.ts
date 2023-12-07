@@ -7,3 +7,4 @@ export * from './MT5AccountType';
 export * from './MT5AccountTypeCard';
 export * from './MT5TradeScreen';
 export * from './Onfido';
+export * from './VerificationFailed';

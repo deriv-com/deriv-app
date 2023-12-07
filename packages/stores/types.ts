@@ -514,6 +514,8 @@ type TClientStore = {
     is_already_attempted: boolean;
     prev_account_type: string;
     account_open_date: number | undefined;
+    is_bot_allowed: boolean;
+    setAccounts: (accounts: Record<string, TActiveAccount>) => void;
     is_beta_chart: boolean;
 };
 
@@ -685,6 +687,7 @@ type TUiStore = {
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
     toggleAdditionalKycInfoModal: () => void;
     toggleKycInformationSubmittedModal: () => void;
+    setAccountSwitcherDisabledMessage: () => void;
 };
 
 type TPortfolioStore = {
@@ -753,7 +756,6 @@ type TBarriers = Array<{
     hideOffscreenBarrier?: boolean;
     isSingleBarrier?: boolean;
     onBarrierChange: (barriers: TOnChangeParams) => void;
-    updateBarrierColor: (is_dark_mode: boolean) => void;
     updateBarriers: (high: string | number, low?: string | number, isFromChart?: boolean) => void;
     updateBarrierShade: (should_display: boolean, contract_type: string) => void;
     barrier_count: number;
@@ -835,7 +837,7 @@ type TContractStore = {
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
     addNotificationMessageByKey: (key: string) => void;
-    client_notifications: object;
+    client_notifications: Record<string, TNotificationMessage>;
     is_notifications_empty: boolean;
     is_notifications_visible: boolean;
     filterNotificationMessages: () => void;
@@ -896,7 +898,10 @@ type TTradersHubStore = {
     };
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
+    is_onboarding_visited: boolean;
+    is_first_time_visit: boolean;
     setIsOnboardingVisited: (is_visited: boolean) => void;
+    setIsFirstTimeVisit: (first_time_visit: boolean) => void;
     show_eu_related_content: boolean;
     setTogglePlatformType: (platform_type: string) => void;
     is_demo: boolean;
@@ -936,6 +941,7 @@ type TTradersHubStore = {
     available_dxtrade_accounts: TAvailableCFDAccounts[];
     available_ctrader_accounts: TAvailableCFDAccounts[];
     toggleIsTourOpen: (is_tour_open: boolean) => void;
+    is_tour_open: boolean;
     is_demo_low_risk: boolean;
     is_mt5_notification_modal_visible: boolean;
     setMT5NotificationModal: (value: boolean) => void;

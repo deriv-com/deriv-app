@@ -296,8 +296,6 @@ export default class ClientStore extends BaseStore {
             is_uk: computed,
             is_brazil: computed,
             country_standpoint: computed,
-            can_have_mlt_account: computed,
-            can_have_mf_account: computed,
             can_upgrade: computed,
             can_upgrade_to: computed,
             virtual_account_loginid: computed,
@@ -903,67 +901,6 @@ export default class ClientStore extends BaseStore {
             this.is_eu && !result.is_uk && !result.is_france && !result.is_belgium && !result.is_other_eu;
 
         return result;
-    }
-
-    // Manual list of MLT countries during MLT/MX account removal.
-    // Also needed to check onboarding modal text for specific country.
-    get can_have_mlt_account() {
-        const countries = [
-            'nl',
-            'cy',
-            'ie',
-            'ro',
-            'be',
-            'lt',
-            'bg',
-            'cz',
-            'dk',
-            'se',
-            'pl',
-            'ee',
-            'hr',
-            'at',
-            'hu',
-            'sl',
-            'fi',
-            'sk',
-            'pt',
-            'lv',
-        ].includes(this.residence);
-        return countries;
-    }
-
-    // Manual list of MF countries during MLT/MX account removal.
-    // Also needed to check onboarding modal text for specific country.
-    get can_have_mf_account() {
-        const countries = [
-            'it',
-            'fr',
-            'de',
-            'lu',
-            'es',
-            'gr',
-            'nl',
-            'cy',
-            'ie',
-            'ro',
-            'lt',
-            'bg',
-            'cz',
-            'dk',
-            'se',
-            'pl',
-            'ee',
-            'hr',
-            'at',
-            'hu',
-            'sl',
-            'fi',
-            'sk',
-            'pt',
-            'lv',
-        ].includes(this.residence);
-        return countries;
     }
 
     get can_upgrade() {
@@ -1621,8 +1558,6 @@ export default class ClientStore extends BaseStore {
             '_filteredParams',
         ];
 
-        const { tracking } = Analytics.getInstances();
-
         const authorize_response = await this.setUserLogin(login_new_user);
 
         if (action_param === 'signup') {
@@ -1668,17 +1603,14 @@ export default class ClientStore extends BaseStore {
         if (authorize_response) {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
-                const { user_id } = authorize_response.authorize;
-
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
                 Analytics.setAttributes({
                     app_id: getAppId(),
+                    account_type: this.loginid.substring(0, 2),
                 });
-                tracking?.identifyEvent(user_id, {
-                    language: getLanguage().toLowerCase(),
-                });
+                Analytics?.identifyEvent();
                 const current_page = window.location.hostname + window.location.pathname;
                 Analytics?.pageView(current_page);
 
@@ -1751,11 +1683,6 @@ export default class ClientStore extends BaseStore {
 
             if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
             this.loginid !== 'null' && Analytics.setAttributes({ account_type: this.loginid.substring(0, 2) });
-            if (this.user_id) {
-                tracking?.identifyEvent(this.user_id, {
-                    language: getLanguage().toLowerCase(),
-                });
-            }
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
             if (this.account_settings && !this.account_settings.residence) {
@@ -2153,7 +2080,6 @@ export default class ClientStore extends BaseStore {
         if (response?.logout === 1) {
             this.cleanUp();
 
-            Analytics.reset();
             this.setLogout(true);
         }
 

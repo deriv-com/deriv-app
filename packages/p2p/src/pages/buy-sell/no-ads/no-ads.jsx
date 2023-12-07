@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import { useHistory } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
@@ -33,7 +33,7 @@ const NoAds = ({ is_ads_page = false }) => {
                 <React.Fragment>
                     <Text align='center' className='no-ads__title' weight='bold'>
                         {is_ads_page ? (
-                            <Localize i18n_default_text='You have no ads.' />
+                            <Localize i18n_default_text='You have no ads 😞' />
                         ) : (
                             <Localize i18n_default_text='No ads for this currency 😞' />
                         )}

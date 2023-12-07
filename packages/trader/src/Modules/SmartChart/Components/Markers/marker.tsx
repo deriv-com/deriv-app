@@ -10,13 +10,19 @@ type TChartMarker = {
         y: string | number;
     };
     marker_content_props: { className: string };
+    decrease_zIndex?: boolean;
 };
 type TRef = {
     setPosition: (position: { epoch: number | null; price: number | null }) => void;
     div: HTMLDivElement;
 };
 
-const ChartMarker = ({ marker_config, marker_content_props, is_bottom_widget_visible }: TChartMarker) => {
+const ChartMarker = ({
+    marker_config,
+    marker_content_props,
+    is_bottom_widget_visible,
+    decrease_zIndex = false,
+}: TChartMarker) => {
     const { ContentComponent, ...marker_props } = marker_config;
 
     // TODO:
@@ -31,6 +37,7 @@ const ChartMarker = ({ marker_config, marker_content_props, is_bottom_widget_vis
                 ref.div.style.height = `calc(100% - ${margin}px)`;
                 ref.div.style.zIndex = '-1';
             }
+            if (decrease_zIndex) ref.div.style.zIndex = '-1';
             ref.setPosition({
                 epoch: +marker_props.x,
                 price: +marker_props.y,

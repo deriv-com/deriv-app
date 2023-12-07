@@ -340,16 +340,8 @@ export default class ContractStore extends BaseStore {
                         hideBarrierLine: true,
                         line_style: BARRIER_LINE_STYLES.DASHED,
                     });
-                    const is_reset_call = /CALL/i.test(contract_type);
 
-                    // Gradient logic: when reset_time has come we need to reapply gradient. For CALL shade will be applied to the lowest barrier, for PUT - the the highest barrier
-                    if (
-                        (is_reset_call && entry_spot > reset_barrier) ||
-                        (!is_reset_call && reset_barrier > entry_spot)
-                    ) {
-                        main_barrier.updateBarrierShade(false, contract_type);
-                        reset_barrier_instance.updateBarrierShade(true, contract_type);
-                    }
+                    main_barrier.updateBarrierShade(false, contract_type);
 
                     barriers.push(reset_barrier_instance);
                 }

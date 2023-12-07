@@ -26,6 +26,7 @@ import {
     isTurbosContract,
     isVanillaContract,
     isSmartTraderContract,
+    isResetContract,
     urlFor,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -37,6 +38,7 @@ import SmartChartSwitcher from '../../Trading/Containers/smart-chart-switcher.js
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget';
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker';
 import DelayedAccuBarriersMarker from 'Modules/SmartChart/Components/Markers/delayed-accu-barriers-marker';
+import ResetContractChartElements from 'Modules/SmartChart/Components/Markers/reset-contract-chart-elements';
 import allMarkers from 'Modules/SmartChart/Components/all-markers.jsx';
 import ChartMarkerBeta from 'Modules/SmartChartBeta/Components/Markers/marker.jsx';
 import { observer, useStore } from '@deriv/stores';
@@ -103,6 +105,7 @@ const ContractReplay = observer(({ contract_id }) => {
     const is_turbos = isTurbosContract(contract_info.contract_type);
     const is_vanilla = isVanillaContract(contract_info.contract_type);
     const is_smarttrader_contract = isSmartTraderContract(contract_info.contract_type);
+    const is_reset_contract = isResetContract(contract_info.contract_type);
 
     const contract_drawer_el = (
         <ContractDrawer
@@ -177,7 +180,11 @@ const ContractReplay = observer(({ contract_id }) => {
                             </DesktopWrapper>
                             <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
                             <DesktopWrapper>
-                                <ReplayChart is_dark_theme={is_dark_theme} is_accumulator_contract={is_accumulator} />
+                                <ReplayChart
+                                    is_dark_theme={is_dark_theme}
+                                    is_accumulator_contract={is_accumulator}
+                                    is_reset_contract={is_reset_contract}
+                                />
                             </DesktopWrapper>
                             <MobileWrapper>
                                 {is_digit_contract ? (
@@ -196,6 +203,7 @@ const ContractReplay = observer(({ contract_id }) => {
                                     <ReplayChart
                                         is_dark_theme={is_dark_theme}
                                         is_accumulator_contract={is_accumulator}
+                                        is_reset_contract={is_reset_contract}
                                     />
                                 )}
                             </MobileWrapper>
@@ -215,7 +223,7 @@ export default ContractReplay;
 
 // CHART -----------------------------------------
 
-const ReplayChart = observer(({ is_accumulator_contract }) => {
+const ReplayChart = observer(({ is_accumulator_contract, is_reset_contract }) => {
     const trade = useTraderStore();
     const { contract_replay, client, common, ui } = useStore();
     const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
@@ -354,15 +362,9 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                     {...accumulators_barriers_marker}
                 />
             )}
-            {contract_info?.reset_time && (
-                <ChartMarker
-                    key='reset_barrier'
-                    marker_config={{
-                        ContentComponent: 'div',
-                        x: contract_info.reset_time,
-                        y: contract_info.reset_barrier,
-                    }}
-                    marker_content_props={{ className: 'sc-reset_barrier' }}
+            {is_reset_contract && contract_info?.reset_time && (
+                <ResetContractChartElements
+                    contract_info={contract_info}
                     is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             )}

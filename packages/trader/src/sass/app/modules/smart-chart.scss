@@ -592,7 +592,22 @@
 .sc-reset_barrier {
     width: 100vw;
     height: 1px;
-    border-bottom: 1px dashed #377cfc;
+    border-bottom: 1px dashed var(--text-info-blue);
+}
+
+.sc-barrier_gradient {
+    width: 100vw;
+    height: 12rem;
+    position: absolute;
+    opacity: 0.3;
+
+    &--to-bottom {
+        background-image: linear-gradient(to bottom, transparent, #39b19d);
+        bottom: 0;
+    }
+    &--to-top {
+        background-image: linear-gradient(to top, transparent, #39b19d);
+    }
 }
 
 //Vanilla specific styles

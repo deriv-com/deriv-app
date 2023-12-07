@@ -126,7 +126,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         if (isDemo) {
             return (
                 <div className='wallets-success-btn'>
-                    <WalletButton isFullWidth onClick={() => hide()} size='lg'>
+                    <WalletButton isFullWidth onClick={hide} size='lg'>
                         OK
                     </WalletButton>
                 </div>
@@ -134,7 +134,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         }
         return (
             <WalletButtonGroup isFlex isFullWidth>
-                <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                <WalletButton onClick={hide} size='lg' variant='outlined'>
                     Maybe later
                 </WalletButton>
                 <WalletButton
@@ -280,7 +280,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     ]);
 
     if (status === 'error') {
-        return <WalletError errorMessage={error?.error.message} onClick={() => hide()} title={error?.error?.code} />;
+        return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;
     }
 
     if (isMobile) {

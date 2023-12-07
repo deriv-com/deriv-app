@@ -15,7 +15,7 @@ const useIsEuRegion = () => {
         const gaming_shortcode = gaming_company?.shortcode;
         const mt_gaming_shortcode = mt_gaming_company?.financial?.shortcode || mt_all_company?.swap_free?.shortcode;
 
-        const is_current_mf = financial_shortcode === 'maltainvest';
+        const is_financial_maltainvest = financial_shortcode === 'maltainvest';
         const shortcodes = financial_shortcode || gaming_shortcode || mt_gaming_shortcode;
         const is_financial_eu_and_not_gaming_svg =
             eu_shortcode_regex.test(financial_shortcode as unknown as string) && gaming_shortcode !== 'svg';
@@ -25,7 +25,7 @@ const useIsEuRegion = () => {
         const is_eu_based_on_shortcodes = shortcodes && (is_financial_eu_and_not_gaming_svg || is_gaming_eu);
         const is_eu_based_on_residence = !shortcodes && is_residence_eu;
 
-        return is_current_mf || is_eu_based_on_shortcodes || is_eu_based_on_residence;
+        return is_financial_maltainvest || is_eu_based_on_shortcodes || is_eu_based_on_residence;
     }, [landing_company]);
 
     return {

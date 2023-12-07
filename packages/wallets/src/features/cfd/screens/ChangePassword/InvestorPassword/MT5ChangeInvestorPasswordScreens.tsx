@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useModal } from '../../../../../components/ModalProvider';
 import MT5ChangeInvestorPasswordInputsScreen from './MT5ChangeInvestorPasswordInputsScreen';
 import MT5ChangeInvestorPasswordSavedScreen from './MT5ChangeInvestorPasswordSavedScreen';
@@ -10,7 +10,7 @@ type TProps = {
     setShowEmailSentScreen?: (value: boolean) => void;
 };
 
-const MT5ChangeInvestorPasswordScreens: React.FC<TProps> = ({ setShowEmailSentScreen }) => {
+const MT5ChangeInvestorPasswordScreens: FC<TProps> = ({ setShowEmailSentScreen }) => {
     const [activeScreen, setActiveScreen] = useState<TChangeInvestorPasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangeInvestorPasswordScreenIndex) => setActiveScreen(nextScreen);
     const { hide } = useModal();

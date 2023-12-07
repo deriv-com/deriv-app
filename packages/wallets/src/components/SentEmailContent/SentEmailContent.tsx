@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { FC, Fragment, useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import { useCountdown } from 'usehooks-ts';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
@@ -17,7 +17,7 @@ type TProps = {
     platform?: TPlatforms.All;
 };
 
-const SentEmailContent: React.FC<TProps> = ({ description, isInvestorPassword = false, platform }) => {
+const SentEmailContent: FC<TProps> = ({ description, isInvestorPassword = false, platform }) => {
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { data } = useSettings();

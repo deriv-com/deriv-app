@@ -66,31 +66,15 @@ export const formatPortfolioPosition = (
 export type TIDVErrorStatus = keyof typeof IDV_ERROR_STATUS;
 export type TOnfidoErrorStatus = keyof typeof ONFIDO_ERROR_STATUS;
 
-// formatIDVError is parsing errors messages from BE (strings) and returns error codes for using it on FE
-export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: string, is_high_risk?: boolean) => {
-    /**
-     * Check required incase of DIEL client
-     */
-    if (
+const isVerifiedOrNone = (errors: Array<TIDVErrorStatus>, status_code: string, is_high_risk?: boolean) => {
+    return (
         errors.length === 0 &&
         (status_code === STATUS_CODES.NONE || status_code === STATUS_CODES.VERIFIED) &&
         !is_high_risk
-    ) {
-        return null;
-    }
+    );
+};
 
-    if (is_high_risk) {
-        if (status_code === STATUS_CODES.NONE) {
-            return null;
-        } else if (status_code === STATUS_CODES.VERIFIED) {
-            return IDV_ERROR_STATUS.HighRisk.code;
-        }
-    }
-
-    if (status_code === STATUS_CODES.EXPIRED) {
-        return IDV_ERROR_STATUS.Expired.code;
-    }
-
+const getIDVErrorStatus = (errors: Array<TIDVErrorStatus>) => {
     const status: Array<TIDVErrorStatus> = [];
     errors.forEach(error => {
         const error_key: TIDVErrorStatus = IDV_ERROR_STATUS[error].code;
@@ -111,6 +95,30 @@ export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: stri
         return IDV_ERROR_STATUS.NameDobMismatch.code;
     }
     return status[0] ?? IDV_ERROR_STATUS.Failed.code;
+};
+
+// formatIDVError is parsing errors messages from BE (strings) and returns error codes for using it on FE
+export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: string, is_high_risk?: boolean) => {
+    /**
+     * Check required incase of DIEL client
+     */
+    if (isVerifiedOrNone(errors, status_code, is_high_risk)) {
+        return null;
+    }
+
+    if (is_high_risk) {
+        if (status_code === STATUS_CODES.NONE) {
+            return null;
+        } else if (status_code === STATUS_CODES.VERIFIED) {
+            return IDV_ERROR_STATUS.HighRisk.code;
+        }
+    }
+
+    if (status_code === STATUS_CODES.EXPIRED) {
+        return IDV_ERROR_STATUS.Expired.code;
+    }
+
+    return getIDVErrorStatus(errors);
 };
 
 export const formatOnfidoError = (status_code: string, errors: Array<TOnfidoErrorStatus> = []) => {

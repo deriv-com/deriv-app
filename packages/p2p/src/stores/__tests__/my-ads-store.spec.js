@@ -1,6 +1,6 @@
 import { waitFor } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import { adverts } from 'Components/my-ads/__mocks__/mock-data';
+import { adverts } from 'Pages/my-ads/__mocks__/mock-data';
 import { requestWS } from 'Utils/websocket';
 import MyAdsStore from '../my-ads-store';
 

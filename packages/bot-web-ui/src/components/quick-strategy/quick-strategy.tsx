@@ -8,6 +8,7 @@ import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import DesktopFormWrapper from './form-wrappers/desktop-form-wrapper';
 import MobileFormWrapper from './form-wrappers/mobile-form-wrapper';
+import LossThresholdWarningDialog from './parts/loss-threshold-warning-dialog';
 import { STRATEGIES } from './config';
 import Form from './form';
 import { TConfigItem, TFormData } from './types';
@@ -33,7 +34,14 @@ const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') =>
 
 const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
     const { quick_strategy } = useDBotStore();
-    const { selected_strategy, form_data, onSubmit, setValue, current_duration_min_max } = quick_strategy;
+    const {
+        selected_strategy,
+        form_data,
+        onSubmit,
+        setValue,
+        current_duration_min_max,
+        initializeLossThresholdWarningData,
+    } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const [dynamic_schema, setDynamicSchema] = useState(Yup.object().shape({}));
 
@@ -58,6 +66,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
             initial_value[key as keyof TFormData] = data[key];
             setValue(key, data[key]);
         });
+        initializeLossThresholdWarningData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -164,6 +173,7 @@ const QuickStrategy = observer(() => {
     return (
         <FormikWrapper>
             <FormikForm>
+                <LossThresholdWarningDialog />
                 {is_mobile ? (
                     <MobileFullPageModal
                         is_modal_open={is_open}

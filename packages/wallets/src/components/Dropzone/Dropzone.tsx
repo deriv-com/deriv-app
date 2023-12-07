@@ -122,7 +122,9 @@ const Dropzone: React.FC<TProps> = ({
                             </WalletText>
                             {buttonText && (
                                 <div className='wallets-dropzone__placeholder-text'>
-                                    <WalletButton onClick={open} text={buttonText} variant='outlined' />
+                                    <WalletButton onClick={open} variant='outlined'>
+                                        {buttonText}
+                                    </WalletButton>
                                 </div>
                             )}
                             {errorMessage && (

@@ -10,14 +10,18 @@ const WalletsListingRoute: React.FC = () => {
     const { switchAccount } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
 
+    const firstLoginid = walletAccounts?.[0]?.loginid;
+
     useEffect(() => {
         if (!activeWallet) {
             const activeLinkedAccount = walletAccounts?.find(wallet => wallet.is_linked_account_active);
             if (activeLinkedAccount) {
                 switchAccount(activeLinkedAccount.loginid);
+            } else if (firstLoginid) {
+                switchAccount(firstLoginid);
             }
         }
-    }, [activeWallet, switchAccount, walletAccounts]);
+    }, [activeWallet, firstLoginid, switchAccount, walletAccounts]);
 
     return (
         <div className='wallets-listing-route'>

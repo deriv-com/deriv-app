@@ -7,6 +7,7 @@ import DefaultHeader from './default-header.jsx';
 import DTraderHeader from './dtrader-header.jsx';
 import TradersHubHeader from './traders-hub-header';
 import DTraderHeaderWallets from './dtrader-header-wallets';
+import TradersHubHeaderWallets from './traders-hub-header-wallets';
 import { useReadLocalStorage } from 'usehooks-ts';
 
 const Header = observer(() => {
@@ -39,7 +40,7 @@ const Header = observer(() => {
     if (is_logged_in) {
         let result;
         if (traders_hub_routes) {
-            result = <TradersHubHeader />;
+            result = should_show_wallets ? <TradersHubHeaderWallets /> : <TradersHubHeader />;
         } else if (pathname === routes.onboarding) {
             result = null;
         } else {

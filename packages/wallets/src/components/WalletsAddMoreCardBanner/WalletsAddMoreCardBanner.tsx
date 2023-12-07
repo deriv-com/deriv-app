@@ -26,7 +26,7 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     const { isMobile } = useDevice();
     const history = useHistory();
     const modal = useModal();
-    const syncLocalStorageClientAccounts = useSyncLocalStorageClientAccounts();
+    const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
 
     const renderButtons = useCallback(
         () => (
@@ -42,10 +42,10 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
 
     useEffect(() => {
         if (data && isMutateSuccess) {
-            syncLocalStorageClientAccounts(data);
+            addWalletAccountToLocalStorage(data);
             switchAccount(data?.client_id);
         }
-    }, [data, isMutateSuccess, switchAccount, syncLocalStorageClientAccounts]);
+    }, [addWalletAccountToLocalStorage, data, isMutateSuccess, switchAccount]);
 
     useEffect(
         () => {

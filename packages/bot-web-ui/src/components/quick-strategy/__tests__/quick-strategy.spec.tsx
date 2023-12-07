@@ -98,11 +98,13 @@ window.Blockly = {
 };
 
 jest.mock('../config', () => ({
+    ...jest.requireActual('../config'),
     STRATEGIES: {
         MARTINGALE: {
             name: 'martingale',
             label: 'martingale',
             description: 'test',
+            long_description: 'martingale',
             fields: [
                 [
                     {

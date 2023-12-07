@@ -37,7 +37,7 @@ describe('JurisdictionTitleIndicator', () => {
             risk_classification: '',
             status: [''],
         },
-        verification_docs: ['not_applicable'],
+        verification_docs: [],
     };
     it('should render JurisdictionTitleIndicator with displayText', () => {
         render(<JurisdictionTitleIndicator {...mock_props} />);

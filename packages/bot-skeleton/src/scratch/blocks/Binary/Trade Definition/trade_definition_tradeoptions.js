@@ -403,7 +403,6 @@ Blockly.Blocks.trade_definition_tradeoptions = {
             this.createPredictionInput(prediction_range);
 
             if (prediction_range.length > 0) {
-                //here check why we need it
                 const prediction_input = this.getInput('PREDICTION');
                 const { connection } = prediction_input;
 

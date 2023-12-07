@@ -20,8 +20,15 @@ import Tutorial from './tutorial-tab';
 
 const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
-    const { active_tab, active_tour, setActiveTab, setWebSocketState, setActiveTour, setTourDialogVisibility } =
-        dashboard;
+    const {
+        active_tab,
+        active_tour,
+        is_chart_modal_visible,
+        setActiveTab,
+        setWebSocketState,
+        setActiveTour,
+        setTourDialogVisibility,
+    } = dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
@@ -148,7 +155,11 @@ const Dashboard = observer(() => {
                             label={<Localize i18n_default_text='Bot Builder' />}
                             id='id-bot-builder'
                         />
-                        <div icon='IcChartsTabDbot' label={<Localize i18n_default_text='Charts' />} id='id-charts'>
+                        <div
+                            icon='IcChartsTabDbot'
+                            label={<Localize i18n_default_text='Charts' />}
+                            id={is_chart_modal_visible ? 'id-charts--disabled' : 'id-charts'}
+                        >
                             <Chart />
                         </div>
                         <div

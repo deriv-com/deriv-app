@@ -2080,7 +2080,6 @@ export default class ClientStore extends BaseStore {
         if (response?.logout === 1) {
             this.cleanUp();
 
-            Analytics.reset();
             this.setLogout(true);
         }
 

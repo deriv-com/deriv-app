@@ -3,6 +3,9 @@ import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { Input, Popover } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { Analytics } from '@deriv/analytics';
+import debounce from 'lodash.debounce';
+import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 type TQSInput = {
@@ -15,7 +18,6 @@ type TQSInput = {
     disabled?: boolean;
     regex?: RegExp;
 };
-
 const QSInput: React.FC<TQSInput> = observer(
     ({ name, onChange, regex, type = 'text', fullwidth = false, attached = false, disabled = false }: TQSInput) => {
         const {
@@ -27,6 +29,38 @@ const QSInput: React.FC<TQSInput> = observer(
         const [has_focus, setFocus] = React.useState(false);
         const { setFieldValue, setFieldTouched } = useFormikContext();
         const is_number = type === 'number' || type === 'text'; //last_digit_prediction has type 'text'
+
+        const sendPlusValueToRudderstack = (value: string) => {
+            Analytics.trackEvent('ce_bot_quick_strategy_form', {
+                action: 'change_parameter_value',
+                parameter_value: value,
+                plus_push_amount: value,
+            });
+        };
+
+        const sendMinusValueToRudderstack = (value: string) => {
+            Analytics.trackEvent('ce_bot_quick_strategy_form', {
+                action: 'change_parameter_value',
+                parameter_value: value,
+                minus_push_amount: value,
+            });
+        };
+
+        const debounceChangePlus = React.useCallback(
+            debounce(sendPlusValueToRudderstack, DEBOUNCE_INTERVAL_TIME, {
+                trailing: true,
+                leading: false,
+            }),
+            []
+        );
+
+        const debounceChangeMinus = React.useCallback(
+            debounce(sendMinusValueToRudderstack, DEBOUNCE_INTERVAL_TIME, {
+                trailing: true,
+                leading: false,
+            }),
+            []
+        );
 
         const handleChange = (e: MouseEvent<HTMLButtonElement>, value: string) => {
             e?.preventDefault();
@@ -97,6 +131,9 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) - 1;
                                                         handleChange(e, String(value % 1 ? value.toFixed(2) : value));
+                                                        debounceChangeMinus(
+                                                            String(value % 1 ? value.toFixed(2) : value)
+                                                        );
                                                     }}
                                                 >
                                                     -
@@ -110,6 +147,9 @@ const QSInput: React.FC<TQSInput> = observer(
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) + 1;
                                                         handleChange(e, String(value % 1 ? value.toFixed(2) : value));
+                                                        debounceChangePlus(
+                                                            String(value % 1 ? value.toFixed(2) : value)
+                                                        );
                                                     }}
                                                 >
                                                     +

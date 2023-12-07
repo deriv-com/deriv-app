@@ -32,20 +32,22 @@
             padding: 0.2rem;
         }
 
-        .cq-symbol-select-btn {
-            margin: 0.2rem;
+        .cq-symbol {
+            &-select-btn {
+                margin: 0.2rem;
 
-            .cq-symbol-dropdown {
-                transform: scale(1);
-                margin-left: auto;
-            }
+                &-dropdown {
+                    transform: scale(1);
+                    margin-left: auto;
+                }
 
-            .cq-symbol {
-                font-size: 1.4rem;
-            }
+                .cq-symbol {
+                    font-size: 1.4rem;
+                }
 
-            .cq-symbol-info {
-                min-height: unset;
+                &-info {
+                    min-height: unset;
+                }
             }
         }
     }

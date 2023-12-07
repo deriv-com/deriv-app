@@ -66,7 +66,7 @@ export const formatPortfolioPosition = (
 export type TIDVErrorStatus = keyof typeof IDV_ERROR_STATUS;
 export type TOnfidoErrorStatus = keyof typeof ONFIDO_ERROR_STATUS;
 
-//formatIDVError is parsing errors messages from BE (strings) and returns error codes for using it on FE
+// formatIDVError is parsing errors messages from BE (strings) and returns error codes for using it on FE
 export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: string, is_high_risk?: boolean) => {
     /**
      * Check required incase of DIEL client
@@ -98,6 +98,10 @@ export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: stri
             status.push(error_key);
         }
     });
+
+    if (status.includes(IDV_ERROR_STATUS.ReportNotAvailable.code)) {
+        return IDV_ERROR_STATUS.ReportNotAvailable.code;
+    }
 
     return status.includes(IDV_ERROR_STATUS.NameMismatch.code) &&
         status.includes(IDV_ERROR_STATUS.DobMismatch.code) &&

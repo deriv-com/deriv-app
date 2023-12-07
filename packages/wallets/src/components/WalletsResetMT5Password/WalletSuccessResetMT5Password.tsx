@@ -1,4 +1,5 @@
 import React, { FC, useCallback } from 'react';
+import { Trans } from 'react-i18next';
 import useDevice from '../../hooks/useDevice';
 import MT5PasswordUpdatedIcon from '../../public/images/ic-mt5-password-updated.svg';
 import MT5SuccessPasswordReset from '../../public/images/mt5-success-password-reset.svg';
@@ -19,11 +20,19 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
     const { isDesktop, isMobile } = useDevice();
 
     const renderFooter = useCallback(() => {
-        return isMobile ? <WalletButton isFullWidth onClick={() => hide()} size='lg' text='Done' /> : null;
+        return isMobile ? (
+            <WalletButton isFullWidth onClick={() => hide()} size='lg'>
+                <Trans defaults='Done' />
+            </WalletButton>
+        ) : null;
     }, [isMobile, hide]);
 
     const renderButtons = useCallback(() => {
-        return isDesktop ? <WalletButton onClick={() => hide()} size='lg' text='Done' /> : <></>;
+        return isDesktop ? (
+            <WalletButton onClick={() => hide()} size='lg'>
+                <Trans defaults='Done' />
+            </WalletButton>
+        ) : null;
     }, [isDesktop, hide]);
 
     return (

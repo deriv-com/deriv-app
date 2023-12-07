@@ -3,7 +3,7 @@ import { useStore, observer } from '@deriv/stores';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
-import { secondsToTimer } from 'Utils/date-time';
+import { millisecondsToTimer } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
@@ -14,14 +14,14 @@ import RatingCellRenderer from 'Components/rating-cell-renderer';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import './order-table-row.scss';
 
-const Title = ({ send_amount, currency, order_purchase_datetime, order_type }) => {
+const Title = ({ send_amount, currency, order_type, purchase_time }) => {
     return (
         <React.Fragment>
             <Text size='sm' color='prominent' line_height='xxs' weight='bold' as='p'>
                 {order_type} {formatMoney(currency, send_amount, true)} {currency}
             </Text>
             <Text color='less-prominent' as='p' line_height='xxs' size='xxs' align='left'>
-                {order_purchase_datetime}
+                {purchase_time}
             </Text>
         </React.Fragment>
     );
@@ -32,7 +32,7 @@ const OrderRow = ({ row: order }) => {
         const distance = ServerTime.getDistanceToServerTime(time);
         return {
             distance,
-            label: distance < 0 ? localize('expired') : secondsToTimer(distance),
+            label: distance < 0 ? localize('expired') : millisecondsToTimer(distance),
         };
     };
     const { general_store, order_store, sendbird_store } = useStores();
@@ -57,9 +57,9 @@ const OrderRow = ({ row: order }) => {
         is_user_recommended_previously,
         local_currency,
         order_expiry_milliseconds,
-        order_purchase_datetime,
         other_user_details,
         price_display,
+        purchase_time,
         rating,
         should_highlight_alert,
         should_highlight_danger,
@@ -269,8 +269,8 @@ const OrderRow = ({ row: order }) => {
                             <Title
                                 send_amount={amount_display}
                                 currency={account_currency}
-                                order_purchase_datetime={order_purchase_datetime}
                                 order_type={order_type}
+                                purchase_time={purchase_time}
                             />
                         </Table.Cell>
                     </Table.Row>

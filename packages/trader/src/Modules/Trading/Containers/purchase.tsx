@@ -31,6 +31,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
     const {
         portfolio: { all_positions, onClickSell },
         ui: { purchase_states: purchased_states_arr, is_mobile, setPurchaseState },
+        client: { is_beta_chart },
     } = useStore();
     const {
         basis,
@@ -99,6 +100,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
                 growth_rate={growth_rate}
                 has_cancellation={has_cancellation}
                 is_accumulator={is_accumulator}
+                is_beta_chart={is_beta_chart}
                 is_disabled={is_disabled}
                 is_high_low={is_high_low}
                 is_loading={isLoading(info)}

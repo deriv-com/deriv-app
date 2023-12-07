@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Trans } from 'react-i18next';
 import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
@@ -83,15 +84,18 @@ const WalletsResetMT5Password = ({
     const renderFooter = () => {
         return isMobile ? (
             <WalletButtonGroup isFullWidth>
-                <WalletButton onClick={() => hide()} size='lg' text='Cancel' variant='outlined' />
+                <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                    <Trans defaults='Cancel' />
+                </WalletButton>
                 <WalletButton
                     disabled={!validPassword(password)}
                     isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
                     onClick={handleSubmit}
                     size='lg'
-                    text='Create'
                     variant='contained'
-                />
+                >
+                    <Trans defaults='Create' />
+                </WalletButton>
             </WalletButtonGroup>
         ) : null;
     };
@@ -120,14 +124,17 @@ const WalletsResetMT5Password = ({
                 )}
                 {isDesktop && (
                     <div className='wallets-reset-mt5-password__button-group'>
-                        <WalletButton onClick={() => hide()} text='Cancel' variant='outlined' />
+                        <WalletButton onClick={() => hide()} variant='outlined'>
+                            <Trans defaults='Cancel' />
+                        </WalletButton>
                         <WalletButton
                             disabled={!validPassword(password)}
                             isLoading={isChangeInvestorPasswordLoading || isChangePasswordLoading}
                             onClick={handleSubmit}
-                            text='Create'
                             variant='contained'
-                        />
+                        >
+                            <Trans defaults='Create' />
+                        </WalletButton>
                     </div>
                 )}
             </div>

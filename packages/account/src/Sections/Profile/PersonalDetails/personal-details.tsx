@@ -15,7 +15,6 @@ import {
     MobileWrapper,
     SelectNative,
     Text,
-    useStateCallback,
 } from '@deriv/components';
 import { GetSettings } from '@deriv/api-types';
 import { WS, getBrandWebsiteName, routes, useIsMounted } from '@deriv/shared';
@@ -702,8 +701,8 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                 </FormBodySection>
                             </FormBody>
                             <FormFooter>
-                                {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
-                                {!is_virtual && !(isSubmitting || is_submit_success || (status && status.msg)) && (
+                                {status?.msg && <FormSubmitErrorMessage message={status?.msg} />}
+                                {!is_virtual && !(isSubmitting || is_submit_success || status?.msg) && (
                                     <Text
                                         className='account-form__footer-note'
                                         size='xxs'

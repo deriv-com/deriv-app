@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import BuyToastNotification from '../../buy-toast-notification';
+import BuyToastNotification from '../buy-toast-notification';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { TRADE_TYPES } from '@deriv/shared';
 

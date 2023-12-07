@@ -425,6 +425,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleAdditionalKycInfoModal: jest.fn(),
             is_kyc_information_submitted_modal_open: false,
             toggleKycInformationSubmittedModal: jest.fn(),
+            setAccountSwitcherDisabledMessage: jest.fn(),
         },
         traders_hub: {
             getAccount: jest.fn(),

@@ -14,6 +14,8 @@ type TDisplay = {
 };
 
 const Display = ({ is_open, name, list, onClick, value }: TDisplay) => {
+    React.useMemo(() => (window as any).hj('event', `selected_${value}_contract_type`), [value]);
+
     const getDisplayText = () =>
         findContractCategory(list as unknown as TList[], { value })?.contract_types?.find((item: TContractType) =>
             item.value.includes(value)

@@ -1,13 +1,13 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
-import { mockContractInfo } from '@deriv/shared';
+import { mockContractInfo, TRADE_TYPES } from '@deriv/shared';
 import ContractDetails from '../contract-details';
 
 const contract_types = {
     test_contract_type: 'test_contract_type',
-    multiplier: 'multiplier',
-    vanilla: 'vanillalongcall',
+    multiplier: TRADE_TYPES.MULTIPLIER,
+    vanilla: TRADE_TYPES.VANILLA.CALL,
     digit: 'digit',
     expiry: 'expiry',
 };

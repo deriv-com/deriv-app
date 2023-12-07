@@ -1,19 +1,18 @@
 import React, { Fragment, useState } from 'react';
+import { Trans } from 'react-i18next';
 import { SentEmailContent } from '../../../../components';
 import { Tab, Tabs, WalletText } from '../../../../components/Base';
 import IcBackArrow from '../../../../public/images/ic-back-arrow.svg';
-import { TPlatforms } from '../../../../types';
+import { PlatformDetails } from '../../constants';
 import MT5ChangeInvestorPasswordScreens from './InvestorPassword/MT5ChangeInvestorPasswordScreens';
 import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswordScreens';
 
-type TProps = {
-    platform: TPlatforms.All;
-    title: string;
-};
-
-const MT5ChangePasswordScreens: React.FC<TProps> = ({ platform, title }) => {
+const MT5ChangePasswordScreens = () => {
     const [showSentEmailContentWithoutTabs, setShowSentEmailContentWithoutTabs] = useState(false);
     const [tabNumber, setTabNumber] = useState(0);
+
+    const platform = PlatformDetails.mt5.platform;
+    const { title } = PlatformDetails[platform];
 
     return showSentEmailContentWithoutTabs ? (
         <Fragment>
@@ -31,7 +30,9 @@ const MT5ChangePasswordScreens: React.FC<TProps> = ({ platform, title }) => {
                 }}
             >
                 <IcBackArrow />
-                <WalletText weight='bold'>Back</WalletText>
+                <WalletText weight='bold'>
+                    <Trans defaults='Back' />
+                </WalletText>
             </div>
 
             <div className='wallets-change-investor-password-screens__sent-email-wrapper'>

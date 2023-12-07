@@ -20,7 +20,7 @@ const ChangePassword = () => {
                     {isDerivX ? (
                         <TradingPlatformChangePasswordScreens platform={platform} />
                     ) : (
-                        <MT5ChangePasswordScreens platform={platform} title={title} />
+                        <MT5ChangePasswordScreens />
                     )}
                 </div>
             </div>

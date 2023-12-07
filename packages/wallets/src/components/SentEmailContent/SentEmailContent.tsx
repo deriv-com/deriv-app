@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import { Trans } from 'react-i18next';
 import { useCountdown } from 'usehooks-ts';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { PlatformDetails } from '../../features/cfd/constants';
@@ -53,7 +54,7 @@ const SentEmailContent: React.FC<TProps> = ({ description, isInvestorPassword = 
                             size={emailLinkSize}
                             variant='ghost'
                         >
-                            Didn&apos;t receive the email?
+                            <Trans defaults="Didn't receive the email?" />
                         </WalletButton>
                     )
                 }

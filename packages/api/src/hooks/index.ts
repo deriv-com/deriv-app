@@ -44,6 +44,7 @@ export { default as useOnfido } from './useOnfido';
 export { default as useOnfidoNotificationEvent } from './useOnfidoNotificationEvent';
 export { default as useOnfidoServiceToken } from './useOnfidoServiceToken';
 export { default as useOtherCFDPlatformsDeposit } from './useOtherCFDPlatformsDeposit';
+export { default as useP2PAdvertList } from './useP2PAdvertList';
 export { default as usePOA } from './usePOA';
 export { default as usePOI } from './usePOI';
 export { default as useResidenceList } from './useResidenceList';

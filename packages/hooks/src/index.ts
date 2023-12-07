@@ -43,7 +43,6 @@ export { default as useNeedTNC } from './useNeedTNC';
 export { default as useOnrampVisible } from './useOnrampVisible';
 export { default as useP2PAdvertInfo } from './useP2PAdvertInfo';
 export { default as useP2PAdvertiserPaymentMethods } from './useP2PAdvertiserPaymentMethods';
-export { default as useP2PAdvertList } from './useP2PAdvertList';
 export { default as useP2PNotificationCount } from './useP2PNotificationCount';
 export { default as useP2PPaymentMethods } from './useP2PPaymentMethods';
 export { default as useP2PExchangeRate } from './useP2PExchangeRate';

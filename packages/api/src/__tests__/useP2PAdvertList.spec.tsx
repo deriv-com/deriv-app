@@ -1,40 +1,21 @@
-import React from 'react';
-import { APIProvider, useInfiniteQuery } from '@deriv/api';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import useInfiniteQuery from '../useInfiniteQuery';
 import { renderHook } from '@testing-library/react-hooks';
-import useP2PAdvertList from '../useP2PAdvertList';
+import useP2PAdvertList from '../hooks/useP2PAdvertList';
 
-type TWrapper = {
-    children: JSX.Element;
-};
-
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
-    useInfiniteQuery: jest.fn(),
-}));
+jest.mock('../useInfiniteQuery');
 
 const mockUseInfiniteQuery = useInfiniteQuery as jest.MockedFunction<typeof useInfiniteQuery<'p2p_advert_list'>>;
 
 describe('useP2PAdvertList', () => {
     it('should return undefined if there is no response', () => {
-        const mock_store = mockStore({});
         // @ts-expect-error need to come up with a way to mock the return type of useInfiniteQuery
         mockUseInfiniteQuery.mockReturnValueOnce({});
 
-        const wrapper = ({ children }: TWrapper) => (
-            <APIProvider>
-                <StoreProvider store={mock_store}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useP2PAdvertList(), { wrapper });
+        const { result } = renderHook(() => useP2PAdvertList());
         expect(result.current.data).toBeUndefined();
     });
 
     it('should return the p2p_advert_list object from response', () => {
-        const mock_store = mockStore({
-            client: { currency: 'USD' },
-        });
         mockUseInfiniteQuery.mockReturnValueOnce({
             // @ts-expect-error need to come up with a way to mock the return type of useInfiniteQuery
             data: {
@@ -99,13 +80,7 @@ describe('useP2PAdvertList', () => {
             },
         });
 
-        const wrapper = ({ children }: TWrapper) => (
-            <APIProvider>
-                <StoreProvider store={mock_store}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
-        const { result } = renderHook(() => useP2PAdvertList(), { wrapper });
+        const { result } = renderHook(() => useP2PAdvertList());
         const adverts_list = result.current.data;
         expect(adverts_list).toHaveLength(1);
         expect(adverts_list?.[0].country).toBe('id');

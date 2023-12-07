@@ -158,7 +158,7 @@ export type TCFDAccountCardActionProps = {
     onSelectAccount: () => void;
     is_button_primary?: boolean;
     is_accounts_switcher_on?: boolean;
-    button_label?: string | JSX.Element;
+    button_label?: string | ReactElement;
     handleClickSwitchAccount: () => void;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
@@ -262,7 +262,7 @@ export type TCFDAccountCard = {
     onSelectAccount: () => void;
     has_cfd_account_error?: boolean;
     is_accounts_switcher_on?: boolean;
-    button_label?: string | JSX.Element;
+    button_label?: string | ReactElement;
     existing_accounts_data?: TExistingData | null;
     toggleAccountsDialog?: (arg?: boolean) => void;
     onClickFund: (arg: DetailsOfEachMT5Loginid) => void;
@@ -279,45 +279,15 @@ export type TCFDAccountCard = {
 
 export type TTradingPlatformAccounts = {
     account_id?: string;
-    /**
-     * Account type.
-     */
     account_type?: TAccountCategory;
-    /**
-     * Balance of the DXTrade account.
-     */
     balance?: number;
-    /**
-     * Residence of the DXTrade account.
-     */
     country?: string;
-    /**
-     * Currency of the DXTrade account.
-     */
     currency?: string;
-    /**
-     * Account balance, formatted to appropriate decimal places.
-     */
     display_balance?: string;
-    /**
-     * Display login of DXTrade account.
-     */
     display_login?: string;
-    /**
-     * Landing company shortcode of the DXTrade account.
-     */
     landing_company_short?: DetailsOfEachMT5Loginid['landing_company_short'];
-    /**
-     * Login of DXTrade account.
-     */
     login?: string;
-    /**
-     * Market type
-     */
     market_type?: keyof typeof MARKET_TYPE;
-    /**
-     * Name of trading platform.
-     */
     platform?: TCFDPlatform;
 };
 

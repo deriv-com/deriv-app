@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { DEFAULT_ACCOUNTS, mockGeneral, mockLoggedIn, setupMocks, assertField } from '@deriv/integration';
 import { Context } from '@deriv/integration/src/utils/mocks/mocks';
 
-const mockSetSettings = (context: Context) => {
+const mockSetSettingsValid = (context: Context) => {
     if ('set_settings' in context.request) {
         context.response = {
             echo_req: context.request,
@@ -71,7 +71,7 @@ test.describe('Personal Details', () => {
                 accounts: DEFAULT_ACCOUNTS,
             },
             page,
-            mocks: [mockGeneral, mockLoggedIn, mockSetSettingsInvalid],
+            mocks: [mockGeneral, mockLoggedIn, mockSetSettingsValid],
         });
         await page.goto(`${baseURL}/account/personal-details`);
 
@@ -96,7 +96,7 @@ test.describe('Personal Details', () => {
         await setupMocks({
             baseURL,
             page,
-            mocks: [mock_general, mock_loggedIn, mock_residents_list, mock_states_list, mock_set_settings_invalid],
+            mocks: [mockGeneral, mockLoggedIn, mockSetSettingsInvalid],
         });
         await page.goto(`${baseURL}/account/personal-details`);
 

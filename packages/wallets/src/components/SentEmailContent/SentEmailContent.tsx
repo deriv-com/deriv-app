@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useCountdown } from 'usehooks-ts';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { PlatformDetails } from '../../features/cfd/constants';
@@ -61,7 +61,7 @@ const SentEmailContent: React.FC<TProps> = ({ description, isInvestorPassword = 
                 titleSize={titleSize}
             />
             {shouldShowResendEmailReasons && (
-                <>
+                <Fragment>
                     {isInvestorPassword && (
                         <div className='wallets-sent-email-content__resend'>
                             <WalletsActionScreen
@@ -97,7 +97,7 @@ const SentEmailContent: React.FC<TProps> = ({ description, isInvestorPassword = 
                     >
                         {hasCountdownStarted ? `Resend email in ${count}` : 'Resend email'}
                     </WalletButton>
-                </>
+                </Fragment>
             )}
         </div>
     );

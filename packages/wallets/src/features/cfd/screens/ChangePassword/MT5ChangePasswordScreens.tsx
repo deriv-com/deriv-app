@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { SentEmailContent } from '../../../../components';
 import { Tab, Tabs, WalletText } from '../../../../components/Base';
 import IcBackArrow from '../../../../public/images/ic-back-arrow.svg';
@@ -16,7 +16,7 @@ const MT5ChangePasswordScreens: React.FC<TProps> = ({ platform, title }) => {
     const [tabNumber, setTabNumber] = useState(0);
 
     return showSentEmailContentWithoutTabs ? (
-        <>
+        <Fragment>
             <div
                 className='wallets-change-password__back-arrow'
                 onClick={() => {
@@ -40,7 +40,7 @@ const MT5ChangePasswordScreens: React.FC<TProps> = ({ platform, title }) => {
                     isInvestorPassword
                 />
             </div>
-        </>
+        </Fragment>
     ) : (
         <Tabs preSelectedTab={tabNumber} wrapperClassName='wallets-change-password__tab'>
             <Tab title={`${title} Password`}>

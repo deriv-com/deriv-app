@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router';
-import { DesktopWrapper, MobileWrapper, DataList, DataTable, usePrevious } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, usePrevious } from '@deriv/components';
 import {
     extractInfoFromShortcode,
     formatDate,
@@ -20,6 +20,7 @@ import PlaceholderComponent from '../Components/placeholder-component';
 import { ReportsMeta } from '../Components/reports-meta';
 import { getProfitTableColumnsTemplate } from 'Constants/data-table-constants';
 import { observer, useStore } from '@deriv/stores';
+import { useFeatureFlags } from '@deriv/hooks';
 import { useReportsStore } from 'Stores/useReportsStores';
 
 type TProfitTable = {
@@ -69,6 +70,7 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
     } = profit_table;
     const prev_date_from = usePrevious(date_from);
     const prev_date_to = usePrevious(date_to);
+    const { is_dtrader_v2_enabled } = useFeatureFlags();
 
     React.useEffect(() => {
         onMount();
@@ -170,6 +172,7 @@ const ProfitTable = observer(({ component_icon }: TProfitTable) => {
         );
     };
 
+    if (is_dtrader_v2_enabled) return <Text size='l'>And I&apos;m Profit Table for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
             <ReportsMeta filter_component={filter_component} className='profit-table__filter' />

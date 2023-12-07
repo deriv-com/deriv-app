@@ -8,12 +8,14 @@ import {
     MobileWrapper,
     PageOverlay,
     SelectNative,
+    Text,
     VerticalTab,
 } from '@deriv/components';
 import { getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { Analytics } from '@deriv/analytics';
+import { useFeatureFlags } from '@deriv/hooks';
 import { TRoute } from 'Types';
 import 'Sass/app/modules/reports.scss';
 
@@ -33,6 +35,7 @@ type TReports = {
 
 const Reports = observer(({ history, location, routes }: TReports) => {
     const { client, common, ui } = useStore();
+    const { is_dtrader_v2_enabled } = useFeatureFlags();
 
     const { is_logged_in, is_logging_in, setVisibilityRealityCheck } = client;
     const { is_from_derivgo, routeBackInApp } = common;
@@ -83,6 +86,19 @@ const Reports = observer(({ history, location, routes }: TReports) => {
     if (!is_logged_in && is_logging_in) {
         return <Loading is_fullscreen />;
     }
+    if (is_dtrader_v2_enabled)
+        return (
+            <React.Fragment>
+                <Text as='p' size='xl'>
+                    Hello! I&apos;m Reports page for DTrader 2.0.
+                </Text>
+                <div>
+                    {selected_route?.component && (
+                        <selected_route.component icon_component={selected_route.icon_component} />
+                    )}
+                </div>
+            </React.Fragment>
+        );
     return (
         <FadeWrapper is_visible={is_reports_visible} className='reports-page-wrapper' keyname='reports-page-wrapper'>
             <div className='reports'>

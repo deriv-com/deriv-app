@@ -16,11 +16,6 @@ const IndicativeCell = observer((props: TIndicativeCell) => {
     const { amount, contract_info, currency, is_footer, is_sell_requested } = props;
     const { portfolio } = useStore();
     const { onClickSell } = portfolio;
-    const [amount_state, setAmountState] = React.useState(0);
-
-    React.useEffect(() => {
-        setAmountState(amount);
-    }, [amount, amount_state]);
 
     return (
         <div className='open-positions__indicative'>

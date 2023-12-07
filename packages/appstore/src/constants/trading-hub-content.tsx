@@ -43,7 +43,7 @@ export const getTradingHubContents = (): TTradingHubContents => ({
             />
         ),
         footer_header: localize("Welcome to Trader's Hub"),
-        footer_text: localize('This is your personal start page for Deriv'),
+        footer_text: localize('This is your personal start page for Deriv.'),
         has_next_content: false,
     },
     step2: {
@@ -75,7 +75,7 @@ export const getTradingHubContents = (): TTradingHubContents => ({
         ),
         footer_header: localize('Trading accounts'),
         footer_text: localize(
-            'These are the trading accounts available to you. You can click on an account’s icon or description to find out more'
+            'These are the trading accounts available to you. You can click on an account’s icon or description to find out more.'
         ),
         has_next_content: false,
     },
@@ -108,8 +108,8 @@ export const getTradingHubContents = (): TTradingHubContents => ({
         ),
         footer_header: localize('CFDs, Options or Multipliers'),
         eu_footer_header: localize('CFDs or Multipliers'),
-        footer_text: localize('You can choose between CFD trading accounts or Options and Multipliers accounts'),
-        eu_footer_text: localize('You can choose between CFD trading accounts and Multipliers accounts'),
+        footer_text: localize('You can choose between CFD trading accounts or Options and Multipliers accounts.'),
+        eu_footer_text: localize('You can choose between CFD trading accounts and Multipliers accounts.'),
         has_next_content: false,
     },
     step4: {
@@ -140,7 +140,7 @@ export const getTradingHubContents = (): TTradingHubContents => ({
             />
         ),
         footer_header: localize('‘Get’ your Deriv account'),
-        footer_text: localize('Click ‘Get’ to create a trading account'),
+        footer_text: localize('Click ‘Get’ to create a trading account.'),
         has_next_content: false,
     },
     step5: {
@@ -181,7 +181,7 @@ export const getTradingHubContents = (): TTradingHubContents => ({
             />
         ),
         footer_header: localize('Top-up your account'),
-        footer_text: localize('Once you have an account click on ‘Deposit’ or ‘Transfer’ to add funds to an account'),
+        footer_text: localize('Once you have an account click on ‘Deposit’ or ‘Transfer’ to add funds to an account.'),
         has_next_content: false,
     },
     step6: {
@@ -222,7 +222,7 @@ export const getTradingHubContents = (): TTradingHubContents => ({
             />
         ),
         footer_header: localize('Start trading'),
-        footer_text: localize('Click ‘Open’ to start trading with your account'),
+        footer_text: localize('Click ‘Open’ to start trading with your account.'),
         has_next_content: true,
         next_content: localize('Start trading'),
     },

@@ -1,4 +1,3 @@
-import { initSurvicate } from '../public-path';
 import React from 'react';
 import { TStores } from '@deriv/stores/types';
 import type { TWebSocket } from 'Types';
@@ -17,13 +16,6 @@ const App = ({ passthrough }: TAppProps) => {
     const { root_store, WS } = passthrough;
     React.useEffect(() => {
         setInnerHeightToVariable();
-        initSurvicate();
-        return () => {
-            const survicate_box = document.getElementById('survicate-box') || undefined;
-            if (survicate_box) {
-                survicate_box.style.display = 'none';
-            }
-        };
     }, []);
 
     return (

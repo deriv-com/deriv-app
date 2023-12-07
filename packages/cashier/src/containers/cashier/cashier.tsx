@@ -68,8 +68,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = usePaymentAgentTransferVisible();
     const { is_payment_agent_visible } = payment_agent;
     const { is_from_derivgo } = common;
-    const { is_cashier_visible: is_visible, is_mobile, toggleCashier } = ui;
-    const { is_account_setting_loaded, is_logged_in, is_logging_in } = client;
+    const { is_cashier_visible: is_visible, is_mobile, toggleCashier, toggleReadyToDepositModal } = ui;
+    const { currency, is_account_setting_loaded, is_logged_in, is_logging_in, is_svg, is_virtual } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const p2p_notification_count = useP2PNotificationCount();
@@ -200,9 +200,35 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
 
     useEffect(() => {
         if (is_p2p_enabled_success && !is_p2p_enabled && history.location.pathname.startsWith(routes.cashier_p2p)) {
+            const url_params = new URLSearchParams(history.location.search);
+            const advert_id = url_params.get('advert_id');
+
             history.push(routes.cashier_deposit);
+
+            if (advert_id) {
+                if (is_virtual) {
+                    toggleReadyToDepositModal();
+                } else {
+                    error.setErrorMessage({
+                        code: 'ShareMyAdsError',
+                        message:
+                            currency !== 'USD' && is_svg
+                                ? localize('Deriv P2P is currently unavailable in this currency.')
+                                : localize('Deriv P2P is currently unavailable in your country.'),
+                    });
+                }
+            }
         }
-    }, [history, is_p2p_enabled, is_p2p_enabled_success]);
+    }, [
+        currency,
+        error,
+        history,
+        is_p2p_enabled,
+        is_p2p_enabled_success,
+        is_svg,
+        is_virtual,
+        toggleReadyToDepositModal,
+    ]);
 
     if (
         ((!is_logged_in || is_mobile) && is_logging_in) ||
@@ -240,7 +266,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     </DesktopWrapper>
                     <MobileWrapper>
                         <Div100vhContainer className='cashier__wrapper--is-mobile' height_offset='80px'>
-                            {selected_route && selected_route.component && (
+                            {selected_route?.component && (
                                 <selected_route.component
                                     component_icon={selected_route.icon_component}
                                     history={history}

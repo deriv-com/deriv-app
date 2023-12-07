@@ -90,10 +90,8 @@ const App = () => {
             }
         });
 
-        if (/\/p2p$/.test(location.pathname)) {
-            history.push(routes.p2p_buy_sell);
-            general_store.setActiveIndex(0);
-        } else if (/\/orders$/.test(location.pathname)) {
+        // Redirect to the correct tab based on the url on page load
+        if (/\/orders$/.test(location.pathname)) {
             history.push(routes.p2p_orders);
             general_store.setActiveIndex(1);
         } else if (/\/my-ads$/.test(location.pathname)) {
@@ -105,10 +103,22 @@ const App = () => {
         } else if (/\/advertiser$/.test(location.pathname)) {
             if (location.search || general_store.counterparty_advertiser_id) {
                 const url_params = new URLSearchParams(location.search);
+                const id = url_params.get('id');
+                const advert_id = url_params.get('advert_id');
 
-                // DO NOT REMOVE. This will prevent the page from redirecting to buy sell on reload from advertiser page
-                // as it resets the URL search params
-                history.replace({ pathname: routes.p2p_advertiser_page, search: `?id=${url_params.get('id')}` });
+                general_store.setCounterpartyAdvertiserId(id);
+
+                if (advert_id) {
+                    general_store.setCounterpartyAdvertId(advert_id);
+                    history.replace({
+                        pathname: routes.p2p_advertiser_page,
+                        search: `?id=${id}&advert_id=${advert_id}`,
+                    });
+                } else {
+                    // DO NOT REMOVE. This will prevent the page from redirecting to buy sell on reload from advertiser page
+                    // as it resets the URL search params
+                    history.replace({ pathname: routes.p2p_advertiser_page, search: `?id=${id}` });
+                }
             } else {
                 history.push(routes.p2p_buy_sell);
             }
@@ -120,6 +130,15 @@ const App = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // Redirect to /p2p/buy-sell if user navigates to /p2p without a subroute
+    React.useEffect(() => {
+        if (/\/p2p$/.test(location.pathname) || location.pathname === '/cashier/p2p/') {
+            history.push(routes.p2p_buy_sell);
+            general_store.setActiveIndex(0);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location.pathname]);
 
     React.useEffect(() => {
         const url_params = new URLSearchParams(location.search);
@@ -243,15 +262,13 @@ const App = () => {
     }
 
     return (
-        <>
-            <main className='p2p'>
-                <ModalManagerContextProvider>
-                    <ModalManager />
-                    <AppContent order_id={order_id} />
-                    <Routes />
-                </ModalManagerContextProvider>
-            </main>
-        </>
+        <main className='p2p'>
+            <ModalManagerContextProvider>
+                <ModalManager />
+                <AppContent order_id={order_id} />
+                <Routes />
+            </ModalManagerContextProvider>
+        </main>
     );
 };
 

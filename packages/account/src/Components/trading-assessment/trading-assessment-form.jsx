@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Formik, Form } from 'formik';
+import { Form, Formik } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
-import { isEmptyObject, isMobile } from '@deriv/shared';
+import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
@@ -104,10 +104,14 @@ const TradingAssessmentForm = ({
 
     const isAssessmentCompleted = answers => Object.values(answers).every(answer => Boolean(answer));
 
-    const nextButtonHandler = values => {
+    const nextButtonHandler = (values, { setTouched }) => {
         if (is_section_filled) {
-            if (isAssessmentCompleted(values) && stored_items === last_question_index) onSubmit(values);
-            else displayNextPage();
+            if (isAssessmentCompleted(values) && stored_items === last_question_index) {
+                onSubmit(values);
+            } else {
+                setTouched({});
+                displayNextPage();
+            }
         }
     };
 
@@ -159,13 +163,13 @@ const TradingAssessmentForm = ({
                 <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you.' />
             </Text>
             <Formik initialValues={{ ...form_value }} validate={handleValidate} onSubmit={nextButtonHandler}>
-                {({ errors, setFieldValue, values }) => {
+                {({ errors, setFieldValue, values, setErrors, touched }) => {
                     const { question_text, form_control, answer_options, questions } =
                         current_question_details.current_question;
                     const has_long_question = questions?.some(
                         question => question.question_text.length > MAX_QUESTION_TEXT_LENGTH
                     );
-
+                    const is_section_required = Object.keys(values).some(field => !!errors[field] && !!touched[field]);
                     return (
                         <React.Fragment>
                             <Text weight='bold' size='xs' className='trading-assessment__question-counter'>
@@ -177,7 +181,7 @@ const TradingAssessmentForm = ({
                                     }}
                                 />
                                 <Text color='loss-danger' size='xxs'>
-                                    * {!isEmptyObject(errors) && <Localize i18n_default_text={'This is required'} />}
+                                    {is_section_required && <Localize i18n_default_text={'* This is required'} />}
                                 </Text>
                             </Text>
                             <section className={'trading-assessment__form'}>
@@ -220,7 +224,10 @@ const TradingAssessmentForm = ({
                                             {should_display_previous_button && (
                                                 <Button
                                                     has_effect
-                                                    onClick={displayPreviousPage}
+                                                    onClick={() => {
+                                                        setErrors({});
+                                                        displayPreviousPage();
+                                                    }}
                                                     text={localize('Previous')}
                                                     type='button'
                                                     secondary

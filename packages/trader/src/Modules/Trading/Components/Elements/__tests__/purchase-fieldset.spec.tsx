@@ -6,7 +6,7 @@ import userEvent from '@testing-library/user-event';
 
 import PurchaseFieldset from '../purchase-fieldset';
 
-const default_mocked_props = {
+const default_mocked_props: React.ComponentProps<typeof PurchaseFieldset> = {
     basis: '',
     buy_info: {},
     currency: '',
@@ -19,6 +19,19 @@ const default_mocked_props = {
         message: 'test_message',
         growth_rate: 0.03,
         stake: '10',
+        spot_time: 0,
+        commission: 0.44,
+        cancellation: undefined,
+        has_error_details: false,
+        error_code: '',
+        error_field: '',
+        has_increased: false,
+        limit_order: undefined,
+        obj_contract_basis: { text: 'mocked text', value: 'mocked value' },
+        payout: 0,
+        profit: '',
+        returns: '',
+        spot: 0,
     },
     is_accumulator: false,
     is_disabled: false,
@@ -35,7 +48,8 @@ const default_mocked_props = {
     purchased_states_arr: [true, false],
     setPurchaseState: jest.fn(),
     type: '',
-} as unknown as React.ComponentProps<typeof PurchaseFieldset>;
+    is_beta_chart: false,
+};
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

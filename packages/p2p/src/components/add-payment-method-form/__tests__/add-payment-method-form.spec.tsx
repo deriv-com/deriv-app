@@ -118,7 +118,7 @@ describe('<AddPaymentMethodForm />', () => {
         await waitFor(() => userEvent.click(cancelButton));
 
         await waitFor(() =>
-            expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'CancelAddPaymentMethodModal' })
+            expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'CancelAddPaymentMethodModal', props: {} })
         );
     });
 
@@ -165,7 +165,7 @@ describe('<AddPaymentMethodForm />', () => {
         render(<AddPaymentMethodForm />, { wrapper });
 
         expect(mock_store.my_profile_store.setAddPaymentMethodErrorMessage).toHaveBeenCalled();
-        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'AddPaymentMethodErrorModal' });
+        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'AddPaymentMethodErrorModal', props: {} });
     });
 
     it('should call create when clicking on Add button if the form is filled', async () => {

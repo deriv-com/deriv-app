@@ -54,6 +54,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }: TAddPaym
             my_profile_store.setAddPaymentMethodErrorMessage(mutation_error.message);
             showModal({
                 key: 'AddPaymentMethodErrorModal',
+                props: {},
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -138,6 +139,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }: TAddPaym
                                                         ? 'textarea'
                                                         : payment_method_field[1].type
                                                 }
+                                                value={field.value || ''}
                                             />
                                         )}
                                     </Field>
@@ -158,6 +160,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }: TAddPaym
                                     if (dirty || !!my_profile_store.selected_payment_method) {
                                         showModal({
                                             key: 'CancelAddPaymentMethodModal',
+                                            props: {},
                                         });
                                     } else {
                                         my_profile_store.hideAddPaymentMethodForm();

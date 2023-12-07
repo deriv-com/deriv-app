@@ -2,6 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, Form, FormikValues } from 'formik';
 import { Button, DesktopWrapper, Input, Loading, Text } from '@deriv/components';
+import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { isEmptyObject } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useStores } from 'Stores';
@@ -17,15 +18,20 @@ const EditPaymentMethodForm = () => {
         ui: { is_desktop, is_mobile },
     } = useStore();
     const { showModal } = useModalManagerContext();
+    const { mutation, update } = useP2PAdvertiserPaymentMethods();
+    const { error: mutation_error, status: mutation_status } = mutation;
     const {
         payment_method_to_edit,
         setPaymentMethodToEdit,
         setSelectedPaymentMethod,
         setSelectedPaymentMethodDisplayName,
         setShouldShowEditPaymentMethodForm,
-        updatePaymentMethod,
         validatePaymentMethodFields,
     } = my_profile_store;
+
+    const updatePaymentMethod = values => {
+        update(payment_method_to_edit.id, values);
+    };
 
     type FieldsInitialValues = {
         [key: string]: TPaymentMethod;
@@ -47,6 +53,15 @@ const EditPaymentMethodForm = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    React.useEffect(() => {
+        if (mutation_status === 'success') {
+            my_profile_store.setShouldShowEditPaymentMethodForm(false);
+        } else if (mutation_status === 'error') {
+            my_profile_store.setAddPaymentMethodErrorMessage(mutation_error.message);
+            showModal({ key: 'AddPaymentMethodErrorModal', props: {} });
+        }
+    }, [mutation_error, mutation_status]);
+
     if (isEmptyObject(payment_method_to_edit)) {
         return <Loading is_fullscreen={false} />;
     }
@@ -67,6 +82,7 @@ const EditPaymentMethodForm = () => {
                                     if (dirty) {
                                         showModal({
                                             key: 'CancelEditPaymentMethodModal',
+                                            props: {},
                                         });
                                     } else {
                                         setShouldShowEditPaymentMethodForm(false);
@@ -124,6 +140,7 @@ const EditPaymentMethodForm = () => {
                                                                     ? 'textarea'
                                                                     : current_field.type
                                                             }
+                                                            value={field.value || ''}
                                                         />
                                                     );
                                                 }}
@@ -146,6 +163,7 @@ const EditPaymentMethodForm = () => {
                                         if (dirty) {
                                             showModal({
                                                 key: 'CancelEditPaymentMethodModal',
+                                                props: {},
                                             });
                                         } else {
                                             setPaymentMethodToEdit(null);

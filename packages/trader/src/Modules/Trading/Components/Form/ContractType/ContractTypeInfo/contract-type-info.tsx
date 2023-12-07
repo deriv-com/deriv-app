@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, ThemedScrollbars, ButtonToggle } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { clickAndKeyEventHandler, TURBOS, VANILLALONG } from '@deriv/shared';
+import { clickAndKeyEventHandler, TRADE_TYPES } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
@@ -38,12 +38,13 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
         },
     } = useStore();
     const [selected_tab, setSelectedTab] = React.useState<TSelectedTab>(TABS.DESCRIPTION);
+    const { RISE_FALL_EQUAL, TURBOS, VANILLA } = TRADE_TYPES;
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
         (i: { value: TContractType['value'] }) =>
-            i.value !== 'rise_fall_equal' && i.value !== TURBOS.SHORT && i.value !== VANILLALONG.PUT
+            i.value !== RISE_FALL_EQUAL && i.value !== TURBOS.SHORT && i.value !== VANILLA.PUT
     );
     const has_toggle_buttons = /accumulator|turboslong|vanilla|multiplier/i.test(item.value);
-    const should_show_video = /accumulator|vanilla/i.test(item.value);
+    const should_show_video = /accumulator|turboslong|vanilla/i.test(item.value);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = is_mobile ? '328' : '528';

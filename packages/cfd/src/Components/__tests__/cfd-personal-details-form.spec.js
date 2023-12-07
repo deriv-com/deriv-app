@@ -3,6 +3,19 @@ import { isMobile } from '@deriv/shared';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CFDPersonalDetailsForm from '../cfd-personal-details-form';
+import { StoreProvider, mockStore } from '@deriv/stores';
+import { CFDStoreProvider } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import { useLandingCompanyDetails } from '@deriv/hooks';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useLandingCompanyDetails: jest.fn(() => ({
+        data: {
+            tin_not_mandatory: 0,
+        },
+        isLoading: false,
+    })),
+}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -103,8 +116,27 @@ describe('<CFDPersonalDetailsForm />', () => {
     const tax_id_required_error = 'Tax identification number is required';
     const opening_reason_required_error = 'Account opening reason is required';
 
+    const mock_store = mockStore({
+        client: {
+            account_settings: {
+                residence: 'id',
+            },
+        },
+        modules: {
+            cfd: {
+                jurisdiction_selected_shortcode: 'vanuatu',
+            },
+        },
+    });
+
+    const wrapper = ({ children }) => (
+        <StoreProvider store={mock_store}>
+            <CFDStoreProvider>{children}</CFDStoreProvider>;
+        </StoreProvider>
+    );
+
     it('should render properly on desktop', async () => {
-        render(<CFDPersonalDetailsForm {...props} />);
+        render(<CFDPersonalDetailsForm {...props} />, { wrapper });
 
         expect(screen.getByTestId('dt_cfd_details_form_description')).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /citizenship/i })).toBeInTheDocument();
@@ -116,7 +148,7 @@ describe('<CFDPersonalDetailsForm />', () => {
 
     it('should not render scrollbars or modal footer wrapper on mobile', () => {
         isMobile.mockReturnValue(true);
-        render(<CFDPersonalDetailsForm {...props} />);
+        render(<CFDPersonalDetailsForm {...props} />, { wrapper });
 
         expect(screen.queryByTestId('dt_themed_scrollbars')).not.toBeInTheDocument();
         expect(screen.queryByTestId('dt_modal_footer')).not.toBeInTheDocument();
@@ -124,13 +156,13 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it("should show that it's loading when is_loading is true", () => {
-        render(<CFDPersonalDetailsForm {...props} is_loading />);
+        render(<CFDPersonalDetailsForm {...props} is_loading />, { wrapper });
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_cfd_details_form_description')).not.toBeInTheDocument();
     });
 
     it("should show that it's loading when residence_list is still empty", () => {
-        render(<CFDPersonalDetailsForm {...props} residence_list={[]} />);
+        render(<CFDPersonalDetailsForm {...props} residence_list={[]} />, { wrapper });
 
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_cfd_details_form_description')).not.toBeInTheDocument();
@@ -152,7 +184,8 @@ describe('<CFDPersonalDetailsForm />', () => {
                 is_fully_authenticated
                 initial_values={initial_values}
                 changeable_fields={changeable_fields}
-            />
+            />,
+            { wrapper }
         );
 
         expect(screen.getByRole('textbox', { name: /citizenship/i })).toBeDisabled();
@@ -165,7 +198,7 @@ describe('<CFDPersonalDetailsForm />', () => {
 
     it('should show an error message received from server that is passed via props as form_error', async () => {
         const form_error = 'Input validation failed: citizen!';
-        render(<CFDPersonalDetailsForm {...props} form_error={form_error} />);
+        render(<CFDPersonalDetailsForm {...props} form_error={form_error} />, { wrapper });
 
         expect(screen.getByTestId('form_submit_error')).toHaveClass('dc-icon');
         expect(screen.getByText(form_error)).toBeInTheDocument();
@@ -173,7 +206,7 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it('should show validation errors in fields', async () => {
-        render(<CFDPersonalDetailsForm {...props} />);
+        render(<CFDPersonalDetailsForm {...props} />, { wrapper });
 
         const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
         const place_of_birth_input = screen.getByRole('textbox', { name: /place of birth/i });
@@ -203,7 +236,7 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it('should enable the Next button for form submission when all required fields are filled', async () => {
-        render(<CFDPersonalDetailsForm {...props} />);
+        render(<CFDPersonalDetailsForm {...props} />, { wrapper });
 
         const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
         const place_of_birth_input = screen.getByRole('textbox', { name: /place of birth/i });
@@ -238,7 +271,7 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it('should disable the Next button in case of invalid input in a required field', async () => {
-        render(<CFDPersonalDetailsForm {...props} />);
+        render(<CFDPersonalDetailsForm {...props} />, { wrapper });
 
         const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
 
@@ -250,7 +283,7 @@ describe('<CFDPersonalDetailsForm />', () => {
     });
 
     it('should disable the Next button in case a required field is empty', async () => {
-        render(<CFDPersonalDetailsForm {...props} />);
+        render(<CFDPersonalDetailsForm {...props} />, { wrapper });
 
         const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
 
@@ -259,5 +292,46 @@ describe('<CFDPersonalDetailsForm />', () => {
 
         expect(await screen.findByText(citizenship_required_error)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /next/i })).toBeDisabled();
+    });
+
+    it('should not show TIN field if the country is NPJ based on the landing_company_details response', async () => {
+        useLandingCompanyDetails.mockReturnValue({
+            data: {
+                tin_not_mandatory: 1,
+            },
+            isLoading: false,
+        });
+
+        render(<CFDPersonalDetailsForm {...props} />, { wrapper });
+
+        const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
+        const place_of_birth_input = screen.getByRole('textbox', { name: /place of birth/i });
+        const tax_residence_input = screen.getByRole('textbox', { name: /tax residence/i });
+        const opening_reason_input = screen.getByTestId(/dti_dropdown_display/i);
+        const next_button = screen.getByRole('button', { name: /next/i });
+        const tax_id_input = screen.queryByRole('textbox', { name: /tax identification number/i });
+
+        expect(tax_id_input).not.toBeInTheDocument();
+        await waitFor(() => expect(screen.getByRole('button', { name: /next/i })).toBeDisabled());
+
+        fireEvent.change(citizenship_input, { target: { value: 'Aland Islands' } });
+        fireEvent.change(place_of_birth_input, { target: { value: 'Indonesia' } });
+        fireEvent.change(tax_residence_input, { target: { value: 'Indonesia' } });
+        fireEvent.click(opening_reason_input);
+        const income_earning = within(screen.getByRole('list')).getByText('Income Earning');
+        fireEvent.click(income_earning);
+
+        await waitFor(() => {
+            expect(screen.queryByText(citizenship_required_error)).not.toBeInTheDocument();
+            expect(screen.queryByText(tax_residence_required_error)).not.toBeInTheDocument();
+            expect(screen.queryByText(opening_reason_required_error)).not.toBeInTheDocument();
+            expect(next_button).toBeEnabled();
+        });
+
+        fireEvent.click(next_button);
+
+        await waitFor(() => {
+            expect(props.onSubmit).toHaveBeenCalledTimes(1);
+        });
     });
 });

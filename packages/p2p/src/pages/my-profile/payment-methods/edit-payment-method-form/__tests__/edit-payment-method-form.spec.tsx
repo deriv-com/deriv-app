@@ -102,7 +102,10 @@ describe('<EditPaymentMethodForm />', () => {
         await waitFor(() => userEvent.click(pageReturnIcon));
 
         await waitFor(() =>
-            expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'CancelEditPaymentMethodModal' })
+            expect(mock_modal_manager.showModal).toHaveBeenCalledWith({
+                key: 'CancelEditPaymentMethodModal',
+                props: {},
+            })
         );
     });
 
@@ -117,7 +120,10 @@ describe('<EditPaymentMethodForm />', () => {
         await waitFor(() => userEvent.click(cancelButton));
 
         await waitFor(() =>
-            expect(mock_modal_manager.showModal).toHaveBeenCalledWith({ key: 'CancelEditPaymentMethodModal' })
+            expect(mock_modal_manager.showModal).toHaveBeenCalledWith({
+                key: 'CancelEditPaymentMethodModal',
+                props: {},
+            })
         );
     });
 });

@@ -29,7 +29,7 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
             return false;
         };
 
-        return is_visible && !checkAllParentNodes(event.target as unknown as HTMLElement);
+        return is_visible && !checkAllParentNodes(event.target as HTMLElement);
     };
 
     const closeAccountsDialog = React.useCallback(() => {

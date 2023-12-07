@@ -435,13 +435,6 @@ export default class ClientStore extends BaseStore {
             }
         );
 
-        reaction(
-            () => this.email,
-            () => {
-                if (!this.email) Analytics.reset();
-            }
-        );
-
         when(
             () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
             () => this.root_store.ui.closeRealAccountSignup()

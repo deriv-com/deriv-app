@@ -246,7 +246,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const successComponent = useMemo(() => {
         const renderSuccessDescription = () => {
             if (isDemo) {
-                return `You can now start practicing trading with your ${marketTypeTitle} demo account.`;
+                return `Let's practise trading with ${activeWallet?.display_balance} virtual funds.`;
             }
             return `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
         };
@@ -269,6 +269,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         isSuccess,
         isDemo,
         activeWallet?.wallet_currency_type,
+        activeWallet?.display_balance,
         marketTypeTitle,
         landingCompanyName,
         mt5Accounts,

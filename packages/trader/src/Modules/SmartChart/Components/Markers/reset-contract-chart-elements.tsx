@@ -22,6 +22,8 @@ const ResetContractChartElements = ({ contract_info, is_bottom_widget_visible }:
     return (
         <React.Fragment>
             <ChartMarker
+                decrease_zIndex
+                is_bottom_widget_visible={is_bottom_widget_visible}
                 marker_config={{
                     ContentComponent: 'div',
                     x: Number(reset_time),
@@ -30,18 +32,16 @@ const ResetContractChartElements = ({ contract_info, is_bottom_widget_visible }:
                 marker_content_props={{
                     className: `sc-barrier_gradient sc-barrier_gradient--${is_reset_call ? 'to-bottom' : 'to-top'}`,
                 }}
-                is_bottom_widget_visible={is_bottom_widget_visible}
-                decrease_zIndex
             />
             <ChartMarker
+                decrease_zIndex
+                is_bottom_widget_visible={is_bottom_widget_visible}
                 marker_config={{
                     ContentComponent: 'div',
                     x: Number(reset_time),
                     y: Number(reset_barrier),
                 }}
                 marker_content_props={{ className: 'sc-reset_barrier' }}
-                is_bottom_widget_visible={is_bottom_widget_visible}
-                decrease_zIndex
             />
         </React.Fragment>
     );

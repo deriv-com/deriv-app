@@ -82,6 +82,12 @@ const TradersHub = observer(() => {
         );
     };
 
+    const mt5_ordered_platform_sections = is_mt5_allowed ? (
+        <OrderedPlatformSections />
+    ) : (
+        <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />
+    );
+
     return (
         <>
             <Div100vhContainer
@@ -94,13 +100,7 @@ const TradersHub = observer(() => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
-                    <DesktopWrapper>
-                        {is_mt5_allowed ? (
-                            <OrderedPlatformSections />
-                        ) : (
-                            <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />
-                        )}
-                    </DesktopWrapper>
+                    <DesktopWrapper>{mt5_ordered_platform_sections}</DesktopWrapper>
                     <MobileWrapper>
                         {is_mt5_allowed &&
                             (is_landing_company_loaded ? (
@@ -123,11 +123,7 @@ const TradersHub = observer(() => {
                                 </Text>
                             </div>
                         )}
-                        {is_mt5_allowed ? (
-                            <OrderedPlatformSections />
-                        ) : (
-                            <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />
-                        )}
+                        {mt5_ordered_platform_sections}
                     </MobileWrapper>
                     <ModalManager />
                     {scrolled && <TourGuide />}

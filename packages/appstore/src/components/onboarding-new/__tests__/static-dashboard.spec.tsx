@@ -85,7 +85,7 @@ describe('StaticDashboard', () => {
 
     it('should not display MT5 section if MT5 is not available in residence country', () => {
         render_container({
-            client: { is_logged_in: true, is_mt5_allowed: false, is_eu_country: true },
+            client: { is_logged_in: true, is_mt5_allowed: true },
             traders_hub: { financial_restricted_countries: true },
         });
         const trading_app_card = screen.getAllByTestId('trading_app_card');

@@ -12,7 +12,6 @@ import { localize } from '@deriv/translations';
 import { MAX_STRATEGIES } from 'Constants/bot-contents';
 import { button_status } from 'Constants/button-status';
 import { TStrategy } from 'Types';
-import { Analytics } from '@deriv/analytics';
 
 type IOnConfirmProps = {
     is_local: boolean;

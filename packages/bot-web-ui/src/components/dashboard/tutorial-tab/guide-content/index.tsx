@@ -136,12 +136,12 @@ const GuideContent = ({ guide_tab_content, video_tab_content }: TGuideContent) =
                                                         width='4rem'
                                                         height='4rem'
                                                         icon={'IcPlayOutline'}
-                                                        onClick={() => {
+                                                        onClick={() =>
                                                             showVideoDialog({
                                                                 type: 'url',
                                                                 url,
-                                                            });
-                                                        }}
+                                                            })
+                                                        }
                                                     />
                                                 </div>
                                             </div>

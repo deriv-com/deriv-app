@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
+import { Analytics } from '@deriv/analytics';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
@@ -75,6 +76,10 @@ const Dashboard = observer(() => {
 
     React.useEffect(() => {
         if (active_tab === BOT_BUILDER) {
+            Analytics.trackEvent('ce_bot_builder_form', {
+                action: 'open',
+                form_source: 'bot_header_form',
+            });
             if (is_drawer_open) {
                 initTrashCan(400, -748);
             } else {

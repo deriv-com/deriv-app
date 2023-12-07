@@ -84,6 +84,7 @@ const AdvertiserPage = () => {
         isSuccess: has_p2p_advert_info,
     } = useP2PAdvertInfo(counterparty_advert_id, {
         enabled: !!counterparty_advert_id,
+        retry: false,
     });
 
     const showErrorModal = () => {

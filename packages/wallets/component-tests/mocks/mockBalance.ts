@@ -11,7 +11,7 @@ const TEMP_DATA = {
             type: 'deriv',
         },
         CR90000256: {
-            balance: 0,
+            balance: 10,
             converted_amount: 0,
             currency: 'BTC',
             demo_account: 0,
@@ -27,7 +27,7 @@ const TEMP_DATA = {
             type: 'deriv',
         },
         CRW1017: {
-            balance: 0,
+            balance: 10,
             converted_amount: 0,
             currency: 'BTC',
             demo_account: 0,

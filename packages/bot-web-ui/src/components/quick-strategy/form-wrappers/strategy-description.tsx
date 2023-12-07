@@ -26,12 +26,12 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
             switch (data.type) {
                 case 'subtitle':
                     return data?.content?.map(text => (
-                        <div className='long_description__title' key={text}>
+                        <div className='qs__long_description__title' key={text}>
                             <Text size={font_size} weight='bold' dangerouslySetInnerHTML={{ __html: text }} />
                         </div>
                     ));
                 case 'text': {
-                    const class_names = classNames(`long_description__content ${data?.className || ''}`);
+                    const class_names = classNames(`qs__long_description__content ${data?.className || ''}`);
                     return data?.content?.map(text => (
                         <div className={class_names} key={text}>
                             <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
@@ -40,12 +40,12 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                 }
                 case 'subtitle_italic':
                     return data?.content?.map(text => (
-                        <div className='long_description__title italic' key={text}>
+                        <div className='qs__long_description__title italic' key={text}>
                             <Text size={font_size} weight='bold' dangerouslySetInnerHTML={{ __html: text }} />
                         </div>
                     ));
                 case 'text_italic': {
-                    const class_names = classNames(`long_description__content italic ${data?.className || ''}`);
+                    const class_names = classNames(`qs__long_description__content italic ${data?.className || ''}`);
                     return data?.content?.map(text => (
                         <div className={class_names} key={text}>
                             <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
@@ -55,7 +55,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                 case 'media':
                     return (
                         <div>
-                            <img className='long_description__image' src={data.src} alt={data.alt} />
+                            <img className='qs__long_description__image' src={data.src} alt={data.alt} />
                         </div>
                     );
                 default:

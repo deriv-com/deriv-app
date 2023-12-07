@@ -9,7 +9,7 @@ export type TGuideContent = Omit<TContent, 'title' | 'description'>;
 
 export type TUserGuideContent = Omit<TContent, 'title' | 'description'>;
 
-export type TQuickStrategyContent = {
+export type TQuickStrategyGuides = {
     qs_name: string;
     type: string;
     content: string[];
@@ -452,7 +452,7 @@ export const faq_content: TFaqContent[] = [
     },
 ];
 
-export const quick_strategy_content: TQuickStrategyContent[] = [
+export const quick_strategy_content: TQuickStrategyGuides[] = [
     {
         qs_name: 'MARTINGALE',
         type: localize('About Martingale'),

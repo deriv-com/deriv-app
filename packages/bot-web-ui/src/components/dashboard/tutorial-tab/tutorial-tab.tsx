@@ -3,7 +3,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import NoSearchResult from './common/no-search-result-found';
-import QuickStrategyContent from './quick-strategy-content/quick-strategy-guides';
+import QuickStrategyGuides from './quick-strategy-content/quick-strategy-guides';
 import { quick_strategy_content } from './config';
 import FAQContent from './faq-content';
 import GuideContent from './guide-content';
@@ -39,7 +39,7 @@ const TutorialsTab = observer(() => {
         },
         {
             label: localize('Quick strategy guides'),
-            content: <QuickStrategyContent quick_strategy_content={quick_strategy_content} />,
+            content: <QuickStrategyGuides quick_strategy_content={quick_strategy_content} />,
         },
         {
             label: localize('Search'),

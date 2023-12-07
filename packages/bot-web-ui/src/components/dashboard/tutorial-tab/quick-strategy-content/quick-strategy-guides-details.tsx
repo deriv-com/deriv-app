@@ -1,16 +1,16 @@
 import React from 'react';
 import StrategyDescription from 'Components/quick-strategy/form-wrappers/strategy-description';
 
-type TQuickStrategyContentDetail = {
+type TQuickStrategyGuidesDetail = {
     tutorial_selected_strategy: string;
 };
 
-const QuickStrategyContentDetail = ({ tutorial_selected_strategy }: TQuickStrategyContentDetail) => {
+const QuickStrategyGuidesDetail = ({ tutorial_selected_strategy }: TQuickStrategyGuidesDetail) => {
     return (
-        <div className='qs'>
+        <div>
             <StrategyDescription tutorial_selected_strategy={tutorial_selected_strategy} />
         </div>
     );
 };
 
-export default QuickStrategyContentDetail;
+export default QuickStrategyGuidesDetail;

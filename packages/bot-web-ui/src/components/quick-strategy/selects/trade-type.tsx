@@ -42,10 +42,10 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ fullWidth = false }) => {
     const selected = values?.tradetype;
 
     React.useEffect(() => {
-        if (values?.symbol && selected !== '') {
+        if (values?.symbol) {
             const { contracts_for } = ApiHelpers.instance;
             const getTradeTypes = async () => {
-                const trade_types = await contracts_for.getTradeTypesForQuickStrategy(values.symbol);
+                const trade_types = await contracts_for.getTradeTypesForQuickStrategy(values?.symbol);
                 setTradeTypes(trade_types);
                 const has_selected = trade_types?.some((trade_type: TTradeType) => trade_type.value === selected);
                 if (!has_selected && trade_types?.[0]?.value !== selected) {
@@ -59,7 +59,7 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ fullWidth = false }) => {
             }, 100)();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [values?.symbol, selected]);
+    }, [values?.symbol]);
 
     const trade_type_dropdown_options = React.useMemo(
         () =>

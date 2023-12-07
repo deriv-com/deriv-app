@@ -28,7 +28,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }: 
     const selected = values?.durationtype;
 
     React.useEffect(() => {
-        if (tradetype && symbol && selected !== '') {
+        if (tradetype && symbol) {
             const getDurationUnits = async () => {
                 const { contracts_for } = ApiHelpers.instance;
                 const durations = await contracts_for.getDurations(symbol, tradetype);
@@ -59,7 +59,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }: 
             getDurationUnits();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [symbol, tradetype, selected]);
+    }, [symbol, tradetype]);
 
     return (
         <div

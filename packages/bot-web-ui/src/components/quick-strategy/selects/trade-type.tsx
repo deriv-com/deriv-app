@@ -42,14 +42,23 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ fullWidth = false }) => {
     const selected = values?.tradetype;
 
     React.useEffect(() => {
-        if (values?.symbol) {
+        const first_time_user_data = !(JSON.parse(localStorage?.getItem('qs-fields') as string) as TFormData);
+        if (first_time_user_data) {
+            setFieldValue?.('tradetype', (trade_types?.[0] as TTradeType)?.value);
+            validateForm();
+            setValue('tradetype', (trade_types?.[0] as TTradeType)?.value);
+        }
+    }, []);
+
+    React.useEffect(() => {
+        if (values?.symbol && selected !== '') {
             const { contracts_for } = ApiHelpers.instance;
             const getTradeTypes = async () => {
                 const trade_types = await contracts_for.getTradeTypesForQuickStrategy(values?.symbol);
                 setTradeTypes(trade_types);
                 const has_selected = trade_types?.some((trade_type: TTradeType) => trade_type.value === selected);
                 if (!has_selected && trade_types?.[0]?.value !== selected) {
-                    await setFieldValue?.('tradetype', trade_types?.[0].value);
+                    await setFieldValue?.('tradetype', trade_types?.[0].value || '');
                     await validateForm();
                     setValue('tradetype', trade_types?.[0].value);
                 }
@@ -59,7 +68,7 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ fullWidth = false }) => {
             }, 100)();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [values?.symbol]);
+    }, [values?.symbol, selected]);
 
     const trade_type_dropdown_options = React.useMemo(
         () =>

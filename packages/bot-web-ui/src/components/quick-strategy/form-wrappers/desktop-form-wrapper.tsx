@@ -25,6 +25,10 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
     const { handleSubmit } = useQsSubmitHandler();
     const handleClose = () => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'close',
+            form_source: 'ce_bot_quick_strategy_form',
+        });
         setFormVisibility(false);
     };
 

@@ -160,14 +160,6 @@ export default class SaveModalStore implements ISaveModalStore {
             this.setButtonStatus(button_status.COMPLETED);
         }
 
-        const { is_mobile } = this.root_store.app.core;
-
-        /* Send the event on rudderstack on strategy save */
-        Analytics.trackEvent('ce_bot_dashboard_form', {
-            bot_name,
-            form_source: 'ce_bot_dashboard_form',
-        });
-
         this.updateBotName(bot_name);
 
         if (active_tab === 0) {

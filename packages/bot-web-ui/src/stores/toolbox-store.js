@@ -1,5 +1,5 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
-import { scrollWorkspace , observer as globalObserver } from '@deriv/bot-skeleton';
+import { scrollWorkspace } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
@@ -43,32 +43,20 @@ export default class ToolboxStore {
     onMount(toolbox_ref) {
         this.adjustWorkspace();
 
-        if (toolbox_ref && toolbox_ref.current) {
-            try {
-                this.toolbox_dom = Blockly.Xml.textToDom(toolbox_ref.current);
-                if (this.toolbox_dom) {
-                    this.toolbox_examples = [...this.toolbox_dom.childNodes].find(el => el.tagName === 'examples');
-                    this.setWorkspaceOptions();
-                    this.disposeToolboxToggleReaction = reaction(
-                        () => this.is_toolbox_open,
-                        is_toolbox_open => {
-                            if (is_toolbox_open) {
-                                this.adjustWorkspace();
-                                // Emit event to GTM
-                                const { gtm } = this.core;
-                                gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
-                            }
-                        }
-                    );
-                } else {
-                    globalObserver.emit('Blockly.Xml.textToDom did not return a valid DOM structure');
+        this.toolbox_dom = Blockly.Xml.textToDom(toolbox_ref?.current);
+        this.toolbox_examples = [...this.toolbox_dom.childNodes].find(el => el.tagName === 'examples');
+        this.setWorkspaceOptions();
+        this.disposeToolboxToggleReaction = reaction(
+            () => this.is_toolbox_open,
+            is_toolbox_open => {
+                if (is_toolbox_open) {
+                    this.adjustWorkspace();
+                    // Emit event to GTM
+                    const { gtm } = this.core;
+                    gtm.pushDataLayer({ event: 'dbot_toolbox_visible', value: true });
                 }
-            } catch (error) {
-                globalObserver.emit('Error parsing XML:', error);
             }
-        } else {
-            globalObserver.emit('toolbox_ref is not available or toolbox_ref.current is falsy');
-        }
+        );
     }
 
     onUnmount() {

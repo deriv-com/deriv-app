@@ -115,6 +115,11 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     };
 
     const handleSave = () => {
+        /* Send the event on rudderstack on strategy save */
+        Analytics.trackEvent('ce_bot_dashboard_form', {
+            bot_name: workspace?.name,
+            form_source: 'ce_bot_dashboard_form',
+        });
         updateBotName(workspace?.name);
         toggleSaveModal();
         sendToRudderStack('save_your_bot');

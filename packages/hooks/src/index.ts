@@ -46,6 +46,7 @@ export { default as useP2PAdvertiserPaymentMethods } from './useP2PAdvertiserPay
 export { default as useP2PAdvertList } from './useP2PAdvertList';
 export { default as useP2PNotificationCount } from './useP2PNotificationCount';
 export { default as useP2PPaymentMethods } from './useP2PPaymentMethods';
+export { default as useP2PExchangeRate } from './useP2PExchangeRate';
 export { default as usePaymentAgentList } from './usePaymentAgentList';
 export { default as usePaymentAgentTransferVisible } from './usePaymentAgentTransferVisible';
 export { default as usePlatformAccounts } from './usePlatformAccounts';
@@ -67,3 +68,6 @@ export { default as useCFDCanGetMoreMT5Accounts } from './useCFDCanGetMoreMT5Acc
 export { default as useNotificationEvent } from './useNotificationEvent';
 export { default as useServiceToken } from './useServiceToken';
 export { default as useFileUploader } from './useFileUploader';
+export { default as useStoreWalletAccountsList } from './useStoreWalletAccountsList';
+export { default as useStoreLinkedWalletsAccounts } from './useStoreLinkedWalletsAccounts';
+export { default as useLandingCompanyDetails } from './useLandingCompanyDetails';

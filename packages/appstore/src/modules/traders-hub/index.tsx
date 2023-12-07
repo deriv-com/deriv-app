@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { isDesktop, routes, ContentFlag } from '@deriv/shared';
@@ -50,8 +51,6 @@ const TradersHub = observer(() => {
 
     const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL || is_eu_user;
 
-    const is_eu_low_risk = content_flag === ContentFlag.LOW_RISK_CR_EU;
-
     const getPlatformToggleOptions = () => [
         { text: eu_title ? localize('Multipliers') : localize('Options & Multipliers'), value: 'options' },
         { text: localize('CFDs'), value: 'cfd' },
@@ -69,7 +68,7 @@ const TradersHub = observer(() => {
     };
     if (!is_logged_in) return null;
 
-    const renderOrderedPlatformSections = (is_cfd_visible = true, is_options_and_multipliers_visible = true) => {
+    const OrderedPlatformSections = ({ is_cfd_visible = true, is_options_and_multipliers_visible = true }) => {
         return (
             <div
                 data-testid='dt_traders_hub'
@@ -96,7 +95,11 @@ const TradersHub = observer(() => {
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
                     <DesktopWrapper>
-                        {is_mt5_allowed ? renderOrderedPlatformSections() : renderOrderedPlatformSections(false, true)}
+                        {is_mt5_allowed ? (
+                            <OrderedPlatformSections />
+                        ) : (
+                            <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />
+                        )}
                     </DesktopWrapper>
                     <MobileWrapper>
                         {is_mt5_allowed &&
@@ -120,18 +123,17 @@ const TradersHub = observer(() => {
                                 </Text>
                             </div>
                         )}
-                        {is_mt5_allowed
-                            ? renderOrderedPlatformSections(
-                                  selected_platform_type === 'cfd',
-                                  selected_platform_type === 'options'
-                              )
-                            : renderOrderedPlatformSections(false, true)}
+                        {is_mt5_allowed ? (
+                            <OrderedPlatformSections />
+                        ) : (
+                            <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />
+                        )}
                     </MobileWrapper>
                     <ModalManager />
                     {scrolled && <TourGuide />}
                 </div>
             </Div100vhContainer>
-            {is_eu_low_risk && (
+            {is_eu_user && (
                 <div data-testid='dt_traders_hub_disclaimer' className='disclaimer'>
                     <Text align='left' className='disclaimer-text' size={is_mobile ? 'xxxs' : 'xs'}>
                         <Localize

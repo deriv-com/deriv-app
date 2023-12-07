@@ -1,8 +1,9 @@
 import React from 'react';
-import { APIProvider, useFetch } from '@deriv/api';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { useFetch } from '@deriv/api';
+import { mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useIsP2PEnabled from '../useIsP2PEnabled';
+import { withMockAPIProvider } from '../mocks';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -18,11 +19,7 @@ describe('useIsP2PEnabled', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => useIsP2PEnabled(), { wrapper });
 
@@ -40,11 +37,7 @@ describe('useIsP2PEnabled', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => useIsP2PEnabled(), { wrapper });
 
@@ -61,11 +54,7 @@ describe('useIsP2PEnabled', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => useIsP2PEnabled(), { wrapper });
 
@@ -85,11 +74,7 @@ describe('useIsP2PEnabled', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        const wrapper = withMockAPIProvider(mock);
 
         const { result } = renderHook(() => useIsP2PEnabled(), { wrapper });
 

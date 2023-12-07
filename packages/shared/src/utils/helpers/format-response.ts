@@ -103,11 +103,14 @@ export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: stri
         return IDV_ERROR_STATUS.ReportNotAvailable.code;
     }
 
-    return status.includes(IDV_ERROR_STATUS.NameMismatch.code) &&
-        status.includes(IDV_ERROR_STATUS.DobMismatch.code) &&
-        !status.includes(IDV_ERROR_STATUS.Failed.code)
-        ? IDV_ERROR_STATUS.NameDobMismatch.code
-        : status[0] ?? IDV_ERROR_STATUS.Failed.code;
+    if (status.includes(IDV_ERROR_STATUS.Failed.code)) {
+        return IDV_ERROR_STATUS.Failed.code;
+    }
+
+    if (status.includes(IDV_ERROR_STATUS.NameMismatch.code) && status.includes(IDV_ERROR_STATUS.DobMismatch.code)) {
+        return IDV_ERROR_STATUS.NameDobMismatch.code;
+    }
+    return status[0] ?? IDV_ERROR_STATUS.Failed.code;
 };
 
 export const formatOnfidoError = (status_code: string, errors: Array<TOnfidoErrorStatus> = []) => {

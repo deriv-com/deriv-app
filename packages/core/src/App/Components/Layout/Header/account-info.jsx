@@ -1,47 +1,15 @@
-import { DesktopWrapper, Icon, MobileWrapper, Popover, Text } from '@deriv/components';
-
-import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
-import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile.jsx';
-import { CSSTransition } from 'react-transition-group';
-import { Localize } from '@deriv/translations';
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { getCurrencyDisplayCode, isBot } from '@deriv/shared';
-
-const AccountInfoWrapper = ({ is_disabled, is_mobile, disabled_message, children }) =>
-    is_disabled && disabled_message ? (
-        <Popover alignment={isBot() && is_mobile ? 'bottom' : 'left'} message={disabled_message} zIndex={99999}>
-            {children}
-        </Popover>
-    ) : (
-        <React.Fragment>{children}</React.Fragment>
-    );
-
-const AccountInfoIcon = ({ is_virtual, currency }) => (
-    <Icon
-        data_testid='dt_icon'
-        icon={`IcCurrency-${is_virtual ? 'virtual' : currency || 'Unknown'}`}
-        className={`acc-info__id-icon acc-info__id-icon--${is_virtual ? 'virtual' : currency}`}
-        size={24}
-    />
-);
-
-const DisplayAccountType = ({ account_type, country_standpoint, is_eu }) => {
-    if (account_type === 'financial') {
-        return <Localize i18n_default_text='Multipliers' />;
-    } else if (account_type === 'gaming') {
-        if (country_standpoint.is_isle_of_man) return null;
-        if (country_standpoint.is_united_kingdom) {
-            return <Localize i18n_default_text='Gaming' />;
-        }
-        if (is_eu || country_standpoint.is_belgium) {
-            return <Localize i18n_default_text='Options' />;
-        }
-        return <Localize i18n_default_text='Derived' />;
-    }
-    return null;
-};
+import { CSSTransition } from 'react-transition-group';
+import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import { Localize } from '@deriv/translations';
+import { getCurrencyDisplayCode } from '@deriv/shared';
+import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
+import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
+import AccountInfoWrapper from './account-info-wrapper';
+import AccountInfoIcon from './account-info-icon';
+import DisplayAccountType from './display-account-type';
 
 const AccountInfo = ({
     acc_switcher_disabled_message,

@@ -1,19 +1,19 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
-import { LocalStore, isDesktop } from '@deriv/shared';
+import { isDesktop } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay';
 import Test from './test.jsx';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget } from './chart-widgets';
-import FormLayout from 'Modules/Trading/Components/Form/form-layout';
+import FormLayout from '../Components/Form/form-layout';
+import AllMarkers from '../../SmartChart/Components/all-markers.jsx';
 import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accumulators-chart-elements';
-import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.tsx';
+import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets';
+import ToolbarWidgetsBeta from '../../SmartChartBeta/Components/toolbar-widgets.jsx';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
-
-import LaunchModal from 'Modules/SmartChartBeta/Components/LaunchModal/launch-modal.tsx';
 
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
     React.useEffect(() => {
@@ -59,7 +59,7 @@ const Trade = observer(() => {
         is_dark_mode_on: is_dark_theme,
         is_mobile,
     } = ui;
-    const { is_eu, is_logged_in } = client;
+    const { is_eu } = client;
     const { network_status } = common;
 
     const [digits, setDigits] = React.useState([]);
@@ -69,8 +69,6 @@ const Trade = observer(() => {
     const [category, setCategory] = React.useState(null);
     const [subcategory, setSubcategory] = React.useState(null);
     const [swipe_index, setSwipeIndex] = React.useState(0);
-    const [open_launch_modal, setOpenLaunchModal] = React.useState(true);
-
     const charts_ref = React.useRef();
 
     const open_market = React.useMemo(() => {
@@ -118,8 +116,6 @@ const Trade = observer(() => {
         setSwipeIndex(index);
     };
 
-    const is_already_shown = LocalStore.get('launchModalShown') || false;
-
     const onTryOtherMarkets = async () => {
         if (!is_synthetics_available) {
             setTryOpenMarkets(true);
@@ -141,6 +137,7 @@ const Trade = observer(() => {
         ),
         [open_market, try_synthetic_indices, try_open_markets]
     );
+
     const form_wrapper_class = is_mobile ? 'mobile-wrapper' : 'sidebar__container desktop-only';
     const chart_height_offset = React.useMemo(() => {
         if (is_accumulator) return '295px';
@@ -148,102 +145,87 @@ const Trade = observer(() => {
         return '259px';
     }, [is_turbos, is_accumulator]);
 
-    const handleLaunchModal = () => {
-        setOpenLaunchModal(!open_launch_modal);
-        LocalStore.set('launchModalShown', true);
-    };
     return (
-        <React.Fragment>
-            {open_launch_modal && is_logged_in && !is_already_shown && (
-                <LaunchModal is_dark_mode={is_dark_theme} handleChange={handleLaunchModal} open={open_launch_modal} />
-            )}
-            <div
-                id='trade_container'
-                className={classNames('trade-container', {
-                    [`trade-container--${is_accumulator ? 'accumulators' : 'turbos'}`]: is_accumulator || is_turbos,
-                })}
+        <div
+            id='trade_container'
+            className={classNames('trade-container', {
+                [`trade-container--${is_accumulator ? 'accumulators' : 'turbos'}`]: is_accumulator || is_turbos,
+            })}
+        >
+            <DesktopWrapper>
+                <PositionsDrawer />
+            </DesktopWrapper>
+            {/* Div100vhContainer is workaround for browsers on devices
+                    with toolbars covering screen height,
+                    using css vh is not returning correct screen height */}
+            <Div100vhContainer
+                id='chart_container'
+                className='chart-container'
+                is_disabled={isDesktop()}
+                height_offset={chart_height_offset}
             >
-                <DesktopWrapper>
-                    <PositionsDrawer />
-                </DesktopWrapper>
-                {/* Div100vhContainer is workaround for browsers on devices
-                with toolbars covering screen height,
-                using css vh is not returning correct screen height */}
-                <Div100vhContainer
-                    id='chart_container'
-                    className='chart-container'
-                    is_disabled={isDesktop()}
-                    height_offset={chart_height_offset}
+                <NotificationMessages />
+                <React.Suspense
+                    fallback={<ChartLoader is_dark={is_dark_theme} is_visible={!symbol || is_chart_loading} />}
                 >
-                    <NotificationMessages />
-                    <React.Suspense
-                        fallback={<ChartLoader is_dark={is_dark_theme} is_visible={!symbol || is_chart_loading} />}
-                    >
-                        <DesktopWrapper>
-                            <div
-                                className={classNames('chart-container__wrapper', {
-                                    'vanilla-trade-chart': is_vanilla,
-                                })}
-                            >
-                                <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
-                                <ChartTrade
-                                    topWidgets={topWidgets}
-                                    charts_ref={charts_ref}
-                                    is_accumulator={is_accumulator}
-                                />
-                            </div>
-                        </DesktopWrapper>
-                        {!(open_launch_modal && is_logged_in && !is_already_shown) && (
-                            <MobileWrapper>
-                                <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
-                                <SwipeableWrapper
-                                    onChange={onChangeSwipeableIndex}
-                                    is_disabled={
-                                        !show_digits_stats ||
-                                        !is_trade_enabled ||
-                                        form_components.length ||
-                                        is_chart_loading ||
-                                        should_show_active_symbols_loading
-                                    }
-                                    is_swipe_disabled={swipe_index === 1}
-                                    className={classNames({ 'vanilla-trade-chart': is_vanilla })}
-                                >
-                                    {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
-                                    <ChartTrade
-                                        topWidgets={topWidgets}
-                                        charts_ref={charts_ref}
-                                        bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
-                                        is_accumulator={is_accumulator}
-                                        has_barrier={has_barrier}
-                                    />
-                                </SwipeableWrapper>
-                            </MobileWrapper>
-                        )}
-                    </React.Suspense>
+                    <DesktopWrapper>
+                        <div className={classNames('chart-container__wrapper', { 'vanilla-trade-chart': is_vanilla })}>
+                            <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
+                            <ChartTrade
+                                topWidgets={topWidgets}
+                                charts_ref={charts_ref}
+                                is_accumulator={is_accumulator}
+                            />
+                        </div>
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
+                        <SwipeableWrapper
+                            onChange={onChangeSwipeableIndex}
+                            is_disabled={
+                                !show_digits_stats ||
+                                !is_trade_enabled ||
+                                form_components.length === 0 ||
+                                is_chart_loading ||
+                                should_show_active_symbols_loading
+                            }
+                            is_swipe_disabled={swipe_index === 1}
+                            className={classNames({ 'vanilla-trade-chart': is_vanilla })}
+                        >
+                            {show_digits_stats && <DigitsWidget digits={digits} tick={tick} />}
+                            <ChartTrade
+                                topWidgets={topWidgets}
+                                charts_ref={charts_ref}
+                                bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
+                                is_accumulator={is_accumulator}
+                                has_barrier={has_barrier}
+                            />
+                        </SwipeableWrapper>
+                    </MobileWrapper>
+                </React.Suspense>
 
-                    {/* Remove Test component for debugging below for production release */}
-                    <Test />
-                </Div100vhContainer>
-                <div className={form_wrapper_class}>
-                    {is_market_closed && !is_market_unavailable_visible && (
-                        <MarketIsClosedOverlay
-                            is_eu={is_eu}
-                            is_synthetics_trading_market_available={is_synthetics_trading_market_available}
-                            {...(is_eu && category)}
-                            onClick={onTryOtherMarkets}
-                            onMarketOpen={prepareTradeStore}
-                            symbol={symbol}
-                        />
-                    )}
-                    <FormLayout
-                        is_market_closed={is_market_closed}
-                        is_trade_enabled={
-                            is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
-                        }
+                {/* Remove Test component for debugging below for production release */}
+                <Test />
+            </Div100vhContainer>
+            <div className={form_wrapper_class}>
+                {is_market_closed && !is_market_unavailable_visible && (
+                    <MarketIsClosedOverlay
+                        is_eu={is_eu}
+                        is_synthetics_trading_market_available={is_synthetics_trading_market_available}
+                        {...(is_eu && category)}
+                        onClick={onTryOtherMarkets}
+                        onMarketOpen={prepareTradeStore}
+                        symbol={symbol}
                     />
-                </div>
+                )}
+                <FormLayout
+                    is_market_closed={is_market_closed}
+                    is_trade_enabled={
+                        is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
+                    }
+                />
             </div>
-        </React.Fragment>
+        </div>
     );
 });
 
@@ -252,9 +234,30 @@ export default Trade;
 // CHART (ChartTrade)--------------------------------------------------------
 
 /* eslint-disable */
-import { SmartChart } from 'Modules/SmartChart/index.js';
+import SmartChartSwitcher from './smart-chart-switcher.jsx';
 
-const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
+const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChartSwitcher innerRef={ref} {...props} />);
+
+// ChartMarkers --------------------------
+const ChartMarkers = observer(config => {
+    const { ui, client, contract_trade } = useStore();
+    const { markers_array, granularity } = contract_trade;
+    const { is_dark_mode_on: is_dark_theme } = ui;
+    const { currency } = client;
+    return markers_array.map(marker => {
+        const Marker = AllMarkers[marker.type];
+        return (
+            <Marker
+                key={marker.key}
+                is_dark_theme={is_dark_theme}
+                granularity={granularity}
+                currency={currency}
+                config={config}
+                {...marker}
+            />
+        );
+    });
+});
 
 const ChartTrade = observer(props => {
     const { is_accumulator, has_barrier, end_epoch, topWidgets, charts_ref } = props;
@@ -273,7 +276,7 @@ const ChartTrade = observer(props => {
     const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on, is_positions_drawer_on, is_mobile } =
         ui;
     const { is_socket_opened, current_language } = common;
-    const { currency, should_show_eu_content } = client;
+    const { currency, is_beta_chart, should_show_eu_content } = client;
     const {
         chartStateChange,
         is_trade_enabled,
@@ -376,13 +379,18 @@ const ChartTrade = observer(props => {
             isConnectionOpened={is_socket_opened}
             clearChart={false}
             toolbarWidget={() => {
-                return (
-                    <ToolbarWidgets
-                        updateChartType={updateChartType}
-                        updateGranularity={updateGranularity}
-                        is_mobile={is_mobile}
-                    />
-                );
+                if (is_beta_chart) {
+                    return (
+                        <ToolbarWidgetsBeta updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                    );
+                } else
+                    return (
+                        <ToolbarWidgets
+                            is_mobile={is_mobile}
+                            updateChartType={updateChartType}
+                            updateGranularity={updateGranularity}
+                        />
+                    );
             }}
             importedLayout={chart_layout}
             onExportLayout={exportLayout}
@@ -395,7 +403,9 @@ const ChartTrade = observer(props => {
             }}
             isLive={true}
             leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
+            is_beta={is_beta_chart}
         >
+            {!is_beta_chart && <ChartMarkers />}
             {is_accumulator && (
                 <AccumulatorsChartElements
                     all_positions={all_positions}
@@ -404,6 +414,7 @@ const ChartTrade = observer(props => {
                     has_crossed_accu_barriers={has_crossed_accu_barriers}
                     should_show_profit_text={!!accumulator_contract_barriers_data.accumulators_high_barrier}
                     symbol={symbol}
+                    is_beta_chart={is_beta_chart}
                 />
             )}
         </SmartChartWithRef>

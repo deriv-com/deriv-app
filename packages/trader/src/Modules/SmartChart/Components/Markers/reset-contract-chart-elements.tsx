@@ -22,7 +22,7 @@ const ResetContractChartElements = ({ contract_info, is_bottom_widget_visible }:
     return (
         <React.Fragment>
             <ChartMarker
-                decrease_zIndex
+                is_positioned_behind
                 is_bottom_widget_visible={is_bottom_widget_visible}
                 marker_config={{
                     ContentComponent: 'div',
@@ -34,7 +34,7 @@ const ResetContractChartElements = ({ contract_info, is_bottom_widget_visible }:
                 }}
             />
             <ChartMarker
-                decrease_zIndex
+                is_positioned_behind
                 is_bottom_widget_visible={is_bottom_widget_visible}
                 marker_config={{
                     ContentComponent: 'div',

@@ -44,12 +44,12 @@ describe('<ResetContractChartElements />', () => {
 
         expect(screen.getAllByText(reset_marker)[0]).toHaveClass('sc-barrier_gradient sc-barrier_gradient--to-top');
     });
-    it('for CONTRACT_TYPES.RESET.CALL coordinate for Y-axis should be the lowest barrier value among entry_spot and reset_barrier', () => {
+    it('for CONTRACT_TYPES.RESET.CALL, Y-axis coordinate should be the lowest barrier value among entry_spot and reset_barrier', () => {
         render(<ResetContractChartElements {...mocked_props} />);
 
         expect(screen.getAllByText(/y-axis/i)[0]).toHaveTextContent('Y-axis: 2030.28');
     });
-    it('for CONTRACT_TYPES.RESET.PUT coordinate for Y-axis should be the highest barrier value among entry_spot and reset_barrier', () => {
+    it('for CONTRACT_TYPES.RESET.PUT, Y-axis coordinate should be the highest barrier value among entry_spot and reset_barrier', () => {
         mocked_props.contract_info.contract_type = CONTRACT_TYPES.RESET.PUT;
         render(<ResetContractChartElements {...mocked_props} />);
 

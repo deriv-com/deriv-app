@@ -59,7 +59,7 @@ function useEventListener<
             listener = event => savedHandler.current(event);
             // Define the listening target
 
-            if (!(targetElement && targetElement.addEventListener)) return;
+            if (!targetElement?.addEventListener) return;
 
             // Create event listener that calls handler function stored in ref
 

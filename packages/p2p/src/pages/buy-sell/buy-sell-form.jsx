@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
 import { HintBox, Input, Text } from '@deriv/components';
 import { useP2PAdvertiserPaymentMethods, useP2PExchangeRate } from '@deriv/hooks';
-import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
+import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, Observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
@@ -20,7 +20,6 @@ import PaymentMethodIcon from 'Components/payment-method-icon';
 import './buy-sell-form.scss';
 
 const BuySellForm = props => {
-    const isMounted = useIsMounted();
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const { showModal } = useModalManagerContext();
@@ -30,7 +29,7 @@ const BuySellForm = props => {
         buy_sell_store.setFormProps(props);
     }, [props, buy_sell_store]);
 
-    const { setPageFooterParent } = props;
+    const { advert, setPageFooterParent } = props;
     const {
         advertiser_details,
         description,
@@ -43,7 +42,7 @@ const BuySellForm = props => {
         price,
         rate,
         rate_type,
-    } = props.advert || {};
+    } = advert || {};
 
     const exchange_rate = useP2PExchangeRate(local_currency);
     const [previous_rate, setPreviousRate] = React.useState(exchange_rate);
@@ -118,7 +117,7 @@ const BuySellForm = props => {
                 },
             });
         }
-    }, [exchange_rate, previous_rate]);
+    }, [buy_sell_store.local_currency, exchange_rate, previous_rate, rate_type, showModal]);
 
     const onClickPaymentMethodCard = payment_method => {
         if (!should_disable_field) {
@@ -148,7 +147,7 @@ const BuySellForm = props => {
                 rate: rate_type === ad_type.FLOAT ? effective_rate : null,
             },
             initialErrors: buy_sell_store.is_sell_advert ? { contact_info: true } : {},
-            onSubmit: (...args) => buy_sell_store.handleSubmit(() => isMounted(), ...args),
+            onSubmit: (...args) => buy_sell_store.handleSubmit(...args),
         });
 
     const getAdvertiserMaxLimit = () => {
@@ -169,9 +168,9 @@ const BuySellForm = props => {
         isValid,
         isSubmitting,
         selected_methods.length,
-        buy_sell_store.form_props,
         buy_sell_store.is_sell_advert,
         payment_method_names,
+        buy_sell_store.form_props,
     ]);
 
     React.useEffect(() => {

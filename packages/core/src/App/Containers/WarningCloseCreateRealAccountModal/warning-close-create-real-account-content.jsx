@@ -2,14 +2,23 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { Modal, FormSubmitButton, Text } from '@deriv/components';
 import { routes, isNavigationFromExternalPlatform } from '@deriv/shared';
+import { Analytics } from '@deriv/analytics';
 
 const WarningMessageModal = ({
     is_closing_create_real_account_modal,
     setIsClosingCreateRealAccountModal,
     closeRealAccountSignup,
     routing_history,
+    real_account_signup_target,
 }) => {
     const closeModal = () => {
+        real_account_signup_target !== 'maltainvest' &&
+            Analytics.trackEvent('ce_real_account_signup_form', {
+                action: 'close',
+                form_source: document.referrer,
+                form_name: 'real_account_signup_form',
+            });
+
         setIsClosingCreateRealAccountModal(false);
 
         closeRealAccountSignup();

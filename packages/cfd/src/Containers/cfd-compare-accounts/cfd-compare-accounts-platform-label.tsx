@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { TCompareAccountsCard } from 'Components/props.types';
-import { getPlatformLabel, getHeaderColor, platfromsHeaderLabel } from '../../Helpers/compare-accounts-config';
+import { getPlatformLabel, getHeaderColor, platformsHeaderLabel } from '../../Helpers/compare-accounts-config';
 
 const CFDCompareAccountsPlatformLabel = ({ trading_platforms }: TCompareAccountsCard) => {
     const platform_label = getPlatformLabel(trading_platforms.platform);
@@ -11,7 +11,9 @@ const CFDCompareAccountsPlatformLabel = ({ trading_platforms }: TCompareAccounts
     return (
         <div
             className={classNames('compare-cfd-account-platform-label', {
-                'compare-cfd-account-platform-label--other-cfds': platform_label === platfromsHeaderLabel.other_cfds,
+                'compare-cfd-account-platform-label--other-cfds':
+                    platform_label === platformsHeaderLabel.other_cfds ||
+                    platform_label === platformsHeaderLabel.ctrader,
             })}
         >
             <Text as='p' weight='bold' size='xxxs' align='center' color={header_color}>

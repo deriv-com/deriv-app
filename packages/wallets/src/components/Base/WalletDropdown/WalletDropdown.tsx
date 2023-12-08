@@ -2,13 +2,14 @@ import React, { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useCombobox } from 'downshift';
 import ArrowIcon from '../../../public/images/pointed-down-arrow-icon.svg';
-import reactNodeToString from '../../../utils/reactNodeToString';
-import { TGenericSizes } from '../types';
+import { TGenericSizes } from '../../../types';
+import reactNodeToString from '../../../utils/react-node-to-string';
 import { WalletText } from '../WalletText';
 import WalletTextField, { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import './WalletDropdown.scss';
 
 type TProps = {
+    disabled?: boolean;
     errorMessage?: WalletTextFieldProps['errorMessage'];
     icon?: React.ReactNode;
     isRequired?: boolean;
@@ -26,6 +27,7 @@ type TProps = {
 };
 
 const WalletDropdown: React.FC<TProps> = ({
+    disabled,
     errorMessage,
     icon = false,
     isRequired = false,
@@ -90,9 +92,15 @@ const WalletDropdown: React.FC<TProps> = ({
     }, [list]);
 
     return (
-        <div className='wallets-dropdown' {...getToggleButtonProps()}>
+        <div
+            className={classNames('wallets-dropdown', {
+                'wallets-dropdown--disabled': disabled,
+            })}
+            {...getToggleButtonProps()}
+        >
             <div className='wallets-dropdown__content'>
                 <WalletTextField
+                    disabled={disabled}
                     errorMessage={errorMessage}
                     isInvalid={hasSelected && !value && isRequired}
                     label={label}

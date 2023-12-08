@@ -29,7 +29,7 @@
         @include mobile {
             flex-direction: column-reverse;
             justify-content: space-between;
-            padding-top: 5.6rem;
+            padding-top: 4rem;
             flex: 1;
         }
     }
@@ -41,7 +41,7 @@
         max-width: 79.2rem;
 
         @include mobile {
-            padding: 1.6rem;
+            padding: 1.6rem 0 0;
             box-shadow: 0 0.2rem 0 0 #f2f3f4 inset;
         }
     }

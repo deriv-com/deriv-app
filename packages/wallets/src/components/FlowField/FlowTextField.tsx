@@ -17,7 +17,7 @@ export interface TFlowFieldProps extends WalletTextFieldProps {
  */
 const FlowTextField = forwardRef(
     (
-        { defaultValue, errorMessage, isInvalid, name, validationSchema, ...rest }: TFlowFieldProps,
+        { defaultValue, disabled, errorMessage, isInvalid, name, validationSchema, ...rest }: TFlowFieldProps,
         ref: Ref<HTMLInputElement>
     ) => {
         const [hasTouched, setHasTouched] = useState(false);
@@ -47,6 +47,7 @@ const FlowTextField = forwardRef(
                         <WalletTextField
                             {...rest}
                             defaultValue={defaultValue}
+                            disabled={disabled}
                             errorMessage={form.errors[name] || errorMessage}
                             isInvalid={(hasTouched && isInvalid) || (hasTouched && Boolean(form.errors[name]))}
                             name={field.name}

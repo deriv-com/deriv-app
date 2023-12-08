@@ -1,3 +1,4 @@
+import { localize } from '@deriv/translations';
 import moment from 'moment';
 import 'moment/min/locales';
 
@@ -273,4 +274,25 @@ export const convertTimeFormat = (time: string) => {
     const formatted_time = `${Number(time_hour) % 12 || 12}:${time_min}`;
     const time_suffix = `${Number(time_hour) >= 12 ? 'pm' : 'am'}`;
     return `${formatted_time} ${time_suffix}`;
+};
+
+/**
+ *  Get a formatted time since a timestamp.
+ * @param  {Number} timestamp in ms
+ * @return {String} '10s ago', or '1m ago', or '1h ago', or '1d ago'
+ */
+export const getTimeSince = (timestamp: number) => {
+    if (!timestamp) return '';
+    const seconds_passed = Math.floor((Date.now() - timestamp) / 1000);
+
+    if (seconds_passed < 60) {
+        return localize('{{seconds_passed}}s ago', { seconds_passed });
+    }
+    if (seconds_passed < 3600) {
+        return localize('{{minutes_passed}}m ago', { minutes_passed: Math.floor(seconds_passed / 60) });
+    }
+    if (seconds_passed < 86400) {
+        return localize('{{hours_passed}}h ago', { hours_passed: Math.floor(seconds_passed / 3600) });
+    }
+    return localize('{{days_passed}}d ago', { days_passed: Math.floor(seconds_passed / (3600 * 24)) });
 };

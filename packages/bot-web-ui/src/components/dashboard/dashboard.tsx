@@ -6,7 +6,7 @@ import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -167,9 +167,9 @@ const Dashboard = observer(() => {
             </DesktopWrapper>
             <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
             <Dialog
-                cancel_button_text={cancel_button_text || <Localize i18n_default_text='Cancel' />}
+                cancel_button_text={cancel_button_text || localize('Cancel')}
                 className={'dc-dialog__wrapper--fixed'}
-                confirm_button_text={ok_button_text || <Localize i18n_default_text='OK' />}
+                confirm_button_text={ok_button_text || localize('OK')}
                 has_close_icon
                 is_mobile_full_width={false}
                 is_visible={is_dialog_open}

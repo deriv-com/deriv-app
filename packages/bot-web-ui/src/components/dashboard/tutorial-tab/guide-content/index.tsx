@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Dialog, Icon, Text } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { removeKeyValue } from 'Utils/settings';
@@ -22,7 +22,7 @@ type TGuideContent = {
     video_tab_content: TGuideList[];
 };
 
-const GuideContent = ({ guide_tab_content, video_tab_content }: TGuideContent) => {
+const GuideContent = observer(({ guide_tab_content, video_tab_content }: TGuideContent) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const { dashboard } = useDBotStore();
@@ -54,7 +54,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content }: TGuideContent) =
     const handleKeyboardEvent = (e: KeyboardEvent) => {
         if (e.key === 'Enter') triggerTour('OnBoard');
     };
-    const has_guide_content = guide_tab_content.length > 0 || video_tab_content.length > 0;
+    const has_guide_content = guide_tab_content.length > 0 || guide_tab_content.length > 0;
 
     return React.useMemo(
         () =>
@@ -182,6 +182,6 @@ const GuideContent = ({ guide_tab_content, video_tab_content }: TGuideContent) =
             ),
         [guide_tab_content, video_tab_content, is_dialog_open]
     );
-};
+});
 
 export default GuideContent;

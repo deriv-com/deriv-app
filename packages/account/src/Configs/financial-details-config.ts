@@ -5,7 +5,6 @@ import {
     getDefaultFields,
     TSchema,
     EMPLOYMENT_VALUES,
-    shouldHideOccupationField,
     TEmploymentStatus,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';

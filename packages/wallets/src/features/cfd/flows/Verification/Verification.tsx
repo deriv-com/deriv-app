@@ -63,14 +63,12 @@ const getManualVerificationFooter = ({
     // eslint-disable-next-line react/display-name
     return () => (
         <WalletButtonGroup isFlex>
-            <WalletButton onClick={onClickBack} size='lg' text='Back' variant='outlined' />
-            <WalletButton
-                disabled={isNextDisabled}
-                isLoading={isNextLoading}
-                onClick={nextFlowHandler}
-                size='lg'
-                text='Next'
-            />
+            <WalletButton onClick={onClickBack} size='lg' variant='outlined'>
+                Back
+            </WalletButton>
+            <WalletButton disabled={isNextDisabled} isLoading={isNextLoading} onClick={nextFlowHandler} size='lg'>
+                Next
+            </WalletButton>
         </WalletButtonGroup>
     );
 };
@@ -285,8 +283,9 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                                           isLoading={isNextLoading(context)}
                                           onClick={() => nextFlowHandler(context)}
                                           size='lg'
-                                          text='Next'
-                                      />
+                                      >
+                                          Next
+                                      </WalletButton>
                                   )
                         }
                         title='Add a real MT5 account'

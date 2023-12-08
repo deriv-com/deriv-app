@@ -8,6 +8,7 @@ import {
     getContractTypePosition,
     getCleanedUpCategories,
 } from '../contract';
+import { CONTRACT_TYPES, TRADE_TYPES } from '../../contract';
 
 type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
 const card_label = 'Apply';
@@ -79,13 +80,13 @@ describe('getContractConfig', () => {
 
 describe('getContractTypeDisplay', () => {
     it('should return a specific button name if show_button_name === true and contract_config has a button_name field', () => {
-        expect(getContractTypeDisplay('ACCU', false, true)).toEqual('Buy');
+        expect(getContractTypeDisplay(CONTRACT_TYPES.ACCUMULATOR, false, true)).toEqual('Buy');
     });
     it('should return a specific contract name if show_button_name === false but contract_config has a button_name field', () => {
-        expect(getContractTypeDisplay('ACCU')).toEqual('Accumulators');
+        expect(getContractTypeDisplay(CONTRACT_TYPES.ACCUMULATOR)).toEqual('Accumulators');
     });
     it('should return a specific contract name if show_button_name === true but contract_config has no button_name field', () => {
-        expect(getContractTypeDisplay('MULTDOWN', true, true)).toEqual('Down');
+        expect(getContractTypeDisplay(CONTRACT_TYPES.MULTIPLIER.DOWN, true, true)).toEqual('Down');
     });
     it('should return an empty string if show_button_name === false and contract_config has no name field', () => {
         expect(getContractTypeDisplay('TEST', true, false)).toBe('');
@@ -97,7 +98,7 @@ describe('getContractTypeDisplay', () => {
 
 describe('getContractTypePosition', () => {
     it('should return a specific button position if such type exist', () => {
-        expect(getContractTypePosition('NOTOUCH')).toBe('bottom');
+        expect(getContractTypePosition(CONTRACT_TYPES.TOUCH.NO_TOUCH)).toBe('bottom');
     });
     it('should return a top position if such type does not exist', () => {
         expect(getContractTypePosition('TEST' as TGetSupportedContractsKey)).toBe('top');
@@ -111,19 +112,19 @@ describe('getCleanedUpCategories', () => {
                 name: 'Ups & Downs',
                 categories: [
                     {
-                        value: 'rise_fall',
+                        value: TRADE_TYPES.RISE_FALL,
                         text: 'Rise/Fall',
                     },
-                    'rise_fall_equal',
-                    'run_high_low',
-                    'reset',
-                    'asian',
-                    'callputspread',
+                    TRADE_TYPES.RISE_FALL_EQUAL,
+                    TRADE_TYPES.RUN_HIGH_LOW,
+                    TRADE_TYPES.RESET,
+                    TRADE_TYPES.ASIAN,
+                    TRADE_TYPES.CALL_PUT_SPREAD,
                 ],
             },
             Vanillas: {
                 name: 'Vanillas',
-                categories: ['vanillalongcall', 'vanillalongput'],
+                categories: [TRADE_TYPES.VANILLA.CALL, TRADE_TYPES.VANILLA.PUT],
             },
         };
         const resulting_categories = {
@@ -131,7 +132,7 @@ describe('getCleanedUpCategories', () => {
                 name: 'Ups & Downs',
                 categories: [
                     {
-                        value: 'rise_fall',
+                        value: TRADE_TYPES.RISE_FALL,
                         text: 'Rise/Fall',
                     },
                 ],
@@ -158,7 +159,7 @@ describe('getCleanedUpCategories', () => {
                 name: 'Multipliers',
                 categories: [
                     {
-                        value: 'multiplier',
+                        value: TRADE_TYPES.MULTIPLIER,
                         text: 'Multipliers',
                     },
                 ],
@@ -169,7 +170,7 @@ describe('getCleanedUpCategories', () => {
                 name: 'Multipliers',
                 categories: [
                     {
-                        value: 'multiplier',
+                        value: TRADE_TYPES.MULTIPLIER,
                         text: 'Multipliers',
                     },
                 ],

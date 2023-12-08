@@ -96,6 +96,7 @@ export default class ChartStore {
     }
 
     saveToLocalStorage() {
+        if (!this.root_store?.app?.core?.client?.is_beta_chart) return;
         LocalStore.set(
             'bot.chart_props',
             JSON.stringify({
@@ -107,6 +108,8 @@ export default class ChartStore {
     }
 
     restoreFromStorage() {
+        if (!this.root_store?.app?.core?.client?.is_beta_chart) return;
+
         try {
             const props = LocalStore.get('bot.chart_props');
 

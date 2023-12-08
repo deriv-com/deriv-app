@@ -2,9 +2,10 @@ import React, { useCallback, useEffect } from 'react';
 import { useFormikContext } from 'formik';
 import { useDebounce } from 'usehooks-ts';
 import { useExchangeRate } from '@deriv/api';
-import { ATMAmountInput } from '../../../../../../components';
+import { ATMAmountInput, Timer } from '../../../../../../components';
 import { useTransfer } from '../../provider';
 import type { TInitialTransferFormValues } from '../../types';
+import './TransferFormAmountInput.scss';
 
 type TProps = {
     fieldName: 'fromAmount' | 'toAmount';
@@ -30,6 +31,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
         : toAccount?.currencyConfig?.fractional_digits;
     const isAmountInputDisabled = fieldName === 'toAmount' && !toAccount;
     const isAmountFieldActive = fieldName === values.activeAmountFieldName;
+    const isTimerVisible = !isFromAmountFieldName && toAccount && !isSameCurrency && fromAmount > 0 && toAmount > 0;
 
     useEffect(() => {
         if (!fromAccount?.currency || !toAccount?.currency || !activeWallet?.loginid) return;
@@ -78,10 +80,10 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     );
 
     useEffect(() => {
-        if (debouncedAmountValue) {
+        if (debouncedAmountValue && !isSameCurrency) {
             amountConverterHandler(debouncedAmountValue);
         }
-    }, [amountConverterHandler, debouncedAmountValue]);
+    }, [amountConverterHandler, debouncedAmountValue, isSameCurrency]);
 
     const onChangeHandler = useCallback(
         (value: number) => {
@@ -100,26 +102,39 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
         [fieldName, isAmountFieldActive, isSameCurrency, setFieldValue, setValues]
     );
 
-    const onFocusHandler = useCallback(() => {
-        setFieldValue('activeAmountFieldName', fieldName);
-    }, [fieldName, setFieldValue]);
+    const onTimerCompleteHandler = useCallback(() => {
+        if (!toAccount?.currency || !exchangeRate?.rates) return;
 
-    const onBlurHandler = useCallback(() => {
-        setFieldValue('activeAmountFieldName', undefined);
-    }, [setFieldValue]);
+        const toRate = exchangeRate.rates[toAccount.currency];
+        const convertedToAmount = Number((fromAmount * toRate).toFixed(toAccount?.currencyConfig?.fractional_digits));
+        setFieldValue('toAmount', convertedToAmount);
+    }, [
+        exchangeRate?.rates,
+        fromAmount,
+        setFieldValue,
+        toAccount?.currency,
+        toAccount?.currencyConfig?.fractional_digits,
+    ]);
 
     return (
-        <ATMAmountInput
-            currency={currency}
-            disabled={isAmountInputDisabled}
-            fractionDigits={fractionDigits}
-            label={amountLabel}
-            maxDigits={MAX_DIGITS}
-            onBlur={onBlurHandler}
-            onChange={onChangeHandler}
-            onFocus={onFocusHandler}
-            value={amountValue}
-        />
+        <div className='wallets-transfer-form-amount-input'>
+            <ATMAmountInput
+                currency={currency}
+                disabled={isAmountInputDisabled}
+                fractionDigits={fractionDigits}
+                label={amountLabel}
+                maxDigits={MAX_DIGITS}
+                onBlur={() => setFieldValue('activeAmountFieldName', undefined)}
+                onChange={onChangeHandler}
+                onFocus={() => setFieldValue('activeAmountFieldName', fieldName)}
+                value={amountValue}
+            />
+            {isTimerVisible && (
+                <div className='wallets-transfer-form-amount-input__timer'>
+                    <Timer key={toAmount} onComplete={onTimerCompleteHandler} />
+                </div>
+            )}
+        </div>
     );
 };
 

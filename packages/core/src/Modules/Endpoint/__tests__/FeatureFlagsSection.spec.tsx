@@ -11,6 +11,7 @@ const FLAGS = {
     SHARKFIN: 'sharkfin',
     DTRADER_V2: 'dtrader_v2',
 };
+const feature_flags_title = 'Feature flags';
 
 describe('<FeatureFlagsSection/>', () => {
     const original_window_location = window.location;
@@ -54,7 +55,7 @@ describe('<FeatureFlagsSection/>', () => {
     it('should render all flags except for the wallet flag on localhost', () => {
         render(mockFeatureFlagsSection());
 
-        expect(screen.getByText('Feature flags')).toBeInTheDocument();
+        expect(screen.getByText(feature_flags_title)).toBeInTheDocument();
         expect(screen.getByRole('checkbox', { name: FLAGS.NEXT_WALLET })).not.toBeChecked();
         expect(screen.getByRole('checkbox', { name: FLAGS.SHARKFIN })).not.toBeChecked();
         expect(screen.getByRole('checkbox', { name: FLAGS.DTRADER_V2 })).not.toBeChecked();
@@ -112,7 +113,7 @@ describe('<FeatureFlagsSection/>', () => {
         delete default_mock_store.feature_flags.data;
         render(mockFeatureFlagsSection());
 
-        expect(screen.queryByRole('Feature flags')).not.toBeInTheDocument();
+        expect(screen.queryByRole(feature_flags_title)).not.toBeInTheDocument();
         expect(screen.queryByRole('checkbox', { name: FLAGS.NEXT_WALLET })).not.toBeInTheDocument();
         expect(screen.queryByRole('checkbox', { name: FLAGS.SHARKFIN })).not.toBeInTheDocument();
         expect(screen.queryByRole('checkbox', { name: FLAGS.DTRADER_V2 })).not.toBeInTheDocument();
@@ -123,7 +124,7 @@ describe('<FeatureFlagsSection/>', () => {
         default_mock_store.feature_flags.update = update;
         render(mockFeatureFlagsSection());
 
-        userEvent.click(screen.queryByRole('checkbox', { name: FLAGS.NEXT_WALLET }));
+        userEvent.click(screen.getByRole('checkbox', { name: FLAGS.NEXT_WALLET }));
 
         expect(update).toBeCalled();
     });

@@ -164,7 +164,7 @@ const Trade = observer(() => {
                 is_disabled={isDesktop()}
                 height_offset={chart_height_offset}
             >
-                <NotificationMessages />
+                <NotificationMessages show_trade_notifications={is_mobile} />
                 <React.Suspense
                     fallback={<ChartLoader is_dark={is_dark_theme} is_visible={!symbol || is_chart_loading} />}
                 >

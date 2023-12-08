@@ -509,6 +509,7 @@ const mock = (): TStores & { is_mock: boolean } => {
         notifications: {
             addNotificationMessage: jest.fn(),
             addNotificationMessageByKey: jest.fn(),
+            addTradeNotification: jest.fn(),
             client_notifications: {},
             is_notifications_empty: true,
             is_notifications_visible: false,
@@ -520,11 +521,13 @@ const mock = (): TStores & { is_mock: boolean } => {
             removeNotificationByKey: jest.fn(),
             removeNotificationMessage: jest.fn(),
             removeNotificationMessageByKey: jest.fn(),
+            removeTradeNotifications: jest.fn(),
             setP2POrderProps: jest.fn(),
             setP2PRedirectTo: jest.fn(),
             showAccountSwitchToRealNotification: jest.fn(),
             setShouldShowPopups: jest.fn(),
             toggleNotificationsModal: jest.fn(),
+            trade_notifications: [],
         },
         portfolio: {
             active_positions: [],

@@ -40,6 +40,7 @@ module.exports = function (env) {
                 'react-router-dom': 'react-router-dom',
                 'react-router': 'react-router',
                 mobx: 'mobx',
+                '@deriv/hooks': '@deriv/hooks',
                 '@deriv/shared': '@deriv/shared',
                 '@deriv/components': '@deriv/components',
                 '@deriv/translations': '@deriv/translations',

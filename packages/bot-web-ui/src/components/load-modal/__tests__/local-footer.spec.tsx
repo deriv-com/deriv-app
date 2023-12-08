@@ -60,7 +60,7 @@ describe('LocalFooter', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should display Cancel button when isMobile is true', async () => {
+    it('should display Cancel button on mobile', async () => {
         mock_store.ui.is_mobile = true;
         render(<LocalFooter />, { wrapper });
         const cancel_button = screen.getByRole('button', { name: /cancel/i });
@@ -71,7 +71,7 @@ describe('LocalFooter', () => {
         expect(mock_DBot_store?.load_modal.setLoadedLocalFile).toHaveBeenCalledWith(null);
     });
 
-    it('should display Open button when isMobile is false', async () => {
+    it('should display Open button on desktop', async () => {
         mock_store.ui.is_mobile = false;
         render(<LocalFooter />, { wrapper });
         const open_button = screen.getByRole('button', { name: /open/i });

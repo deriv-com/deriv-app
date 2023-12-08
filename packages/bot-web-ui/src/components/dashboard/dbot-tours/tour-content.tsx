@@ -1,13 +1,10 @@
+import { getImageLocation } from '../../../public-path';
 import React from 'react';
-
 import { Icon, Text } from '@deriv/components';
-import { getUrlBase, isMobile } from '@deriv/shared';
+import { getUrlBase } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-
-import { getImageLocation } from '../../../../public-path';
-import TourSteps from '../common/tour-steps';
-
-const is_mobile = isMobile();
+import TourSteps from './common/tour-steps';
+import { is } from 'immutable';
 
 type TJoyrideConfig = Record<
     'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay' | 'disableCloseOnEsc',
@@ -530,36 +527,44 @@ export const DBOT_ONBOARDING_MOBILE: TMobileTourConfig[] = [
     },
 ];
 
-export const tourDialogInfo = is_mobile ? (
-    <Localize
-        key='tour-dialog-info-mobile'
-        i18n_default_text='Here’s a quick guide on how to use Deriv Bot on the go.'
-    />
-) : (
-    <Localize
-        key='tour-dialog-info-desktop'
-        i18n_default_text='Learn how to build your bot from scratch using a simple strategy.'
-    />
-);
+export const getTourDialogInfo = (is_mobile: boolean) => {
+    return is_mobile ? (
+        <Localize
+            key='tour-dialog-info-mobile'
+            i18n_default_text='Here’s a quick guide on how to use Deriv Bot on the go.'
+        />
+    ) : (
+        <Localize
+            key='tour-dialog-info-desktop'
+            i18n_default_text='Learn how to build your bot from scratch using a simple strategy.'
+        />
+    );
+};
 
-export const tourDialogAction = is_mobile ? (
-    <Localize
-        key='tour-dialog-action-mobile'
-        i18n_default_text='You can import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot.'
-    />
-) : (
-    <Localize
-        key='tour-dialog-action-desktop'
-        i18n_default_text='Hit the <0>Start</0> button to begin and follow the tutorial.'
-    />
-);
+export const getTourDialogAction = (is_mobile: boolean) => {
+    if (is_mobile) {
+        return (
+            <Localize
+                key='tour-dialog-action-mobile'
+                i18n_default_text='You can import a bot from your mobile device or from Google drive, see a preview in the bot builder, and start trading by running the bot.'
+            />
+        );
+    }
+    return (
+        <Localize
+            key='tour-dialog-action-desktop'
+            i18n_default_text='Hit the <0>Start</0> button to begin and follow the tutorial.'
+        />
+    );
+};
 
 export const onboarding_tour_header = (
     <Localize key='onboarding-tour-header' i18n_default_text='Get started on Deriv Bot' />
 );
 
-export const bot_builder_tour_header = is_mobile ? (
-    <Localize key='tour_header-mobile' i18n_default_text='Bot Builder guide' />
-) : (
-    <Localize key='tour_header-desktop' i18n_default_text="Let's build a Bot!" />
-);
+export const getBotBuilderTourHeader = (is_mobile: boolean) => {
+    if (is_mobile) {
+        return <Localize key='tour_header-mobile' i18n_default_text='Bot Builder guide' />;
+    }
+    return <Localize key='tour_header-desktop' i18n_default_text="Let's build a Bot!" />;
+};

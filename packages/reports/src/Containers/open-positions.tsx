@@ -12,7 +12,6 @@ import {
     PositionsDrawerCard,
     SelectNative,
     Dropdown,
-    Text,
 } from '@deriv/components';
 import {
     isAccumulatorContract,
@@ -33,7 +32,6 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { Analytics } from '@deriv/analytics';
-import { useFeatureFlags } from '@deriv/hooks';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getContractDurationType } from '../Helpers/market-underlying';
 
@@ -481,7 +479,6 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
         getContractById,
     };
 
-    const { is_dtrader_v2_enabled } = useFeatureFlags();
     const [has_accumulator_contract, setHasAccumulatorContract] = React.useState(false);
     const [has_multiplier_contract, setHasMultiplierContract] = React.useState(false);
     const previous_active_positions = usePrevious(active_positions);
@@ -653,8 +650,8 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
             />
         );
     };
-
-    if (is_dtrader_v2_enabled) return <Text size='l'>And I am Open positions for DTrader 2.0.</Text>;
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Open positions for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
             <NotificationMessages />

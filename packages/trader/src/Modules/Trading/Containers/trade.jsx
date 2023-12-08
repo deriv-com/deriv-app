@@ -1,8 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper, Text } from '@deriv/components';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
-import { useFeatureFlags } from '@deriv/hooks';
 import ChartLoader from 'App/Components/Elements/chart-loader';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay';
@@ -71,7 +70,6 @@ const Trade = observer(() => {
     const [subcategory, setSubcategory] = React.useState(null);
     const [swipe_index, setSwipeIndex] = React.useState(0);
     const charts_ref = React.useRef();
-    const { is_dtrader_v2_enabled } = useFeatureFlags();
 
     const open_market = React.useMemo(() => {
         if (try_synthetic_indices) {
@@ -147,7 +145,8 @@ const Trade = observer(() => {
         return '259px';
     }, [is_turbos, is_accumulator]);
 
-    if (is_dtrader_v2_enabled) return <Text size='xl'>Hello! I am DTrader 2.0.</Text>;
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='xl'>Hello! I am DTrader 2.0.</Text>;
     return (
         <div
             id='trade_container'

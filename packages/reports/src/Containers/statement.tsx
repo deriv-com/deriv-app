@@ -19,7 +19,6 @@ import FilterComponent from '../Components/filter-component';
 import { ReportsMeta } from '../Components/reports-meta';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
 import { observer, useStore } from '@deriv/stores';
-import { useFeatureFlags } from '@deriv/hooks';
 import { useReportsStore } from 'Stores/useReportsStores';
 import { TSupportedContractType, TUnsupportedContractType } from 'Types';
 import { TSource } from '@deriv/components/src/components/data-table/data-table';
@@ -151,7 +150,6 @@ const Statement = observer(({ component_icon }: TStatement) => {
     const prev_action_type = usePrevious(action_type);
     const prev_date_from = usePrevious(date_from);
     const prev_date_to = usePrevious(date_to);
-    const { is_dtrader_v2_enabled } = useFeatureFlags();
 
     React.useEffect(() => {
         onMount();
@@ -239,8 +237,8 @@ const Statement = observer(({ component_icon }: TStatement) => {
             </div>
         </React.Fragment>
     );
-
-    if (is_dtrader_v2_enabled) return <Text size='l'>And I am Statement for DTrader 2.0.</Text>;
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Statement for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
             <ReportsMeta

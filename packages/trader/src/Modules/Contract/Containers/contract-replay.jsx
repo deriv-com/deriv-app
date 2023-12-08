@@ -9,7 +9,6 @@ import {
     PageOverlay,
     SwipeableWrapper,
     FadeWrapper,
-    Text,
     usePrevious,
 } from '@deriv/components';
 import {
@@ -64,9 +63,7 @@ const ContractReplay = observer(({ contract_id }) => {
     const { is_dark_mode_on: is_dark_theme, notification_messages_ui: NotificationMessages, toggleHistoryTab } = ui;
     const trade_type_feature_flag =
         contract_info.shortcode && getContractTypeFeatureFlag(contract_info.contract_type, isHighLow(contract_info));
-    const { is_dtrader_v2_enabled, [`is_${trade_type_feature_flag}_enabled`]: is_trade_type_enabled } =
-        useFeatureFlags();
-    const is_trade_type_disabled = is_trade_type_enabled === false;
+    const is_trade_type_disabled = useFeatureFlags()[`is_${trade_type_feature_flag}_enabled`] === false;
 
     const [is_visible, setIsVisible] = React.useState(false);
     const history = useHistory();
@@ -139,7 +136,8 @@ const ContractReplay = observer(({ contract_id }) => {
         window.open(statementws_url, '_blank');
     };
 
-    if (is_dtrader_v2_enabled) return <Text size='xl'>Hello! I am Contract Details page for DTrader 2.0.</Text>;
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='xl'>Hello! I am Contract Details page for DTrader 2.0.</Text>;
     return (
         <FadeWrapper is_visible={is_visible} className='contract-details-wrapper' keyname='contract-details-wrapper'>
             <MobileWrapper>

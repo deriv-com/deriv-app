@@ -3,6 +3,7 @@ import useAuthorize from '../useAuthorize';
 import { PAYMENT_METHOD_ICONS } from '../../constants';
 import useQuery from '../../useQuery';
 
+/** A custom hook that return the list of P2P available payment methods **/
 const useP2PPaymentMethods = () => {
     const { isSuccess } = useAuthorize();
     const { data, ...rest } = useQuery('p2p_payment_methods', { options: { enabled: isSuccess } });

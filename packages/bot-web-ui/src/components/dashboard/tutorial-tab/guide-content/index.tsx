@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Dialog, Icon, Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { removeKeyValue } from 'Utils/settings';
@@ -20,15 +20,15 @@ type TGuideList = {
 type TGuideContent = {
     guide_tab_content: TGuideList[];
     video_tab_content: TGuideList[];
+    is_dialog_open: boolean;
 };
 
-const GuideContent = observer(({ guide_tab_content, video_tab_content }: TGuideContent) => {
+const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: TGuideContent) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const { dashboard } = useDBotStore();
     const {
         dialog_options,
-        is_dialog_open,
         onCloseDialog: onOkButtonClick,
         setActiveTab,
         setTourDialogVisibility,
@@ -54,6 +54,7 @@ const GuideContent = observer(({ guide_tab_content, video_tab_content }: TGuideC
     const handleKeyboardEvent = (e: KeyboardEvent) => {
         if (e.key === 'Enter') triggerTour('OnBoard');
     };
+
     const has_guide_content = guide_tab_content.length > 0 || video_tab_content.length > 0;
 
     return React.useMemo(
@@ -182,6 +183,6 @@ const GuideContent = observer(({ guide_tab_content, video_tab_content }: TGuideC
             ),
         [guide_tab_content, video_tab_content, is_dialog_open]
     );
-});
+};
 
 export default GuideContent;

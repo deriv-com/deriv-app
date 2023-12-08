@@ -76,4 +76,5 @@ export const routes = {
     // Wallets
     wallets: '/wallets',
     wallets_withdrawal: '/wallets/cashier/withdraw',
+    wallets_compare_accounts: '/wallets/compare-accounts',
 };

@@ -63,6 +63,8 @@ export { default as usePlatformDemoAccount } from './usePlatformDemoAccount';
 export { default as usePlatformRealAccounts } from './usePlatformRealAccounts';
 export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useStatesList } from './useStatesList';
+export { default as useStoreLinkedWalletsAccounts } from './useStoreLinkedWalletsAccounts';
+export { default as useStoreWalletAccountsList } from './useStoreWalletAccountsList';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
 export { default as useVerifyEmail } from './useVerifyEmail';

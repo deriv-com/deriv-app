@@ -160,6 +160,7 @@ module.exports = function (env) {
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,
             /^@deriv\/translations\/.+$/,
+            /^@deriv\/analytics\/.+$/,
         ],
     };
 };

@@ -1,0 +1,10 @@
+project_id: '631094'
+api_token_env: 'CROWDIN_WALLETS_API_KEY'
+
+files:
+    - source: /src/translations/messages.json
+      translation: /src/translations/%two_letters_code%.json
+      languages_mapping:
+          two_letters_code:
+              zh-CN: zh_cn
+              zh-TW: zh_tw

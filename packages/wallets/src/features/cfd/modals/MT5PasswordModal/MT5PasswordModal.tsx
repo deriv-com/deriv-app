@@ -125,14 +125,16 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const renderSuccessButton = useCallback(() => {
         if (isDemo) {
             return (
-                <WalletButton isFullWidth onClick={() => hide()} size='lg'>
-                    Continue
-                </WalletButton>
+                <div className='wallets-success-btn'>
+                    <WalletButton isFullWidth onClick={hide} size='lg'>
+                        OK
+                    </WalletButton>
+                </div>
             );
         }
         return (
             <WalletButtonGroup isFlex isFullWidth>
-                <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                <WalletButton onClick={hide} size='lg' variant='outlined'>
                     Maybe later
                 </WalletButton>
                 <WalletButton
@@ -244,7 +246,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     const successComponent = useMemo(() => {
         const renderSuccessDescription = () => {
             if (isDemo) {
-                return `You can now start practicing trading with your ${marketTypeTitle} demo account.`;
+                return `Let's practise trading with ${activeWallet?.display_balance} virtual funds.`;
             }
             return `Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
         };
@@ -267,6 +269,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         isSuccess,
         isDemo,
         activeWallet?.wallet_currency_type,
+        activeWallet?.display_balance,
         marketTypeTitle,
         landingCompanyName,
         mt5Accounts,
@@ -277,7 +280,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
     ]);
 
     if (status === 'error') {
-        return <WalletError errorMessage={error?.error.message} onClick={() => hide()} title={error?.error?.code} />;
+        return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;
     }
 
     if (isMobile) {

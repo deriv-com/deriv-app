@@ -2,9 +2,10 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import React from 'react';
+import { Analytics } from '@deriv/analytics';
 import debounce from 'lodash.debounce';
+import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 
-const DEBOUNCE_INTERVAL_TIME = 300;
 const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tutorials }) => {
     const { dashboard } = useDBotStore();
     const input_ref = React.useRef(null);
@@ -15,6 +16,10 @@ const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tuto
             value => {
                 filterTuotrialTab(value);
                 setActiveTabTutorial(2);
+                Analytics.trackEvent('ce_bot_tutorial_form', {
+                    action: 'search',
+                    search_string: value,
+                });
                 if (value === '') {
                     setActiveTabTutorial(prev_active_tutorials);
                 }

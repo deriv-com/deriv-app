@@ -1,0 +1,18 @@
+.wallets-compare-accounts-trading-instruments {
+    &__span {
+        position: relative;
+        top: 0.2rem;
+        font-size: 1.6rem;
+        color: var(--text-red);
+    }
+    &__text {
+        margin-left: 0.5rem;
+    }
+}
+
+.wallets-compare-accounts-instrument-icon {
+    display: flex;
+    align-items: center;
+    margin: 0.2rem;
+    cursor: not-allowed;
+}

@@ -8,13 +8,12 @@ jest.mock('react-router-dom', () => ({
         pathname: '/appstore/traders-hub',
     })),
 }));
-
 jest.mock('react-transition-group', () => ({
     TransitionGroup: jest.fn(({ children }) => <div>{children}</div>),
     CSSTransition: jest.fn(({ children }) => <div>{children}</div>),
 }));
-
 jest.mock('../../Components/Elements/NotificationMessage', () => jest.fn(() => 'mockedNotification'));
+jest.mock('../trade-notifications', () => jest.fn(() => <div>TradeNotifications</div>));
 
 describe('AppNotificationMessages', () => {
     const store = mockStore({
@@ -50,5 +49,6 @@ describe('AppNotificationMessages', () => {
     it('should render the component', () => {
         renderComponent(store);
         expect(screen.getByText('mockedNotification')).toBeInTheDocument();
+        expect(screen.getByText('TradeNotifications')).toBeInTheDocument();
     });
 });

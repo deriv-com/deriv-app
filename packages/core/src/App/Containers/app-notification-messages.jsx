@@ -16,11 +16,18 @@ import {
     priority_toast_messages,
     maintenance_notifications,
 } from '../../Stores/Helpers/client-notifications';
+import TradeNotifications from './trade-notifications';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
 
-const NotificationsContent = ({ is_notification_loaded, style, notifications, removeNotificationMessage }) => {
+const NotificationsContent = ({
+    is_notification_loaded,
+    style,
+    notifications,
+    removeNotificationMessage,
+    show_trade_notifications,
+}) => {
     const { pathname } = useLocation();
 
     return (
@@ -48,6 +55,7 @@ const NotificationsContent = ({ is_notification_loaded, style, notifications, re
                         <Notification data={notification} removeNotificationMessage={removeNotificationMessage} />
                     </CSSTransition>
                 ))}
+                <TradeNotifications show_trade_notifications={show_trade_notifications} />
             </TransitionGroup>
         </div>
     );
@@ -62,6 +70,7 @@ const AppNotificationMessages = ({
     stopNotificationLoading,
     markNotificationMessage,
     should_show_popups,
+    show_trade_notifications,
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
@@ -160,10 +169,13 @@ const AppNotificationMessages = ({
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}
                     markNotificationMessage={markNotificationMessage}
+                    show_trade_notifications={show_trade_notifications}
                 />
             </Portal>
         </div>
-    ) : null;
+    ) : (
+        <TradeNotifications show_trade_notifications={show_trade_notifications} />
+    );
 };
 
 AppNotificationMessages.propTypes = {
@@ -185,6 +197,7 @@ AppNotificationMessages.propTypes = {
     removeNotificationMessage: PropTypes.func,
     should_show_popups: PropTypes.bool,
     stopNotificationLoading: PropTypes.func,
+    show_trade_notifications: PropTypes.bool,
 };
 
 export default connect(({ notifications }) => ({

@@ -6,7 +6,6 @@ export { default as useActiveLinkedToTradingAccount } from './useActiveLinkedToT
 export { default as useActiveTradingAccount } from './useActiveTradingAccount';
 export { default as useActiveWalletAccount } from './useActiveWalletAccount';
 export { default as useActiveWalletBalance } from './useActiveWalletBalance';
-export { default as useCreateAdvertiser } from './useCreateAdvertiser';
 export { default as useAllAccountsList } from './useAllAccountsList';
 export { default as useAllWalletAccounts } from './useAllWalletAccounts';
 export { default as useAuthentication } from './useAuthentication';

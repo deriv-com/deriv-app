@@ -40,7 +40,7 @@ describe('WalletCard', () => {
             </APIProvider>
         );
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
-        const gradient = screen.getByTestId('wallet-gradient-background');
+        const gradient = screen.getByTestId('dt_wallet-gradient-background');
         expect(gradient).toHaveClass('wallets-gradient--USD-mobile-card-light');
     });
 
@@ -56,7 +56,7 @@ describe('WalletCard', () => {
             </APIProvider>
         );
         expect(screen.getByText('BTC Wallet')).toBeInTheDocument();
-        const gradient = screen.getByTestId('wallet-gradient-background');
+        const gradient = screen.getByTestId('dt_wallet-gradient-background');
         expect(gradient).toHaveClass('wallets-gradient--BTC-mobile-card-light');
     });
 
@@ -72,7 +72,7 @@ describe('WalletCard', () => {
                 <WalletCard {...mockProps} />
             </APIProvider>
         );
-        const gradient = screen.getByTestId('wallet-gradient-background');
+        const gradient = screen.getByTestId('dt_wallet-gradient-background');
         expect(gradient).toHaveClass('wallets-gradient--demo-mobile-card-light');
     });
 

@@ -1,7 +1,7 @@
 import React from 'react';
+import { APIProvider } from '@deriv/api';
 import { render, screen } from '@testing-library/react';
 import WalletCashierHeader from '../WalletCashierHeader';
-import { APIProvider } from '@deriv/api';
 
 const DISPLAY_BALANCE = 'RM42';
 jest.mock('@deriv/api', () => ({
@@ -25,7 +25,7 @@ describe('<WalletCashierHeader/>', () => {
             </APIProvider>
         );
 
-        const divElement = screen.getByTestId('wallet-gradient-background');
+        const divElement = screen.getByTestId('dt_wallet-gradient-background');
         expect(divElement).toBeInTheDocument();
     });
 

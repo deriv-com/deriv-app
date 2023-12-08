@@ -1,43 +1,42 @@
-.bot-dashboard:has(.chart-modal-dialog) {
-    --value-cubic-bezier: cubic-bezier(0.25, 0.1, 0.1, 0.25);
-    --modal-height: 48.1vh;
+#id-charts--disabled {
+    color: var(--fill-normal-1);
+    stroke-opacity: 30%;
+    pointer-events: none;
+}
 
+.chart-modal-dialog {
     @mixin align-items-center {
         display: flex;
         align-items: center;
     }
 
-    #id-charts {
-        color: var(--fill-normal-1);
-        stroke-opacity: 30%;
-        pointer-events: none;
+    --modal-height: 48.1vh;
+
+    height: var(--modal-height);
+    max-height: var(--modal-height);
+    @include align-items-center;
+    justify-content: center;
+    z-index: 999;
+    transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
+
+    .dashboard__chart-wrapper--modal {
+        height: var(--modal-height);
     }
 
-    .chart-modal-dialog {
-        height: var(--modal-height);
-        max-height: var(--modal-height);
-        @include align-items-center;
-        justify-content: center;
-        z-index: 999;
-        transition: opacity 0.25s var(--value-cubic-bezier);
+    .sc-navigation-widget {
+        display: none;
+    }
 
-        .dashboard__chart-wrapper--modal {
-            height: var(--modal-height);
+    .cq-symbols-display {
+        .cq-menu-btn {
+            padding: 0.2rem;
         }
 
-        .sc-navigation-widget {
-            display: none;
-        }
-
-        .cq-symbols-display {
-            .cq-menu-btn {
-                padding: 0.2rem;
-            }
-
-            .cq-symbol-select-btn {
+        .cq-symbol {
+            &-select-btn {
                 margin: 0.2rem;
 
-                .cq-symbol-dropdown {
+                &-dropdown {
                     transform: scale(1);
                     margin-left: auto;
                 }
@@ -46,52 +45,52 @@
                     font-size: 1.4rem;
                 }
 
-                .cq-symbol-info {
+                &-info {
                     min-height: unset;
                 }
             }
         }
+    }
 
-        .sc-toolbar-widget {
-            bottom: 4vh;
-            top: unset;
-            border-width: 0;
-            border-radius: 2rem;
-            cursor: pointer;
-            background: var(--general-section-1);
+    .sc-toolbar-widget {
+        bottom: 4vh;
+        top: unset;
+        border-width: 0;
+        border-radius: 2rem;
+        cursor: pointer;
+        background: var(--general-section-1);
 
-            .sc-tooltip:not(:first-child) {
-                display: none;
-            }
+        .sc-tooltip:not(:first-child) {
+            display: none;
+        }
 
-            .cq-menu-btn {
-                .sc-chart-mode__menu__timeperiod {
-                    top: 0.6rem;
-                    left: 1rem;
-                }
-            }
-
-            .cq-menu-btn:hover {
-                background: none;
+        .cq-menu-btn {
+            .sc-chart-mode__menu__timeperiod {
+                top: 0.6rem;
+                left: 1rem;
             }
         }
 
-        .cq-chart-title {
-            .cq-menu-dropdown {
-                position: fixed;
-                height: 46rem;
-                left: unset;
+        .cq-menu-btn:hover {
+            background: none;
+        }
+    }
 
-                .sc-dialog {
-                    height: 100% !important;
+    .cq-chart-title {
+        .cq-menu-dropdown {
+            position: fixed;
+            height: 46rem;
+            left: unset;
 
-                    &__body {
+            .sc-dialog {
+                height: 100% !important;
+
+                &__body {
+                    height: inherit !important;
+
+                    .sc-mcd {
                         height: inherit !important;
-
-                        .sc-mcd {
-                            height: inherit !important;
-                            min-width: auto !important;
-                        }
+                        min-width: auto !important;
                     }
                 }
             }

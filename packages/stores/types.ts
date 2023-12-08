@@ -24,6 +24,7 @@ import type {
 } from '@deriv/api-types';
 
 import type { FeatureFlagsStore } from './src/stores';
+import { TContractInfo } from '../shared/src/utils/contract';
 
 type TRoutes =
     | '/404'
@@ -35,6 +36,7 @@ type TRoutes =
     | '/account/proof-of-identity'
     | '/account/proof-of-address'
     | '/account/proof-of-ownership'
+    | '/account/proof-of-income'
     | '/account/passwords'
     | '/account/closing-account'
     | '/account/deactivate-account'
@@ -426,7 +428,6 @@ type TClientStore = {
     selectCurrency: (currency: string) => void;
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
-    setVisibilityRealityCheck: (value: boolean) => void;
     setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => Promise<void>;
@@ -455,6 +456,7 @@ type TClientStore = {
     mt5_login_list: DetailsOfEachMT5Loginid[];
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
+    should_allow_poinc_authentication: boolean;
     isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial' | 'gaming' | 'all') => boolean;
     isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial' | 'gaming' | 'all') => boolean;
     fetchResidenceList?: () => Promise<void>;
@@ -837,6 +839,7 @@ type TContractStore = {
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
     addNotificationMessageByKey: (key: string) => void;
+    addTradeNotification: (contract_info: TContractInfo) => void;
     client_notifications: Record<string, TNotificationMessage>;
     is_notifications_empty: boolean;
     is_notifications_visible: boolean;
@@ -848,11 +851,23 @@ type TNotificationStore = {
     removeNotificationByKey: ({ key }: { key: string }) => void;
     removeNotificationMessage: ({ key, should_show_again }: { key: string; should_show_again?: boolean }) => void;
     removeNotificationMessageByKey: ({ key }: { key: string }) => void;
+    removeTradeNotifications: (id?: string) => void;
     setP2POrderProps: () => void;
     setP2PRedirectTo: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setShouldShowPopups: (should_show_popups: boolean) => void;
     toggleNotificationsModal: () => void;
+    trade_notifications: Array<{
+        buy_price: number;
+        contract_id: number;
+        currency: string;
+        contract_type: string;
+        id: string;
+        profit: number;
+        status: string;
+        symbol: string;
+        timestamp: number;
+    }>;
 };
 
 type TActiveSymbolsStore = {

@@ -4,7 +4,7 @@ import { TCoreStores } from '@deriv/stores/types';
 const isProductionOrStaging = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const initHotjar = (client: TCoreStores['client']) => {
-    // To initialize only on licensed domains.
+    // To initialize only on staging and production links
     if (!isProductionOrStaging) return;
 
     /**

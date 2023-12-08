@@ -927,7 +927,9 @@ export default class TradeStore extends BaseStore {
                             const { category, underlying } = extractInfoFromShortcode(shortcode);
                             const is_digit_contract = isDigitContractType(category?.toUpperCase() ?? '');
                             const contract_type = category?.toUpperCase();
-                            (window as any).hj('event', `placed_${category}_trade`);
+
+                            if ((window as any).hj) (window as any).hj('event', `placed_${category}_trade`);
+
                             this.root_store.contract_trade.addContract({
                                 contract_id,
                                 start_time,

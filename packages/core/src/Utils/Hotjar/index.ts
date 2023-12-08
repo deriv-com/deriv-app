@@ -1,11 +1,11 @@
 import { epochToMoment, toMoment } from '@deriv/shared';
 import { TCoreStores } from '@deriv/stores/types';
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProductionOrStaging = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const initHotjar = (client: TCoreStores['client']) => {
     // To initialize only on licensed domains.
-    if (!isProduction) return;
+    if (!isProductionOrStaging) return;
 
     /**
      * Inject: External Script - Hotjar

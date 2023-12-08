@@ -8,9 +8,18 @@ export const fiatOnRampProvider = {
     description:
         'A fast and secure fiat-to-crypto payment service. Deposit cryptocurrencies from anywhere in the world using your credit/debit cards and bank transfers.',
     getPaymentIcons: () => [
-        <IcCashierApplePay key='apple-pay' />,
-        <IcCashierMastercard key='mastercard' />,
-        <IcCashierVisa key='visa' />,
+        {
+            icon: <IcCashierApplePay />,
+            name: 'apple-pay',
+        },
+        {
+            icon: <IcCashierMastercard />,
+            name: 'mastercard',
+        },
+        {
+            icon: <IcCashierVisa />,
+            name: 'visa',
+        },
     ],
     icon: <IcCashierBanxa key='banxa' />,
     name: 'Banxa',

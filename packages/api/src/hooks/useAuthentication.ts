@@ -43,6 +43,8 @@ const useAuthentication = () => {
             poi_status: get_account_status_data?.authentication?.identity?.status,
             /** client's poa verification status */
             poa_status: get_account_status_data?.authentication?.document?.status,
+            /** client's risk classification: `low`, `standard`, `high`.  */
+            risk_classification: get_account_status_data?.risk_classification,
         };
     }, [get_account_status_data]);
 

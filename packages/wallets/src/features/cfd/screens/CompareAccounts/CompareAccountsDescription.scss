@@ -1,0 +1,14 @@
+.wallets-compare-accounts-text-container {
+    max-height: 24.5rem;
+
+    @include mobile {
+        max-height: 21rem;
+    }
+
+    &--demo {
+        max-height: 13.5rem;
+    }
+    &__separator {
+        margin: 0.9rem;
+    }
+}

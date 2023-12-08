@@ -1507,6 +1507,7 @@ export default class ClientStore extends BaseStore {
         this.setPreSwitchAccount(true);
         this.setIsLoggingIn(true);
         this.root_store.notifications.removeNotifications(true);
+        this.root_store.notifications.removeTradeNotifications();
         this.root_store.notifications.removeAllNotificationMessages(true);
         if (!this.is_virtual && /VRTC|VRW/.test(loginid)) {
             this.setPrevRealAccountLoginid(this.loginid);
@@ -2080,7 +2081,6 @@ export default class ClientStore extends BaseStore {
         if (response?.logout === 1) {
             this.cleanUp();
 
-            Analytics.reset();
             this.setLogout(true);
         }
 

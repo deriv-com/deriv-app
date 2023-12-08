@@ -4,7 +4,8 @@ import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
 import { WalletButton, WalletPasswordField, WalletsActionScreen, WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
-import { validPassword } from '../../../../../utils/passwordUtils';
+import { validPassword } from '../../../../../utils/password';
+import { PlatformDetails } from '../../../constants';
 
 type TFormInitialValues = {
     currentPassword: string;
@@ -19,7 +20,7 @@ type TProps = {
 const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, setNextScreen }) => {
     const { isMobile } = useDevice();
     const { getModalState } = useModal();
-    const mt5AccountId = getModalState('accountId') || '';
+    const mt5AccountId = getModalState('accountId') ?? '';
 
     const {
         error: changeInvestorPasswordError,
@@ -34,7 +35,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
             account_id: mt5AccountId,
             new_password: values.newPassword,
             old_password: values.currentPassword,
-            platform: 'mt5',
+            platform: PlatformDetails.mt5.platform,
         });
         setNextScreen?.();
     };
@@ -86,15 +87,13 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                     }
                                     isLoading={changeInvestorPasswordStatus === 'loading'}
                                     size={isMobile ? 'lg' : 'md'}
-                                    text='Change investor password'
                                     type='submit'
-                                />
-                                <WalletButton
-                                    onClick={sendEmail}
-                                    size={isMobile ? 'lg' : 'md'}
-                                    text='Create or reset investor password'
-                                    variant='ghost'
-                                />
+                                >
+                                    Change investor password
+                                </WalletButton>
+                                <WalletButton onClick={sendEmail} size={isMobile ? 'lg' : 'md'} variant='ghost'>
+                                    Create or reset investor password
+                                </WalletButton>
                             </div>
                         </form>
                     )}

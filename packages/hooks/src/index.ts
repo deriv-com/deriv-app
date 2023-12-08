@@ -34,6 +34,7 @@ export { default as useInputDecimalFormatter } from './useInputDecimalFormatter'
 export { default as useIsAccountStatusPresent } from './useIsAccountStatusPresent';
 export { default as useIsP2PEnabled } from './useIsP2PEnabled';
 export { default as useIsRealAccountNeededForCashier } from './useIsRealAccountNeededForCashier';
+export { default as useIsRtl } from './useIsRtl';
 export { default as useIsSystemMaintenance } from './useIsSystemMaintenance';
 export { default as useLocalStorageData } from './useLocalStorageData';
 export { default as useNeedAuthentication } from './useNeedAuthentication';

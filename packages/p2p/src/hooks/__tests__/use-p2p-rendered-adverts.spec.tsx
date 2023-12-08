@@ -5,8 +5,8 @@ import { TCoreStores } from '@deriv/stores/types';
 import { useStores } from 'Stores/index';
 import useP2PRenderedAdverts from '../use-p2p-rendered-adverts';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
     useP2PAdvertList: jest.fn(() => ({
         data: [
             {

@@ -2,8 +2,8 @@ import { renderHook } from '@testing-library/react-hooks';
 import useP2PAdvertiserAdverts from '../use-p2p-advertiser-adverts';
 import { useStores } from 'Stores/index';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
     useP2PAdvertList: jest.fn(() => ({
         data: [
             {

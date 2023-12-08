@@ -31,6 +31,9 @@ const useP2PCompletedOrdersNotification = () => {
         if (data?.p2p_order_list?.list.length && data?.p2p_order_list?.list !== notifications.p2p_completed_orders) {
             notifications.p2p_completed_orders = data.p2p_order_list.list;
         }
+        notifications?.p2p_completed_orders?.sort((a, b) => {
+            return (b.completion_time || 0) - (a.completion_time || 0);
+        });
     }, [data, notifications]);
 };
 

@@ -10,7 +10,7 @@ type TCopyTextComponent = {
 
 const CopyTextComponent = ({ text, className }: TCopyTextComponent) => {
     return (
-        <div className={className} data-testid='cfd_account_copy_main_div'>
+        <div className={className} data-testid='copy_text_component_main_div'>
             <Clipboard
                 text_copy={text}
                 info_message={isMobile() ? '' : localize('copy')}

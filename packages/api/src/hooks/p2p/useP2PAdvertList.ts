@@ -1,6 +1,6 @@
 import React from 'react';
-import useInfiniteQuery from '../useInfiniteQuery';
-import useAuthorize from './useAuthorize';
+import useInfiniteQuery from '../../useInfiniteQuery';
+import useAuthorize from '../useAuthorize';
 
 /**
  * This custom hook returns available adverts for use with 'p2p_order_create' by calling 'p2p_advert_list' endpoint

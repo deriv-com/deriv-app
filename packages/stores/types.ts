@@ -36,6 +36,7 @@ type TRoutes =
     | '/account/proof-of-identity'
     | '/account/proof-of-address'
     | '/account/proof-of-ownership'
+    | '/account/proof-of-income'
     | '/account/passwords'
     | '/account/closing-account'
     | '/account/deactivate-account'
@@ -430,7 +431,6 @@ type TClientStore = {
     selectCurrency: (currency: string) => void;
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
-    setVisibilityRealityCheck: (value: boolean) => void;
     setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => Promise<void>;
@@ -459,6 +459,7 @@ type TClientStore = {
     mt5_login_list: DetailsOfEachMT5Loginid[];
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
+    should_allow_poinc_authentication: boolean;
     isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial' | 'gaming' | 'all') => boolean;
     isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial' | 'gaming' | 'all') => boolean;
     fetchResidenceList?: () => Promise<void>;

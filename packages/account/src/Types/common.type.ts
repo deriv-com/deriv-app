@@ -167,3 +167,8 @@ export type TAutoComplete = {
     value: boolean;
     text: string;
 };
+
+export type TFilesDescription = {
+    descriptions: { id: string; value: JSX.Element }[];
+    title: React.ReactNode;
+};

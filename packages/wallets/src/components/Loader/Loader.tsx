@@ -8,7 +8,10 @@ type TProps = {
 };
 
 const Loader: React.FC<TProps> = ({ color = '#85ACB0', isFullScreen = true }) => (
-    <div className={classNames('wallets-loader', { 'wallets-loader--fullscreen': isFullScreen })}>
+    <div
+        className={classNames('wallets-loader', { 'wallets-loader--fullscreen': isFullScreen })}
+        data-testid='dt_loader'
+    >
         <span className='wallets-loader__element' style={{ backgroundColor: color }} />
         <span className='wallets-loader__element' style={{ backgroundColor: color }} />
         <span className='wallets-loader__element' style={{ backgroundColor: color }} />

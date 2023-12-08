@@ -84,17 +84,6 @@ const QuickStrategyForm = observer(() => {
                             return null;
                         }
 
-                        const excluded_fields: Array<string> = ['last_digit_prediction', 'label_last_digit_prediction'];
-                        const excluded_trade_types: Array<string> = ['matchesdiffers', 'overunder'];
-
-                        if (
-                            excluded_fields.includes(field.name as string) &&
-                            values.type !== 'DIGITMATCH' &&
-                            !excluded_trade_types.includes(values.tradetype as string)
-                        ) {
-                            return null;
-                        }
-
                         switch (field.type) {
                             // Generic or common fields
                             case 'number': {
@@ -119,6 +108,11 @@ const QuickStrategyForm = observer(() => {
                             }
                             case 'text': {
                                 if (!field.name) return null;
+                                const { should_have = [], hide_without_should_have = false } = field;
+                                const should_enable = shouldEnable(should_have);
+                                if (!should_enable && hide_without_should_have) {
+                                    return null;
+                                }
                                 return (
                                     <QSInput
                                         {...field}

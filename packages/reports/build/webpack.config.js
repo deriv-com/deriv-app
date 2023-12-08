@@ -46,6 +46,7 @@ module.exports = function (env) {
                 '@deriv/translations': '@deriv/translations',
                 '@deriv/analytics': '@deriv/analytics',
             },
+            /^@deriv\/hooks\/.+$/,
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,
             /^@deriv\/translations\/.+$/,

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Accordion, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { TDescription } from '../config';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -41,7 +40,7 @@ const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
     }
 };
 
-const FAQContent = observer(({ faq_list }: TFAQContent) => {
+const FAQContent = ({ faq_list }: TFAQContent) => {
     const { dashboard } = useDBotStore();
     const { active_tab_tutorials } = dashboard;
 
@@ -123,6 +122,6 @@ const FAQContent = observer(({ faq_list }: TFAQContent) => {
         ),
         [faq_list]
     );
-});
+};
 
 export default FAQContent;

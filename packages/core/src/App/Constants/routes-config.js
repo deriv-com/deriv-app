@@ -6,6 +6,7 @@ import { localize } from '@deriv/translations';
 import Redirect from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
 import CFDCompareAccounts from '@deriv/cfd/src/Containers/cfd-compare-accounts';
+import TestPage from '../Components/TestPage';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));
@@ -73,6 +74,13 @@ const P2P = React.lazy(() =>
 
 const getModules = () => {
     const modules = [
+        {
+            path: '/test',
+            component: TestPage,
+            getTitle: () => 'Test Page',
+            icon_component: 'IcReports',
+            is_authenticated: false,
+        },
         {
             path: routes.bot,
             component: Bot,

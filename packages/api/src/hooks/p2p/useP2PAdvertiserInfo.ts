@@ -4,9 +4,8 @@ import useAuthorize from '../useAuthorize';
 
 /** This custom hook returns information about the given advertiser ID */
 const useP2PAdvertiserInfo = (id?: string) => {
-    const { data: authorize_data } = useAuthorize();
-    const enabled = authorize_data?.scopes?.some(scope => scope == 'payments');
-    const { data, ...rest } = useQuery('p2p_advertiser_info', { payload: { id }, options: { enabled } });
+    const { isSuccess } = useAuthorize();
+    const { data, ...rest } = useQuery('p2p_advertiser_info', { payload: { id }, options: { enabled: isSuccess } });
 
     // Add additional information to the p2p_advertiser_info data
     const modified_p2p_advertiser_info = useMemo(() => {

@@ -53,8 +53,7 @@
 .cashier__wrapper--is-mobile .cashier__wrapper {
     @include mobile() {
         width: 100%;
-        margin-left: 0;
-        margin-right: 0;
+        margin-inline: 0;
     }
 }
 

@@ -256,6 +256,7 @@ export default class ClientStore extends BaseStore {
             is_crypto: action.bound,
             default_currency: computed,
             should_allow_authentication: computed,
+            should_allow_poinc_authentication: computed,
             is_financial_assessment_incomplete: computed,
             is_financial_assessment_needed: computed,
             is_authentication_needed: computed,
@@ -700,6 +701,12 @@ export default class ClientStore extends BaseStore {
     get should_allow_authentication() {
         return this.account_status?.status?.some(
             status => status === 'allow_document_upload' || status === 'allow_poi_resubmission'
+        );
+    }
+
+    get should_allow_poinc_authentication() {
+        return (
+            this.is_fully_authenticated && this.account_status?.authentication?.needs_verification?.includes('income')
         );
     }
 

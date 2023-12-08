@@ -24,6 +24,7 @@ import type {
 } from '@deriv/api-types';
 
 import type { FeatureFlagsStore } from './src/stores';
+import { TContractInfo } from '../shared/src/utils/contract';
 
 type TRoutes =
     | '/404'
@@ -837,6 +838,7 @@ type TContractStore = {
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
     addNotificationMessageByKey: (key: string) => void;
+    addTradeNotification: (contract_info: TContractInfo) => void;
     client_notifications: Record<string, TNotificationMessage>;
     is_notifications_empty: boolean;
     is_notifications_visible: boolean;
@@ -848,11 +850,23 @@ type TNotificationStore = {
     removeNotificationByKey: ({ key }: { key: string }) => void;
     removeNotificationMessage: ({ key, should_show_again }: { key: string; should_show_again?: boolean }) => void;
     removeNotificationMessageByKey: ({ key }: { key: string }) => void;
+    removeTradeNotifications: (id?: string) => void;
     setP2POrderProps: () => void;
     setP2PRedirectTo: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setShouldShowPopups: (should_show_popups: boolean) => void;
     toggleNotificationsModal: () => void;
+    trade_notifications: Array<{
+        buy_price: number;
+        contract_id: number;
+        currency: string;
+        contract_type: string;
+        id: string;
+        profit: number;
+        status: string;
+        symbol: string;
+        timestamp: number;
+    }>;
 };
 
 type TActiveSymbolsStore = {

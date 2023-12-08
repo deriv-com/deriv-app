@@ -5,16 +5,23 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { StaticUrl } from '@deriv/components';
 import {
     daysSince,
+    extractInfoFromShortcode,
     formatDate,
     formatMoney,
+    getEndTime,
+    getMarketName,
     getPathname,
     getPlatformSettings,
     getStaticUrl,
+    getTotalProfit,
+    getTradeTypeName,
     getUrlBase,
     isCryptocurrency,
     isEmptyObject,
+    isHighLow,
     isMobile,
     isMultiplierContract,
+    isTurbosContract,
     LocalStore,
     routes,
     unique,
@@ -43,6 +50,7 @@ export default class NotificationStore extends BaseStore {
     push_notifications = [];
     client_notifications = {};
     should_show_popups = true;
+    trade_notifications = [];
     p2p_order_props = {};
     p2p_redirect_to = {};
     p2p_completed_orders = null;
@@ -54,6 +62,7 @@ export default class NotificationStore extends BaseStore {
             addNotificationBar: action.bound,
             addNotificationMessage: action.bound,
             addNotificationMessageByKey: action.bound,
+            addTradeNotification: action.bound,
             addVerificationNotifications: action.bound,
             client_notifications: observable,
             filterNotificationMessages: action.bound,
@@ -75,6 +84,7 @@ export default class NotificationStore extends BaseStore {
             removeNotificationMessage: action.bound,
             removeNotificationMessageByKey: action.bound,
             removeNotifications: action.bound,
+            removeTradeNotifications: action.bound,
             resetVirtualBalanceNotification: action.bound,
             setClientNotifications: action.bound,
             setP2POrderProps: action.bound,
@@ -83,6 +93,7 @@ export default class NotificationStore extends BaseStore {
             should_show_popups: observable,
             showCompletedOrderNotification: action.bound,
             toggleNotificationsModal: action.bound,
+            trade_notifications: observable,
             unmarkNotificationMessage: action.bound,
             updateNotifications: action.bound,
         });
@@ -178,6 +189,38 @@ export default class NotificationStore extends BaseStore {
 
     addNotificationMessageByKey(key) {
         if (key) this.addNotificationMessage(this.client_notifications[key]);
+    }
+
+    addTradeNotification(contract_info) {
+        if (!contract_info) return;
+        const {
+            buy_price,
+            contract_id,
+            contract_type,
+            currency,
+            profit,
+            purchase_time,
+            shortcode,
+            status,
+            underlying,
+        } = contract_info;
+        const id = `${contract_id}_${status}`;
+        if (this.trade_notifications.some(({ id: notification_id }) => notification_id === id)) return;
+        this.trade_notifications.push({
+            id,
+            buy_price,
+            contract_id,
+            contract_type: getTradeTypeName(contract_type, isHighLow({ shortcode }), isTurbosContract(contract_type)),
+            currency,
+            profit: isMultiplierContract(contract_type) && !isNaN(profit) ? getTotalProfit(contract_info) : profit,
+            status,
+            symbol: getMarketName(underlying ?? extractInfoFromShortcode(shortcode).underlying),
+            timestamp: status === 'open' ? purchase_time : getEndTime(contract_info),
+        });
+        /* Consider notifications older than 100s ago as stale and filter out such trade_notifications from the array
+           in order to protect RAM in case there are too many notifications coming at once. */
+        const hundred_sec_ago = Math.floor(Date.now() / 1000) - 100;
+        this.trade_notifications = this.trade_notifications.filter(({ timestamp }) => timestamp > hundred_sec_ago);
     }
 
     addVerificationNotifications(identity, document, has_restricted_mt5_account, has_mt5_account_with_rejected_poa) {
@@ -619,6 +662,10 @@ export default class NotificationStore extends BaseStore {
         this.notifications = should_close_persistent
             ? []
             : [...this.notifications.filter(notifs => notifs.is_persistent)];
+    }
+
+    removeTradeNotifications(id) {
+        this.trade_notifications = id ? this.trade_notifications.filter(item => item.id !== id) : [];
     }
 
     removeNotificationByKey({ key }) {

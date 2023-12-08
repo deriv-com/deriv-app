@@ -1,6 +1,6 @@
 import React from 'react';
 import { Accordion, Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TDescription } from '../config';
@@ -39,7 +39,7 @@ const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
     }
 };
 
-const FAQContent = observer(({ faq_list }: TFAQContent) => {
+const FAQContent = ({ faq_list }: TFAQContent) => {
     const { ui } = useStore();
     const { dashboard } = useDBotStore();
     const { active_tab_tutorials } = dashboard;
@@ -121,8 +121,9 @@ const FAQContent = observer(({ faq_list }: TFAQContent) => {
                 </div>
             </div>
         ),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [faq_list]
     );
-});
+};
 
 export default FAQContent;

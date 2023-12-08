@@ -17,8 +17,14 @@ const Header = observer(() => {
     useP2PCompletedOrdersNotification();
 
     const traders_hub_routes =
-        [routes.traders_hub, routes.account, routes.cashier, routes.wallets, routes.compare_cfds].includes(pathname) ||
-        pathname.startsWith(routes.compare_cfds);
+        [
+            routes.traders_hub,
+            routes.account,
+            routes.cashier,
+            routes.wallets,
+            routes.wallets_compare_accounts,
+            routes.compare_cfds,
+        ].includes(pathname) || pathname.startsWith(routes.compare_cfds);
 
     const client_accounts = useReadLocalStorage('client.accounts');
     const { is_next_wallet_enabled } = useFeatureFlags();

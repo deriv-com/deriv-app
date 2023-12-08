@@ -5,6 +5,7 @@ type THighlightProps = {
     highlight_color?: string;
     left: number;
     width: number | string;
+    default_offset: number;
 };
 
 const Highlight = ({
@@ -12,6 +13,7 @@ const Highlight = ({
     highlight_color = 'var(--button-toggle-secondary)',
     left,
     width,
+    default_offset,
 }: THighlightProps) => {
     const border_radius_size = '4px';
     const highlight_style = {
@@ -26,10 +28,10 @@ const Highlight = ({
         highlight_style.borderRadius = '4px';
     } else {
         Object.assign(highlight_style, {
-            borderTopLeftRadius: left === 0 ? border_radius_size : 0,
-            borderTopRightRadius: left === 0 ? 0 : border_radius_size,
-            borderBottomLeftRadius: left === 0 ? border_radius_size : 0,
-            borderBottomRightRadius: left === 0 ? 0 : border_radius_size,
+            borderTopLeftRadius: left === default_offset ? border_radius_size : 0,
+            borderTopRightRadius: left === default_offset ? 0 : border_radius_size,
+            borderBottomLeftRadius: left === default_offset ? border_radius_size : 0,
+            borderBottomRightRadius: left === default_offset ? 0 : border_radius_size,
         });
     }
 

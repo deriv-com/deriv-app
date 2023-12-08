@@ -1,6 +1,7 @@
 import classnames from 'classnames';
 import React from 'react';
 import { Highlight } from './button-highlight';
+import { useIsRtl } from '@deriv/hooks';
 
 type THighlightWrapperProps = Omit<React.HTMLProps<HTMLDivElement>, 'children'> & {
     children: React.ReactElement | React.ReactElement[];
@@ -11,7 +12,10 @@ type THighlightWrapperProps = Omit<React.HTMLProps<HTMLDivElement>, 'children'> 
 const class_selector = 'dc-button-menu__button--active';
 
 const HighlightWrapper = ({ children, className, has_rounded_button, ...other_props }: THighlightWrapperProps) => {
-    const [left, setLeft] = React.useState(0);
+    const is_rtl = useIsRtl();
+    const default_offset = is_rtl ? -112 : 0;
+
+    const [left, setLeft] = React.useState(default_offset);
 
     const wrapper_ref = React.useRef<HTMLDivElement>(null);
 
@@ -20,7 +24,7 @@ const HighlightWrapper = ({ children, className, has_rounded_button, ...other_pr
             const active_button_el = wrapper_ref?.current
                 ?.getElementsByClassName(class_selector)
                 ?.item(0) as HTMLButtonElement;
-            updateHighlightPosition(active_button_el);
+            !is_rtl ? updateHighlightPosition(active_button_el) : updateHighlightPositionRTL(active_button_el);
         }
         return () => resetHighlight();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -30,8 +34,11 @@ const HighlightWrapper = ({ children, className, has_rounded_button, ...other_pr
         const active_button_el = wrapper_ref?.current
             ?.getElementsByClassName(class_selector)
             ?.item(0) as HTMLButtonElement;
-        if (active_button_el) updateHighlightPosition(active_button_el);
-        else if (left !== 0) resetHighlight(); // clear highlight when active element doesn't exist
+        if (active_button_el) {
+            !is_rtl ? updateHighlightPosition(active_button_el) : updateHighlightPositionRTL(active_button_el);
+        } else if (left !== default_offset) {
+            resetHighlight();
+        } // clear highlight when active element doesn't exist
     });
 
     const onClick = (e: Event, buttonClick: () => void) => {
@@ -40,7 +47,13 @@ const HighlightWrapper = ({ children, className, has_rounded_button, ...other_pr
         buttonClick?.();
     };
 
-    const resetHighlight = () => setLeft(0);
+    const resetHighlight = !is_rtl ? () => setLeft(0) : () => setLeft(-112);
+
+    const updateHighlightPositionRTL = (el: HTMLButtonElement | null) => {
+        if (!el) return;
+        const { offsetLeft } = el;
+        if (left !== offsetLeft - 112) setLeft(offsetLeft - 112);
+    };
 
     const updateHighlightPosition = (el: HTMLButtonElement | null) => {
         if (!el) return;
@@ -66,6 +79,7 @@ const HighlightWrapper = ({ children, className, has_rounded_button, ...other_pr
                 highlight_color={other_props.highlight_color}
                 left={left}
                 width={`${button_width}%`}
+                default_offset={default_offset}
             />
         </div>
     );

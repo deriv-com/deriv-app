@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import { Rnd } from 'react-rnd';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
@@ -33,6 +33,11 @@ export default function Draggable({
     xaxis = 0,
     yaxis = 0,
 }: PropsWithChildren<DraggableProps>) {
+    const [first_drag_x, setFirstDragX] = useState(xaxis);
+    const [first_drag_y, setFirstDragY] = useState(yaxis);
+    const [first_left, setFirstLeft] = useState(0);
+    const [first_top, setFirstTop] = useState(0);
+
     return is_visible ? (
         <Rnd
             bounds={bounds}
@@ -44,11 +49,25 @@ export default function Draggable({
                 width,
                 height,
             }}
+            style={{
+                left: xaxis,
+                top: yaxis,
+            }}
             dragHandleClassName={dragHandleClassName}
             enableResizing={enableResizing}
             minHeight={height}
             minWidth={minWidth}
-            onDragStart={e => {
+            onDrag={(e, data) => {
+                //we need these calculations since we no longer use the 'transform: translate(x, y)' property
+                //as it causes unexpected behaviour of Beta Chart styles & helps avoid bounce bug upon the first drag
+                data.node.style.left = `${data.lastX - first_drag_x + first_left + data.deltaX}px`;
+                data.node.style.top = `${data.lastY - first_drag_y + first_top + data.deltaY}px`;
+            }}
+            onDragStart={(e, data) => {
+                setFirstDragX(data.x);
+                setFirstDragY(data.y);
+                setFirstLeft(parseInt(data.node.style.left));
+                setFirstTop(parseInt(data.node.style.top));
                 // on responsive devices touch event is not triggering the close button action
                 // need to handle it manually
                 const parentElement = (e?.target as HTMLDivElement)?.parentElement;

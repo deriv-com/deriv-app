@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import i18n, { setLanguage } from '../../translations/i18n';
 import { WalletText } from '../Base';
 import './WalletLanguageSidePanel.scss';
@@ -11,12 +11,6 @@ const languages = {
 };
 
 const WalletLanguageSidePanel: React.FC = () => {
-    const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
-
-    useEffect(() => {
-        setLanguage(currentLanguage);
-    }, [currentLanguage]);
-
     return (
         <div className='wallets-language-side-panel'>
             <WalletText color='general' size='lg' weight='bold'>
@@ -29,16 +23,11 @@ const WalletLanguageSidePanel: React.FC = () => {
                         <div
                             key={`wallets-language-side-panel__language-item-${languageCode}`}
                             onClick={() => {
-                                setCurrentLanguage(languageCode);
+                                setLanguage(languageCode);
                             }}
                         >
-                            <li
-                                className='wallets-language-side-panel__language-item'
-                                onClick={() => {
-                                    setCurrentLanguage(languageCode);
-                                }}
-                            >
-                                <WalletText weight={currentLanguage === languageCode ? 'bold' : 'normal'}>
+                            <li className='wallets-language-side-panel__language-item'>
+                                <WalletText weight={i18n.language === languageCode ? 'bold' : 'normal'}>
                                     {language}
                                 </WalletText>
                             </li>

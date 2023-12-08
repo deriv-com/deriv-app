@@ -36,10 +36,9 @@
             &--left {
                 display: flex;
                 align-items: center;
-                gap: 0.8rem;
 
                 & > svg {
-                    transform: scale(0.6);
+                    transform: scale(0.7) translateX(-0.7rem);
                 }
 
                 .wallets-mt5-trade-screen__details-title {
@@ -76,7 +75,7 @@
 
         &-maintainance {
             display: grid;
-            grid-template-columns: 3rem auto;
+            grid-template-columns: 2.5rem auto;
         }
     }
 

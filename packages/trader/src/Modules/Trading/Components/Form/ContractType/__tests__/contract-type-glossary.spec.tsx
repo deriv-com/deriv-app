@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { TRADE_TYPES } from '@deriv/shared';
 import ContractTypeGlossary from '../ContractTypeInfo/contract-type-glossary';
 
 const deal_cancellation = 'Deal cancellation';
@@ -7,14 +8,14 @@ const stop_out = 'Stop out';
 
 describe('<ContractTypeGlossary />', () => {
     it('Ensure accumulator glossary is rendered properly', () => {
-        render(<ContractTypeGlossary category='accumulator' />);
+        render(<ContractTypeGlossary category={TRADE_TYPES.ACCUMULATOR} />);
 
         expect(
             screen.getByText(/You can choose a growth rate with values of 1%, 2%, 3%, 4%, and 5%./i)
         ).toBeInTheDocument();
     });
     it('Ensure vanilla glossary is rendered properly', () => {
-        render(<ContractTypeGlossary category='vanillalongcall' />);
+        render(<ContractTypeGlossary category={TRADE_TYPES.VANILLA.CALL} />);
 
         expect(
             screen.getByText(
@@ -23,7 +24,7 @@ describe('<ContractTypeGlossary />', () => {
         ).toBeInTheDocument();
     });
     it('Ensure turbos glossary is rendered properly', () => {
-        render(<ContractTypeGlossary category='turboslong' />);
+        render(<ContractTypeGlossary category={TRADE_TYPES.TURBOS.LONG} />);
 
         expect(
             screen.getByText(
@@ -31,22 +32,22 @@ describe('<ContractTypeGlossary />', () => {
             )
         ).toBeInTheDocument();
     });
-    it('Ensure multiplier glossary is rendered properly if it is multiplier synthetic', () => {
-        render(<ContractTypeGlossary category='multiplier' />);
+    it('Ensure TRADE_TYPES.MULTIPLIER glossary is rendered properly if it is TRADE_TYPES.MULTIPLIER synthetic', () => {
+        render(<ContractTypeGlossary category={TRADE_TYPES.MULTIPLIER} />);
 
         expect(screen.getByText(deal_cancellation)).toBeInTheDocument();
         expect(screen.getByText(stop_out)).toBeInTheDocument();
     });
-    it('Ensure multiplier glossary is rendered properly if it is multiplier_fx', () => {
-        render(<ContractTypeGlossary category='multiplier' is_multiplier_fx />);
+    it('Ensure TRADE_TYPES.MULTIPLIER glossary is rendered properly if it is multiplier_fx', () => {
+        render(<ContractTypeGlossary category={TRADE_TYPES.MULTIPLIER} is_multiplier_fx />);
 
         expect(screen.queryByText(deal_cancellation)).not.toBeInTheDocument();
         expect(screen.getByText(/current-tick-execution/i)).toBeInTheDocument();
         expect(screen.queryByText(/next-tick-execution/i)).not.toBeInTheDocument();
         expect(screen.getByText(stop_out)).toBeInTheDocument();
     });
-    it('Ensure multiplier glossary is rendered properly if it is major pairs  symbol and multiplier_fx', () => {
-        render(<ContractTypeGlossary category='multiplier' is_multiplier_fx is_major_pairs />);
+    it('Ensure TRADE_TYPES.MULTIPLIER glossary is rendered properly if it is major pairs  symbol and multiplier_fx', () => {
+        render(<ContractTypeGlossary category={TRADE_TYPES.MULTIPLIER} is_multiplier_fx is_major_pairs />);
 
         expect(screen.queryByText(deal_cancellation)).not.toBeInTheDocument();
         expect(screen.queryByText(/current-tick-execution/i)).not.toBeInTheDocument();

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import moment from 'moment';
-import { useActiveWalletAccount, useAllAccountsList, useTransactions } from '@deriv/api';
+import { useActiveWalletAccount, useAllAccountsList, useInfiniteTransactions } from '@deriv/api';
 import { TSocketRequestPayload } from '@deriv/api/types';
 import { Loader } from '../../../../../../components';
 import { WalletText } from '../../../../../../components/Base';
@@ -23,7 +23,7 @@ const TransactionsCompleted: React.FC<TProps> = ({ filter }) => {
         isFetching,
         isLoading: isTransactionListLoading,
         setFilter,
-    } = useTransactions();
+    } = useInfiniteTransactions();
     const { data: wallet, isLoading: isWalletLoading } = useActiveWalletAccount();
     const { data: accounts, isLoading: isAccountsListLoading } = useAllAccountsList();
 

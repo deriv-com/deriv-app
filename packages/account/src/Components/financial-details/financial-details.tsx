@@ -9,7 +9,7 @@ import {
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
-import { isDesktop, isMobile, EMPLOYMENT_VALUES, TEmploymentStatus } from '@deriv/shared';
+import { isDesktop, isMobile, EMPLOYMENT_VALUES, TEmploymentStatus, shouldHideOccupationField } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { TFinancialInformationForm } from 'Types';
 import FinancialInformation from './financial-details-partials';
@@ -48,6 +48,9 @@ const FinancialDetails = (props: TFinancialDetails) => {
 
     const handleValidate = (values: TFinancialInformationForm) => {
         const { errors } = splitValidationResultTypes(props.validate(values));
+        if (shouldHideOccupationField(props.employment_status)) {
+            delete errors?.occupation;
+        }
         return errors;
     };
 

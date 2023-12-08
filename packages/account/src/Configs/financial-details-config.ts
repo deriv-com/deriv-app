@@ -52,21 +52,7 @@ const financial_details_config: (props: { financial_assessment: GetFinancialAsse
         occupation: {
             default_value: financial_assessment?.occupation ?? '',
             supported_in: ['maltainvest'],
-            rules: [
-                [
-                    (
-                        value: string,
-                        options: Record<string, unknown>,
-                        { employment_status }: { employment_status: TEmploymentStatus }
-                    ) => {
-                        /**
-                         * Check for the value of employment_status to determine if occupation field should be required.
-                         */
-                        return shouldHideOccupationField(employment_status) || !!value;
-                    },
-                    localize('Please select an option'),
-                ],
-            ],
+            rules: [['req', localize('Please select an option')]],
         },
         source_of_wealth: {
             default_value: financial_assessment?.source_of_wealth ?? '',

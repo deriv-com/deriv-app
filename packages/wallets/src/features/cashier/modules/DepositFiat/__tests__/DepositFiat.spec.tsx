@@ -10,8 +10,11 @@ jest.mock('@deriv/api', () => ({
 
 describe('DepositFiat', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
         (useAuthorize as jest.Mock).mockReturnValueOnce({ isSuccess: true });
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     it('should call useAuthorize and useCashierFiatAddress hooks on mount', () => {

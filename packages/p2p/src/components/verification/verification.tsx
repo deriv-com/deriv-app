@@ -4,6 +4,7 @@ import { routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import Dp2pBlocked from 'Components/dp2p-blocked';
 import { Localize } from 'Components/i18next';
+import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';
 import { useStores } from 'Stores/index';
 
 const Verification = () => {
@@ -11,11 +12,11 @@ const Verification = () => {
     const { p2p_poa_required, poa_status, poi_status } = general_store;
     const getPoiAction = (status: string) => {
         switch (status) {
-            case 'pending':
+            case identity_status_codes.PENDING:
                 return <Localize i18n_default_text='Your proof of identity is still under review.' />;
-            case 'rejected':
+            case identity_status_codes.REJECTED:
                 return <Localize i18n_default_text='Identity verification failed. Please try again.' />;
-            case 'verified':
+            case identity_status_codes.VERIFIED:
                 return <Localize i18n_default_text='Your proof of identity is verified.' />;
             default:
                 return <Localize i18n_default_text='Upload your documents to verify your identity.' />;
@@ -23,11 +24,11 @@ const Verification = () => {
     };
     const getPoaAction = (status: string) => {
         switch (status) {
-            case 'pending':
+            case document_status_codes.PENDING:
                 return <Localize i18n_default_text='Your proof of address is still under review.' />;
-            case 'rejected':
+            case document_status_codes.REJECTED:
                 return <Localize i18n_default_text='Address verification failed. Please try again.' />;
-            case 'verified':
+            case document_status_codes.VERIFIED:
                 return <Localize i18n_default_text='Your proof of address is verified.' />;
             default:
                 return <Localize i18n_default_text='Upload your documents to verify your address.' />;
@@ -47,10 +48,10 @@ const Verification = () => {
     const checklist_items = [
         {
             content: getPoiAction(poi_status),
-            is_disabled: poi_status === 'pending',
-            status: poi_status === 'verified' ? 'done' : 'action',
+            is_disabled: poi_status === identity_status_codes.PENDING,
+            status: poi_status === identity_status_codes.VERIFIED ? 'done' : 'action',
             onClick:
-                poi_status === 'verified'
+                poi_status === identity_status_codes.VERIFIED
                     ? () => {
                           //do nothing
                       }
@@ -62,10 +63,10 @@ const Verification = () => {
             ? [
                   {
                       content: getPoaAction(poa_status),
-                      is_disabled: poa_status === 'pending',
-                      status: poa_status === 'verified' ? 'done' : 'action',
+                      is_disabled: poa_status === document_status_codes.PENDING,
+                      status: poa_status === document_status_codes.VERIFIED ? 'done' : 'action',
                       onClick:
-                          poa_status === 'verified'
+                          poa_status === document_status_codes.VERIFIED
                               ? () => {
                                     //do nothing
                                 }
@@ -77,7 +78,11 @@ const Verification = () => {
             : []),
     ];
 
-    if (!general_store.is_advertiser && general_store.poi_status === 'verified' && general_store.nickname) {
+    if (
+        !general_store.is_advertiser &&
+        general_store.poi_status === identity_status_codes.VERIFIED &&
+        general_store.nickname
+    ) {
         return <Dp2pBlocked />;
     }
 

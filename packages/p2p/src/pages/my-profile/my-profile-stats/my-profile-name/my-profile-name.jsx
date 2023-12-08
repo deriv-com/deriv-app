@@ -8,6 +8,7 @@ import RecommendedBy from 'Components/recommended-by';
 import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
 import UserAvatar from 'Components/user/user-avatar';
+import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';
 import BlockUserCount from 'Pages/advertiser-page/block-user/block-user-count';
 import MyProfilePrivacy from 'Pages/my-profile/my-profile-stats/my-profile-privacy/my-profile-privacy';
 import { useStores } from 'Stores';
@@ -146,12 +147,12 @@ const MyProfileName = () => {
                                 is_poa_verified={
                                     general_store.is_advertiser
                                         ? !!full_verification
-                                        : general_store.poa_status === 'verified'
+                                        : general_store.poa_status === document_status_codes.VERIFIED
                                 }
                                 is_poi_verified={
                                     general_store.is_advertiser
                                         ? !!basic_verification
-                                        : general_store.poi_status === 'verified'
+                                        : general_store.poi_status === identity_status_codes.VERIFIED
                                 }
                                 trade_count={Number(buy_orders_count) + Number(sell_orders_count)}
                                 large

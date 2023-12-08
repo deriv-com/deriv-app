@@ -4,6 +4,7 @@ import { AutoSizer, DesktopWrapper, Loading, Text } from '@deriv/components';
 import { isEmptyObject } from '@deriv/shared';
 import DailyLimitModal from 'Components/daily-limit-modal';
 import Verification from 'Components/verification';
+import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container';
@@ -13,9 +14,9 @@ import MyProfileHeader from './my-profile-header';
 const MyProfile = () => {
     const { general_store, my_profile_store } = useStores();
     const is_poi_poa_verified =
-        general_store.poi_status === 'verified' &&
+        general_store.poi_status === identity_status_codes.VERIFIED &&
         general_store.p2p_poa_required &&
-        general_store.poa_status === 'verified';
+        general_store.poa_status === document_status_codes.VERIFIED;
 
     React.useEffect(() => {
         if (general_store.active_index !== 3) general_store.setActiveIndex(3);

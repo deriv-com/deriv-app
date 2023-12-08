@@ -5,7 +5,6 @@ import { useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
-import './nickname-modal.scss';
 
 type TNicknameModalProps = {
     onConfirm: () => void;
@@ -43,7 +42,7 @@ const NicknameModal = ({ onConfirm, should_hide_close_btn = false }: TNicknameMo
                     {({ errors, handleChange, isSubmitting, values }) => (
                         <Form noValidate>
                             <div
-                                className='nickname-modal__content nickname-modal__content__centre'
+                                className='nickname-modal__content nickname-modal__content--centre'
                                 data-testid='dt_nickname_form_content'
                             >
                                 <Icon icon='IcCashierP2pUser' width='128' height='128' />
@@ -86,7 +85,7 @@ const NicknameModal = ({ onConfirm, should_hide_close_btn = false }: TNicknameMo
                                         }}
                                         large
                                     >
-                                        {localize('Cancel')}
+                                        <Localize i18n_default_text='Cancel' />
                                     </Button>
                                     <Button
                                         type='submit'
@@ -99,7 +98,7 @@ const NicknameModal = ({ onConfirm, should_hide_close_btn = false }: TNicknameMo
                                         primary
                                         large
                                     >
-                                        {localize('Confirm')}
+                                        <Localize i18n_default_text='Confirm' />
                                     </Button>
                                 </Button.Group>
                             </div>

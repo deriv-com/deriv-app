@@ -13,6 +13,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import { OnlineStatusAvatar } from 'Components/online-status';
 import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
+import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
@@ -74,9 +75,9 @@ const BuySellRow = ({ row: advert }) => {
         market_rate: effective_rate,
     });
     const is_poi_poa_verified =
-        general_store.poi_status === 'verified' &&
+        general_store.poi_status === identity_status_codes.VERIFIED &&
         general_store.p2p_poa_required &&
-        general_store.poa_status === 'verified';
+        general_store.poa_status === document_status_codes.VERIFIED;
     const onClickRow = () => {
         if ((general_store.is_advertiser || is_poi_poa_verified) && !general_store.is_barred) {
             buy_sell_store.showAdvertiserPage(advert);

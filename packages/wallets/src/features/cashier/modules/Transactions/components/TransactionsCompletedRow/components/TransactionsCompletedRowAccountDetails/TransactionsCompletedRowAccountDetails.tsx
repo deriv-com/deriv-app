@@ -6,6 +6,7 @@ import {
     WalletText,
 } from '../../../../../../../../components';
 import { THooks, TWalletLandingCompanyName } from '../../../../../../../../types';
+import { MT5MarketTypeDetails } from '../../../../../../constants';
 import { getTradingAppIcon, getWalletIcon } from '../../../../../../helpers';
 import './TransactionsCompletedRowAccountDetails.scss';
 
@@ -38,7 +39,11 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                 <WalletCurrencyCard currency={currency} isDemo={isDemo} size='md' />
             ) : (
                 <WalletsAppLinkedWithWalletIcon
-                    appIcon={getTradingAppIcon(accountType, landingCompanyName ?? 'svg', mt5Group)}
+                    appIcon={getTradingAppIcon(
+                        accountType,
+                        landingCompanyName ?? MT5MarketTypeDetails.financial.landingCompany.svg.name,
+                        mt5Group
+                    )}
                     currency={currency}
                     isDemo={isDemo}
                     walletIcon={getWalletIcon(currency, isDemo)}

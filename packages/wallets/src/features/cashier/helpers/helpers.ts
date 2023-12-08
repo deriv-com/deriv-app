@@ -1,5 +1,5 @@
 import { THooks, TMarketTypes, TWalletLandingCompanyName } from '../../../types';
-import { appIconMapper, walletIconMapper } from '../constants';
+import { LandingCompanyDetails, MT5MarketTypeDetails, PlatformDetails, walletIconMapper } from '../constants';
 
 type TGetAccountNameProps = {
     accountCategory: THooks.TransferAccount['account_category'];
@@ -11,19 +11,19 @@ type TGetAccountNameProps = {
 
 //TODO: remove this function when market_type will be added to transfer_between_accounts response in API
 export const getMarketType = (mt5Group?: string) => {
-    if (mt5Group?.includes('financial')) return 'financial';
-    if (mt5Group?.includes('synthetic')) return 'synthetic';
-    if (mt5Group?.includes('all')) return 'all';
-    return 'all';
+    if (mt5Group?.includes(MT5MarketTypeDetails.financial.name)) return MT5MarketTypeDetails.financial.name;
+    if (mt5Group?.includes(MT5MarketTypeDetails.synthetic.name)) return MT5MarketTypeDetails.synthetic.name;
+    if (mt5Group?.includes(MT5MarketTypeDetails.all.name)) return MT5MarketTypeDetails.all.name;
+    return MT5MarketTypeDetails.all.name;
 };
 
 //TODO: remove this function when landing_company_name will be added to transfer_between_accounts response in API for mt5 accounts
 export const getLandingCompanyNameOfMT5Account = (mt5Group?: string) => {
-    if (mt5Group?.includes('bvi')) return 'bvi';
-    if (mt5Group?.includes('labuan')) return 'labuan';
-    if (mt5Group?.includes('svg')) return 'svg';
-    if (mt5Group?.includes('vanuatu')) return 'vanuatu';
-    return 'svg';
+    if (mt5Group?.includes(LandingCompanyDetails.bvi.name)) return LandingCompanyDetails.bvi.name;
+    if (mt5Group?.includes(LandingCompanyDetails.labuan.name)) return LandingCompanyDetails.labuan.name;
+    if (mt5Group?.includes(LandingCompanyDetails.svg.name)) return LandingCompanyDetails.svg.name;
+    if (mt5Group?.includes(LandingCompanyDetails.vanuatu.name)) return LandingCompanyDetails.vanuatu.name;
+    return LandingCompanyDetails.svg.name;
 };
 
 export const getWalletIcon = (currency: string, isDemo: boolean) => {
@@ -36,15 +36,18 @@ export const getTradingAppIcon = (
     mt5Group?: string
 ) => {
     const marketType = getMarketType(mt5Group);
+    const mt5Platform = PlatformDetails.mt5;
 
-    if (accountType === 'mt5') {
-        if (marketType === 'financial') {
-            return appIconMapper.mt5.financial[landingCompanyName].light;
+    if (accountType === mt5Platform.name) {
+        if (marketType === mt5Platform.marketType.financial.name) {
+            return mt5Platform.marketType.financial.landingCompany[landingCompanyName].icon.light;
+        } else if (marketType === mt5Platform.marketType.synthetic.name) {
+            return mt5Platform.marketType.synthetic.icon.light;
         }
-        return appIconMapper.mt5[marketType].light;
+        return mt5Platform.marketType.all.icon.light;
     }
     //@ts-expect-error needs backend typing
-    return appIconMapper[accountType]?.light;
+    return PlatformDetails[accountType]?.icon.light;
 };
 
 export const getAccountName = ({
@@ -59,21 +62,31 @@ export const getAccountName = ({
             return `${displayCurrencyCode} Wallet`;
         case 'trading': {
             switch (accountType) {
-                case 'binary':
-                case 'standard':
-                    return 'Deriv Apps';
-                case 'dxtrade':
-                    return 'Deriv X';
-                case 'ctrader':
-                    return 'Deriv cTrader';
-                case 'mt5': {
+                case PlatformDetails.binary.name:
+                case PlatformDetails.standard.name:
+                    return PlatformDetails.standard.title;
+                case PlatformDetails.dxtrade.name:
+                    return PlatformDetails.dxtrade.title;
+                case PlatformDetails.ctrader.name:
+                    return PlatformDetails.ctrader.title;
+                case PlatformDetails.mt5.name: {
                     switch (mt5MarketType) {
-                        case 'financial':
-                            return ['svg', 'virtual'].includes(landingCompanyName) ? 'MT5 Financial' : 'MT5 CFDs';
-                        case 'synthetic':
-                            return 'MT5 Derived';
-                        case 'all':
-                            return 'MT5 Swap-free';
+                        case MT5MarketTypeDetails.financial.name:
+                            return [
+                                MT5MarketTypeDetails.financial.landingCompany.svg.name,
+                                MT5MarketTypeDetails.financial.landingCompany.virtual.name,
+                            ].includes(
+                                landingCompanyName as Extract<
+                                    TGetAccountNameProps['landingCompanyName'],
+                                    'svg' | 'virtual'
+                                >
+                            )
+                                ? MT5MarketTypeDetails.financial.landingCompany.svg.title
+                                : MT5MarketTypeDetails.financial.landingCompany.malta.title;
+                        case MT5MarketTypeDetails.synthetic.name:
+                            return MT5MarketTypeDetails.synthetic.title;
+                        case MT5MarketTypeDetails.all.name:
+                            return MT5MarketTypeDetails.all.title;
                         default:
                             return '';
                     }

@@ -61,11 +61,7 @@ const TutorialsTab = observer(() => {
     return is_mobile ? (
         <TutorialsTabMobile tutorial_tabs={tutorial_tabs} prev_active_tutorials={prev_active_tutorials} />
     ) : (
-        <TutorialsTabDesktop
-            is_dialog_open
-            tutorial_tabs={tutorial_tabs}
-            prev_active_tutorials={prev_active_tutorials}
-        />
+        <TutorialsTabDesktop tutorial_tabs={tutorial_tabs} prev_active_tutorials={prev_active_tutorials} />
     );
 });
 

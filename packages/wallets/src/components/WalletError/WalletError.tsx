@@ -3,7 +3,7 @@ import useDevice from '../../hooks/useDevice';
 import ErrorIcon from '../../public/images/error-icon.svg';
 import { ModalStepWrapper } from '../Base';
 import WalletButton from '../Base/WalletButton/WalletButton';
-import WalletsActionScreen from '../WalletsActionScreen/WalletsActionScreen';
+import { WalletsActionScreen } from '../WalletsActionScreen';
 import './WalletError.scss';
 
 type TProps = {
@@ -30,13 +30,9 @@ const WalletError: React.FC<TProps> = ({
                     description={errorMessage}
                     icon={<ErrorIcon />}
                     renderButtons={() => (
-                        <WalletButton
-                            isFullWidth={isMobile}
-                            onClick={onClick}
-                            size='lg'
-                            text={buttonText}
-                            variant={buttonVariant}
-                        />
+                        <WalletButton isFullWidth={isMobile} onClick={onClick} size='lg' variant={buttonVariant}>
+                            {buttonText}
+                        </WalletButton>
                     )}
                     title={title}
                 />

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useWalletAccountsList } from '@deriv/api';
+import { WalletButton, WalletText } from '../../components/Base';
 import './CFDPlatformsList.scss';
 
 const CFDPlatformsListEmptyState = () => {
@@ -15,16 +16,13 @@ const CFDPlatformsListEmptyState = () => {
 
     return (
         <div className='wallets-cfd-list__cfd-empty-state'>
-            <p className='wallets-cfd-list__cfd-empty-state__description'>
+            <WalletText align='center' weight='bold'>
                 To trade CFDs, you’ll need to use your {fiatAccount?.wallet_currency_type} Wallet. Click Transfer to
                 move your {activeWallet?.currency} to your {fiatAccount?.wallet_currency_type} Wallet.
-            </p>
-            <button
-                className='wallets-cfd-list__cfd-empty-state__transfer-button'
-                onClick={() => history.push('/wallets/cashier/transfer')}
-            >
+            </WalletText>
+            <WalletButton color='primary-light' onClick={() => history.push('/wallets/cashier/transfer')} size='lg'>
                 Transfer
-            </button>
+            </WalletButton>
         </div>
     );
 };

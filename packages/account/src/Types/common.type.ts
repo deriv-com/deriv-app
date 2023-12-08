@@ -150,3 +150,8 @@ export type TServerError = {
 };
 
 export type TFinancialInformationForm = Omit<SetFinancialAssessmentRequest, 'set_financial_assessment'>;
+
+export type TFilesDescription = {
+    descriptions: { id: string; value: JSX.Element }[];
+    title: React.ReactNode;
+};

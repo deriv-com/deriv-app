@@ -12,7 +12,6 @@ const MT5AccountTypeModal = () => {
 
     return (
         <ModalStepWrapper
-            closeOnEscape
             renderFooter={() => (
                 <WalletButton
                     disabled={!selectedMarketType}
@@ -20,8 +19,9 @@ const MT5AccountTypeModal = () => {
                         setModalState('marketType', selectedMarketType);
                         show(<JurisdictionModal />);
                     }}
-                    text='Next'
-                />
+                >
+                    Next
+                </WalletButton>
             )}
             title='Select Deriv MT5’s account type'
         >

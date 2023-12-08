@@ -12,11 +12,11 @@ import type {
 
 const useMutation = <T extends TSocketEndpointNames>(name: T, options?: TSocketRequestMutationOptions<T>) => {
     const { send } = useAPI();
-    const { mutate: _mutate, ...rest } = _useMutation<
-        TSocketResponseData<T>,
-        TSocketError<T>,
-        TSocketAcceptableProps<T>
-    >(props => {
+    const {
+        mutate: _mutate,
+        mutateAsync: _mutateAsync,
+        ...rest
+    } = _useMutation<TSocketResponseData<T>, TSocketError<T>, TSocketAcceptableProps<T>>(props => {
         const prop = props?.[0];
         const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestPayload<T>) : undefined;
 
@@ -24,9 +24,11 @@ const useMutation = <T extends TSocketEndpointNames>(name: T, options?: TSocketR
     }, options);
 
     const mutate = useCallback((...payload: TSocketAcceptableProps<T>) => _mutate(payload), [_mutate]);
+    const mutateAsync = useCallback((...payload: TSocketAcceptableProps<T>) => _mutateAsync(payload), [_mutateAsync]);
 
     return {
         mutate,
+        mutateAsync,
         ...rest,
     };
 };

@@ -4,26 +4,33 @@ import { THooks } from '../../../../types';
 import { DynamicLeverageTableColumnHeader } from './DynamicLeverageTableColumnHeader';
 import './DynamicLeverageMarketCard.scss';
 
-type TDynamicLeverageMarketCardProps = THooks.DynamicLeverage;
+type TDynamicLeverageMarketCardProps = {
+    data: THooks.DynamicLeverage[keyof THooks.DynamicLeverage]['volume']['data'];
+    displayName: string;
+    instruments: string[];
+    max: number;
+    min: number;
+};
 
 export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
     data,
-    description,
-    leverage,
-    title,
+    displayName,
+    instruments,
+    max,
+    min,
 }) => (
     <div className='wallets-dynamic-leverage-modal__market'>
         <div className='wallets-dynamic-leverage-modal__market-title'>
             <WalletText align='center' data-testid='market_title' size='sm' weight='bold'>
-                {title}
+                {displayName}
             </WalletText>
-            {description && (
+            {!!instruments.length && (
                 <WalletText align='center' data-testid='description_title' fontStyle='italic' size='2xs'>
-                    {description}
+                    {`(${instruments.join(', ')})`}
                 </WalletText>
             )}
             <WalletText align='center' color='error' data-testid='leverage_title' size='xs'>
-                {leverage}
+                {`Up to ${min}:${max}`}
             </WalletText>
         </div>
         <div className='wallets-dynamic-leverage-modal__market-table'>
@@ -39,7 +46,7 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
                         key={`${columns.from}-${columns.to}-${columns.leverage}`}
                     >
                         {Object.entries(columns).map(([columnKey, value]) => (
-                            <div key={`${title}_${columnKey}_${value}`}>
+                            <div key={`${displayName}_${columnKey}_${value}`}>
                                 <WalletText align='center' size='sm'>
                                     {value}
                                 </WalletText>

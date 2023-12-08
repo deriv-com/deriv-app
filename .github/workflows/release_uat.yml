@@ -30,8 +30,11 @@ jobs:
         GD_API_KEY: ${{ secrets.GD_API_KEY }}
         GD_APP_ID: ${{ secrets.GD_APP_ID }}
         GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
-        RUDDERSTACK_STAGING_KEY: ${{ vars.RUDDERSTACK_STAGING_KEY }}
-        RUDDERSTACK_URL: ${{ vars.RUDDERSTACK_URL }}
+        RUDDERSTACK_KEY: ${{ vars.RUDDERSTACK_KEY }}
+    - name: Versioning
+      uses: "./.github/actions/versioning"
+      with:
+        release_type: uat
     - name: Run tests
       run: npm test
     - name: Publish to Cloudflare Pages UAT 

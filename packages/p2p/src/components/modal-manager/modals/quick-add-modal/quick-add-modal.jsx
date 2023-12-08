@@ -92,7 +92,7 @@ const QuickAddModal = ({ advert }) => {
                                 text={localize('Cancel')}
                             />
                             <Button
-                                className='quick-add-modal--button'
+                                className='quick-add-modal__button'
                                 has_effect
                                 is_disabled={
                                     selected_methods.length === 0 || my_ads_store.payment_method_names.length === 0
@@ -105,7 +105,7 @@ const QuickAddModal = ({ advert }) => {
                         </>
                     )}
                 >
-                    <div className='quick-add-modal--info'>
+                    <div className='quick-add-modal__info'>
                         <Text color='prominent' size='xxs'>
                             <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
                         </Text>

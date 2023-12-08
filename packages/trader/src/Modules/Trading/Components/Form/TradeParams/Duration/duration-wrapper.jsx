@@ -131,7 +131,7 @@ const DurationWrapper = observer(() => {
 
         assertDurationIsWithinBoundary(current_duration);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [has_missing_duration_unit, simple_is_missing_duration_unit]);
 
     React.useEffect(() => {
         if (duration_unit === 'd') {

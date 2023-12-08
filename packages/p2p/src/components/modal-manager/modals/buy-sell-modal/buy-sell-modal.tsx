@@ -5,6 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper, Modal, ThemedScrollbars } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AddPaymentMethodForm from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 import BuySellForm from 'Pages/buy-sell/buy-sell-form.jsx';
@@ -18,6 +19,7 @@ const BuySellModal = () => {
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
     const { buy_sell_store, general_store, my_profile_store, order_store } = useStores();
     const { is_buy_advert, selected_ad_state } = buy_sell_store;
+    const { account_currency } = selected_ad_state;
     const { balance } = general_store;
     const { should_show_add_payment_method_form } = my_profile_store;
 
@@ -62,6 +64,27 @@ const BuySellModal = () => {
         hideModal();
         buy_sell_store.fetchAdvertiserAdverts();
         buy_sell_store.setShowAdvertiserPage(false);
+    };
+
+    const getModalTitle = () => {
+        if (should_show_add_payment_method_form) {
+            return localize('Add payment method');
+        }
+        if (is_buy_advert) {
+            return localize('Buy {{ currency }}', { currency: account_currency });
+        }
+        return localize('Sell {{ currency }}', { currency: account_currency });
+    };
+
+    const onReturn = () => {
+        if (general_store.is_form_modified) {
+            showModal({
+                key: 'CancelAddPaymentMethodModal',
+                props: {},
+            });
+        } else {
+            my_profile_store.setShouldShowAddPaymentMethodForm(false);
+        }
     };
 
     React.useEffect(() => {
@@ -110,7 +133,7 @@ const BuySellModal = () => {
                     is_flex
                     is_modal_open={is_modal_open}
                     page_header_className='buy-sell-modal__header'
-                    renderPageHeaderElement={<BuySellModalTitle is_buy={is_buy_advert} />}
+                    renderPageHeaderElement={<BuySellModalTitle is_buy={is_buy_advert} onReturn={onReturn} />}
                     pageHeaderReturnFn={onCancel}
                 >
                     <BuySellModalError
@@ -144,10 +167,12 @@ const BuySellModal = () => {
                     className={classNames('buy-sell-modal', {
                         'buy-sell-modal__form': should_show_add_payment_method_form,
                     })}
+                    has_return_icon={should_show_add_payment_method_form}
                     height={is_buy_advert ? 'auto' : '649px'}
                     is_open={is_modal_open}
+                    onReturn={onReturn}
                     portalId='modal_root'
-                    title={<BuySellModalTitle is_buy={is_buy_advert} />}
+                    title={getModalTitle()}
                     toggleModal={onCancel}
                     width='456px'
                 >

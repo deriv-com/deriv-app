@@ -27,7 +27,11 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                         <EmailVerification />
                     </div>
                 }
-                renderButtons={() => <WalletButton onClick={sendEmail} size='lg' text='Send email' />}
+                renderButtons={() => (
+                    <WalletButton onClick={sendEmail} size='lg'>
+                        Send email
+                    </WalletButton>
+                )}
                 title='Please help us verify your withdrawal request.'
             />
         </div>

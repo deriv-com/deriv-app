@@ -21,7 +21,7 @@ const svg_loaders = [
                 plugins: [
                     { removeTitle: false },
                     { removeUselessStrokeAndFill: false },
-                    { removeUknownsAndDefaults: false },
+                    { removeUnknownsAndDefaults: false },
                     { removeViewBox: false },
                 ],
                 floatPrecision: 3,
@@ -70,6 +70,9 @@ module.exports = function (env) {
                                 cacheDirectory: true,
                                 rootMode: 'upward',
                             },
+                        },
+                        {
+                            loader: path.resolve(__dirname, './localize-loader.js'),
                         },
                     ],
                 },

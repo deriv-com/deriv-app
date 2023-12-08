@@ -1,8 +1,14 @@
 import React, { useCallback, useEffect } from 'react';
-import { useActiveWalletAccount, useCreateNewRealAccount, useSettings } from '@deriv/api';
+import {
+    useActiveLinkedToTradingAccount,
+    useActiveWalletAccount,
+    useCreateNewRealAccount,
+    useSettings,
+} from '@deriv/api';
 import { toMoment } from '../../../../shared/src/utils/date';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useDevice from '../../hooks/useDevice';
+import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import { ModalStepWrapper, WalletButton, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletResponsiveSvg } from '../WalletResponsiveSvg';
@@ -12,10 +18,17 @@ const DerivAppsGetAccount: React.FC = () => {
     const { show } = useModal();
     const { isDesktop } = useDevice();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { isSuccess: isAccountCreationSuccess, mutate: createNewRealAccount } = useCreateNewRealAccount();
+    const {
+        data: newTradingAccountData,
+        isSuccess: isAccountCreationSuccess,
+        mutate: createNewRealAccount,
+    } = useCreateNewRealAccount();
     const {
         data: { country_code: countryCode, date_of_birth: dateOfBirth, first_name: firstName, last_name: lastName },
     } = useSettings();
+    const { addTradingAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
+
+    const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 
     const landingCompanyName = activeWallet?.landing_company_name?.toLocaleUpperCase();
 
@@ -28,7 +41,7 @@ const DerivAppsGetAccount: React.FC = () => {
             >
                 <CFDSuccess
                     description={`Transfer funds from your ${activeWallet?.wallet_currency_type} Wallet to your Deriv Apps (${landingCompanyName}) account to start trading.`}
-                    displayBalance={activeWallet?.display_balance}
+                    displayBalance={activeLinkedToTradingAccount?.display_balance ?? '0.00'}
                     renderButton={() => <DerivAppsSuccessFooter />}
                     title={`Your Deriv Apps (${landingCompanyName}) account is ready`}
                 />
@@ -37,13 +50,22 @@ const DerivAppsGetAccount: React.FC = () => {
                 defaultRootId: 'wallets_modal_root',
             }
         );
-    }, [activeWallet?.display_balance, activeWallet?.wallet_currency_type, isDesktop, landingCompanyName, show]);
+    }, [
+        activeLinkedToTradingAccount?.display_balance,
+        activeWallet?.wallet_currency_type,
+        isDesktop,
+        landingCompanyName,
+        show,
+    ]);
 
     useEffect(() => {
+        if (newTradingAccountData && isAccountCreationSuccess) {
+            addTradingAccountToLocalStorage(newTradingAccountData);
+        }
         if (isAccountCreationSuccess) {
             openSuccessModal();
         }
-    }, [isAccountCreationSuccess, openSuccessModal]);
+    }, [addTradingAccountToLocalStorage, isAccountCreationSuccess, newTradingAccountData, openSuccessModal]);
 
     const createTradingAccount = () => {
         createNewRealAccount({
@@ -73,7 +95,9 @@ const DerivAppsGetAccount: React.FC = () => {
                             : 'Get a Deriv Apps trading account to trade options and multipliers on these apps.'}
                     </WalletText>
                 </div>
-                <WalletButton color='primary-light' onClick={createTradingAccount} text='Get' />
+                <WalletButton color='primary-light' onClick={createTradingAccount}>
+                    Get
+                </WalletButton>
             </div>
         </div>
     );

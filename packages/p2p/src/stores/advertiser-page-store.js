@@ -20,6 +20,7 @@ export default class AdvertiserPageStore extends BaseStore {
 
         makeObservable(this, {
             active_index: observable,
+            counterparty_advertiser_info: observable,
             counterparty_type: observable,
             api_error_message: observable,
             form_error_message: observable,

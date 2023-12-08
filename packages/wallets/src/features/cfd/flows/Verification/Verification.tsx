@@ -13,6 +13,7 @@ import {
 } from '../../../accounts/screens';
 import { IDVDocumentUpload } from '../../../accounts/screens/IDVDocumentUpload';
 import { PersonalDetails } from '../../../accounts/screens/PersonalDetails';
+import { PlatformDetails } from '../../constants';
 import { MT5PasswordModal } from '../../modals';
 import { Onfido } from '../../screens';
 
@@ -62,14 +63,12 @@ const getManualVerificationFooter = ({
     // eslint-disable-next-line react/display-name
     return () => (
         <WalletButtonGroup isFlex>
-            <WalletButton onClick={onClickBack} size='lg' text='Back' variant='outlined' />
-            <WalletButton
-                disabled={isNextDisabled}
-                isLoading={isNextLoading}
-                onClick={nextFlowHandler}
-                size='lg'
-                text='Next'
-            />
+            <WalletButton onClick={onClickBack} size='lg' variant='outlined'>
+                Back
+            </WalletButton>
+            <WalletButton disabled={isNextDisabled} isLoading={isNextLoading} onClick={nextFlowHandler} size='lg'>
+                Next
+            </WalletButton>
         </WalletButtonGroup>
     );
 };
@@ -83,8 +82,8 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { submitIDVDocuments } = useIdentityDocumentVerificationAdd();
     const { getModalState, hide, show } = useModal();
 
-    const selectedMarketType = getModalState('marketType') || 'all';
-    const platform = getModalState('platform') || 'mt5';
+    const selectedMarketType = getModalState('marketType') ?? 'all';
+    const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
 
     const shouldSubmitPOA = useMemo(
         () => !poaStatus?.has_attempted_poa || (!poaStatus?.is_pending && !poaStatus.is_verified),
@@ -284,8 +283,9 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                                           isLoading={isNextLoading(context)}
                                           onClick={() => nextFlowHandler(context)}
                                           size='lg'
-                                          text='Next'
-                                      />
+                                      >
+                                          Next
+                                      </WalletButton>
                                   )
                         }
                         title='Add a real MT5 account'

@@ -1,4 +1,8 @@
-.wallets-added-ctrader-accounts {
+.wallets-added-ctrader {
+    &__icon {
+        cursor: pointer;
+    }
+
     &__actions {
         display: flex;
         flex-direction: column;
@@ -8,5 +12,6 @@
     &__details {
         display: flex;
         flex-direction: column;
+        flex-grow: 1;
     }
 }

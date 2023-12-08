@@ -1,0 +1,41 @@
+.wallets-withdrawal-crypto-amount-converter {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 2.4rem;
+
+    @include mobile {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    &__arrow {
+        margin-top: 1.2rem;
+
+        @include mobile {
+            height: fit-content;
+            margin-top: 0;
+            margin-inline: auto;
+        }
+
+        & > svg {
+            transition: rotate 0.2s ease;
+            rotate: 180deg;
+
+            @include mobile {
+                rotate: 270deg;
+                margin-bottom: 2.2rem;
+            }
+        }
+
+        &--rtl {
+            & > svg {
+                rotate: 0deg;
+
+                @include mobile {
+                    rotate: 90deg;
+                }
+            }
+        }
+    }
+}

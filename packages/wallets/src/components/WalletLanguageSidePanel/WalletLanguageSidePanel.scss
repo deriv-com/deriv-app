@@ -1,0 +1,26 @@
+.wallets-language-side-panel {
+    position: fixed;
+    bottom: 4.6rem;
+    right: 1rem;
+    width: 34rem;
+    border-radius: 0.6rem;
+    padding: 1.2rem 1.6rem;
+    background-color: #fff;
+    box-shadow: 0 2rem 1.3rem #00000003, 0 0.4rem 0.3rem #00000005;
+    border: 0.1rem solid #897d7d;
+    z-index: 69420;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: 1rem;
+
+    &__language-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+        gap: 2.5rem;
+        margin-top: 1rem;
+    }
+
+    &__language-item {
+        cursor: pointer;
+    }
+}

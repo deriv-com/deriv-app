@@ -13,8 +13,8 @@ import {
     IndexRange,
 } from 'react-virtualized';
 import { isMobile, isDesktop } from '@deriv/shared';
-import DataListCell, { TColIndex, TDataListCell } from './data-list-cell';
-import DataListRow from './data-list-row';
+import DataListCell from './data-list-cell';
+import DataListRow, { TRowRenderer } from './data-list-row';
 import ThemedScrollbars from '../themed-scrollbars';
 import { MeasuredCellParent } from 'react-virtualized/dist/es/CellMeasurer';
 import { TTableRowItem, TPassThrough, TRow } from '../types/common.types';
@@ -22,18 +22,6 @@ import { TTableRowItem, TPassThrough, TRow } from '../types/common.types';
 const List = _List as unknown as React.FC<ListProps>;
 const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
 const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
-export type TRowRenderer = (params: Partial<TMobileRowRenderer>) => React.ReactNode;
-
-type TMobileRowRenderer = {
-    row?: TRow;
-    is_footer?: boolean;
-    columns_map?: Record<TColIndex, TDataListCell['column']>;
-    server_time?: moment.Moment;
-    onClickCancel: (contract_id?: number) => void;
-    onClickSell: (contract_id?: number) => void;
-    measure?: () => void;
-    passthrough?: TPassThrough;
-};
 
 export type TDataList = {
     className?: string;

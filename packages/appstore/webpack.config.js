@@ -6,7 +6,8 @@ const path = require('path');
 //TODO: Uncomment this line when type script migrations on all packages done
 //const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
-const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+const is_release =
+    process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
 const svg_loaders = [
     {
@@ -59,6 +60,7 @@ module.exports = function (env) {
                 Stores: path.resolve(__dirname, 'src/stores'),
                 Types: path.resolve(__dirname, 'src/types'),
                 Utils: path.resolve(__dirname, 'src/utils'),
+                Hooks: path.resolve(__dirname, 'src/hooks'),
             },
             extensions: ['.ts', '.tsx', '.js'],
         },
@@ -179,6 +181,7 @@ module.exports = function (env) {
                 '@deriv/account': true,
                 '@deriv/cashier': true,
                 '@deriv/cfd': true,
+                '@deriv/analytics': true,
             },
         ],
         //TODO: Uncomment this line when type script migrations on all packages done

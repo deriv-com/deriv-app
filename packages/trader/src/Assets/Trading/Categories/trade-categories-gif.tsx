@@ -15,9 +15,8 @@ import ImageRunHighLow from 'Assets/SvgComponents/trade_explanations/img-run-hig
 import ImageSpread from 'Assets/SvgComponents/trade_explanations/img-spread.svg';
 import ImageTickHighLow from 'Assets/SvgComponents/trade_explanations/img-tick-high-low.svg';
 import ImageTouch from 'Assets/SvgComponents/trade_explanations/img-touch.svg';
-import ImageTurbos from 'Assets/SvgComponents/trade_explanations/img-turbos.svg';
 import ContractTypeDescriptionVideo from './contract-type-description-video';
-import { VANILLALONG, TURBOS } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv/shared';
 
 // TODO: Replace static image svgs with themed GIFs or animated SVGs
 const TradeCategoriesGIF = ({
@@ -29,47 +28,46 @@ const TradeCategoriesGIF = ({
 }) => {
     if (category !== selected_contract_type) return null;
     switch (category) {
-        case 'asian':
+        case TRADE_TYPES.ASIAN:
             return <ImageAsianUpDown />;
-        case 'callputspread':
+        case TRADE_TYPES.CALL_PUT_SPREAD:
             return <ImageSpread />;
-        case 'end':
+        case TRADE_TYPES.END:
             return <ImageEndsInOut />;
-        case 'even_odd':
+        case TRADE_TYPES.EVEN_ODD:
             return <ImageEvenOdd />;
-        case 'high_low':
+        case TRADE_TYPES.HIGH_LOW:
             return <ImageHighLow />;
-        case 'lb_call':
+        case TRADE_TYPES.LB_CALL:
             return <ImageCloseToLow />;
-        case 'lb_put':
+        case TRADE_TYPES.LB_PUT:
             return <ImageHighToClose />;
-        case 'lb_high_low':
+        case TRADE_TYPES.LB_HIGH_LOW:
             return <ImageHighToLow />;
-        case 'rise_fall':
+        case TRADE_TYPES.RISE_FALL:
+        case TRADE_TYPES.RISE_FALL_EQUAL:
             return <ImageRiseFall />;
-        case 'rise_fall_equal':
-            return <ImageRiseFall />;
-        case 'match_diff':
+        case TRADE_TYPES.MATCH_DIFF:
             return <ImageMatchDiff />;
-        case 'multiplier':
+        case TRADE_TYPES.MULTIPLIER:
             return <ImageMultiplier />;
-        case 'over_under':
+        case TRADE_TYPES.OVER_UNDER:
             return <ImageOverUnder />;
-        case 'reset':
+        case TRADE_TYPES.RESET:
             return <ImageReset />;
-        case 'run_high_low':
+        case TRADE_TYPES.RUN_HIGH_LOW:
             return <ImageRunHighLow />;
-        case 'accumulator':
+        case TRADE_TYPES.ACCUMULATOR:
             return <ContractTypeDescriptionVideo selected_contract_type={selected_contract_type} />;
-        case 'tick_high_low':
+        case TRADE_TYPES.TICK_HIGH_LOW:
             return <ImageTickHighLow />;
-        case 'touch':
+        case TRADE_TYPES.TOUCH:
             return <ImageTouch />;
-        case TURBOS.LONG:
-        case TURBOS.SHORT:
-            return <ImageTurbos />;
-        case VANILLALONG.CALL:
-        case VANILLALONG.PUT:
+        case TRADE_TYPES.TURBOS.LONG:
+        case TRADE_TYPES.TURBOS.SHORT:
+            return <ContractTypeDescriptionVideo selected_contract_type='turbos' />;
+        case TRADE_TYPES.VANILLA.CALL:
+        case TRADE_TYPES.VANILLA.PUT:
             return <ContractTypeDescriptionVideo selected_contract_type='vanilla' />;
         default:
             return null;

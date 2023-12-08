@@ -20,5 +20,10 @@
         "outDir": "./dist",
         "baseUrl": "./"
     },
-    "include": ["src", "../../globals.d.ts", "../../utils.d.ts"]
+    "include": [
+      "src",
+      "./index.d.ts",
+      "../../globals.d.ts",
+      "../../utils.d.ts"
+    ]
 }

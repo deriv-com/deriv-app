@@ -49,7 +49,15 @@ jest.mock('@deriv/shared', () => ({
         },
         setSettings: jest.fn(() => Promise.resolve({ error: '' })),
         wait: jest.fn(() => Promise.resolve([])),
+        getSocket: jest.fn().mockReturnValue({}),
     },
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useFileUploader: jest.fn(() => ({
+        upload: jest.fn(),
+    })),
 }));
 
 describe('<CFDPOA />', () => {

@@ -1,11 +1,12 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { reaction } from 'mobx';
-import { observer } from 'mobx-react-lite';
-
+import { useP2PAdvertiserAdverts } from 'Hooks';
+import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
-import { daysSince, isMobile } from '@deriv/shared';
+import { useP2PAdvertInfo } from '@deriv/hooks';
+import { daysSince, isDesktop, isEmptyObject, isMobile, routes } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -19,21 +20,32 @@ import { api_error_codes } from 'Constants/api-error-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 
-import BlockUserOverlay from './block-user/block-user-overlay';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import AdvertiserPageDropdownMenu from './advertiser-page-dropdown-menu.jsx';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
+import BlockUserOverlay from './block-user/block-user-overlay';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
+    const {
+        advertiser_id,
+        advertiser_info,
+        counterparty_advert_id,
+        counterparty_advertiser_id,
+        is_advertiser,
+        is_barred,
+        setCounterpartyAdvertId,
+        setCounterpartyAdvertiserId,
+    } = general_store;
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
     const { advertiser_details_name, advertiser_details_id, counterparty_advertiser_info } = advertiser_page_store;
 
-    const is_my_advert = advertiser_details_id === general_store.advertiser_id;
+    const is_my_advert = advertiser_details_id === advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
-    const info = is_my_advert ? general_store.advertiser_info : counterparty_advertiser_info;
+    const info = is_my_advert ? advertiser_info : counterparty_advertiser_info;
 
     const history = useHistory();
+    const location = useLocation();
 
     const {
         basic_verification,
@@ -66,8 +78,69 @@ const AdvertiserPage = () => {
                   name: nickname,
               });
     };
+    const {
+        data: p2p_advert_info,
+        isFetching,
+        isSuccess: has_p2p_advert_info,
+    } = useP2PAdvertInfo(counterparty_advert_id, {
+        enabled: !!counterparty_advert_id,
+    });
+
+    const showErrorModal = () => {
+        setCounterpartyAdvertId('');
+        showModal({
+            key: 'ErrorModal',
+            props: {
+                error_message: "It's either deleted or no longer active.",
+                error_modal_button_text: 'OK',
+                error_modal_title: 'This ad is unavailable',
+                onClose: () => {
+                    hideModal({ should_hide_all_modals: true });
+                },
+                width: isMobile() ? '90vw' : '',
+            },
+        });
+    };
+
+    const setShowAdvertInfo = React.useCallback(
+        () => {
+            const { is_active, is_buy, is_visible } = p2p_advert_info || {};
+            if (has_p2p_advert_info) {
+                const advert_type = is_buy ? 1 : 0;
+
+                if (is_active && is_visible) {
+                    advertiser_page_store.setActiveIndex(advert_type);
+                    advertiser_page_store.handleTabItemClick(advert_type);
+                    buy_sell_store.setSelectedAdState(p2p_advert_info);
+                    showModal({ key: 'BuySellModal' });
+                } else {
+                    showErrorModal();
+                }
+            } else {
+                showErrorModal();
+            }
+        },
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [has_p2p_advert_info, p2p_advert_info]
+    );
 
     React.useEffect(() => {
+        if (is_advertiser && !is_barred) {
+            if (isFetching && isDesktop()) {
+                showModal({ key: 'LoadingModal' });
+            } else if (counterparty_advert_id) {
+                setShowAdvertInfo();
+            }
+        }
+    }, [counterparty_advert_id, isFetching, setShowAdvertInfo]);
+
+    React.useEffect(() => {
+        if (location.search || counterparty_advertiser_id) {
+            const url_params = new URLSearchParams(location.search);
+            general_store.setCounterpartyAdvertiserId(url_params.get('id'));
+        }
+
         buy_sell_store.setShowAdvertiserPage(true);
         advertiser_page_store.onMount();
         advertiser_page_store.setIsDropdownMenuVisible(false);
@@ -75,8 +148,20 @@ const AdvertiserPage = () => {
         const disposeCounterpartyAdvertiserIdReaction = reaction(
             () => [general_store.counterparty_advertiser_id, general_store.is_advertiser_info_subscribed],
             () => {
-                // DO NOT REMOVE. This fixes reload on advertiser page routing issue
-                advertiser_page_store.onAdvertiserIdUpdate();
+                if (counterparty_advertiser_id) {
+                    // DO NOT REMOVE. This fixes reloading issue when user navigates to advertiser page via URL
+                    advertiser_page_store.onAdvertiserIdUpdate();
+
+                    if (is_barred) {
+                        history.push(routes.p2p_buy_sell);
+                    } else if (!is_advertiser) {
+                        history.push(routes.p2p_my_ads);
+                    }
+
+                    // Need to set active index to 0 when users navigate to advertiser page via url,
+                    // and when user clicks the back button, it will navigate back to the buy/sell tab
+                    general_store.setActiveIndex(0);
+                }
             },
             { fireImmediately: true }
         );
@@ -85,6 +170,7 @@ const AdvertiserPage = () => {
             disposeCounterpartyAdvertiserIdReaction();
             advertiser_page_store.onUnmount();
             buy_sell_store.setShowAdvertiserPage(false);
+            advertiser_page_store.setCounterpartyAdvertiserInfo({});
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -94,7 +180,6 @@ const AdvertiserPage = () => {
         const disposeBlockUnblockUserErrorReaction = reaction(
             () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
             () => {
-                advertiser_page_store.onTabChange();
                 if (general_store.block_unblock_user_error) {
                     showModal({
                         key: 'ErrorModal',
@@ -130,6 +215,7 @@ const AdvertiserPage = () => {
 
         return () => {
             disposeBlockUnblockUserErrorReaction();
+            advertiser_page_store.onUnmount();
         };
     }, [advertiser_details_name, counterparty_advertiser_info]);
 
@@ -143,12 +229,18 @@ const AdvertiserPage = () => {
         },
     });
 
+    const { error, isError } = useP2PAdvertiserAdverts();
+
     if (advertiser_page_store.is_loading || general_store.is_block_unblock_user_loading) {
         return <Loading is_fullscreen={false} />;
     }
 
     if (advertiser_page_store.error_message) {
         return <div className='advertiser-page__error'>{advertiser_page_store.error_message}</div>;
+    }
+
+    if (isError) {
+        return <div className='advertiser-page__error'>{error.message}</div>;
     }
 
     return (
@@ -166,6 +258,7 @@ const AdvertiserPage = () => {
                         if (general_store.active_index === general_store.path.my_profile)
                             my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                         history.push(general_store.active_tab_route);
+                        setCounterpartyAdvertiserId(null);
                     }}
                     page_title={localize("Advertiser's page")}
                 />
@@ -227,9 +320,9 @@ const AdvertiserPage = () => {
                                     </div>
                                 </div>
                             </MobileWrapper>
-                            <div className='advertiser-page__rating'>
-                                <DesktopWrapper>
-                                    <React.Fragment>
+                            {!isEmptyObject(info) && (
+                                <div className='advertiser-page__rating'>
+                                    <DesktopWrapper>
                                         <div className='advertiser-page__rating--row'>
                                             <OnlineStatusIcon is_online={is_online} />
                                             <OnlineStatusLabel
@@ -253,56 +346,56 @@ const AdvertiserPage = () => {
                                                 )}
                                             </Text>
                                         </div>
-                                    </React.Fragment>
-                                </DesktopWrapper>
-                                {rating_average ? (
-                                    <React.Fragment>
-                                        <div className='advertiser-page__rating--row'>
-                                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                                {rating_average_decimal}
-                                            </Text>
-                                            <StarRating
-                                                empty_star_className='advertiser-page__rating--star'
-                                                empty_star_icon='IcEmptyStar'
-                                                full_star_className='advertiser-page__rating--star'
-                                                full_star_icon='IcFullStar'
-                                                initial_value={rating_average_decimal}
-                                                is_readonly
-                                                number_of_stars={5}
-                                                should_allow_hover_effect={false}
-                                                star_size={isMobile() ? 17 : 20}
-                                            />
-                                            <div className='advertiser-page__rating--text'>
-                                                <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                                    {rating_count === 1 ? (
-                                                        <Localize
-                                                            i18n_default_text='({{number_of_ratings}} rating)'
-                                                            values={{ number_of_ratings: rating_count }}
-                                                        />
-                                                    ) : (
-                                                        <Localize
-                                                            i18n_default_text='({{number_of_ratings}} ratings)'
-                                                            values={{ number_of_ratings: rating_count }}
-                                                        />
-                                                    )}
+                                    </DesktopWrapper>
+                                    {rating_average ? (
+                                        <React.Fragment>
+                                            <div className='advertiser-page__rating--row'>
+                                                <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                    {rating_average_decimal}
                                                 </Text>
+                                                <StarRating
+                                                    empty_star_className='advertiser-page__rating--star'
+                                                    empty_star_icon='IcEmptyStar'
+                                                    full_star_className='advertiser-page__rating--star'
+                                                    full_star_icon='IcFullStar'
+                                                    initial_value={rating_average_decimal}
+                                                    is_readonly
+                                                    number_of_stars={5}
+                                                    should_allow_hover_effect={false}
+                                                    star_size={isMobile() ? 17 : 20}
+                                                />
+                                                <div className='advertiser-page__rating--text'>
+                                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                        {rating_count === 1 ? (
+                                                            <Localize
+                                                                i18n_default_text='({{number_of_ratings}} rating)'
+                                                                values={{ number_of_ratings: rating_count }}
+                                                            />
+                                                        ) : (
+                                                            <Localize
+                                                                i18n_default_text='({{number_of_ratings}} ratings)'
+                                                                values={{ number_of_ratings: rating_count }}
+                                                            />
+                                                        )}
+                                                    </Text>
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div className='advertiser-page__rating--row'>
+                                                <RecommendedBy
+                                                    recommended_average={recommended_average}
+                                                    recommended_count={recommended_count}
+                                                />
+                                            </div>
+                                        </React.Fragment>
+                                    ) : (
                                         <div className='advertiser-page__rating--row'>
-                                            <RecommendedBy
-                                                recommended_average={recommended_average}
-                                                recommended_count={recommended_count}
-                                            />
+                                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                <Localize i18n_default_text='Not rated yet' />
+                                            </Text>
                                         </div>
-                                    </React.Fragment>
-                                ) : (
-                                    <div className='advertiser-page__rating--row'>
-                                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                            <Localize i18n_default_text='Not rated yet' />
-                                        </Text>
-                                    </div>
-                                )}
-                            </div>
+                                    )}
+                                </div>
+                            )}
                             <div className='advertiser-page__row'>
                                 <TradeBadge
                                     is_poa_verified={!!full_verification}

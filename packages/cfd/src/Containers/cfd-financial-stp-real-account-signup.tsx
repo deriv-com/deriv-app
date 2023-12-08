@@ -1,13 +1,14 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
 import { useIsAccountStatusPresent } from '@deriv/hooks';
-import { isDesktop, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
+import { isDesktop, getAuthenticationStatusInfo } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import type { TCoreStores } from '@deriv/stores/types';
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { JURISDICTION } from '../Helpers/cfd-config';
 
 type TCFDFinancialStpRealAccountSignupProps = {
     onFinish: () => void;
@@ -122,21 +123,21 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     };
 
     const should_show_poi = () => {
-        if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
+        if (jurisdiction_selected_shortcode === JURISDICTION.MALTA_INVEST) {
             return need_poi_for_maltainvest;
         }
         return need_poi_for_bvi_labuan_vanuatu;
     };
 
     const shouldShowPOA = () => {
-        if (Jurisdiction.LABUAN === jurisdiction_selected_shortcode && is_authenticated_with_idv_photoid) {
+        if (JURISDICTION.LABUAN === jurisdiction_selected_shortcode && is_authenticated_with_idv_photoid) {
             return true;
         }
         return !['pending', 'verified'].includes(authentication_status.document_status);
     };
 
     const should_show_personal_details =
-        !has_submitted_cfd_personal_details && jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST;
+        !has_submitted_cfd_personal_details && jurisdiction_selected_shortcode !== JURISDICTION.MALTA_INVEST;
 
     const verification_configs = [
         ...(should_show_poi() ? [poi_config] : []),

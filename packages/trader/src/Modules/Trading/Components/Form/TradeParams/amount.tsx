@@ -1,9 +1,9 @@
-import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces } from '@deriv/shared';
+import { AMOUNT_MAX_LENGTH, addComma, getDecimalPlaces, TRADE_TYPES } from '@deriv/shared';
 import { ButtonToggle, Dropdown, InputField } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import AllowEquals from './allow-equals';
 import Fieldset from 'App/Components/Form/fieldset';
-import Multiplier from './Multiplier/multiplier.jsx';
+import Multiplier from './Multiplier/multiplier';
 import MultipliersInfo from './Multiplier/info';
 import MinMaxStakeInfo from './min-max-stake-info';
 import React from 'react';
@@ -107,24 +107,14 @@ const Amount = observer(({ is_minimized = false }: { is_minimized?: boolean }) =
 
     const getBasisList = () => basis_list.map(item => ({ text: item.text, value: item.value }));
 
-    const setTooltipContent = () => {
-        if (is_multiplier) {
-            return (
-                <Localize i18n_default_text='Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.' />
-            );
-        }
-        return null;
-    };
-
     return (
         <Fieldset
             className='trade-container__fieldset center-text'
             header={
-                contract_type === 'high_low' || is_multiplier || is_accumulator || is_vanilla || is_turbos
+                contract_type === TRADE_TYPES.HIGH_LOW || is_multiplier || is_accumulator || is_vanilla || is_turbos
                     ? localize('Stake')
                     : undefined
             }
-            header_tooltip={setTooltipContent()}
         >
             {basis_list.length > 1 && (
                 <ButtonToggle

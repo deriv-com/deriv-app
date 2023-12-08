@@ -2,28 +2,27 @@ import React from 'react';
 import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
+    addComma,
     epochToMoment,
     getCancellationPrice,
     getCurrencyDisplayCode,
+    getLocalizedBasis,
     hasTwoBarriers,
     isAccumulatorContract,
+    isEndedBeforeCancellationExpired,
     isMobile,
     isMultiplierContract,
     isSmartTraderContract,
     isAsiansContract,
     isTurbosContract,
-    isUserSold,
-    isEndedBeforeCancellationExpired,
     isUserCancelled,
+    isUserSold,
+    isVanillaFxContract,
     toGMTFormat,
     TContractInfo,
 } from '@deriv/shared';
-import {
-    addCommaToNumber,
-    getBarrierLabel,
-    getBarrierValue,
-    isDigitType,
-} from 'App/Components/Elements/PositionsDrawer/helpers';
+import { Analytics } from '@deriv/analytics';
+import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import ContractAuditItem from './contract-audit-item';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
 
@@ -48,17 +47,18 @@ const ContractDetails = ({
         commission,
         contract_type,
         currency,
+        date_start,
+        display_number_of_contracts,
         entry_spot_display_value,
         entry_tick_time,
         exit_tick_time,
         high_barrier,
+        low_barrier,
         profit,
-        date_start,
         tick_count,
         tick_passed,
         transaction_ids: { buy, sell } = {},
-        low_barrier,
-        display_number_of_contracts,
+        underlying,
     } = contract_info;
 
     const is_profit = Number(profit) >= 0;
@@ -72,6 +72,10 @@ const ContractDetails = ({
         ? `${tick_passed}/${tick_count} ${localize('ticks')}`
         : `${tick_count} ${ticks_label}`;
 
+    const vanilla_payout_text = isVanillaFxContract(contract_type, underlying)
+        ? getLocalizedBasis().payout_per_pip
+        : getLocalizedBasis().payout_per_point;
+
     const getLabel = () => {
         if (isUserSold(contract_info) && isEndedBeforeCancellationExpired(contract_info))
             return localize('Deal cancellation');
@@ -79,6 +83,15 @@ const ContractDetails = ({
         if (isCancellationExpired(contract_info)) return localize('Deal cancellation (expired)');
         return localize('Deal cancellation (active)');
     };
+
+    React.useEffect(() => {
+        Analytics.trackEvent('ce_reports_form', {
+            action: 'open_contract_details',
+            form_name: 'default',
+            form_source: 'deriv_trader',
+        });
+    }, []);
+
     return (
         <ThemedScrollbars is_bypassed={isMobile()}>
             <div className='contract-audit__tabs-content'>
@@ -159,7 +172,7 @@ const ContractDetails = ({
                             <ContractAuditItem
                                 id='dt_bt_label'
                                 icon={<Icon icon='IcContractPayout' size={24} />}
-                                label={localize('Payout per point')}
+                                label={vanilla_payout_text}
                                 value={
                                     display_number_of_contracts
                                         ? `${display_number_of_contracts} ${getCurrencyDisplayCode(currency)}`
@@ -180,7 +193,7 @@ const ContractDetails = ({
                         id='dt_entry_spot_label'
                         icon={<Icon icon='IcContractEntrySpot' size={24} />}
                         label={localize('Entry spot')}
-                        value={addCommaToNumber(Number(entry_spot_display_value)) || ' - '}
+                        value={entry_spot_display_value ? addComma(entry_spot_display_value) : ' - '}
                         value2={toGMTFormat(epochToMoment(Number(entry_tick_time))) || ' - '}
                     />
                 )}
@@ -189,7 +202,7 @@ const ContractDetails = ({
                         id='dt_exit_spot_label'
                         icon={<Icon icon='IcContractExitSpot' size={24} />}
                         label={localize('Exit spot')}
-                        value={addCommaToNumber(Number(exit_spot)) || ' - '}
+                        value={exit_spot ? addComma(exit_spot) : ' - '}
                         value2={toGMTFormat(epochToMoment(Number(exit_tick_time))) || ' - '}
                     />
                 )}

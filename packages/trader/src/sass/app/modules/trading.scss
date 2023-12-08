@@ -482,7 +482,7 @@
             }
         }
         &__list {
-            overflow-y: scroll;
+            overflow-y: auto;
             flex: 1 1 auto;
             display: flex;
             flex-direction: column;
@@ -684,6 +684,7 @@
         @include mobile {
             padding: 0 0.4rem;
             min-height: 1.4rem;
+            margin-bottom: 0.4rem;
 
             .trade-container__price-info-basis {
                 color: var(--text-general);

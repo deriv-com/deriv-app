@@ -10,6 +10,7 @@ export const routes = {
     proof_of_identity: '/account/proof-of-identity',
     proof_of_address: '/account/proof-of-address',
     proof_of_ownership: '/account/proof-of-ownership',
+    proof_of_income: '/account/proof-of-income',
     passwords: '/account/passwords',
     closing_account: '/account/closing-account',
     deactivate_account: '/account/deactivate-account', // TODO: Remove once mobile team has changed this link
@@ -48,7 +49,7 @@ export const routes = {
     cashier_withdrawal: '/cashier/withdrawal',
     cashier_pa: '/cashier/payment-agent',
     cashier_acc_transfer: '/cashier/account-transfer',
-    cashier_crypto_transactions: '/cashier/crypto-transactions',
+    cashier_transactions_crypto: '/cashier/crypto-transactions',
     // cashier_offramp: '/cashier/off-ramp',
     cashier_onramp: '/cashier/on-ramp',
     cashier_p2p: '/cashier/p2p',
@@ -75,4 +76,6 @@ export const routes = {
 
     // Wallets
     wallets: '/wallets',
+    wallets_withdrawal: '/wallets/cashier/withdraw',
+    wallets_compare_accounts: '/wallets/compare-accounts',
 };

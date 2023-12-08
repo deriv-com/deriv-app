@@ -2,9 +2,22 @@ import classNames from 'classnames';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useIsMounted } from '@deriv/shared';
-import { TRowRenderer } from './data-list';
-import { TPassThrough } from '../types/common.types';
-import { TSource } from '../data-table/data-table';
+import { TPassThrough, TRow } from '../types/common.types';
+import { TColIndex, TDataListCell } from './data-list-cell';
+import { TSource } from '../data-table/table-row';
+
+type TMobileRowRenderer = {
+    row?: TRow;
+    is_footer?: boolean;
+    columns_map?: Record<TColIndex, TDataListCell['column']>;
+    server_time?: moment.Moment;
+    onClickCancel: (contract_id?: number) => void;
+    onClickSell: (contract_id?: number) => void;
+    measure?: () => void;
+    passthrough?: TPassThrough;
+};
+
+export type TRowRenderer = (params: Partial<TMobileRowRenderer>) => React.ReactNode;
 
 type TDataListRow = {
     action_desc?: {

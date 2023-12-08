@@ -1,5 +1,11 @@
 import { GetSettings, ProfitTable, ResidenceList, Statement } from '@deriv/api-types';
-import { getContractTypeFeatureFlag, getUnsupportedContracts } from '../constants';
+import {
+    getContractTypeFeatureFlag,
+    getUnsupportedContracts,
+    STATUS_CODES,
+    IDV_ERROR_STATUS,
+    ONFIDO_ERROR_STATUS,
+} from '../constants';
 import { getSymbolDisplayName, TActiveSymbols } from './active-symbols';
 import { getMarketInformation } from './market-underlying';
 import { TContractInfo } from '../contract';
@@ -55,6 +61,64 @@ export const formatPortfolioPosition = (
         is_unsupported: isUnSupportedContract(portfolio_pos),
         contract_update: portfolio_pos.limit_order,
     };
+};
+
+export type TIDVErrorStatus = keyof typeof IDV_ERROR_STATUS;
+export type TOnfidoErrorStatus = keyof typeof ONFIDO_ERROR_STATUS;
+
+//formatIDVError is parsing errors messages from BE (strings) and returns error codes for using it on FE
+export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: string, is_high_risk?: boolean) => {
+    /**
+     * Check required incase of DIEL client
+     */
+    if (
+        errors.length === 0 &&
+        (status_code === STATUS_CODES.NONE || status_code === STATUS_CODES.VERIFIED) &&
+        !is_high_risk
+    ) {
+        return null;
+    }
+
+    if (is_high_risk) {
+        if (status_code === STATUS_CODES.NONE) {
+            return null;
+        } else if (status_code === STATUS_CODES.VERIFIED) {
+            return IDV_ERROR_STATUS.HighRisk.code;
+        }
+    }
+
+    if (status_code === STATUS_CODES.EXPIRED) {
+        return IDV_ERROR_STATUS.Expired.code;
+    }
+
+    const status: Array<TIDVErrorStatus> = [];
+    errors.forEach(error => {
+        const error_key: TIDVErrorStatus = IDV_ERROR_STATUS[error].code;
+        if (error_key) {
+            status.push(error_key);
+        }
+    });
+
+    return status.includes(IDV_ERROR_STATUS.NameMismatch.code) &&
+        status.includes(IDV_ERROR_STATUS.DobMismatch.code) &&
+        !status.includes(IDV_ERROR_STATUS.Failed.code)
+        ? IDV_ERROR_STATUS.NameDobMismatch.code
+        : status[0] ?? IDV_ERROR_STATUS.Failed.code;
+};
+
+export const formatOnfidoError = (status_code: string, errors: Array<TOnfidoErrorStatus> = []) => {
+    if (status_code === STATUS_CODES.EXPIRED) {
+        return [ONFIDO_ERROR_STATUS.Expired.code, ...errors];
+    }
+    return errors;
+};
+
+export const getOnfidoError = (error: TOnfidoErrorStatus) => {
+    return ONFIDO_ERROR_STATUS[error]?.message ?? '';
+};
+
+export const getIDVError = (error: TIDVErrorStatus) => {
+    return IDV_ERROR_STATUS[error]?.message ?? '';
 };
 
 export const isVerificationServiceSupported = (

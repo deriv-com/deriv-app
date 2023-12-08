@@ -1,0 +1,29 @@
+.wallets-jurisdiction-card-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1.4rem 0;
+    width: 100%;
+
+    @include mobile {
+        padding: 2rem 0;
+    }
+
+    &:first-child {
+        margin-top: 1.6rem;
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        &-badge {
+            background-color: #661b20;
+            border-radius: 0.4rem;
+            color: #ffffff;
+            font-weight: 700;
+            padding: 1rem;
+        }
+    }
+}

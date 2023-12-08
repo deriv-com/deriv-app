@@ -40,6 +40,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         loginid,
         logout: logoutClient,
         should_allow_authentication,
+        should_allow_poinc_authentication,
         landing_company_shortcode: active_account_landing_company,
         is_landing_company_loaded,
         is_pending_proof_of_ownership,
@@ -83,10 +84,11 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 ];
             } else if (location === routes.traders_hub || is_trading_hub_category) {
                 primary_routes = [routes.account, routes.cashier];
+            } else if (location === routes.wallets || is_next_wallet_enabled) {
+                primary_routes = [routes.reports, routes.account];
             } else {
                 primary_routes = [routes.reports, routes.account, routes.cashier];
             }
-
             setPrimaryRoutesConfig(getFilteredRoutesConfig(routes_config, primary_routes));
         };
 
@@ -95,7 +97,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
 
         return () => clearTimeout(timeout);
-    }, [is_appstore, account_status, should_allow_authentication]);
+    }, [is_appstore, account_status, should_allow_authentication, is_trading_hub_category, is_next_wallet_enabled]);
 
     const toggleDrawer = React.useCallback(() => {
         if (is_mobile_language_menu_open) setMobileLanguageMenuOpen(false);
@@ -108,7 +110,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             }, 400);
         }
         expandSubMenu(false);
-    }, [expandSubMenu, is_open]);
+    }, [expandSubMenu, is_open, is_mobile_language_menu_open, setMobileLanguageMenuOpen]);
 
     const getFilteredRoutesConfig = (all_routes_config, routes_to_filter) => {
         const subroutes_config = all_routes_config.flatMap(i => i.routes || []);
@@ -144,6 +146,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 return is_virtual || active_account_landing_company !== 'maltainvest';
             } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {
                 return !should_allow_authentication;
+            } else if (/proof-of-income/.test(route_path)) {
+                return !should_allow_poinc_authentication;
             } else if (/proof-of-ownership/.test(route_path)) {
                 return is_virtual || !is_pending_proof_of_ownership;
             }

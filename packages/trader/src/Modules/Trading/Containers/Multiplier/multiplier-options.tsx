@@ -2,10 +2,9 @@ import React from 'react';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
-import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { useIsMounted, WS } from '@deriv/shared';
+import { useIsMounted, WS, TRADE_TYPES, CONTRACT_TYPES } from '@deriv/shared';
 import { TTradeStore } from 'Types';
 
 type TMultiplierOptions = {
@@ -23,14 +22,19 @@ const MultiplierOptions = observer(({ toggleModal }: TMultiplierOptions) => {
         if (!amount) return undefined;
 
         const onProposalResponse: TTradeStore['onProposalResponse'] = ({ echo_req, proposal, subscription }) => {
-            if (isMounted() && proposal && echo_req.contract_type === 'MULTUP' && Number(echo_req.amount) === amount) {
+            if (
+                isMounted() &&
+                proposal &&
+                echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.UP &&
+                Number(echo_req.amount) === amount
+            ) {
                 setCommission(proposal.commission);
                 proposal.limit_order?.stop_out && setStopOut(proposal.limit_order.stop_out?.order_amount);
             } else if (subscription?.id) {
                 WS.forget(subscription.id);
             }
         };
-        const dispose = requestPreviewProposal(trade_store, { amount }, onProposalResponse);
+        const dispose = requestPreviewProposal(trade_store, onProposalResponse, { amount });
 
         return () => {
             dispose?.();
@@ -42,15 +46,12 @@ const MultiplierOptions = observer(({ toggleModal }: TMultiplierOptions) => {
     return (
         <React.Fragment>
             <RadioGroupWithInfoMobile
-                popover_alignment='bottom'
-                contract_name='multiplier'
-                current_value_object={{ name: 'multiplier', value: multiplier }}
-                info={localize(
-                    'Your gross profit is the percentage change in market price times your stake and the multiplier chosen here.'
-                )}
+                contract_name={TRADE_TYPES.MULTIPLIER}
+                current_value_object={{ name: TRADE_TYPES.MULTIPLIER, value: multiplier }}
                 items_list={multiplier_range_list}
                 onChange={onChange}
                 toggleModal={toggleModal}
+                should_show_tooltip={false}
             />
             <MultipliersInfo
                 className='trade-params__multiplier-trade-info'

@@ -187,6 +187,11 @@ const getModules = () => {
                             component: Account,
                             getTitle: () => localize('Proof of ownership'),
                         },
+                        {
+                            path: routes.proof_of_income,
+                            component: Account,
+                            getTitle: () => localize('Proof of income'),
+                        },
                     ],
                 },
                 {
@@ -354,7 +359,7 @@ const getModules = () => {
                     icon_component: 'IcCashierOnRamp',
                 },
                 {
-                    path: routes.cashier_crypto_transactions,
+                    path: routes.cashier_transactions_crypto,
                     component: Cashier,
                     is_invisible: true,
                 },

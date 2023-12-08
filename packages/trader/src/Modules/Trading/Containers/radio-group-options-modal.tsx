@@ -2,14 +2,14 @@ import React from 'react';
 import { Div100vhContainer, Modal, usePreventIOSZoom } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject } from '@deriv/shared';
+import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject, TRADE_TYPES } from '@deriv/shared';
 import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
 import { observer } from '@deriv/stores';
 
 type TRadioGroupOptionsModal = {
     is_open: boolean;
-    modal_title: string;
+    modal_title: React.ReactNode;
     toggleModal: () => void;
 };
 
@@ -25,7 +25,7 @@ const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }: 
         <React.Fragment>
             <Modal
                 id='dt_trade_parameters_mobile'
-                className='trade-params'
+                className='trade-params dc-modal-header--title-bar'
                 is_open={is_open}
                 is_title_centered
                 should_header_stick_body={false}
@@ -39,7 +39,7 @@ const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }: 
                         <MultiplierOptions toggleModal={toggleModal} />
                     ) : (
                         <RadioGroupWithInfoMobile
-                            contract_name='accumulator'
+                            contract_name={TRADE_TYPES.ACCUMULATOR}
                             current_value_object={{ name: 'growth_rate', value: growth_rate }}
                             info={localize(
                                 'Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier}} from the previous spot price.',

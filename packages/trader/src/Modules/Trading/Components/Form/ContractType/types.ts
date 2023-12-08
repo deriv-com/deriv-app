@@ -7,6 +7,7 @@ export type TContractCategory = {
     component?: JSX.Element | null;
     contract_types: TContractType[];
     icon?: string;
+    is_unavailable?: boolean;
     key: string;
     label?: string;
 };

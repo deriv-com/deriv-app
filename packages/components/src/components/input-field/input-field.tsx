@@ -1,14 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv/shared';
-import IncrementButtons from './increment-buttons';
-import Input from './input';
+import IncrementButtons, { TButtonType } from './increment-buttons';
+import Input, { TInputMode } from './input';
 import Tooltip from '../tooltip';
 import Text from '../text';
 
 export type TChangeEvent = { target: { name: string; value: number | string } };
-export type TInputMode = 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal';
-export type TButtonType = 'button' | 'submit' | 'reset';
 
 // ToDo: Refactor input_field
 // supports more than two different types of 'value' as a prop.
@@ -61,7 +59,7 @@ type TInputField = {
     placeholder?: string;
     prefix?: string;
     required?: boolean;
-    setCurrentFocus: (name: string | null) => void;
+    setCurrentFocus?: (name: string | null) => void;
     type?: string;
     unit?: string;
     value: number | string;

@@ -22,7 +22,7 @@
         &-button {
             background-color: #ffffff;
             border: none;
-            border-radius: 5px;
+            border-radius: 0.5rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -44,17 +44,23 @@
                 cursor: default;
             }
         }
-        &-landing-company {
-            align-self: flex-start;
-            border: 0.1rem solid #000;
-            border-radius: 0.2rem;
-            padding: 0 0.4rem;
-            font-weight: 700;
-            line-height: 1.4rem;
+    }
+
+    &__success-footer {
+        width: 24rem;
+
+        @include mobile {
+            width: 100%;
+        }
+    }
+
+    &__success-card {
+        & .wallets-card__details {
+            padding: 1.6rem;
+            width: 24rem;
 
             @include mobile {
-                line-height: 1.2rem;
-                font-size: 0.8rem;
+                width: 21.6rem;
             }
         }
     }

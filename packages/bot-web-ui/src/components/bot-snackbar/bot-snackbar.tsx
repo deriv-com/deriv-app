@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Icon, Toast } from '@deriv/components';
-import { Localize } from '@deriv/translations';
 
 type TBotSnackbar = {
     className?: string;
@@ -9,20 +8,10 @@ type TBotSnackbar = {
     handleClose: () => void;
     type?: 'error' | 'info' | 'notification';
     timeout?: number;
-    msg_localize_components?: JSX.Element[];
-    message: string;
+    message: JSX.Element;
 };
 
-const BotSnackbar = ({
-    message,
-    msg_localize_components = [],
-    timeout = 6000,
-    is_open,
-    onClick,
-    handleClose,
-    type,
-    className,
-}: TBotSnackbar) => {
+const BotSnackbar = ({ message, timeout = 6000, is_open, onClick, handleClose, type, className }: TBotSnackbar) => {
     const [notification_timer, setNotificationTimer] = useState(timeout);
 
     React.useEffect(() => {
@@ -43,7 +32,7 @@ const BotSnackbar = ({
             data-testid='bot-snackbar-notification-container'
         >
             <Toast is_open={is_open} type={type} timeout={notification_timer} onClick={onClick} onClose={handleClose}>
-                <div>{message && <Localize i18n_default_text={message} components={msg_localize_components} />}</div>
+                <div>{message}</div>
                 <Icon
                     icon='IcCross'
                     className={'notification-close'}

@@ -8,6 +8,7 @@ import GBPIcon from '../../public/images/currencies/gbp.svg';
 import LTCIcon from '../../public/images/currencies/ltc.svg';
 import USDIcon from '../../public/images/currencies/usd.svg';
 import USDCIcon from '../../public/images/currencies/usdc.svg';
+import { THooks } from '../../types';
 
 const currencies = {
     aud: AUDIcon,
@@ -24,10 +25,10 @@ const currencies = {
 };
 
 type TWalletCurrencyIconProps = {
-    currency: string;
+    currency: THooks.AllWalletAccounts['currency'];
 };
 
-const WalletAddMoreCurrencyIcon = ({ currency }: TWalletCurrencyIconProps) => {
+const WalletAddMoreCurrencyIcon: React.FC<TWalletCurrencyIconProps> = ({ currency }) => {
     const CurrencyIcon = useMemo(() => currencies[currency as keyof typeof currencies], [currency]);
 
     if (CurrencyIcon) {

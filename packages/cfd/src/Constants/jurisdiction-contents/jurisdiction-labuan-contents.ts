@@ -31,7 +31,7 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize('Forex and Cryptocurrencies'),
+            description: localize('Forex (standard/exotic) and cryptocurrencies'),
             title_indicators: {
                 type: 'displayText',
                 display_text: localize('80+'),

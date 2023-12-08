@@ -4,12 +4,26 @@ import { Icon, Popover } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
+import { useFeatureFlags } from '@deriv/hooks';
+import { useLocalStorage } from 'usehooks-ts';
 
 const TradersHubOnboarding = observer(() => {
     const history = useHistory();
     const { traders_hub, ui } = useStore();
-    const { setIsOnboardingVisited } = traders_hub;
-    const { is_dark_mode_on } = ui;
+    const { setIsOnboardingVisited, setIsFirstTimeVisit } = traders_hub;
+    const { is_dark_mode_on, is_mobile } = ui;
+    const { is_next_wallet_enabled } = useFeatureFlags();
+    const [, setWalletsOnboarding] = useLocalStorage('walletsOnboarding', '');
+
+    const onClickHandler = is_next_wallet_enabled
+        ? () => {
+              setWalletsOnboarding('started');
+          }
+        : () => {
+              history.push(routes.onboarding);
+              setIsOnboardingVisited(false);
+              setIsFirstTimeVisit(false);
+          };
 
     return (
         <div data-testid='dt_traders_hub_onboarding'>
@@ -17,7 +31,7 @@ const TradersHubOnboarding = observer(() => {
                 <Popover
                     classNameBubble='account-settings-toggle__tooltip'
                     alignment='bottom'
-                    message={<Localize i18n_default_text='View onboarding' />}
+                    message={!is_mobile && <Localize i18n_default_text='View onboarding' />}
                     should_disable_pointer_events
                     zIndex='9999'
                 >
@@ -25,10 +39,7 @@ const TradersHubOnboarding = observer(() => {
                         data_testid='dt_traders_hub_onboarding_icon'
                         icon={is_dark_mode_on ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
-                        onClick={() => {
-                            history.push(routes.onboarding);
-                            setIsOnboardingVisited(false);
-                        }}
+                        onClick={onClickHandler}
                     />
                 </Popover>
             </div>

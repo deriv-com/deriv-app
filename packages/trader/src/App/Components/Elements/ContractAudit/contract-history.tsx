@@ -6,7 +6,7 @@ import ContractAuditItem from './contract-audit-item';
 
 type TContractHistory = {
     currency?: string;
-    history: [] | TContractStore['contract_update_history'];
+    history?: [] | TContractStore['contract_update_history'];
 };
 const ContractHistory = ({ currency, history = [] }: TContractHistory) => {
     if (!history.length) {

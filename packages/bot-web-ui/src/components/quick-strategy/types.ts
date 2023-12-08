@@ -6,16 +6,7 @@ export type TDurationItemRaw = {
 };
 
 export type TFormData = {
-    symbol?: string;
-    tradetype?: string;
-    durationtype?: string;
-    duration?: string;
-    stake?: string;
-    size?: string;
-    profit?: string;
-    loss?: string;
-    unit?: string;
-    action: string;
+    [key: string]: string | number | boolean;
 };
 
 export type TValidationType = 'min' | 'max' | 'required' | 'number' | 'ceil' | 'floor';
@@ -41,12 +32,25 @@ export type TConfigItem = {
     attached?: boolean;
     hide?: string[];
     validation?: TValidationItem[];
+    should_have?: {
+        key: string;
+        value: string | number | boolean;
+    }[];
+};
+
+export type TDescriptionItem = {
+    type: string;
+    content?: string[];
+    src?: string;
+    alt?: string;
+    className?: string;
 };
 
 export type TStrategy = {
     name: string;
     label: string;
     description: string;
+    long_description?: TDescriptionItem[];
     fields: TConfigItem[][];
 };
 

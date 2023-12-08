@@ -1,7 +1,6 @@
 import React from 'react';
+import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
 import EmailVerification from '../../../../../public/images/email-verification.svg';
-import WalletsActionScreen from '../../../../../components/WalletsActionScreen/WalletsActionScreen';
-import { WalletText } from '../../../../../components';
 import './WithdrawalVerificationRequest.scss';
 
 type TProps = {
@@ -12,7 +11,6 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
     return (
         <div className='wallets-withdrawal-verification-request'>
             <WalletsActionScreen
-                actionText='Send email'
                 description={
                     <div className='wallets-withdrawal-verification-request__description'>
                         <WalletText align='center'>
@@ -29,7 +27,11 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                         <EmailVerification />
                     </div>
                 }
-                onAction={sendEmail}
+                renderButtons={() => (
+                    <WalletButton onClick={sendEmail} size='lg'>
+                        Send email
+                    </WalletButton>
+                )}
                 title='Please help us verify your withdrawal request.'
             />
         </div>

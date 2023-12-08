@@ -21,6 +21,7 @@ const WalletActionModal: React.FC<TWalletActionModal> = ({
     title,
 }) => {
     const { isMobile } = useDevice();
+
     return (
         <ModalWrapper hideCloseButton={hideCloseButton}>
             <div className='wallets-action-modal'>
@@ -36,9 +37,10 @@ const WalletActionModal: React.FC<TWalletActionModal> = ({
                             key={action.text}
                             onClick={action.onClick}
                             size='lg'
-                            text={action.text}
                             variant={action.isPrimary ? 'contained' : 'outlined'}
-                        />
+                        >
+                            {action.text}
+                        </WalletButton>
                     ))}
                 </div>
             </div>

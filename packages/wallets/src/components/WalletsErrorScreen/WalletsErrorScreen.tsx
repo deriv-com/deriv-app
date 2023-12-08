@@ -1,6 +1,7 @@
 import React from 'react';
 import IcCashierError from '../../public/images/ic-cashier-error.svg';
-import WalletsActionScreen from '../WalletsActionScreen/WalletsActionScreen';
+import { WalletButton } from '../Base';
+import { WalletsActionScreen } from '../WalletsActionScreen';
 
 type TProps = {
     message: string;
@@ -11,12 +12,14 @@ const ErrorState: React.FC<TProps> = ({
 }) => {
     return (
         <WalletsActionScreen
-            actionText='Try again'
-            actionVariant='ghost'
             description={message}
             icon={<IcCashierError />}
-            onAction={() => window.location.reload()}
-            title={'Oops, something went wrong!'}
+            renderButtons={() => (
+                <WalletButton onClick={() => window.location.reload()} size='lg' variant='ghost'>
+                    Try again
+                </WalletButton>
+            )}
+            title='Oops, something went wrong!'
         />
     );
 };

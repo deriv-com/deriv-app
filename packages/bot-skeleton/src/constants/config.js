@@ -310,7 +310,7 @@ export const config = {
             symbol: '1HZ100V',
             tradetype: 'callput',
             durationtype: 't',
-            size: 2,
+            size: 1,
             unit: 1,
         },
     },

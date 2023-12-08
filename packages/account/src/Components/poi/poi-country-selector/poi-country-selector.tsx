@@ -1,27 +1,23 @@
 import React from 'react';
-import { Autocomplete, Button, DesktopWrapper, MobileWrapper, Text, SelectNative } from '@deriv/components';
-import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
-import { localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
+import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
+import { IDV_ERROR_STATUS, isMobile, TIDVErrorStatus } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import FormFooter from 'Components/form-footer';
+import { POIContext } from '../../../Helpers/poi-context';
+import { useResidenceList } from '@deriv/api';
 
-type TCountry = Record<string, string>;
-
-type TPoiCountrySelector = {
+type TCountrySelector = {
     handleSelectionNext: () => void;
     is_from_external: boolean;
-    residence_list: Array<TCountry>;
-    selected_country: string;
-    setSelectedCountry: (value: TCountry) => void;
+    mismatch_status?: TIDVErrorStatus;
 };
 
-const PoiCountrySelector = ({
-    handleSelectionNext,
-    is_from_external,
-    residence_list,
-    selected_country,
-    setSelectedCountry,
-}: TPoiCountrySelector) => {
+const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_status }: TCountrySelector) => {
+    const { setSelectedCountry } = React.useContext(POIContext);
+    const { data: country_list, isLoading } = useResidenceList();
+
     const initial_form_values: FormikValues = {
         country_input: '',
     };
@@ -32,7 +28,7 @@ const PoiCountrySelector = ({
 
         if (!country_input) {
             errors.country_input = localize('Please select the country of document issuance.');
-        } else if (!residence_list.find((c: FormikValues) => c.text === country_input)) {
+        } else if (!country_list.find((c: FormikValues) => c.text === country_input)) {
             errors.country_input = localize('Please select a valid country of document issuance.');
         }
 
@@ -40,9 +36,7 @@ const PoiCountrySelector = ({
     };
 
     const updateSelectedCountry = (country_name: string) => {
-        const matching_country: TCountry | undefined = residence_list.find(
-            (c: FormikValues) => c.text === country_name
-        );
+        const matching_country = country_list?.find((c: FormikValues) => c.text === country_name);
         if (matching_country) {
             setSelectedCountry?.(matching_country);
         }
@@ -53,6 +47,8 @@ const PoiCountrySelector = ({
         setSubmitting(false);
         handleSelectionNext?.();
     };
+
+    const failed_message: React.ReactNode = mismatch_status ? IDV_ERROR_STATUS[mismatch_status]?.message ?? null : null;
 
     return (
         <Formik initialValues={initial_form_values} validate={validateFields} onSubmit={submitHandler}>
@@ -74,11 +70,30 @@ const PoiCountrySelector = ({
                             'min-height': !is_from_external,
                         })}
                     >
-                        <Text className='proof-of-identity__header' align='center' weight='bold'>
-                            {localize('Proof of identity')}
-                        </Text>
+                        {failed_message ? (
+                            <React.Fragment>
+                                <Text align='center' weight='bold' size={isMobile() ? 'xs' : 's'}>
+                                    <Localize i18n_default_text='Your identity verification failed because:' />
+                                </Text>
+                                <HintBox
+                                    className={classNames('proof-of-identity__failed-message', 'hint-box-layout')}
+                                    icon='IcAlertDanger'
+                                    message={
+                                        <Text as='p' size={isMobile() ? 'xxs' : 'xs'}>
+                                            {failed_message}
+                                        </Text>
+                                    }
+                                    is_danger
+                                />
+                            </React.Fragment>
+                        ) : (
+                            <Text className='proof-of-identity__header' align='center' weight='bold'>
+                                <Localize i18n_default_text='Proof of identity' />
+                            </Text>
+                        )}
+
                         <Text className='proof-of-identity__country-text ' size='xs'>
-                            {localize('In which country was your document issued?')}
+                            <Localize i18n_default_text='In which country was your document issued?' />
                         </Text>
                         <fieldset className='proof-of-identity__fieldset'>
                             <Field name='country_input'>
@@ -95,13 +110,13 @@ const PoiCountrySelector = ({
                                                 autoComplete='off'
                                                 type='text'
                                                 label={localize('Country')}
-                                                list_items={residence_list}
+                                                list_items={country_list}
                                                 value={values.country_input}
                                                 onBlur={(e: FormikValues) => {
                                                     handleBlur(e);
                                                     const current_input = e.target.value;
                                                     if (
-                                                        !residence_list.find(
+                                                        !country_list.find(
                                                             (c: FormikValues) => c.text === current_input
                                                         )
                                                     ) {
@@ -127,7 +142,7 @@ const PoiCountrySelector = ({
                                                     error={touched.country_input && errors.country_input}
                                                     label={localize('Country')}
                                                     placeholder={localize('Please select')}
-                                                    list_items={residence_list}
+                                                    list_items={country_list}
                                                     value={values.country_input}
                                                     onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                                                         handleChange(e);
@@ -151,7 +166,7 @@ const PoiCountrySelector = ({
                             type='submit'
                             onClick={() => handleSubmit()}
                             has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid || !selected_country}
+                            is_disabled={!dirty || isSubmitting || !isValid || isLoading}
                             is_loading={false}
                             text={localize('Next')}
                             large
@@ -164,4 +179,4 @@ const PoiCountrySelector = ({
     );
 };
 
-export default PoiCountrySelector;
+export default CountrySelector;

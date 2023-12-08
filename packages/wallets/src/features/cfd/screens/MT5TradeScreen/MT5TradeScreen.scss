@@ -1,12 +1,24 @@
 .wallets-mt5-trade-screen {
+    $root: &;
     width: 45vw;
     max-width: 60rem;
     min-width: 51.2rem;
-
     @include mobile {
         width: 100%;
         min-width: 100%;
         height: auto;
+    }
+
+    &__label {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__title {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        gap: 0.6rem;
     }
 
     &__details {
@@ -21,18 +33,12 @@
             justify-content: space-between;
             width: 100%;
 
-            &-title {
-                display: flex;
-                flex-direction: column;
-            }
-
             &--left {
                 display: flex;
                 align-items: center;
-                gap: 0.8rem;
 
                 & > svg {
-                    transform: scale(0.6);
+                    transform: scale(0.7) translateX(-0.7rem);
                 }
 
                 .wallets-mt5-trade-screen__details-title {
@@ -40,6 +46,12 @@
                     flex-direction: column;
                     gap: 0.4rem;
                 }
+            }
+
+            &--right {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
             }
         }
 
@@ -55,11 +67,15 @@
             & .wallets-mt5-trade-details-item:last-child {
                 border-radius: 0 0 0.7rem 0.7rem;
             }
+
+            & .wallets-mt5-trade-details-item--info:last-child {
+                border-radius: 0.4rem;
+            }
         }
 
         &-maintainance {
             display: grid;
-            grid-template-columns: 3rem auto;
+            grid-template-columns: 2.5rem auto;
         }
     }
 

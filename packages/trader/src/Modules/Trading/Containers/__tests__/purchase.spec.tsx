@@ -1,17 +1,16 @@
 import React from 'react';
-
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { render, screen } from '@testing-library/react';
-
-import TraderProviders from '../../../../trader-providers';
+import { mockContractInfo, TContractInfo, CONTRACT_TYPES, TRADE_TYPES } from '@deriv/shared';
 import Purchase from '../purchase';
+import TraderProviders from '../../../../trader-providers';
 
 const default_mock_store = {
     modules: {
         trade: {
             basis: '',
-            contract_type: 'accumulator',
+            contract_type: TRADE_TYPES.ACCUMULATOR as string,
             currency: '',
             is_accumulator: false,
             is_multiplier: false,
@@ -27,7 +26,7 @@ const default_mock_store = {
             purchase_info: {},
             symbol: 'test_symbol',
             validation_errors: {},
-            vanilla_trade_type: 'VANILLALONGCALL',
+            vanilla_trade_type: CONTRACT_TYPES.VANILLA.CALL,
             trade_types: { CALL: 'Higher', PUT: 'Lower' } as { [key: string]: string },
             is_trade_enabled: true,
         },
@@ -35,7 +34,7 @@ const default_mock_store = {
 };
 
 type TNewMockedProps = typeof default_mock_store &
-    Partial<{ portfolio: { active_positions: { contract_info: { underlying: string }; type: string }[] } }>;
+    Partial<{ portfolio: { active_positions: { contract_info: TContractInfo; type: string }[] } }>;
 
 jest.mock('Modules/Trading/Components/Elements/purchase-fieldset', () =>
     jest.fn(() => <div>PurchaseField component</div>)
@@ -67,7 +66,9 @@ describe('<Purchase />', () => {
         const new_mocked_store: TNewMockedProps = {
             ...default_mock_store,
             portfolio: {
-                active_positions: [{ contract_info: { underlying: 'test_symbol' }, type: 'accumulator' }],
+                active_positions: [
+                    { contract_info: mockContractInfo({ underlying: 'test_symbol' }), type: TRADE_TYPES.ACCUMULATOR },
+                ],
             },
         };
         new_mocked_store.modules.trade.trade_types = { ACCU: 'Accumulator Up' };
@@ -80,13 +81,13 @@ describe('<Purchase />', () => {
         expect(screen.getByText(/accu sell button/i)).toBeInTheDocument();
     });
 
-    it('should render only one PurchaseField component if it is vanilla trade type', () => {
+    it('should render only one PurchaseField component if it is TRADE_TYPES.VANILLA.CALL trade type', () => {
         const new_mocked_store = { ...default_mock_store };
         new_mocked_store.modules.trade.is_accumulator = false;
         new_mocked_store.modules.trade.is_vanilla = true;
-        new_mocked_store.modules.trade.contract_type = 'vanilla';
+        new_mocked_store.modules.trade.contract_type = TRADE_TYPES.VANILLA.CALL;
         new_mocked_store.modules.trade.trade_types = {
-            VANILLA: 'Vanilla Long Call',
+            [CONTRACT_TYPES.VANILLA.CALL]: TRADE_TYPES.VANILLA.CALL,
         };
         const mock_root_store = mockStore(new_mocked_store);
         render(mockPurchaseModal(mock_root_store));

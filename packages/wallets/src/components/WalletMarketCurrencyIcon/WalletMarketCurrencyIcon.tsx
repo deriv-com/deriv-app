@@ -1,5 +1,4 @@
 import React, { ComponentType, SVGAttributes } from 'react';
-import useDevice from '../../hooks/useDevice';
 import CTraderIcon from '../../public/images/ctrader.svg';
 import DerivAppIcon from '../../public/images/deriv-apps.svg';
 import DerivXIcon from '../../public/images/derivx.svg';
@@ -35,8 +34,6 @@ const WalletMarketCurrencyIcon: React.FC<TWalletMarketCurrencyIconProps> = ({
     marketType,
     platform,
 }) => {
-    const { isMobile } = useDevice();
-
     let MarketTypeIcon: ComponentType<SVGAttributes<SVGElement>>;
     if (marketType && platform) {
         MarketTypeIcon =
@@ -56,7 +53,7 @@ const WalletMarketCurrencyIcon: React.FC<TWalletMarketCurrencyIconProps> = ({
                 }`}
             >
                 <WalletGradientBackground currency={currency} hasShine isDemo={isDemo} type='card'>
-                    <WalletCardIcon size={isMobile ? 'xl' : 'lg'} type={isDemo ? 'Demo' : currency} />
+                    <WalletCardIcon device='desktop' size='lg' type={isDemo ? 'Demo' : currency} />
                 </WalletGradientBackground>
             </div>
         </div>

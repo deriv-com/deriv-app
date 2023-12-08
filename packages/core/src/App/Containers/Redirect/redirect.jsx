@@ -28,6 +28,7 @@ const Redirect = observer(() => {
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
     const ext_platform_url = url_params.get('ext_platform_url');
+    const is_next_wallet = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
     const { is_appstore } = React.useContext(PlatformContext);
 
     const redirectToExternalPlatform = url => {
@@ -95,25 +96,25 @@ const Redirect = observer(() => {
                 let hash = '';
                 switch (redirect_to) {
                     case '1':
-                        pathname = routes.mt5;
+                        pathname = routes.traders_hub;
                         break;
                     case '10':
-                        pathname = routes.mt5;
+                        pathname = routes.traders_hub;
                         hash = 'real';
                         break;
                     case '11':
-                        pathname = routes.mt5;
+                        pathname = routes.traders_hub;
                         hash = 'demo';
                         break;
                     case '2':
-                        pathname = routes.dxtrade;
+                        pathname = routes.traders_hub;
                         break;
                     case '20':
-                        pathname = routes.dxtrade;
+                        pathname = routes.traders_hub;
                         hash = 'real';
                         break;
                     case '21':
-                        pathname = routes.dxtrade;
+                        pathname = routes.traders_hub;
                         hash = 'demo';
                         break;
                     case '3':
@@ -137,7 +138,15 @@ const Redirect = observer(() => {
             break;
         }
         case 'payment_withdraw': {
-            history.push(routes.cashier_withdrawal);
+            if (is_next_wallet) {
+                // passes verification_code through query param as we do not want to use localstorage/session storage
+                // though can't use "verification_code" as name param
+                // as there is general logic within client-store
+                // which removes anything which resembles code=XYZ
+                history.push(`${routes.wallets_withdrawal}?verification=${verification_code?.payment_withdraw}`);
+            } else {
+                history.push(routes.cashier_withdrawal);
+            }
             redirected_to_route = true;
             break;
         }
@@ -181,7 +190,7 @@ const Redirect = observer(() => {
         case 'trading_platform_investor_password_reset': {
             localStorage.setItem('cfd_reset_password_code', code_param);
             const is_demo = localStorage.getItem('cfd_reset_password_intent')?.includes('demo');
-            history.push(`${routes.mt5}#${is_demo ? 'demo' : 'real'}#reset-password`);
+            history.push(`${routes.traders_hub}#${is_demo ? 'demo' : 'real'}#reset-password`);
             redirected_to_route = true;
             break;
         }

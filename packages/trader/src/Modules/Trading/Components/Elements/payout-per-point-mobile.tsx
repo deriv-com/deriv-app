@@ -47,7 +47,7 @@ const PayoutPerPointMobile = observer(() => {
             </div>
             <Text size='xs' weight='bold' className='payout-per-point__value'>
                 <Money amount={payout_per_point} currency={currency} show_currency should_format={false} />
-                <ArrowIndicator classname='trade-container__price-info-movement' value={payout_per_point} />
+                <ArrowIndicator className='trade-container__price-info-movement' value={payout_per_point} />
             </Text>
         </Fieldset>
     );

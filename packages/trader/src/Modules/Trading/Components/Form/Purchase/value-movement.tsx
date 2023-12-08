@@ -34,7 +34,7 @@ const ValueMovement = ({
             )}
         </div>
         <ArrowIndicator
-            classname='trade-container__price-info-movement'
+            className='trade-container__price-info-movement'
             value={proposal_info?.obj_contract_basis?.value || value}
         />
     </div>

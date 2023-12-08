@@ -2,7 +2,7 @@ import React from 'react';
 import Icon from '../icon/icon';
 
 type TArrowIndicatorProps = {
-    classname?: string;
+    className?: string;
     value?: number | string;
 };
 
@@ -13,7 +13,7 @@ type TData = {
     value?: string | number;
 };
 
-const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
+const ArrowIndicator = ({ className, value }: TArrowIndicatorProps) => {
     const [is_visible, setIsVisible] = React.useState(false);
     const [data, setData] = React.useState<TData>({
         icon: '',
@@ -47,7 +47,7 @@ const ArrowIndicator = ({ classname, value }: TArrowIndicatorProps) => {
     }, [value]);
 
     return (
-        <div className={classname} data-testid='dt_arrow_indicator'>
+        <div className={className} data-testid='dt_arrow_indicator'>
             {has_comparable_values && is_visible ? (
                 <Icon icon={previous_value === Number(value) ? previous_icon : icon} />
             ) : null}

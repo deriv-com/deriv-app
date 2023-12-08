@@ -240,7 +240,7 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
                     })}
                 >
                     <Money amount={Math.abs(profit)} currency={currency} />
-                    <ArrowIndicator classname='open-positions__profit-loss--movement' value={profit} />
+                    <ArrowIndicator className='open-positions__profit-loss--movement' value={profit} />
                 </div>
             );
         },
@@ -403,7 +403,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
                     })}
                 >
                     <Money amount={Math.abs(total_profit)} currency={currency} />
-                    <ArrowIndicator classname='open-positions__profit-loss--movement' value={total_profit} />
+                    <ArrowIndicator className='open-positions__profit-loss--movement' value={total_profit} />
                 </div>
             );
         },
@@ -532,7 +532,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
                     })}
                 >
                     <Money amount={Math.abs(total_profit)} currency={currency} />
-                    <ArrowIndicator classname='open-positions__profit-loss--movement' value={total_profit} />
+                    <ArrowIndicator className='open-positions__profit-loss--movement' value={total_profit} />
                 </div>
             );
         },

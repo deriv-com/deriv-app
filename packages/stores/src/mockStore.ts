@@ -211,7 +211,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             setBalanceOtherAccounts: jest.fn(),
             setInitialized: jest.fn(),
             setLogout: jest.fn(),
-            setVisibilityRealityCheck: jest.fn(),
             setP2pAdvertiserInfo: jest.fn(),
             setPreSwitchAccount: jest.fn(),
             social_identity_provider: '',

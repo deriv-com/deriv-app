@@ -23,7 +23,7 @@ const UploadMessage = observer(() => {
             <div className='dc-file-dropzone__message-subtitle'>
                 <Text size='xxs' align='center' weight='bold' color='less-prominent'>
                     {is_mobile ? (
-                        <Localize i18n_default_text='Click here to upload.' />
+                        <Localize i18n_default_text='Click here to browse your files.' />
                     ) : (
                         <Localize i18n_default_text='Drag and drop a file or click to browse your files.' />
                     )}

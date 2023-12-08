@@ -19,11 +19,13 @@
         flex-direction: column;
         justify-content: space-between;
         width: 100%;
-        height: 100%;
         position: absolute;
         backface-visibility: hidden;
         transition: transform 0.6s ease;
         transform: rotateY(0deg);
+        @include mobile {
+            height: 100%;
+        }
     }
 
     &__footer-content {
@@ -48,12 +50,18 @@
     }
     &__wrapper {
         @include desktop {
-            height: 76rem;
+            position: relative;
             perspective: 100rem;
             overflow: scroll;
+            &--financial {
+                height: 76rem;
+            }
+            &--synthetic,
+            &--all {
+                height: 69rem;
+            }
         }
     }
-
     &__flipped {
         @include desktop {
             height: 70rem;

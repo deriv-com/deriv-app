@@ -4,17 +4,7 @@ import { parse } from '@babel/parser';
 import traverse from '@babel/traverse';
 import generateKey from './src/utils/generate-keys';
 
-let messages;
-if (fs.existsSync('./src/translations/messages.json')) {
-    try {
-        const initialMessages = JSON.parse(fs.readFileSync('./src/translations/messages.json', 'utf-8'));
-        messages = new Map(initialMessages);
-    } catch (err) {
-        messages = new Map();
-    }
-} else {
-    messages = new Map();
-}
+const messages = new Map();
 const values = new Set();
 
 module.exports = async function (source) {

@@ -99,6 +99,7 @@ const Dropzone: React.FC<TProps> = ({
         <div {...getRootProps()} className='wallets-dropzone__container' ref={rootRef as RefObject<HTMLDivElement>}>
             <input
                 {...(getInputProps() as DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>)}
+                data-testid='dt_dropzone-input'
             />
             <div
                 className={classNames(
@@ -145,6 +146,7 @@ const Dropzone: React.FC<TProps> = ({
                                 {hasFrame && <DropzoneFrame />}
                                 <IconButton
                                     className='wallets-dropzone__remove-file'
+                                    data-testid='dt_remove-button'
                                     icon={<CloseIcon width={12} />}
                                     onClick={removeFile}
                                     size='sm'

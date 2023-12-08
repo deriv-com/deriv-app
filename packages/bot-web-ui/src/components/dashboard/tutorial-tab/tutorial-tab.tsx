@@ -15,7 +15,7 @@ const TutorialsTab = observer(() => {
     const { dashboard } = useDBotStore();
     const [prev_active_tutorials, setPrevActiveTutorialsTab] = React.useState<number | null>(0);
 
-    const { active_tab_tutorials, video_tab_content, guide_tab_content, faq_tab_content } = dashboard;
+    const { active_tab_tutorials, video_tab_content, guide_tab_content, faq_tab_content, is_dialog_open } = dashboard;
 
     React.useEffect(() => {
         Analytics.trackEvent('ce_bot_tutorial_form', {
@@ -43,7 +43,13 @@ const TutorialsTab = observer(() => {
     const tutorial_tabs = [
         {
             label: localize('Guide'),
-            content: <GuideContent guide_tab_content={guide_tab_content} video_tab_content={video_tab_content} />,
+            content: (
+                <GuideContent
+                    is_dialog_open={is_dialog_open}
+                    guide_tab_content={guide_tab_content}
+                    video_tab_content={video_tab_content}
+                />
+            ),
         },
         {
             label: localize('FAQ'),
@@ -53,7 +59,11 @@ const TutorialsTab = observer(() => {
             label: localize('Search'),
             content: has_content_guide_tab ? (
                 <>
-                    <GuideContent guide_tab_content={guide_tab_content} video_tab_content={video_tab_content} />
+                    <GuideContent
+                        is_dialog_open={is_dialog_open}
+                        guide_tab_content={guide_tab_content}
+                        video_tab_content={video_tab_content}
+                    />
                     <FAQContent faq_list={faq_tab_content} />
                 </>
             ) : (

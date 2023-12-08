@@ -17,12 +17,15 @@
 
         &--top {
             flex-direction: column-reverse;
-            top: -100%;
+            transform: translate(-50%, -100%);
+            top: 0;
+            left: 50%;
         }
 
         &--bottom {
             flex-direction: column;
-            bottom: -100%;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         &--left {
@@ -62,10 +65,11 @@
 
     &__message {
         width: max-content;
-        max-width: 28rem;
+        max-width: 22rem;
         padding: 0.8rem;
         border-radius: 4px;
         font-size: 1.2rem;
+        line-height: 1.8rem;
         white-space: pre-wrap;
 
         background: var(--system-light-5-active-background, #d6dadb);

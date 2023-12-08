@@ -44,9 +44,9 @@ describe('<NoAds/>', () => {
             screen.getByText('Looking to buy or sell USD? You can post your own ad for others to respond.')
         ).toBeInTheDocument();
     });
-    it('should display "You have no ads" when is_ads_page is true', () => {
+    it('should display "You have no ads 😞" when is_ads_page is true', () => {
         render(<NoAds {...mock_props} is_ads_page />);
-        expect(screen.getByText('You have no ads.')).toBeInTheDocument();
+        expect(screen.getByText('You have no ads 😞')).toBeInTheDocument();
         expect(screen.getByText('Create new ad')).toBeInTheDocument();
     });
     it('should handle onclick of create ad button', () => {

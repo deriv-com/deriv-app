@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Field, Form } from 'formik';
 import { Button, DesktopWrapper, Input, Loading, Text } from '@deriv/components';
+import { useP2PAdvertiserPaymentMethods } from '@deriv/hooks';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -13,6 +13,8 @@ import './edit-payment-method-form.scss';
 
 const EditPaymentMethodForm = () => {
     const { showModal } = useModalManagerContext();
+    const { mutation, update } = useP2PAdvertiserPaymentMethods();
+    const { error: mutation_error, status: mutation_status } = mutation;
     const { general_store, my_profile_store } = useStores();
     const { payment_method_to_edit } = my_profile_store;
 
@@ -21,6 +23,10 @@ const EditPaymentMethodForm = () => {
         fields_initial_values[key] = payment_method_to_edit.fields[key].value;
     });
 
+    const updatePaymentMethod = values => {
+        update(payment_method_to_edit.id, values);
+    };
+
     React.useEffect(() => {
         return () => {
             my_profile_store.setSelectedPaymentMethod('');
@@ -28,6 +34,15 @@ const EditPaymentMethodForm = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        if (mutation_status === 'success') {
+            my_profile_store.setShouldShowEditPaymentMethodForm(false);
+        } else if (mutation_status === 'error') {
+            my_profile_store.setAddPaymentMethodErrorMessage(mutation_error.message);
+            showModal({ key: 'AddPaymentMethodErrorModal' });
+        }
+    }, [mutation_error, mutation_status]);
 
     if (!payment_method_to_edit) {
         return <Loading is_fullscreen={false} />;
@@ -38,7 +53,7 @@ const EditPaymentMethodForm = () => {
             <ModalForm
                 enableReinitialize
                 initialValues={fields_initial_values}
-                onSubmit={my_profile_store.updatePaymentMethod}
+                onSubmit={updatePaymentMethod}
                 validate={my_profile_store.validatePaymentMethodFields}
             >
                 {({ dirty, handleChange, isSubmitting, errors }) => {
@@ -106,6 +121,7 @@ const EditPaymentMethodForm = () => {
                                                             onChange={handleChange}
                                                             name={payment_method_key}
                                                             required={!!current_field.required}
+                                                            value={field.value || ''}
                                                         />
                                                     );
                                                 }}
@@ -156,4 +172,4 @@ const EditPaymentMethodForm = () => {
     );
 };
 
-export default observer(EditPaymentMethodForm);
+export default EditPaymentMethodForm;

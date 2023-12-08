@@ -18,7 +18,6 @@ export default class MyProfileStore extends BaseStore {
     has_more_items_to_load = false;
     is_block_user_table_loading = false;
     is_button_loading = false;
-    is_confirm_delete_modal_open = false;
     is_daily_limit_modal_open = false;
     is_daily_limit_success_modal_open = false;
     is_error_modal_open = false;
@@ -62,7 +61,6 @@ export default class MyProfileStore extends BaseStore {
             has_more_items_to_load: observable,
             is_block_user_table_loading: observable,
             is_button_loading: observable,
-            is_confirm_delete_modal_open: observable,
             is_daily_limit_modal_open: observable,
             is_daily_limit_success_modal_open: observable,
             is_error_modal_open: observable,
@@ -110,7 +108,6 @@ export default class MyProfileStore extends BaseStore {
             hideAddPaymentMethodForm: action.bound,
             onClear: action.bound,
             validatePaymentMethodFields: action.bound,
-            updatePaymentMethod: action.bound,
             showAddPaymentMethodForm: action.bound,
             onSubmit: action.bound,
             onClickUnblock: action.bound,
@@ -124,7 +121,6 @@ export default class MyProfileStore extends BaseStore {
             setFullName: action.bound,
             setHasMoreItemsToLoad: action.bound,
             setIsBlockUserTableLoading: action.bound,
-            setIsConfirmDeleteModalOpen: action.bound,
             setIsDailyLimitModalOpen: action.bound,
             setIsDailyLimitSuccessModalOpen: action.bound,
             setIsErrorModalOpen: action.bound,
@@ -535,29 +531,6 @@ export default class MyProfileStore extends BaseStore {
         this.setShouldShowAddPaymentMethodForm(true);
     }
 
-    updatePaymentMethod(values, { setSubmitting }) {
-        this.setIsLoading(true);
-        requestWS({
-            p2p_advertiser_payment_methods: 1,
-            update: {
-                [this.payment_method_to_edit.id]: {
-                    ...values,
-                },
-            },
-        }).then(response => {
-            if (response?.error) {
-                this.setAddPaymentMethodErrorMessage(response.error.message);
-                this.root_store.general_store.showModal({
-                    key: 'AddPaymentMethodErrorModal',
-                });
-            } else {
-                this.setShouldShowEditPaymentMethodForm(false);
-            }
-            this.setIsLoading(false);
-            setSubmitting(false);
-        });
-    }
-
     validateForm = values => {
         const validations = {
             contact_info: [v => textValidator(v)],
@@ -670,10 +643,6 @@ export default class MyProfileStore extends BaseStore {
 
     setIsBlockUserTableLoading(is_block_user_table_loading) {
         this.is_block_user_table_loading = is_block_user_table_loading;
-    }
-
-    setIsConfirmDeleteModalOpen(is_confirm_delete_modal_open) {
-        this.is_confirm_delete_modal_open = is_confirm_delete_modal_open;
     }
 
     setIsDailyLimitModalOpen(is_daily_limit_modal_open) {

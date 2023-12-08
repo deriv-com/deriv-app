@@ -84,8 +84,7 @@ describe('<TutorialsTabDesktop />', () => {
 
     it('should call onFocusSearch when input is focused', () => {
         const inputElement = screen.getByTestId('id-test-input-search');
-        expect(inputElement).not.toHaveFocus();
-        userEvent.tab();
+        userEvent.click(inputElement);
         expect(inputElement).toHaveFocus();
     });
 

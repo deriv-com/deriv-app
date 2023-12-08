@@ -9,12 +9,14 @@ import type {
     useCreateOtherCFDAccount,
     useCreateWallet,
     useCryptoTransactions,
+    useCryptoWithdrawal,
     useCtraderAccountsList,
     useCurrencyConfig,
     useDerivAccountsList,
     useDxtradeAccountsList,
     useDynamicLeverage,
     useExchangeRate,
+    useInfiniteTransactions,
     useMT5AccountsList,
     usePOA,
     usePOI,
@@ -43,11 +45,13 @@ export namespace THooks {
     export type AllAccountsList = NonNullable<ReturnType<typeof useAllAccountsList>>['data'];
     export type DynamicLeverage = NonNullable<ReturnType<typeof useDynamicLeverage>['data']>;
     export type CryptoTransactions = NonNullable<ReturnType<typeof useCryptoTransactions>['data']>[number];
+    export type CryptoWithdrawal = NonNullable<ReturnType<typeof useCryptoWithdrawal>['mutateAsync']>;
     export type POA = NonNullable<ReturnType<typeof usePOA>['data']>;
     export type POI = NonNullable<ReturnType<typeof usePOI>['data']>;
     export type CurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['data']>[string];
     export type GetCurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['getConfig']>;
     export type Transactions = NonNullable<ReturnType<typeof useTransactions>['data']>[number];
+    export type InfiniteTransactions = NonNullable<ReturnType<typeof useInfiniteTransactions>['data']>[number];
     export type TransferAccount = NonNullable<
         NonNullable<ReturnType<typeof useTransferBetweenAccounts>['data']>['accounts']
     >[number];
@@ -84,5 +88,7 @@ export namespace TDisplayBalance {
 
 export type TGenericSizes = '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '5xl' | '6xl' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';
 
-export type TWalletLandingCompanyName = Extract<THooks.MT5AccountsList['landing_company_short'], 'malta' | 'svg'>;
+export type TWalletLandingCompanyName =
+    | Extract<THooks.MT5AccountsList['landing_company_short'], 'malta' | 'svg'>
+    | 'virtual';
 export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company_short'];

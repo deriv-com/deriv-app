@@ -15,6 +15,8 @@ import {
     isVanillaContract,
     LocalStore,
     switch_to_tick_chart,
+    CONTRACT_TYPES,
+    TRADE_TYPES,
     getLastContractMarkerIndex,
 } from '@deriv/shared';
 
@@ -242,13 +244,13 @@ export default class ContractTradeStore extends BaseStore {
         const is_call_put = isCallPut(trade_type);
         if (is_call_put) {
             // treat CALLE/PUTE and CALL/PUT the same
-            trade_types = ['CALLE', 'PUTE', 'CALL', 'PUT'];
+            trade_types = [CONTRACT_TYPES.CALLE, CONTRACT_TYPES.PUTE, CONTRACT_TYPES.CALL, CONTRACT_TYPES.PUT];
         } else if (isTurbosContract(trade_type)) {
             //to show both Long and Short recent contracts on DTrader chart
-            trade_types = ['TURBOSLONG', 'TURBOSSHORT'];
+            trade_types = [CONTRACT_TYPES.TURBOS.LONG, CONTRACT_TYPES.TURBOS.SHORT];
         } else if (isVanillaContract(trade_type)) {
             //to show both Call and Put recent contracts on DTrader chart
-            trade_types = ['VANILLALONGCALL', 'VANILLALONGPUT'];
+            trade_types = [CONTRACT_TYPES.VANILLA.CALL, CONTRACT_TYPES.VANILLA.PUT];
         }
 
         return this.contracts
@@ -268,9 +270,9 @@ export default class ContractTradeStore extends BaseStore {
                 // entry_spot=barrier means it is rise_fall contract (blame the api)
                 if (trade_type_is_supported && is_call_put && ((info.barrier && info.entry_tick) || info.shortcode)) {
                     if (`${+info.entry_tick}` === `${+info.barrier}` && !isHighLow(info)) {
-                        return trade_type === 'rise_fall' || trade_type === 'rise_fall_equal';
+                        return trade_type === TRADE_TYPES.RISE_FALL || trade_type === TRADE_TYPES.RISE_FALL_EQUAL;
                     }
-                    return trade_type === 'high_low';
+                    return trade_type === TRADE_TYPES.HIGH_LOW;
                 }
                 return trade_type_is_supported;
             });
@@ -335,7 +337,7 @@ export default class ContractTradeStore extends BaseStore {
                 this.accumulator_contract_barriers_data) ||
             this.accumulator_barriers_data ||
             {};
-        if (trade_type === 'accumulator' && proposal_prev_spot_time && accumulators_high_barrier) {
+        if (trade_type === TRADE_TYPES.ACCUMULATOR && proposal_prev_spot_time && accumulators_high_barrier) {
             if (this.root_store.client.is_beta_chart) {
                 const is_open = isAccumulatorContractOpen(this.last_contract.contract_info);
                 markers.push(

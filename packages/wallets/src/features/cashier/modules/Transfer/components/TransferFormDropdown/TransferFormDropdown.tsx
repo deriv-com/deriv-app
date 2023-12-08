@@ -21,6 +21,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const { fromAccount, toAccount } = values;
     const { isMobile } = useDevice();
     const modal = useModal();
+    const isFromAccountDropdown = fieldName === 'fromAccount';
 
     const toAccountList = useMemo(() => {
         if (!activeWallet) return { tradingAccounts: [], walletAccounts: [] };
@@ -33,29 +34,57 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
         return { tradingAccounts: [], walletAccounts: [activeWallet] };
     }, [accounts?.tradingAccounts, accounts?.walletAccounts, activeWallet, fromAccount?.loginid]);
 
-    const selectedAccount = fieldName === 'fromAccount' ? fromAccount : toAccount;
-    const accountsList = fieldName === 'fromAccount' ? accounts : toAccountList;
-    const label = fieldName === 'fromAccount' ? 'Transfer from' : 'Transfer to';
+    const selectedAccount = isFromAccountDropdown ? fromAccount : toAccount;
+    const accountsList = isFromAccountDropdown ? accounts : toAccountList;
+    const label = isFromAccountDropdown ? 'Transfer from' : 'Transfer to';
+    const badgeLabel = selectedAccount?.demo_account ? 'virtual' : selectedAccount?.landingCompanyName;
 
     const handleSelect = useCallback(
         (account: TInitialTransferFormValues['fromAccount']) => {
             if (account?.loginid === selectedAccount?.loginid) return;
 
-            setValues(prev => {
-                const fromAccount = fieldName === 'fromAccount' ? account : prev.fromAccount;
-                const computedToAccount = account?.loginid !== activeWallet?.loginid ? activeWallet : undefined;
-                const toAccount = fieldName === 'toAccount' ? account : computedToAccount;
-                return {
+            const swapAccounts = () => {
+                setValues(prev => {
+                    return {
+                        ...prev,
+                        activeAmountFieldName: undefined,
+                        fromAccount: isFromAccountDropdown ? account : prev.toAccount,
+                        fromAmount: prev.toAmount,
+                        toAccount: isFromAccountDropdown ? prev.fromAccount : account,
+                        toAmount: prev.fromAmount,
+                    };
+                });
+            };
+
+            if (isFromAccountDropdown) {
+                if (account?.loginid === values.toAccount?.loginid) {
+                    swapAccounts();
+                } else {
+                    setValues(prev => {
+                        const toAccount = account?.loginid !== activeWallet?.loginid ? activeWallet : undefined;
+
+                        return {
+                            ...prev,
+                            activeAmountFieldName: undefined,
+                            fromAccount: account,
+                            fromAmount: 0,
+                            toAccount,
+                            toAmount: 0,
+                        };
+                    });
+                }
+            } else if (account?.loginid === values.fromAccount?.loginid) {
+                swapAccounts();
+            } else {
+                setValues(prev => ({
                     ...prev,
-                    activeAmountFieldName: undefined,
-                    fromAccount,
-                    fromAmount: 0,
-                    toAccount,
+                    activeAmountFieldName: 'fromAmount',
+                    toAccount: account,
                     toAmount: 0,
-                };
-            });
+                }));
+            }
         },
-        [activeWallet, fieldName, selectedAccount?.loginid, setValues]
+        [activeWallet, isFromAccountDropdown, selectedAccount?.loginid, setValues, values.fromAccount, values.toAccount]
     );
 
     return (
@@ -99,10 +128,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 <>
                     {selectedAccount && (
                         <div className='wallets-transfer-form-dropdown__badge'>
-                            <WalletListCardBadge
-                                isDemo={Boolean(selectedAccount?.demo_account)}
-                                label={selectedAccount?.landingCompanyName}
-                            />
+                            <WalletListCardBadge isDemo={Boolean(selectedAccount?.demo_account)} label={badgeLabel} />
                         </div>
                     )}
                     <IcDropdown className='wallets-transfer-form-dropdown__icon-dropdown' />

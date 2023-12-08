@@ -30,7 +30,7 @@ const useP2PPaymentMethods = () => {
     }, [data]);
 
     return {
-        p2p_payment_methods: modified_data,
+        data: modified_data,
         ...rest,
     };
 };

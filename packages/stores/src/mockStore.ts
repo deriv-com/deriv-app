@@ -202,6 +202,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             mt5_login_list: [],
             logout: jest.fn(),
             should_allow_authentication: false,
+            should_allow_poinc_authentication: false,
             active_accounts: [],
             account_list: [],
             available_crypto_currencies: [],

@@ -28,7 +28,6 @@ export default class ContractReplayStore extends BaseStore {
 
     // ---- Normal properties ---
     is_ongoing_contract = false;
-    prev_indicative = 0;
 
     contract_update = observable.object({});
     // TODO: you view a contract and then share that link with another person,
@@ -116,7 +115,6 @@ export default class ContractReplayStore extends BaseStore {
         this.is_static_chart = false;
         this.is_chart_loading = true;
         this.contract_info = {};
-        this.prev_indicative = 0;
         this.chart_state = '';
         this.root_store.ui.toggleHistoryTab(false);
         WS.removeOnReconnect();
@@ -146,10 +144,6 @@ export default class ContractReplayStore extends BaseStore {
 
         this.contract_info = response.proposal_open_contract;
         this.contract_update = response.proposal_open_contract.limit_order;
-
-        // Add indicative status for contract
-        const new_indicative = +this.contract_info.bid_price;
-        this.prev_indicative = new_indicative;
 
         const is_forward_starting =
             !!this.contract_info.is_forward_starting ||

@@ -54,7 +54,7 @@ const GuideContent = observer(({ guide_tab_content, video_tab_content }: TGuideC
     const handleKeyboardEvent = (e: KeyboardEvent) => {
         if (e.key === 'Enter') triggerTour('OnBoard');
     };
-    const has_guide_content = guide_tab_content.length > 0 || guide_tab_content.length > 0;
+    const has_guide_content = guide_tab_content.length > 0 || video_tab_content.length > 0;
 
     return React.useMemo(
         () =>

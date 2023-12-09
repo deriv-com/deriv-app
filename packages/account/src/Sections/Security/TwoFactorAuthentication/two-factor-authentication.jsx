@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { useHistory } from 'react-router';
 import {
     Timeline,
     DesktopWrapper,
@@ -11,6 +12,7 @@ import {
     Loading,
     Text,
 } from '@deriv/components';
+import { useNetworkStatus } from '@deriv/hooks';
 import { getPropertyValue, isMobile, PlatformContext, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
@@ -30,9 +32,18 @@ const TwoFactorAuthentication = observer(() => {
     const [qr_secret_key, setQrSecretKey] = React.useState('');
     const { is_appstore } = React.useContext(PlatformContext);
 
+    const network_status = useNetworkStatus();
+    const history = useHistory();
+
     React.useEffect(() => {
         getDigitStatus();
     }, [getDigitStatus, has_enabled_two_fa]);
+
+    React.useEffect(() => {
+        if (network_status.online && network_status.since) {
+            history.go(0);
+        }
+    }, [history, network_status]);
 
     const generateQrCode = React.useCallback(async () => {
         setQrLoading(true);

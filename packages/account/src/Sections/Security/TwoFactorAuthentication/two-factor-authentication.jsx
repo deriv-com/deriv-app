@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
-import { useHistory } from 'react-router';
 import {
     Timeline,
     DesktopWrapper,
@@ -14,11 +13,11 @@ import {
 } from '@deriv/components';
 import { useNetworkStatus } from '@deriv/hooks';
 import { getPropertyValue, isMobile, PlatformContext, WS } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import DigitForm from './digit-form.jsx';
 import TwoFactorAuthenticationArticle from './two-factor-authentication-article.jsx';
-import { observer, useStore } from '@deriv/stores';
 
 const TwoFactorAuthentication = observer(() => {
     const { client, common } = useStore();
@@ -33,7 +32,6 @@ const TwoFactorAuthentication = observer(() => {
     const { is_appstore } = React.useContext(PlatformContext);
 
     const network_status = useNetworkStatus();
-    const history = useHistory();
 
     React.useEffect(() => {
         getDigitStatus();
@@ -41,9 +39,9 @@ const TwoFactorAuthentication = observer(() => {
 
     React.useEffect(() => {
         if (network_status.online && network_status.since) {
-            history.go(0);
+            window.location.reload();
         }
-    }, [history, network_status]);
+    }, [network_status]);
 
     const generateQrCode = React.useCallback(async () => {
         setQrLoading(true);

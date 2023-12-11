@@ -1,0 +1,9 @@
+.wallets-compare-accounts-outline {
+    display: flex;
+    flex-direction: column;
+    padding: 4rem 2.4rem 0;
+    border-radius: 2.4rem;
+    @include mobile {
+        padding: 7rem 1.5rem 0;
+    }
+}

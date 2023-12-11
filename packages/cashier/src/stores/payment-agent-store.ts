@@ -205,7 +205,6 @@ export default class PaymentAgentStore {
 
     filterPaymentAgentList(bank?: number | string) {
         this.setPaymentAgentSearchWarning(false);
-        const { common } = this.root_store;
 
         this.filtered_list = [];
 
@@ -239,6 +238,12 @@ export default class PaymentAgentStore {
         }
 
         this.setIsSearchLoading(false);
+
+        this.routeToCashierDepositIfAgentVisible();
+    }
+
+    routeToCashierDepositIfAgentVisible() {
+        const { common } = this.root_store;
 
         if (!this.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
             common.routeTo(routes.cashier_deposit);

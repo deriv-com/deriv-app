@@ -4,12 +4,8 @@
     grid-gap: 1rem;
 
     @include desktop {
-        max-width: 36rem;
         margin: 0 auto;
-
-        .dc-icon {
-            margin-top: 1rem;
-        }
+        grid-gap: 2.4rem;
 
         .dc-input {
             margin-bottom: unset;
@@ -50,5 +46,11 @@
         margin-left: 0;
         color: var(--text-less-prominent);
         align-self: start;
+    }
+
+    &__arrow-container {
+        height: 100%;
+        display: flex;
+        align-items: center;
     }
 }

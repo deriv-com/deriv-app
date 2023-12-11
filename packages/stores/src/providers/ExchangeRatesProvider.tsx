@@ -16,6 +16,8 @@ const ExchangeRatesProvider = ({ children }: TExchangeRatesProvider) => {
 
     const handleSubscription = (base_currency: string, target_currency: string) => {
         if (base_currency === '' || target_currency === '' || base_currency === target_currency) return;
+        if (exchange_rates[base_currency]?.[target_currency]) return;
+
         subscribe({
             payload: {
                 base_currency,

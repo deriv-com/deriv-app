@@ -14,11 +14,13 @@ type TTutorialsTabDesktop = {
 const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: TTutorialsTabDesktop) => {
     const { dashboard } = useDBotStore();
 
-    const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue } = dashboard;
+    const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue, resetTutorialTabContent } =
+        dashboard;
     const search = faq_search_value?.toLowerCase();
 
     const onCloseHandleSearch = () => {
         setFAQSearchValue('');
+        resetTutorialTabContent();
         setActiveTabTutorial(prev_active_tutorials);
     };
 
@@ -67,7 +69,7 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
                 {tutorial_tabs.map(
                     ({ label, content }) =>
                         content && (
-                            <div label={label} key={label}>
+                            <div label={label} key={`${content}_${label}`}>
                                 {content}
                             </div>
                         )

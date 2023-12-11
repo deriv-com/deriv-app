@@ -34,7 +34,7 @@ $size-map: (
 );
 
 .wallets-button {
-    display: inline-flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.8rem;
@@ -55,7 +55,7 @@ $size-map: (
     @each $color, $values in $color-map {
         &__color--#{$color} {
             background-color: map-get($values, backgroundcolor);
-            &:hover {
+            &:hover:not(:disabled) {
                 background-color: map-get($values, hover);
             }
         }
@@ -68,14 +68,14 @@ $size-map: (
         &--outlined {
             border: 1px solid var(--system-light-3-less-prominent-text, #999);
             background: none;
-            &:hover {
+            &:hover:not(:disabled) {
                 background: #00000014;
             }
         }
         &--ghost {
             background: none;
             border: none;
-            &:hover {
+            &:hover:not(:disabled) {
                 background: #ff444f14;
             }
         }

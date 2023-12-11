@@ -1,31 +1,33 @@
 import React from 'react';
+import { FormikValues } from 'formik';
 import countries from 'i18n-iso-countries';
-import { Localize, localize } from '@deriv/translations';
+import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
 import {
     filterObjProperties,
     toMoment,
     validLength,
     validName,
     getIDVNotApplicableOption,
-    idv_error_statuses,
+    IDV_ERROR_STATUS,
     AUTH_STATUS_CODES,
 } from '@deriv/shared';
-import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
-import { FormikValues } from 'formik';
+import { Localize, localize } from '@deriv/translations';
 import { getIDVDocuments } from '../Constants/idv-document-config';
 import { TServerError } from '../Types';
 import { LANGUAGE_CODES } from '../Constants/onfido';
 
 export const documentAdditionalError = (
-    document_additional: string | undefined,
-    document_additional_format: string
+    additional_document_value: string | undefined,
+    document_additional_config: FormikValues
 ) => {
     let error_message = null;
-    if (!document_additional) {
-        error_message = localize('Please enter your document number. ');
+    if (!additional_document_value) {
+        error_message = localize('Please enter your {{document_name}}. ', {
+            document_name: document_additional_config?.display_name?.toLowerCase() ?? localize('document number'),
+        });
     } else {
-        const format_regex = getRegex(document_additional_format);
-        if (!format_regex.test(document_additional)) {
+        const format_regex = getRegex(document_additional_config?.format);
+        if (!format_regex.test(additional_document_value)) {
             error_message = localize('Please enter the correct format. ');
         }
     }
@@ -103,6 +105,8 @@ export const generatePlaceholderText = (selected_doc: string): string => {
             return localize('Enter Driver License Reference number');
         case 'ssnit':
             return localize('Enter your SSNIT number');
+        case 'national_id_no_photo':
+            return localize('Enter your National Identification Number (NIN)');
         default:
             return localize('Enter your document number');
     }
@@ -147,8 +151,8 @@ export const isDocumentTypeValid = (document_type: FormikValues) => {
     return undefined;
 };
 
-export const isAdditionalDocumentValid = (document_type: FormikValues, document_additional?: string) => {
-    const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
+export const isAdditionalDocumentValid = (document_type: FormikValues, additional_document_value?: string) => {
+    const error_message = documentAdditionalError(additional_document_value, document_type?.additional);
     if (error_message) {
         return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
     }
@@ -166,6 +170,9 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
                 break;
             case 'ssnit':
                 document_name = 'SSNIT number';
+                break;
+            case 'national_id_no_photo':
+                document_name = 'NIN';
                 break;
             default:
                 document_name = 'document number';
@@ -258,12 +265,12 @@ export const validate = <T,>(errors: Record<string, string>, values: T) => {
     };
 };
 
-type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];
+type TIDVErrorStatus = keyof typeof IDV_ERROR_STATUS;
 export const verifyFields = (status: TIDVErrorStatus) => {
     switch (status) {
-        case idv_error_statuses.poi_dob_mismatch:
+        case IDV_ERROR_STATUS.DobMismatch.code:
             return ['date_of_birth'];
-        case idv_error_statuses.poi_name_mismatch:
+        case IDV_ERROR_STATUS.NameMismatch.code:
             return ['first_name', 'last_name'];
         default:
             return ['first_name', 'last_name', 'date_of_birth'];

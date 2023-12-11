@@ -15,12 +15,10 @@ const BuySell = () => {
 
     React.useEffect(() => {
         if (general_store.active_index !== 0) general_store.setActiveIndex(0);
-        const disposeIsListedReaction = buy_sell_store.registerIsListedReaction();
         const disposeAdvertIntervalReaction = buy_sell_store.registerAdvertIntervalReaction();
         buy_sell_store.setLocalCurrency(buy_sell_store.selected_local_currency);
 
         return () => {
-            disposeIsListedReaction();
             disposeAdvertIntervalReaction();
             general_store.setShouldShowPopup(false);
         };

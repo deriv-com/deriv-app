@@ -1,17 +1,17 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { TContractInfo } from '@deriv/shared';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
+import { mockContractInfo, TRADE_TYPES } from '@deriv/shared';
 import ContractDetails from '../contract-details';
 
 const contract_types = {
     test_contract_type: 'test_contract_type',
-    multiplier: 'multiplier',
-    vanilla: 'vanillalongcall',
+    multiplier: TRADE_TYPES.MULTIPLIER,
+    vanilla: TRADE_TYPES.VANILLA.CALL,
     digit: 'digit',
     expiry: 'expiry',
 };
-const contract_info = {
+const contract_info = mockContractInfo({
     barrier: '1460.00',
     cancellation: { ask_price: 122223 },
     contract_type: contract_types.test_contract_type,
@@ -38,7 +38,7 @@ const contract_info = {
     profit: -0.1,
     status: 'open',
     transaction_ids: { buy: 420381262708 },
-} as TContractInfo;
+});
 
 const mock_default_props = {
     contract_end_time: 123,
@@ -146,5 +146,19 @@ describe('<ContractDetails />', () => {
         render(<ContractDetails {...new_props} />);
 
         expect(screen.getByText('Deal cancellation (expired)')).toBeInTheDocument();
+    });
+
+    it('should render correct rounding for barrier, entry spot and exit spot', () => {
+        const new_props = { ...mock_default_props };
+        new_props.contract_info.contract_type = contract_types.vanilla;
+        new_props.contract_info.barrier = '2037.000';
+        new_props.contract_info.entry_spot_display_value = '2031.00';
+        new_props.exit_spot = '2039.0';
+
+        render(<ContractDetails {...new_props} />);
+
+        expect(screen.getByText('2,037.000')).toBeInTheDocument();
+        expect(screen.getByText('2,031.00')).toBeInTheDocument();
+        expect(screen.getByText('2,039.0')).toBeInTheDocument();
     });
 });

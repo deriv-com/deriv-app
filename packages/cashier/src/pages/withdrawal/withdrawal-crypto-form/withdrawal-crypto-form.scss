@@ -29,9 +29,6 @@
     &__percentage {
         &-container {
             margin-top: 2.4rem;
-            @include mobile {
-                margin-top: 0;
-            }
         }
         &-selector {
             margin-bottom: 1.6rem;

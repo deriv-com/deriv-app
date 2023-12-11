@@ -9,7 +9,7 @@ on:
 jobs:
   integration_tests:
     name: Run Integration Tests
-    runs-on: Runner_16cores_Deriv-app
+    runs-on: Runner_8cores_Deriv-app
     environment: Preview
     steps:
     - name: Checkout
@@ -25,5 +25,5 @@ jobs:
       run: npm run build:all
     - name: Install Playwright Browsers
       run: npx playwright install
-    - name: Run integration tests
-      run: npm run test:e2e
+    - name: Run component tests
+      run: npm run test:component

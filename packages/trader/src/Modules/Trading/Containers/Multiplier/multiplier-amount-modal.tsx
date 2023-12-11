@@ -1,6 +1,6 @@
 import React from 'react';
 import { Div100vhContainer, Modal, usePreventIOSZoom } from '@deriv/components';
-import { useIsMounted, WS } from '@deriv/shared';
+import { useIsMounted, WS, CONTRACT_TYPES } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile';
@@ -60,7 +60,7 @@ const TradeParamsMobile = observer(({ toggleModal }: { toggleModal: TToggleModal
             if (
                 isMounted() &&
                 proposal &&
-                echo_req.contract_type === 'MULTUP' &&
+                echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.UP &&
                 Number(echo_req.amount) === Number(stake_ref.current)
             ) {
                 setCommission(proposal.commission);

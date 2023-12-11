@@ -1,0 +1,44 @@
+.wallets-withdrawal-crypto-receipt {
+    max-width: 58.8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+    @include mobile {
+        max-width: 100%;
+        gap: 1.6rem;
+    }
+
+    &__accounts-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.8rem;
+
+        & .wallets-card__details {
+            padding: 1.6rem;
+            width: 20rem;
+
+            @include mobile {
+                width: 16rem;
+                padding: 0.8rem;
+            }
+        }
+
+        & > svg {
+            transform: rotate(-90deg);
+        }
+    }
+
+    &__withdrawal-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+
+    &__actions {
+        display: flex;
+        gap: 0.8rem;
+    }
+}

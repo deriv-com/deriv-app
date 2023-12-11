@@ -1,22 +1,30 @@
 .withdrawal-crypto-form {
     display: flex;
+    width: 100%;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 4rem;
     padding-top: 2.4rem;
+
+    .dc-input__field {
+        height: auto;
+    }
+
+    .withdraw__input {
+        width: 100%;
+    }
+
+    .cashier__form-submit-button {
+        margin: 0;
+    }
 
     &__submit {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-end;
-        margin: 2rem auto 0;
+        margin: 2.4rem auto 0;
         @include desktop {
-            min-width: 36rem;
-            width: fit-content;
-        }
-        @include mobile {
-            align-items: flex-end;
+            padding: 1.6rem 2.4rem;
         }
 
         > * {
@@ -28,11 +36,12 @@
     }
     &__percentage {
         &-container {
+            width: 100%;
             margin-top: 2.4rem;
         }
         &-selector {
             margin-bottom: 1.6rem;
-            width: fit-content;
+            width: 100%;
             @include mobile {
                 display: flex;
                 flex-direction: column;
@@ -40,5 +49,12 @@
                 width: 100%;
             }
         }
+    }
+}
+
+.cashier__wrapper--is-mobile .cashier__wrapper {
+    @include mobile() {
+        width: 100%;
+        margin-inline: 0;
     }
 }

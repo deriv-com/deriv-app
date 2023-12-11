@@ -36,9 +36,12 @@ const TwoFactorAuthentication = observer(() => {
 
     React.useEffect(() => {
         console.log('calling getDigitStatus');
-        getDigitStatus();
+        const fetchDigitStatus = async () => {
+            await getDigitStatus();
+        };
+        fetchDigitStatus();
         console.log('getDigitStatus called');
-    }, [getDigitStatus, has_enabled_two_fa]);
+    }, [getDigitStatus]);
 
     React.useEffect(() => {
         if (network_status.online && network_status.since) {
@@ -76,7 +79,9 @@ const TwoFactorAuthentication = observer(() => {
             return;
         }
 
-        if (!status_response) generateQrCode();
+        if (!status_response) {
+            await generateQrCode();
+        }
 
         setLoading(false);
     }, [getTwoFAStatus, generateQrCode]);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trans } from 'react-i18next';
 import { useBalance } from '@deriv/api';
 import { THooks } from '../../types';
 import { WalletText } from '../Base';
@@ -13,7 +14,7 @@ const WalletListCardIBalance: React.FC<TProps> = ({ balance }) => {
     return (
         <div className='wallets-balance__container'>
             <WalletText align='right' color='primary' size='xs'>
-                Wallet balance
+                <Trans defaults='Wallet balance' />
             </WalletText>
             {isLoading ? (
                 <div className='wallets-skeleton wallets-balance--loader' />

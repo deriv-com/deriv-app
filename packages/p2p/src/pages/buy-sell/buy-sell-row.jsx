@@ -4,9 +4,9 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import { Button, Icon, Table, Text } from '@deriv/components';
-import { useExchangeRate } from '@deriv/hooks';
 import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { useP2PExchangeRate } from '@deriv/hooks';
 
 import { Localize, localize } from 'Components/i18next';
 import { OnlineStatusAvatar } from 'Components/online-status';
@@ -19,12 +19,26 @@ import { generateEffectiveRate } from 'Utils/format-value';
 import './buy-sell-row.scss';
 
 const BuySellRow = ({ row: advert }) => {
+    const {
+        account_currency,
+        advertiser_details,
+        counterparty_type,
+        effective_rate,
+        local_currency,
+        max_order_amount_limit_display,
+        min_order_amount_limit_display,
+        payment_method_names,
+        price_display,
+        rate_type,
+        rate,
+    } = advert;
+
     const { buy_sell_store, general_store } = useStores();
     const {
         client: { currency },
     } = useStore();
     const history = useHistory();
-    const { getRate } = useExchangeRate();
+    const exchange_rate = useP2PExchangeRate(local_currency);
 
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
@@ -44,20 +58,6 @@ const BuySellRow = ({ row: advert }) => {
         );
     }
 
-    const {
-        account_currency,
-        advertiser_details,
-        counterparty_type,
-        effective_rate,
-        local_currency,
-        max_order_amount_limit_display,
-        min_order_amount_limit_display,
-        payment_method_names,
-        price_display,
-        rate_type,
-        rate,
-    } = advert;
-
     const is_my_advert = advert.advertiser_details.id === general_store.advertiser_id;
     const is_buy_advert = counterparty_type === buy_sell.BUY;
     const { name: advertiser_name, rating_average, rating_count } = advert.advertiser_details;
@@ -67,7 +67,7 @@ const BuySellRow = ({ row: advert }) => {
         rate_type,
         rate,
         local_currency,
-        exchange_rate: getRate(local_currency),
+        exchange_rate,
         market_rate: effective_rate,
     });
     const onClickRow = () => {

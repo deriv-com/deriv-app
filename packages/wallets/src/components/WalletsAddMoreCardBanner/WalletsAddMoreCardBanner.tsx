@@ -26,13 +26,15 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     const { isMobile } = useDevice();
     const history = useHistory();
     const modal = useModal();
-    const syncLocalStorageClientAccounts = useSyncLocalStorageClientAccounts();
+    const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
 
     const renderButtons = useCallback(
         () => (
             <div className='wallets-add-more__success-footer'>
-                <WalletButton color='black' onClick={() => modal.hide()} text='Maybe later' variant='outlined' />
-                <WalletButton onClick={() => history.push('wallets/cashier/deposit')} text='Deposit now' />
+                <WalletButton color='black' onClick={() => modal.hide()} variant='outlined'>
+                    Maybe later
+                </WalletButton>
+                <WalletButton onClick={() => history.push('wallets/cashier/deposit')}>Deposit now</WalletButton>
             </div>
         ),
         [history] // eslint-disable-line react-hooks/exhaustive-deps
@@ -40,10 +42,10 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
 
     useEffect(() => {
         if (data && isMutateSuccess) {
-            syncLocalStorageClientAccounts(data);
+            addWalletAccountToLocalStorage(data);
             switchAccount(data?.client_id);
         }
-    }, [data, isMutateSuccess, switchAccount, syncLocalStorageClientAccounts]);
+    }, [addWalletAccountToLocalStorage, data, isMutateSuccess, switchAccount]);
 
     useEffect(
         () => {
@@ -101,8 +103,9 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
                     currency && mutate({ account_type: isCrypto ? 'crypto' : 'doughflow', currency });
                 }}
                 size={isMobile ? 'sm' : 'lg'}
-                text={isAdded ? 'Added' : 'Add'}
-            />
+            >
+                {isAdded ? 'Added' : 'Add'}
+            </WalletButton>
         </div>
     );
 };

@@ -185,3 +185,8 @@ export type TProofOfOwnershipErrors = Record<
 >;
 
 export type TVerificationStatus = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+
+export type TFilesDescription = {
+    descriptions: { id: string; value: JSX.Element }[];
+    title: React.ReactNode;
+};

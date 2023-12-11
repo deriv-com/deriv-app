@@ -20,12 +20,12 @@ export const FeatureFlagsSection = observer(() => {
     if (!feature_flags.data) return null;
 
     return (
-        <div style={{ marginTop: '4rem' }}>
+        <div className='feature-flags'>
             <Text as='h1' weight='bold' color='prominent'>
                 Feature flags
             </Text>
             {Object.keys(visible_feature_flags).map(flag => (
-                <div key={flag} style={{ marginTop: '1.6rem' }}>
+                <div key={flag} className='feature-flags__item'>
                     <Checkbox
                         label={flag}
                         value={visible_feature_flags[flag as keyof typeof visible_feature_flags]}

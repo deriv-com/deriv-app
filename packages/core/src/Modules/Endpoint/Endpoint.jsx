@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Input, Checkbox, Text } from '@deriv/components';
-import { getDebugServiceWorker, getAppId, getSocketURL, PlatformContext, isMobile } from '@deriv/shared';
+import { getDebugServiceWorker, getAppId, getSocketURL, PlatformContext } from '@deriv/shared';
 import { FeatureFlagsSection } from './FeatureFlagsSection';
 
 const InputField = props => {
@@ -61,17 +61,12 @@ const Endpoint = () => {
             }}
         >
             {({ errors, isSubmitting, touched, values, handleChange, setFieldTouched }) => (
-                <Form style={{ width: '30vw', minWidth: '300px', margin: isMobile() ? 'auto' : '20vh auto' }}>
-                    <div
-                        style={{
-                            marginBottom: '1.6rem',
-                        }}
-                    >
+                <Form className='endpoint'>
+                    <div className='endpoint__title'>
                         <Text as='h1' weight='bold' color='prominent'>
                             Change API endpoint
                         </Text>
                     </div>
-
                     <InputField name='server' label='Server' hint='e.g. frontend.derivws.com' />
                     <InputField
                         name='app_id'
@@ -92,7 +87,7 @@ const Endpoint = () => {
                     />
                     <Field name='is_appstore_enabled'>
                         {({ field }) => (
-                            <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
+                            <div className='endpoint__checkbox'>
                                 <Checkbox
                                     {...field}
                                     label='Enable Appstore'
@@ -107,7 +102,7 @@ const Endpoint = () => {
                     </Field>
                     <Field name='is_debug_service_worker_enabled'>
                         {({ field }) => (
-                            <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
+                            <div className='endpoint__checkbox'>
                                 <Checkbox
                                     {...field}
                                     label='Enable Service Worker registration for this URL'
@@ -138,7 +133,6 @@ const Endpoint = () => {
                         text='Submit'
                         primary
                     />
-                    <span style={{ marginLeft: '1.6rem' }} />
                     <Button
                         type='button'
                         onClick={() => {

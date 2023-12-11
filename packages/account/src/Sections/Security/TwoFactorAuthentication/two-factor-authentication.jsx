@@ -76,6 +76,7 @@ const TwoFactorAuthentication = observer(() => {
         console.log('response of getTwoFAStatus: ', status_response);
         if (status_response.error) {
             setErrorMessage(status_response.error.message);
+            setLoading(false);
             return;
         }
 
@@ -86,8 +87,8 @@ const TwoFactorAuthentication = observer(() => {
         setLoading(false);
     }, [getTwoFAStatus, generateQrCode]);
 
-    if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (error_message) return <LoadErrorMessage error_message={error_message} />;
+    if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
     const TwoFactorEnabled = (
         <ThemedScrollbars is_bypassed={isMobile()} className='two-factor__scrollbars'>

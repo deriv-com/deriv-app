@@ -15,8 +15,26 @@ jest.mock('App/Components/Animations', () => ({
 }));
 jest.mock('../../LastDigitPrediction', () => ({
     ...jest.requireActual('../../LastDigitPrediction'),
-    DigitSpot: jest.fn(() => <div>{mocked_digit_spot}</div>),
-    LastDigitPrediction: jest.fn(() => <div>{mocked_last_digit_prediction}</div>),
+    DigitSpot: jest.fn(({ current_spot, is_selected_winning, is_won }) => (
+        <div>
+            {mocked_digit_spot}
+            <div>Spot:{current_spot}</div>
+            <div>{is_selected_winning ? 'Selected winning' : null}</div>
+            <div>{is_won ? 'Won' : null}</div>
+        </div>
+    )),
+    LastDigitPrediction: jest.fn(({ onLastDigitSpot }) => (
+        <div>
+            {mocked_last_digit_prediction}
+            <button
+                onClick={() =>
+                    onLastDigitSpot({ spot: '2361.35', is_lost: false, is_selected_winning: true, is_won: true })
+                }
+            >
+                Set spot
+            </button>
+        </div>
+    )),
 }));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -29,7 +47,20 @@ describe('<Digits />', () => {
     let mocked_props: React.ComponentProps<typeof Digits>;
     beforeEach(() => {
         mocked_props = {
-            contract_info: mockContractInfo(),
+            contract_info: mockContractInfo({
+                tick_stream: [
+                    {
+                        epoch: 1700203489,
+                        tick: 2361.33,
+                        tick_display_value: '2361.33',
+                    },
+                    {
+                        epoch: 1700203490,
+                        tick: 2361.35,
+                        tick_display_value: '2361.35',
+                    },
+                ],
+            }),
             digits_array: [90, 107, 105, 94, 100, 96, 96, 101, 105, 97],
             digits_info: {},
             display_status: undefined,
@@ -87,5 +118,20 @@ describe('<Digits />', () => {
         expect(screen.getByText(tick_information_text)).toBeInTheDocument();
         expect(screen.getByText(mocked_digit_spot)).toBeInTheDocument();
         expect(screen.getByText(mocked_last_digit_prediction)).toBeInTheDocument();
+    });
+    it('onLastDigitSpot function call should set new properties in <DigitSpot />', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        render(<Digits {...mocked_props} />);
+
+        expect(screen.getByText('Spot:')).toBeInTheDocument();
+        expect(screen.queryByText('Selected winning')).not.toBeInTheDocument();
+        expect(screen.queryByText('Won')).not.toBeInTheDocument();
+
+        userEvent.click(screen.getByText('Set spot'));
+
+        expect(screen.getByText('Spot:2361.35')).toBeInTheDocument();
+        expect(screen.getByText('Selected winning')).toBeInTheDocument();
+        expect(screen.getByText('Won')).toBeInTheDocument();
     });
 });

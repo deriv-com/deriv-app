@@ -22,7 +22,7 @@
     }
 
     .cashier__wrapper--is-mobile .cashier__wrapper {
-        @include mobile() {
+        @include mobile {
             width: 100%;
             margin-inline: 0;
         }

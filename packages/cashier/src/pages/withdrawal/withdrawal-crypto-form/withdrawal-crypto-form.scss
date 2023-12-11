@@ -21,13 +21,6 @@
         margin: 0;
     }
 
-    .cashier__wrapper--is-mobile .cashier__wrapper {
-        @include mobile {
-            width: 100%;
-            margin-inline: 0;
-        }
-    }
-
     &__submit {
         display: flex;
         flex-direction: column;
@@ -59,5 +52,12 @@
                 align-items: center;
             }
         }
+    }
+}
+
+.cashier__wrapper--is-mobile .cashier__wrapper {
+    @include mobile {
+        width: 100%;
+        margin-inline: 0;
     }
 }

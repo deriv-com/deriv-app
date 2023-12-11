@@ -53,18 +53,15 @@
             }
         }
     }
-}
 
-.cashier__wrapper--is-mobile .cashier__wrapper {
-    @include mobile() {
-        width: 100%;
-        margin-inline: 0;
+    .cashier__wrapper--is-mobile .cashier__wrapper {
+        @include mobile() {
+            width: 100%;
+            margin-inline: 0;
+        }
+    }
+
+    .dc-field--error {
+        line-height: 1.5;
     }
 }
-<<<<<<< HEAD
-
-.dc-field--error {
-    line-height: 1.5;
-}
-=======
->>>>>>> rostislav/legacy-cashier-withdrawal-fix

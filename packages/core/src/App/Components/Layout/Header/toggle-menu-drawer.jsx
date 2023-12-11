@@ -96,7 +96,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             processRoutes();
         }
 
-        return () => clearTimeout(timeout);
+        return () => clearTimeout(timeout.current);
     }, [is_appstore, account_status, should_allow_authentication, is_trading_hub_category, is_next_wallet_enabled]);
 
     const toggleDrawer = React.useCallback(() => {

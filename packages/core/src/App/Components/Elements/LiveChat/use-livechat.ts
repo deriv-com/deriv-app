@@ -2,12 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { liveChatInitialization } from './live-chat';
 import Cookies from 'js-cookie';
-import { deriv_urls } from '@deriv/shared';
+import { deriv_urls, useIsMounted } from '@deriv/shared';
 
 // Todo: Should break this into smaller hooks or utility functions.
 const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     const [isReady, setIsReady] = useState(false);
     const [reload, setReload] = useState(false);
+    const isMounted = useIsMounted();
     const history = useHistory();
     const widget = window.LiveChatWidget;
 
@@ -32,8 +33,10 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     const onHistoryChange = useCallback(() => {
         liveChatDeletion().then(() => {
             liveChatInitialization().then(() => {
-                setReload(true);
-                setIsReady(true);
+                if (isMounted()) {
+                    setReload(true);
+                    setIsReady(true);
+                }
             });
         });
     }, []);

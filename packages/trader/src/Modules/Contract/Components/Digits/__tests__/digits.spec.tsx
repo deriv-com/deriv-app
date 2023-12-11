@@ -63,12 +63,9 @@ describe('<Digits />', () => {
             }),
             digits_array: [90, 107, 105, 94, 100, 96, 96, 101, 105, 97],
             digits_info: {},
-            display_status: undefined,
-            is_digit_contract: undefined,
-            is_ended: undefined,
             is_trade_page: true,
             onDigitChange: jest.fn(),
-            selected_digit: 0,
+            selected_digit: 5,
             tick: {
                 ask: 2098.19,
                 bid: 2097.59,

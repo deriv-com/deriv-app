@@ -11,18 +11,35 @@ export type TActiveSymbol = {
     value: string;
 };
 
+export type TLossThresholdWarningData = {
+    show: boolean;
+    loss_amount?: string | number;
+    currency?: string;
+    highlight_field?: Array<string>;
+    already_shown?: boolean;
+};
+
 interface IQuickStrategyStore {
+    current_duration_min_max: {
+        min: number;
+        max: number;
+    };
     root_store: RootStore;
     is_open: boolean;
     selected_strategy: string;
     form_data: TFormData;
+    loss_threshold_warning_data: {
+        show: boolean;
+    };
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
+    setLossThresholdWarningData: (data: TLossThresholdWarningData) => void;
     setFormVisibility: (is_open: boolean) => void;
     setSelectedStrategy: (strategy: string) => void;
     setValue: (name: string, value: string) => void;
     onSubmit: (data: TFormData) => void;
     toggleStopBotDialog: () => void;
+    setCurrentDurationMinMax: (min: number, max: number) => void;
 }
 
 export default class QuickStrategyStore implements IQuickStrategyStore {
@@ -37,17 +54,29 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
     };
     is_contract_dialog_open = false;
     is_stop_bot_dialog_open = false;
+    current_duration_min_max = {
+        min: 0,
+        max: 10,
+    };
+    loss_threshold_warning_data: TLossThresholdWarningData = {
+        show: false,
+    };
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
+            current_duration_min_max: observable,
             form_data: observable,
             is_contract_dialog_open: observable,
             is_open: observable,
             is_stop_bot_dialog_open: observable,
+            initializeLossThresholdWarningData: action,
             selected_strategy: observable,
+            loss_threshold_warning_data: observable,
             onSubmit: action,
+            setCurrentDurationMinMax: action,
             setFormVisibility: action,
             setSelectedStrategy: action,
+            setLossThresholdWarningData: action,
             setValue: action,
             toggleStopBotDialog: action,
         });
@@ -62,6 +91,21 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         );
     }
 
+    setLossThresholdWarningData = (data: TLossThresholdWarningData) => {
+        this.loss_threshold_warning_data = {
+            ...this.loss_threshold_warning_data,
+            ...data,
+        };
+    };
+
+    initializeLossThresholdWarningData = () => {
+        this.loss_threshold_warning_data = {
+            show: false,
+            highlight_field: [],
+            already_shown: false,
+        };
+    };
+
     setFormVisibility = (is_open: boolean) => {
         this.is_open = is_open;
     };
@@ -72,6 +116,13 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
 
     setValue = (name: string, value: string | number | boolean) => {
         this.form_data[name as keyof TFormData] = value;
+    };
+
+    setCurrentDurationMinMax = (min = 0, max = 10) => {
+        this.current_duration_min_max = {
+            min,
+            max,
+        };
     };
 
     onSubmit = async (data: TFormData) => {
@@ -109,7 +160,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             market,
             submarket,
             tradetypecat: trade_type_cat,
-            alembert_unit: unit,
+            dalembert_unit: unit,
             oscar_unit: unit,
             ...rest_data,
         };

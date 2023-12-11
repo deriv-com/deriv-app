@@ -7,8 +7,10 @@ const getDesktopSteps = (
     isDemoWallet: boolean,
     hasMT5Account: boolean,
     hasDerivAppsTradingAccount: boolean,
-    isAllWalletsAlreadyAdded: boolean
-): Step[] => [
+    isAllWalletsAlreadyAdded: boolean,
+    walletNumber = 1
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): any[] => [
     // Wallet header
     {
         content: (
@@ -22,7 +24,7 @@ const getDesktopSteps = (
         placement: 'bottom',
         spotlightPadding: 0,
         styles: { spotlight: { borderRadius: '1.6rem 1.6rem 0rem 0rem' } },
-        target: '.wallets-accordion__header',
+        target: `.wallets-accordion:nth-child(${walletNumber}) .wallets-accordion__header`,
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 Wallets
@@ -51,7 +53,7 @@ const getDesktopSteps = (
                 borderRadius: '6.4rem',
             },
         },
-        target: '.wallets-accordion__header .wallets-header__actions',
+        target: `.wallets-accordion:nth-child(${walletNumber}) .wallets-accordion__header .wallets-header__actions`,
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 Wallet actions

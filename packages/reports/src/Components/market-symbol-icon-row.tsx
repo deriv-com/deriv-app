@@ -1,7 +1,6 @@
 import React from 'react';
-import { extractInfoFromShortcode, isHighLow } from '@deriv/shared';
+import { extractInfoFromShortcode, getMarketName, getTradeTypeName, isHighLow } from '@deriv/shared';
 import { Icon, Popover, IconTradeTypes } from '@deriv/components';
-import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
 import classNames from 'classnames';
 
 type TMarketSymbolIconRow = {

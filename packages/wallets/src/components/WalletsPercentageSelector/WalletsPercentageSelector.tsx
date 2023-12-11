@@ -17,7 +17,7 @@ type TWalletsPercentageSelector = {
 };
 
 const WalletsPercentageSelector = ({ amount, balance, onChangePercentage }: TWalletsPercentageSelector) => {
-    const balancePercentage = useMemo(() => (amount * 100) / balance, [amount, balance]);
+    const balancePercentage = useMemo(() => (balance > 0 ? (amount * 100) / balance : 0), [amount, balance]);
 
     const getBlockFillPercentage = useCallback(
         (blockPercentage: number) => {

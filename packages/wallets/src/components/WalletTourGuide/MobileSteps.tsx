@@ -6,8 +6,10 @@ const getMobileSteps = (
     isDemoWallet: boolean,
     hasMT5Account: boolean,
     hasDerivAppsTradingAccount: boolean,
-    isAllWalletsAlreadyAdded: boolean
-): Step[] => [
+    isAllWalletsAlreadyAdded: boolean,
+    walletNumber = 1
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): any[] => [
     // Wallet card
     {
         content: (
@@ -21,7 +23,7 @@ const getMobileSteps = (
         placement: 'bottom',
         spotlightPadding: 0,
         styles: { spotlight: { borderRadius: '0.8rem' } },
-        target: '.wallets-carousel-content__container .wallets-card',
+        target: `.wallets-carousel-content__container .wallets-card:nth-child(${walletNumber})`,
         title: (
             <WalletText color='red' size='sm' weight='bold'>
                 Wallets

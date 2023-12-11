@@ -1,18 +1,19 @@
 import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useAccountsList, useCreateWallet } from '@deriv/api';
+import { useCreateWallet, useDerivAccountsList } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
 import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import CheckIcon from '../../public/images/check.svg';
 import PlusIcon from '../../public/images/plus.svg';
 import { THooks } from '../../types';
-import { WalletButton, WalletText } from '../Base';
+import { WalletButton } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletAddedSuccess } from '../WalletAddedSuccess';
 import WalletAddMoreCurrencyIcon from '../WalletAddMoreCurrencyIcon';
 import { WalletError } from '../WalletError';
+import WalletListCardBadge from '../WalletListCardBadge/WalletListCardBadge';
 
-type TProps = THooks.AvailableWallets;
+type TProps = THooks.AllWalletAccounts;
 
 const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     currency,
@@ -20,18 +21,20 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
     is_crypto: isCrypto,
     landing_company_name: landingCompanyName,
 }: TProps) => {
-    const { switchAccount } = useAccountsList();
+    const { switchAccount } = useDerivAccountsList();
     const { data, error, isSuccess: isMutateSuccess, mutate, status } = useCreateWallet();
     const { isMobile } = useDevice();
     const history = useHistory();
     const modal = useModal();
-    const syncLocalStorageClientAccounts = useSyncLocalStorageClientAccounts();
+    const { addWalletAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
 
     const renderButtons = useCallback(
         () => (
             <div className='wallets-add-more__success-footer'>
-                <WalletButton color='black' onClick={() => modal.hide()} text='Maybe later' variant='outlined' />
-                <WalletButton onClick={() => history.push('wallets/cashier/deposit')} text='Deposit now' />
+                <WalletButton color='black' onClick={() => modal.hide()} variant='outlined'>
+                    Maybe later
+                </WalletButton>
+                <WalletButton onClick={() => history.push('wallets/cashier/deposit')}>Deposit now</WalletButton>
             </div>
         ),
         [history] // eslint-disable-line react-hooks/exhaustive-deps
@@ -39,10 +42,10 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
 
     useEffect(() => {
         if (data && isMutateSuccess) {
-            syncLocalStorageClientAccounts(data);
+            addWalletAccountToLocalStorage(data);
             switchAccount(data?.client_id);
         }
-    }, [data, isMutateSuccess, switchAccount, syncLocalStorageClientAccounts]);
+    }, [addWalletAccountToLocalStorage, data, isMutateSuccess, switchAccount]);
 
     useEffect(
         () => {
@@ -83,20 +86,16 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
                 <span className='wallets-add-more__banner-logo'>
                     <WalletAddMoreCurrencyIcon currency={currency ? currency.toLowerCase() : ''} />
                 </span>
-                <div className='wallets-add-more__banner-landing-company'>
-                    <WalletText align='right' size='xs' weight='bold'>
-                        {landingCompanyName}
-                    </WalletText>
-                </div>
+                <WalletListCardBadge label={landingCompanyName} />
             </div>
             <WalletButton
                 color='white'
                 disabled={isAdded}
                 icon={
                     isAdded ? (
-                        <CheckIcon className='wallets-add-more__banner-button-icon' />
+                        <CheckIcon className='wallets-add-more__banner-button-icon' width={16} />
                     ) : (
-                        <PlusIcon className='wallets-add-more__banner-button-icon' />
+                        <PlusIcon className='wallets-add-more__banner-button-icon' width={16} />
                     )
                 }
                 onClick={e => {
@@ -104,8 +103,9 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
                     currency && mutate({ account_type: isCrypto ? 'crypto' : 'doughflow', currency });
                 }}
                 size={isMobile ? 'sm' : 'lg'}
-                text={isAdded ? 'Added' : 'Add'}
-            />
+            >
+                {isAdded ? 'Added' : 'Add'}
+            </WalletButton>
         </div>
     );
 };

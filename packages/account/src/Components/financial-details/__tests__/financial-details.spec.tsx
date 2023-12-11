@@ -198,7 +198,7 @@ describe('<FinancialDetails />', () => {
         });
     });
 
-    it('should not show Occupation field if employment status is "Unemployed"', async () => {
+    it('should not show Occupation field if employment status is "Unemployed"', () => {
         const new_mock_props: React.ComponentProps<typeof FinancialDetails> = {
             ...mock_props,
             employment_status: EMPLOYMENT_VALUES.UNEMPLOYED,
@@ -208,7 +208,7 @@ describe('<FinancialDetails />', () => {
         expect(screen.queryByText('Occupation')).not.toBeInTheDocument();
     });
 
-    it('should not show Occupation field if employment status is "Self employed"', async () => {
+    it('should not show Occupation field if employment status is "Self employed"', () => {
         const new_mock_props: React.ComponentProps<typeof FinancialDetails> = {
             ...mock_props,
             employment_status: EMPLOYMENT_VALUES.SELF_EMPLOYED,

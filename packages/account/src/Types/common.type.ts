@@ -162,3 +162,8 @@ export type TServerError = {
     details?: { [key: string]: string };
     fields?: string[];
 };
+
+export type TFilesDescription = {
+    descriptions: { id: string; value: JSX.Element }[];
+    title: React.ReactNode;
+};

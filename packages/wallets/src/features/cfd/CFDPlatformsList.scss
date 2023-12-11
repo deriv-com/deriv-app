@@ -31,6 +31,10 @@
             gap: 0.4rem;
         }
 
+        &-title {
+            display: flex;
+        }
+
         &-description {
             display: flex;
             flex-direction: column;

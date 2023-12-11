@@ -58,7 +58,7 @@ const TwoFactorAuthentication = observer(() => {
     if (error_message) return <LoadErrorMessage error_message={error_message} />;
 
     return (
-        <section>
+        <section className='two-factor'>
             <div className='two-factor__wrapper'>
                 {has_enabled_two_fa ? (
                     <TwoFactorEnabled />

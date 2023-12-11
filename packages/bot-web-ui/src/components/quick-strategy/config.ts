@@ -9,8 +9,8 @@ export const FORM_TABS = [
         value: 'TRADE_PARAMETERS',
     },
     {
-        label: localize('Description'),
-        value: 'DESCRIPTION',
+        label: localize('Learn more'),
+        value: 'LEARN_MORE',
         disabled: true,
     },
 ];

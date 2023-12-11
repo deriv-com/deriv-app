@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import classNames from 'classnames';
 import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
@@ -34,7 +35,9 @@ const TwoFactorAuthentication = observer(() => {
     const network_status = useNetworkStatus();
 
     React.useEffect(() => {
+        console.log('calling getDigitStatus');
         getDigitStatus();
+        console.log('getDigitStatus called');
     }, [getDigitStatus, has_enabled_two_fa]);
 
     React.useEffect(() => {
@@ -44,6 +47,7 @@ const TwoFactorAuthentication = observer(() => {
     }, [network_status]);
 
     const generateQrCode = React.useCallback(async () => {
+        console.log('calling generateQrCode');
         setQrLoading(true);
         const generate_response = await WS.authorized.accountSecurity({
             account_security: 1,
@@ -64,7 +68,9 @@ const TwoFactorAuthentication = observer(() => {
     }, [email_address]);
 
     const getDigitStatus = React.useCallback(async () => {
+        console.log('calling getTwoFAStatus');
         const status_response = await getTwoFAStatus();
+        console.log('response of getTwoFAStatus: ', status_response);
         if (status_response.error) {
             setErrorMessage(status_response.error.message);
             return;

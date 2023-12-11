@@ -17,8 +17,7 @@ export const tourStepConfig = (
     hasDerivAppsTradingAccount: boolean,
     isAllWalletsAlreadyAdded: boolean,
     walletIndex = 1
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): any[] =>
+): Step[] =>
     isMobile
         ? getMobileSteps(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded, walletIndex)
         : getDesktopSteps(

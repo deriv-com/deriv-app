@@ -8,8 +8,7 @@ const getMobileSteps = (
     hasDerivAppsTradingAccount: boolean,
     isAllWalletsAlreadyAdded: boolean,
     walletNumber = 1
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): any[] => [
+): Step[] => [
     // Wallet card
     {
         content: (

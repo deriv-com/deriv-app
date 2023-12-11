@@ -385,6 +385,7 @@ export default class TradeStore extends BaseStore {
             is_market_closed: observable,
             is_mobile_digit_view_selected: observable,
             is_purchase_enabled: observable,
+            is_synthetics_trading_market_available: computed,
             is_trade_component_mounted: observable,
             is_trade_enabled: observable,
             is_trade_params_expanded: observable,

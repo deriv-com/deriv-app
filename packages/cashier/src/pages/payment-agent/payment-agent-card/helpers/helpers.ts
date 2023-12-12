@@ -12,10 +12,8 @@ export const hasNormalizedPaymentMethods = (all_payment_methods?: { payment_meth
 };
 
 export const getUniquePaymentAgentSupportedBanks = (supported_banks?: { payment_method: string }[]) => {
-    const normalized_payment_methods =
-        supported_banks &&
-        supported_banks
-            .map(bank => getNormalizedPaymentMethod(bank.payment_method, Constants.icon_payment_methods, true))
-            .filter(Boolean);
+    const normalized_payment_methods = supported_banks
+        ?.map(bank => getNormalizedPaymentMethod(bank.payment_method, Constants.icon_payment_methods, true))
+        .filter(Boolean);
     return Array.from(new Set(normalized_payment_methods));
 };

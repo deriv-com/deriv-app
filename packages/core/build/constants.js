@@ -140,7 +140,6 @@ const plugins = ({ base, is_test_env }) => {
             'process.env.DATADOG_SESSION_SAMPLE_RATE': JSON.stringify(process.env.DATADOG_SESSION_SAMPLE_RATE),
             'process.env.REF_NAME': JSON.stringify(process.env.REF_NAME),
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-            'process.env.RUDDERSTACK_URL': JSON.stringify(process.env.RUDDERSTACK_URL),
             'process.env.RUDDERSTACK_KEY': JSON.stringify(process.env.RUDDERSTACK_KEY),
             'process.env.GROWTHBOOK_CLIENT_KEY': JSON.stringify(process.env.GROWTHBOOK_CLIENT_KEY),
             'process.env.GROWTHBOOK_DECRYPTION_KEY': JSON.stringify(process.env.GROWTHBOOK_DECRYPTION_KEY),

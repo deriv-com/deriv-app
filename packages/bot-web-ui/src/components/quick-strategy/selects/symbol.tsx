@@ -7,6 +7,7 @@ import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { useStore } from '@deriv/stores';
 import { TFormData } from '../types';
+import { Analytics } from '@deriv/analytics';
 
 type TSymbol = {
     component?: React.ReactNode;
@@ -42,6 +43,14 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     const [is_input_started, setIsInputStarted] = useState(false);
     const [input_value, setInputValue] = useState({ text: '', value: '' });
     const { setFieldValue, values } = useFormikContext<TFormData>();
+
+    const sendAssetValueToRudderStack = (item: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_asset',
+            asset_type: item,
+            form_source: 'ce_bot_quick_strategy_form',
+        });
+    };
 
     useEffect(() => {
         const { active_symbols } = ApiHelpers.instance;
@@ -89,6 +98,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     const handleItemSelection = (item: TItem) => {
         if (item) {
             const { value } = item as TSymbol;
+            sendAssetValueToRudderStack(item.text);
             setFieldValue('symbol', value);
             setValue('symbol', value);
             setIsInputStarted(false);

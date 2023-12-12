@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { VANILLALONG, TURBOS } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import AccumulatorTradeDescription from './Description/accumulator-trade-description';
 import AsianTradeDescription from './Description/asian-trade-description';
@@ -37,69 +37,69 @@ const TradeCategories = ({
     let TradeTypeTemplate;
     if (category) {
         switch (category) {
-            case 'accumulator':
+            case TRADE_TYPES.ACCUMULATOR:
                 TradeTypeTemplate = <AccumulatorTradeDescription onClick={onClick} />;
                 break;
-            case 'rise_fall':
-            case 'rise_fall_equal':
+            case TRADE_TYPES.RISE_FALL:
+            case TRADE_TYPES.RISE_FALL_EQUAL:
                 TradeTypeTemplate = <RiseFallTradeDescription />;
                 break;
-            case 'high_low':
+            case TRADE_TYPES.HIGH_LOW:
                 TradeTypeTemplate = <HighLowTradeDescription />;
                 break;
-            case 'end':
+            case TRADE_TYPES.END:
                 TradeTypeTemplate = <EndTradeDescription />;
                 break;
-            case 'stay':
+            case TRADE_TYPES.STAY:
                 TradeTypeTemplate = <StayTradeDescription />;
                 break;
-            case 'match_diff':
+            case TRADE_TYPES.MATCH_DIFF:
                 TradeTypeTemplate = <MatchDiffTradeDescription />;
                 break;
-            case 'even_odd':
+            case TRADE_TYPES.EVEN_ODD:
                 TradeTypeTemplate = <EvenOddTradeDescription />;
                 break;
-            case 'over_under':
+            case TRADE_TYPES.OVER_UNDER:
                 TradeTypeTemplate = <OverUnderTradeDescription />;
                 break;
-            case 'touch':
+            case TRADE_TYPES.TOUCH:
                 TradeTypeTemplate = <TouchTradeDescription />;
                 break;
-            case 'asian':
+            case TRADE_TYPES.ASIAN:
                 TradeTypeTemplate = <AsianTradeDescription />;
                 break;
-            case 'run_high_low':
+            case TRADE_TYPES.RUN_HIGH_LOW:
                 TradeTypeTemplate = <RunHighLowTradeDescription />;
                 break;
-            case 'reset':
+            case TRADE_TYPES.RESET:
                 TradeTypeTemplate = <ResetTradeDescription />;
                 break;
-            case 'callputspread':
+            case TRADE_TYPES.CALL_PUT_SPREAD:
                 TradeTypeTemplate = <CallPutSpreadTradeDescription />;
                 break;
-            case 'tick_high_low':
+            case TRADE_TYPES.TICK_HIGH_LOW:
                 TradeTypeTemplate = <TickHighLowTradeDescription />;
                 break;
-            case 'lb_high_low':
+            case TRADE_TYPES.LB_HIGH_LOW:
                 TradeTypeTemplate = <LbHighLowTradeDescription />;
                 break;
-            case 'lb_put':
+            case TRADE_TYPES.LB_PUT:
                 TradeTypeTemplate = <LbPutTradeDescription />;
                 break;
-            case 'lb_call':
+            case TRADE_TYPES.LB_CALL:
                 TradeTypeTemplate = <LbCallTradeDescription />;
                 break;
-            case 'multiplier':
+            case TRADE_TYPES.MULTIPLIER:
                 TradeTypeTemplate = (
                     <MultiplierTradeDescription is_multiplier_fx={is_multiplier_fx} onClick={onClick} />
                 );
                 break;
-            case TURBOS.LONG:
-            case TURBOS.SHORT:
+            case TRADE_TYPES.TURBOS.LONG:
+            case TRADE_TYPES.TURBOS.SHORT:
                 TradeTypeTemplate = <TurbosTradeDescription onClick={onClick} />;
                 break;
-            case VANILLALONG.CALL:
-            case VANILLALONG.PUT:
+            case TRADE_TYPES.VANILLA.CALL:
+            case TRADE_TYPES.VANILLA.PUT:
                 TradeTypeTemplate = <VanillaTradeDescription is_vanilla_fx={is_vanilla_fx} onClick={onClick} />;
                 break;
             default:

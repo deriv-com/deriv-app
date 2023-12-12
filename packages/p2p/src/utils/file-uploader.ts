@@ -78,3 +78,15 @@ const getFileExtension = (file: TFile): string | null => {
     const f = file?.type?.match(/[^/]+$/u);
     return f && f[0];
 };
+
+/**
+ * The function renames the files by removing any non ISO-8859-1 code point from filename and returns a new blob object with the updated file name.
+ * @param {TFile} file
+ * @returns {Blob}
+ */
+export const renameFile = (file: TFile): Blob => {
+    const new_file = new Blob([file], { type: file.type });
+    // eslint-disable-next-line no-control-regex
+    new_file.name = file.name.replace(/[^\x00-\x7F]+/g, '');
+    return new_file;
+};

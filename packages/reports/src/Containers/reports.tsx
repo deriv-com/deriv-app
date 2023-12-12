@@ -34,7 +34,7 @@ type TReports = {
 const Reports = observer(({ history, location, routes }: TReports) => {
     const { client, common, ui } = useStore();
 
-    const { is_logged_in, is_logging_in, setVisibilityRealityCheck } = client;
+    const { is_logged_in, is_logging_in } = client;
     const { is_from_derivgo, routeBackInApp } = common;
     const { is_reports_visible, setReportsTabIndex, reports_route_tab_index, toggleReports } = ui;
 
@@ -47,7 +47,6 @@ const Reports = observer(({ history, location, routes }: TReports) => {
         });
         toggleReports(true);
         return () => {
-            setVisibilityRealityCheck(1);
             toggleReports(false);
             Analytics.trackEvent('ce_reports_form', {
                 action: 'close',

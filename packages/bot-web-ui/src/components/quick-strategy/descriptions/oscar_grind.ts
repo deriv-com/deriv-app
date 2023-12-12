@@ -6,6 +6,8 @@ export const OSCAR_GRIND: TDescriptionItem[] = [
     {
         type: 'subtitle',
         content: [localize('Exploring the Oscar’s Grind strategy in Deriv Bot')],
+        expanded: true,
+        no_collapsible: false,
     },
     {
         type: 'text',
@@ -134,7 +136,7 @@ export const OSCAR_GRIND: TDescriptionItem[] = [
     },
     {
         type: 'subtitle_italic',
-        content: [localize('<em>Disclaimers:</em>')],
+        content: [localize('Disclaimers:')],
     },
     {
         type: 'text_italic',

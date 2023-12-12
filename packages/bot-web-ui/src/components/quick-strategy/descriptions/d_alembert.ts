@@ -6,6 +6,8 @@ export const D_ALEMBERT: TDescriptionItem[] = [
     {
         type: 'subtitle',
         content: [localize('Exploring the D’Alembert strategy in Deriv Bot')],
+        expanded: true,
+        no_collapsible: false,
     },
     {
         type: 'text',
@@ -141,7 +143,7 @@ export const D_ALEMBERT: TDescriptionItem[] = [
     },
     {
         type: 'subtitle_italic',
-        content: [localize('<i>Disclaimer:</i>')],
+        content: [localize('Disclaimer:')],
     },
     {
         type: 'text_italic',

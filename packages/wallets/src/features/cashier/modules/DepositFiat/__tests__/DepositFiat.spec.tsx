@@ -49,7 +49,7 @@ describe('DepositFiat', () => {
 
     it('should render iframe after loading is completed and iframe url is received', async () => {
         (useCashierFiatAddress as jest.Mock).mockReturnValueOnce({
-            data: 'http://iframe_url',
+            data: 'https://iframe_url',
             error: null,
             isError: false,
             isLoading: false,
@@ -62,7 +62,7 @@ describe('DepositFiat', () => {
                 expect(screen.queryByTestId('dt_wallets-loader')).not.toBeInTheDocument();
             });
             const iframe = screen.getByTestId('dt_deposit-fiat-iframe');
-            expect(iframe).toHaveAttribute('src', 'http://iframe_url');
+            expect(iframe).toHaveAttribute('src', 'https://iframe_url');
         });
     });
 });

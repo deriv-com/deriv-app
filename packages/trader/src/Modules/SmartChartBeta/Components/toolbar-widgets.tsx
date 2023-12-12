@@ -1,6 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop } from '@deriv/shared';
 import {
     ChartModeBeta,
     DrawToolsBeta,
@@ -10,9 +9,16 @@ import {
     ToolbarWidgetBeta,
 } from 'Modules/SmartChartBeta';
 
-const ToolbarWidgetsBeta = ({ position, updateChartType, updateGranularity }) => {
+type TToolbarWidgetsBetaProps = {
+    is_mobile?: boolean;
+    position?: string;
+    updateChartType: (type: string) => void;
+    updateGranularity: (granularity: number) => void;
+};
+
+const ToolbarWidgetsBeta = ({ is_mobile, position, updateChartType, updateGranularity }: TToolbarWidgetsBetaProps) => {
     return (
-        <ToolbarWidgetBeta position={position || isMobile() ? 'bottom' : null}>
+        <ToolbarWidgetBeta position={position || is_mobile ? 'bottom' : null}>
             <ChartModeBeta portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
             {isDesktop() && <StudyLegendBeta portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />}
             {isDesktop() && <ViewsBeta portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />}
@@ -20,12 +26,6 @@ const ToolbarWidgetsBeta = ({ position, updateChartType, updateGranularity }) =>
             {isDesktop() && <ShareBeta portalNodeId='modal_root' />}
         </ToolbarWidgetBeta>
     );
-};
-
-ToolbarWidgetsBeta.propTypes = {
-    position: PropTypes.string,
-    updateChartType: PropTypes.func,
-    updateGranularity: PropTypes.func,
 };
 
 export default React.memo(ToolbarWidgetsBeta);

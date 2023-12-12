@@ -1,10 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { IDV_ERROR_STATUS, isDesktop, isMobile } from '@deriv/shared';
+import { IDV_ERROR_STATUS, isDesktop, isMobile, POIContext } from '@deriv/shared';
 import CountrySelector from '../poi-country-selector';
 import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { POIContext } from 'Helpers/poi-context';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),

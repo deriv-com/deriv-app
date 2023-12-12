@@ -15,6 +15,7 @@ import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
+import { validPassword } from '../../../../utils/password';
 import { companyNamesAndUrls, MarketTypeDetails, PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 
@@ -182,7 +183,12 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             );
         return (
             <WalletButton
-                disabled={!password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading}
+                disabled={
+                    !password ||
+                    createMT5AccountLoading ||
+                    tradingPlatformPasswordChangeLoading ||
+                    !validPassword(password)
+                }
                 isFullWidth
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                 onClick={onSubmit}

@@ -40,11 +40,11 @@ export const getTradingAppIcon = (
 
     if (accountType === mt5Platform.name) {
         if (marketType === mt5Platform.marketType.financial.name) {
-            return mt5Platform.marketType.financial.landingCompany[landingCompanyName].icon.light;
+            return mt5Platform.marketType.financial.landingCompany?.[landingCompanyName].icon.light;
         } else if (marketType === mt5Platform.marketType.synthetic.name) {
-            return mt5Platform.marketType.synthetic.icon.light;
+            return mt5Platform.marketType.synthetic.icon?.light;
         }
-        return mt5Platform.marketType.all.icon.light;
+        return mt5Platform.marketType.all.icon?.light;
     }
     //@ts-expect-error needs backend typing
     return PlatformDetails[accountType]?.icon.light;
@@ -73,16 +73,16 @@ export const getAccountName = ({
                     switch (mt5MarketType) {
                         case MT5MarketTypeDetails.financial.name:
                             return [
-                                MT5MarketTypeDetails.financial.landingCompany.svg.name,
-                                MT5MarketTypeDetails.financial.landingCompany.virtual.name,
+                                MT5MarketTypeDetails.financial.landingCompany?.svg.name,
+                                MT5MarketTypeDetails.financial.landingCompany?.virtual.name,
                             ].includes(
                                 landingCompanyName as Extract<
                                     TGetAccountNameProps['landingCompanyName'],
                                     'svg' | 'virtual'
                                 >
                             )
-                                ? MT5MarketTypeDetails.financial.landingCompany.svg.title
-                                : MT5MarketTypeDetails.financial.landingCompany.malta.title;
+                                ? MT5MarketTypeDetails.financial.landingCompany?.svg.title
+                                : MT5MarketTypeDetails.financial.landingCompany?.malta.title;
                         case MT5MarketTypeDetails.synthetic.name:
                             return MT5MarketTypeDetails.synthetic.title;
                         case MT5MarketTypeDetails.all.name:

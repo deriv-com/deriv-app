@@ -4,7 +4,7 @@ import ResetTradingPassword from './Containers/reset-trading-password';
 import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { POIProvider } from './Helpers/poi-context';
+import { POIProvider } from '@deriv/shared';
 
 // TODO: add correct types for WS after implementing them
 type TAppProps = {

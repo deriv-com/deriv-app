@@ -2,7 +2,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Authorize, GetAccountStatus, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
-import { AUTH_STATUS_CODES, Platforms } from '@deriv/shared';
+import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, Platforms } from '@deriv/shared';
 import { IDENTIFIER_TYPES } from '../Constants/poo-identifier';
 import getPaymentMethodsConfig from '../Configs/payment-method-config';
 
@@ -184,7 +184,9 @@ export type TProofOfOwnershipErrors = Record<
     Array<{ payment_method_identifier?: string; files?: Array<string> }>
 >;
 
-export type TVerificationStatus = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+export type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+
+export type TMT5AccountStatus = typeof MT5_ACCOUNT_STATUS[keyof typeof MT5_ACCOUNT_STATUS];
 
 export type TFilesDescription = {
     descriptions: { id: string; value: JSX.Element }[];

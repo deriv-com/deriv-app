@@ -1,0 +1,519 @@
+.dc-modal {
+    &-header--verification-modal {
+        border-bottom: 1px solid var(--general-section-1);
+    }
+}
+.proof-of-identity {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+
+    &__main-container {
+        margin: 0 auto;
+        max-width: 68.2rem;
+
+        .onfido-container {
+            padding-top: 1.6rem;
+        }
+
+        .manual-poi {
+            max-width: 67rem;
+            margin: 0 auto;
+            padding: 2rem;
+
+            &-details {
+                margin: 0 auto;
+            }
+        }
+
+        .account-form {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            &_poa {
+                margin-top: 1rem;
+                padding: 1rem 0 10rem;
+                .dc-themed-scrollbars {
+                    .account__scrollbars_container {
+                        padding: 0;
+                    }
+                }
+                .account-form__section {
+                    align-items: initial;
+                    &-side-note {
+                        width: 26rem;
+                    }
+                    &-content {
+                        width: 40rem;
+
+                        .account-poa {
+                            &__upload {
+                                &-icon {
+                                    margin-bottom: 1rem;
+                                }
+                                &-item {
+                                    width: 100%;
+                                    padding: 0 0.5em;
+                                    font-size: var(--text-size-xxs);
+                                    line-height: 1.5;
+                                    color: var(--text-prominent);
+                                }
+                                &-list {
+                                    width: 100%;
+                                    flex: 1;
+                                    margin-right: 1.6rem;
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                    .account-poa__upload-box {
+                                        border: 1px solid var(--icon-grey-background);
+                                        border-radius: $BORDER_RADIUS * 2;
+                                        margin: 0 0.8rem 1.6rem;
+                                        padding: 0.8rem;
+                                        display: flex;
+                                    }
+                                }
+                                &-box {
+                                    flex-direction: column;
+                                    margin-bottom: 2rem;
+                                    text-align: center;
+                                    align-items: center;
+                                    justify-content: flex-start;
+                                    flex: 1 0 calc((100% / 3) - 3.2rem);
+                                }
+                                &-file {
+                                    flex: 1;
+                                    height: 24rem;
+                                    position: relative;
+                                    margin: 0 0.8rem;
+
+                                    .dc-file-dropzone {
+                                        border: 1px solid var(--general-active);
+                                    }
+                                }
+                                &-remove-btn {
+                                    position: absolute;
+                                    width: 1.6rem;
+                                    height: 1.6rem;
+                                    top: 0.8rem;
+                                    right: 0.8rem;
+                                    cursor: pointer;
+                                    transition: transform 0.25s linear;
+                                }
+                            }
+                            &__details {
+                                &-section {
+                                    margin-top: 1rem;
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                }
+                                &-fields {
+                                    width: 100%;
+                                    min-width: 40rem;
+                                    flex: 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            &__fieldset {
+                margin-bottom: 0;
+                gap: unset !important;
+                .dc-autocomplete {
+                    margin-bottom: 3.2rem;
+                }
+            }
+            &__header {
+                margin-bottom: 1.6rem;
+                position: relative;
+                height: 1.6rem;
+                white-space: nowrap;
+                &:not(:first-child) {
+                    margin-top: 1.6rem;
+                }
+            }
+            &__section {
+                grid-template-areas: 'section-side-note section-content';
+                grid-template-columns: auto 1fr;
+                grid-gap: 1rem;
+                &-side-note {
+                    grid-area: section-side-note;
+                }
+                &-content {
+                    grid-area: section-content;
+                }
+
+                @include mobile {
+                    grid-template-columns: none;
+                    grid-gap: 0;
+                    grid-template-areas:
+                        'section-side-note'
+                        'section-content';
+                }
+            }
+            &__footer {
+                height: 8rem;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                display: flex;
+                width: 100%;
+                padding: 1.6rem 2.4rem;
+                align-items: center;
+                justify-content: flex-end;
+                z-index: 4;
+                border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+                border-top: 1px solid var(--general-section-1);
+                background-color: var(--general-main-1);
+
+                @include mobile {
+                    &-btn {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        .account-management {
+            &__list {
+                &-container {
+                    margin-top: 1.6rem;
+                    max-width: 50.6rem;
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                &-icon {
+                    margin: 0.2rem 1.2rem 0;
+                }
+
+                &-message {
+                    display: flex;
+                    margin-bottom: 1.6rem;
+
+                    &:last-of-type {
+                        margin-bottom: 0;
+                    }
+                }
+
+                &-button.dc-btn {
+                    margin-top: 2.4rem;
+                    width: fit-content;
+                    align-self: center;
+                }
+            }
+
+            &__message {
+                margin-top: 1em;
+
+                &-content {
+                    display: flex;
+                    width: 100%;
+                    height: 100%;
+                    margin: 0 1.6rem;
+                    align-items: center;
+                    flex-direction: column;
+
+                    .dc-btn {
+                        height: 4rem;
+                        margin-top: 3.2rem;
+
+                        @include mobile {
+                            margin: 1.6rem 0;
+                            padding: 1.6rem;
+                            width: 100%;
+                        }
+                    }
+                }
+
+                &-icon {
+                    width: 12.8rem;
+                    height: 12.8rem;
+                    margin-top: 8rem;
+
+                    @include mobile {
+                        margin-top: 4rem;
+
+                        /* iPhone SE screen height fixes due to UI space restrictions */
+                        @media only screen and (max-height: 480px) {
+                            margin-top: 3.2rem;
+                        }
+                    }
+                }
+
+                &-title {
+                    font-size: var(--text-size-xs);
+                    margin-bottom: 1rem;
+                    text-align: center;
+                }
+
+                &-subtitle {
+                    font-size: var(--text-size-xxs);
+                    font-weight: 400;
+                    text-align: center;
+                    line-height: 1.5;
+                }
+
+                &-wrapper {
+                    display: flex;
+                    justify-content: center;
+                    width: 100%;
+
+                    &-full-width {
+                        width: calc(100vw - 33rem);
+
+                        @include mobile {
+                            width: 100%;
+                        }
+                    }
+
+                    @include mobile {
+                        overflow-x: hidden;
+                        overflow-y: auto;
+                    }
+                }
+
+                @include mobile {
+                    line-height: 2rem;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    .min-height {
+        min-height: 50vh;
+
+        @include mobile {
+            min-height: unset;
+        }
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        @include mobile {
+            min-height: unset;
+            overflow-y: scroll;
+            justify-content: center;
+        }
+
+        &--reset {
+            align-items: normal;
+            @include mobile {
+                overflow-y: unset;
+                padding: 1.6rem;
+            }
+            .proof-of-identity__submit-button {
+                @include mobile {
+                    margin: unset;
+                    width: 100%;
+                }
+            }
+            .account-form__footer {
+                @include mobile {
+                    padding: 1.6rem 2.4rem;
+                }
+            }
+            .form-body {
+                @include desktop {
+                    z-index: 5;
+                }
+            }
+        }
+
+        .icon {
+            width: 12.8rem;
+            height: 12.8rem;
+            margin: 5.2rem auto 2.6rem;
+
+            @include mobile {
+                width: 7.2rem;
+                height: 7.2rem;
+                margin-top: 2.6rem;
+            }
+        }
+
+        .external-dropdown {
+            .dc-dropdown-list {
+                z-index: 5;
+            }
+        }
+    }
+
+    &__redirection {
+        .dc-btn {
+            margin-top: 3.2rem;
+            height: 4rem;
+
+            @include mobile {
+                margin: 1.6rem 0;
+                padding: 1.6rem;
+                width: 100%;
+            }
+        }
+    }
+
+    &__country-text {
+        margin-bottom: 1.6rem;
+    }
+
+    &__text {
+        @include mobile {
+            width: 94%;
+            text-align: center;
+        }
+    }
+
+    &__dropdown-container {
+        margin-top: 1.6rem;
+    }
+
+    &__inner-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        @include mobile {
+            flex-direction: column;
+        }
+    }
+
+    &__header {
+        margin: 5.4rem 0 1.6rem;
+
+        @include mobile {
+            margin: 2.4rem 0 0.8rem;
+        }
+    }
+
+    &__footer.external-footer {
+        padding: unset;
+        position: unset;
+        top: unset;
+        bottom: unset;
+        border: none;
+        height: fit-content;
+        z-index: 4;
+    }
+
+    &__footer {
+        height: 8rem;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        width: 100%;
+        padding: 1.6rem 2.4rem;
+        align-items: center;
+        justify-content: flex-end;
+        z-index: 4;
+        border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+        border-top: 0.1rem solid var(--general-section-1);
+        background-color: var(--general-main-1);
+
+        @include mobile {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-end;
+            position: fixed;
+            bottom: 0;
+        }
+    }
+
+    &__footer-alert {
+        margin-right: auto;
+    }
+
+    &__submit-button {
+        @include mobile {
+            margin-right: 1.2rem;
+        }
+    }
+
+    &__fieldset {
+        width: 39.5rem;
+
+        @include mobile {
+            width: 94%;
+            margin: 0.4rem 0 3.2rem;
+        }
+
+        .document-dropdown {
+            margin: 0.4rem 0 3.2rem;
+        }
+
+        .country-dropdown {
+            min-height: 35.2rem;
+        }
+
+        &-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            @include mobile {
+                width: 100%;
+            }
+        }
+
+        &-input {
+            width: 39.5rem;
+
+            @include mobile {
+                width: 94%;
+                margin-top: 0.4rem;
+            }
+        }
+    }
+
+    &__sample-container {
+        margin-left: 1.6rem;
+
+        @include mobile {
+            margin-left: unset;
+            width: 94%;
+        }
+
+        &-external {
+            margin-top: 2.8rem;
+        }
+    }
+
+    &__sample-container &__image-container {
+        width: fit-content;
+        height: fit-content;
+        padding: 0.8rem;
+        border-radius: $BORDER_RADIUS;
+        background-color: $color-grey-2;
+    }
+
+    &__image {
+        max-width: 24.5rem;
+        border-radius: $BORDER_RADIUS;
+        object-fit: contain;
+
+        @include mobile {
+            max-width: calc(95vw - 1.6rem);
+        }
+    }
+
+    &__redirect {
+        width: auto !important;
+    }
+
+    .text {
+        display: block;
+    }
+
+    .btm-spacer {
+        margin-bottom: 1.6rem;
+    }
+}

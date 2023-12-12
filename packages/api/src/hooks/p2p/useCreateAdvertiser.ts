@@ -12,7 +12,6 @@ const useCreateAdvertiser = () => {
     const invalidate = useInvalidateQuery();
     const { data, mutate, ...rest } = useMutation('p2p_advertiser_create', {
         onSuccess: () => {
-            invalidate('p2p_advertiser_list');
             invalidate('p2p_advertiser_info');
         },
     });

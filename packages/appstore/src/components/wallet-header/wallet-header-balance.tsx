@@ -12,6 +12,7 @@ type TWalletHeaderBalance = Pick<TWalletAccount, 'balance' | 'currency'>;
 const WalletHeaderBalance = observer(({ balance, currency }: TWalletHeaderBalance) => {
     const {
         traders_hub: { openFailedVerificationModal, is_eu_user },
+        client,
     } = useStore();
     const mf_account_status = useMFAccountStatus();
 

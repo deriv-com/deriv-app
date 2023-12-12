@@ -3,7 +3,8 @@ import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Icon, WalletIcon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode, routes } from '@deriv/shared';
+import { useLocation } from 'react-router-dom';
 import { useStore, observer } from '@deriv/stores';
 import { TStores } from '@deriv/stores/types';
 import { useStoreWalletAccountsList, useStoreLinkedWalletsAccounts } from '@deriv/hooks';
@@ -115,6 +116,8 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
     const { is_mobile, account_switcher_disabled_message, disableApp, enableApp } = ui;
     const { data: wallet_list } = useStoreWalletAccountsList();
     const linked_wallets_accounts = useStoreLinkedWalletsAccounts();
+    const { pathname } = useLocation();
+    const is_wallets_cashier_route = pathname.includes(routes.wallets_cashier);
 
     const active_account = accounts?.[loginid ?? ''];
     const active_wallet = wallet_list?.find(wallet => wallet.loginid === loginid);
@@ -127,14 +130,19 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
             active_wallet.dtrade_loginid || linked_wallets_accounts.dtrade?.[0]?.loginid;
 
         // switch to dtrade account
-        if (linked_dtrade_trading_account_loginid && linked_dtrade_trading_account_loginid !== loginid) {
+        if (
+            linked_dtrade_trading_account_loginid &&
+            linked_dtrade_trading_account_loginid !== loginid &&
+            !is_wallets_cashier_route
+        ) {
             switchAccount(linked_dtrade_trading_account_loginid);
         }
     }
 
     const linked_wallet = wallet_list?.find(wallet => wallet.dtrade_loginid === linked_dtrade_trading_account_loginid);
 
-    if (!linked_wallet) return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />;
+    if (!linked_wallet || is_wallets_cashier_route)
+        return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />;
 
     return (
         <div className='acc-info__wrapper'>

@@ -26,7 +26,7 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
         setSelectedTab(tutorial_tabs[active_tab_tutorials] || {});
     }, [tutorial_tabs]);
 
-    const onFocusSearch = () => setActiveTabTutorial(2);
+    const onFocusSearch = () => setActiveTabTutorial(3);
 
     const onChangeHandle = React.useCallback(
         ({ target }) => setActiveTabTutorial(tutorial_tabs.findIndex(i => i.label === target.value)),
@@ -111,7 +111,8 @@ const TutorialsTabMobile = observer(({ tutorial_tabs, prev_active_tutorials }: T
                 className={classNames({
                     'tutorials-mobile__guide': active_tab_tutorials === 0,
                     'tutorials-mobile__faq': active_tab_tutorials === 1,
-                    'tutorials-mobile__search': active_tab_tutorials === 2,
+                    'tutorials-mobile__qs-guide': prev_active_tutorials === 2,
+                    'tutorials-mobile__search': active_tab_tutorials === 3,
                 })}
             >
                 {selectedTab.content}

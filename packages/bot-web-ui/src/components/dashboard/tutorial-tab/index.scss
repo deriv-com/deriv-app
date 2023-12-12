@@ -365,7 +365,8 @@
                             margin-top: -7.2rem;
                         }
                         .tutorials-guide:nth-child(1),
-                        .tutorials-faq:nth-child(2) {
+                        .tutorials-faq:nth-child(2),
+                        .tutorials-qs-guide:nth-child(3) {
                             background-color: var(--sidebar-tab);
                             border-radius: 0.4rem 0.4rem 0 0;
                             transition: all 0.6s;
@@ -461,6 +462,7 @@
 
     &__guide,
     &__faq,
+    &__qs-guide,
     &__search {
         @include mobile {
             height: calc(var(--vh) - 280px);

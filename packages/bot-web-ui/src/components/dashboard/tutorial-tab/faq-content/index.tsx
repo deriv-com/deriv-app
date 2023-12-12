@@ -2,8 +2,8 @@ import React from 'react';
 import { Accordion, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { TDescription } from '../config';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { TDescription } from '../config';
 
 type TFAQContent = {
     faq_list: TFAQList[];

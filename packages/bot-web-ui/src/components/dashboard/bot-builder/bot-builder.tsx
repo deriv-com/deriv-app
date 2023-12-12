@@ -9,6 +9,8 @@ import QuickStrategy1 from '../../quick-strategy';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../dbot-tours/bot-builder-tour';
 import WorkspaceWrapper from './workspace-wrapper';
+import { Analytics } from '@deriv/analytics'; //BotTAction will add ones that PR gets merged
+import { DBOT_TABS } from 'Constants/bot-contents';
 
 const BotBuilder = observer(() => {
     const { dashboard, app, run_panel, toolbar, quick_strategy } = useDBotStore();
@@ -17,6 +19,21 @@ const BotBuilder = observer(() => {
     const { is_running } = run_panel;
     const is_blockly_listener_registered = React.useRef(false);
     const [show_snackbar, setShowSnackbar] = React.useState(false);
+
+    React.useEffect(() => {
+        if (active_tab === DBOT_TABS.BOT_BUILDER) {
+            Analytics.trackEvent('ce_bot_builder_form', {
+                action: 'open',
+                form_source: 'ce_bot_builder_form',
+            });
+            return () => {
+                Analytics.trackEvent('ce_bot_builder_form', {
+                    action: 'close',
+                    form_source: 'ce_bot_builder_form',
+                });
+            };
+        }
+    }, [active_tab]);
 
     const { onMount, onUnmount } = app;
     const el_ref = React.useRef<HTMLInputElement | null>(null);

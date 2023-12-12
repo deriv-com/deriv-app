@@ -79,6 +79,12 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     setWebsocket(WS);
 
+    React.useEffect(() => {
+        if (!root_store.client.email) {
+            Analytics.reset();
+        }
+    }, [root_store.client.email]);
+
     return (
         <>
             {is_translation_loaded ? (

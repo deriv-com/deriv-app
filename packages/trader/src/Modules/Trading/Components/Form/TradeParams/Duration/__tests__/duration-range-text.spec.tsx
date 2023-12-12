@@ -3,8 +3,8 @@ import { render, screen } from '@testing-library/react';
 import DurationRangeText from '../duration-range-text';
 
 const mocked_props = {
-    min: '1',
-    max: '1440',
+    min: 1,
+    max: 1440,
     duration_unit_text: 'minutes',
 };
 

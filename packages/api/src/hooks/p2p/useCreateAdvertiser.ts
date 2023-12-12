@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo } from 'react';
-import useAuthorize from '../useAuthorize';
 import useMutation from '../../useMutation';
 import useInvalidateQuery from '../../useInvalidateQuery';
 
@@ -11,7 +10,6 @@ type TAdvertiseCreatePayload = {
 
 const useCreateAdvertiser = () => {
     const invalidate = useInvalidateQuery();
-    const { isSuccess: isUserAuthorized } = useAuthorize();
     const { data, mutate, ...rest } = useMutation('p2p_advertiser_create', {
         onSuccess: () => {
             invalidate('p2p_advertiser_list');
@@ -21,9 +19,9 @@ const useCreateAdvertiser = () => {
 
     const createAdvertiser = useCallback(
         (payload: TAdvertiseCreatePayload) => {
-            if (isUserAuthorized) mutate({ payload });
+            mutate({ payload });
         },
-        [isUserAuthorized, mutate]
+        [mutate]
     );
 
     const modified_data = useMemo(() => {

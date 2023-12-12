@@ -4,6 +4,7 @@ import { EMPLOYMENT_VALUES, isDesktop, isMobile } from '@deriv/shared';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FinancialDetails from '../financial-details';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -46,8 +47,18 @@ describe('<FinancialDetails />', () => {
         expect(screen.getByText('Source of wealth')).toBeInTheDocument();
     };
 
+    const mock_store = mockStore({});
+
+    const renderComponent = ({ props = mock_props }) => {
+        render(
+            <StoreProvider store={mock_store}>
+                <FinancialDetails {...props} />
+            </StoreProvider>
+        );
+    };
+
     it('should render "FinancialDetails" for desktop', () => {
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent({});
 
         fieldsRenderCheck();
 
@@ -62,7 +73,7 @@ describe('<FinancialDetails />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent({});
 
         fieldsRenderCheck();
 
@@ -74,7 +85,7 @@ describe('<FinancialDetails />', () => {
     });
 
     it('should trigger "Previous" button', () => {
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent({});
 
         fieldsRenderCheck();
 
@@ -89,7 +100,7 @@ describe('<FinancialDetails />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent({});
 
         fieldsRenderCheck();
 
@@ -135,7 +146,7 @@ describe('<FinancialDetails />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent({});
 
         const select_inputs = screen.getAllByRole('combobox');
 
@@ -153,7 +164,7 @@ describe('<FinancialDetails />', () => {
             ...mock_props,
             employment_status: 'Pensioner',
         };
-        render(<FinancialDetails {...new_mock_props} />);
+        renderComponent({ props: new_mock_props });
 
         fieldsRenderCheck();
 
@@ -203,7 +214,7 @@ describe('<FinancialDetails />', () => {
             ...mock_props,
             employment_status: EMPLOYMENT_VALUES.UNEMPLOYED,
         };
-        render(<FinancialDetails {...new_mock_props} />);
+        renderComponent({ props: new_mock_props });
 
         expect(screen.queryByText('Occupation')).not.toBeInTheDocument();
     });
@@ -213,7 +224,7 @@ describe('<FinancialDetails />', () => {
             ...mock_props,
             employment_status: EMPLOYMENT_VALUES.SELF_EMPLOYED,
         };
-        render(<FinancialDetails {...new_mock_props} />);
+        renderComponent({ props: new_mock_props });
 
         expect(screen.queryByText('Occupation')).not.toBeInTheDocument();
     });

@@ -6,7 +6,8 @@ import TopWidgets from '../../SmartChart/Components/top-widgets';
 import { observer, useStore } from '@deriv/stores';
 
 export const DigitsWidget = observer(() => {
-    const { contract_replay } = useStore();
+    const { contract_replay, ui } = useStore();
+    const { is_mobile } = ui;
     const { contract_store } = contract_replay;
     const { contract_info, digits_info, display_status, is_digit_contract, is_ended } = contract_store;
 
@@ -14,6 +15,7 @@ export const DigitsWidget = observer(() => {
         <Digits
             is_digit_contract={is_digit_contract}
             is_ended={is_ended}
+            is_mobile={is_mobile}
             contract_info={contract_info}
             digits_info={digits_info}
             display_status={display_status}

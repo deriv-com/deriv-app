@@ -12,7 +12,7 @@ import {
     getNetIncomeList,
     getFormattedOccupationList,
     getSourceOfWealthList,
-} from 'Configs/financial-details-config';
+} from '../../Configs/financial-details-config';
 
 type TFinancialDetailsDropdownFieldProps = {
     dropdown_list: Array<object>;
@@ -23,7 +23,7 @@ type TFinancialDetailsDropdownFieldProps = {
 };
 
 type TFinancialInformationProps = {
-    employment_status?: TEmploymentStatus;
+    employment_status?: TEmploymentStatus | string;
 };
 
 /**

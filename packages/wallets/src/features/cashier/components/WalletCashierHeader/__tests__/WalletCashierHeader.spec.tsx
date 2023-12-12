@@ -25,7 +25,7 @@ describe('<WalletCashierHeader/>', () => {
             </APIProvider>
         );
 
-        const divElement = screen.getByTestId('dt_wallet-gradient-background');
+        const divElement = screen.getByTestId('dt_wallet_gradient_background');
         expect(divElement).toBeInTheDocument();
     });
 

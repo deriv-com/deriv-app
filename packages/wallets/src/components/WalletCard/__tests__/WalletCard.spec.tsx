@@ -40,7 +40,7 @@ describe('WalletCard', () => {
             </APIProvider>
         );
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
-        const gradient = screen.getByTestId('dt_wallet-gradient-background');
+        const gradient = screen.getByTestId('dt_wallet_gradient_background');
         expect(gradient).toHaveClass('wallets-gradient--USD-mobile-card-light');
     });
 
@@ -56,7 +56,7 @@ describe('WalletCard', () => {
             </APIProvider>
         );
         expect(screen.getByText('BTC Wallet')).toBeInTheDocument();
-        const gradient = screen.getByTestId('dt_wallet-gradient-background');
+        const gradient = screen.getByTestId('dt_wallet_gradient_background');
         expect(gradient).toHaveClass('wallets-gradient--BTC-mobile-card-light');
     });
 
@@ -72,7 +72,7 @@ describe('WalletCard', () => {
                 <WalletCard {...mockProps} />
             </APIProvider>
         );
-        const gradient = screen.getByTestId('dt_wallet-gradient-background');
+        const gradient = screen.getByTestId('dt_wallet_gradient_background');
         expect(gradient).toHaveClass('wallets-gradient--demo-mobile-card-light');
     });
 
@@ -82,7 +82,7 @@ describe('WalletCard', () => {
                 <WalletCard {...mockProps} />
             </APIProvider>
         );
-        const balanceLoader = screen.getByTestId('dt_wallet-card-balance-loader');
+        const balanceLoader = screen.getByTestId('dt_wallet_card_balance_loader');
         expect(balanceLoader).toBeInTheDocument();
     });
 
@@ -118,7 +118,7 @@ describe('WalletCard', () => {
                 <WalletCard {...mockProps} />
             </APIProvider>
         );
-        const icon = screen.getByTestId('dt_wallet-card-icon');
+        const icon = screen.getByTestId('dt_wallet_card_icon');
         expect(icon).toHaveAttribute('width', '16');
     });
 });

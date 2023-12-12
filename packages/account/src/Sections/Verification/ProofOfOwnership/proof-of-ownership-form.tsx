@@ -184,7 +184,7 @@ const ProofOfOwnershipForm = ({
         values: Partial<TProofOfOwnershipFormValue>,
         action: FormikHelpers<Partial<TProofOfOwnershipFormValue>>
     ) => {
-        const { setFieldError, setStatus, resetForm } = action;
+        const { setFieldError, setStatus } = action;
         try {
             setStatus({ is_btn_loading: true });
             const uploader = new DocumentUploader({ connection: WS.getSocket() });

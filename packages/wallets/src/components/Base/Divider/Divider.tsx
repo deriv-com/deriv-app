@@ -10,7 +10,7 @@ type TProps = {
 const Divider: React.FC<TProps> = ({ color = '#f2f3f4', margin, variant = 'horizontal' }) => (
     <div
         className={`wallets-divider wallets-divider--${variant}`}
-        data-testid='dt-divider'
+        data-testid='dt_divider'
         style={{ borderColor: color, margin }}
     />
 );

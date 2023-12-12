@@ -38,7 +38,9 @@ const AccountTransferNote = ({
     const exchange_rate = account_currency != null ? exchange_rates?.USD?.[account_currency] || 1 : 1;
 
     useEffect(() => {
-        handleSubscription('USD', JSON.stringify(account_currency));
+        if (account_currency) {
+            handleSubscription('USD', account_currency);
+        }
     }, [account_currency, exchange_rate, handleSubscription]);
 
     const getTransferFeeNote = useCallback(() => {
@@ -64,7 +66,12 @@ const AccountTransferNote = ({
             );
         }
         return (
-            <Localize i18n_default_text='No fees for transfer between fiat account (with the same currency) to Deriv MT5, and Deriv X account(s), vice versa.' />
+            <Localize
+                i18n_default_text="We don't charge a fee for transferring funds between your Deriv {{currency}} account to Deriv MT5, Deriv cTrader, or Deriv X account."
+                values={{
+                    currency: account_currency,
+                }}
+            />
         );
     }, [account_currency, minimum_fee, transfer_fee]);
 

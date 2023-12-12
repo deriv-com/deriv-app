@@ -14,12 +14,12 @@ type TTradeChartProps = {
     bottomWidgets?: (props: TBottomWidgetsParams) => React.ReactElement;
     has_barrier?: boolean;
     is_accumulator: boolean;
-    charts_ref: React.RefObject<any>;
-    topWidgets: (() => JSX.Element) | null;
+    charts_ref: React.MutableRefObject<HTMLDivElement>;
+    topWidgets: (() => JSX.Element) | null | undefined;
     children?: React.ReactNode;
 };
-
-const SmartChartWithRef = React.forwardRef((props: any, ref: React.Ref<any>) => (
+//TODO: will add props later
+const SmartChartWithRef = React.forwardRef((props: any, ref: React.ForwardedRef<HTMLElement | null>) => (
     <SmartChart innerRef={ref} {...props} />
 ));
 
@@ -113,7 +113,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
             crosshairTooltipLeftAllow={560}
             showLastDigitStats={isDesktop() ? show_digits_stats : false}
             chartControlsWidgets={null}
-            chartStatusListener={(v: any) => setChartStatus(!v)}
+            chartStatusListener={(v: boolean) => setChartStatus(!v)}
             chartType={chart_type}
             initialData={{
                 activeSymbols: JSON.parse(JSON.stringify(active_symbols)),

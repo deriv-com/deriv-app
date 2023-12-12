@@ -25,7 +25,6 @@ const TopWidgets = ({
     is_mobile,
     is_title_enabled = true,
     onSymbolChange,
-    y_axis_width,
     theme,
     open_market,
     open,
@@ -48,7 +47,7 @@ const TopWidgets = ({
             <div
                 className='top-widgets-portal'
                 style={{
-                    width: `calc(100% - ${y_axis_width ? y_axis_width + 5 : 0}px)`,
+                    width: `100%`,
                 }}
             >
                 {ChartTitleLocal}

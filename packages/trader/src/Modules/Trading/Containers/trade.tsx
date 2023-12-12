@@ -78,7 +78,7 @@ const Trade = observer(() => {
     const [swipe_index, setSwipeIndex] = React.useState<number | undefined>(0);
     const [open_launch_modal, setOpenLaunchModal] = React.useState<boolean>(true);
 
-    const charts_ref = React.useRef();
+    const charts_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
     const open_market = React.useMemo(() => {
         if (try_synthetic_indices) {
@@ -139,13 +139,7 @@ const Trade = observer(() => {
     };
 
     const topWidgets = React.useCallback(
-        () => (
-            <ChartTopWidgets
-                open_market={open_market}
-                open={try_synthetic_indices || try_open_markets}
-                charts_ref={charts_ref}
-            />
-        ),
+        () => <ChartTopWidgets open_market={open_market} open={try_synthetic_indices || try_open_markets} />,
         [open_market, try_synthetic_indices, try_open_markets]
     );
 

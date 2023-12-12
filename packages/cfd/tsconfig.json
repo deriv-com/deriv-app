@@ -7,9 +7,11 @@
             "Constants/*": ["./src/Constants/*"],
             "Components/*": ["./src/Components/*"],
             "Containers/*": ["./src/Containers/*"],
+            "Helpers/*": ["./src/Helpers/*"],
             "Modules/*": ["./src/Modules/*"],
             "Sass/*": ["./src/sass/*"],
             "Stores/*": ["./src/Stores/*"],
+            "Types/*": ["./src/types/*"],
             "Utils/*": ["./src/Utils/*"],
             "@deriv/*": ["../*/src"]
         },

@@ -3,6 +3,7 @@ import { EventEmitter } from 'events';
 import { Server as WsServer } from 'ws';
 import { generate } from 'selfsigned';
 import { Page, expect } from '@playwright/test';
+import generateOauthLoginFromAccounts from './generateOauthLoginFromAccounts';
 
 import type {
     APITokenRequest,
@@ -464,6 +465,8 @@ type Response =
     | VerifyEmailResponse;
 
 export interface Context {
+    query: object;
+    state: object;
     request: Request;
     response?: Response;
     req_id: number;
@@ -484,6 +487,8 @@ type Options = {
 const pems = generate();
 
 export async function createMockServer(
+    state: object,
+    query: object,
     mocks: Array<(context: Context) => void>,
     options?: Options
 ): Promise<MockServer> {
@@ -497,6 +502,8 @@ export async function createMockServer(
         ws.on('message', async message => {
             const parsedMessage = JSON.parse(message.toString());
             const context: Context = {
+                query,
+                state,
                 request: parsedMessage,
                 req_id: parsedMessage.req_id,
                 socket: ws,
@@ -540,15 +547,19 @@ export async function createMockServer(
 type SetupMocksOptions = {
     baseURL?: string;
     page: Page;
+    state?: object;
     mocks: Array<(context: Context) => void>;
 };
 
-async function setupMocks({ baseURL, page, mocks }: SetupMocksOptions) {
+async function setupMocks({ baseURL, page, state, mocks }: SetupMocksOptions) {
     if (!baseURL) {
         throw new Error('baseURL is required');
     }
 
-    const mockServer = await createMockServer(mocks);
+    const oauthLoginUrl = generateOauthLoginFromAccounts(baseURL, state?.accounts);
+    const query = Object.fromEntries(oauthLoginUrl.searchParams);
+    const mockServer = await createMockServer(state || {}, query, mocks);
+
     page.addListener('close', () => {
         mockServer.close();
     });
@@ -556,19 +567,24 @@ async function setupMocks({ baseURL, page, mocks }: SetupMocksOptions) {
 
     await page.evaluate(server_url => {
         window.localStorage.setItem('config.server_url', server_url);
+        window.localStorage.setItem(
+            'FeatureFlagStore',
+            `{"data":{"wallet":false,"next_wallet":true,"sharkfin":false}}`
+        );
     }, mockServer.url);
 
-    await page.goto(
-        `${baseURL}/?acct1=CR5712715&token1=a1-x0000000000000000000000000001&cur1=USD&acct2=CR5712710&token2=a1-x0000000000000000000000000002&cur2=BTC&acct3=VRTC8420051&token3=a1-x0000000000000000000000000003&cur3=USD&state=`
-    );
+    await page.goto(oauthLoginUrl.href);
 
     await expect
-        .poll(async () => {
-            return page.evaluate(() => {
-                return window.localStorage.getItem('active_loginid');
-            });
-        })
-        .toBe('CR5712715');
+        .poll(
+            async () => {
+                return page.evaluate(() => {
+                    return window.localStorage.getItem('active_loginid');
+                });
+            },
+            { timeout: 30000 }
+        )
+        .not.toBeNull();
 
     return mockServer;
 }

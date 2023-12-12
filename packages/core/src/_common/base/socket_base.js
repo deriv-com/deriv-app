@@ -8,7 +8,6 @@ const { getLanguage } = require('@deriv/translations');
 const website_name = require('@deriv/shared').website_name;
 const SocketCache = require('./socket_cache');
 const APIMiddleware = require('./api_middleware');
-const { CFD_PLATFORMS } = require('@deriv/shared');
 
 /*
  * An abstraction layer over native javascript WebSocket,
@@ -30,8 +29,12 @@ const BinarySocketBase = (() => {
         is_down: false,
     };
 
-    const getSocketUrl = language =>
-        `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${language}&brand=${website_name.toLowerCase()}`;
+    const getSocketUrl = (language, is_mock_server = false) => {
+        if (is_mock_server) {
+            return 'ws://127.0.0.1:42069';
+        }
+        return `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${language}&brand=${website_name.toLowerCase()}`;
+    };
 
     const isReady = () => hasReadyState(1);
 
@@ -41,10 +44,10 @@ const BinarySocketBase = (() => {
         binary_socket.close();
     };
 
-    const closeAndOpenNewConnection = (language = getLanguage()) => {
+    const closeAndOpenNewConnection = (language = getLanguage(), session_id = '') => {
         close();
         is_switching_socket = true;
-        openNewConnection(language);
+        openNewConnection(language, session_id);
     };
 
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
@@ -56,18 +59,32 @@ const BinarySocketBase = (() => {
         client_store = client;
     };
 
+    const getMockServerConfig = () => {
+        const mock_server_config = localStorage.getItem('mock_server_data');
+        return mock_server_config
+            ? JSON.parse(mock_server_config)
+            : {
+                  session_id: '',
+                  is_mockserver_enabled: false,
+              };
+    };
+
     const openNewConnection = (language = getLanguage()) => {
+        const mock_server_config = getMockServerConfig();
+        const session_id = mock_server_config?.session_id || '';
+
         if (wrong_app_id === getAppId()) return;
 
         if (!is_switching_socket) config.wsEvent('init');
 
         if (isClose()) {
             is_disconnect_called = false;
-            binary_socket = new WebSocket(getSocketUrl(language));
+            binary_socket = new WebSocket(getSocketUrl(language, session_id));
+
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
                 storage: SocketCache,
-                middleware: new APIMiddleware(config),
+                middleware: new APIMiddleware(config, session_id),
             });
         }
 
@@ -346,8 +363,6 @@ const BinarySocketBase = (() => {
     const p2pSubscribe = (request, cb) => subscribe(request, cb);
     const accountStatistics = () => deriv_api.send({ account_statistics: 1 });
 
-    const realityCheck = () => deriv_api.send({ reality_check: 1 });
-
     const tradingServers = platform => deriv_api.send({ platform, trading_servers: 1 });
 
     const tradingPlatformAccountsList = platform =>
@@ -375,8 +390,7 @@ const BinarySocketBase = (() => {
         });
 
     const getServiceToken = (platform, server) => {
-        let temp_service = platform;
-        if (platform === CFD_PLATFORMS.DERIVEZ) temp_service = 'pandats';
+        const temp_service = platform;
 
         return deriv_api.send({
             service_token: 1,
@@ -467,7 +481,6 @@ const BinarySocketBase = (() => {
         fetchLoginHistory,
         closeAndOpenNewConnection,
         accountStatistics,
-        realityCheck,
         tradingServers,
         tradingPlatformAccountsList,
         tradingPlatformNewAccount,

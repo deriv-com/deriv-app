@@ -4,7 +4,7 @@ import Text from '../text';
 import { TGetCardLables } from '../types';
 
 type TProgressTicksMobileProps = {
-    current_tick: number | null;
+    current_tick?: number | null;
     ticks_count: number;
     getCardLabels: TGetCardLables;
 };

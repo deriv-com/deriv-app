@@ -1,0 +1,29 @@
+.wallets-verification-failed {
+    display: flex;
+    flex-direction: column;
+    padding: 2.4rem;
+    gap: 2.4rem;
+    border-radius: 0.8rem;
+    background-color: var(--system-light-8-primary-background, #fff);
+    width: 44rem;
+    height: 34.4rem;
+
+    @include mobile {
+        width: 32rem;
+        height: 30rem;
+        padding: 1.6rem;
+        gap: 1.6rem;
+    }
+
+    & li {
+        left: 1rem;
+        position: relative;
+        list-style-type: disc;
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.8rem;
+    }
+}

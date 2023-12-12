@@ -16,7 +16,7 @@ type TPageErrorProps = {
     header: React.ReactNode;
     image_url?: string;
     messages: Array<TMessageObject | React.ReactNode>;
-    redirect_labels: string[];
+    redirect_labels: Array<JSX.Element | string>;
     redirect_urls?: string[];
     setError?: (has_error: boolean, error: React.ReactNode) => void;
     should_clear_error_on_click?: boolean;
@@ -124,7 +124,7 @@ const PageError = ({
                         )}
                     </Text>
                 </div>
-                <div className='dc-page-error__btn-wrapper'>
+                <div className='dc-page-error__btn-wrapper' data-testid='dc-page-error__btn-wrapper'>
                     {should_redirect &&
                         redirect_labels.length !== 0 &&
                         redirect_urls?.map?.((url, index) => (

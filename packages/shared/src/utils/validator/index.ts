@@ -1,3 +1,4 @@
-import Validator from './validator';
+import Errors from './errors';
+import Validator, { template } from './validator';
 
-export { Validator };
+export { Errors, template, Validator };

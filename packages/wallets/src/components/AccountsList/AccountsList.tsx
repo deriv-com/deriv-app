@@ -1,34 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { CFDPlatformsList } from '../../features';
 import useDevice from '../../hooks/useDevice';
-import { CFDList } from '../CFDList';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
-import { TabList, TabPanel, TabPanels, Tabs } from '../Tabs';
+import {
+    WalletsPrimaryTabList,
+    WalletsPrimaryTabPanel,
+    WalletsPrimaryTabPanels,
+    WalletsPrimaryTabs,
+} from '../WalletsPrimaryTabs';
+import { WalletMobileTourGuide } from '../WalletTourGuide';
 import './AccountsList.scss';
 
-const AccountsList = () => {
-    const { is_mobile } = useDevice();
+type TProps = {
+    isWalletSettled?: boolean;
+};
 
-    if (is_mobile) {
+const AccountsList = ({ isWalletSettled }: TProps) => {
+    const { isMobile } = useDevice();
+    const [isMT5PlatformListLoaded, setIsMT5PlatformListLoaded] = useState(false);
+    const [isOptionsAndMultipliersLoaded, setIsOptionsAndMultipliersLoaded] = useState(false);
+
+    if (isMobile) {
         return (
-            <Tabs className='wallets-accounts-list'>
+            <WalletsPrimaryTabs className='wallets-accounts-list'>
                 {/* TODO: Localization needed on tab headers */}
-                <TabList list={['CFDs', 'Options & multipliers']} />
-                <TabPanels>
-                    <TabPanel>
-                        <h1>CFDs</h1>
-                    </TabPanel>
-                    <TabPanel>
-                        <OptionsAndMultipliersListing />
-                    </TabPanel>
-                </TabPanels>
-            </Tabs>
+                <WalletsPrimaryTabList list={['CFDs', 'Options & multipliers']} />
+                <WalletsPrimaryTabPanels>
+                    <WalletsPrimaryTabPanel>
+                        <CFDPlatformsList onMT5PlatformListLoaded={setIsMT5PlatformListLoaded} />
+                    </WalletsPrimaryTabPanel>
+                    <WalletsPrimaryTabPanel>
+                        <OptionsAndMultipliersListing
+                            onOptionsAndMultipliersLoaded={setIsOptionsAndMultipliersLoaded}
+                        />
+                    </WalletsPrimaryTabPanel>
+                </WalletsPrimaryTabPanels>
+                <WalletMobileTourGuide
+                    isMT5PlatformListLoaded={isMT5PlatformListLoaded}
+                    isOptionsAndMultipliersLoaded={isOptionsAndMultipliersLoaded}
+                    isWalletSettled={isWalletSettled}
+                />
+            </WalletsPrimaryTabs>
         );
     }
 
     return (
         <div className='wallets-accounts-list'>
             <div className='wallets-accounts-list__content'>
-                <CFDList />
+                <CFDPlatformsList />
                 <OptionsAndMultipliersListing />
             </div>
         </div>

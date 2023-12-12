@@ -1,29 +1,32 @@
-import classNames from 'classnames';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
-import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
-import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS, isDesktop } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import { CFDAccountCopy } from './cfd-account-copy';
+import classNames from 'classnames';
+import { FormikValues } from 'formik';
+
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { Button, DesktopWrapper, Icon, MobileWrapper, Money, Text } from '@deriv/components';
+import { getCFDPlatformLabel, isMobile, mobileOSDetect } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+
 import {
+    getCTraderWebTerminalLink,
     getDXTradeWebTerminalLink,
     getPlatformDXTradeDownloadLink,
-    getCTraderWebTerminalLink,
-    getDerivEzWebTerminalLink,
 } from '../Helpers/constants';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+
 import {
     TAccountIconValues,
-    TSpecBoxProps,
-    TPasswordBoxProps,
-    TCFDAccountCardActionProps,
     TCFDAccountCard,
+    TCFDAccountCardActionProps,
     TTradingPlatformAccounts,
     TTradingPlatformAvailableAccount,
 } from './props.types';
-import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { useStore, observer } from '@deriv/stores';
-import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
-import { FormikValues } from 'formik';
+import { CFD_PLATFORMS, CATEGORY, MARKET_TYPE } from '../Helpers/cfd-config';
+import { TMarketTypeSynthetic, TAccountCategory } from '../types/market-type.types';
+import SpecBox from './specbox';
+import PasswordBox from './passwordbox';
 
 const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {
@@ -61,48 +64,6 @@ const AddAccountButton = React.forwardRef<HTMLDivElement, { onSelectAccount: () 
 
 AddAccountButton.displayName = 'AddAccountButton';
 
-const SpecBox = ({ value, is_bold }: TSpecBoxProps) => (
-    <div className='cfd-account-card__spec-box'>
-        <Text size='xs' weight={is_bold ? 'bold' : ''} className='cfd-account-card__spec-text'>
-            {value}
-        </Text>
-        <CFDAccountCopy text={value} className='cfd-account-card__spec-copy' />
-    </div>
-);
-
-const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
-    <div className='cfd-account-card__password-box'>
-        <div className='cfd-account-card__password-text'>
-            <Popover
-                alignment='right'
-                message={localize(
-                    'Use these credentials to log in to your {{platform}} account on the website and mobile apps.',
-                    {
-                        platform: getCFDPlatformLabel(platform),
-                    }
-                )}
-                classNameBubble='cfd-account-card__password-tooltip'
-            >
-                <Text size='xs'>•••••••••••••••</Text>
-            </Popover>
-        </div>
-        <Popover alignment='bottom' message={localize('Change Password')}>
-            <Button
-                className='cfd-account-card__password-action'
-                transparent
-                onClick={onClick}
-                icon={
-                    <Icon
-                        icon='IcEdit'
-                        className='da-article__learn-more-icon'
-                        custom_color='var(--text-less-prominent)'
-                    />
-                }
-            />
-        </Popover>
-    </div>
-);
-
 const CFDAccountCardAction = ({
     button_label,
     handleClickSwitchAccount,
@@ -120,7 +81,7 @@ const CFDAccountCardAction = ({
 }: TCFDAccountCardActionProps) => {
     if (
         is_virtual &&
-        type.category === 'real' &&
+        type.category === CATEGORY.REAL &&
         typeof handleClickSwitchAccount === 'function' &&
         (platform === CFD_PLATFORMS.MT5 ? has_real_account && type.type === 'financial_stp' : true)
     ) {
@@ -147,7 +108,7 @@ const CFDAccountCardAction = ({
         );
     }
     const lbl_add_account =
-        type.category === 'real' ? (
+        type.category === CATEGORY.REAL ? (
             <Localize i18n_default_text='Add real account' />
         ) : (
             <Localize i18n_default_text='Add demo account' />
@@ -200,7 +161,7 @@ const CFDAccountCardComponent = observer(
     }: TCFDAccountCard) => {
         const { ui, common, traders_hub, client } = useStore();
 
-        const { setIsAcuityModalOpen, setShouldShowCooldownModal } = ui;
+        const { setShouldShowCooldownModal } = ui;
         const { setAppstorePlatform } = common;
         const { show_eu_related_content } = traders_hub;
         const {
@@ -212,7 +173,6 @@ const CFDAccountCardComponent = observer(
 
         const {
             dxtrade_tokens,
-            derivez_tokens,
             ctrader_tokens,
             setAccountType,
             setJurisdictionSelectedShortcode,
@@ -227,26 +187,26 @@ const CFDAccountCardComponent = observer(
             is_logged_in &&
             !show_eu_related_content &&
             platform === CFD_PLATFORMS.MT5 &&
-            (type.category === 'demo'
+            (type.category === CATEGORY.DEMO
                 ? isEligibleForMoreDemoMt5Svg(
-                      type.type as TTradingPlatformAvailableAccount['market_type'] | 'synthetic'
+                      type.type as TTradingPlatformAvailableAccount['market_type'] | TMarketTypeSynthetic
                   ) && !!existing_data
                 : isEligibleForMoreRealMt5(
-                      type.type as TTradingPlatformAvailableAccount['market_type'] | 'synthetic'
+                      type.type as TTradingPlatformAvailableAccount['market_type'] | TMarketTypeSynthetic
                   ) && !!existing_data);
 
-        const platform_icon = show_eu_related_content && platform === CFD_PLATFORMS.MT5 ? 'cfd' : type.type;
+        const platform_icon = show_eu_related_content && platform === CFD_PLATFORMS.MT5 ? CFD_PLATFORMS.CFD : type.type;
 
         const icon: React.ReactNode | null = type.type ? (
             <Icon icon={account_icons[type.platform][platform_icon]} size={64} />
         ) : null;
-        const has_popular_banner: boolean = type.type === 'synthetic';
-        const has_demo_banner: boolean = type.category === 'demo';
+        const has_popular_banner: boolean = type.type === MARKET_TYPE.SYNTHETIC;
+        const has_demo_banner: boolean = type.category === CATEGORY.DEMO;
         const has_server_banner =
             is_logged_in &&
             existing_data &&
-            type.category === 'real' &&
-            type.type === 'synthetic' &&
+            type.category === CATEGORY.REAL &&
+            type.type === MARKET_TYPE.SYNTHETIC &&
             (existing_data as DetailsOfEachMT5Loginid)?.server_info;
 
         const ref = React.useRef<HTMLDivElement | null>(null);
@@ -400,26 +360,6 @@ const CFDAccountCardComponent = observer(
                                 )}
                         </div>
                     </div>
-                    {platform === CFD_PLATFORMS.MT5 && isDesktop() && is_logged_in && (
-                        <div className='cfd-account-card__acuity-container'>
-                            {type.type === 'financial' && (
-                                <Button
-                                    onClick={() => setIsAcuityModalOpen(true)}
-                                    className='cfd-account-card__acuity-banner'
-                                    type='button'
-                                    transparent
-                                >
-                                    <div className='cfd-account-card__acuity-banner--wrapper'>
-                                        <Icon icon='icMt5Acuity' />
-                                        <Text as='p' size='xxs' weight='bold' color='prominent'>
-                                            <Localize i18n_default_text='Get Acuity trading tools' />
-                                        </Text>
-                                        <Icon icon='IcAddOutline' color='secondary' />
-                                    </div>
-                                </Button>
-                            )}
-                        </div>
-                    )}
                     {existing_data && <div className='cfd-account-card__divider' />}
 
                     <div className='cfd-account-card__cta' style={!existing_data?.login ? { marginTop: 'auto' } : {}}>
@@ -450,7 +390,7 @@ const CFDAccountCardComponent = observer(
                             {existing_data?.login &&
                                 is_logged_in &&
                                 platform === CFD_PLATFORMS.MT5 &&
-                                type.category === 'demo' &&
+                                type.category === CATEGORY.DEMO &&
                                 existing_accounts_data?.length &&
                                 existing_accounts_data?.map((acc: FormikValues, index: number) => (
                                     <div className='cfd-account-card__item' key={index}>
@@ -512,7 +452,7 @@ const CFDAccountCardComponent = observer(
                                 is_logged_in &&
                                 platform === CFD_PLATFORMS.MT5 &&
                                 !existing_accounts_data?.length &&
-                                type.category === 'demo' && (
+                                type.category === CATEGORY.DEMO && (
                                     <div className='cfd-account-card__item'>
                                         {(existing_data as TTradingPlatformAccounts)?.display_login && (
                                             <div className='cfd-account-card--login-id-demo'>
@@ -564,7 +504,7 @@ const CFDAccountCardComponent = observer(
                             {existing_data?.login &&
                                 is_logged_in &&
                                 platform === CFD_PLATFORMS.MT5 &&
-                                type.category === 'real' &&
+                                type.category === CATEGORY.REAL &&
                                 existing_accounts_data?.map((acc: FormikValues, index: number) => (
                                     <div className='cfd-account-card__item' key={index}>
                                         {existing_data?.display_balance && is_logged_in && !show_eu_related_content && (
@@ -707,8 +647,10 @@ const CFDAccountCardComponent = observer(
                             {existing_data && is_logged_in && platform === CFD_PLATFORMS.DXTRADE && (
                                 <div className='cfd-account-card__manage'>
                                     <Button onClick={() => onClickFund(existing_data)} type='button' secondary>
-                                        {type.category === 'real' && <Localize i18n_default_text='Fund transfer' />}
-                                        {type.category === 'demo' && <Localize i18n_default_text='Top up' />}
+                                        {type.category === CATEGORY.REAL && (
+                                            <Localize i18n_default_text='Fund transfer' />
+                                        )}
+                                        {type.category === CATEGORY.DEMO && <Localize i18n_default_text='Top up' />}
                                     </Button>
                                 </div>
                             )}
@@ -721,7 +663,7 @@ const CFDAccountCardComponent = observer(
                                         type='button'
                                         href={getDXTradeWebTerminalLink(
                                             type.category,
-                                            dxtrade_tokens[type.category as 'demo' | 'real']
+                                            dxtrade_tokens[type.category as TAccountCategory]
                                         )}
                                         target='_blank'
                                         rel='noopener noreferrer'
@@ -749,7 +691,7 @@ const CFDAccountCardComponent = observer(
                                         type='button'
                                         href={getCTraderWebTerminalLink(
                                             type.category,
-                                            ctrader_tokens[type.category as 'demo' | 'real']
+                                            ctrader_tokens[type.category as TAccountCategory]
                                         )}
                                         target='_blank'
                                         rel='noopener noreferrer'
@@ -785,23 +727,6 @@ const CFDAccountCardComponent = observer(
                                     setShouldShowCooldownModal={setShouldShowCooldownModal}
                                 />
                             )}
-                            {existing_data &&
-                                is_logged_in &&
-                                !is_web_terminal_unsupported &&
-                                platform === CFD_PLATFORMS.DERIVEZ && (
-                                    <a
-                                        className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
-                                        type='button'
-                                        href={getDerivEzWebTerminalLink(
-                                            type.category,
-                                            derivez_tokens[type.category as 'demo' | 'real']
-                                        )}
-                                        target='_blank'
-                                        rel='noopener noreferrer'
-                                    >
-                                        <Localize i18n_default_text='Trade on web terminal' />
-                                    </a>
-                                )}
                             {!existing_data && is_logged_in && (
                                 <CFDAccountCardAction
                                     button_label={button_label}

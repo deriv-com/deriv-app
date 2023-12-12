@@ -7,6 +7,7 @@ import {
     isAccumulatorContract,
     isTurbosContract,
     toMoment,
+    TRADE_TYPES,
 } from '@deriv/shared';
 import { TError, TTradeStore } from 'Types';
 
@@ -71,7 +72,7 @@ export const getProposalInfo = (
 
     const is_stake = contract_basis?.value === 'stake';
 
-    const price = is_stake ? stake : proposal[contract_basis?.value as keyof Proposal];
+    const price = is_stake ? stake : (proposal[contract_basis?.value as keyof Proposal] as string | number);
     let has_increased = false;
 
     if (price !== undefined && price !== null) {
@@ -163,11 +164,11 @@ const createProposalRequestForContract = (store: TTradeStore, type_of_contract: 
         obj_expiry.date_expiry = convertToUnix(expiry_date.unix(), store.expiry_time);
     }
 
-    if (store.contract_type === 'multiplier') {
+    if (store.contract_type === TRADE_TYPES.MULTIPLIER) {
         setProposalMultiplier(store, obj_multiplier);
     }
 
-    if (store.contract_type === 'accumulator') {
+    if (store.contract_type === TRADE_TYPES.ACCUMULATOR) {
         setProposalAccumulator(store, obj_accumulator);
     }
 

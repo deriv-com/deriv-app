@@ -1,177 +1,37 @@
 import classNames from 'classnames';
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
+import { useLocation, useHistory } from 'react-router-dom';
+import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import {
     useOnrampVisible,
     useAccountTransferVisible,
-    useIsRealAccountNeededForCashier,
     useIsP2PEnabled,
     usePaymentAgentTransferVisible,
+    useFeatureFlags,
 } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize, getAllowedLanguages, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
-import { BinaryLink, LanguageLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
-import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
-
-const MenuLink = observer(
-    ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink, is_hidden }) => {
-        const { common, ui, client } = useStore();
-        const { changeCurrentLanguage } = common;
-        const deriv_static_url = getStaticUrl(link_to);
-        const history = useHistory();
-        const { has_any_real_account, is_virtual } = client;
-        const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
-        const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
-
-        const cashier_link =
-            link_to === routes.cashier_deposit ||
-            link_to === routes.cashier_withdrawal ||
-            link_to === routes.cashier_acc_transfer;
-
-        if (is_hidden) return null;
-
-        const traders_hub_path = window.location.pathname === routes.traders_hub;
-
-        if (real_account_needed_for_cashier && cashier_link && traders_hub_path) {
-            const handleClickCashier = () => {
-                onClickLink();
-                toggleNeedRealAccountForCashierModal();
-            };
-            return (
-                <div
-                    className={classNames('header__menu-mobile-link', {
-                        'header__menu-mobile-link--disabled': is_disabled,
-                    })}
-                    onClick={handleClickCashier}
-                >
-                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                    <span className='header__menu-mobile-link-text'>{text}</span>
-                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-                </div>
-            );
-        }
-
-        if (cashier_link && is_virtual && !has_any_real_account) {
-            const toggle_modal_routes =
-                window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
-
-            const toggleModal = () => {
-                if (toggle_modal_routes && !has_any_real_account) {
-                    toggleReadyToDepositModal();
-                }
-            };
-
-            const handleClickCashier = () => {
-                if (is_virtual && has_any_real_account) {
-                    history.push(routes.cashier_deposit);
-                } else if (!has_any_real_account && is_virtual) {
-                    toggleModal();
-                }
-                onClickLink();
-            };
-            return (
-                <div
-                    className={classNames('header__menu-mobile-link', {
-                        'header__menu-mobile-link--disabled': is_disabled,
-                    })}
-                    onClick={handleClickCashier}
-                >
-                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                    <span className='header__menu-mobile-link-text'>{text}</span>
-                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-                </div>
-            );
-        }
-
-        if (is_language) {
-            return (
-                <span
-                    className={classNames('header__menu-mobile-link', {
-                        'header__menu-mobile-link--disabled': is_disabled,
-                        'header__menu-mobile-link--active': is_active,
-                    })}
-                    onClick={() => {
-                        onClickLink();
-                        changeLanguage(link_to, changeCurrentLanguage);
-                    }}
-                >
-                    <Icon className='header__menu-mobile-link-flag-icon' size={32} icon={icon} />
-                    <span className='header__menu-mobile-link-text'>{text}</span>
-                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-                </span>
-            );
-        } else if (!link_to) {
-            return (
-                <div
-                    className={classNames('header__menu-mobile-link', {
-                        'header__menu-mobile-link--disabled': is_disabled,
-                    })}
-                >
-                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                    <span className='header__menu-mobile-link-text'>{text}</span>
-                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-                </div>
-            );
-        } else if (deriv_static_url) {
-            return (
-                <a
-                    className={classNames('header__menu-mobile-link', {
-                        'header__menu-mobile-link--disabled': is_disabled,
-                        'header__menu-mobile-link--active': is_active,
-                    })}
-                    href={link_to}
-                >
-                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                    <Text
-                        className={text === localize('Trade') ? '' : 'header__menu-mobile-link-text'}
-                        as='h3'
-                        size='xs'
-                        weight={window.location.pathname === '/' && text === localize('Trade') ? 'bold' : null}
-                    >
-                        {text}
-                    </Text>
-                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-                </a>
-            );
-        }
-
-        return (
-            <BinaryLink
-                to={link_to}
-                className={classNames('header__menu-mobile-link', {
-                    'header__menu-mobile-link--disabled': is_disabled,
-                    'header__menu-mobile-link--active': is_active,
-                })}
-                active_class='header__menu-mobile-link--active'
-                onClick={onClickLink}
-            >
-                <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                <Text
-                    className={text === localize('Trade') ? '' : 'header__menu-mobile-link-text'}
-                    as='h3'
-                    size='xs'
-                    weight={window.location.pathname === '/' && text === localize('Trade') ? 'bold' : null}
-                >
-                    {text}
-                </Text>
-                {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-            </BinaryLink>
-        );
-    }
-);
+import MenuLink from './menu-link';
+import { MobileLanguageMenu, MenuTitle } from './Components/ToggleMenu';
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
-    const { app_routing_history, current_language, is_language_changing } = common;
-    const { disableApp, enableApp, is_dark_mode_on: is_dark_mode, setDarkMode: toggleTheme } = ui;
+    const { app_routing_history, current_language } = common;
+    const {
+        disableApp,
+        enableApp,
+        is_mobile_language_menu_open,
+        is_dark_mode_on: is_dark_mode,
+        setDarkMode: toggleTheme,
+        setMobileLanguageMenuOpen,
+    } = ui;
     const {
         account_status,
         is_logged_in,
@@ -180,6 +40,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         loginid,
         logout: logoutClient,
         should_allow_authentication,
+        should_allow_poinc_authentication,
         landing_company_shortcode: active_account_landing_company,
         is_landing_company_loaded,
         is_pending_proof_of_ownership,
@@ -199,10 +60,11 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const [transitionExit, setTransitionExit] = React.useState(false);
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
     const [is_submenu_expanded, expandSubMenu] = React.useState(false);
-    const [is_language_change, setIsLanguageChange] = React.useState(false);
+
     const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
     const history = useHistory();
+    const { is_next_wallet_enabled } = useFeatureFlags();
 
     React.useEffect(() => {
         const processRoutes = () => {
@@ -222,10 +84,11 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 ];
             } else if (location === routes.traders_hub || is_trading_hub_category) {
                 primary_routes = [routes.account, routes.cashier];
+            } else if (location === routes.wallets || is_next_wallet_enabled) {
+                primary_routes = [routes.reports, routes.account];
             } else {
                 primary_routes = [routes.reports, routes.account, routes.cashier];
             }
-
             setPrimaryRoutesConfig(getFilteredRoutesConfig(routes_config, primary_routes));
         };
 
@@ -234,9 +97,10 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
 
         return () => clearTimeout(timeout);
-    }, [is_appstore, account_status, should_allow_authentication]);
+    }, [is_appstore, account_status, should_allow_authentication, is_trading_hub_category, is_next_wallet_enabled]);
 
     const toggleDrawer = React.useCallback(() => {
+        if (is_mobile_language_menu_open) setMobileLanguageMenuOpen(false);
         if (!is_open) setIsOpen(!is_open);
         else {
             setTransitionExit(true);
@@ -246,7 +110,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             }, 400);
         }
         expandSubMenu(false);
-    }, [expandSubMenu, is_open]);
+    }, [expandSubMenu, is_open, is_mobile_language_menu_open, setMobileLanguageMenuOpen]);
 
     const getFilteredRoutesConfig = (all_routes_config, routes_to_filter) => {
         const subroutes_config = all_routes_config.flatMap(i => i.routes || []);
@@ -282,6 +146,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 return is_virtual || active_account_landing_company !== 'maltainvest';
             } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {
                 return !should_allow_authentication;
+            } else if (/proof-of-income/.test(route_path)) {
+                return !should_allow_poinc_authentication;
             } else if (/proof-of-ownership/.test(route_path)) {
                 return is_virtual || !is_pending_proof_of_ownership;
             }
@@ -353,68 +219,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         );
     };
 
-    const getLanguageRoutes = () => {
-        return (
-            <MobileDrawer.SubMenu
-                has_subheader
-                submenu_icon='IcLanguage'
-                submenu_title={localize('Language')}
-                submenu_suffix_icon='IcChevronRight'
-                onToggle={expandSubMenu}
-            >
-                {Object.keys(getAllowedLanguages()).map((lang, idx) => (
-                    <MobileDrawer.Item key={idx}>
-                        <MenuLink
-                            is_language
-                            is_active={current_language === lang}
-                            link_to={lang}
-                            icon={`IcFlag${lang.replace('_', '-')}`}
-                            text={getAllowedLanguages()[lang]}
-                            onClickLink={toggleDrawer}
-                        />
-                    </MobileDrawer.Item>
-                ))}
-            </MobileDrawer.SubMenu>
-        );
-    };
-
-    const GetLanguageRoutesTraderHub = React.useCallback(() => {
-        return (
-            <MobileDrawer.SubMenu
-                is_expanded={is_language_change}
-                has_subheader
-                submenu_title={localize('Language')}
-                onToggle={is_expanded => {
-                    expandSubMenu(is_expanded);
-                    setIsLanguageChange(is_changing => !is_changing);
-                }}
-                submenu_toggle_class='dc-mobile-drawer__submenu-toggle--hidden'
-            >
-                <div
-                    className={classNames(
-                        'settings-language__language-container settings-language__language-container--has-padding',
-                        {
-                            'settings-language__language-container--disabled': is_language_changing,
-                        }
-                    )}
-                >
-                    {Object.keys(getAllowedLanguages()).map(lang => (
-                        <LanguageLink
-                            key={lang}
-                            icon_classname='settings-language__language-flag'
-                            is_clickable
-                            lang={lang}
-                            toggleModal={() => {
-                                toggleDrawer();
-                                setIsLanguageChange(is_changing => !is_changing);
-                            }}
-                        />
-                    ))}
-                </div>
-            </MobileDrawer.SubMenu>
-        );
-    }, [is_language_change, toggleDrawer, is_language_changing]);
-
     const HelpCentreRoute = has_border_bottom => {
         return (
             <MobileDrawer.Item className={classNames({ 'header__menu-mobile-theme': has_border_bottom })}>
@@ -432,34 +236,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const is_trading_hub_category =
         route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
-
-    const MenuTitle = React.useCallback(
-        () => (
-            <React.Fragment>
-                <div>{localize('Menu')}</div>
-                <div
-                    className='settings-language__language-button_wrapper'
-                    onClick={() => {
-                        if (!is_language_change) {
-                            setIsLanguageChange(true);
-                        }
-                    }}
-                >
-                    <Icon
-                        icon={`IcFlag${current_language.replace('_', '-')}`}
-                        data_testid='dt_icon'
-                        className='ic-settings-language__icon'
-                        type={current_language.replace(/(\s|_)/, '-').toLowerCase()}
-                        size={22}
-                    />
-                    <Text weight='bold' size='xxs'>
-                        <Localize i18n_default_text={current_language} />
-                    </Text>
-                </div>
-            </React.Fragment>
-        ),
-        [current_language, is_language_change]
-    );
 
     return (
         <React.Fragment>
@@ -523,7 +299,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 {is_logged_in && (
                                     <MobileDrawer.Item>
                                         <MenuLink
-                                            link_to={routes.traders_hub}
+                                            link_to={is_next_wallet_enabled ? routes.wallets : routes.traders_hub}
                                             icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'}
                                             text={localize("Trader's Hub")}
                                             onClickLink={toggleDrawer}
@@ -540,8 +316,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         />
                                     </MobileDrawer.Item>
                                 )}
-                                {!is_logged_in && getLanguageRoutes()}
-
                                 {primary_routes_config.map((route_config, idx) =>
                                     getRoutesWithSubMenu(route_config, idx)
                                 )}
@@ -634,11 +408,13 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     </MobileDrawer.Item>
                                 )}
                             </MobileDrawer.Body>
-                            <MobileDrawer.Footer className={is_logged_in && 'dc-mobile-drawer__footer--servertime'}>
+                            <MobileDrawer.Footer className={is_logged_in ? 'dc-mobile-drawer__footer--servertime' : ''}>
                                 <ServerTime is_mobile />
                                 <NetworkStatus is_mobile />
                             </MobileDrawer.Footer>
-                            {is_language_change && <GetLanguageRoutesTraderHub />}
+                            {is_mobile_language_menu_open && (
+                                <MobileLanguageMenu expandSubMenu={expandSubMenu} toggleDrawer={toggleDrawer} />
+                            )}
                         </React.Fragment>
                     </div>
                 </Div100vhContainer>

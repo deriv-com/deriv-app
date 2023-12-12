@@ -62,7 +62,7 @@ export const getCashierValidations = cashier_arr => {
 };
 
 // Notifications keys will not be added to localStorage and will appear again after user logout/login
-export const excluded_notifications = ['contract_sold', 'switched_to_real', 'has_changed_two_fa'];
+export const excluded_notifications = ['contract_sold', 'has_changed_two_fa'];
 
 export const maintenance_notifications = ['system_maintenance', 'site_maintenance'];
 
@@ -71,6 +71,19 @@ export const priority_toast_messages = [
     'need_fa',
     'p2p_daily_limit_increase',
     'authenticate',
+    'poinc_upload_limited',
+    'wallets_migrated',
+    'wallets_failed',
+    'needs_poinc',
     'notify_financial_assessment',
+    'additional_kyc_info',
+    'poa_expired',
+    'svg_needs_poi_poa',
+    'svg_needs_poa',
+    'svg_needs_poi',
+    'poi_failed',
+    'poa_failed',
+    'svg_poi_expired',
+    'mt5_notification',
     ...maintenance_notifications,
 ];

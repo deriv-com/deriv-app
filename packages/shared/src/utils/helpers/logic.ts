@@ -2,55 +2,25 @@ import moment from 'moment';
 import { isEmptyObject } from '../object';
 import { isAccumulatorContract, isOpen, isUserSold } from '../contract';
 import { TContractInfo, TContractStore } from '../contract/contract-types';
-
-type TTick = {
-    ask?: number;
-    bid?: number;
-    epoch?: number;
-    id?: string;
-    pip_size: number;
-    quote?: number;
-    symbol?: string;
-};
-
-type TIsEndedBeforeCancellationExpired = TGetEndTime & {
-    cancellation: {
-        ask_price: number;
-        date_expiry: number;
-    };
-};
+import { TickSpotData } from '@deriv/api-types';
 
 type TIsSoldBeforeStart = Required<Pick<TContractInfo, 'sell_time' | 'date_start'>>;
 
 type TIsStarted = Required<Pick<TContractInfo, 'is_forward_starting' | 'current_spot_time' | 'date_start'>>;
 
-type TGetEndTime = Pick<
-    TContractInfo,
-    | 'is_expired'
-    | 'sell_time'
-    | 'status'
-    | 'tick_count'
-    | 'bid_price'
-    | 'buy_price'
-    | 'contract_id'
-    | 'is_valid_to_sell'
-    | 'profit'
-> &
-    Required<Pick<TContractInfo, 'contract_type' | 'date_expiry' | 'exit_tick_time' | 'is_path_dependent'>>;
-
-export const isContractElapsed = (contract_info: TGetEndTime, tick: TTick) => {
+export const isContractElapsed = (contract_info: TContractInfo, tick?: null | TickSpotData) => {
     if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;
     const end_time = getEndTime(contract_info) || 0;
-    if (end_time && tick.epoch) {
+    if (end_time && tick && tick.epoch) {
         const seconds = moment.duration(moment.unix(tick.epoch).diff(moment.unix(end_time))).asSeconds();
         return seconds >= 2;
     }
     return false;
 };
 
-export const isEndedBeforeCancellationExpired = (contract_info: TIsEndedBeforeCancellationExpired) => {
+export const isEndedBeforeCancellationExpired = (contract_info: TContractInfo) => {
     const end_time = getEndTime(contract_info) || 0;
-    return !!(contract_info.cancellation && end_time < contract_info.cancellation.date_expiry);
+    return !!(contract_info.cancellation?.date_expiry && end_time < contract_info.cancellation.date_expiry);
 };
 
 export const isSoldBeforeStart = (contract_info: TIsSoldBeforeStart) =>

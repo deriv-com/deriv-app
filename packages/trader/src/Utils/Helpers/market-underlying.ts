@@ -1,13 +1,6 @@
-import { getContractConfig, getMarketNamesMap } from '@deriv/shared';
-
 type TMarketInfo = {
     category: string;
     underlying: string;
-};
-
-type TTradeConfig = {
-    name: JSX.Element;
-    position: string;
 };
 
 /**
@@ -34,11 +27,3 @@ export const getMarketInformation = (shortcode: string): TMarketInfo => {
 
     return market_info;
 };
-
-export const getMarketName = (underlying: string) =>
-    underlying ? getMarketNamesMap()[underlying.toUpperCase() as keyof typeof getMarketNamesMap] : null;
-
-export const getTradeTypeName = (category: string) =>
-    category
-        ? (getContractConfig()[category.toUpperCase() as keyof typeof getContractConfig] as TTradeConfig)?.name
-        : null;

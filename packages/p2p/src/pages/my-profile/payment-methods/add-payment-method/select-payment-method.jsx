@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Formik, Field } from 'formik';
 import { Autocomplete, Icon, Loading, Text } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
 import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';
 import './select-payment-method.scss';
@@ -31,9 +30,7 @@ const SelectPaymentMethod = () => {
                                 autoComplete='off' // prevent chrome autocomplete
                                 className='add-payment-method-select__input'
                                 data-lpignore='true'
-                                label={
-                                    isDesktop() ? localize('Payment method') : localize('Choose your payment method')
-                                }
+                                label={localize('Payment method')}
                                 list_items={my_profile_store.payment_methods_list_items}
                                 onItemSelection={({ value }) => {
                                     setTimeout(() => my_profile_store.setSelectedPaymentMethod(value), 0);

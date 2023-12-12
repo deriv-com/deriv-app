@@ -8,24 +8,24 @@ import { useLongPress } from '../../hooks';
 
 type TNumpad = {
     className?: string;
-    currency: string;
+    currency?: string;
     is_regular?: boolean;
     is_currency?: boolean;
     is_submit_disabled?: boolean;
-    label: string;
+    label?: string;
     reset_press_interval: number;
     reset_value: string;
-    max: number;
-    min: number;
+    max?: number;
+    min?: number;
     pip_size: number;
     onSubmit: (param: number | string) => void;
-    v: string;
+    v?: string;
     render?: (props: { value: string; className: string }) => React.ReactNode;
     submit_label: string;
-    value: string;
-    format: (v: string) => number;
+    value: string | number;
+    format?: (v: string) => number | string;
     onValueChange: (val: number | string) => void;
-    onValidate: (default_value: number | string) => string | undefined;
+    onValidate: (default_value: number | string) => boolean | 'error';
 };
 
 const concatenate = (number: string | number, default_value: string | number) =>
@@ -71,7 +71,7 @@ const Numpad = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [default_value, value]);
 
-    const updateValue = (val: string) => {
+    const updateValue = (val: string | number) => {
         setValue(val);
         if (onValueChange) onValueChange(val);
     };

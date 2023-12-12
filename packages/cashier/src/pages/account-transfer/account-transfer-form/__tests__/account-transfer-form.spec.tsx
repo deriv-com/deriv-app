@@ -1,15 +1,21 @@
 import React from 'react';
-
-import { isMobile } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS, isMobile } from '@deriv/shared';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore, ExchangeRatesProvider } from '@deriv/stores';
 import { TError } from '../../../../types';
 import AccountTransferForm from '../account-transfer-form';
+import userEvent from '@testing-library/user-event';
+import { useMFAccountStatus } from '@deriv/hooks';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
     isMobile: jest.fn(),
+}));
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useMFAccountStatus: jest.fn(),
 }));
 
 let mockRootStore: ReturnType<typeof mockStore>;
@@ -20,6 +26,7 @@ jest.mock('Assets/svgs/trading-platform', () =>
 
 describe('<AccountTransferForm />', () => {
     beforeEach(() => {
+        (useMFAccountStatus as jest.Mock).mockReturnValue(null);
         mockRootStore = mockStore({
             client: {
                 account_limits: {
@@ -189,6 +196,17 @@ describe('<AccountTransferForm />', () => {
         fireEvent.click(submit_button);
 
         expect(await screen.findByText('Insufficient balance')).toBeInTheDocument();
+    });
+
+    it('should show an error and transfer button should be disabled if useMFAccountStatus is pending', async () => {
+        (useMFAccountStatus as jest.Mock).mockReturnValue(MT5_ACCOUNT_STATUS.PENDING);
+
+        renderAccountTransferForm();
+
+        userEvent.type(screen.getByTestId('dt_account_transfer_form_input'), '1');
+
+        expect(await screen.findByText('Unavailable as your documents are still under review')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Transfer' })).toBeDisabled();
     });
 
     it('should not allow to do transfer if accounts from and to are same', () => {

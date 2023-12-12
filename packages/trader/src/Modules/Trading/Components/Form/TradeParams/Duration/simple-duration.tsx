@@ -1,5 +1,3 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { ButtonToggle, InputField } from '@deriv/components';
 import RangeSlider from 'App/Components/Form/RangeSlider';
@@ -7,6 +5,23 @@ import TradingDatePicker from '../../DatePicker';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
+type TSimpleDuration = {
+    changeDurationUnit: React.ComponentProps<typeof ButtonToggle>['onChange'];
+    duration_t: number;
+    duration_units_list: ReturnType<typeof useTraderStore>['duration_units_list'];
+    getDurationFromUnit: ReturnType<typeof useStore>['ui']['getDurationFromUnit'];
+    number_input_props: {
+        type: string;
+        is_incrementable: boolean;
+    };
+    shared_input_props: {
+        is_hj_whitelisted: boolean;
+        onChange: ({ target }: { target: { name: string; value: string | number } }) => void;
+        max_value: number;
+        min_value: number;
+    };
+    simple_duration_unit: string;
+};
 const SimpleDuration = observer(
     ({
         changeDurationUnit,
@@ -15,12 +30,14 @@ const SimpleDuration = observer(
         getDurationFromUnit,
         number_input_props,
         shared_input_props,
-    }) => {
+        simple_duration_unit: simple_duration_unit_prop,
+    }: TSimpleDuration) => {
         const { ui } = useStore();
-        const { current_focus, setCurrentFocus, simple_duration_unit } = ui;
+        const { current_focus, setCurrentFocus } = ui;
         const { contract_expiry_type, validation_errors } = useTraderStore();
 
-        const filterMinutesAndTicks = arr => {
+        const simple_duration_unit = simple_duration_unit_prop || ui.simple_duration_unit;
+        const filterMinutesAndTicks = (arr: TSimpleDuration['duration_units_list']) => {
             const filtered_arr = arr.filter(du => du.value === 't' || du.value === 'm');
             if (filtered_arr.length <= 1) return [];
 
@@ -41,7 +58,7 @@ const SimpleDuration = observer(
                     />
                 )}
                 {simple_duration_unit === 't' && contract_expiry_type === 'tick' && (
-                    <RangeSlider name='duration' value={duration_t} ticks={10} {...shared_input_props} />
+                    <RangeSlider name='duration' value={duration_t} {...shared_input_props} />
                 )}
                 {simple_duration_unit === 'd' && (
                     <TradingDatePicker id='dt_simple_duration_datepicker' mode='duration' name='duration' />
@@ -53,7 +70,7 @@ const SimpleDuration = observer(
                         current_focus={current_focus}
                         error_messages={validation_errors.duration}
                         name='duration'
-                        label={has_label ? duration_units_list[0]?.text : null}
+                        label={has_label ? duration_units_list[0]?.text : undefined}
                         setCurrentFocus={setCurrentFocus}
                         value={getDurationFromUnit(simple_duration_unit)}
                         {...number_input_props}
@@ -64,14 +81,5 @@ const SimpleDuration = observer(
         );
     }
 );
-
-SimpleDuration.propTypes = {
-    changeDurationUnit: PropTypes.func,
-    duration_t: PropTypes.number,
-    duration_units_list: MobxPropTypes.arrayOrObservableArray,
-    getDurationFromUnit: PropTypes.func,
-    number_input_props: PropTypes.object,
-    shared_input_props: PropTypes.object,
-};
 
 export default SimpleDuration;

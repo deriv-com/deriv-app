@@ -2,7 +2,12 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-const ExpiryText = ({ expiry_epoch, has_error, fixed_date }) => {
+type TExpiryText = {
+    expiry_epoch?: number;
+    has_error?: boolean;
+    fixed_date?: string;
+};
+const ExpiryText = ({ expiry_epoch, has_error, fixed_date }: TExpiryText) => {
     const formatted_date =
         expiry_epoch && !has_error
             ? new Date(expiry_epoch * 1000)

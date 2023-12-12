@@ -345,7 +345,7 @@ export default class NotificationStore extends BaseStore {
         if (is_logged_in) {
             if (isEmptyObject(account_status)) return;
             const {
-                authentication: { document, identity, needs_verification, ownership },
+                authentication: { document, identity, income, needs_verification, ownership },
                 status,
                 cashier_validation,
             } = account_status;
@@ -428,6 +428,9 @@ export default class NotificationStore extends BaseStore {
                     is_10k_withdrawal_limit_reached &&
                     (needs_verification.includes('document') || document?.status !== 'verified');
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
+                const needs_poinc =
+                    needs_verification.includes('income') && ['rejected', 'none'].includes(income?.status);
+                const poinc_upload_limited = needs_verification.includes('income') && income?.status === 'locked';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
                 const poo_required = ownership?.requests?.length > 0 && ownership?.status?.toLowerCase() !== 'rejected';
                 const poo_rejected = is_pending_proof_of_ownership && ownership?.status?.toLowerCase() === 'rejected';
@@ -451,6 +454,8 @@ export default class NotificationStore extends BaseStore {
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
+                if (needs_poinc) this.addNotificationMessage(this.client_notifications.needs_poinc);
+                if (poinc_upload_limited) this.addNotificationMessage(this.client_notifications.poinc_upload_limited);
 
                 if (
                     poi_name_mismatch &&
@@ -977,6 +982,16 @@ export default class NotificationStore extends BaseStore {
                 message: localize('To continue trading with us, please confirm who you are.'),
                 type: 'danger',
             },
+            needs_poinc: {
+                action: {
+                    route: routes.proof_of_income,
+                    text: localize('Go to my account settings'),
+                },
+                key: 'needs_poinc',
+                header: localize('Please verify your proof of income'),
+                message: localize('To continue trading with us, please submit your proof of income.'),
+                type: 'warning',
+            },
 
             new_version_available: {
                 action: {
@@ -1097,6 +1112,12 @@ export default class NotificationStore extends BaseStore {
                     />
                 ),
                 type: 'warning',
+            },
+            poinc_upload_limited: {
+                key: 'poinc_upload_limited',
+                header: localize("You've reached the limit of uploading your documents."),
+                message: localize('Please check your email.'),
+                type: 'danger',
             },
             resticted_mt5_with_pending_poa: {
                 key: 'resticted_mt5_with_pending_poa',

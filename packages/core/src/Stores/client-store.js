@@ -2571,7 +2571,9 @@ export default class ClientStore extends BaseStore {
     }
 
     get is_pending_proof_of_ownership() {
-        return this.account_status?.authentication?.needs_verification?.includes('ownership');
+        if (!this.account_status?.authentication) return false;
+        const { ownership, needs_verification } = this.account_status.authentication;
+        return needs_verification?.includes('ownership') || ownership?.status === 'verified';
     }
 
     fetchFinancialAssessment() {

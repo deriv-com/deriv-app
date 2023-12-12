@@ -4,7 +4,9 @@ import useMutation from '../../useMutation';
 import useInvalidateQuery from '../../useInvalidateQuery';
 
 type TAdvertiseCreatePayload = {
-    name: string;
+ name: NonNullable<
+        Parameters<ReturnType<typeof useMutation<'p2p_advertiser_create'>>['mutate']>
+    >[0]['payload']['name'];
 };
 
 const useCreateAdvertiser = () => {

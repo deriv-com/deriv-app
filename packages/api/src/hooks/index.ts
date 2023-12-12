@@ -63,4 +63,3 @@ export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useWalletAccountsList } from './useWalletAccountsList';
 export { default as useWalletMigration } from './useWalletMigration';
 export { default as useTradingPlatformPasswordReset } from './useTradingPlatformPasswordReset';
-export * as P2PHooks from './p2p';

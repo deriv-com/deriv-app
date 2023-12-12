@@ -3,15 +3,65 @@ import classNames from 'classnames';
 import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
 import { isEmptyObject, addComma, getDurationMinMaxValues, getUnitMap } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import ExpiryText from './expiry-text.jsx';
-import DurationRangeText from './duration-range-text';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import moment from 'moment';
+import ExpiryText from './expiry-text';
+import DurationRangeText from './duration-range-text';
+import type { TTradeParamsMobile } from 'Modules/Trading/Containers/trade-params-mobile';
+
+type TDuration = Pick<
+    TTradeParamsMobile,
+    | 'amount_tab_idx'
+    | 'd_duration'
+    | 'duration_tab_idx'
+    | 'h_duration'
+    | 'm_duration'
+    | 's_duration'
+    | 't_duration'
+    | 'has_amount_error'
+    | 'payout_value'
+    | 'setDurationError'
+    | 'setDurationTabIdx'
+    | 'setSelectedDuration'
+    | 'stake_value'
+    | 'toggleModal'
+> & {
+    expiry_epoch?: string | number;
+};
+
+type TNumber = Pick<
+    TDuration,
+    | 'expiry_epoch'
+    | 'has_amount_error'
+    | 'payout_value'
+    | 'setDurationError'
+    | 'setSelectedDuration'
+    | 'stake_value'
+    | 'toggleModal'
+> & {
+    basis_option: string;
+    contract_expiry?: string;
+    duration_unit_option: ReturnType<typeof useTraderStore>['duration_units_list'][0];
+    duration_values?: Record<string, number>;
+    selected_duration: number;
+    show_expiry?: boolean;
+};
+
+type TTicks = Omit<TNumber, 'expiry_epoch' | 'contract_expiry' | 'duration_unit_option' | 'show_expiry'>;
+
+type TDurationUnit = 't' | 's' | 'm' | 'h' | 'd';
 
 const submit_label = localize('OK');
 
-const updateAmountChanges = (obj, stake_value, payout_value, basis, trade_basis, trade_amount) => {
+const updateAmountChanges = (
+    obj: Record<string, string | number>,
+    stake_value: number,
+    payout_value: number,
+    basis: string,
+    trade_basis: string,
+    trade_amount: number
+) => {
     // TODO: Move onChangeMultiple outside of duration and amount
     //  and unify all trade parameter components to use same onMultipleChange func onSubmit
     // Checks if Amount tab was changed to stake and stake value was updated
@@ -39,7 +89,7 @@ const Ticks = observer(
         stake_value,
         selected_duration,
         setSelectedDuration,
-    }) => {
+    }: TTicks) => {
         const {
             duration_min_max,
             duration: trade_duration,
@@ -55,9 +105,9 @@ const Ticks = observer(
 
         const [min_tick, max_tick] = getDurationMinMaxValues(duration_min_max, 'tick', 't');
 
-        const setTickDuration = value => {
+        const setTickDuration = (value: { target: { value: number; name: string } }) => {
             const { value: duration } = value.target;
-            const on_change_obj = {};
+            const on_change_obj: Record<string, string | number> = {};
 
             // check for any amount changes from Amount trade params tab before submitting onChange object
             if (!has_amount_error)
@@ -72,15 +122,18 @@ const Ticks = observer(
             toggleModal();
         };
 
-        const onTickChange = tick => setSelectedDuration('t', tick);
-        const tick_duration = trade_duration < min_tick && selected_duration < min_tick ? min_tick : selected_duration;
+        const onTickChange = (tick: number) => setSelectedDuration('t', tick);
+        const tick_duration =
+            trade_duration < Number(min_tick) && selected_duration < Number(min_tick)
+                ? Number(min_tick)
+                : selected_duration;
         return (
             <div className='trade-params__duration-tickpicker'>
                 <TickPicker
                     default_value={tick_duration}
                     submit_label={submit_label}
-                    max_value={max_tick}
-                    min_value={min_tick}
+                    max_value={Number(max_tick)}
+                    min_value={Number(min_tick)}
                     onSubmit={setTickDuration}
                     onValueChange={onTickChange}
                     singular_label={localize('Tick')}
@@ -106,7 +159,7 @@ const Numbers = observer(
         stake_value,
         show_expiry = false,
         toggleModal,
-    }) => {
+    }: TNumber) => {
         const { ui } = useStore();
         const { addToast } = ui;
         const {
@@ -122,7 +175,7 @@ const Numbers = observer(
         const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
         const [has_error, setHasError] = React.useState(false);
 
-        const validateDuration = value => {
+        const validateDuration = (value: number | string) => {
             const localized_message = (
                 <Localize
                     i18n_default_text='Should be between {{min}} and {{max}}'
@@ -132,12 +185,12 @@ const Numbers = observer(
                     }}
                 />
             );
-            if (parseInt(value) < min || parseInt(selected_duration) > max) {
+            if (parseInt(value as string) < Number(min) || Math.trunc(selected_duration) > Number(max)) {
                 addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
                 setDurationError(true);
                 setHasError(true);
                 return 'error';
-            } else if (parseInt(value) > max) {
+            } else if (parseInt(value as string) > Number(max)) {
                 addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
                 setHasError(true);
                 return 'error';
@@ -153,14 +206,14 @@ const Numbers = observer(
             return true;
         };
 
-        const setDuration = duration => {
-            const on_change_obj = {};
+        const setDuration = (duration: string | number) => {
+            const on_change_obj: Record<string, string | number> = {};
 
             // check for any amount changes from Amount trade params tab before submitting onChange object
             if (!has_amount_error)
                 updateAmountChanges(on_change_obj, stake_value, payout_value, basis_option, trade_basis, trade_amount);
 
-            if (trade_duration !== duration || trade_duration_unit !== duration_unit) {
+            if (trade_duration !== Number(duration) || trade_duration_unit !== duration_unit) {
                 on_change_obj.duration_unit = duration_unit;
                 on_change_obj.duration = duration;
                 on_change_obj.expiry_type = 'duration';
@@ -170,13 +223,13 @@ const Numbers = observer(
             toggleModal();
         };
 
-        const setExpiryDate = (epoch, duration) => {
+        const setExpiryDate = (epoch: number, duration: string | number) => {
             if (trade_duration_unit !== 'd') {
                 return moment.utc().add(Number(duration), 'days').format('D MMM YYYY, [23]:[59]:[59] [GMT +0]');
             }
             let expiry_date = new Date((epoch - trade_duration * 24 * 60 * 60) * 1000);
             if (duration) {
-                expiry_date = new Date(expiry_date.getTime() + duration * 24 * 60 * 60 * 1000);
+                expiry_date = new Date(expiry_date.getTime() + Number(duration) * 24 * 60 * 60 * 1000);
             }
 
             return expiry_date
@@ -186,12 +239,12 @@ const Numbers = observer(
                 .replace(/(\d{2}) (\w{3} \d{4})/, '$1 $2,');
         };
 
-        const onNumberChange = num => {
-            setSelectedDuration(duration_unit, num);
+        const onNumberChange = (num: number | string) => {
+            setSelectedDuration(duration_unit, Number(num));
             validateDuration(num);
         };
 
-        const fixed_date = !has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : '';
+        const fixed_date = !has_error ? setExpiryDate(Number(expiry_epoch), Number(duration_values?.d_duration)) : '';
 
         const { name_plural, name } = getUnitMap()[duration_unit];
         const duration_unit_text = name_plural ?? name;
@@ -214,8 +267,8 @@ const Numbers = observer(
                     }}
                     pip_size={0}
                     submit_label={submit_label}
-                    min={min}
-                    max={max}
+                    min={Number(min)}
+                    max={Number(max)}
                     reset_press_interval={350}
                     reset_value=''
                     onValidate={validateDuration}
@@ -243,7 +296,7 @@ const Duration = observer(
         stake_value,
         t_duration,
         toggleModal,
-    }) => {
+    }: TDuration) => {
         const { duration_units_list, duration_min_max, duration_unit, basis: trade_basis } = useTraderStore();
         const duration_values = {
             t_duration,
@@ -257,7 +310,7 @@ const Duration = observer(
             ? duration_tab_idx
             : duration_units_list.findIndex(d => d.value === duration_unit);
         const [min, max] = getDurationMinMaxValues(duration_min_max, 'daily', 'd');
-        const handleRelativeChange = date => {
+        const handleRelativeChange = (date: number) => {
             setSelectedDuration('d', date);
         };
         const selected_basis_option = () => {
@@ -269,10 +322,10 @@ const Duration = observer(
             return trade_basis;
         };
 
-        const onTabChange = index => {
+        const onTabChange = (index: number) => {
             setDurationTabIdx(index);
             const { value: unit } = duration_units_list[index];
-            setSelectedDuration(unit, duration_values[`${unit}_duration`]);
+            setSelectedDuration(unit, duration_values[`${unit as TDurationUnit}_duration`]);
         };
 
         return (

@@ -2,7 +2,7 @@ import React from 'react';
 import Loading from '_common/components/loading';
 
 type TChartLoader = {
-    is_dark: boolean;
+    is_dark?: boolean;
     is_visible: boolean;
 };
 

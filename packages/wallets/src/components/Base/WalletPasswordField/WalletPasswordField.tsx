@@ -28,10 +28,18 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             onChange?.(e);
-            setIsTouched(true);
+            if (!isTouched) {
+                setIsTouched(true);
+            }
         },
-        [onChange]
+        [isTouched, onChange]
     );
+
+    const handleBlur = useCallback(() => {
+        if (!isTouched) {
+            setIsTouched(true);
+        }
+    }, [isTouched]);
 
     return (
         <div className='wallets-password'>
@@ -43,6 +51,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 message={isTouched ? errorMessage : ''}
                 messageVariant='warning'
                 name={name}
+                onBlur={handleBlur}
                 onChange={handleChange}
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setIsPasswordVisible} viewPassword={isPasswordVisible} />

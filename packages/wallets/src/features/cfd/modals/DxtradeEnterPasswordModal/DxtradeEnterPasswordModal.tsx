@@ -37,9 +37,9 @@ const DxtradeEnterPasswordModal = () => {
 
     const successDescription = useMemo(() => {
         return accountType === 'demo'
-            ? "Let's practise trading with 10,000 USD virtual funds."
+            ? `Let's practise trading with ${activeWallet?.display_balance} virtual funds.`
             : `Transfer funds from your ${activeWallet?.currency} Wallet to your ${PlatformDetails.dxtrade.title} account to start trading.`;
-    }, [accountType, activeWallet?.currency]);
+    }, [accountType, activeWallet?.currency, activeWallet?.display_balance]);
 
     const dxtradeBalance = useMemo(() => {
         return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;

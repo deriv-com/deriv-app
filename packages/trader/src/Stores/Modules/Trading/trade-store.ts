@@ -73,7 +73,7 @@ type TBarriers = Array<
         isSingleBarrier?: boolean;
     }
 >;
-type TChartLayout = {
+export type TChartLayout = {
     adj: boolean;
     aggregationType: string;
     animation?: boolean;
@@ -118,7 +118,7 @@ type TChartLayout = {
     timeUnit: string;
     volumeUnderlay: boolean;
 };
-type TChartStateChangeOption = {
+export type TChartStateChangeOption = {
     indicator_type_name?: string;
     indicators_category_name?: string;
     isClosed?: boolean;
@@ -909,6 +909,9 @@ export default class TradeStore extends BaseStore {
                             const is_digit_contract = isDigitContractType(category?.toUpperCase() ?? '');
                             const is_multiplier = isMultiplierContract(category);
                             const contract_type = category?.toUpperCase();
+
+                            if ((window as any).hj) (window as any).hj('event', `placed_${category}_trade`);
+
                             this.root_store.contract_trade.addContract({
                                 contract_id,
                                 start_time,

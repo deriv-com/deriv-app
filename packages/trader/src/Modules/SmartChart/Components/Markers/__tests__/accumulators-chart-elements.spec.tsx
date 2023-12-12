@@ -32,7 +32,7 @@ describe('AccumulatorsChartElements', () => {
                     profit: 120,
                 },
             },
-        ],
+        ] as React.ComponentProps<typeof AccumulatorsChartElements>['all_positions'],
         current_spot: 9478.34,
         current_spot_time: 1234567890,
         has_crossed_accu_barriers: false,

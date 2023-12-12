@@ -14,7 +14,7 @@ type TTickPicker = {
     min_value: number;
     max_value: number;
     onSubmit: (props: { target: { value: number; name: string } }) => void;
-    submit_label: React.ReactElement;
+    submit_label: React.ReactElement | string;
     singular_label: string;
     plural_label: string;
     onValueChange: (tick_value: number) => void;

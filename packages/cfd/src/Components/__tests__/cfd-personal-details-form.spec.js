@@ -307,7 +307,7 @@ describe('<CFDPersonalDetailsForm />', () => {
         const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
         const place_of_birth_input = screen.getByRole('textbox', { name: /place of birth/i });
         const tax_residence_input = screen.getByRole('textbox', { name: /tax residence/i });
-        const opening_reason_input = screen.getByTestId(/dti_dropdown_display/i);
+        const opening_reason_input = screen.getByTestId(/dt_dropdown_display/i);
         const next_button = screen.getByRole('button', { name: /next/i });
         const tax_id_input = screen.queryByRole('textbox', { name: /tax identification number/i });
 

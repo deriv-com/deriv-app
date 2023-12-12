@@ -60,7 +60,7 @@ const useCreateAdvertiser = () => {
             /** When true, the advertiser's real name will be displayed on to other users on adverts and orders. */
             show_name: Boolean(show_name),
             /** The epoch time that the client became an advertiser. */
-            created_time: created_time? new Date(created_time) : undefined,
+            created_time: created_time ? new Date(created_time) : undefined,
         };
     }, [data]);
 

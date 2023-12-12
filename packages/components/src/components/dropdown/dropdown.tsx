@@ -198,7 +198,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
                     role='list'
                     ref={list_ref}
                 >
-                    <ThemedScrollbars height={!is_rtl && (list_dimensions[1] || '200px')}>
+                    <ThemedScrollbars height={is_rtl ? undefined : list_dimensions[1] || '200px'}>
                         {Array.isArray(list) ? (
                             <Items
                                 onKeyPressed={onKeyPressed}

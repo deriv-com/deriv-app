@@ -150,6 +150,9 @@
         right: 12px;
         transition: transform 0.2s ease;
         transform: rotate(0deg);
+        [dir='rtl'] & {
+            transform: rotate(180deg);
+        }
         transform-origin: 50% 45%;
         @include typeface(--title-center-normal-black, none);
         @extend %inline-icon;

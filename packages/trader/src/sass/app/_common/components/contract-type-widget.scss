@@ -39,6 +39,9 @@
 
             .contract-type-widget__select-arrow {
                 transform: rotate(-90deg);
+                [dir='rtl'] & {
+                    transform: rotate(90deg);
+                }
             }
         }
     }
@@ -56,8 +59,8 @@
         line-height: 1;
         transition: transform 0.25s ease;
         transform: rotate(90deg);
-        &[dir='rtl'] {
-            transform: rotate(90deg);
+        [dir='rtl'] & {
+            transform: rotate(-90deg);
         }
         transform-origin: 45% 45;
         color: var(--text-prominent);

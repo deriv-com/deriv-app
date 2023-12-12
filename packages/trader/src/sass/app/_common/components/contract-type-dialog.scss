@@ -98,6 +98,9 @@
     &--enter,
     &--exit {
         transform: translate3d(20%, 0, 0);
+        [dir='rtl'] & {
+            transform: translate3d(-20%, 0, 0);
+        }
         pointer-events: none;
         opacity: 0;
         height: 0;
@@ -108,10 +111,6 @@
         opacity: 1;
         pointer-events: auto;
     }
-}
-
-[dir='rtl'] .contract-type-info__wrapper {
-    left: calc(100% + 10px);
 }
 
 .contract-type-widget__header ~ .dc-mobile-dialog__content {

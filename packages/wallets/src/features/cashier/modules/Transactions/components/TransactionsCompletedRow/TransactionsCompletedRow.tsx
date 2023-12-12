@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { WalletText } from '../../../../../../components/Base';
 import { THooks } from '../../../../../../types';
+import { PlatformDetails } from '../../../../constants';
 import { TransactionsCompletedRowAccountDetails } from './components/TransactionsCompletedRowAccountDetails';
 import { TransactionsCompletedRowTransferAccountDetails } from './components/TransactionsCompletedRowTransferAccountDetails';
 import './TransactionsCompletedRow.scss';
@@ -17,7 +18,7 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
         if (
             transaction?.action_type !== 'transfer' ||
             !transaction.longcode ||
-            !transaction.longcode.includes('Deriv X')
+            !transaction.longcode.includes(PlatformDetails.dxtrade.title)
         )
             return null;
         const longcodeMessageTokens = transaction.longcode.split(' ');

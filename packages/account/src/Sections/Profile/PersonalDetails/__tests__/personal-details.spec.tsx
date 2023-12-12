@@ -137,7 +137,7 @@ describe('<PersonalDetailsForm />', () => {
         });
     });
 
-    it('should render professional client if support_professional_client is true with not verified account', async () => {
+    it('should render professional client if support_professional_client is true with not verified account', () => {
         mock_store.client.current_landing_company.support_professional_client = 'true';
         renderComponent();
         const professional_client_text = [
@@ -165,7 +165,7 @@ describe('<PersonalDetailsForm />', () => {
         expect(auth_link).toBe('/account/proof-of-identity');
     });
 
-    it('should render POA auth link', async () => {
+    it('should render POA auth link', () => {
         mock_store.client.current_landing_company.support_professional_client = 'true';
         mock_store.client.authentication_status.identity_status = 'verified';
         renderComponent();

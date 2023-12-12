@@ -1,13 +1,9 @@
 import { useMemo } from 'react';
 import useQuery from '../useQuery';
-import useAuthorize from './useAuthorize';
 
 /** A custom hook to retrieves the account status for the current user. */
 const useGetAccountStatus = () => {
-    const { isSuccess } = useAuthorize();
-    const { data: get_account_status_data, ...rest } = useQuery('get_account_status', {
-        options: { enabled: isSuccess },
-    });
+    const { data: get_account_status_data, ...rest } = useQuery('get_account_status');
 
     // Add additional information to the account status response.
     const modified_account_status = useMemo(() => {

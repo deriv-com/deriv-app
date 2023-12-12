@@ -51,38 +51,62 @@ export const walletIconMapper = {
     },
 } as const;
 
-type TDefinedMT5LandingCompanyName = Exclude<TMT5LandingCompanyName, undefined>;
+type TDefinedMT5LandingCompanyName = Exclude<TMT5LandingCompanyName, 'malta' | 'seychelles' | undefined>;
 
-export const LandingCompanyDetails = {
+interface TDefinedMT5LandingCompanyDetails {
+    name: TDefinedMT5LandingCompanyName;
+    shortcode: string;
+}
+
+export const LandingCompanyDetails: Record<TDefinedMT5LandingCompanyName, TDefinedMT5LandingCompanyDetails> = {
     bvi: {
-        name: 'bvi' as TDefinedMT5LandingCompanyName,
+        name: 'bvi',
         shortcode: 'BVI',
     },
     labuan: {
-        name: 'labuan' as TDefinedMT5LandingCompanyName,
+        name: 'labuan',
         shortcode: 'Labuan',
     },
     maltainvest: {
-        name: 'maltainvest' as TDefinedMT5LandingCompanyName,
+        name: 'maltainvest',
         shortcode: 'Maltainvest',
     },
     svg: {
-        name: 'svg' as TDefinedMT5LandingCompanyName,
+        name: 'svg',
         shortcode: 'SVG',
     },
     vanuatu: {
-        name: 'vanuatu' as TDefinedMT5LandingCompanyName,
+        name: 'vanuatu',
         shortcode: 'Vanuatu',
     },
 } as const;
 
-export const MT5MarketTypeDetails = {
+interface TMT5MarketTypeDetails {
+    icon?: {
+        dark: string;
+        light: string;
+    };
+    landingCompany?: Record<TWalletLandingCompanyName, TWalletLandingCompanyDetails>;
+    name: TMarketTypes.All;
+    title: string;
+}
+
+interface TWalletLandingCompanyDetails {
+    icon: {
+        dark: string;
+        light: string;
+    };
+    name: TWalletLandingCompanyName;
+    title: string;
+}
+
+export const MT5MarketTypeDetails: Record<TMarketTypes.All, TMT5MarketTypeDetails> = {
     all: {
         icon: {
             dark: 'IcWalletMt5All',
             light: 'IcWalletMt5All',
         },
-        name: 'all' as TMarketTypes.All,
+        name: 'all',
         title: 'MT5 Swap-Free',
     },
     financial: {
@@ -92,7 +116,7 @@ export const MT5MarketTypeDetails = {
                     dark: 'IcWalletMt5CFDs',
                     light: 'IcWalletMt5CFDs',
                 },
-                name: 'malta' as TWalletLandingCompanyName,
+                name: 'malta',
                 title: 'MT5 CFDs',
             },
             svg: {
@@ -100,7 +124,7 @@ export const MT5MarketTypeDetails = {
                     dark: 'IcWalletMt5Financial',
                     light: 'IcWalletMt5Financial',
                 },
-                name: 'svg' as TWalletLandingCompanyName,
+                name: 'svg',
                 title: 'MT5 Financial',
             },
             virtual: {
@@ -108,11 +132,11 @@ export const MT5MarketTypeDetails = {
                     dark: 'IcWalletMt5Financial',
                     light: 'IcWalletMt5Financial',
                 },
-                name: 'virtual' as TWalletLandingCompanyName,
+                name: 'virtual',
                 title: 'MT5 CFDs',
             },
         },
-        name: 'financial' as TMarketTypes.All,
+        name: 'financial',
         title: 'MT5 Financial',
     },
     synthetic: {
@@ -120,7 +144,7 @@ export const MT5MarketTypeDetails = {
             dark: 'IcWalletMt5Derived',
             light: 'IcWalletMt5Derived',
         },
-        name: 'synthetic' as TMarketTypes.All,
+        name: 'synthetic',
         title: 'MT5 Derived',
     },
 } as const;

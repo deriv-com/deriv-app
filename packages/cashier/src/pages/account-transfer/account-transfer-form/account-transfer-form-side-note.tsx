@@ -4,6 +4,7 @@ import { Text } from '@deriv/components';
 import { useExchangeRate } from '@deriv/hooks';
 import { Localize } from '@deriv/translations';
 import { useCurrencyConfig } from '@deriv/api';
+import { addComma } from '@deriv/shared';
 
 type TAccountTransferNoteProps = {
     allowed_transfers_amount: GetLimits['daily_cumulative_amount_transfers'];
@@ -47,7 +48,7 @@ const AccountTransferNote = ({
         if (transfer_fee === 2) {
             return (
                 <Localize
-                    i18n_default_text='We charge 2% or {{minimum_fee}} {{currency}} (whichever is higher) for all cryptocurrency transfers.'
+                    i18n_default_text='We charge 2% or {{ minimum_fee }} {{ currency }} (whichever is higher) for all cryptocurrency transfers.'
                     values={{
                         minimum_fee,
                         currency: account_currency,
@@ -57,7 +58,7 @@ const AccountTransferNote = ({
         } else if (transfer_fee === 1) {
             return (
                 <Localize
-                    i18n_default_text='We charge 1% or {{minimum_fee}} {{currency}} (whichever is higher) for all cryptocurrency transfers.'
+                    i18n_default_text='We charge 1% or {{ minimum_fee }} {{ currency }} (whichever is higher) for all cryptocurrency transfers.'
                     values={{
                         minimum_fee,
                         currency: account_currency,
@@ -83,10 +84,12 @@ const AccountTransferNote = ({
                         <Localize
                             i18n_default_text='Each day you can transfer up to {{ allowed_dxtrade }} {{ currency }}. The daily limit will be reset at 00:00 GMT.'
                             values={{
-                                allowed_dxtrade: (
+                                allowed_dxtrade: addComma(
                                     exchange_rate *
-                                    (Number(allowed_transfers_amount?.dxtrade) || ALLOWED_TRANSFER_AMOUNTS.DXTRADE)
-                                ).toFixed(2),
+                                        (Number(allowed_transfers_amount?.dxtrade) || ALLOWED_TRANSFER_AMOUNTS.DXTRADE),
+                                    2,
+                                    false
+                                ),
                                 currency: account_currency,
                             }}
                         />
@@ -100,10 +103,12 @@ const AccountTransferNote = ({
                         <Localize
                             i18n_default_text='Each day you can transfer up to {{ allowed_mt5 }} {{ currency }}. The daily limit will be reset at 00:00 GMT.'
                             values={{
-                                allowed_mt5: (
+                                allowed_mt5: addComma(
                                     exchange_rate *
-                                    (Number(allowed_transfers_amount?.mt5) || ALLOWED_TRANSFER_AMOUNTS.MT5)
-                                ).toFixed(2),
+                                        (Number(allowed_transfers_amount?.mt5) || ALLOWED_TRANSFER_AMOUNTS.MT5),
+                                    2,
+                                    false
+                                ),
                                 currency: account_currency,
                             }}
                         />
@@ -117,10 +122,12 @@ const AccountTransferNote = ({
                     <Localize
                         i18n_default_text='Each day you can transfer up to {{ allowed_internal }} {{ currency }}. The daily limit will be reset at 00:00 GMT.'
                         values={{
-                            allowed_internal: (
+                            allowed_internal: addComma(
                                 exchange_rate *
-                                (Number(allowed_transfers_amount?.internal) || ALLOWED_TRANSFER_AMOUNTS.INTERNAL)
-                            ).toFixed(2),
+                                    (Number(allowed_transfers_amount?.internal) || ALLOWED_TRANSFER_AMOUNTS.INTERNAL),
+                                2,
+                                false
+                            ),
                             currency: account_currency,
                         }}
                     />

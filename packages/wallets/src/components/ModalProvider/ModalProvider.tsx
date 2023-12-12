@@ -5,6 +5,7 @@ import useDevice from '../../hooks/useDevice';
 import { THooks, TMarketTypes, TPlatforms } from '../../types';
 
 type TModalState = {
+    accountId?: string;
     marketType?: TMarketTypes.All;
     platform?: TPlatforms.All;
     selectedJurisdiction?: THooks.AvailableMT5Accounts['shortcode'];

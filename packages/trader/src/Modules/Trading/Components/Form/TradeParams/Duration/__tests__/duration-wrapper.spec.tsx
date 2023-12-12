@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
+import { TRADE_TYPES } from '@deriv/shared';
 import userEvent from '@testing-library/user-event';
 import DurationWrapper from '../duration-wrapper';
 import TraderProviders from '../../../../../../../trader-providers';
@@ -27,7 +28,7 @@ describe('<DurationWrapper />', () => {
             modules: {
                 trade: {
                     contract_expiry_type: 'intraday',
-                    contract_type: 'rise_fall',
+                    contract_type: TRADE_TYPES.RISE_FALL,
                     duration: 3,
                     duration_unit: 'm',
                     duration_units_list: [

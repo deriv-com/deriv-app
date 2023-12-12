@@ -1,26 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { render, screen } from '@testing-library/react';
-import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
+import { mockContractInfo, getCardLabels } from '@deriv/shared';
 import TurbosCardBody from '../turbos-card-body';
 
-const contract_info: TContractInfo = {
+const contract_info = mockContractInfo({
     contract_id: 1,
     bid_price: 1044.02,
     buy_price: 1044.0,
     profit: 50,
-    barrier: '10904.80',
-    entry_spot_display_value: '1046.80',
+    barrier: '10904.803',
+    entry_spot_display_value: '1046.800',
     sell_price: 1046.8,
-};
-
-const mockCardLabels = () => ({
-    BARRIER: 'Barrier',
-    CONTRACT_VALUE: 'Contract value',
-    ENTRY_SPOT: 'Entry spot',
-    TAKE_PROFIT: 'Take profit',
-    TOTAL_PROFIT_LOSS: 'Total profit/loss',
-    PURCHASE_PRICE: 'Buy price',
 });
 
 describe('TurbosCardBody', () => {
@@ -38,7 +29,7 @@ describe('TurbosCardBody', () => {
         currency: 'USD',
         current_focus: null,
         error_message_alignment: 'left',
-        getCardLabels: mockCardLabels as React.ComponentProps<typeof TurbosCardBody>['getCardLabels'],
+        getCardLabels: () => getCardLabels(),
         getContractById: jest.fn(),
         is_sold: false,
         onMouseLeave: jest.fn(),
@@ -55,27 +46,27 @@ describe('TurbosCardBody', () => {
 
     it('renders header and values correctly', () => {
         render(<TurbosCardBody {...mock_props} />);
-        const buy_price_header = screen.getByText(mockCardLabels().PURCHASE_PRICE);
+        const buy_price_header = screen.getByText(getCardLabels().PURCHASE_PRICE);
         expect(buy_price_header).toBeInTheDocument();
         const buy_price_amount = screen.getByText('1,044.00');
         expect(buy_price_amount).toBeInTheDocument();
 
-        const entry_spot_header = screen.getByText(mockCardLabels().ENTRY_SPOT);
+        const entry_spot_header = screen.getByText(getCardLabels().ENTRY_SPOT);
         expect(entry_spot_header).toBeInTheDocument();
-        const entry_spot_amount = screen.getByText('1,046.80');
+        const entry_spot_amount = screen.getByText('1,046.800');
         expect(entry_spot_amount).toBeInTheDocument();
 
-        const barrier_header = screen.getByText(mockCardLabels().BARRIER);
+        const barrier_header = screen.getByText(getCardLabels().BARRIER);
         expect(barrier_header).toBeInTheDocument();
-        const barrier_level = screen.getByText('10,904.80');
+        const barrier_level = screen.getByText('10,904.803');
         expect(barrier_level).toBeInTheDocument();
 
-        const take_profit_header = screen.getByText(mockCardLabels().TAKE_PROFIT);
+        const take_profit_header = screen.getByText(getCardLabels().TAKE_PROFIT);
         expect(take_profit_header).toBeInTheDocument();
         const take_profit_amount = screen.getByText('-');
         expect(take_profit_amount).toBeInTheDocument();
 
-        const total_profit_loss_header = screen.getByText(mockCardLabels().TOTAL_PROFIT_LOSS);
+        const total_profit_loss_header = screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS);
         expect(total_profit_loss_header).toBeInTheDocument();
         const total_profit_loss_amount = screen.getByText('50.00');
         expect(total_profit_loss_amount).toBeInTheDocument();
@@ -85,7 +76,7 @@ describe('TurbosCardBody', () => {
         new_mocked_props.contract_info.profit = 0;
         render(<TurbosCardBody {...new_mocked_props} />);
 
-        expect(screen.getByText(mockCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
+        expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
         expect(screen.getByText('0.00')).toBeInTheDocument();
     });
 });

@@ -6,6 +6,7 @@ import { Autocomplete } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TDurationItemRaw, TFormData } from '../types';
+import { Analytics } from '@deriv/analytics';
 
 type TDurationUnitItem = {
     text: string;
@@ -26,6 +27,14 @@ const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }) 
     const { setFieldValue, validateForm, values } = useFormikContext<TFormData>();
     const { symbol, tradetype } = values;
     const selected = values?.durationtype;
+
+    const sendDurationTypeToRudderStack = (item: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_duration',
+            duration_type: item,
+            form_source: 'ce_bot_quick_strategy_form',
+        });
+    };
 
     React.useEffect(() => {
         if (tradetype && symbol) {
@@ -81,6 +90,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }) 
                             value={selected_item?.text || ''}
                             list_items={list}
                             onItemSelection={(item: TItem) => {
+                                sendDurationTypeToRudderStack(item?.text);
                                 if ((item as TDurationUnitItem)?.value) {
                                     setCurrentDurationMinMax(
                                         (item as TDurationUnitItem)?.min,

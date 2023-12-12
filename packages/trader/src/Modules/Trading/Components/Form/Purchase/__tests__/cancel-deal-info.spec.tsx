@@ -8,11 +8,26 @@ import TraderProviders from '../../../../../../trader-providers';
 
 const deal_cancellation = 'Deal cancel. fee';
 const price = '1,023.00 USD';
-const mock_proposal_info = {
+const mock_proposal_info: TProposalTypeInfo = {
     id: '129106862',
     cancellation: { ask_price: 1023, date_expiry: 1907128726 },
     has_error: false,
-} as unknown as TProposalTypeInfo;
+    growth_rate: 0,
+    spot_time: 0,
+    commission: 0.44,
+    has_error_details: false,
+    error_code: '',
+    error_field: '',
+    has_increased: false,
+    limit_order: undefined,
+    message: '',
+    obj_contract_basis: { text: 'mock text', value: 'mock value' },
+    payout: 0,
+    profit: '',
+    returns: '',
+    stake: '',
+    spot: 0,
+};
 
 const default_mock_store = {
     modules: {

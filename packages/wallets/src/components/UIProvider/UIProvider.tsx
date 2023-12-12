@@ -7,7 +7,7 @@ type TUIState = {
 };
 
 type TUIContext = {
-    setUIState: (key: keyof TUIState, value: TUIState[keyof TUIState]) => void;
+    setUIState: (key: keyof TUIState, value: TUIState[typeof key]) => void;
     uiState: TUIState;
 };
 

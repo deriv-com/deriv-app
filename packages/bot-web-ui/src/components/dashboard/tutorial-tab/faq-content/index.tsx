@@ -1,7 +1,6 @@
 import React from 'react';
 import { Accordion, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { TDescription } from '../config';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -41,7 +40,7 @@ const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
     }
 };
 
-const FAQContent = observer(({ faq_list }: TFAQContent) => {
+const FAQContent = ({ faq_list }: TFAQContent) => {
     const { dashboard } = useDBotStore();
     const { active_tab_tutorials } = dashboard;
 
@@ -93,28 +92,36 @@ const FAQContent = observer(({ faq_list }: TFAQContent) => {
         }));
     };
 
-    return (
-        <div data-testid='id-faq__wrapper'>
-            <div className='faq__wrapper' ref={faq_wrapper_element}>
-                {faq_list?.length > 0 && (
-                    <>
-                        {active_tab_tutorials === 2 && (
-                            <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
-                                <Localize i18n_default_text='FAQ' />
-                            </Text>
-                        )}
-                        <div
-                            data-testid='id-accordion-test'
-                            onClick={handleAccordionClick}
-                            onKeyDown={handleKeyboardEvent}
-                        >
-                            <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
-                        </div>
-                    </>
-                )}
+    return React.useMemo(
+        () => (
+            <div data-testid='id-faq__wrapper'>
+                <div className='faq__wrapper' ref={faq_wrapper_element}>
+                    {faq_list?.length > 0 && (
+                        <>
+                            {active_tab_tutorials === 2 && (
+                                <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
+                                    <Localize i18n_default_text='FAQ' />
+                                </Text>
+                            )}
+                            <div
+                                data-testid='id-accordion-test'
+                                onClick={handleAccordionClick}
+                                onKeyDown={handleKeyboardEvent}
+                            >
+                                <Accordion
+                                    className='faq__wrapper__content'
+                                    list={getList()}
+                                    icon_close=''
+                                    icon_open=''
+                                />
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
-        </div>
+        ),
+        [faq_list]
     );
-});
+};
 
 export default FAQContent;

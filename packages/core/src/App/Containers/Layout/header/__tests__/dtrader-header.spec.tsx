@@ -15,7 +15,7 @@ jest.mock('../header-account-actions', () => jest.fn(() => <div>Mocked Header Ac
 jest.mock('../traders-hub-home-button', () => jest.fn(() => <div>Mocked Traders Home Button</div>));
 
 describe('DTraderHeader', () => {
-    const mock_store = mockStore({ ui: { is_desktop: true } });
+    const mock_store = mockStore({ ui: { is_desktop: true, is_real_acc_signup_on: true } });
     const renderComponent = (modified_store = mock_store) =>
         render(
             <StoreProvider store={modified_store}>
@@ -38,7 +38,7 @@ describe('DTraderHeader', () => {
     it('should render Toggle Menu Drawer, Menu Links, Header Account Action and Real Account SignUp components, in Mobile view', () => {
         renderComponent(
             mockStore({
-                ui: { is_desktop: false, is_mobile: true },
+                ui: { is_desktop: false, is_mobile: true, is_real_acc_signup_on: true },
                 modules: { cashier: { payment_agent: 'MOCK_PAYMENT_AGENT' } },
             })
         );

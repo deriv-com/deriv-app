@@ -14,7 +14,7 @@ jest.mock('App/Components/Layout/Header/toggle-menu-drawer.jsx', () =>
 jest.mock('../header-account-actions', () => jest.fn(() => <div>Mocked Header Account Action</div>));
 
 describe('DefaultHeader', () => {
-    const mock_store = mockStore({ ui: { is_desktop: true } });
+    const mock_store = mockStore({ ui: { is_desktop: true, is_real_acc_signup_on: true } });
     const renderComponent = (modified_store = mock_store) =>
         render(
             <StoreProvider store={modified_store}>
@@ -33,7 +33,7 @@ describe('DefaultHeader', () => {
     it('should render Toggle Menu Drawer, Menu Links, Account action and Real Account SignUp components, in Mobile view', () => {
         renderComponent(
             mockStore({
-                ui: { is_desktop: false, is_mobile: true },
+                ui: { is_desktop: false, is_mobile: true, is_real_acc_signup_on: true },
                 modules: { cashier: { payment_agent: 'MOCK_PAYMENT_AGENT' } },
             })
         );

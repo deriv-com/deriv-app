@@ -174,4 +174,28 @@ const cumulativeAccountLimitsMessageFn = ({
     };
 };
 
-export { cumulativeAccountLimitsMessageFn, lifetimeAccountLimitsBetweenWalletsMessageFn };
+const transferFeesBetweenWalletsMessageFn = ({
+    displayMoney,
+    sourceAccount,
+    sourceAmount,
+    targetAccount,
+}: TMessageFnProps) => {
+    if (!sourceAccount.currency || !sourceAccount.currencyConfig || !targetAccount.currency) return null;
+
+    const feePercentage = sourceAccount.currencyConfig?.transfer_between_accounts.fees[targetAccount.currency];
+    const feeAmount = displayMoney?.(
+        (feePercentage * sourceAmount) / 100,
+        sourceAccount.currency,
+        sourceAccount.currencyConfig.fractional_digits
+    );
+    return {
+        text: `Fee: ${feeAmount} (2% transfer fee or 0.01 USD, whichever is higher, applies for fund transfers between your ${targetAccount.accountName} and cryptocurrency Wallets)`,
+        type: 'info' as const,
+    };
+};
+
+export {
+    cumulativeAccountLimitsMessageFn,
+    lifetimeAccountLimitsBetweenWalletsMessageFn,
+    transferFeesBetweenWalletsMessageFn,
+};

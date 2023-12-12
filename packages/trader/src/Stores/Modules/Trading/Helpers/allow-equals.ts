@@ -1,11 +1,10 @@
-import { isEmptyObject, getPropertyValue } from '@deriv/shared';
+import { isEmptyObject, getPropertyValue, TRADE_TYPES } from '@deriv/shared';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
-import { PriceProposalRequest } from '@deriv/api-types';
 import { TTradeStore } from 'Types';
 
 type THasDurationForCallPutEqual = {
     contract_type_list: TTradeStore['contract_types_list'];
-    duration_unit: PriceProposalRequest['duration_unit'];
+    duration_unit: TTradeStore['duration_unit'];
     contract_start_type: string;
 };
 
@@ -13,8 +12,8 @@ export const hasCallPutEqual = (contract_type_list: THasDurationForCallPutEqual[
     if (isEmptyObject(contract_type_list)) return false;
 
     return !!getPropertyValue(contract_type_list, 'Ups & Downs')?.categories?.some(
-        (contract: THasDurationForCallPutEqual['contract_type_list']['Ups & Downs'][string]['categories'][0]) =>
-            contract.value === 'rise_fall_equal'
+        (contract: THasDurationForCallPutEqual['contract_type_list']['Ups & Downs']['categories'][0]) =>
+            contract.value === TRADE_TYPES.RISE_FALL_EQUAL
     );
 };
 
@@ -26,8 +25,7 @@ export const hasDurationForCallPutEqual = (
     if (!contract_type_list || !duration_unit || !contract_start_type) return false;
 
     const contract_list = Object.keys(contract_type_list || {}).reduce<string[]>((key, list) => {
-        // @ts-expect-error the key always exists in the object, hence can ignore the TS error.
-        const item: THasDurationForCallPutEqual['contract_type_list']['Ups & Downs'][string] = contract_type_list[list];
+        const item: THasDurationForCallPutEqual['contract_type_list']['Ups & Downs'] = contract_type_list[list];
         return [...key, ...item.categories.map(contract => contract.value)];
     }, []);
 

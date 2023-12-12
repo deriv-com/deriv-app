@@ -39,4 +39,10 @@
     &--grey-disabled {
         background-color: var(--checkbox-disabled-grey);
     }
+
+    &__label {
+        &--error {
+            color: var(--text-loss-danger) !important;
+        }
+    }
 }

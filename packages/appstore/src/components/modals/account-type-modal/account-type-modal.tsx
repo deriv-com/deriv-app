@@ -147,7 +147,7 @@ const MT5AccountTypeModal = () => {
                             is_synthetic_available={is_synthetic_available}
                             is_swapfree_available={is_swapfree_available}
                         />
-                        <Modal.Footer has_separator>
+                        <Modal.Footer className='account-type-card__footer-button' has_separator>
                             <Button
                                 disabled={!account_type_card}
                                 primary
@@ -177,9 +177,8 @@ const MT5AccountTypeModal = () => {
                             is_synthetic_available={is_synthetic_available}
                             is_swapfree_available={is_swapfree_available}
                         />
-                        <Modal.Footer has_separator>
+                        <Modal.Footer className='account-type-card__footer-button' has_separator>
                             <Button
-                                style={{ width: '100%' }}
                                 disabled={!account_type_card}
                                 primary
                                 onClick={() => {

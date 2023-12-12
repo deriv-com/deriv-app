@@ -1,5 +1,8 @@
 module.exports = {
     extends: ['@deriv/eslint-config-deriv'],
+    rules: {
+        'global-require': 'off',
+    },
     overrides: [
         {
             files: ['*.ts', '*.tsx'],
@@ -9,6 +12,7 @@ module.exports = {
         },
         {
             files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+            excludedFiles: '**/integration-tests/**/*.[jt]s?(x)',
             extends: ['plugin:testing-library/react'],
         },
         {

@@ -2,7 +2,7 @@
     &__icon {
         width: 1rem;
         height: 1rem;
-        margin: auto 0.5rem auto 0rem;
+        margin: auto 0.5rem auto 0;
         border-radius: 50%;
 
         @include mobile {
@@ -13,6 +13,7 @@
         &--online {
             background: var(--text-profit-success);
         }
+
         &--offline {
             background: var(--checkbox-disabled-grey);
         }
@@ -26,7 +27,7 @@
         width: fit-content;
         height: fit-content;
 
-        &-text {
+        &__text {
             position: absolute;
         }
 

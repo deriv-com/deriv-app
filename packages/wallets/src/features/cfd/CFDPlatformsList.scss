@@ -1,0 +1,50 @@
+.wallets-cfd-list {
+    width: 100%;
+    height: 100%;
+
+    @include desktop {
+        border-top: 0.2rem solid var(--system-light-7-secondary-background, #f2f3f4);
+    }
+    &__cfd-empty-state {
+        display: flex;
+        padding: 2.4rem 0rem 4.8rem;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2.4rem;
+        align-self: stretch;
+    }
+
+    &__header {
+        padding: 2.4rem 0;
+
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 1.6rem 0;
+        }
+
+        &-compare-accounts {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        &-title {
+            display: flex;
+        }
+
+        &-description {
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+            align-items: start;
+
+            &__link {
+                color: var(--brand-coral, #ff444f);
+                text-underline-offset: 0.3rem;
+            }
+        }
+    }
+}

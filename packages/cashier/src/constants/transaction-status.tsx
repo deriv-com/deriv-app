@@ -87,6 +87,20 @@ export const getStatus = (
                 renderer: 'unsuccessful',
                 transaction_hash: localize('NA'),
             },
+            REVERTED: {
+                name: localize('Unsuccessful'),
+                description: localize(
+                    "Your withdrawal is unsuccessful. We've sent you an email with more information."
+                ),
+                renderer: 'unsuccessful',
+                transaction_hash: localize('NA'),
+            },
+            REVERTING: {
+                name: localize('In process'),
+                description: localize("We're processing your withdrawal."),
+                renderer: 'in-process',
+                transaction_hash: localize('NA'),
+            },
             SENT: {
                 name: localize('Successful'),
                 description: localize('Your withdrawal is successful.'),

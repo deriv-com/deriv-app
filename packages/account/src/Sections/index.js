@@ -6,10 +6,11 @@ import FinancialAssessment from 'Sections/Assessment/FinancialAssessment';
 import ProofOfIdentity from 'Sections/Verification/ProofOfIdentity';
 import ProofOfAddress from 'Sections/Verification/ProofOfAddress';
 import ProofOfOwnership from 'Sections/Verification/ProofOfOwnership';
+import ProofOfIncome from 'Sections/Verification/ProofOfIncome';
 import TwoFactorAuthentication from 'Sections/Security/TwoFactorAuthentication';
 import ApiToken from 'Sections/Security/ApiToken';
 import SelfExclusion from 'Sections/Security/SelfExclusion';
-import Account from 'Containers/account.jsx';
+import Account from 'Containers/Account/account';
 import ClosingAccount from 'Sections/Security/ClosingAccount';
 import ConnectedApps from 'Sections/Security/ConnectedApps';
 import LoginHistory from 'Sections/Security/LoginHistory';
@@ -26,6 +27,7 @@ export {
     ProofOfIdentity,
     ProofOfAddress,
     ProofOfOwnership,
+    ProofOfIncome,
     TwoFactorAuthentication,
     ApiToken,
     SelfExclusion,

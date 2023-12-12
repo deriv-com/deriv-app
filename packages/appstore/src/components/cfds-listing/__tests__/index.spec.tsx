@@ -10,10 +10,9 @@ jest.mock('Components/containers/listing-container', () =>
 describe('CFDsListing', () => {
     const mock = mockStore({
         traders_hub: {
-            selected_region: 'NON-EU',
+            selected_region: 'Non-EU',
             has_any_real_account: true,
             is_real: true,
-            can_get_more_cfd_mt5_accounts: true,
             no_MF_account: true,
             is_demo_low_risk: true,
         },

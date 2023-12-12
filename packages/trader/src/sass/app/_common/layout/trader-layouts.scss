@@ -318,11 +318,17 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     .ciq-asset-information {
                         top: 75px;
                     }
-                    .stx_jump_today.home > svg {
-                        top: 10px;
-                        left: 8px;
-                        padding: 0;
-                        position: absolute;
+                    .stx_jump_today {
+                        @include mobile {
+                            z-index: 15; // must be greater than z-index of mobile .stx-holder.stx-panel-chart
+                        }
+
+                        &.home > svg {
+                            top: 10px;
+                            left: 8px;
+                            padding: 0;
+                            position: absolute;
+                        }
                     }
                     .cq-bottom-ui-widgets {
                         bottom: 30px !important;
@@ -637,6 +643,12 @@ $FLOATING_HEADER_HEIGHT: 41px;
     .chartContainer {
         background: transparent;
         min-height: 100%;
+
+        @include mobile {
+            .flutter-chart {
+                height: calc(100% - 5px);
+            }
+        }
     }
 }
 

@@ -2,31 +2,32 @@ import React from 'react';
 import { routes, moduleLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
-    AccountLimits,
-    Passwords,
-    PersonalDetails,
-    TradingAssessment,
-    FinancialAssessment,
-    ProofOfIdentity,
-    ProofOfAddress,
-    ProofOfOwnership,
-    ApiToken,
-    TwoFactorAuthentication,
-    SelfExclusion,
     Account,
+    AccountClosed,
+    AccountLimits,
+    ApiToken,
     ClosingAccount,
     ConnectedApps,
-    LoginHistory,
-    AccountClosed,
     DeactivateAccount,
+    FinancialAssessment,
     LanguageSettings,
+    LoginHistory,
+    Passwords,
+    PersonalDetails,
+    ProofOfAddress,
+    ProofOfIdentity,
+    ProofOfOwnership,
+    ProofOfIncome,
+    SelfExclusion,
+    TradingAssessment,
+    TwoFactorAuthentication,
 } from 'Sections';
 
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
 
 // Order matters
-const initRoutesConfig = ({ is_appstore }) => [
+const initRoutesConfig = () => [
     {
         path: routes.account_closed,
         component: AccountClosed,
@@ -98,6 +99,11 @@ const initRoutesConfig = ({ is_appstore }) => [
                         component: ProofOfOwnership,
                         getTitle: () => localize('Proof of ownership'),
                     },
+                    {
+                        path: routes.proof_of_income,
+                        component: ProofOfIncome,
+                        getTitle: () => localize('Proof of income'),
+                    },
                 ],
             },
             {
@@ -112,27 +118,25 @@ const initRoutesConfig = ({ is_appstore }) => [
                     {
                         path: routes.self_exclusion,
                         component: SelfExclusion,
-                        getTitle: () => (is_appstore ? localize('Self-exclusion') : localize('Self exclusion')),
+                        getTitle: () => localize('Self exclusion'),
                     },
                     {
                         path: routes.account_limits,
                         component: AccountLimits,
-                        getTitle: () => (is_appstore ? localize('Withdrawal limits') : localize('Account limits')),
+                        getTitle: () => localize('Account limits'),
                     },
                     {
                         path: routes.login_history,
                         component: LoginHistory,
                         getTitle: () => localize('Login history'),
                     },
-                    ...(is_appstore
-                        ? []
-                        : [
-                              {
-                                  path: routes.api_token,
-                                  component: ApiToken,
-                                  getTitle: () => localize('API token'),
-                              },
-                          ]),
+                    ...[
+                        {
+                            path: routes.api_token,
+                            component: ApiToken,
+                            getTitle: () => localize('API token'),
+                        },
+                    ],
                     {
                         path: routes.connected_apps,
                         component: ConnectedApps,
@@ -150,18 +154,6 @@ const initRoutesConfig = ({ is_appstore }) => [
                     },
                 ],
             },
-            // TO DO -- Please remove these comments after changing for dashboard routes
-            // It is possible to add a Deriv Dashboard only path.
-            // ...(is_appstore
-            //     ? [
-            //           {
-            //               component: Home,
-            //               getTitle: () => localize('Dashboard-only path'),
-            //               is_authenticated: false,
-            //               path: routes.resources,
-            //           },
-            //       ]
-            //     : []),
         ],
     },
 ];
@@ -171,9 +163,9 @@ let routesConfig;
 // For default page route if page/path is not found, must be kept at the end of routes_config array
 const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = ({ is_appstore }) => {
+const getRoutesConfig = () => {
     if (!routesConfig) {
-        routesConfig = initRoutesConfig({ is_appstore });
+        routesConfig = initRoutesConfig();
         routesConfig.push(route_default);
     }
     return routesConfig;

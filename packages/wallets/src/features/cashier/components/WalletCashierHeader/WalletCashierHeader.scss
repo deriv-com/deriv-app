@@ -1,0 +1,137 @@
+.wallets-cashier-header {
+    width: 100%;
+    max-width: 128rem;
+    height: 16rem;
+    margin: 0 auto;
+    padding-top: 2.4rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.6rem;
+
+    @include mobile {
+        padding-top: 0;
+        height: fit-content;
+    }
+
+    &__info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-inline: 4rem;
+
+        @include mobile {
+            padding: 1.6rem 1.6rem 0rem;
+        }
+    }
+
+    &__top-left-info {
+        display: flex;
+        flex-direction: column;
+
+        @include mobile {
+            gap: 0.4rem;
+        }
+    }
+
+    &__details {
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+
+        @include mobile {
+            opacity: 1;
+            max-height: 2rem;
+            transition: opacity 0.25s ease, max-height 0.25s ease;
+
+            &--hide-details {
+                max-height: 0;
+                opacity: 0;
+            }
+        }
+    }
+
+    &__top-right-info {
+        display: flex;
+        gap: 1.6rem;
+        align-items: start;
+
+        @include mobile {
+            gap: 0.8rem;
+        }
+    }
+
+    &__currency-icon {
+        @include mobile {
+            & > :first-child {
+                max-height: 4.8rem;
+                transition: opacity 0.2s ease, max-height 0.2s ease;
+            }
+
+            &--hide-currency-icon > :first-child {
+                max-height: 0;
+                opacity: 0;
+            }
+        }
+    }
+
+    &__close-icon {
+        cursor: pointer;
+
+        &--white {
+            path {
+                fill: var(--light-8-primary-background, #fff);
+            }
+        }
+    }
+
+    &__tabs {
+        display: flex;
+        overflow-x: scroll;
+        padding-inline: 4rem;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        @include mobile {
+            padding-inline: 1.6rem;
+        }
+    }
+
+    &__tab {
+        all: unset;
+        display: flex;
+        min-width: 11.2rem;
+        height: 4.8rem;
+        padding-inline: 1.6rem;
+        justify-content: center;
+        align-items: center;
+        gap: 0.8rem;
+        flex-shrink: 0;
+        cursor: pointer;
+
+        @include mobile {
+            height: 4rem;
+            min-width: 7.2rem;
+            padding-inline: 2.4rem;
+        }
+
+        &--active {
+            border-radius: 1.6rem 1.6rem 0rem 0rem;
+            background: var(--light-8-primary-background, #fff);
+        }
+    }
+
+    &__tab-icon {
+        &--system-dark-2-general-text {
+            path {
+                fill: var(--system-dark-2-general-text, #c2c2c2);
+            }
+        }
+    }
+}

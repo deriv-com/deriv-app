@@ -12,6 +12,9 @@ import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
 import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
 import 'Sass/details-form.scss';
+import { Analytics } from '@deriv/analytics';
+
+const STEP_IDENTIFIERS = ['account_currency', 'personal_details', 'address_details', 'terms_of_use'];
 
 const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, getTotalSteps, sub_section_index }) => {
     const step = getCurrentStep() - 1;
@@ -59,6 +62,21 @@ const AccountWizard = props => {
     const [state_items, setStateItems] = React.useState([]);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
     const is_high_risk_client_for_mt5 = useIsClientHighRiskForMT5();
+
+    const trackEvent = React.useCallback(
+        payload => {
+            if (props.real_account_signup_target === 'maltainvest') return;
+
+            Analytics.trackEvent('ce_real_account_signup_form', {
+                current_step: STEP_IDENTIFIERS[payload.step_num],
+                form_source: document.referrer,
+                form_name: 'real_account_signup_form',
+                landing_company: props.real_account_signup_target,
+                ...payload,
+            });
+        },
+        [props.real_account_signup_target]
+    );
 
     const {
         setIsTradingAssessmentForNewUserEnabled,
@@ -198,6 +216,12 @@ const AccountWizard = props => {
             return;
         }
 
+        trackEvent({
+            action: 'step_back',
+            step_num: current_step,
+            step_codename: STEP_IDENTIFIERS[current_step],
+        });
+
         goToPreviousStep();
         clearError();
     };
@@ -219,6 +243,15 @@ const AccountWizard = props => {
         delete clone?.tax_identification_confirm;
         delete clone?.agreed_tnc;
         delete clone?.agreed_tos;
+        delete clone?.confirmation_checkbox;
+
+        // BE does not accept empty strings for TIN
+        // so we remove it from the payload if it is empty in case of optional TIN field
+        // as the value will be available from the form_values
+        if (clone?.tax_identification_number?.length === 0) {
+            delete clone.tax_identification_number;
+        }
+
         clone = processInputData(clone);
         props.setRealAccountFormData(clone);
         if (payload) {
@@ -238,6 +271,11 @@ const AccountWizard = props => {
         if (should_override || index + 1 >= state_items.length) {
             createRealAccount({});
         } else {
+            trackEvent({
+                action: 'step_passed',
+                step_num: index,
+                step_codename: STEP_IDENTIFIERS[index],
+            });
             goToNextStep();
         }
     };
@@ -274,8 +312,17 @@ const AccountWizard = props => {
         if (!form_data?.document_type?.id) {
             delete form_data.document_type;
         }
+
+        trackEvent({
+            action: 'save',
+        });
+
         submitForm(payload)
             .then(async response => {
+                trackEvent({
+                    action: 'real_signup_finished',
+                    user_choice: JSON.stringify(response?.echo_req),
+                });
                 props.setIsRiskWarningVisible(false);
                 if (props.real_account_signup_target === 'maltainvest') {
                     props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
@@ -297,6 +344,10 @@ const AccountWizard = props => {
                 }
             })
             .catch(error => {
+                trackEvent({
+                    action: 'real_signup_error',
+                    real_signup_error_message: error,
+                });
                 if (error.code === 'show risk disclaimer') {
                     props.setIsRiskWarningVisible(true);
                     setShouldAcceptFinancialRisk(true);
@@ -335,6 +386,8 @@ const AccountWizard = props => {
     if (!mounted) return null;
 
     if (!finished) {
+        const employment_status =
+            state_items.find(item => item.form_value.employment_status)?.form_value?.employment_status || '';
         const wizard_steps = state_items.map((step, step_index) => {
             const passthrough = getPropsForChild(step_index);
             const BodyComponent = step.body;
@@ -351,6 +404,7 @@ const AccountWizard = props => {
                     form_error={form_error}
                     {...passthrough}
                     key={step_index}
+                    employment_status={employment_status}
                 />
             );
         });

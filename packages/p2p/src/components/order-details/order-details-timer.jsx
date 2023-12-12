@@ -1,17 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
+import { Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
-import { secondsToTimer } from 'Utils/date-time';
+import { millisecondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
 import { useStores } from 'Stores';
+import './order-details-timer.scss';
 
 const OrderDetailsTimer = observer(() => {
     const getTimeLeft = time => {
         const distance = ServerTime.getDistanceToServerTime(time);
         return {
             distance,
-            label: secondsToTimer(Math.max(0, distance)),
+            label: millisecondsToTimer(Math.max(0, distance)),
         };
     };
 
@@ -36,9 +38,13 @@ const OrderDetailsTimer = observer(() => {
 
     if (should_show_order_timer) {
         return (
-            <div className='order-details-card__header-timer'>
-                <div>{localize('Time left')}</div>
-                <div className='order-details-card__header-timer-counter'>{remaining_time}</div>
+            <div className='order-details-timer'>
+                <Text size='xxs' align='center'>
+                    {localize('Time left')}
+                </Text>
+                <Text className='order-details-timer__counter' size='xxs' align='center'>
+                    {remaining_time}
+                </Text>
             </div>
         );
     }

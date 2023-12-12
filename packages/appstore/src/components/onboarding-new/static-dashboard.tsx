@@ -1,14 +1,17 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text, ButtonToggle, ThemedScrollbars, Button } from '@deriv/components';
-import { isMobile, isDesktop, ContentFlag } from '@deriv/shared';
+
+import { Button, ButtonToggle, Text, ThemedScrollbars } from '@deriv/components';
+import { ContentFlag, isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize, Localize } from '@deriv/translations';
-import StaticGetMoreAccounts from './static-get-more-accounts';
-import StaticCFDAccountManager from './static-cfd-account-manager';
-import StaticTradingAppCard from './static-trading-app-card';
-import StaticCurrencySwitcherContainer from './static-currency-switcher-container';
+import { Localize, localize } from '@deriv/translations';
+
 import BalanceText from 'Components/elements/text/balance-text';
+
+import StaticCFDAccountManager from './static-cfd-account-manager';
+import StaticCurrencySwitcherContainer from './static-currency-switcher-container';
+import StaticGetMoreAccounts from './static-get-more-accounts';
+import StaticTradingAppCard from './static-trading-app-card';
 
 import './static-dashboard.scss';
 
@@ -102,7 +105,7 @@ const StaticDashboard = observer(
         const compare_accounts_title = eu_user ? localize('Account Information') : localize('Compare accounts');
 
         return (
-            <ThemedScrollbars height={'calc(100% - 20rem)'} is_bypassed={isMobile()}>
+            <ThemedScrollbars height={'calc(100% - 25rem)'} is_bypassed={isMobile()}>
                 <div
                     data-testid='dt_onboarding_dashboard'
                     className={classNames('static-dashboard', {
@@ -271,6 +274,7 @@ const StaticDashboard = observer(
                                         has_applauncher_account={has_applauncher_account}
                                         is_item_blurry={is_blurry.platformlauncher}
                                         has_divider={!eu_user && !financial_restricted_countries}
+                                        is_animated={is_onboarding_animated.button}
                                     />
                                 </div>
 
@@ -284,6 +288,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                                 has_divider
                                             />
                                         </div>
@@ -295,6 +300,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                                 has_divider
                                             />
                                         </div>
@@ -306,6 +312,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                             />
                                         </div>
                                         <div className='static-dashboard-wrapper__body--apps-item'>
@@ -316,6 +323,7 @@ const StaticDashboard = observer(
                                                 availability='Non-EU'
                                                 has_applauncher_account={has_applauncher_account}
                                                 is_item_blurry={is_blurry.platformlauncher}
+                                                is_animated={is_onboarding_animated.button}
                                             />
                                         </div>
                                     </React.Fragment>
@@ -434,9 +442,7 @@ const StaticDashboard = observer(
                                         type='synthetic'
                                         platform='mt5'
                                         appname={localize('Derived')}
-                                        description={localize(
-                                            'Trade CFDs on MT5 with synthetics, baskets, and derived FX.'
-                                        )}
+                                        description={localize('This account offers CFDs on derived instruments.')}
                                         loginid={loginid}
                                         currency={currency}
                                         has_account={has_account}
@@ -454,7 +460,7 @@ const StaticDashboard = observer(
                                         platform='mt5'
                                         appname={localize('CFDs')}
                                         description={localize(
-                                            'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.'
+                                            'This MFSA-regulated account offers CFDs on derived and financial instruments.'
                                         )}
                                         loginid={loginid}
                                         currency={is_eu_user ? mf_currency : currency}
@@ -473,9 +479,7 @@ const StaticDashboard = observer(
                                             type='financial'
                                             platform='mt5'
                                             appname={localize('Financial')}
-                                            description={localize(
-                                                'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
-                                            )}
+                                            description={localize('This account offers CFDs on financial instruments.')}
                                             financial_amount={financial_amount}
                                             derived_amount={derived_amount}
                                             loginid={loginid}
@@ -494,7 +498,7 @@ const StaticDashboard = observer(
                                                 platform='mt5'
                                                 appname={localize('Swap-Free')}
                                                 description={localize(
-                                                    'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.'
+                                                    'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities cryptocurrencies, ETFs and synthetic indices.'
                                                 )}
                                                 financial_amount={financial_amount}
                                                 derived_amount={derived_amount}
@@ -535,6 +539,48 @@ const StaticDashboard = observer(
                                                     : 'prominent'
                                             }
                                         >
+                                            {localize('Deriv cTrader')}
+                                        </Text>
+                                    </div>
+                                </React.Fragment>
+                            )}
+
+                            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
+                                <div className='static-dashboard-wrapper__body'>
+                                    <StaticCFDAccountManager
+                                        type='all'
+                                        platform='ctrader'
+                                        appname={localize('Deriv cTrader')}
+                                        description={localize(
+                                            'This account offers CFDs on a feature-rich trading platform.'
+                                        )}
+                                        loginid={loginid}
+                                        currency={currency}
+                                        has_account={has_account}
+                                        is_last_step={is_last_step}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                        is_derivx_last_step={is_derivx_last_step}
+                                        is_financial_last_step={is_financial_last_step}
+                                        is_eu_user={is_eu_user}
+                                    />
+                                </div>
+                            )}
+
+                            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
+                                <React.Fragment>
+                                    <Divider />
+                                    <div className='static-dashboard-wrapper__body--header'>
+                                        <Text
+                                            as='h2'
+                                            weight='bold'
+                                            size='xs'
+                                            color={
+                                                is_blurry.cfd_text || is_blurry.cfd_description
+                                                    ? 'less-prominent'
+                                                    : 'prominent'
+                                            }
+                                        >
                                             {localize('Other CFD Platforms')}
                                         </Text>
                                     </div>
@@ -547,7 +593,7 @@ const StaticDashboard = observer(
                                         platform='dxtrade'
                                         appname={localize('Deriv X')}
                                         description={localize(
-                                            'Trade CFDs on Deriv X with financial markets and our Derived indices.'
+                                            'This account offers CFDs on a highly customisable CFD trading platform.'
                                         )}
                                         loginid={loginid}
                                         currency={currency}
@@ -559,23 +605,6 @@ const StaticDashboard = observer(
                                         is_financial_last_step={is_financial_last_step}
                                         is_eu_user={is_eu_user}
                                     />
-                                    {/* <StaticCFDAccountManager
-                                    type='Financial'
-                                    platform='derivez'
-                                    appname={localize('Deriv EZ')}
-                                    description={localize(
-                                        'Trade CFDs on an easy-to-get-started platform with all your favourite assets.'
-                                    )}
-                                    loginid={loginid}
-                                    currency={currency}
-                                    has_account={has_account}
-                                    derived_amount={derived_amount}
-                                    financial_amount={financial_amount}
-                                    is_derivx_last_step={is_derivx_last_step}
-                                    is_blurry={is_blurry}
-                                    is_onboarding_animated={is_onboarding_animated}
-                                    is_eu_user={is_eu_user}
-                                /> */}
                                 </div>
                             )}
                         </div>

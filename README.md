@@ -43,8 +43,6 @@ Before running or contribute to this project, you need to have the setup of the 
 -   npm >=7.21.0
 -   git (for `contribution`)
 
-**Note**: `node -v` and `sudo node -v` should be the same version.
-
 ## Quick start
 
 1.  **Fork the project**
@@ -135,15 +133,6 @@ You can find the names of packages by first navigating to the `packages` folder.
 
 ### Usage
 
-### Configuring Hosts file
-
-In order to run our solution for the first time, you need to configure your `hosts` file:
-
-1. Open terminal.
-2. Open `hosts` file in your preferred text editor, f.e `sudo vim /etc/hosts`.
-3. Add a new entry pointing to `127.0.0.1 localhost.binary.sx`.
-4. Save the file and proceed to the next step.
-
 ### Starting a Development Server
 
 If you wish to work on Core, simply run `npm run serve core`.
@@ -230,14 +219,12 @@ There is a 4th type of release: releasing npm registry packages (currently `@der
 
 <br />
 
-## PR Guidelines
+## PR format recommendations
 
-1. Use the `developer 1|developer 2/task_name` format for PR titles. (e.g.: `dev1|dev2/fixed_emoji_issue`, `dev1/added_superfast_jellyfish`)
-    - Optional square bracket tag (e.g. `[WIP]`) can be at the end.
-2. Use the appropriate package labels available on the repo to indicate which packages your PR modifies.
+1. Use the `[{Project Code}] {Developer}/{Clickup Card ID}/{Description}` format for PR titles. (e.g.: `[COJ] evgeniy/COJ-247/Align next-button on mt5 modal`), where [COJ] is a clickup project code.
+2. Add screenshots of change for easier reviewing (whenever applicable) and brief description
 3. Use Draft PRs if you don't mean to request for reviews yet. [Read more here.](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
-
-<br />
+   <br />
 
 ## Test link deployment
 
@@ -274,11 +261,13 @@ If preferable to use manual deployment, you can use [gh-pages](https://pages.git
     1. use `lerna exec` with the `--scope` argument as the package you want to run the command on, as such `lerna exec --scope=trader -- npm ci`.
     2. `cd` into `packages/PACKAGE-NAME` and run `npm ci`, as such `cd packages/trader && npm ci`
 
-4. Why do I need to run commands with `sudo`?
+4. My build(s) fail and I can see it related to Node Sass (`node-sass`), what do I do?
 
-    **A.** You shouldn't need to. The only command that needs privilege is `serve` and `start` and that's because it's on port 443 **however, that script prompts you by itself, you do not need to place `sudo`**.
+    **A.** This issue happens when your `node-sass` has its `binding.node` set to a version of node different from the current projects' one. Please try the following in order:
 
-    If you face this issue, simply run `sudo chown -R $(whoami) .` from the root of the project.
+    1. First run `npx lerna exec -- npm rebuild node-sass` and try building your packages again.
+    2. If that doesn't work, try `npm cache clean --force`, followed by `npm run clean`, and then `npm run bootstrap`.
+    3. And finally, if that doesn't work then you can read deeper into this [StackOverflow post](https://stackoverflow.com/questions/37986800).
 
 5. How can I regenerate `package-lock.json` file?
 

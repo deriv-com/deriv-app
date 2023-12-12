@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
-import { ExchangeRatesProvider } from './providers';
+import { APIProvider } from '@deriv/api';
 import StoreContext from './storeContext';
-import { ExchangeRatesStore, FeatureFlagsStore } from './stores';
+import { FeatureFlagsStore } from './stores';
 import type { TCoreStores, TStores } from '../types';
 
 const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TCoreStores }>) => {
@@ -12,7 +12,6 @@ const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TCo
         // Otherwise, instantiate store and return it.
         return {
             ...store,
-            exchange_rates: new ExchangeRatesStore(),
             feature_flags: new FeatureFlagsStore(),
         };
     }, [store]);
@@ -26,9 +25,9 @@ const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TCo
     }, [memoizedValue]);
 
     return (
-        <StoreContext.Provider value={memoizedValue}>
-            <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
-        </StoreContext.Provider>
+        <APIProvider>
+            <StoreContext.Provider value={memoizedValue}>{children}</StoreContext.Provider>
+        </APIProvider>
     );
 };
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { jurisdictionVerificationContents } from '../../Constants/jurisdiction-contents/jurisdiction-verification-contents';
 import { TJurisdictionTitleIndicatorProps } from 'Containers/props.types';
 import { TJurisdictionCardItemVerificationItem, TJurisdictionCardVerificationStatus } from 'Components/props.types';
+import { JURISDICTION } from '../../Helpers/cfd-config';
 
 const JurisdictionTitleIndicator = ({
     account_status,
@@ -26,7 +27,11 @@ const JurisdictionTitleIndicator = ({
 
     const getVerificationIconVariant = (verification_document: TJurisdictionCardItemVerificationItem): string => {
         let icon_variant: TJurisdictionCardVerificationStatus = 'Default';
-        if ([Jurisdiction.BVI, Jurisdiction.LABUAN, Jurisdiction.VANUATU].includes(type_of_card)) {
+        if (
+            type_of_card === JURISDICTION.BVI ||
+            type_of_card === JURISDICTION.LABUAN ||
+            type_of_card === JURISDICTION.VANUATU
+        ) {
             if (['document_number', 'selfie', 'identity_document'].includes(verification_document)) {
                 if (poi_pending_for_bvi_labuan_vanuatu) {
                     icon_variant = 'Pending';
@@ -36,7 +41,7 @@ const JurisdictionTitleIndicator = ({
                     icon_variant = 'Verified';
                 }
             }
-        } else if (Jurisdiction.MALTA_INVEST === type_of_card) {
+        } else if (type_of_card === JURISDICTION.MALTA_INVEST) {
             if (['document_number', 'selfie', 'identity_document'].includes(verification_document)) {
                 if (poi_pending_for_maltainvest) {
                     icon_variant = 'Pending';

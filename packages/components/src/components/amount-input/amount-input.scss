@@ -1,0 +1,51 @@
+.amount-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 0.8rem;
+    height: auto;
+}
+
+.amount-input-container {
+    position: relative;
+    height: 2.8rem;
+
+    .dc-input__field {
+        color: var(--text-general);
+    }
+
+    &--error {
+        .dc-input__field {
+            color: var(--text-loss-danger);
+            -webkit-text-fill-color: var(--text-loss-danger);
+        }
+    }
+
+    &--disabled {
+        .dc-input__field {
+            color: var(--text-disabled-1);
+        }
+    }
+
+    @include mobile {
+        height: 2.4rem;
+    }
+}
+
+.amount-input {
+    position: absolute;
+    border: none;
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+
+    input {
+        font-size: var(--text-size-sm);
+        font-weight: var(--text-weight-bold);
+
+        @include mobile {
+            font-size: var(--text-size-s);
+        }
+    }
+}

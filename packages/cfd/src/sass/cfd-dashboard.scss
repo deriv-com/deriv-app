@@ -1248,26 +1248,6 @@
         }
     }
 
-    &__acuity-container {
-        height: 3.4rem;
-        margin: 1.6rem;
-    }
-
-    &__acuity-banner {
-        background: var(--general-section-1);
-        border-radius: 0.8rem;
-        width: 100%;
-        height: 100%;
-
-        &--wrapper {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 1.6rem;
-            padding: 0.8rem 2.65rem;
-        }
-    }
-
     &__divider {
         width: calc(100% - 3.2rem);
         margin-left: 1.6rem;
@@ -1298,7 +1278,6 @@
     &__maintenance {
         display: flex;
         padding-top: 1rem;
-        align-items: center;
 
         &-icon {
             padding-right: 0.5rem;
@@ -1541,6 +1520,9 @@
         text-align: left;
         margin: 0 2.4rem;
     }
+    &__acc_status_badge {
+        max-width: max-content;
+    }
 }
 
 .cfd-password-manager {
@@ -1587,9 +1569,6 @@
         @include mobile {
             max-width: unset;
         }
-    }
-    &__new-password {
-        margin-bottom: 8.6rem;
     }
     &__actions {
         align-items: center;

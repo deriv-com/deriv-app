@@ -1,4 +1,5 @@
 import { localize } from '@deriv/translations';
+
 import { CFD_PLATFORMS } from '../platform';
 
 export interface AvailableAccount {
@@ -16,7 +17,7 @@ export interface AvailableAccount {
 export const getCFDAvailableAccount = () => [
     {
         name: 'Derived',
-        description: localize('Trade CFDs on MT5 with synthetics, baskets, and derived FX.'),
+        description: localize('This account offers CFDs on derived instruments.'),
         platform: CFD_PLATFORMS.MT5,
         market_type: 'synthetic',
         icon: 'Derived',
@@ -24,18 +25,18 @@ export const getCFDAvailableAccount = () => [
     },
     {
         name: 'Deriv X',
-        description: localize('Trade CFDs on Deriv X with financial markets and our Derived indices.'),
+        description: localize('This account offers CFDs on a highly customisable CFD trading platform.'),
         platform: CFD_PLATFORMS.DXTRADE,
         market_type: 'all',
         icon: 'DerivX',
         availability: 'Non-EU',
     },
     {
-        name: 'Deriv EZ',
-        description: localize('Trade CFDs on an easy-to-get-started platform with all your favourite assets.'),
-        platform: CFD_PLATFORMS.DERIVEZ,
+        name: 'Deriv cTrader',
+        description: localize('This account offers CFDs on a feature-rich trading platform.'),
+        platform: CFD_PLATFORMS.CTRADER,
         market_type: 'all',
-        icon: 'DerivEz',
+        icon: 'CTrader',
         availability: 'Non-EU',
     },
 ];

@@ -27,7 +27,7 @@ export const SELFIE_DOCUMENT = {
     info: localize('Upload your selfie.'),
 };
 
-const date_field = {
+export const date_field = {
     name: 'expiry_date',
     label: localize('Expiry date'),
     type: 'date',
@@ -154,7 +154,6 @@ export const getDocumentIndex = ({ country_code }: FormikValues) => [
                               type: 'text',
                               required: true,
                           },
-                          { ...date_field, required: false },
                       ],
                       documents_title: localize('Next, upload both of the following documents.'),
                       documents: [

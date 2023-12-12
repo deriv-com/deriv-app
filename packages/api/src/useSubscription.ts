@@ -1,19 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useWS } from '@deriv/shared';
+import useAPI from './useAPI';
 import type {
     TSocketAcceptableProps,
+    TSocketError,
     TSocketRequestPayload,
     TSocketResponseData,
     TSocketSubscribableEndpointNames,
 } from '../types';
 
-const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) => {
-    const [is_loading, setIsLoading] = useState(false);
-    const [is_subscribed, setSubscribed] = useState(false);
-    const [error, setError] = useState<unknown>();
+const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T, idle_time = 5000) => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSubscribed, setSubscribed] = useState(false);
+    const [isIdle, setIdle] = useState(false);
+    const [error, setError] = useState<TSocketError<T>>();
     const [data, setData] = useState<TSocketResponseData<T>>();
     const subscriber = useRef<{ unsubscribe?: VoidFunction }>();
-    const WS = useWS();
+    const idle_timeout = useRef<NodeJS.Timeout>();
+    const { subscribe: _subscribe } = useAPI();
 
     const subscribe = useCallback(
         (...props: TSocketAcceptableProps<T>) => {
@@ -22,29 +25,29 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
 
             setIsLoading(true);
             setSubscribed(true);
+            setIdle(false);
 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const onData = (response: any) => {
-                setData(response);
+            idle_timeout.current = setTimeout(() => {
+                setIdle(true);
                 setIsLoading(false);
-            };
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const onError = (response: any) => {
-                setError(response.error);
-                setIsLoading(false);
-            };
+            }, idle_time);
 
             try {
-                subscriber.current = WS.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) }).subscribe(
-                    onData,
-                    onError
+                subscriber.current = _subscribe(name, payload).subscribe(
+                    response => {
+                        setData(response);
+                        setIsLoading(false);
+                    },
+                    response => {
+                        setError(response.error);
+                        setIsLoading(false);
+                    }
                 );
             } catch (e) {
-                setError(e);
+                setError(e as TSocketError<T>);
             }
         },
-        [WS, name]
+        [_subscribe, name, idle_time]
     );
 
     const unsubscribe = useCallback(() => {
@@ -58,7 +61,21 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
         };
     }, [unsubscribe]);
 
-    return { subscribe, unsubscribe, is_loading, is_subscribed, error, data };
+    useEffect(() => {
+        return () => {
+            if (idle_timeout.current) clearTimeout(idle_timeout.current);
+        };
+    }, [data]);
+
+    return {
+        subscribe,
+        unsubscribe,
+        isIdle,
+        isLoading,
+        isSubscribed,
+        error,
+        data,
+    };
 };
 
 export default useSubscription;

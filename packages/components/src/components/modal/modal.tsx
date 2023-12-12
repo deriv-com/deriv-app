@@ -17,6 +17,7 @@ type TModalElement = {
     close_icon_color?: string;
     elements_to_ignore?: HTMLElement[];
     has_close_icon?: boolean;
+    has_return_icon?: boolean;
     header?: React.ReactNode;
     header_background_color?: string;
     height?: string;
@@ -29,13 +30,15 @@ type TModalElement = {
     is_vertical_centered?: boolean;
     is_vertical_top?: boolean;
     onMount?: () => void;
+    onReturn?: () => void;
     onUnmount?: () => void;
     portalId?: string;
     renderTitle?: () => React.ReactNode;
+    should_close_on_click_outside?: boolean;
     should_header_stick_body?: boolean;
     small?: boolean;
     title?: string | React.ReactNode;
-    toggleModal?: (e?: React.MouseEvent<HTMLElement>) => void;
+    toggleModal?: (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
     width?: string;
 };
 
@@ -45,6 +48,7 @@ const ModalElement = ({
     close_icon_color,
     elements_to_ignore,
     has_close_icon = true,
+    has_return_icon = false,
     header,
     header_background_color,
     height,
@@ -57,9 +61,11 @@ const ModalElement = ({
     is_vertical_centered,
     is_vertical_top,
     onMount,
+    onReturn,
     onUnmount,
     portalId,
     renderTitle,
+    should_close_on_click_outside,
     should_header_stick_body = true,
     small,
     title,
@@ -85,11 +91,12 @@ const ModalElement = ({
         const is_absolute_modal_visible = document.getElementById('popup_root')?.hasChildNodes();
         const path = e.path ?? e.composedPath?.();
         return (
-            has_close_icon &&
-            !isPortalElementVisible() &&
-            is_open &&
-            !is_absolute_modal_visible &&
-            !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el as HTMLElement)))
+            should_close_on_click_outside ||
+            (has_close_icon &&
+                !isPortalElementVisible() &&
+                is_open &&
+                !is_absolute_modal_visible &&
+                !(elements_to_ignore && path?.find(el => elements_to_ignore.includes(el as HTMLElement))))
         );
     };
 
@@ -180,6 +187,9 @@ const ModalElement = ({
                                 [`dc-modal-header__title--${className}`]: className,
                             })}
                         >
+                            {has_return_icon && (
+                                <Icon icon='IcArrowLeftBold' onClick={onReturn} className='dc-modal-header__icon' />
+                            )}
                             {title}
                         </Text>
                     )}
@@ -194,7 +204,7 @@ const ModalElement = ({
                     )}
                     {has_close_icon && (
                         <div onClick={toggleModal} className='dc-modal-header__close' role='button'>
-                            <Icon icon='IcCross' color={close_icon_color} />
+                            <Icon icon='IcCross' color={close_icon_color} data_testid='dt_modal_close_icon' />
                         </div>
                     )}
                 </div>
@@ -209,6 +219,7 @@ type TModal = TModalElement & {
     exit_classname?: string;
     onEntered?: () => void;
     onExited?: () => void;
+    transition_timeout?: React.ComponentProps<typeof CSSTransition>['timeout'];
 };
 
 const Modal = ({
@@ -218,6 +229,7 @@ const Modal = ({
     elements_to_ignore,
     exit_classname,
     has_close_icon = true,
+    has_return_icon = false,
     header,
     header_background_color,
     height,
@@ -232,19 +244,22 @@ const Modal = ({
     onEntered,
     onExited,
     onMount,
+    onReturn,
     onUnmount,
     portalId,
     renderTitle,
+    should_close_on_click_outside = false,
     should_header_stick_body = true,
     small,
     title,
+    transition_timeout,
     toggleModal,
     width,
 }: React.PropsWithChildren<TModal>) => (
     <CSSTransition
         appear
         in={is_open}
-        timeout={250}
+        timeout={transition_timeout || 250}
         classNames={{
             appear: 'dc-modal__container--enter',
             enter: 'dc-modal__container--enter',
@@ -259,6 +274,7 @@ const Modal = ({
             className={className}
             close_icon_color={close_icon_color}
             should_header_stick_body={should_header_stick_body}
+            has_return_icon={has_return_icon}
             header={header}
             header_background_color={header_background_color}
             id={id}
@@ -274,9 +290,11 @@ const Modal = ({
             has_close_icon={has_close_icon}
             height={height}
             onMount={onMount}
+            onReturn={onReturn}
             onUnmount={onUnmount}
             portalId={portalId}
             renderTitle={renderTitle}
+            should_close_on_click_outside={should_close_on_click_outside}
             small={small}
             width={width}
             elements_to_ignore={elements_to_ignore}

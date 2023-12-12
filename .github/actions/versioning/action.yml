@@ -1,0 +1,22 @@
+name: versioning
+description: Versioning
+inputs:
+  RELEASE_TYPE:
+    description: Release Type
+    required: false
+outputs:
+  version:
+    description: Version
+runs:
+  using: composite
+
+  steps:
+    - name: Set Version
+      id: set_version
+      run: |
+        current_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        version="${{ inputs.RELEASE_TYPE }}-GH_Run#:${{ github.run_number }}-Date:$current_date"
+        echo "Setting version to: $version"
+        echo "version=$version" >> $GITHUB_ENV
+        echo $version > packages/core/dist/version.txt
+      shell: bash

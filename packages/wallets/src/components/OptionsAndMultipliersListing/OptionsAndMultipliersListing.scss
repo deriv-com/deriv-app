@@ -1,29 +1,44 @@
 .wallets-options-and-multipliers-listing {
     width: 100%;
     height: 100%;
-    padding-top: 24px;
+    padding-top: 2.4rem;
 
-    @include desktop {
-        border-top: 2px solid var(--system-light-7-secondary-background, #f2f3f4);
+    @include mobile {
+        padding-top: unset;
+    }
+
+    &--border {
+        @include desktop {
+            border-top: 0.2rem solid var(--system-light-7-secondary-background, #f2f3f4);
+        }
     }
 
     &__header {
-        padding-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        align-self: stretch;
+        padding-bottom: 2.4rem;
+        justify-content: space-between;
 
         &-title {
-            font-weight: bold;
-            font-size: 24px;
-            line-height: 36px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 1.6rem;
+            padding-bottom: 0;
         }
 
         &-subtitle {
-            font-size: 16px;
-            line-height: 24px;
-
             &__link {
                 color: var(--brand-coral, #ff444f);
+                text-underline-offset: 0.3rem;
             }
         }
     }
@@ -32,5 +47,28 @@
         display: grid;
         gap: 1.6rem 4.8rem;
         grid-template-columns: repeat(3, 1fr);
+        user-select: none;
+
+        @include mobile {
+            grid-template-rows: repeat(5, 1fr);
+            grid-template-columns: auto;
+            gap: 0;
+        }
+
+        &__icon {
+            cursor: pointer;
+        }
+
+        &--without-trading-account {
+            @include mobile {
+                margin: auto 2rem;
+            }
+        }
+
+        &__details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
     }
 }

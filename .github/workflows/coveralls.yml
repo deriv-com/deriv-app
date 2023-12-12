@@ -1,26 +1,24 @@
-on: ["push", "pull_request"]
-
+on: 
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, edited]    
 name: Coveralls
-
 jobs:
-
   build:
     name: Reporter
-    runs-on: ubuntu-latest
+    runs-on: Runner_8cores_Deriv-app
     steps:
-
-      - uses: actions/checkout@v3
-
-      - name: Use Node.js 18.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.x
-
-      - name: Bootstrap, Build, and make test-coverage
-        run: |
-          npm ci
-          npm run bootstrap
-          npm run build:all
-          JEST_MAX_WORKERS=3 npm run test:jest
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: './.github/actions/setup_node'
+      - name: Install dependencies
+        uses: "./.github/actions/npm_install_from_cache"
+      - name: Build
+        uses: "./.github/actions/build"
+      - name: Test
+        run: JEST_MAX_WORKERS=95% npm run test:jest -- --collectCoverage
       - name: Coveralls
         uses: coverallsapp/github-action@v2

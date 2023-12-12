@@ -27,6 +27,7 @@ export default class RunPanelStore {
             is_stop_button_disabled: computed,
             is_clear_stat_disabled: computed,
             onStopButtonClick: action.bound,
+            onStopBotClick: action.bound,
             stopBot: action.bound,
             onClearStatClick: action.bound,
             clearStat: action.bound,
@@ -141,7 +142,7 @@ export default class RunPanelStore {
         return (
             this.is_running ||
             this.has_open_contract ||
-            (journal.unfiltered_messages.length === 0 && transactions.elements.length === 0)
+            (journal.unfiltered_messages.length === 0 && transactions?.transactions?.length === 0)
         );
     }
 
@@ -219,6 +220,16 @@ export default class RunPanelStore {
     }
 
     onStopButtonClick() {
+        const { is_multiplier } = this.root_store.summary_card;
+
+        if (is_multiplier) {
+            this.showStopMultiplierContractDialog();
+        } else {
+            this.stopBot();
+        }
+    }
+
+    onStopBotClick() {
         const { is_multiplier } = this.root_store.summary_card;
         const { summary_card } = this.root_store;
 
@@ -643,11 +654,12 @@ export default class RunPanelStore {
 
     showErrorMessage(data) {
         const { journal } = this.root_store;
-        const { notifications } = this.core;
+        const { notifications, ui } = this.core;
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
             this.toggleDrawer(true);
             this.setActiveTabIndex(run_panel.JOURNAL);
+            ui.setPromptHandler(false);
         } else {
             notifications.addNotificationMessage(journalError(this.switchToJournal));
             notifications.removeNotificationMessage({ key: 'bot_error' });

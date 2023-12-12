@@ -28,7 +28,7 @@ describe('<OrderDetailsWrapper />', () => {
         isMobile.mockReturnValue(true);
         const mobile_props = {
             className: 'order-details',
-            body_className: 'order-details--body',
+            body_className: 'order-details__body',
             height_offset: '80px',
             is_flex: true,
             is_modal_open: true,
@@ -53,7 +53,7 @@ describe('<OrderDetailsWrapper />', () => {
         render(<OrderDetailsWrapper {...desktop_props} />);
 
         await waitFor(() => {
-            expect(screen.getByTestId('order-details-wrapper-desktop')).toBeInTheDocument();
+            expect(screen.getByTestId('dt_page_return')).toBeInTheDocument();
             expect(screen.getByText('desktop test')).toBeInTheDocument();
         });
     });

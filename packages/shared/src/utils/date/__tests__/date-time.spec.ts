@@ -57,6 +57,24 @@ describe('formatDate', () => {
         const date = moment().utc();
         expect(DateTime.formatDate(date, date_format)).toEqual(moment(date).format(date_format));
     });
+
+    it('returns undefined when date is null and should_format_null is false', () => {
+        expect(DateTime.formatDate(null, date_format, false)).toBeUndefined();
+    });
+
+    it('returns formatted date when date is null and should_format_null is true', () => {
+        expect(DateTime.formatDate(null, date_format, true)).toEqual(moment().utc().format(date_format));
+    });
+
+    it('returns formatted date when date is not null and should_format_null is true', () => {
+        const date = moment('2023-09-20').utc();
+        expect(DateTime.formatDate(date, date_format, true)).toEqual(moment(date).format(date_format));
+    });
+
+    it('returns formatted date when date is not null and should_format_null is false', () => {
+        const date = moment('2023-09-20').utc();
+        expect(DateTime.formatDate(date, date_format, false)).toEqual(moment(date).format(date_format));
+    });
 });
 
 /* eslint-disable no-unused-expressions */
@@ -93,5 +111,23 @@ describe('convertDuration', () => {
             const duration = moment.duration(moment.unix(end_time).diff(moment.unix(start_time))); // three minutes
             expect(DateTime.formatDuration(duration).timestamp).toEqual('00:03:00');
         });
+    });
+});
+
+describe('getTimeSince', () => {
+    it('should return correct time since timestamp for each time unit', () => {
+        const now = Date.now();
+        const fifteen_sec_ago = Date.now() - 15000;
+        const ninety_sec_ago = Date.now() - 90000;
+        const four_thousand_sec_ago = Date.now() - 4000000;
+        const hundred_thousand_sec_ago = Date.now() - 100000000;
+        expect(DateTime.getTimeSince(now)).toEqual('0s ago');
+        expect(DateTime.getTimeSince(fifteen_sec_ago)).toEqual('15s ago');
+        expect(DateTime.getTimeSince(ninety_sec_ago)).toEqual('1m ago');
+        expect(DateTime.getTimeSince(four_thousand_sec_ago)).toEqual('1h ago');
+        expect(DateTime.getTimeSince(hundred_thousand_sec_ago)).toEqual('1d ago');
+    });
+    it('should return an empty string when called with 0', () => {
+        expect(DateTime.getTimeSince(0)).toEqual('');
     });
 });

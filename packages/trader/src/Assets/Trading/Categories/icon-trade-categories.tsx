@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Icon } from '@deriv/components';
+import { TRADE_TYPES } from '@deriv/shared';
 
 type TIconTradeCategory = {
     category: string;
@@ -11,7 +12,8 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
     let IconCategory;
     if (category) {
         switch (category) {
-            case 'rise_fall':
+            case TRADE_TYPES.RISE_FALL:
+            case TRADE_TYPES.RISE_FALL_EQUAL:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -23,19 +25,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'rise_fall_equal':
-                IconCategory = (
-                    <React.Fragment>
-                        <div className='category-wrapper'>
-                            <Icon icon='IcTradetypeCall' className='category-type' color='brand' />
-                        </div>
-                        <div className='category-wrapper'>
-                            <Icon icon='IcTradetypePut' className='category-type' color='brand' />
-                        </div>
-                    </React.Fragment>
-                );
-                break;
-            case 'high_low':
+            case TRADE_TYPES.HIGH_LOW:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -47,7 +37,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'end':
+            case TRADE_TYPES.END:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -59,7 +49,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'stay':
+            case TRADE_TYPES.STAY:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -71,7 +61,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'match_diff':
+            case TRADE_TYPES.MATCH_DIFF:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -83,7 +73,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'even_odd':
+            case TRADE_TYPES.EVEN_ODD:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -95,7 +85,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'over_under':
+            case TRADE_TYPES.OVER_UNDER:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -107,7 +97,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'touch':
+            case TRADE_TYPES.TOUCH:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -119,7 +109,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'asian':
+            case TRADE_TYPES.ASIAN:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -131,28 +121,28 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'lb_call':
+            case TRADE_TYPES.LB_CALL:
                 IconCategory = (
                     <div className='category-wrapper'>
                         <Icon icon='IcTradetypeLbcall' className='category-type' color='brand' />
                     </div>
                 );
                 break;
-            case 'lb_put':
+            case TRADE_TYPES.LB_PUT:
                 IconCategory = (
                     <div className='category-wrapper'>
                         <Icon icon='IcTradetypeLbput' className='category-type' color='brand' />
                     </div>
                 );
                 break;
-            case 'lb_high_low':
+            case TRADE_TYPES.LB_HIGH_LOW:
                 IconCategory = (
                     <div className='category-wrapper'>
                         <Icon icon='IcTradetypeLbhighlow' className='category-type' color='brand' />
                     </div>
                 );
                 break;
-            case 'run_high_low':
+            case TRADE_TYPES.RUN_HIGH_LOW:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -164,7 +154,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'reset':
+            case TRADE_TYPES.RESET:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -176,7 +166,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'tick_high_low':
+            case TRADE_TYPES.TICK_HIGH_LOW:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -188,7 +178,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'callputspread':
+            case TRADE_TYPES.CALL_PUT_SPREAD:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -200,7 +190,7 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'multiplier':
+            case TRADE_TYPES.MULTIPLIER:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -212,15 +202,15 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'accumulator':
+            case TRADE_TYPES.ACCUMULATOR:
                 IconCategory = (
                     <div className='category-wrapper'>
                         <Icon icon='IcTradetypeAccu' className='category-type' color='brand' />
                     </div>
                 );
                 break;
-            case 'turboslong':
-            case 'turbosshort':
+            case TRADE_TYPES.TURBOS.LONG:
+            case TRADE_TYPES.TURBOS.SHORT:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>
@@ -232,7 +222,8 @@ const IconTradeCategory = ({ category, className }: TIconTradeCategory) => {
                     </React.Fragment>
                 );
                 break;
-            case 'vanilla':
+            case TRADE_TYPES.VANILLA.CALL:
+            case TRADE_TYPES.VANILLA.PUT:
                 IconCategory = (
                     <React.Fragment>
                         <div className='category-wrapper'>

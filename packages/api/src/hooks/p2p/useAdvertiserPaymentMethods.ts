@@ -17,7 +17,7 @@ const type_to_icon_mapper = {
 };
 
 /** A custom hook to fetch, create, update and delete p2p advertiser payment methods. */
-const useP2PAdvertiserPaymentMethods = () => {
+const useAdvertiserPaymentMethods = () => {
     const invalidate = useInvalidateQuery();
     const { isSuccess } = useAuthorize();
     const { data, ...rest } = useQuery('p2p_advertiser_payment_methods', { options: { enabled: isSuccess } });
@@ -67,4 +67,4 @@ const useP2PAdvertiserPaymentMethods = () => {
     };
 };
 
-export default useP2PAdvertiserPaymentMethods;
+export default useAdvertiserPaymentMethods;

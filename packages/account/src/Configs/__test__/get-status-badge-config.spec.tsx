@@ -92,12 +92,12 @@ describe('getStatusBadgeConfig', () => {
     it('should render need_verification status and redirect to POA when POI is verified', () => {
         account_status = MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
 
-        renderCheck(account_status, openFailedVerificationModal, selected_account_type, setIsVerificationModalVisible, {
+        renderCheck(account_status, openFailedVerificationModal, selected_account_type, undefined, {
             poi_status: AUTH_STATUS_CODES.VERIFIED,
             poa_status: AUTH_STATUS_CODES.NONE,
         });
 
-        expect(screen.getByText('Need verification.'));
+        expect(screen.getByText('Needs verification.'));
         expect(screen.getByText('IcAlertInfo'));
 
         const btn = screen.getByRole('link', { name: 'Verify now' });
@@ -109,15 +109,16 @@ describe('getStatusBadgeConfig', () => {
     it('should render need_verification status and redirect to POI when POI status is not verified and POA status is not verified', () => {
         account_status = MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
 
-        renderCheck(account_status, openFailedVerificationModal, selected_account_type, setIsVerificationModalVisible, {
+        renderCheck(account_status, openFailedVerificationModal, selected_account_type, undefined, {
             poi_status: AUTH_STATUS_CODES.NONE,
             poa_status: AUTH_STATUS_CODES.NONE,
         });
 
-        expect(screen.getByText('Need verification.'));
+        expect(screen.getByText('Needs verification.'));
         expect(screen.getByText('IcAlertInfo'));
 
         const btn = screen.getByRole('link', { name: 'Verify now' });
+
         expect(btn).toBeInTheDocument();
         expect(btn.hasAttribute('href'));
         expect(btn.hasAttribute(routes.proof_of_identity));

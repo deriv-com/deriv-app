@@ -4,7 +4,6 @@ import { Icon, Text } from '@deriv/components';
 import { getUrlBase } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import TourSteps from './common/tour-steps';
-import { is } from 'immutable';
 
 type TJoyrideConfig = Record<
     'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay' | 'disableCloseOnEsc',

@@ -1,9 +1,9 @@
 import React from 'react';
 import { formatOnfidoError } from '@deriv/shared';
-import UploadComplete from 'Components/poi/status/upload-complete';
-import Verified from 'Components/poi/status/verified';
-import RejectedReasons from 'Components/poi/status/rejected-reasons';
-import Unsupported from 'Components/poi/status/unsupported';
+import UploadComplete from '../../../Components/poi/status/upload-complete';
+import Verified from '../../../Components/poi/status/verified';
+import RejectedReasons from '../../../Components/poi/status/rejected-reasons';
+import Unsupported from '../../../Components/poi/status/unsupported';
 import { identity_status_codes } from './proof-of-identity-utils';
 
 const Onfido = ({

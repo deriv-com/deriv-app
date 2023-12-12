@@ -1,6 +1,6 @@
 import React, { CSSProperties, ElementType, ReactNode } from 'react';
 import classNames from 'classnames';
-import { TGenericSizes } from '../types';
+import { TGenericSizes } from '../../../types';
 import './WalletText.scss';
 
 export interface WalletTextProps {

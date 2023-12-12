@@ -9,6 +9,7 @@ import {
     isDesktop,
     isEnded,
     isHighLow,
+    isMobile,
     isMultiplierContract,
     isTurbosContract,
     isVanillaContract,
@@ -16,6 +17,7 @@ import {
     switch_to_tick_chart,
     CONTRACT_TYPES,
     TRADE_TYPES,
+    getLastContractMarkerIndex,
 } from '@deriv/shared';
 
 import BaseStore from './base-store';
@@ -31,7 +33,9 @@ export default class ContractTradeStore extends BaseStore {
 
     // Chart specific observables
     granularity = +LocalStore.get('contract_trade.granularity') || 0;
-    chart_type = LocalStore.get('contract_trade.chart_style') || 'line';
+    chart_type = this.root_store.client.is_beta_chart
+        ? LocalStore.get('contract_trade.chart_style') || 'line'
+        : LocalStore.get('contract_trade.chart_type') || 'mountain';
     prev_chart_type = '';
     prev_granularity = null;
 
@@ -200,15 +204,21 @@ export default class ContractTradeStore extends BaseStore {
     }
 
     updateChartType(type) {
-        LocalStore.set('contract_trade.chart_style', type);
+        if (this.root_store.client.is_beta_chart) {
+            LocalStore.set('contract_trade.chart_style', type);
+        } else {
+            LocalStore.set('contract_trade.chart_type', type);
+        }
         this.chart_type = type;
     }
 
     updateGranularity(granularity) {
-        const tick_chart_types = ['line', 'candles', 'hollow', 'ohlc'];
+        const tick_chart_types = this.root_store.client.is_beta_chart
+            ? ['line', 'candles', 'hollow', 'ohlc']
+            : ['mountain', 'line', 'colored_line', 'spline', 'baseline'];
 
         if (granularity === 0 && tick_chart_types.indexOf(this.chart_type) === -1) {
-            this.chart_type = 'line';
+            this.chart_type = this.root_store.client.is_beta_chart ? 'line' : 'mountain';
         }
 
         LocalStore.set('contract_trade.granularity', granularity);
@@ -309,6 +319,11 @@ export default class ContractTradeStore extends BaseStore {
             .filter(m => m)
             .map(m => toJS(m));
 
+        if (!this.root_store.client.is_beta_chart) {
+            if (markers.length) {
+                markers[getLastContractMarkerIndex(markers)].is_last_contract = true;
+            }
+        }
         const { current_spot_time, entry_tick_time, exit_tick_time } = this.last_contract.contract_info || {};
 
         const should_show_poc_barriers =
@@ -322,21 +337,40 @@ export default class ContractTradeStore extends BaseStore {
                 this.accumulator_contract_barriers_data) ||
             this.accumulator_barriers_data ||
             {};
-
         if (trade_type === TRADE_TYPES.ACCUMULATOR && proposal_prev_spot_time && accumulators_high_barrier) {
-            const is_open = isAccumulatorContractOpen(this.last_contract.contract_info);
-            markers.push(
-                getAccumulatorMarkers({
-                    high_barrier: accumulators_high_barrier,
-                    low_barrier: accumulators_low_barrier,
-                    barrier_spot_distance,
-                    prev_epoch: proposal_prev_spot_time,
-                    has_crossed_accu_barriers: this.has_crossed_accu_barriers,
-                    is_dark_theme: this.root_store.ui.is_dark_mode_on,
-                    contract_info: is_open ? this.last_contract.contract_info : {},
-                    is_accumulator_trade_without_contract: !is_open || !entry_tick_time,
-                })
-            );
+            if (this.root_store.client.is_beta_chart) {
+                const is_open = isAccumulatorContractOpen(this.last_contract.contract_info);
+                markers.push(
+                    getAccumulatorMarkers({
+                        high_barrier: accumulators_high_barrier,
+                        low_barrier: accumulators_low_barrier,
+                        barrier_spot_distance,
+                        prev_epoch: proposal_prev_spot_time,
+                        has_crossed_accu_barriers: this.has_crossed_accu_barriers,
+                        is_dark_theme: this.root_store.ui.is_dark_mode_on,
+                        contract_info: is_open ? this.last_contract.contract_info : {},
+                        is_accumulator_trade_without_contract: !is_open || !entry_tick_time,
+                    })
+                );
+            }
+            if (!this.root_store.client.is_beta_chart) {
+                markers.push({
+                    type: 'TickContract',
+                    contract_info: {
+                        accu_barriers_difference: barrier_spot_distance && {
+                            top: `+${barrier_spot_distance}`,
+                            bottom: `-${barrier_spot_distance}`,
+                            font: isMobile() ? '10px IBM Plex Sans' : '14px IBM Plex Sans',
+                        },
+                        has_crossed_accu_barriers: this.has_crossed_accu_barriers,
+                        is_accumulator_trade_without_contract:
+                            !isAccumulatorContractOpen(this.last_contract.contract_info) || !entry_tick_time,
+                    },
+                    key: 'dtrader_accumulator_barriers',
+                    price_array: [accumulators_high_barrier, accumulators_low_barrier],
+                    epoch_array: [proposal_prev_spot_time],
+                });
+            }
         }
         return markers;
     }
@@ -358,9 +392,11 @@ export default class ContractTradeStore extends BaseStore {
             }
             return;
         }
+
         const is_last_contract = contract_id === this.last_contract.contract_id;
 
         const contract = new ContractStore(this.root_store, { contract_id });
+
         contract.populateConfig(
             {
                 date_start: start_time,
@@ -412,6 +448,7 @@ export default class ContractTradeStore extends BaseStore {
             const contract = this.contracts_map[contract_id];
             const is_last_contract = contract_id === this.last_contract.contract_id;
             contract.populateConfig(response.proposal_open_contract, is_last_contract);
+
             if (response.proposal_open_contract.is_sold) {
                 this.root_store.notifications.removeNotificationMessage(switch_to_tick_chart);
                 contract.cacheProposalOpenContractResponse(response);

@@ -1,3 +1,5 @@
+import { TMarketTypes, TMT5LandingCompanyName, TWalletLandingCompanyName } from '../../../types';
+
 export const walletIconMapper = {
     AUD: {
         dark: 'IcWalletCurrencyAud',
@@ -49,25 +51,27 @@ export const walletIconMapper = {
     },
 } as const;
 
+type TDefinedMT5LandingCompanyName = Exclude<TMT5LandingCompanyName, undefined>;
+
 export const LandingCompanyDetails = {
     bvi: {
-        name: 'bvi',
+        name: 'bvi' as TDefinedMT5LandingCompanyName,
         shortcode: 'BVI',
     },
     labuan: {
-        name: 'labuan',
+        name: 'labuan' as TDefinedMT5LandingCompanyName,
         shortcode: 'Labuan',
     },
     maltainvest: {
-        name: 'maltainvest',
+        name: 'maltainvest' as TDefinedMT5LandingCompanyName,
         shortcode: 'Maltainvest',
     },
     svg: {
-        name: 'svg',
+        name: 'svg' as TDefinedMT5LandingCompanyName,
         shortcode: 'SVG',
     },
     vanuatu: {
-        name: 'vanuatu',
+        name: 'vanuatu' as TDefinedMT5LandingCompanyName,
         shortcode: 'Vanuatu',
     },
 } as const;
@@ -78,7 +82,7 @@ export const MT5MarketTypeDetails = {
             dark: 'IcWalletMt5All',
             light: 'IcWalletMt5All',
         },
-        name: 'all',
+        name: 'all' as TMarketTypes.All,
         title: 'MT5 Swap-Free',
     },
     financial: {
@@ -88,7 +92,7 @@ export const MT5MarketTypeDetails = {
                     dark: 'IcWalletMt5CFDs',
                     light: 'IcWalletMt5CFDs',
                 },
-                name: 'malta',
+                name: 'malta' as TWalletLandingCompanyName,
                 title: 'MT5 CFDs',
             },
             svg: {
@@ -96,7 +100,7 @@ export const MT5MarketTypeDetails = {
                     dark: 'IcWalletMt5Financial',
                     light: 'IcWalletMt5Financial',
                 },
-                name: 'svg',
+                name: 'svg' as TWalletLandingCompanyName,
                 title: 'MT5 Financial',
             },
             virtual: {
@@ -104,11 +108,11 @@ export const MT5MarketTypeDetails = {
                     dark: 'IcWalletMt5Financial',
                     light: 'IcWalletMt5Financial',
                 },
-                name: 'virtual',
+                name: 'virtual' as TWalletLandingCompanyName,
                 title: 'MT5 CFDs',
             },
         },
-        name: 'financial',
+        name: 'financial' as TMarketTypes.All,
         title: 'MT5 Financial',
     },
     synthetic: {
@@ -116,7 +120,7 @@ export const MT5MarketTypeDetails = {
             dark: 'IcWalletMt5Derived',
             light: 'IcWalletMt5Derived',
         },
-        name: 'synthetic',
+        name: 'synthetic' as TMarketTypes.All,
         title: 'MT5 Derived',
     },
 } as const;

@@ -1,6 +1,5 @@
 .scrollbar-wrapper {
-    overflow-x: hidden;
-    overflow-y: scroll;
+    overflow: visible;
 
     @include mobile {
         overflow: unset;

@@ -71,7 +71,7 @@ describe('<AddPaymentMethod />', () => {
 
         userEvent.click(pageReturnIcon);
 
-        expect(mock_modal_manager.showModal).toBeCalledWith({ key: 'CancelAddPaymentMethodModal' });
+        expect(mock_modal_manager.showModal).toBeCalledWith({ key: 'CancelAddPaymentMethodModal', props: {} });
     });
 
     it('should call hideModal, hideAddPaymentMethodForm when clicking page return icon if selected_payment_method and dirty is false', () => {

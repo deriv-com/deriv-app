@@ -97,9 +97,6 @@ const MyProfileName = () => {
                                             star_size={getIconSize(17, 20)}
                                         />
                                         <div className='my-profile-name__rating__text'>
-                                            <Text color='prominent' size={getTextSize('xxxs', 'xs')}>
-                                                {rating_average_decimal}
-                                            </Text>
                                             <Text color='less-prominent' size={getTextSize('xxxs', 'xs')}>
                                                 {rating_count === 1 ? (
                                                     <Localize

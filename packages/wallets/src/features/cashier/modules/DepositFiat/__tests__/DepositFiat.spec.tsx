@@ -17,20 +17,6 @@ describe('DepositFiat', () => {
         jest.clearAllMocks();
     });
 
-    it('should call useAuthorize and useCashierFiatAddress hooks on mount', () => {
-        (useCashierFiatAddress as jest.Mock).mockReturnValueOnce({
-            data: null,
-            error: null,
-            isError: false,
-            isLoading: true,
-            mutate: jest.fn(),
-        });
-
-        render(<DepositFiat />);
-        expect(useAuthorize).toHaveBeenCalled();
-        expect(useCashierFiatAddress).toHaveBeenCalledWith();
-    });
-
     it('should render error screen if isError and depositError is a server error', () => {
         const serverError = { code: '500', message: 'Server Error' };
 

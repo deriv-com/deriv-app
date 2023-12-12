@@ -1,4 +1,5 @@
 import React from 'react';
+import { Step } from '@deriv/react-joyride';
 import { WalletText } from '../Base';
 import './WalletTourGuide.scss';
 
@@ -8,8 +9,7 @@ const getDesktopSteps = (
     hasDerivAppsTradingAccount: boolean,
     isAllWalletsAlreadyAdded: boolean,
     walletNumber = 1
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): any[] => [
+): Step[] => [
     // Wallet header
     {
         content: (

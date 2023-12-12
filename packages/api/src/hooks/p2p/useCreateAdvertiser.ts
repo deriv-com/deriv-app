@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import useMutation from '../../useMutation';
 import useInvalidateQuery from '../../useInvalidateQuery';
 
@@ -8,19 +8,33 @@ type TAdvertiseCreatePayload = {
     >[0]['payload']['name'];
 };
 
+/** A custom hook that creates a P2P advertiser. This can only be used when the user is authorized.
+ *
+ * To create an advertiser, specify the following payload arguments in the `mutate` call:
+ * @example
+ *  mutate({
+        name: 'your_name',
+    });
+ *
+*/
 const useCreateAdvertiser = () => {
     const invalidate = useInvalidateQuery();
-    const { data, mutate, ...rest } = useMutation('p2p_advertiser_create', {
+    const {
+        data,
+        mutate: _mutate,
+        ...rest
+    } = useMutation('p2p_advertiser_create', {
         onSuccess: () => {
+            invalidate('p2p_advertiser_list');
             invalidate('p2p_advertiser_info');
         },
     });
 
-    const createAdvertiser = useCallback(
+    const mutate = useCallback(
         (payload: TAdvertiseCreatePayload) => {
-            mutate({ payload });
+            _mutate({ payload });
         },
-        [mutate]
+        [_mutate]
     );
 
     const modified_data = useMemo(() => {
@@ -50,7 +64,7 @@ const useCreateAdvertiser = () => {
 
     return {
         data: modified_data,
-        createAdvertiser,
+        mutate,
         ...rest,
     };
 };

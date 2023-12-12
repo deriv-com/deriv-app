@@ -2061,6 +2061,10 @@ type TSocketEndpoints = {
         request: P2PAdvertiserInformationRequest;
         response: P2PAdvertiserInformationResponse;
     };
+    p2p_advertiser_list: {
+        request: P2PAdvertiserListRequest;
+        response: P2PAdvertiserListResponse;
+    };
     p2p_advertiser_payment_methods: {
         request: P2PAdvertiserPaymentMethodsRequest;
         response: P2PAdvertiserPaymentMethodsResponse;

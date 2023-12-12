@@ -7,7 +7,7 @@ import { AUTH_STATUS_CODES } from '@deriv/shared';
 import ProofOfOwnershipForm from './proof-of-ownership-form';
 import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from '../../../Components/poo/statuses';
 import getPaymentMethodsConfig from '../../../Configs/payment-method-config';
-import { TPaymentMethod, TPaymentMethodIdentifier, TPaymentMethodInfo, TVerificationStatus } from '../../../Types';
+import { TPaymentMethod, TPaymentMethodIdentifier, TPaymentMethodInfo, TAuthStatusCodes } from '../../../Types';
 
 type TPaymentData = DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
 
@@ -17,7 +17,7 @@ export const ProofOfOwnership = observer(() => {
     const { is_dark_mode_on: is_dark_mode, is_mobile } = ui;
     const { refreshNotifications } = notifications;
     const cards = account_status?.authentication?.ownership?.requests;
-    const [status, setStatus] = useState<TVerificationStatus>(AUTH_STATUS_CODES.NONE);
+    const [status, setStatus] = useState<TAuthStatusCodes>(AUTH_STATUS_CODES.NONE);
 
     const grouped_payment_method_data = React.useMemo(() => {
         const groups: Partial<Record<TPaymentMethod, TPaymentMethodInfo>> = {};
@@ -46,7 +46,7 @@ export const ProofOfOwnership = observer(() => {
     }, [cards, is_dark_mode]);
     useEffect(() => {
         setStatus(
-            (account_status?.authentication?.ownership?.status?.toLowerCase() as TVerificationStatus) ??
+            (account_status?.authentication?.ownership?.status?.toLowerCase() as TAuthStatusCodes) ??
                 AUTH_STATUS_CODES.NONE
         );
     }, [account_status]);

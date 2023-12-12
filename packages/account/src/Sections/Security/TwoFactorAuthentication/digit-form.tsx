@@ -1,16 +1,32 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, FormikProps, FormikHelpers, FieldProps } from 'formik';
 import { Input, Button } from '@deriv/components';
 import { getPropertyValue, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { observer, useStore } from '@deriv/stores';
 
-const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_language_changing }) => {
+type TResponse = {
+    error?: {
+        message: string;
+        code: string;
+    };
+};
+
+type TDigitFormValues = {
+    digit_code: string;
+};
+
+const DigitForm = observer(() => {
+    const { client, common } = useStore();
+    const { is_language_changing } = common;
+    const { has_enabled_two_fa, setTwoFAChangedStatus, setTwoFAStatus } = client;
     const [is_success, setSuccess] = React.useState(false);
     const [is_ready_for_verification, setReadyForVerification] = React.useState(false);
-    const button_text = is_enabled ? localize('Disable') : localize('Enable');
-    const formik_ref = React.useRef();
-    let enable_response;
+
+    const button_text = has_enabled_two_fa ? localize('Disable') : localize('Enable');
+    const formik_ref = React.useRef<FormikProps<TDigitFormValues>>(null);
+    let enable_response: TResponse;
 
     const initial_form = {
         digit_code: '',
@@ -18,40 +34,36 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_langu
 
     React.useEffect(() => {
         if (is_language_changing) {
-            formik_ref.current.setFieldTouched('digit_code');
+            formik_ref.current?.setFieldTouched('digit_code');
         }
     }, [is_language_changing]);
 
-    const validateFields = async values => {
-        const digit_code = values.digit_code;
+    const validateFields = async (values: TDigitFormValues) => {
+        const digit_code = values?.digit_code;
         if (!digit_code) {
             return { digit_code: localize('Digit code is required.') };
-        } else if (!(digit_code.length === 6)) {
+        } else if (digit_code.length !== 6) {
             return { digit_code: localize('Length of digit code must be 6 characters.') };
-        } else if (!/^[0-9]{6}$/g.test(digit_code)) {
+        } else if (!/^\d{6}$/g.test(digit_code)) {
             return { digit_code: localize('Digit code must only contain numbers.') };
-        } else if (is_ready_for_verification) {
-            if (formik_ref.current.isValid) {
-                const totp_action = is_enabled ? 'disable' : 'enable';
-                enable_response = await WS.authorized.accountSecurity({
-                    account_security: 1,
-                    totp_action,
-                    otp: values.digit_code,
-                });
-                if (enable_response.error) {
-                    const { code, message } = enable_response.error;
-                    if (code === 'InvalidOTP')
-                        return { digit_code: localize("That's not the right code. Please try again.") };
-                    return { digit_code: message };
-                }
-            } else {
-                return { digit_code: localize("That's not the right code. Please try again.") };
+        } else if (is_ready_for_verification && formik_ref.current?.isValid) {
+            const totp_action = has_enabled_two_fa ? 'disable' : 'enable';
+            enable_response = await WS.authorized.accountSecurity({
+                account_security: 1,
+                totp_action,
+                otp: values.digit_code,
+            });
+            if (enable_response?.error) {
+                const { code, message } = enable_response.error;
+                if (code === 'InvalidOTP')
+                    return { digit_code: localize("That's not the right code. Please try again.") };
+                return { digit_code: message };
             }
         }
         return {};
     };
 
-    const handleSubmit = async (values, { resetForm }) => {
+    const handleSubmit = async (values: TDigitFormValues, { resetForm }: FormikHelpers<TDigitFormValues>) => {
         if (!enable_response.error) {
             const is_enabled_response = !!getPropertyValue(enable_response, ['account_security', 'totp', 'is_enabled']);
             setSuccess(true);
@@ -63,11 +75,11 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_langu
 
     return (
         <Formik initialValues={initial_form} onSubmit={handleSubmit} validate={validateFields} innerRef={formik_ref}>
-            {({ values, errors, isValid, touched, handleChange, handleBlur, isSubmitting, dirty }) => (
+            {({ values, isValid, handleChange, handleBlur, isSubmitting, dirty }) => (
                 <Form noValidate>
-                    <div className='two-factor__input-group'>
+                    <div className='two-factor__input-group' data-testid='dt_digitform_2fa'>
                         <Field name='digit_code'>
-                            {({ field }) => (
+                            {({ field, meta }: FieldProps) => (
                                 <Input
                                     {...field}
                                     data-lpignore='true'
@@ -81,8 +93,8 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_langu
                                     }}
                                     onBlur={handleBlur}
                                     required
-                                    error={touched.digit_code && errors.digit_code}
-                                    maxLength='6'
+                                    error={meta.touched ? meta.error : undefined}
+                                    maxLength={6}
                                     autoComplete='off'
                                 />
                             )}
@@ -97,7 +109,9 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_langu
                             is_loading={isSubmitting}
                             is_submit_success={is_success}
                             text={button_text}
-                            onClick={() => setReadyForVerification(true)}
+                            onClick={() => {
+                                setReadyForVerification(true);
+                            }}
                             large
                             primary
                         />
@@ -106,6 +120,6 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus, is_langu
             )}
         </Formik>
     );
-};
+});
 
 export default DigitForm;

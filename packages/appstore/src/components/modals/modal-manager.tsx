@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ResetTradingPasswordModal } from '@deriv/account';
-import { useFeatureFlags } from '@deriv/hooks';
+import { useFeatureFlags, useCurrentList } from '@deriv/hooks';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
@@ -30,11 +30,11 @@ type TCurrentList = DetailsOfEachMT5Loginid & {
 const ModalManager = () => {
     const store = useStores();
     const { is_wallet_enabled } = useFeatureFlags();
+    const { current_list } = useCurrentList();
     const { common, client, modules, traders_hub, ui } = store;
     const { is_logged_in, is_eu, is_eu_country, is_populating_mt5_account_list, verification_code } = client;
     const { platform } = common;
     const {
-        current_list,
         enableCFDPasswordModal,
         is_mt5_trade_modal_visible,
         setAccountType,
@@ -90,14 +90,15 @@ const ModalManager = () => {
         const should_be_enabled = (list_item: TCurrentList) =>
             platform === 'dxtrade' ? list_item.enabled === 1 : true;
         const acc = current_list_keys.some(
-            key => key.startsWith(`${platform}.real.${acc_type}`) && should_be_enabled(current_list[key])
+            key =>
+                key.startsWith(`${platform}.real.${acc_type}`) && should_be_enabled(current_list[key] as TCurrentList)
         )
             ? Object.keys(current_list)
                   .filter(key => key.startsWith(`${platform}.real.${acc_type}`))
                   .reduce((_acc, cur) => {
                       _acc.push(current_list[cur]);
                       return _acc;
-                  }, [] as DetailsOfEachMT5Loginid[])
+                  }, [] as Omit<DetailsOfEachMT5Loginid[], 'balance'> & { balance?: number | null }[])
             : undefined;
         return acc;
     };

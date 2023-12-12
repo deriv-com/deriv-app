@@ -14,6 +14,7 @@ export { default as useCryptoTransactions } from './useCryptoTransactions';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useCurrentAccountDetails } from './useCurrentAccountDetails';
 export { default as useCurrentCurrencyConfig } from './useCurrentCurrencyConfig';
+export { default as useCurrentList } from './useCurrentList';
 export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
 export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useDepositLocked } from './useDepositLocked';

@@ -94,6 +94,9 @@
     &--enter,
     &--exit {
         transform: translate3d(20%, 0, 0);
+        [dir='rtl'] & {
+            transform: translate3d(-20%, 0, 0);
+        }
         pointer-events: none;
         opacity: 0;
         height: 0;

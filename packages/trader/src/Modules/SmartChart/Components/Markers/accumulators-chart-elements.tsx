@@ -14,6 +14,7 @@ type TAccumulatorsChartElements = {
     has_crossed_accu_barriers: boolean;
     should_show_profit_text: React.ComponentProps<typeof AccumulatorsProfitLossTooltip>['should_show_profit_text'];
     symbol: string;
+    is_mobile?: boolean;
 };
 
 const AccumulatorsChartElements = ({
@@ -23,6 +24,7 @@ const AccumulatorsChartElements = ({
     has_crossed_accu_barriers,
     should_show_profit_text,
     symbol,
+    is_mobile,
 }: TAccumulatorsChartElements) => {
     const accumulators_positions = all_positions.filter(
         ({ contract_info }) =>
@@ -39,9 +41,10 @@ const AccumulatorsChartElements = ({
                         key={contract_info.contract_id}
                         {...contract_info}
                         should_show_profit_text={should_show_profit_text}
+                        is_mobile={is_mobile}
                     />
                 ))}
-            {has_crossed_accu_barriers && !!current_spot_time && (
+            {has_crossed_accu_barriers && !!current_spot_time && !!current_spot && (
                 <ChartMarker
                     marker_config={{
                         ContentComponent: 'div',

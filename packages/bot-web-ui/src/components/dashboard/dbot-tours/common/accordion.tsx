@@ -45,6 +45,16 @@ const Accordion = ({
     const is_expanded_section = expanded_subtitles_storage ? expanded_subtitles_storage[accordion_subtitle] : false;
     const should_be_expanded = is_expanded_section || is_open;
 
+    const chooseIcon = () => {
+        if (icon) {
+            if (should_be_expanded) {
+                return icon.open_icon || 'IcAccordionMinus';
+            }
+            return icon.close_icon || 'IcAccordionPlus';
+        }
+        return should_be_expanded ? 'IcAccordionMinus' : 'IcAccordionPlus';
+    };
+
     return (
         <div className='dbot-accordion' {...props}>
             <div>
@@ -72,15 +82,7 @@ const Accordion = ({
                     </div>
                     {no_collapsible && (
                         <div className='dbot-accordion__icon'>
-                            <Icon
-                                icon={
-                                    icon && should_be_expanded
-                                        ? icon.open_icon || 'IcAccordionMinus'
-                                        : icon
-                                        ? icon.close_icon
-                                        : 'IcAccordionPlus'
-                                }
-                            />
+                            <Icon icon={chooseIcon()} />
                         </div>
                     )}
                 </div>

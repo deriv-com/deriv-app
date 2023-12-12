@@ -10,22 +10,22 @@ describe('Divider', () => {
     };
     it('should render proper borderColor', () => {
         render(<Divider {...mockProps} />);
-        const elemet = screen.getByTestId('dt_divider');
+        const element = screen.getByTestId('dt_divider');
 
-        expect(elemet).toHaveStyle('borderColor: #f2f3f4');
+        expect(element).toHaveStyle('borderColor: #f2f3f4');
     });
     it('should render proper margin', () => {
         render(<Divider {...mockProps} />);
-        const elemet = screen.getByTestId('dt_divider');
+        const element = screen.getByTestId('dt_divider');
 
-        expect(elemet).toHaveStyle('margin: 1rem');
+        expect(element).toHaveStyle('margin: 1rem');
     });
 
     it('should has proper class', () => {
         render(<Divider {...mockProps} />);
-        const elemet = screen.getByTestId('dt_divider');
+        const element = screen.getByTestId('dt_divider');
 
-        expect(elemet).toHaveClass('wallets-divider wallets-divider--vertical');
-        expect(elemet).not.toHaveClass('wallets-divider wallets-divider--horizontal');
+        expect(element).toHaveClass('wallets-divider wallets-divider--vertical');
+        expect(element).not.toHaveClass('wallets-divider wallets-divider--horizontal');
     });
 });

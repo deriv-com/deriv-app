@@ -1,4 +1,4 @@
-import React, { createRef } from 'react';
+import React, { createRef, useState } from 'react';
 import { render, screen } from '@testing-library/react';
 import ToggleSwitch from '../ToggleSwitch';
 
@@ -20,13 +20,16 @@ describe('ToggleSwitch', () => {
         expect(onChangeMock).toHaveBeenCalledTimes(1);
     });
 
-    it('should render toggle switch with ref', () => {
+    it('should render toggle switch with ref and update the state when clicking on it', () => {
         const ref = createRef<HTMLInputElement>();
-        const onChangeMock = jest.fn();
-        render(<ToggleSwitch onChange={onChangeMock} ref={ref} value={false} />);
+        const ToggleSwitchWrapper = () => {
+            const [isChecked, setIsChecked] = useState(false);
+            return <ToggleSwitch onChange={e => setIsChecked(e.target.checked)} ref={ref} value={isChecked} />;
+        };
+        render(<ToggleSwitchWrapper />);
         expect(ref.current).not.toBeNull();
         expect(ref.current).not.toBeChecked();
         ref.current?.click();
-        expect(onChangeMock).toHaveBeenCalledTimes(1);
+        expect(ref.current).toBeChecked();
     });
 });

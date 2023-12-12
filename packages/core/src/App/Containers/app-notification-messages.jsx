@@ -102,6 +102,7 @@ const AppNotificationMessages = ({
                   'identity',
                   'install_pwa',
                   'need_fa',
+                  'needs_poinc',
                   'notify_financial_assessment',
                   'poi_name_mismatch',
                   'poa_address_mismatch_failure',
@@ -114,6 +115,7 @@ const AppNotificationMessages = ({
                   'poi_expired',
                   'poi_failed',
                   'poi_verified',
+                  'poinc_upload_limited',
                   'p2p_daily_limit_increase',
                   'resticted_mt5_with_failed_poa',
                   'resticted_mt5_with_pending_poa',
@@ -143,7 +145,6 @@ const AppNotificationMessages = ({
     });
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
-    //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
 
     const filtered_excluded_notifications = notifications.filter(message =>
         priority_toast_messages.includes(message.key) || message.type.includes('p2p')

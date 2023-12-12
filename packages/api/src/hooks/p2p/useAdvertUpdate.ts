@@ -9,8 +9,8 @@ type TPayload = Parameters<ReturnType<typeof useMutation<'p2p_advert_update'>>['
  * To update an advert, specify the payload arguments that should be updated, for instance:
  * @example
  *  mutate({
-        "id": 1234,
-        "is_active": 0
+        "id": 1234, // required
+        "is_active": 0 // optional
     });
  * 
 */

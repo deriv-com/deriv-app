@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
@@ -16,6 +16,10 @@ type TStrategyDescription = {
 type TDataGroupedObjectsByTitle = {
     type: string;
     content: string[];
+};
+
+type TExpandedSubtitlesStorageDefault = {
+    [key: string]: boolean;
 };
 
 const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfields, active_tab }) => {
@@ -67,13 +71,25 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
         }
     };
 
-    const grouped_objects_by_title = strategy?.long_description?.reduce((acc, obj: TDescriptionItem) => {
-        if (obj.type === 'subtitle_italic' || obj.type === 'subtitle') {
-            acc.push([]);
-        }
-        acc[acc.length - 1].push(obj);
-        return acc;
-    }, []);
+    const expanded_subtitles_storage_default: TExpandedSubtitlesStorageDefault = {};
+    const grouped_objects_by_title = strategy?.long_description?.reduce(
+        (acc: TDescriptionItem[][], obj: TDescriptionItem) => {
+            if (obj.type === 'subtitle_italic' || obj.type === 'subtitle') {
+                acc.push([]);
+                expanded_subtitles_storage_default[
+                    `${(obj as TDataGroupedObjectsByTitle).content[0]}__${selected_strategy}`
+                        .split(' ')
+                        .join('_')
+                        .toLocaleLowerCase()
+                ] = obj?.expanded || false;
+            }
+            acc[acc.length - 1].push(obj);
+            return acc;
+        },
+        []
+    );
+
+    const [expanded_subtitles_storage, setExpandedSubtitlesStorage] = useState(expanded_subtitles_storage_default);
 
     return (
         <>
@@ -89,8 +105,8 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
             ) : (
                 <div className='qs__body__content__description'>
                     <div>
-                        {grouped_objects_by_title?.map((data: TDataGroupedObjectsByTitle[]) => {
-                            const subtitle_value = data[0]?.content[0];
+                        {grouped_objects_by_title?.map((data: TDescriptionItem[]) => {
+                            const subtitle_value = (data && data[0]?.content && data[0]?.content[0]) || '';
                             return (
                                 <Accordion
                                     key={`accordion-${subtitle_value}`}
@@ -108,6 +124,8 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
                                     }}
                                     is_cursive={data[0]?.type === 'subtitle_italic'}
                                     no_collapsible={(data[0] as TDescriptionItem)?.no_collapsible}
+                                    expanded_subtitles_storage={expanded_subtitles_storage}
+                                    setExpandedSubtitlesStorage={setExpandedSubtitlesStorage}
                                 />
                             );
                         })}

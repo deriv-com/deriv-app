@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames';
 
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 import { TStepMobile } from '../config';
 
@@ -14,6 +15,8 @@ type TPartialAccordion = Partial<{
     };
     is_cursive: boolean;
     no_collapsible: boolean;
+    expanded_subtitles_storage: { [key: string]: boolean };
+    setExpandedSubtitlesStorage: (value: { [key: string]: boolean }) => void;
 }>;
 
 type TAccordion = {
@@ -30,13 +33,34 @@ const Accordion = ({
     icon,
     ...props
 }: TAccordion) => {
-    const [is_open, setOpen] = React.useState(expanded);
+    const [is_open, setOpen] = useState(expanded);
+    const {
+        quick_strategy: { selected_strategy },
+    } = useDBotStore();
     if (!content_data) return null;
     const { content, header } = content_data;
+
+    const { expanded_subtitles_storage, setExpandedSubtitlesStorage } = props;
+    const accordion_subtitle = `${header}__${selected_strategy}`.split(' ').join('_').toLocaleLowerCase();
+    const is_expanded_section = expanded_subtitles_storage ? expanded_subtitles_storage[accordion_subtitle] : false;
+    const should_be_expanded = is_expanded_section || is_open;
+
     return (
         <div className='dbot-accordion' {...props}>
             <div>
-                <div className='dbot-accordion__navbar' data-testid={test_id} onClick={() => setOpen(!is_open)}>
+                <div
+                    className='dbot-accordion__navbar'
+                    data-testid={test_id}
+                    onClick={() => {
+                        setOpen(!should_be_expanded);
+                        if (expanded_subtitles_storage && setExpandedSubtitlesStorage) {
+                            setExpandedSubtitlesStorage({
+                                ...expanded_subtitles_storage,
+                                [accordion_subtitle]: !should_be_expanded,
+                            });
+                        }
+                    }}
+                >
                     <div
                         className={classNames('dbot-accordion__header', {
                             'dbot-accordion__header--cursive': is_cursive,
@@ -50,7 +74,7 @@ const Accordion = ({
                         <div className='dbot-accordion__icon'>
                             <Icon
                                 icon={
-                                    icon && is_open
+                                    icon && should_be_expanded
                                         ? icon.open_icon || 'IcAccordionMinus'
                                         : icon
                                         ? icon.close_icon
@@ -62,7 +86,7 @@ const Accordion = ({
                 </div>
                 <div
                     className={classNames('dbot-accordion__content', {
-                        'dbot-accordion__content--open': is_open,
+                        'dbot-accordion__content--open': should_be_expanded,
                     })}
                     data-testid='accordion-content'
                 >

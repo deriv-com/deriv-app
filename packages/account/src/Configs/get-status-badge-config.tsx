@@ -1,13 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Text } from '@deriv/components';
 import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
+import { Link } from 'react-router-dom';
 
 const getStatusBadgeConfig = (
     account_status: typeof MT5_ACCOUNT_STATUS[keyof typeof MT5_ACCOUNT_STATUS],
     openFailedVerificationModal?: (selected_account_type: string) => void,
-    selected_account_type?: string
+    selected_account_type?: string,
+    setIsVerificationModalVisible?: (value: boolean) => void
 ) => {
     const BadgeTextComponent = <Text key={0} weight='bold' size='xxxs' color='warning' />;
 
@@ -41,14 +42,22 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcRedWarning',
             };
-        case MT5_ACCOUNT_STATUS.NEED_VERIFICATION:
+        case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION:
             return {
                 text: (
                     <Localize
-                        i18n_default_text='<0>Need verification.</0><1>Verify now</1>'
+                        i18n_default_text='<0>Needs verification.</0><1>Verify now</1>'
                         components={[
                             <Text key={0} weight='bold' size='xxxs' color='var(--status-info)' />,
-                            <Link key={1} className='link-need-verification' to='/account/proof-of-identity' />,
+                            setIsVerificationModalVisible ? (
+                                <Text
+                                    key={1}
+                                    className='link-need-verification'
+                                    onClick={() => setIsVerificationModalVisible?.(true)}
+                                />
+                            ) : (
+                                <Link key={1} className='link-need-verification' to='/account/proof-of-identity' />
+                            ),
                         ]}
                     />
                 ),

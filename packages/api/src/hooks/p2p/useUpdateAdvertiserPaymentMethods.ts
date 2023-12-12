@@ -10,7 +10,7 @@ type TUpdatePayload = NonNullable<TPayloads['update']>[0];
 /** A custom hook that sends a request to update an existing p2p advertiser payment method. */
 const useUpdateAdvertiserPaymentMethods = () => {
     const invalidate = useInvalidateQuery();
-    const { mutate, ...rest } = useMutation('p2p_advertiser_payment_methods', {
+    const { data, mutate, ...rest } = useMutation('p2p_advertiser_payment_methods', {
         onSuccess: () => invalidate('p2p_advertiser_payment_methods'),
     });
 
@@ -20,6 +20,7 @@ const useUpdateAdvertiserPaymentMethods = () => {
     );
 
     return {
+        data,
         /** Sends a request to update an existing p2p advertiser payment method */
         update,
         ...rest,

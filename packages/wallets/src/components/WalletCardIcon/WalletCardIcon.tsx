@@ -65,7 +65,7 @@ const WalletCardIcon: React.FC<TProps> = ({ device, size = 'lg', type }) => {
 
     if (!Icon) return null;
 
-    return <Icon width={width} />;
+    return <Icon data-testid='dt_wallet-card-icon' width={width} />;
 };
 
 export default WalletCardIcon;

@@ -13,7 +13,7 @@ describe('WalletCard', () => {
         balance: '100 USD',
         currency: 'USD',
         iconSize: 'lg',
-        landingCompanyName: 'Deriv',
+        landingCompanyName: 'SVG',
     };
     beforeEach(() => {
         jest.clearAllMocks();
@@ -25,7 +25,7 @@ describe('WalletCard', () => {
             balance: '100 USD',
             currency: 'USD',
             iconSize: 'lg',
-            landingCompanyName: 'Deriv',
+            landingCompanyName: 'SVG',
         };
     });
 
@@ -33,7 +33,7 @@ describe('WalletCard', () => {
         jest.resetAllMocks();
     });
 
-    it('should render wallet card for USD wallet', () => {
+    it('should render the correct wallet card and gradient background for USD wallet', () => {
         render(
             <APIProvider>
                 <WalletCard {...mockProps} />
@@ -44,7 +44,7 @@ describe('WalletCard', () => {
         expect(gradient).toHaveClass('wallets-gradient--USD-mobile-card-light');
     });
 
-    it('should render wallet card for BTC wallet', () => {
+    it('should render the correct wallet card and gradient background for BTC wallet', () => {
         mockProps = {
             balance: '100 BTC',
             currency: 'BTC',
@@ -60,7 +60,7 @@ describe('WalletCard', () => {
         expect(gradient).toHaveClass('wallets-gradient--BTC-mobile-card-light');
     });
 
-    it('should render wallet card for demo wallet', () => {
+    it('should render the correct wallet card and gradient background for demo wallet', () => {
         mockProps = {
             balance: '100 USD',
             currency: 'USD',
@@ -97,5 +97,28 @@ describe('WalletCard', () => {
             </APIProvider>
         );
         expect(screen.getByText('100 USD')).toBeInTheDocument();
+    });
+
+    it('should show the landing company name when provided', () => {
+        render(
+            <APIProvider>
+                <WalletCard {...mockProps} />
+            </APIProvider>
+        );
+        expect(screen.getByText('SVG')).toBeInTheDocument();
+    });
+
+    it('should show the icon with the correct size', () => {
+        mockProps = {
+            ...mockProps,
+            iconSize: 'sm',
+        };
+        render(
+            <APIProvider>
+                <WalletCard {...mockProps} />
+            </APIProvider>
+        );
+        const icon = screen.getByTestId('dt_wallet-card-icon');
+        expect(icon).toHaveAttribute('width', '16');
     });
 });

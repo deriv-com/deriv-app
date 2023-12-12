@@ -15,7 +15,7 @@ const ProofOfAddress = ({ index, onSave, onSubmit }: TProofOfAddress) => {
     };
 
     return (
-        <div className='cfd-proof-of-address'>
+        <div className='proof-of-address'>
             <ProofOfAddressForm step_index={index} is_for_cfd_modal onSubmitForCFDModal={onSubmitForCFDModal} />
         </div>
     );

@@ -102,6 +102,8 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
             updated_visibility_status = [...updated_visibility_status, 'advertiser_ads_paused'];
         if (!enable_action_point && updated_visibility_status.includes('advert_inactive'))
             updated_visibility_status = updated_visibility_status.filter(status => status !== 'advert_inactive');
+        if (enable_action_point && !updated_visibility_status.includes('advert_inactive'))
+            updated_visibility_status = [...updated_visibility_status, 'advert_inactive'];
         return updated_visibility_status;
     };
 

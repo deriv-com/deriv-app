@@ -5,10 +5,17 @@ import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
 import { TDescriptionItem } from '../types';
+import Accordion from '../../dashboard/dbot-tours/common/accordion';
+import './strategy-description.scss';
 
 type TStrategyDescription = {
     formfields: React.ReactNode;
     active_tab: string;
+};
+
+type TDataGroupedObjectsByTitle = {
+    type: string;
+    content: string[];
 };
 
 const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfields, active_tab }) => {
@@ -60,6 +67,14 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
         }
     };
 
+    const grouped_objects_by_title = strategy?.long_description?.reduce((acc, obj: TDescriptionItem) => {
+        if (obj.type === 'subtitle_italic' || obj.type === 'subtitle') {
+            acc.push([]);
+        }
+        acc[acc.length - 1].push(obj);
+        return acc;
+    }, []);
+
     return (
         <>
             {active_tab === 'TRADE_PARAMETERS' ? (
@@ -74,9 +89,28 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
             ) : (
                 <div className='qs__body__content__description'>
                     <div>
-                        {strategy?.long_description?.map(data => (
-                            <div key={data?.content?.[0]}>{renderDescription(data)}</div>
-                        ))}
+                        {grouped_objects_by_title?.map((data: TDataGroupedObjectsByTitle[]) => {
+                            const subtitle_value = data[0]?.content[0];
+                            return (
+                                <Accordion
+                                    key={`accordion-${subtitle_value}`}
+                                    content_data={{
+                                        header: subtitle_value,
+                                        content: data
+                                            .slice(1)
+                                            ?.map(element => renderDescription(element))
+                                            .flatMap(item => item) as React.ReactElement[],
+                                    }}
+                                    expanded={(data[0] as TDescriptionItem)?.expanded ?? false}
+                                    icon={{
+                                        open_icon: 'IcAccordionMinus',
+                                        close_icon: 'IcAccordionPlus',
+                                    }}
+                                    is_cursive={data[0]?.type === 'subtitle_italic'}
+                                    no_collapsible={(data[0] as TDescriptionItem)?.no_collapsible}
+                                />
+                            );
+                        })}
                     </div>
                 </div>
             )}

@@ -1,0 +1,26 @@
+.qs {
+    .dbot-accordion {
+        &__content {
+            background-color: transparent;
+            &--open {
+                max-height: fit-content;
+            }
+        }
+        &__header {
+            text-align: left;
+            &--cursive {
+                font-style: italic;
+            }
+        }
+        &__navbar {
+            padding-left: 0;
+            padding-right: 0;
+            border-bottom: 1px solid var(--general-section-1);
+        }
+        &__icon svg {
+            filter: none;
+            width: 12px;
+            height: 12px;
+        }
+    }
+}

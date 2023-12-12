@@ -61,7 +61,7 @@ export default class BaseStore {
                 () => {
                     try {
                         const result = this.switch_account_listener?.();
-                        if (result && result.then && typeof result.then === 'function') {
+                        if (result?.then && typeof result.then === 'function') {
                             result.then(() => {
                                 this.root_store?.client.switchEndSignal?.();
                                 this.onSwitchAccount(this.switch_account_listener);
@@ -87,7 +87,7 @@ export default class BaseStore {
             async () => {
                 try {
                     const result = this.client_init_listener?.();
-                    if (result && result.then && typeof result.then === 'function') {
+                    if (result?.then && typeof result.then === 'function') {
                         result.then(() => {
                             this.root_store?.client.setInitialized(false);
                             this.onClientInit(this.client_init_listener);

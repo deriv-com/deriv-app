@@ -4,7 +4,7 @@ import { useFormikContext } from 'formik';
 import { Button, Input, Icon } from '@deriv/components';
 import { compressImageFiles } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TPaymentMethod, TProofOfOwnershipFormValue, TProofOfOwnershipErrors } from 'Types';
+import { TPaymentMethod, TProofOfOwnershipFormValue } from 'Types';
 
 type TFileUploaderProps = {
     class_name?: string;

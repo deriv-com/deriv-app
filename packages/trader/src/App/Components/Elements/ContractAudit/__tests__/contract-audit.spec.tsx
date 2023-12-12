@@ -1,19 +1,27 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { mockContractInfo } from '@deriv/shared';
 import ContractAudit from '../contract-audit';
 
 const ContractDetails = 'ContractDetails';
 const ContractHistory = 'ContractHistory';
-const mocked_default_props = {
-    contract_info: { contract_id: 'test_id', currency: 'test_currency' },
-    contract_update_history: [{ order_date: '20' }, { order_date: '10' }],
+const mocked_default_props: React.ComponentProps<typeof ContractAudit> = {
+    contract_info: mockContractInfo(),
+    contract_update_history: [{ order_date: 1700482235 }, { order_date: 1700482236 }],
     has_result: true,
     is_multiplier: true,
     is_accumulator: false,
     is_turbos: false,
+    is_vanilla: false,
     toggleHistoryTab: jest.fn(),
-} as unknown as React.ComponentProps<typeof ContractAudit>;
+    contract_end_time: 1700482235,
+    duration: 3,
+    duration_unit: 'm',
+    exit_spot: '2428.68',
+    is_dark_theme: false,
+    is_open: false,
+};
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import getStatusBadgeConfig from 'Configs/get-status-badge-config';
 import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, routes } from '@deriv/shared';
 import { TMT5AccountStatus } from 'Types';
@@ -8,18 +9,21 @@ import { TMT5AccountStatus } from 'Types';
 describe('getStatusBadgeConfig', () => {
     let account_status: TMT5AccountStatus;
     const openFailedVerificationModal = jest.fn();
+    const setIsVerificationModalVisible = jest.fn();
     const selected_account_type = 'test type';
 
     const renderCheck = (
         account_status: Parameters<typeof getStatusBadgeConfig>[0],
         openFailedVerificationModal: Parameters<typeof getStatusBadgeConfig>[1],
         selected_account_type: Parameters<typeof getStatusBadgeConfig>[2],
-        user_account_status?: Parameters<typeof getStatusBadgeConfig>[3]
+        setIsVerificationModalVisible?: Parameters<typeof getStatusBadgeConfig>[3],
+        user_account_status?: Parameters<typeof getStatusBadgeConfig>[4]
     ) => {
         const badge = getStatusBadgeConfig(
             account_status,
             openFailedVerificationModal,
             selected_account_type,
+            setIsVerificationModalVisible,
             user_account_status
         );
         render(
@@ -51,18 +55,20 @@ describe('getStatusBadgeConfig', () => {
         expect(openFailedVerificationModal).toBeCalledWith(selected_account_type);
     });
 
-    it('should render need_verification status and redirect to identity by default', () => {
-        account_status = MT5_ACCOUNT_STATUS.NEED_VERIFICATION;
+    it('should render needs_verification status and redirect to identity by default', () => {
+        account_status = MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
 
-        renderCheck(account_status, openFailedVerificationModal, selected_account_type);
+        renderCheck(account_status, openFailedVerificationModal, selected_account_type, setIsVerificationModalVisible);
 
-        expect(screen.getByText('Need verification.'));
+        expect(screen.getByText(/Needs verification./));
         expect(screen.getByText('IcAlertInfo'));
 
-        const btn = screen.getByRole('link', { name: 'Verify now' });
+        const btn = screen.getByText('Verify now');
         expect(btn).toBeInTheDocument();
         expect(btn.hasAttribute('href'));
         expect(btn.hasAttribute(routes.proof_of_identity));
+        userEvent.click(btn);
+        expect(setIsVerificationModalVisible).toBeCalled();
     });
 
     it('should render migrated_with_position status', () => {
@@ -84,9 +90,9 @@ describe('getStatusBadgeConfig', () => {
     });
 
     it('should render need_verification status and redirect to POA when POI is verified', () => {
-        account_status = MT5_ACCOUNT_STATUS.NEED_VERIFICATION;
+        account_status = MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
 
-        renderCheck(account_status, openFailedVerificationModal, selected_account_type, {
+        renderCheck(account_status, openFailedVerificationModal, selected_account_type, setIsVerificationModalVisible, {
             poi_status: AUTH_STATUS_CODES.VERIFIED,
             poa_status: AUTH_STATUS_CODES.NONE,
         });
@@ -101,9 +107,9 @@ describe('getStatusBadgeConfig', () => {
     });
 
     it('should render need_verification status and redirect to POI when POI status is not verified and POA status is not verified', () => {
-        account_status = MT5_ACCOUNT_STATUS.NEED_VERIFICATION;
+        account_status = MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
 
-        renderCheck(account_status, openFailedVerificationModal, selected_account_type, {
+        renderCheck(account_status, openFailedVerificationModal, selected_account_type, setIsVerificationModalVisible, {
             poi_status: AUTH_STATUS_CODES.NONE,
             poa_status: AUTH_STATUS_CODES.NONE,
         });

@@ -164,4 +164,10 @@ export type TServerError = {
 };
 
 export type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+
 export type TMT5AccountStatus = typeof MT5_ACCOUNT_STATUS[keyof typeof MT5_ACCOUNT_STATUS];
+
+export type TFilesDescription = {
+    descriptions: { id: string; value: JSX.Element }[];
+    title: React.ReactNode;
+};

@@ -16,11 +16,18 @@ import {
     priority_toast_messages,
     maintenance_notifications,
 } from '../../Stores/Helpers/client-notifications';
+import TradeNotifications from './trade-notifications';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
 
-const NotificationsContent = ({ is_notification_loaded, style, notifications, removeNotificationMessage }) => {
+const NotificationsContent = ({
+    is_notification_loaded,
+    style,
+    notifications,
+    removeNotificationMessage,
+    show_trade_notifications,
+}) => {
     const { pathname } = useLocation();
 
     return (
@@ -48,6 +55,7 @@ const NotificationsContent = ({ is_notification_loaded, style, notifications, re
                         <Notification data={notification} removeNotificationMessage={removeNotificationMessage} />
                     </CSSTransition>
                 ))}
+                <TradeNotifications show_trade_notifications={show_trade_notifications} />
             </TransitionGroup>
         </div>
     );
@@ -62,6 +70,7 @@ const AppNotificationMessages = ({
     stopNotificationLoading,
     markNotificationMessage,
     should_show_popups,
+    show_trade_notifications,
 }) => {
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
@@ -93,6 +102,7 @@ const AppNotificationMessages = ({
                   'identity',
                   'install_pwa',
                   'need_fa',
+                  'needs_poinc',
                   'notify_financial_assessment',
                   'poi_name_mismatch',
                   'poa_address_mismatch_failure',
@@ -105,6 +115,7 @@ const AppNotificationMessages = ({
                   'poi_expired',
                   'poi_failed',
                   'poi_verified',
+                  'poinc_upload_limited',
                   'p2p_daily_limit_increase',
                   'resticted_mt5_with_failed_poa',
                   'resticted_mt5_with_pending_poa',
@@ -134,7 +145,6 @@ const AppNotificationMessages = ({
     });
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
-    //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
 
     const filtered_excluded_notifications = notifications.filter(message =>
         priority_toast_messages.includes(message.key) || message.type.includes('p2p')
@@ -160,10 +170,13 @@ const AppNotificationMessages = ({
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}
                     markNotificationMessage={markNotificationMessage}
+                    show_trade_notifications={show_trade_notifications}
                 />
             </Portal>
         </div>
-    ) : null;
+    ) : (
+        <TradeNotifications show_trade_notifications={show_trade_notifications} />
+    );
 };
 
 AppNotificationMessages.propTypes = {
@@ -185,6 +198,7 @@ AppNotificationMessages.propTypes = {
     removeNotificationMessage: PropTypes.func,
     should_show_popups: PropTypes.bool,
     stopNotificationLoading: PropTypes.func,
+    show_trade_notifications: PropTypes.bool,
 };
 
 export default connect(({ notifications }) => ({

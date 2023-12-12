@@ -52,9 +52,11 @@ const TradingAppCard = ({
     const {
         common,
         traders_hub,
+        ui,
         modules: { cfd },
         client,
     } = useStore();
+    const { setIsVerificationModalVisible } = ui;
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
@@ -80,6 +82,7 @@ const TradingAppCard = ({
         mt5_acc_auth_status,
         openFailedVerificationModal,
         selected_mt5_jurisdiction,
+        setIsVerificationModalVisible,
         { poi_status: authentication?.identity?.status, poa_status: authentication?.document?.status }
     );
 
@@ -118,14 +121,16 @@ const TradingAppCard = ({
             window.open(getStaticUrl(`/dmt5`, {}, false, true));
         else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
         else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
-        else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
+        else if (platform === CFD_PLATFORMS.CTRADER) window.open(getStaticUrl(`/deriv-ctrader`));
+        else if (icon === 'Options' && !is_eu_user)
+            window.open(getStaticUrl(`trade-types/options/digital-options/up-and-down/`));
         else;
     };
 
     const migration_status =
         mt5_acc_auth_status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION ||
         mt5_acc_auth_status === MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
-    const is_disabled = !!(mt5_acc_auth_status && !migration_status);
+    const is_disabled = !!(mt5_acc_auth_status && !migration_status) && !is_eu_user;
 
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
@@ -200,7 +205,10 @@ const TradingAppCard = ({
                         onAction={onAction}
                         is_external={is_external}
                         new_tab={new_tab}
-                        is_buttons_disabled={is_disabled}
+                        is_buttons_disabled={
+                            //For MF, we enable the button even if account is not authenticated. Rest of jurisdictions, disable the button for pending, failed and needs verification
+                            is_disabled
+                        }
                         is_account_being_created={!!is_account_being_created}
                         is_real={is_real}
                     />

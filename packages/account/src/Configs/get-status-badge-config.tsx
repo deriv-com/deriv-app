@@ -1,14 +1,15 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Text } from '@deriv/components';
 import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TAuthStatusCodes, TMT5AccountStatus } from '../Types/common.type';
+import { Link } from 'react-router-dom';
 
 const getStatusBadgeConfig = (
     mt5_account_status: TMT5AccountStatus,
     openFailedVerificationModal?: (selected_account_type: string) => void,
     selected_account_type?: string,
+    setIsVerificationModalVisible?: (value: boolean) => void,
     user_account_status?: { poi_status: TAuthStatusCodes; poa_status: TAuthStatusCodes }
 ) => {
     const BadgeTextComponent = <Text key={0} weight='bold' size='xxxs' color='warning' />;
@@ -43,7 +44,7 @@ const getStatusBadgeConfig = (
                 ),
                 icon: 'IcRedWarning',
             };
-        case MT5_ACCOUNT_STATUS.NEED_VERIFICATION: {
+        case MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION: {
             const redirect_url =
                 user_account_status?.poi_status === AUTH_STATUS_CODES.NONE
                     ? routes.proof_of_identity
@@ -51,10 +52,18 @@ const getStatusBadgeConfig = (
             return {
                 text: (
                     <Localize
-                        i18n_default_text='<0>Need verification.</0><1>Verify now</1>'
+                        i18n_default_text='<0>Needs verification.</0><1>Verify now</1>'
                         components={[
                             <Text key={0} weight='bold' size='xxxs' color='var(--status-info)' />,
-                            <Link key={1} className='link-need-verification' to={redirect_url} />,
+                            setIsVerificationModalVisible ? (
+                                <Text
+                                    key={1}
+                                    className='link-need-verification'
+                                    onClick={() => setIsVerificationModalVisible?.(true)}
+                                />
+                            ) : (
+                                <Link key={1} className='link-need-verification' to={redirect_url} />
+                            ),
                         ]}
                     />
                 ),

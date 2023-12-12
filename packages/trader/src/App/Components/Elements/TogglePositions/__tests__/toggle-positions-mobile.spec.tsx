@@ -1,11 +1,12 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
-import TogglePositionsMobile from '../toggle-positions-mobile';
-import TraderProviders from '../../../../../trader-providers';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { BrowserRouter } from 'react-router-dom';
+import { mockContractInfo, CONTRACT_TYPES } from '@deriv/shared';
+import TogglePositionsMobile from '../toggle-positions-mobile';
+import TraderProviders from '../../../../../trader-providers';
 
 const default_mocked_props: React.ComponentProps<typeof TogglePositionsMobile> = {
     active_positions_count: 0,
@@ -13,13 +14,13 @@ const default_mocked_props: React.ComponentProps<typeof TogglePositionsMobile> =
     error: '',
     filtered_positions: [
         {
-            contract_info: {
+            contract_info: mockContractInfo({
                 contract_id: 215925907928,
-                contract_type: 'CALL',
+                contract_type: CONTRACT_TYPES.CALL,
                 is_sold: 0,
                 shortcode: 'CALL_1HZ100V_76.33_1692187938_1692188838_S0P_0',
                 underlying: '1HZ100V',
-            },
+            }),
             contract_update: {},
             display_name: 'Volatility 100 (1s) Index',
             indicative: 29.55,
@@ -29,13 +30,13 @@ const default_mocked_props: React.ComponentProps<typeof TogglePositionsMobile> =
             profit_loss: -9.45,
         },
         {
-            contract_info: {
+            contract_info: mockContractInfo({
                 contract_id: 2,
-                contract_type: 'PUT',
+                contract_type: CONTRACT_TYPES.PUT,
                 is_sold: 0,
                 shortcode: 'PUT_R_10_19.53_1691443887_1691444787_S0P_0',
                 underlying: 'R_100',
-            },
+            }),
             contract_update: {},
             display_name: 'Volatility 100 (1s) Index',
             indicative: 29.55,
@@ -106,13 +107,13 @@ describe('TogglePositionsMobile component', () => {
             error: '',
             filtered_positions: [
                 {
-                    contract_info: {
+                    contract_info: mockContractInfo({
                         contract_id: 1,
-                        contract_type: 'CALL',
+                        contract_type: CONTRACT_TYPES.CALL,
                         is_sold: 0,
                         shortcode: 'CALL_R_10_19.54_1691443851_1691444751_S0P_0',
                         underlying: 'R_100',
-                    },
+                    }),
                     contract_update: {},
                     display_name: 'Volatility 100 (1s) Index',
                     indicative: 29.55,
@@ -122,13 +123,13 @@ describe('TogglePositionsMobile component', () => {
                     profit_loss: -9.45,
                 },
                 {
-                    contract_info: {
+                    contract_info: mockContractInfo({
                         contract_id: 2,
-                        contract_type: 'PUT',
+                        contract_type: CONTRACT_TYPES.PUT,
                         is_sold: 0,
                         shortcode: 'PUT_R_10_19.53_1691443887_1691444787_S0P_0',
                         underlying: 'R_100',
-                    },
+                    }),
                     contract_update: {},
                     display_name: 'Volatility 100 (1s) Index',
                     indicative: 29.55,
@@ -157,13 +158,13 @@ describe('TogglePositionsMobile component', () => {
             error: '',
             filtered_positions: [
                 {
-                    contract_info: {
+                    contract_info: mockContractInfo({
                         contract_id: 1,
-                        contract_type: 'CALL',
+                        contract_type: CONTRACT_TYPES.CALL,
                         is_sold: 0,
                         shortcode: 'CALL_R_10_19.54_1691443851_1691444751_S0P_0',
                         underlying: 'R_100',
-                    },
+                    }),
                     contract_update: {},
                     display_name: 'Volatility 100 (1s) Index',
                     indicative: 29.55,
@@ -173,13 +174,13 @@ describe('TogglePositionsMobile component', () => {
                     profit_loss: -9.45,
                 },
                 {
-                    contract_info: {
+                    contract_info: mockContractInfo({
                         contract_id: 2,
-                        contract_type: 'PUT',
+                        contract_type: CONTRACT_TYPES.PUT,
                         is_sold: 1,
                         shortcode: 'PUT_R_10_19.53_1691443887_1691444787_S0P_0',
                         underlying: 'R_100',
-                    },
+                    }),
                     contract_update: {},
                     display_name: 'Volatility 100 (1s) Index',
                     indicative: 29.55,
@@ -210,13 +211,13 @@ describe('TogglePositionsMobile component', () => {
     it('should display no more than 5 recent positions', () => {
         const positions_pair: React.ComponentProps<typeof TogglePositionsMobile>['filtered_positions'] = [
             {
-                contract_info: {
+                contract_info: mockContractInfo({
                     contract_id: 1,
-                    contract_type: 'CALL',
+                    contract_type: CONTRACT_TYPES.CALL,
                     is_sold: 0,
                     shortcode: 'CALL_R_10_19.54_1691443851_1691444751_S0P_0',
                     underlying: 'R_100',
-                },
+                }),
                 contract_update: {},
                 display_name: 'Volatility 100 (1s) Index',
                 indicative: 29.55,
@@ -226,13 +227,13 @@ describe('TogglePositionsMobile component', () => {
                 profit_loss: -9.45,
             },
             {
-                contract_info: {
+                contract_info: mockContractInfo({
                     contract_id: 2,
-                    contract_type: 'PUT',
+                    contract_type: CONTRACT_TYPES.PUT,
                     is_sold: 0,
                     shortcode: 'PUT_R_10_19.53_1691443887_1691444787_S0P_0',
                     underlying: 'R_100',
-                },
+                }),
                 contract_update: {},
                 display_name: 'Volatility 100 (1s) Index',
                 indicative: 29.55,

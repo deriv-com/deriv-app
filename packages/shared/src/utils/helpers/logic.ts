@@ -8,7 +8,7 @@ type TIsSoldBeforeStart = Required<Pick<TContractInfo, 'sell_time' | 'date_start
 
 type TIsStarted = Required<Pick<TContractInfo, 'is_forward_starting' | 'current_spot_time' | 'date_start'>>;
 
-export const isContractElapsed = (contract_info: TContractInfo, tick?: TickSpotData) => {
+export const isContractElapsed = (contract_info: TContractInfo, tick?: null | TickSpotData) => {
     if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;
     const end_time = getEndTime(contract_info) || 0;
     if (end_time && tick && tick.epoch) {

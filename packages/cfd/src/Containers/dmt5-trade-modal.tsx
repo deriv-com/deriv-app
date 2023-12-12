@@ -8,6 +8,7 @@ import {
     getCFDPlatformLabel,
     getPlatformSettings,
     getUrlBase,
+    MT5_ACCOUNT_STATUS,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -80,11 +81,17 @@ const DMT5TradeModal = observer(
             mt5_trade_account?.status,
             undefined,
             undefined,
+            undefined,
             {
                 poi_status: authentication?.identity?.status,
                 poa_status: authentication?.document?.status,
             }
         );
+
+        const has_migration_status = [
+            MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION,
+            MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION,
+        ].includes(mt5_trade_account?.status);
 
         return (
             <div className='cfd-trade-modal-container'>
@@ -116,7 +123,7 @@ const DMT5TradeModal = observer(
                                 />
                             </Text>
                         )}
-                        {mt5_trade_account?.status && (
+                        {has_migration_status && (
                             <StatusBadge
                                 className='trading-app-card__acc_status_badge'
                                 account_status={mt5_trade_account.status}

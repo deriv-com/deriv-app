@@ -8,6 +8,25 @@
         overflow-x: hidden;
         overflow-y: auto;
     }
+    &__banner-container {
+        display: flex;
+        justify-content: center;
+        padding: 0 4.6rem;
+
+        .da-inline-note-with-icon {
+            margin-top: 0.8rem;
+            padding: 0.8rem;
+            display: flex;
+            background: $color-yellow-3;
+            border-radius: $BORDER_RADIUS;
+            gap: 0.8rem;
+            line-height: 1.4rem;
+        }
+
+        @include mobile {
+            padding: 0 1.6rem;
+        }
+    }
 
     &__sub-header {
         @include desktop {
@@ -159,6 +178,9 @@
             width: unset;
             padding-top: 3.2rem;
         }
+    }
+    .address-details-form {
+        margin-top: 4.4rem;
     }
 }
 

@@ -19,11 +19,10 @@ const SelfExclusionForm = props => {
         resetSelfExclusion,
         updateSelfExclusion,
         setRunLimit,
-        is_reality_check_visible,
     } = props;
 
     React.useEffect(() => {
-        if (is_reality_check_visible || !is_logged_in) {
+        if (!is_logged_in) {
             resetSelfExclusion();
         }
     });
@@ -194,7 +193,7 @@ const SelfExclusion = observer(({ onRunButtonClick }) => {
     const { is_restricted, resetSelfExclusion, initial_values, api_max_losses, run_limit, setRunLimit } =
         self_exclusion;
     const { is_onscreen_keyboard_active } = ui;
-    const { is_logged_in, is_reality_check_visible, updateSelfExclusion, virtual_account_loginid } = client;
+    const { is_logged_in, updateSelfExclusion, virtual_account_loginid } = client;
 
     const self_exclusion_form_props = {
         is_onscreen_keyboard_active,
@@ -205,7 +204,6 @@ const SelfExclusion = observer(({ onRunButtonClick }) => {
         resetSelfExclusion,
         updateSelfExclusion,
         setRunLimit,
-        is_reality_check_visible,
         virtual_account_loginid,
         run_limit,
     };

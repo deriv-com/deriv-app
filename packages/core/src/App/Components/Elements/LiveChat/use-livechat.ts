@@ -1,14 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { liveChatInitialization } from './live-chat';
+import { liveChatInitialization } from './live-chat-initializer';
 import Cookies from 'js-cookie';
 import { deriv_urls } from '@deriv/shared';
+import { useIsMounted } from 'usehooks-ts';
 
 // Todo: Should break this into smaller hooks or utility functions.
 const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     const [isReady, setIsReady] = useState(false);
     const [reload, setReload] = useState(false);
     const history = useHistory();
+    const isMounted = useIsMounted();
     const widget = window.LiveChatWidget;
 
     const liveChatDeletion = () =>
@@ -32,11 +34,13 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     const onHistoryChange = useCallback(() => {
         liveChatDeletion().then(() => {
             liveChatInitialization().then(() => {
-                setReload(true);
-                setIsReady(true);
+                if (isMounted()) {
+                    setReload(true);
+                    setIsReady(true);
+                }
             });
         });
-    }, []);
+    }, [isMounted]);
 
     const liveChatSetup = (is_logged_in: boolean) => {
         if (window.LiveChatWidget) {
@@ -116,9 +120,10 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
 
     useEffect(() => {
         history.listen(onHistoryChange);
-
-        window.LiveChatWidget?.on('ready', () => setIsReady(true));
-    }, [history, onHistoryChange]);
+        window.LiveChatWidget?.on('ready', () => {
+            if (isMounted()) setIsReady(true);
+        });
+    }, [history, isMounted, onHistoryChange]);
 
     useEffect(() => {
         if (reload) {

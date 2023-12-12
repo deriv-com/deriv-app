@@ -1,10 +1,13 @@
 import React from 'react';
 import { getDurationMinMaxValues } from '@deriv/shared';
-import Duration from './duration.jsx';
+import Duration from './duration';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
-const DurationWrapper = observer(() => {
+type TDurationWrapper = {
+    is_minimized?: boolean;
+};
+const DurationWrapper = observer(({ is_minimized }: TDurationWrapper) => {
     const { ui } = useStore();
     const {
         advanced_expiry_type,
@@ -47,6 +50,7 @@ const DurationWrapper = observer(() => {
         expiry_time,
         expiry_type,
         getDurationFromUnit,
+        is_minimized,
         is_advanced_duration,
         market_open_times,
         onChange,
@@ -56,7 +60,7 @@ const DurationWrapper = observer(() => {
         start_date,
     };
 
-    const hasDurationUnit = (duration_type, is_advanced) => {
+    const hasDurationUnit = (duration_type: string, is_advanced: boolean) => {
         let duration_list = [...duration_units_list];
 
         if (duration_list.length > 1 && !is_advanced) {
@@ -87,19 +91,23 @@ const DurationWrapper = observer(() => {
     };
 
     const assertDurationIsWithinBoundary = React.useCallback(
-        current_duration => {
+        (current_duration: number) => {
             const [min_value, max_value] = getDurationMinMaxValues(
                 duration_min_max,
                 contract_expiry_type,
                 duration_unit
             );
-            if (contract_expiry_type === 'tick' && current_duration < min_value) {
-                onChangeUiStore({ name: `duration_${duration_unit}`, value: min_value });
+            if (contract_expiry_type === 'tick' && current_duration < Number(min_value)) {
+                onChangeUiStore({ name: `duration_${duration_unit}`, value: Number(min_value) });
                 onChange({ target: { name: 'duration', value: min_value } });
             }
 
-            if (!(current_duration < min_value) && current_duration > max_value && duration_unit !== 'd') {
-                onChangeUiStore({ name: `duration_${duration_unit}`, value: max_value });
+            if (
+                current_duration >= Number(min_value) &&
+                current_duration > Number(max_value) &&
+                duration_unit !== 'd'
+            ) {
+                onChangeUiStore({ name: `duration_${duration_unit}`, value: Number(max_value) });
                 onChange({ target: { name: 'duration', value: max_value } });
             }
         },
@@ -129,7 +137,7 @@ const DurationWrapper = observer(() => {
 
         if (expiry_type === 'endtime') handleEndTime();
 
-        assertDurationIsWithinBoundary(current_duration);
+        assertDurationIsWithinBoundary(Number(current_duration));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [has_missing_duration_unit, simple_is_missing_duration_unit]);
 
@@ -155,11 +163,11 @@ const DurationWrapper = observer(() => {
             onChange({ target: { name: 'expiry_type', value: 'duration' } });
         }
 
-        if (duration !== current_duration) {
+        if (duration !== Number(current_duration)) {
             onChangeUiStore({ name: `duration_${duration_unit}`, value: duration });
         }
 
-        assertDurationIsWithinBoundary(current_duration);
+        assertDurationIsWithinBoundary(Number(current_duration));
     }, [
         duration_unit,
         is_advanced_duration,

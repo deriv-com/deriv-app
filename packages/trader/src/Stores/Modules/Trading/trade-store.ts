@@ -73,7 +73,7 @@ type TBarriers = Array<
         isSingleBarrier?: boolean;
     }
 >;
-type TChartLayout = {
+export type TChartLayout = {
     adj: boolean;
     aggregationType: string;
     animation?: boolean;
@@ -118,7 +118,7 @@ type TChartLayout = {
     timeUnit: string;
     volumeUnderlay: boolean;
 };
-type TChartStateChangeOption = {
+export type TChartStateChangeOption = {
     indicator_type_name?: string;
     indicators_category_name?: string;
     isClosed?: boolean;

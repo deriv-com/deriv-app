@@ -11,7 +11,7 @@ const useP2PAdvertList = (
 ) => {
     const { isSuccess } = useAuthorize();
     const { data, fetchNextPage, ...rest } = useInfiniteQuery('p2p_advert_list', {
-        payload: { ...payload, offset: payload?.offset || 0, limit: payload?.limit || 50 },
+        payload: { ...payload, offset: payload?.offset, limit: payload?.limit },
         options: {
             getNextPageParam: (lastPage, pages) => {
                 if (!lastPage?.p2p_advert_list?.list) return;

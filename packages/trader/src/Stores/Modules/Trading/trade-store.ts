@@ -17,6 +17,7 @@ import {
     isEmptyObject,
     isMarketClosed,
     isMobile,
+    isMultiplierContract,
     isTurbosContract,
     isVanillaFxContract,
     isVanillaContract,
@@ -24,9 +25,7 @@ import {
     resetEndTimeOnVolatilityIndices,
     showDigitalOptionsUnavailableError,
     showUnavailableLocationError,
-    formatMoney,
     getCurrencyDisplayCode,
-    unsupported_contract_types_list,
     BARRIER_COLORS,
     BARRIER_LINE_STYLES,
     TRADE_TYPES,
@@ -40,7 +39,6 @@ import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 import { isDigitContractType, isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import ServerTime from '_common/base/server_time';
 import { processPurchase } from './Actions/purchase';
-import { getAvailableContractTypes } from 'Modules/Trading/Helpers/contract-type';
 import { getUpdatedTicksHistoryStats } from './Helpers/accumulator';
 import { processTradeParams } from './Helpers/process';
 import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS, when } from 'mobx';
@@ -75,7 +73,7 @@ type TBarriers = Array<
         isSingleBarrier?: boolean;
     }
 >;
-type TChartLayout = {
+export type TChartLayout = {
     adj: boolean;
     aggregationType: string;
     animation?: boolean;
@@ -120,7 +118,7 @@ type TChartLayout = {
     timeUnit: string;
     volumeUnderlay: boolean;
 };
-type TChartStateChangeOption = {
+export type TChartStateChangeOption = {
     indicator_type_name?: string;
     indicators_category_name?: string;
     isClosed?: boolean;
@@ -172,20 +170,6 @@ type TStakeBoundary = Record<
     }
 >;
 type TTicksHistoryResponse = TicksHistoryResponse | TicksStreamResponse;
-type TToastBoxListItem = {
-    component: JSX.Element | null;
-    contract_types: TTextValueStrings[];
-    icon: string;
-    key: string;
-    label: string;
-};
-type TToastBoxObject = {
-    key?: boolean;
-    buy_price?: string;
-    currency?: string;
-    contract_type?: string;
-    list?: Array<TToastBoxListItem | undefined>;
-};
 type TBarriersData = Record<string, never> | { barrier: string; barrier_choices: string[] };
 
 const store_name = 'trade_store';
@@ -306,9 +290,6 @@ export default class TradeStore extends BaseStore {
 
     // Mobile
     is_trade_params_expanded = true;
-
-    //Toastbox
-    contract_purchase_toast_box?: TToastBoxObject;
 
     debouncedProposal = debounce(this.requestProposal, 500);
     proposal_requests: Record<string, Partial<PriceProposalRequest>> = {};
@@ -444,12 +425,10 @@ export default class TradeStore extends BaseStore {
             barriers_flattened: computed,
             changeDurationValidationRules: action.bound,
             chartStateChange: action.bound,
-            clearContractPurchaseToastBox: action.bound,
             clearContracts: action.bound,
             clearLimitOrderBarriers: action.bound,
             clearPurchaseInfo: action.bound,
             clientInitListener: action.bound,
-            contract_purchase_toast_box: observable,
             enablePurchase: action.bound,
             exportLayout: action.bound,
             forgetAllProposal: action.bound,
@@ -486,7 +465,6 @@ export default class TradeStore extends BaseStore {
             setActiveSymbols: action.bound,
             setBarrierChoices: action.bound,
             setChartStatus: action.bound,
-            setContractPurchaseToastbox: action.bound,
             setContractTypes: action.bound,
             setDefaultSymbol: action.bound,
             setIsTradeParamsExpanded: action.bound,
@@ -524,6 +502,7 @@ export default class TradeStore extends BaseStore {
                 }
                 this.setDefaultGrowthRate();
                 this.resetAccumulatorData();
+                this.root_store.notifications.removeTradeNotifications();
             }
         );
         reaction(
@@ -557,6 +536,7 @@ export default class TradeStore extends BaseStore {
                     delete this.validation_rules.take_profit;
                 }
                 this.resetAccumulatorData();
+                this.root_store.notifications.removeTradeNotifications();
             }
         );
         reaction(
@@ -926,7 +906,11 @@ export default class TradeStore extends BaseStore {
                             const shortcode = response.buy.shortcode;
                             const { category, underlying } = extractInfoFromShortcode(shortcode);
                             const is_digit_contract = isDigitContractType(category?.toUpperCase() ?? '');
+                            const is_multiplier = isMultiplierContract(category);
                             const contract_type = category?.toUpperCase();
+
+                            if ((window as any).hj) (window as any).hj('event', `placed_${category}_trade`);
+
                             this.root_store.contract_trade.addContract({
                                 contract_id,
                                 start_time,
@@ -956,7 +940,18 @@ export default class TradeStore extends BaseStore {
                             this.debouncedProposal();
                             this.clearLimitOrderBarriers();
                             this.pushPurchaseDataToGtm(contract_data);
-                            this.setContractPurchaseToastbox(response.buy);
+                            if (this.root_store.ui.is_mobile) {
+                                const shortcode = response.buy.shortcode;
+                                this.root_store.notifications.addTradeNotification({
+                                    buy_price: is_multiplier ? this.amount : response.buy.buy_price,
+                                    contract_id: response.buy.contract_id,
+                                    contract_type: extractInfoFromShortcode(shortcode).category,
+                                    currency: getCurrencyDisplayCode(this.root_store.client.currency),
+                                    purchase_time: response.buy.purchase_time,
+                                    shortcode,
+                                    status: 'open',
+                                });
+                            }
                             this.is_purchasing_contract = false;
                             return;
                         }
@@ -1461,6 +1456,7 @@ export default class TradeStore extends BaseStore {
     }
 
     onMount() {
+        this.root_store.notifications.removeTradeNotifications();
         if (this.is_trade_component_mounted && this.should_skip_prepost_lifecycle) {
             return;
         }
@@ -1669,25 +1665,6 @@ export default class TradeStore extends BaseStore {
 
     get is_vanilla_fx() {
         return isVanillaFxContract(this.contract_type, this.symbol);
-    }
-
-    setContractPurchaseToastbox(response: Buy) {
-        const list = getAvailableContractTypes(
-            this.contract_types_list,
-            unsupported_contract_types_list
-        ) as Array<TToastBoxListItem>;
-
-        this.contract_purchase_toast_box = {
-            key: true,
-            buy_price: formatMoney(this.root_store.client.currency, response.buy_price, true, 0, 0),
-            contract_type: this.contract_type,
-            currency: getCurrencyDisplayCode(this.root_store.client.currency),
-            list,
-        };
-    }
-
-    clearContractPurchaseToastBox() {
-        this.contract_purchase_toast_box = undefined;
     }
 
     async getFirstOpenMarket(markets_to_search: string[]) {

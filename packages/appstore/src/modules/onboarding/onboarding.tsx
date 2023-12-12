@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { localize } from '@deriv/translations';
+import { useHasActiveRealAccount } from '@deriv/hooks';
 import { isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarTracker } from '@deriv/components';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
-import { useHistory } from 'react-router-dom';
 import EmptyOnboarding from './empty-onboarding';
 import { useStore, observer } from '@deriv/stores';
 import { useTradersHubTracking } from 'Hooks/index';
@@ -36,9 +37,10 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
         setPrevAccountType,
         is_mt5_allowed,
     } = client;
-    const { is_mobile } = ui;
+    const { is_mobile, is_from_signup_account } = ui;
     const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
     const [step, setStep] = React.useState<number>(1);
+    const has_active_real_account = useHasActiveRealAccount();
 
     const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose, trackDotNavigation } =
         useTradersHubTracking();
@@ -79,7 +81,11 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
 
         toggleIsTourOpen(false);
         history.push(routes.traders_hub);
-        await selectAccountType(prev_account_type);
+        if (content_flag === ContentFlag.EU_REAL && !has_active_real_account) {
+            await selectAccountType('demo');
+        } else {
+            await selectAccountType(prev_account_type);
+        }
     };
 
     const handleOnboardingStepChange = (step_num: number) => {
@@ -113,6 +119,10 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
 
     if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;
+    }
+
+    if (is_logged_in && is_from_signup_account && is_eu_user) {
+        history.push(routes.traders_hub);
     }
 
     return (

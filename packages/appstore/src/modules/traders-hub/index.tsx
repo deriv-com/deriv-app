@@ -15,7 +15,13 @@ import './traders-hub.scss';
 
 const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
-    const { notification_messages_ui: Notifications, is_mobile } = ui;
+    const {
+        notification_messages_ui: Notifications,
+        openRealAccountSignup,
+        is_from_signup_account,
+        is_mobile,
+        setIsFromSignupAccount,
+    } = ui;
     const {
         is_landing_company_loaded,
         is_logged_in,
@@ -23,9 +29,10 @@ const TradersHub = observer(() => {
         is_logging_in,
         is_account_setting_loaded,
         is_mt5_allowed,
+        has_active_real_account,
     } = client;
     const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
-    const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
+    const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
     const can_show_notify = !is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded;
 
@@ -37,6 +44,27 @@ const TradersHub = observer(() => {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
+    React.useEffect(() => {
+        if (is_eu_user) setTogglePlatformType('cfd');
+        if (
+            !has_active_real_account &&
+            is_logged_in &&
+            is_from_signup_account &&
+            content_flag === ContentFlag.EU_DEMO
+        ) {
+            openRealAccountSignup('maltainvest');
+            setIsFromSignupAccount(false);
+        }
+    }, [
+        content_flag,
+        has_active_real_account,
+        is_eu_user,
+        is_from_signup_account,
+        is_logged_in,
+        openRealAccountSignup,
+        setIsFromSignupAccount,
+        setTogglePlatformType,
+    ]);
 
     React.useEffect(() => {
         if (is_eu_user) setTogglePlatformType('cfd');

@@ -90,6 +90,7 @@ const ContractTypeWidget = observer(
 
                 onChange({ target: { name, value: clicked_item.value } });
 
+                if ((window as any).hj) (window as any).hj('event', `selected_${value}_contract_type`);
                 if (subform_name === 'trade_type') {
                     Analytics.trackEvent('ce_trade_types_form', {
                         action: 'choose_trade_type',

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Formik, Field, FormikValues, FormikHelpers, FormikHandlers, FormikState } from 'formik';
+import { Formik, Field, FormikProps, FormikHelpers, FormikHandlers, FormikState, FieldProps } from 'formik';
 import { StatesList } from '@deriv/api-types';
 import {
     Autocomplete,
@@ -19,6 +19,7 @@ import { useStatesList } from '@deriv/hooks';
 import { getLocation } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
+import InlineNoteWithIcon from '../inline-note-with-icon';
 import { FormInputField } from '../forms/form-fields';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
@@ -46,7 +47,7 @@ type TAddressDetails = {
         action: (isSubmitting: boolean) => void,
         next_step: () => void
     ) => void;
-    is_gb_residence: boolean | string;
+    selected_step_ref?: React.RefObject<FormikProps<TAddressDetailFormProps>>;
     value: TAddressDetailFormProps;
     has_real_account: boolean;
 };
@@ -67,7 +68,7 @@ type TAutoComplete = {
  * @param goToPreviousStep - function to go to previous step
  * @param validate - function to validate form values
  * @param onSubmit - function to submit form values
- * @param is_gb_residence - is residence Great Britan
+ * @param selected_step_ref - reference to selected step
  * @param value - form values
  * @param disabled_items - array of disabled fields
  * @param has_real_account - has real account
@@ -82,7 +83,7 @@ const AddressDetails = observer(
         goToPreviousStep,
         validate,
         onSubmit,
-        is_gb_residence,
+        selected_step_ref,
         disabled_items,
         has_real_account,
         ...props
@@ -92,6 +93,7 @@ const AddressDetails = observer(
         const {
             ui,
             client: { residence },
+            traders_hub: { is_eu_user },
         } = useStore();
 
         const { is_desktop, is_mobile } = ui;
@@ -143,18 +145,30 @@ const AddressDetails = observer(
                                     is_disabled={is_desktop}
                                 >
                                     <ScrollToFieldWithError />
-                                    <Text
-                                        as='p'
-                                        align='left'
-                                        size='xxs'
-                                        line_height='l'
-                                        className='details-form__description'
-                                    >
-                                        <strong>
-                                            <Localize i18n_default_text='Only use an address for which you have proof of residence - ' />
-                                        </strong>
-                                        <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline, or internet), bank statement, or government-issued letter with your name and this address.' />
-                                    </Text>
+                                    {is_eu_user ? (
+                                        <div className='details-form__banner-container'>
+                                            <InlineNoteWithIcon
+                                                icon='IcAlertWarning'
+                                                message={
+                                                    <Localize i18n_default_text='For verification purposes as required by regulation. It’s your responsibility to provide accurate and complete answers. You can update personal details at any time in your account settings.' />
+                                                }
+                                                title={localize('Why do we collect this?')}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <Text
+                                            as='p'
+                                            align='left'
+                                            size='xxs'
+                                            line_height='l'
+                                            className='details-form__description'
+                                        >
+                                            <strong>
+                                                <Localize i18n_default_text='Only use an address for which you have proof of residence - ' />
+                                            </strong>
+                                            <Localize i18n_default_text='a recent utility bill (e.g. electricity, water, gas, landline, or internet), bank statement, or government-issued letter with your name and this address.' />
+                                        </Text>
+                                    )}
 
                                     <ThemedScrollbars height={height} className='details-form__scrollbar'>
                                         <div className={classNames('details-form__elements', 'address-details-form ')}>
@@ -196,7 +210,7 @@ const AddressDetails = observer(
                                             )}
                                             {states_list?.length > 0 ? (
                                                 <Field name='address_state'>
-                                                    {({ field }: FormikValues) => (
+                                                    {({ field }: FieldProps) => (
                                                         <React.Fragment>
                                                             <DesktopWrapper>
                                                                 <Autocomplete
@@ -268,7 +282,6 @@ const AddressDetails = observer(
                                             )}
                                             <FormInputField
                                                 name='address_postcode'
-                                                required={!!is_gb_residence}
                                                 label={localize('Postal/ZIP Code')}
                                                 placeholder={localize('Postal/ZIP Code')}
                                                 onChange={e => {

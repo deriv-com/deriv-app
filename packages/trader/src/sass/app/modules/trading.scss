@@ -92,6 +92,12 @@
                 transform: translateX(5px);
             }
         }
+        &-expiration {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.6rem;
+        }
         &-wrapper {
             &--disabled {
                 .btn-purchase__box-shadow {
@@ -1080,5 +1086,29 @@
 
     &-button {
         margin: 0;
+    }
+}
+
+.dc-modal__container_account-verification-pending-modal {
+    .dc-modal {
+        &-header__title,
+        &-footer {
+            padding: 2.4rem;
+        }
+        &-body {
+            padding: 0 2.4rem;
+        }
+        @include mobile {
+            &-header__title {
+                font-size: 1.4rem;
+                padding: 1.6rem;
+            }
+            &-body {
+                padding: 0 1.6rem;
+            }
+            &-footer {
+                padding: 1.6rem;
+            }
+        }
     }
 }

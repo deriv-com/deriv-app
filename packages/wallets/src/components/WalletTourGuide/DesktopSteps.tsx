@@ -132,7 +132,6 @@ const getDesktopSteps = (
         content: <WalletText size='sm'>Click Add on each card for more Wallets.</WalletText>,
         disableBeacon: true,
         disableOverlayClose: true,
-        floaterProps: { disableAnimation: false },
         placement: 'right',
         styles: { spotlight: { borderRadius: '1.6rem' } },
         target: isAllWalletsAlreadyAdded ? 'null' : '.wallets-add-more__card', // skip this if all wallets already added

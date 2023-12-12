@@ -17,7 +17,7 @@ const InlineNoteWithIcon = ({ icon, message, font_size = 'xxxs', title }: TInlin
                 </div>
             )}
             <Text as='p' size={font_size} line_height='s'>
-                {title && <strong>{title}: </strong>}
+                {title && <strong> {title} </strong>}
                 {message}
             </Text>
         </div>

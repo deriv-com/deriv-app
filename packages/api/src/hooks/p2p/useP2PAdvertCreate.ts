@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
-import useMutation from '../useMutation';
-// import useInvalidateQuery from '../useInvalidateQuery';
+import useMutation from '../../useMutation';
+import useInvalidateQuery from '../../useInvalidateQuery';
 
 type TPayload = Parameters<ReturnType<typeof useMutation<'p2p_advert_create'>>['mutate']>[0]['payload'];
 
 /** A custom hook that creates a P2P advert. This can only be used by an approved P2P advertiser.
  * 
- * To create an advert, specify the following payload arguments in the `mutate` call:
+ * To create an advert, specify the following payload arguments in the `mutate` call (some arguments are optional):
  * @example
  *  mutate({
         description: 'Please transfer to account number 1234',
@@ -20,11 +20,10 @@ type TPayload = Parameters<ReturnType<typeof useMutation<'p2p_advert_create'>>['
  * 
 */
 const useP2PAdvertCreate = () => {
-    // const invalidate = useInvalidateQuery();
+    const invalidate = useInvalidateQuery();
     const { mutate: _mutate, ...rest } = useMutation('p2p_advert_create', {
         onSuccess: () => {
-            // TODO: Invalidate P2P advert list hook once the hook is implemented
-            // invalidate('p2p_advert_list');
+            invalidate('p2p_advert_list');
         },
     });
 

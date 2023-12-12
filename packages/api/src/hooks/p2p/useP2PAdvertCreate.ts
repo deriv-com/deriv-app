@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import useMutation from '../../useMutation';
 import useInvalidateQuery from '../../useInvalidateQuery';
 
@@ -21,7 +21,11 @@ type TPayload = Parameters<ReturnType<typeof useMutation<'p2p_advert_create'>>['
 */
 const useP2PAdvertCreate = () => {
     const invalidate = useInvalidateQuery();
-    const { mutate: _mutate, ...rest } = useMutation('p2p_advert_create', {
+    const {
+        data,
+        mutate: _mutate,
+        ...rest
+    } = useMutation('p2p_advert_create', {
         onSuccess: () => {
             invalidate('p2p_advert_list');
         },
@@ -29,7 +33,26 @@ const useP2PAdvertCreate = () => {
 
     const mutate = useCallback((payload: TPayload) => _mutate({ payload }), [_mutate]);
 
+    const modified_data = useMemo(() => {
+        if (!data?.p2p_advert_create) return undefined;
+
+        return {
+            ...data?.p2p_advert_create,
+            /** Indicates if this is block trade advert or not. */
+            block_trade: Boolean(data?.p2p_advert_create?.block_trade),
+            /** The advert creation time in epoch. */
+            created_time: data?.p2p_advert_create?.created_time
+                ? new Date(data?.p2p_advert_create?.created_time)
+                : undefined,
+            /** The activation status of the advert. */
+            is_active: Boolean(data?.p2p_advert_create?.is_active),
+            /** Indicates that this advert will appear on the main advert list. */
+            is_visible: Boolean(data?.p2p_advert_create?.is_visible),
+        };
+    }, [data?.p2p_advert_create]);
+
     return {
+        data: modified_data,
         mutate,
         ...rest,
     };

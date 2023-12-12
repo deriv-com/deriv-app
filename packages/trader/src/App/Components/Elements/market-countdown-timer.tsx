@@ -165,7 +165,7 @@ const MarketCountdownTimer = observer(
                     weight='bold'
                 >
                     <Localize
-                        i18n_default_text='{{formatted_opening_time}} (GMT) on {{opening_day}},<0/> {{opening_date}}.'
+                        i18n_default_text='{{formatted_opening_time}} (GMT) on {{opening_day}},<0 /> {{opening_date}}.'
                         components={[<br key={0} />]}
                         values={{
                             formatted_opening_time,

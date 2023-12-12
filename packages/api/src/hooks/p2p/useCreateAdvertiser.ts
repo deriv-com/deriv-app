@@ -38,10 +38,12 @@ const useCreateAdvertiser = () => {
     );
 
     const modified_data = useMemo(() => {
-        if (!data?.p2p_advertiser_create) return undefined;
+        const advertiser = data?.p2p_advertiser_create;
+
+        if (!advertiser) return undefined;
 
         const { basic_verification, full_verification, is_approved, is_listed, is_online, show_name, created_time } =
-            data?.p2p_advertiser_create;
+            advertiser;
 
         return {
             ...data?.p2p_advertiser_create,

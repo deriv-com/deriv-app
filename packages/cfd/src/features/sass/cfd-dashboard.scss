@@ -1265,12 +1265,12 @@
     }
 }
 
-.cfd-trade-modal-container {
+.trade-modal-container {
     width: inherit;
     overflow-y: scroll;
 }
 
-.cfd-trade-modal {
+.trade-modal {
     display: flex;
     margin: 2.4rem;
     align-items: center;
@@ -1321,12 +1321,12 @@
         &-table {
             width: 100%;
 
-            &-attribute .cfd-trade-modal--paragraph {
+            &-attribute .trade-modal--paragraph {
                 color: var(--text-general);
                 margin-right: 2.4rem;
             }
             &-data {
-                .cfd-trade-modal--paragraph {
+                .trade-modal--paragraph {
                     @include typeface(--paragraph-left-bold-black, none);
                     line-height: 1.45;
                 }

@@ -6,6 +6,7 @@ import OtherCFDsTradeModal from './other-cfds-trade-modal';
 import MT5TradeModal from './mt5-trade-modal';
 import { TCFDPasswordReset } from '../../Containers/props.types';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import '../sass/cfd-dashboard.scss';
 
 type TCFDTradeModalProps = {
     is_eu_user: boolean;
@@ -77,9 +78,9 @@ const CFDTradeModal = observer(
                         portal_id='deriv_app'
                         header='Trade'
                         onClickClose={toggleModal}
-                        header_classname='cfd-trade-modal__mobile-title'
+                        header_classname='trade-modal__mobile-title'
                     >
-                        <Div100vhContainer className='cfd-trade-modal__mobile-view-wrapper' height_offset='80px'>
+                        <Div100vhContainer className='trade-modal__mobile-view-wrapper' height_offset='80px'>
                             <CFDTradeModal />
                         </Div100vhContainer>
                     </PageOverlay>

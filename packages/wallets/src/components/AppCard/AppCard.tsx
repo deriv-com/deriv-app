@@ -1,8 +1,7 @@
 import React from 'react';
-import type { THooks } from '../../types';
+import type { TGenericSizes, THooks } from '../../types';
 import { AppCardBadge } from '../AppCardBadge';
 import { WalletText } from '../Base';
-import type { TGenericSizes } from '../Base/types';
 import { WalletGradientBackground } from '../WalletGradientBackground';
 import { WalletsAppLinkedWithWalletIcon } from '../WalletsAppLinkedWithWalletIcon';
 import './AppCard.scss';

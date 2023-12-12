@@ -4,7 +4,7 @@ import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroup
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { useIsMounted, WS } from '@deriv/shared';
+import { useIsMounted, WS, TRADE_TYPES, CONTRACT_TYPES } from '@deriv/shared';
 import { TTradeStore } from 'Types';
 
 type TMultiplierOptions = {
@@ -22,7 +22,12 @@ const MultiplierOptions = observer(({ toggleModal }: TMultiplierOptions) => {
         if (!amount) return undefined;
 
         const onProposalResponse: TTradeStore['onProposalResponse'] = ({ echo_req, proposal, subscription }) => {
-            if (isMounted() && proposal && echo_req.contract_type === 'MULTUP' && Number(echo_req.amount) === amount) {
+            if (
+                isMounted() &&
+                proposal &&
+                echo_req.contract_type === CONTRACT_TYPES.MULTIPLIER.UP &&
+                Number(echo_req.amount) === amount
+            ) {
                 setCommission(proposal.commission);
                 proposal.limit_order?.stop_out && setStopOut(proposal.limit_order.stop_out?.order_amount);
             } else if (subscription?.id) {
@@ -41,8 +46,8 @@ const MultiplierOptions = observer(({ toggleModal }: TMultiplierOptions) => {
     return (
         <React.Fragment>
             <RadioGroupWithInfoMobile
-                contract_name='multiplier'
-                current_value_object={{ name: 'multiplier', value: multiplier }}
+                contract_name={TRADE_TYPES.MULTIPLIER}
+                current_value_object={{ name: TRADE_TYPES.MULTIPLIER, value: multiplier }}
                 items_list={multiplier_range_list}
                 onChange={onChange}
                 toggleModal={toggleModal}

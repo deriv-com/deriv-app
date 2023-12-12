@@ -2,6 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { ActiveSymbols } from '@deriv/api-types';
 import { TContractType, TContractCategory, TList } from '../Components/Form/ContractType/types';
+import { unsupported_contract_types_list } from '@deriv/shared';
 
 type TContractTypesList = {
     [key: string]: {
@@ -60,7 +61,10 @@ export const getContractTypeCategoryIcons = () =>
 export const showLabelForMultipliers = (checked_symbol: string) =>
     /R_|1HZ/i.test(checked_symbol) && !/1HZ150V|1HZ250V/i.test(checked_symbol);
 
-export const getAvailableContractTypes = (contract_types_list: TContractTypesList, unsupported_list: string[]) => {
+export const getAvailableContractTypes = (
+    contract_types_list: TContractTypesList,
+    unsupported_list: typeof unsupported_contract_types_list
+) => {
     return Object.keys(contract_types_list)
         .map(key => {
             const contract_types = contract_types_list[key].categories;
@@ -68,7 +72,7 @@ export const getAvailableContractTypes = (contract_types_list: TContractTypesLis
             const available_contract_types = contract_types.filter(type =>
                 type.value &&
                 // TODO: remove this check once all contract types are supported
-                !unsupported_list.includes(type.value)
+                !unsupported_list.includes(type.value as typeof unsupported_contract_types_list[number])
                     ? type
                     : undefined
             );

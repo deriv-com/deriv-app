@@ -1,25 +1,27 @@
-import React, { useState } from 'react';
-import { Route, Switch, useHistory } from 'react-router-dom';
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import { useWalletAccountsList } from '@deriv/api';
 import { WalletNoWalletFoundState } from '../components';
 import { CashierModalRoute } from './CashierModalRoute';
+import { CompareAccountsRoute } from './CompareAccountsRoute';
 import { TradesHubRoute } from './TradersHubRoute';
 import { WalletsListingRoute } from './WalletsListingRoute';
 
 const prefix = '/wallets';
 
-type TRoutes =
-    | `${typeof prefix}/cashier/deposit`
-    | `${typeof prefix}/cashier/reset-balance`
-    | `${typeof prefix}/cashier/transactions`
-    | `${typeof prefix}/cashier/transfer`
-    | `${typeof prefix}/cashier/withdraw`
-    | `${typeof prefix}/cashier`
-    | `${typeof prefix}/traders-hub`
-    | `${typeof prefix}`;
+type TRoutes = `${typeof prefix}${
+    | ''
+    | '/cashier'
+    | '/cashier/deposit'
+    | '/cashier/reset-balance'
+    | '/cashier/transaction'
+    | '/cashier/transfer'
+    | '/cashier/withdraw'
+    | '/compare-account'
+    | '/traders-hub'}`;
 
 declare module 'react-router-dom' {
-    export function useHistory(): { push: (path: TRoutes | string) => void };
+    export function useHistory(): { push: (path: TRoutes) => void };
 
     export function useRouteMatch(path: TRoutes): boolean;
 }
@@ -33,6 +35,7 @@ const Router: React.FC = () => {
     return (
         <Switch>
             <Route component={TradesHubRoute} path={`${prefix}/traders-hub`} />
+            <Route component={CompareAccountsRoute} path={`${prefix}/compare-accounts`} />
             <Route component={CashierModalRoute} path={`${prefix}/cashier`} />
             <Route component={WalletsListingRoute} path={prefix} />
         </Switch>

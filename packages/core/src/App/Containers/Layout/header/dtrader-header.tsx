@@ -27,8 +27,15 @@ const DTraderHeader = observer(() => {
         is_switching,
     } = client;
     const { app_routing_history, platform, current_language } = common;
-    const { header_extension, is_app_disabled, is_desktop, is_mobile, is_route_modal_on, toggleReadyToDepositModal } =
-        ui;
+    const {
+        header_extension,
+        is_app_disabled,
+        is_desktop,
+        is_mobile,
+        is_route_modal_on,
+        toggleReadyToDepositModal,
+        is_real_acc_signup_on,
+    } = ui;
     const { addNotificationMessage, client_notifications, removeNotificationMessage } = notifications;
     const { setTogglePlatformType } = traders_hub;
 
@@ -124,7 +131,7 @@ const DTraderHeader = observer(() => {
                     <HeaderAccountActions onClickDeposit={handleClickCashier} />
                 </div>
             </div>
-            <RealAccountSignup />
+            {is_real_acc_signup_on && <RealAccountSignup />}
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />
         </header>

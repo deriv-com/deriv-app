@@ -49,6 +49,7 @@ const TradersHubHeader = observer(() => {
         toggleAccountsDialog,
         toggleNeedRealAccountForCashierModal,
         toggleReadyToDepositModal,
+        is_real_acc_signup_on,
     } = ui;
 
     const history = useHistory();
@@ -152,7 +153,7 @@ const TradersHubHeader = observer(() => {
                             )}
                         </div>
                     </div>
-                    <RealAccountSignup />
+                    {is_real_acc_signup_on && <RealAccountSignup />}
                 </React.Fragment>
             )}
             {is_mobile && (

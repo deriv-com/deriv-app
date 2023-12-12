@@ -33,7 +33,7 @@ const NoAds = ({ is_ads_page = false }) => {
                 <React.Fragment>
                     <Text align='center' className='no-ads__title' weight='bold'>
                         {is_ads_page ? (
-                            <Localize i18n_default_text='You have no ads.' />
+                            <Localize i18n_default_text='You have no ads 😞' />
                         ) : (
                             <Localize i18n_default_text='No ads for this currency 😞' />
                         )}

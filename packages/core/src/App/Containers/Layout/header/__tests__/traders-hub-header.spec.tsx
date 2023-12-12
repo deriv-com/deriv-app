@@ -2,6 +2,7 @@ import React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import TradersHubHeader from '../traders-hub-header';
+import { TStores } from '@deriv/stores/types';
 
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
@@ -35,12 +36,21 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 describe('TradersHubHeader', () => {
-    const mock_store = mockStore({
-        ui: { is_desktop: true },
-    });
-    const renderComponent = (modified_store = mock_store) =>
+    const renderComponent = (mock_store?: TStores) =>
         render(
-            <StoreProvider store={modified_store}>
+            <StoreProvider
+                store={
+                    mock_store ??
+                    mockStore({
+                        ui: { is_desktop: true },
+                        feature_flags: {
+                            data: {
+                                next_wallet: true,
+                            },
+                        },
+                    })
+                }
+            >
                 <TradersHubHeader />
             </StoreProvider>
         );
@@ -51,7 +61,13 @@ describe('TradersHubHeader', () => {
     });
 
     it('should render "RealAccountSignup" as a child component', () => {
-        renderComponent();
+        const mock_store = mockStore({
+            ui: {
+                is_desktop: true,
+                is_real_acc_signup_on: true,
+            },
+        });
+        renderComponent(mock_store);
         expect(screen.getByText('MockedRealAccountSignup')).toBeInTheDocument();
     });
 

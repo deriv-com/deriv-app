@@ -34,6 +34,7 @@ const DefaultHeader = observer(() => {
         is_app_disabled,
         is_route_modal_on,
         is_trading_assessment_for_existing_user_enabled,
+        is_real_acc_signup_on,
     } = ui;
 
     const history = useHistory();
@@ -122,7 +123,7 @@ const DefaultHeader = observer(() => {
                 Prevent the modals that are part of Real Account signup to get triggered when the corresponding store value changes by
                 removing the parent element from DOM
             */}
-            {!is_trading_assessment_for_existing_user_enabled && <RealAccountSignup />}
+            {!is_trading_assessment_for_existing_user_enabled && is_real_acc_signup_on && <RealAccountSignup />}
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />
         </header>

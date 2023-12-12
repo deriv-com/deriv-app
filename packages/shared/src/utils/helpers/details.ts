@@ -3,6 +3,12 @@ import { localize } from '@deriv/translations';
 import moment from 'moment';
 import { TContractInfo } from '../contract';
 
+type TUnitMap = {
+    name_plural?: string;
+    name_singular?: string;
+    name?: string;
+};
+
 export const getDurationUnitValue = (obj_duration: moment.Duration) => {
     const duration_ms = obj_duration.asMilliseconds() / 1000;
     // Check with isEndTime to find out if value of duration has decimals
@@ -40,7 +46,7 @@ export const getUnitMap = () => {
         m: { name_plural: localize('minutes'), name_singular: localize('minute') },
         s: { name: localize('seconds') },
         t: { name_plural: localize('ticks'), name_singular: localize('tick') },
-    };
+    } as { [key: string]: TUnitMap };
 };
 
 const TIME = {

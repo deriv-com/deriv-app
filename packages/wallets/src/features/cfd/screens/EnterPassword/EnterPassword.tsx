@@ -39,16 +39,18 @@ const EnterPassword: React.FC<TProps> = ({
                 <WalletText lineHeight='xl' weight='bold'>
                     Enter your {title} password
                 </WalletText>
-                <WalletText size='sm'>
-                    Enter your {title} password to add a {title} {marketTypeTitle} account.
-                </WalletText>
-                <WalletPasswordField
-                    label={`${title} password`}
-                    onChange={onPasswordChange}
-                    password={password}
-                    shouldDisablePasswordMeter
-                    showMessage={false}
-                />
+                <div className='wallets-enter-password__content'>
+                    <WalletText size='sm'>
+                        Enter your {title} password to add a {title} {marketTypeTitle} account.
+                    </WalletText>
+                    <WalletPasswordField
+                        label={`${title} password`}
+                        onChange={onPasswordChange}
+                        password={password}
+                        shouldDisablePasswordMeter
+                        showMessage={false}
+                    />
+                </div>
             </div>
             {isDesktop && (
                 <div className='wallets-enter-password__buttons'>

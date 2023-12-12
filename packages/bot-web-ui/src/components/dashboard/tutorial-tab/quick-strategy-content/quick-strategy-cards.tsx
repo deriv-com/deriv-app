@@ -31,6 +31,8 @@ const QuickStrategyCards = observer(
                                 className='tutorials-quick-strategy__placeholder'
                                 key={type}
                                 onClick={() => setTutorialSelectedStrategy(qs_name)}
+                                role='button'
+                                tabIndex={0}
                             >
                                 <div>
                                     <div className='tutorials-quick-strategy__placeholder__title'>

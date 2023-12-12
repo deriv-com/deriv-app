@@ -31,7 +31,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                         </div>
                     ));
                 case 'text': {
-                    const class_names = classNames(`qs__long_description__content ${data?.className || ''}`);
+                    const class_names = classNames(`qs__long_description__content ${data?.className ?? ''}`);
                     return data?.content?.map(text => (
                         <div className={class_names} key={text}>
                             <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
@@ -45,7 +45,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                         </div>
                     ));
                 case 'text_italic': {
-                    const class_names = classNames(`qs__long_description__content italic ${data?.className || ''}`);
+                    const class_names = classNames(`qs__long_description__content italic ${data?.className ?? ''}`);
                     return data?.content?.map(text => (
                         <div className={class_names} key={text}>
                             <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />

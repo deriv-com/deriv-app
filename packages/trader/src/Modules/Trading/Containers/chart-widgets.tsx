@@ -9,7 +9,7 @@ import { observer, useStore } from '@deriv/stores';
 
 type TDigits = React.ComponentProps<typeof Digits>;
 type TChartTopWidgets = {
-    charts_ref?: { chart: { yAxiswidth: number } } | null;
+    charts_ref?: any;
     open_market: React.ComponentProps<typeof TopWidgets>['open_market'];
     open: React.ComponentProps<typeof TopWidgets>['open'];
 };
@@ -20,13 +20,14 @@ type TChartBottomWidgets = {
 };
 
 export const DigitsWidget = observer(({ digits, tick }: { digits: TDigits['digits_array']; tick: TDigits['tick'] }) => {
-    const { contract_trade } = useStore();
+    const { contract_trade, ui } = useStore();
     const {
         onChange: onDigitChange,
         symbol: underlying,
         contract_type: trade_type,
         last_digit: selected_digit,
     } = useTraderStore();
+    const { is_mobile } = ui;
     const { last_contract } = contract_trade;
     const { contract_info = {}, digits_info = {}, display_status, is_digit_contract, is_ended } = last_contract;
     return (
@@ -37,6 +38,7 @@ export const DigitsWidget = observer(({ digits, tick }: { digits: TDigits['digit
             display_status={display_status}
             is_digit_contract={is_digit_contract}
             is_ended={is_ended}
+            is_mobile={is_mobile}
             onDigitChange={onDigitChange}
             is_trade_page
             tick={tick}
@@ -53,10 +55,7 @@ export const ChartTopWidgets = observer(({ charts_ref, open_market, open }: TCha
     const { is_digits_widget_active, onChange: onSymbolChange } = useTraderStore();
     const { is_dark_mode_on, is_mobile } = ui;
     const theme = is_dark_mode_on ? 'dark' : 'light';
-    let yAxiswidth;
-    if (charts_ref?.chart) {
-        yAxiswidth = charts_ref.chart.yAxiswidth;
-    }
+    const yAxiswidth = charts_ref && charts_ref.chart ? charts_ref.chart.yAxiswidth : 0;
     return (
         <TopWidgets
             open_market={open_market}

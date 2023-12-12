@@ -7,6 +7,7 @@ import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
+import { Analytics } from '@deriv/analytics';
 
 type TContractTypesItem = {
     text: string;
@@ -28,6 +29,22 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
     const { setFieldValue, validateForm, values } = useFormikContext<TFormData>();
     const { symbol, tradetype } = values;
     const selected = values?.type;
+
+    const sendTradeTypeToRudderStack = (item: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_trade_type',
+            trade_type: item,
+            form_source: 'ce_bot_quick_strategy_form',
+        });
+    };
+
+    const sendTradeTypeValueToRudderStack = (item: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_trade_type_mode',
+            trade_type_mode: item,
+            form_source: 'ce_bot_quick_strategy_form',
+        });
+    };
 
     React.useEffect(() => {
         if (tradetype && symbol) {
@@ -75,6 +92,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
                                                 'qs__form__field__list__item--active': is_active,
                                             })}
                                             onClick={() => {
+                                                sendTradeTypeValueToRudderStack(item.text);
                                                 handleChange(item.value);
                                             }}
                                         >
@@ -99,6 +117,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
                             onItemSelection={(item: TItem) => {
                                 if ((item as TContractTypesItem)?.value) {
                                     handleChange((item as TContractTypesItem)?.value as string);
+                                    sendTradeTypeToRudderStack(item?.text);
                                 }
                             }}
                         />

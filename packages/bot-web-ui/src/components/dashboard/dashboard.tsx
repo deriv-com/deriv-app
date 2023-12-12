@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
+import { Analytics } from '@deriv/analytics';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -19,8 +20,15 @@ import Tutorial from './tutorial-tab';
 
 const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
-    const { active_tab, active_tour, setActiveTab, setWebSocketState, setActiveTour, setTourDialogVisibility } =
-        dashboard;
+    const {
+        active_tab,
+        active_tour,
+        is_chart_modal_visible,
+        setActiveTab,
+        setWebSocketState,
+        setActiveTour,
+        setTourDialogVisibility,
+    } = dashboard;
     const { onEntered, dashboard_strategies } = load_modal;
     const { is_dialog_open, is_drawer_open, dialog_options, onCancelButtonClick, onCloseDialog, onOkButtonClick } =
         run_panel;
@@ -75,6 +83,10 @@ const Dashboard = observer(() => {
 
     React.useEffect(() => {
         if (active_tab === BOT_BUILDER) {
+            Analytics.trackEvent('ce_bot_builder_form', {
+                action: 'open',
+                form_source: 'bot_header_form',
+            });
             if (is_drawer_open) {
                 initTrashCan(400, -748);
             } else {
@@ -143,7 +155,11 @@ const Dashboard = observer(() => {
                             label={<Localize i18n_default_text='Bot Builder' />}
                             id='id-bot-builder'
                         />
-                        <div icon='IcChartsTabDbot' label={<Localize i18n_default_text='Charts' />} id='id-charts'>
+                        <div
+                            icon='IcChartsTabDbot'
+                            label={<Localize i18n_default_text='Charts' />}
+                            id={is_chart_modal_visible ? 'id-charts--disabled' : 'id-charts'}
+                        >
                             <Chart />
                         </div>
                         <div
@@ -167,9 +183,9 @@ const Dashboard = observer(() => {
             </DesktopWrapper>
             <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
             <Dialog
-                cancel_button_text={cancel_button_text || <Localize i18n_default_text='Cancel' />}
+                cancel_button_text={cancel_button_text || localize('Cancel')}
                 className={'dc-dialog__wrapper--fixed'}
-                confirm_button_text={ok_button_text || <Localize i18n_default_text='OK' />}
+                confirm_button_text={ok_button_text || localize('OK')}
                 has_close_icon
                 is_mobile_full_width={false}
                 is_visible={is_dialog_open}

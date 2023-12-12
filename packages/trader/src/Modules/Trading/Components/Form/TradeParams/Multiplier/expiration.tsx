@@ -49,7 +49,7 @@ const Expiration = observer(({ is_text_only, text_size }: TExpirationProps) => {
                 ) : null
             }
         >
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '1.6rem' }}>
+            <div className='trade-container__fieldset-expiration'>
                 {expiration ? (
                     <Text size='xs' align='center'>
                         {date} at {timestamp}

@@ -7,6 +7,7 @@ import GuideContent from './guide-content';
 import FAQContent from './faq-content';
 import NoSearchResult from './common/no-search-result-found';
 import { localize } from '@deriv/translations';
+import { Analytics } from '@deriv/analytics';
 
 const TutorialsTab = observer(() => {
     const { ui } = useStore();
@@ -14,7 +15,20 @@ const TutorialsTab = observer(() => {
     const { dashboard } = useDBotStore();
     const [prev_active_tutorials, setPrevActiveTutorialsTab] = React.useState<number | null>(0);
 
-    const { active_tab_tutorials, video_tab_content, guide_tab_content, faq_tab_content } = dashboard;
+    const { active_tab_tutorials, video_tab_content, guide_tab_content, faq_tab_content, is_dialog_open } = dashboard;
+
+    React.useEffect(() => {
+        Analytics.trackEvent('ce_bot_tutorial_form', {
+            action: 'open',
+            form_source: 'bot_header_form',
+        });
+        return () => {
+            Analytics.trackEvent('ce_bot_tutorial_form', {
+                action: 'close',
+                form_source: 'bot_header_form',
+            });
+        };
+    }, []);
 
     React.useEffect(() => {
         const _active_tab = [0, 1];
@@ -29,7 +43,13 @@ const TutorialsTab = observer(() => {
     const tutorial_tabs = [
         {
             label: localize('Guide'),
-            content: <GuideContent guide_tab_content={guide_tab_content} video_tab_content={video_tab_content} />,
+            content: (
+                <GuideContent
+                    is_dialog_open={is_dialog_open}
+                    guide_tab_content={guide_tab_content}
+                    video_tab_content={video_tab_content}
+                />
+            ),
         },
         {
             label: localize('FAQ'),
@@ -39,7 +59,11 @@ const TutorialsTab = observer(() => {
             label: localize('Search'),
             content: has_content_guide_tab ? (
                 <>
-                    <GuideContent guide_tab_content={guide_tab_content} video_tab_content={video_tab_content} />
+                    <GuideContent
+                        is_dialog_open={is_dialog_open}
+                        guide_tab_content={guide_tab_content}
+                        video_tab_content={video_tab_content}
+                    />
                     <FAQContent faq_list={faq_tab_content} />
                 </>
             ) : (

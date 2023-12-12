@@ -44,7 +44,7 @@ describe('<ToggleMenuDrawer />', () => {
         );
     };
 
-    it('should render', () => {
+    it('should clear timeout after component was unmount', () => {
         jest.useFakeTimers();
         jest.spyOn(global, 'clearTimeout');
         const { unmount } = render(mockToggleMenuDrawer());

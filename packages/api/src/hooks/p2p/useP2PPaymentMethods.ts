@@ -1,24 +1,14 @@
-import React from 'react';
-import { useFetch } from '@deriv/api';
-import { useStore } from '@deriv/stores';
+import { useMemo } from 'react';
+import useAuthorize from '../useAuthorize';
+import { PAYMENT_METHOD_ICONS } from '../../constants';
+import useQuery from '../../useQuery';
 
-const type_to_icon_mapper = {
-    bank: 'IcCashierBankTransfer',
-    other: 'IcCashierOther',
-    ewallet: 'IcCashierEwallet',
-};
-
-/**
- * @deprecated This hook is deprecated. Please use the one from the `api` package instead.
- * A custom hook that return the list of P2P available payment methods */
+/** A custom hook that returns a list of P2P available payment methods **/
 const useP2PPaymentMethods = () => {
-    const { client } = useStore();
-    const { is_authorize } = client;
-
-    const { data, ...rest } = useFetch('p2p_payment_methods', { options: { enabled: is_authorize } });
-
+    const { isSuccess } = useAuthorize();
+    const { data, ...rest } = useQuery('p2p_payment_methods', { options: { enabled: isSuccess } });
     // Modify the data to add additional information.
-    const modified_data = React.useMemo(() => {
+    const modified_data = useMemo(() => {
         const p2p_payment_methods = data?.p2p_payment_methods;
 
         if (!p2p_payment_methods) return undefined;
@@ -32,7 +22,7 @@ const useP2PPaymentMethods = () => {
                 /** Payment method field definitions. */
                 fields,
                 /** Icon for each payment method based on the type */
-                icon: type_to_icon_mapper[payment_method.type],
+                icon: PAYMENT_METHOD_ICONS[payment_method.type],
                 /** Payment method id */
                 id: key,
             };

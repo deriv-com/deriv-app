@@ -36,13 +36,14 @@ const modal_pages_indices = {
     restricted_country_signup_error: 9,
     invalid_input_error: 10,
 };
+let active_modal_index_no = 0;
 
 const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence, real_account_signup_target }) => {
     const maltainvest_signup = real_account_signup_target === 'maltainvest';
     const iom_signup = real_account_signup_target === 'iom';
     const deposit_cash_signup = real_account_signup_target === 'deposit_cash';
 
-    if (!maltainvest_signup && !currency) {
+    if ((!maltainvest_signup && !currency) || active_modal_index_no === modal_pages_indices.set_currency) {
         return <Localize i18n_default_text='Set a currency for your real account' />;
     }
 
@@ -304,7 +305,7 @@ const RealAccountSignup = ({
     const getModalHeight = () => {
         if (is_from_restricted_country) return '304px';
         else if ([invalid_input_error, status_dialog].includes(getActiveModalIndex())) return 'auto';
-        if (!currency) return '688px'; // Set currency modal
+        if (!currency || getActiveModalIndex() === modal_pages_indices.set_currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
             if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
                 // Manage account
@@ -477,7 +478,6 @@ const RealAccountSignup = ({
     };
 
     const getActiveModalIndex = () => {
-        let active_modal_index_no;
         if (real_account_signup_target === 'choose') {
             active_modal_index_no = modal_pages_indices.choose_crypto_currency;
             return active_modal_index_no;
@@ -491,7 +491,7 @@ const RealAccountSignup = ({
                 active_modal_index_no = modal_pages_indices.add_or_manage_account;
             } else {
                 active_modal_index_no =
-                    !currency && real_account_signup_target !== 'maltainvest'
+                    (!currency && real_account_signup_target !== 'maltainvest') || is_loading
                         ? modal_pages_indices.set_currency
                         : modal_pages_indices.account_wizard;
             }

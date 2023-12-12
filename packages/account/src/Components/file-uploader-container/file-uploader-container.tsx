@@ -6,8 +6,8 @@ import { observer, useStore } from '@deriv/stores';
 
 type TFileUploaderContainer = {
     onFileDrop: (files: File[]) => void;
-    files_description: React.ReactNode;
-    examples: React.ReactNode;
+    files_description?: React.ReactNode;
+    examples?: React.ReactNode;
     onError?: (error_message: string) => void;
 };
 
@@ -27,7 +27,7 @@ const FileUploaderContainer = observer(
                 </div>
                 <div className='file-uploader__file-supported-formats'>
                     <Text size={is_mobile ? 'xxxs' : 'xxs'}>
-                        <Localize i18n_default_text='Supported formats: JPEG, JPG, PNG, PDF and GIF only' />
+                        <Localize i18n_default_text='Supported formats: JPEG, JPG, PNG, PDF, and GIF only' />
                     </Text>
                     <Text size={is_mobile ? 'xxxs' : 'xxs'}>
                         <Localize i18n_default_text='Maximum size: 8MB' />

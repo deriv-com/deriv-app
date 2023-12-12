@@ -3,7 +3,8 @@ import classNames from 'classnames';
 import { useFormikContext } from 'formik';
 import { Button, Text, ThemedScrollbars } from '@deriv/components';
 import Icon from '@deriv/components/src/components/icon/icon';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
+import { Analytics } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
@@ -24,6 +25,10 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
     const { handleSubmit } = useQsSubmitHandler();
     const handleClose = () => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'close',
+            form_source: 'ce_bot_quick_strategy_form',
+        });
         setFormVisibility(false);
     };
 
@@ -34,6 +39,11 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
         setActiveTab('TRADE_PARAMETERS');
+        // on strategy selection
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_strategy',
+            strategy_type: strategy,
+        });
     };
 
     const handleTabChange = (tab: string) => {

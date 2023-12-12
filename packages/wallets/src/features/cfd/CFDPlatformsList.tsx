@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trans } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
 import { WalletButton, WalletText } from '../../components/Base';
 import useDevice from '../../hooks/useDevice';
@@ -14,6 +15,7 @@ type TProps = {
 const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
+    const history = useHistory();
 
     return (
         <div className='wallets-cfd-list'>
@@ -34,7 +36,14 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                                 defaults='Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
                             />
                         </WalletText>
-                        <WalletButton size='sm' textSize='sm' variant='ghost'>
+                        <WalletButton
+                            onClick={() => {
+                                history.push('/wallets/compare-accounts');
+                            }}
+                            size='sm'
+                            textSize='sm'
+                            variant='ghost'
+                        >
                             Compare accounts
                         </WalletButton>
                     </div>
@@ -44,7 +53,13 @@ const CFDPlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                             <WalletText size='xl' weight='bold'>
                                 CFDs
                             </WalletText>
-                            <WalletButton size='sm' variant='ghost'>
+                            <WalletButton
+                                onClick={() => {
+                                    history.push('/wallets/compare-accounts');
+                                }}
+                                size='sm'
+                                variant='ghost'
+                            >
                                 Compare accounts
                             </WalletButton>
                         </div>

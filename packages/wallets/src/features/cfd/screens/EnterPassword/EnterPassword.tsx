@@ -3,10 +3,10 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { PlatformDetails } from '../../constants';
+import { validPassword } from '../../../../utils/password';
+import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
-// TODO: Refactor the unnecessary props out once FlowProvider is integrated
 type TProps = {
     isLoading?: boolean;
     marketType: TMarketTypes.CreateOtherCFDAccount;
@@ -30,7 +30,8 @@ const EnterPassword: React.FC<TProps> = ({
     const title = PlatformDetails[platform].title;
     const { data } = useActiveWalletAccount();
     const accountType = data?.is_virtual ? 'Demo' : 'Real';
-    const marketTypeTitle = platform === 'dxtrade' ? accountType : marketType;
+    const marketTypeTitle =
+        platform === PlatformDetails.dxtrade.platform ? accountType : MarketTypeDetails[marketType].title;
 
     return (
         <div className='wallets-enter-password'>
@@ -38,21 +39,32 @@ const EnterPassword: React.FC<TProps> = ({
                 <WalletText lineHeight='xl' weight='bold'>
                     Enter your {title} password
                 </WalletText>
-                <WalletText size='sm'>
-                    Enter your {title} password to add a {title} {marketTypeTitle} account.
-                </WalletText>
-                <WalletPasswordField label={`${title} password`} onChange={onPasswordChange} password={password} />
+                <div className='wallets-enter-password__content'>
+                    <WalletText size='sm'>
+                        Enter your {title} password to add a {title} {marketTypeTitle} account.
+                    </WalletText>
+                    <WalletPasswordField
+                        label={`${title} password`}
+                        onChange={onPasswordChange}
+                        password={password}
+                        shouldDisablePasswordMeter
+                        showMessage={false}
+                    />
+                </div>
             </div>
             {isDesktop && (
                 <div className='wallets-enter-password__buttons'>
-                    <WalletButton onClick={onSecondaryClick} size='lg' text='Forgot password?' variant='outlined' />
+                    <WalletButton onClick={onSecondaryClick} size='lg' variant='outlined'>
+                        Forgot password?
+                    </WalletButton>
                     <WalletButton
-                        disabled={!password || isLoading}
+                        disabled={!password || isLoading || !validPassword(password)}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'
-                        text='Add account'
-                    />
+                    >
+                        Add account
+                    </WalletButton>
                 </div>
             )}
         </div>

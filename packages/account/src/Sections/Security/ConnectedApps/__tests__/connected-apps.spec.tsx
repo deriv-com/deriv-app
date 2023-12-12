@@ -5,6 +5,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ConnectedApps from '../connected-apps';
 import { WS } from '@deriv/shared';
+import { getConnectedAppsScopes } from '../template-helper';
 
 const mock_connected_apps: OauthApps = [
     {
@@ -89,9 +90,7 @@ describe('ConnectedApps', () => {
 
     it('should render the app list in Desktop view', async () => {
         renderComponent();
-        const mock_permissions = mock_connected_apps[0]?.scopes
-            ?.map(scope => scope.charAt(0).toUpperCase().concat(scope.substring(1)))
-            .join(', ');
+        const mock_permissions = getConnectedAppsScopes(mock_connected_apps[0]?.scopes);
 
         await waitFor(() => {
             expect(screen.getByText('Name')).toBeInTheDocument();
@@ -114,9 +113,7 @@ describe('ConnectedApps', () => {
 
     it('should render the app list in Mobile view', async () => {
         renderComponent(mockStore({ ui: { is_mobile: true } }));
-        const mock_permissions = mock_connected_apps[0]?.scopes
-            ?.map(scope => scope.charAt(0).toUpperCase().concat(scope.substring(1)))
-            .join(', ');
+        const mock_permissions = getConnectedAppsScopes(mock_connected_apps[0]?.scopes);
 
         await waitFor(() => {
             expect(screen.getByText('Name')).toBeInTheDocument();

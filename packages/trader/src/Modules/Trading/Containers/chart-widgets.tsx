@@ -9,7 +9,6 @@ import { observer, useStore } from '@deriv/stores';
 
 type TDigits = React.ComponentProps<typeof Digits>;
 type TChartTopWidgets = {
-    charts_ref?: { chart: { yAxiswidth: number } } | null;
     open_market: React.ComponentProps<typeof TopWidgets>['open_market'];
     open: React.ComponentProps<typeof TopWidgets>['open'];
 };
@@ -20,13 +19,14 @@ type TChartBottomWidgets = {
 };
 
 export const DigitsWidget = observer(({ digits, tick }: { digits: TDigits['digits_array']; tick: TDigits['tick'] }) => {
-    const { contract_trade } = useStore();
+    const { contract_trade, ui } = useStore();
     const {
         onChange: onDigitChange,
         symbol: underlying,
         contract_type: trade_type,
         last_digit: selected_digit,
     } = useTraderStore();
+    const { is_mobile } = ui;
     const { last_contract } = contract_trade;
     const { contract_info = {}, digits_info = {}, display_status, is_digit_contract, is_ended } = last_contract;
     return (
@@ -37,6 +37,7 @@ export const DigitsWidget = observer(({ digits, tick }: { digits: TDigits['digit
             display_status={display_status}
             is_digit_contract={is_digit_contract}
             is_ended={is_ended}
+            is_mobile={is_mobile}
             onDigitChange={onDigitChange}
             is_trade_page
             tick={tick}
@@ -48,16 +49,12 @@ export const DigitsWidget = observer(({ digits, tick }: { digits: TDigits['digit
 });
 
 // Chart widgets passed into SmartCharts
-export const ChartTopWidgets = observer(({ charts_ref, open_market, open }: TChartTopWidgets) => {
+export const ChartTopWidgets = observer(({ open_market, open }: TChartTopWidgets) => {
     const { client, ui } = useStore();
     const { is_digits_widget_active, onChange: onSymbolChange } = useTraderStore();
     const { is_beta_chart } = client;
     const { is_dark_mode_on, is_mobile } = ui;
     const theme = is_dark_mode_on ? 'dark' : 'light';
-    let yAxiswidth;
-    if (charts_ref?.chart) {
-        yAxiswidth = charts_ref.chart.yAxiswidth;
-    }
     return (
         <TopWidgets
             open_market={open_market}
@@ -66,7 +63,6 @@ export const ChartTopWidgets = observer(({ charts_ref, open_market, open }: TCha
             is_digits_widget_active={is_digits_widget_active}
             onSymbolChange={symbolChange(onSymbolChange)}
             theme={theme}
-            y_axis_width={yAxiswidth}
             is_beta_chart={is_beta_chart}
         />
     );

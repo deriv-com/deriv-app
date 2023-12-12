@@ -1,0 +1,14 @@
+.wallets-compare-accounts-platform-label {
+    background-color: #e6f5ff;
+    padding: 0.9rem;
+    border-top-left-radius: 1.4rem;
+    border-top-right-radius: 1.4rem;
+
+    &--ctrader {
+        background-color: #ffeabf;
+    }
+
+    &--other-cfds {
+        background-color: #e8fdf8;
+    }
+}

@@ -151,43 +151,40 @@ export default class GeneralStore extends BaseStore {
         const { is_from_derivgo, routeTo } = common;
         const { account_transfer, onramp, payment_agent, transaction_history } = modules.cashier;
 
-        if (client.is_logged_in) {
-            // avoid calling this again
-            if (this.is_populating_values) {
-                return;
-            }
+        if (!client.is_logged_in || this.is_populating_values) {
+            return;
+        }
 
-            this.is_populating_values = true;
+        this.is_populating_values = true;
 
-            if (should_remount) {
-                this.setOnRemount(this.onMountCommon);
-            }
-            // we need to see if client's country has PA
-            // if yes, we can show the PA tab in cashier
-            this.setLoading(true);
-            await payment_agent.setPaymentAgentList();
-            payment_agent.filterPaymentAgentList();
-            this.setLoading(false);
+        if (should_remount) {
+            this.setOnRemount(this.onMountCommon);
+        }
+        // we need to see if client's country has PA
+        // if yes, we can show the PA tab in cashier
+        this.setLoading(true);
+        await payment_agent.setPaymentAgentList();
+        payment_agent.filterPaymentAgentList();
+        this.setLoading(false);
 
-            if (!account_transfer.accounts_list.length) {
-                account_transfer.sortAccountsTransfer(null, is_from_derivgo);
-            }
+        if (!account_transfer.accounts_list.length) {
+            account_transfer.sortAccountsTransfer(null, is_from_derivgo);
+        }
 
-            if (!payment_agent.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
-                routeTo(routes.cashier_deposit);
-            }
+        if (!payment_agent.is_payment_agent_visible && window.location.pathname.endsWith(routes.cashier_pa)) {
+            routeTo(routes.cashier_deposit);
+        }
 
-            if (!onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
-                routeTo(routes.cashier_deposit);
-            }
+        if (!onramp.is_onramp_tab_visible && window.location.pathname.endsWith(routes.cashier_onramp)) {
+            routeTo(routes.cashier_deposit);
+        }
 
-            if (
-                !transaction_history.is_transactions_crypto_visible &&
-                window.location.pathname.endsWith(routes.cashier_transactions_crypto)
-            ) {
-                routeTo(routes.cashier_deposit);
-                transaction_history.setIsTransactionsCryptoVisible(true);
-            }
+        if (
+            !transaction_history.is_transactions_crypto_visible &&
+            window.location.pathname.endsWith(routes.cashier_transactions_crypto)
+        ) {
+            routeTo(routes.cashier_deposit);
+            transaction_history.setIsTransactionsCryptoVisible(true);
         }
     }
 

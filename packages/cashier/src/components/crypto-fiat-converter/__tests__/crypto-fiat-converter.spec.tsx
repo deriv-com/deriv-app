@@ -22,12 +22,14 @@ describe('<CryptoFiatConverter />', () => {
         });
 
         mockProps = {
+            arrow_icon_direction: 'right',
             from_currency: 'BTC',
             hint: 'Transfer limits',
             resetConverter: jest.fn(),
             to_currency: 'USD',
             onChangeConverterFromAmount: jest.fn(),
             onChangeConverterToAmount: jest.fn(),
+            setArrowIconDirection: jest.fn(),
             validateFromAmount: jest.fn(),
             validateToAmount: jest.fn(),
         };
@@ -52,16 +54,6 @@ describe('<CryptoFiatConverter />', () => {
         expect(screen.getByText('Amount (USD)')).toBeInTheDocument();
         expect(screen.getByText('Transfer limits')).toBeInTheDocument();
         expect(screen.getByText('Approximate value')).toBeInTheDocument();
-    });
-
-    it('should change arrow direction when the focus changes between inputs', () => {
-        renderCryptoFiatConverter();
-
-        const [converter_from_amount_input, converter_to_amount_input] = screen.getAllByRole('textbox');
-        converter_from_amount_input.focus();
-        expect(screen.getByTestId('dti_arrow_right_bold')).toBeInTheDocument();
-        converter_to_amount_input.focus();
-        expect(screen.getByTestId('dti_arrow_left_bold')).toBeInTheDocument();
     });
 
     it('"converter_from_amount" and "converter_to_amount" inputs should show the proper values', () => {

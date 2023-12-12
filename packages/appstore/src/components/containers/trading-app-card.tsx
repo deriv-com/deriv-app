@@ -52,8 +52,10 @@ const TradingAppCard = ({
     const {
         common,
         traders_hub,
+        ui,
         modules: { cfd },
     } = useStore();
+    const { setIsVerificationModalVisible } = ui;
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
@@ -75,7 +77,8 @@ const TradingAppCard = ({
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         mt5_acc_auth_status,
         openFailedVerificationModal,
-        selected_mt5_jurisdiction
+        selected_mt5_jurisdiction,
+        setIsVerificationModalVisible
     );
 
     const handleStatusBadgeClick = (mt5_acc_auth_status: string) => {
@@ -122,7 +125,7 @@ const TradingAppCard = ({
     const migration_status =
         mt5_acc_auth_status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION ||
         mt5_acc_auth_status === MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
-    const is_disabled = !!(mt5_acc_auth_status && !migration_status);
+    const is_disabled = !!(mt5_acc_auth_status && !migration_status) && !is_eu_user;
 
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
@@ -197,7 +200,10 @@ const TradingAppCard = ({
                         onAction={onAction}
                         is_external={is_external}
                         new_tab={new_tab}
-                        is_buttons_disabled={is_disabled}
+                        is_buttons_disabled={
+                            //For MF, we enable the button even if account is not authenticated. Rest of jurisdictions, disable the button for pending, failed and needs verification
+                            is_disabled
+                        }
                         is_account_being_created={!!is_account_being_created}
                         is_real={is_real}
                     />

@@ -1,27 +1,36 @@
 import React from 'react';
+import { History } from 'history';
 import { Localize, localize } from '@deriv/translations';
-import { formatDate } from '@deriv/shared';
+import { formatDate, routes } from '@deriv/shared';
 
 type TProps = {
     cashier_validation: string[] | undefined;
+    closeAccountTransferModal: () => void;
+    excluded_until: number | undefined;
+    history: History;
     is_crypto: boolean;
+    is_eu: boolean;
     is_system_maintenance: boolean;
     is_cashier_locked: boolean;
     is_deposit_locked: boolean;
     is_withdrawal_locked: boolean;
     is_identity_verification_needed: boolean;
-    excluded_until: number | undefined;
+    is_pending_verification: boolean;
 };
 
 const getMessage = ({
     cashier_validation,
+    closeAccountTransferModal,
+    excluded_until,
+    history,
     is_crypto,
+    is_eu,
     is_system_maintenance,
     is_cashier_locked,
     is_deposit_locked,
     is_withdrawal_locked,
     is_identity_verification_needed,
-    excluded_until,
+    is_pending_verification,
 }: TProps) => {
     const no_residence = cashier_validation?.includes('no_residence');
     const unwelcome_status = cashier_validation?.includes('unwelcome_status');
@@ -42,6 +51,7 @@ const getMessage = ({
     const ask_fix_details = cashier_validation?.includes('ASK_FIX_DETAILS');
     const ask_uk_funds_protection = cashier_validation?.includes('ASK_UK_FUNDS_PROTECTION');
     const pa_commision_withdrawal_limit = cashier_validation?.includes('PACommisionWithdrawalLimit');
+    const pathname = history.location.pathname;
 
     if (is_system_maintenance) {
         if (is_crypto && is_withdrawal_locked)
@@ -140,7 +150,47 @@ const getMessage = ({
                     />
                 ),
             };
-        if (ask_authenticate)
+        if (ask_authenticate) {
+            if (is_eu) {
+                const getDescription = () => {
+                    let description;
+                    switch (pathname) {
+                        case routes.cashier_deposit:
+                            description = (
+                                <Localize i18n_default_text='You can make a new deposit once the verification of your account is complete.' />
+                            );
+                            break;
+                        case routes.cashier_withdrawal:
+                            description = (
+                                <Localize i18n_default_text='You can make a withdrawal once the verification of your account is complete.' />
+                            );
+                            break;
+                        case routes.cashier_acc_transfer:
+                            description = (
+                                <Localize i18n_default_text='You can make a funds transfer once the verification of your account is complete.' />
+                            );
+                            break;
+                        default:
+                            break;
+                    }
+
+                    return description;
+                };
+
+                return {
+                    icon: 'IcCashierLocked',
+                    title: localize('Cashier is locked'),
+                    description: getDescription(),
+                    action: {
+                        onClick: () => {
+                            history.push(routes.proof_of_identity);
+                            closeAccountTransferModal();
+                        },
+                        label: localize('Verify now'),
+                    },
+                };
+            }
+
             return {
                 icon: 'IcCashierLocked',
                 title: localize('Cashier is locked'),
@@ -159,6 +209,38 @@ const getMessage = ({
                     />
                 ),
             };
+        }
+        if (is_eu && is_pending_verification) {
+            const getDescription = () => {
+                let description;
+                switch (pathname) {
+                    case routes.cashier_deposit:
+                        description = (
+                            <Localize i18n_default_text='You cannot make further deposits as your documents are still under review. We will notify you by email within 3 days once your verification is approved.' />
+                        );
+                        break;
+                    case routes.cashier_withdrawal:
+                        description = (
+                            <Localize i18n_default_text='You cannot make a withdrawal as your documents are still under review. We will notify you by email within 3 days once your verification is approved.' />
+                        );
+                        break;
+                    case routes.cashier_acc_transfer:
+                        description = (
+                            <Localize i18n_default_text='You cannot make a fund transfer as your documents are still under review. We will notify you by email within 3 days once your verification is approved.' />
+                        );
+                        break;
+                    default:
+                        break;
+                }
+                return description;
+            };
+
+            return {
+                icon: 'IcCashierLocked',
+                title: localize('Cashier is locked'),
+                description: getDescription(),
+            };
+        }
         if (ask_financial_risk_approval)
             return {
                 icon: 'IcCashierLocked',

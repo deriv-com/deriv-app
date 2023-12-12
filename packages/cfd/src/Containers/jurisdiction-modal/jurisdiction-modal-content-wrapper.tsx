@@ -14,7 +14,7 @@ import { MARKET_TYPE, JURISDICTION } from '../../Helpers/cfd-config';
 const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
     const { client, traders_hub } = useStore();
 
-    const { show_eu_related_content } = traders_hub;
+    const { show_eu_related_content, is_eu_user } = traders_hub;
 
     const {
         trading_platform_available_accounts,
@@ -183,7 +183,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                 toggleCFDVerificationModal();
             }
         } else if (is_maltainvest_selected) {
-            if (poi_acknowledged_for_maltainvest && poa_acknowledged) {
+            if (is_eu_user || (poi_acknowledged_for_maltainvest && poa_acknowledged)) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();

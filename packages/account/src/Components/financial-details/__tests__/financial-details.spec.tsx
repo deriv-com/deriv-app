@@ -4,6 +4,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FinancialDetails from '../financial-details';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -39,8 +40,18 @@ describe('<FinancialDetails />', () => {
         expect(screen.getByText('Source of wealth')).toBeInTheDocument();
     };
 
+    const mock_store = mockStore({});
+
+    const renderComponent = () => {
+        render(
+            <StoreProvider store={mock_store}>
+                <FinancialDetails {...mock_props} />
+            </StoreProvider>
+        );
+    };
+
     it('should render "FinancialDetails" for desktop', () => {
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent();
 
         fieldsRenderCheck();
 
@@ -55,7 +66,7 @@ describe('<FinancialDetails />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent();
 
         fieldsRenderCheck();
 
@@ -67,7 +78,7 @@ describe('<FinancialDetails />', () => {
     });
 
     it('should trigger "Previous" button', () => {
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent();
 
         fieldsRenderCheck();
 
@@ -82,7 +93,7 @@ describe('<FinancialDetails />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent();
 
         fieldsRenderCheck();
 
@@ -128,7 +139,7 @@ describe('<FinancialDetails />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent();
 
         const select_inputs = screen.getAllByRole('combobox');
 
@@ -142,11 +153,7 @@ describe('<FinancialDetails />', () => {
     it('should show "Unemployed" in occupation list if employment status is not "Employed"', async () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
-        const new_mock_props = {
-            ...mock_props,
-            employment_status: 'Pensioner',
-        };
-        render(<FinancialDetails {...new_mock_props} />);
+        renderComponent();
 
         fieldsRenderCheck();
 

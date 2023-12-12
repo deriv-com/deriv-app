@@ -255,7 +255,6 @@ const personalDetailsConfig = <T>(
                 })
             ),
             is_svg: upgrade_info?.can_upgrade_to === 'svg',
-            is_mf: real_account_signup_target === 'maltainvest',
             account_opening_reason_list: [
                 {
                     text: localize('Hedging'),

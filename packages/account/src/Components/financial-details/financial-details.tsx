@@ -11,10 +11,12 @@ import {
 } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
+import { observer, useStore } from '@deriv/stores';
+import { EMPLOYMENT_VALUES } from '../../Constants/financial-details';
 import FinancialInformation from './financial-details-partials';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
+import InlineNoteWithIcon from '../inline-note-with-icon';
 
 type TFinancialDetailsFormValues = {
     income_source: string;
@@ -40,6 +42,7 @@ type TFinancialDetails = {
     ) => void;
     onCancel: (current_step: number, props: () => void) => void;
     validate: (values: TFinancialDetailsFormValues) => object;
+    is_eu_user: boolean;
     value: TFinancialDetailsFormValues;
     employment_status: string;
 };
@@ -50,12 +53,16 @@ type TFinancialDetails = {
  * @param {TFinancialDetails} props  - props of the component
  * @returns {React.ReactNode} React component that renders FinancialDetails form.
  */
-const FinancialDetails = (props: TFinancialDetails) => {
+const FinancialDetails = observer((props: TFinancialDetails) => {
     const handleCancel = (values: TFinancialDetailsFormValues) => {
         const current_step = props.getCurrentStep() - 1;
         props.onSave(current_step, values);
         props.onCancel(current_step, props.goToPreviousStep);
     };
+
+    const {
+        traders_hub: { is_eu_user },
+    } = useStore();
 
     const handleValidate = (values: TFinancialDetailsFormValues) => {
         const { errors } = splitValidationResultTypes(props.validate(values));
@@ -96,9 +103,26 @@ const FinancialDetails = (props: TFinancialDetails) => {
                                     height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
-                                        <Localize i18n_default_text='We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.' />
-                                    </Text>
+                                    {is_eu_user ? (
+                                        <div className='details-form__banner-container'>
+                                            <InlineNoteWithIcon
+                                                icon='IcAlertWarning'
+                                                message={
+                                                    <Localize i18n_default_text='We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.' />
+                                                }
+                                                title={localize('Why do we collect this?')}
+                                            />
+                                        </div>
+                                    ) : (
+                                        <Text
+                                            as='p'
+                                            color='prominent'
+                                            size='xxs'
+                                            className='trading-assessment__side-note'
+                                        >
+                                            <Localize i18n_default_text='We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.' />
+                                        </Text>
+                                    )}
                                     <ThemedScrollbars autohide={window.innerHeight >= 890} height={Number(height) - 77}>
                                         <div
                                             className={classNames(
@@ -133,6 +157,6 @@ const FinancialDetails = (props: TFinancialDetails) => {
             }}
         </Formik>
     );
-};
+});
 
 export default FinancialDetails;

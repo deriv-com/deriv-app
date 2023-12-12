@@ -7,12 +7,10 @@ import { useStore, observer } from '@deriv/stores';
 import RealAccountCard from './real-account-card';
 import './real-account-switcher.scss';
 import { IsIconCurrency } from 'Assets/svgs/currency';
+import { useMFAccountStatus } from '@deriv/hooks';
 
-type AccountNeedsVerificationProps = {
-    multipliers_account_status: string;
-};
-
-const AccountNeedsVerification = observer(({ multipliers_account_status }: AccountNeedsVerificationProps) => {
+const AccountNeedsVerification = observer(() => {
+    const mf_account_status = useMFAccountStatus();
     const { client, traders_hub } = useStore();
     const { account_list, loginid } = client;
     const { openModal, openFailedVerificationModal } = traders_hub;
@@ -21,7 +19,7 @@ const AccountNeedsVerification = observer(({ multipliers_account_status }: Accou
     const icon_title = account?.title;
 
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
-        multipliers_account_status,
+        mf_account_status,
         openFailedVerificationModal,
         'multipliers'
     );
@@ -39,15 +37,16 @@ const AccountNeedsVerification = observer(({ multipliers_account_status }: Accou
                 return openModal('currency_selection');
             }}
         >
-            <StatusBadge account_status={multipliers_account_status} icon={badge_icon} text={badge_text} />
+            <StatusBadge account_status={mf_account_status} icon={badge_icon} text={badge_text} />
         </CurrencySwitcherContainer>
     );
 });
 
 const RealAccountSwitcher = observer(() => {
     const { client, traders_hub } = useStore();
+    const mf_account_status = useMFAccountStatus();
     const { is_logging_in, is_switching, has_maltainvest_account } = client;
-    const { multipliers_account_status, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
+    const { is_eu_user, no_CR_account, no_MF_account } = traders_hub;
 
     const eu_account = is_eu_user && !no_MF_account;
     const cr_account = !is_eu_user && !no_CR_account;
@@ -61,8 +60,8 @@ const RealAccountSwitcher = observer(() => {
         );
     }
 
-    if (multipliers_account_status && is_eu_user) {
-        return <AccountNeedsVerification multipliers_account_status={multipliers_account_status} />;
+    if (mf_account_status && is_eu_user) {
+        return <AccountNeedsVerification />;
     }
 
     if (has_maltainvest_account && is_eu_user) {

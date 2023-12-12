@@ -44,5 +44,4 @@ const TradingAssessmentNewUser = ({
         />
     );
 };
-
 export default TradingAssessmentNewUser;

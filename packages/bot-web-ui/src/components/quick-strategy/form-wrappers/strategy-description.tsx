@@ -62,7 +62,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
             }
             case 'media':
                 return (
-                    <div>
+                    <div key={data.alt}>
                         <img className='long_description__image' src={data.src} alt={data.alt} />
                     </div>
                 );

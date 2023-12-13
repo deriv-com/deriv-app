@@ -12,6 +12,13 @@ type TRenderComponentProps = {
     store: ReturnType<typeof mockStore>;
 };
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useFileUploader: jest.fn(() => ({
+        upload: jest.fn(),
+    })),
+}));
+
 describe('proof-of-ownership-form.jsx', () => {
     const mock_store = mockStore({
         client: {

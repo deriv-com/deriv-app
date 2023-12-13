@@ -8,6 +8,13 @@ import test_data from './test-data';
 type TRequests = DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
 type TStatus = DeepRequired<GetAccountStatus>['authentication']['ownership']['status'];
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useFileUploader: jest.fn(() => ({
+        upload: jest.fn(),
+    })),
+}));
+
 describe('proof-of-ownership.jsx', () => {
     let ownership_temp: typeof test_data;
 

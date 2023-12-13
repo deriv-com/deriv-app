@@ -30,6 +30,7 @@ import {
     BARRIER_LINE_STYLES,
     TRADE_TYPES,
     hasBarrier,
+    isHighLow,
 } from '@deriv/shared';
 import { Analytics } from '@deriv/analytics';
 import type { TEvents } from '@deriv/analytics';
@@ -908,8 +909,17 @@ export default class TradeStore extends BaseStore {
                             const is_digit_contract = isDigitContractType(category?.toUpperCase() ?? '');
                             const is_multiplier = isMultiplierContract(category);
                             const contract_type = category?.toUpperCase();
+                            const is_call = category === 'Call';
+                            const is_put = category === 'Put';
+                            const is_high_low = isHighLow({ shortcode_info: extractInfoFromShortcode(shortcode) });
+                            const higher_lower_contact = is_high_low && is_call ? 'higher' : 'lower';
+                            const rise_fall_contract = !is_high_low && is_call ? 'rise' : 'fall';
+                            const call_put_contract = is_high_low ? higher_lower_contact : rise_fall_contract;
 
-                            if ((window as any).hj) (window as any).hj('event', `placed_${category}_trade`);
+                            if ((window as any).hj) {
+                                const event_string = `placed_${is_call || is_put ? call_put_contract : category}_trade`;
+                                (window as any).hj('event', event_string);
+                            }
 
                             this.root_store.contract_trade.addContract({
                                 contract_id,

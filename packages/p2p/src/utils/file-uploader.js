@@ -18,7 +18,7 @@ const isFileSupported = files => files.filter(each_file => getPotSupportedFiles(
 export const getErrorMessage = files =>
     isFileTooLarge(files) && isFileSupported(files)
         ? localize('Cannot upload a file over 5MB')
-        : localize('File uploaded is not supported');
+        : localize('The file you uploaded is not supported. Upload another.');
 
 /**
  * The function renames the files by removing any non ISO-8859-1 code point from filename and returns a new blob object with the updated file name.

@@ -1,0 +1,38 @@
+.dc-modal__container_verification-document-submitted-modal {
+    height: 28rem !important;
+    width: 44rem !important;
+}
+.account-management {
+    &__message {
+        margin-top: 1rem;
+        &-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 100% !important;
+        }
+        &-content {
+            display: flex;
+            width: 100%;
+            margin: 0 1.6rem;
+            padding-bottom: 2rem;
+            align-items: center;
+            flex-direction: column;
+            .dc-btn {
+                height: 4rem;
+                margin-top: 3.2rem;
+            }
+        }
+        &-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 12.8rem;
+            height: 12.8rem;
+        }
+    }
+
+    &__text-container {
+        margin-top: 1rem;
+    }
+}

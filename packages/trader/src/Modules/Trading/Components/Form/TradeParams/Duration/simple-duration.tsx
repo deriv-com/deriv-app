@@ -1,7 +1,9 @@
 import React from 'react';
 import { ButtonToggle, InputField } from '@deriv/components';
+import { getDurationMinMaxValues, getUnitMap } from '@deriv/shared';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import TradingDatePicker from '../../DatePicker';
+import DurationRangeText from './duration-range-text';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
@@ -34,9 +36,14 @@ const SimpleDuration = observer(
     }: TSimpleDuration) => {
         const { ui } = useStore();
         const { current_focus, setCurrentFocus } = ui;
-        const { contract_expiry_type, validation_errors } = useTraderStore();
+        const { contract_expiry_type, duration_min_max, validation_errors } = useTraderStore();
 
         const simple_duration_unit = simple_duration_unit_prop || ui.simple_duration_unit;
+
+        const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, simple_duration_unit);
+        const { name_plural, name } = getUnitMap()[simple_duration_unit];
+        const duration_unit_text = name_plural ?? name;
+
         const filterMinutesAndTicks = (arr: TSimpleDuration['duration_units_list']) => {
             const filtered_arr = arr.filter(du => du.value === 't' || du.value === 'm');
             if (filtered_arr.length <= 1) return [];
@@ -76,6 +83,9 @@ const SimpleDuration = observer(
                         {...number_input_props}
                         {...shared_input_props}
                     />
+                )}
+                {simple_duration_unit !== 't' && (
+                    <DurationRangeText min={min} max={max} duration_unit_text={duration_unit_text} />
                 )}
             </>
         );

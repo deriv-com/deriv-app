@@ -3,7 +3,7 @@ import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import DocumentUploader from '@binary-com/binary-document-uploader';
 import { Button } from '@deriv/components';
 import { readFiles, WS, UPLOAD_FILE_TYPE } from '@deriv/shared';
-import { TCoreStores } from '@deriv/stores/types';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
@@ -20,20 +20,15 @@ import {
 import { isValidPaymentMethodIdentifier, isValidFile } from './validation';
 
 type TProofOfOwnershipFormProps = {
-    client_email: TCoreStores['client']['email'];
     grouped_payment_method_data: Partial<Record<TPaymentMethod, TPaymentMethodInfo>>;
-    is_mobile: TCoreStores['ui']['is_mobile'];
-    refreshNotifications: TCoreStores['notifications']['refreshNotifications'];
-    updateAccountStatus: TCoreStores['client']['updateAccountStatus'];
 };
 
-const ProofOfOwnershipForm = ({
-    client_email,
-    grouped_payment_method_data,
-    is_mobile,
-    refreshNotifications,
-    updateAccountStatus,
-}: TProofOfOwnershipFormProps) => {
+const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOfOwnershipFormProps) => {
+    const { client, notifications, ui } = useStore();
+    const { refreshNotifications } = notifications;
+    const { email: client_email, updateAccountStatus } = client;
+    const { is_mobile } = ui;
+
     const grouped_payment_method_data_keys = Object.keys(grouped_payment_method_data) as Array<TPaymentMethod>;
 
     let initial_values: Partial<TProofOfOwnershipFormValue> = {};
@@ -168,7 +163,10 @@ const ProofOfOwnershipForm = ({
                             ...errors[card_key as TPaymentMethod],
                             [payment_id]: {
                                 ...(errors[card_key as TPaymentMethod]?.[payment_id] ?? {}),
-                                files: { ...errors[card_key as TPaymentMethod]?.[payment_id]?.files, [i]: verify_file },
+                                files: {
+                                    ...errors[card_key as TPaymentMethod]?.[payment_id]?.files,
+                                    [i]: verify_file,
+                                },
                             },
                         };
                     } else {
@@ -291,6 +289,8 @@ const ProofOfOwnershipForm = ({
             )}
         </Formik>
     );
-};
+});
+
+ProofOfOwnershipForm.displayName = 'ProofOfOwnershipForm';
 
 export default ProofOfOwnershipForm;

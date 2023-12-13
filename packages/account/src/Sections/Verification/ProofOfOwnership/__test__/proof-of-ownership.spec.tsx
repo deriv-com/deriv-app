@@ -14,6 +14,7 @@ describe('proof-of-ownership.jsx', () => {
     beforeAll(() => {
         ownership_temp = test_data;
     });
+    let store = mockStore({});
     const ProofOfOwnershipScreen = () => {
         return (
             <StoreProvider store={store}>
@@ -21,7 +22,6 @@ describe('proof-of-ownership.jsx', () => {
             </StoreProvider>
         );
     };
-    let store = mockStore({});
     it('should render no poo required status page', () => {
         store = mockStore({
             client: {

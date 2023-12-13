@@ -5,34 +5,40 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import ProofOfOwnershipForm from '../proof-of-ownership-form';
 
 import { grouped_payment_method_data } from './test-data';
+import { StoreProvider, mockStore } from '@deriv/stores';
+
+type TRenderComponentProps = {
+    props: React.ComponentProps<typeof ProofOfOwnershipForm>;
+    store: ReturnType<typeof mockStore>;
+};
 
 describe('proof-of-ownership-form.jsx', () => {
-    it('should render a single card item inside the form', () => {
-        render(
-            <ProofOfOwnershipForm
-                grouped_payment_method_data={{ beyonic: grouped_payment_method_data.beyonic }}
-                updateAccountStatus={jest.fn()}
-                refreshNotifications={jest.fn()}
-                is_dark_mode={false}
-                client_email={'test@testing.com'}
-                citizen='id'
-            />
+    const mock_store = mockStore({
+        client: {
+            email: 'test@testing.com',
+        },
+    });
+
+    const renderComponent = ({ props, store = mock_store }: TRenderComponentProps) => {
+        return render(
+            <StoreProvider store={store}>
+                <ProofOfOwnershipForm {...props} />
+            </StoreProvider>
         );
+    };
+
+    it('should render a single card item inside the form', () => {
+        renderComponent({ props: { grouped_payment_method_data: { beyonic: grouped_payment_method_data.beyonic } } });
+
         const cardItems = screen.getByTestId('beyonic');
         expect(cardItems).toBeInTheDocument();
     });
 
     it('should render multiple card items inside the form', () => {
-        render(
-            <ProofOfOwnershipForm
-                grouped_payment_method_data={grouped_payment_method_data}
-                updateAccountStatus={jest.fn()}
-                refreshNotifications={jest.fn()}
-                is_dark_mode={false}
-                client_email={'test@testing.com'}
-                citizen='id'
-            />
-        );
+        renderComponent({
+            props: { grouped_payment_method_data },
+        });
+
         Object.keys(grouped_payment_method_data).forEach(key => {
             const cardItem = screen.getByTestId(key);
             expect(cardItem).toBeInTheDocument();
@@ -40,16 +46,10 @@ describe('proof-of-ownership-form.jsx', () => {
     });
 
     it('should format identifier', async () => {
-        render(
-            <ProofOfOwnershipForm
-                grouped_payment_method_data={{ visa: grouped_payment_method_data.visa }}
-                updateAccountStatus={jest.fn()}
-                refreshNotifications={jest.fn()}
-                is_dark_mode={false}
-                client_email={'test@testing.com'}
-                citizen='id'
-            />
-        );
+        renderComponent({
+            props: { grouped_payment_method_data: { visa: grouped_payment_method_data.visa } },
+        });
+
         const poo_dropdown_button = await screen.findByTestId('dt_proof_of_ownership_button');
         fireEvent.click(poo_dropdown_button);
         const identifier_input = await screen.findByTestId('dt_payment_method_identifier');

@@ -12,10 +12,9 @@ import { TPaymentMethod, TPaymentMethodIdentifier, TPaymentMethodInfo, TAuthStat
 type TPaymentData = DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
 
 export const ProofOfOwnership = observer(() => {
-    const { client, notifications, ui } = useStore();
-    const { account_status, email: client_email, updateAccountStatus } = client;
-    const { is_dark_mode_on: is_dark_mode, is_mobile } = ui;
-    const { refreshNotifications } = notifications;
+    const { client, ui } = useStore();
+    const { account_status } = client;
+    const { is_dark_mode_on: is_dark_mode } = ui;
     const cards = account_status?.authentication?.ownership?.requests;
     const [status, setStatus] = useState<TAuthStatusCodes>(AUTH_STATUS_CODES.NONE);
 
@@ -44,6 +43,7 @@ export const ProofOfOwnership = observer(() => {
         });
         return { groups };
     }, [cards, is_dark_mode]);
+
     useEffect(() => {
         setStatus(
             (account_status?.authentication?.ownership?.status?.toLowerCase() as TAuthStatusCodes) ??
@@ -55,15 +55,7 @@ export const ProofOfOwnership = observer(() => {
     };
 
     if (cards?.length && status !== AUTH_STATUS_CODES.REJECTED) {
-        return (
-            <ProofOfOwnershipForm
-                client_email={client_email}
-                grouped_payment_method_data={grouped_payment_method_data.groups}
-                is_mobile={is_mobile}
-                refreshNotifications={refreshNotifications}
-                updateAccountStatus={updateAccountStatus}
-            />
-        );
+        return <ProofOfOwnershipForm grouped_payment_method_data={grouped_payment_method_data.groups} />;
     }
     if (status === AUTH_STATUS_CODES.VERIFIED) return <POOVerified />;
     if (status === AUTH_STATUS_CODES.PENDING) return <POOSubmitted />;
@@ -71,5 +63,7 @@ export const ProofOfOwnership = observer(() => {
     if (status === AUTH_STATUS_CODES.REJECTED) return <POORejetced onTryAgain={onTryAgain} />;
     return <Loading is_fullscreen={false} className='account__initial-loader' />;
 });
+
+ProofOfOwnership.displayName = 'ProofOfOwnership';
 
 export default withRouter(ProofOfOwnership);

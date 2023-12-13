@@ -1,4 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
+import { mockLocalStorageBeforeEachTest, restoreLocalStorageAfterEachTest } from '../../utils/tests';
 import useSyncLocalStorageClientAccounts from '../useSyncLocalStorageClientAccounts';
 
 jest.mock('usehooks-ts', () => ({
@@ -108,8 +109,13 @@ const defaultClientAccountsValue = {
 
 describe('useSyncLocalStorageClientAccounts', () => {
     beforeEach(() => {
+        mockLocalStorageBeforeEachTest();
         global.localStorage.clear();
         global.localStorage.setItem(localStorageKey, JSON.stringify(defaultClientAccountsValue));
+    });
+
+    afterEach(() => {
+        restoreLocalStorageAfterEachTest();
     });
 
     it('Should correctly put data in localStorage for new TRADING account', () => {

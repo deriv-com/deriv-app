@@ -8,6 +8,7 @@ import {
 import { toMoment } from '../../../../shared/src/utils/date';
 import { CFDSuccess } from '../../features/cfd/screens/CFDSuccess';
 import useDevice from '../../hooks/useDevice';
+import useSyncLocalStorageClientAccounts from '../../hooks/useSyncLocalStorageClientAccounts';
 import { ModalStepWrapper, WalletButton, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
 import { WalletResponsiveSvg } from '../WalletResponsiveSvg';
@@ -17,10 +18,15 @@ const DerivAppsGetAccount: React.FC = () => {
     const { show } = useModal();
     const { isDesktop } = useDevice();
     const { data: activeWallet } = useActiveWalletAccount();
-    const { isSuccess: isAccountCreationSuccess, mutate: createNewRealAccount } = useCreateNewRealAccount();
+    const {
+        data: newTradingAccountData,
+        isSuccess: isAccountCreationSuccess,
+        mutate: createNewRealAccount,
+    } = useCreateNewRealAccount();
     const {
         data: { country_code: countryCode, date_of_birth: dateOfBirth, first_name: firstName, last_name: lastName },
     } = useSettings();
+    const { addTradingAccountToLocalStorage } = useSyncLocalStorageClientAccounts();
 
     const { data: activeLinkedToTradingAccount } = useActiveLinkedToTradingAccount();
 
@@ -53,10 +59,13 @@ const DerivAppsGetAccount: React.FC = () => {
     ]);
 
     useEffect(() => {
+        if (newTradingAccountData && isAccountCreationSuccess) {
+            addTradingAccountToLocalStorage(newTradingAccountData);
+        }
         if (isAccountCreationSuccess) {
             openSuccessModal();
         }
-    }, [isAccountCreationSuccess, openSuccessModal]);
+    }, [addTradingAccountToLocalStorage, isAccountCreationSuccess, newTradingAccountData, openSuccessModal]);
 
     const createTradingAccount = () => {
         createNewRealAccount({

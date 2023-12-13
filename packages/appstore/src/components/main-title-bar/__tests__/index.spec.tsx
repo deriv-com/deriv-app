@@ -54,8 +54,24 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('MainTitleBar', () => {
+    const mock_store = mockStore({
+        exchange_rates: {
+            data: {
+                date: 1631032849924,
+            },
+        },
+        modules: {
+            cashier: {
+                account_transfer: { is_transfer_confirm: false },
+                general_store: { is_loading: false },
+            },
+        },
+        client: {
+            is_landing_company_loaded: false,
+        },
+        feature_flags: { data: { wallet: false } },
+    });
     const render_container = (mock_store_override?: ReturnType<typeof mockStore>) => {
-        const mock_store = mockStore({ feature_flags: { data: { wallet: false } } });
         const wrapper = ({ children }: React.PropsWithChildren) => (
             <APIProvider>
                 <StoreProvider store={mock_store_override ?? mock_store}>
@@ -109,7 +125,13 @@ describe('MainTitleBar', () => {
         expect(screen.getByText(/Trader's Hub/)).toBeInTheDocument();
     });
 
-    it('should render the total assets text', () => {
+    it('should show total assets loader when platforms are not yet loaded', () => {
+        render_container();
+        expect(screen.getByText(/Loading/)).toBeInTheDocument();
+    });
+
+    it('should render the total assets text when platforms are loaded', () => {
+        mock_store.client.is_landing_company_loaded = true;
         render_container();
         expect(screen.getByText(/Total assets/)).toBeInTheDocument();
     });

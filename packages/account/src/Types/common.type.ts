@@ -163,6 +163,11 @@ export type TServerError = {
     fields?: string[];
 };
 
+export type TFilesDescription = {
+    descriptions: { id: string; value: JSX.Element }[];
+    title: React.ReactNode;
+};
+
 export type TTradingAssessmentForm = Required<
     Pick<
         GetFinancialAssessment,

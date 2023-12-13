@@ -1,6 +1,7 @@
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { filterDisabledPositions, formatPortfolioPosition, isVerificationServiceSupported } from '../format-response';
 import { LocalStore } from '../../storage';
+import { CONTRACT_TYPES } from '../../contract';
 import { getContractTypeFeatureFlag } from '../../constants';
 
 jest.mock('../../constants', () => ({
@@ -19,7 +20,7 @@ describe('format-response', () => {
     const portfolio_pos = {
         buy_price: 2500.5,
         contract_id: 1234,
-        contract_type: 'ASIANU',
+        contract_type: CONTRACT_TYPES.ASIAN.UP,
         longcode: 'test \n test \n test',
         payout: 3500.1,
         symbol: 'R_25',
@@ -113,7 +114,7 @@ describe('format-response', () => {
             contract_update: undefined,
             purchase: 2500.5,
             reference: +5678,
-            type: 'ASIANU',
+            type: CONTRACT_TYPES.ASIAN.UP,
             contract_info: portfolio_pos,
         });
     });

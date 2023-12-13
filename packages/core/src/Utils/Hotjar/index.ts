@@ -1,11 +1,11 @@
 import { epochToMoment, toMoment } from '@deriv/shared';
 import { TCoreStores } from '@deriv/stores/types';
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProductionOrStaging = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const initHotjar = (client: TCoreStores['client']) => {
-    // To initialize only on licensed domains.
-    if (!isProduction) return;
+    // To initialize only on staging and production links
+    if (!isProductionOrStaging) return;
 
     /**
      * Inject: External Script - Hotjar
@@ -36,6 +36,7 @@ const initHotjar = (client: TCoreStores['client']) => {
             'Account created': account_open_date ? toMoment(account_open_date).format('YYYY-MM-DD') : '',
             'Account type': account_type,
             'User country': client.clients_country,
+            'Beta chart': client.is_beta_chart,
         });
     })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
 };

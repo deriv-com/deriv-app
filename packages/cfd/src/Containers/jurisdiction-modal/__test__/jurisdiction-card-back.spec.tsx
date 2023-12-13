@@ -34,14 +34,16 @@ describe('<JurisdictionCardBack />', () => {
         );
         expect(screen.getByText('We need you to submit these in order to get this account:')).toBeInTheDocument();
         expect(screen.queryByText('A selfie of yourself.')).not.toBeInTheDocument();
-        expect(screen.queryByText('Document number (identity card, passport)')).not.toBeInTheDocument();
+        expect(
+            screen.queryByText(`Document number (e.g. identity card, passport, driver's license)`)
+        ).not.toBeInTheDocument();
         expect(
             screen.queryByText(
                 'A recent utility bill (e.g. electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
             )
         ).not.toBeInTheDocument();
         expect(
-            screen.queryByText('A copy of your identity document (identity card, passport)')
+            screen.queryByText(`A copy of your identity document (e.g. identity card, passport, driver's license)`)
         ).not.toBeInTheDocument();
         exampleVerificationMessage();
     });
@@ -51,7 +53,7 @@ describe('<JurisdictionCardBack />', () => {
         render(<JurisdictionCardBack {...mock_props} />);
         expect(screen.queryByText('A selfie of yourself.')).not.toBeInTheDocument();
         expect(
-            screen.queryByText('A copy of your identity document (identity card, passport)')
+            screen.queryByText(`A copy of your identity document (e.g. identity card, passport, driver's license)`)
         ).not.toBeInTheDocument();
         expect(screen.getByText('We need you to submit these in order to get this account:')).toBeInTheDocument();
         expect(

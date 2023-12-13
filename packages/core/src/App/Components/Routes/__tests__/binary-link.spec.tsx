@@ -8,8 +8,6 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 type TMockBinaryLink = {
     active_class?: string;
     to?: string;
-    has_error?: boolean;
-    setError?: () => void;
 };
 
 let store = mockStore();

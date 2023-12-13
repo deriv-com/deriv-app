@@ -4,7 +4,6 @@ import { Button, Icon, Modal, Money, StatusBadge, Text } from '@deriv/components
 import { localize } from '@deriv/translations';
 import { getCurrencyName } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import RootStore from 'Stores/index';
 import CurrencyIcon from './currency';
 import { AccountListDetail } from './types';
 import classNames from 'classnames';

@@ -4,8 +4,8 @@ import { Text } from '@deriv/components';
 import { TIDVErrorStatus, IDV_ERROR_STATUS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import IdvDocumentPending from 'Assets/ic-idv-document-pending.svg';
-import PoaButton from 'Components/poa/poa-button';
+import IdvDocumentPending from '../../../../Assets/ic-idv-document-pending.svg';
+import PoaButton from '../../../poa/poa-button';
 
 type TIdvSubmitComplete = {
     is_from_external: boolean;

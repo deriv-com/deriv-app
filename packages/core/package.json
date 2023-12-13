@@ -89,7 +89,7 @@
         "@babel/polyfill": "^7.4.4",
         "@datadog/browser-rum": "^4.37.0",
         "@deriv/account": "^1.0.0",
-        "@deriv/analytics": "^1.4.4",
+        "@deriv/analytics": "^1.4.5",
         "@deriv/api": "^1.0.0",
         "@deriv/appstore": "^0.0.4",
         "@deriv/wallets": "^1.0.0",

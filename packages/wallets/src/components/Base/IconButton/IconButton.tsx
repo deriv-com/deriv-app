@@ -1,6 +1,6 @@
 import React, { ButtonHTMLAttributes, ComponentProps, forwardRef, Ref } from 'react';
 import classNames from 'classnames';
-import { TGenericSizes } from '../types';
+import { TGenericSizes } from '../../../types';
 import './IconButton.scss';
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

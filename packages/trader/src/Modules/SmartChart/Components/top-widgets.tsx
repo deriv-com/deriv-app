@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { isEnded, isAccumulatorContract, isDigitContract } from '@deriv/shared';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { ChartTitle } from 'Modules/SmartChart';
 import { ChartTitleBeta } from 'Modules/SmartChartBeta';
-import BuyToastNotification from './buy-toast-notification';
-import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import RecentTradeInfo from './recent-trade-info';
 
 type TTopWidgets = {
     InfoBox?: React.ReactNode;
@@ -18,37 +15,12 @@ type TTopWidgets = {
     onSymbolChange?: ReturnType<typeof useTraderStore>['onChange'];
     open?: boolean;
     open_market?: {
-        category: string | null;
-        subcategory?: string | null;
-    };
+        category?: string;
+        subcategory?: string;
+    } | null;
     theme?: string;
     y_axis_width?: number;
 };
-
-const RecentTradeInfo = observer(() => {
-    const { contract_trade, client } = useStore();
-    const { granularity, filtered_contracts, markers_array } = contract_trade;
-
-    const latest_tick_contract = client.is_beta_chart
-        ? filtered_contracts[filtered_contracts.length - 1]
-        : markers_array[markers_array.length - 1];
-    if (
-        !latest_tick_contract?.contract_info.tick_stream ||
-        isAccumulatorContract(latest_tick_contract.contract_info.contract_type)
-    )
-        return null;
-
-    const is_ended = isEnded(latest_tick_contract.contract_info);
-    if (is_ended || granularity !== 0) return null;
-
-    const { contract_type, tick_stream, tick_count } = latest_tick_contract.contract_info;
-    const current_tick = isDigitContract(contract_type) ? tick_stream.length : Math.max(tick_stream.length - 1, 0);
-    return (
-        <Text weight='bold' className='recent-trade-info'>
-            {localize('Tick')} {current_tick}/{tick_count}
-        </Text>
-    );
-});
 
 const TopWidgets = ({
     InfoBox,
@@ -83,7 +55,6 @@ const TopWidgets = ({
                     width: `calc(100% - ${y_axis_width ? y_axis_width + 5 : 0}px)`,
                 }}
             >
-                {is_mobile && <BuyToastNotification />}
                 {ChartTitleLocal}
                 {!is_digits_widget_active && <RecentTradeInfo />}
             </div>

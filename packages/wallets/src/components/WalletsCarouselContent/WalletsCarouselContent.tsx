@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useWalletAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useStaleWalletsAccountsList } from '@deriv/api';
 import { ProgressBar } from '../Base';
 import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
@@ -11,60 +11,67 @@ type TProps = {
     onWalletSettled?: (value: boolean) => void;
 };
 
+/**
+ * carousel component
+ * idea behind data flow here:
+ * - Embla is the SINGLE SOURCE OF TRUTH for current active card, so the state flow / data flow is simple
+ * - everything else gets in sync with Embla eventually
+ */
 const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
-    const { isLoading: isAuthorizeLoading, switchAccount } = useAuthorize();
+    const { switchAccount } = useAuthorize();
+    const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useStaleWalletsAccountsList();
+    const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
-    const { data: walletAccountsList } = useWalletAccountsList();
-    const [isCarouselInitialized, setIsCarouselInitialized] = useState(false);
+
+    const [selectedEmblaIndex, setSelectedEmblaIndex] = useState(-1);
+    const [isInitialDataLoading, setIsInitialDataLoading] = useState(true);
+
     const [walletsCarouselEmblaRef, walletsCarouselEmblaApi] = useEmblaCarousel({
         containScroll: false,
         skipSnaps: true,
     });
 
+    // set initial wallet id
     useEffect(() => {
-        if (walletsCarouselEmblaApi) {
-            setIsCarouselInitialized(true);
-        }
-    }, [walletsCarouselEmblaApi]);
-
-    const { data: activeWallet } = useActiveWalletAccount();
-    const activeWalletIndex = useMemo(
-        () =>
-            walletAccountsList?.findIndex(wallet => wallet.loginid === activeWallet?.loginid) ??
-            walletsCarouselEmblaApi?.selectedScrollSnap() ??
-            0,
-        [activeWallet?.loginid, walletAccountsList, walletsCarouselEmblaApi]
-    );
-
-    const [progressBarActiveIndex, setProgressBarActiveIndex] = useState(activeWalletIndex + 1);
-
-    useEffect(() => {
-        if (isCarouselInitialized) {
-            walletsCarouselEmblaApi?.scrollTo(activeWalletIndex);
-            setProgressBarActiveIndex(activeWalletIndex + 1);
-        }
-    }, [activeWalletIndex, isCarouselInitialized, walletsCarouselEmblaApi]);
-
-    useEffect(() => {
-        walletsCarouselEmblaApi?.on('settle', () => {
-            const scrollSnapIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
-            const loginid = walletAccountsList?.[scrollSnapIndex]?.loginid;
-            if (activeWallet?.loginid !== loginid) {
-                switchAccount(loginid || '');
+        if (selectedEmblaIndex === -1 && !isActiveWalletLoading) {
+            const activeWalletIndex = walletAccountsList?.findIndex(({ loginid }) => loginid === activeWallet?.loginid);
+            if (activeWalletIndex !== undefined && activeWalletIndex !== -1) {
+                setSelectedEmblaIndex(activeWalletIndex);
             }
-            onWalletSettled?.(true);
-        });
+        }
+    }, [activeWallet, isActiveWalletLoading]);
 
+    // bind to embla change api
+    useEffect(() => {
         walletsCarouselEmblaApi?.on('select', () => {
             const scrollSnapIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
-            setProgressBarActiveIndex(scrollSnapIndex + 1);
-            onWalletSettled?.(false);
+            setSelectedEmblaIndex(scrollSnapIndex);
         });
-    }, [walletsCarouselEmblaApi, switchAccount, walletAccountsList, activeWallet?.loginid, onWalletSettled]);
 
-    const amountOfSteps = useMemo(() => walletAccountsList?.map(wallet => wallet.loginid), [walletAccountsList]);
+        // on settle, this is only for tutorial / onboarding plugin in some other components,
+        walletsCarouselEmblaApi?.on('settle', () => {
+            onWalletSettled && onWalletSettled(true);
+        });
+    }, [walletsCarouselEmblaApi]);
 
-    if (isAuthorizeLoading || isCurrencyConfigLoading) {
+    // load active wallet whenever its changed
+    useEffect(() => {
+        const selectedLoginId = walletAccountsList?.[selectedEmblaIndex]?.loginid;
+        if (selectedLoginId) {
+            switchAccount(selectedLoginId);
+            walletsCarouselEmblaApi?.scrollTo(selectedEmblaIndex, true);
+        }
+    }, [selectedEmblaIndex]);
+
+    // set the initial data loading flag to false once all "is loading" flags are false,
+    // as then and only then we can display all the stuff
+    useEffect(() => {
+        if (!isWalletAccountsListLoading && !isActiveWalletLoading && !isCurrencyConfigLoading) {
+            setIsInitialDataLoading(false);
+        }
+    }, [isWalletAccountsListLoading, isActiveWalletLoading, isCurrencyConfigLoading]);
+
+    if (isInitialDataLoading) {
         return <WalletsCarouselLoader />;
     }
 
@@ -83,10 +90,9 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
             </div>
             <div className='wallets-carousel-content__progress-bar'>
                 <ProgressBar
-                    activeIndex={progressBarActiveIndex}
-                    indexes={amountOfSteps || []}
-                    isTransition
-                    setActiveIndex={switchAccount}
+                    activeIndex={selectedEmblaIndex}
+                    count={walletAccountsList?.length || 0}
+                    onClick={walletsCarouselEmblaApi?.scrollTo}
                 />
             </div>
             <WalletListCardActions

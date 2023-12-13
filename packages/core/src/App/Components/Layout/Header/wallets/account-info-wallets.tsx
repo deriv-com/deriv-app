@@ -133,6 +133,7 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
         if (
             linked_dtrade_trading_account_loginid &&
             linked_dtrade_trading_account_loginid !== loginid &&
+            //temporary disable switching to DerivApps account from /wallets/cashier routes
             !is_wallets_cashier_route
         ) {
             switchAccount(linked_dtrade_trading_account_loginid);
@@ -141,8 +142,10 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
 
     const linked_wallet = wallet_list?.find(wallet => wallet.dtrade_loginid === linked_dtrade_trading_account_loginid);
 
-    if (!linked_wallet || is_wallets_cashier_route)
-        return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />;
+    //temporary remove DerivApps account switcher from /wallets/cashier routes
+    if (is_wallets_cashier_route) return <div style={{ marginRight: '10px' }} />;
+
+    if (!linked_wallet) return <AccountsInfoLoader is_logged_in={is_logged_in} is_mobile={is_mobile} speed={3} />;
 
     return (
         <div className='acc-info__wrapper'>

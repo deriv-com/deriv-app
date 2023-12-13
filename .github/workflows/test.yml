@@ -35,12 +35,10 @@ jobs:
       run: npx tsc --project packages/traders-hub/tsconfig.json -noEmit
     - name: Check ESLint for @deriv/wallets
       run: npx eslint --fix --ignore-path packages/wallets/.eslintignore --config packages/wallets/.eslintrc.js packages/wallets
-    - name: Check Stylelint for @deriv/traders-hub
-      run: npx stylelint packages/traders-hub/**/*.scss
-    - name: Check Stylelint for @deriv/wallets
-      run: npx stylelint packages/wallets/**/*.scss
     - name: Check ESLint for @deriv/traders-hub
       run: npx eslint --fix --ignore-path packages/traders-hub/.eslintignore --config packages/traders-hub/.eslintrc.js packages/traders-hub
+    - name: Check Stylelint for @deriv/wallets
+      run: npx stylelint packages/wallets/**/*.scss
     - name: Check tests for @deriv/hooks
       run: bash ./scripts/check-tests.sh packages/hooks/src
     - name: Check tests for @deriv/utils

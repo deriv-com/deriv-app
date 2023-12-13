@@ -3,8 +3,8 @@ import { TMessageFnProps } from '../types';
 // this function should work once BE WALL-1440 is delivered
 const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     activeWallet,
+    activeWalletExchangeRates,
     displayMoney,
-    exchangeRatesWalletCurrency,
     limits,
     sourceAccount,
     sourceAmount,
@@ -24,10 +24,10 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     if (
         !sourceAccount.currency ||
         (sourceAccount.currency !== activeWallet.currency &&
-            !exchangeRatesWalletCurrency?.rates?.[sourceAccount.currency]) ||
+            !activeWalletExchangeRates?.rates?.[sourceAccount.currency]) ||
         !targetAccount.currency ||
         (targetAccount.currency !== activeWallet.currency &&
-            !exchangeRatesWalletCurrency?.rates?.[targetAccount.currency]) ||
+            !activeWalletExchangeRates?.rates?.[targetAccount.currency]) ||
         !sourceAccount.currencyConfig ||
         !targetAccount.currencyConfig
     )
@@ -37,12 +37,12 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
 
     const allowedSumConverted =
         allowedSumActiveWalletCurrency *
-        (exchangeRatesWalletCurrency?.rates?.[
+        (activeWalletExchangeRates?.rates?.[
             transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency
         ] ?? 1);
     const availableSumConverted =
         availableSumActiveWalletCurrency *
-        (exchangeRatesWalletCurrency?.rates?.[
+        (activeWalletExchangeRates?.rates?.[
             transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency
         ] ?? 1);
 
@@ -95,8 +95,8 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
 };
 
 const cumulativeAccountLimitsMessageFn = ({
+    USDExchangeRates,
     displayMoney,
-    exchangeRatesUSD,
     limits,
     sourceAccount,
     sourceAmount,
@@ -118,19 +118,19 @@ const cumulativeAccountLimitsMessageFn = ({
 
     if (
         !sourceAccount.currency ||
-        (sourceAccount.currency !== 'USD' && !exchangeRatesUSD?.rates?.[sourceAccount.currency]) ||
+        (sourceAccount.currency !== 'USD' && !USDExchangeRates?.rates?.[sourceAccount.currency]) ||
         !targetAccount.currency ||
-        (targetAccount.currency !== 'USD' && !exchangeRatesUSD?.rates?.[targetAccount.currency]) ||
+        (targetAccount.currency !== 'USD' && !USDExchangeRates?.rates?.[targetAccount.currency]) ||
         !sourceAccount.currencyConfig ||
         !targetAccount.currencyConfig
     )
         return null;
 
-    const sourceCurrencyLimit = allowedSumUSD * (exchangeRatesUSD?.rates?.[sourceAccount.currency] ?? 1);
-    const targetCurrencyLimit = allowedSumUSD * (exchangeRatesUSD?.rates?.[targetAccount.currency] ?? 1);
+    const sourceCurrencyLimit = allowedSumUSD * (USDExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
+    const targetCurrencyLimit = allowedSumUSD * (USDExchangeRates?.rates?.[targetAccount.currency] ?? 1);
 
-    const sourceCurrencyRemainder = availableSumUSD * (exchangeRatesUSD?.rates?.[sourceAccount.currency] ?? 1);
-    const targetCurrencyRemainder = availableSumUSD * (exchangeRatesUSD?.rates?.[targetAccount.currency] ?? 1);
+    const sourceCurrencyRemainder = availableSumUSD * (USDExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
+    const targetCurrencyRemainder = availableSumUSD * (USDExchangeRates?.rates?.[targetAccount.currency] ?? 1);
 
     const formattedSourceCurrencyLimit = displayMoney?.(
         sourceCurrencyLimit,

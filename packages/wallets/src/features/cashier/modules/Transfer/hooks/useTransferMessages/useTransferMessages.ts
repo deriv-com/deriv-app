@@ -13,8 +13,8 @@ const useTransferMessages = (
     fromAccount: NonNullable<TAccount> | undefined,
     toAccount: NonNullable<TAccount> | undefined,
     formData: TInitialTransferFormValues,
-    exchangeRatesUSD?: THooks.ExchangeRate,
-    exchangeRatesWalletCurrency?: THooks.ExchangeRate
+    activeWalletExchangeRates?: THooks.ExchangeRate,
+    USDExchangeRates?: THooks.ExchangeRate
 ) => {
     const { data: authorizeData } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
@@ -52,13 +52,13 @@ const useTransferMessages = (
     messageFns.forEach(messageFn => {
         const message = messageFn({
             activeWallet,
+            activeWalletExchangeRates,
             displayMoney,
-            exchangeRatesUSD,
-            exchangeRatesWalletCurrency,
             limits: accountLimits,
             sourceAccount: fromAccount,
             sourceAmount,
             targetAccount: toAccount,
+            USDExchangeRates,
         });
         if (message) messages.push(message);
     });

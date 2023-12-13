@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { useTransferBetweenAccounts } from '@deriv/api';
+import { useGetExchangeRate, useTransferBetweenAccounts } from '@deriv/api';
 import type { THooks } from '../../../../../types';
 import { useExtendedTransferAccountProperties, useSortedTransferAccounts } from '../hooks';
 import type { TInitialTransferFormValues } from '../types';
@@ -14,11 +14,14 @@ type TReceipt = {
 };
 
 export type TTransferContext = {
+    USDExchangeRates?: THooks.ExchangeRate;
     accounts: ReturnType<typeof useExtendedTransferAccountProperties>['accounts'];
     activeWallet: ReturnType<typeof useExtendedTransferAccountProperties>['activeWallet'];
+    activeWalletExchangeRates?: THooks.ExchangeRate;
     error: ReturnType<typeof useTransferBetweenAccounts>['error'];
     isLoading: boolean;
     receipt?: TReceipt;
+    refetchExchangeRates: ReturnType<typeof useGetExchangeRate>['refetch'];
     requestTransferBetweenAccounts: (values: TInitialTransferFormValues) => void;
     resetTransfer: VoidFunction;
 };
@@ -46,6 +49,22 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
     } = useExtendedTransferAccountProperties(data?.accounts || transferAccounts);
     const [receipt, setReceipt] = useState<TReceipt>();
     const sortedAccounts = useSortedTransferAccounts(accounts);
+
+    const { data: activeWalletExchangeRates, refetch: refetchActiveWalletExchangeRates } = useGetExchangeRate({
+        base_currency: activeWallet?.currency ?? 'USD',
+        loginid: activeWallet?.loginid,
+    });
+    const { data: USDExchangeRates, refetch: refetchUSDExchangeRates } = useGetExchangeRate({
+        base_currency: 'USD',
+        loginid: activeWallet?.loginid,
+    });
+    const refetchExchangeRates = useCallback(() => {
+        refetchUSDExchangeRates();
+        const updatedActiveWalletExchangeRates = refetchActiveWalletExchangeRates();
+
+        return updatedActiveWalletExchangeRates;
+    }, [refetchUSDExchangeRates, refetchActiveWalletExchangeRates]);
+
     const isLoading = (!data?.accounts && !transferAccounts) || isTransferAccountsLoading || isModifiedAccountsLoading;
 
     const requestTransferAccounts = useCallback(() => mutate({ accounts: 'all' }), [mutate]);
@@ -97,11 +116,14 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
             value={{
                 accounts: sortedAccounts,
                 activeWallet,
+                activeWalletExchangeRates,
                 error,
                 isLoading,
                 receipt,
+                refetchExchangeRates,
                 requestTransferBetweenAccounts,
                 resetTransfer,
+                USDExchangeRates,
             }}
         >
             {children}

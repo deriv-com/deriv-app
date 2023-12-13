@@ -1,25 +1,22 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
 import { FadedAnimatedList, WalletAlertMessage } from '../../../../../../components';
-import { THooks } from '../../../../../../types';
 import { useTransferMessages } from '../../hooks';
+import { useTransfer } from '../../provider';
 import { TInitialTransferFormValues } from '../../types';
 import './TransferMessages.scss';
 
-type TProps = {
-    exchangeRatesUSD?: THooks.ExchangeRate;
-    exchangeRatesWalletCurrency?: THooks.ExchangeRate;
-};
-
-const TransferMessages: React.FC<TProps> = ({ exchangeRatesUSD, exchangeRatesWalletCurrency }) => {
+const TransferMessages = () => {
     const { values } = useFormikContext<TInitialTransferFormValues>();
+
+    const { USDExchangeRates, activeWalletExchangeRates } = useTransfer();
 
     const messages = useTransferMessages(
         values.fromAccount,
         values.toAccount,
         values,
-        exchangeRatesUSD,
-        exchangeRatesWalletCurrency
+        USDExchangeRates,
+        activeWalletExchangeRates
     );
 
     return (

@@ -1,27 +1,22 @@
 import React, { useCallback, useEffect } from 'react';
 import { useFormikContext } from 'formik';
 import { useDebounce } from 'usehooks-ts';
-import { useGetExchangeRate } from '@deriv/api';
 import { ATMAmountInput, Timer } from '../../../../../../components';
-import { THooks } from '../../../../../../types';
+import { useTransfer } from '../../provider';
 import type { TInitialTransferFormValues } from '../../types';
 import './TransferFormAmountInput.scss';
 
 type TProps = {
-    exchangeRatesWalletCurrency?: THooks.ExchangeRate;
     fieldName: 'fromAmount' | 'toAmount';
-    refetchExchangeRates?: ReturnType<typeof useGetExchangeRate>['refetch'];
 };
 
 const MAX_DIGITS = 14;
 
-const TransferFormAmountInput: React.FC<TProps> = ({
-    exchangeRatesWalletCurrency,
-    fieldName,
-    refetchExchangeRates,
-}) => {
+const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const { setFieldValue, setValues, values } = useFormikContext<TInitialTransferFormValues>();
     const { fromAccount, fromAmount, toAccount, toAmount } = values;
+
+    const { activeWalletExchangeRates, refetchExchangeRates } = useTransfer();
 
     const isFromAmountFieldName = fieldName === 'fromAmount';
     const isSameCurrency = fromAccount?.currency === toAccount?.currency;
@@ -39,9 +34,9 @@ const TransferFormAmountInput: React.FC<TProps> = ({
 
     const amountConverterHandler = useCallback(
         (value: number) => {
-            if (!toAccount?.currency || !exchangeRatesWalletCurrency?.rates || !isAmountFieldActive) return;
+            if (!toAccount?.currency || !activeWalletExchangeRates?.rates || !isAmountFieldActive) return;
 
-            const toRate = exchangeRatesWalletCurrency.rates[toAccount.currency];
+            const toRate = activeWalletExchangeRates.rates[toAccount.currency];
 
             if (isFromAmountFieldName) {
                 const convertedToAmount = Number(
@@ -56,7 +51,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({
             }
         },
         [
-            exchangeRatesWalletCurrency?.rates,
+            activeWalletExchangeRates?.rates,
             fromAccount?.currencyConfig?.fractional_digits,
             isAmountFieldActive,
             isFromAmountFieldName,

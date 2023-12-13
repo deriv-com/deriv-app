@@ -25,7 +25,7 @@ describe('<Verification />', () => {
 
         const el_dp2p_verification_container = screen.getByTestId('dt_verification_container');
         expect(el_dp2p_verification_container).toBeInTheDocument();
-        expect(screen.getByText('Upload your documents to verify your identity.')).toBeInTheDocument();
+        expect(screen.getByText('Upload documents to verify your identity.')).toBeInTheDocument();
     });
 
     it('Should ask for proof of address if poa is required', () => {
@@ -34,7 +34,7 @@ describe('<Verification />', () => {
         });
         render(<Verification />);
 
-        expect(screen.getByText('Upload your documents to verify your address.')).toBeInTheDocument();
+        expect(screen.getByText('Upload documents to verify your address.')).toBeInTheDocument();
     });
 
     it('Should redirect to account poi verification if poi has not been verified', () => {

@@ -15,7 +15,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
     const { advertiser_page_store, buy_sell_store, general_store } = useStores();
     const {
         client: { currency },
-        ui: { is_mobile },
+        ui: { is_desktop },
     } = useStore();
     const {
         effective_rate,
@@ -57,7 +57,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
                 key: 'NicknameModal',
                 props: {
                     onConfirm: showBuySellForm,
-                    should_hide_close_btn: !is_mobile,
+                    should_hide_close_btn: is_desktop,
                 },
             });
         }

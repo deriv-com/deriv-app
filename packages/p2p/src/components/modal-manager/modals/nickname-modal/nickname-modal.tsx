@@ -29,7 +29,7 @@ const NicknameModal = ({ onConfirm, should_hide_close_btn = false }: TNicknameMo
                         } else {
                             notifications.addNotificationMessage({
                                 key: 'p2p_advertiser_nickname_added',
-                                header: localize('Your nickname is successfully added.'),
+                                header: localize('Nickname added successfully!'),
                                 platform: 'P2P',
                                 should_hide_close_btn,
                                 type: 'announce',
@@ -47,10 +47,10 @@ const NicknameModal = ({ onConfirm, should_hide_close_btn = false }: TNicknameMo
                             >
                                 <Icon icon='IcCashierP2pUser' width='128' height='128' />
                                 <Text as='h5' weight='bold' className='nickname-modal__content--title'>
-                                    <Localize i18n_default_text='Choose a nickname' />
+                                    <Localize i18n_default_text='Choose your nickname' />
                                 </Text>
                                 <Text as='p' size='xs' className='nickname-modal__content--text'>
-                                    <Localize i18n_default_text='You will appear to other users as' />
+                                    <Localize i18n_default_text='This nickname will be visible to other Deriv P2P users.' />
                                 </Text>
                                 <div className='nickname-modal__field_wrapper'>
                                     <Field name='nickname'>
@@ -71,7 +71,7 @@ const NicknameModal = ({ onConfirm, should_hide_close_btn = false }: TNicknameMo
                                     </Field>
                                 </div>
                                 <Text align='center' className='nickname-modal__content--ps' size='xs'>
-                                    <Localize i18n_default_text='Once set, your nickname cannot be changed.' />
+                                    <Localize i18n_default_text='Note: Your nickname cannot be changed later.' />
                                 </Text>
                             </div>
                             <div className='nickname-modal__footer'>

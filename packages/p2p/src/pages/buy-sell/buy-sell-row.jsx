@@ -39,7 +39,7 @@ const BuySellRow = ({ row: advert }) => {
     const { showModal } = useModalManagerContext();
     const {
         client: { currency },
-        ui: { is_mobile },
+        ui: { is_desktop },
     } = useStore();
     const history = useHistory();
     const exchange_rate = useP2PExchangeRate(local_currency);
@@ -94,7 +94,7 @@ const BuySellRow = ({ row: advert }) => {
                 key: 'NicknameModal',
                 props: {
                     onConfirm: () => buy_sell_store.setSelectedAdvert(advert),
-                    should_hide_close_btn: !is_mobile,
+                    should_hide_close_btn: is_desktop,
                 },
             });
         } else {

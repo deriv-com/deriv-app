@@ -182,6 +182,7 @@ const DxtradeEnterPasswordModal = () => {
                         )
                     }
                     password={password}
+                    passwordError={error?.error?.code === 'PasswordError'}
                     platform={dxtradePlatform}
                 />
             );
@@ -194,11 +195,11 @@ const DxtradeEnterPasswordModal = () => {
         onSubmit,
         password,
         dxtradePlatform,
+        error?.error?.code,
         show,
     ]);
-
-    if (status === 'error') {
-        return <WalletError errorMessage={error?.error.message} onClick={() => hide()} title={error?.error?.code} />;
+    if (status === 'error' && error?.error?.code !== 'PasswordError') {
+        return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;
     }
 
     if (isMobile) {

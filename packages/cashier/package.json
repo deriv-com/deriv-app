@@ -41,6 +41,7 @@
         "@deriv/deriv-api": "^1.0.13",
         "@deriv/hooks": "^1.0.0",
         "@deriv/p2p": "^0.7.3",
+        "@deriv/p2p-v2": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",

@@ -261,7 +261,7 @@ const getModules = () => {
             getTitle: () => localize('Wallets'),
         },
         {
-            path: routes.P2P_V2,
+            path: routes.cashier_p2p_v2,
             component: P2P_V2,
             getTitle: () => localize('P2P-V2'),
         },

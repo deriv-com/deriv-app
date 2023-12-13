@@ -3,6 +3,10 @@ import { render, screen } from '@testing-library/react';
 import WalletsErrorScreen from '../WalletsErrorScreen';
 
 describe('WalletsErrorScreen', () => {
+    afterAll(() => {
+        jest.clearAllMocks();
+    });
+
     it('should show the correct title and icon with default message', () => {
         render(<WalletsErrorScreen />);
         expect(screen.getByTestId('dt_error_icon')).toBeInTheDocument();

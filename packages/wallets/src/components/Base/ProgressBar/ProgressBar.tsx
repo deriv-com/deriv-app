@@ -20,6 +20,7 @@ const ProgressBar: React.FC<TProps> = ({ activeIndex, indexes, isTransition = tr
                 return (
                     <div
                         className={`${barClassname} ${isTransition ? 'wallets-progress-bar-transition' : ''}`}
+                        data-testid='dt_progress_bar_item'
                         key={`progress-bar-${currentIndex}`}
                         onClick={() => setActiveIndex(value)}
                     />

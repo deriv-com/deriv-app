@@ -377,27 +377,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         &__personal-details {
-            &--dashboard {
-                & .account-form__fieldset {
-                    margin-bottom: 3.2rem;
-
-                    @include mobile {
-                        margin-bottom: 3.2rem;
-                    }
-                }
-
-                & .dc-field--error {
-                    color: var(--text-loss-danger);
-                }
-
-                & .account-form__footer-note {
-                    width: unset;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                }
-            }
-
             @include desktop {
                 .account__scrollbars_container {
                     padding-top: 2.4rem;

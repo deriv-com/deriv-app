@@ -11,7 +11,7 @@ describe('WithdrawalVerificationRequest', () => {
         const sendEmailButton = screen.getByText('Send email');
         expect(sendEmailButton).toBeInTheDocument();
 
-        expect(screen.getByText(/Click that link to your withdrawal request./)).toBeInTheDocument();
+        expect(screen.getByText(/Click that link to verify your withdrawal request./)).toBeInTheDocument();
         expect(screen.getByText('This is to protect your account from unauthorised withdrawals.')).toBeInTheDocument();
 
         const emailVerificationIcon = screen.getByTestId('dt_withdrawal_verification_request_icon');

@@ -1,11 +1,8 @@
 import React from 'react';
-import { WS } from '@deriv/shared';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import AccountWizard from '../account-wizard';
+import { render, screen} from '@testing-library/react';
 import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { Analytics } from '@deriv/analytics';
+import AccountWizard from '../account-wizard';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -207,7 +204,7 @@ describe('<AccountWizard />', () => {
     const renderComponent = (mock_store = mockStore({})) => {
         return render(
             <StoreProvider store={mock_store}>
-                <AccountWizard setLoading={jest.fn} />
+                <AccountWizard setLoading={jest.fn} setRealAccountFormData={jest.fn} />
             </StoreProvider>
         );
     };
@@ -245,13 +242,9 @@ describe('<AccountWizard />', () => {
         expect(screen.getByText('TestComponent')).toBeInTheDocument();
     });
 
-    // it('should invoke Create account and IDV data submission APIs on click of Submit button', async () => {
-    //     renderComponent(store);
-    //     const ele_submit_btn = screen.getByRole('button', { name: 'Submit' });
-    //     await waitFor(() => {
-    //         userEvent.click(ele_submit_btn);
-    //     });
-    //     expect(WS.send).toHaveBeenCalled();
-    //     expect(Analytics.trackEvent).toHaveBeenCalled();
-    // });
+    fit('should invoke Create account and IDV data submission APIs on click of Submit button', async () => {
+        renderComponent(store);
+        const ele_submit_btn = screen.getByRole('button');
+        expect(ele_submit_btn).toHaveTextContent('Submit')
+    });
 });

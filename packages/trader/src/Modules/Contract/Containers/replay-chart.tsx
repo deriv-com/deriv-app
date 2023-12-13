@@ -59,6 +59,7 @@ const ReplayChart = observer(
 
             if (is_mobile) {
                 chart_margin.bottom = 48;
+                chart_margin.top = 48;
             }
 
             return chart_margin;

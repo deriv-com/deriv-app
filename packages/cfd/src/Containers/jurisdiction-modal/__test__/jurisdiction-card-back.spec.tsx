@@ -37,7 +37,7 @@ describe('<JurisdictionCardBack />', () => {
         expect(screen.queryByText('Document number (identity card, passport)')).not.toBeInTheDocument();
         expect(
             screen.queryByText(
-                'A recent utility bill (electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
+                'A recent utility bill (e.g. electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
             )
         ).not.toBeInTheDocument();
         expect(
@@ -59,7 +59,7 @@ describe('<JurisdictionCardBack />', () => {
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'A recent utility bill (electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
+                'A recent utility bill (e.g. electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
             )
         ).toBeInTheDocument();
         exampleVerificationMessage();
@@ -75,7 +75,7 @@ describe('<JurisdictionCardBack />', () => {
         ).toBeInTheDocument();
         expect(
             screen.getByText(
-                'A recent utility bill (electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
+                'A recent utility bill (e.g. electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
             )
         ).toBeInTheDocument();
         exampleVerificationMessage();

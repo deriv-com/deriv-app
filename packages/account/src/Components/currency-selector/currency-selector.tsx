@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Field, Formik, FormikHandlers, FormikState } from 'formik';
 import { WebsiteStatus } from '@deriv/api-types';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
-import { getPlatformSettings, reorderCurrencies, getAddressDetailsFields } from '@deriv/shared';
+import { getPlatformSettings, reorderCurrencies, getAddressDetailsFields, CURRENCY_TYPE } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import RadioButton from './radio-button';
@@ -11,11 +11,6 @@ import RadioButtonGroup from './radio-button-group';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 export const Hr = () => <div className='currency-hr' />;
-
-const CURRENCY_TYPE: Record<string, 'crypto' | 'fiat'> = {
-    CRYPTO: 'crypto',
-    FIAT: 'fiat',
-};
 
 export type TCurrencySelectorFormProps = {
     currency: string;
@@ -77,7 +72,7 @@ const CurrencySelector = observer(
         has_wallet_account,
         value,
     }: TCurrencySelector) => {
-        const { client, ui } = useStore();
+        const { client, ui, traders_hub } = useStore();
 
         const {
             currency,
@@ -88,8 +83,9 @@ const CurrencySelector = observer(
             is_mt5_allowed,
             has_fiat,
             accounts,
-            is_eu,
         } = client;
+
+        const { is_eu_user } = traders_hub;
 
         const has_currency = Boolean(currency);
 
@@ -163,10 +159,17 @@ const CurrencySelector = observer(
         };
 
         const description = React.useMemo(() => {
-            const dmt5_label = is_eu ? localize('CFDs') : localize('Deriv MT5');
+            const dmt5_label = is_eu_user ? localize('CFDs') : localize('Deriv MT5');
             const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
-            if (is_dxtrade_allowed && is_mt5_allowed) {
+            if (is_eu_user && is_mt5_allowed) {
+                return (
+                    <Localize
+                        i18n_default_text="Enjoy a seamless trading experience with the selected fiat account. Please note that once you've made your first deposit or created a real {{dmt5_label}} account, your account currency cannot be changed."
+                        values={{ dmt5_label }}
+                    />
+                );
+            } else if (is_dxtrade_allowed && is_mt5_allowed) {
                 return (
                     <Localize
                         i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} or {{platform_name_dxtrade}} account.'
@@ -185,7 +188,7 @@ const CurrencySelector = observer(
             return (
                 <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.' />
             );
-        }, [is_eu, is_dxtrade_allowed, is_mt5_allowed]);
+        }, [is_eu_user, is_dxtrade_allowed, is_mt5_allowed]);
 
         return (
             <Formik
@@ -273,7 +276,7 @@ const CurrencySelector = observer(
                                         )}
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer is_bypassed={is_mobile}>
+                                <Modal.Footer has_separator is_bypassed={is_mobile}>
                                     <FormSubmitButton
                                         className={
                                             set_currency

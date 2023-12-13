@@ -23,7 +23,7 @@ const OnRampProviderCard = observer(({ provider }: TOnRampProviderCardProps) => 
         <div className='on-ramp__provider'>
             <div className='on-ramp__provider-logo'>
                 <Icon
-                    data_testid={is_dark_mode_on ? 'dti_provider_icon_dark' : 'dti_provider_icon_light'}
+                    data_testid={is_dark_mode_on ? 'dt_provider_icon_dark' : 'dt_provider_icon_light'}
                     icon={is_dark_mode_on ? provider.icon.dark : provider.icon.light}
                     width={logo_size}
                     height={logo_size}
@@ -38,14 +38,18 @@ const OnRampProviderCard = observer(({ provider }: TOnRampProviderCardProps) => 
             <div className='on-ramp__provider-payment-icons'>
                 <div className='on-ramp__provider-payment-icons-shadow' />
                 <NewsTicker speed={10}>
-                    {payment_icons.map((payment_icon, idx) => (
-                        <Icon
-                            data_testid={is_dark_mode_on ? 'dti_payment_icon_dark' : 'dti_payment_icon_light'}
-                            icon={is_dark_mode_on ? payment_icon.dark : payment_icon.light}
-                            key={idx}
-                            size={40}
-                        />
-                    ))}
+                    {payment_icons.map(payment_icon => {
+                        const icon = is_dark_mode_on ? payment_icon.dark : payment_icon.light;
+
+                        return (
+                            <Icon
+                                data_testid={is_dark_mode_on ? 'dt_payment_icon_dark' : 'dt_payment_icon_light'}
+                                icon={icon}
+                                key={icon}
+                                size={40}
+                            />
+                        );
+                    })}
                 </NewsTicker>
             </div>
             <Button

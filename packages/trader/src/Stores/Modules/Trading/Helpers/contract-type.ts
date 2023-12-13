@@ -17,6 +17,7 @@ import {
     getContractSubtype,
     getLocalizedBasis,
     TTradeTypesCategories,
+    TRADE_TYPES,
 } from '@deriv/shared';
 import ServerTime from '_common/base/server_time';
 import { localize } from '@deriv/translations';
@@ -249,8 +250,12 @@ export const ContractType = (() => {
     const getContractType = (list: TTradeTypesCategories, contract_type: string) => {
         const arr_list: string[] = Object.keys(list || {})
             .reduce<string[]>((k, l) => [...k, ...(list[l].categories as TTextValueStrings[]).map(ct => ct.value)], [])
-            .filter(type => unsupported_contract_types_list.indexOf(type) === -1)
-            .sort((a, b) => (a === 'multiplier' || b === 'multiplier' ? -1 : 0));
+            .filter(
+                type =>
+                    unsupported_contract_types_list.indexOf(type as typeof unsupported_contract_types_list[number]) ===
+                    -1
+            )
+            .sort((a, b) => (a === TRADE_TYPES.MULTIPLIER || b === TRADE_TYPES.MULTIPLIER ? -1 : 0));
 
         return {
             contract_type: getArrayDefaultValue(arr_list, contract_type),
@@ -654,7 +659,7 @@ export const ContractType = (() => {
         const arr_cancellation_range: string[] =
             getPropertyValue(available_contract_types, [contract_type, 'config', 'cancellation_range']) || [];
         const cached_multipliers_cancellation: string[] =
-            getPropertyValue(available_contract_types, ['multiplier', 'config', 'cancellation_range']) || [];
+            getPropertyValue(available_contract_types, [TRADE_TYPES.MULTIPLIER, 'config', 'cancellation_range']) || [];
         const regex = /(^(?:\d){1,})|((?:[a-zA-Z]){1,}$)/g;
         const getText = (str: string) => {
             const [duration, unit] = str.match(regex) ?? [];

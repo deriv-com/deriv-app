@@ -5,16 +5,23 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { StaticUrl } from '@deriv/components';
 import {
     daysSince,
+    extractInfoFromShortcode,
     formatDate,
     formatMoney,
+    getEndTime,
+    getMarketName,
     getPathname,
     getPlatformSettings,
     getStaticUrl,
+    getTotalProfit,
+    getTradeTypeName,
     getUrlBase,
     isCryptocurrency,
     isEmptyObject,
+    isHighLow,
     isMobile,
     isMultiplierContract,
+    isTurbosContract,
     LocalStore,
     routes,
     unique,
@@ -43,6 +50,7 @@ export default class NotificationStore extends BaseStore {
     push_notifications = [];
     client_notifications = {};
     should_show_popups = true;
+    trade_notifications = [];
     p2p_order_props = {};
     p2p_redirect_to = {};
     p2p_completed_orders = null;
@@ -54,6 +62,7 @@ export default class NotificationStore extends BaseStore {
             addNotificationBar: action.bound,
             addNotificationMessage: action.bound,
             addNotificationMessageByKey: action.bound,
+            addTradeNotification: action.bound,
             addVerificationNotifications: action.bound,
             client_notifications: observable,
             filterNotificationMessages: action.bound,
@@ -75,6 +84,7 @@ export default class NotificationStore extends BaseStore {
             removeNotificationMessage: action.bound,
             removeNotificationMessageByKey: action.bound,
             removeNotifications: action.bound,
+            removeTradeNotifications: action.bound,
             resetVirtualBalanceNotification: action.bound,
             setClientNotifications: action.bound,
             setP2POrderProps: action.bound,
@@ -83,6 +93,7 @@ export default class NotificationStore extends BaseStore {
             should_show_popups: observable,
             showCompletedOrderNotification: action.bound,
             toggleNotificationsModal: action.bound,
+            trade_notifications: observable,
             unmarkNotificationMessage: action.bound,
             updateNotifications: action.bound,
         });
@@ -178,6 +189,38 @@ export default class NotificationStore extends BaseStore {
 
     addNotificationMessageByKey(key) {
         if (key) this.addNotificationMessage(this.client_notifications[key]);
+    }
+
+    addTradeNotification(contract_info) {
+        if (!contract_info) return;
+        const {
+            buy_price,
+            contract_id,
+            contract_type,
+            currency,
+            profit,
+            purchase_time,
+            shortcode,
+            status,
+            underlying,
+        } = contract_info;
+        const id = `${contract_id}_${status}`;
+        if (this.trade_notifications.some(({ id: notification_id }) => notification_id === id)) return;
+        this.trade_notifications.push({
+            id,
+            buy_price,
+            contract_id,
+            contract_type: getTradeTypeName(contract_type, isHighLow({ shortcode }), isTurbosContract(contract_type)),
+            currency,
+            profit: isMultiplierContract(contract_type) && !isNaN(profit) ? getTotalProfit(contract_info) : profit,
+            status,
+            symbol: getMarketName(underlying ?? extractInfoFromShortcode(shortcode).underlying),
+            timestamp: status === 'open' ? purchase_time : getEndTime(contract_info),
+        });
+        /* Consider notifications older than 100s ago as stale and filter out such trade_notifications from the array
+           in order to protect RAM in case there are too many notifications coming at once. */
+        const hundred_sec_ago = Math.floor(Date.now() / 1000) - 100;
+        this.trade_notifications = this.trade_notifications.filter(({ timestamp }) => timestamp > hundred_sec_ago);
     }
 
     addVerificationNotifications(identity, document, has_restricted_mt5_account, has_mt5_account_with_rejected_poa) {
@@ -302,7 +345,7 @@ export default class NotificationStore extends BaseStore {
         if (is_logged_in) {
             if (isEmptyObject(account_status)) return;
             const {
-                authentication: { document, identity, needs_verification, ownership },
+                authentication: { document, identity, income, needs_verification, ownership },
                 status,
                 cashier_validation,
             } = account_status;
@@ -385,6 +428,9 @@ export default class NotificationStore extends BaseStore {
                     is_10k_withdrawal_limit_reached &&
                     (needs_verification.includes('document') || document?.status !== 'verified');
                 const needs_poi = is_10k_withdrawal_limit_reached && identity?.status !== 'verified';
+                const needs_poinc =
+                    needs_verification.includes('income') && ['rejected', 'none'].includes(income?.status);
+                const poinc_upload_limited = needs_verification.includes('income') && income?.status === 'locked';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
                 const poo_required = ownership?.requests?.length > 0 && ownership?.status?.toLowerCase() !== 'rejected';
                 const poo_rejected = is_pending_proof_of_ownership && ownership?.status?.toLowerCase() === 'rejected';
@@ -408,6 +454,8 @@ export default class NotificationStore extends BaseStore {
 
                 if (needs_poa) this.addNotificationMessage(this.client_notifications.needs_poa);
                 if (needs_poi) this.addNotificationMessage(this.client_notifications.needs_poi);
+                if (needs_poinc) this.addNotificationMessage(this.client_notifications.needs_poinc);
+                if (poinc_upload_limited) this.addNotificationMessage(this.client_notifications.poinc_upload_limited);
 
                 if (
                     poi_name_mismatch &&
@@ -619,6 +667,10 @@ export default class NotificationStore extends BaseStore {
         this.notifications = should_close_persistent
             ? []
             : [...this.notifications.filter(notifs => notifs.is_persistent)];
+    }
+
+    removeTradeNotifications(id) {
+        this.trade_notifications = id ? this.trade_notifications.filter(item => item.id !== id) : [];
     }
 
     removeNotificationByKey({ key }) {
@@ -930,6 +982,16 @@ export default class NotificationStore extends BaseStore {
                 message: localize('To continue trading with us, please confirm who you are.'),
                 type: 'danger',
             },
+            needs_poinc: {
+                action: {
+                    route: routes.proof_of_income,
+                    text: localize('Go to my account settings'),
+                },
+                key: 'needs_poinc',
+                header: localize('Please verify your proof of income'),
+                message: localize('To continue trading with us, please submit your proof of income.'),
+                type: 'warning',
+            },
 
             new_version_available: {
                 action: {
@@ -1050,6 +1112,12 @@ export default class NotificationStore extends BaseStore {
                     />
                 ),
                 type: 'warning',
+            },
+            poinc_upload_limited: {
+                key: 'poinc_upload_limited',
+                header: localize("You've reached the limit of uploading your documents."),
+                message: localize('Please check your email.'),
+                type: 'danger',
             },
             resticted_mt5_with_pending_poa: {
                 key: 'resticted_mt5_with_pending_poa',

@@ -3,8 +3,6 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import WithdrawalVerificationSent from '../WithdrawalVerificationSent';
 
 describe('WithdrawalVerificationSent', () => {
-    jest.useFakeTimers();
-
     test('should render component correctly', () => {
         render(<WithdrawalVerificationSent counter={0} sendEmail={jest.fn()} />);
 
@@ -20,7 +18,7 @@ describe('WithdrawalVerificationSent', () => {
         expect(screen.getByRole('button', { name: "Didn't receive the email?" })).toBeInTheDocument();
     });
 
-    test('should call sendEmail function and toggle showResend on button click', async () => {
+    test('should call sendEmail prop and show resend email button', async () => {
         const sendEmailMock = jest.fn();
         render(<WithdrawalVerificationSent counter={10} sendEmail={sendEmailMock} />);
 
@@ -44,14 +42,10 @@ describe('WithdrawalVerificationSent', () => {
 
         expect(sendEmailMock).toHaveBeenCalledTimes(1);
 
-        jest.advanceTimersByTime(10000);
-
         await waitFor(() => {
             expect(screen.getByRole('button', { name: /Resend email/ })).toBeInTheDocument();
             fireEvent.click(screen.getByRole('button', { name: /Resend email/ }));
             expect(sendEmailMock).toHaveBeenCalledTimes(1);
         });
-
-        jest.useRealTimers();
     });
 });

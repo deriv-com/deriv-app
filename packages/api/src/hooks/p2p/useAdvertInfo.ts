@@ -9,7 +9,7 @@ const useAdvertInfo = (
     options?: NonNullable<Parameters<typeof useQuery<'p2p_advert_info'>>[1]>['options']
 ) => {
     const { data, ...rest } = useQuery('p2p_advert_info', {
-        payload: { id: payload?.id, use_client_limits: payload?.use_client_limits },
+        payload,
         options,
     });
 

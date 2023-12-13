@@ -221,23 +221,17 @@ AccountSignup.propTypes = {
 };
 
 const AccountSignupModal = observer(() => {
-    const { ui, client } =useStore()
+    const { ui, client } = useStore();
+    const { onSignup, is_logged_in, residence_list, clients_country, logout } = client;
     const {
-        onSignup,
-        is_logged_in,
-        residence_list,
-        clients_country,
-        logout,
-    } = client
-    const {
-    is_account_signup_modal_visible:is_visible,
-    toggleAccountSignupModal,
-    enableApp,
-    disableApp,
-    is_loading,
-    is_mobile,
-    setIsFromSignupAccount
-    } = ui
+        is_account_signup_modal_visible: is_visible,
+        toggleAccountSignupModal,
+        enableApp,
+        disableApp,
+        is_loading,
+        is_mobile,
+        setIsFromSignupAccount,
+    } = ui;
 
     React.useEffect(() => {
         // a logged in user should not be able to create a new account
@@ -268,6 +262,4 @@ const AccountSignupModal = observer(() => {
     );
 });
 
-
-
-export default (AccountSignupModal);
+export default AccountSignupModal;

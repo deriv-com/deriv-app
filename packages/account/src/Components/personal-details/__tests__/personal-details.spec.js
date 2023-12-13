@@ -278,7 +278,9 @@ describe('<PersonalDetails/>', () => {
         account_settings: {},
     };
 
-    beforeAll(() => (ReactDOM.createPortal = jest.fn(component => component)));
+    beforeAll(() => {
+        ReactDOM.createPortal = jest.fn(component => component);
+    });
 
     afterAll(() => ReactDOM.createPortal.mockClear());
 
@@ -286,10 +288,10 @@ describe('<PersonalDetails/>', () => {
         jest.clearAllMocks();
     });
 
-    const renderwithRouter = component => {
-        const mock_store = mockStore({});
+    const renderwithRouter = (component, store) => {
+        let mock_store = mockStore({});
         render(
-            <StoreProvider store={mock_store}>
+            <StoreProvider store={store ?? mock_store}>
                 <ExchangeRatesProvider>
                     <BrowserRouter>{component}</BrowserRouter>
                 </ExchangeRatesProvider>
@@ -360,7 +362,6 @@ describe('<PersonalDetails/>', () => {
     it('submit button should be enabled if TIN or tax_residence is optional in case of CR accounts', () => {
         const new_props = {
             ...props,
-            is_mf: false,
             is_svg: true,
             value: {
                 first_name: '',
@@ -435,7 +436,6 @@ describe('<PersonalDetails/>', () => {
         const new_props = {
             ...props,
             is_svg: false,
-            is_mf: true,
             value: {
                 ...props.value,
                 tax_residence: 'Malta',
@@ -481,7 +481,12 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should show title and Name label when salutation is passed', () => {
-        renderwithRouter(<PersonalDetails {...props} is_mf />);
+        const mock_store = mockStore({
+            traders_hub: {
+                is_eu_user: true,
+            },
+        });
+        renderwithRouter(<PersonalDetails {...props} />, mock_store);
 
         expect(
             screen.getByRole('heading', {
@@ -537,7 +542,12 @@ describe('<PersonalDetails/>', () => {
     });
 
     it('should display the correct field details when is_svg is false ', () => {
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} is_mf />);
+        const mock_store = mockStore({
+            traders_hub: {
+                is_eu_user: true,
+            },
+        });
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />, mock_store);
 
         expect(screen.getByRole('heading', { name: 'Title and name' })).toBeInTheDocument();
         expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
@@ -839,7 +849,6 @@ describe('<PersonalDetails/>', () => {
         shouldShowIdentityInformation.mockReturnValue(true);
         const new_props = {
             ...props,
-            is_mf: false,
             value: {
                 ...props.value,
                 ...idv_document_data,
@@ -864,7 +873,6 @@ describe('<PersonalDetails/>', () => {
 
         const new_props = {
             ...props,
-            is_mf: false,
             value: {
                 ...props.value,
                 ...new_document_data,
@@ -883,7 +891,6 @@ describe('<PersonalDetails/>', () => {
         isDesktop.mockReturnValue(true);
         const new_props = {
             ...props,
-            is_mf: true,
             value: {
                 ...props.value,
                 tax_residence: 'France',

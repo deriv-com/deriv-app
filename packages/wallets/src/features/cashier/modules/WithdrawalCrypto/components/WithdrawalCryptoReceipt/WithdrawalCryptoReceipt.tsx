@@ -2,8 +2,9 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { WalletButton, WalletCard, WalletText } from '../../../../../../components';
 import ArrowDown from '../../../../../../public/images/ic-back-arrow.svg';
-import { WithdrawalCryptoDestinationAddress } from './components';
+import { LandingCompanyDetails } from '../../../../constants';
 import { TWithdrawalReceipt } from '../../types';
+import { WithdrawalCryptoDestinationAddress } from './components';
 import './WithdrawalCryptoReceipt.scss';
 
 type TProps = {
@@ -22,7 +23,7 @@ const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt 
                     balance={`-${amount} ${currency}`}
                     currency={currency ?? ''}
                     iconSize='md'
-                    landingCompanyName='SVG'
+                    landingCompanyName={LandingCompanyDetails.svg.shortcode}
                 />
                 <ArrowDown />
                 <WithdrawalCryptoDestinationAddress address={address} />
@@ -41,10 +42,13 @@ const WithdrawalCryptoReceipt: React.FC<TProps> = ({ onClose, withdrawalReceipt 
                     color='white'
                     onClick={() => history.push('/wallets/cashier/transactions')}
                     size='lg'
-                    text='View transactions'
                     variant='outlined'
-                />
-                <WalletButton onClick={onClose} size='lg' text='Close' />
+                >
+                    View transactions
+                </WalletButton>
+                <WalletButton onClick={onClose} size='lg'>
+                    Close
+                </WalletButton>
             </div>
         </div>
     );

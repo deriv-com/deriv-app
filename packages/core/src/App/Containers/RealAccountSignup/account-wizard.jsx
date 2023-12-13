@@ -6,7 +6,7 @@ import React from 'react';
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
 import { WS, getLocation, toMoment, formatIDVFormValues } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { observer,useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import AcceptRiskForm from './accept-risk-form.jsx';
 import LoadingModal from './real-account-signup-loader.jsx';
 import { getItems } from './account-wizard-form';
@@ -55,38 +55,37 @@ const StepperHeader = ({ has_target, has_real_account, items, getCurrentStep, ge
 };
 
 const AccountWizard = observer(props => {
-    const { client, notifications, ui, traders_hub } =useStore()
-    const {
-        account_settings,
-        account_status,
-        fetchAccountSettings,
-        fetchResidenceList,
-        fetchStatesList,
-        financial_assessment,
-        currency,
-        has_active_real_account:has_real_account,
-        residence:has_residence,
-        is_fully_authenticated,
-        is_virtual,
-        realAccountSignup,
-        residence_list,
-        residence,
-        states_list,
-        upgrade_info,
-    } =client
-    const {refreshNotifications} =notifications
-    const {content_flag} =traders_hub
-    const {
-        closeRealAccountSignup,
-        real_account_signup_target,
-        setIsRealAccountSignupModalVisible,
-        setIsTradingAssessmentForNewUserEnabled,
-        setShouldShowAppropriatenessWarningModal,
-        setShouldShowRiskWarningModal,
-        setSubSectionIndex,
-        sub_section_index,
-    } =ui
-    const has_currency =!!currency
+    const { client, notifications, ui, traders_hub } = useStore();
+    const modifiedProps = {
+        ...props,
+        account_settings: client.account_settings,
+        account_status: client.account_status,
+        fetchAccountSettings: client.fetchAccountSettings,
+        fetchResidenceList: client.fetchResidenceList,
+        fetchStatesList: client.fetchStatesList,
+        financial_assessment: client.financial_assessment,
+        has_currency: !!client.currency,
+        has_real_account: client.has_active_real_account,
+        has_residence: client.residence,
+        is_fully_authenticated: client.is_fully_authenticated,
+        is_virtual: client.is_virtual,
+        realAccountSignup: client.realAccountSignup,
+        residence_list: client.residence_list,
+        residence: client.residence,
+        states_list: client.states_list,
+        upgrade_info: client.upgrade_info,
+        refreshNotifications: notifications.refreshNotifications,
+        content_flag: traders_hub.content_flag,
+        closeRealAccountSignup: ui.closeRealAccountSignup,
+        real_account_signup_target: ui.real_account_signup_target,
+        setIsRealAccountSignupModalVisible: ui.setIsRealAccountSignupModalVisible,
+        setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
+        setShouldShowAppropriatenessWarningModal: ui.setShouldShowAppropriatenessWarningModal,
+        setShouldShowRiskWarningModal: ui.setShouldShowRiskWarningModal,
+        setSubSectionIndex: ui.setSubSectionIndex,
+        sub_section_index: ui.sub_section_index,
+    };
+
     const [finished] = React.useState(undefined);
     const [mounted, setMounted] = React.useState(false);
     const [form_error, setFormError] = React.useState('');
@@ -97,22 +96,28 @@ const AccountWizard = observer(props => {
 
     const trackEvent = React.useCallback(
         payload => {
-            if (props.real_account_signup_target === 'maltainvest') return;
+            if (modifiedProps.real_account_signup_target === 'maltainvest') return;
 
             Analytics.trackEvent('ce_real_account_signup_form', {
                 current_step: STEP_IDENTIFIERS[payload.step_num],
                 form_source: document.referrer,
                 form_name: 'real_account_signup_form',
-                landing_company: props.real_account_signup_target,
+                landing_company: modifiedProps.real_account_signup_target,
                 ...payload,
             });
         },
-        [props.real_account_signup_target]
+        [modifiedProps.real_account_signup_target]
     );
 
     const {
+        setIsTradingAssessmentForNewUserEnabled,
+        residence_list,
+        states_list,
+        fetchResidenceList,
+        fetchStatesList,
+        has_residence,
         setLoading,
-    } = props;
+    } = modifiedProps;
 
     const getData = async () => {
         setLoading(true);
@@ -124,7 +129,7 @@ const AccountWizard = observer(props => {
     };
 
     const get_items_props = {
-        ...props,
+        ...modifiedProps,
         is_high_risk_client_for_mt5,
     };
 
@@ -186,7 +191,7 @@ const AccountWizard = observer(props => {
     };
 
     const getCountryCode = async residences => {
-        const response = residences.find(item => item.value === residence);
+        const response = residences.find(item => item.value === modifiedProps.residence);
         if (!response || !response.phone_idd) return '';
         return `+${response.phone_idd}`;
     };
@@ -238,7 +243,7 @@ const AccountWizard = observer(props => {
 
     const prevStep = (current_step, goToPreviousStep) => {
         if (current_step - 1 < 0) {
-            props.onClose();
+            modifiedProps.onClose();
             return;
         }
 
@@ -279,14 +284,14 @@ const AccountWizard = observer(props => {
         }
 
         clone = processInputData(clone);
-        props.setRealAccountFormData(clone);
+        modifiedProps.setRealAccountFormData(clone);
         if (payload) {
             clone = {
                 ...clone,
                 ...payload,
             };
         }
-        return realAccountSignup(clone);
+        return modifiedProps.realAccountSignup(clone);
     };
 
     const updateValue = (index, value, setSubmitting, goToNextStep, should_override = false) => {
@@ -322,7 +327,7 @@ const AccountWizard = observer(props => {
 
         if (passthrough?.length) {
             passthrough.forEach(item => {
-                Object.assign(properties, { [item]: props[item] });
+                Object.assign(properties, { [item]: modifiedProps[item] });
             });
             properties.bypass_to_personal = previous_data.length > 0;
         }
@@ -349,15 +354,15 @@ const AccountWizard = observer(props => {
                     action: 'real_signup_finished',
                     user_choice: JSON.stringify(response?.echo_req),
                 });
-                props.setIsRiskWarningVisible(false);
-                if (props.real_account_signup_target === 'maltainvest') {
-                    props.onOpenDepositModal();
-                } else if (props.real_account_signup_target === 'samoa') {
-                    props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
+                modifiedProps.setIsRiskWarningVisible(false);
+                if (modifiedProps.real_account_signup_target === 'maltainvest') {
+                    modifiedProps.onOpenDepositModal();
+                } else if (modifiedProps.real_account_signup_target === 'samoa') {
+                    modifiedProps.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
                 } else {
-                    props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
+                    modifiedProps.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
-                const country_code = account_settings.citizen || residence;
+                const country_code = modifiedProps.account_settings.citizen || modifiedProps.residence;
                 /**
                  * If IDV details are present, then submit IDV details
                  */
@@ -375,17 +380,17 @@ const AccountWizard = observer(props => {
                     real_signup_error_message: error,
                 });
                 if (error.code === 'show risk disclaimer') {
-                    props.setIsRiskWarningVisible(true);
+                    modifiedProps.setIsRiskWarningVisible(true);
                     setShouldAcceptFinancialRisk(true);
                 } else if (error.code === 'AppropriatenessTestFailed') {
                     if (form_data?.risk_tolerance === 'No') {
-                        fetchAccountSettings();
-                        setShouldShowRiskWarningModal(true);
+                        modifiedProps.fetchAccountSettings();
+                        modifiedProps.setShouldShowRiskWarningModal(true);
                     } else {
-                        setShouldShowAppropriatenessWarningModal(true);
+                        modifiedProps.setShouldShowAppropriatenessWarningModal(true);
                     }
                 } else {
-                    props.onError(error, state_items);
+                    modifiedProps.onError(error, state_items);
                 }
             })
             .finally(() => {
@@ -399,11 +404,11 @@ const AccountWizard = observer(props => {
     };
 
     const onDeclineRisk = () => {
-        props.onClose();
-        props.setIsRiskWarningVisible(false);
+        modifiedProps.onClose();
+        modifiedProps.setIsRiskWarningVisible(false);
     };
 
-    if (props.is_loading) return <LoadingModal />;
+    if (modifiedProps.is_loading) return <LoadingModal />;
 
     if (should_accept_financial_risk) {
         return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
@@ -424,9 +429,9 @@ const AccountWizard = observer(props => {
                     onSubmit={updateValue}
                     onCancel={prevStep}
                     onSave={saveFormData}
-                    closeRealAccountSignup={closeRealAccountSignup}
-                    is_virtual={is_virtual}
-                    has_currency={has_currency}
+                    closeRealAccountSignup={modifiedProps.closeRealAccountSignup}
+                    is_virtual={modifiedProps.is_virtual}
+                    has_currency={modifiedProps.has_currency}
                     form_error={form_error}
                     {...passthrough}
                     key={step_index}
@@ -436,15 +441,15 @@ const AccountWizard = observer(props => {
         });
 
         let navHeader = <div />;
-        if (real_account_signup_target !== 'samoa') {
+        if (modifiedProps.real_account_signup_target !== 'samoa') {
             navHeader = (
                 <StepperHeader
-                    has_real_account={has_real_account}
+                    has_real_account={modifiedProps.has_real_account}
                     items={state_items}
-                    has_currency={has_currency}
-                    has_target={real_account_signup_target !== 'manage'}
-                    setIsRiskWarningVisible={props.setIsRiskWarningVisible}
-                    sub_section_index={props.sub_section_index}
+                    has_currency={modifiedProps.has_currency}
+                    has_target={modifiedProps.real_account_signup_target !== 'manage'}
+                    setIsRiskWarningVisible={modifiedProps.setIsRiskWarningVisible}
+                    sub_section_index={modifiedProps.sub_section_index}
                 />
             );
         }
@@ -453,8 +458,8 @@ const AccountWizard = observer(props => {
             <Wizard
                 nav={navHeader}
                 className={classNames('account-wizard', {
-                    'account-wizard--set-currency': !has_currency,
-                    'account-wizard--deriv-crypto': real_account_signup_target === 'samoa',
+                    'account-wizard--set-currency': !modifiedProps.has_currency,
+                    'account-wizard--deriv-crypto': modifiedProps.real_account_signup_target === 'samoa',
                 })}
             >
                 {wizard_steps}
@@ -467,14 +472,34 @@ const AccountWizard = observer(props => {
 });
 
 AccountWizard.propTypes = {
+    account_settings: PropTypes.object,
+    account_status: PropTypes.object,
+    closeRealAccountSignup: PropTypes.func,
+    content_flag: PropTypes.string,
+    fetchResidenceList: PropTypes.func,
+    fetchAccountSettings: PropTypes.func,
+    fetchStatesList: PropTypes.func,
+    has_currency: PropTypes.bool,
+    has_real_account: PropTypes.bool,
+    has_residence: PropTypes.bool,
     is_loading: PropTypes.bool,
+    is_virtual: PropTypes.bool,
     onClose: PropTypes.func,
     onError: PropTypes.func,
     onFinishSuccess: PropTypes.func,
     onLoading: PropTypes.func,
     onOpenWelcomeModal: PropTypes.func,
+    real_account_signup_target: PropTypes.string,
+    realAccountSignup: PropTypes.func,
+    residence_list: PropTypes.array,
+    residence: PropTypes.string,
+    states_list: PropTypes.array,
+    setIsTradingAssessmentForNewUserEnabled: PropTypes.func,
     setIsRiskWarningVisible: PropTypes.func,
     setLoading: PropTypes.func,
+    setShouldShowRiskWarningModal: PropTypes.func,
+    setSubSectionIndex: PropTypes.func,
+    sub_section_index: PropTypes.number,
 };
 
-export default (AccountWizard);
+export default AccountWizard;

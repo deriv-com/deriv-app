@@ -183,5 +183,4 @@ AppNotificationMessages.propTypes = {
     is_notification_loaded: PropTypes.bool,
     stopNotificationLoading: PropTypes.func,
 };
-
 export default (AppNotificationMessages);

@@ -1,27 +1,50 @@
 import React from 'react';
-import { getStatusBadgeConfig } from '@deriv/account';
+import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Button, Icon, Modal, Money, StatusBadge, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrencyName } from '@deriv/shared';
+import { connect } from 'Stores/connect';
+import { observer,useStore } from '@deriv/stores';
+import RootStore from 'Stores/index';
 import CurrencyIcon from './currency';
 import { AccountListDetail } from './types';
 import classNames from 'classnames';
-import { useHasSetCurrency } from '@deriv/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { useHasSetCurrency, useMFAccountStatus } from '@deriv/hooks';
 
 type CurrencySelectionModalProps = {
     is_visible: boolean;
 };
 
-const CurrencySelectionModal = observer(({ is_visible }: CurrencySelectionModalProps) => {
-    const { client, traders_hub, ui } = useStore();
-    const { account_list, accounts, loginid: current_loginid, switchAccount, has_any_real_account } = client;
-    const { closeModal, selected_region, openFailedVerificationModal, multipliers_account_status } = traders_hub;
-    const { openRealAccountSignup, toggleSetCurrencyModal } = ui;
-    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
-        multipliers_account_status,
+const CurrencySelectionModal = observer(({
+    is_visible,
+}: CurrencySelectionModalProps) => {
+    const { client, traders_hub, ui } = useStore()
+    const {
+        account_list,
+        accounts,
+        switchAccount,
+        has_any_real_account,
+        account_status,
+        loginid: current_loginid,
+    } = client
+    const {
+        closeModal,
+        selected_region,
         openFailedVerificationModal,
-        'multipliers'
+    } = traders_hub
+    const {
+        openRealAccountSignup,
+        toggleSetCurrencyModal,
+    } = ui
+    const { authentication } = account_status;
+
+    const mf_account_status = useMFAccountStatus();
+    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
+        mf_account_status,
+        openFailedVerificationModal,
+        'multipliers',
+        undefined,
+        { poi_status: authentication?.identity?.status, poa_status: authentication?.document?.status }
     );
 
     const hasSetCurrency = useHasSetCurrency();
@@ -67,9 +90,9 @@ const CurrencySelectionModal = observer(({ is_visible }: CurrencySelectionModalP
                                     </Text>
                                 </div>
                                 <div className='currency-item-card__balance'>
-                                    {multipliers_account_status ? (
+                                    {mf_account_status ? (
                                         <StatusBadge
-                                            account_status={multipliers_account_status}
+                                            account_status={mf_account_status}
                                             icon={badge_icon}
                                             text={badge_text}
                                         />
@@ -105,4 +128,17 @@ const CurrencySelectionModal = observer(({ is_visible }: CurrencySelectionModalP
     );
 });
 
-export default CurrencySelectionModal;
+export default connect(({ client, traders_hub, ui }: RootStore) => ({
+    account_list: client.account_list,
+    accounts: client.accounts,
+    loginid: client.loginid,
+    switchAccount: client.switchAccount,
+    mf_account_status: client.mf_account_status,
+    has_any_real_account: client.has_any_real_account,
+    account_status: client.account_status,
+    closeModal: traders_hub.closeModal,
+    selected_region: traders_hub.selected_region,
+    openFailedVerificationModal: traders_hub.openFailedVerificationModal,
+    openRealAccountSignup: ui.openRealAccountSignup,
+    toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
+}))(CurrencySelectionModal);

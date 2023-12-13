@@ -1,7 +1,9 @@
 import React from 'react';
 import { Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { RiskToleranceWarningModal, TradingAssessmentForm, tradingAssessmentConfig } from '@deriv/account';
+import TradingAssessmentForm from '@deriv/account/src/Components/trading-assessment/trading-assessment-form.jsx';
+import tradingAssessmentConfig from '@deriv/account/src/Configs/trading-assessment-config';
+import RiskToleranceWarningModal from '@deriv/account/src/Components/trading-assessment/risk-tolerance-warning-modal.jsx';
 import TradingExperienceModal from './trading-experience-modal.jsx';
 import { observer, useStore } from '@deriv/stores';
 

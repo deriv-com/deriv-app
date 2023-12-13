@@ -181,9 +181,7 @@ const AddCurrency = observer(({ onSubmit, hasNoAvailableCrypto, is_add_crypto, i
             initialValues={{
                 currency: form_value.currency,
             }}
-            onSubmit={(values, actions) => {
-                onSubmit(false, values, actions.setSubmitting);
-            }}
+            onSubmit={onSubmit}
         >
             {({ handleSubmit, values, isSubmitting }) => (
                 <form onSubmit={handleSubmit}>

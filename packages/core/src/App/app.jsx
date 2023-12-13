@@ -3,6 +3,7 @@ import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
 import {
+    POIProvider,
     initFormErrorMessages,
     setSharedCFDText,
     setUrlLanguage,
@@ -90,9 +91,13 @@ const AppWithoutTranslation = ({ root_store }) => {
                 <Router basename={has_base ? `/${base}` : null}>
                     <StoreProvider store={root_store}>
                         <APIProvider>
-                            <ExchangeRatesProvider>
-                                <AppContent passthrough={platform_passthrough} />
-                            </ExchangeRatesProvider>
+                            <POIProvider>
+                                <StoreProvider store={root_store}>
+                                    <ExchangeRatesProvider>
+                                        <AppContent passthrough={platform_passthrough} />
+                                    </ExchangeRatesProvider>
+                                </StoreProvider>
+                            </POIProvider>
                         </APIProvider>
                     </StoreProvider>
                 </Router>

@@ -9,12 +9,14 @@ import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { observer, useStore } from '@deriv/stores';
 
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
+import ReadyToVerifyModal from './ready-to-verify-modal';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
 import MT5Notification from './mt5-notification';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
+import VerificationModal from '../VerificationModal';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -45,11 +47,20 @@ const WarningCloseCreateRealAccountModal = React.lazy(() =>
     import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
 );
 
+const VerificationDocumentSubmitted = React.lazy(() =>
+    import(/* webpackChunkName: "verification-document-submitted-modal" */ './VerificationDocumentSubmitted')
+);
+
+const OneTimeDepositModal = React.lazy(() =>
+    import(/* webpackChunkName: "one-time-deposit-modal" */ '../OneTimeDepositModal')
+);
+
 const AdditionalKycInfoModal = React.lazy(() =>
     import(
         /* webpackChunkName: "additional-kyc-info-modal" */ '@deriv/account/src/Components/additional-kyc-info-modal'
     )
 );
+
 const InformationSubmittedModal = React.lazy(() =>
     import(/* webpackChunkName: "information-submitted-modal" */ './information-submitted-modal')
 );
@@ -58,7 +69,6 @@ const AppModals = observer(() => {
     const { client, ui, traders_hub } = useStore()
     const {
         is_logged_in,
-        is_reality_check_visible,
         fetchFinancialAssessment,
         setCFDScore,
         landing_company_shortcode: active_account_landing_company,
@@ -69,7 +79,6 @@ const AppModals = observer(() => {
         content_flag,
     } = traders_hub
     const {
-        is_welcome_modal_visible,
         is_account_needed_modal_on,
         is_closing_create_real_account_modal,
         is_set_residence_modal_visible,
@@ -84,6 +93,10 @@ const AppModals = observer(() => {
         should_show_risk_accept_modal,
         is_additional_kyc_info_modal_open,
         is_kyc_information_submitted_modal_open,
+        is_verification_modal_visible,
+        is_verification_submitted,
+        should_show_one_time_deposit_modal,
+        should_show_account_success_modal,
     } = ui
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
@@ -166,6 +179,21 @@ const AppModals = observer(() => {
         ComponentToLoad = <NeedRealAccountForCashierModal />;
     }
 
+    if (is_verification_modal_visible) {
+        ComponentToLoad = <VerificationModal />;
+    }
+
+    if (is_verification_submitted) {
+        ComponentToLoad = <VerificationDocumentSubmitted />;
+    }
+
+    if (should_show_one_time_deposit_modal) {
+        ComponentToLoad = <OneTimeDepositModal />;
+    }
+
+    if (should_show_account_success_modal) {
+        ComponentToLoad = <ReadyToVerifyModal />;
+    }
     if (is_additional_kyc_info_modal_open) {
         ComponentToLoad = <AdditionalKycInfoModal />;
     }

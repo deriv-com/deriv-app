@@ -1,19 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { loginUrl, routes, SessionStore, PlatformContext } from '@deriv/shared';
+import { withRouter, useHistory } from 'react-router-dom';
+import { loginUrl, routes, redirectToLogin, SessionStore, PlatformContext } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
-import { observer, useStore } from '@deriv/stores';
 import { Analytics } from '@deriv/analytics';
 
-const Redirect = observer(({ history}) => {
-    const { client, ui } = useStore()
-    const {
-        currency,
-        setVerificationCode,
-        verification_code,
-        setNewEmail, } = client
+const Redirect = observer(() => {
+    const history = useHistory();
+    const { client, ui } = useStore();
+
+    const { currency, is_logged_in, is_logging_in, setNewEmail, setVerificationCode, verification_code } = client;
+
     const {
         openRealAccountSignup,
         setResetTradingPasswordModalOpen,
@@ -21,7 +20,9 @@ const Redirect = observer(({ history}) => {
         toggleResetPasswordModal,
         toggleResetEmailModal,
         toggleUpdateEmailModal,
-        is_mobile, } = ui
+        is_mobile,
+    } = ui;
+
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
@@ -75,6 +76,20 @@ const Redirect = observer(({ history}) => {
         }
         case 'trading_platform_mt5_password_reset':
         case 'trading_platform_dxtrade_password_reset': {
+            const reset_code_key = `${action_param}_code`;
+            if (!is_logging_in && !is_logged_in) {
+                if (verification_code[action_param]) {
+                    sessionStorage.setItem(reset_code_key, verification_code[action_param]);
+                }
+                redirectToLogin(is_logged_in, getLanguage());
+                redirected_to_route = true;
+                break;
+            }
+            if (!verification_code[action_param]) {
+                const reset_code = sessionStorage.getItem(reset_code_key);
+                setVerificationCode(reset_code, action_param);
+                sessionStorage.removeItem(reset_code_key);
+            }
             const redirect_to = url_params.get('redirect_to');
 
             if (redirect_to) {

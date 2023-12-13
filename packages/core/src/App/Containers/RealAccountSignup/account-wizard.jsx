@@ -350,9 +350,9 @@ const AccountWizard = observer(props => {
                     user_choice: JSON.stringify(response?.echo_req),
                 });
                 props.setIsRiskWarningVisible(false);
-                if (real_account_signup_target === 'maltainvest') {
-                    props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
-                } else if (real_account_signup_target === 'samoa') {
+                if (props.real_account_signup_target === 'maltainvest') {
+                    props.onOpenDepositModal();
+                } else if (props.real_account_signup_target === 'samoa') {
                     props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
                 } else {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());

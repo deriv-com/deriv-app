@@ -36,6 +36,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         account_list,
         residence: client_residence,
         country_standpoint,
+        currency,
         is_eu,
         is_landing_company_loaded,
         is_low_risk,
@@ -519,7 +520,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                                 className='acc-switcher__btn--traders_hub'
                                 secondary
                                 onClick={
-                                    has_any_real_account && !hasSetCurrency
+                                    has_any_real_account && (!hasSetCurrency || !currency)
                                         ? setAccountCurrency
                                         : () => openRealAccountSignup('manage')
                                 }

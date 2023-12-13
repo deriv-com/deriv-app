@@ -18,7 +18,15 @@ import validateSignupFields from './validate-signup-fields.jsx';
 
 import 'Sass/app/modules/account-signup.scss';
 
-const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, onSignup, residence_list }) => {
+const AccountSignup = ({
+    enableApp,
+    is_mobile,
+    isModalVisible,
+    clients_country,
+    onSignup,
+    residence_list,
+    setIsFromSignupAccount,
+}) => {
     const signupInitialValues = { citizenship: '', password: '', residence: '' };
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -91,6 +99,7 @@ const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, 
             });
         } else {
             isModalVisible(false);
+            setIsFromSignupAccount(true);
             SessionStore.remove('signup_query_param');
             enableApp();
 
@@ -208,6 +217,7 @@ AccountSignup.propTypes = {
     residence_list: PropTypes.array,
     is_mobile: PropTypes.bool,
     isModalVisible: PropTypes.func,
+    setIsFromSignupAccount: PropTypes.func,
 };
 
 const AccountSignupModal = observer(() => {
@@ -226,6 +236,7 @@ const AccountSignupModal = observer(() => {
     disableApp,
     is_loading,
     is_mobile,
+    setIsFromSignupAccount
     } = ui
 
     React.useEffect(() => {
@@ -251,6 +262,7 @@ const AccountSignupModal = observer(() => {
                 is_mobile={is_mobile}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
+                setIsFromSignupAccount={setIsFromSignupAccount}
             />
         </Dialog>
     );

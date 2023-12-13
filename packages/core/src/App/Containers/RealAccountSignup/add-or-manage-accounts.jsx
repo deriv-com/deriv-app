@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Tabs, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { CURRENCY_TYPE, isDesktop, isMobile } from '@deriv/shared';
 import { WS } from 'Services';
 import AddCryptoCurrency from './add-crypto-currency.jsx';
 import AddCurrency from './add-currency.jsx';
@@ -63,13 +63,12 @@ const AddOrManageAccounts = observer(props => {
         setActiveIndex(index);
     };
 
-    const manageOrChangeAccount = (obj, setSubmitting) => {
+    const setCurrencyOrAddCryptoAccount = currency_object => {
         setLoading(true);
-        Object.entries(obj).map(([key, value]) => {
-            if (key === 'fiat') {
+        Object.entries(currency_object).map(([key, value]) => {
+            if (key === CURRENCY_TYPE.FIAT) {
                 setCurrency(value)
                     .then(response => {
-                        setSubmitting(false);
                         onSuccessSetAccountCurrency(
                             response.passthrough.previous_currency,
                             response.echo_req.set_account_currency,
@@ -85,7 +84,6 @@ const AddOrManageAccounts = observer(props => {
                 createCryptoAccount(value)
                     .then(() => {
                         onSuccessSetAccountCurrency('', value, deposit_target);
-                        setSubmitting(false);
                         resetRealAccountSignupTarget();
                         setIsDeposit(true);
                     })
@@ -95,10 +93,6 @@ const AddOrManageAccounts = observer(props => {
                     .finally(() => setLoading(false));
             }
         });
-    };
-
-    const updateValue = (index, value, setSubmitting) => {
-        manageOrChangeAccount(value, setSubmitting);
     };
 
     const hasNoAvailableCrypto = () => {
@@ -115,7 +109,7 @@ const AddOrManageAccounts = observer(props => {
         >
             <ChangeAccountCurrency
                 className='account-wizard__body'
-                onSubmit={updateValue}
+                onSubmit={setCurrencyOrAddCryptoAccount}
                 value={form_value}
                 form_error={form_error}
                 can_change_fiat_currency={can_change_fiat_currency}
@@ -128,7 +122,7 @@ const AddOrManageAccounts = observer(props => {
     if (is_add_currency || is_add_crypto || is_add_fiat) {
         return (
             <AddCurrency
-                onSubmit={updateValue}
+                onSubmit={setCurrencyOrAddCryptoAccount}
                 value={form_value}
                 form_error={form_error}
                 should_show_crypto_only
@@ -162,7 +156,7 @@ const AddOrManageAccounts = observer(props => {
                         >
                             <AddCryptoCurrency
                                 className='account-wizard__body'
-                                onSubmit={updateValue}
+                                onSubmit={setCurrencyOrAddCryptoAccount}
                                 value={form_value}
                                 form_error={form_error}
                                 should_show_crypto_only
@@ -176,7 +170,7 @@ const AddOrManageAccounts = observer(props => {
                         ) : (
                             <AddCryptoCurrency
                                 className='account-wizard__body'
-                                onSubmit={updateValue}
+                                onSubmit={setCurrencyOrAddCryptoAccount}
                                 value={form_value}
                                 form_error={form_error}
                                 should_show_fiat_only={true}

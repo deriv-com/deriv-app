@@ -2,7 +2,7 @@ import 'Sass/app/modules/trading-mobile.scss';
 import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom } from '@deriv/components';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile';
 import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier';
-import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile.jsx';
+import DurationMobile from 'Modules/Trading/Components/Form/TradeParams/Duration/duration-mobile';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit';
 import { TTextValueStrings } from 'Types';
 import { observer, useStore } from '@deriv/stores';
@@ -17,7 +17,7 @@ type TTradeParamsModal = {
     toggleModal: () => void;
 };
 
-type TTradeParamsMobile = {
+export type TTradeParamsMobile = {
     currency: string;
     toggleModal: () => void;
     isVisible: (component_key: string) => boolean;
@@ -86,7 +86,7 @@ const makeGetDefaultDuration = (trade_duration: number, trade_duration_unit: str
 const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }: TTradeParamsModal) => {
     const { client } = useStore();
     const { currency } = client;
-    const { amount, form_components, duration, duration_unit, duration_units_list, is_vanilla } = useTraderStore();
+    const { amount, form_components, duration, duration_unit, duration_units_list } = useTraderStore();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const getDefaultDuration = React.useCallback(makeGetDefaultDuration(duration, duration_unit), []);
@@ -151,7 +151,7 @@ const TradeParamsModal = observer(({ is_open, toggleModal, tab_index }: TTradePa
                 is_open={is_open}
                 header={<div />}
                 toggleModal={toggleModal}
-                height={is_vanilla ? '53.8rem' : 'auto'}
+                height='53.8rem'
                 width='calc(100vw - 32px)'
             >
                 <ThemedScrollbars>
@@ -283,7 +283,6 @@ const TradeParamsMobile = observer(
                 {isVisible('duration') ? (
                     <div data-header-content={getHeaderContent('duration')}>
                         <DurationMobile
-                            // @ts-expect-error: TODO: check if TS error is gone after <DurationMobile /> is migrated to TS
                             toggleModal={toggleModal}
                             amount_tab_idx={amount_tab_idx}
                             duration_tab_idx={duration_tab_idx}

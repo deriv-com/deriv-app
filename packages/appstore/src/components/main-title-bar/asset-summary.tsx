@@ -62,7 +62,11 @@ const AssetSummary = observer(() => {
                     ) : null}
                     <Popover
                         alignment={isMobile() ? 'top' : 'left'}
-                        message={localize('Total assets in all your accounts')}
+                        message={
+                            is_eu_user
+                                ? localize('Total assets in your Deriv Apps and Deriv MT5 CFDs demo account.')
+                                : localize('Total assets in all your accounts')
+                        }
                         zIndex={9999}
                         is_bubble_hover_enabled
                     >

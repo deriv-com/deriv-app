@@ -25,7 +25,7 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
         name_and_address: {
             icon: 'IcNameAndAddressVerification',
             text: localize(
-                'A recent utility bill (electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
+                'A recent utility bill (e.g. electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
             ),
         },
         not_applicable: {

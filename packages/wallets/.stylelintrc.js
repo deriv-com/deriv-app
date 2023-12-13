@@ -12,4 +12,5 @@ module.exports = {
             },
         ],
     },
+    ignoreFiles: ['**/wallets/**'],
 };

@@ -1,9 +1,10 @@
 import React from 'react';
+import { Heading } from '@deriv/quill-design';
 
 const TradersHubRoute: React.FC = () => {
     return (
-        <div>
-            <h1>Traders Hub</h1>
+        <div className='container mx-auto'>
+            <Heading.H3>Traders Hub</Heading.H3>
         </div>
     );
 };

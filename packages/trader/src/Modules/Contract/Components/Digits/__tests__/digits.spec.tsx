@@ -77,6 +77,7 @@ describe('<Digits />', () => {
             },
             trade_type: TRADE_TYPES.MATCH_DIFF,
             underlying: '1HZ100V',
+            is_mobile: false,
         };
     });
 

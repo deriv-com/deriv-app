@@ -2,7 +2,7 @@ import React from 'react';
 import { GetFinancialAssessment, GetSettings } from '@deriv/api-types';
 import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { getTradingAssessmentQuestions } from 'Constants/trading-assessment-questions';
+import { getTradingAssessmentQuestions } from '../Constants/trading-assessment-questions';
 
 type TTradingAssessmentConfig = {
     account_settings: GetSettings;

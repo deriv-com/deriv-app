@@ -391,7 +391,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                     </MobileDrawer.Item>
                                 )}
                                 <MobileDrawer.Item className='header__menu-mobile-livechat'>
-                                    {is_appstore ? null : <LiveChat is_mobile_drawer />}
+                                    <LiveChat />
                                 </MobileDrawer.Item>
                                 {is_logged_in && (
                                     <MobileDrawer.Item

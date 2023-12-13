@@ -4,18 +4,18 @@ import { Button, Loading } from '@deriv/components';
 import { isEmptyObject, WS, getPlatformRedirect, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
-import DemoMessage from 'Components/demo-message';
-import ErrorMessage from 'Components/error-component';
-import Expired from 'Components/poi/status/expired';
+import DemoMessage from '../../../Components/demo-message';
+import ErrorMessage from '../../../Components/error-component';
+import Expired from '../../../Components/poi/status/expired';
 import IdvContainer from './idv.jsx';
-import Limited from 'Components/poi/status/limited';
+import Limited from '../../../Components/poi/status/limited';
 import { Localize } from '@deriv/translations';
-import NotRequired from 'Components/poi/status/not-required';
+import NotRequired from '../../../Components/poi/status/not-required';
 import Onfido from './onfido.jsx';
 import POISubmission from './proof-of-identity-submission.jsx';
-import Unsupported from 'Components/poi/status/unsupported';
-import UploadComplete from 'Components/poi/status/upload-complete';
-import Verified from 'Components/poi/status/verified';
+import Unsupported from '../../../Components/poi/status/unsupported';
+import UploadComplete from '../../../Components/poi/status/upload-complete';
+import Verified from '../../../Components/poi/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainer = observer(
@@ -54,6 +54,7 @@ const ProofOfIdentityContainer = observer(
                 refreshNotifications();
             });
         };
+
         const loadResidenceList = React.useCallback(() => {
             fetchResidenceList().then(response_residence_list => {
                 if (response_residence_list.error) {
@@ -140,7 +141,6 @@ const ProofOfIdentityContainer = observer(
             [identity_status_codes.rejected, identity_status_codes.suspected, identity_status_codes.expired].includes(
                 idv.status
             );
-
         if (
             identity_status === identity_status_codes.none ||
             has_require_submission ||

@@ -6,6 +6,7 @@ jest.mock('../authorization-required-modal', () => jest.fn(() => 'AuthorizationR
 jest.mock('../insufficient-balance-modal', () => jest.fn(() => 'InsufficientBalanceModal'));
 jest.mock('../company-wide-limit-exceeded-modal', () => jest.fn(() => 'CompanyWideLimitExceededModal'));
 jest.mock('../account-verification-required-modal', () => jest.fn(() => 'AccountVerificationRequiredModal'));
+
 type TModal = {
     (): JSX.Element;
     Body?: React.FC;

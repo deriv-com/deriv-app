@@ -380,9 +380,19 @@ type TClientStore = {
     currencies_list: { text: string; value: string; has_tool_tip?: boolean }[];
     current_currency_type?: string;
     current_fiat_currency?: string;
+    email_address: string;
     has_any_real_account: boolean;
     getLimits: () => Promise<{ get_limits?: GetLimits }>;
+    getTwoFAStatus: () => Promise<
+        | boolean
+        | {
+              error: {
+                  message: string;
+              };
+          }
+    >;
     has_active_real_account: boolean;
+    has_cookie_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;
     has_restricted_mt5_account: boolean;
@@ -408,6 +418,7 @@ type TClientStore = {
     is_logging_in: boolean;
     is_low_risk: boolean;
     is_mt5_password_not_set: boolean;
+    is_mt5_account_list_updated: boolean;
     is_pending_proof_of_ownership: boolean;
     is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
@@ -594,6 +605,7 @@ type TUiStore = {
     has_real_account_signup_ended: boolean;
     header_extension: JSX.Element | null;
     is_account_settings_visible: boolean;
+    is_account_switcher_disabled: boolean;
     is_additional_kyc_info_modal_open: boolean;
     is_advanced_duration: boolean;
     is_cashier_visible: boolean;
@@ -602,12 +614,16 @@ type TUiStore = {
     is_chart_layout_default: boolean;
     is_chart_countdown_visible: boolean;
     is_closing_create_real_account_modal: boolean;
+    is_from_signup_account: boolean;
+    is_from_success_deposit_modal: boolean;
     is_kyc_information_submitted_modal_open: boolean;
     is_dark_mode_on: boolean;
     is_loading: boolean;
     is_reports_visible: boolean;
     is_route_modal_on: boolean;
     is_language_settings_modal_on: boolean;
+    is_verification_modal_visible: boolean;
+    is_verification_submitted: boolean;
     is_desktop: boolean;
     is_app_disabled: boolean;
     is_link_expired_modal_visible: boolean;
@@ -616,6 +632,7 @@ type TUiStore = {
     is_mobile_language_menu_open: boolean;
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
+    is_trading_assessment_for_existing_user_enabled: boolean;
     is_unsupported_contract_modal_visible: boolean;
     onChangeUiStore: ({ name, value }: { name: string; value: unknown }) => void;
     openPositionsDrawer: () => void;
@@ -644,6 +661,11 @@ type TUiStore = {
     setMobileLanguageMenuOpen: (is_mobile_language_menu_open: boolean) => void;
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
+    setIsFromSignupAccount: (value: boolean) => void;
+    setIsVerificationModalVisible: (value: boolean) => void;
+    setIsFromSuccessDepositModal: (value: boolean) => void;
+    setIsVerificationSubmitted: (value: boolean) => void;
+    setIsMT5VerificationFailedModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     setPurchaseState: (index: number) => void;
     simple_duration_unit: string;
@@ -669,11 +691,15 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
     should_show_cancellation_warning: boolean;
+    should_show_one_time_deposit_modal: boolean;
+    should_show_account_success_modal: boolean;
+    should_trigger_tour_guide: boolean;
     toggleCancellationWarning: (state_change?: boolean) => void;
     toggleUnsupportedContractModal: (state_change: boolean) => void;
     toggleReports: (is_visible: boolean) => void;
     is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
+    is_mf_verification_pending_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
     is_switch_to_deriv_account_modal_visible: boolean;
     openSwitchToRealAccountModal: () => void;
@@ -699,6 +725,10 @@ type TUiStore = {
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
+    setShouldTriggerTourGuide: (value: boolean) => void;
+    setShouldShowOneTimeDepositModal: (value: boolean) => void;
+    toggleAccountSuccessModal: () => void;
+    setIsMFVericationPendingModal: (value: boolean) => void;
     setMT5MigrationModalEnabled: (value: boolean) => void;
     toggleMT5MigrationModal: () => void;
     vanilla_trade_type: 'VANILLALONGCALL' | 'VANILLALONGPUT';
@@ -941,7 +971,6 @@ type TTradersHubStore = {
     toggleRegulatorsCompareModal: () => void;
     openFailedVerificationModal: (selected_account_type: Record<string, unknown> | string) => void;
     modal_data: TModalData;
-    multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;
     selected_platform_type: string;

@@ -10,6 +10,7 @@
         border-radius: 4px;
         border: 1.5px solid var(--status-info);
         align-items: center;
+        white-space: nowrap;
 
         &--migrated_with_position,
         &--migrated_without_position,
@@ -38,6 +39,7 @@
     cursor: pointer;
     font-size: var(--text-size-xxxs);
     padding-left: 0.3rem;
+    text-decoration: underline;
 }
 
 .link-verification-failed {

@@ -5,7 +5,7 @@ import useAuthorize from '../useAuthorize';
 /**
  * This custom hook returns available adverts for use with 'p2p_order_create' by calling 'p2p_advert_list' endpoint
  */
-const useP2PAdvertList = (
+const useAdvertList = (
     payload?: NonNullable<Parameters<typeof useInfiniteQuery<'p2p_advert_list'>>[1]>['payload'],
     config?: NonNullable<Parameters<typeof useInfiniteQuery<'p2p_advert_list'>>[1]>['options']
 ) => {
@@ -65,4 +65,4 @@ const useP2PAdvertList = (
     };
 };
 
-export default useP2PAdvertList;
+export default useAdvertList;

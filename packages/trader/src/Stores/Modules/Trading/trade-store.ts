@@ -912,8 +912,8 @@ export default class TradeStore extends BaseStore {
                             const is_call = category === 'Call';
                             const is_put = category === 'Put';
                             const is_high_low = isHighLow({ shortcode_info: extractInfoFromShortcode(shortcode) });
-                            const higher_lower_contact = is_high_low && is_call ? 'higher' : 'lower';
-                            const rise_fall_contract = !is_high_low && is_call ? 'rise' : 'fall';
+                            const higher_lower_contact = is_call ? 'higher' : 'lower';
+                            const rise_fall_contract = is_call ? 'rise' : 'fall';
                             const call_put_contract = is_high_low ? higher_lower_contact : rise_fall_contract;
 
                             if ((window as any).hj) {

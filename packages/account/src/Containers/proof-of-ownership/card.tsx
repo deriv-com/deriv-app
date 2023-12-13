@@ -54,7 +54,7 @@ const Card = ({ details }: TCardProps) => {
                     className='proof-of-ownership__card-item-icon'
                     onClick={onClickHandler}
                     transparent
-                    data-testid='dt_proof-of-ownership-button'
+                    data-testid='dt_proof_of_ownership_button'
                     type='button'
                 />
             </div>

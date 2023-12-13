@@ -50,7 +50,7 @@ describe('proof-of-ownership-form.jsx', () => {
                 citizen='id'
             />
         );
-        const poo_dropdown_button = await screen.findByTestId('dt_proof-of-ownership-button');
+        const poo_dropdown_button = await screen.findByTestId('dt_proof_of_ownership_button');
         fireEvent.click(poo_dropdown_button);
         const identifier_input = await screen.findByTestId('dt_payment_method_identifier');
         fireEvent.change(identifier_input, { target: { value: '1234567891011121' } });

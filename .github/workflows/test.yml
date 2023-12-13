@@ -31,8 +31,12 @@ jobs:
       run: npx tsc --project packages/stores/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/wallets
       run: npx tsc --project packages/wallets/tsconfig.json -noEmit
+    - name: Check TypeScript for @deriv/traders-hub
+      run: npx tsc --project packages/traders-hub/tsconfig.json -noEmit
     - name: Check ESLint for @deriv/wallets
       run: npx eslint --fix --ignore-path packages/wallets/.eslintignore --config packages/wallets/.eslintrc.js packages/wallets
+    - name: Check ESLint for @deriv/traders-hub
+      run: npx eslint --fix --ignore-path packages/traders-hub/.eslintignore --config packages/traders-hub/.eslintrc.js packages/traders-hub
     - name: Check Stylelint for @deriv/wallets
       run: npx stylelint packages/wallets/**/*.scss
     - name: Check tests for @deriv/hooks

@@ -1,0 +1,4 @@
+/*
+  X-Frame-Options: sameorigin
+  Content-Security-Policy: frame-ancestors 'self';
+

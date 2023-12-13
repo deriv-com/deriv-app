@@ -22,7 +22,7 @@ describe('WithdrawalVerificationRequest', () => {
         const sendEmailMock = jest.fn();
         render(<WithdrawalVerificationRequest sendEmail={sendEmailMock} />);
 
-        fireEvent.click(screen.getByText('Send email'));
+        fireEvent.click(screen.getByRole('button', { name: 'Send email' }));
 
         expect(sendEmailMock).toHaveBeenCalledTimes(1);
     });

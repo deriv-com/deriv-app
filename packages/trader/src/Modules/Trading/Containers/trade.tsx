@@ -216,7 +216,9 @@ const Trade = observer(() => {
                                     has_barrier={has_barrier}
                                     charts_ref={charts_ref}
                                     is_accumulator={is_accumulator}
-                                    topWidgets={topWidgets}
+                                    topWidgets={
+                                        !(open_launch_modal && is_logged_in && !is_already_shown) ? topWidgets : null
+                                    }
                                 />
                             </SwipeableWrapper>
                         </MobileWrapper>

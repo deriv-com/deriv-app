@@ -63,13 +63,11 @@ const TransferForm = () => {
                                     mobileAccountsListRef={mobileAccountsListRef}
                                 />
                             </div>
-                            {exchangeRatesUSD && exchangeRatesWalletCurrency && (
-                                <TransferMessages
-                                    exchangeRatesUSD={exchangeRatesUSD}
-                                    exchangeRatesWalletCurrency={exchangeRatesWalletCurrency}
-                                    key={values.fromAmount.toString() + values.toAmount.toString()}
-                                />
-                            )}
+                            <TransferMessages
+                                exchangeRatesUSD={exchangeRatesUSD}
+                                exchangeRatesWalletCurrency={exchangeRatesWalletCurrency}
+                                key={values.fromAmount.toString() + values.toAmount.toString()}
+                            />
                             <div className='wallets-transfer__fields-section'>
                                 <TransferFormAmountInput
                                     exchangeRatesWalletCurrency={exchangeRatesWalletCurrency}

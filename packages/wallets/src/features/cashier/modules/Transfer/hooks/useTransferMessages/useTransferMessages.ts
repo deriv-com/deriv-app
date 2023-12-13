@@ -13,8 +13,8 @@ const useTransferMessages = (
     fromAccount: NonNullable<TAccount> | undefined,
     toAccount: NonNullable<TAccount> | undefined,
     formData: TInitialTransferFormValues,
-    exchangeRatesUSD: THooks.ExchangeRate,
-    exchangeRatesWalletCurrency: THooks.ExchangeRate
+    exchangeRatesUSD?: THooks.ExchangeRate,
+    exchangeRatesWalletCurrency?: THooks.ExchangeRate
 ) => {
     const { data: authorizeData } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();

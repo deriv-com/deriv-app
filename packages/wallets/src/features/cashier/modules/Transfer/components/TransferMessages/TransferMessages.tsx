@@ -7,8 +7,8 @@ import { TInitialTransferFormValues } from '../../types';
 import './TransferMessages.scss';
 
 type TProps = {
-    exchangeRatesUSD: THooks.ExchangeRate;
-    exchangeRatesWalletCurrency: THooks.ExchangeRate;
+    exchangeRatesUSD?: THooks.ExchangeRate;
+    exchangeRatesWalletCurrency?: THooks.ExchangeRate;
 };
 
 const TransferMessages: React.FC<TProps> = ({ exchangeRatesUSD, exchangeRatesWalletCurrency }) => {

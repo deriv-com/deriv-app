@@ -37,7 +37,7 @@ const useOrderList = (
             advert_details: {
                 ...advert?.advert_details,
                 /** Indicates if this is block trade advert or not. */
-                block_trade: Boolean(advert?.advert_details?.block_trade),
+                is_block_trade: Boolean(advert?.advert_details?.block_trade),
             },
             /** Details of the advertiser for this order. */
             advertiser_details: {
@@ -55,13 +55,6 @@ const useOrderList = (
                 /** Indicates that the advertiser was recommended in the most recent review by the current user. */
                 is_recommended: Boolean(advert?.advertiser_details?.is_recommended),
             },
-            /** The epoch time of the order completion. */
-            completion_time: advert?.completion_time ? new Date(advert.completion_time) : undefined,
-            /** The advert creation time in epoch. */
-            created_time: advert?.created_time ? new Date(advert.created_time) : undefined,
-            /** The epoch time in which the order will be expired. */
-            expiry_time: advert?.expiry_time ? new Date(advert.expiry_time) : undefined,
-            /** 1 if the order is created for the advert of the current client, otherwise 0. */
             is_incoming: Boolean(advert?.is_incoming),
             /** 1 if a review can be given, otherwise 0 */
             is_reviewable: Boolean(advert?.is_reviewable),
@@ -71,14 +64,10 @@ const useOrderList = (
             review_details: {
                 ...advert?.review_details,
                 /** 1 if the advertiser is recommended, 0 if not recommended. */
-                recommended: Boolean(advert?.review_details?.recommended),
+                is_recommended: Boolean(advert?.review_details?.recommended),
             },
             /** Indicates that the seller in the process of confirming the order. */
-            verification_pending: Boolean(advert?.verification_pending),
-            /** Epoch time that the current verification token will expire. */
-            verification_token_expiry: advert?.verification_token_expiry
-                ? new Date(advert.verification_token_expiry)
-                : undefined,
+            is_verification_pending: Boolean(advert?.verification_pending),
         }));
     }, [flatten_data]);
 

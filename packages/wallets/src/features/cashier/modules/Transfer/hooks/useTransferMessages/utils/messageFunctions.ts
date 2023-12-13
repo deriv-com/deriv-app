@@ -180,16 +180,27 @@ const transferFeesBetweenWalletsMessageFn = ({
     sourceAmount,
     targetAccount,
 }: TMessageFnProps) => {
-    if (!sourceAccount.currency || !sourceAccount.currencyConfig || !targetAccount.currency) return null;
+    if (!sourceAccount.currency || !sourceAccount.currencyConfig || !sourceAmount || !targetAccount.currency)
+        return null;
+
+    const minimumFeeAmount = 1 / Math.pow(10, sourceAccount.currencyConfig.fractional_digits);
 
     const feePercentage = sourceAccount.currencyConfig?.transfer_between_accounts.fees[targetAccount.currency];
-    const feeAmount = displayMoney?.(
-        (feePercentage * sourceAmount) / 100,
+
+    const feeAmount = (feePercentage * sourceAmount) / 100;
+
+    const feeMessageText = displayMoney?.(
+        feeAmount > minimumFeeAmount ? feeAmount : minimumFeeAmount,
         sourceAccount.currency,
         sourceAccount.currencyConfig.fractional_digits
     );
+
     return {
-        text: `Fee: ${feeAmount} (2% transfer fee or 0.01 USD, whichever is higher, applies for fund transfers between your ${targetAccount.accountName} and cryptocurrency Wallets)`,
+        text: `Fee: ${feeMessageText} (${feePercentage}% transfer fee or ${minimumFeeAmount.toFixed(
+            sourceAccount.currencyConfig.fractional_digits
+        )}, whichever is higher, applies for fund transfers between your ${
+            targetAccount.accountName
+        } and cryptocurrency Wallets)`,
         type: 'info' as const,
     };
 };

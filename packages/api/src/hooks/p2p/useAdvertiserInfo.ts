@@ -3,12 +3,12 @@ import useQuery from '../../useQuery';
 import useAuthorize from '../useAuthorize';
 
 /** This custom hook returns information about the given advertiser ID */
-const useP2PAdvertiserInfo = (id?: string) => {
+const useAdvertiserInfo = (id?: string) => {
     const { isSuccess } = useAuthorize();
     const { data, ...rest } = useQuery('p2p_advertiser_info', { payload: { id }, options: { enabled: isSuccess } });
 
     // Add additional information to the p2p_advertiser_info data
-    const modified_p2p_advertiser_info = useMemo(() => {
+    const modified_data = useMemo(() => {
         const advertiser_info = data?.p2p_advertiser_info;
 
         if (!advertiser_info) return undefined;
@@ -50,9 +50,9 @@ const useP2PAdvertiserInfo = (id?: string) => {
 
     return {
         /** P2P advertiser information */
-        data: modified_p2p_advertiser_info,
+        data: modified_data,
         ...rest,
     };
 };
 
-export default useP2PAdvertiserInfo;
+export default useAdvertiserInfo;

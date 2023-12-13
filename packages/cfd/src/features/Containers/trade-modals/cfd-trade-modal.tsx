@@ -4,8 +4,8 @@ import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import OtherCFDsTradeModal from './other-cfds-trade-modal';
 import MT5TradeModal from './mt5-trade-modal';
-import { TCFDPasswordReset } from '../../Containers/props.types';
-import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import { TCFDPasswordReset } from '../../../Containers/props.types';
+import { useCfdStore } from '../../../Stores/Modules/CFD/Helpers/useCfdStores';
 import '../sass/cfd-dashboard.scss';
 
 type TCFDTradeModalProps = {

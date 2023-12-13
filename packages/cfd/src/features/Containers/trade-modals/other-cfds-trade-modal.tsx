@@ -4,12 +4,12 @@ import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDsPlatformType } f
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { getCFDAccountKey, isMobile, mobileOSDetect } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { getPlatformQRCode, PlatformsDesktopDownload, mobileDownloadLink } from '../../Helpers/config';
-import { getTitle, platformsText, CTRADER_DESKTOP_DOWNLOAD } from '../../Helpers/constants';
-import { CFD_PLATFORMS, MOBILE_PLATFORMS } from '../../Helpers/cfd-config';
-import SpecBox from '../../Components/specbox';
-import PasswordBox from '../../Components/passwordbox';
-import { TCFDPasswordReset } from '../../Containers/props.types';
+import { getPlatformQRCode, PlatformsDesktopDownload, mobileDownloadLink } from '../../../Helpers/config';
+import { getTitle, platformsText, CTRADER_DESKTOP_DOWNLOAD } from '../../../Helpers/constants';
+import { CFD_PLATFORMS, MOBILE_PLATFORMS } from '../../../Helpers/cfd-config';
+import SpecBox from '../../../Components/specbox';
+import PasswordBox from '../../../Components/passwordbox';
+import { TCFDPasswordReset } from '../../../Containers/props.types';
 import '../sass/cfd-dashboard.scss';
 
 type TOtherCFDsTradeModalProps = {

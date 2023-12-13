@@ -11,14 +11,14 @@ import {
     isMobile,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { getPlatformMt5DownloadLink } from '../../Helpers/constants';
-import SpecBox from '../../Components/specbox';
-import PasswordBox from '../../Components/passwordbox';
-import TradingPlatformIcon from '../../Assets/svgs/trading-platform';
-import { TTradingPlatformAccounts } from '../../Components/props.types';
+import { getPlatformMt5DownloadLink } from '../../../Helpers/constants';
+import SpecBox from '../../../Components/specbox';
+import PasswordBox from '../../../Components/passwordbox';
+import TradingPlatformIcon from '../../../Assets/svgs/trading-platform';
+import { TTradingPlatformAccounts } from '../../../Components/props.types';
 
-import { TCFDPasswordReset } from '../../Containers/props.types';
-import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../../Helpers/cfd-config';
+import { TCFDPasswordReset } from '../../../Containers/props.types';
+import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../../../Helpers/cfd-config';
 import '../sass/cfd-dashboard.scss';
 
 type TMT5TradeModalProps = {

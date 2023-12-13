@@ -1,15 +1,16 @@
-import React from 'react';
-import { useFetch } from '@deriv/api';
-import { TSocketRequestQueryOptions } from '@deriv/api/types';
+import { useMemo } from 'react';
+import useQuery from '../../useQuery';
 
 /**
- * @deprecated
  * This custom hook returns the advert info for a specific advert by calling 'p2p_advert_info' endpoint
  */
-const useP2PAdvertInfo = (id: string, options: TSocketRequestQueryOptions<'p2p_advert_info'>) => {
-    const { data, ...rest } = useFetch('p2p_advert_info', { payload: { id }, options });
+const useAdvertInfo = (
+    id?: string,
+    options?: NonNullable<Parameters<typeof useQuery<'p2p_advert_info'>>[1]>['options']
+) => {
+    const { data, ...rest } = useQuery('p2p_advert_info', { payload: { id }, options });
 
-    const modified_data = React.useMemo(() => {
+    const modified_data = useMemo(() => {
         const p2p_advert_info = data?.p2p_advert_info;
 
         if (!p2p_advert_info) return undefined;
@@ -29,4 +30,4 @@ const useP2PAdvertInfo = (id: string, options: TSocketRequestQueryOptions<'p2p_a
     };
 };
 
-export default useP2PAdvertInfo;
+export default useAdvertInfo;

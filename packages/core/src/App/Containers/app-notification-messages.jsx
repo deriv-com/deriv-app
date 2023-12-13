@@ -62,15 +62,15 @@ const NotificationsContent = ({
 };
 
 const AppNotificationMessages = observer(({ is_notification_loaded, is_mt5, stopNotificationLoading }) => {
-    const { notifications } = useStore()
+    const { notifications } = useStore();
     const {
         marked_notifications,
         removeNotificationMessage,
         markNotificationMessage,
         should_show_popups,
-        show_trade_notifications
-    } = notifications
-    const notification_messages = notifications.notifications
+        show_trade_notifications,
+    } = notifications;
+    const notification_messages = notifications.notifications;
     const [style, setStyle] = React.useState({});
     const [notifications_ref, setNotificationsRef] = React.useState(null);
 
@@ -91,44 +91,44 @@ const AppNotificationMessages = observer(({ is_notification_loaded, is_mt5, stop
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
             ? [
-                ...maintenance_notifications,
-                'authenticate',
-                'deriv_go',
-                'document_needs_action',
-                'dp2p',
-                'contract_sold',
-                'has_changed_two_fa',
-                'identity',
-                'install_pwa',
-                'need_fa',
-                'needs_poinc',
-                'notify_financial_assessment',
-                'poi_name_mismatch',
-                'poa_address_mismatch_failure',
-                'poa_address_mismatch_success',
-                'poa_address_mismatch_warning',
-                'poa_expired',
-                'poa_failed',
-                'poa_rejected_for_mt5',
-                'poa_verified',
-                'poi_expired',
-                'poi_failed',
-                'poi_verified',
-                'poinc_upload_limited',
-                'p2p_daily_limit_increase',
-                'resticted_mt5_with_failed_poa',
-                'resticted_mt5_with_pending_poa',
-                'svg_needs_poa',
-                'svg_needs_poi',
-                'svg_needs_poi_poa',
-                'svg_poi_expired',
-                'wallets_migrated',
-                'wallets_failed',
-                'tnc',
-                'trustpilot',
-                'unwelcome',
-                'additional_kyc_info',
-            ].includes(message.key) || message.type === 'p2p_completed_order'
+                  ...maintenance_notifications,
+                  'authenticate',
+                  'deriv_go',
+                  'document_needs_action',
+                  'dp2p',
+                  'contract_sold',
+                  'has_changed_two_fa',
+                  'identity',
+                  'install_pwa',
+                  'need_fa',
+                  'needs_poinc',
+                  'notify_financial_assessment',
+                  'poi_name_mismatch',
+                  'poa_address_mismatch_failure',
+                  'poa_address_mismatch_success',
+                  'poa_address_mismatch_warning',
+                  'poa_expired',
+                  'poa_failed',
+                  'poa_rejected_for_mt5',
+                  'poa_verified',
+                  'poi_expired',
+                  'poi_failed',
+                  'poi_verified',
+                  'poinc_upload_limited',
+                  'p2p_daily_limit_increase',
+                  'resticted_mt5_with_failed_poa',
+                  'resticted_mt5_with_pending_poa',
+                  'svg_needs_poa',
+                  'svg_needs_poi',
+                  'svg_needs_poi_poa',
+                  'svg_poi_expired',
+                  'wallets_migrated',
+                  'wallets_failed',
+                  'tnc',
+                  'trustpilot',
+                  'unwelcome',
+                  'additional_kyc_info',
+              ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
 
         const is_only_for_p2p_notification =
@@ -154,8 +154,8 @@ const AppNotificationMessages = observer(({ is_notification_loaded, is_mt5, stop
     const notifications_sublist =
         window.location.pathname === routes.cashier_deposit
             ? filtered_excluded_notifications.filter(message =>
-                ['switched_to_real', ...maintenance_notifications].includes(message.key)
-            )
+                  ['switched_to_real', ...maintenance_notifications].includes(message.key)
+              )
             : filtered_excluded_notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
@@ -183,4 +183,4 @@ AppNotificationMessages.propTypes = {
     is_notification_loaded: PropTypes.bool,
     stopNotificationLoading: PropTypes.func,
 };
-export default (AppNotificationMessages);
+export default AppNotificationMessages;

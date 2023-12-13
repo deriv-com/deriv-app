@@ -66,18 +66,15 @@ const InformationSubmittedModal = React.lazy(() =>
 );
 
 const AppModals = observer(() => {
-    const { client, ui, traders_hub } = useStore()
+    const { client, ui, traders_hub } = useStore();
     const {
         is_logged_in,
         fetchFinancialAssessment,
         setCFDScore,
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
-    } = client
-    const {
-        is_mt5_notification_modal_visible,
-        content_flag,
-    } = traders_hub
+    } = client;
+    const { is_mt5_notification_modal_visible, content_flag } = traders_hub;
     const {
         is_account_needed_modal_on,
         is_closing_create_real_account_modal,
@@ -97,7 +94,7 @@ const AppModals = observer(() => {
         is_verification_submitted,
         should_show_one_time_deposit_modal,
         should_show_account_success_modal,
-    } = ui
+    } = ui;
     const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
     const url_action_param = url_params.get('action');
@@ -210,4 +207,4 @@ const AppModals = observer(() => {
     );
 });
 
-export default (AppModals);
+export default AppModals;

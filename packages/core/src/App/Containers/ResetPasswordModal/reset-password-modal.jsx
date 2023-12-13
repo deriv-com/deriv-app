@@ -4,23 +4,20 @@ import { Formik, Form } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { redirectToLogin, validPassword, validLength, getErrorMessages, WS } from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
-import { observer,useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 
 const ResetPasswordModal = observer(() => {
-    const { ui, client } =useStore()
+    const { ui, client } = useStore();
+    const { logout: logoutClient, verification_code } = client;
     const {
-        logout:logoutClient,
-        verification_code
-    } =client
-    const {
-    disableApp,
-    enableApp,
-    is_loading,
-    is_mobile,
-    is_reset_password_modal_visible:is_visible,
-    toggleResetPasswordModal,
-    toggleLinkExpiredModal,
-    } =ui
+        disableApp,
+        enableApp,
+        is_loading,
+        is_mobile,
+        is_reset_password_modal_visible: is_visible,
+        toggleResetPasswordModal,
+        toggleLinkExpiredModal,
+    } = ui;
     const onResetComplete = (error, actions) => {
         actions.setSubmitting(false);
         const error_code = error?.code;
@@ -47,7 +44,7 @@ const ResetPasswordModal = observer(() => {
         const api_request = {
             reset_password: 1,
             new_password: values.password,
-            verification_code:verification_code.reset_password,
+            verification_code: verification_code.reset_password,
         };
 
         WS.resetPassword(api_request).then(async response => {
@@ -166,5 +163,4 @@ const ResetPasswordModal = observer(() => {
     );
 });
 
-
-export default (ResetPasswordModal);
+export default ResetPasswordModal;

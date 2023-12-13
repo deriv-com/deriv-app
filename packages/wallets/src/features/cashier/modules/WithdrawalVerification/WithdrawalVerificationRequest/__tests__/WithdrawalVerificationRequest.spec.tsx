@@ -8,7 +8,7 @@ describe('WithdrawalVerificationRequest', () => {
 
         expect(screen.getByText('Please help us verify your withdrawal request.')).toBeInTheDocument();
 
-        const sendEmailButton = screen.getByText('Send email');
+        const sendEmailButton = screen.getByRole('button', { name: 'Send email' });
         expect(sendEmailButton).toBeInTheDocument();
 
         expect(screen.getByText(/Click that link to verify your withdrawal request./)).toBeInTheDocument();

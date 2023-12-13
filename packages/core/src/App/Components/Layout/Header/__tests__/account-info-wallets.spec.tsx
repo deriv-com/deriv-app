@@ -4,11 +4,6 @@ import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import AccountInfoWallets from '../wallets/account-info-wallets';
 
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useLocation: jest.fn().mockReturnValue({ pathname: '/' }),
-}));
-
 describe('AccountInfoWallets component', () => {
     const wrapper = (mock: ReturnType<typeof mockStore>) => {
         const Component = ({ children }: { children: JSX.Element }) => {

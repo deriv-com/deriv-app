@@ -1911,6 +1911,7 @@ export default class ClientStore extends BaseStore {
                 this.root_store.notifications.resetVirtualBalanceNotification(obj_balance.loginid);
             }
 
+            //temporary workaround to sync this.loginid with selected wallet loginid
             if (window.location.pathname.includes(routes.wallets_cashier)) {
                 this.resetLocalStorageValues(localStorage.getItem('active_loginid') ?? this.loginid);
                 return;

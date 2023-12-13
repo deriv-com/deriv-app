@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen} from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { useIsClientHighRiskForMT5 } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import AccountWizard from '../account-wizard';
@@ -242,9 +242,9 @@ describe('<AccountWizard />', () => {
         expect(screen.getByText('TestComponent')).toBeInTheDocument();
     });
 
-    fit('should invoke Create account and IDV data submission APIs on click of Submit button', async () => {
+    it('should invoke Create account and IDV data submission APIs on click of Submit button', async () => {
         renderComponent(store);
         const ele_submit_btn = screen.getByRole('button');
-        expect(ele_submit_btn).toHaveTextContent('Submit')
+        expect(ele_submit_btn).toHaveTextContent('Submit');
     });
 });

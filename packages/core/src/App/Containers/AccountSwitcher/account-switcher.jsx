@@ -552,6 +552,4 @@ AccountSwitcher.propTypes = {
     history: PropTypes.object,
 };
 
-const account_switcher = withRouter(AccountSwitcher);
-
-export default account_switcher;
+export default withRouter(AccountSwitcher);

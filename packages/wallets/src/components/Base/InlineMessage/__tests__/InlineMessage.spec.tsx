@@ -11,44 +11,44 @@ jest.mock('../../../../hooks/useDevice', () => ({
 }));
 
 describe('InlineMessage', () => {
-    const inLineMessageEl = () => screen.getByTestId('dt_inline_message');
-    const inLineMessageIconEl = () => screen.getByTestId('dt_inline_message_icon');
+    const getInLineMessageEl = () => screen.getByTestId('dt_inline_message');
+    const getInLineMessageIconEl = () => screen.getByTestId('dt_inline_message_icon');
 
     it('renders with correct size', () => {
         const { rerender } = render(<InlineMessage message='Test message' size='lg' type='warning' />);
-        expect(inLineMessageEl()).toHaveClass('wallets-inline-message--lg');
-        expect(inLineMessageIconEl()).toHaveAttribute('height', '24');
-        expect(inLineMessageIconEl()).toHaveAttribute('width', '24');
+        expect(getInLineMessageEl()).toHaveClass('wallets-inline-message--lg');
+        expect(getInLineMessageIconEl()).toHaveAttribute('height', '24');
+        expect(getInLineMessageIconEl()).toHaveAttribute('width', '24');
 
         rerender(<InlineMessage message='Test message' size='md' type='warning' />);
-        expect(inLineMessageEl()).toHaveClass('wallets-inline-message--md');
-        expect(inLineMessageIconEl()).toHaveAttribute('height', '16');
-        expect(inLineMessageIconEl()).toHaveAttribute('width', '16');
+        expect(getInLineMessageEl()).toHaveClass('wallets-inline-message--md');
+        expect(getInLineMessageIconEl()).toHaveAttribute('height', '16');
+        expect(getInLineMessageIconEl()).toHaveAttribute('width', '16');
 
         rerender(<InlineMessage message='Test message' size='sm' type='warning' />);
-        expect(inLineMessageEl()).toHaveClass('wallets-inline-message--sm');
+        expect(getInLineMessageEl()).toHaveClass('wallets-inline-message--sm');
 
         rerender(<InlineMessage message='Test message' size='xs' type='warning' />);
-        expect(inLineMessageEl()).toHaveClass('wallets-inline-message--xs');
+        expect(getInLineMessageEl()).toHaveClass('wallets-inline-message--xs');
     });
 
     it('renders with correct size on mobile device ', () => {
         (useDevice as jest.Mock).mockReturnValue({ isMobile: true });
         const { rerender } = render(<InlineMessage message='Test message' size='lg' type='warning' />);
-        expect(inLineMessageEl()).toHaveClass('wallets-inline-message--lg');
-        expect(inLineMessageIconEl()).toHaveAttribute('height', '16');
-        expect(inLineMessageIconEl()).toHaveAttribute('width', '16');
+        expect(getInLineMessageEl()).toHaveClass('wallets-inline-message--lg');
+        expect(getInLineMessageIconEl()).toHaveAttribute('height', '16');
+        expect(getInLineMessageIconEl()).toHaveAttribute('width', '16');
 
         rerender(<InlineMessage message='Test message' size='md' type='warning' />);
-        expect(inLineMessageEl()).toHaveClass('wallets-inline-message--md');
-        expect(inLineMessageIconEl()).toHaveAttribute('height', '16');
-        expect(inLineMessageIconEl()).toHaveAttribute('width', '16');
+        expect(getInLineMessageEl()).toHaveClass('wallets-inline-message--md');
+        expect(getInLineMessageIconEl()).toHaveAttribute('height', '16');
+        expect(getInLineMessageIconEl()).toHaveAttribute('width', '16');
 
         rerender(<InlineMessage message='Test message' size='sm' type='warning' />);
-        expect(inLineMessageEl()).toHaveClass('wallets-inline-message--sm');
+        expect(getInLineMessageEl()).toHaveClass('wallets-inline-message--sm');
 
         rerender(<InlineMessage message='Test message' size='xs' type='warning' />);
-        expect(inLineMessageEl()).toHaveClass('wallets-inline-message--xs');
+        expect(getInLineMessageEl()).toHaveClass('wallets-inline-message--xs');
     });
 
     it('renders with correct font size on desktop', () => {
@@ -83,21 +83,21 @@ describe('InlineMessage', () => {
 
     it('renders the correct icon for each type', () => {
         const { rerender } = render(<InlineMessage message='Test message' />);
-        expect(inLineMessageEl()).toHaveClass('wallets-inline-message--warning');
+        expect(getInLineMessageEl()).toHaveClass('wallets-inline-message--warning');
 
         rerender(<InlineMessage message='Test message' type='error' />);
-        expect(inLineMessageEl()).toHaveClass('wallets-inline-message--error');
+        expect(getInLineMessageEl()).toHaveClass('wallets-inline-message--error');
 
         rerender(<InlineMessage message='Test message' type='announcement' />);
-        expect(inLineMessageEl()).toHaveClass('wallets-inline-message--announcement');
+        expect(getInLineMessageEl()).toHaveClass('wallets-inline-message--announcement');
 
         rerender(<InlineMessage message='Test message' type='information' />);
-        expect(inLineMessageEl()).toHaveClass('wallets-inline-message--information');
+        expect(getInLineMessageEl()).toHaveClass('wallets-inline-message--information');
     });
 
     it('renders the correct variant', () => {
         render(<InlineMessage message='Test message' type='warning' variant='contained' />);
-        expect(inLineMessageEl()).toHaveClass('wallets-inline-message--contained');
+        expect(getInLineMessageEl()).toHaveClass('wallets-inline-message--contained');
     });
 
     it('renders the title if provided', () => {

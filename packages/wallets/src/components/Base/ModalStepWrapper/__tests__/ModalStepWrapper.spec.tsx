@@ -36,6 +36,12 @@ describe('ModalStepWrapper', () => {
         expect(footerElement).not.toBeInTheDocument();
     });
 
+    it('should render the children passed to ModalStepWrapper', () => {
+        render(<MockComponent />);
+        const children = screen.getByText('test');
+        expect(children).toBeInTheDocument();
+    });
+
     it('should render correctly with title', () => {
         render(<MockComponent title='Test Title' />);
         const title = screen.getByText('Test Title');

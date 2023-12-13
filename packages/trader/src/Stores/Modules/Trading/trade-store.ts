@@ -31,6 +31,7 @@ import {
     TRADE_TYPES,
     hasBarrier,
     isHighLow,
+    CONTRACT_TYPES,
 } from '@deriv/shared';
 import { Analytics } from '@deriv/analytics';
 import type { TEvents } from '@deriv/analytics';
@@ -909,14 +910,14 @@ export default class TradeStore extends BaseStore {
                             const is_digit_contract = isDigitContractType(category?.toUpperCase() ?? '');
                             const is_multiplier = isMultiplierContract(category);
                             const contract_type = category?.toUpperCase();
-                            const is_call = category === 'Call';
-                            const is_put = category === 'Put';
+                            const is_call = category.toUpperCase() === CONTRACT_TYPES.CALL;
+                            const is_put = category.toUpperCase() === CONTRACT_TYPES.PUT;
                             const is_high_low = isHighLow({ shortcode_info: extractInfoFromShortcode(shortcode) });
-                            let higher_lower_contact = 'lower';
-                            let rise_fall_contract = 'fall';
+                            let higher_lower_contact = CONTRACT_TYPES.LOWER.toLowerCase();
+                            let rise_fall_contract = CONTRACT_TYPES.FALL.toLowerCase();
                             if (is_call) {
-                                higher_lower_contact = 'higher';
-                                rise_fall_contract = 'rise';
+                                higher_lower_contact = CONTRACT_TYPES.HIGHER.toLowerCase();
+                                rise_fall_contract = CONTRACT_TYPES.RISE.toLowerCase();
                             }
                             const call_put_contract = is_high_low ? higher_lower_contact : rise_fall_contract;
 

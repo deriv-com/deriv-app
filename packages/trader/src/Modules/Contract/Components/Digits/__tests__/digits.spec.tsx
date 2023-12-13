@@ -63,6 +63,7 @@ describe('<Digits />', () => {
             }),
             digits_array: [90, 107, 105, 94, 100, 96, 96, 101, 105, 97],
             digits_info: {},
+            is_mobile: false,
             is_trade_page: true,
             onDigitChange: jest.fn(),
             selected_digit: 5,

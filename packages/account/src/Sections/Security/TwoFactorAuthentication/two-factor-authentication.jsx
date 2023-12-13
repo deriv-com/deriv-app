@@ -56,9 +56,9 @@ const TwoFactorAuthentication = observer(() => {
             account_security: 1,
             totp_action: 'generate',
         });
-        setLoading(false);
 
         if (generate_response.error) {
+            setQrLoading(false);
             setErrorMessage(generate_response.error.message);
             return;
         }
@@ -72,19 +72,25 @@ const TwoFactorAuthentication = observer(() => {
 
     const getDigitStatus = React.useCallback(async () => {
         console.log('calling getTwoFAStatus');
-        const status_response = await getTwoFAStatus();
-        console.log('response of getTwoFAStatus: ', status_response);
-        if (status_response.error) {
-            setErrorMessage(status_response.error.message);
+        try {
+            const status_response = await getTwoFAStatus();
+            console.log('response of getTwoFAStatus: ', status_response);
+            if (status_response.error) {
+                setErrorMessage(status_response.error.message);
+                setLoading(false);
+                return;
+            }
+
+            if (!status_response) {
+                await generateQrCode();
+            }
+
             setLoading(false);
-            return;
+        } catch (error) {
+            console.log('error in getTwoFAStatus: ', error);
+            setQrLoading(false);
+            setLoading(false);
         }
-
-        if (!status_response) {
-            await generateQrCode();
-        }
-
-        setLoading(false);
     }, [getTwoFAStatus, generateQrCode]);
 
     if (error_message) return <LoadErrorMessage error_message={error_message} />;

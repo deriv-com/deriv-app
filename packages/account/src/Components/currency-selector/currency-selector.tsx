@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Field, Formik, FormikHandlers, FormikState } from 'formik';
 import { WebsiteStatus } from '@deriv/api-types';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
-import { getPlatformSettings, reorderCurrencies, getAddressDetailsFields, CURRENCY_TYPE } from '@deriv/shared';
+import { getPlatformSettings, reorderCurrencies, getAddressDetailsFields } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import RadioButton from './radio-button';
@@ -11,6 +11,11 @@ import RadioButtonGroup from './radio-button-group';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 export const Hr = () => <div className='currency-hr' />;
+
+const CURRENCY_TYPE: Record<string, 'crypto' | 'fiat'> = {
+    CRYPTO: 'crypto',
+    FIAT: 'fiat',
+};
 
 export type TCurrencySelectorFormProps = {
     currency: string;

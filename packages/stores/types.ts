@@ -392,7 +392,6 @@ type TClientStore = {
           }
     >;
     has_active_real_account: boolean;
-    has_cookie_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;
     has_restricted_mt5_account: boolean;
@@ -606,7 +605,6 @@ type TUiStore = {
     has_real_account_signup_ended: boolean;
     header_extension: JSX.Element | null;
     is_account_settings_visible: boolean;
-    is_account_switcher_disabled: boolean;
     is_additional_kyc_info_modal_open: boolean;
     is_advanced_duration: boolean;
     is_cashier_visible: boolean;
@@ -633,7 +631,6 @@ type TUiStore = {
     is_mobile_language_menu_open: boolean;
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
-    is_trading_assessment_for_existing_user_enabled: boolean;
     is_unsupported_contract_modal_visible: boolean;
     onChangeUiStore: ({ name, value }: { name: string; value: unknown }) => void;
     openPositionsDrawer: () => void;

@@ -63,7 +63,9 @@ const AddCryptoCurrency = ({
             initialValues={{
                 currency: value.currency,
             }}
-            onSubmit={onSubmit}
+            onSubmit={(values, actions) => {
+                onSubmit(false, values, actions.setSubmitting);
+            }}
         >
             {({ handleSubmit, values, errors, touched, isSubmitting }) => (
                 <form onSubmit={handleSubmit}>

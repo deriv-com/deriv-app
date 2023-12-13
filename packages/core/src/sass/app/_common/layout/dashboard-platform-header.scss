@@ -1,0 +1,116 @@
+.dashboard-platform-header {
+    position: fixed;
+    z-index: 99;
+    width: 100%;
+    height: $HEADER_HEIGHT;
+    left: 0px;
+    top: 0px;
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--general-section-1);
+    background-color: var(--general-main-1);
+    backface-visibility: hidden;
+    transition: opacity 0.3s;
+    display: flex;
+
+    @include mobile {
+        height: 40px;
+    }
+
+    &__menu-left {
+        display: inline-flex;
+        height: #{$HEADER_HEIGHT - 1px};
+        align-items: center;
+
+        @include mobile {
+            height: 39px;
+        }
+
+        &-extensions {
+            display: flex;
+            overflow: hidden;
+        }
+    }
+
+    &__menu-right {
+        justify-content: flex-end;
+        display: inline-flex;
+        flex: 1;
+        align-items: center;
+    }
+
+    &__my-apps {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 13rem;
+
+        > * {
+            cursor: pointer;
+        }
+
+        &--title {
+            margin-left: 8px;
+        }
+    }
+
+    &__platform-information {
+        display: flex;
+        align-items: center;
+
+        &--icon {
+            margin-right: 1.2rem;
+        }
+    }
+
+    &__divider {
+        width: 1px;
+        height: 32px;
+        margin-left: 8px;
+        background: var(--general-section-2);
+
+        @include mobile {
+            height: 24px;
+        }
+    }
+
+    &__setting {
+        margin-right: 12px;
+
+        &--icon {
+            cursor: pointer;
+        }
+    }
+
+    &__notification {
+        @include mobile {
+            .notifications-toggle {
+                margin-right: 0;
+            }
+        }
+    }
+
+    &__report {
+        margin-right: 24px;
+    }
+
+    &__balance {
+        display: flex;
+        align-items: center;
+
+        &--icon {
+            margin: 0px 8px;
+        }
+    }
+
+    &__button {
+        margin: 6px 16px;
+
+        @include mobile {
+            width: 5.4rem;
+        }
+    }
+
+    &__mobile-drawer-icon {
+        margin: 12px 8px 12px 12px;
+    }
+}

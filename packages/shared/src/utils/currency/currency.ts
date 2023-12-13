@@ -58,11 +58,6 @@ export const reorderCurrencies = <T extends { value: string; type: string }>(lis
 
 export const AMOUNT_MAX_LENGTH = 10;
 
-export const CURRENCY_TYPE = {
-    CRYPTO: 'crypto',
-    FIAT: 'fiat',
-} as const;
-
 export const getRoundedNumber = (number: number, currency: string) => {
     return Number(Number(number).toFixed(getDecimalPlaces(currency)));
 };

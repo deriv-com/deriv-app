@@ -1,6 +1,5 @@
 import React from 'react';
 import P2P from '@deriv/p2p';
-import P2P_V2 from '@deriv/p2p-v2';
 import { routes, moduleLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Cashier } from '../containers';
@@ -64,12 +63,6 @@ const initRoutesConfig = (): TRouteConfig[] => [
             {
                 path: routes.cashier_p2p,
                 component: P2P,
-                getTitle: () => localize('Deriv P2P'),
-                icon_component: 'IcDp2p',
-            },
-            {
-                path: routes.cashier_p2p_v2,
-                component: P2P_V2,
                 getTitle: () => localize('Deriv P2P'),
                 icon_component: 'IcDp2p',
             },

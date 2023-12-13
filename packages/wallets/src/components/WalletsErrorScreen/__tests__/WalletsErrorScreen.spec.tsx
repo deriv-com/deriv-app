@@ -28,7 +28,7 @@ describe('WalletsErrorScreen', () => {
             writable: true,
         });
         render(<WalletsErrorScreen />);
-        screen.getByText('Try again').click();
+        screen.getByRole('button', { name: 'Try again' }).click();
         expect(reloadMock).toHaveBeenCalled();
     });
 });

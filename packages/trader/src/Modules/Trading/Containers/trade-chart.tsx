@@ -171,6 +171,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
                     has_crossed_accu_barriers={has_crossed_accu_barriers}
                     should_show_profit_text={!!accumulator_contract_barriers_data.accumulators_high_barrier}
                     symbol={symbol}
+                    is_mobile={is_mobile}
                 />
             )}
         </SmartChartWithRef>

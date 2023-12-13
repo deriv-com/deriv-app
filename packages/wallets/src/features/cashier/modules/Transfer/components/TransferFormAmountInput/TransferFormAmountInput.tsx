@@ -1,21 +1,25 @@
 import React, { useCallback, useEffect } from 'react';
 import { useFormikContext } from 'formik';
 import { useDebounce } from 'usehooks-ts';
-import { useExchangeRate } from '@deriv/api';
+import { useGetExchangeRate } from '@deriv/api';
 import { ATMAmountInput, Timer } from '../../../../../../components';
-import { useTransfer } from '../../provider';
+import { THooks } from '../../../../../../types';
 import type { TInitialTransferFormValues } from '../../types';
 import './TransferFormAmountInput.scss';
 
 type TProps = {
+    exchangeRatesWalletCurrency?: THooks.ExchangeRate;
     fieldName: 'fromAmount' | 'toAmount';
+    refetchExchangeRates?: ReturnType<typeof useGetExchangeRate>['refetch'];
 };
 
 const MAX_DIGITS = 14;
 
-const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
-    const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
-    const { activeWallet } = useTransfer();
+const TransferFormAmountInput: React.FC<TProps> = ({
+    exchangeRatesWalletCurrency,
+    fieldName,
+    refetchExchangeRates,
+}) => {
     const { setFieldValue, setValues, values } = useFormikContext<TInitialTransferFormValues>();
     const { fromAccount, fromAmount, toAccount, toAmount } = values;
 
@@ -33,28 +37,11 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const isAmountFieldActive = fieldName === values.activeAmountFieldName;
     const isTimerVisible = !isFromAmountFieldName && toAccount && !isSameCurrency && fromAmount > 0 && toAmount > 0;
 
-    useEffect(() => {
-        if (!fromAccount?.currency || !toAccount?.currency || !activeWallet?.loginid) return;
-        subscribe({
-            base_currency: fromAccount?.currency,
-            loginid: activeWallet?.loginid,
-            target_currency: toAccount?.currency,
-        });
-        return () => unsubscribe();
-    }, [
-        activeWallet?.currency,
-        activeWallet?.loginid,
-        fromAccount?.currency,
-        subscribe,
-        toAccount?.currency,
-        unsubscribe,
-    ]);
-
     const amountConverterHandler = useCallback(
         (value: number) => {
-            if (!toAccount?.currency || !exchangeRate?.rates || !isAmountFieldActive) return;
+            if (!toAccount?.currency || !exchangeRatesWalletCurrency?.rates || !isAmountFieldActive) return;
 
-            const toRate = exchangeRate.rates[toAccount.currency];
+            const toRate = exchangeRatesWalletCurrency.rates[toAccount.currency];
 
             if (isFromAmountFieldName) {
                 const convertedToAmount = Number(
@@ -69,7 +56,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
             }
         },
         [
-            exchangeRate?.rates,
+            exchangeRatesWalletCurrency?.rates,
             fromAccount?.currencyConfig?.fractional_digits,
             isAmountFieldActive,
             isFromAmountFieldName,
@@ -103,14 +90,18 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     );
 
     const onTimerCompleteHandler = useCallback(() => {
-        if (!toAccount?.currency || !exchangeRate?.rates) return;
-
-        const toRate = exchangeRate.rates[toAccount.currency];
-        const convertedToAmount = Number((fromAmount * toRate).toFixed(toAccount?.currencyConfig?.fractional_digits));
-        setFieldValue('toAmount', convertedToAmount);
+        refetchExchangeRates?.().then(res => {
+            const newRates = res.data?.exchange_rates;
+            if (!newRates?.rates || !toAccount?.currency) return;
+            const toRate = newRates.rates[toAccount.currency];
+            const convertedToAmount = Number(
+                (fromAmount * toRate).toFixed(toAccount?.currencyConfig?.fractional_digits)
+            );
+            setFieldValue('toAmount', convertedToAmount);
+        });
     }, [
-        exchangeRate?.rates,
         fromAmount,
+        refetchExchangeRates,
         setFieldValue,
         toAccount?.currency,
         toAccount?.currencyConfig?.fractional_digits,

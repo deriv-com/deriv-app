@@ -1,5 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { Formik } from 'formik';
+import { useGetExchangeRate } from '@deriv/api';
 import { Loader, WalletButton } from '../../../../../../components';
 import useDevice from '../../../../../../hooks/useDevice';
 import { useTransfer } from '../../provider';
@@ -13,6 +14,22 @@ const TransferForm = () => {
     const { isMobile } = useDevice();
     const { activeWallet, isLoading, requestTransferBetweenAccounts } = useTransfer();
     const mobileAccountsListRef = useRef<HTMLDivElement | null>(null);
+
+    const { data: exchangeRatesWalletCurrency, refetch: refetchExchangeRatesWalletCurrency } = useGetExchangeRate({
+        base_currency: activeWallet?.currency ?? 'USD',
+        loginid: activeWallet?.loginid,
+    });
+    const { data: exchangeRatesUSD, refetch: refetchExchangeRatesUSD } = useGetExchangeRate({
+        base_currency: 'USD',
+        loginid: activeWallet?.loginid,
+    });
+
+    const refetchExchangeRates = useCallback(() => {
+        refetchExchangeRatesUSD();
+        const newExchangeRatesWalletCurrency = refetchExchangeRatesWalletCurrency();
+
+        return newExchangeRatesWalletCurrency;
+    }, [refetchExchangeRatesUSD, refetchExchangeRatesWalletCurrency]);
 
     const initialValues: TInitialTransferFormValues = {
         activeAmountFieldName: undefined,
@@ -36,15 +53,29 @@ const TransferForm = () => {
                     <form className='wallets-transfer__form' onSubmit={handleSubmit}>
                         <div className='wallets-transfer__fields'>
                             <div className='wallets-transfer__fields-section'>
-                                <TransferFormAmountInput fieldName='fromAmount' />
+                                <TransferFormAmountInput
+                                    exchangeRatesWalletCurrency={exchangeRatesWalletCurrency}
+                                    fieldName='fromAmount'
+                                    refetchExchangeRates={refetchExchangeRates}
+                                />
                                 <TransferFormDropdown
                                     fieldName='fromAccount'
                                     mobileAccountsListRef={mobileAccountsListRef}
                                 />
                             </div>
-                            <TransferMessages />
+                            {exchangeRatesUSD && exchangeRatesWalletCurrency && (
+                                <TransferMessages
+                                    exchangeRatesUSD={exchangeRatesUSD}
+                                    exchangeRatesWalletCurrency={exchangeRatesWalletCurrency}
+                                    key={values.fromAmount.toString() + values.toAmount.toString()}
+                                />
+                            )}
                             <div className='wallets-transfer__fields-section'>
-                                <TransferFormAmountInput fieldName='toAmount' />
+                                <TransferFormAmountInput
+                                    exchangeRatesWalletCurrency={exchangeRatesWalletCurrency}
+                                    fieldName='toAmount'
+                                    refetchExchangeRates={refetchExchangeRates}
+                                />
                                 <TransferFormDropdown
                                     fieldName='toAccount'
                                     mobileAccountsListRef={mobileAccountsListRef}

@@ -1,0 +1,20 @@
+.ready-to-verify-dialog {
+    .dc-dialog {
+        &__header-wrapper,
+        &__content,
+        &__footer {
+            display: flex;
+            justify-content: center;
+            text-align: center;
+        }
+        @include mobile {
+            &__dialog {
+                padding: 1.6rem;
+                margin: 0 1.6rem;
+            }
+        }
+    }
+    .dc-dialog__header-wrapper {
+        margin-top: unset;
+    }
+}

@@ -2,21 +2,32 @@
     .dbot-accordion {
         &__content {
             background-color: transparent;
+
             &--open {
                 max-height: fit-content;
             }
         }
+
         &__header {
             text-align: left;
+
             &--cursive {
                 font-style: italic;
             }
         }
+
         &__navbar {
+            background-color: transparent;
+            border: none;
+            outline: none;
             padding-left: 0;
-            padding-right: 0;
             border-bottom: 1px solid var(--general-section-1);
+
+            &--no-event {
+                pointer-events: none;
+            }
         }
+
         &__icon svg {
             filter: none;
             width: 12px;

@@ -58,8 +58,10 @@ const Accordion = ({
     return (
         <div className='dbot-accordion' {...props}>
             <div>
-                <div
-                    className='dbot-accordion__navbar'
+                <button
+                    className={classNames('dbot-accordion__navbar', {
+                        'dbot-accordion__navbar--no-event': !no_collapsible,
+                    })}
                     data-testid={test_id}
                     onClick={() => {
                         setOpen(!should_be_expanded);
@@ -85,7 +87,7 @@ const Accordion = ({
                             <Icon icon={chooseIcon()} />
                         </div>
                     )}
-                </div>
+                </button>
                 <div
                     className={classNames('dbot-accordion__content', {
                         'dbot-accordion__content--open': should_be_expanded,

@@ -81,7 +81,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
                         .split(' ')
                         .join('_')
                         .toLocaleLowerCase()
-                ] = obj?.expanded || false;
+                ] = obj?.expanded ?? false;
             }
             acc[acc.length - 1].push(obj);
             return acc;
@@ -106,7 +106,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
                 <div className='qs__body__content__description'>
                     <div>
                         {grouped_objects_by_title?.map((data: TDescriptionItem[]) => {
-                            const subtitle_value = (data && data[0]?.content && data[0]?.content[0]) || '';
+                            const subtitle_value = data?.[0]?.content?.[0] || '';
                             return (
                                 <Accordion
                                     key={`accordion-${subtitle_value}`}
@@ -117,13 +117,13 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
                                             ?.map(element => renderDescription(element))
                                             .flatMap(item => item) as React.ReactElement[],
                                     }}
-                                    expanded={(data[0] as TDescriptionItem)?.expanded ?? false}
+                                    expanded={data[0]?.expanded ?? false}
                                     icon={{
                                         open_icon: 'IcAccordionMinus',
                                         close_icon: 'IcAccordionPlus',
                                     }}
                                     is_cursive={data[0]?.type === 'subtitle_italic'}
-                                    no_collapsible={(data[0] as TDescriptionItem)?.no_collapsible}
+                                    no_collapsible={data[0]?.no_collapsible}
                                     expanded_subtitles_storage={expanded_subtitles_storage}
                                     setExpandedSubtitlesStorage={setExpandedSubtitlesStorage}
                                 />

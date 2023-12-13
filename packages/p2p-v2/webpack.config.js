@@ -2,42 +2,39 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 
-const is_release =
+const isRelease =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
 module.exports = function (env) {
     const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
 
     return {
+        devtool: isRelease ? 'source-map' : 'eval-cheap-module-source-map',
         entry: {
             index: path.resolve(__dirname, './src', 'index.tsx'),
         },
-        mode: is_release ? 'production' : 'development',
-        output: {
-            path: path.resolve(__dirname, './dist'),
-            publicPath: base,
-            filename: 'p2p-v2/js/[name].js',
-            libraryExport: 'default',
-            library: '@deriv/p2p-v2',
-            libraryTarget: 'umd',
-            chunkFilename: 'p2p-v2/js/p2p-v2.[name].[contenthash].js',
-        },
-        resolve: {
-            extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        },
+        externals: [
+            {
+                classnames: true,
+                react: true,
+                'react-dom': true,
+                'react-router-dom': true,
+            },
+        ],
+        mode: isRelease ? 'production' : 'development',
         module: {
             rules: [
                 {
                     // https://github.com/webpack/webpack/issues/11467
-                    test: /\.m?js/,
                     include: /node_modules/,
                     resolve: {
                         fullySpecified: false,
                     },
+                    test: /\.m?js/,
                 },
                 {
-                    test: /\.(js|jsx|ts|tsx)$/,
                     exclude: /node_modules/,
+                    test: /\.(js|jsx|ts|tsx)$/,
                     use: [
                         {
                             loader: 'babel-loader',
@@ -51,8 +48,8 @@ module.exports = function (env) {
                 //TODO: Uncomment this line when type script migrations on all packages done
                 // plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
                 {
-                    test: input => is_release && /\.js$/.test(input),
                     loader: 'source-map-loader',
+                    test: input => isRelease && /\.js$/.test(input),
                 },
                 {
                     test: /\.(sc|sa|c)ss$/,
@@ -75,8 +72,8 @@ module.exports = function (env) {
                         {
                             loader: 'resolve-url-loader',
                             options: {
-                                sourceMap: true,
                                 keepQuery: true,
+                                sourceMap: true,
                             },
                         },
                         'sass-loader',
@@ -97,25 +94,18 @@ module.exports = function (env) {
             ],
         },
         optimization: {
-            minimize: is_release,
-            minimizer: is_release
+            minimize: isRelease,
+            minimizer: isRelease
                 ? [
                       new TerserPlugin({
-                          test: /\.js$/,
                           parallel: 2,
+                          test: /\.js$/,
                       }),
                       new CssMinimizerPlugin(),
                   ]
                 : [],
             splitChunks: {
-                chunks: 'all',
-                minSize: 102400,
-                minSizeReduction: 102400,
-                minChunks: 1,
-                maxAsyncRequests: 30,
-                maxInitialRequests: 3,
                 automaticNameDelimiter: '~',
-                enforceSizeThreshold: 500000,
                 cacheGroups: {
                     default: {
                         minChunks: 2,
@@ -125,25 +115,36 @@ module.exports = function (env) {
                     },
                     defaultVendors: {
                         idHint: 'vendors',
-                        test: /[\\/]node_modules[\\/]/,
                         priority: -10,
+                        test: /[\\/]node_modules[\\/]/,
                     },
                     shared: {
-                        test: /[\\/]shared[\\/]/,
-                        name: 'shared',
                         chunks: 'all',
+                        name: 'shared',
+                        test: /[\\/]shared[\\/]/,
                     },
                 },
+                chunks: 'all',
+                enforceSizeThreshold: 500000,
+                maxAsyncRequests: 30,
+                maxInitialRequests: 3,
+                minChunks: 1,
+                minSize: 102400,
+                minSizeReduction: 102400,
             },
         },
-        devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
-        externals: [
-            {
-                react: true,
-                'react-dom': true,
-                classnames: true,
-                'react-router-dom': true,
-            },
-        ],
+        output: {
+            chunkFilename: 'p2p-v2/js/p2p-v2.[name].[contenthash].js',
+            filename: 'p2p-v2/js/[name].js',
+            library: '@deriv/p2p-v2',
+            libraryExport: 'default',
+            libraryTarget: 'umd',
+            path: path.resolve(__dirname, './dist'),
+            publicPath: base,
+        },
+
+        resolve: {
+            extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        },
     };
 };

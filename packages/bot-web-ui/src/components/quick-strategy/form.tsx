@@ -20,7 +20,7 @@ import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 const QuickStrategyForm = observer(() => {
     const { ui } = useStore();
     const { quick_strategy } = useDBotStore();
-    const { selected_strategy, setValue } = quick_strategy;
+    const { selected_strategy, setValue, form_data } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_mobile } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
@@ -82,6 +82,7 @@ const QuickStrategyForm = observer(() => {
                             case 'number': {
                                 if (!field.name) return null;
                                 const { should_have = [], validation } = field;
+                                const initital_stake = 1;
                                 let min = 1;
                                 let max = 100000;
                                 const should_validate_min = validation?.includes('min');
@@ -89,6 +90,13 @@ const QuickStrategyForm = observer(() => {
                                 if (field.name === 'duration' && current_duration_min_max) {
                                     min = current_duration_min_max.min;
                                     max = current_duration_min_max.max;
+                                }
+                                const should_validate = field.should_have;
+                                if (should_validate && field.name === 'max_stake') {
+                                    min = +form_data?.stake;
+                                    if (isNaN(min)) {
+                                        min = +initital_stake;
+                                    }
                                 }
                                 if (should_have?.length) {
                                     const should_enable = should_have.every((item: TFormData) => {

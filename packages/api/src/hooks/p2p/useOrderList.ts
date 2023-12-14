@@ -81,6 +81,7 @@ const useOrderList = (
     return {
         /** The 'p2p_order_list' response. */
         data: modified_data,
+        /** Fetch the next page of orders. */
         loadMoreOrders: fetchNextPage,
         ...rest,
     };

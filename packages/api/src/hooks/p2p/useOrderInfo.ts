@@ -61,6 +61,7 @@ const useOrderInfo = (id: string) => {
     }, [data?.p2p_order_info]);
 
     return {
+        /** The 'p2p_order_info' response. */
         data: modified_data,
         ...rest,
     };

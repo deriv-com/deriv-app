@@ -72,8 +72,9 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
     };
 
     const expanded_subtitles_storage_default: TExpandedSubtitlesStorageDefault = {};
-    const grouped_objects_by_title = strategy?.long_description?.reduce(
-        (acc: TDescriptionItem[][], obj: TDescriptionItem) => {
+    const grouped_objects_by_title =
+        Array.isArray(strategy?.long_description) &&
+        strategy?.long_description?.reduce((acc: TDescriptionItem[][], obj: TDescriptionItem) => {
             if (obj.type === 'subtitle_italic' || obj.type === 'subtitle') {
                 acc.push([]);
                 expanded_subtitles_storage_default[
@@ -85,9 +86,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
             }
             acc[acc.length - 1].push(obj);
             return acc;
-        },
-        []
-    );
+        }, []);
 
     const [expanded_subtitles_storage, setExpandedSubtitlesStorage] = useState(expanded_subtitles_storage_default);
 

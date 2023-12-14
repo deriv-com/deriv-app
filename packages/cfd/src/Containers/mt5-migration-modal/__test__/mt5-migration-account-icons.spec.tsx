@@ -11,37 +11,33 @@ jest.mock('@deriv/hooks', () => ({
 const mock_store = mockStore({});
 
 describe('MT5MigrationAccountIcons', () => {
-    type TMT5MigrationAccountIconsProps = React.ComponentProps<typeof MT5MigrationAccountIcons>;
-    const renderComponent = (
-        to: TMT5MigrationAccountIconsProps['to'],
-        type: TMT5MigrationAccountIconsProps['type']
-    ) => {
+    const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock_store}>{children}</StoreProvider>
         );
-        render(<MT5MigrationAccountIcons to={to} type={type} />, { wrapper });
+        render(<MT5MigrationAccountIcons />, { wrapper });
     };
 
     it('should render MT5MigrationAccountIcons for derived bvi account', () => {
-        renderComponent('bvi', 'derived');
+        renderComponent();
         expect(screen.getByTestId('dt_migrate_from_svg_derived')).toBeInTheDocument();
         expect(screen.getByTestId('dt_migrate_to_bvi_derived')).toBeInTheDocument();
     });
 
     it('should render MT5MigrationAccountIcons for financial bvi account', () => {
-        renderComponent('bvi', 'financial');
+        renderComponent();
         expect(screen.getByTestId('dt_migrate_from_svg_financial')).toBeInTheDocument();
         expect(screen.getByTestId('dt_migrate_to_bvi_financial')).toBeInTheDocument();
     });
 
     it('should render MT5MigrationAccountIcons for derived vanuatu account', () => {
-        renderComponent('vanuatu', 'derived');
+        renderComponent();
         expect(screen.getByTestId('dt_migrate_from_svg_derived')).toBeInTheDocument();
         expect(screen.getByTestId('dt_migrate_to_vanuatu_derived')).toBeInTheDocument();
     });
 
     it('should render MT5MigrationAccountIcons for financial vanuatu account', () => {
-        renderComponent('vanuatu', 'financial');
+        renderComponent();
         expect(screen.getByTestId('dt_migrate_from_svg_financial')).toBeInTheDocument();
         expect(screen.getByTestId('dt_migrate_to_vanuatu_financial')).toBeInTheDocument();
     });

@@ -67,6 +67,11 @@
             align-items: center;
         }
     }
+    &__migration_infobox {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 2rem;
+    }
     &__existing-accounts {
         margin: 3.2rem 2.4rem;
         display: grid;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv/components';
+import { Button, Modal, Text, HintBox } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import MT5MigrationAccountIcons from './mt5-migration-account-icons';
@@ -23,13 +23,19 @@ const MT5MigrationFrontSideContent = observer(() => {
                     <MT5MigrationAccountIcons />
                 </div>
             </div>
-            <div>
-                <Text as='p' size={content_size} align='center'>
-                    <Localize
-                        i18n_default_text='Click <0>Next</0> to start your transition.'
-                        components={[<strong key={0} />]}
-                    />
-                </Text>
+            <div className='mt5-migration-modal__migration_infobox'>
+                <HintBox
+                    icon='IcInfoBlue'
+                    message={
+                        <Text as='p' size='xxxs'>
+                            <Localize
+                                i18n_default_text='Your existing <0>MT5 SVG</0> account(s) will remain accessible.'
+                                components={[<strong key={0} />]}
+                            />
+                        </Text>
+                    }
+                    is_info
+                />
             </div>
             <Modal.Footer has_separator>
                 <Button type='button' has_effect large primary onClick={() => setShowModalFrontSide(false)}>

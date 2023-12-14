@@ -21,8 +21,8 @@ describe('WalletListCard', () => {
                     badge='SVG'
                     balance='1000.00 USD'
                     currency='USD'
-                    isActive={true}
-                    isDemo={true}
+                    isActive
+                    isDemo
                     loginid='CR123456'
                     title='USD'
                 />
@@ -46,7 +46,7 @@ describe('WalletListCard', () => {
                     badge='MALTA'
                     balance='0.0000021 BTC'
                     currency='BTC'
-                    isActive={true}
+                    isActive
                     isDemo={false}
                     loginid='CR123456'
                     title='BTC'
@@ -74,8 +74,8 @@ describe('WalletListCard', () => {
                         badge='SVG'
                         balance='1000.00 USD'
                         currency='USD'
-                        isActive={true}
-                        isDemo={true}
+                        isActive
+                        isDemo
                         loginid='CR123456'
                         title='USD'
                     />
@@ -99,7 +99,7 @@ describe('WalletListCard', () => {
                         badge='MALTA'
                         balance='0.0000021 BTC'
                         currency='BTC'
-                        isActive={true}
+                        isActive
                         isDemo={false}
                         loginid='CR123456'
                         title='BTC'
@@ -124,7 +124,7 @@ describe('WalletListCard', () => {
                         badge='MALTA'
                         balance='0.0000021 BTC'
                         currency='BTC'
-                        isActive={true}
+                        isActive
                         isDemo={false}
                         loginid='CR123456'
                         title='BTC'
@@ -149,7 +149,7 @@ describe('WalletListCard', () => {
                         badge='MALTA'
                         balance='0.0000021 BTC'
                         currency='BTC'
-                        isActive={true}
+                        isActive
                         isDemo={false}
                         loginid='CR123456'
                         title='BTC'
@@ -174,7 +174,7 @@ describe('WalletListCard', () => {
                         badge='MALTA'
                         balance='0.0000021 BTC'
                         currency='BTC'
-                        isActive={true}
+                        isActive
                         isDemo={false}
                         loginid='CR123456'
                         title='BTC'

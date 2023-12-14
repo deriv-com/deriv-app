@@ -61,7 +61,7 @@ const useOrderInfo = (id: string) => {
                 has_not_been_recommended: review_details?.recommended === null,
             },
             /** Indicates that the seller in the process of confirming the order. */
-            verification_pending: Boolean(verification_pending),
+            is_verification_pending: Boolean(verification_pending),
         };
     }, [data?.p2p_order_info]);
 

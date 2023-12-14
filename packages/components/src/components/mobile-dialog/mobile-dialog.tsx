@@ -121,7 +121,11 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                                 {renderTitle ? renderTitle() : title}
                             </Text>
                             {has_close_icon && (
-                                <div className='icons dc-btn-close dc-mobile-dialog__close-btn' onClick={props.onClose}>
+                                <div
+                                    data-testid='dt_dc_mobile_dialog_close_btn'
+                                    className='icons dc-btn-close dc-mobile-dialog__close-btn'
+                                    onClick={props.onClose}
+                                >
                                     <Icon icon='IcCross' className='dc-mobile-dialog__close-btn-icon' />
                                 </div>
                             )}

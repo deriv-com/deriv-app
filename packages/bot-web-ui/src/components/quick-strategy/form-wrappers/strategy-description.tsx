@@ -6,11 +6,11 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
 import { TDescriptionItem } from '../types';
 
-type TStrategyDescription = {
-    formfields?: React.ReactNode;
-    active_tab?: string;
-    tutorial_selected_strategy?: string;
-};
+type TStrategyDescription = Partial<{
+    formfields: React.ReactNode;
+    active_tab: string;
+    tutorial_selected_strategy: string;
+}>;
 
 const StrategyDescription: React.FC<TStrategyDescription> = observer(
     ({ formfields, active_tab, tutorial_selected_strategy }) => {

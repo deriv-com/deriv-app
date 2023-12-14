@@ -21,6 +21,7 @@ const QuickStrategyCards = observer(
     ({ quick_strategy_content, tutorial_selected_strategy, setTutorialSelectedStrategy }: TQuickStrategyGuides) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
+        const text_size = is_mobile ? 'xxs' : 's';
 
         return (
             <>
@@ -41,7 +42,7 @@ const QuickStrategyCards = observer(
                                             weight='bold'
                                             color='prominent'
                                             line_height='s'
-                                            size={is_mobile ? 'xxs' : 's'}
+                                            size={text_size}
                                         >
                                             {type}
                                         </Text>
@@ -54,7 +55,7 @@ const QuickStrategyCards = observer(
                                                         align='center'
                                                         color='prominent'
                                                         line_height='s'
-                                                        size={is_mobile ? 'xxs' : 's'}
+                                                        size={text_size}
                                                     >
                                                         {data}
                                                     </Text>
@@ -71,10 +72,10 @@ const QuickStrategyCards = observer(
                     <>
                         <div className='tutorials-quick-strategy__breadcrumb'>
                             <Text
-                                className='tutorials-quick-strategy__breadcrumb--click'
+                                className='tutorials-quick-strategy__breadcrumb__clickable'
                                 color='prominent'
                                 line_height='s'
-                                size={is_mobile ? 'xxs' : 's'}
+                                size={text_size}
                                 as='div'
                                 onClick={() => {
                                     setTutorialSelectedStrategy('');
@@ -82,13 +83,7 @@ const QuickStrategyCards = observer(
                             >
                                 <Localize i18n_default_text={'Quick strategy guides >'} />
                             </Text>
-                            <Text
-                                weight='lighter'
-                                color='prominent'
-                                line_height='s'
-                                size={is_mobile ? 'xxs' : 's'}
-                                as='div'
-                            >
+                            <Text weight='lighter' color='prominent' line_height='s' size={text_size} as='div'>
                                 <Localize i18n_default_text={`About ${STRATEGIES[tutorial_selected_strategy].label}`} />
                             </Text>
                         </div>

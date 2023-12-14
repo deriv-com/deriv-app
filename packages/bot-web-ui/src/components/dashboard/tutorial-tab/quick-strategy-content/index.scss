@@ -41,25 +41,25 @@
     }
     &__breadcrumb {
         display: flex;
-        margin-bottom: 1rem;
-        @include mobile {
-            margin-bottom: 0;
-        }
 
-        &--click {
+        &__clickable {
             cursor: pointer;
             margin-right: 0.5rem;
         }
     }
-    .qs__body__content__description {
-        padding: 1rem 0;
-    }
-    .qs__long_description__image {
-        width: 55%;
-        margin-bottom: 4rem;
-        @include mobile {
-            width: 100%;
-            margin-bottom: 2rem;
+
+    .qs {
+        &__body__content__description {
+            padding: 1rem 0;
+        }
+
+        &__long_description__image {
+            width: 55%;
+            margin-bottom: 4rem;
+            @include mobile {
+                width: 100%;
+                margin-bottom: 2rem;
+            }
         }
     }
 }

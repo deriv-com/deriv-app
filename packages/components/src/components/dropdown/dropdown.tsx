@@ -46,6 +46,7 @@ type TDropdown = {
     placeholder?: string;
     suffix_icon?: string;
     should_show_new_label?: boolean;
+    should_open_on_hover?: boolean;
     test_id?: string;
     value?: string | number;
     classNameIcon?: string;
@@ -264,6 +265,7 @@ const Dropdown = ({
     placeholder,
     suffix_icon,
     should_show_new_label = false,
+    should_open_on_hover = false,
     test_id,
     value,
     classNameIcon,
@@ -434,7 +436,12 @@ const Dropdown = ({
                 data-testid={test_id}
                 value={value || 0}
             />
-            <div ref={wrapper_ref} className={containerClassName()}>
+            <div
+                ref={wrapper_ref}
+                className={containerClassName()}
+                onMouseOver={should_open_on_hover ? () => setIsListVisible(true) : undefined}
+                onMouseLeave={should_open_on_hover ? () => setIsListVisible(false) : undefined}
+            >
                 <div
                     className={classNames('dc-dropdown__container', {
                         'dc-dropdown__container--suffix-icon': suffix_icon,
@@ -454,7 +461,7 @@ const Dropdown = ({
                         className={dropdownDisplayClassName()}
                         data-testid='dt_dropdown_display'
                         tabIndex={isSingleOption() ? -1 : 0}
-                        onClick={handleVisibility}
+                        onClick={should_open_on_hover ? undefined : handleVisibility}
                         onKeyDown={onKeyPressed as unknown as React.KeyboardEventHandler}
                         id='dropdown-display'
                         ref={dropdown_ref}

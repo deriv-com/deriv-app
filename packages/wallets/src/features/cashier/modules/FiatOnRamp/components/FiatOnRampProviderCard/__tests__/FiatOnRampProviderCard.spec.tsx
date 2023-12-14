@@ -1,29 +1,49 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { fiatOnRampProvider as actualFiatOnRampProvider } from '../../../constants';
 import FiatOnRampProviderCard from '../FiatOnRampProviderCard';
 
-describe('FiatOnRampProviderCard', () => {
-    const mockProvider = {
+type MockedFiatOnRampProvider = typeof actualFiatOnRampProvider & {
+    handleDisclaimer: jest.Mock;
+};
+
+jest.mock('../../../constants', () => ({
+    fiatOnRampProvider: {
         description: 'Test Description',
-        getPaymentIcons: () => [{ icon: <div key='test-icon'>Test Icon</div>, name: 'test_icon' }],
+        getPaymentIcons: jest.fn(() => [
+            {
+                icon: (
+                    <div data-testid='test_icon' key='test-icon'>
+                        Test Icon
+                    </div>
+                ),
+                name: 'test_icon',
+            },
+        ]),
         handleDisclaimer: jest.fn(),
-        icon: <div>Test Logo</div>,
+        icon: <div data-testid='test_logo'>Test Logo</div>,
         name: 'Test Provider',
-    };
+    },
+}));
+
+describe('FiatOnRampProviderCard', () => {
+    const fiatOnRampProvider = actualFiatOnRampProvider as MockedFiatOnRampProvider;
 
     it('should render component correctly', () => {
-        render(<FiatOnRampProviderCard {...mockProvider} />);
+        render(<FiatOnRampProviderCard {...fiatOnRampProvider} />);
 
         expect(screen.getByText('Test Provider')).toBeInTheDocument();
         expect(screen.getByText('Test Description')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_payment_method_icon_test_icon')).toBeInTheDocument();
+        const testIcons = screen.getAllByTestId('test_icon');
+        expect(testIcons[0]).toBeInTheDocument();
+        expect(screen.getByTestId('test_logo')).toBeInTheDocument();
         expect(screen.getByText('Select')).toBeInTheDocument();
     });
 
     it('should call handleDisclaimer function on "Select" button click', () => {
-        render(<FiatOnRampProviderCard {...mockProvider} />);
+        render(<FiatOnRampProviderCard {...fiatOnRampProvider} />);
 
         fireEvent.click(screen.getByText('Select'));
-        expect(mockProvider.handleDisclaimer).toHaveBeenCalled();
+        expect(fiatOnRampProvider.handleDisclaimer).toHaveBeenCalled();
     });
 });

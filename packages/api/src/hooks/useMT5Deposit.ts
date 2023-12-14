@@ -1,11 +1,22 @@
 import { useCallback } from 'react';
 import useMutation from '../useMutation';
+import useInvalidateQuery from '../useInvalidateQuery';
 
 type TPayload = Parameters<ReturnType<typeof useMutation<'mt5_deposit'>>['mutate']>[0]['payload'];
 
 /** A custom hook for top-up of MT5 Accounts */
 const useMT5Deposit = () => {
-    const { mutate: _mutate, mutateAsync: _mutateAsync, ...rest } = useMutation('mt5_deposit');
+    const invalidate = useInvalidateQuery();
+
+    const {
+        mutate: _mutate,
+        mutateAsync: _mutateAsync,
+        ...rest
+    } = useMutation('mt5_deposit', {
+        onSuccess: () => {
+            invalidate('mt5_login_list');
+        },
+    });
 
     const mutate = useCallback((payload: TPayload) => _mutate({ payload }), [_mutate]);
     const mutateAsync = useCallback((payload: TPayload) => _mutateAsync({ payload }), [_mutateAsync]);

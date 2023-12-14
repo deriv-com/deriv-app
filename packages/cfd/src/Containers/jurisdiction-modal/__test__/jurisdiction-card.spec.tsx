@@ -213,9 +213,9 @@ describe('JurisdictionCard', () => {
     it('should render JurisdictionCard on the back', () => {
         render(<JurisdictionCard {...mock_props} />);
         expect(screen.getByText('We need you to submit these in order to get this account:')).toBeInTheDocument();
-        expect(screen.getByText('Your document is pending for verification.')).toBeInTheDocument();
-        expect(screen.getByText('Verification failed. Resubmit during account creation.')).toBeInTheDocument();
-        expect(screen.getByText('Your document is verified.')).toBeInTheDocument();
+        expect(screen.getByText('Verification in review.')).toBeInTheDocument();
+        expect(screen.getByText('Verification failed. Resubmit your details.')).toBeInTheDocument();
+        expect(screen.getByText('Verification successful.')).toBeInTheDocument();
     });
 
     it('should click on JurisdictionCard and render setJurisdictionSelectedShortCode function', () => {

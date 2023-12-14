@@ -74,10 +74,6 @@ jest.mock('@deriv/shared', () => ({
     getTotalProfit: jest.fn(() => 35.6786),
     getSymbolDisplayName: jest.fn(() => symbol_display_name),
 }));
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    NavLink: jest.fn(({ children }) => <div>{children}</div>),
-}));
 jest.mock('App/Components/Routes', () => ({
     ...jest.requireActual('App/Components/Routes'),
     BinaryLink: jest.fn(({ children }) => <div>{children}</div>),

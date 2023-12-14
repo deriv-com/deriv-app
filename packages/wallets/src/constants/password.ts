@@ -18,6 +18,7 @@ export const passwordValues = {
 export const passwordErrorMessage = {
     invalidLength: 'You should enter 8-25 characters.',
     missingCharacter: 'Password should have lower and uppercase English letters with numbers.',
+    PasswordError: 'That password is incorrect. Please try again.',
 };
 
 export const warningMessages: Record<passwordKeys, string> = {

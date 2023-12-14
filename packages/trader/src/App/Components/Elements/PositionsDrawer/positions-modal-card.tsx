@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
     addComma,
@@ -101,24 +100,17 @@ const PositionsModalCard = observer(
 
         const contract_vanilla_el = (
             <React.Fragment>
-                <NavLink
-                    className='positions-modal-card'
-                    to={{
-                        pathname: `/contract/${contract_info.contract_id}`,
-                    }}
-                >
-                    <ContractCard.Header
-                        contract_info={contract_info}
-                        display_name={display_name}
-                        getCardLabels={getCardLabels}
-                        getContractTypeDisplay={getContractTypeDisplay}
-                        has_progress_slider={!is_mobile && has_progress_slider}
-                        is_mobile={is_mobile}
-                        is_sell_requested={is_sell_requested}
-                        onClickSell={onClickSell}
-                        server_time={server_time as moment.Moment}
-                    />
-                </NavLink>
+                <ContractCard.Header
+                    contract_info={contract_info}
+                    display_name={display_name}
+                    getCardLabels={getCardLabels}
+                    getContractTypeDisplay={getContractTypeDisplay}
+                    has_progress_slider={!is_mobile && has_progress_slider}
+                    is_mobile={is_mobile}
+                    is_sell_requested={is_sell_requested}
+                    onClickSell={onClickSell}
+                    server_time={server_time as moment.Moment}
+                />
                 <CurrencyBadge currency={contract_info?.currency ?? ''} />
                 <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-body')}>
                     <div className={classNames('positions-modal-card__grid-profit-payout')}>

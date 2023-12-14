@@ -14,7 +14,7 @@ const useAdvertiserRelationsAddBlocked = () => {
     return {
         data,
         /** Sends a request to block advertiser of the current user by passing the advertiser id. */
-        addBlockedAdvertiser,
+        mutate: addBlockedAdvertiser,
         ...rest,
     };
 };

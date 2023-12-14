@@ -17,7 +17,7 @@ const useAdvertiserRelationsRemoveBlocked = () => {
     return {
         data,
         /** Sends a request to unblock advertiser of the current user by passing the advertiser id. */
-        removeBlockedAdvertiser,
+        mutate: removeBlockedAdvertiser,
         ...rest,
     };
 };

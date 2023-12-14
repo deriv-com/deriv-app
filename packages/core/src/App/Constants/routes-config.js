@@ -67,7 +67,7 @@ const Wallets = React.lazy(() =>
 const TradersHub = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "traders-hub" */ '@deriv/traders-hub');
+        return import(/* webpackChunkName: "tradershub" */ '@deriv/tradershub');
     })
 );
 

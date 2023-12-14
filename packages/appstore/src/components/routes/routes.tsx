@@ -4,7 +4,6 @@ import { useFeatureFlags /*useWalletsList*/ } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import Wallets from '@deriv/wallets';
-import TradersHubv2 from '../../../../traders-hub';
 import Onboarding from 'Modules/onboarding';
 import TradersHub from 'Modules/traders-hub';
 // import { WalletsModule } from 'Modules/wallets';
@@ -13,7 +12,7 @@ import RouteWithSubroutes from './route-with-sub-routes.jsx';
 
 const Routes: React.FC = observer(() => {
     //TODO: Uncomment once useWalletList hook is optimized for production release.
-    const { /*is_wallet_enabled,*/ is_next_wallet_enabled, is_next_tradershub_enabled } = useFeatureFlags();
+    const { /*is_wallet_enabled,*/ is_next_wallet_enabled } = useFeatureFlags();
     // const { has_wallet, isLoading } = useWalletsList();
     // const should_show_wallets = is_wallet_enabled && has_wallet;
 

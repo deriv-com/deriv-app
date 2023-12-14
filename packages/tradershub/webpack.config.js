@@ -41,11 +41,11 @@ module.exports = function (env) {
         output: {
             path: path.resolve(__dirname, './dist'),
             publicPath: base,
-            filename: 'traders-hub/js/[name].js',
+            filename: 'tradershub/js/[name].js',
             libraryExport: 'default',
-            library: '@deriv/traders-hub',
+            library: '@deriv/tradershub',
             libraryTarget: 'umd',
-            chunkFilename: 'traders-hub/js/traders-hub.[name].[contenthash].js',
+            chunkFilename: 'tradershub/js/tradershub.[name].[contenthash].js',
         },
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -121,17 +121,17 @@ module.exports = function (env) {
                 },
                 {
                     test: /\.svg$/,
-                    issuer: /\/packages\/traders-hub\/.*(\/)?.*.scss/,
+                    issuer: /\/packages\/tradershub\/.*(\/)?.*.scss/,
                     exclude: /node_modules/,
                     include: /public\//,
                     type: 'asset/resource',
                     generator: {
-                        filename: 'traders-hub/public/[name].[contenthash][ext]',
+                        filename: 'tradershub/public/[name].[contenthash][ext]',
                     },
                 },
                 {
                     test: /\.svg$/,
-                    issuer: /\/packages\/traders-hub\/.*(\/)?.*.tsx/,
+                    issuer: /\/packages\/tradershub\/.*(\/)?.*.tsx/,
                     exclude: /node_modules/,
                     include: /public\//,
                     use: svg_loaders,

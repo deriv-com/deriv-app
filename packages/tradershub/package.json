@@ -1,8 +1,8 @@
 {
-    "name": "@deriv/traders-hub",
+    "name": "@deriv/tradershub",
     "private": true,
     "version": "1.0.0",
-    "main": "dist/traders-hub/js/index.js",
+    "main": "dist/tradershub/js/index.js",
     "engines": {
         "node": "18.x"
     },

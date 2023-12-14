@@ -45,26 +45,33 @@ const useOrderList = (
                 /** Indicates if the advertiser is currently online. */
                 is_online: Boolean(advert?.advertiser_details?.is_online),
                 /** Indicates that the advertiser was recommended in the most recent review by the current user. */
-                is_recommended: Boolean(advert?.advertiser_details?.is_recommended),
+                is_recommended:
+                    advert?.advertiser_details?.is_recommended === null
+                        ? null
+                        : Boolean(advert?.advertiser_details?.is_recommended),
             },
             /** Details of the client who created the order. */
             client_details: {
                 ...advert?.client_details,
                 /** Indicates if the advertiser is currently online. */
-                is_online: Boolean(advert?.advertiser_details?.is_online),
+                is_online: Boolean(advert?.client_details?.is_online),
                 /** Indicates that the advertiser was recommended in the most recent review by the current user. */
-                is_recommended: Boolean(advert?.advertiser_details?.is_recommended),
+                is_recommended:
+                    advert?.client_details?.is_recommended === null
+                        ? null
+                        : Boolean(advert?.client_details?.is_recommended),
             },
             is_incoming: Boolean(advert?.is_incoming),
-            /** 1 if a review can be given, otherwise 0 */
+            /** Indicates if a review can be given. */
             is_reviewable: Boolean(advert?.is_reviewable),
-            /** 1 if the latest order changes have been seen by the current client, otherwise 0. */
+            /** Indicates if the latest order changes have been seen by the current client. */
             is_seen: Boolean(advert?.is_seen),
             /** Details of the review you gave for this order, if any. */
             review_details: {
                 ...advert?.review_details,
-                /** 1 if the advertiser is recommended, 0 if not recommended. */
-                is_recommended: Boolean(advert?.review_details?.recommended),
+                /** Indicates if the advertiser is recommended. */
+                is_recommended:
+                    advert?.review_details?.recommended === null ? null : Boolean(advert?.review_details?.recommended),
             },
             /** Indicates that the seller in the process of confirming the order. */
             is_verification_pending: Boolean(advert?.verification_pending),

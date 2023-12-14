@@ -50,10 +50,11 @@ const useAdvertList = (
                 /** Indicates if the advertiser is currently online. */
                 is_online: Boolean(advert?.advertiser_details?.is_online),
                 /** Indicates that the advertiser was recommended in the most recent review by the current user. */
-                is_recommended: Boolean(advert?.advertiser_details?.is_recommended),
+                is_recommended:
+                    advert?.advertiser_details?.is_recommended === null
+                        ? null
+                        : Boolean(advert?.advertiser_details?.is_recommended),
             },
-            /** The advert creation time in epoch. */
-            created_time: advert?.created_time ? new Date(advert.created_time) : undefined,
         }));
     }, [flatten_data]);
 

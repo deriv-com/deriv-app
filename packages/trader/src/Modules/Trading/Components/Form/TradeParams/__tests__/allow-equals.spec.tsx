@@ -1,12 +1,13 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { TRADE_TYPES } from '@deriv/shared';
 import { hasCallPutEqual } from 'Stores/Modules/Trading/Helpers/allow-equals';
 import AllowEquals from '../allow-equals';
 
 const default_props = {
     contract_start_type: 'spot',
-    contract_type: 'rise_fall',
+    contract_type: TRADE_TYPES.RISE_FALL,
     contract_types_list: {},
     duration_unit: 'd',
     expiry_type: 'endtime',

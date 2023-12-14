@@ -44,7 +44,7 @@ const validateWithdrawal = (values: TValidateWithdrawalValueProps, { balance, cu
     } else if (!values.account_number) {
         errors.account_number = localize('This field is required.');
         // TODO: improve broker code validation of the account number when the wallets project will be released
-    } else if (!/^[C][R]\d+$/.test(values.account_number)) {
+    } else if (!/^CR\d+$/.test(values.account_number)) {
         errors.account_number = localize('Please enter a valid account number. Example: CR123456789');
     }
 

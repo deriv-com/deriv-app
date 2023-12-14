@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, createContext, useContext, useEffect, useRef } from 'react';
+import React, { PropsWithChildren, createContext, useContext, useEffect, useRef, useState } from 'react';
 // @ts-expect-error `@deriv/deriv-api` is not in TypeScript, Hence we ignore the TS error.
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getAppId, getSocketURL, useWS } from '@deriv/shared';
@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 type APIContextData = {
     derivAPI: DerivAPIBasic | null;
+    switchEnvironment: (loginid: string | null | undefined) => void;
 };
 
 const APIContext = createContext<APIContextData | null>(null);
@@ -21,32 +22,30 @@ declare global {
 // This is a temporary workaround to share a single `QueryClient` instance between all the packages.
 const getSharedQueryClientContext = (): QueryClient => {
     if (!window.ReactQueryClient) {
-        window.ReactQueryClient = new QueryClient();
+        window.ReactQueryClient = new QueryClient({
+            logger: {
+                log: console.log, // eslint-disable-line no-console
+                warn: console.warn, // eslint-disable-line no-console
+                error: () => null,
+            },
+        });
     }
 
     return window.ReactQueryClient;
 };
 
-let timer_id: NodeJS.Timer;
 /**
- * Handles reconnection logic by reinitializing the WebSocket instance if it is in
- * closing or closed state.
- * @param wss_url WebSocket URL
- * @returns
+ * Retrieves the WebSocket URL based on the current environment.
+ * @returns {string} The WebSocket URL.
  */
-const handleReconnection = (wss_url: string) => {
-    if (!window.WSConnections) return;
-    const existingWebsocketInstance = window.WSConnections[wss_url];
-    if (
-        !existingWebsocketInstance ||
-        !(existingWebsocketInstance instanceof WebSocket) ||
-        [2, 3].includes(existingWebsocketInstance.readyState)
-    ) {
-        clearTimeout(timer_id);
-        timer_id = setTimeout(() => {
-            initializeDerivAPI();
-        }, 1000);
-    }
+const getWebSocketURL = () => {
+    const endpoint = getSocketURL();
+    const app_id = getAppId();
+    const language = localStorage.getItem('i18n_language');
+    const brand = 'deriv';
+    const wss_url = `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=${brand}`;
+
+    return wss_url;
 };
 
 /**
@@ -54,7 +53,7 @@ const handleReconnection = (wss_url: string) => {
  * @param {string} wss_url - The WebSocket URL.
  * @returns {WebSocket} The WebSocket instance associated with the provided URL.
  */
-const getWebsocketInstance = (wss_url: string) => {
+const getWebsocketInstance = (wss_url: string, onWSClose: () => void) => {
     if (!window.WSConnections) {
         window.WSConnections = {};
     }
@@ -66,10 +65,22 @@ const getWebsocketInstance = (wss_url: string) => {
         [2, 3].includes(existingWebsocketInstance.readyState)
     ) {
         window.WSConnections[wss_url] = new WebSocket(wss_url);
-        window.WSConnections[wss_url].addEventListener('close', () => handleReconnection(wss_url));
+        window.WSConnections[wss_url].addEventListener('close', () => {
+            if (typeof onWSClose === 'function') onWSClose();
+        });
     }
 
     return window.WSConnections[wss_url];
+};
+
+/**
+ * Retrieves the active WebSocket instance.
+ * @returns {WebSocket} The WebSocket instance associated with the provided URL.
+ */
+export const getActiveWebsocket = () => {
+    const wss_url = getWebSocketURL();
+
+    return window?.WSConnections?.[wss_url];
 };
 
 /**
@@ -77,19 +88,15 @@ const getWebsocketInstance = (wss_url: string) => {
  * without causing race conditions with deriv-app core stores.
  * @returns {DerivAPIBasic} The initialized DerivAPI instance.
  */
-const initializeDerivAPI = (): DerivAPIBasic => {
+const initializeDerivAPI = (onWSClose: () => void): DerivAPIBasic => {
     if (!window.DerivAPI) {
         window.DerivAPI = {};
     }
 
-    const endpoint = getSocketURL();
-    const app_id = getAppId();
-    const language = localStorage.getItem('i18n_language');
-    const brand = 'deriv';
-    const wss_url = `wss://${endpoint}/websockets/v3?app_id=${app_id}&l=${language}&brand=${brand}`;
-    const websocketConnection = getWebsocketInstance(wss_url);
+    const wss_url = getWebSocketURL();
+    const websocketConnection = getWebsocketInstance(wss_url, onWSClose);
 
-    if (!window.DerivAPI?.[wss_url]) {
+    if (!window.DerivAPI?.[wss_url] || window.DerivAPI?.[wss_url].isConnectionClosed()) {
         window.DerivAPI[wss_url] = new DerivAPIBasic({ connection: websocketConnection });
     }
 
@@ -98,6 +105,19 @@ const initializeDerivAPI = (): DerivAPIBasic => {
 
 const queryClient = getSharedQueryClientContext();
 
+/**
+ * Determines the WS environment based on the login ID and custom server URL.
+ * @param {string | null | undefined} loginid - The login ID (can be a string, null, or undefined).
+ * @returns {string} Returns the WS environment: 'custom', 'real', or 'demo'.
+ */
+const getEnvironment = (loginid: string | null | undefined) => {
+    const customServerURL = window.localStorage.getItem('config.server_url');
+    if (customServerURL) return 'custom';
+
+    if (loginid && !/^(VRT|VRW)/.test(loginid)) return 'real';
+    return 'demo';
+};
+
 type TAPIProviderProps = {
     /** If set to true, the APIProvider will instantiate it's own socket connection. */
     standalone?: boolean;
@@ -105,7 +125,18 @@ type TAPIProviderProps = {
 
 const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
     const WS = useWS();
-    const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI() : null);
+    const [reconnect, setReconnect] = useState(false);
+    const activeLoginid = window.localStorage.getItem('active_loginid');
+    const [environment, setEnvironment] = useState(getEnvironment(activeLoginid));
+    const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI(() => setReconnect(true)) : null);
+
+    const switchEnvironment = (loginid: string | null | undefined) => {
+        if (!standalone) return;
+        const currentEnvironment = getEnvironment(loginid);
+        if (currentEnvironment !== 'custom' && currentEnvironment !== environment) {
+            setEnvironment(currentEnvironment);
+        }
+    };
 
     useEffect(() => {
         let interval_id: NodeJS.Timer;
@@ -117,8 +148,20 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
         return () => clearInterval(interval_id);
     }, [standalone]);
 
+    useEffect(() => {
+        let reconnectTimerId: NodeJS.Timeout;
+        if (standalone || reconnect) {
+            standaloneDerivAPI.current = initializeDerivAPI(() => {
+                reconnectTimerId = setTimeout(() => setReconnect(true), 500);
+            });
+            setReconnect(false);
+        }
+
+        return () => clearTimeout(reconnectTimerId);
+    }, [environment, reconnect, standalone]);
+
     return (
-        <APIContext.Provider value={{ derivAPI: standalone ? standaloneDerivAPI.current : WS }}>
+        <APIContext.Provider value={{ derivAPI: standalone ? standaloneDerivAPI.current : WS, switchEnvironment }}>
             <QueryClientProvider client={queryClient}>
                 {children}
                 {/* <ReactQueryDevtools /> */}

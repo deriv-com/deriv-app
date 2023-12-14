@@ -30,13 +30,9 @@ const WalletError: React.FC<TProps> = ({
                     description={errorMessage}
                     icon={<ErrorIcon />}
                     renderButtons={() => (
-                        <WalletButton
-                            isFullWidth={isMobile}
-                            onClick={onClick}
-                            size='lg'
-                            text={buttonText}
-                            variant={buttonVariant}
-                        />
+                        <WalletButton isFullWidth={isMobile} onClick={onClick} size='lg' variant={buttonVariant}>
+                            {buttonText}
+                        </WalletButton>
                     )}
                     title={title}
                 />

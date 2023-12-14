@@ -3,6 +3,7 @@ import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
 import {
+    POIProvider,
     initFormErrorMessages,
     setSharedCFDText,
     setUrlLanguage,
@@ -51,16 +52,11 @@ const AppWithoutTranslation = ({ root_store }) => {
         };
 
         initializeTranslations();
-        if (
-            process.env.NODE_ENV === 'production' ||
-            process.env.NODE_ENV === 'staging' ||
-            process.env.NODE_ENV === 'test'
-        ) {
+        if (process.env.RUDDERSTACK_KEY) {
             Analytics.initialise({
                 growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,
                 growthbookDecryptionKey: process.env.GROWTHBOOK_DECRYPTION_KEY,
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
-                enableDevMode: process.env.NODE_ENV !== 'production',
             });
         }
 
@@ -84,17 +80,25 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     setWebsocket(WS);
 
+    React.useEffect(() => {
+        if (!root_store.client.email) {
+            Analytics.reset();
+        }
+    }, [root_store.client.email]);
+
     return (
         <>
             {is_translation_loaded ? (
                 <Router basename={has_base ? `/${base}` : null}>
                     <MobxContentProvider store={root_store}>
                         <APIProvider>
-                            <StoreProvider store={root_store}>
-                                <ExchangeRatesProvider>
-                                    <AppContent passthrough={platform_passthrough} />
-                                </ExchangeRatesProvider>
-                            </StoreProvider>
+                            <POIProvider>
+                                <StoreProvider store={root_store}>
+                                    <ExchangeRatesProvider>
+                                        <AppContent passthrough={platform_passthrough} />
+                                    </ExchangeRatesProvider>
+                                </StoreProvider>
+                            </POIProvider>
                         </APIProvider>
                     </MobxContentProvider>
                 </Router>

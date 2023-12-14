@@ -35,14 +35,16 @@ const useAuthentication = () => {
             is_poi_name_mismatch: account_status.has('poi_name_mismatch'),
             /** client's name in POA documents does not match */
             is_poa_address_mismatch: account_status.has('poa_address_mismatch'),
-            /** client has attempted POI before */
-            has_poa_been_attempted: get_account_status_data?.authentication?.document?.status !== 'none',
             /** client has attempted POA before */
+            has_poa_been_attempted: get_account_status_data?.authentication?.document?.status !== 'none',
+            /** client has attempted POI before */
             has_poi_been_attempted: get_account_status_data?.authentication?.identity?.status !== 'none',
             /** client's poi verification status */
             poi_status: get_account_status_data?.authentication?.identity?.status,
             /** client's poa verification status */
             poa_status: get_account_status_data?.authentication?.document?.status,
+            /** client's risk classification: `low`, `standard`, `high`.  */
+            risk_classification: get_account_status_data?.risk_classification,
         };
     }, [get_account_status_data]);
 

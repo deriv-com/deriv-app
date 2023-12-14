@@ -33,38 +33,44 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
 
     // set initial wallet id
     useEffect(() => {
-        if (selectedEmblaIndex === -1 && !isActiveWalletLoading) {
+        if (selectedEmblaIndex === -1 && !isActiveWalletLoading && walletsCarouselEmblaApi) {
             const activeWalletIndex = walletAccountsList?.findIndex(({ loginid }) => loginid === activeWallet?.loginid);
             if (activeWalletIndex !== undefined && activeWalletIndex !== -1) {
+                // exception from general rule of Embla being single source of truth
+                // as this is needed to set the initial active wallet
                 setSelectedEmblaIndex(activeWalletIndex);
+                walletsCarouselEmblaApi?.scrollTo(activeWalletIndex, true);
             }
         }
-    }, [activeWallet, isActiveWalletLoading]);
+    }, [activeWallet, isActiveWalletLoading, walletsCarouselEmblaApi]);
 
-    // bind to embla change api
+    // bind to embla events
     useEffect(() => {
-        walletsCarouselEmblaApi?.on('select', () => {
+        if (!walletsCarouselEmblaApi) {
+            return;
+        }
+
+        walletsCarouselEmblaApi.on('select', () => {
             const scrollSnapIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
             setSelectedEmblaIndex(scrollSnapIndex);
         });
 
         // on settle, this is only for tutorial / onboarding plugin in some other components,
-        walletsCarouselEmblaApi?.on('settle', () => {
+        walletsCarouselEmblaApi.on('settle', () => {
             onWalletSettled && onWalletSettled(true);
         });
     }, [walletsCarouselEmblaApi]);
 
-    // load active wallet whenever its changed
+    // load active wallet whenever its scrolled
     useEffect(() => {
         const selectedLoginId = walletAccountsList?.[selectedEmblaIndex]?.loginid;
         if (selectedLoginId) {
             switchAccount(selectedLoginId);
-            walletsCarouselEmblaApi?.scrollTo(selectedEmblaIndex, true);
         }
     }, [selectedEmblaIndex]);
 
     // set the initial data loading flag to false once all "is loading" flags are false,
-    // as then and only then we can display all the stuff
+    // as then and only then we can display all the stuff and we want to display it permanently after that
     useEffect(() => {
         if (!isWalletAccountsListLoading && !isActiveWalletLoading && !isCurrencyConfigLoading) {
             setIsInitialDataLoading(false);

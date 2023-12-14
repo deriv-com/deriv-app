@@ -25,7 +25,6 @@ export type TValidationItem =
 export type TConfigItem = {
     type: string;
     name?: keyof TFormData;
-    fullWidth?: boolean;
     dependencies?: string[];
     label?: string;
     description?: string;

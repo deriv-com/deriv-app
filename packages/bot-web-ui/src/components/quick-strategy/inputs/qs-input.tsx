@@ -12,13 +12,13 @@ type TQSInput = {
     name: string;
     onChange: (key: string, value: string | number | boolean) => void;
     type?: string;
-    fullwidth?: boolean;
     attached?: boolean;
     should_have?: { key: string; value: string | number | boolean }[];
     disabled?: boolean;
 };
+
 const QSInput: React.FC<TQSInput> = observer(
-    ({ name, onChange, type = 'text', fullwidth = false, attached = false, disabled = false }) => {
+    ({ name, onChange, type = 'text', attached = false, disabled = false }) => {
         const {
             ui: { is_mobile },
         } = useStore();
@@ -76,7 +76,6 @@ const QSInput: React.FC<TQSInput> = observer(
                     return (
                         <div
                             className={classNames('qs__form__field', {
-                                'full-width': fullwidth,
                                 'no-top-spacing': attached,
                                 'no-border-top': attached,
                             })}

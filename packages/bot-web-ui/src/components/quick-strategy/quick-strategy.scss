@@ -233,52 +233,41 @@
         }
 
         &__field {
-            padding: 0.5rem;
-            width: 50%;
-            display: inline-block;
-            vertical-align: middle;
+            width: 100%;
 
-            &.full-width {
-                width: 100%;
+            &.no-top-spacing {
+                padding-top: 0;
             }
 
-            @include mobile() {
-                width: 100%;
-
-                &.no-top-spacing {
-                    padding-top: 0;
+            &.no-border-top {
+                .dc-input__container {
+                    border-top-left-radius: 0;
+                    border-top-right-radius: 0;
                 }
+            }
 
-                &.no-border-top {
-                    .dc-input__container {
-                        border-top-left-radius: 0;
-                        border-top-right-radius: 0;
-                    }
+            &.no-top-border-radius {
+                .dc-input__container {
+                    border-bottom-left-radius: 0;
+                    border-bottom-right-radius: 0;
                 }
+            }
 
-                &.no-top-border-radius {
-                    .dc-input__container {
-                        border-bottom-left-radius: 0;
-                        border-bottom-right-radius: 0;
-                    }
+            &.no-border-bottom-radius {
+                .qs__checkbox {
+                    border-bottom-left-radius: 0;
+                    border-bottom-right-radius: 0;
                 }
+            }
 
-                &.no-border-bottom-radius {
-                    .qs__checkbox {
-                        border-bottom-left-radius: 0;
-                        border-bottom-right-radius: 0;
-                    }
-                }
+            &.no-bottom-spacing {
+                padding-bottom: 0;
+            }
 
-                &.no-bottom-spacing {
-                    padding-bottom: 0;
-                }
-
-                &.no-bottom-border-radius {
-                    .dc-input__container {
-                        border-bottom-left-radius: 0;
-                        border-bottom-right-radius: 0;
-                    }
+            &.no-bottom-border-radius {
+                .dc-input__container {
+                    border-bottom-left-radius: 0;
+                    border-bottom-right-radius: 0;
                 }
             }
 
@@ -315,6 +304,11 @@
                     font-weight: normal;
                 }
             }
+            &:last-child {
+                .dc-input__container {
+                    margin-bottom: 0;
+                }
+            }
         }
     }
 
@@ -327,6 +321,7 @@
                 height: var(--select-height);
                 background: var(--general-main-1);
                 padding: 0.8rem 2.4rem;
+                margin-bottom: 0.8rem;
             }
 
             &__leading-icon {
@@ -373,6 +368,7 @@
                 height: var(--select-height);
                 background: var(--general-main-1);
                 padding: 0.8rem 2.4rem;
+                margin-bottom: 0.8rem;
             }
 
             &__field {
@@ -452,7 +448,7 @@
                 height: var(--input-height);
                 border: 1px solid transparent;
                 background-color: var(--general-main-1);
-
+                margin-bottom: 0.8rem;
                 &:hover {
                     border: 1px solid var(--border-hover);
                 }
@@ -514,20 +510,9 @@
 
     &__input-label {
         @extend .x-center;
-        justify-content: space-between;
         height: var(--input-height);
-        background: var(--general-main-1);
-        border-radius: 0.4rem;
-        padding: 0 2.4rem;
-
         &__wrapper {
             margin-right: 2rem;
-        }
-
-        @include mobile() {
-            background: transparent;
-            margin-bottom: -1rem;
-            justify-content: center;
         }
     }
 
@@ -536,6 +521,7 @@
         background: var(--general-main-1);
         border-radius: 0.4rem;
         @extend .x-center;
+        margin-bottom: 0.8rem;
 
         &__container {
             @extend .x-center;
@@ -543,7 +529,6 @@
             height: calc(var(--input-height) - 0.5rem);
             width: 100%;
             padding: 0 2.4rem 0 1.6rem;
-
             .dc-checkbox {
                 .dc-text {
                     font-weight: bold;

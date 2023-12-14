@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Icon, Text } from '@deriv/components';
@@ -29,11 +28,7 @@ const MarketOption: React.FC<TMarketOption> = ({ symbol }) => (
     </div>
 );
 
-type TSymbolSelect = {
-    fullWidth?: boolean;
-};
-
-const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
+const SymbolSelect: React.FC = () => {
     const { quick_strategy } = useDBotStore();
     const {
         ui: { is_mobile, is_desktop },
@@ -116,7 +111,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     };
 
     return (
-        <div className={classNames('qs__form__field', { 'full-width': fullWidth })}>
+        <div className='qs__form__field'>
             <Field name='symbol' key='asset' id='asset'>
                 {({ field: { value, ...rest_field } }: FieldProps) => (
                     <>

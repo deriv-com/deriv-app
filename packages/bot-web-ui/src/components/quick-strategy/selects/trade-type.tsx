@@ -1,14 +1,12 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import debounce from 'lodash.debounce';
+import { Analytics } from '@deriv/analytics';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, IconTradeTypes, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
-import { Analytics } from '@deriv/analytics';
-import { useStore } from '@deriv/stores';
 
 type TTradeType = {
     component?: React.ReactNode;
@@ -32,11 +30,7 @@ const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type }) => (
     </div>
 );
 
-type TTradeTypeSelect = {
-    fullWidth?: boolean;
-};
-
-const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ fullWidth = false }) => {
+const TradeTypeSelect: React.FC = () => {
     const [trade_types, setTradeTypes] = React.useState([]);
     const { setFieldValue, values, validateForm } = useFormikContext<TFormData>();
     const { quick_strategy } = useDBotStore();
@@ -80,7 +74,7 @@ const TradeTypeSelect: React.FC<TTradeTypeSelect> = ({ fullWidth = false }) => {
     );
 
     return (
-        <div className={classNames('qs__form__field', { 'full-width': fullWidth })}>
+        <div className='qs__form__field'>
             <Field name='tradetype' key='tradetype' id='tradetype'>
                 {({ field }: FieldProps) => {
                     const selected_trade_type = trade_type_dropdown_options?.find(

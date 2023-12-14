@@ -104,30 +104,31 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
             ) : (
                 <div className='qs__body__content__description'>
                     <div>
-                        {grouped_objects_by_title?.map((data: TDescriptionItem[]) => {
-                            const subtitle_value = data?.[0]?.content?.[0] || '';
-                            return (
-                                <Accordion
-                                    key={`accordion-${subtitle_value}`}
-                                    content_data={{
-                                        header: subtitle_value,
-                                        content: data
-                                            .slice(1)
-                                            ?.map(element => renderDescription(element))
-                                            .flatMap(item => item) as React.ReactElement[],
-                                    }}
-                                    expanded={data[0]?.expanded ?? false}
-                                    icon={{
-                                        open_icon: 'IcAccordionMinus',
-                                        close_icon: 'IcAccordionPlus',
-                                    }}
-                                    is_cursive={data[0]?.type === 'subtitle_italic'}
-                                    no_collapsible={data[0]?.no_collapsible}
-                                    expanded_subtitles_storage={expanded_subtitles_storage}
-                                    setExpandedSubtitlesStorage={setExpandedSubtitlesStorage}
-                                />
-                            );
-                        })}
+                        {Array.isArray(grouped_objects_by_title) &&
+                            grouped_objects_by_title?.map((data: TDescriptionItem[]) => {
+                                const subtitle_value = data?.[0]?.content?.[0] ?? '';
+                                return (
+                                    <Accordion
+                                        key={`accordion-${subtitle_value}`}
+                                        content_data={{
+                                            header: subtitle_value,
+                                            content: data
+                                                .slice(1)
+                                                ?.map(element => renderDescription(element))
+                                                .flatMap(item => item) as React.ReactElement[],
+                                        }}
+                                        expanded={data[0]?.expanded ?? false}
+                                        icon={{
+                                            open_icon: 'IcAccordionMinus',
+                                            close_icon: 'IcAccordionPlus',
+                                        }}
+                                        is_cursive={data[0]?.type === 'subtitle_italic'}
+                                        no_collapsible={data[0]?.no_collapsible}
+                                        expanded_subtitles_storage={expanded_subtitles_storage}
+                                        setExpandedSubtitlesStorage={setExpandedSubtitlesStorage}
+                                    />
+                                );
+                            })}
                     </div>
                 </div>
             )}

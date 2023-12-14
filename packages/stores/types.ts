@@ -277,6 +277,33 @@ type TChartStateChangeOption = {
     time_interval_name?: string;
 };
 
+type TContentConfig = {
+    className?: string;
+    label?: string;
+    line_style?: string;
+    spot_className?: string;
+};
+
+type TMarkerContentConfig = TContentConfig & {
+    align_label?: string;
+    is_value_hidden?: boolean;
+    marker_config?: {
+        [key: string]: {
+            type: string;
+            marker_config: {
+                ContentComponent: React.ComponentType<TMarkerContentConfig> | string;
+                className?: string;
+            };
+            content_config: TContentConfig;
+        };
+    };
+    spot_epoch?: string;
+    spot_count?: number;
+    spot_profit?: string;
+    spot_value?: string;
+    status?: string;
+};
+
 type TNotificationMessage = {
     action?: TActionProps;
     className?: string;
@@ -1055,8 +1082,13 @@ type TContractReplay = {
         markers_array:
             | []
             | Array<{
-                  content_config: { className: string };
-                  marker_config: { ContentComponent: 'div'; x: string | number; y: string | number };
+                  content_config: TMarkerContentConfig;
+                  marker_config: {
+                      ContentComponent: React.ComponentType<TMarkerContentConfig> | string;
+                      className?: string;
+                      x: string | number;
+                      y: string | number | null;
+                  };
                   react_key: string;
                   type: string;
               }>;

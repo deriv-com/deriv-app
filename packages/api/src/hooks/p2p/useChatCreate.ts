@@ -5,6 +5,7 @@ type TPayload = NonNullable<Parameters<ReturnType<typeof useMutation<'p2p_chat_c
 
 /**
  * A custom hook to create a p2p chat for the specified order.
+ *
  * @example
  * const { data, mutate } = useChatCreate();
  * **/

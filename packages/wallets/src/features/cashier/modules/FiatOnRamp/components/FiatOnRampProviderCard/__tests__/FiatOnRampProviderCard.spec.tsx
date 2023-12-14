@@ -5,7 +5,7 @@ import FiatOnRampProviderCard from '../FiatOnRampProviderCard';
 describe('FiatOnRampProviderCard', () => {
     const mockProvider = {
         description: 'Test Description',
-        getPaymentIcons: () => [{ icon: <div key='test-icon'>Test Icon</div>, name: 'test-icon' }],
+        getPaymentIcons: () => [{ icon: <div key='test-icon'>Test Icon</div>, name: 'test_icon' }],
         handleDisclaimer: jest.fn(),
         icon: <div>Test Logo</div>,
         name: 'Test Provider',
@@ -16,7 +16,7 @@ describe('FiatOnRampProviderCard', () => {
 
         expect(screen.getByText('Test Provider')).toBeInTheDocument();
         expect(screen.getByText('Test Description')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_payment_method_icon_test-icon')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_payment_method_icon_test_icon')).toBeInTheDocument();
         expect(screen.getByText('Select')).toBeInTheDocument();
     });
 

@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import useAuthorize from '../useAuthorize';
-import { PAYMENT_METHOD_ICONS } from '../../constants';
 import useQuery from '../../useQuery';
 
 /** A custom hook that returns a list of P2P available payment methods **/
@@ -21,8 +20,6 @@ const usePaymentMethods = () => {
                 ...payment_method,
                 /** Payment method field definitions. */
                 fields,
-                /** Icon for each payment method based on the type */
-                icon: PAYMENT_METHOD_ICONS[payment_method.type],
                 /** Payment method id */
                 id: key,
             };

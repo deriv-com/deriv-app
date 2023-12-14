@@ -35,7 +35,7 @@ describe('<JurisdictionCardBack />', () => {
         expect(screen.getByText('We need you to submit these in order to get this account:')).toBeInTheDocument();
         expect(screen.queryByText('A selfie of yourself.')).not.toBeInTheDocument();
         expect(
-            screen.queryByText(`Document number (e.g. identity card, passport, driver's license)`)
+            screen.queryByText("Document number (e.g. identity card, passport, driver's license)")
         ).not.toBeInTheDocument();
         expect(
             screen.queryByText(
@@ -43,7 +43,7 @@ describe('<JurisdictionCardBack />', () => {
             )
         ).not.toBeInTheDocument();
         expect(
-            screen.queryByText(`A copy of your identity document (e.g. identity card, passport, driver's license)`)
+            screen.queryByText("A copy of your identity document (e.g. identity card, passport, driver's license)")
         ).not.toBeInTheDocument();
         exampleVerificationMessage();
     });
@@ -53,11 +53,11 @@ describe('<JurisdictionCardBack />', () => {
         render(<JurisdictionCardBack {...mock_props} />);
         expect(screen.queryByText('A selfie of yourself.')).not.toBeInTheDocument();
         expect(
-            screen.queryByText(`A copy of your identity document (e.g. identity card, passport, driver's license)`)
+            screen.queryByText("A copy of your identity document (e.g. identity card, passport, driver's license)")
         ).not.toBeInTheDocument();
         expect(screen.getByText('We need you to submit these in order to get this account:')).toBeInTheDocument();
         expect(
-            screen.getByText(`Document number (e.g. identity card, passport, driver's license)`)
+            screen.getByText("Document number (e.g. identity card, passport, driver's license)")
         ).toBeInTheDocument();
         expect(
             screen.getByText(
@@ -73,7 +73,7 @@ describe('<JurisdictionCardBack />', () => {
         expect(screen.getByText('We need you to submit these in order to get this account:')).toBeInTheDocument();
         expect(screen.getByText('A selfie of yourself.')).toBeInTheDocument();
         expect(
-            screen.getByText(`A copy of your identity document (e.g. identity card, passport, driver's license)`)
+            screen.getByText("A copy of your identity document (e.g. identity card, passport, driver's license)")
         ).toBeInTheDocument();
         expect(
             screen.getByText(
@@ -82,7 +82,7 @@ describe('<JurisdictionCardBack />', () => {
         ).toBeInTheDocument();
         exampleVerificationMessage();
         expect(
-            screen.queryByText(`Document number (e.g. identity card, passport, driver's license)`)
+            screen.queryByText("Document number (e.g. identity card, passport, driver's license)")
         ).not.toBeInTheDocument();
     });
 

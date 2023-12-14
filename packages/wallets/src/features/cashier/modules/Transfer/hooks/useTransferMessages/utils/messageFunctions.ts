@@ -89,6 +89,7 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
 };
 
 const cumulativeAccountLimitsMessageFn = ({
+    activeWallet,
     displayMoney,
     exchangeRates,
     limits,
@@ -100,25 +101,48 @@ const cumulativeAccountLimitsMessageFn = ({
         sourceAccount.account_category === 'wallet' && targetAccount.account_category === 'wallet';
     const isSameCurrency = sourceAccount.currency === targetAccount.currency;
 
+    const isDemoTransfer = activeWallet?.wallet_currency_type === 'Demo';
+
     const keyAccountType =
         [sourceAccount, targetAccount].find(acc => acc.account_category !== 'wallet')?.account_type ?? 'wallets';
 
     const platformKey = keyAccountType === 'standard' ? 'dtrade' : keyAccountType;
 
-    //@ts-expect-error needs backend type
-    const allowedSumUSD = limits?.daily_cumulative_amount_transfers?.[platformKey].allowed as number;
-    //@ts-expect-error needs backend type
-    const availableSumUSD = limits?.daily_cumulative_amount_transfers?.[platformKey].available as number;
+    const allowedSumUSD = isDemoTransfer
+        ? //@ts-expect-error needs backend type
+          (limits?.daily_cumulative_amount_transfers?.virtual.allowed as number)
+        : //@ts-expect-error needs backend type
+          (limits?.daily_cumulative_amount_transfers?.[platformKey].allowed as number);
+
+    const availableSumUSD = isDemoTransfer
+        ? //@ts-expect-error needs backend type
+          (limits?.daily_cumulative_amount_transfers?.virtual.available as number)
+        : //@ts-expect-error needs backend type
+          (limits?.daily_cumulative_amount_transfers?.[platformKey].available as number);
 
     if (
         !sourceAccount.currency ||
-        !exchangeRates?.rates?.[sourceAccount.currency] ||
         !targetAccount.currency ||
-        !exchangeRates?.rates?.[targetAccount.currency] ||
         !sourceAccount.currencyConfig ||
         !targetAccount.currencyConfig
     )
         return null;
+
+    if (isDemoTransfer) {
+        if (allowedSumUSD === availableSumUSD) {
+            return {
+                text: `Your daily transfer limit for virtual funds is ${availableSumUSD} USD.`,
+                type: 'success',
+            } as const;
+        }
+        return {
+            text: `Your remaining daily transfer limit for virtual funds is ${availableSumUSD} USD.`,
+            type: 'success',
+        } as const;
+    }
+
+    // separated the exchangeRates check to prevent checking for demo transfer
+    if (!exchangeRates?.rates?.[targetAccount.currency] || !exchangeRates?.rates?.[sourceAccount.currency]) return null;
 
     const sourceCurrencyLimit = allowedSumUSD * (exchangeRates.rates[sourceAccount.currency] ?? 1);
     const targetCurrencyLimit = allowedSumUSD * (exchangeRates.rates[targetAccount.currency] ?? 1);
@@ -158,13 +182,14 @@ const cumulativeAccountLimitsMessageFn = ({
             type: 'error' as const,
         };
 
-    if (allowedSumUSD === availableSumUSD)
+    if (allowedSumUSD === availableSumUSD) {
         return {
             text: `The daily transfer limit between your ${
                 isTransferBetweenWallets ? 'Wallets' : `${sourceAccount.accountName} and ${targetAccount.accountName}`
             } is ${formattedSourceCurrencyLimit}${!isSameCurrency ? ` (${formattedTargetCurrencyLimit})` : ''}.`,
             type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
         };
+    }
 
     return {
         text: `The remaining daily transfer limit between ${

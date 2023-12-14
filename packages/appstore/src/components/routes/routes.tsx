@@ -20,7 +20,6 @@ const Routes: React.FC = observer(() => {
     if (is_next_wallet_enabled) {
         content = Wallets;
     }
-
     // else if (should_show_wallets) {
     //     content = WalletsModule;
     // }

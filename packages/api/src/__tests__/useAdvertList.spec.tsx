@@ -1,20 +1,20 @@
 import React from 'react';
 import useInfiniteQuery from '../useInfiniteQuery';
 import { renderHook } from '@testing-library/react-hooks';
-import useP2PAdvertList from '../hooks/p2p/useP2PAdvertList';
+import useAdvertList from '../hooks/p2p/useAdvertList';
 import APIProvider from '../APIProvider';
 
 jest.mock('../useInfiniteQuery');
 
 const mockUseInfiniteQuery = useInfiniteQuery as jest.MockedFunction<typeof useInfiniteQuery<'p2p_advert_list'>>;
 
-describe('useP2PAdvertList', () => {
+describe('useAdvertList', () => {
     test('should return undefined if there is no response', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
         // @ts-expect-error need to come up with a way to mock the return type of useInfiniteQuery
         mockUseInfiniteQuery.mockReturnValueOnce({});
 
-        const { result } = renderHook(() => useP2PAdvertList(), { wrapper });
+        const { result } = renderHook(() => useAdvertList(), { wrapper });
         expect(result.current.data).toBeUndefined();
     });
 
@@ -84,7 +84,7 @@ describe('useP2PAdvertList', () => {
             },
         });
 
-        const { result } = renderHook(() => useP2PAdvertList(), { wrapper });
+        const { result } = renderHook(() => useAdvertList(), { wrapper });
         const adverts_list = result.current.data;
         expect(adverts_list).toHaveLength(1);
         expect(adverts_list?.[0].country).toBe('id');

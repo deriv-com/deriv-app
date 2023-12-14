@@ -29,12 +29,14 @@ const CreatePassword: React.FC<TProps> = ({
     return (
         <div className='wallets-create-password'>
             {!isMobile && icon}
-            <WalletText lineHeight='xl' weight='bold'>
-                Create a {title} password
-            </WalletText>
-            <WalletText align='center' size='sm'>
-                You can use this password for all your {title} accounts.
-            </WalletText>
+            <div className='wallets-create-password__text'>
+                <WalletText align='center' lineHeight='xl' weight='bold'>
+                    Create a {title} password
+                </WalletText>
+                <WalletText align='center' size='sm'>
+                    You can use this password for all your {title} accounts.
+                </WalletText>
+            </div>
 
             <WalletPasswordField label={`${title} password`} onChange={onPasswordChange} password={password} />
             {!isMobile && (

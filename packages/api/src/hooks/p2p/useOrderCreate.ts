@@ -55,7 +55,7 @@ const useOrderCreate = () => {
             },
             /** Indicates if the order is created for the advert of the current client. */
             is_incoming: Boolean(is_incoming),
-            /** Indicates if a review can be given, otherwise 0. */
+            /** Indicates if a review can be given. */
             is_reviewable: Boolean(is_reviewable),
             /** Indicates if the latest order changes have been seen by the current client. */
             is_seen: Boolean(is_seen),

@@ -14,8 +14,8 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                 description={
                     <div className='wallets-withdrawal-verification-request__description'>
                         <WalletText align='center'>
-                            Click the button below and we’ll send you an email with a link. Click that link to verify
-                            your withdrawal request.
+                            Click the button below and we&apos;ll send you an email with a link. Click that link to
+                            verify your withdrawal request.
                         </WalletText>
                         <WalletText align='center'>
                             This is to protect your account from unauthorised withdrawals.
@@ -23,7 +23,10 @@ const WithdrawalVerificationRequest: React.FC<TProps> = ({ sendEmail }) => {
                     </div>
                 }
                 icon={
-                    <div className='wallets-withdrawal-verification-request__icon'>
+                    <div
+                        className='wallets-withdrawal-verification-request__icon'
+                        data-testid='dt_withdrawal_verification_request_icon'
+                    >
                         <EmailVerification />
                     </div>
                 }

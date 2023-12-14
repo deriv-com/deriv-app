@@ -1,10 +1,10 @@
 import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
+import debounce from 'lodash.debounce';
+import { Analytics } from '@deriv/analytics';
 import { Input, Popover } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Analytics } from '@deriv/analytics';
-import debounce from 'lodash.debounce';
 import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 
@@ -16,9 +16,14 @@ type TQSInput = {
     attached?: boolean;
     should_have?: { key: string; value: string | number | boolean }[];
     disabled?: boolean;
+    min?: number;
+    max?: number;
+    should_validate_min?: boolean;
+    should_validate_max?: boolean;
 };
+
 const QSInput: React.FC<TQSInput> = observer(
-    ({ name, onChange, type = 'text', fullwidth = false, attached = false, disabled = false }) => {
+    ({ name, onChange, type = 'text', fullwidth = false, attached = false, disabled = false, min, max }) => {
         const {
             ui: { is_mobile },
         } = useStore();
@@ -106,6 +111,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         leading_icon={
                                             is_number ? (
                                                 <button
+                                                    disabled={field.value < min}
                                                     data-testid='qs-input-decrease'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) - 1;
@@ -122,6 +128,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         trailing_icon={
                                             is_number ? (
                                                 <button
+                                                    disabled={field.value > max}
                                                     data-testid='qs-input-increase'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) + 1;

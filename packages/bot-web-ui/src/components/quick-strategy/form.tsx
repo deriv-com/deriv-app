@@ -24,6 +24,7 @@ const QuickStrategyForm = observer(() => {
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_mobile } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
+    const { current_duration_min_max } = quick_strategy;
 
     const sendInitialStakeValueToruddetack = (key: string, value: string | number | boolean) => {
         Analytics.trackEvent('ce_bot_quick_strategy_form', {
@@ -80,7 +81,15 @@ const QuickStrategyForm = observer(() => {
                             // Generic or common fields
                             case 'number': {
                                 if (!field.name) return null;
-                                const { should_have = [] } = field;
+                                const { should_have = [], validation } = field;
+                                let min = 1;
+                                let max = 100000;
+                                const should_validate_min = validation?.includes('min');
+                                const should_validate_max = validation?.includes('max');
+                                if (field.name === 'duration' && current_duration_min_max) {
+                                    min = current_duration_min_max.min;
+                                    max = current_duration_min_max.max;
+                                }
                                 if (should_have?.length) {
                                     const should_enable = should_have.every((item: TFormData) => {
                                         return values[item.key as keyof TFormData] === item.value;
@@ -95,10 +104,25 @@ const QuickStrategyForm = observer(() => {
                                             name={field.name as string}
                                             disabled={!should_enable}
                                             onChange={onChange}
+                                            min={min}
+                                            max={max}
+                                            should_validate_min={should_validate_min}
+                                            should_validate_max={should_validate_max}
                                         />
                                     );
                                 }
-                                return <QSInput {...field} onChange={onChange} key={key} name={field.name as string} />;
+                                return (
+                                    <QSInput
+                                        {...field}
+                                        onChange={onChange}
+                                        key={key}
+                                        name={field.name as string}
+                                        min={min}
+                                        max={max}
+                                        should_validate_min={should_validate_min}
+                                        should_validate_max={should_validate_max}
+                                    />
+                                );
                             }
 
                             case 'label':

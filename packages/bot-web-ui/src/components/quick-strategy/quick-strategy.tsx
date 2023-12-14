@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Form as FormikForm, Formik } from 'formik';
 import * as Yup from 'yup';
+import { Analytics } from '@deriv/analytics';
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { MobileFullPageModal, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
@@ -13,7 +14,6 @@ import { STRATEGIES } from './config';
 import Form from './form';
 import { TConfigItem, TFormData } from './types';
 import './quick-strategy.scss';
-import { Analytics } from '@deriv/analytics';
 
 type TFormikWrapper = {
     children: React.ReactNode;

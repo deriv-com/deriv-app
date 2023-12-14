@@ -4,7 +4,7 @@ import { TradersHubRoute } from './TradersHubRoute';
 
 const prefix = '/traders-hub';
 
-type TRoutes = `${typeof prefix}${'' | '/compare-account'}`;
+type TRoutes = `${typeof prefix}${'' | '/compare-account' | 'onboarding'}`;
 
 declare module 'react-router-dom' {
     export function useHistory(): { push: (path: TRoutes) => void };

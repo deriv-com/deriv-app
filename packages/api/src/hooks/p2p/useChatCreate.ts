@@ -8,6 +8,7 @@ type TPayload = NonNullable<Parameters<ReturnType<typeof useMutation<'p2p_chat_c
  *
  * @example
  * const { data, mutate } = useChatCreate();
+ * mutate({ order_id: 'order_id' });
  * **/
 const useChatCreate = () => {
     const { data, mutate: _mutate, ...rest } = useMutation('p2p_chat_create');

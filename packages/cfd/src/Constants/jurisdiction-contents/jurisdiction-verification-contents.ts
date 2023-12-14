@@ -12,7 +12,7 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
     required_verification_docs: {
         document_number: {
             icon: 'IcDocumentNumberVerification',
-            text: localize(`Document number (e.g. identity card, passport, driver's license)`),
+            text: localize("Document number (e.g. identity card, passport, driver's license)"),
         },
         selfie: {
             icon: 'IcSelfieVerification',
@@ -20,7 +20,7 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
         },
         identity_document: {
             icon: 'IcIdentityDocumentVerification',
-            text: localize(`A copy of your identity document (e.g. identity card, passport, driver's license)`),
+            text: localize("A copy of your identity document (e.g. identity card, passport, driver's license)"),
         },
         name_and_address: {
             icon: 'IcNameAndAddressVerification',

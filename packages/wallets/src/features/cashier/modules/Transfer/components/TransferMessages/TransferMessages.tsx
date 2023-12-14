@@ -12,8 +12,8 @@ const TransferMessages = () => {
 
     return (
         <FadedAnimatedList className='wallets-transfer-messages'>
-            {messages.map(message => (
-                <WalletAlertMessage key={message.text + message.type} message={message.text} type={message.type} />
+            {messages.map((message, index) => (
+                <WalletAlertMessage key={index + message.type} message={message.text} type={message.type} />
             ))}
         </FadedAnimatedList>
     );

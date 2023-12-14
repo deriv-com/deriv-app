@@ -51,7 +51,9 @@ const useOrderReview = () => {
     }, [data]);
 
     return {
+        /** Data returned after a review was created for the order */
         data: modified_data,
+        /** mutate function to create a review for a specified order */
         mutate,
         ...rest,
     };

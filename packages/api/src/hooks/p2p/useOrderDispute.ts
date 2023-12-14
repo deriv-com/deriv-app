@@ -69,7 +69,9 @@ const useOrderDispute = () => {
     }, [data]);
 
     return {
+        /** Data returned after disputing an order */
         data: modified_data,
+        /** mutate function to dispute an order */
         mutate,
         ...rest,
     };

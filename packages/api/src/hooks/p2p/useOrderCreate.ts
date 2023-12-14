@@ -53,11 +53,11 @@ const useOrderCreate = () => {
                 /** Indicates if the advertiser is currently online. */
                 is_online: Boolean(client_details.is_online),
             },
-            /** 1 if the order is created for the advert of the current client, otherwise 0. */
+            /** Indicates if the order is created for the advert of the current client. */
             is_incoming: Boolean(is_incoming),
-            /** 1 if a review can be given, otherwise 0. */
+            /** Indicates if a review can be given, otherwise 0. */
             is_reviewable: Boolean(is_reviewable),
-            /** 1 if the latest order changes have been seen by the current client, otherwise 0. */
+            /** Indicates if the latest order changes have been seen by the current client. */
             is_seen: Boolean(is_seen),
         };
     }, [data?.p2p_order_create]);

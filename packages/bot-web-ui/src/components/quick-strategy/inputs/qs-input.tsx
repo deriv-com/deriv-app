@@ -1,10 +1,10 @@
 import React, { MouseEvent } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
+import debounce from 'lodash.debounce';
+import { Analytics } from '@deriv/analytics';
 import { Input, Popover } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { Analytics } from '@deriv/analytics';
-import debounce from 'lodash.debounce';
 import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 

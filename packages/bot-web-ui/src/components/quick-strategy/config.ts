@@ -72,7 +72,6 @@ const LABEL_DURATION: TConfigItem = {
     type: 'label',
     label: localize('Duration'),
     description: localize('How long each trade takes to expire.'),
-    hide: ['desktop'],
 };
 
 const DURATION_TYPE: TConfigItem = {

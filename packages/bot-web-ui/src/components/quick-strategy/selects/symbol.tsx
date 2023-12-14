@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
+import { Analytics } from '@deriv/analytics';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Icon, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
-import { useDBotStore } from 'Stores/useDBotStore';
 import { useStore } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
-import { Analytics } from '@deriv/analytics';
 
 type TSymbol = {
     component?: React.ReactNode;

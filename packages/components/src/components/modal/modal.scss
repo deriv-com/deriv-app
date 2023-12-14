@@ -86,10 +86,6 @@
         @include desktop {
             min-width: 440px !important;
             max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT}) !important;
-
-            &_jurisdiction-modal {
-                max-height: none !important;
-            }
         }
         @include mobile {
             max-width: calc(100vw - 3.2rem) !important;

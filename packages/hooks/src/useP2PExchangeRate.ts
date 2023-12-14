@@ -6,7 +6,7 @@ const useP2PExchangeRate = (local_currency: string) => {
 
     React.useEffect(() => {
         handleSubscription('USD', local_currency);
-    }, [handleSubscription, local_currency]);
+    }, [local_currency]);
 
     const exchange_rate = exchange_rates?.USD?.[local_currency] ?? 1;
 

@@ -59,6 +59,7 @@ const useAdvertiserAdverts = (
     return {
         /** The 'p2p_advertiser_adverts' response. */
         data: modified_data,
+        /** Function to fetch the next batch of adverts */
         loadMoreAdverts: fetchNextPage,
         ...rest,
     };

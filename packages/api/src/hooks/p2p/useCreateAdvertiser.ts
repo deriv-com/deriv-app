@@ -47,9 +47,9 @@ const useCreateAdvertiser = () => {
         return {
             ...data?.p2p_advertiser_create,
             /** Indicating whether the advertiser's identify has been verified. */
-            is_basic_verification: Boolean(basic_verification),
+            has_basic_verification: Boolean(basic_verification),
             /** Indicating whether the advertiser's address has been verified. */
-            is_full_verification: Boolean(full_verification),
+            has_full_verification: Boolean(full_verification),
             /** The approval status of the advertiser. */
             is_approved: Boolean(is_approved),
             /** Indicates if the advertiser's active adverts are listed. When false, adverts won't be listed regardless if they are active or not. */

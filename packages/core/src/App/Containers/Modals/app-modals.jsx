@@ -9,12 +9,14 @@ import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import { connect } from 'Stores/connect';
 
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
+import ReadyToVerifyModal from './ready-to-verify-modal';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
 import MT5Notification from './mt5-notification';
 import NeedRealAccountForCashierModal from './need-real-account-for-cashier-modal';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
 import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
+import VerificationModal from '../VerificationModal';
 
 const AccountSignupModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "account-signup-modal" */ '../AccountSignupModal'))
@@ -45,11 +47,20 @@ const WarningCloseCreateRealAccountModal = React.lazy(() =>
     import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
 );
 
+const VerificationDocumentSubmitted = React.lazy(() =>
+    import(/* webpackChunkName: "verification-document-submitted-modal" */ './VerificationDocumentSubmitted')
+);
+
+const OneTimeDepositModal = React.lazy(() =>
+    import(/* webpackChunkName: "one-time-deposit-modal" */ '../OneTimeDepositModal')
+);
+
 const AdditionalKycInfoModal = React.lazy(() =>
     import(
         /* webpackChunkName: "additional-kyc-info-modal" */ '@deriv/account/src/Components/additional-kyc-info-modal'
     )
 );
+
 const InformationSubmittedModal = React.lazy(() =>
     import(/* webpackChunkName: "information-submitted-modal" */ './information-submitted-modal')
 );
@@ -74,6 +85,10 @@ const AppModals = ({
     is_trading_experience_incomplete,
     should_show_risk_accept_modal,
     is_need_real_account_for_cashier_modal_visible,
+    is_verification_modal_visible,
+    is_verification_submitted,
+    should_show_one_time_deposit_modal,
+    should_show_account_success_modal,
     is_additional_kyc_info_modal_open,
     is_kyc_information_submitted_modal_open,
 }) => {
@@ -158,6 +173,21 @@ const AppModals = ({
         ComponentToLoad = <NeedRealAccountForCashierModal />;
     }
 
+    if (is_verification_modal_visible) {
+        ComponentToLoad = <VerificationModal />;
+    }
+
+    if (is_verification_submitted) {
+        ComponentToLoad = <VerificationDocumentSubmitted />;
+    }
+
+    if (should_show_one_time_deposit_modal) {
+        ComponentToLoad = <OneTimeDepositModal />;
+    }
+
+    if (should_show_account_success_modal) {
+        ComponentToLoad = <ReadyToVerifyModal />;
+    }
     if (is_additional_kyc_info_modal_open) {
         ComponentToLoad = <AdditionalKycInfoModal />;
     }
@@ -180,6 +210,8 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_logged_in: client.is_logged_in,
+    is_verification_modal_visible: ui.is_verification_modal_visible,
+    is_verification_submitted: ui.is_verification_submitted,
     has_maltainvest_account: client.has_maltainvest_account,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     is_mt5_notification_modal_visible: traders_hub.is_mt5_notification_modal_visible,
@@ -197,6 +229,8 @@ export default connect(({ client, ui, traders_hub }) => ({
     content_flag: traders_hub.content_flag,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
+    should_show_one_time_deposit_modal: ui.should_show_one_time_deposit_modal,
+    should_show_account_success_modal: ui.should_show_account_success_modal,
     is_additional_kyc_info_modal_open: ui.is_additional_kyc_info_modal_open,
     is_kyc_information_submitted_modal_open: ui.is_kyc_information_submitted_modal_open,
 }))(AppModals);

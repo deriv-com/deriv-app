@@ -5,7 +5,10 @@ import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
-import { TStepMobile } from '../config';
+type TContentData = {
+    header: string;
+    content: React.ReactElement[];
+} | null;
 
 type TPartialAccordion = Partial<{
     test_id: string;
@@ -20,7 +23,7 @@ type TPartialAccordion = Partial<{
 }>;
 
 type TAccordion = {
-    content_data: TStepMobile | null;
+    content_data: TContentData;
     expanded: boolean;
 } & TPartialAccordion;
 

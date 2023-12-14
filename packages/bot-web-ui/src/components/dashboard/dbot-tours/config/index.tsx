@@ -9,15 +9,6 @@ import TourSteps from '../common/tour-steps';
 
 const is_mobile = isMobile();
 
-export type TStepMobile = {
-    header: string;
-    content: React.ReactElement[];
-    key?: number;
-    step_key?: number;
-    img?: string;
-    media?: string;
-};
-
 type TJoyrideConfig = Record<
     'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay' | 'disableCloseOnEsc',
     boolean

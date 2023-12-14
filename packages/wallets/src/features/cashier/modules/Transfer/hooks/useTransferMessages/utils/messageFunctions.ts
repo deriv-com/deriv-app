@@ -128,15 +128,21 @@ const cumulativeAccountLimitsMessageFn = ({
     )
         return null;
 
+    const formattedDemoLimit = displayMoney?.(
+        availableSumUSD,
+        sourceAccount.currencyConfig.display_code,
+        sourceAccount.currencyConfig.fractional_digits
+    );
+
     if (isDemoTransfer) {
         if (allowedSumUSD === availableSumUSD) {
             return {
-                text: `Your daily transfer limit for virtual funds is ${availableSumUSD} USD.`,
+                text: `Your daily transfer limit for virtual funds is ${formattedDemoLimit}.`,
                 type: 'success',
             } as const;
         }
         return {
-            text: `Your remaining daily transfer limit for virtual funds is ${availableSumUSD} USD.`,
+            text: `Your remaining daily transfer limit for virtual funds is ${formattedDemoLimit}.`,
             type: 'success',
         } as const;
     }

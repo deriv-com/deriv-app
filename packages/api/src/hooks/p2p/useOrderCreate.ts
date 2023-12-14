@@ -63,7 +63,9 @@ const useOrderCreate = () => {
     }, [data?.p2p_order_create]);
 
     return {
+        /** The 'p2p_order_create' response. */
         data: modified_data,
+        /** Sends a request to create a P2P order. */
         mutate,
         ...rest,
     };

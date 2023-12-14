@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount } from '@deriv/api';
-import { FiatOnRampModule } from '../../modules';
+import { FiatOnRampModule } from '../../modules/FiatOnRamp';
 
 const WalletFiatOnRamp = () => {
     const { data } = useActiveWalletAccount();

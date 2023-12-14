@@ -16,7 +16,7 @@ describe('FiatOnRampProviderCard', () => {
 
         expect(screen.getByText('Test Provider')).toBeInTheDocument();
         expect(screen.getByText('Test Description')).toBeInTheDocument();
-        expect(screen.getByTestId('dt_payment-method-icon-test-icon')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_payment_method_icon_test-icon')).toBeInTheDocument();
         expect(screen.getByText('Select')).toBeInTheDocument();
     });
 

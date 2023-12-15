@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { KeyboardEvent } from 'react';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
@@ -27,13 +27,17 @@ const QuickStrategyCards = observer(
             <>
                 {tutorial_selected_strategy === '' ? (
                     <div className='tutorials-quick-strategy__cards'>
-                        {quick_strategy_content?.map(({ qs_name, content, type }) => (
+                        {quick_strategy_content?.map(({ qs_name, content, type }, index) => (
                             <div
                                 className='tutorials-quick-strategy__placeholder'
                                 key={type}
                                 onClick={() => setTutorialSelectedStrategy(qs_name)}
-                                role='button'
-                                tabIndex={0}
+                                tabIndex={index}
+                                onKeyDown={(e: KeyboardEvent) => {
+                                    if (e.key === 'Enter') {
+                                        setTutorialSelectedStrategy(qs_name);
+                                    }
+                                }}
                             >
                                 <div>
                                     <div className='tutorials-quick-strategy__placeholder__title'>

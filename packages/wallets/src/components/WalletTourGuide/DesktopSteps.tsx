@@ -1,4 +1,5 @@
 import React from 'react';
+import { Step } from '@deriv/react-joyride';
 import { WalletText } from '../Base';
 import './WalletTourGuide.scss';
 
@@ -8,8 +9,7 @@ const getDesktopSteps = (
     hasDerivAppsTradingAccount: boolean,
     isAllWalletsAlreadyAdded: boolean,
     walletNumber = 1
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): any[] => [
+): Step[] => [
     // Wallet header
     {
         content: (
@@ -132,7 +132,6 @@ const getDesktopSteps = (
         content: <WalletText size='sm'>Click Add on each card for more Wallets.</WalletText>,
         disableBeacon: true,
         disableOverlayClose: true,
-        floaterProps: { disableAnimation: false },
         placement: 'right',
         styles: { spotlight: { borderRadius: '1.6rem' } },
         target: isAllWalletsAlreadyAdded ? 'null' : '.wallets-add-more__card', // skip this if all wallets already added

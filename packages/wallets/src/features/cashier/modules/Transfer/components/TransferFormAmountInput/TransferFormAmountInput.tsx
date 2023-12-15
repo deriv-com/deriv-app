@@ -27,17 +27,20 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
 
     const isFromAmountFieldName = fieldName === 'fromAmount';
     const isSameCurrency = fromAccount?.currency === toAccount?.currency;
+    const isAmountInputDisabled = fieldName === 'toAmount' && !toAccount;
+    const isAmountFieldActive = fieldName === values.activeAmountFieldName;
+    const isTimerVisible = !isFromAmountFieldName && toAccount && !isSameCurrency && fromAmount > 0 && toAmount > 0;
+
     const amountValue = isFromAmountFieldName ? fromAmount : toAmount;
-    const debouncedAmountValue = useDebounce(values.activeAmountFieldName === fieldName ? amountValue : undefined, 500);
+    const debouncedAmountValue = useDebounce(amountValue, 500);
+
     const toAmountLabel = isSameCurrency || !toAccount ? 'Amount you receive' : 'Estimated amount';
     const amountLabel = isFromAmountFieldName ? 'Amount you send' : toAmountLabel;
+
     const currency = isFromAmountFieldName ? fromAccount?.currency : toAccount?.currency;
     const fractionDigits = isFromAmountFieldName
         ? fromAccount?.currencyConfig?.fractional_digits
         : toAccount?.currencyConfig?.fractional_digits;
-    const isAmountInputDisabled = fieldName === 'toAmount' && !toAccount;
-    const isAmountFieldActive = fieldName === values.activeAmountFieldName;
-    const isTimerVisible = !isFromAmountFieldName && toAccount && !isSameCurrency && fromAmount > 0 && toAmount > 0;
 
     const amountConverterHandler = useCallback(
         (value: number) => {

@@ -12,7 +12,7 @@
 
     @include mobile() {
         --select-height: 4rem;
-        --input-height: 3.2rem;
+        --input-height: 3.4rem;
         --footer-height: 4.2rem;
         --input-action-height: 3rem;
         --input-action-width: 3rem;
@@ -231,6 +231,9 @@
 
         &__field {
             width: 100%;
+            &__input {
+                margin-bottom: 0.8rem;
+            }
 
             &.no-top-spacing {
                 padding-top: 0;
@@ -309,6 +312,10 @@
                     margin-bottom: 0;
                 }
             }
+            .dc-icon {
+                height: 1rem;
+                width: 1rem;
+            }
         }
     }
 
@@ -321,7 +328,6 @@
                 height: var(--select-height);
                 background: var(--general-main-1);
                 padding: 0.8rem 2.4rem;
-                margin-bottom: 0.8rem;
             }
 
             &__leading-icon {
@@ -368,7 +374,6 @@
                 height: var(--select-height);
                 background: var(--general-main-1);
                 padding: 0.8rem 2.4rem;
-                margin-bottom: 0.8rem;
             }
 
             &__field {
@@ -448,7 +453,7 @@
                 height: var(--input-height);
                 border: 1px solid transparent;
                 background-color: var(--general-main-1);
-                margin-bottom: 0.8rem;
+
                 &:hover {
                     border: 1px solid var(--border-hover);
                 }
@@ -512,7 +517,11 @@
         @extend .x-center;
         height: var(--input-height);
         &__wrapper {
-            margin-right: 2rem;
+            margin-right: 1rem;
+        }
+        .dc-icon {
+            height: 10px;
+            width: 10px;
         }
     }
 
@@ -521,15 +530,14 @@
         background: var(--general-main-1);
         border-radius: 0.4rem;
         @extend .x-center;
-        margin-bottom: 0.8rem;
 
         &__container {
             @extend .x-center;
-            justify-content: space-between;
             height: calc(var(--input-height) - 0.5rem);
             width: 100%;
             padding: 0 2.4rem 0 1.6rem;
             .dc-checkbox {
+                margin-right: 1rem;
                 .dc-text {
                     font-weight: bold;
                 }

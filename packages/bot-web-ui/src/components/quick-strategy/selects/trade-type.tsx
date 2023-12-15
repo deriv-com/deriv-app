@@ -74,7 +74,7 @@ const TradeTypeSelect: React.FC = () => {
     );
 
     return (
-        <div className='qs__form__field'>
+        <div className='qs__form__field qs__form__field__input'>
             <Field name='tradetype' key='tradetype' id='tradetype'>
                 {({ field }: FieldProps) => {
                     const selected_trade_type = trade_type_dropdown_options?.find(

@@ -71,7 +71,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
     const key = `qs-contract-type-${name}`;
 
     return (
-        <div className='qs__form__field no-top-spacing'>
+        <div className='qs__form__field qs__form__field__input no-top-spacing'>
             <Field name={name} key={key} id={key}>
                 {({ field }: FieldProps) => {
                     const selected_item = list?.find(item => item.value === field.value);

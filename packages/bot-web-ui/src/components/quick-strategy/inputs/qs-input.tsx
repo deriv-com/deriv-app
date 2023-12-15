@@ -75,7 +75,7 @@ const QSInput: React.FC<TQSInput> = observer(
                     const has_error = error;
                     return (
                         <div
-                            className={classNames('qs__form__field', {
+                            className={classNames('qs__form__field qs__form__field__input', {
                                 'no-top-spacing': attached,
                                 'no-border-top': attached,
                             })}

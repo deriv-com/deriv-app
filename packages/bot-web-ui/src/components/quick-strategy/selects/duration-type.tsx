@@ -71,7 +71,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }) => {
 
     return (
         <div
-            className={classNames('qs__form__field', {
+            className={classNames('qs__form__field qs__form__field__input', {
                 'no-top-border-radius': attached,
             })}
         >

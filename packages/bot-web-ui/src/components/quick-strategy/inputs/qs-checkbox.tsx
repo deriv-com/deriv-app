@@ -26,7 +26,7 @@ const QSCheckbox: React.FC<TQSCheckbox> = ({ name, label, description, attached 
             {({ field }: FieldProps) => {
                 return (
                     <div
-                        className={classNames('qs__form__field', {
+                        className={classNames('qs__form__field qs__form__field__input', {
                             'no-border-bottom-radius': attached,
                         })}
                     >

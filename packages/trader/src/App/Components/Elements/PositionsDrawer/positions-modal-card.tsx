@@ -6,6 +6,7 @@ import {
     getContractPath,
     getContractTypeDisplay,
     getCardLabels,
+    getMarketInformation,
     getSymbolDisplayName,
     getEndTime,
     getTotalProfit,
@@ -19,7 +20,6 @@ import {
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
-import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import PositionsResultMobile from './positions-result-mobile';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';

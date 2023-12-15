@@ -1,35 +1,26 @@
-import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { observer, useStore } from '@deriv/stores';
+import React from 'react';
 import ErrorComponent from './index';
 
-const ErrorBoundary = observer(({ children }) => {
-    const root_store = useStore();
-    const [hasError, setHasError] = useState(false);
-    const [error, setError] = useState(null);
-    const [info, setInfo] = useState(null);
+class ErrorBoundary extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { hasError: false };
+    }
+    componentDidCatch = (error, info) => {
+        if (window.TrackJS) window.TrackJS.console.log(this.props.root_store);
 
-    const handleError = (errorMsg, infoMsg) => {
-        if (window.TrackJS) window.TrackJS.console.log(root_store);
-
-        setHasError(true);
-        setError(errorMsg);
-        setInfo(infoMsg);
-    };
-    useEffect(() => {
-        window.addEventListener('error', () => {
-            handleError(error, info);
+        this.setState({
+            hasError: true,
+            error,
+            info,
         });
-        return () =>
-            window.removeEventListener('error', () => {
-                handleError(error, info);
-            });
-    }, [error, info]);
-
-    return hasError ? <ErrorComponent should_show_refresh={true} /> : children;
-});
+    };
+    render = () => (this.state.hasError ? <ErrorComponent should_show_refresh={true} /> : this.props.children);
+}
 
 ErrorBoundary.propTypes = {
+    root_store: PropTypes.object,
     children: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
 

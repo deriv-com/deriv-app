@@ -1,13 +1,9 @@
 import { useCallback } from 'react';
-import useInvalidateQuery from '../../useInvalidateQuery';
-import useMutation from '../../useMutation';
+import useAdvertiserRelations from './useAdvertiserRelations';
 
 /** This hook unblocks advertisers of the current user by passing the advertiser id. */
 const useAdvertiserRelationsRemoveBlocked = () => {
-    const invalidate = useInvalidateQuery();
-    const { data, mutate, ...rest } = useMutation('p2p_advertiser_relations', {
-        onSuccess: () => invalidate('p2p_advertiser_relations'),
-    });
+    const { mutate, data, ...rest } = useAdvertiserRelations();
 
     const removeBlockedAdvertiser = useCallback(
         (id: number[]) => mutate({ payload: { remove_blocked: id } }),

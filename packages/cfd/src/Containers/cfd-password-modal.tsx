@@ -825,9 +825,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             return (
                 <React.Fragment>
                     <Localize
-                        i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} {{type}} {{jurisdiction_selected_shortcode}} account. '
+                        i18n_default_text='Congratulations, you have successfully created your {{category}} <0/>{{platform}} {{type}} {{jurisdiction_selected_shortcode}} account. '
                         values={{
-                            // TODO: remove below condition once deriv x changes are completed
                             type: accountTypes(),
                             platform:
                                 platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : getCFDPlatformLabel(platform),
@@ -835,6 +834,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                             jurisdiction_selected_shortcode:
                                 platform === CFD_PLATFORMS.MT5 && !show_eu_related_content ? jurisdiction_label : '',
                         }}
+                        components={[platform === CFD_PLATFORMS.DXTRADE ? <br key={0} /> : '']}
                     />
                     {platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER ? (
                         <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />

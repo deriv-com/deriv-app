@@ -9,9 +9,10 @@ import './TransferMessages.scss';
 const TransferMessages = () => {
     const { values } = useFormikContext<TInitialTransferFormValues>();
 
-    const { USDExchangeRates, activeWalletExchangeRates } = useTransfer();
+    const { USDExchangeRates, accountLimits, activeWalletExchangeRates } = useTransfer();
 
     const messages = useTransferMessages({
+        accountLimits,
         activeWalletExchangeRates,
         formData: values,
         fromAccount: values.fromAccount,

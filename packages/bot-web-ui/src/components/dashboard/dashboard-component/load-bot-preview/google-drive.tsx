@@ -12,7 +12,7 @@ const GoogleDrive = observer(() => {
     const { is_open_button_loading, onDriveConnect, onDriveOpen } = load_modal;
 
     return (
-        <div className='load-strategy__container'>
+        <div className='load-strategy__container' data-testid='dt_google_drive'>
             <div className='load-strategy__google-drive'>
                 <Icon
                     icon={'IcGoogleDrive'}

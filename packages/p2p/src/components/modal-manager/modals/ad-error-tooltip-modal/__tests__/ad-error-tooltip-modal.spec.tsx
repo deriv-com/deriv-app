@@ -33,7 +33,11 @@ describe('<AdErrorTooltipModal />', () => {
     });
 
     it('should render the component in default state', () => {
-        render(<AdErrorTooltipModal {...mock_props} />);
+        render(
+            <StoreProvider store={mockStore({})}>
+                <AdErrorTooltipModal {...mock_props} />
+            </StoreProvider>
+        );
         expect(
             screen.getByText('Your ad isn’t listed on Buy/Sell due to the following reason(s):')
         ).toBeInTheDocument();

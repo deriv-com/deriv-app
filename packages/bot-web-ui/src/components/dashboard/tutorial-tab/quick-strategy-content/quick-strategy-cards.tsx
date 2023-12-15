@@ -56,6 +56,7 @@ const QuickStrategyCards = observer(
                                                         color='prominent'
                                                         line_height='s'
                                                         size={text_size}
+                                                        className='tutorials-quick-strategy__placeholder__content__text'
                                                     >
                                                         {data}
                                                     </Text>
@@ -64,7 +65,10 @@ const QuickStrategyCards = observer(
                                         </ul>
                                     </div>
                                 </div>
-                                <Icon icon='IcChevronRightBold' />
+                                <Icon
+                                    className='tutorials-quick-strategy__placeholder__icon'
+                                    icon='IcChevronRightBold'
+                                />
                             </div>
                         ))}
                     </div>
@@ -83,7 +87,7 @@ const QuickStrategyCards = observer(
                             >
                                 <Localize i18n_default_text={'Quick strategy guides >'} />
                             </Text>
-                            <Text weight='lighter' color='prominent' line_height='s' size={text_size} as='div'>
+                            <Text color='less-prominent' line_height='s' size={text_size} as='div'>
                                 <Localize i18n_default_text={`About ${STRATEGIES[tutorial_selected_strategy].label}`} />
                             </Text>
                         </div>

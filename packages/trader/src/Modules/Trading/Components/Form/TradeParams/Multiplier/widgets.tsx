@@ -9,7 +9,7 @@ import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/M
 import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration-modal';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';
 import { localize, Localize } from '@deriv/translations';
-import { getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
+import { clickAndKeyEventHandler, getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
 
 type TAmountWidgetProps = {
     amount: number;
@@ -23,7 +23,6 @@ type TRadioGroupOptionsWidgetProps = {
     modal_title: React.ReactNode;
     tooltip_message?: string | React.ReactNode;
     is_disabled?: boolean;
-    should_show_new_label?: boolean;
 };
 
 const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }: TAmountWidgetProps) => {
@@ -94,13 +93,13 @@ const RadioGroupOptionsWidget = ({
 
     const toggleModal = () => {
         if (is_disabled) return;
-        setIsOpen(!is_open);
+        clickAndKeyEventHandler(() => setIsOpen(!is_open));
     };
 
     return (
         <React.Fragment>
             <RadioGroupOptionsModal is_open={is_open} toggleModal={toggleModal} modal_title={modal_title} />
-            <div className='mobile-widget mobile-widget__multiplier-options' onClick={toggleModal}>
+            <div className='mobile-widget mobile-widget__multiplier-options' onClick={toggleModal} role='dialog'>
                 <div
                     className={classNames('mobile-widget__item', {
                         'mobile-widget__item-disabled': is_disabled,

@@ -7,7 +7,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import Accordion from '../common/accordion';
 import TourButton from '../common/tour-button';
 import TourStartDialog from '../common/tour-start-dialog';
-import { BOT_BUILDER_MOBILE } from '../config';
+import { BOT_BUILDER_MOBILE } from '../tour-content';
 import { highlightLoadModalButton } from '../utils';
 
 const BotBuilderTourMobile = observer(() => {

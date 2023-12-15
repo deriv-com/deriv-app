@@ -9,7 +9,7 @@ import { MemoryHistory, createMemoryHistory } from 'history';
 describe('<TradeFooterExtensions>', () => {
     let mock_store: ReturnType<typeof mockStore>,
         router_prop: Partial<RouteComponentProps>,
-        customHistory: MemoryHistory;
+        custom_history: MemoryHistory;
     beforeEach(() => {
         mock_store = {
             ...mockStore({
@@ -25,13 +25,13 @@ describe('<TradeFooterExtensions>', () => {
                 },
             }),
         };
-        customHistory = createMemoryHistory({ initialEntries: ['/test'] });
+        custom_history = createMemoryHistory({ initialEntries: ['/test'] });
     });
     const renderTraderFooterExtensions = (props: Partial<RouteComponentProps>) => {
-        customHistory = createMemoryHistory({ initialEntries: [props.location.pathname] });
+        custom_history = createMemoryHistory({ initialEntries: [props.location.pathname] });
         return render(
             <TraderProviders store={mock_store}>
-                <Router history={customHistory}>
+                <Router history={custom_history}>
                     <TradeFooterExtensions {...props} />
                 </Router>
             </TraderProviders>

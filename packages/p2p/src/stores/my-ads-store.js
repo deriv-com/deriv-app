@@ -651,16 +651,16 @@ export default class MyAdsStore extends BaseStore {
 
         const getMaxTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to 2 decimals are allowed.'),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not be below Min limit', { field_name }),
         ];
 
         const getMinTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to 2 decimals are allowed.'),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not exceed Max limit', { field_name }),
         ];
@@ -788,16 +788,16 @@ export default class MyAdsStore extends BaseStore {
 
         const getMaxTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to 2 decimals are allowed.'),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not be below Min limit', { field_name }),
         ];
 
         const getMinTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to 2 decimals are allowed.'),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not exceed Max limit', { field_name }),
         ];

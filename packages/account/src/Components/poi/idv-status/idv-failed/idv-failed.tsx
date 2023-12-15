@@ -39,6 +39,7 @@ import {
 import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';
 import { TIDVFormValues, TPersonalDetailsForm } from '../../../../Types';
 import LoadErrorMessage from '../../../load-error-message';
+import { TIdvDocumentSubmitForm } from '../../idv-document-submit/idv-document-submit';
 
 type TRestState = {
     api_error: string;
@@ -357,15 +358,17 @@ const IdvFailed = ({
                         )}
                     </FormBody>
                     <FormFooter className='proof-of-identity__footer'>
-                        <Button
-                            className='proof-of-identity__submit-button'
-                            type='submit'
-                            has_effect
-                            is_disabled={!dirty || isSubmitting || !isValid}
-                            text={buttonText(shouldSkipIdv(values?.document_type?.id))}
-                            large
-                            primary
-                        />
+                        <div className='proof-of-identity__actions'>
+                            <Button
+                                className='proof-of-identity__submit-button'
+                                type='submit'
+                                has_effect
+                                is_disabled={!dirty || isSubmitting || !isValid}
+                                text={buttonText(shouldSkipIdv(values?.document_type?.id))}
+                                large
+                                primary
+                            />
+                        </div>
                     </FormFooter>
                 </Form>
             )}

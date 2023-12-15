@@ -7,6 +7,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import StarRating from 'Components/star-rating';
 import RecommendUser from 'Components/recommend-user';
 import { useStores } from 'Stores';
+import { getIconSize } from 'Utils/responsive';
 
 type TRatingModalProps = {
     is_buy_order_for_user: boolean;
@@ -49,7 +50,7 @@ const RatingModal = ({
                         onClick={handleRating}
                         rating_value={rating_value}
                         should_allow_half_icon={false}
-                        star_size={isMobile() ? 25 : 20}
+                        star_size={getIconSize(25, 20)}
                     />
                 </div>
                 {rating_value > 0 && (

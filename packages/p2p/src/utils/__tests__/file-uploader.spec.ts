@@ -32,7 +32,7 @@ describe('getErrorMessage', () => {
                 size: 1024 * 1024 * 4,
             },
         };
-        expect(getErrorMessage([file as TFile])).toEqual('File uploaded is not supported');
+        expect(getErrorMessage([file as TFile])).toEqual('The file you uploaded is not supported. Upload another.');
     });
 });
 

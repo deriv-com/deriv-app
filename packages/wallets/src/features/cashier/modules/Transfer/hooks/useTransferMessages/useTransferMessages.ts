@@ -6,6 +6,7 @@ import { TAccount, TInitialTransferFormValues } from '../../types';
 import {
     cumulativeAccountLimitsMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
+    transferFeesBetweenWalletsMessageFn,
 } from './utils/messageFunctions';
 import { TMessage, TMessageFnProps } from './types';
 
@@ -89,6 +90,7 @@ const useTransferMessages = (
     }
     if (!isAccountVerified && isTransferBetweenWallets) {
         messageFns.push(lifetimeAccountLimitsBetweenWalletsMessageFn);
+        messageFns.push(transferFeesBetweenWalletsMessageFn);
     }
 
     messageFns.forEach(messageFn => {

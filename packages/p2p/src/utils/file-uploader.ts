@@ -56,7 +56,7 @@ const isFileSupported = (files: TFile[]): boolean =>
 export const getErrorMessage = (files: TFile[]): string =>
     isFileTooLarge(files) && isFileSupported(files)
         ? localize('Cannot upload a file over 5MB')
-        : localize('File uploaded is not supported');
+        : localize('The file you uploaded is not supported. Upload another.');
 
 /**
  * Truncates the file name to a certain length

@@ -3,8 +3,8 @@ import { useLocation } from 'react-router-dom';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
-import DefaultHeader from './default-header.jsx';
-import DTraderHeader from './dtrader-header.jsx';
+import DefaultHeader from './default-header';
+import DTraderHeader from './dtrader-header';
 import TradersHubHeader from './traders-hub-header';
 import DTraderHeaderWallets from './dtrader-header-wallets';
 import { useReadLocalStorage } from 'usehooks-ts';
@@ -16,6 +16,7 @@ const Header = observer(() => {
     const traders_hub_routes =
         [
             routes.traders_hub,
+            routes.traders_hub_v2,
             routes.account,
             routes.cashier,
             routes.wallets,

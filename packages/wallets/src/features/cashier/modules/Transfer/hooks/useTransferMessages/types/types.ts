@@ -3,7 +3,7 @@ import { TAccount } from '../../../types';
 
 export type TMessage = {
     text: string;
-    type: 'error' | 'success';
+    type: 'error' | 'info' | 'success';
 };
 
 export type TMessageFnProps = {

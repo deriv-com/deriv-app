@@ -1,15 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv/analytics';
 import { observer, useStore } from '@deriv/stores';
-
 import { useDBotStore } from 'Stores/useDBotStore';
-
 import OnboardTourHandler from '../dbot-tours/onboarding-tour';
-
 import Local from './load-bot-preview/local';
 import Cards from './cards';
 import InfoPanel from './info-panel';
@@ -62,11 +58,11 @@ const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboar
 );
 
 const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
+    const { ui } = useStore();
     const { load_modal, dashboard } = useDBotStore();
     const { dashboard_strategies } = load_modal;
     const { setActiveTab, setActiveTabTutorial, active_tab, active_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
-    const { ui } = useStore();
     const { is_mobile } = ui;
     const get_first_strategy_info = React.useRef(false);
 
@@ -152,7 +148,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                 </div>
             </div>
             <InfoPanel />
-            {active_tab === 0 && <OnboardTourHandler />}
+            {active_tab === 0 && <OnboardTourHandler is_mobile={is_mobile} />}
         </React.Fragment>
     );
 });

@@ -14,6 +14,7 @@ type TProps = {
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
     password: string;
+    passwordError?: boolean;
     platform: TPlatforms.All;
 };
 
@@ -24,6 +25,7 @@ const EnterPassword: React.FC<TProps> = ({
     onPrimaryClick,
     onSecondaryClick,
     password,
+    passwordError,
     platform,
 }) => {
     const { isDesktop } = useDevice();
@@ -47,6 +49,7 @@ const EnterPassword: React.FC<TProps> = ({
                         label={`${title} password`}
                         onChange={onPasswordChange}
                         password={password}
+                        passwordError={passwordError}
                         shouldDisablePasswordMeter
                         showMessage={false}
                     />
@@ -58,7 +61,7 @@ const EnterPassword: React.FC<TProps> = ({
                         Forgot password?
                     </WalletButton>
                     <WalletButton
-                        disabled={!password || isLoading || !validPassword(password)}
+                        disabled={!password || isLoading || !validPassword(password) || passwordError}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

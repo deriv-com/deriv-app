@@ -1,7 +1,7 @@
 import { getImageLocation } from '../../../../public-path';
 import { localize } from '@deriv/translations';
 
-export type TDescription = Pick<TContent, 'type' | 'content' | 'src' | 'imageclass'>;
+export type TDescription = Pick<TContent, 'type' | 'content' | 'src' | 'imageclass' | 'is_mobile'>;
 
 export type TFaqContent = Pick<TContent, 'title' | 'description' | 'src' | 'search_id'>;
 
@@ -26,6 +26,7 @@ export type TContent = {
     url?: string;
     imageclass?: string;
     search_id: string;
+    is_mobile?: boolean;
 };
 
 export const user_guide_content: TUserGuideContent[] = [

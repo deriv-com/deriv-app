@@ -1,5 +1,5 @@
 import React from 'react';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop } from '@deriv/shared';
 import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from './v1';
 import { ChartModeBeta, DrawToolsBeta, ShareBeta, StudyLegendBeta, ToolbarWidgetBeta, ViewsBeta } from './v2';
 
@@ -7,13 +7,14 @@ type TToolbarWidgetsProps = {
     is_beta_chart?: boolean;
     updateChartType: (chart_type: string) => void;
     updateGranularity: (updateGranularity: number) => void;
+    position?: string | null;
 };
 
-const ToolbarWidgets = ({ is_beta_chart, updateChartType, updateGranularity }: TToolbarWidgetsProps) => {
+const ToolbarWidgets = ({ is_beta_chart, updateChartType, updateGranularity, position }: TToolbarWidgetsProps) => {
     return (
         <>
             {is_beta_chart && (
-                <ToolbarWidgetBeta position={isMobile() ? 'bottom' : null}>
+                <ToolbarWidgetBeta position={position}>
                     <ChartModeBeta
                         portalNodeId='modal_root'
                         onChartType={updateChartType}
@@ -30,7 +31,7 @@ const ToolbarWidgets = ({ is_beta_chart, updateChartType, updateGranularity }: T
                 </ToolbarWidgetBeta>
             )}
             {!is_beta_chart && (
-                <ToolbarWidget position={isMobile() ? 'bottom' : null}>
+                <ToolbarWidget position={position}>
                     <ChartMode
                         portalNodeId='modal_root'
                         onChartType={updateChartType}

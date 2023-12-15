@@ -23,7 +23,6 @@ describe('<TermsOfUse/>', () => {
     const risk_warning_title = 'Risk warning';
     const svg_description =
         'Your account will be opened with Deriv (SVG) LLC, and will be subject to the laws of Saint Vincent and the Grenadines.';
-
     const mock_props: React.ComponentProps<typeof TermsOfUse> = {
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),

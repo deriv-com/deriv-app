@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { passwordErrorMessage } from '../../../constants/password';
 import { Score, validatePassword, validPassword } from '../../../utils/password';
 import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
@@ -8,6 +9,7 @@ import './WalletPasswordField.scss';
 
 interface WalletPasswordFieldProps extends WalletTextFieldProps {
     password: string;
+    passwordError?: boolean;
     shouldDisablePasswordMeter?: boolean;
 }
 
@@ -17,6 +19,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     name = 'walletPasswordField',
     onChange,
     password,
+    passwordError,
     shouldDisablePasswordMeter = false,
     showMessage,
 }) => {
@@ -28,28 +31,37 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             onChange?.(e);
-            setIsTouched(true);
+            if (!isTouched) {
+                setIsTouched(true);
+            }
         },
-        [onChange]
+        [isTouched, onChange]
     );
+
+    const handleBlur = useCallback(() => {
+        if (!isTouched) {
+            setIsTouched(true);
+        }
+    }, [isTouched]);
 
     return (
         <div className='wallets-password'>
             <WalletTextField
                 autoComplete={autoComplete}
-                errorMessage={errorMessage}
-                isInvalid={!validPassword(password) && isTouched}
+                errorMessage={passwordError ? passwordErrorMessage.PasswordError : errorMessage}
+                isInvalid={(!validPassword(password) && isTouched) || passwordError}
                 label={label}
                 message={isTouched ? errorMessage : ''}
                 messageVariant='warning'
                 name={name}
+                onBlur={handleBlur}
                 onChange={handleChange}
                 renderRightIcon={() => (
                     <PasswordViewerIcon setViewPassword={setIsPasswordVisible} viewPassword={isPasswordVisible} />
                 )}
                 showMessage={showMessage}
                 type={isPasswordVisible ? 'text' : 'password'}
-                value={password}
+                value={passwordError ? '' : password}
             />
             {!shouldDisablePasswordMeter && <PasswordMeter score={score as Score} />}
         </div>

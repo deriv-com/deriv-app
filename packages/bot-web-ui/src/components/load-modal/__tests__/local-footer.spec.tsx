@@ -1,19 +1,15 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
+import DashboardStore from 'Stores/dashboard-store';
+import LoadModalStore from 'Stores/load-modal-store';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import LocalFooter from '../local-footer';
-import { isMobile } from '@deriv/shared';
-import DashboardStore from 'Stores/dashboard-store';
-import LoadModalStore from 'Stores/load-modal-store';
-
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(),
-}));
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
@@ -23,9 +19,9 @@ jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
 
 describe('LocalFooter', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    const mock_store = mockStore({});
 
     beforeAll(() => {
-        const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         mock_DBot_store = {
             ...mock_DBot_store,
@@ -64,8 +60,8 @@ describe('LocalFooter', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should display Cancel button when isMobile is true', async () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
+    it('should display Cancel button on mobile', async () => {
+        mock_store.ui.is_mobile = true;
         render(<LocalFooter />, { wrapper });
         const cancel_button = screen.getByRole('button', { name: /cancel/i });
         expect(cancel_button).toBeInTheDocument();
@@ -75,8 +71,8 @@ describe('LocalFooter', () => {
         expect(mock_DBot_store?.load_modal.setLoadedLocalFile).toHaveBeenCalledWith(null);
     });
 
-    it('should display Open button when isMobile is false', async () => {
-        (isMobile as jest.Mock).mockReturnValue(false);
+    it('should display Open button on desktop', async () => {
+        mock_store.ui.is_mobile = false;
         render(<LocalFooter />, { wrapper });
         const open_button = screen.getByRole('button', { name: /open/i });
         expect(open_button).toBeInTheDocument();

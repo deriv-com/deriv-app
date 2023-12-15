@@ -38,7 +38,7 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ acco
                 accountType={accountType ?? ''}
                 actionType='transfer'
                 currency={transferAccount.currency ?? 'USD'}
-                displayAccountName={displayAccountName}
+                displayAccountName={displayAccountName ?? ''}
                 displayActionType={`Transfer ${direction}`}
                 isDemo={Boolean(transferAccount.is_virtual)}
                 isInterWallet={transferAccount === wallet}

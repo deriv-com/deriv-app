@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Formik, FormikErrors, FormikHelpers, FormikState } from 'formik';
-import { ResidenceList } from '@deriv/api-types';
 import { Button, HintBox, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {
@@ -12,14 +11,6 @@ import {
     formatIDVFormValues,
     isMobile,
 } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
-import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
-import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
-import FormBody from 'Components/form-body';
-import FormFooter from 'Components/form-footer';
-import IDVForm from 'Components/forms/idv-form';
-import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import FormSubHeader from 'Components/form-sub-header';
 import {
     validate,
     makeSettingsRequest,
@@ -28,14 +19,23 @@ import {
     isDocumentTypeValid,
     isAdditionalDocumentValid,
     isDocumentNumberValid,
-} from 'Helpers/utils';
+} from '../../../Helpers/utils';
+import BackButtonIcon from '../../../Assets/ic-poi-back-btn.svg';
+import PoiNameDobExample from '../../../Assets/ic-poi-name-dob-example.svg';
+import IDVForm from '../../forms/idv-form';
+import PersonalDetailsForm from '../../forms/personal-details-form';
+import FormBody from '../../form-body';
+import FormFooter from '../../form-footer';
+import FormSubHeader from '../../form-sub-header';
+import { observer, useStore } from '@deriv/stores';
+import { ResidenceList } from '@deriv/api-types';
 import {
     CLAIMED_DOCUMENT_ERROR_MESSAGE,
     DUPLICATE_ACCOUNT_ERROR_MESSAGE,
     GENERIC_ERROR_MESSAGE,
-} from 'Configs/poi-error-config';
+} from '../../../Configs/poi-error-config';
 import { TIDVFormValues, TPersonalDetailsForm } from 'Types';
-import { API_ERROR_CODES } from 'Constants/api-error-codes';
+import { API_ERROR_CODES } from '../../../Constants/api-error-codes';
 
 type TIDVDocumentSubmitProps = {
     handleBack: React.MouseEventHandler;

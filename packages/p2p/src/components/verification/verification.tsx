@@ -51,14 +51,9 @@ const Verification = () => {
             content: getPoiAction(poi_status),
             is_disabled: poi_status === identity_status_codes.PENDING,
             status: poi_status === identity_status_codes.VERIFIED ? 'done' : 'action',
-            onClick:
-                poi_status === identity_status_codes.VERIFIED
-                    ? () => {
-                          //do nothing
-                      }
-                    : () => {
-                          redirectToVerification(routes.proof_of_identity);
-                      },
+            onClick: () => {
+                if (poi_status !== identity_status_codes.VERIFIED) redirectToVerification(routes.proof_of_identity);
+            },
         },
         ...(p2p_poa_required
             ? [
@@ -66,14 +61,10 @@ const Verification = () => {
                       content: getPoaAction(poa_status),
                       is_disabled: poa_status === document_status_codes.PENDING,
                       status: poa_status === document_status_codes.VERIFIED ? 'done' : 'action',
-                      onClick:
-                          poa_status === document_status_codes.VERIFIED
-                              ? () => {
-                                    //do nothing
-                                }
-                              : () => {
-                                    redirectToVerification(routes.proof_of_address);
-                                },
+                      onClick: () => {
+                          if (poa_status !== document_status_codes.VERIFIED)
+                              redirectToVerification(routes.proof_of_address);
+                      },
                   },
               ]
             : []),

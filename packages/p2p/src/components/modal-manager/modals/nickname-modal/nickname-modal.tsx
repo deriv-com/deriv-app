@@ -29,7 +29,7 @@ const NicknameModal = ({ onConfirm, should_hide_close_btn = false }: TNicknameMo
                         } else {
                             notifications.addNotificationMessage({
                                 key: 'p2p_advertiser_nickname_added',
-                                header: localize('Nickname added successfully!'),
+                                header: <Localize i18n_default_text='Nickname added successfully!' />,
                                 platform: 'P2P',
                                 should_hide_close_btn,
                                 type: 'announce',
@@ -70,7 +70,7 @@ const NicknameModal = ({ onConfirm, should_hide_close_btn = false }: TNicknameMo
                                         )}
                                     </Field>
                                 </div>
-                                <Text align='center' className='nickname-modal__content--ps' size='xs'>
+                                <Text align='center' className='nickname-modal__content--note' size='xs'>
                                     <Localize i18n_default_text='Your nickname cannot be changed later.' />
                                 </Text>
                             </div>

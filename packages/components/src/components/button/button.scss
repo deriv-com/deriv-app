@@ -207,6 +207,10 @@
             font-size: 1.4rem;
         }
     }
+    &__wide {
+        width: 100%;
+        height: 4rem;
+    }
     &__effect:focus:not(:active):after {
         content: '';
         position: absolute;

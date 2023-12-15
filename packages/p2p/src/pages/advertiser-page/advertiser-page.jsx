@@ -5,7 +5,7 @@ import { useP2PAdvertiserAdverts } from 'Hooks';
 import { useHistory, useLocation } from 'react-router-dom';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { useP2PAdvertInfo } from '@deriv/hooks';
-import { daysSince, isDesktop, isMobile, routes } from '@deriv/shared';
+import { daysSince, isDesktop, isEmptyObject, isMobile, routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 
 import { Localize, localize } from 'Components/i18next';
@@ -18,6 +18,7 @@ import TradeBadge from 'Components/trade-badge';
 import UserAvatar from 'Components/user/user-avatar';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { getErrorMessage, getErrorModalTitle, getWidth } from 'Utils/block-user';
 import { useStores } from 'Stores';
 
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
@@ -64,20 +65,12 @@ const AdvertiserPage = () => {
         sell_orders_count,
     } = info;
 
+    const is_invalid_advertiser_id = general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID;
     const joined_since = daysSince(created_time);
     const nickname = advertiser_details_name ?? name;
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
 
-    const error_message = () => {
-        return !!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert
-            ? localize("Unblocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
-                  name: nickname,
-              })
-            : localize("Blocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
-                  name: nickname,
-              });
-    };
     const {
         data: p2p_advert_info,
         isFetching,
@@ -170,8 +163,8 @@ const AdvertiserPage = () => {
             disposeCounterpartyAdvertiserIdReaction();
             advertiser_page_store.onUnmount();
             buy_sell_store.setShowAdvertiserPage(false);
+            advertiser_page_store.setCounterpartyAdvertiserInfo({});
         };
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -183,17 +176,14 @@ const AdvertiserPage = () => {
                     showModal({
                         key: 'ErrorModal',
                         props: {
-                            error_message:
-                                general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
-                                    ? error_message()
-                                    : general_store.block_unblock_user_error,
+                            error_message: getErrorMessage(
+                                general_store.block_unblock_user_error,
+                                !!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert,
+                                is_invalid_advertiser_id,
+                                nickname
+                            ),
                             error_modal_button_text: localize('Got it'),
-                            error_modal_title:
-                                general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
-                                    ? localize('{{name}} is no longer on Deriv P2P', {
-                                          name: nickname,
-                                      })
-                                    : localize('Unable to block advertiser'),
+                            error_modal_title: getErrorModalTitle(is_invalid_advertiser_id, nickname),
                             has_close_icon: false,
                             onClose: () => {
                                 buy_sell_store.hideAdvertiserPage();
@@ -204,7 +194,7 @@ const AdvertiserPage = () => {
                                 general_store.setBlockUnblockUserError('');
                                 hideModal();
                             },
-                            width: isMobile() ? '90rem' : '40rem',
+                            width: getWidth(),
                         },
                     });
                 }
@@ -319,9 +309,9 @@ const AdvertiserPage = () => {
                                     </div>
                                 </div>
                             </MobileWrapper>
-                            <div className='advertiser-page__rating'>
-                                <DesktopWrapper>
-                                    <React.Fragment>
+                            {!isEmptyObject(info) && (
+                                <div className='advertiser-page__rating'>
+                                    <DesktopWrapper>
                                         <div className='advertiser-page__rating--row'>
                                             <OnlineStatusIcon is_online={is_online} />
                                             <OnlineStatusLabel
@@ -345,56 +335,56 @@ const AdvertiserPage = () => {
                                                 )}
                                             </Text>
                                         </div>
-                                    </React.Fragment>
-                                </DesktopWrapper>
-                                {rating_average ? (
-                                    <React.Fragment>
-                                        <div className='advertiser-page__rating--row'>
-                                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                                {rating_average_decimal}
-                                            </Text>
-                                            <StarRating
-                                                empty_star_className='advertiser-page__rating--star'
-                                                empty_star_icon='IcEmptyStar'
-                                                full_star_className='advertiser-page__rating--star'
-                                                full_star_icon='IcFullStar'
-                                                initial_value={rating_average_decimal}
-                                                is_readonly
-                                                number_of_stars={5}
-                                                should_allow_hover_effect={false}
-                                                star_size={isMobile() ? 17 : 20}
-                                            />
-                                            <div className='advertiser-page__rating--text'>
-                                                <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                                    {rating_count === 1 ? (
-                                                        <Localize
-                                                            i18n_default_text='({{number_of_ratings}} rating)'
-                                                            values={{ number_of_ratings: rating_count }}
-                                                        />
-                                                    ) : (
-                                                        <Localize
-                                                            i18n_default_text='({{number_of_ratings}} ratings)'
-                                                            values={{ number_of_ratings: rating_count }}
-                                                        />
-                                                    )}
+                                    </DesktopWrapper>
+                                    {rating_average ? (
+                                        <React.Fragment>
+                                            <div className='advertiser-page__rating--row'>
+                                                <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                    {rating_average_decimal}
                                                 </Text>
+                                                <StarRating
+                                                    empty_star_className='advertiser-page__rating--star'
+                                                    empty_star_icon='IcEmptyStar'
+                                                    full_star_className='advertiser-page__rating--star'
+                                                    full_star_icon='IcFullStar'
+                                                    initial_value={rating_average_decimal}
+                                                    is_readonly
+                                                    number_of_stars={5}
+                                                    should_allow_hover_effect={false}
+                                                    star_size={isMobile() ? 17 : 20}
+                                                />
+                                                <div className='advertiser-page__rating--text'>
+                                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                        {rating_count === 1 ? (
+                                                            <Localize
+                                                                i18n_default_text='({{number_of_ratings}} rating)'
+                                                                values={{ number_of_ratings: rating_count }}
+                                                            />
+                                                        ) : (
+                                                            <Localize
+                                                                i18n_default_text='({{number_of_ratings}} ratings)'
+                                                                values={{ number_of_ratings: rating_count }}
+                                                            />
+                                                        )}
+                                                    </Text>
+                                                </div>
                                             </div>
-                                        </div>
+                                            <div className='advertiser-page__rating--row'>
+                                                <RecommendedBy
+                                                    recommended_average={recommended_average}
+                                                    recommended_count={recommended_count}
+                                                />
+                                            </div>
+                                        </React.Fragment>
+                                    ) : (
                                         <div className='advertiser-page__rating--row'>
-                                            <RecommendedBy
-                                                recommended_average={recommended_average}
-                                                recommended_count={recommended_count}
-                                            />
+                                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                                <Localize i18n_default_text='Not rated yet' />
+                                            </Text>
                                         </div>
-                                    </React.Fragment>
-                                ) : (
-                                    <div className='advertiser-page__rating--row'>
-                                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                            <Localize i18n_default_text='Not rated yet' />
-                                        </Text>
-                                    </div>
-                                )}
-                            </div>
+                                    )}
+                                </div>
+                            )}
                             <div className='advertiser-page__row'>
                                 <TradeBadge
                                     is_poa_verified={!!full_verification}

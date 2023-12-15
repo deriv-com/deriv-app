@@ -72,6 +72,7 @@ describe('<BuySellModal />', () => {
                 is_form_modified: false,
             },
             my_profile_store: {
+                selected_payment_method_fields: [],
                 should_show_add_payment_method_form: false,
                 getPaymentMethodsList: jest.fn(),
                 getSelectedPaymentMethodDetails: jest.fn(),

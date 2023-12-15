@@ -9,8 +9,14 @@ const mockCommonStore = {
 };
 describe('RoutePromptDialogStore', () => {
     let route_store: RoutePromptDialogStore;
+    const root_store = {
+        run_panel: {
+            is_running: true,
+        },
+    };
+
     beforeEach(() => {
-        route_store = new RoutePromptDialogStore(null, mockCommonStore);
+        route_store = new RoutePromptDialogStore(root_store, mockCommonStore);
     });
 
     it('should set should_show to be false', () => {

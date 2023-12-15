@@ -70,7 +70,7 @@
         "@datadog/browser-logs": "^4.36.0",
         "@deriv/bot-skeleton": "^1.0.0",
         "@deriv/components": "^1.0.0",
-        "@deriv/deriv-charts": "1.4.1",
+        "@deriv/deriv-charts": "1.4.2",
         "@deriv/deriv-charts-beta": "npm:@deriv/deriv-charts@^2.0.0-beta.14",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",

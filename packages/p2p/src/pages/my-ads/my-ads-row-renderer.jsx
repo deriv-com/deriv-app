@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { HorizontalSwipe, Icon, Popover, ProgressIndicator, Table, Text } from '@deriv/components';
 import { isMobile, formatMoney } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { useP2PExchangeRate } from '@deriv/hooks';
-import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdStatus from 'Pages/my-ads/ad-status.jsx';
 import { useStores } from 'Stores';
+import { api_error_codes } from 'Constants/api-error-codes';
 import { generateEffectiveRate } from 'Utils/format-value';
 import AdType from './ad-type.jsx';
 
@@ -41,6 +42,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     // Use separate is_advert_active state to ensure value is updated
     const [is_advert_active, setIsAdvertActive] = React.useState(is_active);
     const [is_popover_actions_visible, setIsPopoverActionsVisible] = React.useState(false);
+    const [show_warning_icon, setShowWarningIcon] = React.useState(false);
     const amount_dealt = amount - remaining_amount;
     const enable_action_point = floating_rate_store.change_ad_alert && floating_rate_store.rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
@@ -55,6 +57,8 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         exchange_rate,
         market_rate: effective_rate,
     });
+
+    const { ADVERT_INACTIVE, ADVERTISER_ADS_PAUSED } = api_error_codes;
 
     const is_advert_listed = general_store.is_listed && !general_store.is_barred;
     const ad_pause_color = is_advert_listed ? 'general' : 'less-prominent';
@@ -90,16 +94,19 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         enable_action_point && floating_rate_store.rate_type !== rate_type ? onClickSwitchAd() : onClickEdit();
 
     const should_show_tooltip_icon =
-        (visibility_status?.length === 1 && visibility_status[0] !== 'advert_inactive') || visibility_status.length > 1;
-
-    const show_warning_icon = enable_action_point || should_show_tooltip_icon || !general_store.is_listed;
+        (visibility_status?.length === 1 &&
+            visibility_status[0] !== 'advert_inactive' &&
+            visibility_status[0] !== 'advertiser_ads_paused') ||
+        visibility_status.length > 1;
 
     const getErrorCodes = () => {
         let updated_visibility_status = [...visibility_status];
-        if (!is_advert_listed && !updated_visibility_status.includes('advertiser_ads_paused'))
-            updated_visibility_status = [...updated_visibility_status, 'advertiser_ads_paused'];
-        if (!enable_action_point && updated_visibility_status.includes('advert_inactive'))
-            updated_visibility_status = updated_visibility_status.filter(status => status !== 'advert_inactive');
+        if (!is_advert_listed && !updated_visibility_status.includes(ADVERTISER_ADS_PAUSED))
+            updated_visibility_status = [...updated_visibility_status, ADVERTISER_ADS_PAUSED];
+        if (!enable_action_point && updated_visibility_status.includes(ADVERT_INACTIVE))
+            updated_visibility_status = updated_visibility_status.filter(status => status !== ADVERT_INACTIVE);
+        if (enable_action_point && !updated_visibility_status.includes(ADVERT_INACTIVE))
+            updated_visibility_status = [...updated_visibility_status, ADVERT_INACTIVE];
         return updated_visibility_status;
     };
 
@@ -107,6 +114,10 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         my_profile_store.getAdvertiserPaymentMethods();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        setShowWarningIcon(enable_action_point || should_show_tooltip_icon || !general_store.is_listed);
+    }, [enable_action_point, general_store.is_listed, should_show_tooltip_icon]);
 
     const onClickTooltipIcon = () => {
         showModal({

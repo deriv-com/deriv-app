@@ -35,6 +35,7 @@
         "@types/react-dom": "^18.0.0",
         "@types/react-router-dom": "^5.1.6",
         "@types/react-virtualized": "^9.21.21",
+        "autoprefixer": "^10.4.16",
         "babel-polyfill": "^6.26.0",
         "dotenv-webpack": "^8.0.1",
         "husky": "^7.0.0",
@@ -52,6 +53,7 @@
         "stylelint-no-unsupported-browser-features": "^4.0.0",
         "stylelint-selector-bem-pattern": "^2.1.0",
         "stylelint-webpack-plugin": "^2.1.1",
+        "tailwindcss": "^3.3.6",
         "ts-jest": "^26.4.2"
     },
     "scripts": {
@@ -82,8 +84,9 @@
         "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
         "test:ci": "f () { npm run test:stylelint  && npm run test:eslint-all ;}; f",
         "test:jest": "jest --all --maxWorkers=${JEST_MAX_WORKERS:-'50%'}",
-        "test:e2e": "npx playwright test",
-        "test:e2e-dev": "npx playwright test --trace on && npx playwright show-report",
+        "test:component": "npx playwright test",
+        "test:component-debug": "npx playwright test --debug",
+        "test:component-ui": "npx playwright test --ui",
         "test:performance": "cd e2e-tests &&  jest -c ./jest.config.js --detectOpenHandles performance",
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
         "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",
@@ -92,7 +95,8 @@
     },
     "dependencies": {
         "@babel/preset-typescript": "^7.16.5",
-        "@deriv/analytics": "^1.4.1",
+        "@deriv/analytics": "^1.4.5",
+        "@deriv/quill-design": "^1.2.10",
         "@sendbird/chat": "^4.9.7",
         "@types/react-transition-group": "^4.4.4",
         "babel-jest": "^27.3.1",

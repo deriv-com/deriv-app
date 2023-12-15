@@ -50,7 +50,9 @@ describe('<CreateAdAddPaymentMethodModal />', () => {
                 is_form_modified: false,
             },
             my_profile_store: {
+                payment_methods_list_items: [],
                 selected_payment_method: '',
+                selected_payment_method_fields: [],
                 setAddPaymentMethodErrorMessage: jest.fn(),
                 getPaymentMethodsList: jest.fn(),
                 getSelectedPaymentMethodDetails: jest.fn(),

@@ -35,7 +35,6 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
         is_counterparty_advertiser_blocked: false,
         onAdvertiserIdUpdate: jest.fn(),
         onMount: jest.fn(),
-        onTabChange: jest.fn(),
         setIsDropdownMenuVisible: jest.fn(),
         onUnmount: jest.fn(),
         onCancel: jest.fn(),

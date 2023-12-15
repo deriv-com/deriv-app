@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useActiveWalletAccount, useAuthorize, useCurrencyConfig } from '@deriv/api';
 import { displayMoney } from '@deriv/api/src/utils';
 import { THooks, TWalletLandingCompanyName } from '../../../../../types';
+import { PlatformDetails } from '../../../constants';
 import { getAccountName, getLandingCompanyNameOfMT5Account, getMarketType } from '../../../helpers';
 
 /** A custom hook that enhances the transfer accounts response by adding additional properties for convenient UI rendering. */
@@ -28,7 +29,7 @@ const useExtendedTransferAccountProperties = (accounts?: THooks.TransferAccount[
                 preferred_language: authorizeData?.preferred_language,
             });
             const landingCompanyName =
-                account.account_type === 'mt5'
+                account.account_type === PlatformDetails.mt5.name
                     ? getLandingCompanyNameOfMT5Account(account.mt5_group)
                     : (activeWallet?.landing_company_name as TWalletLandingCompanyName);
 

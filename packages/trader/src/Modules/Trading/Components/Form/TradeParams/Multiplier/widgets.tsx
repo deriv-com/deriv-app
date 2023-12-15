@@ -10,7 +10,6 @@ import MultipliersExpirationModal from 'Modules/Trading/Components/Form/TradePar
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info';
 import { localize, Localize } from '@deriv/translations';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
-import { showLabelForMultipliers } from '../../../../Helpers/contract-type';
 
 type TAmountWidgetProps = {
     amount: number;
@@ -90,7 +89,6 @@ const RadioGroupOptionsWidget = ({
     tooltip_message,
     is_disabled,
     modal_title,
-    should_show_new_label,
 }: TRadioGroupOptionsWidgetProps) => {
     const [is_open, setIsOpen] = React.useState(false);
 
@@ -102,12 +100,7 @@ const RadioGroupOptionsWidget = ({
     return (
         <React.Fragment>
             <RadioGroupOptionsModal is_open={is_open} toggleModal={toggleModal} modal_title={modal_title} />
-            <button
-                className={classNames('mobile-widget mobile-widget__multiplier-options', {
-                    'mobile-widget__label': should_show_new_label,
-                })}
-                onClick={toggleModal}
-            >
+            <div className='mobile-widget mobile-widget__multiplier-options' onClick={toggleModal}>
                 <div
                     className={classNames('mobile-widget__item', {
                         'mobile-widget__item-disabled': is_disabled,
@@ -131,33 +124,16 @@ const RadioGroupOptionsWidget = ({
                         />
                     </span>
                 )}
-                {should_show_new_label && (
-                    <Text
-                        className='dc-dropdown__label--new'
-                        weight='bold'
-                        size='xxxs'
-                        line_height='s'
-                        color='colored-background'
-                    >
-                        <Localize i18n_default_text='NEW!' />
-                    </Text>
-                )}
-            </button>
+            </div>
         </React.Fragment>
     );
 };
 
 export const MultiplierOptionsWidget = observer(() => {
-    const { multiplier, symbol } = useTraderStore();
+    const { multiplier } = useTraderStore();
     const displayed_trade_param = `x${multiplier}`;
     const modal_title = localize('Multiplier');
-    return (
-        <RadioGroupOptionsWidget
-            displayed_trade_param={displayed_trade_param}
-            modal_title={modal_title}
-            should_show_new_label={showLabelForMultipliers(symbol)}
-        />
-    );
+    return <RadioGroupOptionsWidget displayed_trade_param={displayed_trade_param} modal_title={modal_title} />;
 });
 
 export const AccumulatorOptionsWidget = observer(() => {

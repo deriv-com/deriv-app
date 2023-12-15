@@ -56,9 +56,9 @@ const TwoFactorAuthentication = observer(() => {
 
     React.useEffect(() => {
         console.log('Component mounted');
-        WS.wait('authorize').then(() => {
-            executeApiCall(getDigitStatus);
-        });
+        // WS.wait('authorize').then(() => {
+        executeApiCall(getDigitStatus);
+        // });
     }, []);
 
     if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account__initial-loader' />;

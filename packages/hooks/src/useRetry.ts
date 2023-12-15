@@ -10,7 +10,7 @@ interface UseApiWithRetryResult<T> {
     executeApiCall: (apiCall: () => Promise<T>) => void;
     response: {
         data: T | null;
-        error: Error | null;
+        error: unknown;
     };
 }
 
@@ -19,7 +19,7 @@ const useApiWithRetry = <T>({
     maxRetryAttempts = 3,
 }: UseApiWithRetryProps): UseApiWithRetryResult<T> => {
     const [responseData, setResponseData] = useState<T | null>(null);
-    const [error, setError] = useState<Error | null>(null);
+    const [error, setError] = useState();
     const [retryAttempts, setRetryAttempts] = useState(0);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
     const retryAttemptsRef = useRef<NodeJS.Timeout | null>(null);
@@ -29,7 +29,7 @@ const useApiWithRetry = <T>({
             const response = await apiCall();
             setResponseData(response);
         } catch (err) {
-            setError(err);
+            // setError(err);
         }
     };
 
@@ -88,17 +88,3 @@ const useApiWithRetry = <T>({
 };
 
 export default useApiWithRetry;
-
-// const useApiWithRetry = <T>() => {
-//     const retryApiCall = async (apiCall: () => Promise<T>) => {
-//         return apiCall();
-//     };
-
-//     const executeApiCall = (apiCall: () => Promise<T>) => {
-//         retryApiCall(apiCall); // Initial API call with retry logic
-//     };
-
-//     return { executeApiCall };
-// };
-
-// export default useApiWithRetry;

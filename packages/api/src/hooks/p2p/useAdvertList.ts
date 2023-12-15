@@ -5,13 +5,13 @@ import useAuthorize from '../useAuthorize';
 /**
  * This custom hook returns available adverts for use with 'p2p_order_create' by calling 'p2p_advert_list' endpoint
  */
-const useP2PAdvertList = (
+const useAdvertList = (
     payload?: NonNullable<Parameters<typeof useInfiniteQuery<'p2p_advert_list'>>[1]>['payload'],
     config?: NonNullable<Parameters<typeof useInfiniteQuery<'p2p_advert_list'>>[1]>['options']
 ) => {
     const { isSuccess } = useAuthorize();
     const { data, fetchNextPage, ...rest } = useInfiniteQuery('p2p_advert_list', {
-        payload: { ...payload, offset: payload?.offset || 0, limit: payload?.limit || 50 },
+        payload: { ...payload, offset: payload?.offset, limit: payload?.limit },
         options: {
             getNextPageParam: (lastPage, pages) => {
                 if (!lastPage?.p2p_advert_list?.list) return;
@@ -65,4 +65,4 @@ const useP2PAdvertList = (
     };
 };
 
-export default useP2PAdvertList;
+export default useAdvertList;

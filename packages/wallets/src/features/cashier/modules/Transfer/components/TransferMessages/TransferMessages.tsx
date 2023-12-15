@@ -11,13 +11,13 @@ const TransferMessages = () => {
 
     const { USDExchangeRates, activeWalletExchangeRates } = useTransfer();
 
-    const messages = useTransferMessages(
-        values.fromAccount,
-        values.toAccount,
-        values,
+    const messages = useTransferMessages({
+        activeWalletExchangeRates,
+        formData: values,
+        fromAccount: values.fromAccount,
+        toAccount: values.toAccount,
         USDExchangeRates,
-        activeWalletExchangeRates
-    );
+    });
 
     return (
         <FadedAnimatedList className='wallets-transfer-messages'>

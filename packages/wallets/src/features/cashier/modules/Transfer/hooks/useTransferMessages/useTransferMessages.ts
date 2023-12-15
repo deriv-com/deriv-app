@@ -9,13 +9,21 @@ import {
 } from './utils/messageFunctions';
 import { TMessage, TMessageFnProps } from './types';
 
-const useTransferMessages = (
-    fromAccount: NonNullable<TAccount> | undefined,
-    toAccount: NonNullable<TAccount> | undefined,
-    formData: TInitialTransferFormValues,
-    activeWalletExchangeRates?: THooks.ExchangeRate,
-    USDExchangeRates?: THooks.ExchangeRate
-) => {
+type TProps = {
+    USDExchangeRates?: THooks.ExchangeRate;
+    activeWalletExchangeRates?: THooks.ExchangeRate;
+    formData: TInitialTransferFormValues;
+    fromAccount: NonNullable<TAccount> | undefined;
+    toAccount: NonNullable<TAccount> | undefined;
+};
+
+const useTransferMessages = ({
+    USDExchangeRates,
+    activeWalletExchangeRates,
+    formData,
+    fromAccount,
+    toAccount,
+}: TProps) => {
     const { data: authorizeData } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
     const { preferred_language: preferredLanguage } = authorizeData;

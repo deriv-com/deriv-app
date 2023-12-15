@@ -71,7 +71,7 @@ const NicknameModal = ({ onConfirm, should_hide_close_btn = false }: TNicknameMo
                                     </Field>
                                 </div>
                                 <Text align='center' className='nickname-modal__content--ps' size='xs'>
-                                    <Localize i18n_default_text='Note: Your nickname cannot be changed later.' />
+                                    <Localize i18n_default_text='Your nickname cannot be changed later.' />
                                 </Text>
                             </div>
                             <div className='nickname-modal__footer'>

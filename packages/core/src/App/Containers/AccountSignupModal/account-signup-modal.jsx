@@ -18,7 +18,15 @@ import validateSignupFields from './validate-signup-fields.jsx';
 
 import 'Sass/app/modules/account-signup.scss';
 
-const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, onSignup, residence_list }) => {
+const AccountSignup = ({
+    enableApp,
+    is_mobile,
+    isModalVisible,
+    clients_country,
+    onSignup,
+    residence_list,
+    setIsFromSignupAccount,
+}) => {
     const signupInitialValues = { citizenship: '', password: '', residence: '' };
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -91,6 +99,7 @@ const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, 
             });
         } else {
             isModalVisible(false);
+            setIsFromSignupAccount(true);
             SessionStore.remove('signup_query_param');
             enableApp();
 
@@ -208,6 +217,7 @@ AccountSignup.propTypes = {
     residence_list: PropTypes.array,
     is_mobile: PropTypes.bool,
     isModalVisible: PropTypes.func,
+    setIsFromSignupAccount: PropTypes.func,
 };
 
 const AccountSignupModal = ({
@@ -222,6 +232,7 @@ const AccountSignupModal = ({
     onSignup,
     residence_list,
     toggleAccountSignupModal,
+    setIsFromSignupAccount,
 }) => {
     React.useEffect(() => {
         // a logged in user should not be able to create a new account
@@ -246,6 +257,7 @@ const AccountSignupModal = ({
                 is_mobile={is_mobile}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
+                setIsFromSignupAccount={setIsFromSignupAccount}
             />
         </Dialog>
     );
@@ -263,6 +275,7 @@ AccountSignupModal.propTypes = {
     onSignup: PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
     toggleAccountSignupModal: PropTypes.func,
+    setIsFromSignupAccount: PropTypes.func,
 };
 
 export default connect(({ ui, client }) => ({
@@ -277,4 +290,5 @@ export default connect(({ ui, client }) => ({
     residence_list: client.residence_list,
     clients_country: client.clients_country,
     logout: client.logout,
+    setIsFromSignupAccount: ui.setIsFromSignupAccount,
 }))(AccountSignupModal);

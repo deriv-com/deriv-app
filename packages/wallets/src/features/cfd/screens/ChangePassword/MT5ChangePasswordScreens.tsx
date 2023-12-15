@@ -1,62 +1,56 @@
-import React, { useState } from 'react';
-import { SentEmailContent, WalletButton, WalletsActionScreen, WalletText } from '../../../../components';
-import { useModal } from '../../../../components/ModalProvider';
-import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { TPlatforms } from '../../../../types';
+import React, { Fragment, useState } from 'react';
+import { Trans } from 'react-i18next';
+import { SentEmailContent } from '../../../../components';
+import { Tab, Tabs, WalletText } from '../../../../components/Base';
+import IcBackArrow from '../../../../public/images/ic-back-arrow.svg';
+import { PlatformDetails } from '../../constants';
+import MT5ChangeInvestorPasswordScreens from './InvestorPassword/MT5ChangeInvestorPasswordScreens';
+import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswordScreens';
 
-type MT5ChangePasswordScreensProps = {
-    platform: TPlatforms.All;
-    platformTitle: string;
-};
+const MT5ChangePasswordScreens = () => {
+    const [showSentEmailContentWithoutTabs, setShowSentEmailContentWithoutTabs] = useState(false);
+    const [tabNumber, setTabNumber] = useState(0);
 
-const MT5ChangePasswordScreens: React.FC<MT5ChangePasswordScreensProps> = ({ platform, platformTitle }) => {
-    type TChangePasswordScreenIndex = 'confirmationScreen' | 'emailVerification' | 'introScreen';
-    const [activeScreen, setActiveScreen] = useState<TChangePasswordScreenIndex>('introScreen');
-    const handleClick = (nextScreen: TChangePasswordScreenIndex) => setActiveScreen(nextScreen);
+    const platform = PlatformDetails.mt5.platform;
+    const { title } = PlatformDetails[platform];
 
-    const { hide } = useModal();
-
-    const ChangePasswordScreens = {
-        confirmationScreen: {
-            bodyText: (
-                <WalletText align='center' color='error' size='sm'>
-                    This will change the password to all of your {platformTitle} accounts.
+    return showSentEmailContentWithoutTabs ? (
+        <Fragment>
+            <div
+                className='wallets-change-password__back-arrow'
+                onClick={() => {
+                    setShowSentEmailContentWithoutTabs(false);
+                    setTabNumber(1);
+                }}
+                onKeyDown={event => {
+                    if (event.key === 'Enter') {
+                        setShowSentEmailContentWithoutTabs(false);
+                        setTabNumber(1);
+                    }
+                }}
+            >
+                <IcBackArrow />
+                <WalletText weight='bold'>
+                    <Trans defaults='Back' />
                 </WalletText>
-            ),
-            button: (
-                <div className='wallets-change-password__btn'>
-                    <WalletButton onClick={() => hide()} size='lg' text='Cancel' variant='outlined' />
-                    <WalletButton onClick={() => handleClick('emailVerification')} size='lg' text='Confirm' />
-                </div>
-            ),
-            headingText: `Confirm to change your ${platformTitle} password`,
-            icon: <MT5PasswordIcon />,
-        },
-        introScreen: {
-            bodyText: `Use this password to log in to your ${platformTitle} accounts on the desktop, web, and mobile apps.`,
-            button: <WalletButton onClick={() => handleClick('confirmationScreen')} size='lg' text='Change password' />,
-            headingText: `${platformTitle} password`,
-            icon: <MT5PasswordIcon />,
-        },
-    };
-
-    if (activeScreen === 'emailVerification')
-        return (
-            <div className='wallets-change-password__sent-email-wrapper'>
-                <SentEmailContent platform={platform} />
             </div>
-        );
 
-    return (
-        <div className='wallets-change-password__content'>
-            <WalletsActionScreen
-                description={ChangePasswordScreens[activeScreen].bodyText}
-                descriptionSize='sm'
-                icon={ChangePasswordScreens[activeScreen].icon}
-                renderButtons={() => ChangePasswordScreens[activeScreen].button}
-                title={ChangePasswordScreens[activeScreen].headingText}
-            />
-        </div>
+            <div className='wallets-change-investor-password-screens__sent-email-wrapper'>
+                <SentEmailContent
+                    description='Please click on the link in the email to reset your password.'
+                    isInvestorPassword
+                />
+            </div>
+        </Fragment>
+    ) : (
+        <Tabs preSelectedTab={tabNumber} wrapperClassName='wallets-change-password__tab'>
+            <Tab title={`${title} Password`}>
+                <TradingPlatformChangePasswordScreens platform={platform} />
+            </Tab>
+            <Tab title='Investor Password'>
+                <MT5ChangeInvestorPasswordScreens setShowEmailSentScreen={setShowSentEmailContentWithoutTabs} />
+            </Tab>
+        </Tabs>
     );
 };
 

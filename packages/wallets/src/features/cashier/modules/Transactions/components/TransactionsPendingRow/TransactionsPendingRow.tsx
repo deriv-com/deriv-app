@@ -195,13 +195,9 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
             </button>
 
             {isMobile && transaction.is_valid_to_cancel && (
-                <WalletButton
-                    isFullWidth
-                    onClick={onCancelButtonClick}
-                    size='sm'
-                    text='Cancel transaction'
-                    variant='outlined'
-                />
+                <WalletButton isFullWidth onClick={onCancelButtonClick} size='sm' variant='outlined'>
+                    Cancel transaction
+                </WalletButton>
             )}
         </div>
     );

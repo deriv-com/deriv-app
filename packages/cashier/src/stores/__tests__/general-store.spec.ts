@@ -241,16 +241,4 @@ describe('GeneralStore', () => {
         general_store.setActiveTab('deposit');
         expect(general_store.active_container).toBe('deposit');
     });
-
-    // it('should perform proper accountSwitcherListener invocation', () => {
-    //     const spyOnRemount = jest.spyOn(general_store, 'onRemount');
-    //     general_store.accountSwitcherListener();
-
-    //     const { iframe, payment_agent } = general_store.root_store.modules.cashier;
-
-    //     expect(iframe.clearIframe).toHaveBeenCalledTimes(1);
-    //     expect(general_store.payment_agent).toEqual(payment_agent);
-    //     expect(general_store.is_populating_values).toBeFalsy();
-    //     expect(spyOnRemount).toHaveBeenCalledTimes(1);
-    // });
 });

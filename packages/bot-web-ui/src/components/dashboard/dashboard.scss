@@ -207,6 +207,10 @@
         &--expanded {
             width: calc(100vw - 39.8rem);
         }
+
+        &--modal {
+            width: 40rem;
+        }
     }
 
     &__toolbox {
@@ -303,8 +307,6 @@
     height: var(--tab-content-height);
 
     .injectionDiv {
-        height: calc(100vh - 20rem);
-
         .blocklyTrash {
             transition: all 0.4s;
 

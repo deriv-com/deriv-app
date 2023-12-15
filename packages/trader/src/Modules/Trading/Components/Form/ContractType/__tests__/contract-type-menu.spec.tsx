@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import ContractTypeMenu from '../ContractTypeMenu';
 import ContractTypeWidget from '../contract-type-widget';
 import { mockStore } from '@deriv/stores';
+import { TRADE_TYPES } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 import { ActiveSymbols } from '@deriv/api-types';
 
@@ -43,7 +44,7 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Multipliers',
-                            value: 'multiplier',
+                            value: TRADE_TYPES.MULTIPLIER,
                         },
                     ],
                     icon: 'IcMultiplier',
@@ -54,11 +55,11 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall',
+                            value: TRADE_TYPES.RISE_FALL,
                         },
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall_equal',
+                            value: TRADE_TYPES.RISE_FALL_EQUAL,
                         },
                     ],
                     icon: 'IcUpsDowns',
@@ -69,11 +70,11 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Higher/Lower',
-                            value: 'high_low',
+                            value: TRADE_TYPES.HIGH_LOW,
                         },
                         {
                             text: 'Touch/No Touch',
-                            value: 'touch',
+                            value: TRADE_TYPES.TOUCH,
                         },
                     ],
                     icon: 'IcHighsLows',
@@ -84,15 +85,15 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Matches/Differs',
-                            value: 'match_diff',
+                            value: TRADE_TYPES.MATCH_DIFF,
                         },
                         {
                             text: 'Even/Odd',
-                            value: 'even_odd',
+                            value: TRADE_TYPES.EVEN_ODD,
                         },
                         {
                             text: 'Over/Under',
-                            value: 'over_under',
+                            value: TRADE_TYPES.OVER_UNDER,
                         },
                     ],
                     icon: 'IcDigits',
@@ -103,35 +104,35 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Multipliers',
-                    value: 'multiplier',
+                    value: TRADE_TYPES.MULTIPLIER,
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall',
+                    value: TRADE_TYPES.RISE_FALL,
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall_equal',
+                    value: TRADE_TYPES.RISE_FALL_EQUAL,
                 },
                 {
                     text: 'Higher/Lower',
-                    value: 'high_low',
+                    value: TRADE_TYPES.HIGH_LOW,
                 },
                 {
                     text: 'Touch/No Touch',
-                    value: 'touch',
+                    value: TRADE_TYPES.TOUCH,
                 },
                 {
                     text: 'Matches/Differs',
-                    value: 'match_diff',
+                    value: TRADE_TYPES.MATCH_DIFF,
                 },
                 {
                     text: 'Even/Odd',
-                    value: 'even_odd',
+                    value: TRADE_TYPES.EVEN_ODD,
                 },
                 {
                     text: 'Over/Under',
-                    value: 'over_under',
+                    value: TRADE_TYPES.OVER_UNDER,
                 },
             ],
             icon: 'IcCatAll',
@@ -144,7 +145,7 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Multipliers',
-                            value: 'multiplier',
+                            value: TRADE_TYPES.MULTIPLIER,
                         },
                     ],
                     icon: 'IcMultiplier',
@@ -155,7 +156,7 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Multipliers',
-                    value: 'multiplier',
+                    value: TRADE_TYPES.MULTIPLIER,
                 },
             ],
             icon: 'IcCatMultiplier',
@@ -168,11 +169,11 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall',
+                            value: TRADE_TYPES.RISE_FALL,
                         },
                         {
                             text: 'Rise/Fall',
-                            value: 'rise_fall_equal',
+                            value: TRADE_TYPES.RISE_FALL_EQUAL,
                         },
                     ],
                     icon: 'IcUpsDowns',
@@ -183,11 +184,11 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Higher/Lower',
-                            value: 'high_low',
+                            value: TRADE_TYPES.HIGH_LOW,
                         },
                         {
                             text: 'Touch/No Touch',
-                            value: 'touch',
+                            value: TRADE_TYPES.TOUCH,
                         },
                     ],
                     icon: 'IcHighsLows',
@@ -198,15 +199,15 @@ describe('ContractTypeMenu', () => {
                     contract_types: [
                         {
                             text: 'Matches/Differs',
-                            value: 'match_diff',
+                            value: TRADE_TYPES.MATCH_DIFF,
                         },
                         {
                             text: 'Even/Odd',
-                            value: 'even_odd',
+                            value: TRADE_TYPES.EVEN_ODD,
                         },
                         {
                             text: 'Over/Under',
-                            value: 'over_under',
+                            value: TRADE_TYPES.OVER_UNDER,
                         },
                     ],
                     icon: 'IcDigits',
@@ -217,31 +218,31 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall',
+                    value: TRADE_TYPES.RISE_FALL,
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall_equal',
+                    value: TRADE_TYPES.RISE_FALL_EQUAL,
                 },
                 {
                     text: 'Higher/Lower',
-                    value: 'high_low',
+                    value: TRADE_TYPES.HIGH_LOW,
                 },
                 {
                     text: 'Touch/No Touch',
-                    value: 'touch',
+                    value: TRADE_TYPES.TOUCH,
                 },
                 {
                     text: 'Matches/Differs',
-                    value: 'match_diff',
+                    value: TRADE_TYPES.MATCH_DIFF,
                 },
                 {
                     text: 'Even/Odd',
-                    value: 'even_odd',
+                    value: TRADE_TYPES.EVEN_ODD,
                 },
                 {
                     text: 'Over/Under',
-                    value: 'over_under',
+                    value: TRADE_TYPES.OVER_UNDER,
                 },
             ],
             icon: 'IcCatOptions',
@@ -255,7 +256,7 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Multipliers',
-                    value: 'multiplier',
+                    value: TRADE_TYPES.MULTIPLIER,
                 },
             ],
             icon: 'IcMultiplier',
@@ -266,11 +267,11 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall',
+                    value: TRADE_TYPES.RISE_FALL,
                 },
                 {
                     text: 'Rise/Fall',
-                    value: 'rise_fall_equal',
+                    value: TRADE_TYPES.RISE_FALL_EQUAL,
                 },
             ],
             icon: 'IcUpsDowns',
@@ -281,11 +282,11 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Higher/Lower',
-                    value: 'high_low',
+                    value: TRADE_TYPES.HIGH_LOW,
                 },
                 {
                     text: 'Touch/No Touch',
-                    value: 'touch',
+                    value: TRADE_TYPES.TOUCH,
                 },
             ],
             icon: 'IcHighsLows',
@@ -296,15 +297,15 @@ describe('ContractTypeMenu', () => {
             contract_types: [
                 {
                     text: 'Matches/Differs',
-                    value: 'match_diff',
+                    value: TRADE_TYPES.MATCH_DIFF,
                 },
                 {
                     text: 'Even/Odd',
-                    value: 'even_odd',
+                    value: TRADE_TYPES.EVEN_ODD,
                 },
                 {
                     text: 'Over/Under',
-                    value: 'over_under',
+                    value: TRADE_TYPES.OVER_UNDER,
                 },
             ],
             icon: 'IcDigits',
@@ -332,7 +333,7 @@ describe('ContractTypeMenu', () => {
 
     const item = {
         text: 'Multipliers',
-        value: 'multiplier',
+        value: TRADE_TYPES.MULTIPLIER,
     };
 
     it('should not show <ContractTypeMenu /> component when it is closed', () => {

@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
+    addComma,
     getContractPath,
     getContractTypeDisplay,
     getCardLabels,
@@ -100,24 +100,17 @@ const PositionsModalCard = observer(
 
         const contract_vanilla_el = (
             <React.Fragment>
-                <NavLink
-                    className='positions-modal-card'
-                    to={{
-                        pathname: `/contract/${contract_info.contract_id}`,
-                    }}
-                >
-                    <ContractCard.Header
-                        contract_info={contract_info}
-                        display_name={display_name}
-                        getCardLabels={getCardLabels}
-                        getContractTypeDisplay={getContractTypeDisplay}
-                        has_progress_slider={!is_mobile && has_progress_slider}
-                        is_mobile={is_mobile}
-                        is_sell_requested={is_sell_requested}
-                        onClickSell={onClickSell}
-                        server_time={server_time as moment.Moment}
-                    />
-                </NavLink>
+                <ContractCard.Header
+                    contract_info={contract_info}
+                    display_name={display_name}
+                    getCardLabels={getCardLabels}
+                    getContractTypeDisplay={getContractTypeDisplay}
+                    has_progress_slider={!is_mobile && has_progress_slider}
+                    is_mobile={is_mobile}
+                    is_sell_requested={is_sell_requested}
+                    onClickSell={onClickSell}
+                    server_time={server_time as moment.Moment}
+                />
                 <CurrencyBadge currency={contract_info?.currency ?? ''} />
                 <div className={classNames('positions-modal-card__grid', 'positions-modal-card__grid-body')}>
                     <div className={classNames('positions-modal-card__grid-profit-payout')}>
@@ -145,7 +138,7 @@ const PositionsModalCard = observer(
                                 {localize('Entry spot:')}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__purchase-value'>
-                                <Money amount={Number(contract_info.entry_spot)} currency={currency} />
+                                {addComma(contract_info.entry_spot)}
                             </Text>
                         </div>
                         <div className='positions-modal-card__payout-price'>
@@ -153,7 +146,7 @@ const PositionsModalCard = observer(
                                 {localize('Strike:')}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__payout-value'>
-                                <Money amount={Number(contract_info.barrier)} currency={currency} />
+                                {addComma(contract_info.barrier)}
                             </Text>
                         </div>
                     </div>

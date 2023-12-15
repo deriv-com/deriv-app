@@ -5,6 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Loading } from '@deriv/components';
 import TwoFactorEnabled from './two-factor-enabled';
 import TwoFactorDisabled from './two-factor-disabled';
+import { useApiWithRetry } from '@deriv/hooks';
 
 const TwoFactorAuthentication = observer(() => {
     const { client } = useStore();
@@ -15,6 +16,8 @@ const TwoFactorAuthentication = observer(() => {
     const [error_message, setErrorMessage] = React.useState('');
     const [secret_key, setSecretKey] = React.useState('');
     const [qr_secret_key, setQrSecretKey] = React.useState('');
+
+    const { executeApiCall } = useApiWithRetry({ timeout: 10000 });
 
     const generateQrCode = React.useCallback(async () => {
         setQrLoading(true);
@@ -38,6 +41,7 @@ const TwoFactorAuthentication = observer(() => {
 
     const getDigitStatus = React.useCallback(async () => {
         const status_response = await getTwoFAStatus();
+        console.log('status_response', status_response);
         // status_response can be boolean or an error object
         if (typeof status_response !== 'boolean') {
             setErrorMessage(status_response?.error?.message);
@@ -51,10 +55,11 @@ const TwoFactorAuthentication = observer(() => {
     }, [getTwoFAStatus, generateQrCode]);
 
     React.useEffect(() => {
+        console.log('Component mounted');
         WS.wait('authorize').then(() => {
-            getDigitStatus();
+            executeApiCall(getDigitStatus);
         });
-    }, [getDigitStatus]);
+    }, []);
 
     if (is_loading || is_switching) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (error_message) return <LoadErrorMessage error_message={error_message} />;

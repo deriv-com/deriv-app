@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useAccountLimits, useActiveWalletAccount, useAuthorize, usePOI } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, usePOI } from '@deriv/api';
 import { displayMoney as displayMoney_ } from '@deriv/api/src/utils';
 import { THooks } from '../../../../../../types';
 import { TAccount, TInitialTransferFormValues } from '../../types';
@@ -11,6 +11,7 @@ import { TMessage, TMessageFnProps } from './types';
 
 type TProps = {
     USDExchangeRates?: THooks.ExchangeRate;
+    accountLimits?: THooks.AccountLimits;
     activeWalletExchangeRates?: THooks.ExchangeRate;
     formData: TInitialTransferFormValues;
     fromAccount: NonNullable<TAccount> | undefined;
@@ -19,6 +20,7 @@ type TProps = {
 
 const useTransferMessages = ({
     USDExchangeRates,
+    accountLimits,
     activeWalletExchangeRates,
     formData,
     fromAccount,
@@ -28,7 +30,6 @@ const useTransferMessages = ({
     const { data: activeWallet } = useActiveWalletAccount();
     const { preferred_language: preferredLanguage } = authorizeData;
     const { data: poi } = usePOI();
-    const { data: accountLimits } = useAccountLimits();
 
     const isTransferBetweenWallets =
         fromAccount?.account_category === 'wallet' && toAccount?.account_category === 'wallet';

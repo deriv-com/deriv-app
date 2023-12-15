@@ -16,7 +16,14 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const { setFieldValue, setValues, values } = useFormikContext<TInitialTransferFormValues>();
     const { fromAccount, fromAmount, toAccount, toAmount } = values;
 
-    const { activeWalletExchangeRates, refetchExchangeRates } = useTransfer();
+    const { activeWalletExchangeRates, refetchAccountLimits, refetchExchangeRates } = useTransfer();
+
+    const refetchExchangeRatesAndLimits = useCallback(() => {
+        refetchAccountLimits();
+        const newRates = refetchExchangeRates();
+
+        return newRates;
+    }, [refetchAccountLimits, refetchExchangeRates]);
 
     const isFromAmountFieldName = fieldName === 'fromAmount';
     const isSameCurrency = fromAccount?.currency === toAccount?.currency;
@@ -85,7 +92,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     );
 
     const onTimerCompleteHandler = useCallback(() => {
-        refetchExchangeRates?.().then(res => {
+        refetchExchangeRatesAndLimits().then(res => {
             const newRates = res.data?.exchange_rates;
             if (!newRates?.rates || !toAccount?.currency) return;
             const toRate = newRates.rates[toAccount.currency];
@@ -96,7 +103,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
         });
     }, [
         fromAmount,
-        refetchExchangeRates,
+        refetchExchangeRatesAndLimits,
         setFieldValue,
         toAccount?.currency,
         toAccount?.currencyConfig?.fractional_digits,

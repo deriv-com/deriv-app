@@ -99,7 +99,11 @@ const RadioGroupOptionsWidget = ({
     return (
         <React.Fragment>
             <RadioGroupOptionsModal is_open={is_open} toggleModal={toggleModal} modal_title={modal_title} />
-            <div className='mobile-widget mobile-widget__multiplier-options' onClick={toggleModal} role='dialog'>
+            <div
+                className='mobile-widget mobile-widget__multiplier-options'
+                onClick={toggleModal}
+                onKeyDown={toggleModal}
+            >
                 <div
                     className={classNames('mobile-widget__item', {
                         'mobile-widget__item-disabled': is_disabled,

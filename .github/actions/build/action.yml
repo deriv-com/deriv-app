@@ -9,6 +9,9 @@ inputs:
     description: 'Node environment'
     required: false
     default: 'test'
+  CROWDIN_WALLETS_API_KEY:
+    description: 'Crowdin wallets api key'
+    required: false
   DATADOG_CLIENT_TOKEN:
     description: 'Datadog client token'
     required: false
@@ -46,6 +49,7 @@ runs:
   - name: Build all packages
     env:
       NODE_ENV: ${{ inputs.NODE_ENV }}
+      CROWDIN_WALLETS_API_KEY: ${{ inputs.CROWDIN_WALLETS_API_KEY }}
       DATADOG_APPLICATION_ID: ${{ inputs.DATADOG_APPLICATION_ID }} 
       DATADOG_CLIENT_TOKEN: ${{ inputs.DATADOG_CLIENT_TOKEN }}
       DATADOG_CLIENT_TOKEN_LOGS: ${{ inputs.DATADOG_CLIENT_TOKEN_LOGS }}

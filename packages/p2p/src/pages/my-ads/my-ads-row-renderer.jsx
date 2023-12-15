@@ -11,6 +11,7 @@ import { ad_type } from 'Constants/floating-rate';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AdStatus from 'Pages/my-ads/ad-status.jsx';
 import { useStores } from 'Stores';
+import { api_error_codes } from 'Constants/api-error-codes';
 import { generateEffectiveRate } from 'Utils/format-value';
 import AdType from './ad-type.jsx';
 
@@ -57,6 +58,8 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         market_rate: effective_rate,
     });
 
+    const { ADVERT_INACTIVE, ADVERTISER_ADS_PAUSED } = api_error_codes;
+
     const is_advert_listed = general_store.is_listed && !general_store.is_barred;
     const ad_pause_color = is_advert_listed ? 'general' : 'less-prominent';
 
@@ -98,10 +101,12 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
 
     const getErrorCodes = () => {
         let updated_visibility_status = [...visibility_status];
-        if (!is_advert_listed && !updated_visibility_status.includes('advertiser_ads_paused'))
-            updated_visibility_status = [...updated_visibility_status, 'advertiser_ads_paused'];
-        if (!enable_action_point && updated_visibility_status.includes('advert_inactive'))
-            updated_visibility_status = updated_visibility_status.filter(status => status !== 'advert_inactive');
+        if (!is_advert_listed && !updated_visibility_status.includes(ADVERTISER_ADS_PAUSED))
+            updated_visibility_status = [...updated_visibility_status, ADVERTISER_ADS_PAUSED];
+        if (!enable_action_point && updated_visibility_status.includes(ADVERT_INACTIVE))
+            updated_visibility_status = updated_visibility_status.filter(status => status !== ADVERT_INACTIVE);
+        if (enable_action_point && !updated_visibility_status.includes(ADVERT_INACTIVE))
+            updated_visibility_status = [...updated_visibility_status, ADVERT_INACTIVE];
         return updated_visibility_status;
     };
 

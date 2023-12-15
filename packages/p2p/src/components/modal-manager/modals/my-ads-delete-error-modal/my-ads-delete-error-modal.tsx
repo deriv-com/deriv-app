@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
+import { getTextSize } from 'Utils/responsive';
 
 const MyAdsDeleteErrorModal = () => {
     const { hideModal, is_modal_open } = useModalManagerContext();
@@ -17,7 +17,7 @@ const MyAdsDeleteErrorModal = () => {
             has_close_icon={false}
             is_open={is_modal_open}
             renderTitle={() => (
-                <Text color='prominent' size={isMobile() ? 'xs' : 's'} weight='bold'>
+                <Text color='prominent' size={getTextSize('xs', 's')} weight='bold'>
                     <Localize i18n_default_text='Do you want to delete this ad?' />
                 </Text>
             )}

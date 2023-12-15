@@ -1,44 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { FC, Fragment, useEffect, useState } from 'react';
+import { Trans } from 'react-i18next';
 import { useCountdown } from 'usehooks-ts';
 import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import ChangePassword from '../../public/images/change-password-email.svg';
-import EmailIcon from '../../public/images/ic-email.svg';
-import EmailFirewallIcon from '../../public/images/ic-email-firewall.svg';
-import EmailSpamIcon from '../../public/images/ic-email-spam.svg';
-import EmailTypoIcon from '../../public/images/ic-email-typo.svg';
 import { TPlatforms } from '../../types';
 import { platformPasswordResetRedirectLink } from '../../utils/cfd';
-import { WalletButton, WalletText } from '../Base';
+import { WalletButton } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './SentEmailContent.scss';
 
 type TProps = {
     description?: string;
+    isInvestorPassword?: boolean;
     platform?: TPlatforms.All;
 };
 
-const REASONS = [
-    {
-        icon: EmailSpamIcon,
-        text: 'The email is in your spam folder (Sometimes things get lost there).',
-    },
-    {
-        icon: EmailIcon,
-        text: 'You accidentally gave us another email address (Usually a work or a personal one instead of the one you meant).',
-    },
-    {
-        icon: EmailTypoIcon,
-        text: 'The email address you entered had a mistake or typo (happens to the best of us).',
-    },
-    {
-        icon: EmailFirewallIcon,
-        text: 'We can’t deliver the email to this address (Usually because of firewalls or filtering).',
-    },
-];
-
-const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
+const SentEmailContent: FC<TProps> = ({ description, isInvestorPassword = false, platform }) => {
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { data } = useSettings();
@@ -66,28 +45,34 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
                 description={description ?? `Please click on the link in the email to change your ${title} password.`}
                 descriptionSize={descriptionSize}
                 icon={<ChangePassword />}
-                renderButtons={() => (
-                    <WalletButton
-                        onClick={() => {
-                            setShouldShowResendEmailReasons(true);
-                        }}
-                        size={emailLinkSize}
-                        variant='ghost'
-                    >
-                        Didn&apos;t receive the email?
-                    </WalletButton>
-                )}
+                renderButtons={() =>
+                    shouldShowResendEmailReasons && isInvestorPassword ? null : (
+                        <WalletButton
+                            onClick={() => {
+                                setShouldShowResendEmailReasons(true);
+                            }}
+                            size={emailLinkSize}
+                            variant='ghost'
+                        >
+                            <Trans defaults="Didn't receive the email?" />
+                        </WalletButton>
+                    )
+                }
                 title='We’ve sent you an email'
                 titleSize={titleSize}
             />
             {shouldShowResendEmailReasons && (
-                <div className='wallets-sent-email-content__reasons'>
-                    {REASONS.map(reason => (
-                        <div className='wallets-sent-email-content__reasons-item' key={`reason-${reason.text}`}>
-                            <reason.icon />
-                            <WalletText size='xs'>{reason.text}</WalletText>
+                <Fragment>
+                    {isInvestorPassword && (
+                        <div className='wallets-sent-email-content__resend'>
+                            <WalletsActionScreen
+                                description="Check your spam or junk folder. If it's not there, try resending the email."
+                                descriptionSize={descriptionSize}
+                                title="Didn't receive the email?"
+                                titleSize={titleSize}
+                            />
                         </div>
-                    ))}
+                    )}
                     <WalletButton
                         disabled={hasCountdownStarted}
                         onClick={() => {
@@ -113,7 +98,7 @@ const SentEmailContent: React.FC<TProps> = ({ description, platform }) => {
                     >
                         {hasCountdownStarted ? `Resend email in ${count}` : 'Resend email'}
                     </WalletButton>
-                </div>
+                </Fragment>
             )}
         </div>
     );

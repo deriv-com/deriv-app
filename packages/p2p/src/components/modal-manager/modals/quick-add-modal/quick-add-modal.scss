@@ -21,6 +21,10 @@
         display: flex;
         flex-direction: column;
         padding: 1.5rem;
+
+        &__payment-method-form {
+            padding: 0;
+        }
     }
 
     &__button {
@@ -31,8 +35,8 @@
         margin-bottom: 1.3rem;
     }
 
-    &--text {
-        display: flex;
+    &__icon {
+        margin-right: 0.8rem;
     }
 
     &__scroll {
@@ -42,9 +46,5 @@
 
     &__horizontal {
         padding-right: 0rem;
-    }
-
-    &__icon {
-        margin-right: 0.8rem;
     }
 }

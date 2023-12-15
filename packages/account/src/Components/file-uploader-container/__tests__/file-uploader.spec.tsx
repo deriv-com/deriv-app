@@ -29,7 +29,7 @@ describe('<FileUploader />', () => {
     const large_file_error_msg = /file size should be 8mb or less/i;
     const file_not_supported_msg = /file uploaded is not supported/i;
     const drop_click_msg = /drag and drop a file or click to browse your files/i;
-    const click_msg = /click here to upload/i;
+    const click_msg = /click here to browse your files/i;
 
     it('should render FileUploader component in desktop mode', () => {
         render(<FileUploader {...props} />, { wrapper });

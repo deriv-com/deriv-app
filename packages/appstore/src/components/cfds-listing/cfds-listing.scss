@@ -1400,6 +1400,17 @@
             gap: 0.8rem;
         }
     }
+    &-footer {
+        @include mobile {
+            position: absolute;
+            bottom: 3.6rem;
+            width: 100%;
+
+            .dc-btn {
+                width: 100%;
+            }
+        }
+    }
 }
 
 .dc-modal__container_cfd-success-dialog {

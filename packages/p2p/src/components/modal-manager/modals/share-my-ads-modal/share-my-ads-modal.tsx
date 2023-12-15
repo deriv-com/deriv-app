@@ -14,7 +14,7 @@ import { websiteUrl } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import MyProfileSeparatorContainer from 'Pages/my-profile/my-profile-separator-container';
+import SeparatorContainerLine from 'Components/separator-container-line';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { TAdvert } from 'Types';
@@ -130,10 +130,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                                     <Localize i18n_default_text='Share via' />
                                 </Text>
                                 <ShareMyAdsSocials advert_url={advert_url} custom_message={formatted_message} />
-                                <MyProfileSeparatorContainer.Line
-                                    className='share-my-ads-modal__line'
-                                    is_invisible={false}
-                                />
+                                <SeparatorContainerLine className='share-my-ads-modal__line' />
                                 <Text>
                                     <Localize i18n_default_text='Or copy this link' />
                                 </Text>

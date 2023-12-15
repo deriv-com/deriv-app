@@ -13,7 +13,17 @@ const TradersHubHomeButton = observer(() => {
     const history = useHistory();
     const location = useLocation();
     const { pathname } = location;
-    const { is_next_wallet_enabled } = useFeatureFlags();
+    const { is_next_wallet_enabled, is_next_tradershub_enabled } = useFeatureFlags();
+
+    const redirect_routes = () => {
+        if (is_next_wallet_enabled) {
+            return routes.wallets;
+        } else if (is_next_tradershub_enabled) {
+            return routes.traders_hub_v2;
+        }
+
+        return routes.traders_hub;
+    };
 
     return (
         <div
@@ -22,7 +32,7 @@ const TradersHubHomeButton = observer(() => {
                 'traders-hub-header__tradershub--active':
                     pathname === routes.traders_hub || pathname === routes.wallets,
             })}
-            onClick={() => history.push(is_next_wallet_enabled ? routes.wallets : routes.traders_hub)}
+            onClick={() => history.push(redirect_routes())}
         >
             <div className='traders-hub-header__tradershub--home-logo'>
                 <Icon

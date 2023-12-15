@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
-import { Analytics } from '@deriv/analytics';
 import { Button, Text, ThemedScrollbars } from '@deriv/components';
 import Icon from '@deriv/components/src/components/icon/icon';
 import { observer, useStore } from '@deriv/stores';
+import { Analytics } from '@deriv/analytics';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';

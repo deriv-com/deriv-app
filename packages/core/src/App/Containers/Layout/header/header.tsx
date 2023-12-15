@@ -13,6 +13,8 @@ const Header = observer(() => {
     const { client } = useStore();
     const { accounts, is_logged_in, setAccounts, loginid, switchAccount } = client;
     const { pathname } = useLocation();
+    const is_wallets_cashier_route = pathname.includes(routes.wallets_cashier);
+
     const traders_hub_routes =
         [
             routes.traders_hub,
@@ -22,7 +24,9 @@ const Header = observer(() => {
             routes.wallets,
             routes.wallets_compare_accounts,
             routes.compare_cfds,
-        ].includes(pathname) || pathname.startsWith(routes.compare_cfds);
+        ].includes(pathname) ||
+        pathname.startsWith(routes.compare_cfds) ||
+        is_wallets_cashier_route;
 
     const client_accounts = useReadLocalStorage('client.accounts');
     const { is_next_wallet_enabled } = useFeatureFlags();

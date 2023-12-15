@@ -3,7 +3,7 @@ import { mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TraderProviders from '../../../../../trader-providers';
-import { CONTRACT_TYPES, LocalStore, WS } from '@deriv/shared';
+import { CONTRACT_TYPES, LocalStore, TRADE_TYPES, WS } from '@deriv/shared';
 import Trade from 'Modules/Trading';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { BrowserRouter } from 'react-router-dom';
@@ -18,7 +18,7 @@ const default_mocked_store = mockStore({
         trade: {
             basis: 'stake',
             basis_list: [{ text: 'Payout', value: 'payout' }],
-            contract_type: 'rise_fall',
+            contract_type: TRADE_TYPES.RISE_FALL,
             is_turbos: false,
             is_vanilla: false,
             onChangeMultiple: jest.fn(),

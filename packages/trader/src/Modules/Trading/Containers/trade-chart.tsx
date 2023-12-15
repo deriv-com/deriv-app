@@ -14,19 +14,12 @@ type TTradeChartProps = {
     bottomWidgets?: (props: TBottomWidgetsParams) => React.ReactElement;
     has_barrier?: boolean;
     is_accumulator: boolean;
-    charts_ref: React.MutableRefObject<HTMLDivElement>;
     topWidgets: (() => JSX.Element) | null | undefined;
     children?: React.ReactNode;
 };
-//TODO: will add props later
-const SmartChartWithRef = React.forwardRef((props: any, ref: React.ForwardedRef<HTMLElement | null>) => (
-    <SmartChart innerRef={ref} {...props} />
-));
-
-SmartChartWithRef.displayName = 'SmartChartWithRef';
 
 const TradeChart = observer((props: TTradeChartProps) => {
-    const { has_barrier, is_accumulator, topWidgets, charts_ref } = props;
+    const { has_barrier, is_accumulator, topWidgets } = props;
     const { client, ui, common, contract_trade, portfolio } = useStore();
     const {
         accumulator_barriers_data,
@@ -102,10 +95,8 @@ const TradeChart = observer((props: TTradeChartProps) => {
     const max_ticks = granularity === 0 ? 8 : 24;
 
     if (!symbol || !active_symbols.length) return null;
-
     return (
-        <SmartChartWithRef
-            ref={charts_ref}
+        <SmartChart
             barriers={barriers}
             contracts_array={markers_array}
             bottomWidgets={(is_accumulator || show_digits_stats) && isDesktop() ? bottomWidgets : props.bottomWidgets}
@@ -160,7 +151,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
             yAxisMargin={{
                 top: is_mobile ? 76 : 106,
             }}
-            isLive={true}
+            isLive
             leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
         >
             {is_accumulator && (
@@ -174,7 +165,7 @@ const TradeChart = observer((props: TTradeChartProps) => {
                     is_mobile={is_mobile}
                 />
             )}
-        </SmartChartWithRef>
+        </SmartChart>
     );
 });
 export default TradeChart;

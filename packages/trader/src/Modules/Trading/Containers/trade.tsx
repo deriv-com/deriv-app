@@ -78,8 +78,6 @@ const Trade = observer(() => {
     const [swipe_index, setSwipeIndex] = React.useState<number | undefined>(0);
     const [open_launch_modal, setOpenLaunchModal] = React.useState<boolean>(true);
 
-    const charts_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
-
     const open_market = React.useMemo(() => {
         if (try_synthetic_indices) {
             return { category: 'synthetics' };
@@ -189,11 +187,7 @@ const Trade = observer(() => {
                                 })}
                             >
                                 <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
-                                <TradeChart
-                                    topWidgets={topWidgets}
-                                    is_accumulator={is_accumulator}
-                                    charts_ref={charts_ref}
-                                />
+                                <TradeChart topWidgets={topWidgets} is_accumulator={is_accumulator} />
                             </div>
                         </DesktopWrapper>
                         <MobileWrapper>
@@ -214,7 +208,6 @@ const Trade = observer(() => {
                                 <TradeChart
                                     bottomWidgets={show_digits_stats ? bottomWidgets : undefined}
                                     has_barrier={has_barrier}
-                                    charts_ref={charts_ref}
                                     is_accumulator={is_accumulator}
                                     topWidgets={
                                         !(open_launch_modal && is_logged_in && !is_already_shown) ? topWidgets : null

@@ -2,7 +2,7 @@ import { getImageLocation } from '../../../public-path';
 import { localize } from '@deriv/translations';
 import { TDescriptionItem } from '../types';
 
-export const OSCAR_GRIND: TDescriptionItem[] = [
+export const OSCARS_GRIND: TDescriptionItem[] = [
     {
         type: 'subtitle',
         content: [localize('Exploring the Oscar’s Grind strategy in Deriv Bot')],

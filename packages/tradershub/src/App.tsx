@@ -1,14 +1,9 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
 import AppContent from './AppContent';
 import './index.scss';
 
 const App: React.FC = () => {
-    return (
-        <APIProvider standalone>
-            <AppContent />
-        </APIProvider>
-    );
+    return <AppContent />;
 };
 
 export default App;

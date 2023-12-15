@@ -60,6 +60,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                             is_beta_chart={true}
                             updateChartType={updateChartType}
                             updateGranularity={updateGranularity}
+                            position={is_mobile ? 'bottom' : null}
                         />
                     )}
                     chartType={chart_type}
@@ -92,6 +93,7 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                             is_beta_chart={false}
                             updateChartType={updateChartType}
                             updateGranularity={updateGranularity}
+                            position={is_mobile ? 'bottom' : null}
                         />
                     )}
                     chartType={chart_type}

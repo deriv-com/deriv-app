@@ -334,15 +334,21 @@ const IdvFailed = ({
                         />
                         <DesktopWrapper>
                             {!is_from_external && (
-                                <Button
-                                    className='proof-of-identity__submit-button'
-                                    type='submit'
-                                    has_effect
-                                    is_disabled={!dirty || isSubmitting || !isValid}
-                                    text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
-                                    large
-                                    primary
-                                />
+                                <div className='proof-of-identity__actions'>
+                                    <Button
+                                        className='proof-of-identity__submit-button'
+                                        type='submit'
+                                        has_effect
+                                        is_disabled={!dirty || isSubmitting || !isValid}
+                                        text={
+                                            is_document_upload_required
+                                                ? localize('Verify')
+                                                : localize('Update profile')
+                                        }
+                                        large
+                                        primary
+                                    />
+                                </div>
                             )}
                         </DesktopWrapper>
                     </FormBody>

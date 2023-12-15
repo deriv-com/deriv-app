@@ -4,7 +4,6 @@ const FLAGS = {
     wallet: false,
     next_wallet: false,
     sharkfin: false,
-    next_tradershub: false,
 } satisfies Record<string, boolean>;
 
 export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FLAGS]: boolean }> {

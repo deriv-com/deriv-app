@@ -23,8 +23,36 @@ jest.mock('Modules/SmartChart', () => ({
 }));
 
 describe('ChartMarker', () => {
-    const ContentComponent = (props: TMarkerContentConfig) => <div>{JSON.stringify(props)}</div>;
-    it('should render without y coordinate', async () => {
+    const start_time = 'Start Time';
+    const end_time = 'End Time';
+    const entry_spot_classname = 'chart-spot__entry';
+    const ContentComponent = jest.fn((props: TMarkerContentConfig) => (
+        <div data-testid={props.className} aria-label={props.label} />
+    ));
+
+    it('should render correctly & pass marker_content_props to the child with both coordinates', async () => {
+        const passthrough_props = {
+            className: entry_spot_classname,
+        };
+        render(
+            <ChartMarker
+                marker_config={{
+                    ContentComponent,
+                    x: 1702561947,
+                    y: '1966.66',
+                }}
+                marker_content_props={passthrough_props}
+            />
+        );
+        expect(screen.getByTestId(entry_spot_classname)).toBeInTheDocument();
+        expect(ContentComponent).toHaveBeenCalledWith(passthrough_props, {});
+    });
+    it('should render correctly & pass marker_content_props to the child when y coordinate is null', async () => {
+        const passthrough_props = {
+            line_style: 'solid',
+            label: start_time,
+            marker_config: {},
+        };
         render(
             <ChartMarker
                 marker_config={{
@@ -33,28 +61,32 @@ describe('ChartMarker', () => {
                     x: 1702561946,
                     y: null,
                 }}
-                marker_content_props={{
-                    line_style: 'solid',
-                    label: 'Start Time',
-                    marker_config: {},
-                }}
+                marker_content_props={passthrough_props}
             />
         );
-        expect(screen.getByText('{"line_style":"solid","label":"Start Time","marker_config":{}}')).toBeInTheDocument();
+        expect(screen.getByLabelText(start_time)).toBeInTheDocument();
+        expect(ContentComponent).toHaveBeenCalledWith(passthrough_props, {});
     });
-    it('should render with y coordinate', async () => {
+    it('should render correctly & pass marker_content_props to the child when is_bottom_widget_visible === true', async () => {
+        const passthrough_props = {
+            label: end_time,
+            line_style: 'dash',
+            marker_config: {},
+            status: 'lost',
+        };
         render(
             <ChartMarker
+                is_bottom_widget_visible
                 marker_config={{
                     ContentComponent,
-                    x: 1702561947,
-                    y: '1966.66',
+                    className: 'chart-marker-line',
+                    x: 1702644813,
+                    y: null,
                 }}
-                marker_content_props={{
-                    className: 'chart-spot__entry',
-                }}
+                marker_content_props={passthrough_props}
             />
         );
-        expect(screen.getByText('{"className":"chart-spot__entry"}')).toBeInTheDocument();
+        expect(screen.getByLabelText(end_time)).toBeInTheDocument();
+        expect(ContentComponent).toHaveBeenCalledWith(passthrough_props, {});
     });
 });

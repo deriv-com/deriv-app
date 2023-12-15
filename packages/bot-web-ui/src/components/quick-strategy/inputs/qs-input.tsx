@@ -111,7 +111,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         leading_icon={
                                             is_number ? (
                                                 <button
-                                                    disabled={field.value < min}
+                                                    disabled={field.value <= min}
                                                     data-testid='qs-input-decrease'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) - 1;

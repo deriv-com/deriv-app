@@ -82,9 +82,9 @@ const QuickStrategyForm = observer(() => {
                             case 'number': {
                                 if (!field.name) return null;
                                 const { should_have = [], validation } = field;
-                                const initital_stake = 1;
+                                const initial_stake = 1;
                                 let min = 1;
-                                let max = 100000;
+                                let max = 1000000;
                                 const should_validate_min = validation?.includes('min');
                                 const should_validate_max = validation?.includes('max');
                                 if (field.name === 'duration' && current_duration_min_max) {
@@ -95,7 +95,7 @@ const QuickStrategyForm = observer(() => {
                                 if (should_validate && field.name === 'max_stake') {
                                     min = +form_data?.stake;
                                     if (isNaN(min)) {
-                                        min = +initital_stake;
+                                        min = +initial_stake;
                                     }
                                 }
                                 if (should_have?.length) {

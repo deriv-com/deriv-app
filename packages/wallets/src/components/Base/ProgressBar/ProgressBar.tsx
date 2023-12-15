@@ -10,7 +10,7 @@ type TProps = {
 
 const ProgressBar: React.FC<TProps> = ({ activeIndex, indexes, isTransition = true, setActiveIndex }) => {
     return (
-        <div className='wallets-progress-bar'>
+        <div className='wallets-progress-bar' role='progressbar'>
             {indexes.map((value, idx) => {
                 const currentIndex = idx + 1;
                 const isActive = currentIndex === activeIndex;
@@ -20,7 +20,6 @@ const ProgressBar: React.FC<TProps> = ({ activeIndex, indexes, isTransition = tr
                 return (
                     <div
                         className={`${barClassname} ${isTransition ? 'wallets-progress-bar-transition' : ''}`}
-                        data-testid='dt_progress_bar_item'
                         key={`progress-bar-${currentIndex}`}
                         onClick={() => setActiveIndex(value)}
                     />

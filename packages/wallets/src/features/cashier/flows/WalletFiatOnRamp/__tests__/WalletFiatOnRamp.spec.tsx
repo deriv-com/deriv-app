@@ -4,6 +4,10 @@ import { useActiveWalletAccount } from '@deriv/api';
 import { render, screen } from '@testing-library/react';
 import WalletFiatOnRamp from '../WalletFiatOnRamp';
 
+jest.mock('../../../modules', () => ({
+    FiatOnRampModule: jest.fn(() => <div>MockedFiatOnRampModule</div>),
+}));
+
 jest.mock('@deriv/api', () => ({
     useActiveWalletAccount: jest.fn(),
 }));
@@ -48,10 +52,6 @@ describe('WalletFiatOnRamp', () => {
 
         render(<WalletFiatOnRamp />);
 
-        expect(
-            screen.getByText(
-                /Fiat onramp is a cashier service that allows you to convert fiat currencies to cryptocurrencies/
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText(/MockedFiatOnRampModule/)).toBeInTheDocument();
     });
 });

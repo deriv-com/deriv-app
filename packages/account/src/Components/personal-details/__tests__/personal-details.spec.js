@@ -116,7 +116,7 @@ const runCommonFormfieldsTests = is_svg => {
                 name: /additional information/i,
             })
         ).toBeInTheDocument();
-    expect(screen.queryByTestId('dti_dropdown_display')).toBeInTheDocument();
+    expect(screen.queryByTestId('dt_dropdown_display')).toBeInTheDocument();
     expect(screen.queryByTestId('account_opening_reason_mobile')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
@@ -610,7 +610,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/tax identification number/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/tax identification number/i)).toBeInTheDocument();
         expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
-        expect(screen.queryByTestId('dti_dropdown_display')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('dt_dropdown_display')).not.toBeInTheDocument();
         expect(screen.queryByTestId('account_opening_reason_mobile')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();

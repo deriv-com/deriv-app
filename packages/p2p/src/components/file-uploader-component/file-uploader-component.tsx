@@ -33,7 +33,7 @@ const FileUploaderComponent = ({
         ui: { is_mobile },
     } = useStore();
 
-    const getUploadMessage = () => {
+    const getUploadMessage = React.useCallback(() => {
         return (
             <>
                 <Icon icon='IcCloudUpload' size={50} />
@@ -42,7 +42,7 @@ const FileUploaderComponent = ({
                 </Text>
             </>
         );
-    };
+    }, [is_mobile, upload_message]);
 
     return (
         <div className='file-uploader-component'>
@@ -72,4 +72,4 @@ const FileUploaderComponent = ({
     );
 };
 
-export default FileUploaderComponent;
+export default React.memo(FileUploaderComponent);

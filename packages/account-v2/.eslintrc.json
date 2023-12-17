@@ -1,0 +1,74 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react/recommended",
+        "plugin:react/jsx-runtime",
+        "plugin:react-hooks/recommended",
+        "plugin:prettier/recommended",
+        "plugin:tailwindcss/recommended",
+        "airbnb",
+        "airbnb/hooks"
+    ],
+    "overrides": [
+        {
+            "files": ["*.ts", "*.mts", "*.cts", "*.tsx"],
+            "rules": {
+                "no-undef": "off"
+            }
+        }
+    ],
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint",
+        "react",
+        "react-hooks",
+        "tailwindcss",
+        "eslint-plugin-local-rules",
+        "simple-import-sort",
+        "sort-destructure-keys",
+        "typescript-sort-keys"
+    ],
+    "rules": {
+        "simple-import-sort/exports": "error",
+        "simple-import-sort/imports": [
+            "error",
+            {
+                "groups": [
+                    [
+                        "public-path",
+                        // `react` first, then packages starting with a character
+                        "^react$",
+                        "^[a-z]",
+                        // Packages starting with `@`
+                        "^@",
+                        // Imports starting with `../`
+                        "^\\.\\.(?!/?$)",
+                        "^\\.\\./?$",
+                        // Imports starting with `./`
+                        "^\\./(?=.*/)(?!/?$)",
+                        "^\\.(?!/?$)",
+                        "^\\./?$",
+                        // Style imports
+                        "^.+\\.s?css$",
+                        // Side effect imports
+                        "^\\u0000",
+                        // Delete the empty line copied as the next line of the last import
+                        "\\s*"
+                    ]
+                ]
+            }
+        ],
+        "sort-destructure-keys/sort-destructure-keys": "error",
+        "sort-keys": "error",
+        "typescript-sort-keys/interface": "error",
+        "typescript-sort-keys/string-enum": "error"
+    }
+}

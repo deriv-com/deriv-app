@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
+import DocumentUploader from '@binary-com/binary-document-uploader';
 import { Button } from '@deriv/components';
-import { useFileUploader } from '@deriv/hooks';
-import { UPLOAD_FILE_TYPE } from '@deriv/shared';
+import { readFiles, WS, UPLOAD_FILE_TYPE } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import FormFooter from '../../../Components/form-footer';
@@ -28,12 +28,15 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
     const { refreshNotifications } = notifications;
     const { email: client_email, updateAccountStatus } = client;
     const { is_mobile } = ui;
-    const { upload } = useFileUploader();
 
     const grouped_payment_method_data_keys = Object.keys(grouped_payment_method_data) as Array<TPaymentMethod>;
 
     let initial_values: Partial<TProofOfOwnershipFormValue> = {};
     const form_ref = React.useRef<FormikProps<Partial<TProofOfOwnershipFormValue>>>(null);
+
+    const fileReadErrorMessage = (filename: string) => {
+        return localize('Unable to read file {{name}}', { name: filename });
+    };
 
     React.useEffect(() => {
         if (form_ref?.current) {
@@ -181,15 +184,16 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
     ) => {
         const { setFieldError, setSubmitting } = action;
         try {
+            const uploader = new DocumentUploader({ connection: WS.getSocket() });
             setSubmitting(true);
             await Object.keys(values).reduce(async (promise, card_key) => {
                 await promise;
-                const payment_method_details = values[card_key as TPaymentMethod] as TProofOfOwnershipFormValue;
+                const payment_method_details = values[card_key];
                 await Object.keys(payment_method_details)?.reduce(async (promise, payment_id) => {
                     await promise;
                     const payment_method_detail = payment_method_details[payment_id];
                     if (payment_method_detail?.files?.length) {
-                        const response = await upload(payment_method_detail.files, {
+                        const processed_files = await readFiles(payment_method_detail.files, fileReadErrorMessage, {
                             document_type: UPLOAD_FILE_TYPE.proof_of_ownership,
                             proof_of_ownership: {
                                 details: {
@@ -199,22 +203,26 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
                                 id: payment_method_detail.id,
                             },
                         });
-                        const upload_error: Array<string> = [];
-                        if (response?.warning) {
-                            if (response?.warning?.trim() === 'DuplicateUpload' && response?.message) {
-                                upload_error[index] = response?.message;
-                                const error_obj = {
-                                    [payment_id]: {
-                                        files: upload_error,
-                                    },
-                                };
+                        await processed_files.reduce(async (promise, processed_file, index) => {
+                            await promise;
+                            const response = await uploader.upload(processed_file);
+                            const upload_error: Array<string> = [];
+                            if (response?.warning) {
+                                if (response?.warning?.trim() === 'DuplicateUpload' && response?.message) {
+                                    upload_error[index] = response?.message;
+                                    const error_obj = {
+                                        [payment_id]: {
+                                            files: upload_error,
+                                        },
+                                    };
 
-                                setFieldError(card_key, { ...error_obj });
+                                    setFieldError(card_key, { ...error_obj });
+                                }
+                            } else {
+                                updateAccountStatus();
+                                refreshNotifications();
                             }
-                        } else {
-                            updateAccountStatus();
-                            refreshNotifications();
-                        }
+                        }, Promise.resolve());
                     }
                 }, Promise.resolve());
             }, Promise.resolve());
@@ -232,7 +240,7 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
             innerRef={form_ref}
             onSubmit={handleFormSubmit}
         >
-            {({ isValid, dirty, isSubmitting }) => (
+            {({ isValid, dirty, isSubmitting, errors }) => (
                 <Form data-testid='dt_poo_form' className='proof-of-ownership'>
                     <FormBody scroll_offset={getScrollOffset(grouped_payment_method_data_keys.length)}>
                         <FormSubHeader title={localize('Please upload the following document(s).')} />

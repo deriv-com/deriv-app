@@ -19,7 +19,6 @@ const userGuideContent = [
         subtype: 'OnBoard',
         content: 'Get started on Deriv Bot',
         src: 'dbot-onboard-tour.png',
-        tab_id: 0,
     },
 ];
 
@@ -30,7 +29,6 @@ const guideContent = [
         content: 'Deriv Bot - your automated trading partner',
         url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
         src: 'video_dbot.webp',
-        tab_id: 0,
     },
 ];
 
@@ -43,7 +41,6 @@ const faqContent = [
                 content: 'eriv Bot is a web-based strategy builder for trading digital options',
             },
         ],
-        tab_id: 2,
     },
 ];
 

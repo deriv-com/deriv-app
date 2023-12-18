@@ -18,8 +18,6 @@ export const ProofOfOwnership = observer(() => {
     const cards = account_status?.authentication?.ownership?.requests;
     const [status, setStatus] = useState<TAuthStatusCodes>();
 
-    console.log('Status: ', { status, account_status });
-
     const grouped_payment_method_data = React.useMemo(() => {
         const groups: Partial<Record<TPaymentMethod, TPaymentMethodInfo>> = {};
         const payment_methods_config = getPaymentMethodsConfig();

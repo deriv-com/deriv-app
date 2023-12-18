@@ -174,11 +174,11 @@ const PositionsModalCard = observer(
                     <div
                         className={classNames('dc-contract-card-item__body', {
                             'dc-contract-card-item__body--crypto': isCryptocurrency(currency),
-                            'dc-contract-card-item__body--loss': +total_profit < 0,
-                            'dc-contract-card-item__body--profit': +total_profit > 0,
+                            'dc-contract-card-item__body--loss': profit_loss < 0,
+                            'dc-contract-card-item__body--profit': profit_loss > 0,
                         })}
                     >
-                        <Money amount={total_profit} currency={currency} />
+                        <Money amount={Math.abs(profit_loss)} currency={currency} />
                         <div
                             className={classNames('dc-contract-card__indicative--movement', {
                                 'dc-contract-card__indicative--movement-complete': !!contract_info.is_sold,

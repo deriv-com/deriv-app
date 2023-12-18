@@ -6,8 +6,8 @@
         "node": "18.x"
     },
     "scripts": {
-        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.js\" && npm run translate",
-        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config ./webpack.config.js\" \"tsc -w --noEmit --preserveWatchOutput\"",
+        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.ts\" && npm run translate",
+        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config ./webpack.config.ts\" \"tsc -w --noEmit --preserveWatchOutput\"",
         "start": "rimraf dist && npm run test && npm run serve",
         "translate": "sh ./scripts/update-translations.sh"
     },

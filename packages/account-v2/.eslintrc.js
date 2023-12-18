@@ -1,5 +1,5 @@
 module.exports = {
-    env: { es6: true },
+    env: { browser: true, es6: true, jest: true },
     extends: ['../../.eslintrc.js', 'eslint:recommended', 'plugin:react/recommended', 'plugin:react-hooks/recommended'],
     overrides: [
         {

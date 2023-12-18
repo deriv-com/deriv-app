@@ -1,14 +1,12 @@
 import React from 'react';
-
 import { mockStore, StoreProvider } from '@deriv/stores';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
-
+import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import { mock_ws } from 'Utils/mock';
-
-import OnboardingTourMobile from '../../onboarding-tour/onboarding-tour-mobile';
-import { DBOT_ONBOARDING_MOBILE } from '../index';
+import OnboardingTourMobile from '../onboarding-tour/onboarding-tour-mobile';
+import { DBOT_ONBOARDING_MOBILE } from '../tour-content';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());

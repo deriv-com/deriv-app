@@ -36,9 +36,8 @@ const useP2PCompletedOrdersNotification = () => {
                     // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` after order completion
                     order => order.id === data.p2p_order_info.id
                 );
-                notifications?.p2p_completed_orders?.splice(index, 1);
                 // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` after order completion
-                notifications?.p2p_completed_orders?.unshift(data.p2p_order_info);
+                notifications?.p2p_completed_orders?.splice(index, 1, data.p2p_order_info);
             }
         }
         if (data?.p2p_order_list?.list.length && data?.p2p_order_list?.list !== notifications.p2p_completed_orders) {

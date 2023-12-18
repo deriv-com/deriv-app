@@ -5,7 +5,6 @@ import { render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { isMobile } from '@deriv/shared';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import GoogleDrive from '../google-drive';
@@ -98,7 +97,7 @@ describe('GoogleDrive', () => {
         expect(container).toBeInTheDocument();
     });
     it('should render GoogleDrive component with with svg element that has height and width equal 96 when it is a mobile version', () => {
-        (isMobile as jest.Mock).mockReturnValueOnce(true);
+        mock_store.ui.is_mobile = true;
         const { container } = render(<GoogleDrive />, { wrapper });
 
         const google_drive_container = screen.getByTestId('dt_google_drive');

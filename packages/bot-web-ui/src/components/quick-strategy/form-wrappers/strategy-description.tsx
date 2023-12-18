@@ -84,6 +84,10 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(({ formfiel
                         .toLocaleLowerCase()
                 ] = obj?.expanded ?? false;
             }
+            //If long description available, show content intro paragraph under heading, skip short description.
+            if (acc.length - 1 === 0 && obj.type === 'text' && obj.content?.length === 2) {
+                obj.content.shift();
+            }
             acc[acc.length - 1].push(obj);
             return acc;
         }, []);

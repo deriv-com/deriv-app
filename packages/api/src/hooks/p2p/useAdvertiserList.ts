@@ -37,7 +37,7 @@ const useAdvertiserList = (
             /** Indicating whether the advertiser's identity has been verified. */
             is_basic_verified: Boolean(advertiser?.basic_verification),
             /** Indicating whether the advertiser's address has been verified. */
-            full_verification: Boolean(advertiser?.full_verification),
+            is_fully_verified: Boolean(advertiser?.full_verification),
             /** The approval status of the advertiser. */
             is_approved: Boolean(advertiser?.is_approved),
             /** Indicates that the advertiser is blocked. */

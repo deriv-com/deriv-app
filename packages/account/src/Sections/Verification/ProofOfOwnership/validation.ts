@@ -14,7 +14,10 @@ export const isValidPaymentMethodIdentifier = (
             return default_error_message;
         } else if (payment_method_identifier.length === CARD_NUMBER.MIN_LENGTH) {
             return !hasInvalidCharacters(payment_method_identifier) ? null : default_error_message;
-        } else if (payment_method_identifier.length > CARD_NUMBER.MAX_LENGTH) {
+        } else if (
+            payment_method_identifier.length !== CARD_NUMBER.MIN_LENGTH ||
+            payment_method_identifier.length > CARD_NUMBER.MAX_LENGTH
+        ) {
             return isFormattedCardNumber(payment_method_identifier) ? null : default_error_message;
         }
         return null;

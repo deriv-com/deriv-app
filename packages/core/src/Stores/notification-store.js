@@ -115,7 +115,6 @@ export default class NotificationStore extends BaseStore {
                 root_store.client.has_changed_two_fa,
                 this.p2p_order_props.order_id,
                 root_store.client.p2p_advertiser_info,
-                this.p2p_completed_orders,
             ],
             () => {
                 if (
@@ -130,6 +129,12 @@ export default class NotificationStore extends BaseStore {
                     this.filterNotificationMessages();
                     this.checkNotificationMessages();
                 }
+            }
+        );
+        reaction(
+            () => this.p2p_completed_orders,
+            () => {
+                this.handleClientNotifications();
             }
         );
     }

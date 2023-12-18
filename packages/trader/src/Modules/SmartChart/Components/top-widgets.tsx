@@ -15,9 +15,9 @@ type TTopWidgets = {
     onSymbolChange?: ReturnType<typeof useTraderStore>['onChange'];
     open?: boolean;
     open_market?: {
-        category: string | null;
-        subcategory?: string | null;
-    };
+        category?: string;
+        subcategory?: string;
+    } | null;
     theme?: string;
     y_axis_width?: number;
 };

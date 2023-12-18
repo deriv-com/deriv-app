@@ -15,6 +15,7 @@ import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
+import { validPassword } from '../../../../utils/password';
 import { companyNamesAndUrls, MarketTypeDetails, PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 
@@ -182,7 +183,12 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
             );
         return (
             <WalletButton
-                disabled={!password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading}
+                disabled={
+                    !password ||
+                    createMT5AccountLoading ||
+                    tradingPlatformPasswordChangeLoading ||
+                    !validPassword(password)
+                }
                 isFullWidth
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                 onClick={onSubmit}
@@ -228,11 +234,13 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                         )
                     }
                     password={password}
+                    passwordError={error?.error?.code === 'PasswordError'}
                     platform={PlatformDetails.mt5.platform}
                 />
             );
     }, [
         createMT5AccountLoading,
+        error?.error?.code,
         isMT5PasswordNotSet,
         isSuccess,
         marketType,
@@ -279,7 +287,7 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
         renderSuccessButton,
     ]);
 
-    if (status === 'error') {
+    if (status === 'error' && error?.error?.code !== 'PasswordError') {
         return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;
     }
 

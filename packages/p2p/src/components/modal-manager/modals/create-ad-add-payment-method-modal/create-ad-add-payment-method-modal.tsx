@@ -4,7 +4,7 @@ import { Button, DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Modal
 import { observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import AddPaymentMethod from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method';
+import AddPaymentMethod from 'Components/add-payment-method';
 import { useStores } from 'Stores';
 
 const CreateAdAddPaymentMethodModal = () => {

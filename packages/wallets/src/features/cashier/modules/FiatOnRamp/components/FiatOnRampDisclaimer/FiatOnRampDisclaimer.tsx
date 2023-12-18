@@ -13,10 +13,7 @@ const FiatOnRampDisclaimer: React.FC<TFiatOnRampDisclaimer> = ({ handleDisclaime
     const redirectToBanxa = useCallback(() => {
         const banxaUrl = provider?.service_token?.banxa?.url ?? '';
         if (banxaUrl) {
-            const link = document.createElement('a');
-            link.href = banxaUrl;
-            link.target = '_blank';
-            link.click();
+            window.open(banxaUrl, '_blank');
         }
     }, [provider?.service_token?.banxa?.url]);
 

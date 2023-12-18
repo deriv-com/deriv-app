@@ -114,7 +114,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             if (Number(unFormatLocaleString(formattedValue, locale)) === 0) {
                 const pasted = (e.clipboardData || window.clipboardData).getData('Text');
                 const pastedValue = Number(unFormatLocaleString(pasted, locale));
-                if (!isNaN(pastedValue) && isFinite(pastedValue))
+                if (!isNaN(pastedValue) && isFinite(pastedValue) && pastedValue >= 0)
                     onChange({
                         target: {
                             value: `${pastedValue.toLocaleString(locale, {

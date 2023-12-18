@@ -1,8 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { DataList, Icon, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { contract_stages } from 'Constants/contract-stage';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -10,6 +9,7 @@ import { TCheckedFilters, TFilterMessageValues, TJournalDataListArgs } from './j
 import { JournalItem, JournalLoader, JournalTools } from './journal-components';
 
 const Journal = observer(() => {
+    const { ui } = useStore();
     const { journal, run_panel } = useDBotStore();
     const {
         checked_filters,
@@ -24,7 +24,7 @@ const Journal = observer(() => {
 
     const filtered_messages_length = Array.isArray(filtered_messages) && filtered_messages.length;
     const unfiltered_messages_length = Array.isArray(unfiltered_messages) && unfiltered_messages.length;
-    const is_mobile = isMobile();
+    const { is_mobile } = ui;
 
     return (
         <div

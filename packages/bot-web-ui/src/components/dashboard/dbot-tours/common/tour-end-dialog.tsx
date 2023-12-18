@@ -1,17 +1,14 @@
 import React from 'react';
-
 import { Dialog, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-
 import { useDBotStore } from '../../../../stores/useDBotStore';
 
 const TourEndDialog = observer(() => {
+    const { ui } = useStore();
     const { dashboard } = useDBotStore();
     const { is_tour_dialog_visible, setTourDialogVisibility } = dashboard;
-
-    const is_mobile = isMobile();
+    const { is_mobile } = ui;
 
     const getTourContent = () => {
         return (

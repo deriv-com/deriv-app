@@ -218,7 +218,7 @@ const RealAccountSignupVerifications = observer(({ onFinish }: TRealAccountSignu
             is_disabled={isDesktop()}
             height_offset='40px'
         >
-            <div className='cfd-financial-stp-modal__body' data-testid='dt_cfd_financial_stp_modal_body'>
+            <div className='cfd-financial-stp-modal__body' data-testid='dt_real_account_signup_verifications'>
                 <BodyComponent
                     /** TODO: Body component is 3 different component in which one of them does not have prop `value`
                      * it needs a refactor

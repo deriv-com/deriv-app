@@ -192,7 +192,7 @@ describe('<RealAccountSignupVerifications />', () => {
             wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
         });
 
-        expect(screen.getByTestId('dt_cfd_financial_stp_modal_body')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_real_account_signup_verifications')).toBeInTheDocument();
     });
 
     it('should render properly for the first step content', () => {

@@ -99,6 +99,10 @@ const copyConfig = base => {
             from: path.resolve(__dirname, '../node_modules/@deriv/tradershub/dist/tradershub'),
             to: 'tradershub',
         },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/account-v2/dist/account-v2'),
+            to: 'account-v2',
+        },
         { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file', noErrorOnMissing: true },
         {
             from: path.resolve(__dirname, '../src/public/.well-known/apple-app-site-association'),

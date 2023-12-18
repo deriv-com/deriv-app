@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { CopyTextComponent } from './copy-text-component';
-import '../sass/cfd-dashboard.scss';
 
 export type TSpecBoxProps = {
     value?: string;

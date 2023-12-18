@@ -16,7 +16,6 @@ import { Localize } from '@deriv/translations';
 
 import { TCFDDashboardContainer } from 'Containers/props.types';
 import { CATEGORY, CFD_PLATFORMS } from '../../Helpers/cfd-config';
-import '../sass/cfd-dashboard.scss';
 
 export const mobileDownloadLink = (platform: TCFDsPlatformType, type: TMobilePlatforms) => {
     switch (platform) {

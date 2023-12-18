@@ -10,7 +10,6 @@ import { CFD_PLATFORMS, MOBILE_PLATFORMS } from '../../../Helpers/cfd-config';
 import SpecBox from '../../../Components/specbox';
 import PasswordBox from '../../../Components/passwordbox';
 import { TCFDPasswordReset } from '../../../Containers/props.types';
-import '../sass/cfd-dashboard.scss';
 
 type TOtherCFDsTradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;

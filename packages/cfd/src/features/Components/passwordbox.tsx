@@ -3,7 +3,6 @@ import { getCFDPlatformLabel } from '@deriv/shared';
 import { Text, Button, Icon, Popover } from '@deriv/components';
 import { TPasswordBoxProps } from '../types/components.types';
 import { localize } from '@deriv/translations';
-import '../sass/cfd-dashboard.scss';
 
 const PasswordBox = ({ platform, onClick }: TPasswordBoxProps) => (
     <div className='trade-modal__password-box'>

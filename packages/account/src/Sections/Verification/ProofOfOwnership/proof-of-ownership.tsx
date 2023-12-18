@@ -18,6 +18,8 @@ export const ProofOfOwnership = observer(() => {
     const cards = account_status?.authentication?.ownership?.requests;
     const [status, setStatus] = useState<TAuthStatusCodes>();
 
+    console.log('Status: ', { status, account_status });
+
     const grouped_payment_method_data = React.useMemo(() => {
         const groups: Partial<Record<TPaymentMethod, TPaymentMethodInfo>> = {};
         const payment_methods_config = getPaymentMethodsConfig();
@@ -45,10 +47,7 @@ export const ProofOfOwnership = observer(() => {
     }, [cards, is_dark_mode]);
 
     useEffect(() => {
-        setStatus(
-            (account_status?.authentication?.ownership?.status?.toLowerCase() as TAuthStatusCodes) ??
-                AUTH_STATUS_CODES.NONE
-        );
+        setStatus(account_status?.authentication?.ownership?.status?.toLowerCase() as TAuthStatusCodes);
     }, [account_status]);
 
     const onTryAgain = () => {

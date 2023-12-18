@@ -3,7 +3,7 @@ import useInfiniteQuery from '../../useInfiniteQuery';
 import useAuthorize from '../useAuthorize';
 
 /**
- * This custom hook returns available advertisers who has/had trade with the current advertiser.
+ * This custom hook returns the available advertisers who have had or currently have trades with the current advertiser.
  */
 const useAdvertiserList = (
     payload?: NonNullable<Parameters<typeof useInfiniteQuery<'p2p_advertiser_list'>>[1]>['payload']

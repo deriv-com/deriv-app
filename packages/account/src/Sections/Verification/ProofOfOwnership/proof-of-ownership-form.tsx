@@ -235,12 +235,13 @@ const ProofOfOwnershipForm = observer(({ grouped_payment_method_data }: TProofOf
 
     return (
         <Formik
-            initialValues={initial_values}
+            initialValues={{ ...initial_values }}
             validate={validateFields}
             innerRef={form_ref}
             onSubmit={handleFormSubmit}
+            enableReinitialize
         >
-            {({ isValid, dirty, isSubmitting, errors }) => (
+            {({ isValid, dirty, isSubmitting }) => (
                 <Form data-testid='dt_poo_form' className='proof-of-ownership'>
                     <FormBody scroll_offset={getScrollOffset(grouped_payment_method_data_keys.length)}>
                         <FormSubHeader title={localize('Please upload the following document(s).')} />

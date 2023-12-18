@@ -54,6 +54,7 @@ const useAdvertiserList = (
     }, [flatten_data]);
 
     return {
+        /** P2P advertiser list */
         data: modified_data,
         loadMoreAdvertisers: fetchNextPage,
         ...rest,

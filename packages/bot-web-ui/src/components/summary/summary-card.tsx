@@ -1,15 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { ContractCard, Text } from '@deriv/components';
-import { getCardLabels, isMobile } from '@deriv/shared';
+import { getCardLabels } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
 import ContractCardLoader from 'Components/contract-card-loading';
 import { getContractTypeDisplay } from 'Constants/contract';
 import { useDBotStore } from 'Stores/useDBotStore';
-
 import { TSummaryCardProps } from './summary-card.types';
 
 const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCardProps) => {
@@ -20,7 +17,7 @@ const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCa
     const { addToast, current_focus, removeToast, setCurrentFocus } = ui;
     const { server_time } = common;
 
-    const is_mobile = isMobile();
+    const { is_mobile } = ui;
 
     const card_header = (
         <ContractCard.Header

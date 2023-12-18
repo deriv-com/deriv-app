@@ -56,7 +56,7 @@ const useUpdateAdvertiser = () => {
     return {
         /** The updated 'p2p_advertiser' response. */
         data: modified_data,
-        /** The mutated payload */
+        /** Update the payload values */
         mutate,
         ...rest,
     };

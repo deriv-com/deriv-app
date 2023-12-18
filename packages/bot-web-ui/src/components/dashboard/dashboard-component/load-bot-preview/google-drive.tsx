@@ -13,7 +13,7 @@ const GoogleDrive = observer(() => {
     const { is_mobile } = ui;
 
     return (
-        <div className='load-strategy__container'>
+        <div className='load-strategy__container' data-testid='dt_google_drive'>
             <div className='load-strategy__google-drive'>
                 <Icon
                     icon={'IcGoogleDrive'}

@@ -7,7 +7,6 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     exchangeRates,
     limits,
     sourceAccount,
-    sourceAmount,
     targetAccount,
 }: TMessageFnProps) => {
     if (sourceAccount?.account_category !== 'wallet' || targetAccount?.account_category !== 'wallet') return null;
@@ -17,15 +16,14 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     const limitsCaseKey = `${sourceWalletType}_to_${targetWalletType}` as const;
 
     //@ts-expect-error needs backend type
-    const allowedSumActiveWalletCurrency = limits?.lifetime_transfers?.[limitsCaseKey].allowed as number;
+    const allowedSumActiveWalletCurrency = limits?.lifetime_transfers?.[limitsCaseKey]?.allowed as number;
     //@ts-expect-error needs backend type
-    const availableSumActiveWalletCurrency = limits?.lifetime_transfers?.[limitsCaseKey].available as number;
+    const availableSumActiveWalletCurrency = limits?.lifetime_transfers?.[limitsCaseKey]?.available as number;
 
     if (
         !sourceAccount.currency ||
-        !exchangeRates?.rates?.[sourceAccount.currency] ||
         !targetAccount.currency ||
-        !exchangeRates?.rates?.[targetAccount.currency] ||
+        !exchangeRates?.rates ||
         !sourceAccount.currencyConfig ||
         !targetAccount.currencyConfig
     )
@@ -41,22 +39,14 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
         (exchangeRates?.rates[transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency] ?? 1);
 
     const sourceCurrencyLimit = transferDirection === 'from' ? allowedSumActiveWalletCurrency : allowedSumConverted;
-    const targetCurrencyLimit = transferDirection === 'from' ? allowedSumConverted : allowedSumActiveWalletCurrency;
 
     const sourceCurrencyRemainder =
         transferDirection === 'from' ? availableSumActiveWalletCurrency : availableSumConverted;
-    const targetCurrencyRemainder =
-        transferDirection === 'from' ? availableSumConverted : availableSumActiveWalletCurrency;
 
     const formattedSourceCurrencyLimit = displayMoney?.(
         sourceCurrencyLimit,
         sourceAccount.currencyConfig.display_code,
         sourceAccount.currencyConfig.fractional_digits
-    );
-    const formattedTargetCurrencyLimit = displayMoney?.(
-        targetCurrencyLimit,
-        targetAccount.currencyConfig.display_code,
-        targetAccount.currencyConfig?.fractional_digits
     );
 
     const formattedSourceCurrencyRemainder = displayMoney?.(
@@ -64,28 +54,51 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
         sourceAccount.currencyConfig.display_code,
         sourceAccount.currencyConfig.fractional_digits
     );
-    const formattedTargetCurrencyRemainder = displayMoney?.(
-        targetCurrencyRemainder,
-        targetAccount.currencyConfig?.display_code,
-        targetAccount.currencyConfig?.fractional_digits
-    );
 
     if (availableSumActiveWalletCurrency === 0)
         return {
-            text: `You've reached the lifetime transfer limit from your ${sourceAccount.accountName} to any ${targetWalletType} Wallet. Verify your account to upgrade the limit.`,
+            text: `You've reached the lifetime transfer limit from your ${sourceAccount.accountName} to any ${
+                targetWalletType === 'crypto' ? 'cryptocurrency' : 'fiat'
+            } Wallet. Verify your account to upgrade the limit.`,
             type: 'error' as const,
         };
 
     if (allowedSumActiveWalletCurrency === availableSumActiveWalletCurrency)
-        return {
-            text: `The lifetime transfer limit from ${sourceAccount.accountName} to any ${targetWalletType} Wallet is ${formattedSourceCurrencyLimit} (${formattedTargetCurrencyLimit}).`,
-            type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
-        };
+        switch (limitsCaseKey) {
+            case 'fiat_to_crypto':
+            case 'crypto_to_fiat':
+                return {
+                    text: `The lifetime transfer limit from ${sourceAccount.accountName} to any ${
+                        targetWalletType === 'crypto' ? 'cryptocurrency' : 'fiat'
+                    } Wallets is up to ${formattedSourceCurrencyLimit}.`,
+                    type: 'success' as const,
+                };
+            case 'crypto_to_crypto':
+                return {
+                    text: `The lifetime transfer limit between cryptocurrency Wallets is up to ${formattedSourceCurrencyLimit}.`,
+                    type: 'success' as const,
+                };
+            default:
+                return null;
+        }
 
-    return {
-        text: `Remaining lifetime transfer limit is ${formattedSourceCurrencyRemainder} (${formattedTargetCurrencyRemainder}). Verify your account to upgrade the limit.`,
-        type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
-    };
+    switch (limitsCaseKey) {
+        case 'fiat_to_crypto':
+        case 'crypto_to_fiat':
+            return {
+                text: `Your remaining lifetime transfer limit from ${sourceAccount.accountName} to any ${
+                    targetWalletType === 'crypto' ? 'cryptocurrency' : 'fiat'
+                } Wallets is ${formattedSourceCurrencyRemainder}. Verify your account to upgrade the limit.`,
+                type: 'success' as const,
+            };
+        case 'crypto_to_crypto':
+            return {
+                text: `Your remaining lifetime transfer limit between cryptocurrency Wallets is ${formattedSourceCurrencyLimit}. Verify your account to upgrade the limit.`,
+                type: 'success' as const,
+            };
+        default:
+            return null;
+    }
 };
 
 const cumulativeAccountLimitsMessageFn = ({
@@ -106,9 +119,9 @@ const cumulativeAccountLimitsMessageFn = ({
     const platformKey = keyAccountType === 'standard' ? 'dtrade' : keyAccountType;
 
     //@ts-expect-error needs backend type
-    const allowedSumUSD = limits?.daily_cumulative_amount_transfers?.[platformKey].allowed as number;
+    const allowedSumUSD = limits?.daily_cumulative_amount_transfers?.[platformKey]?.allowed as number;
     //@ts-expect-error needs backend type
-    const availableSumUSD = limits?.daily_cumulative_amount_transfers?.[platformKey].available as number;
+    const availableSumUSD = limits?.daily_cumulative_amount_transfers?.[platformKey]?.available as number;
 
     if (
         !sourceAccount.currency ||

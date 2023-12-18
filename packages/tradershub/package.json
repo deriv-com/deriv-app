@@ -13,7 +13,6 @@
         "translate": "sh ./scripts/update-translations.sh"
     },
     "dependencies": {
-        "@deriv/api": "^1.0.0",
         "@deriv/integration": "^1.0.0",
         "@deriv/quill-design": "^1.2.10",
         "@deriv/react-joyride": "^2.6.2",

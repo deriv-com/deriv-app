@@ -8,8 +8,6 @@
     }
 
     &--demo {
-        @include desktop {
-            padding-top: 1.6rem;
-        }
+        padding-top: 1.6rem;
     }
 }

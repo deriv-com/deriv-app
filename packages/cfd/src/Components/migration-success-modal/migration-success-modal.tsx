@@ -98,7 +98,7 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
             is_open={is_open && has_migrated_mt5_accounts}
             toggleModal={toggleModal}
             has_close_icon
-            title={' '}
+            title=' '
             width='58.8rem'
             should_header_stick_body={false}
         >

@@ -5,18 +5,15 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { CFDStoreProvider } from '../../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MigrationSuccessModalContent from '../migration-success-modal-content';
 
-const mock_store = mockStore({
-    ui: {
-        is_mobile: false,
-    },
-});
+const mock_store = mockStore({});
+
 const wrapper = ({ children }) => (
     <StoreProvider store={mock_store}>
         <CFDStoreProvider>{children}</CFDStoreProvider>;
     </StoreProvider>
 );
 describe('<MigrationSuccessModal />', () => {
-    const props = {
+    const props: React.ComponentProps<typeof MigrationSuccessModalContent> = {
         has_open_positions: false,
         icon: 'icon',
         eligible_account_migrate: 'SVG',

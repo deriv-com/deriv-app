@@ -1264,267 +1264,6 @@
         }
     }
 }
-
-.trade-modal-container {
-    width: inherit;
-    overflow-y: scroll;
-}
-
-.trade-modal {
-    display: flex;
-    margin: 2.4rem;
-    align-items: center;
-    gap: 0.8rem;
-    &__maintenance {
-        display: flex;
-        padding-top: 1rem;
-
-        &-icon {
-            padding-right: 0.5rem;
-        }
-
-        &-text {
-            color: var(--text-less-prominent);
-        }
-    }
-    &--paragraph {
-        @include typeface(--paragraph-left-normal-black, none);
-        color: var(--text-less-prominent);
-        line-height: 1.45;
-    }
-    &__desc {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-    }
-    &__password {
-        &-box {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-        &-text {
-            overflow: hidden;
-        }
-        &-action {
-            padding: 0;
-            height: 1.5rem;
-            .dc-btn__icon {
-                padding-right: 0;
-            }
-        }
-    }
-    &__specs {
-        padding: 1.6rem;
-        width: 100%;
-
-        &-table {
-            width: 100%;
-
-            &-attribute .trade-modal--paragraph {
-                color: var(--text-general);
-                margin-right: 2.4rem;
-            }
-            &-data {
-                .trade-modal--paragraph {
-                    @include typeface(--paragraph-left-bold-black, none);
-                    line-height: 1.45;
-                }
-            }
-        }
-    }
-    &__login-specs {
-        margin: 0 2.4rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.1rem;
-        :first-child {
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-        }
-        :last-child {
-            border-bottom-left-radius: 5px;
-            border-bottom-right-radius: 5px;
-        }
-        &-item {
-            display: flex;
-            padding: 0.5rem 0.8rem;
-            align-items: center;
-            justify-content: space-between;
-            background: var(--general-section-1);
-        }
-    }
-    &__spec-box {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-    }
-    &__spec-text {
-        font-family: Courier, monospace;
-        overflow: hidden;
-    }
-    &__download-center {
-        border-top: 2px solid var(--general-section-1);
-        padding-top: 2rem;
-        padding-bottom: 5.8rem;
-
-        &-description {
-            display: flex;
-            justify-content: center;
-            margin-top: 1.4rem;
-        }
-
-        &-app {
-            display: flex;
-            flex-direction: column;
-            margin-top: 1.6rem;
-            &--option {
-                display: flex;
-                gap: 1.6rem;
-                align-items: center;
-                padding: 1.6rem 2.4rem;
-                border-top: 1px solid var(--border-disabled);
-                &:last-child {
-                    border-bottom: 1px solid var(--border-disabled);
-                }
-                &-item {
-                    flex-grow: 1;
-                }
-                &-link {
-                    align-items: center;
-                    display: flex;
-                    justify-content: center;
-                    text-decoration: none;
-                    @include typeface(--paragraph-center-bold-black, none);
-                    background-color: transparent;
-                    border: 1px solid var(--border-disabled);
-                    color: var(--text-less-prominent);
-
-                    &:hover {
-                        background-color: var(--button-secondary-hover);
-                    }
-                }
-            }
-        }
-
-        &-options {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 1.6rem;
-            gap: 1.6rem;
-
-            &--desktop {
-                display: block;
-                align-items: baseline;
-                flex-flow: column nowrap;
-
-                &-links {
-                    display: flex;
-                    flex-direction: column;
-                }
-                &-row {
-                    display: flex;
-                    align-items: baseline;
-                    justify-content: center;
-                    margin-bottom: 3.1rem;
-
-                    > svg:first-child {
-                        margin-bottom: 0.4rem;
-                        margin-right: 0.8rem;
-                    }
-                    a > svg {
-                        margin-top: 0.8rem;
-                        margin-right: 0.8rem;
-                    }
-                }
-                &-download {
-                    display: grid;
-                    grid-auto-flow: column;
-                    grid-gap: 0.8rem;
-                    justify-content: center;
-
-                    a {
-                        margin-top: 0.4rem;
-                    }
-                }
-            }
-            &--mobile {
-                align-items: center;
-                display: flex;
-                flex-flow: column nowrap;
-                margin-left: 4.7rem;
-
-                &-devices {
-                    margin-bottom: 1.6em;
-                    svg:first-child {
-                        margin-right: 0.8em;
-                    }
-                }
-                &-link:not(:first-child) {
-                    margin-left: 1.6rem;
-                }
-                &-links {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.8rem;
-                }
-                @include mobile {
-                    margin-left: unset;
-                    margin-right: unset;
-                }
-            }
-            &--qrcode {
-                display: flex;
-                flex-direction: column;
-                width: 13.6rem;
-                height: auto;
-                padding: 0.8rem;
-                align-items: center;
-                justify-content: center;
-                border: 1px solid var(--border-disabled);
-                border-radius: 5px;
-            }
-        }
-        &-text {
-            margin: 1.6rem;
-        }
-        &--heading {
-            @include typeface(--title-center-bold-black, none);
-            color: var(--text-general);
-            line-height: 1.5;
-            margin-left: 2.1rem;
-            margin-bottom: 4.2rem;
-            @include desktop {
-                margin-left: 0;
-                text-align: center;
-            }
-        }
-        &--hint {
-            margin-top: 1.6rem;
-        }
-        @include mobile {
-            margin-bottom: 1.6rem;
-        }
-    }
-    &__mobile-view {
-        .dc-page-overlay__content {
-            flex-direction: column;
-        }
-        &-wrapper {
-            overflow: scroll;
-            width: inherit;
-        }
-    }
-    &__mobile-title {
-        text-align: left;
-        margin: 0 2.4rem;
-    }
-    &__acc_status_badge {
-        max-width: max-content;
-    }
-}
-
 .cfd-password-manager {
     margin: 5.6rem auto 3.2rem;
     width: 100%;
@@ -2119,7 +1858,256 @@
         align-items: flex-end;
     }
 }
+.cfd-accounts-compare-modal {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    background: inherit;
+    height: 100%;
+    position: relative;
+    &-row-eu {
+        grid-template-columns: 0.67fr 1fr;
+    }
+    @for $column_count from 1 through 7 {
+        .cfd-accounts-compare-modal__row-with-columns-count-#{$column_count} {
+            grid-template-columns: repeat($column_count, 1fr);
+        }
+    }
+    &__table-header {
+        grid-template-columns: 11rem 38rem 46rem;
+        &__pre-appstore {
+            grid-template-columns: 11rem 36rem 46rem 13.5rem;
+        }
+    }
+    @for $financial_accounts_count from 0 through 6 {
+        @for $synthetic_accounts_count from 0 through 2 {
+            .cfd-accounts-compare-modal__table-header-for-synthetic-#{$synthetic_accounts_count}-financial-#{$financial_accounts_count} {
+                @if $synthetic_accounts_count > 0 and $financial_accounts_count > 0 {
+                    grid-template-columns: 1fr ($synthetic_accounts_count + fr) ($financial_accounts_count + fr);
+                    &__pre-appstore {
+                        grid-template-columns: 1fr ($synthetic_accounts_count + fr) (
+                                $financial_accounts_count + fr
+                            ) 1fr;
+                    }
+                } @else if $synthetic_accounts_count == 0 and $financial_accounts_count == 0 {
+                    grid-template-columns: 1fr;
+                    &__pre-appstore {
+                        grid-template-columns: 1fr 1fr;
+                    }
+                } @else if $synthetic_accounts_count == 0 {
+                    grid-template-columns: 1fr ($financial_accounts_count + fr);
+                    &__pre-appstore {
+                        grid-template-columns: 1fr ($financial_accounts_count + fr) 1fr;
+                    }
+                } @else {
+                    grid-template-columns: 1fr ($synthetic_accounts_count + fr);
+                    &__pre-appstore {
+                        grid-template-columns: 1fr ($synthetic_accounts_count + fr) 1fr;
+                    }
+                }
+            }
+        }
+    }
+    &__table-header-item {
+        justify-content: center;
+    }
 
+    &__table-row {
+        grid-template-columns: 11rem 13.4rem 12.6rem 12rem 13.4rem 12.6rem 10rem 10rem;
+        &__pre-appstore {
+            grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem;
+        }
+        &--leverage {
+            grid-template-columns: 11rem 38rem 36rem 10rem;
+            &__pre-appstore {
+                grid-template-columns: 11rem 36rem 36rem 10rem 13.5rem;
+            }
+        }
+        &--platform {
+            &__pre-appstore {
+                grid-template-columns: 11rem 82rem 13.5rem;
+            }
+        }
+        &--instruments {
+            grid-template-columns: 11rem 38rem 26rem 10rem 10rem;
+            &__pre-appstore {
+                grid-template-columns: 11rem 36rem 26rem 10rem 10rem 13.5rem;
+            }
+        }
+    }
+
+    &__table-row-item {
+        flex-direction: column;
+        justify-content: center;
+        &--tooltip {
+            flex-direction: row;
+        }
+    }
+    &__table-footer {
+        grid-template-columns: 11rem 13.4rem 12.6rem 12rem 13.4rem 12.6rem 10rem 10rem;
+        height: 4.8rem;
+        &__pre-appstore {
+            grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem;
+        }
+        &__item {
+            height: 4.8rem;
+            justify-content: center;
+            &--verification-pending {
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                padding: 3px 8px;
+                background: rgba(255, 68, 79, 0.16);
+                opacity: 0.32;
+                border-radius: 4px;
+                width: 100%;
+                cursor: not-allowed;
+                .dc-text {
+                    font-style: normal;
+                    font-weight: 700;
+                    color: var(--brand-red-coral);
+                }
+            }
+        }
+        &__button {
+            width: 100%;
+        }
+    }
+
+    .dc-table {
+        margin: 0 25px;
+
+        &__header {
+            border: none;
+            height: 4rem;
+            top: 0;
+            z-index: 10;
+        }
+        &__cell:not(.cfd-accounts-compare-modal__table-empty-cell),
+        &__head:not(.cfd-accounts-compare-modal__table-empty-cell) {
+            padding: 0.8rem;
+            border: 1px solid var(--general-active);
+            margin-left: -1px;
+            margin-bottom: -1px;
+        }
+        &__cell {
+            padding: 1rem 0.8rem;
+        }
+        &__row {
+            border-bottom: none;
+            min-height: 4rem;
+        }
+
+        &--scrollbar {
+            display: block; // Safari needs this to work properly!
+        }
+    }
+    &-modal {
+        &__wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 2.4rem;
+        }
+    }
+    @include mobile {
+        height: 100%;
+        font-size: 1.2rem;
+
+        .dc-table {
+            height: 100%;
+            margin: 25px;
+            overflow-x: auto;
+            &__cell {
+                &--fixed {
+                    background-color: var(--general-main-1);
+                    .dc-text {
+                        font-size: var(--text-size-xxxs);
+                        text-align: left;
+                    }
+                }
+            }
+        }
+        &__table {
+            &-header,
+            &-footer,
+            &-row,
+            &-row--leverage,
+            &-row--instruments {
+                width: 250vw;
+                &__pre-appstore {
+                    width: 250vw;
+                }
+            }
+        }
+        .cfd-accounts-compare-modal {
+            &__table-empty-cell.dc-table {
+                &__cell--fixed {
+                    margin-left: -1px;
+                    border: 1px solid var(--general-active);
+                    border-width: 1px 1px 0px 0px;
+                }
+                &__head {
+                    border-top: none;
+                }
+            }
+            &-row-eu {
+                width: unset;
+                height: unset;
+            }
+        }
+        @for $column_count from 1 through 7 {
+            .cfd-accounts-compare-modal__row-with-columns-count-#{$column_count} {
+                width: calc(250vw / 7 * #{$column_count});
+                &__pre-appstore {
+                    width: calc(250vw / 7 * #{$column_count + 1});
+                }
+            }
+        }
+        @for $financial_accounts_count from 0 through 6 {
+            @for $synthetic_accounts_count from 0 through 2 {
+                .cfd-accounts-compare-modal__table-header-for-synthetic-#{$synthetic_accounts_count}-financial-#{$financial_accounts_count} {
+                    width: calc(250vw / 7 * (#{$synthetic_accounts_count} + #{$financial_accounts_count} + 1));
+                    &__pre-appstore {
+                        width: calc(250vw / 7 * (#{$synthetic_accounts_count} + #{$financial_accounts_count} + 2));
+                    }
+                }
+            }
+        }
+    }
+}
+.dc-modal-header__title--cfd-accounts-compare-modal {
+    font-size: var(--text-size-sm);
+    line-height: 3rem;
+}
+
+.cfd-accounts-compare-modal-mobile-header {
+    height: fit-content;
+    border-bottom: none;
+    .dc-text {
+        font-size: var(--text-size-s);
+    }
+}
+.cfd-compare-accounts-tooltip {
+    margin-left: 0.8rem;
+    &--msg {
+        font-size: var(--text-size-xxs);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px;
+        width: 276px;
+        border-radius: 4px;
+    }
+}
+
+.switch-to-real-account-modal {
+    .dc-dialog__content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
 .da-icon-with-message__button {
     margin: 2rem;
 }

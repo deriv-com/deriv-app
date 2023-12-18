@@ -2,7 +2,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 
-const is_release =
+const isRelease =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
 const svg_loaders = [
@@ -37,7 +37,7 @@ module.exports = function (env) {
         entry: {
             index: path.resolve(__dirname, './src', 'index.tsx'),
         },
-        mode: is_release ? 'production' : 'development',
+        mode: isRelease ? 'production' : 'development',
         output: {
             path: path.resolve(__dirname, './dist'),
             publicPath: base,
@@ -76,7 +76,7 @@ module.exports = function (env) {
                 //TODO: Uncomment this line when type script migrations on all packages done
                 // plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
                 {
-                    test: input => is_release && /\.js$/.test(input),
+                    test: input => isRelease && /\.js$/.test(input),
                     loader: 'source-map-loader',
                 },
                 {
@@ -89,7 +89,7 @@ module.exports = function (env) {
                                 url: true,
                                 modules: {
                                     auto: path => path.includes('.module.'),
-                                    localIdentName: is_release ? '[hash:base64]' : '[path][name]__[local]',
+                                    localIdentName: isRelease ? '[hash:base64]' : '[path][name]__[local]',
                                 },
                             },
                         },
@@ -143,8 +143,8 @@ module.exports = function (env) {
             ],
         },
         optimization: {
-            minimize: is_release,
-            minimizer: is_release
+            minimize: isRelease,
+            minimizer: isRelease
                 ? [
                       new TerserPlugin({
                           test: /\.js$/,
@@ -182,7 +182,7 @@ module.exports = function (env) {
                 },
             },
         },
-        devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
+        devtool: isRelease ? 'source-map' : 'eval-cheap-module-source-map',
         externals: [
             {
                 '@deriv/api': true,

@@ -1,6 +1,6 @@
 module.exports = {
     env: { es6: true },
-    extends: ['../../.eslintrc.js', 'eslint:recommended', 'plugin:react/recommended'],
+    extends: ['../../.eslintrc.js', 'eslint:recommended', 'plugin:react/recommended', 'plugin:react-hooks/recommended'],
     overrides: [
         {
             files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
@@ -18,6 +18,21 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 'error',
         '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/sort-type-constituents': 'error',
+        '@typescript-eslint/naming-convention': [
+            'error',
+            {
+                selector: 'variable',
+                format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
+            },
+            {
+                selector: 'parameter',
+                format: ['camelCase'],
+            },
+            {
+                selector: 'function',
+                format: ['camelCase'],
+            },
+        ],
         'import/first': 'error',
         'import/newline-after-import': 'error',
         'import/no-duplicates': 'error',

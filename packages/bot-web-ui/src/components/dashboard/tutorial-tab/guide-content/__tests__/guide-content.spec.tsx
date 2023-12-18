@@ -16,7 +16,6 @@ export const mock_user_guide_content = [
         subtype: 'OnBoard',
         content: 'Get started on Deriv Bot',
         src: 'dbot-onboard-tour.png',
-        tab_id: 0,
         search_id: 'ugc-0',
     },
     {
@@ -25,7 +24,6 @@ export const mock_user_guide_content = [
         subtype: 'BotBuilder',
         content: 'Let’s build a bot!',
         src: 'bot-builder-tour.png',
-        tab_id: 0,
         search_id: 'ugc-1',
     },
 ];
@@ -37,7 +35,6 @@ export const mock_guide_content = [
         content: 'Deriv Bot - your automated trading partner',
         url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
         src: 'video_dbot.webp',
-        tab_id: 0,
         search_id: 'gc-0',
     },
 ];

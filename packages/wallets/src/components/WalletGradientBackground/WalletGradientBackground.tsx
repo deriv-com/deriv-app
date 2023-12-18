@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { THooks } from '../../types';
 import './WalletGradientBackground.scss';
 
@@ -30,7 +31,12 @@ const WalletGradientBackground: React.FC<TProps> = ({
     };
 
     return (
-        <div className={`wallets-gradient ${bodyClassName} ${getClassName()}`} data-testid='wallet-gradient-background'>
+        <div
+            className={classNames(`wallets-gradient ${getClassName()}`, {
+                [`${bodyClassName}`]: !!bodyClassName,
+            })}
+            data-testid='dt_wallet_gradient_background'
+        >
             {hasShine && !isDemo && <span className='wallets-gradient__shine' />}
             <div className='wallets-gradient__content'>{children}</div>
         </div>

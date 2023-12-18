@@ -1,24 +1,21 @@
 import React from 'react';
 import classNames from 'classnames';
-
 import { Button, Icon } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-
 import { useDBotStore } from 'Stores/useDBotStore';
-
 import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';
 
 const LocalComponent = observer(() => {
+    const { ui } = useStore();
     const { dashboard, load_modal } = useDBotStore();
     const { active_tab, active_tour } = dashboard;
     const { handleFileChange, loaded_local_file, setLoadedLocalFile } = load_modal;
 
-    const file_input_ref = React.useRef(null);
+    const file_input_ref = React.useRef<HTMLInputElement>(null);
     const [is_file_supported, setIsFileSupported] = React.useState(true);
-    const is_mobile = isMobile();
+    const { is_mobile } = ui;
 
     if (loaded_local_file && is_file_supported) {
         return (
@@ -84,7 +81,7 @@ const LocalComponent = observer(() => {
                                 ? localize('Select an XML file from your device')
                                 : localize('Please upload an XML file')
                         }
-                        onClick={() => file_input_ref.current.click()}
+                        onClick={() => file_input_ref?.current?.click()}
                         has_effect
                         primary
                         large

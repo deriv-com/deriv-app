@@ -1,6 +1,5 @@
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
-import { D_ALEMBERT, MARTINGALE, OSCAR_GRIND } from './descriptions';
 import { D_ALEMBERT, MARTINGALE, OSCARS_GRIND } from './descriptions';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 

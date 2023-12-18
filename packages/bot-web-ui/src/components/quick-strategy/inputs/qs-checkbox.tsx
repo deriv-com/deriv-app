@@ -34,7 +34,13 @@ const QSCheckbox: React.FC<TQSCheckbox> = ({ name, label, description, attached 
                             <div className='qs__checkbox__container'>
                                 <Checkbox {...field} label={label} onChange={handleChange} data-testid='qs-checkbox' />
                                 <span>
-                                    <Popover message={description} zIndex='9999' alignment='top' icon='info' />
+                                    <Popover
+                                        classNameTargetIcon='qs__checkbox__info'
+                                        message={description}
+                                        zIndex='9999'
+                                        alignment='top'
+                                        icon='info'
+                                    />
                                 </span>
                             </div>
                         </div>

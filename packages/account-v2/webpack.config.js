@@ -125,17 +125,17 @@ module.exports = function (env) {
                 },
                 {
                     test: /\.svg$/,
-                    issuer: /\/packages\/tradershub\/.*(\/)?.*.scss/,
+                    issuer: /\/packages\/account-v2\/.*(\/)?.*.scss/,
                     exclude: /node_modules/,
                     include: /public\//,
                     type: 'asset/resource',
                     generator: {
-                        filename: 'tradershub/public/[name].[contenthash][ext]',
+                        filename: 'account-v2/public/[name].[contenthash][ext]',
                     },
                 },
                 {
                     test: /\.svg$/,
-                    issuer: /\/packages\/tradershub\/.*(\/)?.*.tsx/,
+                    issuer: /\/packages\/account-v2\/.*(\/)?.*.tsx/,
                     exclude: /node_modules/,
                     include: /public\//,
                     use: svg_loaders,
@@ -185,9 +185,10 @@ module.exports = function (env) {
         devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
         externals: [
             {
+                '@deriv/api': true,
+                classnames: true,
                 react: true,
                 'react-dom': true,
-                classnames: true,
                 'react-router-dom': true,
             },
         ],

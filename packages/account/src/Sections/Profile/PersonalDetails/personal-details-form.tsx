@@ -128,7 +128,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
             setSubmitting(false);
         } else {
             // Adding a delay to show the notification after the page reload
-            setTimeout(() => {
+            const notification_timeout = setTimeout(() => {
                 if (data.set_settings.notification) {
                     showPOAAddressMismatchSuccessNotification();
                 } else if (has_poa_address_mismatch) {
@@ -162,6 +162,10 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                 const from = url_params.get('from') as keyof typeof routes;
                 history.push(routes[from]);
             }
+
+            return () => {
+                clearTimeout(notification_timeout);
+            };
         }
     };
 
@@ -639,7 +643,6 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                                 'I would like to be treated as a professional client.'
                                                             )}
                                                             id='request_professional_status'
-                                                            defaultChecked={!!values.request_professional_status}
                                                             disabled={
                                                                 is_virtual ||
                                                                 !!account_settings.request_professional_status

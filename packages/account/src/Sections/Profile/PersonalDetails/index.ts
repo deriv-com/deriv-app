@@ -1,3 +1,3 @@
-import personalDetails from './personal-details';
+import PersonalDetails from './personal-details-form';
 
-export default personalDetails;
+export default PersonalDetails;

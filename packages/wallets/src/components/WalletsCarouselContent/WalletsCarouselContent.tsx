@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useStaleWalletsAccountsList } from '@deriv/api';
 import { ProgressBar } from '../Base';
@@ -67,7 +67,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         if (selectedLoginId) {
             switchAccount(selectedLoginId);
         }
-    }, [selectedEmblaIndex]);
+    }, [selectedEmblaIndex, switchAccount, walletAccountsList]);
 
     // set the initial data loading flag to false once all "is loading" flags are false,
     // as then and only then we can display all the stuff and we want to display it permanently after that

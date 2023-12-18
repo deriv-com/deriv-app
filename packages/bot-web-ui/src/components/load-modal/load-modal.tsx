@@ -1,7 +1,6 @@
 import React from 'react';
 import { MobileFullPageModal, Modal, Tabs } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { tabs_title } from 'Constants/load-modal';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -12,6 +11,7 @@ import Recent from './recent';
 import RecentFooter from './recent-footer';
 
 const LoadModal = observer(() => {
+    const { ui } = useStore();
     const { load_modal, dashboard } = useDBotStore();
     const {
         active_index,
@@ -24,9 +24,10 @@ const LoadModal = observer(() => {
         tab_name,
     } = load_modal;
     const { setPreviewOnPopup } = dashboard;
+    const { is_mobile } = ui;
     const header_text = localize('Load strategy');
 
-    if (isMobile()) {
+    if (is_mobile) {
         return (
             <MobileFullPageModal
                 is_modal_open={is_load_modal_open}

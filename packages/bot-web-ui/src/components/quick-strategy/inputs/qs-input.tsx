@@ -18,8 +18,6 @@ type TQSInput = {
     disabled?: boolean;
     min?: number;
     max?: number;
-    should_validate_min?: boolean;
-    should_validate_max?: boolean;
 };
 
 const QSInput: React.FC<TQSInput> = observer(
@@ -111,7 +109,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         leading_icon={
                                             is_number ? (
                                                 <button
-                                                    disabled={field.value <= min}
+                                                    disabled={!!min && field.value <= min}
                                                     data-testid='qs-input-decrease'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) - 1;
@@ -128,7 +126,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         trailing_icon={
                                             is_number ? (
                                                 <button
-                                                    disabled={field.value >= max}
+                                                    disabled={!!max && field.value >= max}
                                                     data-testid='qs-input-increase'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) + 1;

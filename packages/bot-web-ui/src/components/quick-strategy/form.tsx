@@ -81,12 +81,10 @@ const QuickStrategyForm = observer(() => {
                             // Generic or common fields
                             case 'number': {
                                 if (!field.name) return null;
-                                const { should_have = [], validation } = field;
+                                const { should_have = [] } = field;
                                 const initial_stake = 1;
                                 let min = 1;
-                                let max = 1000000;
-                                const should_validate_min = validation?.includes('min');
-                                const should_validate_max = validation?.includes('max');
+                                let max;
                                 if (field.name === 'duration' && current_duration_min_max) {
                                     min = current_duration_min_max.min;
                                     max = current_duration_min_max.max;
@@ -114,8 +112,6 @@ const QuickStrategyForm = observer(() => {
                                             onChange={onChange}
                                             min={min}
                                             max={max}
-                                            should_validate_min={should_validate_min}
-                                            should_validate_max={should_validate_max}
                                         />
                                     );
                                 }
@@ -127,8 +123,6 @@ const QuickStrategyForm = observer(() => {
                                         name={field.name as string}
                                         min={min}
                                         max={max}
-                                        should_validate_min={should_validate_min}
-                                        should_validate_max={should_validate_max}
                                     />
                                 );
                             }

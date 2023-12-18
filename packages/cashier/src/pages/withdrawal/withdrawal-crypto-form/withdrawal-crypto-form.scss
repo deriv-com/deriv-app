@@ -22,6 +22,13 @@
         margin: 0;
     }
 
+    &__wrapper {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     &__submit {
         display: flex;
         flex-direction: column;
@@ -53,12 +60,5 @@
                 align-items: center;
             }
         }
-    }
-}
-
-.cashier__wrapper--is-mobile .cashier__wrapper {
-    @include mobile {
-        width: 100%;
-        margin-inline: 0;
     }
 }

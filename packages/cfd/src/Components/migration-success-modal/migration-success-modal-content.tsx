@@ -1,11 +1,9 @@
-import { InlineMessage, Text, Button, Modal } from '@deriv/components';
-import Icon from '@deriv/components/src/components/icon/icon';
-import { Jurisdiction, CFD_PLATFORMS, getCFDPlatformNames, getFormattedJurisdictionCode } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
-import classNames from 'classnames';
-import { observer } from 'mobx-react';
 import React from 'react';
+import classNames from 'classnames';
+import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
+import { InlineMessage, Text, Button, Modal, Icon } from '@deriv/components';
+import { Jurisdiction, CFD_PLATFORMS, getCFDPlatformNames, getFormattedJurisdictionCode } from '@deriv/shared';
 
 type TMigrationSuccessModalContent = {
     has_open_positions: boolean;

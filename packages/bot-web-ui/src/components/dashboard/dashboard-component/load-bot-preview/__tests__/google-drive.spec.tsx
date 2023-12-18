@@ -1,5 +1,5 @@
 import React from 'react';
-import { mockStore, StoreProvider, useStore } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -7,15 +7,6 @@ import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import GoogleDrive from '../google-drive';
-
-jest.mock('@deriv/stores', () => ({
-    ...jest.requireActual('@deriv/stores'),
-    useStore: jest.fn(() => ({
-        ui: {
-            is_mobile: false,
-        },
-    })),
-}));
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));
@@ -100,11 +91,7 @@ describe('GoogleDrive', () => {
         expect(container).toBeInTheDocument();
     });
     it('should render GoogleDrive component with with svg element that has height and width equal 96 when it is a mobile version', () => {
-        (useStore as jest.Mock).mockReturnValue({
-            ui: {
-                is_mobile: true,
-            },
-        });
+        mock_store.ui.is_mobile = true;
         const { container } = render(<GoogleDrive />, { wrapper });
 
         const google_drive_container = screen.getByTestId('dt_google_drive');

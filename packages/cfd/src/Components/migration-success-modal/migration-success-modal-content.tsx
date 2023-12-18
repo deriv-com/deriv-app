@@ -9,18 +9,13 @@ import React from 'react';
 
 type TMigrationSuccessModalContent = {
     has_open_positions: boolean;
-    getMigrationIcon: () => void;
+    icon?: string;
     eligible_account_migrate: string;
     directToCashier: () => void;
 };
 
 const MigrationSuccessModalContent = observer(
-    ({
-        has_open_positions,
-        getMigrationIcon,
-        eligible_account_migrate,
-        directToCashier,
-    }: TMigrationSuccessModalContent) => {
+    ({ has_open_positions, icon, eligible_account_migrate, directToCashier }: TMigrationSuccessModalContent) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
 
@@ -34,7 +29,7 @@ const MigrationSuccessModalContent = observer(
                     })}
                 >
                     <div className='cfd-success-dialog-migration__icon-area'>
-                        <Icon icon={`${getMigrationIcon()}`} size={128} />
+                        {icon && <Icon icon={icon} size={128} />}
                     </div>
                     <div>
                         <Text as='h2' weight='bold' size='s' className='cfd-success-dialog-migration__title'>
@@ -51,7 +46,12 @@ const MigrationSuccessModalContent = observer(
                                     components={[<strong key={0} />]}
                                 />
                             </Text>
-                            <Text size={text_size} as='p' align='center'>
+                            <Text
+                                size={text_size}
+                                as='p'
+                                align='center'
+                                className='cfd-success-dialog-migration__content-wrapper__desc'
+                            >
                                 <Localize
                                     i18n_default_text='For new trades, please transfer your funds into the new <0>{{platform}} {{eligible_account_migrate}}</0>  account(s).'
                                     values={{

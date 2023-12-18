@@ -1384,6 +1384,9 @@
     }
     &__inline-msg {
         margin: 2.4rem 2.4rem 0;
+        @include mobile {
+            margin: 2.4rem 0;
+        }
     }
     &__icon-area {
         width: 12.8rem;
@@ -1396,8 +1399,11 @@
         flex-direction: column;
         gap: 2.4rem;
         margin: 0.8rem auto;
-        @include mobile {
-            gap: 0.8rem;
+
+        &__desc {
+            @include mobile {
+                padding: 0 3.8rem;
+            }
         }
     }
     &-footer {

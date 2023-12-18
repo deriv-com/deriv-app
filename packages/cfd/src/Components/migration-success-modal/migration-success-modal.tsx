@@ -16,20 +16,15 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
     const { ui, client } = useStore();
     const { updateMt5LoginList, mt5_login_list } = client;
     const { is_mobile, setMT5MigrationModalEnabled } = ui;
-    const {
-        disableCFDPasswordModal,
-        setError,
-        setCFDSuccessDialog,
-        //  migrated_mt5_accounts,  // TODO: TESTING
-        setMigratedMT5Accounts,
-    } = useCfdStore();
+    const { disableCFDPasswordModal, setError, setCFDSuccessDialog, setMigratedMT5Accounts, migrated_mt5_accounts } =
+        useCfdStore();
 
     React.useEffect(() => {
         if (is_open) {
             updateMt5LoginList();
         }
     }, [is_open, updateMt5LoginList]);
-    const migrated_mt5_accounts = [{ login_id: 'MTR40025895', to_account: { financial: 'vanuatu' } }]; // TODO: TESTING
+
     const has_migrated_mt5_accounts = !!migrated_mt5_accounts.length;
     const eligible_account_migrate = getFormattedJurisdictionCode(
         migrated_mt5_accounts.map(account => Object.values(account?.to_account ?? {})?.[0])?.[0]
@@ -92,7 +87,7 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
         >
             <MigrationSuccessModalContent
                 directToCashier={directToCashier}
-                getMigrationIcon={getMigrationIcon}
+                icon={getMigrationIcon()}
                 eligible_account_migrate={eligible_account_migrate}
                 has_open_positions={has_migrated_mt5_accounts}
             />
@@ -100,8 +95,7 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
     ) : (
         <Modal
             className='cfd-success-dialog-migration'
-            // is_open={is_open && has_migrated_mt5_accounts}
-            is_open={true} // TODO: TESTING
+            is_open={is_open && has_migrated_mt5_accounts}
             toggleModal={toggleModal}
             has_close_icon
             title={' '}
@@ -110,7 +104,7 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
         >
             <MigrationSuccessModalContent
                 directToCashier={directToCashier}
-                getMigrationIcon={getMigrationIcon}
+                icon={getMigrationIcon()}
                 eligible_account_migrate={eligible_account_migrate}
                 has_open_positions={has_migrated_mt5_accounts}
             />

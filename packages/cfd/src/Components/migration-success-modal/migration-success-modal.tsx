@@ -79,7 +79,7 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
 
     return is_mobile ? (
         <PageOverlay
-            is_open={true}
+            is_open={is_open && has_migrated_mt5_accounts}
             header_classname='cfd-success-dialog-migration'
             portal_id='deriv_app'
             header=' '
@@ -89,7 +89,7 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
                 directToCashier={directToCashier}
                 icon={getMigrationIcon()}
                 eligible_account_migrate={eligible_account_migrate}
-                has_open_positions={has_migrated_mt5_accounts}
+                has_open_positions={has_open_positions}
             />
         </PageOverlay>
     ) : (
@@ -106,7 +106,7 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
                 directToCashier={directToCashier}
                 icon={getMigrationIcon()}
                 eligible_account_migrate={eligible_account_migrate}
-                has_open_positions={has_migrated_mt5_accounts}
+                has_open_positions={has_open_positions}
             />
         </Modal>
     );

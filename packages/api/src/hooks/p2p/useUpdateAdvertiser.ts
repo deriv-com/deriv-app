@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import useMutation from '../../useMutation';
 import useInvalidateQuery from '../../useInvalidateQuery';
 
-type TPayload = Parameters<ReturnType<typeof useMutation<'p2p_advertiser_update'>>['mutate']>[0];
+type TPayload = Parameters<ReturnType<typeof useMutation<'p2p_advertiser_update'>>['mutate']>[0]['payload'];
 
 /** A custom hook that updates a P2P advert. This can only be used by an approved P2P advertiser.
  *

@@ -3,7 +3,7 @@ import useInfiniteQuery from '../../useInfiniteQuery';
 import useAuthorize from '../useAuthorize';
 
 /**
- * This custom hook returns available advertisers who has/had trade with the current advertiser.
+ * This custom hook returns the available advertisers who have had or currently have trades with the current advertiser.
  */
 const useAdvertiserList = (
     payload?: NonNullable<Parameters<typeof useInfiniteQuery<'p2p_advertiser_list'>>[1]>['payload']
@@ -34,10 +34,10 @@ const useAdvertiserList = (
 
         return flatten_data.map(advertiser => ({
             ...advertiser,
-            /** Indicating whether the advertiser's identify has been verified. */
-            basic_verification: Boolean(advertiser?.basic_verification),
+            /** Indicating whether the advertiser's identity has been verified. */
+            is_basic_verified: Boolean(advertiser?.basic_verification),
             /** Indicating whether the advertiser's address has been verified. */
-            full_verification: Boolean(advertiser?.full_verification),
+            is_fully_verified: Boolean(advertiser?.full_verification),
             /** The approval status of the advertiser. */
             is_approved: Boolean(advertiser?.is_approved),
             /** Indicates that the advertiser is blocked. */

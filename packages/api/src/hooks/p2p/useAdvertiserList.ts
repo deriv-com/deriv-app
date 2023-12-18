@@ -34,7 +34,7 @@ const useAdvertiserList = (
 
         return flatten_data.map(advertiser => ({
             ...advertiser,
-            /** Indicating whether the advertiser's identify has been verified. */
+            /** Indicating whether the advertiser's identity has been verified. */
             basic_verification: Boolean(advertiser?.basic_verification),
             /** Indicating whether the advertiser's address has been verified. */
             full_verification: Boolean(advertiser?.full_verification),

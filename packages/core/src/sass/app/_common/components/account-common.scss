@@ -420,7 +420,6 @@
         }
 
         &--grid-layout {
-            display: grid;
             grid-gap: 4px;
 
             .dc-dropdown-container {
@@ -895,14 +894,24 @@
             }
         }
 
-        .proof-of-identity__submit-button {
-            @include desktop {
-                margin-top: 3.2rem;
-                margin-left: auto;
+        .proof-of-identity {
+            &__actions {
+                @include desktop {
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: flex-end;
+                }
             }
 
-            @include mobile {
-                margin-inline: 2.4rem;
+            &__submit-button {
+                @include desktop {
+                    margin-top: 3.2rem;
+                    margin-left: auto;
+                }
+
+                @include mobile {
+                    margin-inline: 2.4rem;
+                }
             }
         }
 

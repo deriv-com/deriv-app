@@ -69,7 +69,7 @@
         &-horizontal {
             display: flex;
             max-width: 96vw !important;
-            margin-bottom: 3rem;
+            padding-bottom: 3rem;
 
             // select the first .payment-method-card only and unset its margin-left
             & > .payment-method-card {

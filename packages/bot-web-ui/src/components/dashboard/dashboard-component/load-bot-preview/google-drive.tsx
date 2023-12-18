@@ -1,15 +1,16 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Button, Icon, StaticUrl } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const GoogleDrive = observer(() => {
+    const { ui } = useStore();
     const { google_drive, load_modal } = useDBotStore();
     const { is_authorised } = google_drive;
     const { is_open_button_loading, onDriveConnect, onDriveOpen } = load_modal;
+    const { is_mobile } = ui;
 
     return (
         <div className='load-strategy__container'>
@@ -19,7 +20,7 @@ const GoogleDrive = observer(() => {
                     className={classnames('load-strategy__google-drive-icon', {
                         'load-strategy__google-drive-icon--disabled': !is_authorised,
                     })}
-                    size={isMobile() ? 96 : 128}
+                    size={is_mobile ? 96 : 128}
                 />
                 <div className='load-strategy__google-drive-connected-text'>
                     {is_authorised ? (

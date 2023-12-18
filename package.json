@@ -35,6 +35,7 @@
         "@types/react-dom": "^18.0.0",
         "@types/react-router-dom": "^5.1.6",
         "@types/react-virtualized": "^9.21.21",
+        "autoprefixer": "^10.4.16",
         "babel-polyfill": "^6.26.0",
         "dotenv-webpack": "^8.0.1",
         "husky": "^7.0.0",
@@ -52,6 +53,7 @@
         "stylelint-no-unsupported-browser-features": "^4.0.0",
         "stylelint-selector-bem-pattern": "^2.1.0",
         "stylelint-webpack-plugin": "^2.1.1",
+        "tailwindcss": "^3.3.6",
         "ts-jest": "^26.4.2"
     },
     "scripts": {
@@ -94,6 +96,7 @@
     "dependencies": {
         "@babel/preset-typescript": "^7.16.5",
         "@deriv/analytics": "^1.4.5",
+        "@deriv/quill-design": "^1.2.10",
         "@sendbird/chat": "^4.9.7",
         "@types/react-transition-group": "^4.4.4",
         "babel-jest": "^27.3.1",

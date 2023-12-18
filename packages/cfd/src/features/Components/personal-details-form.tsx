@@ -280,7 +280,7 @@ const PersonalDetailsForm = ({
                                         size='xxs'
                                         align='center'
                                         className='details-form__description'
-                                        data-testid='dt_cfd_details_form_description'
+                                        data-testid='dt_personal_details_form'
                                     >
                                         <Localize
                                             i18n_default_text={

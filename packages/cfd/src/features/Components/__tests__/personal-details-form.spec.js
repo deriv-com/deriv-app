@@ -106,7 +106,7 @@ describe('<PersonalDetailsForm />', () => {
     it('should render properly on desktop', async () => {
         render(<PersonalDetailsForm {...props} />);
 
-        expect(screen.getByTestId('dt_cfd_details_form_description')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_personal_details_form')).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /citizenship/i })).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /tax residence/i })).toBeInTheDocument();
         expect(screen.getByRole('textbox', { name: /tax identification number/i })).toBeInTheDocument();
@@ -126,14 +126,14 @@ describe('<PersonalDetailsForm />', () => {
     it("should show that it's loading when is_loading is true", () => {
         render(<PersonalDetailsForm {...props} is_loading />);
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
-        expect(screen.queryByTestId('dt_cfd_details_form_description')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('dt_personal_details_form')).not.toBeInTheDocument();
     });
 
     it("should show that it's loading when residence_list is still empty", () => {
         render(<PersonalDetailsForm {...props} residence_list={[]} />);
 
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
-        expect(screen.queryByTestId('dt_cfd_details_form_description')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('dt_personal_details_form')).not.toBeInTheDocument();
     });
 
     it('should disable Citizenship and Tax residence fields if they were submitted earlier & immutable from BE', async () => {

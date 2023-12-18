@@ -32,11 +32,10 @@ const wrapper = ({ children }: PropsWithChildren) => (
 );
 describe('WalletListCardActions', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
         mockedUseDevice.mockReturnValue({ isDesktop: true, isMobile: false, isTablet: false });
     });
-    afterAll(() => {
-        jest.resetModules();
+    afterEach(() => {
+        jest.clearAllMocks();
     });
     it('should show the actions texts if the real wallet is active', () => {
         render(<WalletListCardActions isActive isDemo={false} loginid='CRW123456' />, { wrapper });

@@ -1,11 +1,11 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import { BrowserRouter } from 'react-router-dom';
-import userEvent from '@testing-library/user-event';
 import TutorialsTabMobile from '../tutorials-tab-mobile';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
@@ -19,7 +19,6 @@ const userGuideContent = [
         subtype: 'OnBoard',
         content: 'Get started on Deriv Bot',
         src: 'dbot-onboard-tour.png',
-        tab_id: 0,
     },
 ];
 
@@ -30,7 +29,6 @@ const guideContent = [
         content: 'Deriv Bot - your automated trading partner',
         url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
         src: 'video_dbot.webp',
-        tab_id: 0,
     },
 ];
 
@@ -40,10 +38,21 @@ const faqContent = [
         description: [
             {
                 type: 'text',
-                content: 'eriv Bot is a web-based strategy builder for trading digital options',
+                content: 'Deriv Bot is a web-based strategy builder for trading digital options',
             },
         ],
-        tab_id: 2,
+    },
+];
+
+const qsContent = [
+    {
+        title: 'About Martingale?',
+        description: [
+            {
+                type: 'text',
+                content: 'Exploring the Martingale strategy in Deriv Bot',
+            },
+        ],
     },
 ];
 
@@ -69,7 +78,9 @@ describe('<TutorialsTabDesktop />', () => {
         );
         render(
             <BrowserRouter>
-                <TutorialsTabMobile tutorial_tabs={[...userGuideContent, ...guideContent, ...faqContent]} />
+                <TutorialsTabMobile
+                    tutorial_tabs={[...userGuideContent, ...guideContent, ...faqContent, ...qsContent]}
+                />
             </BrowserRouter>,
             {
                 wrapper,

@@ -84,6 +84,8 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
         form_initial_values: {},
     });
 
+    const notification_timeout = React.useRef<NodeJS.Timeout>();
+
     const [start_on_submit_timeout, setStartOnSubmitTimeout] = React.useState<{
         is_timeout_started: boolean;
         timeout_callback: () => void;
@@ -128,7 +130,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
             setSubmitting(false);
         } else {
             // Adding a delay to show the notification after the page reload
-            const notification_timeout = setTimeout(() => {
+            notification_timeout.current = setTimeout(() => {
                 if (data.set_settings.notification) {
                     showPOAAddressMismatchSuccessNotification();
                 } else if (has_poa_address_mismatch) {
@@ -162,12 +164,10 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                 const from = url_params.get('from') as keyof typeof routes;
                 history.push(routes[from]);
             }
-
-            return () => {
-                clearTimeout(notification_timeout);
-            };
         }
     };
+
+    React.useEffect(() => () => clearTimeout(notification_timeout.current), []);
 
     React.useEffect(() => {
         let timeout_id: NodeJS.Timeout;

@@ -181,9 +181,10 @@ module.exports = function (env) {
         devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
         externals: [
             {
+                '@deriv/api': true,
+                classnames: true,
                 react: true,
                 'react-dom': true,
-                classnames: true,
                 'react-router-dom': true,
             },
         ],

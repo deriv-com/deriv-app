@@ -32,7 +32,7 @@ const InfoPanel = observer(() => {
 
     const renderInfo = () => (
         <div className='db-info-panel'>
-            <div className='db-info-panel__close-action' onClick={handleClose}>
+            <div data-testid='close-icon' className='db-info-panel__close-action' onClick={handleClose}>
                 <Icon width='1rem' height='1rem' icon='IcCloseIconDbot' />
             </div>
 

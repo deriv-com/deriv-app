@@ -22,27 +22,27 @@ const useP2PCompletedOrdersNotification = () => {
     }, [is_authorize, is_p2p_enabled, subscribe, unsubscribe]);
 
     React.useEffect(() => {
-        // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` after order completion
+        // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` if order info updated
         if (data?.p2p_order_info) {
             // create new list if it doesn't exist
             if (!notifications?.p2p_completed_orders) {
-                // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` after order completion
+                // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` if order info updated
                 notifications.p2p_completed_orders = [data.p2p_order_info];
                 return;
             }
             // insert new order to the top of the list if it's not already there
-            // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` after order completion
+            // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` if order info updated
             if (!notifications?.p2p_completed_orders.includes(data.p2p_order_info)) {
-                // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` after order completion
+                // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` if order info updated
                 notifications?.p2p_completed_orders.unshift(data.p2p_order_info);
             }
             // update order if it's already in the list
             else {
                 const index = notifications?.p2p_completed_orders.findIndex(
-                    // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` after order completion
+                    // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` if order info updated
                     order => order.id === data.p2p_order_info.id
                 );
-                // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` after order completion
+                // @ts-expect-error `p2p_order_list` return individual `p2p_order_info` if order info updated
                 notifications?.p2p_completed_orders.splice(index, 1, data.p2p_order_info);
             }
         }

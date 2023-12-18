@@ -39,9 +39,11 @@ describe('<MigrationSuccessModal />', () => {
 
     it('should not render open position banner if has_open_positions is false', () => {
         render(<MigrationSuccessModalContent {...props} />, { wrapper });
+
         expect(
             screen.queryByText(/you can continue with the open positions on your current account\(s\)\./i)
         ).not.toBeInTheDocument();
+
         const button = screen.getByRole('button', {
             name: /transfer now/i,
         });
@@ -52,9 +54,11 @@ describe('<MigrationSuccessModal />', () => {
 
     it('should render open position banner if has_open_positions is true', () => {
         render(<MigrationSuccessModalContent {...props} has_open_positions />, { wrapper });
+
         expect(
             screen.getByText(/you can continue with the open positions on your current account\(s\)\./i)
         ).toBeInTheDocument();
+
         const button = screen.getByRole('button', {
             name: /ok/i,
         });

@@ -10,18 +10,13 @@ import RootStore from 'Stores/index';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import InfoPanel from '../info-panel';
 
-jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
-jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
-    saveRecentWorkspace: jest.fn(),
-    unHighlightAllBlocks: jest.fn(),
-}));
-jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
+jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 
 describe('InfoPanel', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    const mock_store = mockStore({});
 
     beforeAll(() => {
-        const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 
         wrapper = ({ children }: { children: JSX.Element }) => (
@@ -52,8 +47,17 @@ describe('InfoPanel', () => {
     it('should render the switching of tabs upon clicking the text link', () => {
         render(<InfoPanel />, { wrapper });
 
-        const tab_switch = screen.getByText('Deriv Bot - your automated trading partner');
-        userEvent.click(tab_switch);
+        const guide_tab = screen.getByText('Deriv Bot - your automated trading partner');
+        userEvent.click(guide_tab);
         expect(mock_DBot_store?.dashboard.setActiveTab(DBOT_TABS.TUTORIAL));
+    });
+
+    it('should render the tutorial tab and FAQ tab', () => {
+        mock_store.ui.is_mobile = true;
+        render(<InfoPanel />, { wrapper });
+
+        const faq_tab = screen.getByText('What is Deriv Bot?');
+        userEvent.click(faq_tab);
+        expect(mock_DBot_store?.dashboard.setActiveTabTutorial(1));
     });
 });

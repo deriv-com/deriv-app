@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv/quill-design';
+import { qtMerge, Text } from '@deriv/quill-design';
 
 type TProps = {
     description: string;
@@ -12,11 +12,11 @@ type TProps = {
 const MT5AccountTypeCard: React.FC<TProps> = ({ description, icon, isSelected, onClick, title }) => {
     return (
         <div
-            className={
+            className={qtMerge(
                 isSelected
                     ? 'rounded-800 border-brand-blue bg-system-light-primary-background cursor-pointer border-solid border-sm'
                     : 'cursor-pointer'
-            }
+            )}
             onClick={onClick}
             onKeyDown={e => {
                 if (e.key === 'Enter' || e.key === ' ') {

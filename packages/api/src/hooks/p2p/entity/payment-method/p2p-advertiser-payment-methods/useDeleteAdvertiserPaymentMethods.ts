@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import useInvalidateQuery from '../../useInvalidateQuery';
-import useMutation from '../../useMutation';
+import useInvalidateQuery from '../../../../../useInvalidateQuery';
+import useMutation from '../../../../../useMutation';
 
 /** A custom hook that sends a request to delete an existing p2p advertiser payment method. */
 const useDeleteAdvertiserPaymentMethods = () => {

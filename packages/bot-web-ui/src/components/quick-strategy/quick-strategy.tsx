@@ -201,7 +201,7 @@ const QuickStrategy = observer(() => {
                         </MobileFormWrapper>
                     </MobileFullPageModal>
                 ) : (
-                    <Modal className='modal--strategy' is_open={is_open} width={'99.6rem'}>
+                    <Modal className='modal--strategy' is_open={is_open} width='72rem'>
                         <DesktopFormWrapper>
                             <Form />
                         </DesktopFormWrapper>

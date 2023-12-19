@@ -142,7 +142,7 @@ export const getValidationRules = (): TValidationRules => ({
                 {
                     func: (value: TTradeStore['expiry_time'], options, store) =>
                         store?.contract_start_type === 'spot' || isTimeValid(value ?? ''),
-                    message: localize('Please enter the start time in the format "HH:MM".'),
+                    message: localize('Please enter the expiry time in the format "HH:MM".'),
                 },
             ],
             [

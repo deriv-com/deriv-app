@@ -63,6 +63,10 @@
     .qs {
         &__body__content__description {
             padding: 1rem 0;
+            width: 85%;
+            .dbot-accordion__navbar span {
+                font-size: 1.6rem;
+            }
         }
 
         &__long_description__image {

@@ -17,9 +17,9 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     const limitsCaseKey = `${sourceWalletType}_to_${targetWalletType}` as const;
 
     //@ts-expect-error needs backend type
-    const allowedSumActiveWalletCurrency = limits?.lifetime_transfers?.[limitsCaseKey].allowed as number;
+    const allowedSumActiveWalletCurrency = limits?.lifetime_transfers?.[limitsCaseKey]?.allowed as number;
     //@ts-expect-error needs backend type
-    const availableSumActiveWalletCurrency = limits?.lifetime_transfers?.[limitsCaseKey].available as number;
+    const availableSumActiveWalletCurrency = limits?.lifetime_transfers?.[limitsCaseKey]?.available as number;
 
     if (
         !sourceAccount.currency ||

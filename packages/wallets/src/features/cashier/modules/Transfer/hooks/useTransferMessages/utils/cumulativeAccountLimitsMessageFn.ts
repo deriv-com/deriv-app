@@ -22,15 +22,15 @@ const cumulativeAccountLimitsMessageFn = ({
 
     const allowedSumUSD = isDemoTransfer
         ? //@ts-expect-error needs backend type
-          (limits?.daily_cumulative_amount_transfers?.virtual.allowed as number)
+          (limits?.daily_cumulative_amount_transfers?.virtual?.allowed as number)
         : //@ts-expect-error needs backend type
-          (limits?.daily_cumulative_amount_transfers?.[platformKey].allowed as number);
+          (limits?.daily_cumulative_amount_transfers?.[platformKey]?.allowed as number);
 
     const availableSumUSD = isDemoTransfer
         ? //@ts-expect-error needs backend type
-          (limits?.daily_cumulative_amount_transfers?.virtual.available as number)
+          (limits?.daily_cumulative_amount_transfers?.virtual?.available as number)
         : //@ts-expect-error needs backend type
-          (limits?.daily_cumulative_amount_transfers?.[platformKey].available as number);
+          (limits?.daily_cumulative_amount_transfers?.[platformKey]?.available as number);
 
     if (
         !sourceAccount.currency ||

@@ -12,7 +12,7 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
     required_verification_docs: {
         document_number: {
             icon: 'IcDocumentNumberVerification',
-            text: localize('Document number (identity card, passport)'),
+            text: localize("Document number (e.g. identity card, passport, driver's license)"),
         },
         selfie: {
             icon: 'IcSelfieVerification',
@@ -20,30 +20,26 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
         },
         identity_document: {
             icon: 'IcIdentityDocumentVerification',
-            text: localize('A copy of your identity document (identity card, passport)'),
+            text: localize("A copy of your identity document (e.g. identity card, passport, driver's license)"),
         },
         name_and_address: {
             icon: 'IcNameAndAddressVerification',
             text: localize(
-                'A recent utility bill (electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
+                'A recent utility bill (e.g. electricity, water or gas) or recent bank statement or government-issued letter with your name and address.'
             ),
-        },
-        not_applicable: {
-            icon: 'IcNotApplicableVerification',
-            text: '',
         },
     },
     status_references: [
         {
             icon: 'IcVerificationStatusYellow',
-            text: localize('Your document is pending for verification.'),
+            text: localize('Verification in review.'),
             color: 'yellow',
         },
         {
             icon: 'IcVerificationStatusRed',
-            text: localize('Verification failed. Resubmit during account creation.'),
+            text: localize('Verification failed. Resubmit your details.'),
             color: 'red',
         },
-        { icon: 'IcVerificationStatusGreen', text: localize('Your document is verified.'), color: 'green' },
+        { icon: 'IcVerificationStatusGreen', text: localize('Verification successful.'), color: 'green' },
     ],
 });

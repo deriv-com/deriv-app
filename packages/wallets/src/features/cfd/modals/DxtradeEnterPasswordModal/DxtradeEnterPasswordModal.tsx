@@ -37,9 +37,9 @@ const DxtradeEnterPasswordModal = () => {
 
     const successDescription = useMemo(() => {
         return accountType === 'demo'
-            ? "Let's practise trading with 10,000 USD virtual funds."
+            ? `Let's practise trading with ${activeWallet?.display_balance} virtual funds.`
             : `Transfer funds from your ${activeWallet?.currency} Wallet to your ${PlatformDetails.dxtrade.title} account to start trading.`;
-    }, [accountType, activeWallet?.currency]);
+    }, [accountType, activeWallet?.currency, activeWallet?.display_balance]);
 
     const dxtradeBalance = useMemo(() => {
         return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;
@@ -55,21 +55,25 @@ const DxtradeEnterPasswordModal = () => {
                             hide();
                         }}
                         size='lg'
-                        text='OK'
-                    />
+                    >
+                        OK
+                    </WalletButton>
                 );
             }
             return (
                 <WalletButtonGroup isFlex isFullWidth>
-                    <WalletButton onClick={() => hide()} size='lg' text='Maybe later' variant='outlined' />
+                    <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                        Maybe later
+                    </WalletButton>
                     <WalletButton
                         onClick={() => {
                             hide();
                             history.push('/wallets/cashier/transfer');
                         }}
                         size='lg'
-                        text='Transfer funds'
-                    />
+                    >
+                        Transfer funds
+                    </WalletButton>
                 </WalletButtonGroup>
             );
         }
@@ -87,17 +91,19 @@ const DxtradeEnterPasswordModal = () => {
                             );
                         }}
                         size='lg'
-                        text='Forgot password?'
                         variant='outlined'
-                    />
+                    >
+                        Forgot password?
+                    </WalletButton>
                     <WalletButton
                         disabled={!password || isLoading}
                         isFullWidth
                         isLoading={isLoading}
                         onClick={onSubmit}
                         size='lg'
-                        text='Add account'
-                    />
+                    >
+                        Add account
+                    </WalletButton>
                 </WalletButtonGroup>
             );
         }
@@ -109,8 +115,9 @@ const DxtradeEnterPasswordModal = () => {
                 isLoading={isLoading}
                 onClick={onSubmit}
                 size='lg'
-                text={`Create ${PlatformDetails.dxtrade.title} password`}
-            />
+            >
+                {`Create ${PlatformDetails.dxtrade.title} password`}
+            </WalletButton>
         );
     }, [
         accountType,
@@ -175,6 +182,7 @@ const DxtradeEnterPasswordModal = () => {
                         )
                     }
                     password={password}
+                    passwordError={error?.error?.code === 'PasswordError'}
                     platform={dxtradePlatform}
                 />
             );
@@ -187,11 +195,11 @@ const DxtradeEnterPasswordModal = () => {
         onSubmit,
         password,
         dxtradePlatform,
+        error?.error?.code,
         show,
     ]);
-
-    if (status === 'error') {
-        return <WalletError errorMessage={error?.error.message} onClick={() => hide()} title={error?.error?.code} />;
+    if (status === 'error' && error?.error?.code !== 'PasswordError') {
+        return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;
     }
 
     if (isMobile) {

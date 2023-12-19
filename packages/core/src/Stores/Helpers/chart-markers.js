@@ -39,7 +39,7 @@ export const createChartMarkers = (contract_info, is_delayed_markers_update) => 
         if (contract_info.tick_count) {
             const tick_markers = createTickMarkers(contract_info, is_delayed_markers_update);
             markers.push(...tick_markers);
-        } else if (chart_type !== 'candle') {
+        } else if (chart_type !== 'candles') {
             const spot_markers = Object.keys(marker_spots).map(type => marker_spots[type](contract_info));
             markers.push(...spot_markers);
         }

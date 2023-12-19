@@ -1,9 +1,19 @@
 .my-profile-stats {
-    &-separator {
+    &__separator {
         margin: 1.6rem 0;
 
         @include mobile {
             margin: 1.6rem -1.6rem;
+            width: 100vw;
+        }
+    }
+
+    &__navigation {
+        display: flex;
+        justify-content: space-between;
+
+        &:last-child {
+            margin-bottom: 1.6rem;
         }
     }
 }

@@ -1,10 +1,9 @@
 import React from 'react';
 import { Accordion, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { TDescription } from '../config';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { TDescription } from '../config';
 
 type TFAQContent = {
     faq_list: TFAQList[];
@@ -15,9 +14,8 @@ type TFAQList = {
     description: TDescription[];
 };
 
-const FAQ = ({ type, content, src, imageclass }: TDescription) => {
+const FAQ = ({ type, content, src, imageclass, is_mobile }: TDescription) => {
     if (type === 'image') return <img src={src} className={imageclass} />;
-    const is_mobile = isMobile();
 
     return (
         <Text
@@ -41,9 +39,11 @@ const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
     }
 };
 
-const FAQContent = observer(({ faq_list }: TFAQContent) => {
+const FAQContent = ({ faq_list }: TFAQContent) => {
+    const { ui } = useStore();
     const { dashboard } = useDBotStore();
     const { active_tab_tutorials } = dashboard;
+    const { is_mobile } = ui;
 
     const faq_wrapper_element = React.useRef<HTMLDivElement>(null);
     const timer_id = React.useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -82,39 +82,48 @@ const FAQContent = observer(({ faq_list }: TFAQContent) => {
                     className='faq__title'
                     weight='bold'
                     key={title}
-                    size={isMobile() ? 'xs' : 's'}
+                    size={is_mobile ? 'xs' : 's'}
                 >
                     {title}
                 </Text>
             ),
             content: description?.map((item, index) => (
-                <FAQ {...item} key={`faq-description-item-${item?.content}-${index}`} />
+                <FAQ {...item} is_mobile={is_mobile} key={`faq-description-item-${item?.content}-${index}`} />
             )),
         }));
     };
 
-    return (
-        <div data-testid='id-faq__wrapper'>
-            <div className='faq__wrapper' ref={faq_wrapper_element}>
-                {faq_list?.length > 0 && (
-                    <>
-                        {active_tab_tutorials === 2 && (
-                            <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
-                                <Localize i18n_default_text='FAQ' />
-                            </Text>
-                        )}
-                        <div
-                            data-testid='id-accordion-test'
-                            onClick={handleAccordionClick}
-                            onKeyDown={handleKeyboardEvent}
-                        >
-                            <Accordion className='faq__wrapper__content' list={getList()} icon_close='' icon_open='' />
-                        </div>
-                    </>
-                )}
+    return React.useMemo(
+        () => (
+            <div data-testid='id-faq__wrapper'>
+                <div className='faq__wrapper' ref={faq_wrapper_element}>
+                    {faq_list?.length > 0 && (
+                        <>
+                            {active_tab_tutorials === 2 && (
+                                <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
+                                    <Localize i18n_default_text='FAQ' />
+                                </Text>
+                            )}
+                            <div
+                                data-testid='id-accordion-test'
+                                onClick={handleAccordionClick}
+                                onKeyDown={handleKeyboardEvent}
+                            >
+                                <Accordion
+                                    className='faq__wrapper__content'
+                                    list={getList()}
+                                    icon_close=''
+                                    icon_open=''
+                                />
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
-        </div>
+        ),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [faq_list]
     );
-});
+};
 
 export default FAQContent;

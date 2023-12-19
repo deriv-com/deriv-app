@@ -1,10 +1,11 @@
 import React from 'react';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@deriv/bot-skeleton';
-import { isMobile } from '@deriv/shared';
+import { TStores } from '@deriv/stores/types';
 import { localize } from '@deriv/translations';
 import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
 import { TStrategy } from 'Types';
+import RootStore from './root-store';
 
 interface ILoadModalStore {
     active_index: number;
@@ -51,10 +52,11 @@ interface ILoadModalStore {
 }
 
 export default class LoadModalStore implements ILoadModalStore {
-    root_store: any;
+    root_store: RootStore;
+    core: TStores;
     previewed_strategy_id = '';
 
-    constructor(root_store: any) {
+    constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
             active_index: observable,
             previewed_strategy_id: observable,
@@ -101,6 +103,7 @@ export default class LoadModalStore implements ILoadModalStore {
         });
 
         this.root_store = root_store;
+        this.core = core;
 
         reaction(
             () => this.active_index,
@@ -149,7 +152,7 @@ export default class LoadModalStore implements ILoadModalStore {
     }
 
     get tab_name() {
-        if (isMobile()) {
+        if (this.core.ui.is_mobile) {
             if (this.active_index === 0) return tabs_title.TAB_LOCAL;
             if (this.active_index === 1) return tabs_title.TAB_GOOGLE;
         }

@@ -6,7 +6,7 @@ import { Button, DesktopWrapper, HintBox, Loading, Text } from '@deriv/component
 import {
     filterObjProperties,
     getIDVNotApplicableOption,
-    idv_error_statuses,
+    IDV_ERROR_STATUS,
     isEmptyObject,
     isMobile,
     removeEmptyPropertiesFromObject,
@@ -14,9 +14,8 @@ import {
     toMoment,
     WS,
 } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import PoiNameExample from '../../../../Assets/ic-poi-name-example.svg';
-import PoiDobExample from '../../../../Assets/ic-poi-dob-example.svg';
 import PoiNameDobExample from '../../../../Assets/ic-poi-name-dob-example.svg';
 import FormBody from '../../../form-body';
 import IDVForm from '../../../forms/idv-form';
@@ -24,7 +23,6 @@ import FormFooter from '../../../form-footer';
 import FormSubHeader from '../../../form-sub-header';
 import PersonalDetailsForm from '../../../forms/personal-details-form.jsx';
 import {
-    getIDVDocumentType,
     isAdditionalDocumentValid,
     isDocumentNumberValid,
     isDocumentTypeValid,
@@ -37,11 +35,11 @@ import {
     GENERIC_ERROR_MESSAGE,
     DUPLICATE_ACCOUNT_ERROR_MESSAGE,
     CLAIMED_DOCUMENT_ERROR_MESSAGE,
+    generateIDVError,
 } from '../../../../Configs/poi-error-config';
 import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';
 import { TIDVFormValues, TPersonalDetailsForm } from '../../../../Types';
 import LoadErrorMessage from '../../../load-error-message';
-import { useStore } from '@deriv/stores';
 
 type TRestState = {
     api_error: string;
@@ -76,7 +74,7 @@ const IdvFailed = ({
     residence_list,
     account_settings,
     handleSubmit,
-    mismatch_status = idv_error_statuses.poi_failed,
+    mismatch_status = IDV_ERROR_STATUS.Failed.code,
     latest_status,
     selected_country,
 }: TIdvFailed) => {
@@ -98,8 +96,14 @@ const IdvFailed = ({
         changeable_fields: [],
     });
 
+    // Document upload not required for the below error codes
     const is_document_upload_required = React.useMemo(
-        () => [idv_error_statuses.poi_expired, idv_error_statuses.poi_failed].includes(mismatch_status),
+        () =>
+            ![
+                IDV_ERROR_STATUS.DobMismatch.code,
+                IDV_ERROR_STATUS.NameMismatch.code,
+                IDV_ERROR_STATUS.NameDobMismatch.code,
+            ].includes(mismatch_status),
         [mismatch_status]
     );
 
@@ -116,91 +120,6 @@ const IdvFailed = ({
     );
 
     const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
-
-    const generateIDVError = React.useCallback(() => {
-        const document_name = is_document_upload_required
-            ? 'identity document'
-            : getIDVDocumentType(latest_status, chosen_country);
-        switch (mismatch_status) {
-            case idv_error_statuses.poi_name_dob_mismatch:
-                return {
-                    required_fields: ['first_name', 'last_name', 'date_of_birth'],
-                    side_note_image: <PoiNameDobExample />,
-                    inline_note_text: (
-                        <Localize
-                            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your {{document_name}}.'
-                            components={[<strong key={0} />]}
-                            values={{ document_name }}
-                        />
-                    ),
-                    failure_message: (
-                        <Localize
-                            i18n_default_text="The <0>name</0> and <0>date of birth</0> on your identity document don't match your profile."
-                            components={[<strong key={0} />]}
-                        />
-                    ),
-                };
-            case idv_error_statuses.poi_name_mismatch:
-                return {
-                    required_fields: ['first_name', 'last_name'],
-                    side_note_image: <PoiNameExample />,
-                    inline_note_text: (
-                        <Localize
-                            i18n_default_text='To avoid delays, enter your <0>name</0> exactly as it appears on your {{document_name}}.'
-                            components={[<strong key={0} />]}
-                            values={{ document_name }}
-                        />
-                    ),
-                    failure_message: (
-                        <Localize
-                            i18n_default_text="The <0>name</0> on your identity document doesn't match your profile."
-                            components={[<strong key={0} />]}
-                        />
-                    ),
-                };
-            case idv_error_statuses.poi_dob_mismatch:
-                return {
-                    required_fields: ['date_of_birth'],
-                    side_note_image: <PoiDobExample />,
-                    inline_note_text: (
-                        <Localize
-                            i18n_default_text='To avoid delays, enter your <0>date of birth</0> exactly as it appears on your {{document_name}}.'
-                            components={[<strong key={0} />]}
-                            values={{ document_name }}
-                        />
-                    ),
-                    failure_message: (
-                        <Localize
-                            i18n_default_text="The <0>date of birth</0> on your identity document doesn't match your profile."
-                            components={[<strong key={0} />]}
-                        />
-                    ),
-                };
-            default:
-                return {
-                    required_fields: ['first_name', 'last_name', 'date_of_birth'],
-                    side_note_image: <PoiNameDobExample />,
-                    inline_note_text: (
-                        <Localize
-                            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your {{document_name}}.'
-                            components={[<strong key={0} />]}
-                            values={{ document_name }}
-                        />
-                    ),
-                    failure_message: (
-                        <Localize
-                            i18n_default_text='{{ banner_message }}'
-                            values={{
-                                banner_message:
-                                    mismatch_status === 'POI_EXPIRED'
-                                        ? 'Your identity document has expired.'
-                                        : 'We were unable to verify the identity document with the details provided.',
-                            }}
-                        />
-                    ),
-                };
-        }
-    }, [latest_status, mismatch_status, chosen_country]);
 
     React.useEffect(() => {
         const initializeFormValues = async (required_fields: string[]) => {
@@ -235,7 +154,12 @@ const IdvFailed = ({
 
         setIsAlreadyAttempted(true);
 
-        const error_config = generateIDVError();
+        const error_config = generateIDVError(
+            is_document_upload_required,
+            latest_status,
+            chosen_country,
+            mismatch_status
+        );
         setIdvFailure(error_config);
         initializeFormValues(error_config?.required_fields ?? []).catch(e => {
             setRestState({
@@ -410,15 +334,21 @@ const IdvFailed = ({
                         />
                         <DesktopWrapper>
                             {!is_from_external && (
-                                <Button
-                                    className='proof-of-identity__submit-button'
-                                    type='submit'
-                                    has_effect
-                                    is_disabled={!dirty || isSubmitting || !isValid}
-                                    text={is_document_upload_required ? localize('Verify') : localize('Update profile')}
-                                    large
-                                    primary
-                                />
+                                <div className='proof-of-identity__actions'>
+                                    <Button
+                                        className='proof-of-identity__submit-button'
+                                        type='submit'
+                                        has_effect
+                                        is_disabled={!dirty || isSubmitting || !isValid}
+                                        text={
+                                            is_document_upload_required
+                                                ? localize('Verify')
+                                                : localize('Update profile')
+                                        }
+                                        large
+                                        primary
+                                    />
+                                </div>
                             )}
                         </DesktopWrapper>
                     </FormBody>

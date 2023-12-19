@@ -26,7 +26,7 @@ const MT5AccountTypeCard: FC<TProps> = ({ description, icon, isSelected, onClick
             role='button'
             tabIndex={0}
         >
-            <div className='flex w-[26.4rem] h-[25rem] items-start'>
+            <div className='flex w-[264px] h-[250px] items-start'>
                 <div className='flex items-start flex-1 p-1200 self-stretch rounded-lg border-system-light-active-background bg-system-light-primary-background border-solid border-sm'>
                     <div className='flex flex-col items-center gap-1200 self-stretch justify-center'>
                         {icon}

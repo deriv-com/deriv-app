@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Heading, Text } from '@deriv/quill-design';
+import { GetMoreMT5Accounts } from '../../features/cfd/screens';
 
 const TradersHubRoute: React.FC = () => (
     <div className='flex flex-col gap-1200'>
@@ -55,6 +56,7 @@ const TradersHubRoute: React.FC = () => (
                         <div className='h-4000 rounded-300 bg-solid-slate-100' />
                         <div className='h-4000 rounded-300 bg-solid-slate-100' />
                     </div>
+                    <GetMoreMT5Accounts />
                 </div>
                 <div>
                     <Text bold className='pb-800' size='md'>

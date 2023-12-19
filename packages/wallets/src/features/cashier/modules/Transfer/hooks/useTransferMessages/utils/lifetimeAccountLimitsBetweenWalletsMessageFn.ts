@@ -1,4 +1,4 @@
-import { TMessageFnProps } from '../types';
+import { TMessageFnProps } from '../../../types';
 
 // this function should work once BE WALL-1440 is delivered
 const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
@@ -7,7 +7,6 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     displayMoney,
     limits,
     sourceAccount,
-    sourceAmount,
     targetAccount,
 }: TMessageFnProps) => {
     if (sourceAccount?.account_category !== 'wallet' || targetAccount?.account_category !== 'wallet') return null;
@@ -47,22 +46,14 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
         ] ?? 1);
 
     const sourceCurrencyLimit = transferDirection === 'from' ? allowedSumActiveWalletCurrency : allowedSumConverted;
-    const targetCurrencyLimit = transferDirection === 'from' ? allowedSumConverted : allowedSumActiveWalletCurrency;
 
     const sourceCurrencyRemainder =
         transferDirection === 'from' ? availableSumActiveWalletCurrency : availableSumConverted;
-    const targetCurrencyRemainder =
-        transferDirection === 'from' ? availableSumConverted : availableSumActiveWalletCurrency;
 
     const formattedSourceCurrencyLimit = displayMoney?.(
         sourceCurrencyLimit,
         sourceAccount.currencyConfig.display_code,
         sourceAccount.currencyConfig.fractional_digits
-    );
-    const formattedTargetCurrencyLimit = displayMoney?.(
-        targetCurrencyLimit,
-        targetAccount.currencyConfig.display_code,
-        targetAccount.currencyConfig?.fractional_digits
     );
 
     const formattedSourceCurrencyRemainder = displayMoney?.(
@@ -70,28 +61,60 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
         sourceAccount.currencyConfig.display_code,
         sourceAccount.currencyConfig.fractional_digits
     );
-    const formattedTargetCurrencyRemainder = displayMoney?.(
-        targetCurrencyRemainder,
-        targetAccount.currencyConfig?.display_code,
-        targetAccount.currencyConfig?.fractional_digits
-    );
 
     if (availableSumActiveWalletCurrency === 0)
         return {
-            text: `You've reached the lifetime transfer limit from your ${sourceAccount.accountName} to any ${targetWalletType} Wallet. Verify your account to upgrade the limit.`,
+            key: 'LIFETIME_TRANSFER_LIMIT_REACHED' as const,
             type: 'error' as const,
+            values: {
+                sourceAccountName: sourceAccount.accountName,
+                targetWalletType,
+            },
         };
 
     if (allowedSumActiveWalletCurrency === availableSumActiveWalletCurrency)
-        return {
-            text: `The lifetime transfer limit from ${sourceAccount.accountName} to any ${targetWalletType} Wallet is ${formattedSourceCurrencyLimit} (${formattedTargetCurrencyLimit}).`,
-            type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
-        };
+        switch (limitsCaseKey) {
+            case 'fiat_to_crypto':
+            case 'crypto_to_fiat':
+                return {
+                    key: 'LIFETIME_TRANSFER_LIMIT_ALLOWED_CRYPTO_AND_FIAT' as const,
+                    type: 'success' as const,
+                    values: {
+                        sourceAccountName: sourceAccount.accountName,
+                        targetWalletType,
+                    },
+                };
+            case 'crypto_to_crypto':
+                return {
+                    key: 'LIFETIME_TRANSFER_LIMIT_ALLOWED_CRYPTO' as const,
+                    type: 'success' as const,
+                    values: { formattedSourceCurrencyLimit },
+                };
+            default:
+                return null;
+        }
 
-    return {
-        text: `Remaining lifetime transfer limit is ${formattedSourceCurrencyRemainder} (${formattedTargetCurrencyRemainder}). Verify your account to upgrade the limit.`,
-        type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
-    };
+    switch (limitsCaseKey) {
+        case 'fiat_to_crypto':
+        case 'crypto_to_fiat':
+            return {
+                key: 'LIFETIME_TRANSFER_LIMIT_AVAILABLE_CRYPTO_AND_FIAT' as const,
+                type: 'success' as const,
+                values: {
+                    formattedSourceCurrencyRemainder,
+                    sourceAccountName: sourceAccount.accountName,
+                    targetWalletType,
+                },
+            };
+        case 'crypto_to_crypto':
+            return {
+                key: 'LIFETIME_TRANSFER_LIMIT_AVAILABLE_CRYPTO' as const,
+                type: 'success' as const,
+                values: { formattedSourceCurrencyLimit },
+            };
+        default:
+            return null;
+    }
 };
 
 export default lifetimeAccountLimitsBetweenWalletsMessageFn;

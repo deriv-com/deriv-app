@@ -1,4 +1,4 @@
-import { TMessageFnProps } from '../types';
+import { TMessageFnProps } from '../../../types';
 
 const cumulativeAccountLimitsMessageFn = ({
     activeWallet,
@@ -11,7 +11,6 @@ const cumulativeAccountLimitsMessageFn = ({
 }: TMessageFnProps) => {
     const isTransferBetweenWallets =
         sourceAccount.account_category === 'wallet' && targetAccount.account_category === 'wallet';
-    const isSameCurrency = sourceAccount.currency === targetAccount.currency;
 
     const isDemoTransfer = activeWallet?.is_virtual;
 
@@ -49,14 +48,16 @@ const cumulativeAccountLimitsMessageFn = ({
     if (isDemoTransfer) {
         if (allowedSumUSD === availableSumUSD) {
             return {
-                text: `Your daily transfer limit for virtual funds is ${formattedDemoLimit}.`,
-                type: 'success',
-            } as const;
+                key: 'CUMULATIVE_TRANSFER_LIMIT_ALLOWED_DEMO' as const,
+                type: 'success' as const,
+                values: { formattedDemoLimit },
+            };
         }
         return {
-            text: `Your remaining daily transfer limit for virtual funds is ${formattedDemoLimit}.`,
-            type: 'success',
-        } as const;
+            key: 'CUMULATIVE_TRANSFER_LIMIT_AVAILABLE_DEMO' as const,
+            type: 'success' as const,
+            values: { formattedDemoLimit },
+        };
     }
 
     // separated the exchangeRates check to prevent checking for demo transfer
@@ -69,20 +70,13 @@ const cumulativeAccountLimitsMessageFn = ({
         return null;
 
     const sourceCurrencyLimit = allowedSumUSD * (activeWalletExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
-    const targetCurrencyLimit = allowedSumUSD * (activeWalletExchangeRates?.rates?.[targetAccount.currency] ?? 1);
 
     const sourceCurrencyRemainder = availableSumUSD * (activeWalletExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
-    const targetCurrencyRemainder = availableSumUSD * (activeWalletExchangeRates?.rates?.[targetAccount.currency] ?? 1);
 
     const formattedSourceCurrencyLimit = displayMoney?.(
         sourceCurrencyLimit,
         sourceAccount.currencyConfig.display_code,
         sourceAccount.currencyConfig.fractional_digits
-    );
-    const formattedTargetCurrencyLimit = displayMoney?.(
-        targetCurrencyLimit,
-        targetAccount.currencyConfig.display_code,
-        targetAccount.currencyConfig?.fractional_digits
     );
 
     const formattedSourceCurrencyRemainder = displayMoney?.(
@@ -90,36 +84,40 @@ const cumulativeAccountLimitsMessageFn = ({
         sourceAccount.currencyConfig.display_code,
         sourceAccount.currencyConfig.fractional_digits
     );
-    const formattedTargetCurrencyRemainder = displayMoney?.(
-        targetCurrencyRemainder,
-        targetAccount.currencyConfig?.display_code,
-        targetAccount.currencyConfig?.fractional_digits
-    );
 
     if (availableSumUSD === 0)
         return {
-            text: `You have reached your daily transfer limit of ${formattedSourceCurrencyLimit} ${
-                !isSameCurrency ? ` (${formattedTargetCurrencyLimit})` : ''
-            } between your ${
-                isTransferBetweenWallets ? 'Wallets' : `${sourceAccount.accountName} and ${targetAccount.accountName}`
-            }. The limit will reset at 00:00 GMT.`,
+            key: 'CUMULATIVE_TRANSFER_LIMIT_REACHED' as const,
             type: 'error' as const,
+            values: {
+                formattedSourceCurrencyLimit,
+                isTransferBetweenWallets,
+                sourceAccountName: sourceAccount.accountName,
+                targetAccountName: targetAccount.accountName,
+            },
         };
 
-    if (allowedSumUSD === availableSumUSD) {
+    if (allowedSumUSD === availableSumUSD)
         return {
-            text: `The daily transfer limit between your ${
-                isTransferBetweenWallets ? 'Wallets' : `${sourceAccount.accountName} and ${targetAccount.accountName}`
-            } is ${formattedSourceCurrencyLimit}${!isSameCurrency ? ` (${formattedTargetCurrencyLimit})` : ''}.`,
+            key: 'CUMULATIVE_TRANSFER_LIMIT_ALLOWED' as const,
             type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
+            values: {
+                formattedSourceCurrencyLimit,
+                isTransferBetweenWallets,
+                sourceAccountName: sourceAccount.accountName,
+                targetAccountName: targetAccount.accountName,
+            },
         };
-    }
 
     return {
-        text: `The remaining daily transfer limit between ${
-            isTransferBetweenWallets ? 'Wallets' : `your ${sourceAccount.accountName} and ${targetAccount.accountName}`
-        } is ${formattedSourceCurrencyRemainder}${!isSameCurrency ? ` (${formattedTargetCurrencyRemainder})` : ''}.`,
+        key: 'CUMULATIVE_TRANSFER_LIMIT_AVAILABLE' as const,
         type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
+        values: {
+            formattedSourceCurrencyRemainder,
+            isTransferBetweenWallets,
+            sourceAccountName: sourceAccount.accountName,
+            targetAccountName: targetAccount.accountName,
+        },
     };
 };
 

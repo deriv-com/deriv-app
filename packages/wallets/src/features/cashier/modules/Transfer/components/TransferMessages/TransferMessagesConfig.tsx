@@ -24,6 +24,12 @@ export const TransferMessagesConfig = {
                 }}
             />
         ),
+    CUMULATIVE_TRANSFER_LIMIT_ALLOWED_DEMO: ({ formattedDemoLimit }: TMessage['values']) => (
+        <Trans
+            defaults='Your daily transfer limit for virtual funds is {{formattedDemoLimit}}'
+            values={{ formattedDemoLimit }}
+        />
+    ),
     CUMULATIVE_TRANSFER_LIMIT_AVAILABLE: ({
         formattedSourceCurrencyRemainder,
         isTransferBetweenWallets,
@@ -45,6 +51,12 @@ export const TransferMessagesConfig = {
                 }}
             />
         ),
+    CUMULATIVE_TRANSFER_LIMIT_AVAILABLE_DEMO: ({ formattedDemoLimit }: TMessage['values']) => (
+        <Trans
+            defaults='Your remaining daily transfer limit for virtual funds is {{formattedDemoLimit}}.'
+            values={{ formattedDemoLimit }}
+        />
+    ),
     CUMULATIVE_TRANSFER_LIMIT_REACHED: ({
         formattedSourceCurrencyLimit,
         isTransferBetweenWallets,

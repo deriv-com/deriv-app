@@ -27,7 +27,7 @@ const ScrollToFieldWithError = ({
     }, [should_recollect_inputs_names]);
     React.useEffect(() => {
         const current_error_field_name =
-            all_page_inputs_names.find(input_name => Object.hasOwn(errors, input_name)) || '';
+            all_page_inputs_names.find(input_name => Object.prototype.hasOwnProperty.call(errors, input_name)) || '';
 
         if (fields_to_scroll_top?.includes(current_error_field_name)) {
             scrollToElement(current_error_field_name, 'start');

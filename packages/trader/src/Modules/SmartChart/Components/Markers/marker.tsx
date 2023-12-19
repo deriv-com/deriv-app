@@ -1,9 +1,8 @@
 import { toJS } from 'mobx';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FastMarker } from 'Modules/SmartChart';
 
 type TChartMarker = {
-    is_bottom_widget_visible?: boolean;
     marker_config: {
         ContentComponent: 'div';
         x: string | number;
@@ -17,12 +16,7 @@ type TRef = {
     div: HTMLDivElement;
 };
 
-const ChartMarker = ({
-    marker_config,
-    marker_content_props,
-    is_bottom_widget_visible,
-    is_positioned_behind = false,
-}: TChartMarker) => {
+const ChartMarker = ({ marker_config, marker_content_props, is_positioned_behind = false }: TChartMarker) => {
     const { ContentComponent, ...marker_props } = marker_config;
 
     // TODO:
@@ -32,10 +26,11 @@ const ChartMarker = ({
         if (ref) {
             // NOTE: null price means vertical line.
             if (!marker_props.y) {
-                const margin = (is_bottom_widget_visible ? 115 : 0) + 24; // digit contracts have a widget at the bottom // height of line marker icon
+                const margin = 24; // height of line marker icon
 
                 ref.div.style.height = `calc(100% - ${margin}px)`;
-                ref.div.style.zIndex = '-1';
+            } else {
+                ref.div.style.zIndex = '1';
             }
             if (is_positioned_behind) ref.div.style.zIndex = '-1';
             ref.setPosition({
@@ -44,13 +39,12 @@ const ChartMarker = ({
             });
         }
     };
-
-    // memoizing the marker components data:
-    const getMemoizedComponent = React.useCallback(() => {
-        return <ContentComponent {...toJS(marker_content_props)} />;
-    }, [marker_content_props]);
-
-    return <FastMarker markerRef={onRef}>{getMemoizedComponent()}</FastMarker>;
+    const Component = useMemo(() => ContentComponent, []);
+    return (
+        <FastMarker markerRef={onRef}>
+            <Component {...toJS(marker_content_props)} />
+        </FastMarker>
+    );
 };
 
 export default ChartMarker;

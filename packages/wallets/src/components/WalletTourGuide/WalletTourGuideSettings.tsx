@@ -1,5 +1,5 @@
 import React from 'react';
-import { TooltipRenderProps } from '@deriv/react-joyride';
+import { Step, TooltipRenderProps } from '@deriv/react-joyride';
 import CloseIcon from '../../public/images/close-icon.svg';
 import { THooks } from '../../types';
 import { WalletButton } from '../Base';
@@ -17,8 +17,7 @@ export const tourStepConfig = (
     hasDerivAppsTradingAccount: boolean,
     isAllWalletsAlreadyAdded: boolean,
     walletIndex = 1
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): any[] =>
+): Step[] =>
     isMobile
         ? getMobileSteps(isDemoWallet, hasMT5Account, hasDerivAppsTradingAccount, isAllWalletsAlreadyAdded, walletIndex)
         : getDesktopSteps(

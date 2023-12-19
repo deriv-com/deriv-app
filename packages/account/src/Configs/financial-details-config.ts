@@ -2,7 +2,7 @@ import React from 'react';
 import { GetFinancialAssessment } from '@deriv/api-types';
 import { generateValidationFunction, getDefaultFields, TSchema } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { EMPLOYMENT_VALUES } from 'Constants/financial-details';
+import { EMPLOYMENT_VALUES } from '../Constants/financial-details';
 
 type TFinancialDetailsConfig = {
     real_account_signup_target: string;

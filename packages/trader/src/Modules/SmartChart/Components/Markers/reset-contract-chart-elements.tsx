@@ -4,10 +4,9 @@ import ChartMarker from './marker';
 
 type ResetContractChartElements = {
     contract_info: TContractInfo;
-    is_bottom_widget_visible: boolean;
 };
 
-const ResetContractChartElements = ({ contract_info, is_bottom_widget_visible }: ResetContractChartElements) => {
+const ResetContractChartElements = ({ contract_info }: ResetContractChartElements) => {
     const { contract_type, entry_spot, reset_time, reset_barrier } = contract_info ?? {};
     const is_reset_call = /CALL/i.test(contract_type ?? '');
 
@@ -21,7 +20,6 @@ const ResetContractChartElements = ({ contract_info, is_bottom_widget_visible }:
         <React.Fragment>
             <ChartMarker
                 is_positioned_behind
-                is_bottom_widget_visible={is_bottom_widget_visible}
                 marker_config={{
                     ContentComponent: 'div',
                     x: Number(reset_time),
@@ -33,7 +31,6 @@ const ResetContractChartElements = ({ contract_info, is_bottom_widget_visible }:
             />
             <ChartMarker
                 is_positioned_behind
-                is_bottom_widget_visible={is_bottom_widget_visible}
                 marker_config={{
                     ContentComponent: 'div',
                     x: Number(reset_time),

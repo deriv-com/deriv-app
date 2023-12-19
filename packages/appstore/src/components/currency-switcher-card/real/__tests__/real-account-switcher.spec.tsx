@@ -2,6 +2,8 @@ import React from 'react';
 import RealAccountSwitcher from '../real-account-switcher';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { MT5_ACCOUNT_STATUS } from '@deriv/shared';
+import { useMFAccountStatus } from '@deriv/hooks';
 
 jest.mock('Components/containers/currency-switcher-container', () => ({
     __esModule: true,
@@ -21,12 +23,21 @@ jest.mock('@deriv/account', () => ({
     }),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useMFAccountStatus: jest.fn(),
+}));
+
 jest.mock('Components/pre-loader/currency-switcher-loader', () => ({
     __esModule: true,
     default: () => <div>Loader</div>,
 }));
 
 describe('RealAccountSwitcher', () => {
+    beforeEach(() => {
+        (useMFAccountStatus as jest.Mock).mockReturnValue(null);
+    });
+
     it('should render the component', () => {
         const mock = mockStore({});
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -40,10 +51,10 @@ describe('RealAccountSwitcher', () => {
     it('should render AccountNeedsVerification component with the correct pending status', () => {
         const mock = mockStore({
             traders_hub: {
-                multipliers_account_status: 'pending',
                 is_eu_user: true,
             },
         });
+        (useMFAccountStatus as jest.Mock).mockReturnValue(MT5_ACCOUNT_STATUS.PENDING);
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );

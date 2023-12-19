@@ -64,7 +64,7 @@ class Validator<T extends object, S extends object> {
                 return;
             }
 
-            (this.rules as unknown as { [key: string]: Array<TRule<S>> })[attribute].forEach((rule: TRule<S>) => {
+            (this.rules as { [key: string]: Array<TRule<S>> })[attribute].forEach((rule: TRule<S>) => {
                 const ruleObject = Validator.getRuleObject<S>(rule);
 
                 if (!ruleObject.validator && typeof ruleObject.validator !== 'function') {
@@ -124,7 +124,7 @@ class Validator<T extends object, S extends object> {
                 rule_object_name === 'custom'
                     ? rule_object_options.func
                     : (
-                          getPreBuildDVRs() as unknown as {
+                          getPreBuildDVRs() as {
                               [key: string]: {
                                   func: TRuleOptions<S>['func'];
                               };

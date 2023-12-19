@@ -1,10 +1,10 @@
 import { getValidationRules, getMultiplierValidationRules } from '../validation-rules';
 import { TTradeStore } from 'Types';
-import { isTimeValid } from '@deriv/shared';
+import { isTimeValid, TRuleOptions } from '@deriv/shared';
 import { isSessionAvailable } from '../../Helpers/start-date';
-import type { TRuleOptions } from 'Utils/Validator/validator';
 
-type TExtendedRuleOptions = TRuleOptions & { condition: (store: TTradeStore) => boolean; message: string };
+type TRestParams = [Partial<TRuleOptions<TTradeStore>>, TTradeStore, TTradeStore | undefined];
+type TExtendedRuleOptions = TRuleOptions<TTradeStore> & { condition: (store: TTradeStore) => boolean; message: string };
 
 const mocked_store = {
     barrier_count: 2,
@@ -17,26 +17,13 @@ const mocked_store = {
     take_profit: false,
 } as unknown as TTradeStore;
 
-const default_mocked_params: [TTradeStore['barrier_1'], Partial<TRuleOptions>, TTradeStore, TTradeStore] = [
-    '123',
-    'test' as unknown as Partial<TRuleOptions>,
+const mocked_rest_params: TRestParams = [
+    { min: 0, max: 10 },
     mocked_store,
     {
-        barrier_1: '+123',
-        barrier_2: '-123',
+        barrier_1: '+120',
+        barrier_2: '-100',
     } as TTradeStore,
-];
-
-const start_time_mocked_params: [string, Partial<TRuleOptions>, TTradeStore] = [
-    null as unknown as string,
-    'test' as unknown as Partial<TRuleOptions>,
-    mocked_store,
-];
-
-const expiry_time_mocked_params: [string, Partial<TRuleOptions>, TTradeStore] = [
-    null as unknown as string,
-    'test' as unknown as Partial<TRuleOptions>,
-    mocked_store,
 ];
 
 jest.mock('@deriv/shared', () => ({
@@ -97,25 +84,52 @@ describe('getValidationRules', () => {
         ).toBe(true);
         expect(
             (returned_validation_rules.barrier_1?.rules?.[2][1] as TExtendedRuleOptions).func?.(
-                ...default_mocked_params
+                '-150',
+                ...mocked_rest_params
+            )
+        ).toBe(false);
+        expect((returned_validation_rules.barrier_1.rules?.[2][1] as TExtendedRuleOptions).message).toBe(
+            'Higher barrier must be higher than lower barrier.'
+        );
+        expect(
+            (returned_validation_rules.barrier_1?.rules?.[2][1] as TExtendedRuleOptions).func?.(
+                '+90',
+                ...mocked_rest_params
             )
         ).toBe(true);
 
         mocked_store.barrier_count = 1;
         expect(
-            (returned_validation_rules.barrier_1.rules?.[2][1] as TExtendedRuleOptions).func?.(...default_mocked_params)
-        ).toBe(true);
-        expect(
-            (returned_validation_rules.barrier_1.rules?.[3][1] as TExtendedRuleOptions).func?.(...default_mocked_params)
+            (returned_validation_rules.barrier_1.rules?.[2][1] as TExtendedRuleOptions).func?.(
+                '+90',
+                ...mocked_rest_params
+            )
         ).toBe(true);
         expect(
             (returned_validation_rules.barrier_1.rules?.[3][1] as TExtendedRuleOptions).func?.(
-                '123',
-                'test' as unknown as Partial<TRuleOptions>,
-                mocked_store,
+                'unused value',
+                mocked_rest_params[0],
+                mocked_rest_params[1],
                 {
-                    barrier_1: '123',
-                    barrier_2: '123',
+                    barrier_1: '+0',
+                    barrier_2: '-100',
+                } as TTradeStore
+            )
+        ).toBe(false);
+        expect((returned_validation_rules.barrier_1.rules?.[3][1] as TExtendedRuleOptions).message).toBe(
+            'Barrier cannot be zero.'
+        );
+        expect(
+            (returned_validation_rules.barrier_1.rules?.[3][1] as TExtendedRuleOptions).func?.(
+                'unused value',
+                mocked_rest_params[0],
+                {
+                    ...mocked_store,
+                    is_vanilla: true,
+                } as TTradeStore,
+                {
+                    barrier_1: '+0',
+                    barrier_2: '-100',
                 } as TTradeStore
             )
         ).toBe(true);
@@ -132,11 +146,36 @@ describe('getValidationRules', () => {
             (returned_validation_rules.barrier_2.rules?.[1][1] as TExtendedRuleOptions).condition(mocked_store)
         ).toBe(true);
         expect(
-            (returned_validation_rules.barrier_2.rules?.[2][1] as TExtendedRuleOptions).func?.(...default_mocked_params)
+            (returned_validation_rules.barrier_2.rules?.[2][1] as TExtendedRuleOptions).func?.(
+                '150',
+                ...mocked_rest_params
+            )
         ).toBe(false);
+        expect((returned_validation_rules.barrier_2.rules?.[2][1] as TExtendedRuleOptions).message).toBe(
+            'Both barriers should be relative or absolute'
+        );
         expect(
-            (returned_validation_rules.barrier_2.rules?.[3][1] as TExtendedRuleOptions).func?.(...default_mocked_params)
+            (returned_validation_rules.barrier_2.rules?.[2][1] as TExtendedRuleOptions).func?.(
+                '+150',
+                ...mocked_rest_params
+            )
+        ).toBe(true);
+
+        expect(
+            (returned_validation_rules.barrier_2.rules?.[3][1] as TExtendedRuleOptions).func?.(
+                '+150',
+                ...mocked_rest_params
+            )
         ).toBe(false);
+        expect((returned_validation_rules.barrier_2.rules?.[3][1] as TExtendedRuleOptions).message).toBe(
+            'Lower barrier must be lower than higher barrier.'
+        );
+        expect(
+            (returned_validation_rules.barrier_2.rules?.[3][1] as TExtendedRuleOptions).func?.(
+                '+90',
+                ...mocked_rest_params
+            )
+        ).toBe(true);
     });
 
     it('should contain rules for duration', () => {
@@ -160,31 +199,68 @@ describe('getValidationRules', () => {
         expect(returned_validation_rules).toHaveProperty('start_time');
         expect(
             (returned_validation_rules.start_time.rules?.[0][1] as TExtendedRuleOptions).func?.(
-                ...start_time_mocked_params
+                '11:45:30',
+                ...mocked_rest_params
             )
         ).toBe(false);
+        expect((returned_validation_rules.start_time.rules?.[0][1] as TExtendedRuleOptions).message).toBe(
+            'Please enter the start time in the format "HH:MM".'
+        );
+        expect(
+            (returned_validation_rules.start_time.rules?.[0][1] as TExtendedRuleOptions).func?.(
+                '11:45',
+                ...mocked_rest_params
+            )
+        ).toBe(true);
+
         expect(
             (returned_validation_rules.start_time.rules?.[1][1] as TExtendedRuleOptions).func?.(
-                ...start_time_mocked_params
+                '24:45',
+                ...mocked_rest_params
             )
         ).toBe(false);
+        expect((returned_validation_rules.start_time.rules?.[1][1] as TExtendedRuleOptions).message).toBe(
+            'Hour must be between 0 and 23.'
+        );
+        expect(
+            (returned_validation_rules.start_time.rules?.[1][1] as TExtendedRuleOptions).func?.(
+                '12:45',
+                ...mocked_rest_params
+            )
+        ).toBe(true);
+
         expect(
             (returned_validation_rules.start_time.rules?.[2][1] as TExtendedRuleOptions).func?.(
-                ...start_time_mocked_params
+                '11:77',
+                ...mocked_rest_params
             )
         ).toBe(false);
+        expect((returned_validation_rules.start_time.rules?.[2][1] as TExtendedRuleOptions).message).toBe(
+            'Minute must be between 0 and 59.'
+        );
+        expect(
+            (returned_validation_rules.start_time.rules?.[2][1] as TExtendedRuleOptions).func?.(
+                '11:45',
+                ...mocked_rest_params
+            )
+        ).toBe(true);
 
+        expect((returned_validation_rules.start_time.rules?.[3][1] as TExtendedRuleOptions).message).toBe(
+            'Start time cannot be in the past.'
+        );
         mocked_store.contract_start_type = 'spot';
         expect(
             (returned_validation_rules.start_time.rules?.[3][1] as TExtendedRuleOptions).func?.(
-                ...start_time_mocked_params
+                '123',
+                ...mocked_rest_params
             )
         ).toBe(true);
 
         mocked_store.contract_start_type = 'test_spot';
         expect(
             (returned_validation_rules.start_time.rules?.[3][1] as TExtendedRuleOptions).func?.(
-                ...start_time_mocked_params
+                '123',
+                ...mocked_rest_params
             )
         ).toBe(false);
 
@@ -192,7 +268,8 @@ describe('getValidationRules', () => {
         (isSessionAvailable as jest.Mock).mockReturnValueOnce(true);
         expect(
             (returned_validation_rules.start_time.rules?.[3][1] as TExtendedRuleOptions).func?.(
-                ...start_time_mocked_params
+                '123',
+                ...mocked_rest_params
             )
         ).toBe(true);
     });
@@ -201,31 +278,36 @@ describe('getValidationRules', () => {
         expect(returned_validation_rules).toHaveProperty('expiry_time');
         expect(
             (returned_validation_rules.expiry_time.rules?.[0][1] as TExtendedRuleOptions).func?.(
-                ...expiry_time_mocked_params
+                '123',
+                ...mocked_rest_params
             )
         ).toBe(false);
         expect(
             (returned_validation_rules.expiry_time.rules?.[1][1] as TExtendedRuleOptions).func?.(
-                ...expiry_time_mocked_params
+                '123',
+                ...mocked_rest_params
             )
         ).toBe(false);
         expect(
             (returned_validation_rules.expiry_time.rules?.[2][1] as TExtendedRuleOptions).func?.(
-                ...expiry_time_mocked_params
+                '123',
+                ...mocked_rest_params
             )
         ).toBe(false);
 
         mocked_store.contract_start_type = 'spot';
         expect(
             (returned_validation_rules.expiry_time.rules?.[3][1] as TExtendedRuleOptions).func?.(
-                ...expiry_time_mocked_params
+                '123',
+                ...mocked_rest_params
             )
         ).toBe(true);
 
         mocked_store.contract_start_type = 'test_spot';
         expect(
             (returned_validation_rules.expiry_time.rules?.[3][1] as TExtendedRuleOptions).func?.(
-                ...expiry_time_mocked_params
+                '123',
+                ...mocked_rest_params
             )
         ).toBe(false);
 
@@ -233,7 +315,8 @@ describe('getValidationRules', () => {
         (isSessionAvailable as jest.Mock).mockReturnValueOnce(true);
         expect(
             (returned_validation_rules.expiry_time.rules?.[3][1] as TExtendedRuleOptions).func?.(
-                ...expiry_time_mocked_params
+                '123',
+                ...mocked_rest_params
             )
         ).toBe(true);
     });

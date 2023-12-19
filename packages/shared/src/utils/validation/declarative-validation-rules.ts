@@ -15,7 +15,7 @@ export type TOptions = {
     type?: string;
 };
 
-export type TRuleOptions<S extends object> = {
+export type TRuleOptions<S extends object = object> = {
     func?: <T extends string>(
         value: T,
         options?: TOptions,

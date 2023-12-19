@@ -16,6 +16,8 @@ const GetMoreMT5Accounts: React.FC = () => {
                     show(<MT5AccountTypeModal />);
                 }
             }}
+            role='button'
+            tabIndex={0}
         >
             <div className='flex p-800 items-center self-stretch rounded-lg border-system-light-active-background flex-1 gap-800 border-75 border-dashed'>
                 <div className='w-12 h-12'>

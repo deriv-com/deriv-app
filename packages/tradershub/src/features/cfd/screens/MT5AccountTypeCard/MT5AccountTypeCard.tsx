@@ -18,6 +18,13 @@ const MT5AccountTypeCard: React.FC<TProps> = ({ description, icon, isSelected, o
                     : 'cursor-pointer'
             }
             onClick={onClick}
+            onKeyDown={e => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    onClick();
+                }
+            }}
+            role='button'
+            tabIndex={0}
         >
             <div className='flex w-[26.4rem] h-[25rem] items-start'>
                 <div className='flex items-start flex-1 p-1200 self-stretch rounded-lg border-system-light-active-background bg-system-light-primary-background border-solid border-sm'>

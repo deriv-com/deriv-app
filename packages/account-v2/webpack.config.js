@@ -35,7 +35,8 @@ module.exports = function (env) {
 
     return {
         entry: {
-            index: path.resolve(__dirname, './src', 'index.tsx'),
+            index: path.resolve(__dirname, 'src', 'index.tsx'),
+            MockComponent: path.resolve(__dirname, 'src', 'lib', 'mock', 'Mock.tsx'),
         },
         mode: isRelease ? 'production' : 'development',
         output: {
@@ -111,7 +112,9 @@ module.exports = function (env) {
                         'sass-loader',
                         {
                             loader: 'sass-resources-loader',
-                            options: {},
+                            options: {
+                                resources: [path.resolve(__dirname, 'src', 'lib', 'mock', 'mock.module.scss')],
+                            },
                         },
                     ],
                 },

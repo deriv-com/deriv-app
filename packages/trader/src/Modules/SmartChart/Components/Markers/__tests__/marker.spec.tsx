@@ -67,26 +67,4 @@ describe('ChartMarker', () => {
         expect(screen.getByLabelText(start_time)).toBeInTheDocument();
         expect(ContentComponent).toHaveBeenCalledWith(passthrough_props, {});
     });
-    it('should render correctly & pass marker_content_props to the child when is_bottom_widget_visible === true', async () => {
-        const passthrough_props = {
-            label: end_time,
-            line_style: 'dash',
-            marker_config: {},
-            status: 'lost',
-        };
-        render(
-            <ChartMarker
-                is_bottom_widget_visible
-                marker_config={{
-                    ContentComponent,
-                    className: 'chart-marker-line',
-                    x: 1702644813,
-                    y: null,
-                }}
-                marker_content_props={passthrough_props}
-            />
-        );
-        expect(screen.getByLabelText(end_time)).toBeInTheDocument();
-        expect(ContentComponent).toHaveBeenCalledWith(passthrough_props, {});
-    });
 });

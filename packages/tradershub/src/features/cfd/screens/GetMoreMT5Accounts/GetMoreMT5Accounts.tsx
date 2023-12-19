@@ -9,7 +9,7 @@ const GetMoreMT5Accounts: React.FC = () => {
 
     return (
         <div
-            className='flex items-start cursor-pointer'
+            className='flex items-start cursor-pointer w-full lg:w-1/3'
             onClick={() => show(<MT5AccountTypeModal />)}
             onKeyDown={e => {
                 if (e.key === 'Enter') {

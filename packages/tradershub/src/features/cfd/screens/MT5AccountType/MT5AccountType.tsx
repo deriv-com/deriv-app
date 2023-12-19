@@ -1,7 +1,6 @@
 import React from 'react';
 import { MarketTypeDetails } from '../../constants';
 import { MT5AccountTypeCard } from '../MT5AccountTypeCard';
-// import './MT5AccountType.scss';
 
 type TProps = {
     onMarketTypeSelect: (marketType: keyof typeof MarketTypeDetails) => void;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text } from '@deriv/quill-design';
-// import './MT5AccountTypeCard.scss';
 
 type TProps = {
     description: string;
@@ -15,13 +14,13 @@ const MT5AccountTypeCard: React.FC<TProps> = ({ description, icon, isSelected, o
         <div
             className={
                 isSelected
-                    ? 'rounded-800 border-brand-blue bg-system-light-primary-background cursor-pointer'
+                    ? 'rounded-800 border-brand-blue bg-system-light-primary-background cursor-pointer border-solid border-sm'
                     : 'cursor-pointer'
             }
             onClick={onClick}
         >
-            <div className='flex max-w-sm max-h-5000 items-start'>
-                <div className='flex items-start flex-1 p-1200 self-stretch rounded-800 border-system-light-active-background bg-system-light-primary-background shadow-620 shadow-opacity-black-500'>
+            <div className='flex w-[26.4rem] h-[25rem] items-start'>
+                <div className='flex items-start flex-1 p-1200 self-stretch rounded-lg border-system-light-active-background bg-system-light-primary-background border-solid border-sm'>
                     <div className='flex flex-col items-center gap-1200 self-stretch justify-center'>
                         {icon}
                         <div className='flex flex-col items-center gap-400 self-stretch'>

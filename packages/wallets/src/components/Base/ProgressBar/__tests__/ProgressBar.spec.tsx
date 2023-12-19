@@ -31,6 +31,6 @@ describe('ProgressBar', () => {
         render(<ProgressBar {...mockProps} />);
         const items = screen.getByRole('progressbar').childNodes;
         userEvent.click(items[2] as HTMLElement);
-        expect(mockProps.onClick).toHaveBeenCalledWith('103');
+        expect(mockProps.onClick).toHaveBeenCalledWith(2);
     });
 });

@@ -355,7 +355,7 @@ export default class BuySellStore extends BaseStore {
     }
 
     setInitialReceiveAmount(initial_price) {
-        this.receive_amount = removeTrailingZeros(this.advert.min_order_amount_limit * initial_price);
+        this.receive_amount = removeTrailingZeros((this.advert.min_order_amount_limit * initial_price).toString());
     }
 
     setReceiveAmount(receive_amount) {

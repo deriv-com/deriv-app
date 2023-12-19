@@ -40,6 +40,13 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
         });
     }, [shouldHideDerivAppHeader, setModalOptions]);
 
+    const Footer = () =>
+        hasRenderFooter ? (
+            <div className='wallets-modal-step-wrapper__footer' data-testid='dt_modal_step_wrapper_footer'>
+                {renderFooter()}
+            </div>
+        ) : null;
+
     return (
         <div
             className={classNames('wallets-modal-step-wrapper', {
@@ -48,22 +55,23 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
                 'wallets-modal-step-wrapper--no-header': shouldHideHeader && !fixedFooter,
                 'wallets-modal-step-wrapper--no-header--fixed-footer': shouldHideHeader && fixedFooter,
             })}
+            data-testid='dt_modal_step_wrapper'
         >
             {!shouldHideHeader && (
-                <div className='wallets-modal-step-wrapper__header'>
+                <div className='wallets-modal-step-wrapper__header' data-testid='dt_modal_step_wrapper_header'>
                     <WalletText weight='bold'>{title}</WalletText>
-                    <CloseIcon className='wallets-modal-step-wrapper__header-close-icon' onClick={hide} />
+                    <CloseIcon
+                        className='wallets-modal-step-wrapper__header-close-icon'
+                        data-testid='dt_modal_step_wrapper_header_icon'
+                        onClick={hide}
+                    />
                 </div>
             )}
-            <div className='wallets-modal-step-wrapper__body'>
+            <div className='wallets-modal-step-wrapper__body' data-testid='dt_modal_step_wrapper_body'>
                 {children}
-                {!shouldFixedFooter && hasRenderFooter && (
-                    <div className='wallets-modal-step-wrapper__footer'>{renderFooter()}</div>
-                )}
+                {!shouldFixedFooter && <Footer />}
             </div>
-            {shouldFixedFooter && hasRenderFooter && (
-                <div className='wallets-modal-step-wrapper__footer'>{renderFooter()}</div>
-            )}
+            {shouldFixedFooter && <Footer />}
         </div>
     );
 };

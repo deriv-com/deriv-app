@@ -1,13 +1,15 @@
 import React from 'react';
-import { observer, useStore } from '@deriv/stores';
-import TutorialsTabMobile from './tutorials-tab-mobile';
-import TutorialsTabDesktop from './tutorials-tab-desktop';
-import { useDBotStore } from 'Stores/useDBotStore';
-import GuideContent from './guide-content';
-import FAQContent from './faq-content';
-import NoSearchResult from './common/no-search-result-found';
-import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv/analytics';
+import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { useDBotStore } from 'Stores/useDBotStore';
+import NoSearchResult from './common/no-search-result-found';
+import QuickStrategyGuides from './quick-strategy-content/quick-strategy-guides';
+import { quick_strategy_content } from './config';
+import FAQContent from './faq-content';
+import GuideContent from './guide-content';
+import TutorialsTabDesktop from './tutorials-tab-desktop';
+import TutorialsTabMobile from './tutorials-tab-mobile';
 
 const TutorialsTab = observer(() => {
     const { ui } = useStore();
@@ -31,7 +33,7 @@ const TutorialsTab = observer(() => {
     }, []);
 
     React.useEffect(() => {
-        const _active_tab = [0, 1];
+        const _active_tab = [0, 1, 2];
         if (_active_tab.includes(active_tab_tutorials)) {
             setPrevActiveTutorialsTab(active_tab_tutorials);
         }
@@ -54,6 +56,10 @@ const TutorialsTab = observer(() => {
         {
             label: localize('FAQ'),
             content: <FAQContent faq_list={faq_tab_content} />,
+        },
+        {
+            label: localize('Quick strategy guides'),
+            content: <QuickStrategyGuides quick_strategy_content={quick_strategy_content} />,
         },
         {
             label: localize('Search'),

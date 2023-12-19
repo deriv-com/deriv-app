@@ -1,13 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-
-import { isMobile } from '@deriv/shared';
-
 import BotBuilderTourDesktop from './bot-builder-tour-desktop';
 import BotBuilderTourMobile from './bot-builder-tour-mobile';
 
-const is_mobile = isMobile();
-const BotBuilderTourHandler = observer(() => {
+type TBotBuilderTourHandler = {
+    is_mobile: boolean;
+};
+
+const BotBuilderTourHandler: React.FC<TBotBuilderTourHandler> = observer(({ is_mobile }) => {
     return <>{is_mobile ? <BotBuilderTourMobile /> : <BotBuilderTourDesktop />};</>;
 });
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { isMobile } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
@@ -10,11 +9,6 @@ import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import LocalFooter from '../local-footer';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(),
-}));
-
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
     saveRecentWorkspace: jest.fn(),
@@ -24,9 +18,9 @@ jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
 describe('LocalFooter', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
+    const mock_store = mockStore({});
 
     beforeAll(() => {
-        const mock_store = mockStore({});
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 
         wrapper = ({ children }: { children: JSX.Element }) => (
@@ -51,13 +45,13 @@ describe('LocalFooter', () => {
     });
 
     it('should render cancel button on mobile', () => {
-        (isMobile as jest.Mock).mockReturnValueOnce(true);
+        mock_store.ui.is_mobile = true;
         render(<LocalFooter />, { wrapper });
         expect(screen.getByText('Cancel')).toBeInTheDocument();
     });
 
     it('should reset local file on cancel button click', async () => {
-        (isMobile as jest.Mock).mockReturnValueOnce(true);
+        mock_store.ui.is_mobile = true;
         render(<LocalFooter />, { wrapper });
         const cancel_button = screen.getByText('Cancel');
         await userEvent.click(cancel_button);

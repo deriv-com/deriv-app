@@ -18,21 +18,21 @@ const TestTable = () => {
                     </Table.Header>
                 )}
                 <Table.Body>
-                    <Table.Row>
+                    <Table.Row has_hover>
                         <Table.Cell>name1</Table.Cell>
                         <Table.Cell>19</Table.Cell>
                         <Table.Cell>male</Table.Cell>
                         <Table.Cell>name1@gmail.com</Table.Cell>
                     </Table.Row>
 
-                    <Table.Row>
+                    <Table.Row has_hover>
                         <Table.Cell>name2</Table.Cell>
                         <Table.Cell>23</Table.Cell>
                         <Table.Cell>male</Table.Cell>
                         <Table.Cell>name2@gmail.com</Table.Cell>
                     </Table.Row>
 
-                    <Table.Row>
+                    <Table.Row has_hover>
                         <Table.Cell>name3</Table.Cell>
                         <Table.Cell>24</Table.Cell>
                         <Table.Cell>female</Table.Cell>
@@ -42,11 +42,11 @@ const TestTable = () => {
             </Table>
             <hr />
             <h1>new one</h1>
-            <Table2 fixed>
+            <Table2>
                 {isDesktop() && (
                     <Table2.Header>
                         <Table2.Row>
-                            <Table2.Head align='right'>name</Table2.Head>
+                            <Table2.Head>name</Table2.Head>
                             <Table2.Head>age</Table2.Head>
                             <Table2.Head>gender</Table2.Head>
                             <Table2.Head>email</Table2.Head>
@@ -57,18 +57,18 @@ const TestTable = () => {
                     <Table2.Row has_hover>
                         <Table2.Cell>name1</Table2.Cell>
                         <Table2.Cell>19</Table2.Cell>
-                        <Table2.Cell align='right'>male</Table2.Cell>
+                        <Table2.Cell>male</Table2.Cell>
                         <Table2.Cell>name1@gmail.com</Table2.Cell>
                     </Table2.Row>
 
-                    <Table2.Row>
+                    <Table2.Row has_hover>
                         <Table2.Cell>name2</Table2.Cell>
                         <Table2.Cell>23</Table2.Cell>
                         <Table2.Cell>male</Table2.Cell>
                         <Table2.Cell>name2@gmail.com</Table2.Cell>
                     </Table2.Row>
 
-                    <Table2.Row>
+                    <Table2.Row has_hover>
                         <Table2.Cell>name3</Table2.Cell>
                         <Table2.Cell>24</Table2.Cell>
                         <Table2.Cell>female</Table2.Cell>

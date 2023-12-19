@@ -106,6 +106,7 @@ export { default as RelativeDatepicker } from './components/relative-datepicker'
 export { default as RemainingTime } from './components/remaining-time';
 export { default as SearchBox } from './components/search-box';
 export { default as Table } from './components/table';
+export { default as Table2 } from './components/table2';
 export { default as Tabs } from './components/tabs';
 export { default as Text } from './components/text';
 export { default as Toast } from './components/toast';

@@ -23,7 +23,6 @@ const WalletListCard: React.FC<TProps> = ({ badge, balance, currency, isActive, 
 
                 <WalletListCardIDetails
                     badge={badge}
-                    currency={currency}
                     isActive={isActive}
                     isDemo={isDemo}
                     loginid={loginid}

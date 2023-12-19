@@ -7,7 +7,7 @@ import { ChartTitle, SmartChart } from './v1';
 
 const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) => {
     const barriers: [] = [];
-    const { client, common, ui } = useStore();
+    const { common, ui } = useStore();
     const { chart_store, run_panel, dashboard } = useDBotStore();
 
     const {
@@ -54,7 +54,11 @@ const Chart = observer(({ show_digits_stats }: { show_digits_stats: boolean }) =
                 enabledChartFooter={false}
                 chartStatusListener={(v: boolean) => setChartStatus(!v)}
                 toolbarWidget={() => (
-                    <ToolbarWidgets updateChartType={updateChartType} updateGranularity={updateGranularity} />
+                    <ToolbarWidgets
+                        updateChartType={updateChartType}
+                        updateGranularity={updateGranularity}
+                        position={is_mobile ? 'bottom' : null}
+                    />
                 )}
                 chartType={chart_type}
                 isMobile={is_mobile}

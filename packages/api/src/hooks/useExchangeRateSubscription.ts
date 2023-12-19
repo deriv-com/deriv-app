@@ -6,7 +6,7 @@ type TPayload = Required<
 >;
 
 /** A custom hook that gets exchange rates from base currency to target currency */
-const useExchangeRate = () => {
+const useExchangeRateSubscription = () => {
     const { data, subscribe: _subscribe, ...rest } = useSubscription('exchange_rates');
 
     const subscribe = useCallback(
@@ -25,4 +25,4 @@ const useExchangeRate = () => {
     };
 };
 
-export default useExchangeRate;
+export default useExchangeRateSubscription;

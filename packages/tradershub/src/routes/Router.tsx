@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { TradersHubRoute } from './TradersHubRoute';
 
@@ -12,7 +12,7 @@ declare module 'react-router-dom' {
     export function useRouteMatch(path: TRoutes): boolean;
 }
 
-const Router: React.FC = () => {
+const Router: FC = () => {
     return (
         <Switch>
             <Route component={TradersHubRoute} path={prefix} />

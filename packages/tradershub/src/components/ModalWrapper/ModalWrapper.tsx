@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { useEventListener } from 'usehooks-ts';
 import CloseIcon from '../../public/images/ic-close-dark.svg';
 import { useModal } from '../ModalProvider';
@@ -9,7 +9,7 @@ type TProps = {
     shouldPreventCloseOnEscape?: boolean;
 };
 
-const ModalWrapper: FC<React.PropsWithChildren<TProps>> = ({
+const ModalWrapper: FC<PropsWithChildren<TProps>> = ({
     children,
     hideCloseButton = false,
     shouldPreventCloseOnEscape = false,

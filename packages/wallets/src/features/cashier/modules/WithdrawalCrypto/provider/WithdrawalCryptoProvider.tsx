@@ -1,11 +1,16 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useActiveWalletAccount, useCryptoWithdrawal, useCurrencyConfig, useExchangeRate } from '@deriv/api';
+import {
+    useActiveWalletAccount,
+    useCryptoWithdrawal,
+    useCurrencyConfig,
+    useExchangeRateSubscription,
+} from '@deriv/api';
 import { THooks } from '../../../../../types';
 import { TWithdrawalReceipt } from '../types';
 
 export type TWithdrawalCryptoContext = {
     activeWallet: ReturnType<typeof useActiveWalletAccount>['data'];
-    exchangeRates: Partial<ReturnType<typeof useExchangeRate>>;
+    exchangeRates: Partial<ReturnType<typeof useExchangeRateSubscription>>;
     fractionalDigits: {
         crypto?: number;
         fiat?: number;
@@ -46,7 +51,7 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     const { isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
     const { getConfig } = useCurrencyConfig();
     const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({});
-    const { data: exchangeRates, subscribe, unsubscribe } = useExchangeRate();
+    const { data: exchangeRates, subscribe, unsubscribe } = useExchangeRateSubscription();
     const FRACTIONAL_DIGITS_CRYPTO = activeWallet?.currency_config?.fractional_digits;
     const FRACTIONAL_DIGITS_FIAT = getConfig('USD')?.fractional_digits;
 

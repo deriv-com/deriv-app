@@ -48,7 +48,6 @@ const default_mocked_props: React.ComponentProps<typeof PurchaseFieldset> = {
     purchased_states_arr: [true, false],
     setPurchaseState: jest.fn(),
     type: '',
-    is_beta_chart: false,
 };
 
 jest.mock('@deriv/shared', () => ({

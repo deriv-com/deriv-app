@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { FC, PropsWithChildren, ReactNode } from 'react';
 import './TradingAccountCard.scss';
 
 type TProps = {
-    leading?: () => React.ReactNode;
-    trailing?: () => React.ReactNode;
+    leading?: () => ReactNode;
+    trailing?: () => ReactNode;
 };
 
-const TradingAccountCard: React.FC<React.PropsWithChildren<TProps>> = ({ children, leading, trailing }) => {
+const TradingAccountCard: FC<PropsWithChildren<TProps>> = ({ children, leading, trailing }) => {
     return (
         <div className='wallets-trading-account-card'>
             {leading?.()}

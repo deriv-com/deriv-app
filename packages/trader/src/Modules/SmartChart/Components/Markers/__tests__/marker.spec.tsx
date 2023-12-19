@@ -24,7 +24,6 @@ jest.mock('Modules/SmartChart', () => ({
 
 describe('ChartMarker', () => {
     const start_time = 'Start Time';
-    const end_time = 'End Time';
     const entry_spot_classname = 'chart-spot__entry';
     const ContentComponent = jest.fn((props: TMarkerContentConfig) => (
         <div data-testid={props.className} aria-label={props.label} />

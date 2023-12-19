@@ -31,7 +31,7 @@ const MT5MigrationModal = observer(() => {
     React.useEffect(() => {
         if (is_mt5_migration_modal_open) {
             const has_mt5_migration_error = !!mt5_migration_error;
-            setShowModalFrontSide(!has_mt5_migration_error);
+            setShowModalFrontSide(has_mt5_migration_error);
         }
     }, [mt5_migration_error, setShowModalFrontSide, is_mt5_migration_modal_open]);
 
@@ -42,12 +42,14 @@ const MT5MigrationModal = observer(() => {
     };
 
     const getModalHeight = () => {
-        if (show_modal_front_side) {
-            return no_of_svg_accounts_to_migrate > 1 ? '54.2rem' : '44rem';
-        } else if (mt5_migration_error) {
+        if (mt5_migration_error) {
             return 'auto';
         }
-        return '61.6rem';
+        /* Temperory commented out these components because the new design is not ready yet */
+        // else if (show_modal_front_side) {
+        return no_of_svg_accounts_to_migrate > 1 ? '54.2rem' : '44rem';
+        // }
+        // return '61.6rem';
     };
 
     return (

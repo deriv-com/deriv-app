@@ -113,13 +113,13 @@ export const D_ALEMBERT: TDescriptionItem[] = [
             localize('s = initial stake'),
             localize('R = number of rounds'),
             localize('f = unit increment'),
-            localize('B = s*(R+(((R-1)/2)*R*f))'),
         ],
         className: 'no-margin',
     },
     {
         type: 'text',
         content: [
+            localize('B = s*(R+(((R-1)/2)*R*f))'),
             localize(
                 'For instance, if you have a loss threshold (B) of 100 USD, with an initial stake (s) of 1 USD and 2 units of increment (f), the calculation would be as follows:'
             ),

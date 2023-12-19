@@ -32,7 +32,7 @@ export const TransferMessagesConfig = {
     }: TMessage['values']) =>
         isTransferBetweenWallets ? (
             <Trans
-                defaults='The remaining daily transfer limit between Wallets is {{formattedSourceCurrencyRemainder}}.'
+                defaults='The remaining daily transfer limit between your Wallets is {{formattedSourceCurrencyRemainder}}.'
                 values={{ formattedSourceCurrencyRemainder }}
             />
         ) : (
@@ -53,7 +53,7 @@ export const TransferMessagesConfig = {
     }: TMessage['values']) =>
         isTransferBetweenWallets ? (
             <Trans
-                defaults='You have reached your daily transfer limit of Wallets between your {{accounts}}. The limit will reset at 00:00 GMT.'
+                defaults='You have reached your daily transfer limit of {{formattedSourceCurrencyLimit}} between your Wallets. The limit will reset at 00:00 GMT.'
                 values={{ formattedSourceCurrencyLimit }}
             />
         ) : (
@@ -72,16 +72,26 @@ export const TransferMessagesConfig = {
             values={{ formattedSourceCurrencyLimit }}
         />
     ),
-    LIFETIME_TRANSFER_LIMIT_ALLOWED_CRYPTO_AND_FIAT: ({ sourceAccountName, targetWalletType }: TMessage['values']) =>
+    LIFETIME_TRANSFER_LIMIT_ALLOWED_CRYPTO_AND_FIAT: ({
+        formattedSourceCurrencyLimit,
+        sourceAccountName,
+        targetWalletType,
+    }: TMessage['values']) =>
         targetWalletType === 'crypto' ? (
             <Trans
                 defaults='The lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.'
-                values={{ sourceAccountName }}
+                values={{
+                    formattedSourceCurrencyLimit,
+                    sourceAccountName,
+                }}
             />
         ) : (
             <Trans
                 defaults='The lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is up to {{formattedSourceCurrencyLimit}}.'
-                values={{ sourceAccountName }}
+                values={{
+                    formattedSourceCurrencyLimit,
+                    sourceAccountName,
+                }}
             />
         ),
     LIFETIME_TRANSFER_LIMIT_AVAILABLE_CRYPTO: ({ formattedSourceCurrencyLimit }: TMessage['values']) => (

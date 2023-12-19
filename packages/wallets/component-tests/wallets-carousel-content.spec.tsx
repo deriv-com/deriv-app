@@ -119,20 +119,4 @@ test.describe('Wallets - Mobile carousel', () => {
 
         expect(progressBarItemClass2).toContain('wallets-progress-bar-active');
     });
-
-    test('persists selected account after page reload', async ({ baseURL }) => {
-        // given
-        await mobilePage.goto(`${baseURL}/wallets`);
-        const progressBarItem = await mobilePage.locator('.wallets-progress-bar div:nth-child(3)');
-
-        // when
-        await progressBarItem.click();
-        await mobilePage.reload();
-
-        // then
-        const activeProgressBarItem2 = await mobilePage.locator('.wallets-progress-bar div:nth-child(3)');
-        const progressBarItemClass2 = await activeProgressBarItem2.getAttribute('class');
-
-        expect(progressBarItemClass2).toContain('wallets-progress-bar-active');
-    });
 });

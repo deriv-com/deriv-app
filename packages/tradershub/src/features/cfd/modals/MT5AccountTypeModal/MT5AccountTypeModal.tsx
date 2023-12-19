@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { ComponentProps, useState } from 'react';
 import { Button } from '@deriv/quill-design';
 import { ModalStepWrapper } from '../../../../components';
 import { useModal } from '../../../../components/ModalProvider';
 import { MT5AccountType } from '../../screens';
 
-type TMarketTypes = React.ComponentProps<typeof MT5AccountType>['selectedMarketType'];
+type TMarketTypes = ComponentProps<typeof MT5AccountType>['selectedMarketType'];
 
 const MT5AccountTypeModal = () => {
     const [selectedMarketType, setSelectedMarketType] = useState<TMarketTypes>(undefined);

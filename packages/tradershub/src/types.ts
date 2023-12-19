@@ -10,7 +10,7 @@ import type {
     useDerivAccountsList,
     useDxtradeAccountsList,
     useDynamicLeverage,
-    useExchangeRate,
+    useGetExchangeRate,
     useMT5AccountsList,
     usePOA,
     usePOI,
@@ -23,7 +23,7 @@ export namespace THooks {
     export type AvailableMT5Accounts = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number];
     export type CtraderAccountsList = NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number];
     export type DxtradeAccountsList = NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[number];
-    export type ExchangeRate = NonNullable<ReturnType<typeof useExchangeRate>['data']>;
+    export type ExchangeRate = NonNullable<ReturnType<typeof useGetExchangeRate>['data']>;
     export type MT5AccountsList = NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
     export type SortedMT5Accounts = NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number];
     export type DerivAccountsList = NonNullable<ReturnType<typeof useDerivAccountsList>['data']>[number];

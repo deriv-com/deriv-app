@@ -1,8 +1,6 @@
 import {
     mockAccountSecurity,
     mockAuthorize,
-    mockBalanceAll,
-    // mockBalanceOne,
     mockGetAccountStatus,
     mockGetFinancialAssessment,
     mockGetLimits,
@@ -21,14 +19,13 @@ import {
     mockTradingPlatformAvailableAccounts,
     mockTransaction,
 } from '@deriv/integration';
-
+import { Context } from '@deriv/integration/src/utils/mocks/mocks';
 import { mockWalletsBalances } from './mockWalletsBalances';
 
-const walletsLoggedIn = async (context: any) => {
+const walletsLoggedIn = async (context: Context) => {
     mockAccountSecurity(context);
     mockAuthorize(context);
     mockWalletsBalances(context);
-    // mockBalanceOne(context);
     mockGetAccountStatus(context);
     mockGetFinancialAssessment(context);
     mockGetLimits(context);

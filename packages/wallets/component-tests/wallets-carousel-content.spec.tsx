@@ -1,5 +1,5 @@
 import { mockGeneral, setupMocks } from '@deriv/integration';
-import { expect, test, devices } from '@playwright/test';
+import { devices, expect, Page, test } from '@playwright/test';
 import { mockCryptoConfig } from './mocks/mockCryptoConfig';
 import { mockGetAccountTypes } from './mocks/mockGetAccountTypes';
 import { mockProposalOpenContract } from './mocks/mockProposalOpenContract';
@@ -9,7 +9,7 @@ import mockWalletsLoggedIn from './mocks/mockWalletsLoggedIn';
 const CAROUSEL_SELECTOR = '.wallets-carousel-content__container';
 
 // swipe function
-async function swipeLeft(mobilePage: any) {
+async function swipeLeft(mobilePage: Page) {
     // Get the bounding box of the carousel
     const boundingBox = await mobilePage.locator(CAROUSEL_SELECTOR).boundingBox();
 
@@ -27,7 +27,7 @@ async function swipeLeft(mobilePage: any) {
 }
 test.describe('Wallets - Mobile carousel', () => {
     // mobile page
-    let mobilePage: any;
+    let mobilePage: Page;
 
     test.beforeEach(async ({ baseURL, browser }) => {
         const iPhone11 = devices['iPhone 11'];

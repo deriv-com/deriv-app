@@ -3,8 +3,8 @@ import { TMessageFnProps } from '../types';
 // this function should work once BE WALL-1440 is delivered
 const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     activeWallet,
+    activeWalletExchangeRates,
     displayMoney,
-    exchangeRates,
     limits,
     sourceAccount,
     sourceAmount,
@@ -23,9 +23,11 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
 
     if (
         !sourceAccount.currency ||
-        !exchangeRates?.rates?.[sourceAccount.currency] ||
+        (sourceAccount.currency !== activeWallet.currency &&
+            !activeWalletExchangeRates?.rates?.[sourceAccount.currency]) ||
         !targetAccount.currency ||
-        !exchangeRates?.rates?.[targetAccount.currency] ||
+        (targetAccount.currency !== activeWallet.currency &&
+            !activeWalletExchangeRates?.rates?.[targetAccount.currency]) ||
         !sourceAccount.currencyConfig ||
         !targetAccount.currencyConfig
     )
@@ -35,10 +37,14 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
 
     const allowedSumConverted =
         allowedSumActiveWalletCurrency *
-        (exchangeRates?.rates[transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency] ?? 1);
+        (activeWalletExchangeRates?.rates?.[
+            transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency
+        ] ?? 1);
     const availableSumConverted =
         availableSumActiveWalletCurrency *
-        (exchangeRates?.rates[transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency] ?? 1);
+        (activeWalletExchangeRates?.rates?.[
+            transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency
+        ] ?? 1);
 
     const sourceCurrencyLimit = transferDirection === 'from' ? allowedSumActiveWalletCurrency : allowedSumConverted;
     const targetCurrencyLimit = transferDirection === 'from' ? allowedSumConverted : allowedSumActiveWalletCurrency;
@@ -89,8 +95,8 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
 };
 
 const cumulativeAccountLimitsMessageFn = ({
+    USDExchangeRates,
     displayMoney,
-    exchangeRates,
     limits,
     sourceAccount,
     sourceAmount,
@@ -112,19 +118,19 @@ const cumulativeAccountLimitsMessageFn = ({
 
     if (
         !sourceAccount.currency ||
-        !exchangeRates?.rates?.[sourceAccount.currency] ||
+        (sourceAccount.currency !== 'USD' && !USDExchangeRates?.rates?.[sourceAccount.currency]) ||
         !targetAccount.currency ||
-        !exchangeRates?.rates?.[targetAccount.currency] ||
+        (targetAccount.currency !== 'USD' && !USDExchangeRates?.rates?.[targetAccount.currency]) ||
         !sourceAccount.currencyConfig ||
         !targetAccount.currencyConfig
     )
         return null;
 
-    const sourceCurrencyLimit = allowedSumUSD * (exchangeRates.rates[sourceAccount.currency] ?? 1);
-    const targetCurrencyLimit = allowedSumUSD * (exchangeRates.rates[targetAccount.currency] ?? 1);
+    const sourceCurrencyLimit = allowedSumUSD * (USDExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
+    const targetCurrencyLimit = allowedSumUSD * (USDExchangeRates?.rates?.[targetAccount.currency] ?? 1);
 
-    const sourceCurrencyRemainder = availableSumUSD * (exchangeRates.rates[sourceAccount.currency] ?? 1);
-    const targetCurrencyRemainder = availableSumUSD * (exchangeRates.rates[targetAccount.currency] ?? 1);
+    const sourceCurrencyRemainder = availableSumUSD * (USDExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
+    const targetCurrencyRemainder = availableSumUSD * (USDExchangeRates?.rates?.[targetAccount.currency] ?? 1);
 
     const formattedSourceCurrencyLimit = displayMoney?.(
         sourceCurrencyLimit,
@@ -174,4 +180,41 @@ const cumulativeAccountLimitsMessageFn = ({
     };
 };
 
-export { cumulativeAccountLimitsMessageFn, lifetimeAccountLimitsBetweenWalletsMessageFn };
+const transferFeesBetweenWalletsMessageFn = ({
+    displayMoney,
+    sourceAccount,
+    sourceAmount,
+    targetAccount,
+}: TMessageFnProps) => {
+    if (!sourceAccount.currency || !sourceAccount.currencyConfig || !sourceAmount || !targetAccount.currency)
+        return null;
+
+    const minimumFeeAmount = 1 / Math.pow(10, sourceAccount.currencyConfig.fractional_digits);
+
+    const minimumFeeText = displayMoney?.(
+        minimumFeeAmount,
+        sourceAccount.currency,
+        sourceAccount.currencyConfig.fractional_digits
+    );
+
+    const feePercentage = sourceAccount.currencyConfig?.transfer_between_accounts.fees[targetAccount.currency];
+
+    const feeAmount = (feePercentage * sourceAmount) / 100;
+
+    const feeMessageText = displayMoney?.(
+        feeAmount > minimumFeeAmount ? feeAmount : minimumFeeAmount,
+        sourceAccount.currency,
+        sourceAccount.currencyConfig.fractional_digits
+    );
+
+    return {
+        text: `Fee: ${feeMessageText} (${feePercentage}% transfer fee or ${minimumFeeText}, whichever is higher, applies for fund transfers between your ${targetAccount.accountName} and cryptocurrency Wallets)`,
+        type: 'info' as const,
+    };
+};
+
+export {
+    cumulativeAccountLimitsMessageFn,
+    lifetimeAccountLimitsBetweenWalletsMessageFn,
+    transferFeesBetweenWalletsMessageFn,
+};

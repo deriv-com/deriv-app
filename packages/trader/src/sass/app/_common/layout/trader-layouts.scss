@@ -292,7 +292,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     .cq-top-ui-widgets,
                     & .info-box {
                         transition: transform 0.25s ease;
-
+                        z-index: initial;
                         .cq-symbols-display {
                             z-index: 1;
 
@@ -304,7 +304,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                             transform: none;
                             opacity: 1;
                             left: 1px;
-
+                            z-index: 102;
                             .chart-close-btn {
                                 display: none;
                             }
@@ -807,7 +807,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
             }
             /** @define cq-top-ui-widgets; weak */
             .cq-top-ui-widgets {
-                z-index: 15 !important;
+                z-index: 102 !important;
             }
         }
     }

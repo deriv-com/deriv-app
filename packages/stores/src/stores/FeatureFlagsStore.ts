@@ -1,10 +1,11 @@
 import BaseStore from './BaseStore';
 
 const FLAGS = {
-    wallet: false,
+    dtrader_v2: false,
+    next_tradershub: false,
     next_wallet: false,
     sharkfin: false,
-    dtrader_v2: false,
+    wallet: false,
 } satisfies Record<string, boolean>;
 
 export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FLAGS]: boolean }> {

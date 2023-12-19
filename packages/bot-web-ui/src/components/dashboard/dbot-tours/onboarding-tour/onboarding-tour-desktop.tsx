@@ -7,7 +7,7 @@ import { getSetting } from 'Utils/settings';
 
 import ReactJoyrideWrapper from '../common/react-joyride-wrapper';
 import TourStartDialog from '../common/tour-start-dialog';
-import { DBOT_ONBOARDING } from '../config';
+import { DBOT_ONBOARDING } from '../tour-content';
 import { useTourHandler } from '../hooks/useTourHandler';
 
 const OnboardingTourDesktop = observer(() => {

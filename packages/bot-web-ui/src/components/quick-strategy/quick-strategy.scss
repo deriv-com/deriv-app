@@ -553,9 +553,10 @@
             }
         }
     }
-    .long_description {
+
+    &__long_description {
         &__title {
-            margin-bottom: 0.8rem;
+            margin: 0.8rem 0;
             &.italic {
                 font-style: italic;
                 margin-bottom: 0;

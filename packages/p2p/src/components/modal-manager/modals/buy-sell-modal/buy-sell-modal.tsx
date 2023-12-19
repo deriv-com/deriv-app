@@ -7,7 +7,7 @@ import { routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import AddPaymentMethodForm from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
+import AddPaymentMethodForm from 'Components/add-payment-method-form';
 import BuySellForm from 'Pages/buy-sell/buy-sell-form.jsx';
 import BuySellFormReceiveAmount from 'Pages/buy-sell/buy-sell-form-receive-amount.jsx';
 import { useStores } from 'Stores';

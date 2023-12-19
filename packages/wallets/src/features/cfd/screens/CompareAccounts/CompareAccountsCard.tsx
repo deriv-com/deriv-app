@@ -52,6 +52,7 @@ const CompareAccountsCard = ({
                     shortCode={shortCode}
                 />
                 <InstrumentsLabelHighlighted
+                    isDemo={isDemo}
                     isEuRegion={isEuRegion}
                     marketType={marketType}
                     platform={platform}

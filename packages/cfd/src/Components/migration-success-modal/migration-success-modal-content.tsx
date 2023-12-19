@@ -30,7 +30,7 @@ const MigrationSuccessModalContent = observer(
                         {icon && <Icon icon={icon} size={128} />}
                     </div>
                     <div>
-                        <Text as='h2' weight='bold' size='s' className='cfd-success-dialog-migration__title'>
+                        <Text as='h2' weight='bold' className='cfd-success-dialog-migration__title'>
                             <Localize i18n_default_text='Success!' />
                         </Text>
                         <div className='cfd-success-dialog-migration__content-wrapper'>

@@ -1,4 +1,4 @@
-import { TMessageFnProps } from '../types';
+import { TMessageFnProps } from '../../../types';
 
 // this function should work once BE WALL-1440 is delivered
 const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
@@ -64,10 +64,12 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
 
     if (availableSumActiveWalletCurrency === 0)
         return {
-            text: `You've reached the lifetime transfer limit from your ${sourceAccount.accountName} to any ${
-                targetWalletType === 'crypto' ? 'cryptocurrency' : 'fiat'
-            } Wallet. Verify your account to upgrade the limit.`,
+            key: 'LIFETIME_TRANSFER_LIMIT_REACHED' as const,
             type: 'error' as const,
+            values: {
+                sourceAccountName: sourceAccount.accountName,
+                targetWalletType,
+            },
         };
 
     if (allowedSumActiveWalletCurrency === availableSumActiveWalletCurrency)
@@ -75,15 +77,18 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
             case 'fiat_to_crypto':
             case 'crypto_to_fiat':
                 return {
-                    text: `The lifetime transfer limit from ${sourceAccount.accountName} to any ${
-                        targetWalletType === 'crypto' ? 'cryptocurrency' : 'fiat'
-                    } Wallets is up to ${formattedSourceCurrencyLimit}.`,
+                    key: 'LIFETIME_TRANSFER_LIMIT_ALLOWED_CRYPTO_AND_FIAT' as const,
                     type: 'success' as const,
+                    values: {
+                        sourceAccountName: sourceAccount.accountName,
+                        targetWalletType,
+                    },
                 };
             case 'crypto_to_crypto':
                 return {
-                    text: `The lifetime transfer limit between cryptocurrency Wallets is up to ${formattedSourceCurrencyLimit}.`,
+                    key: 'LIFETIME_TRANSFER_LIMIT_ALLOWED_CRYPTO' as const,
                     type: 'success' as const,
+                    values: { formattedSourceCurrencyLimit },
                 };
             default:
                 return null;
@@ -93,15 +98,19 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
         case 'fiat_to_crypto':
         case 'crypto_to_fiat':
             return {
-                text: `Your remaining lifetime transfer limit from ${sourceAccount.accountName} to any ${
-                    targetWalletType === 'crypto' ? 'cryptocurrency' : 'fiat'
-                } Wallets is ${formattedSourceCurrencyRemainder}. Verify your account to upgrade the limit.`,
+                key: 'LIFETIME_TRANSFER_LIMIT_AVAILABLE_CRYPTO_AND_FIAT' as const,
                 type: 'success' as const,
+                values: {
+                    formattedSourceCurrencyRemainder,
+                    sourceAccountName: sourceAccount.accountName,
+                    targetWalletType,
+                },
             };
         case 'crypto_to_crypto':
             return {
-                text: `Your remaining lifetime transfer limit between cryptocurrency Wallets is ${formattedSourceCurrencyLimit}. Verify your account to upgrade the limit.`,
+                key: 'LIFETIME_TRANSFER_LIMIT_AVAILABLE_CRYPTO' as const,
                 type: 'success' as const,
+                values: { formattedSourceCurrencyLimit },
             };
         default:
             return null;
@@ -118,7 +127,6 @@ const cumulativeAccountLimitsMessageFn = ({
 }: TMessageFnProps) => {
     const isTransferBetweenWallets =
         sourceAccount.account_category === 'wallet' && targetAccount.account_category === 'wallet';
-    const isSameCurrency = sourceAccount.currency === targetAccount.currency;
 
     const keyAccountType =
         [sourceAccount, targetAccount].find(acc => acc.account_category !== 'wallet')?.account_type ?? 'wallets';
@@ -141,20 +149,13 @@ const cumulativeAccountLimitsMessageFn = ({
         return null;
 
     const sourceCurrencyLimit = allowedSumUSD * (USDExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
-    const targetCurrencyLimit = allowedSumUSD * (USDExchangeRates?.rates?.[targetAccount.currency] ?? 1);
 
     const sourceCurrencyRemainder = availableSumUSD * (USDExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
-    const targetCurrencyRemainder = availableSumUSD * (USDExchangeRates?.rates?.[targetAccount.currency] ?? 1);
 
     const formattedSourceCurrencyLimit = displayMoney?.(
         sourceCurrencyLimit,
         sourceAccount.currencyConfig.display_code,
         sourceAccount.currencyConfig.fractional_digits
-    );
-    const formattedTargetCurrencyLimit = displayMoney?.(
-        targetCurrencyLimit,
-        targetAccount.currencyConfig.display_code,
-        targetAccount.currencyConfig?.fractional_digits
     );
 
     const formattedSourceCurrencyRemainder = displayMoney?.(
@@ -162,35 +163,40 @@ const cumulativeAccountLimitsMessageFn = ({
         sourceAccount.currencyConfig.display_code,
         sourceAccount.currencyConfig.fractional_digits
     );
-    const formattedTargetCurrencyRemainder = displayMoney?.(
-        targetCurrencyRemainder,
-        targetAccount.currencyConfig?.display_code,
-        targetAccount.currencyConfig?.fractional_digits
-    );
 
     if (availableSumUSD === 0)
         return {
-            text: `You have reached your daily transfer limit of ${formattedSourceCurrencyLimit} ${
-                !isSameCurrency ? ` (${formattedTargetCurrencyLimit})` : ''
-            } between your ${
-                isTransferBetweenWallets ? 'Wallets' : `${sourceAccount.accountName} and ${targetAccount.accountName}`
-            }. The limit will reset at 00:00 GMT.`,
+            key: 'CUMULATIVE_TRANSFER_LIMIT_REACHED' as const,
             type: 'error' as const,
+            values: {
+                formattedSourceCurrencyLimit,
+                isTransferBetweenWallets,
+                sourceAccountName: sourceAccount.accountName,
+                targetAccountName: targetAccount.accountName,
+            },
         };
 
     if (allowedSumUSD === availableSumUSD)
         return {
-            text: `The daily transfer limit between your ${
-                isTransferBetweenWallets ? 'Wallets' : `${sourceAccount.accountName} and ${targetAccount.accountName}`
-            } is ${formattedSourceCurrencyLimit}${!isSameCurrency ? ` (${formattedTargetCurrencyLimit})` : ''}.`,
+            key: 'CUMULATIVE_TRANSFER_LIMIT_ALLOWED' as const,
             type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
+            values: {
+                formattedSourceCurrencyLimit,
+                isTransferBetweenWallets,
+                sourceAccountName: sourceAccount.accountName,
+                targetAccountName: targetAccount.accountName,
+            },
         };
 
     return {
-        text: `The remaining daily transfer limit between ${
-            isTransferBetweenWallets ? 'Wallets' : `your ${sourceAccount.accountName} and ${targetAccount.accountName}`
-        } is ${formattedSourceCurrencyRemainder}${!isSameCurrency ? ` (${formattedTargetCurrencyRemainder})` : ''}.`,
+        key: 'CUMULATIVE_TRANSFER_LIMIT_AVAILABLE' as const,
         type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
+        values: {
+            formattedSourceCurrencyRemainder,
+            isTransferBetweenWallets,
+            sourceAccountName: sourceAccount.accountName,
+            targetAccountName: targetAccount.accountName,
+        },
     };
 };
 
@@ -222,8 +228,14 @@ const transferFeesBetweenWalletsMessageFn = ({
     );
 
     return {
-        text: `Fee: ${feeMessageText} (${feePercentage}% transfer fee or ${minimumFeeText}, whichever is higher, applies for fund transfers between your ${targetAccount.accountName} and cryptocurrency Wallets)`,
+        key: 'TRANSFER_FEE_BETWEEN_WALLETS' as const,
         type: 'info' as const,
+        values: {
+            feeMessageText,
+            feePercentage,
+            minimumFeeText,
+            targetAccountName: targetAccount.accountName,
+        },
     };
 };
 

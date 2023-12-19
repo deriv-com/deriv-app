@@ -2,13 +2,12 @@ import { useCallback } from 'react';
 import { useActiveWalletAccount, useAuthorize, usePOI } from '@deriv/api';
 import { displayMoney as displayMoney_ } from '@deriv/api/src/utils';
 import { THooks } from '../../../../../../types';
-import { TAccount, TInitialTransferFormValues } from '../../types';
+import { TAccount, TInitialTransferFormValues, TMessage, TMessageFnProps } from '../../types';
 import {
     cumulativeAccountLimitsMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
     transferFeesBetweenWalletsMessageFn,
 } from './utils/messageFunctions';
-import { TMessage, TMessageFnProps } from './types';
 
 type TProps = {
     USDExchangeRates?: THooks.ExchangeRate;

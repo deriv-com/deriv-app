@@ -10,7 +10,7 @@ type TProps = {
     fieldName: 'fromAmount' | 'toAmount';
 };
 
-const MAX_DIGITS = 10;
+const MAX_DIGITS = 12;
 
 const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const { setFieldValue, setValues, values } = useFormikContext<TInitialTransferFormValues>();

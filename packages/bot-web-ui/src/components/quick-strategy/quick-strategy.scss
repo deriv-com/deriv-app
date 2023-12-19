@@ -3,15 +3,16 @@
     --footer-height: 7.2rem;
     --header-height: 5.6rem;
     --min-content-height: 40rem;
-    --input-height: 5.2rem;
-    --select-height: 5.2rem;
+    --input-height: 4.8rem;
+    --select-height: 4.8rem;
     --input-border-radius: 0.4rem;
     --input-action-height: 4.6rem;
     --input-action-width: 4.6rem;
+    --group-outer-padding: 1.6rem;
 
     @include mobile() {
         --select-height: 4rem;
-        --input-height: 3.2rem;
+        --input-height: 3.4rem;
         --footer-height: 4.2rem;
         --input-action-height: 3rem;
         --input-action-width: 3rem;
@@ -97,7 +98,7 @@
             background-color: var(--general-main-1);
             width: calc(100% - var(--sidebar-width));
             position: relative;
-            padding: 1rem;
+            padding: 0.8rem;
 
             @include mobile() {
                 width: 100%;
@@ -166,26 +167,22 @@
             }
 
             &__form {
-                padding: 1rem;
+                padding: 2.4rem;
 
                 @include mobile() {
                     padding: 0 1.6rem;
                 }
 
                 &__group {
-                    width: 90%;
+                    width: 100%;
                     background-color: var(--general-section-1);
                     margin: auto;
                     border-radius: 0.8rem;
-                    padding: 1.1rem;
-                    margin-bottom: 1rem;
+                    padding: 0.8rem var(--group-outer-padding) 1.6rem;
+                    margin-bottom: 1.6rem;
 
                     &:last-child {
                         margin-bottom: 0;
-                    }
-
-                    @include mobile() {
-                        width: 100%;
                     }
                 }
             }
@@ -233,52 +230,64 @@
         }
 
         &__field {
-            padding: 0.5rem;
-            width: 50%;
-            display: inline-block;
-            vertical-align: middle;
-
-            &.full-width {
-                width: 100%;
+            width: 100%;
+            &__input {
+                margin-bottom: 0.8rem;
             }
 
-            @include mobile() {
-                width: 100%;
+            &__group-icons {
+                .qs__autocomplete {
+                    .dc-input__leading-icon {
+                        height: 2.4rem;
+                        width: auto;
+                        .dc-icon {
+                            height: 1.4rem;
+                            width: 1.4rem;
+                        }
+                    }
 
-                &.no-top-spacing {
-                    padding-top: 0;
-                }
-
-                &.no-border-top {
-                    .dc-input__container {
-                        border-top-left-radius: 0;
-                        border-top-right-radius: 0;
+                    .qs__select__option {
+                        .dc-icon {
+                            height: 1.4rem;
+                            width: 1.4rem;
+                        }
                     }
                 }
+            }
 
-                &.no-top-border-radius {
-                    .dc-input__container {
-                        border-bottom-left-radius: 0;
-                        border-bottom-right-radius: 0;
-                    }
+            &.no-top-spacing {
+                padding-top: 0;
+            }
+
+            &.no-border-top {
+                .dc-input__container {
+                    border-top-left-radius: 0;
+                    border-top-right-radius: 0;
                 }
+            }
 
-                &.no-border-bottom-radius {
-                    .qs__checkbox {
-                        border-bottom-left-radius: 0;
-                        border-bottom-right-radius: 0;
-                    }
+            &.no-top-border-radius {
+                .dc-input__container {
+                    border-bottom-left-radius: 0;
+                    border-bottom-right-radius: 0;
                 }
+            }
 
-                &.no-bottom-spacing {
-                    padding-bottom: 0;
+            &.no-border-bottom-radius {
+                .qs__checkbox {
+                    border-bottom-left-radius: 0;
+                    border-bottom-right-radius: 0;
                 }
+            }
 
-                &.no-bottom-border-radius {
-                    .dc-input__container {
-                        border-bottom-left-radius: 0;
-                        border-bottom-right-radius: 0;
-                    }
+            &.no-bottom-spacing {
+                padding-bottom: 0;
+            }
+
+            &.no-bottom-border-radius {
+                .dc-input__container {
+                    border-bottom-left-radius: 0;
+                    border-bottom-right-radius: 0;
                 }
             }
 
@@ -286,6 +295,7 @@
                 margin: 0;
                 padding: 0;
                 display: flex;
+                margin-bottom: 0.8rem;
 
                 &__item {
                     flex: 1;
@@ -296,10 +306,12 @@
                     font-size: 12px;
 
                     &:first-child {
+                        border-top-left-radius: 4px;
                         border-bottom-left-radius: 4px;
                     }
 
                     &:last-child {
+                        border-top-right-radius: 4px;
                         border-bottom-right-radius: 4px;
                     }
 
@@ -313,6 +325,11 @@
             .contract-type {
                 .dc-input__field {
                     font-weight: normal;
+                }
+            }
+            &:last-child {
+                .dc-input__container {
+                    margin-bottom: 0;
                 }
             }
         }
@@ -330,8 +347,10 @@
             }
 
             &__leading-icon {
-                top: 1.6rem;
-                left: 1.6rem;
+                top: 1.4rem;
+                left: 1.4rem;
+                height: 2.4rem;
+                width: 2.4rem;
 
                 @include mobile() {
                     top: 50%;
@@ -412,10 +431,14 @@
             &__icon {
                 background-color: var(--icon-grey-background);
                 margin-left: 0.8rem;
-
                 &:first-child {
                     margin-left: 0;
                 }
+            }
+
+            .dc-icon {
+                height: 2.4rem;
+                width: auto;
             }
         }
     }
@@ -514,20 +537,9 @@
 
     &__input-label {
         @extend .x-center;
-        justify-content: space-between;
         height: var(--input-height);
-        background: var(--general-main-1);
-        border-radius: 0.4rem;
-        padding: 0 2.4rem;
-
         &__wrapper {
-            margin-right: 2rem;
-        }
-
-        @include mobile() {
-            background: transparent;
-            margin-bottom: -1rem;
-            justify-content: center;
+            margin-right: 1rem;
         }
     }
 
@@ -539,12 +551,11 @@
 
         &__container {
             @extend .x-center;
-            justify-content: space-between;
             height: calc(var(--input-height) - 0.5rem);
             width: 100%;
             padding: 0 2.4rem 0 1.6rem;
-
             .dc-checkbox {
+                margin-right: 1rem;
                 .dc-text {
                     font-weight: bold;
                 }

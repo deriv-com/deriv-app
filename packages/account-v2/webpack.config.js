@@ -111,15 +111,7 @@ module.exports = function (env) {
                         'sass-loader',
                         {
                             loader: 'sass-resources-loader',
-                            options: {
-                                // Provide path to the file with resources
-                                resources: [
-                                    // eslint-disable-next-line global-require, import/no-dynamic-require
-                                    ...require('../shared/src/styles/index.js'),
-                                    // eslint-disable-next-line global-require, import/no-dynamic-require
-                                    ...require('./src/styles/index.js'),
-                                ],
-                            },
+                            options: {},
                         },
                     ],
                 },

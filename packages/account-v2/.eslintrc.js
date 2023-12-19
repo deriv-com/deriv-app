@@ -12,7 +12,7 @@ module.exports = {
     parserOptions: { sourceType: 'module' },
     plugins: ['eslint-plugin-local-rules', 'simple-import-sort', 'sort-destructure-keys', 'typescript-sort-keys'],
     root: true,
-    ignorePatterns: ['**/node_modules/**', '**/dist/**', '**/*.js'],
+    ignorePatterns: ['**/node_modules/**', '**/dist/**', '**/*.js', '**/webpack.config.*'],
     rules: {
         '@typescript-eslint/array-type': 'error',
         '@typescript-eslint/no-explicit-any': 'error',

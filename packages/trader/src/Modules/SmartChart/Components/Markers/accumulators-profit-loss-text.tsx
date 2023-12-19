@@ -2,14 +2,12 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { addComma, formatMoney, getCurrencyDisplayCode, isMobile } from '@deriv/shared';
 import { FastMarker } from 'Modules/SmartChart';
-import { FastMarkerBeta } from 'Modules/SmartChartBeta';
 import classNames from 'classnames';
 import { TRef } from './accumulators-profit-loss-tooltip';
 import { ProposalOpenContract } from '@deriv/api-types';
 
 type TAccumulatorsProfitLossText = Pick<ProposalOpenContract, 'current_spot' | 'current_spot_time' | 'currency'> & {
     className?: string;
-    is_beta_chart?: boolean;
     profit_value: number;
     should_show_profit_percentage?: boolean;
 };
@@ -25,7 +23,6 @@ const AccumulatorsProfitLossText = ({
     current_spot_time,
     currency,
     className = 'sc-accumulators-profit-loss-text',
-    is_beta_chart,
     profit_value,
     should_show_profit_percentage,
 }: TAccumulatorsProfitLossText) => {
@@ -119,14 +116,8 @@ const AccumulatorsProfitLossText = ({
         }
     };
 
-    const FastMarkerComponent = is_beta_chart ? FastMarkerBeta : FastMarker;
-
     return (
-        <FastMarkerComponent
-            markerRef={onRef}
-            className={classNames(className, won ? 'won' : 'lost')}
-            overlap_y_axis={false}
-        >
+        <FastMarker markerRef={onRef} className={classNames(className, won ? 'won' : 'lost')} overlap_y_axis={false}>
             <Text
                 weight='bold'
                 size={isMobile() ? 's' : 'sm'}
@@ -143,7 +134,7 @@ const AccumulatorsProfitLossText = ({
             <Text size={isMobile() ? 'xxxs' : 'xxs'} as='div' className={`${className}__currency`}>
                 {should_show_profit_percentage ? '%' : getCurrencyDisplayCode(currency)}
             </Text>
-        </FastMarkerComponent>
+        </FastMarker>
     );
 };
 

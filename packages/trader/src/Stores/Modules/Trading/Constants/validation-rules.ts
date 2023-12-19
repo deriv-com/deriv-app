@@ -1,12 +1,11 @@
 import { localize } from '@deriv/translations';
-import { isHourValid, isMinuteValid, isTimeValid, toMoment } from '@deriv/shared';
+import { isHourValid, isMinuteValid, isTimeValid, toMoment, TRuleOptions } from '@deriv/shared';
 import { isSessionAvailable } from '../Helpers/start-date';
 import { TTradeStore } from 'Types';
-import type { TRuleOptions } from 'Utils/Validator/validator';
 
 type TValidationRules = {
     [key: string]: {
-        rules?: Array<string | TRuleOptions>[];
+        rules?: Array<string | TRuleOptions<TTradeStore>>[];
         trigger?: string;
     };
 };

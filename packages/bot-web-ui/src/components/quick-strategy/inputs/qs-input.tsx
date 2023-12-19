@@ -15,10 +15,12 @@ type TQSInput = {
     attached?: boolean;
     should_have?: { key: string; value: string | number | boolean }[];
     disabled?: boolean;
+    min?: number;
+    max?: number;
 };
 
 const QSInput: React.FC<TQSInput> = observer(
-    ({ name, onChange, type = 'text', attached = false, disabled = false }) => {
+    ({ name, onChange, type = 'text', attached = false, disabled = false, min, max }) => {
         const {
             ui: { is_mobile },
         } = useStore();
@@ -105,6 +107,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         leading_icon={
                                             is_number ? (
                                                 <button
+                                                    disabled={!!min && field.value <= min}
                                                     data-testid='qs-input-decrease'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) - 1;
@@ -121,6 +124,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         trailing_icon={
                                             is_number ? (
                                                 <button
+                                                    disabled={!!max && field.value >= max}
                                                     data-testid='qs-input-increase'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) + 1;

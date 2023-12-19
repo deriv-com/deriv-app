@@ -4,7 +4,7 @@ import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
-import { TDescriptionItem } from '../types';
+import { TDescriptionItem, TDescription, TDataGroupedObjectsByTitle } from '../types';
 import Accordion from '../../dashboard/dbot-tours/common/accordion';
 import './strategy-description.scss';
 
@@ -13,11 +13,6 @@ type TStrategyDescription = Partial<{
     active_tab: string;
     tutorial_selected_strategy: string;
 }>;
-
-type TDataGroupedObjectsByTitle = {
-    type: string;
-    content: string[];
-};
 
 type TExpandedSubtitlesStorageDefault = {
     [key: string]: boolean;
@@ -99,42 +94,41 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
         return (
             <>
                 {active_tab === 'TRADE_PARAMETERS' ? (
-                    <>
-                        <div className='qs__body__content__form'>{formfields}</div>
-                    </>
+                    <div className='qs__body__content__form'>{formfields}</div>
                 ) : (
                     <div className='qs__body__content__description'>
                         <div>
                             {Array.isArray(grouped_objects_by_title) &&
-                                grouped_objects_by_title?.map(
-                                    (data: TDescriptionItem[] | TDataGroupedObjectsByTitle) => {
-                                        const subtitle_value = data?.[0]?.content?.[0] ?? '';
-                                        return (
-                                            <Accordion
-                                                key={`accordion-${subtitle_value}`}
-                                                content_data={{
-                                                    header: subtitle_value,
-                                                    content:
-                                                        (renderDescription(data) as React.ReactElement[]) ??
-                                                        (data
-                                                            ?.slice(1)
-                                                            ?.map(element => renderDescription(element))
-                                                            .flatMap(item => item) as React.ReactElement[]),
-                                                }}
-                                                expanded={data[0]?.expanded ?? false}
-                                                icon={{
-                                                    open_icon: 'IcAccordionMinus',
-                                                    close_icon: 'IcAccordionPlus',
-                                                }}
-                                                is_cursive={data[0]?.type === 'subtitle_italic'}
-                                                no_collapsible={data[0]?.no_collapsible}
-                                                has_subtitle={!!subtitle_value}
-                                                expanded_subtitles_storage={expanded_subtitles_storage}
-                                                setExpandedSubtitlesStorage={setExpandedSubtitlesStorage}
-                                            />
-                                        );
-                                    }
-                                )}
+                                grouped_objects_by_title?.map((data: TDescription) => {
+                                    const subtitle_value = (data as TDescriptionItem[])?.[0]?.content?.[0] ?? '';
+                                    return (
+                                        <Accordion
+                                            key={`accordion-${subtitle_value}`}
+                                            content_data={{
+                                                header: subtitle_value,
+                                                content:
+                                                    (renderDescription(
+                                                        data as TDataGroupedObjectsByTitle
+                                                    ) as React.ReactElement[]) ??
+                                                    ((data as TDescriptionItem[])
+                                                        ?.slice(1)
+                                                        ?.map(element => renderDescription(element))
+                                                        .flatMap(item => item) as React.ReactElement[]),
+                                            }}
+                                            expanded={(data as TDescriptionItem[])[0]?.expanded ?? false}
+                                            icon={{
+                                                open_icon: 'IcAccordionMinus',
+                                                close_icon: 'IcAccordionPlus',
+                                            }}
+                                            is_cursive={(data as TDescriptionItem[])[0]?.type === 'subtitle_italic'}
+                                            no_collapsible={(data as TDescriptionItem[])[0]?.no_collapsible}
+                                            has_subtitle={!!subtitle_value}
+                                            expanded_subtitles_storage={expanded_subtitles_storage}
+                                            setExpandedSubtitlesStorage={setExpandedSubtitlesStorage}
+                                            font_size={font_size}
+                                        />
+                                    );
+                                })}
                         </div>
                     </div>
                 )}

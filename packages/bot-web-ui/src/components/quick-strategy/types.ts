@@ -54,6 +54,13 @@ export type TDescriptionItem = {
     type: string;
 } & TPartialDescriptionItem;
 
+export type TDataGroupedObjectsByTitle = {
+    type: string;
+    content: string[];
+};
+
+export type TDescription = TDescriptionItem[] | TDataGroupedObjectsByTitle;
+
 export type TStrategy = {
     name: string;
     label: string;

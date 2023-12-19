@@ -26,6 +26,7 @@ type TPartialAccordion = Partial<{
 type TAccordion = {
     content_data: TContentData;
     expanded: boolean;
+    font_size: string;
 } & TPartialAccordion;
 
 const Accordion = ({
@@ -35,6 +36,7 @@ const Accordion = ({
     is_cursive = false,
     no_collapsible = true,
     has_subtitle = true,
+    font_size,
     icon,
     ...props
 }: TAccordion) => {
@@ -84,7 +86,7 @@ const Accordion = ({
                                 'dbot-accordion__header--cursive': is_cursive,
                             })}
                         >
-                            <Text as='span' size='xs' weight='bold'>
+                            <Text as='span' size={font_size} weight='bold'>
                                 {localize(header)}
                             </Text>
                         </div>
@@ -101,7 +103,7 @@ const Accordion = ({
                     })}
                     data-testid='accordion-content'
                 >
-                    <Text as='span' line_height='s' size='xxs'>
+                    <Text as='span' line_height='s' size={font_size}>
                         {content}
                     </Text>
                 </div>

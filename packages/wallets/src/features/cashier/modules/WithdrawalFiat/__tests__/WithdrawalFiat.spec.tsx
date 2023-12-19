@@ -23,7 +23,7 @@ describe('<WithdrawalFiat />', () => {
             await waitFor(() => {
                 expect(screen.queryByTestId('dt_wallets-loader')).not.toBeInTheDocument();
             });
-            const iframe = screen.getByTestId('dt_wallets-withdrawal-fiat-iframe');
+            const iframe = screen.getByTestId('dt_wallets_withdrawal_fiat_iframe');
             expect(iframe).toHaveAttribute('src', 'https://example.com');
         });
     });

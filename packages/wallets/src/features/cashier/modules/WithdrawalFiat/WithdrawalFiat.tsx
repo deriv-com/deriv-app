@@ -29,7 +29,7 @@ const WithdrawalFiat: React.FC<WithdrawalFiatProps> = ({ verificationCode }) => 
             {iframeUrl && (
                 <iframe
                     className='wallets-withdrawal-fiat__iframe'
-                    data-testid='dt_wallets-withdrawal-fiat-iframe'
+                    data-testid='dt_wallets_withdrawal_fiat_iframe'
                     key={iframeUrl}
                     src={iframeUrl}
                     style={{ display: isLoading ? 'none' : 'block' }}

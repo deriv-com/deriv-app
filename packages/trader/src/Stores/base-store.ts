@@ -268,19 +268,20 @@ export default class BaseStore {
      */
     validateProperty<T extends BaseStore>(property: string, value: T[keyof T]) {
         const validation_rules_for_property = this.validation_rules[property] ?? {};
-        const trigger = 'trigger' in validation_rules_for_property ? validation_rules_for_property.trigger : undefined;
-        const inputs = { [property]: value ?? this[property as keyof this] };
+        const trigger = (
+            'trigger' in validation_rules_for_property ? validation_rules_for_property.trigger : undefined
+        ) as keyof this;
+        const inputs = { [property]: value ?? this[property as keyof this] } as Pick<this, keyof this>;
         const validation_rules = {
             [property]: 'rules' in validation_rules_for_property ? validation_rules_for_property.rules : [],
         };
 
         if (!!trigger && Object.hasOwnProperty.call(this, trigger)) {
             const validation_rules_for_trigger = this.validation_rules[trigger as keyof TValidationRules];
-            inputs[trigger] = this[trigger as keyof this];
-            validation_rules[trigger] =
+            inputs[trigger] = this[trigger];
+            validation_rules[trigger as keyof TValidationRules] =
                 'rules' in validation_rules_for_trigger ? validation_rules_for_trigger.rules : [];
         }
-        // @ts-expect-error TODO: remove this comment when Validator migrated to TS is merged to master
         const validator = new Validator(inputs, validation_rules, this);
 
         validator.isPassed();

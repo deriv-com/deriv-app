@@ -3,11 +3,6 @@ import Errors from './errors';
 
 type TRule<T extends object> = string | Array<string | TRuleOptions<T>>;
 
-type TValidationResult = {
-    is_ok: boolean;
-    message: string;
-};
-
 export const template = (string: string, content: string | Array<string>) => {
     let to_replace = content;
     if (content && !Array.isArray(content)) {
@@ -89,7 +84,7 @@ class Validator<T extends object, S extends object> {
                     ruleObject.options,
                     this.store,
                     this.input
-                ) as TValidationResult | boolean;
+                );
                 if (typeof result === 'boolean' && !result) {
                     this.addFailure(attribute, ruleObject);
                 } else if (typeof result === 'object') {

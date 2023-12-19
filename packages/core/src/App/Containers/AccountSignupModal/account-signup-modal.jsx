@@ -13,9 +13,8 @@ import { Analytics } from '@deriv/analytics';
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
-
+import { useAuth } from 'App/AuthProvider';
 import validateSignupFields from './validate-signup-fields.jsx';
-
 import 'Sass/app/modules/account-signup.scss';
 
 const AccountSignup = ({
@@ -23,7 +22,7 @@ const AccountSignup = ({
     is_mobile,
     isModalVisible,
     clients_country,
-    onSignup,
+    // onSignup,
     residence_list,
     setIsFromSignupAccount,
 }) => {
@@ -35,6 +34,8 @@ const AccountSignup = ({
     const [pw_input, setPWInput] = React.useState('');
     const [is_password_modal, setIsPasswordModal] = React.useState(false);
     const [is_disclaimer_accepted, setIsDisclaimerAccepted] = React.useState(false);
+
+    const { onSignupForm } = useAuth();
 
     const checkResidenceIsBrazil = selected_country =>
         selected_country && residence_list[indexOfSelection(selected_country)]?.value?.toLowerCase() === 'br';
@@ -85,7 +86,7 @@ const AccountSignup = ({
             citizenship: residence_list[index_of_selected_citizenship].value,
         };
 
-        onSignup(modded_values, onSignupComplete);
+        onSignupForm(modded_values, onSignupComplete);
     };
 
     const onSignupComplete = error => {

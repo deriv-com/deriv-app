@@ -7,7 +7,7 @@ import './index.scss';
 import './translations/i18n';
 
 const App: React.FC = () => (
-    <APIProvider standalone>
+    <APIProvider>
         <ModalProvider>
             <AppContent />
         </ModalProvider>

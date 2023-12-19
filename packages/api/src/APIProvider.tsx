@@ -1,8 +1,9 @@
 import React, { PropsWithChildren, createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 // @ts-expect-error `@deriv/deriv-api` is not in TypeScript, Hence we ignore the TS error.
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
-import { getAppId, getSocketURL, useWS } from '@deriv/shared';
+import { WS, getAppId, getSocketURL, useWS } from '@deriv/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 type APIContextData = {
     derivAPI: DerivAPIBasic | null;
@@ -124,7 +125,7 @@ type TAPIProviderProps = {
 };
 
 const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
-    const WS = useWS();
+    // const WS = useWS();
     const [reconnect, setReconnect] = useState(false);
     const activeLoginid = window.localStorage.getItem('active_loginid');
     const [environment, setEnvironment] = useState(getEnvironment(activeLoginid));
@@ -167,7 +168,7 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
         <APIContext.Provider value={{ derivAPI: standalone ? standaloneDerivAPI.current : WS, switchEnvironment }}>
             <QueryClientProvider client={queryClient}>
                 {children}
-                {/* <ReactQueryDevtools /> */}
+                <ReactQueryDevtools />
             </QueryClientProvider>
         </APIContext.Provider>
     );

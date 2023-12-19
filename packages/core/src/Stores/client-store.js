@@ -413,7 +413,7 @@ export default class ClientStore extends BaseStore {
             () => [this.account_settings],
             () => {
                 const language = getRedirectionLanguage(this.account_settings?.preferred_language);
-                window.history.replaceState({}, document.title, urlForLanguage(language));
+                // window.history.replaceState({}, document.title, urlForLanguage(language));
 
                 this.setPreferredLanguage(language);
                 LocalStore.set(LANGUAGE_KEY, language);
@@ -1539,16 +1539,16 @@ export default class ClientStore extends BaseStore {
             this.root_store.ui.setIsNewAccount();
         }
 
-        if (search) {
-            if (code_param && action_param) this.setVerificationCode(code_param, action_param);
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(() => {
-                    // timeout is needed to get the token (code) from the URL before we hide it from the URL
-                    // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
-                    history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
-                }, 0);
-            });
-        }
+        // if (search) {
+        //     if (code_param && action_param) this.setVerificationCode(code_param, action_param);
+        //     document.addEventListener('DOMContentLoaded', () => {
+        //         setTimeout(() => {
+        //             // timeout is needed to get the token (code) from the URL before we hide it from the URL
+        //             // and from LiveChat that gets the URL from Window, particularly when initialized via HTML script on mobile
+        //             history.replaceState(null, null, window.location.search.replace(/&?code=[^&]*/i, ''));
+        //         }, 0);
+        //     });
+        // }
 
         this.setDeviceData();
 
@@ -1619,10 +1619,10 @@ export default class ClientStore extends BaseStore {
             });
             const language = getRedirectionLanguage(authorize_response.authorize.preferred_language);
             const stored_language = LocalStore.get(LANGUAGE_KEY);
-            if (language !== 'EN' && stored_language && language !== stored_language) {
-                window.history.replaceState({}, document.title, urlForLanguage(language));
-                await this.root_store.common.changeSelectedLanguage(language);
-            }
+            // if (language !== 'EN' && stored_language && language !== stored_language) {
+            //     window.history.replaceState({}, document.title, urlForLanguage(language));
+            //     await this.root_store.common.changeSelectedLanguage(language);
+            // }
             if (this.citizen) {
                 await this.onSetCitizen(this.citizen);
             }
@@ -1680,20 +1680,20 @@ export default class ClientStore extends BaseStore {
         this.setInitialized(true);
 
         // delete search params if it's signup when signin completed
-        if (action_param === 'signup') {
-            const filteredQuery = filterUrlQuery(search, ['lang']);
-            history.replaceState(
-                null,
-                null,
-                window.location.href.replace(`${search}`, filteredQuery === '' ? '' : `?${filteredQuery}`)
-            );
-        }
+        // if (action_param === 'signup') {
+        //     const filteredQuery = filterUrlQuery(search, ['lang']);
+        //     history.replaceState(
+        //         null,
+        //         null,
+        //         window.location.href.replace(`${search}`, filteredQuery === '' ? '' : `?${filteredQuery}`)
+        //     );
+        // }
 
-        history.replaceState(
-            null,
-            null,
-            window.location.href.replace(`${search}`, excludeParamsFromUrlQuery(search, unused_params))
-        );
+        // history.replaceState(
+        //     null,
+        //     null,
+        //     window.location.href.replace(`${search}`, excludeParamsFromUrlQuery(search, unused_params))
+        // );
 
         return true;
     }
@@ -2126,28 +2126,28 @@ export default class ClientStore extends BaseStore {
 
         let is_social_signup_provider = false;
 
-        if (search) {
-            let search_params = new URLSearchParams(window.location.search);
+        // if (search) {
+        //     let search_params = new URLSearchParams(window.location.search);
 
-            search_params.forEach((value, key) => {
-                const account_keys = ['acct', 'token', 'cur'];
-                const is_account_param = account_keys.some(
-                    account_key => key?.includes(account_key) && key !== 'affiliate_token'
-                );
+        //     search_params.forEach((value, key) => {
+        //         const account_keys = ['acct', 'token', 'cur'];
+        //         const is_account_param = account_keys.some(
+        //             account_key => key?.includes(account_key) && key !== 'affiliate_token'
+        //         );
 
-                if (is_account_param) {
-                    obj_params[key] = value;
-                    is_social_signup_provider = true;
-                }
-            });
+        //         if (is_account_param) {
+        //             obj_params[key] = value;
+        //             is_social_signup_provider = true;
+        //         }
+        //     });
 
-            // delete account query params - but keep other query params (e.g. utm)
-            Object.keys(obj_params).forEach(key => search_params.delete(key));
-            search_params.delete('state'); // remove unused state= query string
-            search_params = search_params?.toString();
-            const search_param_without_account = search_params ? `?${search_params}` : '/';
-            history.replaceState(null, null, `${search_param_without_account}${window.location.hash}`);
-        }
+        //     // delete account query params - but keep other query params (e.g. utm)
+        //     Object.keys(obj_params).forEach(key => search_params.delete(key));
+        //     search_params.delete('state'); // remove unused state= query string
+        //     search_params = search_params?.toString();
+        //     const search_param_without_account = search_params ? `?${search_params}` : '/';
+        //     history.replaceState(null, null, `${search_param_without_account}${window.location.hash}`);
+        // }
 
         const is_client_logging_in = login_new_user ? login_new_user.token1 : obj_params.token1;
 
@@ -2156,14 +2156,14 @@ export default class ClientStore extends BaseStore {
 
             const redirect_url = sessionStorage.getItem('redirect_url');
 
-            if (
-                (redirect_url?.endsWith('/') || redirect_url?.endsWith(routes.bot)) &&
-                (isTestLink() || isProduction() || isLocal() || isStaging())
-            ) {
-                window.history.replaceState({}, document.title, '/appstore/traders-hub');
-            } else {
-                window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
-            }
+            // if (
+            //     (redirect_url?.endsWith('/') || redirect_url?.endsWith(routes.bot)) &&
+            //     (isTestLink() || isProduction() || isLocal() || isStaging())
+            // ) {
+            //     window.history.replaceState({}, document.title, '/appstore/traders-hub');
+            // } else {
+            //     window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
+            // }
             SocketCache.clear();
             // is_populating_account_list is used for socket general to know not to filter the first-time logins
             this.is_populating_account_list = true;
@@ -2309,6 +2309,7 @@ export default class ClientStore extends BaseStore {
         });
     }
 
+    // TODO: we need to move this to AuthProvider and remove it
     onSignup({ citizenship, password, residence }, cb) {
         if (!this.verification_code.signup || !password || !residence || !citizenship) return;
         WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams()).then(

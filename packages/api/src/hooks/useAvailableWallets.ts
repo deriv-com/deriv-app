@@ -9,9 +9,9 @@ const useAvailableWallets = () => {
         payload: {
             categories: ['wallet'],
         },
-        options: {
-            enabled: isSuccess,
-        },
+        // options: {
+        //     enabled: isSuccess,
+        // },
     });
 
     const modifiedData = useMemo(() => {

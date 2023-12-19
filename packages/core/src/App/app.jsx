@@ -23,6 +23,7 @@ import AppContent from './AppContent';
 import 'Sass/app.scss';
 import { Analytics } from '@deriv/analytics';
 import initHotjar from '../Utils/Hotjar';
+import AuthProvider from './AuthProvider';
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
@@ -89,19 +90,21 @@ const AppWithoutTranslation = ({ root_store }) => {
     return (
         <>
             {is_translation_loaded ? (
-                <Router basename={has_base ? `/${base}` : null}>
-                    <MobxContentProvider store={root_store}>
-                        <APIProvider>
-                            <POIProvider>
-                                <StoreProvider store={root_store}>
-                                    <ExchangeRatesProvider>
-                                        <AppContent passthrough={platform_passthrough} />
-                                    </ExchangeRatesProvider>
-                                </StoreProvider>
-                            </POIProvider>
-                        </APIProvider>
-                    </MobxContentProvider>
-                </Router>
+                <AuthProvider>
+                    <Router basename={has_base ? `/${base}` : null}>
+                        <MobxContentProvider store={root_store}>
+                            <APIProvider>
+                                <POIProvider>
+                                    <StoreProvider store={root_store}>
+                                        <ExchangeRatesProvider>
+                                            <AppContent passthrough={platform_passthrough} />
+                                        </ExchangeRatesProvider>
+                                    </StoreProvider>
+                                </POIProvider>
+                            </APIProvider>
+                        </MobxContentProvider>
+                    </Router>
+                </AuthProvider>
             ) : (
                 <></>
             )}

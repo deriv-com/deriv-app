@@ -1,3 +1,24 @@
+const getQueryKeys = (name, props) => {
+    if (!props) return [name];
+
+    delete props.req_id;
+    if (name && props[name] === 1) delete props[name];
+
+    if (Object.keys(props).length === 0) return [name];
+
+    const ordered_props = Object.keys(props)
+        .sort((a, b) => a.localeCompare(b))
+        .reduce((obj, key) => {
+            obj[key] = props[key];
+
+            return obj;
+        }, {});
+
+    const query_props = JSON.stringify(ordered_props);
+
+    return [name, query_props];
+};
+
 class APIMiddleware {
     session_id;
 
@@ -16,6 +37,11 @@ class APIMiddleware {
 
         const key = requestToKey(request);
 
+        const apiCallName = Object.keys(requestToKeyObject({ ...request }))[0];
+        const queryCacheName = getQueryKeys(apiCallName, { ...request });
+        if (window.ReactQueryClient.getQueryData(queryCacheName)) {
+            return Promise.resolve(window.ReactQueryClient.getQueryData(queryCacheName));
+        }
         if (key in this.debounced_calls) {
             return this.debounced_calls[key];
         }
@@ -26,7 +52,15 @@ class APIMiddleware {
     sendIsCalled({ response_promise, args: [request, options = {}] }) {
         const promise = promiseRejectToResolve(response_promise);
 
+        const cachePromise = promiseRejectToResolve(response_promise);
+
         const key = requestToKey(request);
+
+        cachePromise.then(response => {
+            const apiCallName = Object.keys(requestToKeyObject({ ...request }))[0];
+            const queryCacheName = getQueryKeys(apiCallName, request);
+            window.ReactQueryClient.setQueryData(queryCacheName, response);
+        });
 
         if (options.callback) {
             promise.then(options.callback);
@@ -57,6 +91,16 @@ function requestToKey(request) {
     delete request_copy.subscribe;
 
     return JSON.stringify(request_copy);
+}
+
+function requestToKeyObject(request) {
+    const request_copy = { ...request };
+
+    delete request_copy.passthrough;
+    delete request_copy.req_id;
+    delete request_copy.subscribe;
+
+    return request_copy;
 }
 
 module.exports = APIMiddleware;

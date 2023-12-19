@@ -24,7 +24,6 @@ describe('<ResetContractChartElements />', () => {
                 reset_time: 1701947743,
                 reset_barrier: '2030.28',
             }),
-            is_bottom_widget_visible: true,
         };
     });
 

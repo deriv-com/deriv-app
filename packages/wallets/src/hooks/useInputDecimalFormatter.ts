@@ -50,8 +50,8 @@ const useInputDecimalFormatter = (initial?: number, options?: TOptions) => {
 
                 // The field have a decimal point and decimal places are already as allowed fraction
                 // digits, So we remove the extra decimal digits from the right and return the new value.
-                if (hasRight && right.length > fractionDigits) {
-                    const newRight = right.substring(0, fractionDigits);
+                if (fractionDigits) {
+                    const newRight = right ? right.substring(0, fractionDigits) : '0'.repeat(fractionDigits);
 
                     return `${left}.${newRight}`;
                 }

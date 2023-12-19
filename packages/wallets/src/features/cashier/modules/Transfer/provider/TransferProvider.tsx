@@ -116,8 +116,9 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
 
     const resetTransfer = useCallback(() => {
         setReceipt(undefined);
+        refetchAccountLimits();
         requestTransferAccounts();
-    }, [requestTransferAccounts]);
+    }, [refetchAccountLimits, requestTransferAccounts]);
 
     useEffect(() => {
         if (!transferAccounts) requestTransferAccounts();

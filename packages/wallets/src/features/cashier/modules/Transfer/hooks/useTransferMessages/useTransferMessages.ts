@@ -7,7 +7,7 @@ import {
     cumulativeAccountLimitsMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
     transferFeesBetweenWalletsMessageFn,
-} from './utils/messageFunctions';
+} from './utils';
 
 type TProps = {
     USDExchangeRates?: THooks.ExchangeRate;

@@ -26,7 +26,7 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
     }, [is_open, updateMt5LoginList]);
 
     const has_migrated_mt5_accounts = !!migrated_mt5_accounts.length;
-    const eligible_account_migrate = getFormattedJurisdictionCode(
+    const eligible_account_to_migrate = getFormattedJurisdictionCode(
         migrated_mt5_accounts.map(account => Object.values(account?.to_account ?? {})?.[0])?.[0]
     );
 
@@ -77,6 +77,15 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
         }
     };
 
+    const ModalContent = () => (
+        <MigrationSuccessModalContent
+            directToCashier={directToCashier}
+            icon={getMigrationIcon()}
+            eligible_account_to_migrate={eligible_account_to_migrate}
+            has_open_positions={has_open_positions}
+        />
+    );
+
     return is_mobile ? (
         <PageOverlay
             is_open={is_open && has_migrated_mt5_accounts}
@@ -85,12 +94,7 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
             header=' '
             onClickClose={toggleModal}
         >
-            <MigrationSuccessModalContent
-                directToCashier={directToCashier}
-                icon={getMigrationIcon()}
-                eligible_account_migrate={eligible_account_migrate}
-                has_open_positions={has_open_positions}
-            />
+            <ModalContent />
         </PageOverlay>
     ) : (
         <Modal
@@ -102,12 +106,7 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
             width='58.8rem'
             should_header_stick_body={false}
         >
-            <MigrationSuccessModalContent
-                directToCashier={directToCashier}
-                icon={getMigrationIcon()}
-                eligible_account_migrate={eligible_account_migrate}
-                has_open_positions={has_open_positions}
-            />
+            <ModalContent />
         </Modal>
     );
 });

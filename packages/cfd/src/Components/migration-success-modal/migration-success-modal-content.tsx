@@ -8,12 +8,12 @@ import { Jurisdiction, CFD_PLATFORMS, getCFDPlatformNames, getFormattedJurisdict
 type TMigrationSuccessModalContent = {
     has_open_positions: boolean;
     icon?: string;
-    eligible_account_migrate: string;
+    eligible_account_to_migrate: string;
     directToCashier: () => void;
 };
 
 const MigrationSuccessModalContent = observer(
-    ({ has_open_positions, icon, eligible_account_migrate, directToCashier }: TMigrationSuccessModalContent) => {
+    ({ has_open_positions, icon, eligible_account_to_migrate, directToCashier }: TMigrationSuccessModalContent) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
 
@@ -36,10 +36,10 @@ const MigrationSuccessModalContent = observer(
                         <div className='cfd-success-dialog-migration__content-wrapper'>
                             <Text size={text_size} as='p' align='center'>
                                 <Localize
-                                    i18n_default_text='Your new <0>{{platform}} {{eligible_account_migrate}}</0> account(s) are ready for trading.'
+                                    i18n_default_text='Your new <0>{{platform}} {{eligible_account_to_migrate}}</0> account(s) are ready for trading.'
                                     values={{
                                         platform,
-                                        eligible_account_migrate,
+                                        eligible_account_to_migrate,
                                     }}
                                     components={[<strong key={0} />]}
                                 />
@@ -51,10 +51,10 @@ const MigrationSuccessModalContent = observer(
                                 className='cfd-success-dialog-migration__content-wrapper__desc'
                             >
                                 <Localize
-                                    i18n_default_text='For new trades, please transfer your funds into the new <0>{{platform}} {{eligible_account_migrate}}</0>  account(s).'
+                                    i18n_default_text='For new trades, please transfer your funds into the new <0>{{platform}} {{eligible_account_to_migrate}}</0>  account(s).'
                                     values={{
                                         platform,
-                                        eligible_account_migrate,
+                                        eligible_account_to_migrate,
                                     }}
                                     components={[<strong key={0} />]}
                                 />

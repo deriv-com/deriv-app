@@ -3,7 +3,33 @@ import classNames from 'classnames';
 import { Field } from 'formik';
 import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { TTradingAssessmentForm, TQuestion } from 'Types';
 import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
+
+type TradingAssessmentDropdownProps = {
+    disabled_items: string[];
+    item_list: TQuestion[];
+    onChange: (
+        e: React.ChangeEvent<HTMLSelectElement>,
+        form_control: keyof TTradingAssessmentForm,
+        setFieldValue: (field: string, value: string, shouldValidate?: boolean) => void
+    ) => void;
+    values: TTradingAssessmentForm;
+    setFieldValue: (field: string, value: string, shouldValidate?: boolean) => void;
+    setEnableNextSection: (enable: boolean) => void;
+};
+
+type TField = {
+    field: {
+        name: string;
+        value: string;
+        onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+    };
+    meta: {
+        error: string;
+        touched: string;
+    };
+};
 
 const TradingAssessmentDropdown = ({
     disabled_items,
@@ -12,7 +38,7 @@ const TradingAssessmentDropdown = ({
     values,
     setFieldValue,
     setEnableNextSection,
-}) => {
+}: TradingAssessmentDropdownProps) => {
     React.useEffect(() => {
         checkIfAllFieldsFilled();
     }, [values]);
@@ -20,10 +46,12 @@ const TradingAssessmentDropdown = ({
     const checkIfAllFieldsFilled = () => {
         if (values) {
             setEnableNextSection(
-                values.cfd_experience &&
-                    values.cfd_frequency &&
-                    values.trading_experience_financial_instruments &&
-                    values.trading_frequency_financial_instruments
+                Boolean(
+                    values.cfd_experience &&
+                        values.cfd_frequency &&
+                        values.trading_experience_financial_instruments &&
+                        values.trading_frequency_financial_instruments
+                )
             );
         }
     };
@@ -32,7 +60,7 @@ const TradingAssessmentDropdown = ({
         <div className='trading-assessment__wrapper__dropdown'>
             {item_list.map(question => (
                 <Field name={question.form_control} key={question.form_control}>
-                    {({ field, meta }) => {
+                    {({ field, meta }: TField) => {
                         const should_extend_trading_frequency_field =
                             question.form_control === 'trading_frequency_financial_instruments' &&
                             question?.question_text.length > MAX_QUESTION_TEXT_LENGTH;
@@ -49,7 +77,13 @@ const TradingAssessmentDropdown = ({
                                         name={question?.form_control}
                                         placeholder={question?.question_text}
                                         list={question?.answer_options}
-                                        onChange={e => onChange(e, question.form_control, setFieldValue)}
+                                        onChange={e =>
+                                            onChange(
+                                                e as React.ChangeEvent<HTMLSelectElement>,
+                                                question.form_control,
+                                                setFieldValue
+                                            )
+                                        }
                                         value={values[question.form_control]}
                                         disabled={disabled_items.includes(question.form_control)}
                                         error={meta.touched && meta.error}

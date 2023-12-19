@@ -96,7 +96,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                     <FormTabs
                         active_tab={activeTab}
                         onChange={handleTabChange}
-                        description={strategy?.long_description}
+                        description={strategy?.long_description || strategy?.description}
                     />
                     <ThemedScrollbars
                         className={classNames('qs__form__container', {

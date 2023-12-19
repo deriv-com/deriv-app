@@ -106,9 +106,7 @@
 
             &__head {
                 @extend .xy-center;
-
                 padding-bottom: 1rem;
-                box-shadow: 0 1.2rem 3rem -2rem var(--text-general);
 
                 @include mobile() {
                     padding: 0 1.6rem 1.6rem;

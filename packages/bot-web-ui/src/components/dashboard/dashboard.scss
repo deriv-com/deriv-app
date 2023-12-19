@@ -642,11 +642,16 @@
         width: 100%;
         padding: 0.6rem 1.6rem;
         cursor: pointer;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        padding-left: 0;
+        border-bottom: 1px solid var(--general-section-1);
     }
 
     &__header {
         width: 90%;
-        text-align: center;
+        text-align: left;
 
         span {
             color: var(--text-prominent);
@@ -658,13 +663,14 @@
         color: $color-white;
         text-align: end;
 
-        svg {
-            filter: invert(1);
+        & svg {
+            filter: none;
+            width: 12px;
+            height: 12px;
         }
     }
 
     &__content {
-        background-color: var(--general-section-1);
         overflow: hidden;
         transition: all 0.4s ease-in-out;
         max-height: 0;

@@ -20,6 +20,7 @@ type TPartialAccordion = Partial<{
     no_collapsible: boolean;
     expanded_subtitles_storage: { [key: string]: boolean };
     setExpandedSubtitlesStorage: (value: { [key: string]: boolean }) => void;
+    has_subtitle: boolean;
 }>;
 
 type TAccordion = {
@@ -33,6 +34,7 @@ const Accordion = ({
     test_id = 'dbot-acc-id',
     is_cursive = false,
     no_collapsible = true,
+    has_subtitle = true,
     icon,
     ...props
 }: TAccordion) => {
@@ -46,7 +48,7 @@ const Accordion = ({
     const { expanded_subtitles_storage, setExpandedSubtitlesStorage } = props;
     const accordion_subtitle = `${header}__${selected_strategy}`.split(' ').join('_').toLocaleLowerCase();
     const is_expanded_section = expanded_subtitles_storage ? expanded_subtitles_storage[accordion_subtitle] : false;
-    const should_be_expanded = is_expanded_section || is_open;
+    const should_be_expanded = is_expanded_section || is_open || !has_subtitle;
 
     const chooseIcon = () => {
         if (icon) {
@@ -61,36 +63,38 @@ const Accordion = ({
     return (
         <div className='dbot-accordion' {...props}>
             <div>
-                <button
-                    className={classNames('dbot-accordion__navbar', {
-                        'dbot-accordion__navbar--no-event': !no_collapsible,
-                    })}
-                    data-testid={test_id}
-                    onClick={() => {
-                        setOpen(!should_be_expanded);
-                        if (expanded_subtitles_storage && setExpandedSubtitlesStorage) {
-                            setExpandedSubtitlesStorage({
-                                ...expanded_subtitles_storage,
-                                [accordion_subtitle]: !should_be_expanded,
-                            });
-                        }
-                    }}
-                >
-                    <div
-                        className={classNames('dbot-accordion__header', {
-                            'dbot-accordion__header--cursive': is_cursive,
+                {has_subtitle && (
+                    <button
+                        className={classNames('dbot-accordion__navbar', {
+                            'dbot-accordion__navbar--no-event': !no_collapsible,
                         })}
+                        data-testid={test_id}
+                        onClick={() => {
+                            setOpen(!should_be_expanded);
+                            if (expanded_subtitles_storage && setExpandedSubtitlesStorage) {
+                                setExpandedSubtitlesStorage({
+                                    ...expanded_subtitles_storage,
+                                    [accordion_subtitle]: !should_be_expanded,
+                                });
+                            }
+                        }}
                     >
-                        <Text as='span' size='xs' weight='bold'>
-                            {localize(header)}
-                        </Text>
-                    </div>
-                    {no_collapsible && (
-                        <div className='dbot-accordion__icon'>
-                            <Icon icon={chooseIcon()} />
+                        <div
+                            className={classNames('dbot-accordion__header', {
+                                'dbot-accordion__header--cursive': is_cursive,
+                            })}
+                        >
+                            <Text as='span' size='xs' weight='bold'>
+                                {localize(header)}
+                            </Text>
                         </div>
-                    )}
-                </button>
+                        {no_collapsible && (
+                            <div className='dbot-accordion__icon'>
+                                <Icon icon={chooseIcon()} />
+                            </div>
+                        )}
+                    </button>
+                )}
                 <div
                     className={classNames('dbot-accordion__content', {
                         'dbot-accordion__content--open': should_be_expanded,

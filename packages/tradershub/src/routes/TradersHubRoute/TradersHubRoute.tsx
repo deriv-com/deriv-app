@@ -56,7 +56,6 @@ const TradersHubRoute: React.FC = () => (
                         <div className='h-4000 rounded-300 bg-solid-slate-100' />
                     </div>
                 </div>
-
                 <div>
                     <Text bold className='pb-800' size='md'>
                         Deriv cTrader

@@ -12,16 +12,20 @@ import { useMFAccountStatus } from '@deriv/hooks';
 const AccountNeedsVerification = observer(() => {
     const mf_account_status = useMFAccountStatus();
     const { client, traders_hub } = useStore();
-    const { account_list, loginid } = client;
+    const { account_list, loginid, account_status } = client;
     const { openModal, openFailedVerificationModal } = traders_hub;
 
     const account = account_list?.find((acc: { loginid?: string }) => loginid === acc?.loginid);
     const icon_title = account?.title;
 
+    const { authentication } = account_status;
+
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         mf_account_status,
         openFailedVerificationModal,
-        'multipliers'
+        'multipliers',
+        undefined,
+        { poi_status: authentication?.identity?.status, poa_status: authentication?.document?.status }
     );
 
     return (

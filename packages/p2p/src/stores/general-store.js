@@ -345,7 +345,7 @@ export default class GeneralStore extends BaseStore {
                 is_active: order_info.is_active_order,
             };
 
-            if (old_order && old_order.status && new_order.status) {
+            if (old_order && old_order?.status && new_order?.status) {
                 if (old_order.status !== new_order.status) {
                     if (notification) {
                         // If order status changed, notify the user.

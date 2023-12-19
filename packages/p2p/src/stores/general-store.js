@@ -12,7 +12,7 @@ import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 
-import { get, init, timePromise } from '../utils/server_time';
+import { get, init } from 'Utils/server_time';
 
 export default class GeneralStore extends BaseStore {
     active_index = 0;
@@ -73,7 +73,6 @@ export default class GeneralStore extends BaseStore {
     server_time = {
         get,
         init,
-        timePromise,
     };
 
     constructor(root_store) {

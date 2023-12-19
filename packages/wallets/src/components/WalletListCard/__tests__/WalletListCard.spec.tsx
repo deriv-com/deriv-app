@@ -34,9 +34,9 @@ describe('WalletListCard', () => {
         expect(screen.getByText('SVG')).toBeInTheDocument();
         expect(screen.getByText('1000.00 USD')).toBeInTheDocument();
         expect(cardGradient).toHaveClass('wallets-gradient--demo-desktop-card-light');
-        expect(screen.queryByRole('button', { name: 'Reset balance' })).toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: 'Withdraw' })).not.toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: 'Deposit' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'reset-balance' })).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'withdraw' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'deposit' })).not.toBeInTheDocument();
     });
 
     it('should render the real wallet list card with the correct details', () => {
@@ -59,9 +59,9 @@ describe('WalletListCard', () => {
         expect(screen.getByText('MALTA')).toBeInTheDocument();
         expect(screen.getByText('0.0000021 BTC')).toBeInTheDocument();
         expect(cardGradient).toHaveClass('wallets-gradient--BTC-desktop-card-light');
-        expect(screen.queryByRole('button', { name: 'Reset balance' })).not.toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: 'Withdraw' })).toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: 'Deposit' })).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'reset-balance' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'withdraw' })).toBeInTheDocument();
+        expect(screen.queryByRole('button', { name: 'deposit' })).toBeInTheDocument();
     });
 
     it('should redirect to reset balance page when reset balance button is clicked', () => {
@@ -83,7 +83,7 @@ describe('WalletListCard', () => {
             </Router>
         );
 
-        const resetBalanceButton = screen.getByRole('button', { name: 'Reset balance' });
+        const resetBalanceButton = screen.getByRole('button', { name: 'reset-balance' });
         expect(resetBalanceButton).toBeInTheDocument();
         resetBalanceButton.click();
         expect(history.location.pathname).toBe('/wallets/cashier/reset-balance');
@@ -108,7 +108,7 @@ describe('WalletListCard', () => {
             </Router>
         );
 
-        const depositButton = screen.getByRole('button', { name: 'Deposit' });
+        const depositButton = screen.getByRole('button', { name: 'deposit' });
         expect(depositButton).toBeInTheDocument();
         depositButton.click();
         expect(history.location.pathname).toBe('/wallets/cashier/deposit');
@@ -133,7 +133,7 @@ describe('WalletListCard', () => {
             </Router>
         );
 
-        const withdrawButton = screen.getByRole('button', { name: 'Withdraw' });
+        const withdrawButton = screen.getByRole('button', { name: 'withdraw' });
         expect(withdrawButton).toBeInTheDocument();
         withdrawButton.click();
         expect(history.location.pathname).toBe('/wallets/cashier/withdraw');
@@ -158,7 +158,7 @@ describe('WalletListCard', () => {
             </Router>
         );
 
-        const transferButton = screen.getByRole('button', { name: 'Transfer' });
+        const transferButton = screen.getByRole('button', { name: 'transfer' });
         expect(transferButton).toBeInTheDocument();
         transferButton.click();
         expect(history.location.pathname).toBe('/wallets/cashier/transfer');
@@ -183,7 +183,7 @@ describe('WalletListCard', () => {
             </Router>
         );
 
-        const viewAllTransactionsButton = screen.getByRole('button', { name: 'Transactions' });
+        const viewAllTransactionsButton = screen.getByRole('button', { name: 'transactions' });
         expect(viewAllTransactionsButton).toBeInTheDocument();
         viewAllTransactionsButton.click();
         expect(history.location.pathname).toBe('/wallets/cashier/transactions');

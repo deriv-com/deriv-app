@@ -1,13 +1,10 @@
 import React from 'react';
 import { Router } from './routes';
-import './AppContent.scss';
 
-const AppContent = () => {
-    return (
-        <div className='traders-hub-app'>
-            <Router />
-        </div>
-    );
-};
+const AppContent = () => (
+    <div className='font-sans max-w-[1232px] mx-auto pt-400 px-400 lg:pt-2500 lg:px-50'>
+        <Router />
+    </div>
+);
 
 export default AppContent;

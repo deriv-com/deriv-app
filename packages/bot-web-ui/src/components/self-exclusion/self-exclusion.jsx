@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import { Button, Div100vhContainer, FadeWrapper, Input, MobileWrapper, Modal, PageOverlay } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -19,6 +18,7 @@ const SelfExclusionForm = props => {
         resetSelfExclusion,
         updateSelfExclusion,
         setRunLimit,
+        is_mobile,
     } = props;
 
     React.useEffect(() => {
@@ -152,8 +152,7 @@ const SelfExclusionForm = props => {
                                 </div>
                                 <div
                                     className={classNames('db-self-exclusion__footer', {
-                                        'db-self-exclusion__footer--relative':
-                                            isMobile() && is_onscreen_keyboard_active,
+                                        'db-self-exclusion__footer--relative': is_mobile && is_onscreen_keyboard_active,
                                     })}
                                 >
                                     <div className='db-self-exclusion__footer-btn-group'>
@@ -192,7 +191,7 @@ const SelfExclusion = observer(({ onRunButtonClick }) => {
     const { ui, client } = useStore();
     const { is_restricted, resetSelfExclusion, initial_values, api_max_losses, run_limit, setRunLimit } =
         self_exclusion;
-    const { is_onscreen_keyboard_active } = ui;
+    const { is_onscreen_keyboard_active, is_mobile } = ui;
     const { is_logged_in, updateSelfExclusion, virtual_account_loginid } = client;
 
     const self_exclusion_form_props = {
@@ -206,11 +205,12 @@ const SelfExclusion = observer(({ onRunButtonClick }) => {
         setRunLimit,
         virtual_account_loginid,
         run_limit,
+        is_mobile,
     };
 
     return (
         <>
-            {isMobile() ? (
+            {is_mobile ? (
                 <FadeWrapper is_visible={is_restricted} className='limits__wrapper' keyname='limitis__wrapper'>
                     <PageOverlay header={localize('Limits')} onClickClose={resetSelfExclusion}>
                         <MobileWrapper>

@@ -29,12 +29,16 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
     const eligible_account_to_migrate = getFormattedJurisdictionCode(
         migrated_mt5_accounts.map(account => Object.values(account?.to_account ?? {})?.[0])?.[0]
     );
-
-    const has_open_positions = mt5_login_list.some(account =>
-        migrated_mt5_accounts.some(
-            migrated_acc =>
-                migrated_acc.login_id === account.login && account.status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION
-        )
+    const has_open_positions = React.useMemo(
+        () =>
+            mt5_login_list.some(account =>
+                migrated_mt5_accounts.some(
+                    migrated_acc =>
+                        migrated_acc.login_id === account.login &&
+                        account.status === MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION
+                )
+            ),
+        [mt5_login_list, migrated_mt5_accounts]
     );
 
     const toggleModal = () => {

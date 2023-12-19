@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { MarketTypeDetails } from '../../constants';
 import { MT5AccountTypeCard } from '../MT5AccountTypeCard';
 
@@ -7,7 +7,7 @@ type TProps = {
     selectedMarketType?: keyof typeof MarketTypeDetails;
 };
 
-const MT5AccountType: React.FC<TProps> = ({ onMarketTypeSelect, selectedMarketType }) => {
+const MT5AccountType: FC<TProps> = ({ onMarketTypeSelect, selectedMarketType }) => {
     const sortedMarketTypeEntries = Object.entries(MarketTypeDetails).sort(([keyA], [keyB]) => {
         const order = ['synthetic', 'financial', 'all'];
         return order.indexOf(keyA) - order.indexOf(keyB);

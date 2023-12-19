@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { qtMerge, Text } from '@deriv/quill-design';
 
 type TProps = {
@@ -9,7 +9,7 @@ type TProps = {
     title: string;
 };
 
-const MT5AccountTypeCard: React.FC<TProps> = ({ description, icon, isSelected, onClick, title }) => {
+const MT5AccountTypeCard: FC<TProps> = ({ description, icon, isSelected, onClick, title }) => {
     return (
         <div
             className={qtMerge(

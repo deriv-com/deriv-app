@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Text } from '@deriv/quill-design';
 import { useModal } from '../../../../components/ModalProvider';
 import AddIcon from '../../../../public/images/add-icon.svg';
 import { MT5AccountTypeModal } from '../../modals';
 
-const GetMoreMT5Accounts: React.FC = () => {
+const GetMoreMT5Accounts: FC = () => {
     const { show } = useModal();
 
     return (

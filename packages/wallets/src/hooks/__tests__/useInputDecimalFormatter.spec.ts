@@ -9,7 +9,7 @@ describe('useInputDecimalFormatter', () => {
             result.current.onChange({ target: { value: '123' } });
         });
 
-        expect(result.current.value).toBe('123');
+        expect(result.current.value).toBe('123.00');
     });
 
     it('should handle fractional digits and sign options correctly', () => {
@@ -34,10 +34,10 @@ describe('useInputDecimalFormatter', () => {
         expect(result.current.value).toBe('');
     });
 
-    it('should return empty string when an user clear the unput', () => {
+    it('should return empty string when the user clears the input', () => {
         const { result } = renderHook(() => useInputDecimalFormatter(10));
 
-        expect(result.current.value).toBe('10');
+        expect(result.current.value).toBe('10.00');
 
         act(() => {
             result.current.onChange({ target: { value: '' } });
@@ -61,16 +61,16 @@ describe('useInputDecimalFormatter', () => {
     it('should return value with sign after adding sign for integer number', () => {
         const { result } = renderHook(() => useInputDecimalFormatter(1, { withSign: true }));
 
-        expect(result.current.value).toBe('1');
+        expect(result.current.value).toBe('1.00');
 
         act(() => {
-            result.current.onChange({ target: { value: '-1' } });
+            result.current.onChange({ target: { value: '-1.00' } });
         });
 
-        expect(result.current.value).toBe('-1');
+        expect(result.current.value).toBe('-1.00');
     });
 
-    it('should return 0 if an user type 0', () => {
+    it('should return 0 if the user types 0', () => {
         const { result } = renderHook(() => useInputDecimalFormatter());
 
         expect(result.current.value).toBe('');
@@ -82,27 +82,27 @@ describe('useInputDecimalFormatter', () => {
         expect(result.current.value).toBe('0');
     });
 
-    it('should return previous value if an user type char', () => {
+    it('should return previous value if the user types non-digit characters', () => {
         const { result } = renderHook(() => useInputDecimalFormatter(10));
 
-        expect(result.current.value).toBe('10');
+        expect(result.current.value).toBe('10.00');
 
         act(() => {
             result.current.onChange({ target: { value: 'test' } });
         });
 
-        expect(result.current.value).toBe('10');
+        expect(result.current.value).toBe('10.00');
     });
 
-    it('should return previous value if an user type integer part like this pattern 0*', () => {
+    it('should return previous value if the user types integer part matching this pattern: 0*', () => {
         const { result } = renderHook(() => useInputDecimalFormatter(10));
 
-        expect(result.current.value).toBe('10');
+        expect(result.current.value).toBe('10.00');
 
         act(() => {
             result.current.onChange({ target: { value: '03' } });
         });
 
-        expect(result.current.value).toBe('10');
+        expect(result.current.value).toBe('10.00');
     });
 });

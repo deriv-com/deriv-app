@@ -1,24 +1,26 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer } from '@deriv/stores';
+import { Analytics } from '@deriv/analytics'; //BotTAction will add ones that PR gets merged
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import BotSnackbar from 'Components/bot-snackbar';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from '../../../stores/useDBotStore';
 import LoadModal from '../../load-modal';
 import QuickStrategy1 from '../../quick-strategy';
 import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import BotBuilderTourHandler from '../dbot-tours/bot-builder-tour';
 import WorkspaceWrapper from './workspace-wrapper';
-import { Analytics } from '@deriv/analytics'; //BotTAction will add ones that PR gets merged
-import { DBOT_TABS } from 'Constants/bot-contents';
 
 const BotBuilder = observer(() => {
+    const { ui } = useStore();
     const { dashboard, app, run_panel, toolbar, quick_strategy } = useDBotStore();
     const { active_tab, active_tour, is_preview_on_popup } = dashboard;
     const { is_open } = quick_strategy;
     const { is_running } = run_panel;
     const is_blockly_listener_registered = React.useRef(false);
     const [show_snackbar, setShowSnackbar] = React.useState(false);
+    const { is_mobile } = ui;
 
     React.useEffect(() => {
         if (active_tab === DBOT_TABS.BOT_BUILDER) {
@@ -104,7 +106,7 @@ const BotBuilder = observer(() => {
                     </div>
                 )}
             </div>
-            {active_tab === 1 && <BotBuilderTourHandler />}
+            {active_tab === 1 && <BotBuilderTourHandler is_mobile={is_mobile} />}
             {/* removed this outside from toolbar becuase it needs to loaded seperately without dependency */}
             <LoadModal />
             <SaveModal />

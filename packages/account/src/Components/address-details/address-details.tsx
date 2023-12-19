@@ -171,7 +171,11 @@ const AddressDetails = observer(
                                     )}
 
                                     <ThemedScrollbars height={height} className='details-form__scrollbar'>
-                                        <div className={classNames('details-form__elements', 'address-details-form ')}>
+                                        <div
+                                            className={classNames('details-form__elements', 'address-details-form', {
+                                                'address-details-form__eu': is_eu_user,
+                                            })}
+                                        >
                                             <FormInputField
                                                 name='address_line_1'
                                                 required

@@ -1,5 +1,5 @@
 import React from 'react';
-import { getStatusBadgeConfig } from '@deriv/account';
+import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Button, Icon, Modal, Money, StatusBadge, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrencyName } from '@deriv/shared';
@@ -9,6 +9,7 @@ import CurrencyIcon from './currency';
 import { AccountListDetail } from './types';
 import classNames from 'classnames';
 import { useHasSetCurrency, useMFAccountStatus } from '@deriv/hooks';
+import { GetAccountStatus } from '@deriv/api-types';
 
 type CurrencySelectionModalProps = {
     //TODO: Replace the type with a proper one when ts migration cards merged
@@ -25,6 +26,7 @@ type CurrencySelectionModalProps = {
     switchAccount: (loginid: string) => void;
     toggleSetCurrencyModal: () => void;
     has_any_real_account: boolean;
+    account_status: GetAccountStatus;
 };
 
 const CurrencySelectionModal = ({
@@ -39,12 +41,17 @@ const CurrencySelectionModal = ({
     switchAccount,
     toggleSetCurrencyModal,
     has_any_real_account,
+    account_status,
 }: CurrencySelectionModalProps) => {
+    const { authentication } = account_status;
+
     const mf_account_status = useMFAccountStatus();
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         mf_account_status,
         openFailedVerificationModal,
-        'multipliers'
+        'multipliers',
+        undefined,
+        { poi_status: authentication?.identity?.status, poa_status: authentication?.document?.status }
     );
 
     const hasSetCurrency = useHasSetCurrency();
@@ -140,4 +147,5 @@ export default connect(({ client, traders_hub, ui }: RootStore) => ({
     mf_account_status: client.mf_account_status,
     toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
     has_any_real_account: client.has_any_real_account,
+    account_status: client.account_status,
 }))(CurrencySelectionModal);

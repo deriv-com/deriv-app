@@ -1,5 +1,5 @@
 import React from 'react';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
@@ -9,7 +9,6 @@ import ToolbarWidgets from '../toolbar-widgets';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(),
     isDesktop: jest.fn(),
 }));
 
@@ -34,12 +33,11 @@ jest.mock('@deriv/deriv-charts', () => ({
 
 describe('ToolbarWidgets', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element;
-
+    const mock_store = mockStore({});
     const mockUpdateChartType = jest.fn();
     const mockUpdateGranularity = jest.fn();
 
     beforeAll(() => {
-        const mock_store = mockStore({});
         const mock_DBot_store = mockDBotStore(mock_store, mock_ws);
 
         wrapper = ({ children }: { children: JSX.Element }) => (
@@ -52,7 +50,6 @@ describe('ToolbarWidgets', () => {
     });
 
     it('should render ToolbarWidgets in desktop', async () => {
-        (isMobile as jest.Mock).mockReturnValueOnce(false);
         (isDesktop as jest.Mock).mockReturnValueOnce(true);
         render(
             <React.Suspense fallback={<div />}>
@@ -66,11 +63,14 @@ describe('ToolbarWidgets', () => {
     });
 
     it('should render ToolbarWidgets in mobile', async () => {
-        (isMobile as jest.Mock).mockReturnValueOnce(true);
         (isDesktop as jest.Mock).mockReturnValueOnce(false);
         render(
             <React.Suspense fallback={<div />}>
-                <ToolbarWidgets updateChartType={mockUpdateChartType} updateGranularity={mockUpdateGranularity} />
+                <ToolbarWidgets
+                    updateChartType={mockUpdateChartType}
+                    updateGranularity={mockUpdateGranularity}
+                    position='bottom'
+                />
             </React.Suspense>,
             {
                 wrapper,

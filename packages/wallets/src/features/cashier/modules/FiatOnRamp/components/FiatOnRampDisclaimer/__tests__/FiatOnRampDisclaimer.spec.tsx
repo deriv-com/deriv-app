@@ -12,7 +12,7 @@ const mockUseMutation = useMutation as jest.Mock;
 describe('FiatOnRampDisclaimer', () => {
     beforeEach(() => {
         mockUseMutation.mockReturnValue({
-            data: { service_token: { banxa: { url: 'mocked_banxa_url' } } },
+            data: { service_token: { banxa: { url: 'https://mocked_banxa_url/' } } },
             isLoading: false,
             mutate: jest.fn(variables => {
                 expect(variables).toEqual({ payload: { referrer: window.location.href, service: 'banxa' } });
@@ -32,6 +32,20 @@ describe('FiatOnRampDisclaimer', () => {
         expect(screen.getByRole('button', { name: 'Continue' })).toBeInTheDocument();
     });
 
+    it('should render loader while loading', () => {
+        mockUseMutation.mockReturnValue({
+            data: { service_token: { banxa: { url: 'https://mocked_banxa_url/' } } },
+            isLoading: true,
+            mutate: jest.fn(variables => {
+                expect(variables).toEqual({ payload: { referrer: window.location.href, service: 'banxa' } });
+            }),
+        });
+        const handleDisclaimer = jest.fn();
+
+        render(<FiatOnRampDisclaimer handleDisclaimer={handleDisclaimer} />);
+        expect(screen.getByTestId('dt_wallets-loader')).toBeInTheDocument();
+    });
+
     it('should call handleDisclaimer function on "Back" button click', () => {
         const handleDisclaimer = jest.fn();
         render(<FiatOnRampDisclaimer handleDisclaimer={handleDisclaimer} />);
@@ -40,14 +54,20 @@ describe('FiatOnRampDisclaimer', () => {
         expect(handleDisclaimer).toHaveBeenCalled();
     });
 
-    it('should call redirectToBanxa function on "Continue" button click', async () => {
+    it('should redirect to Banxa provider on "Continue" button click', async () => {
         const handleDisclaimer = jest.fn();
+        const originalWindowOpen = window.open;
+        window.open = jest.fn();
+
         render(<FiatOnRampDisclaimer handleDisclaimer={handleDisclaimer} />);
 
         fireEvent.click(screen.getByRole('button', { name: 'Continue' }));
 
         await waitFor(() => {
+            expect(window.open).toHaveBeenCalledWith('https://mocked_banxa_url/', '_blank');
             expect(mockUseMutation).toHaveBeenCalledWith('service_token');
         });
+
+        window.open = originalWindowOpen;
     });
 });

@@ -32,7 +32,7 @@ const ChartMarker = ({ marker_config, marker_content_props, is_positioned_behind
             } else {
                 ref.div.style.zIndex = '1';
             }
-            if (is_positioned_behind) ref.div.style.zIndex = '-1';
+            if (is_positioned_behind) ref.div.style.zIndex = '0';
             ref.setPosition({
                 epoch: +marker_props.x,
                 price: +marker_props.y,

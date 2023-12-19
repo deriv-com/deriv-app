@@ -345,7 +345,7 @@ export default class GeneralStore extends BaseStore {
                 is_active: order_info.is_active_order,
             };
 
-            if (old_order) {
+            if (old_order && old_order.status && new_order.status) {
                 if (old_order.status !== new_order.status) {
                     if (notification) {
                         // If order status changed, notify the user.
@@ -467,7 +467,7 @@ export default class GeneralStore extends BaseStore {
         );
 
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
-            const hasStatuses = statuses => statuses?.every(status => get_account_status.status.includes(status));
+            const hasStatuses = statuses => statuses?.every(status => get_account_status?.status.includes(status));
 
             const is_authenticated = hasStatuses(['authenticated']);
             const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);

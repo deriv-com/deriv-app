@@ -1,11 +1,9 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import TraderProviders from '../../../trader-providers';
 import TradeHeaderExtensions from '../trade-header-extensions';
 import { mockStore } from '@deriv/stores';
-import { isMobile } from '@deriv/shared';
 
-jest.mock('../populate-header', () => jest.fn(() => <div>MockedPopulateHeader</div>));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     WS: {

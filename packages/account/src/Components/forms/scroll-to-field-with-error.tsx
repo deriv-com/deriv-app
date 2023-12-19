@@ -17,7 +17,10 @@ const ScrollToFieldWithError = ({
     const scrollToElement = (element_name: string, block: ScrollLogicalPosition = 'center') => {
         if (!element_name) return;
         const el = document.querySelector(`[name="${element_name}"]`) as HTMLInputElement;
-        (el?.parentElement ?? el)?.scrollIntoView({ behavior: 'smooth', block });
+        const target_element = el?.parentElement ?? el;
+        if (typeof target_element?.scrollIntoView === 'function') {
+            target_element?.scrollIntoView({ behavior: 'smooth', block });
+        }
         if (el?.type !== 'radio') el?.focus();
     };
 

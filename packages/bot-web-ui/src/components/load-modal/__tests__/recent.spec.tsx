@@ -3,17 +3,9 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import userEvent from '@testing-library/user-event';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { isMobile } from '@deriv/shared';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import Recent from '../recent';
-
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(),
-}));
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));

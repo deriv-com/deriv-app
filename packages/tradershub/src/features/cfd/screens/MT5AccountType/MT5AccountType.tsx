@@ -13,7 +13,7 @@ const MT5AccountType: React.FC<TProps> = ({ onMarketTypeSelect, selectedMarketTy
         return order.indexOf(keyA) - order.indexOf(keyB);
     });
     return (
-        <div className='flex items-center flex-shrink-0 bg-system-light-primary-background rounded-xl h-70v w-80v justify-center p-1200 flex-1 gap-1200'>
+        <div className='flex items-center flex-shrink-0 bg-system-light-primary-background rounded-xl h-[70vh] w-[80vw] justify-center p-1200 flex-1 gap-1200'>
             {sortedMarketTypeEntries.map(([key, value]) => (
                 <MT5AccountTypeCard
                     description={value.description}

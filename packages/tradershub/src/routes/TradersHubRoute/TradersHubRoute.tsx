@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Button, Heading, Text } from '@deriv/quill-design';
 
-const TradersHubRoute: React.FC = () => (
+const TradersHubRoute: FC = () => (
     <div className='flex flex-col gap-1200'>
         {/* Header */}
         <div className='flex align-start items-center justify-between gap-100'>

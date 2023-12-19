@@ -4,7 +4,6 @@ import './ProgressBar.scss';
 type TProps = {
     activeIndex: number;
     count: number;
-    isTransition?: boolean;
     onClick?: (index: number) => void;
 };
 

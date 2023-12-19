@@ -3,8 +3,8 @@ import { TMessageFnProps } from '../types';
 // this function should work once BE WALL-1440 is delivered
 const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     activeWallet,
+    activeWalletExchangeRates,
     displayMoney,
-    exchangeRates,
     limits,
     sourceAccount,
     sourceAmount,
@@ -23,9 +23,11 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
 
     if (
         !sourceAccount.currency ||
-        !exchangeRates?.rates?.[sourceAccount.currency] ||
+        (sourceAccount.currency !== activeWallet.currency &&
+            !activeWalletExchangeRates?.rates?.[sourceAccount.currency]) ||
         !targetAccount.currency ||
-        !exchangeRates?.rates?.[targetAccount.currency] ||
+        (targetAccount.currency !== activeWallet.currency &&
+            !activeWalletExchangeRates?.rates?.[targetAccount.currency]) ||
         !sourceAccount.currencyConfig ||
         !targetAccount.currencyConfig
     )
@@ -35,10 +37,14 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
 
     const allowedSumConverted =
         allowedSumActiveWalletCurrency *
-        (exchangeRates?.rates[transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency] ?? 1);
+        (activeWalletExchangeRates?.rates?.[
+            transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency
+        ] ?? 1);
     const availableSumConverted =
         availableSumActiveWalletCurrency *
-        (exchangeRates?.rates[transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency] ?? 1);
+        (activeWalletExchangeRates?.rates?.[
+            transferDirection === 'from' ? targetAccount.currency : sourceAccount.currency
+        ] ?? 1);
 
     const sourceCurrencyLimit = transferDirection === 'from' ? allowedSumActiveWalletCurrency : allowedSumConverted;
     const targetCurrencyLimit = transferDirection === 'from' ? allowedSumConverted : allowedSumActiveWalletCurrency;

@@ -2,8 +2,8 @@ import { TMessageFnProps } from '../types';
 
 const cumulativeAccountLimitsMessageFn = ({
     activeWallet,
+    activeWalletExchangeRates,
     displayMoney,
-    exchangeRates,
     limits,
     sourceAccount,
     sourceAmount,
@@ -60,13 +60,19 @@ const cumulativeAccountLimitsMessageFn = ({
     }
 
     // separated the exchangeRates check to prevent checking for demo transfer
-    if (!exchangeRates?.rates?.[targetAccount.currency] || !exchangeRates?.rates?.[sourceAccount.currency]) return null;
+    if (
+        (sourceAccount.currency !== activeWallet.currency &&
+            !activeWalletExchangeRates?.rates?.[sourceAccount.currency]) ||
+        (targetAccount.currency !== activeWallet.currency &&
+            !activeWalletExchangeRates?.rates?.[targetAccount.currency])
+    )
+        return null;
 
-    const sourceCurrencyLimit = allowedSumUSD * (exchangeRates.rates[sourceAccount.currency] ?? 1);
-    const targetCurrencyLimit = allowedSumUSD * (exchangeRates.rates[targetAccount.currency] ?? 1);
+    const sourceCurrencyLimit = allowedSumUSD * (activeWalletExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
+    const targetCurrencyLimit = allowedSumUSD * (activeWalletExchangeRates?.rates?.[targetAccount.currency] ?? 1);
 
-    const sourceCurrencyRemainder = availableSumUSD * (exchangeRates.rates[sourceAccount.currency] ?? 1);
-    const targetCurrencyRemainder = availableSumUSD * (exchangeRates.rates[targetAccount.currency] ?? 1);
+    const sourceCurrencyRemainder = availableSumUSD * (activeWalletExchangeRates?.rates?.[sourceAccount.currency] ?? 1);
+    const targetCurrencyRemainder = availableSumUSD * (activeWalletExchangeRates?.rates?.[targetAccount.currency] ?? 1);
 
     const formattedSourceCurrencyLimit = displayMoney?.(
         sourceCurrencyLimit,

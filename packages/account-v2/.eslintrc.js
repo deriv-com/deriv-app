@@ -1,6 +1,12 @@
 module.exports = {
     env: { browser: true, es6: true, jest: true },
-    extends: ['../../.eslintrc.js', 'eslint:recommended', 'plugin:react/recommended', 'plugin:react-hooks/recommended'],
+    extends: [
+        '../../.eslintrc.js',
+        'eslint:recommended',
+        'plugin:react/recommended',
+        'plugin:react-hooks/recommended',
+        'plugin:sonarjs/recommended',
+    ],
     overrides: [
         {
             files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
@@ -9,8 +15,15 @@ module.exports = {
             },
         },
     ],
+    parser: '@typescript-eslint/parser',
     parserOptions: { sourceType: 'module' },
-    plugins: ['eslint-plugin-local-rules', 'simple-import-sort', 'sort-destructure-keys', 'typescript-sort-keys'],
+    plugins: [
+        'eslint-plugin-local-rules',
+        'sonarjs',
+        'simple-import-sort',
+        'sort-destructure-keys',
+        'typescript-sort-keys',
+    ],
     root: true,
     ignorePatterns: ['**/node_modules/**', '**/dist/**', '**/*.js', '**/webpack.config.*'],
     rules: {
@@ -18,21 +31,7 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 'error',
         '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/sort-type-constituents': 'error',
-        '@typescript-eslint/naming-convention': [
-            'error',
-            {
-                selector: 'variable',
-                format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
-            },
-            {
-                selector: 'parameter',
-                format: ['camelCase'],
-            },
-            {
-                selector: 'function',
-                format: ['camelCase'],
-            },
-        ],
+        camelcase: 'error',
         'import/first': 'error',
         'import/newline-after-import': 'error',
         'import/no-duplicates': 'error',

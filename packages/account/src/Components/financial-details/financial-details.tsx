@@ -9,7 +9,7 @@ import {
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
-import { isDesktop, isMobile, EMPLOYMENT_VALUES, TEmploymentStatus, shouldHideOccupationField } from '@deriv/shared';
+import { isDesktop, isMobile, EMPLOYMENT_VALUES, shouldHideOccupationField } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { TFinancialInformationForm } from 'Types';
 import { observer, useStore } from '@deriv/stores';

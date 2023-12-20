@@ -8,7 +8,6 @@ import {
     getCardLabels,
     getSymbolDisplayName,
     getEndTime,
-    getTotalProfit,
     isAccumulatorContract,
     isCryptoContract,
     isMultiplierContract,
@@ -16,7 +15,6 @@ import {
     isCryptocurrency,
     isVanillaContract,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
 import { getMarketInformation } from 'Utils/Helpers/market-underlying';
@@ -83,20 +81,32 @@ const PositionsModalCard = observer(
                 <PositionsCardLoader speed={2} />
             </div>
         );
-        const is_multiplier = isMultiplierContract(contract_info.contract_type);
-        const is_accumulator = isAccumulatorContract(contract_info.contract_type);
-        const is_turbos = isTurbosContract(contract_info.contract_type);
-        const is_vanilla = isVanillaContract(contract_info.contract_type);
-        const is_crypto = isCryptoContract(contract_info.underlying);
+        const {
+            barrier,
+            bid_price,
+            buy_price,
+            contract_type,
+            date_expiry,
+            date_start,
+            entry_spot_display_value,
+            is_sold,
+            profit,
+            sell_price,
+            shortcode,
+            tick_count,
+            underlying,
+        } = contract_info;
+        const { BUY_PRICE, CONTRACT_VALUE, ENTRY_SPOT, STRIKE, TOTAL_PROFIT_LOSS } = getCardLabels();
+        const is_multiplier = isMultiplierContract(contract_type);
+        const is_accumulator = isAccumulatorContract(contract_type);
+        const is_turbos = isTurbosContract(contract_type);
+        const is_vanilla = isVanillaContract(contract_type);
+        const is_crypto = isCryptoContract(underlying);
         const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
         const has_ended = !!getEndTime(contract_info);
         const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
-        const total_profit = getTotalProfit(contract_info);
 
-        const display_name = getSymbolDisplayName(
-            active_symbols,
-            getMarketInformation(contract_info.shortcode || '').underlying
-        );
+        const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(shortcode || '').underlying);
 
         const contract_vanilla_el = (
             <React.Fragment>
@@ -116,18 +126,18 @@ const PositionsModalCard = observer(
                     <div className={classNames('positions-modal-card__grid-profit-payout')}>
                         <div className='positions-modal-card__purchase-price'>
                             <Text size='xxxs' className='positions-modal-card__purchase-label'>
-                                {localize('Buy price:')}
+                                {BUY_PRICE}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__purchase-value'>
-                                <Money amount={contract_info.buy_price} currency={currency} />
+                                <Money amount={buy_price} currency={currency} />
                             </Text>
                         </div>
                         <div className='positions-modal-card__payout-price'>
                             <Text size='xxxs' className='positions-modal-card__payout-label'>
-                                {localize('Contract value:')}
+                                {CONTRACT_VALUE}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__payout-value'>
-                                <Money amount={contract_info.bid_price} currency={currency} />
+                                <Money amount={is_sold ? sell_price : bid_price} currency={currency} />
                             </Text>
                         </div>
                     </div>
@@ -135,53 +145,50 @@ const PositionsModalCard = observer(
                     <div className={classNames('positions-modal-card__grid-price-payout')}>
                         <div className='positions-modal-card__purchase-price'>
                             <Text size='xxxs' className='positions-modal-card__purchase-label'>
-                                {localize('Entry spot:')}
+                                {ENTRY_SPOT}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__purchase-value'>
-                                {addComma(contract_info.entry_spot)}
+                                {addComma(entry_spot_display_value)}
                             </Text>
                         </div>
                         <div className='positions-modal-card__payout-price'>
                             <Text size='xxxs' className='positions-modal-card__payout-label'>
-                                {localize('Strike:')}
+                                {STRIKE}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__payout-value'>
-                                {addComma(contract_info.barrier)}
+                                {addComma(barrier)}
                             </Text>
                         </div>
                     </div>
 
-                    {result || !!contract_info.is_sold ? (
-                        <PositionsResultMobile
-                            is_visible={!!contract_info.is_sold}
-                            result={result || fallback_result}
-                        />
+                    {result || !!is_sold ? (
+                        <PositionsResultMobile is_visible={!!is_sold} result={result || fallback_result} />
                     ) : (
                         <ProgressSliderMobile
                             className='positions-modal-card__progress'
                             current_tick={current_tick}
                             getCardLabels={getCardLabels}
                             is_loading={is_loading}
-                            start_time={contract_info.date_start}
-                            expiry_time={contract_info.date_expiry}
+                            start_time={date_start}
+                            expiry_time={date_expiry}
                             server_time={server_time as moment.Moment}
-                            ticks_count={contract_info.tick_count}
+                            ticks_count={tick_count}
                         />
                     )}
                 </div>
                 <div className={classNames('positions-modal-card__item', className)}>
-                    <div className='dc-contract-card-item__header'>{getCardLabels().TOTAL_PROFIT_LOSS}</div>
+                    <div className='dc-contract-card-item__header'>{TOTAL_PROFIT_LOSS}</div>
                     <div
                         className={classNames('dc-contract-card-item__body', {
                             'dc-contract-card-item__body--crypto': isCryptocurrency(currency),
-                            'dc-contract-card-item__body--loss': profit_loss < 0,
-                            'dc-contract-card-item__body--profit': profit_loss > 0,
+                            'dc-contract-card-item__body--loss': Number(profit) < 0,
+                            'dc-contract-card-item__body--profit': Number(profit) > 0,
                         })}
                     >
-                        <Money amount={Math.abs(profit_loss)} currency={currency} />
+                        <Money amount={profit} currency={currency} />
                         <div
                             className={classNames('dc-contract-card__indicative--movement', {
-                                'dc-contract-card__indicative--movement-complete': !!contract_info.is_sold,
+                                'dc-contract-card__indicative--movement-complete': !!is_sold,
                             })}
                         >
                             {status === 'profit' && <Icon icon='IcProfit' />}
@@ -228,7 +235,7 @@ const PositionsModalCard = observer(
                 is_mobile={is_mobile}
                 is_multiplier={is_multiplier}
                 is_positions
-                is_sold={!!contract_info.is_sold}
+                is_sold={!!is_sold}
                 is_turbos={is_turbos}
                 has_progress_slider={is_mobile && has_progress_slider && !has_ended}
                 removeToast={removeToast}
@@ -277,7 +284,7 @@ const PositionsModalCard = observer(
                         className={classNames('positions-modal-card')}
                         onClick={() => toggleUnsupportedContractModal(true)}
                     >
-                        {contract_info.underlying ? contract_el : loader_el}
+                        {underlying ? contract_el : loader_el}
                     </div>
                 ) : (
                     <React.Fragment>
@@ -290,7 +297,7 @@ const PositionsModalCard = observer(
                             })}
                             to={getContractPath(id)}
                         >
-                            {contract_info.underlying ? contract_el : loader_el}
+                            {underlying ? contract_el : loader_el}
                         </BinaryLink>
                     </React.Fragment>
                 )}

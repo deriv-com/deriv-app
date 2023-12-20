@@ -105,6 +105,15 @@ const QuickStrategyForm = observer(() => {
                                         min = +initial_stake;
                                     }
                                 }
+                                if (should_validate && field.name === 'last_digit_prediction') {
+                                    if (+form_data?.last_digit_prediction === 1) {
+                                        min = 0;
+                                    }
+                                    if (+form_data?.last_digit_prediction > 0) {
+                                        min = +form_data?.last_digit_prediction - 1;
+                                    }
+                                    max = 9;
+                                }
                                 if (should_have?.length) {
                                     if (!should_enable && (is_mobile || hide_without_should_have)) {
                                         return null;

@@ -20,12 +20,13 @@ type TFormikWrapper = {
 };
 
 const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') => {
-    const errors: { [key: string]: { MIN?: string; MAX: string } } = {
+    const errors: { [key: string]: { MIN: string; MAX: string } } = {
         DURATION: {
             MIN: localize('Minimum duration: {{ value }}', { value }),
             MAX: localize('Maximum duration: {{ value }}', { value }),
         },
         LAST_DIGIT_PREDICTION: {
+            MIN: localize('Enter a value from {{ value }} to 9.', { value }),
             MAX: localize('Enter a value from 0 to {{ value }}.', { value }),
         },
         DEFAULT: {
@@ -109,6 +110,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                             min_error = getErrorMessage('MIN', min);
                         }
                         if (should_validate && field.name === 'last_digit_prediction') {
+                            max = 0;
                             max = 9;
                             max_error = getErrorMessage('MAX', max, 'LAST_DIGIT_PREDICTION');
                             integer_error_message = 'Enter a value from 0 to 9.';

@@ -176,7 +176,7 @@ const LABEL_LAST_DIGIT_PREDICTION: TConfigItem = {
 const LAST_DIGIT_PREDICTION: TConfigItem = {
     type: 'number',
     name: 'last_digit_prediction',
-    validation: ['number', 'required', 'max', 'integer'],
+    validation: ['number', 'required', 'min', 'max', 'integer'],
     should_have: [{ key: 'tradetype', value: '', multiple: ['matchesdiffers', 'overunder'] }],
     hide_without_should_have: true,
 };

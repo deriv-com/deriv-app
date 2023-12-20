@@ -21,6 +21,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
                     window.open(getStaticUrl('/derivx'));
                 }
             }}
+            role='button'
         >
             <DerivX />
         </div>

@@ -4,21 +4,32 @@ import { TradingAccountCard } from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/cfd/derivx.svg';
 
+const leadingComponent = () => {
+    return (
+        <div
+            className='cursor-pointer'
+            onClick={() => {
+                window.open(getStaticUrl('/derivx'));
+            }}
+            onKeyDown={e => {
+                if (e.key === 'Enter') {
+                    window.open(getStaticUrl('/derivx'));
+                }
+            }}
+            role='button'
+        >
+            <DerivX />
+        </div>
+    );
+};
+
+const trailingComponent = () => {
+    return <Button color='primary-light' /* open <DxtradeEnterPasswordModal /> */>Get</Button>;
+};
+
 const AvailableDxtradeAccountsList: React.FC = () => {
     return (
-        <TradingAccountCard
-            leading={() => (
-                <div
-                    className='cursor-pointer'
-                    onClick={() => {
-                        window.open(getStaticUrl('/derivx'));
-                    }}
-                >
-                    <DerivX />
-                </div>
-            )}
-            trailing={() => <Button color='primary-light' /* open <DxtradeEnterPasswordModal /> */>Get</Button>}
-        >
+        <TradingAccountCard leading={leadingComponent} trailing={trailingComponent}>
             <div className='flex-grow'>
                 <p>
                     <Text size='sm' weight='bold'>

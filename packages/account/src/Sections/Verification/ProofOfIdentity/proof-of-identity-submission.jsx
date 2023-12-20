@@ -130,7 +130,6 @@ const POISubmission = observer(
                     IDV_ERROR_STATUS.DobMismatch.code,
                     IDV_ERROR_STATUS.NameMismatch.code,
                     IDV_ERROR_STATUS.NameDobMismatch.code,
-                    IDV_ERROR_STATUS.HighRisk.code,
                 ].includes(mismatch_status) &&
                 idv.submissions_left > 0
             ) {

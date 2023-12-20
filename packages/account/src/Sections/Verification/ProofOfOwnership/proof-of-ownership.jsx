@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
-import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from 'Components/poo/statuses';
+import { POONotRequired, POOVerified, POORejected, POOSubmitted } from 'Components/poo/statuses';
 import { Loading } from '@deriv/components';
 import { POO_STATUSES } from './constants/constants';
 import getPaymentMethodsConfig from './payment-method-config.js';
@@ -66,7 +66,7 @@ export const ProofOfOwnership = observer(() => {
         return <POONotRequired />; // Client does not need proof of ownership.
     }
     if (status === POO_STATUSES.rejected) {
-        return <POORejetced onTryAgain={onTryAgain} />; // Proof of ownership rejected
+        return <POORejected onTryAgain={onTryAgain} />; // Proof of ownership rejected
     }
     return <Loading is_fullscreen={false} className='account__initial-loader' />;
 });

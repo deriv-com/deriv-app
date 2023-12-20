@@ -11,6 +11,10 @@ const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
 
 const reasons = ['Document details do not match profile details', 'Expired documents', 'Poor image quality'];
 
+/**
+ * @description This component is used to display the verification failed modal in case of POI and POA
+ */
+
 const VerificationFailed = () => {
     const { hide } = useModal();
     const { data: poiStatus } = usePOI();

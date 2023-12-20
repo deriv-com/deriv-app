@@ -14,7 +14,7 @@ interface ILoadModalStore {
     is_open_button_loading: boolean;
     is_strategy_loaded: boolean;
     loaded_local_file: File | null;
-    recent_strategies: string[];
+    recent_strategies: TStrategy[];
     dashboard_strategies: Array<TStrategy>;
     selected_strategy_id: string | undefined;
     is_strategy_removed: boolean;
@@ -40,7 +40,7 @@ interface ILoadModalStore {
     setActiveTabIndex: (index: number) => void;
     setLoadedLocalFile: (loaded_local_file: File | null) => void;
     setDashboardStrategies: (strategies: Array<TStrategy>) => void;
-    setRecentStrategies: (recent_strategies: string[]) => void;
+    setRecentStrategies: (recent_strategies: TStrategy[]) => void;
     setSelectedStrategyId: (selected_strategy_id: string) => void;
     toggleExplanationExpand: () => void;
     toggleLoadModal: () => void;
@@ -130,7 +130,7 @@ export default class LoadModalStore implements ILoadModalStore {
     is_explanation_expand = false;
     is_open_button_loading = false;
     loaded_local_file: File | null = null;
-    recent_strategies: Array<string> = [];
+    recent_strategies: Array<TStrategy> = [];
     dashboard_strategies: Array<TStrategy> | [] = [];
     selected_strategy_id = '';
     is_strategy_loaded = false;
@@ -428,7 +428,7 @@ export default class LoadModalStore implements ILoadModalStore {
         this.loaded_local_file = loaded_local_file;
     };
 
-    setRecentStrategies = (recent_strategies: string[]): void => {
+    setRecentStrategies = (recent_strategies: TStrategy[]): void => {
         this.recent_strategies = recent_strategies;
     };
 

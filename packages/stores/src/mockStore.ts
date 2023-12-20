@@ -24,7 +24,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             trading_platform_available_accounts: [],
             account_limits: {},
             account_status: {
-                p2p_poa_required: 0,
                 authentication: {
                     attempts: {
                         count: 1,

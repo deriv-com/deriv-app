@@ -6,7 +6,7 @@ type TPayload = NonNullable<
     Parameters<ReturnType<typeof useMutation<'p2p_advertiser_update'>>['mutate']>[0]
 >['payload'];
 
-/** A custom hook that updates a P2P advertiser. This can only be used by an approved P2P advertiser.
+/** A custom hook that updates the information of the P2P advertiser for the current account. Can only be used by an approved P2P advertiser
  *
  * To update an advertiser, specify the payload arguments that should be updated, for instance:
  * @example
@@ -39,6 +39,7 @@ const useUpdateAdvertiser = () => {
 
         return {
             ...p2p_advertiser_update,
+            /** Indicating whether the advertiser's identity has been verified. */
             is_basic_verified: Boolean(basic_verification),
             /** Indicating whether the advertiser's address has been verified. */
             is_fully_verified: Boolean(full_verification),

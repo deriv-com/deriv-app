@@ -97,7 +97,6 @@ module.exports = function (env) {
                 '@deriv/shared': '@deriv/shared',
                 '@deriv/components': '@deriv/components',
                 '@deriv/translations': '@deriv/translations',
-                '@deriv/account-v2': '@deriv/account-v2',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,

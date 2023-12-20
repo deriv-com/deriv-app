@@ -1,6 +1,6 @@
-const baseConfigForPackages = require('../../jest.config.base');
+import baseConfigForPackages from '../../jest.config.base';
 
-module.exports = {
+export default {
     ...baseConfigForPackages,
     moduleNameMapper: {
         '\\.s(c|a)ss$': '<rootDir>/../../__mocks__/styleMock.js',

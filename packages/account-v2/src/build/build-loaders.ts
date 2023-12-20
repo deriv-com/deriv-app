@@ -1,0 +1,115 @@
+import { RuleSetRule } from 'webpack';
+import { BuildOptions } from './types/build-types';
+
+export const buildLoaders = (options: BuildOptions): RuleSetRule[] => {
+    const svgLoaders = [
+        {
+            loader: 'babel-loader',
+            options: {
+                cacheDirectory: true,
+                rootMode: 'upward',
+            },
+        },
+        {
+            loader: 'react-svg-loader',
+            options: {
+                jsx: true,
+                svgo: {
+                    floatPrecision: 3,
+                    plugins: [
+                        { removeTitle: false },
+                        { removeUselessStrokeAndFill: false },
+                        { removeUnknownsAndDefaults: false },
+                        { removeViewBox: false },
+                    ],
+                },
+            },
+        },
+    ];
+    const babelLoader = {
+        exclude: /node_modules/,
+        test: /\.(js|jsx|ts|tsx)$/,
+        use: [
+            {
+                loader: 'babel-loader',
+                options: {
+                    cacheDirectory: true,
+                    rootMode: 'upward',
+                },
+            },
+        ],
+    };
+    const styleLoader = {
+        test: /\.(sc|sa|c)ss$/,
+        use: [
+            'style-loader',
+            {
+                loader: 'css-loader',
+                options: {
+                    modules: {
+                        auto: (path: string) => path.includes('.module.'),
+                        localIdentName: options.isRelease ? '[hash:base64]' : '[path][name]__[local]',
+                    },
+                    url: true,
+                },
+            },
+            {
+                loader: 'postcss-loader',
+                options: {
+                    postcssOptions: {
+                        config: options.paths.root,
+                    },
+                },
+            },
+            {
+                loader: 'resolve-url-loader',
+                options: {
+                    keepQuery: true,
+                    sourceMap: true,
+                },
+            },
+            'sass-loader',
+            {
+                loader: 'sass-resources-loader',
+                options: {},
+            },
+        ],
+    };
+    const sourceMapLoader = {
+        loader: 'source-map-loader',
+        test: (input: string) => options.isRelease && /\.js$/.test(input),
+    };
+
+    return [
+        {
+            // https://github.com/webpack/webpack/issues/11467
+            include: /node_modules/,
+            resolve: {
+                fullySpecified: false,
+            },
+            test: /\.m?js/,
+        },
+        babelLoader,
+        //TODO: Uncomment this line when type script migrations on all packages done
+        // plugins: [new CleanWebpackPlugin(), new ForkTsCheckerWebpackPlugin()],
+        sourceMapLoader,
+        styleLoader,
+        {
+            exclude: /node_modules/,
+            generator: {
+                filename: 'account-v2/public/[name].[contenthash][ext]',
+            },
+            include: /public\//,
+            issuer: /\/packages\/account-v2\/.*(\/)?.*.scss/,
+            test: /\.svg$/,
+            type: 'asset/resource',
+        },
+        {
+            exclude: /node_modules/,
+            include: /public\//,
+            issuer: /\/packages\/account-v2\/.*(\/)?.*.tsx/,
+            test: /\.svg$/,
+            use: svgLoaders,
+        },
+    ];
+};

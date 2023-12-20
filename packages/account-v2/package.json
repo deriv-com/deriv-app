@@ -6,8 +6,8 @@
         "node": "18.x"
     },
     "scripts": {
-        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.js\"",
-        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config ./webpack.config.js\" \"tsc -w --noEmit --preserveWatchOutput\"",
+        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress --config \"./webpack.config.ts\"",
+        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch --config ./webpack.config.ts\" \"tsc -w --noEmit --preserveWatchOutput\"",
         "start": "rimraf dist && npm run test && npm run serve"
     },
     "dependencies": {
@@ -31,6 +31,7 @@
         "@testing-library/user-event": "^13.5.0",
         "@types/css-modules": "^1.0.2",
         "@types/react-dom": "^18.0.0",
+        "@types/webpack": "^5.28.5",
         "@typescript-eslint/eslint-plugin": "5.45.0",
         "@typescript-eslint/parser": "5.45.0",
         "autoprefixer": "^10.4.16",

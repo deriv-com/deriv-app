@@ -179,7 +179,7 @@ describe('<PersonalDetailsForm />', () => {
         const place_of_birth_input = screen.getByRole('textbox', { name: /place of birth/i });
         const tax_residence_input = screen.getByRole('textbox', { name: /tax residence/i });
         const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
-        const opening_reason_input = screen.getByTestId(/dti_dropdown_display/i);
+        const opening_reason_input = screen.getByTestId(/dt_dropdown_display/i);
         const next_button = screen.getByRole('button', { name: /next/i });
 
         fireEvent.blur(citizenship_input);
@@ -209,7 +209,7 @@ describe('<PersonalDetailsForm />', () => {
         const place_of_birth_input = screen.getByRole('textbox', { name: /place of birth/i });
         const tax_residence_input = screen.getByRole('textbox', { name: /tax residence/i });
         const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
-        const opening_reason_input = screen.getByTestId(/dti_dropdown_display/i);
+        const opening_reason_input = screen.getByTestId(/dt_dropdown_display/i);
         const next_button = screen.getByRole('button', { name: /next/i });
 
         await waitFor(() => expect(screen.getByRole('button', { name: /next/i })).toBeDisabled());

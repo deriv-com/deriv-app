@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
+import { Analytics } from '@deriv/analytics';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TDurationItemRaw, TFormData } from '../types';
-import { Analytics } from '@deriv/analytics';
 
 type TDurationUnitItem = {
     text: string;
@@ -16,11 +16,10 @@ type TDurationUnitItem = {
 };
 
 type TDurationUnit = {
-    fullWidth?: boolean;
     attached?: boolean;
 };
 
-const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }: TDurationUnit) => {
+const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
     const [list, setList] = React.useState<TDurationUnitItem[]>([]);
     const { quick_strategy } = useDBotStore();
     const { setValue, setCurrentDurationMinMax } = quick_strategy;
@@ -72,8 +71,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ fullWidth = false, attached }: 
 
     return (
         <div
-            className={classNames('qs__form__field', {
-                'full-width': fullWidth,
+            className={classNames('qs__form__field qs__form__field__input', {
                 'no-top-border-radius': attached,
             })}
         >

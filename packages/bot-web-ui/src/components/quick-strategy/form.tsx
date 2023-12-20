@@ -20,10 +20,11 @@ import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 const QuickStrategyForm = observer(() => {
     const { ui } = useStore();
     const { quick_strategy } = useDBotStore();
-    const { selected_strategy, setValue } = quick_strategy;
+    const { selected_strategy, setValue, form_data } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_mobile } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
+    const { current_duration_min_max } = quick_strategy;
 
     const sendInitialStakeValueToruddetack = (key: string, value: string | number | boolean) => {
         Analytics.trackEvent('ce_bot_quick_strategy_form', {
@@ -90,6 +91,20 @@ const QuickStrategyForm = observer(() => {
                                 if (!field.name) return null;
                                 const { should_have = [], hide_without_should_have = false } = field;
                                 const should_enable = shouldEnable(should_have);
+                                const initial_stake = 1;
+                                let min = 1;
+                                let max;
+                                if (field.name === 'duration' && current_duration_min_max) {
+                                    min = current_duration_min_max.min;
+                                    max = current_duration_min_max.max;
+                                }
+                                const should_validate = field.should_have;
+                                if (should_validate && field.name === 'max_stake') {
+                                    min = +form_data?.stake;
+                                    if (isNaN(min)) {
+                                        min = +initial_stake;
+                                    }
+                                }
                                 if (should_have?.length) {
                                     if (!should_enable && (is_mobile || hide_without_should_have)) {
                                         return null;
@@ -101,10 +116,21 @@ const QuickStrategyForm = observer(() => {
                                             name={field.name as string}
                                             disabled={!should_enable}
                                             onChange={onChange}
+                                            min={min}
+                                            max={max}
                                         />
                                     );
                                 }
-                                return <QSInput {...field} onChange={onChange} key={key} name={field.name as string} />;
+                                return (
+                                    <QSInput
+                                        {...field}
+                                        onChange={onChange}
+                                        key={key}
+                                        name={field.name as string}
+                                        min={min}
+                                        max={max}
+                                    />
+                                );
                             }
                             case 'text': {
                                 if (!field.name) return null;

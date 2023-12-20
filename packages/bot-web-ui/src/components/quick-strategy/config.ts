@@ -1,6 +1,6 @@
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
-import { D_ALEMBERT, MARTINGALE, OSCAR_GRIND } from './descriptions';
+import { D_ALEMBERT, MARTINGALE, OSCARS_GRIND } from './descriptions';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [
@@ -21,10 +21,21 @@ const NUMBER_DEFAULT_VALIDATION: TValidationItem = {
     getMessage: (min: string | number) => localize('Must be a number higher than {{ min }}', { min: Number(min) - 1 }),
 };
 
+const LABEL_SYMBOL: TConfigItem = {
+    type: 'label',
+    label: localize('Asset'),
+    description: localize('The underlying market your bot will trade with this strategy.'),
+};
+
 const SYMBOL: TConfigItem = {
     type: 'symbol',
-    fullWidth: true,
     name: 'symbol',
+};
+
+const LABEL_TRADETYPE: TConfigItem = {
+    type: 'label',
+    label: localize('Trade Type'),
+    description: localize('Your bot will use this trade type for every run'),
 };
 
 const TRADETYPE: TConfigItem = {
@@ -33,7 +44,13 @@ const TRADETYPE: TConfigItem = {
     dependencies: ['symbol'],
 };
 
-const CONTRACT_TYPE: TConfigItem = {
+const LABEL_PURCHASE_TYPE: TConfigItem = {
+    type: 'label',
+    label: localize('Purchase Condition'),
+    description: localize('Your bot uses a single trade type for each run.'),
+};
+
+const PURCHASE_TYPE: TConfigItem = {
     type: 'contract_type',
     name: 'type',
     dependencies: ['symbol', 'tradetype'],
@@ -54,8 +71,7 @@ const STAKE: TConfigItem = {
 const LABEL_DURATION: TConfigItem = {
     type: 'label',
     label: localize('Duration'),
-    description: localize('The trade length of your purchased contract.'),
-    hide: ['desktop'],
+    description: localize('How long each trade takes to expire.'),
 };
 
 const DURATION_TYPE: TConfigItem = {
@@ -176,9 +192,12 @@ export const STRATEGIES: TStrategies = {
         long_description: MARTINGALE,
         fields: [
             [
+                LABEL_SYMBOL,
                 SYMBOL,
+                LABEL_TRADETYPE,
                 TRADETYPE,
-                CONTRACT_TYPE,
+                LABEL_PURCHASE_TYPE,
+                PURCHASE_TYPE,
                 LABEL_LAST_DIGIT_PREDICTION,
                 LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
@@ -199,13 +218,17 @@ export const STRATEGIES: TStrategies = {
         long_description: D_ALEMBERT,
         fields: [
             [
+                LABEL_SYMBOL,
                 SYMBOL,
+                LABEL_TRADETYPE,
                 TRADETYPE,
-                CONTRACT_TYPE,
+                LABEL_PURCHASE_TYPE,
+                PURCHASE_TYPE,
                 LABEL_LAST_DIGIT_PREDICTION,
                 LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
+                LABEL_DURATION,
                 DURATION_TYPE,
                 DURATION,
             ],
@@ -218,16 +241,20 @@ export const STRATEGIES: TStrategies = {
         description: localize(
             "The Oscar's Grind strategy aims to potentially make one unit of profit per session. A new session starts when the target profit is reached. If a losing trade is followed by a successful one, the stake increases by one unit. In every other scenario, the stake for the next trade will be the same as the previous one. If the stake for the next trade exceeds the gap between the target profit and current loss of the session, it adjusts to the gap size. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake."
         ),
-        long_description: OSCAR_GRIND,
+        long_description: OSCARS_GRIND,
         fields: [
             [
+                LABEL_SYMBOL,
                 SYMBOL,
+                LABEL_TRADETYPE,
                 TRADETYPE,
-                CONTRACT_TYPE,
+                LABEL_PURCHASE_TYPE,
+                PURCHASE_TYPE,
                 LABEL_LAST_DIGIT_PREDICTION,
                 LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
+                LABEL_DURATION,
                 DURATION_TYPE,
                 DURATION,
             ],
@@ -242,9 +269,12 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [
+                LABEL_SYMBOL,
                 SYMBOL,
+                LABEL_TRADETYPE,
                 TRADETYPE,
-                CONTRACT_TYPE,
+                LABEL_PURCHASE_TYPE,
+                PURCHASE_TYPE,
                 LABEL_LAST_DIGIT_PREDICTION,
                 LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
@@ -264,9 +294,12 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [
+                LABEL_SYMBOL,
                 SYMBOL,
+                LABEL_TRADETYPE,
                 TRADETYPE,
-                CONTRACT_TYPE,
+                LABEL_PURCHASE_TYPE,
+                PURCHASE_TYPE,
                 LABEL_LAST_DIGIT_PREDICTION,
                 LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
@@ -286,13 +319,17 @@ export const STRATEGIES: TStrategies = {
         ),
         fields: [
             [
+                LABEL_SYMBOL,
                 SYMBOL,
+                LABEL_TRADETYPE,
                 TRADETYPE,
-                CONTRACT_TYPE,
+                LABEL_PURCHASE_TYPE,
+                PURCHASE_TYPE,
                 LABEL_LAST_DIGIT_PREDICTION,
                 LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
+                LABEL_DURATION,
                 DURATION_TYPE,
                 DURATION,
             ],

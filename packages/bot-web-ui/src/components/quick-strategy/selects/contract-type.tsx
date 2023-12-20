@@ -1,13 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
+import { Analytics } from '@deriv/analytics';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
-import { Analytics } from '@deriv/analytics';
 
 type TContractTypesItem = {
     text: string;
@@ -16,11 +16,10 @@ type TContractTypesItem = {
 
 type TContractTypes = {
     name: string;
-    fullWidth?: boolean;
     attached?: boolean;
 };
 
-const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, name }: TContractTypes) => {
+const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const [list, setList] = React.useState<TContractTypesItem[]>([]);
@@ -72,11 +71,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
     const key = `qs-contract-type-${name}`;
 
     return (
-        <div
-            className={classNames('qs__form__field no-top-border-radius no-top-spacing', {
-                'full-width': fullWidth,
-            })}
-        >
+        <div className='qs__form__field qs__form__field__input no-top-spacing'>
             <Field name={name} key={key} id={key}>
                 {({ field }: FieldProps) => {
                     const selected_item = list?.find((item: TContractTypesItem) => item.value === field.value);

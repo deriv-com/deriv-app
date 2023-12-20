@@ -80,6 +80,7 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
                     key: 'LIFETIME_TRANSFER_LIMIT_ALLOWED_CRYPTO_AND_FIAT' as const,
                     type: 'success' as const,
                     values: {
+                        formattedSourceCurrencyLimit,
                         sourceAccountName: sourceAccount.accountName,
                         targetWalletType,
                     },
@@ -110,7 +111,7 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
             return {
                 key: 'LIFETIME_TRANSFER_LIMIT_AVAILABLE_CRYPTO' as const,
                 type: 'success' as const,
-                values: { formattedSourceCurrencyLimit },
+                values: { formattedSourceCurrencyRemainder },
             };
         default:
             return null;

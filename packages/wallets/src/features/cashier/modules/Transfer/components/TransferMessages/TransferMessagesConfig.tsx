@@ -106,10 +106,10 @@ export const TransferMessagesConfig = {
                 }}
             />
         ),
-    LIFETIME_TRANSFER_LIMIT_AVAILABLE_CRYPTO: ({ formattedSourceCurrencyLimit }: TMessage['values']) => (
+    LIFETIME_TRANSFER_LIMIT_AVAILABLE_CRYPTO: ({ formattedSourceCurrencyRemainder }: TMessage['values']) => (
         <Trans
-            defaults='Your remaining lifetime transfer limit between cryptocurrency Wallets is {{formattedSourceCurrencyLimit}}. Verify your account to upgrade the limit.'
-            values={{ formattedSourceCurrencyLimit }}
+            defaults='Your remaining lifetime transfer limit between cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
+            values={{ formattedSourceCurrencyRemainder }}
         />
     ),
     LIFETIME_TRANSFER_LIMIT_AVAILABLE_CRYPTO_AND_FIAT: ({

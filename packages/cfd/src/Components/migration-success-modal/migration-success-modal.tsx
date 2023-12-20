@@ -9,21 +9,15 @@ import MigrationSuccessModalContent from './migration-success-modal-content';
 
 type TMigrationSuccessModal = {
     is_open: boolean;
+    closeModal: () => void;
 };
 
-const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => {
+const MigrationSuccessModal = observer(({ is_open, closeModal }: TMigrationSuccessModal) => {
     const history = useHistory();
     const { ui, client } = useStore();
-    const { updateMt5LoginList, mt5_login_list } = client;
-    const { is_mobile, setMT5MigrationModalEnabled } = ui;
-    const { disableCFDPasswordModal, setError, setCFDSuccessDialog, setMigratedMT5Accounts, migrated_mt5_accounts } =
-        useCfdStore();
-
-    React.useEffect(() => {
-        if (is_open) {
-            updateMt5LoginList();
-        }
-    }, [is_open, updateMt5LoginList]);
+    const { mt5_login_list } = client;
+    const { is_mobile } = ui;
+    const { migrated_mt5_accounts } = useCfdStore();
 
     const has_migrated_mt5_accounts = !!migrated_mt5_accounts.length;
     const eligible_account_to_migrate = getFormattedJurisdictionCode(
@@ -41,16 +35,8 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
         [mt5_login_list, migrated_mt5_accounts]
     );
 
-    const toggleModal = () => {
-        setMigratedMT5Accounts([]);
-        setError(false);
-        disableCFDPasswordModal();
-        setMT5MigrationModalEnabled(false);
-        setCFDSuccessDialog(false);
-    };
-
     const directToCashier = () => {
-        toggleModal();
+        closeModal();
         if (!has_open_positions) {
             history.push(routes.cashier_acc_transfer);
         }
@@ -92,19 +78,19 @@ const MigrationSuccessModal = observer(({ is_open }: TMigrationSuccessModal) => 
 
     return is_mobile ? (
         <PageOverlay
-            is_open={is_open && has_migrated_mt5_accounts}
+            is_open={is_open}
             header_classname='cfd-success-dialog-migration'
             portal_id='deriv_app'
             header=' '
-            onClickClose={toggleModal}
+            onClickClose={closeModal}
         >
             <ModalContent />
         </PageOverlay>
     ) : (
         <Modal
             className='cfd-success-dialog-migration'
-            is_open={is_open && has_migrated_mt5_accounts}
-            toggleModal={toggleModal}
+            is_open={is_open}
+            toggleModal={closeModal}
             has_close_icon
             title=' '
             width='58.8rem'

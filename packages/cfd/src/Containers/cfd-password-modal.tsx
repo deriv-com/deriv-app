@@ -561,6 +561,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         account_status,
         landing_companies,
         is_logged_in,
+        is_populating_mt5_account_list,
         is_dxtrade_allowed,
         mt5_login_list,
         updateAccountStatus,
@@ -627,6 +628,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     React.useEffect(() => {
         if (is_logged_in) {
+            updateMT5Status();
             updateAccountStatus();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -732,7 +734,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const should_show_success =
         should_show_success_modals && is_cfd_password_modal_enabled && !is_mt5_migration_modal_enabled;
 
-    const should_show_migration_success = should_show_success_modals && is_mt5_migration_modal_enabled;
+    const should_show_migration_success =
+        should_show_success_modals && is_mt5_migration_modal_enabled && !is_populating_mt5_account_list;
 
     const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
 
@@ -952,7 +955,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 width={is_mobile ? '32.8rem' : 'auto'}
                 is_medium_button={is_mobile}
             />
-            <MigrationSuccessModal is_open={should_show_migration_success} />
+            <MigrationSuccessModal is_open={should_show_migration_success} closeModal={closeModal} />
             <SentEmailModal
                 is_open={should_show_sent_email_modal}
                 identifier_title='trading_password'

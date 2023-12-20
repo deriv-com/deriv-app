@@ -37,6 +37,7 @@ const SymbolSelect: React.FC = () => {
     const [active_symbols, setActiveSymbols] = React.useState([]);
     const [is_input_started, setIsInputStarted] = useState(false);
     const [input_value, setInputValue] = useState({ text: '', value: '' });
+    const [last_selected_symbol, setLastSelectedSymbol] = useState({ text: '', value: '' });
     const { setFieldValue, values } = useFormikContext<TFormData>();
 
     const sendAssetValueToRudderStack = (item: string) => {
@@ -105,6 +106,11 @@ const SymbolSelect: React.FC = () => {
             const selectedSymbol = symbols.find(symbol => symbol.value === values.symbol);
             if (selectedSymbol && selectedSymbol.text !== input_value.text) {
                 setInputValue({ text: selectedSymbol.text, value: selectedSymbol.value });
+                setLastSelectedSymbol({ text: selectedSymbol.text, value: selectedSymbol.value });
+                setIsInputStarted(false);
+            }
+            if (!selectedSymbol) {
+                setInputValue({ text: last_selected_symbol.text, value: last_selected_symbol.value });
                 setIsInputStarted(false);
             }
         }

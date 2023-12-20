@@ -18,7 +18,7 @@ const ProgressBar: React.FC<TProps> = ({ activeIndex, count, onClick }) => {
                     <div
                         className={`${barClassname} wallets-progress-bar-transition`}
                         key={`progress-bar-${idx}`}
-                        onClick={() => onClick && onClick(idx)}
+                        onClick={() => onClick?.(idx)}
                     />
                 );
             })}

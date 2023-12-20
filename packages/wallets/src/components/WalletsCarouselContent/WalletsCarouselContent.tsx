@@ -59,7 +59,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
 
         // on settle, this is only for tutorial / onboarding plugin in some other components,
         walletsCarouselEmblaApi.on('settle', () => {
-            onWalletSettled && onWalletSettled(true);
+            onWalletSettled?.(true);
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [walletsCarouselEmblaApi]);
@@ -100,7 +100,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
             <div className='wallets-carousel-content__progress-bar'>
                 <ProgressBar
                     activeIndex={selectedEmblaIndex}
-                    count={walletAccountsList?.length || 0}
+                    count={walletAccountsList?.length ?? 0}
                     onClick={walletsCarouselEmblaApi?.scrollTo}
                 />
             </div>

@@ -6,30 +6,7 @@ import { FadedAnimatedList, WalletAlertMessage, WalletButton } from '../../../..
 import { useTransferMessages } from '../../hooks';
 import { useTransfer } from '../../provider';
 import { TInitialTransferFormValues } from '../../types';
-import { TransferMessagesConfig, TTransferMessagesKeys } from './TransferMessagesConfig';
 import './TransferMessages.scss';
-
-const VerifyPOIButton: React.FC = () => {
-    return (
-        <WalletButton size='sm' type='button' variant='contained'>
-            <Link
-                className='wallets-transfer-messages__link'
-                rel='noopener noreferrer'
-                target='_blank'
-                to='/account/proof-of-identity'
-            >
-                <Trans defaults='Verify' />
-            </Link>
-        </WalletButton>
-    );
-};
-
-const shouldVerifyIdentity = (key: TTransferMessagesKeys) =>
-    [
-        'LIFETIME_TRANSFER_LIMIT_AVAILABLE_CRYPTO',
-        'LIFETIME_TRANSFER_LIMIT_AVAILABLE_CRYPTO_AND_FIAT',
-        'LIFETIME_TRANSFER_LIMIT_REACHED',
-    ].includes(key);
 
 const TransferMessages: React.FC = () => {
     const { values } = useFormikContext<TInitialTransferFormValues>();
@@ -47,12 +24,22 @@ const TransferMessages: React.FC = () => {
 
     return (
         <FadedAnimatedList className='wallets-transfer-messages'>
-            {messages.map(({ key, type, values }) => {
-                const message = TransferMessagesConfig[key]({ ...values });
+            {messages.map(({ action, text, type, values }) => {
+                const message = <Trans defaults={text} values={values} />;
 
                 return (
-                    <WalletAlertMessage key={key} message={message} type={type}>
-                        {shouldVerifyIdentity(key) && <VerifyPOIButton />}
+                    <WalletAlertMessage key={text} message={message} type={type}>
+                        {action?.buttonLabel && action?.navigateTo && (
+                            <WalletButton size='sm' type='button' variant='contained'>
+                                <Link
+                                    className='wallets-transfer-messages__link'
+                                    to={action.navigateTo}
+                                    {...(action?.openInNewTab && { rel: 'noopener noreferrer', target: '_blank' })}
+                                >
+                                    <Trans defaults={action.buttonLabel} />
+                                </Link>
+                            </WalletButton>
+                        )}
                     </WalletAlertMessage>
                 );
             })}

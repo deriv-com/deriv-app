@@ -27,8 +27,11 @@ const transferFeesBetweenWalletsMessageFn = ({
         sourceAccount.currencyConfig.fractional_digits
     );
 
+    const text =
+        'Fee: {{feeMessageText}} ({{feePercentage}}% transfer fee or {{minimumFeeText}}, whichever is higher, applies for fund transfers between your {{targetAccountName}} and cryptocurrency Wallets)';
+
     return {
-        key: 'TRANSFER_FEE_BETWEEN_WALLETS' as const,
+        text,
         type: 'info' as const,
         values: {
             feeMessageText,

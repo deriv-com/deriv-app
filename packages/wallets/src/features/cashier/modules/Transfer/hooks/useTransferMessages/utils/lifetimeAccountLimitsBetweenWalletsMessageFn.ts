@@ -62,32 +62,47 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
         sourceAccount.currencyConfig.fractional_digits
     );
 
-    if (availableSumActiveWalletCurrency === 0)
+    let text: string;
+    const verifyPOIAction = {
+        buttonLabel: 'Verify',
+        navigateTo: '/account/proof-of-identity',
+        openInNewTab: true,
+    };
+
+    if (availableSumActiveWalletCurrency === 0) {
+        text =
+            targetWalletType === 'crypto'
+                ? "You've reached the lifetime transfer limit from your {{sourceAccountName}} to any cryptocurrency Wallet. Verify your account to upgrade the limit."
+                : "You've reached the lifetime transfer limit from your {{sourceAccountName}} to any fiat Wallet. Verify your account to upgrade the limit.";
         return {
-            key: 'LIFETIME_TRANSFER_LIMIT_REACHED' as const,
+            action: verifyPOIAction,
+            text,
             type: 'error' as const,
-            values: {
-                sourceAccountName: sourceAccount.accountName,
-                targetWalletType,
-            },
+            values: { sourceAccountName: sourceAccount.accountName },
         };
+    }
 
     if (allowedSumActiveWalletCurrency === availableSumActiveWalletCurrency)
         switch (limitsCaseKey) {
             case 'fiat_to_crypto':
             case 'crypto_to_fiat':
+                text =
+                    targetWalletType === 'crypto'
+                        ? 'The lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.'
+                        : 'The lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is up to {{formattedSourceCurrencyLimit}}.';
                 return {
-                    key: 'LIFETIME_TRANSFER_LIMIT_ALLOWED_CRYPTO_AND_FIAT' as const,
+                    text,
                     type: 'success' as const,
                     values: {
                         formattedSourceCurrencyLimit,
                         sourceAccountName: sourceAccount.accountName,
-                        targetWalletType,
                     },
                 };
             case 'crypto_to_crypto':
+                text =
+                    'The lifetime transfer limit between cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.';
                 return {
-                    key: 'LIFETIME_TRANSFER_LIMIT_ALLOWED_CRYPTO' as const,
+                    text,
                     type: 'success' as const,
                     values: { formattedSourceCurrencyLimit },
                 };
@@ -98,18 +113,25 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     switch (limitsCaseKey) {
         case 'fiat_to_crypto':
         case 'crypto_to_fiat':
+            text =
+                targetWalletType === 'crypto'
+                    ? 'Your remaining lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
+                    : 'Your remaining lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.';
             return {
-                key: 'LIFETIME_TRANSFER_LIMIT_AVAILABLE_CRYPTO_AND_FIAT' as const,
+                action: verifyPOIAction,
+                text,
                 type: 'success' as const,
                 values: {
                     formattedSourceCurrencyRemainder,
                     sourceAccountName: sourceAccount.accountName,
-                    targetWalletType,
                 },
             };
         case 'crypto_to_crypto':
+            text =
+                'Your remaining lifetime transfer limit between cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.';
             return {
-                key: 'LIFETIME_TRANSFER_LIMIT_AVAILABLE_CRYPTO' as const,
+                action: verifyPOIAction,
+                text,
                 type: 'success' as const,
                 values: { formattedSourceCurrencyRemainder },
             };

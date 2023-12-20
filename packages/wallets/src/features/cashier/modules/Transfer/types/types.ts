@@ -1,5 +1,4 @@
 import { THooks } from '../../../../../types';
-import type { TTransferMessagesKeys } from '../components/TransferMessages/TransferMessagesConfig';
 import type { TTransferContext } from '../provider';
 
 export type TAccount = TTransferContext['activeWallet'];
@@ -13,8 +12,15 @@ export type TInitialTransferFormValues = {
     toAmount: number;
 };
 
+type TAction = {
+    buttonLabel?: string;
+    navigateTo?: string;
+    openInNewTab?: boolean;
+};
+
 export type TMessage = {
-    key: TTransferMessagesKeys;
+    action?: TAction;
+    text: string;
     type: 'error' | 'info' | 'success';
     values: Record<string, boolean | number | string | undefined>;
 };

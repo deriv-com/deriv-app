@@ -20,14 +20,13 @@ type TFormikWrapper = {
 };
 
 const getErrorMessage = (dir: 'MIN' | 'MAX', value: number, type = 'DEFAULT') => {
-    const errors: { [key: string]: { MIN: string; MAX: string } } = {
+    const errors: { [key: string]: { MIN?: string; MAX: string } } = {
         DURATION: {
             MIN: localize('Minimum duration: {{ value }}', { value }),
             MAX: localize('Maximum duration: {{ value }}', { value }),
         },
         LAST_DIGIT_PREDICTION: {
-            MIN: localize('Minimum duration: {{ value }}', { value }),
-            MAX: localize('Maximum duration: {{ value }}', { value }),
+            MAX: localize('Enter a value from 0 to {{ value }}.', { value }),
         },
         DEFAULT: {
             MIN: localize('The value must be equal or greater than {{ value }}', { value }),
@@ -88,6 +87,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                         let max = 10;
                         let min_error = getErrorMessage('MIN', min);
                         let max_error = getErrorMessage('MAX', max);
+                        let integer_error_message = '';
                         if (field.name === 'duration' && current_duration_min_max) {
                             min = current_duration_min_max.min;
                             max = current_duration_min_max.max;
@@ -108,6 +108,11 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                             }
                             min_error = getErrorMessage('MIN', min);
                         }
+                        if (should_validate && field.name === 'last_digit_prediction') {
+                            max = 9;
+                            max_error = getErrorMessage('MAX', max, 'LAST_DIGIT_PREDICTION');
+                            integer_error_message = 'Enter a value from 0 to 9.';
+                        }
                         if (should_validate) {
                             field.validation.forEach(validation => {
                                 if (typeof validation === 'string') {
@@ -127,6 +132,9 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                                         case 'floor':
                                             schema = schema.round('floor');
                                             break;
+                                        case 'integer':
+                                            schema = schema.integer(integer_error_message);
+                                            break;
                                         default:
                                             break;
                                     }
@@ -140,26 +148,6 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                                 }
                             });
                         }
-                        sub_schema[field.name] = schema;
-                    }
-                    if (field.validation.includes('text-number')) {
-                        let schema: Record<string, any> = Yup.string();
-                        field.validation.forEach(validation => {
-                            if (typeof validation === 'string') {
-                                switch (validation) {
-                                    case 'required':
-                                        schema = schema.required(localize('Field cannot be empty'));
-                                        break;
-                                    case 'text-number':
-                                        schema = schema.matches(/^[0-9.]$/, {
-                                            message: localize('Enter a value from 0 to 9.'),
-                                        });
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                        });
                         sub_schema[field.name] = schema;
                     }
                 }

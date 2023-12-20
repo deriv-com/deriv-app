@@ -30,7 +30,7 @@ const QSInput: React.FC<TQSInput> = observer(
 
         const [has_focus, setFocus] = React.useState(false);
         const { setFieldValue, setFieldTouched } = useFormikContext();
-        const is_number = type === 'number' || type === 'text'; //last_digit_prediction has type 'text'
+        const is_number = type === 'number';
 
         const sendPlusValueToRudderstack = (value: string) => {
             Analytics.trackEvent('ce_bot_quick_strategy_form', {
@@ -73,22 +73,8 @@ const QSInput: React.FC<TQSInput> = observer(
 
         const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const input_value = e.target.value;
-            if (regex?.test(input_value)) {
-                if (input_value === '') {
-                    e.target.value = '0';
-                    onChange(name, '0');
-                } else if (/^0[^.]/.test(input_value)) {
-                    const last_value = input_value[1];
-                    e.target.value = last_value;
-                    onChange(name, last_value);
-                } else {
-                    onChange(name, e.target.value);
-                }
-            }
-            if (name !== 'last_digit_prediction') {
-                const value = is_number ? Number(input_value) : input_value;
-                onChange(name, value);
-            }
+            const value = is_number ? Number(input_value) : input_value;
+            onChange(name, value);
         };
 
         return (

@@ -132,23 +132,6 @@ const QuickStrategyForm = observer(() => {
                                     />
                                 );
                             }
-                            case 'text': {
-                                if (!field.name) return null;
-                                const { should_have = [], hide_without_should_have = false } = field;
-                                const should_enable = shouldEnable(should_have);
-                                if (!should_enable && hide_without_should_have) {
-                                    return null;
-                                }
-                                return (
-                                    <QSInput
-                                        {...field}
-                                        onChange={onChange}
-                                        regex={field.regex}
-                                        key={key}
-                                        name={field.name as string}
-                                    />
-                                );
-                            }
                             case 'label': {
                                 if (!field.label) return null;
                                 const { should_have = [], hide_without_should_have = false } = field;

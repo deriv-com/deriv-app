@@ -174,9 +174,9 @@ const LABEL_LAST_DIGIT_PREDICTION: TConfigItem = {
 };
 
 const LAST_DIGIT_PREDICTION: TConfigItem = {
-    type: 'text',
+    type: 'number',
     name: 'last_digit_prediction',
-    validation: ['text-number'],
+    validation: ['number', 'required', 'max', 'integer'],
     should_have: [{ key: 'tradetype', value: '', multiple: ['matchesdiffers', 'overunder'] }],
     hide_without_should_have: true,
     regex: /^\d*(\.\d*)?$/,

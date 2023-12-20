@@ -50,7 +50,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
         accounts,
         activeWallet,
         isLoading: isModifiedAccountsLoading,
-    } = useExtendedTransferAccountProperties(data?.accounts || transferAccounts, authorizeData);
+    } = useExtendedTransferAccountProperties(data?.accounts ?? transferAccounts, authorizeData);
     const [receipt, setReceipt] = useState<TReceipt>();
     const sortedAccounts = useSortedTransferAccounts(accounts);
 
@@ -133,7 +133,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
                 activeWalletExchangeRates,
                 error,
                 isLoading,
-                preferredLanguage: authorizeData.preferred_language || 'en-US',
+                preferredLanguage: authorizeData.preferred_language ?? 'en-US',
                 receipt,
                 refetchAccountLimits,
                 refetchExchangeRates,

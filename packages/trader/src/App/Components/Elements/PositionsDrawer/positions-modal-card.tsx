@@ -208,7 +208,7 @@ const PositionsModalCard = observer(
             </React.Fragment>
         );
 
-        const custom_card_header = (
+        const common_card_header = (
             <ContractCard.Header
                 contract_info={contract_info}
                 display_name={display_name}
@@ -222,7 +222,7 @@ const PositionsModalCard = observer(
             />
         );
 
-        const custom_card_body = (
+        const common_card_body = (
             <ContractCard.Body
                 addToast={addToast}
                 contract_info={contract_info}
@@ -247,7 +247,7 @@ const PositionsModalCard = observer(
             />
         );
 
-        const custom_card_footer = (
+        const common_card_footer = (
             <ContractCard.Footer
                 contract_info={contract_info}
                 getCardLabels={getCardLabels}
@@ -268,9 +268,9 @@ const PositionsModalCard = observer(
                     profit_loss={profit_loss}
                     should_show_result_overlay={false}
                 >
-                    {custom_card_header}
-                    {custom_card_body}
-                    {custom_card_footer}
+                    {common_card_header}
+                    {common_card_body}
+                    {common_card_footer}
                 </ContractCard>
             </React.Fragment>
         );

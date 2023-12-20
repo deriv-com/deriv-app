@@ -1,9 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
+import { useStore } from '@deriv/stores';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
-import { getContractTypeDisplay } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS, getContractTypeDisplay } from '@deriv/shared';
 import { TProposalTypeInfo, TTradeStore } from 'Types';
+import { useMFAccountStatus } from '@deriv/hooks';
 
 type TPurchaseButton = {
     basis: string;
@@ -19,6 +21,7 @@ type TPurchaseButton = {
     is_loading: boolean;
     is_multiplier: boolean;
     is_proposal_empty: boolean;
+    is_vanilla_fx?: boolean;
     is_vanilla: boolean;
     is_turbos: boolean;
     onClickPurchase: (proposal_id: string, price: string | number, type: string) => void;
@@ -53,8 +56,8 @@ const IconComponentWrapper = ({ type }: { type: string }) => (
 );
 
 const PurchaseButton = ({
-    buy_info,
     basis, // mobile-only
+    buy_info,
     currency,
     growth_rate,
     has_deal_cancellation,
@@ -65,15 +68,20 @@ const PurchaseButton = ({
     is_high_low,
     is_loading,
     is_multiplier,
-    is_vanilla,
     is_proposal_empty,
     is_turbos,
+    is_vanilla_fx,
+    is_vanilla,
+    onClickPurchase,
     purchased_states_arr,
     setPurchaseState,
     should_fade,
-    onClickPurchase,
     type,
 }: TPurchaseButton) => {
+    const {
+        ui: { setIsMFVericationPendingModal },
+    } = useStore();
+    const mf_account_status = useMFAccountStatus();
     const getIconType = () => {
         if (!should_fade && is_loading) return '';
         return is_high_low ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
@@ -116,8 +124,12 @@ const PurchaseButton = ({
                 'btn-purchase--2__vanilla-opts': index === 1 && is_vanilla,
             })}
             onClick={() => {
-                setPurchaseState(index);
-                onClickPurchase(info.id, info.stake, type);
+                if (is_multiplier && mf_account_status === MT5_ACCOUNT_STATUS.PENDING) {
+                    setIsMFVericationPendingModal(true);
+                } else {
+                    setPurchaseState(index);
+                    onClickPurchase(info.id, info.stake, type);
+                }
             }}
         >
             <DesktopWrapper>
@@ -164,6 +176,7 @@ const PurchaseButton = ({
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
                             is_turbos={is_turbos}
+                            is_vanilla_fx={is_vanilla_fx}
                             is_vanilla={is_vanilla}
                             should_fade={should_fade}
                             proposal_info={info}

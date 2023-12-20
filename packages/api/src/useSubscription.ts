@@ -2,17 +2,20 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import useAPI from './useAPI';
 import type {
     TSocketAcceptableProps,
+    TSocketError,
     TSocketRequestPayload,
     TSocketResponseData,
     TSocketSubscribableEndpointNames,
 } from '../types';
 
-const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) => {
+const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T, idle_time = 5000) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isSubscribed, setSubscribed] = useState(false);
-    const [error, setError] = useState<unknown>();
+    const [isIdle, setIdle] = useState(false);
+    const [error, setError] = useState<TSocketError<T>>();
     const [data, setData] = useState<TSocketResponseData<T>>();
     const subscriber = useRef<{ unsubscribe?: VoidFunction }>();
+    const idle_timeout = useRef<NodeJS.Timeout>();
     const { subscribe: _subscribe } = useAPI();
 
     const subscribe = useCallback(
@@ -22,6 +25,12 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
 
             setIsLoading(true);
             setSubscribed(true);
+            setIdle(false);
+
+            idle_timeout.current = setTimeout(() => {
+                setIdle(true);
+                setIsLoading(false);
+            }, idle_time);
 
             try {
                 subscriber.current = _subscribe(name, payload).subscribe(
@@ -35,10 +44,10 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
                     }
                 );
             } catch (e) {
-                setError(e);
+                setError(e as TSocketError<T>);
             }
         },
-        [_subscribe, name]
+        [_subscribe, name, idle_time]
     );
 
     const unsubscribe = useCallback(() => {
@@ -52,9 +61,16 @@ const useSubscription = <T extends TSocketSubscribableEndpointNames>(name: T) =>
         };
     }, [unsubscribe]);
 
+    useEffect(() => {
+        return () => {
+            if (idle_timeout.current) clearTimeout(idle_timeout.current);
+        };
+    }, [data]);
+
     return {
         subscribe,
         unsubscribe,
+        isIdle,
         isLoading,
         isSubscribed,
         error,

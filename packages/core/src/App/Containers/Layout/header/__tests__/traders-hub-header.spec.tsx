@@ -1,14 +1,9 @@
 import React from 'react';
-import { isDesktop, isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import TradersHubHeader from '../traders-hub-header';
+import { TStores } from '@deriv/stores/types';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
-    isDesktop: jest.fn(() => true),
-}));
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
     useHistory: () => ({ history: {} }),
@@ -32,10 +27,30 @@ jest.mock('Assets/SvgComponents/header/deriv-rebranding-logo.svg', () => jest.fn
 jest.mock('../../../CurrencySelectionModal', () => jest.fn(() => <div>MockedCurrencySelectionModal</div>));
 jest.mock('../show-notifications', () => jest.fn(() => <div>MockedShowNotifications</div>));
 
+jest.mock('@deriv/hooks', () => ({
+    useFeatureFlags: () => ({
+        is_next_wallet_enabled: false,
+    }),
+    useIsRealAccountNeededForCashier: () => false,
+    useHasSetCurrency: () => true,
+}));
+
 describe('TradersHubHeader', () => {
-    const renderComponent = () =>
+    const renderComponent = (mock_store?: TStores) =>
         render(
-            <StoreProvider store={mockStore({})}>
+            <StoreProvider
+                store={
+                    mock_store ??
+                    mockStore({
+                        ui: { is_desktop: true },
+                        feature_flags: {
+                            data: {
+                                next_wallet: true,
+                            },
+                        },
+                    })
+                }
+            >
                 <TradersHubHeader />
             </StoreProvider>
         );
@@ -46,7 +61,13 @@ describe('TradersHubHeader', () => {
     });
 
     it('should render "RealAccountSignup" as a child component', () => {
-        renderComponent();
+        const mock_store = mockStore({
+            ui: {
+                is_desktop: true,
+                is_real_acc_signup_on: true,
+            },
+        });
+        renderComponent(mock_store);
         expect(screen.getByText('MockedRealAccountSignup')).toBeInTheDocument();
     });
 
@@ -66,9 +87,11 @@ describe('TradersHubHeader', () => {
     });
 
     it('should render the Cashier button in mobile view', () => {
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        (isMobile as jest.Mock).mockReturnValue(true);
-        renderComponent();
+        renderComponent(
+            mockStore({
+                ui: { is_desktop: false, is_mobile: true },
+            })
+        );
         expect(screen.getByRole('button', { name: 'Cashier' })).toBeInTheDocument();
     });
 });

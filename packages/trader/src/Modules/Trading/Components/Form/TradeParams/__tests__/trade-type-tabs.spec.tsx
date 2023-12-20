@@ -4,16 +4,17 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import TradeTypeTabs from '../trade-type-tabs';
 import { mockStore } from '@deriv/stores';
+import { TRADE_TYPES } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 
 describe('Trade Type Tabs', () => {
     const mock_root_store = {
         modules: {
             trade: {
-                contract_type: 'turboslong',
+                contract_type: TRADE_TYPES.TURBOS.LONG,
                 onChange: jest.fn(() => {
                     if (mock_root_store.modules) {
-                        mock_root_store.modules.trade.contract_type = 'turbosshort';
+                        mock_root_store.modules.trade.contract_type = TRADE_TYPES.TURBOS.SHORT;
                     }
                 }),
             },
@@ -26,7 +27,7 @@ describe('Trade Type Tabs', () => {
             </TraderProviders>
         );
     };
-    it('should render Long & Short tabs when contract_type = turboslong', () => {
+    it('should render Long & Short tabs when contract_type = TRADE_TYPES.TURBOS.LONG', () => {
         render(mockTradeTypeTabs(mock_root_store));
         const long_tab = screen.getByText('Long');
         const short_tab = screen.getByText('Short');
@@ -35,9 +36,9 @@ describe('Trade Type Tabs', () => {
         });
     });
 
-    it('should render Call & Put tabs when contract_type = vanillalongcall', () => {
+    it('should render Call & Put tabs when contract_type = TRADE_TYPES.VANILLA.CALL', () => {
         if (mock_root_store.modules) {
-            mock_root_store.modules.trade.contract_type = 'vanillalongcall';
+            mock_root_store.modules.trade.contract_type = TRADE_TYPES.VANILLA.CALL;
         }
         render(mockTradeTypeTabs(mock_root_store));
         const call_tab = screen.getByText('Call');
@@ -61,13 +62,13 @@ describe('Trade Type Tabs', () => {
 
     it('should call onChange when a tab is clicked', () => {
         if (mock_root_store.modules) {
-            mock_root_store.modules.trade.contract_type = 'turboslong';
+            mock_root_store.modules.trade.contract_type = TRADE_TYPES.TURBOS.LONG;
         }
         render(mockTradeTypeTabs(mock_root_store));
 
         const short_tab = screen.getByText('Short');
         userEvent.click(short_tab);
 
-        expect(mock_root_store.modules?.trade.contract_type).toBe('turbosshort');
+        expect(mock_root_store.modules?.trade.contract_type).toBe(TRADE_TYPES.TURBOS.SHORT);
     });
 });

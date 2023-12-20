@@ -54,8 +54,8 @@ beforeEach(() => {
                     filterPaymentAgentList: jest.fn(),
                 },
                 transaction_history: {
-                    is_crypto_transactions_visible: false,
-                    setIsCryptoTransactionsVisible: jest.fn(),
+                    is_transactions_crypto_visible: false,
+                    setIsTransactionsCryptoVisible: jest.fn(),
                 },
                 withdraw: {
                     check10kLimit: jest.fn(),
@@ -211,12 +211,12 @@ describe('GeneralStore', () => {
         jest.restoreAllMocks();
     });
 
-    it('should route to deposit page and call proper methods if is_crypto_transactions_visible equal to false and location.pahname = /cashier/crypto-transactions when onMountCommon was called', async () => {
+    it('should route to deposit page and call proper methods if is_transactions_crypto_visible equal to false and location.pahname = /cashier/transactions-crypto when onMountCommon was called', async () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
             location: {
-                pathname: routes.cashier_crypto_transactions,
+                pathname: routes.cashier_transactions_crypto,
             },
         }));
         general_store.root_store.client.is_logged_in = true;
@@ -241,16 +241,4 @@ describe('GeneralStore', () => {
         general_store.setActiveTab('deposit');
         expect(general_store.active_container).toBe('deposit');
     });
-
-    // it('should perform proper accountSwitcherListener invocation', () => {
-    //     const spyOnRemount = jest.spyOn(general_store, 'onRemount');
-    //     general_store.accountSwitcherListener();
-
-    //     const { iframe, payment_agent } = general_store.root_store.modules.cashier;
-
-    //     expect(iframe.clearIframe).toHaveBeenCalledTimes(1);
-    //     expect(general_store.payment_agent).toEqual(payment_agent);
-    //     expect(general_store.is_populating_values).toBeFalsy();
-    //     expect(spyOnRemount).toHaveBeenCalledTimes(1);
-    // });
 });

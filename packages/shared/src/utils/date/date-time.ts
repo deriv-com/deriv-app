@@ -1,3 +1,4 @@
+import { localize } from '@deriv/translations';
 import moment from 'moment';
 import 'moment/min/locales';
 
@@ -51,7 +52,7 @@ export const toLocalFormat = (time: moment.MomentInput) => moment.utc(time).loca
  * @param  {String} time        24 hours format, may or may not include seconds
  * @return {moment} a new moment object of result
  */
-export const setTime = (moment_obj: moment.Moment, time: string) => {
+export const setTime = (moment_obj: moment.Moment, time: string | null) => {
     const [hour, minute, second] = time ? time.split(':') : [0, 0, 0];
     moment_obj
         .hour(+hour)
@@ -73,7 +74,8 @@ export const toGMTFormat = (time?: moment.MomentInput) =>
         .utc()
         .format('YYYY-MM-DD HH:mm:ss [GMT]');
 
-export const formatDate = (date?: moment.MomentInput, date_format = 'YYYY-MM-DD') => toMoment(date).format(date_format);
+export const formatDate = (date?: moment.MomentInput, date_format = 'YYYY-MM-DD', should_format_null = true) =>
+    !should_format_null && date === null ? undefined : toMoment(date).format(date_format);
 
 export const formatTime = (epoch: number | string, time_format = 'HH:mm:ss [GMT]') =>
     toMoment(epoch).format(time_format);
@@ -272,4 +274,25 @@ export const convertTimeFormat = (time: string) => {
     const formatted_time = `${Number(time_hour) % 12 || 12}:${time_min}`;
     const time_suffix = `${Number(time_hour) >= 12 ? 'pm' : 'am'}`;
     return `${formatted_time} ${time_suffix}`;
+};
+
+/**
+ *  Get a formatted time since a timestamp.
+ * @param  {Number} timestamp in ms
+ * @return {String} '10s ago', or '1m ago', or '1h ago', or '1d ago'
+ */
+export const getTimeSince = (timestamp: number) => {
+    if (!timestamp) return '';
+    const seconds_passed = Math.floor((Date.now() - timestamp) / 1000);
+
+    if (seconds_passed < 60) {
+        return localize('{{seconds_passed}}s ago', { seconds_passed });
+    }
+    if (seconds_passed < 3600) {
+        return localize('{{minutes_passed}}m ago', { minutes_passed: Math.floor(seconds_passed / 60) });
+    }
+    if (seconds_passed < 86400) {
+        return localize('{{hours_passed}}h ago', { hours_passed: Math.floor(seconds_passed / 3600) });
+    }
+    return localize('{{days_passed}}d ago', { days_passed: Math.floor(seconds_passed / (3600 * 24)) });
 };

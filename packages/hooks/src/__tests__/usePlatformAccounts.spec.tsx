@@ -13,7 +13,7 @@ describe('usePlatformAccounts', () => {
         const { result } = renderHook(() => usePlatformAccounts(), { wrapper });
 
         expect(result.current.demo).toBe(undefined);
-        expect(result.current.real.length).toBe(0);
+        expect(result.current.real).toHaveLength(0);
     });
 
     test('should return proper data when user only has platform demo account', async () => {
@@ -34,7 +34,7 @@ describe('usePlatformAccounts', () => {
         const { result } = renderHook(() => usePlatformAccounts(), { wrapper });
 
         expect(result.current.demo?.loginid).toBe(mock.client.accounts.VR1234.loginid);
-        expect(result.current.real.length).toBe(0);
+        expect(result.current.real).toHaveLength(0);
     });
 
     test('should return proper data when user only has platform real account', async () => {
@@ -55,7 +55,7 @@ describe('usePlatformAccounts', () => {
         const { result } = renderHook(() => usePlatformAccounts(), { wrapper });
 
         expect(result.current.demo?.loginid).toBe(undefined);
-        expect(result.current.real.length).toBe(1);
+        expect(result.current.real).toHaveLength(1);
     });
 
     test('should return proper data when user has both real and demo accounts', async () => {
@@ -86,7 +86,7 @@ describe('usePlatformAccounts', () => {
         const { result } = renderHook(() => usePlatformAccounts(), { wrapper });
 
         expect(result.current.demo?.loginid).toBe(mock.client.accounts.VR1235.loginid);
-        expect(result.current.real.length).toBe(1);
+        expect(result.current.real).toHaveLength(1);
         expect(result.current.real[0].landing_company_shortcode).toBe('svg');
     });
 });

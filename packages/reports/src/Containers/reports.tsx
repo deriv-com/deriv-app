@@ -13,6 +13,7 @@ import {
 import { getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { Analytics } from '@deriv/analytics';
 import { TRoute } from 'Types';
 import 'Sass/app/modules/reports.scss';
 
@@ -33,15 +34,25 @@ type TReports = {
 const Reports = observer(({ history, location, routes }: TReports) => {
     const { client, common, ui } = useStore();
 
-    const { is_logged_in, is_logging_in, setVisibilityRealityCheck } = client;
+    const { is_logged_in, is_logging_in } = client;
     const { is_from_derivgo, routeBackInApp } = common;
     const { is_reports_visible, setReportsTabIndex, reports_route_tab_index, toggleReports } = ui;
 
     React.useEffect(() => {
+        Analytics.trackEvent('ce_reports_form', {
+            action: 'open',
+            form_name: 'default',
+            subform_name: history.location.pathname.split('/')[2],
+            form_source: 'deriv_trader',
+        });
         toggleReports(true);
         return () => {
-            setVisibilityRealityCheck(1);
             toggleReports(false);
+            Analytics.trackEvent('ce_reports_form', {
+                action: 'close',
+                form_name: 'default',
+                subform_name: location.pathname.split('/')[2],
+            });
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

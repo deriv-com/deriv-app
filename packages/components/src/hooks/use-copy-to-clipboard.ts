@@ -1,10 +1,9 @@
 import React from 'react';
 
-type IsCopied = boolean;
 type CopyFn = (text: string) => Promise<boolean>;
 type IsCopyFn = (flag: boolean) => void;
 
-export const useCopyToClipboard = (): [IsCopied, CopyFn, IsCopyFn] => {
+export const useCopyToClipboard = (): [boolean, CopyFn, IsCopyFn] => {
     const [is_copied, setIsCopied] = React.useState(false);
 
     const copyToClipboard = async (text: string) => {

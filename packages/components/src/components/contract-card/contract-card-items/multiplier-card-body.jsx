@@ -5,6 +5,7 @@ import {
     isCryptocurrency,
     getCancellationPrice,
     getLimitOrderAmount,
+    getTotalProfit,
     isValidToCancel,
     isValidToSell,
     shouldShowCancellation,
@@ -35,12 +36,12 @@ const MultiplierCardBody = ({
     status,
     toggleCancellationWarning,
 }) => {
-    const { buy_price, bid_price, profit, limit_order, underlying } = contract_info;
-
+    const { buy_price, bid_price, limit_order, underlying } = contract_info;
     const { take_profit, stop_loss } = getLimitOrderAmount(contract_update || limit_order);
     const cancellation_price = getCancellationPrice(contract_info);
     const is_valid_to_cancel = isValidToCancel(contract_info);
     const is_valid_to_sell = isValidToSell(contract_info);
+    const total_profit = getTotalProfit(contract_info);
     const {
         BUY_PRICE,
         CURRENT_STAKE,
@@ -67,8 +68,8 @@ const MultiplierCardBody = ({
                 <ContractCardItem header={CURRENT_STAKE} className='dc-contract-card__current-stake'>
                     <div
                         className={classNames({
-                            'dc-contract-card--profit': +profit > 0,
-                            'dc-contract-card--loss': +profit < 0,
+                            'dc-contract-card--profit': total_profit > 0,
+                            'dc-contract-card--loss': total_profit < 0,
                         })}
                     >
                         <Money amount={bid_price} currency={currency} />
@@ -127,17 +128,17 @@ const MultiplierCardBody = ({
                 className='dc-contract-card-item__total-profit-loss'
                 header={TOTAL_PROFIT_LOSS}
                 is_crypto={isCryptocurrency(currency)}
-                is_loss={+profit < 0}
-                is_won={+profit > 0}
+                is_loss={total_profit < 0}
+                is_won={total_profit > 0}
             >
-                <Money amount={profit} currency={currency} />
+                <Money amount={Math.abs(total_profit)} currency={currency} />
                 <div
                     className={classNames('dc-contract-card__indicative--movement', {
                         'dc-contract-card__indicative--movement-complete': is_sold,
                     })}
+                    data-testid={`dt_indicative_movement_${total_profit > 0 ? 'profit' : 'loss'}`}
                 >
-                    {status === 'profit' && <Icon icon='IcProfit' />}
-                    {status === 'loss' && <Icon icon='IcLoss' />}
+                    {total_profit > 0 ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />}
                 </div>
             </ContractCardItem>
         </React.Fragment>

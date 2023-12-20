@@ -1,0 +1,128 @@
+.wallets-transactions-pending-row {
+    $root: &;
+    width: 100%;
+    height: 7.8rem;
+    display: flex;
+    gap: 1.6rem;
+    align-items: flex-start;
+    border-top: 0.1rem solid var(--system-light-3-border, #e5e5e5);
+    padding: 1.6rem;
+
+    @include mobile {
+        height: unset;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        padding: 1.6rem 0;
+    }
+
+    &__column {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__wallet-info {
+        display: flex;
+        order: -2;
+        align-items: center;
+        width: max-content;
+        gap: 0.8rem;
+    }
+
+    &__fields-container {
+        height: 100%;
+        display: flex;
+        flex-grow: 1;
+        gap: 1.6rem;
+        align-items: flex-start;
+
+        @include mobile {
+            order: 0;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+
+            #{$root}__column {
+                gap: 0.4rem;
+            }
+        }
+    }
+
+    &__transaction {
+        &-address {
+            width: 7rem;
+        }
+
+        &-amount {
+            width: max-content;
+            align-self: center;
+        }
+
+        &-confirmations {
+            width: 7.6rem;
+        }
+
+        &-hash {
+            width: 9.2rem;
+        }
+
+        &-status {
+            width: 10.3rem;
+            display: flex;
+            flex-grow: 1;
+            justify-content: flex-end;
+            align-items: center;
+            align-self: center;
+            justify-self: flex-end;
+
+            // unset default button style
+            border: unset;
+            padding: unset;
+            background-color: unset;
+            text-align: unset;
+
+            @include mobile {
+                align-self: flex-start;
+                order: -1;
+            }
+
+            &-dot {
+                margin-right: 0.4rem;
+                width: 0.8rem;
+                height: 0.8rem;
+                border-radius: 0.4rem;
+
+                &--pending,
+                &--locked,
+                &--performing-blockchain-txn,
+                &--processing,
+                &--reverting,
+                &--verified {
+                    background: var(--status-warning, #ffad3a);
+                }
+
+                &--confirmed,
+                &--sent {
+                    background: var(--status-success, #4bb4b3);
+                }
+
+                &--error,
+                &--cancelled,
+                &--rejected,
+                &--reverted {
+                    background: var(--status-danger, #ec3f3f);
+                }
+            }
+        }
+
+        &-time {
+            width: 6.5rem;
+        }
+
+        &-cancel-button {
+            margin-left: 1rem;
+            padding: 0;
+            border: none;
+            cursor: pointer;
+            background-color: transparent;
+        }
+    }
+}

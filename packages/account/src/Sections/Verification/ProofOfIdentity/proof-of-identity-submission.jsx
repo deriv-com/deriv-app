@@ -1,14 +1,14 @@
 import React from 'react';
-import { WS } from '@deriv/shared';
+import { formatIDVError, WS, IDV_ERROR_STATUS, POIContext } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import PoiCountrySelector from 'Components/poi/poi-country-selector';
-import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
-import IdvUploadComplete from 'Components/poi/idv-status/idv-submit-complete';
-import Unsupported from 'Components/poi/status/unsupported';
-import UploadComplete from 'Components/poi/status/upload-complete';
-
-import OnfidoUpload from './onfido-sdk-view-container';
-import { identity_status_codes, service_code, submission_status_code } from './proof-of-identity-utils';
+import CountrySelector from '../../../Components/poi/poi-country-selector';
+import IdvDocumentSubmit from '../../../Components/poi/idv-document-submit';
+import IdvFailed from '../../../Components/poi/idv-status/idv-failed';
+import IdvSubmitComplete from '../../../Components/poi/idv-status/idv-submit-complete';
+import Unsupported from '../../../Components/poi/status/unsupported';
+import UploadComplete from '../../../Components/poi/status/upload-complete';
+import OnfidoSdkViewContainer from './onfido-sdk-view-container';
+import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 
 const POISubmission = observer(
     ({
@@ -25,16 +25,22 @@ const POISubmission = observer(
         redirect_button,
         residence_list,
         setIsCfdPoiCompleted,
+        should_show_mismatch_form,
     }) => {
-        const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
-        const [submission_service, setSubmissionService] = React.useState();
-        const [selected_country, setSelectedCountry] = React.useState({});
+        const {
+            submission_service,
+            setSubmissionService,
+            submission_status,
+            setSubmissionStatus,
+            selected_country,
+            setSelectedCountry,
+        } = React.useContext(POIContext);
 
-        const { client, common, notifications } = useStore();
+        const { client, notifications } = useStore();
 
-        const { account_settings, getChangeableFields } = client;
-        const { current_language } = common;
+        const { account_settings, getChangeableFields, account_status } = client;
         const { refreshNotifications } = notifications;
+        const is_high_risk = account_status.risk_classification === 'high';
 
         const handleSelectionNext = () => {
             if (Object.keys(selected_country).length) {
@@ -46,7 +52,7 @@ const POISubmission = observer(
 
                 if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
                     setSubmissionService(service_code.idv);
-                } else if (onfido_submissions_left && is_onfido_supported) {
+                } else if (Number(onfido_submissions_left) > 0 && is_onfido_supported) {
                     setSubmissionService(service_code.onfido);
                 } else {
                     setSubmissionService(service_code.manual);
@@ -73,67 +79,102 @@ const POISubmission = observer(
             [residence_list]
         );
 
-        React.useEffect(() => {
-            if (submission_status !== submission_status_code.complete) {
-                if ((has_require_submission || allow_poi_resubmission) && identity_last_attempt) {
-                    switch (identity_last_attempt.service) {
-                        case service_code.idv: {
-                            if (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) {
-                                setSubmissionStatus(submission_status_code.selecting);
-                            } else {
-                                setSubmissionService(service_code.manual);
-                                setSubmissionStatus(submission_status_code.submitting);
-                            }
-                            break;
-                        }
-                        case service_code.onfido: {
-                            if (Number(onfido.submissions_left) > 0) {
-                                setSubmissionStatus(submission_status_code.selecting);
-                            } else {
-                                setSubmissionService(service_code.manual);
-                                setSubmissionStatus(submission_status_code.submitting);
-                            }
-                            break;
-                        }
-                        case service_code.manual: {
-                            setSelectedCountry(getCountryFromResidence(identity_last_attempt.country_code));
-                            setSubmissionStatus(submission_status_code.submitting);
+        const needs_resubmission = has_require_submission || allow_poi_resubmission;
+
+        const mismatch_status = formatIDVError(idv.last_rejected, idv.status, is_high_risk);
+
+        const setIdentityService = React.useCallback(
+            identity_last_attempt => {
+                const { service, country_code } = identity_last_attempt;
+                setSelectedCountry(getCountryFromResidence(country_code));
+                switch (service) {
+                    case service_code.idv:
+                    case service_code.onfido: {
+                        if (Number(idv.submissions_left) > 0 || Number(onfido.submissions_left) > 0) {
+                            setSubmissionStatus(submission_status_code.selecting);
+                        } else {
                             setSubmissionService(service_code.manual);
-                            break;
+                            setSubmissionStatus(submission_status_code.submitting);
                         }
-                        default:
-                            break;
+                        break;
                     }
-                } else {
-                    setSubmissionStatus(submission_status_code.selecting);
+                    case service_code.manual: {
+                        setSubmissionService(service_code.manual);
+                        setSubmissionStatus(submission_status_code.submitting);
+                        break;
+                    }
+                    default:
+                        break;
                 }
+            },
+            [
+                getCountryFromResidence,
+                idv.submissions_left,
+                onfido.submissions_left,
+                setSelectedCountry,
+                setSubmissionService,
+                setSubmissionStatus,
+                is_idv_disallowed,
+            ]
+        );
+
+        React.useEffect(() => {
+            if (submission_status != submission_status_code.selecting) {
+                return;
+            }
+            if (needs_resubmission && identity_last_attempt) {
+                setIdentityService(identity_last_attempt);
+            } else if (
+                mismatch_status &&
+                [
+                    IDV_ERROR_STATUS.DobMismatch.code,
+                    IDV_ERROR_STATUS.NameMismatch.code,
+                    IDV_ERROR_STATUS.NameDobMismatch.code,
+                ].includes(mismatch_status) &&
+                idv.submissions_left > 0
+            ) {
+                setSubmissionService(service_code.idv);
+                setSubmissionStatus(submission_status_code.submitting);
+            } else {
+                setSubmissionStatus(submission_status_code.selecting);
             }
         }, [
             allow_poi_resubmission,
-            getCountryFromResidence,
-            has_require_submission,
             identity_last_attempt,
-            idv.submissions_left,
-            onfido.submissions_left,
+            needs_resubmission,
+            setIdentityService,
+            submission_status,
+            idv,
+            mismatch_status,
+            setSubmissionService,
+            setSubmissionStatus,
         ]);
 
         switch (submission_status) {
             case submission_status_code.selecting: {
                 return (
-                    <PoiCountrySelector
-                        key={current_language}
+                    <CountrySelector
                         handleSelectionNext={handleSelectionNext}
                         is_from_external={is_from_external}
-                        residence_list={residence_list}
-                        selected_country={selected_country}
-                        setSelectedCountry={setSelectedCountry}
+                        mismatch_status={mismatch_status}
                     />
                 );
             }
+
             case submission_status_code.submitting: {
                 switch (submission_service) {
                     case service_code.idv:
-                        return (
+                        return should_show_mismatch_form ? (
+                            <IdvFailed
+                                account_settings={account_settings}
+                                getChangeableFields={getChangeableFields}
+                                mismatch_status={mismatch_status}
+                                residence_list={residence_list}
+                                handleSubmit={handleViewComplete}
+                                latest_status={identity_last_attempt}
+                                selected_country={selected_country}
+                            />
+                        ) : (
                             <IdvDocumentSubmit
                                 handleViewComplete={handleViewComplete}
                                 handleBack={handleBack}
@@ -144,10 +185,8 @@ const POISubmission = observer(
                         const country_code = selected_country.value;
                         const doc_obj = selected_country.identity.services.onfido.documents_supported;
                         const documents_supported = Object.keys(doc_obj).map(d => doc_obj[d].display_name);
-
                         return (
-                            <OnfidoUpload
-                                account_settings={account_settings}
+                            <OnfidoSdkViewContainer
                                 country_code={country_code}
                                 documents_supported={documents_supported}
                                 getChangeableFields={getChangeableFields}
@@ -175,8 +214,9 @@ const POISubmission = observer(
                 switch (submission_service) {
                     case service_code.idv:
                         return (
-                            <IdvUploadComplete
+                            <IdvSubmitComplete
                                 is_from_external={is_from_external}
+                                mismatch_status={mismatch_status}
                                 needs_poa={needs_poa}
                                 redirect_button={redirect_button}
                             />

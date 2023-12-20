@@ -2,11 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
-import userEvent from '@testing-library/user-event';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumentValid } from 'Helpers/utils';
+import { StoreProvider, mockStore, ExchangeRatesProvider } from '@deriv/stores';
+import { Analytics } from '@deriv/analytics';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -26,6 +28,13 @@ jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
         warnings: mock_warnings,
         errors: mock_errors,
     })),
+}));
+
+jest.mock('Helpers/utils', () => ({
+    ...jest.requireActual('Helpers/utils'),
+    isDocumentTypeValid: jest.fn(),
+    shouldShowIdentityInformation: jest.fn(() => false),
+    isAdditionalDocumentValid: jest.fn(),
 }));
 
 const mock_warnings = {};
@@ -61,17 +70,25 @@ const runCommonFormfieldsTests = is_svg => {
     expect(screen.queryByTestId('tax_residence')).toBeInTheDocument();
     expect(screen.queryByTestId('tax_residence_mobile')).not.toBeInTheDocument();
 
-    expect(
-        screen.getByText(/Please enter your first name as in your official identity documents./i)
-    ).toBeInTheDocument();
+    if (is_svg) {
+        expect(screen.getByText(/your first name as in your identity document/i)).toBeInTheDocument();
 
-    expect(
-        screen.getByText(/Please enter your last name as in your official identity documents./i)
-    ).toBeInTheDocument();
+        expect(screen.getByText(/your last name as in your identity document/i)).toBeInTheDocument();
 
-    expect(
-        screen.getByText(/Please enter your date of birth as in your official identity documents./i)
-    ).toBeInTheDocument();
+        expect(screen.getByText(/your date of birth as in your identity document/i)).toBeInTheDocument();
+    } else {
+        expect(
+            screen.getByText(/Please enter your first name as in your official identity documents./i)
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getByText(/Please enter your last name as in your official identity documents./i)
+        ).toBeInTheDocument();
+
+        expect(
+            screen.getByText(/Please enter your date of birth as in your official identity documents./i)
+        ).toBeInTheDocument();
+    }
 
     const tax_residence_pop_over = screen.queryByTestId('tax_residence_pop_over');
     expect(tax_residence_pop_over).toBeInTheDocument();
@@ -99,13 +116,50 @@ const runCommonFormfieldsTests = is_svg => {
                 name: /additional information/i,
             })
         ).toBeInTheDocument();
-    expect(screen.queryByTestId('dti_dropdown_display')).toBeInTheDocument();
+    expect(screen.queryByTestId('dt_dropdown_display')).toBeInTheDocument();
     expect(screen.queryByTestId('account_opening_reason_mobile')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
 };
 
 describe('<PersonalDetails/>', () => {
+    const idv_document_data = {
+        document_type: {
+            value: 'national_id',
+            text: 'National ID',
+        },
+        document_number: '1234567890123',
+    };
+
+    const default_IDV_config = {
+        documents_supported: {},
+        has_visual_sample: 0,
+        is_country_supported: 0,
+    };
+
+    const default_residence_details = [
+        {
+            value: 'tc',
+            identity: {
+                services: {
+                    idv: {
+                        documents_supported: {
+                            document_1: {
+                                display_name: 'Test document 1 name',
+                                format: '5436454364243',
+                            },
+                            document_2: {
+                                display_name: 'Test document 2 name',
+                                format: 'A54321',
+                            },
+                        },
+                        has_visual_sample: true,
+                    },
+                },
+            },
+        },
+    ];
+
     const props = {
         is_svg: true,
         is_high_risk: false,
@@ -139,11 +193,7 @@ describe('<PersonalDetails/>', () => {
             {
                 identity: {
                     services: {
-                        idv: {
-                            documents_supported: {},
-                            has_visual_sample: 0,
-                            is_country_supported: 0,
-                        },
+                        idv: default_IDV_config,
                         onfido: {
                             documents_supported: {
                                 passport: {
@@ -161,11 +211,7 @@ describe('<PersonalDetails/>', () => {
             {
                 identity: {
                     services: {
-                        idv: {
-                            documents_supported: {},
-                            has_visual_sample: 0,
-                            is_country_supported: 0,
-                        },
+                        idv: default_IDV_config,
                         onfido: {
                             documents_supported: {},
                             is_country_supported: 0,
@@ -232,209 +278,30 @@ describe('<PersonalDetails/>', () => {
         account_settings: {},
     };
 
-    beforeAll(() => (ReactDOM.createPortal = jest.fn(component => component)));
+    beforeAll(() => {
+        ReactDOM.createPortal = jest.fn(component => component);
+    });
 
     afterAll(() => ReactDOM.createPortal.mockClear());
 
-    const renderwithRouter = component => {
-        const mock_store = mockStore({});
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
+    const renderwithRouter = (component, store) => {
+        let mock_store = mockStore({});
         render(
-            <StoreProvider store={mock_store}>
-                <BrowserRouter>{component}</BrowserRouter>
+            <StoreProvider store={store ?? mock_store}>
+                <ExchangeRatesProvider>
+                    <BrowserRouter>{component}</BrowserRouter>
+                </ExchangeRatesProvider>
             </StoreProvider>
         );
     };
 
-    it('should autopopulate tax_residence for MF clients', () => {
-        const new_props = {
-            ...props,
-            is_svg: false,
-            is_mf: true,
-            value: {
-                ...props.value,
-                tax_residence: 'Malta',
-            },
-        };
-        renderwithRouter(<PersonalDetails {...new_props} />);
-        expect(
-            screen.getByRole('textbox', {
-                name: /tax residence\*/i,
-            })
-        ).toHaveValue('Malta');
-    });
-
-    it('should render PersonalDetails component', () => {
+    it('should have called trackEvent on mount', () => {
         renderwithRouter(<PersonalDetails {...props} />);
-        expect(screen.getByTestId('personal_details_form')).toBeInTheDocument();
-    });
-
-    it('should show proper salutation message when is_virtual is true', () => {
-        renderwithRouter(<PersonalDetails {...props} is_virtual />);
-
-        expect(
-            screen.getByText(
-                /please remember that it is your responsibility to keep your answers accurate and up to date\. you can update your personal details at any time in your account settings\./i
-            )
-        ).toBeInTheDocument();
-    });
-
-    it('should show proper salutation message when is_virtual is false', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
-
-        expect(
-            screen.getByText(
-                /please remember that it is your responsibility to keep your answers accurate and up to date\. you can update your personal details at any time in your \./i
-            )
-        ).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: /account settings/i })).toBeInTheDocument();
-        expect(screen.getByText(/account settings/i).closest('a')).toHaveAttribute('href', '/account/personal-details');
-
-        fireEvent.click(screen.getByText('account settings'));
-
-        expect(props.closeRealAccountSignup).toHaveBeenCalledTimes(1);
-    });
-
-    it('should show title and Name label when salutation is passed', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
-
-        expect(
-            screen.getByRole('heading', {
-                name: /title and name/i,
-            })
-        ).toBeInTheDocument();
-    });
-
-    it('should show Name label when salutation is not passed', () => {
-        const newprops = { ...props, value: {} };
-        renderwithRouter(<PersonalDetails {...newprops} />);
-
-        expect(screen.getByRole('heading', { name: /name/i })).toBeInTheDocument();
-        expect(screen.queryByRole('heading', { name: /title and name/i })).not.toBeInTheDocument();
-    });
-
-    it('should show salutation options', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
-
-        const mr_radio_btn = screen.getByRole('radio', { name: /mr/i });
-        const mrs_radio_btn = screen.getByRole('radio', { name: /ms/i });
-        expect(mr_radio_btn).toBeInTheDocument();
-        expect(mrs_radio_btn).toBeInTheDocument();
-        expect(mr_radio_btn.checked).toEqual(false);
-
-        fireEvent.click(mr_radio_btn);
-
-        expect(mr_radio_btn.checked).toEqual(true);
-        expect(mrs_radio_btn.checked).toEqual(false);
-    });
-
-    it('should display the correct field details ', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
-
-        expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
-        expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
-        expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
-
-        runCommonFormfieldsTests(props.is_svg);
-    });
-
-    it('should display the correct field details when is_svg is true ', () => {
-        renderwithRouter(<PersonalDetails {...props} />);
-
-        expect(screen.getByRole('heading', { name: /title and name/i })).toBeInTheDocument();
-        expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
-        expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
-        expect(screen.getByText(/last name\*/i)).toBeInTheDocument();
-        expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
-        expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
-
-        runCommonFormfieldsTests(props.is_svg);
-    });
-
-    it('should display the correct field details when is_svg is false ', () => {
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
-
-        expect(screen.getByRole('heading', { name: 'Title and name' })).toBeInTheDocument();
-        expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /other details/i })).toBeInTheDocument();
-        expect(screen.getByText('First name')).toBeInTheDocument();
-        expect(screen.getByText('Last name')).toBeInTheDocument();
-        expect(screen.getByText('Date of birth')).toBeInTheDocument();
-        expect(screen.getByText('Phone number*')).toBeInTheDocument();
-        expect(screen.getByLabelText('Phone number*')).toBeInTheDocument();
-
-        runCommonFormfieldsTests(false);
-    });
-
-    it('should not enable fields which are disabled and empty', () => {
-        renderwithRouter(
-            <PersonalDetails
-                {...props}
-                disabled_items={['salutation', 'first_name', 'last_name', 'date_of_birth', 'account_opening_reason']}
-            />
-        );
-        expect(screen.getByRole('radio', { name: /mr/i })).not.toBeDisabled();
-        expect(screen.getByRole('radio', { name: /ms/i })).not.toBeDisabled();
-        expect(screen.getByTestId('first_name')).toBeDisabled();
-        expect(screen.getByTestId('last_name')).toBeDisabled();
-        expect(screen.getByTestId('date_of_birth')).toBeDisabled();
-        expect(screen.getByTestId('place_of_birth')).not.toBeDisabled();
-        expect(screen.getByTestId('citizenship')).toBeEnabled(); // citizenship value is not disabled by BE, so enable the field
-    });
-
-    it('should disable citizen field if the client is_fully_authenticated', () => {
-        const new_props = {
-            ...props,
-            value: {
-                ...props.value,
-                citizen: 'france',
-            },
-        };
-        renderwithRouter(<PersonalDetails {...new_props} is_fully_authenticated={true} />);
-
-        expect(screen.getByTestId('citizenship')).toBeDisabled();
-    });
-
-    it('should display proper data in mobile mode', () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
-
-        expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
-        expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
-        expect(screen.getByTestId('first_name')).toBeInTheDocument();
-        expect(screen.getByTestId('last_name')).toBeInTheDocument();
-        expect(screen.getByTestId('date_of_birth')).toBeInTheDocument();
-        expect(screen.queryByTestId('place_of_birth_mobile')).toBeInTheDocument();
-        expect(screen.queryByTestId('place_of_birth')).not.toBeInTheDocument();
-        expect(screen.queryByTestId('citizenship_mobile')).toBeInTheDocument();
-        expect(screen.queryByTestId('citizenship')).not.toBeInTheDocument();
-        expect(screen.queryByTestId('phone')).toBeInTheDocument();
-        expect(screen.queryByTestId('tax_residence_mobile')).toBeInTheDocument();
-        expect(screen.queryByTestId('tax_residence')).not.toBeInTheDocument();
-        expect(screen.getByText(/tax identification number/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/tax identification number/i)).toBeInTheDocument();
-        expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
-        expect(screen.queryByTestId('dti_dropdown_display')).not.toBeInTheDocument();
-        expect(screen.queryByTestId('account_opening_reason_mobile')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
-    });
-
-    it('should select correct dropdown options in mobile mode', () => {
-        isMobile.mockReturnValue(true);
-        isDesktop.mockReturnValue(false);
-
-        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
-        const place_of_birth_mobile = screen.queryByTestId('place_of_birth_mobile');
-
-        expect(place_of_birth_mobile).toBeInTheDocument();
-
-        fireEvent.change(place_of_birth_mobile, { target: { value: 'Afghanistan' } });
-
-        const { getByText } = within(screen.getAllByTestId('selected_value')[0]);
-        expect(getByText('Afghanistan')).toBeInTheDocument();
+        expect(Analytics.trackEvent).toHaveBeenCalledTimes(1);
     });
 
     it('should have validation errors on form fields', async () => {
@@ -492,6 +359,278 @@ describe('<PersonalDetails/>', () => {
         ).toBeInTheDocument();
     });
 
+    it('submit button should be enabled if TIN or tax_residence is optional in case of CR accounts', () => {
+        const new_props = {
+            ...props,
+            is_svg: true,
+            value: {
+                first_name: '',
+                last_name: '',
+                date_of_birth: '',
+                place_of_birth: '',
+                phone: '+34',
+                tax_residence: '',
+                tax_identification_number: '',
+                document_type: 'none',
+            },
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+
+        const first_name = screen.getByTestId('first_name');
+        const last_name = screen.getByTestId('last_name');
+        const date_of_birth = screen.getByTestId('date_of_birth');
+        const phone = screen.getByTestId('phone');
+
+        userEvent.type(first_name, 'test firstname');
+        userEvent.type(last_name, 'test lastname');
+        userEvent.type(date_of_birth, '2000-12-12');
+        userEvent.type(phone, '+49123456789012');
+        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
+    });
+
+    it('should not display confirmation checkbox if opt-out of IDV', async () => {
+        splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
+        const new_props = {
+            ...props,
+            value: {
+                first_name: '',
+                last_name: '',
+                date_of_birth: '',
+                phone: '+93',
+                account_opening_reason: '',
+                place_of_birth: '',
+                document_type: 'none',
+            },
+        };
+
+        renderwithRouter(<PersonalDetails {...new_props} />);
+
+        const first_name = screen.getByTestId('first_name');
+        const last_name = screen.getByTestId('last_name');
+        const date_of_birth = screen.getByTestId('date_of_birth');
+        const phone = screen.getByTestId('phone');
+
+        userEvent.type(first_name, 'test firstname');
+        userEvent.type(last_name, 'test lastname');
+        userEvent.type(date_of_birth, '2000-12-12');
+        userEvent.type(phone, '+49123456789012');
+
+        const previous_btn = screen.getByRole('button', { name: /previous/i });
+        const next_btn = screen.getByRole('button', { name: /next/i });
+
+        const confirmation_checkbox = screen.queryByLabelText(
+            /i confirm that the name and date of birth above match my chosen identity document/i
+        );
+        expect(confirmation_checkbox).not.toBeInTheDocument();
+
+        expect(previous_btn).toBeEnabled();
+        expect(next_btn).toBeEnabled();
+        userEvent.click(next_btn);
+
+        await waitFor(() => {
+            expect(new_props.onSubmit).toBeCalled();
+        });
+    });
+
+    it('should autopopulate tax_residence for MF clients', () => {
+        const new_props = {
+            ...props,
+            is_svg: false,
+            value: {
+                ...props.value,
+                tax_residence: 'Malta',
+            },
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+        expect(
+            screen.getByRole('textbox', {
+                name: /tax residence\*/i,
+            })
+        ).toHaveValue('Malta');
+    });
+
+    it('should render PersonalDetails component', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
+        expect(screen.getByTestId('personal_details_form')).toBeInTheDocument();
+    });
+
+    it('should show proper salutation message when is_virtual is true', () => {
+        renderwithRouter(<PersonalDetails {...props} is_virtual />);
+
+        expect(
+            screen.getByText(
+                /please remember that it is your responsibility to keep your answers accurate and up to date\. you can update your personal details at any time in your account settings\./i
+            )
+        ).toBeInTheDocument();
+    });
+
+    it('should show proper salutation message when is_virtual is false', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
+
+        expect(
+            screen.getByText(
+                /please remember that it is your responsibility to keep your answers accurate and up to date\. you can update your personal details at any time in your \./i
+            )
+        ).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: /account settings/i })).toBeInTheDocument();
+        expect(screen.getByText(/account settings/i).closest('a')).toHaveAttribute('href', '/account/personal-details');
+
+        fireEvent.click(screen.getByText('account settings'));
+
+        expect(props.closeRealAccountSignup).toHaveBeenCalledTimes(1);
+    });
+
+    it('should show title and Name label when salutation is passed', () => {
+        const mock_store = mockStore({
+            traders_hub: {
+                is_eu_user: true,
+            },
+        });
+        renderwithRouter(<PersonalDetails {...props} />, mock_store);
+
+        expect(
+            screen.getByRole('heading', {
+                name: /title and name/i,
+            })
+        ).toBeInTheDocument();
+    });
+
+    it('should show Name label when salutation is not passed', () => {
+        const newprops = { ...props, value: {} };
+        renderwithRouter(<PersonalDetails {...newprops} />);
+
+        expect(screen.getByRole('heading', { name: /details/i })).toBeInTheDocument();
+        expect(screen.queryByRole('heading', { name: /title and name/i })).not.toBeInTheDocument();
+    });
+
+    it('should show salutation options', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
+
+        const mr_radio_btn = screen.getByRole('radio', { name: /mr/i });
+        const mrs_radio_btn = screen.getByRole('radio', { name: /ms/i });
+        expect(mr_radio_btn).toBeInTheDocument();
+        expect(mrs_radio_btn).toBeInTheDocument();
+        expect(mr_radio_btn.checked).toEqual(false);
+
+        fireEvent.click(mr_radio_btn);
+
+        expect(mr_radio_btn.checked).toEqual(true);
+        expect(mrs_radio_btn.checked).toEqual(false);
+    });
+
+    it('should display the correct field details ', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
+
+        expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
+
+        runCommonFormfieldsTests(props.is_svg);
+    });
+
+    it('should display the correct field details when is_svg is true ', () => {
+        renderwithRouter(<PersonalDetails {...props} />);
+
+        expect(screen.queryByRole('heading', { name: 'Details' })).toBeInTheDocument();
+        expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/last name\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
+
+        runCommonFormfieldsTests(props.is_svg);
+    });
+
+    it('should display the correct field details when is_svg is false ', () => {
+        const mock_store = mockStore({
+            traders_hub: {
+                is_eu_user: true,
+            },
+        });
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />, mock_store);
+
+        expect(screen.getByRole('heading', { name: 'Title and name' })).toBeInTheDocument();
+        expect(screen.queryByRole('heading', { name: 'name' })).not.toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /other details/i })).toBeInTheDocument();
+        expect(screen.getByText(/first name\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/last name\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
+        expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
+        expect(screen.getByLabelText('Phone number*')).toBeInTheDocument();
+
+        runCommonFormfieldsTests(false);
+    });
+
+    it('should not enable fields which are disabled and empty', () => {
+        renderwithRouter(
+            <PersonalDetails
+                {...props}
+                disabled_items={['salutation', 'first_name', 'last_name', 'date_of_birth', 'account_opening_reason']}
+            />
+        );
+        expect(screen.getByRole('radio', { name: /mr/i })).not.toBeDisabled();
+        expect(screen.getByRole('radio', { name: /ms/i })).not.toBeDisabled();
+        expect(screen.getByTestId('first_name')).toBeDisabled();
+        expect(screen.getByTestId('last_name')).toBeDisabled();
+        expect(screen.getByTestId('date_of_birth')).toBeDisabled();
+        expect(screen.getByTestId('place_of_birth')).not.toBeDisabled();
+        expect(screen.getByTestId('citizenship')).toBeEnabled(); // citizenship value is not disabled by BE, so enable the field
+    });
+
+    it('should disable citizen field if the client is_fully_authenticated', () => {
+        const new_props = {
+            ...props,
+            value: {
+                ...props.value,
+                citizen: 'france',
+            },
+        };
+        renderwithRouter(<PersonalDetails {...new_props} is_fully_authenticated={true} />);
+
+        expect(screen.getByTestId('citizenship')).toBeDisabled();
+    });
+
+    it('should display proper data in mobile mode', () => {
+        isMobile.mockReturnValue(true);
+        isDesktop.mockReturnValue(false);
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+
+        expect(screen.getByRole('radio', { name: /mr/i })).toBeInTheDocument();
+        expect(screen.getByRole('radio', { name: /ms/i })).toBeInTheDocument();
+        expect(screen.getByTestId('first_name')).toBeInTheDocument();
+        expect(screen.getByTestId('last_name')).toBeInTheDocument();
+        expect(screen.getByTestId('date_of_birth')).toBeInTheDocument();
+        expect(screen.queryByTestId('place_of_birth_mobile')).toBeInTheDocument();
+        expect(screen.queryByTestId('place_of_birth')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('citizenship_mobile')).toBeInTheDocument();
+        expect(screen.queryByTestId('citizenship')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('phone')).toBeInTheDocument();
+        expect(screen.queryByTestId('tax_residence_mobile')).toBeInTheDocument();
+        expect(screen.queryByTestId('tax_residence')).not.toBeInTheDocument();
+        expect(screen.getByText(/tax identification number/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/tax identification number/i)).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_dropdown_display')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('account_opening_reason_mobile')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /previous/i })).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /next/i })).toBeInTheDocument();
+    });
+
+    it('should select correct dropdown options in mobile mode', () => {
+        isMobile.mockReturnValue(true);
+        isDesktop.mockReturnValue(false);
+
+        renderwithRouter(<PersonalDetails {...props} is_svg={false} />);
+        const place_of_birth_mobile = screen.queryByTestId('place_of_birth_mobile');
+
+        expect(place_of_birth_mobile).toBeInTheDocument();
+
+        fireEvent.change(place_of_birth_mobile, { target: { value: 'Afghanistan' } });
+
+        const { getByText } = within(screen.getAllByTestId('selected_value')[0]);
+        expect(getByText('Afghanistan')).toBeInTheDocument();
+    });
+
     it('should show error for invalid TIN', async () => {
         const newvalidate = {
             errors: {
@@ -540,6 +679,8 @@ describe('<PersonalDetails/>', () => {
             /i confirm that the name and date of birth above match my chosen identity document/i
         );
         expect(checkbox).not.toBeInTheDocument();
+
+        screen.debug();
 
         expect(previous_btn).toBeEnabled();
         expect(next_btn).toBeEnabled();
@@ -704,92 +845,60 @@ describe('<PersonalDetails/>', () => {
         expect(screen.queryByRole('link', { name: 'here' })).not.toBeInTheDocument();
     });
 
+    it('should validate idv values when a document type is selected', async () => {
+        shouldShowIdentityInformation.mockReturnValue(true);
+        const new_props = {
+            ...props,
+            value: {
+                ...props.value,
+                ...idv_document_data,
+            },
+            residence_list: default_residence_details,
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+
+        await waitFor(() => {
+            expect(isDocumentTypeValid).toHaveBeenCalled();
+            expect(isAdditionalDocumentValid).not.toHaveBeenCalled();
+        });
+    });
+
+    it('should validate idv values along with additional document number when a document type is selected', async () => {
+        shouldShowIdentityInformation.mockReturnValue(true);
+
+        const new_document_data = {
+            ...idv_document_data,
+            document_type: { ...idv_document_data.document_type, additional: '12345' },
+        };
+
+        const new_props = {
+            ...props,
+            value: {
+                ...props.value,
+                ...new_document_data,
+            },
+            residence_list: default_residence_details,
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+
+        await waitFor(() => {
+            expect(isAdditionalDocumentValid).toHaveBeenCalled();
+        });
+    });
+
     it('should disable tax_residence field if it is immutable from BE', () => {
         isMobile.mockReturnValue(false);
         isDesktop.mockReturnValue(true);
         const new_props = {
             ...props,
-            is_mf: true,
             value: {
                 ...props.value,
                 tax_residence: 'France',
+                document_type: idv_document_data,
             },
             disabled_items: ['salutation', 'first_name', 'last_name', 'date_of_birth', 'tax_residence'],
         };
         renderwithRouter(<PersonalDetails {...new_props} />);
         expect(screen.getByTestId('tax_residence')).toBeDisabled();
-    });
-
-    it('submit button should be enabled if TIN or tax_residence is optional in case of CR accounts', () => {
-        const new_props = {
-            ...props,
-            is_mf: false,
-            is_svg: true,
-            value: {
-                first_name: '',
-                last_name: '',
-                date_of_birth: '',
-                place_of_birth: '',
-                phone: '+34',
-                tax_residence: '',
-                tax_identification_number: '',
-            },
-        };
-        renderwithRouter(<PersonalDetails {...new_props} />);
-
-        const first_name = screen.getByTestId('first_name');
-        const last_name = screen.getByTestId('last_name');
-        const date_of_birth = screen.getByTestId('date_of_birth');
-        const phone = screen.getByTestId('phone');
-
-        userEvent.type(first_name, 'test firstname');
-        userEvent.type(last_name, 'test lastname');
-        userEvent.type(date_of_birth, '2000-12-12');
-        userEvent.type(phone, '+49123456789012');
-        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled();
-    });
-
-    it('should not display confirmation checkbox if opt-out of IDV', async () => {
-        splitValidationResultTypes.mockReturnValue({ warnings: {}, errors: {} });
-        const new_props = {
-            ...props,
-            value: {
-                first_name: '',
-                last_name: '',
-                date_of_birth: '',
-                phone: '+93',
-                account_opening_reason: '',
-                place_of_birth: '',
-                document_type: 'none',
-            },
-        };
-
-        renderwithRouter(<PersonalDetails {...new_props} />);
-
-        const first_name = screen.getByTestId('first_name');
-        const last_name = screen.getByTestId('last_name');
-        const date_of_birth = screen.getByTestId('date_of_birth');
-        const phone = screen.getByTestId('phone');
-
-        userEvent.type(first_name, 'test firstname');
-        userEvent.type(last_name, 'test lastname');
-        userEvent.type(date_of_birth, '2000-12-12');
-        userEvent.type(phone, '+49123456789012');
-
-        const previous_btn = screen.getByRole('button', { name: /previous/i });
-        const next_btn = screen.getByRole('button', { name: /next/i });
-
-        const confirmation_checkbox = screen.queryByLabelText(
-            /i confirm that the name and date of birth above match my chosen identity document/i
-        );
-        expect(confirmation_checkbox).not.toBeInTheDocument();
-
-        expect(previous_btn).toBeEnabled();
-        expect(next_btn).toBeEnabled();
-        userEvent.click(next_btn);
-
-        await waitFor(() => {
-            expect(new_props.onSubmit).toBeCalled();
-        });
     });
 });

@@ -1,14 +1,29 @@
 .wallets-gradient {
     position: relative;
 
+    &__content {
+        position: relative;
+    }
+
     &__shine {
         position: absolute;
         inset: 0;
         clip-path: polygon(40% 10%, 104% -6.94%, 92.5% 100%, 28% 100%);
         mix-blend-mode: overlay;
         opacity: 0.16;
-        border-top-right-radius: 8px;
+        border-top-right-radius: 0.8rem;
         background-color: #fff;
+    }
+
+    &__palette {
+        &--grey {
+            background: radial-gradient(
+                    100% 277.78% at 0% 100%,
+                    rgba(153, 153, 153, 0.08) 0%,
+                    rgba(153, 153, 153, 0.32) 100%
+                )
+                #ffffff;
+        }
     }
 
     &--USD {
@@ -20,7 +35,7 @@
                         rgba(244, 67, 54, 0.24) 0%,
                         rgba(40, 57, 145, 0.48) 100%
                     );
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -29,7 +44,7 @@
                             rgba(40, 57, 145, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
             &-header {
@@ -62,7 +77,7 @@
                             rgba(40, 57, 145, 0.56) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -72,7 +87,7 @@
                             rgba(40, 57, 145, 0.56) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
             &-header {
@@ -105,7 +120,7 @@
                             rgba(255, 205, 0, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -114,7 +129,7 @@
                             rgba(255, 205, 0, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -149,7 +164,7 @@
                             rgba(255, 205, 0, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -158,7 +173,7 @@
                             rgba(255, 205, 0, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -194,7 +209,7 @@
                             rgba(248, 209, 46, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -203,7 +218,7 @@
                             rgba(248, 209, 46, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -238,7 +253,7 @@
                             rgba(248, 209, 46, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -247,7 +262,7 @@
                             rgba(248, 209, 46, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -284,7 +299,7 @@
                             rgba(244, 67, 54, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -294,7 +309,7 @@
                             rgba(244, 67, 54, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -329,7 +344,7 @@
                             rgba(244, 67, 54, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -339,7 +354,7 @@
                             rgba(244, 67, 54, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -375,7 +390,7 @@
                             rgba(247, 199, 27, 0.477) 99.99%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -385,7 +400,7 @@
                             rgba(255, 100, 68, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -420,7 +435,7 @@
                             rgba(247, 199, 27, 0.477) 99.99%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -430,7 +445,7 @@
                             rgba(255, 100, 68, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -466,7 +481,7 @@
                             rgba(130, 140, 173, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -475,7 +490,7 @@
                             rgba(130, 140, 173, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -510,7 +525,7 @@
                             rgba(130, 140, 173, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -519,7 +534,7 @@
                             rgba(130, 140, 173, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -553,7 +568,7 @@
                             rgba(193, 204, 207, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -563,7 +578,7 @@
                             rgba(193, 204, 207, 0.4) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -598,7 +613,7 @@
                             rgba(193, 204, 207, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -607,7 +622,7 @@
                             rgba(193, 204, 207, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -643,7 +658,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -652,7 +667,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -687,7 +702,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -696,7 +711,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -732,7 +747,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -741,7 +756,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -796,7 +811,7 @@
                             rgba(4, 217, 217, 0.4) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -806,7 +821,7 @@
                             rgba(4, 217, 217, 0.4) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
         }
@@ -821,7 +836,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -830,7 +845,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -865,7 +880,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -874,7 +889,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -910,7 +925,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -919,7 +934,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -954,7 +969,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -963,7 +978,7 @@
                             rgba(0, 147, 147, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -999,7 +1014,7 @@
                             rgba(34, 76, 225, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -1008,7 +1023,7 @@
                             rgba(34, 76, 225, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -1043,7 +1058,7 @@
                             rgba(34, 76, 225, 0.48) 100%
                         )
                         #ffffff;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -1052,7 +1067,7 @@
                             rgba(34, 76, 225, 0.48) 100%
                         )
                         #151717;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -1088,7 +1103,7 @@
                             rgba(255, 68, 79, 0.48) 100%
                         )
                         #212329;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -1097,7 +1112,7 @@
                             rgba(255, 68, 79, 0.48) 100%
                         )
                         #fbdddd;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -1131,21 +1146,7 @@
                             rgba(255, 68, 79, 0.68) 100%
                         )
                         #212329;
-                    border-radius: 8px;
-                    &:before {
-                        content: '';
-                        display: block;
-                        position: absolute;
-                        left: 0;
-                        top: 0;
-                        width: 100%;
-                        height: 100%;
-                        background-image: url('../../public//images/wallet-demo-bg-light.svg');
-                        background-repeat: repeat;
-                        background-size: 70px;
-                        mix-blend-mode: overlay;
-                        opacity: 0.24;
-                    }
+                    border-radius: 0.8rem;
                 }
                 &-dark {
                     background: radial-gradient(
@@ -1154,7 +1155,7 @@
                             rgba(255, 68, 79, 0.48) 100%
                         )
                         #fbdddd;
-                    border-radius: 8px;
+                    border-radius: 0.8rem;
                 }
             }
 
@@ -1177,6 +1178,23 @@
                         )
                         #fbdddd;
                 }
+            }
+        }
+        &-desktop-header-light,
+        &-mobile-header-light,
+        &-mobile-card-light {
+            &:before {
+                content: '';
+                display: block;
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                background-image: url('../../public/images/wallet-demo-bg-light.svg');
+                background-repeat: repeat;
+                background-size: 7rem;
+                mix-blend-mode: overlay;
+                opacity: 0.24;
             }
         }
     }

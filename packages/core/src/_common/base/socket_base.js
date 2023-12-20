@@ -8,7 +8,6 @@ const { getLanguage } = require('@deriv/translations');
 const website_name = require('@deriv/shared').website_name;
 const SocketCache = require('./socket_cache');
 const APIMiddleware = require('./api_middleware');
-const { CFD_PLATFORMS } = require('@deriv/shared');
 
 /*
  * An abstraction layer over native javascript WebSocket,
@@ -364,8 +363,6 @@ const BinarySocketBase = (() => {
     const p2pSubscribe = (request, cb) => subscribe(request, cb);
     const accountStatistics = () => deriv_api.send({ account_statistics: 1 });
 
-    const realityCheck = () => deriv_api.send({ reality_check: 1 });
-
     const tradingServers = platform => deriv_api.send({ platform, trading_servers: 1 });
 
     const tradingPlatformAccountsList = platform =>
@@ -393,8 +390,7 @@ const BinarySocketBase = (() => {
         });
 
     const getServiceToken = (platform, server) => {
-        let temp_service = platform;
-        if (platform === CFD_PLATFORMS.DERIVEZ) temp_service = 'pandats';
+        const temp_service = platform;
 
         return deriv_api.send({
             service_token: 1,
@@ -485,7 +481,6 @@ const BinarySocketBase = (() => {
         fetchLoginHistory,
         closeAndOpenNewConnection,
         accountStatistics,
-        realityCheck,
         tradingServers,
         tradingPlatformAccountsList,
         tradingPlatformNewAccount,

@@ -3,13 +3,14 @@ import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
 import {
+    POIProvider,
     initFormErrorMessages,
     setSharedCFDText,
     setUrlLanguage,
     setWebsocket,
     useOnLoadTranslation,
 } from '@deriv/shared';
-import { StoreProvider } from '@deriv/stores';
+import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
@@ -19,9 +20,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
 import AppContent from './AppContent';
-// TODO: Lazy load smartchart styles
-import '@deriv/deriv-charts/dist/smartcharts.css';
 import 'Sass/app.scss';
+import { Analytics } from '@deriv/analytics';
+import initHotjar from '../Utils/Hotjar';
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
@@ -42,14 +43,30 @@ const AppWithoutTranslation = ({ root_store }) => {
     React.useEffect(initCFDStore, []);
 
     React.useEffect(() => {
+        const loadSmartchartsStyles = () => {
+            import('@deriv/deriv-charts/dist/smartcharts.css');
+        };
+
         initializeTranslations();
+        if (process.env.RUDDERSTACK_KEY) {
+            Analytics.initialise({
+                growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,
+                growthbookDecryptionKey: process.env.GROWTHBOOK_DECRYPTION_KEY,
+                rudderstackKey: process.env.RUDDERSTACK_KEY,
+            });
+        }
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedCFDText(CFD_TEXT);
         root_store.common.setPlatform();
+        loadSmartchartsStyles();
         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    React.useEffect(() => {
+        initHotjar(root_store.client);
     }, []);
 
     const platform_passthrough = {
@@ -59,15 +76,25 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     setWebsocket(WS);
 
+    React.useEffect(() => {
+        if (!root_store.client.email) {
+            Analytics.reset();
+        }
+    }, [root_store.client.email]);
+
     return (
         <>
             {is_translation_loaded ? (
                 <Router basename={has_base ? `/${base}` : null}>
                     <MobxContentProvider store={root_store}>
                         <APIProvider>
-                            <StoreProvider store={root_store}>
-                                <AppContent passthrough={platform_passthrough} />
-                            </StoreProvider>
+                            <POIProvider>
+                                <StoreProvider store={root_store}>
+                                    <ExchangeRatesProvider>
+                                        <AppContent passthrough={platform_passthrough} />
+                                    </ExchangeRatesProvider>
+                                </StoreProvider>
+                            </POIProvider>
                         </APIProvider>
                     </MobxContentProvider>
                 </Router>

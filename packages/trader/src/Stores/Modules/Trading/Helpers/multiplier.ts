@@ -3,7 +3,7 @@ import { TTradeStore } from 'Types';
 type TData = Partial<
     Pick<
         TTradeStore,
-        'cancellation_duration' | 'cancellation_price' | 'has_cancellation' | 'has_stop_loss' | 'has_take_profit'
+        'cancellation_duration' | 'has_cancellation' | 'has_stop_loss' | 'has_take_profit' | 'stop_loss' | 'take_profit'
     >
 >;
 
@@ -13,7 +13,7 @@ type TOnToggleCancellation = {
 };
 
 type TOnChangeCancellationDuration = {
-    event: React.ChangeEvent<HTMLInputElement>;
+    event: { target: { name: string; value: string } };
     onChangeMultiple: (data: TData) => void;
 };
 

@@ -1,9 +1,10 @@
-import { FormikValues } from 'formik';
 import React from 'react';
+import { FormikValues } from 'formik';
 import { isDesktop, isMobile } from '@deriv/shared';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FinancialDetails from '../financial-details';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -25,6 +26,7 @@ describe('<FinancialDetails />', () => {
         validate: jest.fn(() => ({ errors: {} })),
         goToPreviousStep: jest.fn(() => ({ errors: {} })),
         value: {},
+        employment_status: '',
     };
 
     const fieldsRenderCheck = () => {
@@ -38,12 +40,22 @@ describe('<FinancialDetails />', () => {
         expect(screen.getByText('Source of wealth')).toBeInTheDocument();
     };
 
+    const mock_store = mockStore({});
+
+    const renderComponent = () => {
+        render(
+            <StoreProvider store={mock_store}>
+                <FinancialDetails {...mock_props} />
+            </StoreProvider>
+        );
+    };
+
     it('should render "FinancialDetails" for desktop', () => {
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent();
 
         fieldsRenderCheck();
 
-        const inputs = screen.getAllByTestId('dti_dropdown_display');
+        const inputs = screen.getAllByTestId('dt_dropdown_display');
         expect(inputs).toHaveLength(8);
 
         expect(screen.getByText('Next')).toBeInTheDocument();
@@ -54,7 +66,7 @@ describe('<FinancialDetails />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent();
 
         fieldsRenderCheck();
 
@@ -66,14 +78,14 @@ describe('<FinancialDetails />', () => {
     });
 
     it('should trigger "Previous" button', () => {
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent();
 
         fieldsRenderCheck();
 
         const btns = screen.getAllByRole('button');
         expect(btns[0]).toHaveTextContent('Previous');
 
-        fireEvent.click(btns[0]);
+        userEvent.click(btns[0]);
         expect(mock_props.getCurrentStep).toHaveBeenCalledTimes(1);
     });
 
@@ -81,7 +93,7 @@ describe('<FinancialDetails />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent();
 
         fieldsRenderCheck();
 
@@ -103,21 +115,21 @@ describe('<FinancialDetails />', () => {
             (option: FormikValues) => option.name === 'source_of_wealth'
         );
 
-        fireEvent.change(account_turnover_select as HTMLElement, { target: { value: 'account turnover 1' } });
+        userEvent.type(account_turnover_select as HTMLElement, 'account turnover 1');
 
-        fireEvent.change(education_level_select as HTMLElement, { target: { value: 'education level 2' } });
-        fireEvent.change(employment_indystry_select as HTMLElement, { target: { value: 'employment industry 1' } });
-        fireEvent.change(estimated_worth_select as HTMLElement, { target: { value: 'estimated worth 2' } });
-        fireEvent.change(income_source_select as HTMLElement, { target: { value: 'income source 1' } });
-        fireEvent.change(net_income_select as HTMLElement, { target: { value: 'net income 1' } });
-        fireEvent.change(occuppation_select as HTMLElement, { target: { value: 'occupation 2' } });
+        userEvent.type(education_level_select as HTMLElement, 'education level 2');
+        userEvent.type(employment_indystry_select as HTMLElement, 'employment industry 1');
+        userEvent.type(estimated_worth_select as HTMLElement, 'estimated worth 2');
+        userEvent.type(income_source_select as HTMLElement, 'income source 1');
+        userEvent.type(net_income_select as HTMLElement, 'net income 1');
+        userEvent.type(occuppation_select as HTMLElement, 'Government Officers');
 
-        fireEvent.change(source_of_wealth_select as HTMLElement, { target: { value: 'source of wealth 1' } });
+        userEvent.type(source_of_wealth_select as HTMLElement, 'source of wealth 1');
 
         const btns = screen.getAllByRole('button');
         expect(btns[1]).toHaveTextContent('Next');
 
-        fireEvent.click(btns[1]);
+        userEvent.click(btns[1]);
         await waitFor(() => {
             expect(mock_props.onSubmit).toHaveBeenCalledTimes(1);
         });
@@ -127,7 +139,7 @@ describe('<FinancialDetails />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        render(<FinancialDetails {...mock_props} />);
+        renderComponent();
 
         const select_inputs = screen.getAllByRole('combobox');
 
@@ -136,5 +148,53 @@ describe('<FinancialDetails />', () => {
         userEvent.selectOptions(income_source_select as HTMLElement, 'Salaried Employee');
 
         expect(screen.getByRole('option', { name: 'Salaried Employee' }).selected).toBe(true);
+    });
+
+    it('should show "Unemployed" in occupation list if employment status is not "Employed"', async () => {
+        (isDesktop as jest.Mock).mockReturnValue(false);
+        (isMobile as jest.Mock).mockReturnValue(true);
+        renderComponent();
+
+        fieldsRenderCheck();
+
+        const select_inputs = screen.getAllByRole('combobox');
+
+        const account_turnover_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'account_turnover'
+        );
+        const education_level_select = select_inputs.find((option: FormikValues) => option.name === 'education_level');
+        const employment_indystry_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'employment_industry'
+        );
+        const estimated_worth_select = select_inputs.find((option: FormikValues) => option.name === 'estimated_worth');
+        const income_source_select = select_inputs.find((option: FormikValues) => option.name === 'income_source');
+        const net_income_select = select_inputs.find((option: FormikValues) => option.name === 'net_income');
+
+        const source_of_wealth_select = select_inputs.find(
+            (option: FormikValues) => option.name === 'source_of_wealth'
+        );
+        const occuppation_select = select_inputs.find((option: FormikValues) => option.name === 'occupation');
+
+        userEvent.type(account_turnover_select as HTMLElement, 'account turnover 1');
+
+        userEvent.type(education_level_select as HTMLElement, 'education level 2');
+        userEvent.type(employment_indystry_select as HTMLElement, 'employment industry 1');
+        userEvent.type(estimated_worth_select as HTMLElement, 'estimated worth 2');
+        userEvent.type(income_source_select as HTMLElement, 'income source 1');
+        userEvent.type(net_income_select as HTMLElement, 'net income 1');
+        userEvent.type(source_of_wealth_select as HTMLElement, 'source of wealth 1');
+
+        const occupation_text = screen.getAllByText('Unemployed')[0];
+        expect(occupation_text).toBeInTheDocument();
+
+        userEvent.type(occuppation_select as HTMLElement, 'Unemployed');
+
+        const next_btn = screen.getByRole('button', { name: 'Next' });
+        expect(next_btn).toBeEnabled();
+
+        userEvent.click(next_btn);
+        await waitFor(() => {
+            expect(mock_props.onSubmit).toHaveBeenCalled();
+        });
     });
 });

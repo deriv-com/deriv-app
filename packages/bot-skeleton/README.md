@@ -67,7 +67,7 @@ bot bot-example.js
 **Use only if you know what you're doing**
 
 ```
-ENDPOINT='wss://ws.binaryws.com/websockets/v3?l=en&app_id=1169' bot bot-example.js
+ENDPOINT='wss://ws.derivws.com/websockets/v3?l=en&app_id=1169' bot bot-example.js
 ```
 
 ### CLI examples

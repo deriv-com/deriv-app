@@ -84,7 +84,7 @@ const MT5MigrationFrontSideContent = observer(() => {
             <div className='mt5-migration-modal__message'>
                 <Text as='p' size={content_size} align='center'>
                     <Localize
-                        i18n_default_text='By clicking on "<0>Next</0>" you agree to move your SVG MT5 account(s) under Deriv (V) Ltd’s <1>terms and conditions</1>.'
+                        i18n_default_text='By clicking on <0>"Next"</0> you agree to move your SVG {{platform}} account(s) under Deriv {{account_to_migrate}} Ltd’s <1>terms and conditions</1>.'
                         components={[
                             <strong key={0} />,
                             <StaticUrl
@@ -93,6 +93,10 @@ const MT5MigrationFrontSideContent = observer(() => {
                                 href={DBVI_COMPANY_NAMES[getEligibleAccountToMigrate()].tnc_url}
                             />,
                         ]}
+                        values={{
+                            platform: CFD_PLATFORMS.MT5.toUpperCase(),
+                            account_to_migrate: eligible_account_to_migrate_label,
+                        }}
                     />
                 </Text>
             </div>

@@ -61,9 +61,7 @@ describe('MT5MigrationFrontSideContent', () => {
         elements.forEach(element => {
             expect(element).toBeInTheDocument();
         });
-        expect(
-            screen.getByText(/you agree to move your SVG MT5 account\(s\) under Deriv \(V\) Ltd/)
-        ).toBeInTheDocument();
+        expect(screen.getByText(/you agree to move your SVG MT5 account\(s\) under Deriv bvi Ltd/)).toBeInTheDocument();
     });
 
     it('should render svg to bvi derived Icons', () => {

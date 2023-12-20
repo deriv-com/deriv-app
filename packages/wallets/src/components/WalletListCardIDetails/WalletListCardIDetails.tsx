@@ -7,7 +7,6 @@ import './WalletListCardIDetails.scss';
 
 type TProps = {
     badge?: THooks.WalletAccountsList['landing_company_name'];
-    currency: THooks.WalletAccountsList['wallet_currency_type'];
     isActive: THooks.WalletAccountsList['is_active'];
     isDemo: THooks.WalletAccountsList['is_virtual'];
     loginid: THooks.WalletAccountsList['loginid'];

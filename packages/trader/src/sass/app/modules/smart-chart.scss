@@ -240,6 +240,7 @@
 }
 
 .ciq-chart > .cq-inchart-subholder {
+    z-index: 1;
     .chart-marker-line {
         &__icon {
             position: absolute;

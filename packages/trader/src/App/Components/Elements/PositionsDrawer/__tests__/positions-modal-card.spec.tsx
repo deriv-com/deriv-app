@@ -11,18 +11,20 @@ import TraderProviders from '../../../../../trader-providers';
 const default_mock_props: React.ComponentProps<typeof PositionsModalCard> = {
     className: 'test_className',
     contract_info: mockContractInfo({
-        contract_type: TRADE_TYPES.VANILLA.CALL,
-        underlying: '',
-        contract_id: 123386875,
-        currency: 'USD',
-        buy_price: 2671,
-        bid_price: 2517,
-        entry_spot: 2666.0,
         barrier: '2650.0',
-        is_sold: 0,
+        bid_price: 7,
+        buy_price: 10,
+        contract_id: 123386875,
+        contract_type: TRADE_TYPES.VANILLA.CALL,
+        currency: 'USD',
         date_start: 123532989,
         date_expiry: 626512765,
+        entry_spot: 2666.0,
+        entry_spot_display_value: '2666.0',
+        is_sold: 0,
+        profit: 3,
         tick_count: 15,
+        underlying: '',
     }),
     contract_update: {},
     currency: 'USD',
@@ -33,7 +35,7 @@ const default_mock_props: React.ComponentProps<typeof PositionsModalCard> = {
     is_sell_requested: false,
     is_unsupported: true,
     onClickSell: jest.fn(),
-    profit_loss: 35.6786,
+    profit_loss: 3,
     onClickCancel: jest.fn(),
     togglePositions: jest.fn(),
     toggleUnsupportedContractModal: jest.fn(),
@@ -119,16 +121,16 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
         expect(screen.getByText('CurrencyBadge')).toBeInTheDocument();
         expect(screen.getByText(/Buy price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,671.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/10.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Contract value:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,517.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/7.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Entry spot:/i)).toBeInTheDocument();
         expect(screen.getByText(/2,666/i)).toBeInTheDocument();
         expect(screen.getByText(/Strike:/i)).toBeInTheDocument();
         expect(screen.getByText(/2,650.0/i)).toBeInTheDocument();
         expect(screen.getByText('ProgressSliderMobile')).toBeInTheDocument();
         expect(screen.getByText(/Total profit\/loss:/i)).toBeInTheDocument();
-        expect(screen.getByText(/35.68/i)).toBeInTheDocument();
+        expect(screen.getByText(/3.00/i)).toBeInTheDocument();
     });
     it('should render a specific closed contract card for Vanillas', () => {
         render(
@@ -136,13 +138,13 @@ describe('<PositionsModalCard />', () => {
                 ...default_mock_props,
                 contract_info: {
                     ...default_mock_props.contract_info,
-                    bid_price: 2670,
-                    buy_price: 2660,
-                    profit: 5,
+                    bid_price: 7,
+                    buy_price: 10,
                     is_sold: 1,
+                    profit: 5,
+                    sell_price: 8,
                     underlying,
                 },
-                profit_loss: 5,
             })
         );
 
@@ -150,9 +152,9 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
         expect(screen.getByText('CurrencyBadge')).toBeInTheDocument();
         expect(screen.getByText(/Buy price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,660.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/10.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Contract value:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,670.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/8.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Entry spot:/i)).toBeInTheDocument();
         expect(screen.getByText(/2,666/i)).toBeInTheDocument();
         expect(screen.getByText(/Strike:/i)).toBeInTheDocument();
@@ -178,12 +180,12 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText('Long')).toBeInTheDocument();
         expect(screen.getByText(/USD/i)).toBeInTheDocument();
         expect(screen.getByText(/Buy price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,671.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/10.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Contract value:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,517.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/7.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Entry spot:/i)).toBeInTheDocument();
         expect(screen.getByText(/Take profit:/i)).toBeInTheDocument();
-        expect(screen.getByText('0')).toBeInTheDocument();
+        expect(screen.getByText('-')).toBeInTheDocument();
         expect(screen.getByText(/Barrier:/i)).toBeInTheDocument();
         expect(screen.getByText(/2,650.0/i)).toBeInTheDocument();
     });
@@ -204,9 +206,9 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/USD/i)).toBeInTheDocument();
         expect(screen.getByText(/Potential profit\/loss:/i)).toBeInTheDocument();
         expect(screen.getByText(/Indicative price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,517.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/7.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Buy price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,671.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/10.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Payout limit:/i)).toBeInTheDocument();
     });
     it('should render the same contract card for Touch/No Touch as for Rise/Fall', () => {
@@ -226,9 +228,9 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/USD/i)).toBeInTheDocument();
         expect(screen.getByText(/Potential profit\/loss:/i)).toBeInTheDocument();
         expect(screen.getByText(/Indicative price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,517.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/7.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Buy price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,671.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/10.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Payout limit:/i)).toBeInTheDocument();
     });
     it('should render the contract card for Multipliers', () => {
@@ -248,7 +250,7 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/USD/i)).toBeInTheDocument();
         expect(screen.getByText('Stake:')).toBeInTheDocument();
         expect(screen.getByText(/Current stake:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,517.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/7.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Deal cancel. fee:/i)).toBeInTheDocument();
         expect(screen.getByText(/Buy price:/i)).toBeInTheDocument();
         expect(screen.getByText(/Take profit:/i)).toBeInTheDocument();

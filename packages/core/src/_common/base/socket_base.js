@@ -8,7 +8,7 @@ const { getLanguage } = require('@deriv/translations');
 const website_name = require('@deriv/shared').website_name;
 const SocketCache = require('./socket_cache');
 const APIMiddleware = require('./api_middleware');
-const { getActiveAuthTokenIDFromLocalStorage } = require('@deriv/utils');
+// const { getActiveAuthTokenIDFromLocalStorage } = require('@deriv/utils');
 
 /*
  * An abstraction layer over native javascript WebSocket,
@@ -96,8 +96,8 @@ const BinarySocketBase = (() => {
 
             // TODO: we need to refactor this to use the new approach
             if (client_store.is_logged_in) {
-                // const authorize_token = client_store.getToken();
-                const authorize_token = getActiveAuthTokenIDFromLocalStorage();
+                const authorize_token = client_store.getToken();
+                // const authorize_token = getActiveAuthTokenIDFromLocalStorage();
                 deriv_api.authorize(authorize_token);
             }
 
@@ -181,6 +181,9 @@ const BinarySocketBase = (() => {
     const subscribeTransaction = cb => subscribe({ transaction: 1 }, cb);
 
     const subscribeWebsiteStatus = cb => subscribe({ website_status: 1 }, cb);
+    const pureAuthorize = token => {
+        return deriv_api.authorize(token);
+    };
 
     const buyAndSubscribe = request => {
         return new Promise(resolve => {
@@ -490,6 +493,7 @@ const BinarySocketBase = (() => {
         triggerMt5DryRun,
         getServiceToken,
         changeEmail,
+        pureAuthorize,
     };
 })();
 
@@ -527,25 +531,6 @@ const proxyForAuthorize = obj =>
             return (...args) => BinarySocketBase?.wait('authorize').then(() => target[field](...args));
         },
     });
-
-// const proxyForAuthorize = obj =>
-// new Proxy(obj, {
-//     get(target, field) {
-//         if (target[field] && typeof target[field] !== 'function') {
-//             return proxyForAuthorize(target[field]);
-//         }
-//         return (...args) =>
-//             BinarySocketBase?.wait('authorize').then(() => {
-//                 if (window.ReactQueryClient.getQueryData(getQueryKeys(field, ...args))) {
-//                     return Promise.resolve(window.ReactQueryClient.getQueryData(getQueryKeys(field, ...args)));
-//                 }
-//                 return target[field](...args).then(response => {
-//                     window.ReactQueryClient.setQueryData(getQueryKeys(field, ...args), response);
-//                     return Promise.resolve(response);
-//                 });
-//             });
-//     },
-// });
 
 BinarySocketBase.authorized = proxyForAuthorize(proxied_socket_base);
 

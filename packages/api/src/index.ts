@@ -7,6 +7,8 @@ export * from './hooks';
 export { default as useInvalidateQuery } from './useInvalidateQuery';
 export { default as usePaginatedFetch } from './usePaginatedFetch';
 export { default as useSubscription } from './useSubscription';
+export { default as AuthProvider } from './AuthProvider';
+export * from './AuthProvider';
 
 export {
     useInfiniteQuery,

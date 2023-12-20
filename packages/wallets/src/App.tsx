@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api';
 import { ModalProvider } from './components/ModalProvider';
 import AppContent from './AppContent';
 import './styles/fonts.scss';
@@ -8,9 +8,11 @@ import './translations/i18n';
 
 const App: React.FC = () => (
     <APIProvider>
-        <ModalProvider>
-            <AppContent />
-        </ModalProvider>
+        <AuthProvider>
+            <ModalProvider>
+                <AppContent />
+            </ModalProvider>
+        </AuthProvider>
     </APIProvider>
 );
 

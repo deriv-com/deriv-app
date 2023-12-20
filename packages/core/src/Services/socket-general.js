@@ -94,9 +94,9 @@ const BinarySocketGeneral = (() => {
                 break;
             case 'get_settings':
                 if (response.get_settings) {
-                    setResidence(response.get_settings.country_code);
-                    client_store.setEmail(response.get_settings.email);
-                    client_store.setAccountSettings(response.get_settings);
+                    // setResidence(response.get_settings.country_code);
+                    // client_store.setEmail(response.get_settings.email);
+                    // client_store.setAccountSettings(response.get_settings);
                     gtm_store.eventHandler(response.get_settings);
                 }
                 break;
@@ -116,12 +116,12 @@ const BinarySocketGeneral = (() => {
         }
     };
 
-    const setResidence = residence => {
-        if (residence) {
-            client_store.setResidence(residence);
-            WS.landingCompany(residence).then(client_store.responseLandingCompany);
-        }
-    };
+    // const setResidence = residence => {
+    //     if (residence) {
+    //         client_store.setResidence(residence);
+    //         WS.landingCompany(residence).then(client_store.responseLandingCompany);
+    //     }
+    // };
 
     const setSessionDurationLimit = user_limits => {
         const duration = user_limits?.get_self_exclusion?.session_duration_limit;
@@ -272,7 +272,7 @@ const BinarySocketGeneral = (() => {
     };
 
     const authorizeAccount = response => {
-        client_store.responseAuthorize(response);
+        // client_store.responseAuthorize(response);
         subscribeBalances();
         WS.storage.getSettings();
         WS.getAccountStatus();

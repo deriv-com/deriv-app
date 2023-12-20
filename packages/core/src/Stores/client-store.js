@@ -5,7 +5,6 @@ import moment from 'moment';
 import {
     CFD_PLATFORMS,
     deriv_urls,
-    excludeParamsFromUrlQuery,
     filterUrlQuery,
     getPropertyValue,
     getUrlBinaryBot,
@@ -13,10 +12,6 @@ import {
     isCryptocurrency,
     isDesktopOs,
     isEmptyObject,
-    isLocal,
-    isProduction,
-    isStaging,
-    isTestLink,
     LocalStore,
     redirectToLogin,
     removeCookies,
@@ -25,7 +20,6 @@ import {
     setCurrencies,
     State,
     toMoment,
-    urlForLanguage,
     getAppId,
 } from '@deriv/shared';
 import { Analytics } from '@deriv/analytics';
@@ -51,10 +45,13 @@ const eu_excluded_regex = new RegExp('^mt$');
 
 export default class ClientStore extends BaseStore {
     loginid;
+    is_authorize = false;
+    is_logging_in = false;
+    has_logged_out = false;
+    accounts = {};
     preferred_language;
     upgrade_info;
     email;
-    accounts = {};
     trading_platform_available_accounts = [];
     pre_switch_broadcast = false;
     switched = '';
@@ -73,9 +70,7 @@ export default class ClientStore extends BaseStore {
     account_settings = {};
     account_status = {};
     device_data = {};
-    is_authorize = false;
-    is_logging_in = false;
-    has_logged_out = false;
+
     is_landing_company_loaded = false;
     is_account_setting_loaded = false;
     has_enabled_two_fa = false;
@@ -309,7 +304,7 @@ export default class ClientStore extends BaseStore {
             setCFDScore: action.bound,
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
-            responseAuthorize: action.bound,
+            // responseAuthorize: action.bound,
             setWebsiteStatus: action.bound,
             accountRealReaction: action.bound,
             setLoginInformation: action.bound,
@@ -341,7 +336,7 @@ export default class ClientStore extends BaseStore {
             setBalanceActiveAccount: action.bound,
             setBalanceOtherAccounts: action.bound,
             selectCurrency: action.bound,
-            setResidence: action.bound,
+            // setResidence: action.bound,
             setEmail: action.bound,
             setAccountSettings: action.bound,
             setAccountStatus: action.bound,
@@ -394,6 +389,13 @@ export default class ClientStore extends BaseStore {
         });
 
         reaction(
+            () => [this.loginid, this.accounts],
+            () => {
+                this.setCookieAccount();
+            }
+        );
+
+        reaction(
             () => [
                 this.is_logged_in,
                 this.loginid,
@@ -408,7 +410,6 @@ export default class ClientStore extends BaseStore {
                 this.setCookieAccount();
             }
         );
-
         reaction(
             () => [this.account_settings],
             () => {
@@ -644,6 +645,7 @@ export default class ClientStore extends BaseStore {
         if (this.selected_currency.length) {
             return this.selected_currency;
         } else if (this.is_logged_in) {
+            console.log('michio: this.accounts: ', this.accounts, this.loginid);
             return this.accounts[this.loginid].currency;
         }
 
@@ -788,6 +790,14 @@ export default class ClientStore extends BaseStore {
     }
 
     get is_logged_in() {
+        // return this.loginid !== undefined;
+        const mmd = !!(
+            !isEmptyObject(this.accounts) &&
+            Object.keys(this.accounts).length > 0 &&
+            this.loginid &&
+            this.accounts[this.loginid].token
+        );
+        console.log('michio: is_logged_in: ', mmd, toJS(this.accounts), toJS(this.loginid));
         return !!(
             !isEmptyObject(this.accounts) &&
             Object.keys(this.accounts).length > 0 &&
@@ -1049,7 +1059,7 @@ export default class ClientStore extends BaseStore {
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
         this.syncWithLegacyPlatforms(loginid, toJS(this.accounts));
-        this.loginid = loginid;
+        // this.loginid = loginid;
     }
 
     setIsAuthorize(value) {
@@ -1200,34 +1210,34 @@ export default class ClientStore extends BaseStore {
         this.selectCurrency('');
     }
 
-    responseAuthorize(response) {
-        this.accounts[this.loginid].email = response.authorize.email;
-        this.accounts[this.loginid].currency = response.authorize.currency;
-        this.accounts[this.loginid].is_virtual = +response.authorize.is_virtual;
-        this.accounts[this.loginid].session_start = parseInt(moment().utc().valueOf() / 1000);
-        this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
-        this.accounts[this.loginid].country = response.country;
-        this.updateAccountList(response.authorize.account_list);
-        this.upgrade_info = this.getBasicUpgradeInfo();
-        this.user_id = response.authorize.user_id;
-        localStorage.setItem('active_user_id', this.user_id);
-        this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
-        this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
+    // responseAuthorize(response) {
+    //     this.accounts[this.loginid].email = response.authorize.email;
+    //     this.accounts[this.loginid].currency = response.authorize.currency;
+    //     this.accounts[this.loginid].is_virtual = +response.authorize.is_virtual;
+    //     this.accounts[this.loginid].session_start = parseInt(moment().utc().valueOf() / 1000);
+    //     this.accounts[this.loginid].landing_company_shortcode = response.authorize.landing_company_name;
+    //     this.accounts[this.loginid].country = response.country;
+    //     this.updateAccountList(response.authorize.account_list);
+    //     this.upgrade_info = this.getBasicUpgradeInfo();
+    //     this.user_id = response.authorize.user_id;
+    //     localStorage.setItem('active_user_id', this.user_id);
+    //     this.upgradeable_landing_companies = [...new Set(response.authorize.upgradeable_landing_companies)];
+    //     this.local_currency_config.currency = Object.keys(response.authorize.local_currencies)[0];
 
-        // delete all notifications key when set new account except notifications for this account
-        // need this because when the user switchs accounts we don't use logout
-        const notification_messages = LocalStore.getObject('notification_messages');
-        const messages = notification_messages[this.loginid] ?? [];
-        LocalStore.setObject('notification_messages', {
-            [this.loginid]: messages,
-        });
+    //     // delete all notifications key when set new account except notifications for this account
+    //     // need this because when the user switchs accounts we don't use logout
+    //     const notification_messages = LocalStore.getObject('notification_messages');
+    //     const messages = notification_messages[this.loginid] ?? [];
+    //     LocalStore.setObject('notification_messages', {
+    //         [this.loginid]: messages,
+    //     });
 
-        // For residences without local currency (e.g. ax)
-        const default_fractional_digits = 2;
-        this.local_currency_config.decimal_places = isEmptyObject(response.authorize.local_currencies)
-            ? default_fractional_digits
-            : +response.authorize.local_currencies[this.local_currency_config.currency].fractional_digits;
-    }
+    //     // For residences without local currency (e.g. ax)
+    //     const default_fractional_digits = 2;
+    //     this.local_currency_config.decimal_places = isEmptyObject(response.authorize.local_currencies)
+    //         ? default_fractional_digits
+    //         : +response.authorize.local_currencies[this.local_currency_config.currency].fractional_digits;
+    // }
 
     setWebsiteStatus(response) {
         this.website_status = response.website_status;
@@ -1573,69 +1583,69 @@ export default class ClientStore extends BaseStore {
         this.user_id = LocalStore.get('active_user_id');
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
-        const client = this.accounts[this.loginid];
+        // const client = this.accounts[this.loginid];
         // If there is an authorize_response, it means it was the first login
-        if (authorize_response) {
-            // If this fails, it means the landing company check failed
-            if (this.loginid === authorize_response.authorize.loginid) {
-                BinarySocketGeneral.authorizeAccount(authorize_response);
+        // if (authorize_response) {
+        //     // If this fails, it means the landing company check failed
+        //     if (this.loginid === authorize_response.authorize.loginid) {
+        //         BinarySocketGeneral.authorizeAccount(authorize_response);
 
-                // Client comes back from oauth and logs in
-                Analytics.setAttributes({
-                    app_id: getAppId(),
-                    account_type: this.loginid.substring(0, 2),
-                });
-                Analytics?.identifyEvent();
-                const current_page = window.location.hostname + window.location.pathname;
-                Analytics?.pageView(current_page);
+        //         // Client comes back from oauth and logs in
+        //         Analytics.setAttributes({
+        //             app_id: getAppId(),
+        //             account_type: this.loginid.substring(0, 2),
+        //         });
+        //         Analytics?.identifyEvent();
+        //         const current_page = window.location.hostname + window.location.pathname;
+        //         Analytics?.pageView(current_page);
 
-                await this.root_store.gtm.pushDataLayer({
-                    event: 'login',
-                });
-            } else {
-                // So it will send an authorize with the accepted token, to be handled by socket-general
-                await BinarySocket.authorize(client.token);
-            }
-            if (redirect_url) {
-                const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
-                const has_action = ['payment_agent_withdraw', 'payment_withdraw', 'reset_password'].includes(
-                    action_param
-                );
+        //         await this.root_store.gtm.pushDataLayer({
+        //             event: 'login',
+        //         });
+        //     } else {
+        //         // So it will send an authorize with the accepted token, to be handled by socket-general
+        //         await BinarySocket.authorize(client.token);
+        //     }
+        //     if (redirect_url) {
+        //         const redirect_route = routes[redirect_url].length > 1 ? routes[redirect_url] : '';
+        //         const has_action = ['payment_agent_withdraw', 'payment_withdraw', 'reset_password'].includes(
+        //             action_param
+        //         );
 
-                if (has_action) {
-                    const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
-                    if ([routes.cashier_withdrawal, routes.cashier_pa].includes(redirect_route)) {
-                        // Set redirect path for cashier withdrawal and payment agent withdrawal (after getting PTA redirect_url)
-                        window.location.replace(`/redirect?${query_string}`);
-                    } else {
-                        window.location.replace(`${redirect_route}/redirect?${query_string}`);
-                    }
-                } else {
-                    window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform'])}`);
-                }
-            }
-            runInAction(() => {
-                this.is_populating_account_list = false;
-            });
-            const language = getRedirectionLanguage(authorize_response.authorize.preferred_language);
-            const stored_language = LocalStore.get(LANGUAGE_KEY);
-            // if (language !== 'EN' && stored_language && language !== stored_language) {
-            //     window.history.replaceState({}, document.title, urlForLanguage(language));
-            //     await this.root_store.common.changeSelectedLanguage(language);
-            // }
-            if (this.citizen) {
-                await this.onSetCitizen(this.citizen);
-            }
-            if (!this.is_virtual) {
-                this.setPrevRealAccountLoginid(this.loginid);
-            }
-            const no_cr_account = this.active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
+        //         if (has_action) {
+        //             const query_string = filterUrlQuery(search, ['platform', 'code', 'action']);
+        //             if ([routes.cashier_withdrawal, routes.cashier_pa].includes(redirect_route)) {
+        //                 // Set redirect path for cashier withdrawal and payment agent withdrawal (after getting PTA redirect_url)
+        //                 window.location.replace(`/redirect?${query_string}`);
+        //             } else {
+        //                 window.location.replace(`${redirect_route}/redirect?${query_string}`);
+        //             }
+        //         } else {
+        //             window.location.replace(`${redirect_route}/?${filterUrlQuery(search, ['platform'])}`);
+        //         }
+        //     }
+        //     runInAction(() => {
+        //         this.is_populating_account_list = false;
+        //     });
+        //     const language = getRedirectionLanguage(authorize_response.authorize.preferred_language);
+        //     const stored_language = LocalStore.get(LANGUAGE_KEY);
+        //     // if (language !== 'EN' && stored_language && language !== stored_language) {
+        //     //     window.history.replaceState({}, document.title, urlForLanguage(language));
+        //     //     await this.root_store.common.changeSelectedLanguage(language);
+        //     // }
+        //     if (this.citizen) {
+        //         await this.onSetCitizen(this.citizen);
+        //     }
+        //     if (!this.is_virtual) {
+        //         this.setPrevRealAccountLoginid(this.loginid);
+        //     }
+        //     const no_cr_account = this.active_accounts.some(acc => acc.landing_company_shortcode === 'svg');
 
-            if (!no_cr_account && this.is_low_risk) {
-                this.switchAccount(this.virtual_account_loginid);
-            }
-        }
-        this.selectCurrency('');
+        //     if (!no_cr_account && this.is_low_risk) {
+        //         this.switchAccount(this.virtual_account_loginid);
+        //     }
+        // }
+        // this.selectCurrency('');
 
         this.responsePayoutCurrencies(await WS.authorized.payoutCurrencies());
         if (this.is_logged_in) {
@@ -1740,6 +1750,7 @@ export default class ClientStore extends BaseStore {
     }
 
     setAccounts(accounts) {
+        console.log('michio: set accounts: ', accounts);
         this.accounts = accounts;
     }
 
@@ -1965,11 +1976,11 @@ export default class ClientStore extends BaseStore {
         this.selected_currency = value;
     }
 
-    setResidence(residence) {
-        if (this.loginid) {
-            this.accounts[this.loginid].residence = residence;
-        }
-    }
+    // setResidence(residence) {
+    //     if (this.loginid) {
+    //         this.accounts[this.loginid].residence = residence;
+    //     }
+    // }
 
     setCitizen(citizen) {
         this.citizen = citizen;
@@ -2018,10 +2029,10 @@ export default class ClientStore extends BaseStore {
         this.root_store.gtm.pushDataLayer({
             event: 'log_out',
         });
-        this.loginid = null;
+        // this.loginid = null;
         this.user_id = null;
         this.upgrade_info = undefined;
-        this.accounts = {};
+        // this.accounts = {};
         this.mt5_login_list = [];
         this.dxtrade_accounts_list = [];
         this.ctrader_accounts_list = [];
@@ -2040,17 +2051,15 @@ export default class ClientStore extends BaseStore {
         this.syncWithLegacyPlatforms(this.loginid, this.accounts);
     }
 
+    // eslint-disable-next-line class-methods-use-this
     async logout() {
         // TODO: [add-client-action] - Move logout functionality to client store
-        const response = await requestLogout();
-
-        if (response?.logout === 1) {
-            this.cleanUp();
-
-            this.setLogout(true);
-        }
-
-        return response;
+        // const response = await requestLogout();
+        // if (response?.logout === 1) {
+        //     this.cleanUp();
+        //     this.setLogout(true);
+        // }
+        // return response;
     }
 
     setLogout(is_logged_out) {

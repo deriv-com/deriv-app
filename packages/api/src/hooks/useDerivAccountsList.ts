@@ -10,8 +10,6 @@ const useDerivAccountsList = () => {
     const { data: balance_data } = useBalance();
     const { getConfig } = useCurrencyConfig();
 
-    console.log('michio: useDerivAccountsList', authorize_data);
-
     // Add additional information to the authorize response.
     const modified_accounts = useMemo(() => {
         return authorize_data.account_list?.map(account => {

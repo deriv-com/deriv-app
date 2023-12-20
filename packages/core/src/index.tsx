@@ -11,6 +11,7 @@ import App from 'App/app.jsx';
 import { checkAndSetEndpointFromUrl } from '@deriv/shared';
 import AppNotificationMessages from './App/Containers/app-notification-messages.jsx';
 import './Utils/Datadog'; // to enable datadog
+import { AuthProvider } from '@deriv/api';
 
 if (
     !!window?.localStorage.getItem?.('debug_service_worker') || // To enable local service worker related development

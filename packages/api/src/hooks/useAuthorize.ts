@@ -6,21 +6,20 @@ import { useAPIContext } from '../APIProvider';
 import { useQueryClient } from '@tanstack/react-query';
 import { getQueryKeys } from '../utils';
 import { WS } from '@deriv/shared';
-
+import { useAuth } from '../AuthProvider';
 /** A custom hook that authorize the user with the given token. If no token is given,
  * it will use the current token from localStorage.
  */
 const useAuthorize = () => {
-    const current_token = getActiveAuthTokenIDFromLocalStorage();
+    // const current_token = getActiveAuthTokenIDFromLocalStorage();
+    const { activeToken, updateLoginId } = useAuth();
     const invalidate = useInvalidateQuery();
     const { switchEnvironment } = useAPIContext();
     const queryClient = useQueryClient();
 
-    console.log('michio: auth current_token', current_token);
-
     const { data, ...rest } = useQuery('authorize', {
-        payload: { authorize: current_token || '' },
-        options: { enabled: Boolean(current_token) },
+        payload: { authorize: activeToken || '' },
+        options: { enabled: Boolean(activeToken) },
     });
 
     // Add additional information to the authorize response.
@@ -28,20 +27,20 @@ const useAuthorize = () => {
 
     const switchAccount = useCallback(
         (loginid: string) => {
-            const currentShit = getActiveAuthTokenIDFromLocalStorage();
-            const active_loginid = getActiveLoginIDFromLocalStorage();
-            console.log('michio: switch switchAccount', active_loginid, loginid);
-            if (active_loginid !== loginid) {
-                localStorage.setItem('active_loginid', loginid);
-                switchEnvironment(active_loginid);
-                WS.authorized.ping({});
-                queryClient.removeQueries({
-                    queryKey: getQueryKeys('authorize', { authorize: currentShit }),
-                });
-                invalidate('authorize');
-            }
+            // const currentShit = getActiveAuthTokenIDFromLocalStorage();
+            // const active_loginid = getActiveLoginIDFromLocalStorage();
+            // if (active_loginid !== loginid) {
+            //     localStorage.setItem('active_loginid', loginid);
+            //     switchEnvironment(active_loginid);
+            //     WS.authorized.ping({});
+            //     queryClient.removeQueries({
+            //         queryKey: getQueryKeys('authorize', { authorize: currentShit }),
+            //     });
+            //     invalidate('authorize');
+            // }
+            updateLoginId(loginid);
         },
-        [invalidate, queryClient, switchEnvironment]
+        [updateLoginId]
     );
 
     return {

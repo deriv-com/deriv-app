@@ -4,10 +4,15 @@ import { observer, useStore } from '@deriv/stores';
 import Routes from 'Components/routes/routes';
 import classNames from 'classnames';
 import './app.scss';
+import { useAuth } from '@deriv/api';
 
 const AppContent: React.FC = observer(() => {
     const { ui } = useStore();
     const { is_dark_mode_on } = ui;
+
+    const { activeToken } = useAuth();
+
+    console.log('akbar: ', activeToken);
 
     return (
         <main

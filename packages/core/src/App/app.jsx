@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
 import {
@@ -23,7 +23,6 @@ import AppContent from './AppContent';
 import 'Sass/app.scss';
 import { Analytics } from '@deriv/analytics';
 import initHotjar from '../Utils/Hotjar';
-import AuthProvider from './AuthProvider';
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
@@ -90,10 +89,10 @@ const AppWithoutTranslation = ({ root_store }) => {
     return (
         <>
             {is_translation_loaded ? (
-                <AuthProvider>
-                    <Router basename={has_base ? `/${base}` : null}>
-                        <MobxContentProvider store={root_store}>
-                            <APIProvider>
+                <APIProvider>
+                    <AuthProvider>
+                        <Router basename={has_base ? `/${base}` : null}>
+                            <MobxContentProvider store={root_store}>
                                 <POIProvider>
                                     <StoreProvider store={root_store}>
                                         <ExchangeRatesProvider>
@@ -101,10 +100,10 @@ const AppWithoutTranslation = ({ root_store }) => {
                                         </ExchangeRatesProvider>
                                     </StoreProvider>
                                 </POIProvider>
-                            </APIProvider>
-                        </MobxContentProvider>
-                    </Router>
-                </AuthProvider>
+                            </MobxContentProvider>
+                        </Router>
+                    </AuthProvider>
+                </APIProvider>
             ) : (
                 <></>
             )}

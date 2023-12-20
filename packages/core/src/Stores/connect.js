@@ -1,5 +1,7 @@
+import { Loading } from '@deriv/components';
+import { useAuth } from '@deriv/api';
 import { useObserver } from 'mobx-react';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const isClassComponent = Component =>
     !!(typeof Component === 'function' && Component.prototype && Component.prototype.isReactComponent);
@@ -25,7 +27,18 @@ function injectStorePropsToComponent(propsToSelectFn, BaseComponent) {
 }
 
 export const MobxContentProvider = ({ store, children }) => {
-    return <MobxContent.Provider value={{ ...store, mobxStores: store }}>{children}</MobxContent.Provider>;
+    const auth = useAuth();
+    const { activeLoginId, authorizeAccounts, clientAccounts } = auth;
+    useEffect(() => {
+        if (activeLoginId) {
+            store.client.setLoginId(activeLoginId);
+        }
+        if (clientAccounts) {
+            store.client.setAccounts(clientAccounts);
+        }
+    }, [activeLoginId, authorizeAccounts, clientAccounts, store.client]);
+
+    return clientAccounts ? <MobxContent.Provider value={store}>{children}</MobxContent.Provider> : <Loading />;
 };
 
 export const connect = propsToSelectFn => Component => injectStorePropsToComponent(propsToSelectFn, Component);

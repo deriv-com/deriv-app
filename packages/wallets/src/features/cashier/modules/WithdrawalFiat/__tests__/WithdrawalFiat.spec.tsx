@@ -9,6 +9,7 @@ jest.mock('@deriv/api', () => ({
 
 describe('<WithdrawalFiat />', () => {
     it('should render the iframe with the withdrawal url from API response', async () => {
+        const verificationCode = 'abcd1234';
         (useCashierFiatAddress as jest.Mock).mockReturnValue({
             data: 'https://example.com',
             error: null,
@@ -19,7 +20,7 @@ describe('<WithdrawalFiat />', () => {
         });
 
         await act(async () => {
-            render(<WithdrawalFiat />);
+            render(<WithdrawalFiat verificationCode={verificationCode} />);
             await waitFor(() => {
                 expect(screen.queryByTestId('dt_wallets-loader')).not.toBeInTheDocument();
             });
@@ -29,12 +30,14 @@ describe('<WithdrawalFiat />', () => {
     });
 
     it('should render the loader while the iframe is loading', () => {
+        const verificationCode = 'abcd1234';
+
         (useCashierFiatAddress as jest.Mock).mockReturnValue({
             isLoading: true,
             mutate: jest.fn(),
         });
 
-        render(<WithdrawalFiat />);
+        render(<WithdrawalFiat verificationCode={verificationCode} />);
         expect(screen.getByTestId('dt_wallets-loader')).toBeInTheDocument();
     });
 

@@ -36,7 +36,6 @@ module.exports = function (env) {
     return {
         entry: {
             index: path.resolve(__dirname, 'src', 'index.tsx'),
-            MockComponent: path.resolve(__dirname, 'src', 'lib', 'mock', 'Mock.tsx'),
         },
         mode: isRelease ? 'production' : 'development',
         output: {

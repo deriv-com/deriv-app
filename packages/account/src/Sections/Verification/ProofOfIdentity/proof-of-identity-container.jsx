@@ -17,7 +17,6 @@ import Unsupported from '../../../Components/poi/status/unsupported';
 import UploadComplete from '../../../Components/poi/status/upload-complete';
 import Verified from '../../../Components/poi/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
-import { MockComponent } from '@deriv/account-v2';
 
 const ProofOfIdentityContainer = observer(
     ({ height, is_from_external, onStateChange, setIsCfdPoiCompleted, getChangeableFields, updateAccountStatus }) => {
@@ -149,30 +148,27 @@ const ProofOfIdentityContainer = observer(
             should_show_mismatch_form
         ) {
             return (
-                <>
-                    <MockComponent />
-                    <POISubmission
-                        account_settings={account_settings}
-                        allow_poi_resubmission={allow_poi_resubmission}
-                        has_require_submission={has_require_submission}
-                        height={height ?? null}
-                        getChangeableFields={getChangeableFields}
-                        identity_last_attempt={identity_last_attempt}
-                        idv={idv}
-                        is_from_external={!!is_from_external}
-                        is_idv_disallowed={is_idv_disallowed || should_ignore_idv}
-                        manual={manual}
-                        needs_poa={needs_poa}
-                        onfido={onfido}
-                        onStateChange={onStateChange}
-                        redirect_button={redirect_button}
-                        refreshNotifications={refreshNotifications}
-                        residence_list={residence_list}
-                        setIsCfdPoiCompleted={setIsCfdPoiCompleted}
-                        updateAccountStatus={updateAccountStatus}
-                        should_show_mismatch_form={should_show_mismatch_form}
-                    />
-                </>
+                <POISubmission
+                    account_settings={account_settings}
+                    allow_poi_resubmission={allow_poi_resubmission}
+                    has_require_submission={has_require_submission}
+                    height={height ?? null}
+                    getChangeableFields={getChangeableFields}
+                    identity_last_attempt={identity_last_attempt}
+                    idv={idv}
+                    is_from_external={!!is_from_external}
+                    is_idv_disallowed={is_idv_disallowed || should_ignore_idv}
+                    manual={manual}
+                    needs_poa={needs_poa}
+                    onfido={onfido}
+                    onStateChange={onStateChange}
+                    redirect_button={redirect_button}
+                    refreshNotifications={refreshNotifications}
+                    residence_list={residence_list}
+                    setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                    updateAccountStatus={updateAccountStatus}
+                    should_show_mismatch_form={should_show_mismatch_form}
+                />
             );
         } else if (
             !identity_last_attempt ||

@@ -1,7 +1,6 @@
-import React from 'react';
 import { Field, FormikValues, useFormikContext } from 'formik';
+import React from 'react';
 import { DesktopWrapper, MobileWrapper, Dropdown, SelectNative } from '@deriv/components';
-import { EMPLOYMENT_VALUES, TEmploymentStatus, shouldHideOccupationField } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     getAccountTurnoverList,
@@ -13,17 +12,18 @@ import {
     getFormattedOccupationList,
     getSourceOfWealthList,
 } from '../../Configs/financial-details-config';
+import { EMPLOYMENT_VALUES } from '../../Constants/financial-details';
 
 type TFinancialDetailsDropdownFieldProps = {
     dropdown_list: Array<object>;
     field_key: string;
     placeholder?: string;
     label: string;
-    employment_status?: TEmploymentStatus;
+    employment_status?: string;
 };
 
 type TFinancialInformationProps = {
-    employment_status?: TEmploymentStatus | string;
+    employment_status?: string;
 };
 
 /**
@@ -164,14 +164,12 @@ const FinancialInformation = ({ employment_status }: TFinancialInformationProps)
                 field_key='employment_industry'
                 label={localize('Industry of employment')}
             />
-            {!shouldHideOccupationField(employment_status) && (
-                <FinancialDetailsOccupationDropdownField
-                    dropdown_list={getFormattedOccupationList(employment_status)}
-                    field_key='occupation'
-                    label={localize('Occupation')}
-                    employment_status={employment_status}
-                />
-            )}
+            <FinancialDetailsOccupationDropdownField
+                dropdown_list={getFormattedOccupationList(employment_status)}
+                field_key='occupation'
+                label={localize('Occupation')}
+                employment_status={employment_status}
+            />
             <FinancialDetailsDropdownField
                 dropdown_list={getSourceOfWealthList()}
                 field_key='source_of_wealth'

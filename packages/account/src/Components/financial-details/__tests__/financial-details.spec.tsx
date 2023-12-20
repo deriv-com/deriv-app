@@ -1,6 +1,6 @@
 import React from 'react';
 import { FormikValues } from 'formik';
-import { EMPLOYMENT_VALUES, isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import FinancialDetails from '../financial-details';
@@ -13,17 +13,10 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 const modal_root_el = document.createElement('div');
+modal_root_el.setAttribute('id', 'modal_root');
+document.body.appendChild(modal_root_el);
 
 describe('<FinancialDetails />', () => {
-    beforeAll(() => {
-        modal_root_el.setAttribute('id', 'modal_root');
-        document.body.appendChild(modal_root_el);
-    });
-
-    afterAll(() => {
-        document.body.removeChild(modal_root_el);
-    });
-
     const mock_props: React.ComponentProps<typeof FinancialDetails> = {
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),
@@ -49,16 +42,16 @@ describe('<FinancialDetails />', () => {
 
     const mock_store = mockStore({});
 
-    const renderComponent = ({ props = mock_props }) => {
+    const renderComponent = () => {
         render(
             <StoreProvider store={mock_store}>
-                <FinancialDetails {...props} />
+                <FinancialDetails {...mock_props} />
             </StoreProvider>
         );
     };
 
     it('should render "FinancialDetails" for desktop', () => {
-        renderComponent({});
+        renderComponent();
 
         fieldsRenderCheck();
 
@@ -73,7 +66,7 @@ describe('<FinancialDetails />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        renderComponent({});
+        renderComponent();
 
         fieldsRenderCheck();
 
@@ -85,7 +78,7 @@ describe('<FinancialDetails />', () => {
     });
 
     it('should trigger "Previous" button', () => {
-        renderComponent({});
+        renderComponent();
 
         fieldsRenderCheck();
 
@@ -100,7 +93,7 @@ describe('<FinancialDetails />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        renderComponent({});
+        renderComponent();
 
         fieldsRenderCheck();
 
@@ -146,7 +139,7 @@ describe('<FinancialDetails />', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        renderComponent({});
+        renderComponent();
 
         const select_inputs = screen.getAllByRole('combobox');
 
@@ -160,11 +153,7 @@ describe('<FinancialDetails />', () => {
     it('should show "Unemployed" in occupation list if employment status is not "Employed"', async () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
-        const new_mock_props: React.ComponentProps<typeof FinancialDetails> = {
-            ...mock_props,
-            employment_status: 'Pensioner',
-        };
-        renderComponent({ props: new_mock_props });
+        renderComponent();
 
         fieldsRenderCheck();
 
@@ -207,25 +196,5 @@ describe('<FinancialDetails />', () => {
         await waitFor(() => {
             expect(mock_props.onSubmit).toHaveBeenCalled();
         });
-    });
-
-    it('should not show Occupation field if employment status is "Unemployed"', () => {
-        const new_mock_props: React.ComponentProps<typeof FinancialDetails> = {
-            ...mock_props,
-            employment_status: EMPLOYMENT_VALUES.UNEMPLOYED,
-        };
-        renderComponent({ props: new_mock_props });
-
-        expect(screen.queryByText('Occupation')).not.toBeInTheDocument();
-    });
-
-    it('should not show Occupation field if employment status is "Self employed"', () => {
-        const new_mock_props: React.ComponentProps<typeof FinancialDetails> = {
-            ...mock_props,
-            employment_status: EMPLOYMENT_VALUES.SELF_EMPLOYED,
-        };
-        renderComponent({ props: new_mock_props });
-
-        expect(screen.queryByText('Occupation')).not.toBeInTheDocument();
     });
 });

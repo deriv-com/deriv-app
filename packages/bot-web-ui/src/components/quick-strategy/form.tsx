@@ -106,7 +106,10 @@ const QuickStrategyForm = observer(() => {
                                     }
                                 }
                                 if (should_validate && field.name === 'last_digit_prediction') {
-                                    if (+form_data?.last_digit_prediction === 1) {
+                                    if (
+                                        isNaN(+form_data?.last_digit_prediction) ||
+                                        +form_data?.last_digit_prediction === 1
+                                    ) {
                                         min = 0;
                                     }
                                     if (+form_data?.last_digit_prediction > 0) {

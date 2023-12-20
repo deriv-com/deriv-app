@@ -15,13 +15,12 @@ type TQSInput = {
     attached?: boolean;
     should_have?: { key: string; value: string | number | boolean }[];
     disabled?: boolean;
-    regex?: RegExp;
     min?: number;
     max?: number;
 };
 
 const QSInput: React.FC<TQSInput> = observer(
-    ({ name, onChange, regex, type = 'text', attached = false, disabled = false, min, max }: TQSInput) => {
+    ({ name, onChange, type = 'text', attached = false, disabled = false, min, max }: TQSInput) => {
         const {
             ui: { is_mobile },
         } = useStore();

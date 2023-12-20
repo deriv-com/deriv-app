@@ -32,7 +32,6 @@ type TPartialConfigItem = Partial<{
     validation: TValidationItem[];
     should_have?: TShouldHave[];
     hide_without_should_have?: boolean;
-    regex: RegExp;
 }>;
 
 export type TShouldHave = {

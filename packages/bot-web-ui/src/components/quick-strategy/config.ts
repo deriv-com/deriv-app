@@ -179,7 +179,6 @@ const LAST_DIGIT_PREDICTION: TConfigItem = {
     validation: ['number', 'required', 'max', 'integer'],
     should_have: [{ key: 'tradetype', value: '', multiple: ['matchesdiffers', 'overunder'] }],
     hide_without_should_have: true,
-    regex: /^\d*(\.\d*)?$/,
 };
 
 export const STRATEGIES: TStrategies = {

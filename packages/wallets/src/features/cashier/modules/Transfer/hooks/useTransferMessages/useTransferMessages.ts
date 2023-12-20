@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useActiveWalletAccount, useAuthorize, usePOI } from '@deriv/api';
 import { displayMoney as displayMoney_ } from '@deriv/api/src/utils';
 import { THooks } from '../../../../../../types';
-import { TAccount, TInitialTransferFormValues, TMessage, TMessageFnProps } from '../../types';
+import { TAccount, TInitialTransferFormValues, TMessageFnProps, TTransferMessage } from '../../types';
 import {
     cumulativeAccountLimitsMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
@@ -48,8 +48,8 @@ const useTransferMessages = ({
 
     const sourceAmount = formData.fromAmount;
 
-    const messageFns: ((props: TMessageFnProps) => TMessage | null)[] = [];
-    const messages: TMessage[] = [];
+    const messageFns: ((props: TMessageFnProps) => TTransferMessage | null)[] = [];
+    const messages: TTransferMessage[] = [];
 
     if (isAccountVerified || (!isAccountVerified && !isTransferBetweenWallets)) {
         messageFns.push(cumulativeAccountLimitsMessageFn);

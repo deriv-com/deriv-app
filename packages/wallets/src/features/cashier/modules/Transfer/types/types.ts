@@ -15,14 +15,18 @@ export type TInitialTransferFormValues = {
 type TAction = {
     buttonLabel?: string;
     navigateTo?: string;
-    openInNewTab?: boolean;
+    shouldOpenInNewTab?: boolean;
 };
 
-export type TMessage = {
-    action?: TAction;
+type TMessage = {
     text: string;
-    type: 'error' | 'info' | 'success';
     values: Record<string, boolean | number | string | undefined>;
+};
+
+export type TTransferMessage = {
+    action?: TAction;
+    message: TMessage;
+    type: 'error' | 'info' | 'success';
 };
 
 export type TMessageFnProps = {

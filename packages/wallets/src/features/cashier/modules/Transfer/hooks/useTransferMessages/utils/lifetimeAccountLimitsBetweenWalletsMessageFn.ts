@@ -1,4 +1,12 @@
-import { TMessageFnProps } from '../../../types';
+import { TMessageFnProps, TTransferMessage } from '../../../types';
+
+let text: TTransferMessage['message']['text'], values: TTransferMessage['message']['values'];
+
+const verifyPOIAction = {
+    buttonLabel: 'Verify',
+    navigateTo: '/account/proof-of-identity',
+    shouldOpenInNewTab: true,
+};
 
 // this function should work once BE WALL-1440 is delivered
 const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
@@ -62,23 +70,17 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
         sourceAccount.currencyConfig.fractional_digits
     );
 
-    let text: string;
-    const verifyPOIAction = {
-        buttonLabel: 'Verify',
-        navigateTo: '/account/proof-of-identity',
-        openInNewTab: true,
-    };
-
     if (availableSumActiveWalletCurrency === 0) {
         text =
             targetWalletType === 'crypto'
                 ? "You've reached the lifetime transfer limit from your {{sourceAccountName}} to any cryptocurrency Wallet. Verify your account to upgrade the limit."
                 : "You've reached the lifetime transfer limit from your {{sourceAccountName}} to any fiat Wallet. Verify your account to upgrade the limit.";
+        values = { sourceAccountName: sourceAccount.accountName };
+
         return {
             action: verifyPOIAction,
-            text,
+            message: { text, values },
             type: 'error' as const,
-            values: { sourceAccountName: sourceAccount.accountName },
         };
     }
 
@@ -90,21 +92,20 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
                     targetWalletType === 'crypto'
                         ? 'The lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.'
                         : 'The lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is up to {{formattedSourceCurrencyLimit}}.';
+                values = { formattedSourceCurrencyLimit, sourceAccountName: sourceAccount.accountName };
+
                 return {
-                    text,
+                    message: { text, values },
                     type: 'success' as const,
-                    values: {
-                        formattedSourceCurrencyLimit,
-                        sourceAccountName: sourceAccount.accountName,
-                    },
                 };
             case 'crypto_to_crypto':
                 text =
                     'The lifetime transfer limit between cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.';
+                values = { formattedSourceCurrencyLimit };
+
                 return {
-                    text,
+                    message: { text, values },
                     type: 'success' as const,
-                    values: { formattedSourceCurrencyLimit },
                 };
             default:
                 return null;
@@ -117,23 +118,22 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
                 targetWalletType === 'crypto'
                     ? 'Your remaining lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
                     : 'Your remaining lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.';
+            values = { formattedSourceCurrencyRemainder, sourceAccountName: sourceAccount.accountName };
+
             return {
                 action: verifyPOIAction,
-                text,
+                message: { text, values },
                 type: 'success' as const,
-                values: {
-                    formattedSourceCurrencyRemainder,
-                    sourceAccountName: sourceAccount.accountName,
-                },
             };
         case 'crypto_to_crypto':
             text =
                 'Your remaining lifetime transfer limit between cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.';
+            values = { formattedSourceCurrencyRemainder };
+
             return {
                 action: verifyPOIAction,
-                text,
+                message: { text, values },
                 type: 'success' as const,
-                values: { formattedSourceCurrencyRemainder },
             };
         default:
             return null;

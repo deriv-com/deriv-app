@@ -1,4 +1,6 @@
-import { TMessageFnProps } from '../../../types';
+import { TMessageFnProps, TTransferMessage } from '../../../types';
+
+let text: TTransferMessage['message']['text'], values: TTransferMessage['message']['values'];
 
 const cumulativeAccountLimitsMessageFn = ({
     activeWallet,
@@ -45,23 +47,23 @@ const cumulativeAccountLimitsMessageFn = ({
         sourceAccount.currencyConfig.fractional_digits
     );
 
-    let text: string;
-
     if (isDemoTransfer) {
         if (allowedSumUSD === availableSumUSD) {
             text = 'Your daily transfer limit for virtual funds is {{formattedDemoLimit}}';
+            values = { formattedDemoLimit };
+
             return {
-                text,
+                message: { text, values },
                 type: 'success' as const,
-                values: { formattedDemoLimit },
             };
         }
 
         text = 'Your remaining daily transfer limit for virtual funds is {{formattedDemoLimit}}.';
+        values = { formattedDemoLimit };
+
         return {
-            text,
+            message: { text, values },
             type: 'success' as const,
-            values: { formattedDemoLimit },
         };
     }
 
@@ -94,14 +96,15 @@ const cumulativeAccountLimitsMessageFn = ({
         text = isTransferBetweenWallets
             ? 'You have reached your daily transfer limit of {{formattedSourceCurrencyLimit}} between your Wallets. The limit will reset at 00:00 GMT.'
             : 'You have reached your daily transfer limit of {{formattedSourceCurrencyLimit}} between your {{sourceAccountName}} and {{targetAccountName}}. The limit will reset at 00:00 GMT.';
+        values = {
+            formattedSourceCurrencyLimit,
+            sourceAccountName: sourceAccount.accountName,
+            targetAccountName: targetAccount.accountName,
+        };
+
         return {
-            text,
+            message: { text, values },
             type: 'error' as const,
-            values: {
-                formattedSourceCurrencyLimit,
-                sourceAccountName: sourceAccount.accountName,
-                targetAccountName: targetAccount.accountName,
-            },
         };
     }
 
@@ -109,29 +112,30 @@ const cumulativeAccountLimitsMessageFn = ({
         text = isTransferBetweenWallets
             ? 'The daily transfer limit between your Wallets is {{formattedSourceCurrencyLimit}}.'
             : 'The daily transfer limit between your {{sourceAccountName}} and {{targetAccountName}} is {{formattedSourceCurrencyLimit}}.';
+        values = {
+            formattedSourceCurrencyLimit,
+            sourceAccountName: sourceAccount.accountName,
+            targetAccountName: targetAccount.accountName,
+        };
+
         return {
-            text,
+            message: { text, values },
             type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
-            values: {
-                formattedSourceCurrencyLimit,
-                sourceAccountName: sourceAccount.accountName,
-                targetAccountName: targetAccount.accountName,
-            },
         };
     }
 
     text = isTransferBetweenWallets
         ? 'The remaining daily transfer limit between your Wallets is {{formattedSourceCurrencyRemainder}}.'
         : 'The remaining daily transfer limit between your {{sourceAccountName}} and {{targetAccountName}} is {{formattedSourceCurrencyRemainder}}.';
+    values = {
+        formattedSourceCurrencyRemainder,
+        sourceAccountName: sourceAccount.accountName,
+        targetAccountName: targetAccount.accountName,
+    };
 
     return {
-        text,
+        message: { text, values },
         type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
-        values: {
-            formattedSourceCurrencyRemainder,
-            sourceAccountName: sourceAccount.accountName,
-            targetAccountName: targetAccount.accountName,
-        },
     };
 };
 

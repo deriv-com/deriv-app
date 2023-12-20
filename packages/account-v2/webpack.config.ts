@@ -7,7 +7,7 @@ const isRelease =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
 export default (env: BuildEnv) => {
-    const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
+    const base = env?.base && env.base !== true ? `/${env.base}/` : '/';
 
     const paths: BuildPaths = {
         entry: path.resolve(__dirname, 'src', 'index.tsx'),

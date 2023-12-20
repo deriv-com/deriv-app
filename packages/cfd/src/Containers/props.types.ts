@@ -22,6 +22,7 @@ import {
 import RootStore from '../Stores/index';
 
 import { TCFDPasswordFormValues } from './cfd-password-modal';
+import { Omit } from 'react-router';
 
 export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;
@@ -158,7 +159,7 @@ export type TCFDPasswordManagerModal = {
 export type TJurisdictionCardProps = {
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     account_type: string;
     disabled: boolean;
     is_non_idv_design: boolean;
@@ -174,7 +175,7 @@ export type TJurisdictionCardBackProps = {
 };
 
 export type TJurisdictionCardFrontProps = TJurisdictionCardBackProps & {
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     card_data: TJurisdictionCardSection[];
     card_values: TJurisdictionCardItems;
     disabled: boolean;
@@ -187,14 +188,14 @@ export type TJurisdictionClickableDescriptionProps = {
 };
 
 export type TJurisdictionTitleIndicatorProps = {
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     title_indicators: TJurisdictionCardSectionTitleIndicators;
     type_of_card: TJurisdictionCardType;
     verification_docs: TJurisdictionCardItemVerification | undefined;
 };
 
 export type TJurisdictionCardSectionProps = {
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     card_section_item: TJurisdictionCardSection;
     toggleCardFlip: React.MouseEventHandler<HTMLSpanElement>;
     type_of_card: TJurisdictionCardType;
@@ -204,7 +205,7 @@ export type TJurisdictionCardSectionProps = {
 export type TJurisdictionCardType = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
 
 export type TVerificationStatusBannerProps = {
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     account_settings: GetSettings;
     account_type: string;
     card_classname: string;
@@ -240,7 +241,7 @@ export type TJurisdictionModalProps = {
 };
 
 export type TJurisdictionModalContentProps = {
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     account_type: string;
     is_non_idv_design: boolean;
     jurisdiction_selected_shortcode: string;
@@ -261,7 +262,8 @@ export type TJurisdictionModalTitleProps = {
     platform: TCFDsPlatformType;
 };
 
-type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+// Omitting p2p_poa_required from GetAccountStatus because its recently made required so cfd build is failing
+type TAccountStatus = Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> & Partial<Pick<GetAccountStatus, 'status'>>;
 
 export type TJurisdictionModalFootNoteProps = {
     account_status: TAccountStatus;
@@ -322,7 +324,7 @@ export type TDMT5CompareModalContentProps = {
 };
 
 export type TCFDDbviOnboardingProps = {
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     context: RootStore;
     disableApp: () => void;
     enableApp: () => void;

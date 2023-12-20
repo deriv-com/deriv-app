@@ -17,7 +17,7 @@ const AvailableDxtradeAccountsList: React.FC = () => {
                     <DerivX />
                 </div>
             )}
-            trailing={() => <Button color='primary-light' /* todo: open <DxtradeEnterPasswordModal /> */>Get</Button>}
+            trailing={() => <Button color='primary-light' /* open <DxtradeEnterPasswordModal /> */>Get</Button>}
         >
             <div className='flex-grow'>
                 <p>

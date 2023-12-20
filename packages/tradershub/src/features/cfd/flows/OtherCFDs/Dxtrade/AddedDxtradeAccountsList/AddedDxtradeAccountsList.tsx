@@ -29,12 +29,12 @@ const AddedDxtradeAccountsList: React.FC = () => {
     const trailingComponent = () => (
         <div className='flex flex-col space-y-1'>
             <Button
-                // todo: open transfer modal
+                // open transfer modal
                 variant='outlined'
             >
                 Transfer
             </Button>
-            <Button /* todo:  show <MT5TradeModal/> */>Open</Button>
+            <Button /* show <MT5TradeModal/> */>Open</Button>
         </div>
     );
 

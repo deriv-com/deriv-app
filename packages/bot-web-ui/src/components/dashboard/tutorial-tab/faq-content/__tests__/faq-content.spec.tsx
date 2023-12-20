@@ -19,7 +19,6 @@ const mockedFaqContent = [
                 content: 'Mocked FAQ Content 1',
             },
         ],
-        tab_id: 1,
     },
     {
         title: 'Mocked FAQ Title 2',
@@ -29,7 +28,6 @@ const mockedFaqContent = [
                 content: 'Mocked FAQ Content 2',
             },
         ],
-        tab_id: 2,
     },
 ];
 

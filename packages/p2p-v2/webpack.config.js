@@ -15,6 +15,7 @@ module.exports = function (env) {
         },
         externals: [
             {
+                '@deriv/api': true,
                 classnames: true,
                 react: true,
                 'react-dom': true,

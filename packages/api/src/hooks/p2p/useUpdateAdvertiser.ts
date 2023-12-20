@@ -34,7 +34,7 @@ const useUpdateAdvertiser = () => {
         const p2p_advertiser_update = data?.p2p_advertiser_update;
         if (!p2p_advertiser_update) return undefined;
 
-        const { basic_verification, full_verification, is_approved, is_listed, is_online, show_name, created_time } =
+        const { basic_verification, full_verification, is_approved, is_listed, is_online, show_name } =
             p2p_advertiser_update;
 
         return {
@@ -50,7 +50,7 @@ const useUpdateAdvertiser = () => {
             /** Indicates if the advertiser is currently online. */
             is_online: Boolean(is_online),
             /** When true, the advertiser's real name will be displayed on to other users on adverts and orders. */
-            show_name: Boolean(show_name),
+            should_show_name: Boolean(show_name),
         };
     }, [data?.p2p_advertiser_update]);
 

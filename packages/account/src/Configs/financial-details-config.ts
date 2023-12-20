@@ -1,13 +1,8 @@
 import React from 'react';
 import { GetFinancialAssessment } from '@deriv/api-types';
-import {
-    generateValidationFunction,
-    getDefaultFields,
-    TSchema,
-    EMPLOYMENT_VALUES,
-    TEmploymentStatus,
-} from '@deriv/shared';
+import { generateValidationFunction, getDefaultFields, TSchema } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { EMPLOYMENT_VALUES } from '../Constants/financial-details';
 
 type TFinancialDetailsConfig = {
     real_account_signup_target: string;
@@ -320,7 +315,7 @@ export const getIncomeSourceList = () => [
     },
 ];
 
-export const getFormattedOccupationList = (employment_status?: TEmploymentStatus) =>
+export const getFormattedOccupationList = (employment_status?: string) =>
     employment_status && employment_status === EMPLOYMENT_VALUES.EMPLOYED
         ? getOccupationList().filter(item => item.value !== EMPLOYMENT_VALUES.UNEMPLOYED)
         : getOccupationList();

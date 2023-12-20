@@ -1,11 +1,6 @@
 /** Add types that are shared between components */
 import React from 'react';
-import {
-    Authorize,
-    GetFinancialAssessment,
-    IdentityVerificationAddDocumentResponse,
-    SetFinancialAssessmentRequest,
-} from '@deriv/api-types';
+import { Authorize, GetFinancialAssessment, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
 import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, Platforms } from '@deriv/shared';
 
@@ -95,6 +90,20 @@ export type TUpgradeInfo = {
     can_open_multi: boolean;
 };
 
+type TIdentity = {
+    services: {
+        idv: {
+            documents_supported: { [key: string]: { display_name: string } } | Record<string, never>;
+            has_visual_sample: 0 | 1;
+            is_country_supported: 0 | 1;
+        };
+        onfido: {
+            documents_supported: { [key: string]: { display_name: string } };
+            is_country_supported: 0 | 1;
+        };
+    };
+};
+
 export type TFile = {
     path: string;
     lastModified: number;
@@ -153,8 +162,6 @@ export type TServerError = {
     details?: { [key: string]: string };
     fields?: string[];
 };
-
-export type TFinancialInformationForm = Omit<SetFinancialAssessmentRequest, 'set_financial_assessment'>;
 
 export type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
 

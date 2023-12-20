@@ -39,9 +39,9 @@ const useUpdateAdvertiser = () => {
 
         return {
             ...p2p_advertiser_update,
-            basic_verification: Boolean(basic_verification),
+            is_basic_verified: Boolean(basic_verification),
             /** Indicating whether the advertiser's address has been verified. */
-            full_verification: Boolean(full_verification),
+            is_fully_verified: Boolean(full_verification),
             /** The approval status of the advertiser. */
             is_approved: Boolean(is_approved),
             /** Indicates if the advertiser's active adverts are listed. When false, adverts won't be listed regardless if they are active or not. */
@@ -50,15 +50,13 @@ const useUpdateAdvertiser = () => {
             is_online: Boolean(is_online),
             /** When true, the advertiser's real name will be displayed on to other users on adverts and orders. */
             show_name: Boolean(show_name),
-            /** The epoch time that the client became an advertiser. */
-            created_time: created_time ? new Date(created_time) : undefined,
         };
     }, [data?.p2p_advertiser_update]);
 
     return {
-        /** The updated 'p2p_advertiser' response. */
+        /** Returns latest information of the advertiser from p2p_advertiser endpoint */
         data: modified_data,
-        /** Update the payload values */
+        /** Sends a request to update the information of the P2P advertiser for the current account. Can only be used by an approved P2P advertiser. */
         mutate,
         ...rest,
     };

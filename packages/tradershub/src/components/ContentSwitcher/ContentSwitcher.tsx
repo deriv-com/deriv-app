@@ -1,24 +1,11 @@
-import React, {
-    Children,
-    createContext,
-    Dispatch,
-    FC,
-    PropsWithChildren,
-    ReactNode,
-    SetStateAction,
-    useContext,
-    useState,
-} from 'react';
-import { Button, qtJoin, qtMerge } from '@deriv/quill-design';
+import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react';
+import ContentHeaderList from './ContentHeaderList';
+import ContentPanelContainer from './ContentPanelContainer';
+import ContentTabPanel from './ContentTabPanel';
 
 type TTabContext = {
     activeTabIndex: number;
     setActiveTabIndex: Dispatch<SetStateAction<number>>;
-};
-
-type TContentHeaderList = {
-    className?: string;
-    list: string[];
 };
 
 type TContentSwitcher = {
@@ -76,63 +63,6 @@ const ContentSwitcher = ({ children, className }: TContentSwitcher) => {
         <TabsContext.Provider value={{ activeTabIndex, setActiveTabIndex }}>
             <div className={className}>{children}</div>
         </TabsContext.Provider>
-    );
-};
-
-/**
- * Container for content panels.
- * Only the active panel's content will be rendered.
- * @param {PropsWithChildren} props The props for the component.
- * @returns {JSX.Element} The rendered component.
- */
-const ContentPanelContainer = ({ children }: PropsWithChildren) => {
-    const { activeTabIndex } = useTabsContext();
-
-    return (
-        <div>
-            {Children.map(children, (child, index) => {
-                if (index !== activeTabIndex) return undefined;
-
-                return child;
-            })}
-        </div>
-    );
-};
-
-/**
- * Panel for displaying content.
- * @param {PropsWithChildren} props The props for the component.
- * @returns {JSX.Element} The rendered component.
- */
-const ContentTabPanel = ({ children }: PropsWithChildren) => <>{children}</>;
-
-/**
- * List of of button headers for the content panels.
- * @param {TContentHeaderList} props The props for the component.
- * @returns {JSX.Element} The rendered component.
- */
-
-const ContentHeaderList: FC<TContentHeaderList> = ({ className, list }) => {
-    const { activeTabIndex, setActiveTabIndex } = useTabsContext();
-
-    return (
-        <div
-            className={qtMerge('flex bg-system-light-secondary-background rounded-400 p-200', className)}
-            data-list-count={list.length}
-        >
-            {list.map((tab, i) => (
-                <Button
-                    className={qtJoin('rounded-200', i !== activeTabIndex && 'bg-transparent')}
-                    colorStyle='white'
-                    fullWidth
-                    key={i}
-                    onClick={() => setActiveTabIndex(i)}
-                    size='lg'
-                >
-                    {tab}
-                </Button>
-            ))}
-        </div>
     );
 };
 

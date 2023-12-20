@@ -1,19 +1,31 @@
 import classNames from 'classnames';
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikErrors } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
+import TradingAssessmentRadioButton from './trading-assessment-radio-buttons';
+import TradingAssessmentDropdown from './trading-assessment-dropdown';
+import { getTradingAssessmentQuestions } from '../../Constants/trading-assessment-questions';
+import { TTradingAssessmentForm, TQuestion } from 'Types';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
-import TradingAssessmentRadioButton from './trading-assessment-radio-buttons.jsx';
-import TradingAssessmentDropdown from './trading-assessment-dropdown.jsx';
+import { MAX_QUESTION_TEXT_LENGTH } from '../../Constants/trading-assessment';
 import InlineNoteWithIcon from '../inline-note-with-icon';
+
+type TradingAssessmentFormProps = {
+    class_name?: string;
+    disabled_items: string[];
+    form_value: TTradingAssessmentForm;
+    onSubmit: (values?: TTradingAssessmentForm, action?: React.ReactNode, should_override?: boolean) => void;
+    onCancel: (form_data: TTradingAssessmentForm) => void;
+    should_move_to_next: boolean;
+    setSubSectionIndex: (index: number) => void;
+    is_independent_section: boolean;
+    is_mobile?: boolean;
+};
 
 const TradingAssessmentForm = observer(
     ({
-        assessment_questions,
         class_name,
         disabled_items,
         form_value,
@@ -22,18 +34,18 @@ const TradingAssessmentForm = observer(
         should_move_to_next,
         setSubSectionIndex,
         is_independent_section,
-    }) => {
+        is_mobile,
+    }: TradingAssessmentFormProps) => {
+        const { traders_hub } = useStore();
+        const { is_eu_user } = traders_hub;
+        const assessment_questions = getTradingAssessmentQuestions();
+        const stored_items = parseInt(localStorage.getItem('current_question_index') ?? '0');
         const [is_section_filled, setIsSectionFilled] = React.useState(false);
         const [current_question_details, setCurrentQuestionDetails] = React.useState({
             current_question_index: 0,
-            current_question: {},
+            current_question: assessment_questions[stored_items],
         });
-        const [form_data, setFormData] = React.useState({});
-        const {
-            traders_hub: { is_eu_user },
-        } = useStore();
-
-        const stored_items = parseInt(localStorage.getItem('current_question_index') || '0');
+        const [form_data, setFormData] = React.useState({ ...form_value });
         const last_question_index = assessment_questions.length - 1;
         const should_display_previous_button = is_independent_section
             ? current_question_details.current_question_index !== 0
@@ -65,10 +77,11 @@ const TradingAssessmentForm = observer(
                 onSubmit(form_data, null, true);
             } else {
                 const next_question = current_question_details.current_question_index + 1;
+
                 if (next_question < assessment_questions.length) {
                     setCurrentQuestionDetails(prev_state_question => {
                         const next_state_question_index = prev_state_question.current_question_index + 1;
-                        localStorage.setItem('current_question_index', next_state_question_index);
+                        localStorage.setItem('current_question_index', String(next_state_question_index));
                         // Sub section form progress is not required when the section is independent
                         if (!is_independent_section) {
                             setSubSectionIndex(next_state_question_index);
@@ -87,7 +100,7 @@ const TradingAssessmentForm = observer(
             if (prev_question >= 0) {
                 setCurrentQuestionDetails(prev_state_question => {
                     const prev_state_question_index = prev_state_question.current_question_index - 1;
-                    localStorage.setItem('current_question_index', prev_state_question_index);
+                    localStorage.setItem('current_question_index', String(prev_state_question_index));
                     if (!is_independent_section) {
                         setSubSectionIndex(prev_state_question_index);
                     }
@@ -101,15 +114,20 @@ const TradingAssessmentForm = observer(
             }
         };
 
-        const handleValueSelection = (e, form_control, callBackFn) => {
+        const handleValueSelection = (
+            e: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>,
+            form_control: keyof TTradingAssessmentForm,
+            callBackFn: (form_control: keyof TTradingAssessmentForm, value: string) => void
+        ) => {
             if (typeof e.persist === 'function') e.persist();
             callBackFn(form_control, e.target.value);
             setFormData(prev_form => ({ ...prev_form, [form_control]: e.target.value }));
         };
 
-        const isAssessmentCompleted = answers => Object.values(answers).every(answer => Boolean(answer));
+        const isAssessmentCompleted = (answers: TTradingAssessmentForm) =>
+            Object.values(answers).every(answer => Boolean(answer));
 
-        const nextButtonHandler = (values, { setTouched }) => {
+        const nextButtonHandler = (values: TTradingAssessmentForm, { setTouched }) => {
             if (is_section_filled) {
                 if (isAssessmentCompleted(values) && stored_items === last_question_index) {
                     onSubmit(values);
@@ -120,8 +138,8 @@ const TradingAssessmentForm = observer(
             }
         };
 
-        const handleValidate = values => {
-            const errors = {};
+        const handleValidate = (values: TTradingAssessmentForm) => {
+            const errors: FormikErrors<TTradingAssessmentForm> = {};
 
             if (!values.risk_tolerance && current_question_details.current_question.section === 'risk_tolerance') {
                 errors.risk_tolerance = 'error';
@@ -133,7 +151,7 @@ const TradingAssessmentForm = observer(
                 errors.source_of_experience = 'error';
             }
             if (current_question_details.current_question.section === 'trading_experience') {
-                const trading_experience_required_fields = [
+                const trading_experience_required_fields: (keyof TTradingAssessmentForm)[] = [
                     'cfd_experience',
                     'cfd_frequency',
                     'trading_experience_financial_instruments',
@@ -146,7 +164,7 @@ const TradingAssessmentForm = observer(
                 });
             }
             if (current_question_details.current_question.section === 'trading_knowledge') {
-                const trading_knowledge_required_fields = [
+                const trading_knowledge_required_fields: (keyof TTradingAssessmentForm)[] = [
                     'cfd_trading_definition',
                     'leverage_impact_trading',
                     'leverage_trading_high_risk_stop_loss',
@@ -214,7 +232,7 @@ const TradingAssessmentForm = observer(
                                         >
                                             {questions?.length ? (
                                                 <TradingAssessmentDropdown
-                                                    item_list={questions}
+                                                    item_list={questions as TQuestion[]}
                                                     onChange={handleValueSelection}
                                                     values={values}
                                                     setFieldValue={setFieldValue}
@@ -226,10 +244,14 @@ const TradingAssessmentForm = observer(
                                                     text={question_text}
                                                     list={answer_options ?? []}
                                                     onChange={e => {
-                                                        handleValueSelection(e, form_control, setFieldValue, values);
+                                                        handleValueSelection(
+                                                            e,
+                                                            form_control as keyof TTradingAssessmentForm,
+                                                            setFieldValue
+                                                        );
                                                     }}
                                                     values={values}
-                                                    form_control={form_control}
+                                                    form_control={form_control as keyof TTradingAssessmentForm}
                                                     setEnableNextSection={setIsSectionFilled}
                                                     disabled_items={disabled_items ?? []}
                                                 />
@@ -237,7 +259,7 @@ const TradingAssessmentForm = observer(
                                         </div>
                                         <Modal.Footer
                                             has_separator
-                                            is_bypassed={isMobile()}
+                                            is_bypassed={is_mobile}
                                             className='trading-assessment__existing_btn '
                                         >
                                             <Button.Group className='trading-assessment__btn-group'>

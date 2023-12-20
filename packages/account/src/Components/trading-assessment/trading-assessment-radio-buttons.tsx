@@ -1,6 +1,17 @@
 import React from 'react';
 import { Field } from 'formik';
 import { Text, RadioGroup } from '@deriv/components';
+import { TTradingAssessmentForm } from 'Types';
+
+type TradingAssessmentRadioButtonProps = {
+    disabled_items: string[];
+    text?: string;
+    list: { text: string; value: string }[];
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    values: TTradingAssessmentForm;
+    form_control: keyof TTradingAssessmentForm;
+    setEnableNextSection: (enable: boolean) => void;
+};
 
 const TradingAssessmentRadioButton = ({
     disabled_items,
@@ -10,10 +21,10 @@ const TradingAssessmentRadioButton = ({
     values,
     form_control,
     setEnableNextSection,
-}) => {
+}: TradingAssessmentRadioButtonProps) => {
     React.useEffect(() => {
         setEnableNextSection(!!values[form_control]);
-    }, [form_control]);
+    }, [form_control, setEnableNextSection, values]);
 
     return (
         <div className='trading-assessment__wrapper__question'>
@@ -24,7 +35,6 @@ const TradingAssessmentRadioButton = ({
                 {() => (
                     <RadioGroup
                         className='trading-assessment__wrapper__question--radio-group'
-                        is_left
                         name={form_control}
                         should_wrap_items
                         required

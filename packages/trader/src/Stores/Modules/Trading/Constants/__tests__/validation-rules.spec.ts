@@ -130,7 +130,7 @@ describe('getValidationRules', () => {
                 mocked_rest_barrier_params[0],
                 {
                     ...mocked_store,
-                    is_vanilla: true, // zero barrier is allowed for vanilla
+                    is_vanilla: true, // zero barrier is allowed for Vanilla
                 } as TTradeStore,
                 inputs
             )

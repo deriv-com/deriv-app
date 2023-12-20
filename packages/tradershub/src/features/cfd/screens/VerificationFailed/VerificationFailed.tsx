@@ -20,7 +20,7 @@ const VerificationFailed = () => {
     const isPOAFailed = poaStatus?.is_rejected || poaStatus?.is_expired || poaStatus?.is_suspected;
 
     return (
-        <div className='flex flex-col p-1200 gap-1200 w-[440px] h-auto bg-system-light-primary-background rounded-400 sm:w-[320px] sm:p-800 sm:gap-800'>
+        <div className='flex flex-col w-[320px] p-800 gap-800 h-auto bg-system-light-primary-background rounded-400 lg:p-1200 lg:gap-1200 lg:w-[440px]'>
             <Text bold size='sm'>
                 Why did my verification fail?
             </Text>

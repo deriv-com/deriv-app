@@ -91,7 +91,7 @@ export default class OrderStore {
     cancellation_count_period = 0;
     cancellation_limit = 0;
     date_from = null;
-    date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+    date_to = null;
     error_code = '';
     error_message = '';
     filtered_date_range = null;
@@ -459,7 +459,7 @@ export default class OrderStore {
         if (this.order_id === null) {
             // When we're looking at a list, it's safe to move orders from Active to Past.
             if (order_idx === -1) {
-                this.orders.unshift(p2p_order_info);
+                return;
             } else if (
                 (get_order_status.is_completed_order && get_order_status.has_review_details) ||
                 !get_order_status.is_reviewable

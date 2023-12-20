@@ -36,6 +36,7 @@ const CompositeCalendarMobile = ({
     const [from_date, setFrom] = React.useState(from ? toMoment(from).format('YYYY-MM-DD') : undefined);
     const [to_date, setTo] = React.useState(to ? toMoment(to).format('YYYY-MM-DD') : undefined);
     const [is_open, setIsOpen] = React.useState(false);
+    const [is_ok_btn_disabled, setIsOkBtnDisabled] = React.useState(true);
 
     const [applied_date_range, setAppliedDateRange] = React.useState(date_range);
     const [selected_date_range, setSelectedDateRange] = React.useState(date_range);
@@ -84,6 +85,7 @@ const CompositeCalendarMobile = ({
         }
         setAppliedDateRange(selected_date_range);
         setIsOpen(false);
+        setIsOkBtnDisabled(true);
     };
 
     const selectDate = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
@@ -94,6 +96,9 @@ const CompositeCalendarMobile = ({
     };
 
     const onDateRangeChange = (date_range: TInputDateRange) => {
+        if (date_range.value !== CUSTOM_KEY || (from_date && to_date)) setIsOkBtnDisabled(false);
+        else setIsOkBtnDisabled(true);
+
         setSelectedDateRange(
             duration_list?.find(range => date_range && range.value === date_range.value) ?? date_range
         );
@@ -103,6 +108,16 @@ const CompositeCalendarMobile = ({
         setSelectedDateRange(applied_date_range);
         setIsOpen(true);
     };
+
+    const closeDialog = () => {
+        setIsOpen(false);
+        setIsOkBtnDisabled(true);
+    };
+
+    React.useEffect(() => {
+        if (from_date && to_date) setIsOkBtnDisabled(false);
+        else setIsOkBtnDisabled(true);
+    }, [from_date, to_date]);
 
     return (
         <React.Fragment>
@@ -122,9 +137,15 @@ const CompositeCalendarMobile = ({
                 title={localize('Please select duration')}
                 visible={is_open}
                 has_content_scroll
-                onClose={() => setIsOpen(false)}
+                onClose={closeDialog}
                 content_height_offset='94px'
-                footer={<CompositeCalendarMobileFooter setIsOpen={setIsOpen} applyDateRange={applyDateRange} />}
+                footer={
+                    <CompositeCalendarMobileFooter
+                        applyDateRange={applyDateRange}
+                        is_ok_btn_disabled={is_ok_btn_disabled}
+                        onCancel={closeDialog}
+                    />
+                }
             >
                 <div className='composite-calendar-mobile'>
                     <div className='composite-calendar-mobile__radio-group'>
@@ -151,16 +172,18 @@ const CompositeCalendarMobile = ({
                         <div className='composite-calendar-mobile__custom-date-range'>
                             <DatePicker
                                 className='composite-calendar-mobile__custom-date-range-start-date'
+                                disabled={selected_date_range?.value !== CUSTOM_KEY}
                                 is_nativepicker
-                                placeholder={localize('Start date')}
+                                placeholder={selected_date_range?.value === CUSTOM_KEY ? localize('Start date') : ''}
                                 value={from_date}
                                 max_date={to_date || today}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => selectDate(e, 'from')}
                             />
                             <DatePicker
                                 className='composite-calendar-mobile__custom-date-range-end-date'
+                                disabled={selected_date_range?.value !== CUSTOM_KEY}
                                 is_nativepicker
-                                placeholder={localize('End date')}
+                                placeholder={selected_date_range?.value === CUSTOM_KEY ? localize('End date') : ''}
                                 value={to_date}
                                 max_date={today}
                                 min_date={from_date}

@@ -12,6 +12,7 @@ type TradingAccountCardProps = {
 };
 
 jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
     useCtraderAccountsList: jest.fn(),
 }));
 

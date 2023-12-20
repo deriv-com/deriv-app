@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { Button, Heading, Text } from '@deriv/quill-design';
-import { AvailableCTraderAccountsList } from '../../features/cfd/flows/CTrader';
 
 const TradersHubRoute: FC = () => (
     <div className='flex flex-col gap-1200'>
@@ -62,8 +61,7 @@ const TradersHubRoute: FC = () => (
                         Deriv cTrader
                     </Text>
                     <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
-                        {/* <div className='h-4000 rounded-300 bg-solid-slate-100' /> */}
-                        <AvailableCTraderAccountsList />
+                        <div className='h-4000 rounded-300 bg-solid-slate-100' />
                     </div>
                 </div>
                 <div>

@@ -62,7 +62,7 @@ describe('<FinancialDetails />', () => {
 
         fieldsRenderCheck();
 
-        const inputs = screen.getAllByTestId('dti_dropdown_display');
+        const inputs = screen.getAllByTestId('dt_dropdown_display');
         expect(inputs).toHaveLength(8);
 
         expect(screen.getByText('Next')).toBeInTheDocument();

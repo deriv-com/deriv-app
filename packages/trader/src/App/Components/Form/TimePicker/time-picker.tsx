@@ -71,6 +71,7 @@ const TimePicker = observer(
                 {is_nativepicker ? (
                     <input
                         type='time'
+                        data-testid={`dt_${name}_input`}
                         id={`dt_${name}_input`}
                         value={selected_time}
                         onChange={handleChange}

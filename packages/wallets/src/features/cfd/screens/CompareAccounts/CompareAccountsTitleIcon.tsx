@@ -48,7 +48,7 @@ const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherA
         case CFD_PLATFORMS.DXTRADE:
             return isDemo ? 'Deriv X Demo' : 'Deriv X';
         case CFD_PLATFORMS.CTRADER:
-            return isDemo ? 'cTrader Demo' : 'cTrader';
+            return isDemo ? 'Deriv cTrader Demo' : 'Deriv cTrader';
         default:
             return isDemo ? 'CFDs Demo' : 'CFDs';
     }

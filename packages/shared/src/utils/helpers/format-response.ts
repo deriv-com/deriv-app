@@ -93,7 +93,7 @@ export const formatIDVError = (errors: Array<TIDVErrorStatus>, status_code: stri
 
     const status: Array<TIDVErrorStatus> = [];
     errors.forEach(error => {
-        const error_key: TIDVErrorStatus = IDV_ERROR_STATUS[error].code;
+        const error_key: TIDVErrorStatus = IDV_ERROR_STATUS[error]?.code;
         if (error_key) {
             status.push(error_key);
         }

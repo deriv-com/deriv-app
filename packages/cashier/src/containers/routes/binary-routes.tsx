@@ -24,7 +24,7 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
     const [routesConfig, setRoutesConfig] = React.useState(getRoutesConfig());
     useEffect(() => {
         if (is_p2p_v2_enabled) {
-            const routes_replicate = routesConfig;
+            const routes_replicate = [...routesConfig];
             routes_replicate[0].routes?.push({
                 path: routes.cashier_p2p_v2,
                 getTitle: () => localize('Deriv P2P-V2'),

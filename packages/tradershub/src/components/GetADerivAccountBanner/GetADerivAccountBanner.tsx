@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Button, Text } from '@deriv/quill-design';
 
 /**
@@ -8,8 +8,8 @@ import { Button, Text } from '@deriv/quill-design';
  *
  * @returns {React.ReactElement} A `div` element containing the banner message and the button.
  */
-const GetADerivAccountBanner: FC = () => (
-    <div className='flex items-center self-stretch justify-center p-800 gap-800 rounded-200 bg-system-light-secondary-background'>
+const GetADerivAccountBanner = () => (
+    <div className='flex items-center justify-center w-full p-800 gap-800 rounded-200 bg-system-light-secondary-background'>
         <Text bold>You need a Deriv account to create a CFD account.</Text>
         <Button className='rounded-200'>Get a Deriv account</Button>
     </div>

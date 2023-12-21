@@ -1,1 +1,1 @@
-export { default as GetADerivAccountBanner } from './GetADerivAccountBanner.js';
+export { default as GetADerivAccountBanner } from './GetADerivAccountBanner';

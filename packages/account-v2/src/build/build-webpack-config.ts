@@ -1,10 +1,10 @@
 import { Configuration } from 'webpack';
-import { BuildOptions } from './types/build-types';
+import { TBuildOptions } from './types/build-types';
 import { buildLoaders } from './build-loaders';
 import { buildOptimization } from './build-optimization';
 import { buildResolvers } from './build-resolvers';
 
-export const buildWebpackConfig = (options: BuildOptions): Configuration => ({
+export const buildWebpackConfig = (options: TBuildOptions): Configuration => ({
     devtool: options.isRelease ? 'source-map' : 'eval-cheap-module-source-map',
     entry: {
         index: options.paths.entry,

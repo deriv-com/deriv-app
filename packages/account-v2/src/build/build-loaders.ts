@@ -1,7 +1,7 @@
 import { RuleSetRule } from 'webpack';
-import { BuildOptions } from './types/build-types';
+import { TBuildOptions } from './types/build-types';
 
-export const buildLoaders = (options: BuildOptions): RuleSetRule[] => {
+export const buildLoaders = (options: TBuildOptions): RuleSetRule[] => {
     const svgLoaders = [
         {
             loader: 'babel-loader',

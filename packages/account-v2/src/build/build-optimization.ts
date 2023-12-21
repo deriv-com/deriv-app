@@ -1,9 +1,9 @@
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import { Configuration } from 'webpack';
-import { BuildOptions } from './types/build-types';
+import { TBuildOptions } from './types/build-types';
 
-export const buildOptimization = (options: BuildOptions): Configuration['optimization'] => ({
+export const buildOptimization = (options: TBuildOptions): Configuration['optimization'] => ({
     minimize: options.isRelease,
     minimizer: options.isRelease
         ? [

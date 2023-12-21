@@ -1,15 +1,15 @@
-export interface BuildPaths {
+export interface TBuildPaths {
     entry: string;
     output: string;
     root: string;
 }
 
-export interface BuildEnv {
+export interface TBuildEnv {
     base?: boolean | string;
 }
 
-export interface BuildOptions {
+export interface TBuildOptions {
     base: string;
     isRelease: boolean;
-    paths: BuildPaths;
+    paths: TBuildPaths;
 }

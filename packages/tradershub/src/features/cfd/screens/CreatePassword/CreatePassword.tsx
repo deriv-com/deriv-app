@@ -25,7 +25,7 @@ const CreatePassword: React.FC<TProps> = ({
 
     const title = PlatformDetails[platform].title;
     return (
-        <div className='inline-flex flex-col items-center w-full text-center gap-1200 p-1600 rounded-400 bg-system-light-primary-background lg:w-2000'>
+        <div className='inline-flex flex-col items-center w-full text-center gap-1200 p-1600 rounded-400 bg-system-light-primary-background lg:w-[400px]'>
             {!isMobile && icon}
             <div className='flex flex-col justify-center gap-1200 lg:gap-400'>
                 <Text bold>Create a {title} password</Text>

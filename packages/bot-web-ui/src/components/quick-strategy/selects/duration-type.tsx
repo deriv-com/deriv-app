@@ -81,6 +81,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }) => {
                     return (
                         <Autocomplete
                             {...field}
+                            readOnly
                             inputMode='none'
                             data-testid='qs_autocomplete_durationtype'
                             autoComplete='off'

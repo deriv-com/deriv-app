@@ -116,7 +116,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                                                         .flatMap(item => item) as React.ReactElement[]),
                                             }}
                                             expanded={(data as TDescriptionItem[])[0]?.expanded ?? false}
-                                            is_cursive={(data as TDescriptionItem[])[0]?.type === 'subtitle_italic'}
+                                            is_cursive={false}
                                             no_collapsible={(data as TDescriptionItem[])[0]?.no_collapsible}
                                             has_subtitle={!!subtitle_value}
                                             expanded_subtitles_storage={expanded_subtitles_storage}

@@ -19,6 +19,7 @@ describe('<IdvSubmitComplete/>', () => {
     const store = mockStore({
         client: {
             account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     attempts: {
                         count: 0,

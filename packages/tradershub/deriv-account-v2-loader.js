@@ -7,7 +7,7 @@ function checkExists(component) {
 
 module.exports = function (source, map) {
     const lines = source.split(/\n/);
-    const mapped_lines = lines.map(line => {
+    const mappedLines = lines.map(line => {
         const matches = /\s*import\s+\{(.*)\}\s*from\s+\'@deriv\/account-v2/.exec(line); // eslint-disable-line no-useless-escape
         if (!matches || !matches[1]) {
             return line; // do nothing;
@@ -28,5 +28,5 @@ ${checkExists(c) ? `import '@deriv/account-v2/dist/account-v2/css/${c}.css';` : 
         return replace;
     });
 
-    return this.callback(null, mapped_lines.join('\n'), map);
+    return this.callback(null, mappedLines.join('\n'), map);
 };

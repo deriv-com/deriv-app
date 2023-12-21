@@ -9,13 +9,9 @@ import { useTraderStore } from 'Stores/useTraderStores';
 const BarrierSelector = observer(() => {
     const { barrier_1, onChange, setHoveredBarrier, barrier_choices } = useTraderStore();
     const [is_barriers_table_expanded, setIsBarriersTableExpanded] = React.useState(false);
-    const [is_mobile_tooltip_visible, setIsMobileTooltipVisible] = React.useState(false);
     const [selected_barrier, setSelectedBarrier] = React.useState(barrier_1);
 
-    const toggleMobileTooltip = () => setIsMobileTooltipVisible(!is_mobile_tooltip_visible);
-
     const toggleBarriersTable = () => {
-        setIsMobileTooltipVisible(false);
         setIsBarriersTableExpanded(!is_barriers_table_expanded);
     };
 
@@ -44,14 +40,7 @@ const BarrierSelector = observer(() => {
     const barriers_header_mobile = (
         <div className='trade-container__barriers-table__header-wrapper'>
             <div>{localize('Barriers')}</div>
-            <Popover
-                alignment='bottom'
-                icon='info'
-                zIndex='9999'
-                message={header_tooltip_text}
-                is_open={is_mobile_tooltip_visible}
-                onClick={toggleMobileTooltip}
-            />
+            <Popover alignment='bottom' icon='info' zIndex='9999' message={header_tooltip_text} />
         </div>
     );
 

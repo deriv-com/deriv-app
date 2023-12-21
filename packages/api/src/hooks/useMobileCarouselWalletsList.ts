@@ -3,7 +3,7 @@ import useWalletAccountsList from './useWalletAccountsList';
 import useCurrencyConfig from './useCurrencyConfig';
 
 /** A custom hook that gets the list of all wallet accounts for the current user. */
-const useStaleWalletsAccountsList = () => {
+const useMobileCarouselWalletsList = () => {
     const { data: walletAccountsList, isLoading } = useWalletAccountsList();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
@@ -15,6 +15,16 @@ const useStaleWalletsAccountsList = () => {
             setStaleIsLoading(false);
             setStaleWalletAccountslist(walletAccountsList);
         }
+
+        if (
+            !isLoading &&
+            !isCurrencyConfigLoading &&
+            walletAccountsList &&
+            staleWalletAccountsList &&
+            staleWalletAccountsList?.length !== walletAccountsList?.length
+        ) {
+            setStaleWalletAccountslist(walletAccountsList);
+        }
     }, [isLoading, isCurrencyConfigLoading, walletAccountsList]);
 
     return {
@@ -24,4 +34,4 @@ const useStaleWalletsAccountsList = () => {
     };
 };
 
-export default useStaleWalletsAccountsList;
+export default useMobileCarouselWalletsList;

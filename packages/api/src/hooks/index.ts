@@ -58,7 +58,7 @@ export { default as useSendbirdServiceToken } from './useSendbirdServiceToken';
 export { default as useServerTime } from './useServerTime';
 export { default as useSettings } from './useSettings';
 export { default as useSortedMT5Accounts } from './useSortedMT5Accounts';
-export { default as useStaleWalletsAccountsList } from './useStaleWalletsAccountsList';
+export { default as useMobileCarouselWalletsList } from './useMobileCarouselWalletsList';
 export { default as useStatesList } from './useStatesList';
 export { default as useTradingAccountsList } from './useTradingAccountsList';
 export { default as useTradingPlatformInvestorPasswordChange } from './useTradingPlatformInvestorPasswordChange';

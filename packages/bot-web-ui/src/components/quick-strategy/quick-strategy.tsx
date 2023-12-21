@@ -110,7 +110,7 @@ const FormikWrapper: React.FC<TFormikWrapper> = observer(({ children }) => {
                             min_error = getErrorMessage('MIN', min);
                         }
                         if (should_validate && field.name === 'last_digit_prediction') {
-                            max = 0;
+                            min = 0;
                             max = 9;
                             max_error = getErrorMessage('MAX', max, 'LAST_DIGIT_PREDICTION');
                             integer_error_message = 'Enter a value from 0 to 9.';

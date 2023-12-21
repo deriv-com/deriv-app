@@ -2,7 +2,14 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { AccountSwitcherWallet } from '../account-switcher-wallet';
+import { AccountSwitcherWalletMobile } from '../account-switcher-wallet-mobile';
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useWalletAccountsList: jest.fn(() => ({
+        data: [{ loginid: 'CR007', dtrade_loginid: 'CR008' }],
+    })),
+}));
 
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
@@ -15,21 +22,33 @@ jest.mock('../account-switcher-wallet-list', () => ({
     AccountSwitcherWalletList: () => <div>AccountSwitcherWalletList</div>,
 }));
 
-const props: React.ComponentProps<typeof AccountSwitcherWallet> = {
+const props: React.ComponentProps<typeof AccountSwitcherWalletMobile> = {
     is_visible: true,
     toggle: jest.fn(),
 };
 
-describe('AccountSwitcherWalletComponent', () => {
-    const wrapper = (mock: ReturnType<typeof mockStore>) => {
-        const Component = ({ children }: { children: JSX.Element }) => {
-            return <StoreProvider store={mock}>{children}</StoreProvider>;
-        };
-        return Component;
-    };
+let modal_root_el: HTMLDivElement;
 
+beforeAll(() => {
+    modal_root_el = document.createElement('div');
+    modal_root_el.setAttribute('id', 'deriv_app');
+    document.body.appendChild(modal_root_el);
+});
+
+afterAll(() => {
+    document.body.removeChild(modal_root_el);
+});
+
+const wrapper = (mock: ReturnType<typeof mockStore>) => {
+    const Component = ({ children }: { children: JSX.Element }) => {
+        return <StoreProvider store={mock}>{children}</StoreProvider>;
+    };
+    return Component;
+};
+
+describe('AccountSwitcherWalletMobile', () => {
     it('should render the component', () => {
-        const mock = mockStore({
+        const store = mockStore({
             client: {
                 accounts: {
                     CR007: {
@@ -40,15 +59,15 @@ describe('AccountSwitcherWalletComponent', () => {
                 },
             },
         });
-
-        render(<AccountSwitcherWallet {...props} />, { wrapper: wrapper(mock) });
+        render(<AccountSwitcherWalletMobile {...props} />, { wrapper: wrapper(store) });
         expect(screen.getByText('Deriv Apps accounts')).toBeInTheDocument();
         expect(screen.getByText('AccountSwitcherWalletList')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Manage funds' })).toBeInTheDocument();
         expect(screen.getByText('Looking for CFDs? Go to Trader’s hub')).toBeInTheDocument();
     });
 
-    it('should render list items based on the number of wallets', () => {
-        const mock = mockStore({
+    it('should render list wallets', () => {
+        const store = mockStore({
             client: {
                 accounts: {
                     CR007: {
@@ -70,16 +89,25 @@ describe('AccountSwitcherWalletComponent', () => {
             },
         });
 
-        render(<AccountSwitcherWallet {...props} />, { wrapper: wrapper(mock) });
+        render(<AccountSwitcherWalletMobile {...props} />, { wrapper: wrapper(store) });
         expect(screen.getByText('AccountSwitcherWalletList')).toBeInTheDocument();
     });
 
-    it('should toggle the switcher on button click', () => {
-        const mock = mockStore({});
-
-        render(<AccountSwitcherWallet {...props} />, { wrapper: wrapper(mock) });
-        const button = screen.getByTestId('dt_go_to_arrow');
-        userEvent.click(button);
+    it('should toggle the switcher on footer click', () => {
+        const store = mockStore({
+            client: {
+                accounts: {
+                    CR007: {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        linked_to: [{ loginid: 'CR008', platform: 'dtrade' }],
+                    },
+                },
+            },
+        });
+        render(<AccountSwitcherWalletMobile {...props} />, { wrapper: wrapper(store) });
+        const footer = screen.getByText('Looking for CFDs? Go to Trader’s hub');
+        userEvent.click(footer);
         expect(props.toggle).toHaveBeenCalledTimes(1);
     });
 });

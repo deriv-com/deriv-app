@@ -1,3 +1,4 @@
+export * from './ContentSwitcher';
 export * from './GetADerivAccountBanner';
 export * from './ModalProvider';
 export * from './ModalStepWrapper';

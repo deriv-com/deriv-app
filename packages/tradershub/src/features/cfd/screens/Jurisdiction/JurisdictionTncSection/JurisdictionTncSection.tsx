@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Text, useBreakpoint } from '@deriv/quill-design';
+import { Link, Text, useBreakpoint } from '@deriv/quill-design';
 import { useModal } from '../../../../../components/ModalProvider';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
@@ -47,27 +47,13 @@ const JurisdictionTncSection: FC<TProps> = ({ isCheckBoxChecked, selectedJurisdi
                     <label className='cursor-pointer' htmlFor='tnc-checkbox'>
                         <Text size={isMobile ? 'sm' : 'md'}>
                             I confirm and accept {selectedCompany.name}&lsquo;s{' '}
-                            <a
+                            <Link
                                 className='cursor-pointer text-solid-coral-700'
-                                onClick={() => {
-                                    window.open(getStaticUrl(selectedCompany.tncUrl), '_blank');
-                                }}
-                                // Reason: To fix sonarcloud issue
-                                onKeyDown={(event: React.KeyboardEvent<HTMLAnchorElement>) => {
-                                    if (event.key === 'Enter') {
-                                        window.open(
-                                            getStaticUrl(
-                                                companyNamesAndUrls[
-                                                    selectedJurisdiction as keyof typeof companyNamesAndUrls
-                                                ].tncUrl
-                                            ),
-                                            '_blank'
-                                        );
-                                    }
-                                }}
+                                href={getStaticUrl(selectedCompany.tncUrl)}
+                                target='_blank'
                             >
                                 Terms and Conditions
-                            </a>
+                            </Link>
                         </Text>
                     </label>
                 </div>

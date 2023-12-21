@@ -25,7 +25,7 @@ const ContentHeaderList: FC<TContentHeaderList> = memo(({ className, list }) => 
                     className={qtJoin('rounded-200', index !== activeTabIndex && 'bg-transparent font-regular')}
                     colorStyle='white'
                     fullWidth
-                    key={index}
+                    key={`tradershub-tab-${tabLabel}`}
                     onClick={() => setActiveTabIndex(index)}
                     size='lg'
                 >

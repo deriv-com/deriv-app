@@ -217,7 +217,7 @@ const TradingAssessment = observer(() => {
                                     // eslint-disable-next-line no-else-return
                                 } else {
                                     return (
-                                        <div key={form_control}>
+                                        <div key={`${form_control}_dropdown`}>
                                             {item.questions.map(items => {
                                                 const sub_form_control = items.form_control;
                                                 return (

@@ -1,6 +1,6 @@
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
-import { D_ALEMBERT, MARTINGALE, OSCARS_GRIND } from './descriptions';
+import { D_ALEMBERT, MARTINGALE, OSCARS_GRIND, REVERSE_MARTINGALE, REVERSE_D_ALEMBERT, _1_3_2_6 } from './descriptions';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [
@@ -168,10 +168,7 @@ export const STRATEGIES: TStrategies = {
     MARTINGALE: {
         name: 'martingale_max-stake',
         label: localize('Martingale'),
-        description: localize(
-            'The Martingale strategy multiplies the stake by the chosen multiplier after every losing trade. The stake for the next trade resets to the initial stake after a successful trade. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake.'
-        ),
-        long_description: MARTINGALE,
+        description: MARTINGALE,
         fields: [
             [
                 LABEL_SYMBOL,
@@ -192,10 +189,7 @@ export const STRATEGIES: TStrategies = {
     D_ALEMBERT: {
         name: 'dalembert_max-stake',
         label: localize('D’Alembert'),
-        description: localize(
-            "The D'Alembert strategy increases the stake after a losing trade and reduces the stake after a successful trade by the number of units that traders decide. One unit is equal to the amount of the initial stake. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake."
-        ),
-        long_description: D_ALEMBERT,
+        description: D_ALEMBERT,
         fields: [
             [
                 LABEL_SYMBOL,
@@ -216,10 +210,7 @@ export const STRATEGIES: TStrategies = {
     OSCARS_GRIND: {
         name: 'oscars_grind_max-stake',
         label: localize('Oscar’s Grind'),
-        description: localize(
-            "The Oscar's Grind strategy aims to potentially make one unit of profit per session. A new session starts when the target profit is reached. If a losing trade is followed by a successful one, the stake increases by one unit. In every other scenario, the stake for the next trade will be the same as the previous one. If the stake for the next trade exceeds the gap between the target profit and current loss of the session, it adjusts to the gap size. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake."
-        ),
-        long_description: OSCARS_GRIND,
+        description: OSCARS_GRIND,
         fields: [
             [
                 LABEL_SYMBOL,
@@ -240,9 +231,7 @@ export const STRATEGIES: TStrategies = {
     REVERSE_MARINGALE: {
         name: 'reverse_martingale',
         label: localize('Reverse Martingale'),
-        description: localize(
-            'The Reverse Martingale strategy multiplies the stake by the chosen multiplier after every successful trade. The stake for the next trade will reset to the initial stake after a losing trade. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake.'
-        ),
+        description: REVERSE_MARTINGALE,
         fields: [
             [
                 LABEL_SYMBOL,
@@ -263,9 +252,7 @@ export const STRATEGIES: TStrategies = {
     REVERSE_D_ALEMBERT: {
         name: 'reverse_dalembert',
         label: localize('Reverse D’Alembert'),
-        description: localize(
-            "The Reverse D'Alembert strategy increases the stake after a successful trade and reduces the stake after a losing trade by the number of units that traders decide. One unit is equal to the amount of the initial stake. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake."
-        ),
+        description: REVERSE_D_ALEMBERT,
         fields: [
             [
                 LABEL_SYMBOL,
@@ -286,9 +273,7 @@ export const STRATEGIES: TStrategies = {
     '1_3_2_6': {
         name: '1_3_2_6',
         label: localize('1-3-2-6'),
-        description: localize(
-            'The 1-3-2-6 strategy aims to maximise profits with four consecutive wins. One unit is equal to the amount of the initial stake. The stake will adjust from 1 unit to 3 units after the first successful trade, then to 2 units after your second successful trade, and to 6 units after the third successful trade. The stake for the next trade will reset to the initial stake if there is a losing trade or a completion of the trade cycle.'
-        ),
+        description: _1_3_2_6,
         fields: [
             [
                 LABEL_SYMBOL,

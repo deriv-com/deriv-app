@@ -12,10 +12,6 @@ type TContentData = {
 
 type TPartialAccordion = Partial<{
     test_id: string;
-    icon: {
-        open_icon: string;
-        close_icon: string;
-    };
     is_cursive: boolean;
     no_collapsible: boolean;
     expanded_subtitles_storage: { [key: string]: boolean };
@@ -37,7 +33,6 @@ const Accordion = ({
     no_collapsible = true,
     has_subtitle = true,
     font_size,
-    icon,
     ...props
 }: TAccordion) => {
     const [is_open, setOpen] = useState(expanded);
@@ -51,16 +46,6 @@ const Accordion = ({
     const accordion_subtitle = `${header}__${selected_strategy}`.split(' ').join('_').toLocaleLowerCase();
     const is_expanded_section = expanded_subtitles_storage ? expanded_subtitles_storage[accordion_subtitle] : false;
     const should_be_expanded = is_expanded_section || is_open || !has_subtitle;
-
-    const chooseIcon = () => {
-        if (icon) {
-            if (should_be_expanded) {
-                return icon.open_icon || 'IcAccordionMinus';
-            }
-            return icon.close_icon || 'IcAccordionPlus';
-        }
-        return should_be_expanded ? 'IcAccordionMinus' : 'IcAccordionPlus';
-    };
 
     return (
         <div className='dbot-accordion' {...props}>
@@ -92,7 +77,7 @@ const Accordion = ({
                         </div>
                         {no_collapsible && (
                             <div className='dbot-accordion__icon'>
-                                <Icon icon={chooseIcon()} />
+                                <Icon icon={should_be_expanded ? 'IcMinusRounded' : 'IcAddRounded'} />
                             </div>
                         )}
                     </button>

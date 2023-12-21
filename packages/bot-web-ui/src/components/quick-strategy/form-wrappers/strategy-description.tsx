@@ -32,12 +32,12 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
             switch (data.type) {
                 case 'subtitle':
                     return data?.content?.map(text => (
-                        <div className='qs__long_description__title' key={text}>
+                        <div className='qs__description__title' key={text}>
                             <Text size={font_size} weight='bold' dangerouslySetInnerHTML={{ __html: text }} />
                         </div>
                     ));
                 case 'text': {
-                    const class_names = classNames(`qs__long_description__content ${data?.className ?? ''}`);
+                    const class_names = classNames(`qs__description__content ${data?.className ?? ''}`);
                     return data?.content?.map(text => (
                         <div className={class_names} key={text}>
                             <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
@@ -46,12 +46,12 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                 }
                 case 'subtitle_italic':
                     return data?.content?.map(text => (
-                        <div className='qs__long_description__title italic' key={text}>
+                        <div className='qs__description__title italic' key={text}>
                             <Text size={font_size} weight='bold' dangerouslySetInnerHTML={{ __html: text }} />
                         </div>
                     ));
                 case 'text_italic': {
-                    const class_names = classNames(`qs__long_description__content italic ${data?.className ?? ''}`);
+                    const class_names = classNames(`qs__description__content italic ${data?.className ?? ''}`);
                     return data?.content?.map(text => (
                         <div className={class_names} key={text}>
                             <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
@@ -61,7 +61,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                 case 'media':
                     return (
                         <div>
-                            <img className='qs__long_description__image' src={data.src} alt={data.alt} />
+                            <img className='qs__description__image' src={data.src} alt={data.alt} />
                         </div>
                     );
                 default:
@@ -70,8 +70,8 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
         };
 
         const expanded_subtitles_storage_default: TExpandedSubtitlesStorageDefault = {};
-        const grouped_objects_by_title = (Array.isArray(strategy?.long_description) &&
-            strategy?.long_description?.reduce((acc: TDescriptionItem[][], obj: TDescriptionItem) => {
+        const grouped_objects_by_title = (Array.isArray(strategy?.description) &&
+            strategy?.description?.reduce((acc: TDescriptionItem[][], obj: TDescriptionItem) => {
                 if (obj.type === 'subtitle_italic' || obj.type === 'subtitle') {
                     acc.push([]);
                     expanded_subtitles_storage_default[
@@ -116,10 +116,6 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                                                         .flatMap(item => item) as React.ReactElement[]),
                                             }}
                                             expanded={(data as TDescriptionItem[])[0]?.expanded ?? false}
-                                            icon={{
-                                                open_icon: 'IcAccordionMinus',
-                                                close_icon: 'IcAccordionPlus',
-                                            }}
                                             is_cursive={(data as TDescriptionItem[])[0]?.type === 'subtitle_italic'}
                                             no_collapsible={(data as TDescriptionItem[])[0]?.no_collapsible}
                                             has_subtitle={!!subtitle_value}

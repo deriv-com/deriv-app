@@ -64,8 +64,7 @@ export type TDescription = TDescriptionItem[] | TDataGroupedObjectsByTitle;
 export type TStrategy = {
     name: string;
     label: string;
-    description: string;
-    long_description?: TDescriptionItem[];
+    description: TDescriptionItem[];
     fields: TConfigItem[][];
 };
 

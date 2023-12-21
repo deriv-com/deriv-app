@@ -1,5 +1,5 @@
 import React, { Children, PropsWithChildren } from 'react';
-import { useTabsContext } from './ContentSwitcher';
+import { useContentSwitch } from './ContentSwitcher';
 
 /**
  * Container for content panels.
@@ -8,7 +8,7 @@ import { useTabsContext } from './ContentSwitcher';
  * @returns {JSX.Element} The rendered component.
  */
 const ContentPanelContainer = ({ children }: PropsWithChildren) => {
-    const { activeTabIndex } = useTabsContext();
+    const { activeTabIndex } = useContentSwitch();
 
     return (
         <div>

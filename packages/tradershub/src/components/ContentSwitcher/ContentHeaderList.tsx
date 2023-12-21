@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { Button, qtJoin, qtMerge } from '@deriv/quill-design';
-import { useTabsContext } from './ContentSwitcher';
+import { useContentSwitch } from './ContentSwitcher';
 
 type TContentHeaderList = {
     className?: string;
@@ -8,33 +8,33 @@ type TContentHeaderList = {
 };
 
 /**
- * List of of button headers for the content panels.
+ * List of button headers for the content panels.
  * @param {TContentHeaderList} props The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-
-const ContentHeaderList: FC<TContentHeaderList> = ({ className, list }) => {
-    const { activeTabIndex, setActiveTabIndex } = useTabsContext();
+const ContentHeaderList: FC<TContentHeaderList> = memo(({ className, list }) => {
+    const { activeTabIndex, setActiveTabIndex } = useContentSwitch();
 
     return (
         <div
             className={qtMerge('flex bg-system-light-secondary-background rounded-400 p-200 gap-200', className)}
             data-list-count={list.length}
         >
-            {list.map((tab, i) => (
+            {list.map((tabLabel, index) => (
                 <Button
-                    className={qtJoin('rounded-200', i !== activeTabIndex && 'bg-transparent font-regular')}
+                    className={qtJoin('rounded-200', index !== activeTabIndex && 'bg-transparent font-regular')}
                     colorStyle='white'
                     fullWidth
-                    key={i}
-                    onClick={() => setActiveTabIndex(i)}
+                    key={index}
+                    onClick={() => setActiveTabIndex(index)}
                     size='lg'
                 >
-                    {tab}
+                    {tabLabel}
                 </Button>
             ))}
         </div>
     );
-};
+});
 
+ContentHeaderList.displayName = 'ContentHeaderList';
 export default ContentHeaderList;

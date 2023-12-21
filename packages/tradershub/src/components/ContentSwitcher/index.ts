@@ -1,3 +1,3 @@
-import ContentSwitcher, { useTabsContext } from './ContentSwitcher';
+import ContentSwitcher, { useContentSwitch } from './ContentSwitcher';
 
-export { ContentSwitcher, useTabsContext };
+export { ContentSwitcher, useContentSwitch };

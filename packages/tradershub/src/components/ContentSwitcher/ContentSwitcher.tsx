@@ -1,9 +1,9 @@
-import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react';
+import React, { createContext, Dispatch, ReactNode, SetStateAction, useContext, useMemo, useState } from 'react';
 import ContentHeaderList from './ContentHeaderList';
 import ContentPanelContainer from './ContentPanelContainer';
 import ContentTabPanel from './ContentTabPanel';
 
-type TTabContext = {
+type TContentContext = {
     activeTabIndex: number;
     setActiveTabIndex: Dispatch<SetStateAction<number>>;
 };
@@ -16,14 +16,14 @@ type TContentSwitcher = {
 /**
  * Context for managing tab state.
  */
-const TabsContext = createContext<TTabContext | null>(null);
+const TabsContext = createContext<TContentContext | null>(null);
 
 /**
  * Hook for accessing the tab context.
  * @throws {Error} If the hook is used outside of a `<ContentSwitcher />`.
- * @returns {TTabContext} The current tab context.
+ * @returns {TContentContext} The current tab context.
  */
-export const useTabsContext = () => {
+export const useContentSwitch = () => {
     const context = useContext(TabsContext);
 
     if (!context) {
@@ -58,9 +58,10 @@ export const useTabsContext = () => {
  */
 const ContentSwitcher = ({ children, className }: TContentSwitcher) => {
     const [activeTabIndex, setActiveTabIndex] = useState(0);
+    const value = useMemo(() => ({ activeTabIndex, setActiveTabIndex }), [activeTabIndex]);
 
     return (
-        <TabsContext.Provider value={{ activeTabIndex, setActiveTabIndex }}>
+        <TabsContext.Provider value={value}>
             <div className={className}>{children}</div>
         </TabsContext.Provider>
     );

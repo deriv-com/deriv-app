@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useCtraderServiceToken } from '@deriv/api';
+import { useActiveTradingAccount, useCtraderServiceToken } from '@deriv/api';
 import { Button, Text } from '@deriv/quill-design';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import { THooks, TPlatforms } from '../../../../../types';
@@ -7,14 +7,17 @@ import { AppToContentMapper, PlatformDetails, PlatformToLabelIconMapper, Platfor
 
 type TMT5TradeLinkProps = {
     app?: keyof typeof AppToContentMapper;
-    isDemo?: THooks.ActiveAccount['is_virtual'];
     platform?: TPlatforms.All;
     webtraderUrl?: THooks.MT5AccountsList['webtrader_url'];
 };
 
-const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, platform, webtraderUrl = '' }) => {
+const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', platform, webtraderUrl = '' }) => {
     const content = AppToContentMapper[app];
     const { data: ctraderToken } = useCtraderServiceToken();
+
+    const { data: activeAccount } = useActiveTradingAccount();
+
+    const isDemo = activeAccount?.is_virtual;
 
     const mt5Platform = PlatformDetails.mt5.platform;
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
@@ -38,11 +41,11 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
     };
 
     return (
-        <div className='flex justify-between items-center border-t border-[#f2f3f4] pt-4 px-6'>
-            <div className='flex items-center gap-4'>
+        <div className='flex items-center justify-between border-t border-system-light-secondary-background px-800 py-1200'>
+            <div className='flex items-center gap-800'>
                 {(platform === mt5Platform || app === ctraderPlatform) && (
                     <React.Fragment>
-                        <div className='w-8 h-8'>{content.icon}</div>
+                        <div className='w-1600 h-1600'>{content.icon}</div>
                         <Text size='sm'>{content.title}</Text>
                     </React.Fragment>
                 )}
@@ -61,11 +64,11 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', isDemo = false, p
             )}
             {platform !== mt5Platform && app !== ctraderPlatform && (
                 <button
-                    className='border-none cursor-pointer bg-black flex p-2 items-center gap-2 rounded-md'
+                    className='flex items-center bg-black border-none rounded-md cursor-pointer p-400 gap-400'
                     onClick={onClickWebTerminal}
                 >
                     {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}
-                    <Text color='white' size='xs' weight='bold'>
+                    <Text bold colorStyle='white' size='sm'>
                         Web terminal
                     </Text>
                 </button>

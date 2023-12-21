@@ -80,24 +80,25 @@ jest.mock('@deriv/shared', () => {
 const accumulators_title = 'Accumulators';
 const multipliers_title = 'Multipliers';
 const underlying = 'R_10';
-const vanilla_title = 'Call/Put';
+const vanillas_title = 'Vanillas';
+const call_put = 'Call/Put';
 
 describe('onChangeContractTypeList', () => {
     const trade_store = mockStore({}).modules.trade;
     const accumulators_contract_data = {
-        Accumulators: {
+        [accumulators_title]: {
             name: accumulators_title,
             categories: [{ value: TRADE_TYPES.ACCUMULATOR, text: accumulators_title }],
         },
     };
     const vanillas_contract_data = {
-        Vanillas: {
-            name: 'Vanillas',
+        [vanillas_title]: {
+            name: vanillas_title,
             categories: [
-                { value: TRADE_TYPES.VANILLA.CALL, text: vanilla_title },
+                { value: TRADE_TYPES.VANILLA.CALL, text: call_put },
                 {
                     value: TRADE_TYPES.VANILLA.PUT,
-                    text: vanilla_title,
+                    text: call_put,
                 },
             ],
         },
@@ -106,6 +107,7 @@ describe('onChangeContractTypeList', () => {
     beforeAll(() => {
         ContractType.buildContractTypesConfig(underlying);
     });
+
     it('should return the 1st contract_type from contract_types_list if Multipliers are not present in it', () => {
         trade_store.contract_types_list = { ...vanillas_contract_data, ...accumulators_contract_data };
         expect(onChangeContractTypeList(trade_store)).toMatchObject({ contract_type: TRADE_TYPES.VANILLA.CALL });
@@ -113,7 +115,7 @@ describe('onChangeContractTypeList', () => {
     it('should return Multipliers contract_type if Multipliers are present in contract_types_list', () => {
         trade_store.contract_types_list = {
             ...vanillas_contract_data,
-            Multipliers: {
+            [multipliers_title]: {
                 name: multipliers_title,
                 categories: [{ value: TRADE_TYPES.MULTIPLIER, text: multipliers_title }],
             },
@@ -149,9 +151,11 @@ describe('onChangeContractType', () => {
             },
         ],
     };
+
     beforeAll(() => {
         ContractType.buildContractTypesConfig(underlying);
     });
+
     it('should return an object with correct store values for Vanilla', () => {
         const barrier_1 = '+0.000';
         const barrier_choices = ['-1.230', '-0.650', barrier_1, '+0.650', '+1.230'];

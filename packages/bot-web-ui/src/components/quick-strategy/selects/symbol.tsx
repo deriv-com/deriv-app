@@ -40,13 +40,14 @@ const SymbolSelect: React.FC = () => {
     const [last_selected_symbol, setLastSelectedSymbol] = useState({ text: '', value: '' });
     const { setFieldValue, values } = useFormikContext<TFormData>();
 
-    const sendAssetValueToRudderStack = (item: string) => {
-        Analytics.trackEvent('ce_bot_quick_strategy_form', {
-            action: 'choose_asset',
-            asset_type: item,
-            form_source: 'ce_bot_quick_strategy_form',
-        });
-    };
+    const symbols = useMemo(
+        () =>
+            active_symbols.map((symbol: TSymbol) => ({
+                component: <MarketOption key={symbol.text} symbol={symbol} />,
+                ...symbol,
+            })),
+        [active_symbols]
+    );
 
     useEffect(() => {
         const { active_symbols } = ApiHelpers.instance;
@@ -64,21 +65,20 @@ const SymbolSelect: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const symbols = useMemo(
-        () =>
-            active_symbols.map((symbol: TSymbol) => ({
-                component: <MarketOption key={symbol.text} symbol={symbol} />,
-                ...symbol,
-            })),
-        [active_symbols]
-    );
-
     useEffect(() => {
         const selected_symbol = symbols.find(symbol => symbol.value === values.symbol);
         if (selected_symbol) {
             setInputValue({ text: selected_symbol.text, value: selected_symbol.value });
         }
     }, [symbols, values.symbol, setInputValue]);
+
+    const sendAssetValueToRudderStack = (item: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_asset',
+            asset_type: item,
+            form_source: 'ce_bot_quick_strategy_form',
+        });
+    };
 
     const handleFocus = () => {
         if (is_desktop && !is_input_started) {

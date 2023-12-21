@@ -2,11 +2,17 @@ import { TFormErrorMessagesTypes } from '../../validation/form-error-messages-ty
 import { initFormErrorMessages } from '../../validation';
 import Validator, { template } from '../validator';
 
-describe('validator', () => {
+describe('validator.ts', () => {
+    const amount_required_error = 'Amount is a required field.';
+    const should_be_valid_number_error = 'Should be a valid number.';
+    const only_99_characters_error = 'Only 99 characters, please.';
+    const min_value_error = 'The value must be equal or greater than 1';
+
     beforeAll(() => {
-        initFormErrorMessages({ number: () => 'Should be a valid number.' } as TFormErrorMessagesTypes);
+        initFormErrorMessages({ number: () => should_be_valid_number_error } as TFormErrorMessagesTypes);
     });
-    describe('.template()', () => {
+
+    describe('template', () => {
         it('should return a string where variables in brackets are replaced with respective items from content array', () => {
             expect(template('abc [_1] abc', ['2'])).toBe('abc 2 abc');
             expect(template('[_1] [_2]', ['1', '2'])).toBe('1 2');
@@ -24,12 +30,9 @@ describe('validator', () => {
             expect(template('[_1]', '')).toBe('undefined');
         });
     });
+
     describe('Validator', () => {
         const store = {
-            initial_barriers: {
-                barrier_1: '',
-                barrier_2: '',
-            },
             is_vanilla: false,
             amount: 10,
             barrier_1: '+1.16',
@@ -37,44 +40,6 @@ describe('validator', () => {
             barrier_count: 1,
             contract_start_type: 'spot',
             currency: 'USD',
-            duration_min_max: {
-                daily: {
-                    min: 86400,
-                    max: 31536000,
-                },
-                intraday: {
-                    min: 15,
-                    max: 86400,
-                },
-                tick: {
-                    min: 5,
-                    max: 10,
-                },
-            },
-            duration_unit: 'm',
-            duration_units_list: [
-                {
-                    text: 'Ticks',
-                    value: 't',
-                },
-                {
-                    text: 'Seconds',
-                    value: 's',
-                },
-                {
-                    text: 'Minutes',
-                    value: 'm',
-                },
-                {
-                    text: 'Hours',
-                    value: 'h',
-                },
-                {
-                    text: 'Days',
-                    value: 'd',
-                },
-            ],
-            duration: 15,
             expiry_date: '2023-12-20',
             expiry_time: '20:05',
             form_components: ['duration', 'amount', 'barrier'],
@@ -86,25 +51,15 @@ describe('validator', () => {
             stop_loss: '10',
             take_profit: '32',
         };
+        const amount_rule_options = { min: 0, type: 'float' };
         const amount_validation_rules = {
             amount: [
-                [
-                    'req',
-                    {
-                        message: 'Amount is a required field.',
-                    },
-                ],
-                [
-                    'number',
-                    {
-                        min: 0,
-                        type: 'float',
-                    },
-                ],
+                ['req', { message: amount_required_error }],
+                ['number', amount_rule_options],
             ],
         };
 
-        it('should pass validation', () => {
+        it('should pass amount validation', () => {
             const inputs = {
                 amount: 10,
             } as Pick<typeof store, keyof typeof store>;
@@ -119,7 +74,7 @@ describe('validator', () => {
             expect(check).toHaveBeenCalled();
             expect(addFailure).not.toHaveBeenCalled();
         });
-        it('should fail validation with an error from rules', () => {
+        it('should fail amount validation with an error from amount rules', () => {
             const inputs = { amount: '' } as Pick<typeof store, keyof typeof store> & { amount: string };
             const validator = new Validator(inputs, amount_validation_rules, store);
             const addFailure = jest.spyOn(validator, 'addFailure');
@@ -131,18 +86,18 @@ describe('validator', () => {
                 expect.objectContaining({
                     name: 'req',
                     options: {
-                        message: 'Amount is a required field.',
+                        message: amount_required_error,
                     },
                 })
             );
             expect(validator.errors).toMatchObject({
                 errors: {
-                    amount: ['Amount is a required field.'],
+                    amount: [amount_required_error],
                 },
             });
             expect(validator.error_count).toBe(1);
         });
-        it('should fail validation with an incorrect number error', () => {
+        it('should fail number validation with an invalid number error', () => {
             const inputs = { amount: NaN } as Pick<typeof store, keyof typeof store>;
             const validator = new Validator(inputs, amount_validation_rules, store);
             const addFailure = jest.spyOn(validator, 'addFailure');
@@ -151,18 +106,54 @@ describe('validator', () => {
             expect(check).toHaveBeenCalled();
             expect(addFailure).toHaveBeenCalledWith(
                 'amount',
-                expect.objectContaining({
-                    name: 'number',
-                    options: {
-                        min: 0,
-                        type: 'float',
-                    },
-                }),
-                'Should be a valid number.'
+                expect.objectContaining({ name: 'number', options: amount_rule_options }),
+                should_be_valid_number_error
             );
             expect(validator.errors).toMatchObject({
                 errors: {
-                    amount: ['Should be a valid number.'],
+                    amount: [should_be_valid_number_error],
+                },
+            });
+            expect(validator.error_count).toBe(1);
+        });
+        it('should fail length validation with 99 chars limit error', () => {
+            const options = { message: only_99_characters_error, max: 99 };
+            const address_city_rules = {
+                address_city: [['length', options]],
+            };
+            const validator = new Validator(
+                {
+                    address_city:
+                        'Krung Thep Mahanakhon Amon Rattanakosin Mahinthara Yuthaya Mahadilok Phop Noppharat Ratchathani Burirom Udomratchaniwet Mahasathan Amon Piman Awatan Sathit Sakkathattiya Witsanukam Prasit',
+                },
+                address_city_rules,
+                { address_city: '' }
+            );
+            const addFailure = jest.spyOn(validator, 'addFailure');
+            const check = jest.spyOn(validator, 'check');
+            expect(validator.isPassed()).toBe(false);
+            expect(check).toHaveBeenCalled();
+            expect(addFailure).toHaveBeenCalledWith(
+                'address_city',
+                expect.objectContaining({ name: 'length', options })
+            );
+            expect(validator.errors).toMatchObject({
+                errors: {
+                    address_city: [only_99_characters_error],
+                },
+            });
+            expect(validator.error_count).toBe(1);
+        });
+        it('should fail min value validation', () => {
+            const options = { message: min_value_error, min: 1 };
+            const size_rules = {
+                size: [['min', options]],
+            };
+            const validator = new Validator({ size: 0 }, size_rules, { size: 10 });
+            validator.addFailure('size', { name: 'min', options });
+            expect(validator.errors).toMatchObject({
+                errors: {
+                    size: [min_value_error],
                 },
             });
             expect(validator.error_count).toBe(1);
@@ -171,7 +162,7 @@ describe('validator', () => {
             const rule_object = Validator.getRuleObject(amount_validation_rules.amount[0]);
             expect(rule_object).toHaveProperty('name', 'req');
             expect(rule_object).toHaveProperty('options', {
-                message: 'Amount is a required field.',
+                message: amount_required_error,
             });
             expect(rule_object).toHaveProperty('validator');
         });

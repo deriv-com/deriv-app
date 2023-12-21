@@ -607,6 +607,10 @@
         &__content {
             margin-bottom: 0.8rem;
 
+            @include desktop {
+                padding-left: 1rem;
+            }
+
             &.italic {
                 font-style: italic;
             }
@@ -623,6 +627,10 @@
         &__image {
             width: 100%;
             margin-bottom: 2rem;
+
+            @include desktop {
+                padding-left: 1rem;
+            }
         }
     }
 }

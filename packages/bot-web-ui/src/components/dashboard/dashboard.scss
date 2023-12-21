@@ -649,6 +649,9 @@
         @include desktop {
             padding-left: 0;
         }
+        @include mobile {
+            padding: 0.6rem 1rem;
+        }
 
         border-bottom: 1px solid var(--general-section-1);
 
@@ -669,6 +672,10 @@
 
         @include mobile {
             width: 100%;
+        }
+
+        @include desktop {
+            padding-left: 1rem;
         }
 
         span {

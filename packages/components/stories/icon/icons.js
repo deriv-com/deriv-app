@@ -724,8 +724,11 @@ export const icons =
     'mt5': [
         'IcMt5BviDerived',
         'IcMt5BviFinancial',
+        'IcMt5Bvi',
         'IcMt5CfdPlatform',
         'IcMt5Cfds',
+        'IcMt5DerivedFinancialBvi',
+        'IcMt5DerivedFinancialVanuatu',
         'IcMt5Derived',
         'IcMt5DeviceDesktop',
         'IcMt5DeviceLaptop',
@@ -757,6 +760,7 @@ export const icons =
         'IcMt5TradeTypes',
         'IcMt5VanuatuDerived',
         'IcMt5VanuatuFinancial',
+        'IcMt5Vanuatu',
     ],
     'option': [
         'IcOptionAccumulators',

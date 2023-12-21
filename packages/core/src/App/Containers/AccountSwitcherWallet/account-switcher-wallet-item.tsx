@@ -9,7 +9,7 @@ import WalletBadge from 'App/Components/Layout/Header/wallets/wallet-badge';
 import './account-switcher-wallet-item.scss';
 
 type TAccountSwitcherWalletItemProps = {
-    account: ReturnType<typeof useStoreWalletAccountsList>['data'][number];
+    account: Exclude<ReturnType<typeof useStoreWalletAccountsList>['data'], undefined>[number];
     closeAccountsDialog: () => void;
     show_badge?: boolean;
 };
@@ -52,7 +52,8 @@ export const AccountSwitcherWalletItem = observer(
                 })}
                 data-testid='account-switcher-wallet-item'
                 onClick={onAccountSwitch}
-                // SonarLint offers to add handler for onKeyDown event if we have onClick event handler
+                // SonarLint offers to add handler for onKeyDown event and a role if we have onClick event handler
+                role='button'
                 onKeyDown={onAccountSwitch}
             >
                 <div>

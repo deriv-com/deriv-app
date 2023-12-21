@@ -32,7 +32,7 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
             });
             setRoutesConfig(routes_replicate);
         }
-    }, [is_p2p_v2_enabled, routesConfig]);
+    }, [is_p2p_v2_enabled]);
 
     return (
         <React.Suspense fallback={<Loading />}>

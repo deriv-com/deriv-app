@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Button, Text, TextField, useBreakpoint } from '@deriv/quill-design';
 import { TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
@@ -23,14 +23,7 @@ type TProps = {
  * @param platform MT5 or Deriv X
  * @returns
  */
-const CreatePassword: React.FC<TProps> = ({
-    icon,
-    isLoading,
-    onPasswordChange,
-    onPrimaryClick,
-    password,
-    platform,
-}) => {
+const CreatePassword: FC<TProps> = ({ icon, isLoading, onPasswordChange, onPrimaryClick, password, platform }) => {
     const { isMobile } = useBreakpoint();
 
     const title = PlatformDetails[platform].title;

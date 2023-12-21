@@ -24,9 +24,15 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
         const { quick_strategy } = useDBotStore();
         const { selected_strategy } = quick_strategy;
         const { is_mobile } = ui;
+
+        const font_size = React.useMemo(() => {
+            if (is_mobile) {
+                return 'xxs';
+            }
+            return tutorial_selected_strategy ? 's' : 'xs';
+        }, [is_mobile, tutorial_selected_strategy]);
+
         const strategy = STRATEGIES[tutorial_selected_strategy || (selected_strategy as keyof typeof STRATEGIES)];
-        const desktop_font_size = tutorial_selected_strategy ? 's' : 'xs';
-        const font_size: string = React.useMemo<string>(() => (is_mobile ? 'xxs' : desktop_font_size), [is_mobile]);
 
         const renderDescription = (data: TDescriptionItem) => {
             switch (data.type) {
@@ -70,24 +76,26 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
         };
 
         const expanded_subtitles_storage_default: TExpandedSubtitlesStorageDefault = {};
-        const grouped_objects_by_title = (Array.isArray(strategy?.description) &&
-            strategy?.description?.reduce((acc: TDescriptionItem[][], obj: TDescriptionItem) => {
-                if (obj.type === 'subtitle_italic' || obj.type === 'subtitle') {
-                    acc.push([]);
-                    expanded_subtitles_storage_default[
-                        `${(obj as TDataGroupedObjectsByTitle).content[0]}__${selected_strategy}`
-                            .split(' ')
-                            .join('_')
-                            .toLocaleLowerCase()
-                    ] = obj?.expanded ?? false;
-                }
-                //If long description available, show content intro paragraph under heading, skip short description.
-                if (acc.length - 1 === 0 && obj.type === 'text' && obj.content?.length === 2) {
-                    obj.content.shift();
-                }
-                acc[acc.length - 1].push(obj);
-                return acc;
-            }, [])) || [{ type: 'text', content: [strategy?.description] }];
+        const grouped_objects_by_title = Array.isArray(strategy?.description)
+            ? strategy?.description?.reduce((acc: TDescriptionItem[][], obj: TDescriptionItem) => {
+                  const is_subtitle = obj.type === 'subtitle_italic' || obj.type === 'subtitle';
+                  if (is_subtitle) {
+                      acc.push([]);
+                      expanded_subtitles_storage_default[
+                          `${(obj as TDataGroupedObjectsByTitle).content[0]}__${selected_strategy}`
+                              .split(' ')
+                              .join('_')
+                              .toLocaleLowerCase()
+                      ] = obj?.expanded ?? false;
+                  }
+                  //If long description available, show content intro paragraph under heading, skip short description.
+                  if (acc.length - 1 === 0 && obj.type === 'text' && obj.content?.length === 2) {
+                      obj.content.shift();
+                  }
+                  acc[acc.length - 1].push(obj);
+                  return acc;
+              }, [])
+            : [{ type: 'text', content: [strategy?.description] }];
 
         const [expanded_subtitles_storage, setExpandedSubtitlesStorage] = useState(expanded_subtitles_storage_default);
 
@@ -115,7 +123,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                                                         ?.map(element => renderDescription(element))
                                                         .flatMap(item => item) as React.ReactElement[]),
                                             }}
-                                            expanded={(data as TDescriptionItem[])[0]?.expanded ?? false}
+                                            expanded={!!(data as TDescriptionItem[])[0]?.expanded}
                                             is_cursive={false}
                                             no_collapsible={(data as TDescriptionItem[])[0]?.no_collapsible}
                                             has_subtitle={!!subtitle_value}

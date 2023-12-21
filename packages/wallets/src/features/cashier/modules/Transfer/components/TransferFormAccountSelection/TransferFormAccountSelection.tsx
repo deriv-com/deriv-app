@@ -48,9 +48,11 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
     return (
         <div className='wallets-transfer-form-account-selection'>
             <div className='wallets-transfer-form-account-selection__header'>
-                <WalletText size='md' weight='bold'>
-                    {label}
-                </WalletText>
+                <div className='wallets-transfer-form-account-selection__label'>
+                    <WalletText size='md' weight='bold'>
+                        {label}
+                    </WalletText>
+                </div>
                 <button className='wallets-transfer-form-account-selection__close-button' onClick={() => modal.hide()}>
                     <CloseIcon />
                 </button>

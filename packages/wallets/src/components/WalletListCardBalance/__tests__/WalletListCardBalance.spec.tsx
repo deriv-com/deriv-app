@@ -20,7 +20,7 @@ describe('WalletListCardBalance', () => {
         expect(screen.getByText('100 USD')).toBeInTheDocument();
     });
 
-    it('should show loader when balance havent load', () => {
+    it('should show loader when balance has not been loaded', () => {
         (useBalance as jest.Mock).mockImplementationOnce(() => ({
             ...jest.requireActual('@deriv/api').useBalance(),
             isLoading: true,

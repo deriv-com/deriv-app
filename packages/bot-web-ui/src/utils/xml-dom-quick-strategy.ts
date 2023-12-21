@@ -1,4 +1,4 @@
-export const addDinamicallyBlockToDOM = (
+export const addDynamicBlockToDOM = (
     name_block: string,
     strategy_value: string,
     trade_type_cat: string,

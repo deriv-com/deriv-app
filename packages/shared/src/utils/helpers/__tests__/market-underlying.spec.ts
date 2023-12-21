@@ -52,16 +52,16 @@ describe('market-underlying', () => {
             expect(getTradeTypeName(CONTRACT_TYPES.PUT, true)).toBe('Lower');
         });
         it('should return the correct Rise or Fall contract type display name when is_how_low === false', () => {
-            expect(getTradeTypeName(position.contract_type, false)).toBe('Rise');
-            expect(getTradeTypeName(CONTRACT_TYPES.PUT, false)).toBe('Fall');
+            expect(getTradeTypeName(position.contract_type)).toBe('Rise');
+            expect(getTradeTypeName(CONTRACT_TYPES.PUT)).toBe('Fall');
         });
         it('should return the correct Long or Short contract type display name when show_button_name is true', () => {
             expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.LONG, false, true)).toBe('Long');
             expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.SHORT, false, true)).toBe('Short');
         });
-        it('should return Turbos for both Turbos contract types when show_button_name is true', () => {
-            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.LONG, false, false)).toBe('Turbos');
-            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.SHORT, false, false)).toBe('Turbos');
+        it('should return Turbos for both Turbos contract types when show_button_name is false', () => {
+            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.LONG)).toBe('Turbos');
+            expect(getTradeTypeName(CONTRACT_TYPES.TURBOS.SHORT)).toBe('Turbos');
         });
         it('should return null if an incorrect contract_type is provided', () => {
             expect(getTradeTypeName(TRADE_TYPES.RISE_FALL)).toBe(null);

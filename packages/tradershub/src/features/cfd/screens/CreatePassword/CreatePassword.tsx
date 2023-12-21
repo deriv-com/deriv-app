@@ -13,6 +13,16 @@ type TProps = {
     platform: TPlatforms.All;
 };
 
+/**
+ * Component to create a password for the platform
+ * @param icon
+ * @param isLoading
+ * @param onPasswordChange
+ * @param onPrimaryClick
+ * @param password
+ * @param platform MT5 or Deriv X
+ * @returns
+ */
 const CreatePassword: React.FC<TProps> = ({
     icon,
     isLoading,

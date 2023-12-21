@@ -518,6 +518,7 @@ type TClientStore = {
     has_account_error_in_dxtrade_demo_list: boolean;
     has_fiat: boolean;
     is_fully_authenticated: boolean;
+    updateMt5LoginList: () => Promise<void>;
     states_list: StatesList;
     /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
     is_crypto: (currency?: string) => boolean;

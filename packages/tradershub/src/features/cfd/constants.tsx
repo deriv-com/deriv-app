@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import CTraderIcon from '../../public/images/cfd/ctrader.svg';
 import DerivXIcon from '../../public/images/cfd/derivx.svg';
 import DerivedMT5Icon from '../../public/images/cfd/mt5-derived.svg';
 import FinancialMT5Icon from '../../public/images/cfd/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/cfd/mt5-swap-free.svg';
+import CTraderLabelIcon from '../../public/images/ctrader-label.svg';
+import DerivXLabelIcon from '../../public/images/derivx-label.svg';
+import LinuxIcon from '../../public/images/ic-linux-logo.svg';
+import MacOSIcon from '../../public/images/ic-macos-logo.svg';
+import MT5Icon from '../../public/images/ic-mt5.svg';
+import WindowsIcon from '../../public/images/ic-windows-logo.svg';
 import { TPlatforms } from '../../types';
+
+type TAppContent = {
+    icon: ReactNode;
+    link: string;
+    text: string;
+    title: string;
+};
+
+type AppToContentMapperType = {
+    [key: string]: TAppContent;
+};
 
 export const MarketTypeDetails = {
     all: {
@@ -69,4 +86,53 @@ export const MarketType = {
     ALL: 'all',
     FINANCIAL: 'financial',
     SYNTHETIC: 'synthetic',
+} as const;
+
+export const AppToContentMapper: AppToContentMapperType = {
+    ctrader: {
+        icon: <WindowsIcon />,
+        link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',
+        text: 'Download',
+        title: 'CTrader Windows App',
+    },
+    linux: {
+        icon: <LinuxIcon />,
+        link: 'https://www.metatrader5.com/en/terminal/help/start_advanced/install_linux',
+        text: 'Learn more',
+        title: 'MetaTrader 5 Linux app',
+    },
+    macos: {
+        icon: <MacOSIcon />,
+        link: 'https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/MetaTrader5.dmg',
+        text: 'Download',
+        title: 'MetaTrader 5 MacOS app',
+    },
+    web: {
+        icon: <MT5Icon />,
+        link: '',
+        text: 'Open',
+        title: 'MetaTrader 5 web',
+    },
+    windows: {
+        icon: <WindowsIcon />,
+        link: 'https://download.mql5.com/cdn/web/deriv.com.limited/mt5/deriv5setup.exe',
+        text: 'Download',
+        title: 'MetaTrader 5 Windows app',
+    },
+};
+
+export const PlatformToLabelIconMapper = {
+    ctrader: <CTraderLabelIcon />,
+    dxtrade: <DerivXLabelIcon />,
+};
+
+export const PlatformUrls = {
+    ctrader: {
+        live: 'https://ct.deriv.com',
+        staging: 'https://ct-uat.deriv.com',
+    },
+    dxtrade: {
+        demo: 'https://dx-demo.deriv.com',
+        live: 'https://dx.deriv.com',
+    },
 } as const;

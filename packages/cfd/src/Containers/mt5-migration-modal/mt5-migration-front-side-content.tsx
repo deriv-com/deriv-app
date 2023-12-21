@@ -95,7 +95,7 @@ const MT5MigrationFrontSideContent = observer(() => {
                             />,
                         ]}
                         values={{
-                            account: Jurisdiction.SVG,
+                            account: Jurisdiction.SVG.toUpperCase(),
                             platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                             account_to_migrate: eligible_account_to_migrate_label,
                         }}

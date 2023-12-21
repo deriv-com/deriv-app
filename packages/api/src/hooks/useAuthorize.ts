@@ -14,7 +14,7 @@ const useAuthorize = () => {
     // const current_token = getActiveAuthTokenIDFromLocalStorage();
     const { activeToken, updateLoginId } = useAuth();
     const invalidate = useInvalidateQuery();
-    const { switchEnvironment } = useAPIContext();
+    // const { switchEnvironment } = useAPIContext();
     const queryClient = useQueryClient();
 
     const { data, ...rest } = useQuery('authorize', {

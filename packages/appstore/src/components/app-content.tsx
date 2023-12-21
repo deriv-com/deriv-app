@@ -12,8 +12,6 @@ const AppContent: React.FC = observer(() => {
 
     const { activeToken } = useAuth();
 
-    console.log('akbar: ', activeToken);
-
     return (
         <main
             className={classNames('dashboard', {

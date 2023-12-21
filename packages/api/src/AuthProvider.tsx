@@ -1,4 +1,3 @@
-import { WS } from '@deriv/shared';
 import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 // import BinarySocket from '_common/base/socket_base';
@@ -118,6 +117,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const authorize = useCallback(async () => {
         if (activeToken) {
             // const authorizeResponse: AuthorizeResponse = await WS.pureAuthorize(activeToken);
+            // @ts-expect-error: Let's ignore a compile error like this unreachable code
             const authorizeResponse = await send('authorize', { authorize: activeToken });
             console.log('michio: authorizeResponse', authorizeResponse);
             const accountsList: AuthAccount[] = authorizeResponse.authorize?.account_list as AuthAccount[];

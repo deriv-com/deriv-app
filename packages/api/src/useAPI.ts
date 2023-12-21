@@ -17,6 +17,7 @@ const useAPI = () => {
             name: T,
             payload?: TSocketRequestPayload<T>
         ): Promise<TSocketResponseData<T>> => {
+            console.log('mahdiyeh', name, derivAPI);
             const response = await derivAPI?.send({ [name]: 1, ...(payload || {}) });
 
             if (response.error) {

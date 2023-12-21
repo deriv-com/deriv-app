@@ -4,7 +4,7 @@ import CFDStoreProvider from '@deriv/cfd/src/cfd-providers';
 import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import AppContent from './app-content';
 import './app.scss';
-import { AuthProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api';
 
 type TProps = {
     passthrough: {
@@ -13,17 +13,19 @@ type TProps = {
 };
 
 const App: React.FC<TProps> = ({ passthrough: { root_store } }) => (
-    <AuthProvider>
-        <CashierStoreProvider store={root_store}>
-            <CFDStoreProvider store={root_store}>
-                <StoreProvider store={root_store}>
-                    <ExchangeRatesProvider>
-                        <AppContent />
-                    </ExchangeRatesProvider>
-                </StoreProvider>
-            </CFDStoreProvider>
-        </CashierStoreProvider>
-    </AuthProvider>
+    <APIProvider>
+        <AuthProvider>
+            <CashierStoreProvider store={root_store}>
+                <CFDStoreProvider store={root_store}>
+                    <StoreProvider store={root_store}>
+                        <ExchangeRatesProvider>
+                            <AppContent />
+                        </ExchangeRatesProvider>
+                    </StoreProvider>
+                </CFDStoreProvider>
+            </CashierStoreProvider>
+        </AuthProvider>
+    </APIProvider>
 );
 
 export default App;

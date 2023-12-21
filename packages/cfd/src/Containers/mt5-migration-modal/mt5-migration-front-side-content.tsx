@@ -7,6 +7,7 @@ import {
     JURISDICTION_MARKET_TYPES,
     DBVI_COMPANY_NAMES,
     CFD_PLATFORMS,
+    getCFDPlatformNames,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
@@ -84,7 +85,7 @@ const MT5MigrationFrontSideContent = observer(() => {
             <div className='mt5-migration-modal__message'>
                 <Text as='p' size={content_size} align='center'>
                     <Localize
-                        i18n_default_text='By clicking on <0>"Next"</0> you agree to move your SVG {{platform}} account(s) under Deriv {{account_to_migrate}} Ltd’s <1>terms and conditions</1>.'
+                        i18n_default_text='By clicking on <0>"Next"</0> you agree to move your {{account}} {{platform}} account(s) under Deriv {{account_to_migrate}} Ltd’s <1>terms and conditions</1>.'
                         components={[
                             <strong key={0} />,
                             <StaticUrl
@@ -94,7 +95,8 @@ const MT5MigrationFrontSideContent = observer(() => {
                             />,
                         ]}
                         values={{
-                            platform: CFD_PLATFORMS.MT5.toUpperCase(),
+                            account: Jurisdiction.SVG,
+                            platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                             account_to_migrate: eligible_account_to_migrate_label,
                         }}
                     />

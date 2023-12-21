@@ -289,6 +289,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_bot_allowed: false,
             account_open_date: undefined,
             setAccounts: jest.fn(),
+            updateMt5LoginList: jest.fn(),
         },
         common: {
             error: common_store_error,

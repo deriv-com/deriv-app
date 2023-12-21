@@ -15,7 +15,7 @@ type TMarketInfo = {
 export const getContractDurationType = (longcode: string, shortcode?: string): string => {
     if (shortcode && /^(MULTUP|MULTDOWN)/.test(shortcode)) return '';
 
-    const duration_pattern = new RegExp('ticks|tick|seconds|minutes|minute|hour|hours');
+    const duration_pattern = /ticks|tick|seconds|minutes|minute|hour|hours/;
     const extracted = duration_pattern.exec(longcode);
     if (extracted !== null) {
         const duration_type = extracted[0];

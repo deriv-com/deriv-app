@@ -41,13 +41,13 @@ class Validator<T extends object, S extends object> {
         if (rule.name === 'length') {
             message = template(message, [
                 rule.options.min === rule.options.max
-                    ? rule.options.min?.toString() || ''
+                    ? rule.options.min?.toString() ?? ''
                     : `${rule.options.min}-${rule.options.max}`,
             ]);
         } else if (rule.name === 'min') {
-            message = template(message, [rule.options.min?.toString() || '']);
+            message = template(message, [rule.options.min?.toString() ?? '']);
         } else if (rule.name === 'not_equal') {
-            message = template(message, [rule.options.name1 || '', rule.options.name2 || '']);
+            message = template(message, [rule.options.name1 ?? '', rule.options.name2 ?? '']);
         }
         this.errors.add(attribute, message);
         this.error_count++;

@@ -87,7 +87,7 @@ const Transactions = () => {
             {isPendingActive && (
                 <TransactionsPending filter={filtersMapper.pending[filterValue] as TTransactionsPendingFilter} />
             )}
-            {wallet?.is_virtual && filterValue === 'deposit' ? (
+            {!isPendingActive && wallet?.is_virtual && filterValue === 'deposit' ? (
                 <TransactionsCompletedDemoResetBalance />
             ) : (
                 <TransactionsCompleted filter={filtersMapper.completed[filterValue] as TTransactionCompletedFilter} />

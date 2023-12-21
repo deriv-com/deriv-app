@@ -77,7 +77,7 @@ const Accordion = ({
                         </div>
                         {no_collapsible && (
                             <div className='dbot-accordion__icon'>
-                                <Icon icon={should_be_expanded ? 'IcMinusRounded' : 'IcAddRounded'} />
+                                <Icon icon={should_be_expanded ? 'IcMinus' : 'IcAdd'} />
                             </div>
                         )}
                     </button>

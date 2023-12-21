@@ -666,12 +666,6 @@
         width: 10%;
         color: $color-white;
         text-align: end;
-
-        & svg {
-            filter: none;
-            width: 12px;
-            height: 12px;
-        }
     }
 
     &__content {

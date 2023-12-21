@@ -2036,7 +2036,7 @@
     "2063812316": "Metin Beyanı",
     "2063890788": "İptal edildi",
     "2066419724": "{{wallet}} ile bağlantılı ticaret hesapları",
-    "2066978677": "{{formatted_opening_time}} (GMT) on {{opening_day}},<0 /> {{opening_date}}.",
+    "2066978677": "{{opening_day}}, <0 /> {{opening_date}} tarihinde {{formatted_opening_time}} (GMT).",
     "2067903936": "Sürücü belgesi",
     "2070002739": "Kabul etme",
     "2070345146": "Kaldıraçlı bir CFD ticareti açarken.",

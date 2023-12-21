@@ -4,8 +4,8 @@ import CompositeCalendarMobileFooter from '../composite-calendar-mobile-footer';
 import userEvent from '@testing-library/user-event';
 
 const mock_props = {
-    setIsOpen: jest.fn(),
     applyDateRange: jest.fn(),
+    onCancel: jest.fn(),
 };
 
 describe('CompositeCalendarMobileFooter', () => {
@@ -17,7 +17,7 @@ describe('CompositeCalendarMobileFooter', () => {
     it('should handle Cancel click', () => {
         render(<CompositeCalendarMobileFooter {...mock_props} />);
         userEvent.click(screen.getByText('Cancel'));
-        expect(mock_props.setIsOpen).toHaveBeenCalled();
+        expect(mock_props.onCancel).toHaveBeenCalled();
     });
     it('should handle OK button click', () => {
         render(<CompositeCalendarMobileFooter {...mock_props} />);

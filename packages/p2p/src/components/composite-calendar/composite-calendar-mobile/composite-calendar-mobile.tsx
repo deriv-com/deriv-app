@@ -40,6 +40,7 @@ const CompositeCalendarMobile = ({
 
     const [applied_date_range, setAppliedDateRange] = React.useState(date_range);
     const [selected_date_range, setSelectedDateRange] = React.useState(date_range);
+    const has_custom_date_range_selected = selected_date_range?.value === CUSTOM_KEY;
     const today = toMoment().format('YYYY-MM-DD');
 
     const selectDateRange = (selected_date_range: TInputDateRange, is_today?: boolean) => {
@@ -78,7 +79,7 @@ const CompositeCalendarMobile = ({
     };
 
     const applyDateRange = () => {
-        if (selected_date_range?.value === CUSTOM_KEY) {
+        if (has_custom_date_range_selected) {
             selectCustomDateRange();
         } else {
             selectDateRange(selected_date_range);
@@ -172,18 +173,18 @@ const CompositeCalendarMobile = ({
                         <div className='composite-calendar-mobile__custom-date-range'>
                             <DatePicker
                                 className='composite-calendar-mobile__custom-date-range-start-date'
-                                disabled={selected_date_range?.value !== CUSTOM_KEY}
+                                disabled={!has_custom_date_range_selected}
                                 is_nativepicker
-                                placeholder={selected_date_range?.value === CUSTOM_KEY ? localize('Start date') : ''}
+                                placeholder={has_custom_date_range_selected ? localize('Start date') : ''}
                                 value={from_date}
                                 max_date={to_date || today}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => selectDate(e, 'from')}
                             />
                             <DatePicker
                                 className='composite-calendar-mobile__custom-date-range-end-date'
-                                disabled={selected_date_range?.value !== CUSTOM_KEY}
+                                disabled={!has_custom_date_range_selected}
                                 is_nativepicker
-                                placeholder={selected_date_range?.value === CUSTOM_KEY ? localize('End date') : ''}
+                                placeholder={has_custom_date_range_selected ? localize('End date') : ''}
                                 value={to_date}
                                 max_date={today}
                                 min_date={from_date}

@@ -25,7 +25,6 @@ export type TValidationItem =
 export type TConfigItem = {
     type: string;
     name?: keyof TFormData;
-    fullWidth?: boolean;
     dependencies?: string[];
     label?: string;
     description?: string;
@@ -38,10 +37,19 @@ export type TConfigItem = {
     }[];
 };
 
+export type TDescriptionItem = {
+    type: string;
+    content?: string[];
+    src?: string;
+    alt?: string;
+    className?: string;
+};
+
 export type TStrategy = {
     name: string;
     label: string;
     description: string;
+    long_description?: TDescriptionItem[];
     fields: TConfigItem[][];
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import Item from './contract-type-item';
 import { localize } from '@deriv/translations';
-import { TURBOS, VANILLALONG } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import classNames from 'classnames';
 import { TContractType, TContractCategory } from './types';
@@ -22,7 +22,10 @@ const List = ({ handleInfoClick, handleSelect, list, should_show_info_banner, va
         {list.map((contract_category, index) => {
             const contract_types = contract_category.contract_types?.filter(contract_type => {
                 const base_contract_type = /^(.*)_equal$/.exec(contract_type.value)?.[1];
-                if (contract_type.value === TURBOS.SHORT || contract_type.value === VANILLALONG.PUT) return false;
+                const { TURBOS, VANILLA } = TRADE_TYPES;
+                if (contract_type.value === TURBOS.SHORT || contract_type.value === VANILLA.PUT) {
+                    return false;
+                }
                 if (base_contract_type) {
                     return !contract_category.contract_types.some(c => c.value === base_contract_type);
                 }

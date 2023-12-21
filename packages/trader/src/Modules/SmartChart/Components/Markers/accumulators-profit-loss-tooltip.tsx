@@ -5,7 +5,7 @@ import { Money, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import AccumulatorsProfitLossText from './accumulators-profit-loss-text';
 import { FastMarker } from 'Modules/SmartChart';
-import { getDecimalPlaces, isMobile } from '@deriv/shared';
+import { getDecimalPlaces } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
 type TContractInfo = ReturnType<typeof useStore>['portfolio']['all_positions'][number]['contract_info'];
@@ -14,6 +14,7 @@ type TAccumulatorsProfitLossTooltip = {
     alignment?: string;
     className?: string;
     should_show_profit_text?: boolean;
+    is_mobile?: boolean;
 } & TContractInfo;
 
 export type TRef = {
@@ -33,6 +34,7 @@ const AccumulatorsProfitLossTooltip = ({
     profit,
     profit_percentage,
     should_show_profit_text,
+    is_mobile,
 }: TAccumulatorsProfitLossTooltip) => {
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(false);
     const won = Number(profit) >= 0;
@@ -115,10 +117,10 @@ const AccumulatorsProfitLossTooltip = ({
                 classNames={`${className}__content`}
             >
                 <div className={classNames(`${className}__content`, `arrow-${opposite_arrow_position}`)}>
-                    <Text size={isMobile() ? 'xxxxs' : 'xxs'} className={`${className}__text`}>
+                    <Text size={is_mobile ? 'xxxxs' : 'xxs'} className={`${className}__text`}>
                         {localize('Total profit/loss:')}
                     </Text>
-                    <Text size={isMobile() ? 'xxxs' : 'xs'} className={`${className}__text`} weight='bold'>
+                    <Text size={is_mobile ? 'xxxs' : 'xs'} className={`${className}__text`} weight='bold'>
                         <Money amount={profit} currency={currency} has_sign show_currency />
                     </Text>
                 </div>

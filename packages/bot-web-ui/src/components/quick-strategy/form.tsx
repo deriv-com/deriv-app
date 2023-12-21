@@ -13,14 +13,34 @@ import QSInputLabel from './inputs/qs-input-label';
 import { STRATEGIES } from './config';
 import { TConfigItem, TFormData } from './types';
 import { useFormikContext } from 'formik';
+import debounce from 'lodash.debounce';
+import { Analytics } from '@deriv/analytics';
+import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 
 const QuickStrategyForm = observer(() => {
     const { ui } = useStore();
     const { quick_strategy } = useDBotStore();
-    const { selected_strategy, setValue } = quick_strategy;
+    const { selected_strategy, setValue, form_data } = quick_strategy;
     const config: TConfigItem[][] = STRATEGIES[selected_strategy]?.fields;
     const { is_mobile } = ui;
     const { values, setFieldTouched, setFieldValue } = useFormikContext<TFormData>();
+    const { current_duration_min_max } = quick_strategy;
+
+    const sendInitialStakeValueToruddetack = (key: string, value: string | number | boolean) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'change_parameter_value',
+            parameter_value: value,
+            parameter_type: key,
+        });
+    };
+
+    const debounceChange = React.useCallback(
+        debounce(sendInitialStakeValueToruddetack, DEBOUNCE_INTERVAL_TIME, {
+            trailing: true,
+            leading: false,
+        }),
+        []
+    );
 
     React.useEffect(() => {
         window.addEventListener('keydown', handleEnter);
@@ -33,6 +53,7 @@ const QuickStrategyForm = observer(() => {
         setValue(key, value);
         await setFieldTouched(key, true, true);
         await setFieldValue(key, value);
+        debounceChange(key, value);
     };
 
     const handleEnter = (event: KeyboardEvent) => {
@@ -61,6 +82,20 @@ const QuickStrategyForm = observer(() => {
                             case 'number': {
                                 if (!field.name) return null;
                                 const { should_have = [] } = field;
+                                const initial_stake = 1;
+                                let min = 1;
+                                let max;
+                                if (field.name === 'duration' && current_duration_min_max) {
+                                    min = current_duration_min_max.min;
+                                    max = current_duration_min_max.max;
+                                }
+                                const should_validate = field.should_have;
+                                if (should_validate && field.name === 'max_stake') {
+                                    min = +form_data?.stake;
+                                    if (isNaN(min)) {
+                                        min = +initial_stake;
+                                    }
+                                }
                                 if (should_have?.length) {
                                     const should_enable = should_have.every((item: TFormData) => {
                                         return values[item.key as keyof TFormData] === item.value;
@@ -75,10 +110,21 @@ const QuickStrategyForm = observer(() => {
                                             name={field.name as string}
                                             disabled={!should_enable}
                                             onChange={onChange}
+                                            min={min}
+                                            max={max}
                                         />
                                     );
                                 }
-                                return <QSInput {...field} onChange={onChange} key={key} name={field.name as string} />;
+                                return (
+                                    <QSInput
+                                        {...field}
+                                        onChange={onChange}
+                                        key={key}
+                                        name={field.name as string}
+                                        min={min}
+                                        max={max}
+                                    />
+                                );
                             }
 
                             case 'label':

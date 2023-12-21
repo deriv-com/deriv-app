@@ -13,6 +13,7 @@ import { STRATEGIES } from './config';
 import Form from './form';
 import { TConfigItem, TFormData } from './types';
 import './quick-strategy.scss';
+import { Analytics } from '@deriv/analytics';
 
 type TFormikWrapper = {
     children: React.ReactNode;
@@ -166,7 +167,20 @@ const QuickStrategy = observer(() => {
     const { is_mobile } = ui;
     const { is_open, setFormVisibility } = quick_strategy;
 
+    React.useEffect(() => {
+        if (is_open) {
+            Analytics.trackEvent('ce_bot_quick_strategy_form', {
+                action: 'open',
+                form_source: 'ce_bot_quick_strategy_form',
+            });
+        }
+    }, [is_open]);
+
     const handleClose = () => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'close',
+            form_source: 'ce_bot_quick_strategy_form',
+        });
         setFormVisibility(false);
     };
 
@@ -187,7 +201,7 @@ const QuickStrategy = observer(() => {
                         </MobileFormWrapper>
                     </MobileFullPageModal>
                 ) : (
-                    <Modal className='modal--strategy' is_open={is_open} width={'99.6rem'}>
+                    <Modal className='modal--strategy' is_open={is_open} width='72rem'>
                         <DesktopFormWrapper>
                             <Form />
                         </DesktopFormWrapper>

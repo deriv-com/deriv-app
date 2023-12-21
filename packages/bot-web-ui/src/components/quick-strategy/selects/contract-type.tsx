@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
+import { Analytics } from '@deriv/analytics';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
@@ -15,11 +16,10 @@ type TContractTypesItem = {
 
 type TContractTypes = {
     name: string;
-    fullWidth?: boolean;
     attached?: boolean;
 };
 
-const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, name }) => {
+const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const [list, setList] = React.useState<TContractTypesItem[]>([]);
@@ -28,6 +28,22 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
     const { setFieldValue, validateForm, values } = useFormikContext<TFormData>();
     const { symbol, tradetype } = values;
     const selected = values?.type;
+
+    const sendTradeTypeToRudderStack = (item: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_trade_type',
+            trade_type: item,
+            form_source: 'ce_bot_quick_strategy_form',
+        });
+    };
+
+    const sendTradeTypeValueToRudderStack = (item: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_trade_type_mode',
+            trade_type_mode: item,
+            form_source: 'ce_bot_quick_strategy_form',
+        });
+    };
 
     React.useEffect(() => {
         if (tradetype && symbol) {
@@ -55,11 +71,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
     const key = `qs-contract-type-${name}`;
 
     return (
-        <div
-            className={classNames('qs__form__field no-top-border-radius no-top-spacing', {
-                'full-width': fullWidth,
-            })}
-        >
+        <div className='qs__form__field qs__form__field__input no-top-spacing'>
             <Field name={name} key={key} id={key}>
                 {({ field }: FieldProps) => {
                     const selected_item = list?.find(item => item.value === field.value);
@@ -75,6 +87,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
                                                 'qs__form__field__list__item--active': is_active,
                                             })}
                                             onClick={() => {
+                                                sendTradeTypeValueToRudderStack(item.text);
                                                 handleChange(item.value);
                                             }}
                                         >
@@ -99,6 +112,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
                             onItemSelection={(item: TItem) => {
                                 if ((item as TContractTypesItem)?.value) {
                                     handleChange((item as TContractTypesItem)?.value as string);
+                                    sendTradeTypeToRudderStack(item?.text);
                                 }
                             }}
                         />

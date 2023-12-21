@@ -1,8 +1,8 @@
 /** Add types that are shared between components */
 import React from 'react';
-import { Authorize, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
+import { Authorize, GetFinancialAssessment, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
-import { Platforms } from '@deriv/shared';
+import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, Platforms } from '@deriv/shared';
 
 export type TToken = {
     display_name: string;
@@ -161,4 +161,36 @@ export type TServerError = {
     message: string;
     details?: { [key: string]: string };
     fields?: string[];
+};
+
+export type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+
+export type TMT5AccountStatus = typeof MT5_ACCOUNT_STATUS[keyof typeof MT5_ACCOUNT_STATUS];
+
+export type TFilesDescription = {
+    descriptions: { id: string; value: JSX.Element }[];
+    title: React.ReactNode;
+};
+
+export type TTradingAssessmentForm = Required<
+    Pick<
+        GetFinancialAssessment,
+        | 'cfd_experience'
+        | 'cfd_frequency'
+        | 'cfd_trading_definition'
+        | 'leverage_trading_high_risk_stop_loss'
+        | 'leverage_impact_trading'
+        | 'required_initial_margin'
+        | 'risk_tolerance'
+        | 'source_of_experience'
+        | 'trading_experience_financial_instruments'
+        | 'trading_frequency_financial_instruments'
+    >
+>;
+
+export type TQuestion = {
+    question_text: string;
+    form_control: keyof TTradingAssessmentForm;
+    answer_options: { text: string; value: string }[];
+    field_type?: string;
 };

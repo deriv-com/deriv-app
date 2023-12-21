@@ -53,9 +53,19 @@
         cursor: pointer;
     }
     &__group {
-        display: flex;
-        margin-top: 2.4rem;
         margin-bottom: 5.2rem;
+        &__guides {
+            display: flex;
+            margin-top: 2.4rem;
+            @include mobile {
+                display: unset;
+            }
+        }
+        &__title {
+            @include mobile {
+                margin-bottom: 1.4rem;
+            }
+        }
         &__nosearch {
             @include position-center;
             width: 100%;
@@ -71,14 +81,12 @@
                 width: auto;
                 span {
                     text-align: left;
-                    padding-left: 0.8rem;
-                    width: calc(100% - 14.8rem);
+                    width: 100%;
                 }
             }
         }
         @include mobile {
             flex-direction: column;
-            margin-top: 1.4rem;
             margin-bottom: 2.2rem;
         }
         &:last-child {
@@ -94,15 +102,24 @@
         height: 16rem;
         width: 28rem;
         background-size: 100% 100%;
+        &__description {
+            width: 28rem;
+            @include mobile {
+                text-align: left;
+                width: calc(100% - 14.8rem);
+            }
+        }
         @include mobile {
             height: 8.7rem;
             width: 14.8rem;
             margin: 0;
+            margin-right: 0.8rem;
         }
         &__tours {
             height: 13.5rem;
             background-size: contain;
             margin-bottom: 0.8rem;
+            margin-right: 0.8rem;
             width: 21.5rem;
             cursor: pointer;
             @include mobile {
@@ -348,7 +365,8 @@
                             margin-top: -7.2rem;
                         }
                         .tutorials-guide:nth-child(1),
-                        .tutorials-faq:nth-child(2) {
+                        .tutorials-faq:nth-child(2),
+                        .tutorials-qs-guide:nth-child(3) {
                             background-color: var(--sidebar-tab);
                             border-radius: 0.4rem 0.4rem 0 0;
                             transition: all 0.6s;
@@ -364,7 +382,7 @@
                         &:first-child {
                             margin-top: 7.5rem;
                         }
-                        &:nth-child(4) {
+                        &:nth-last-child(2) {
                             display: none;
                         }
                     }
@@ -373,9 +391,6 @@
                         display: flex;
                         justify-content: flex-start;
                         padding: 0 1.6rem;
-                        &:nth-child(3) {
-                            display: none;
-                        }
                     }
                 }
 
@@ -447,6 +462,7 @@
 
     &__guide,
     &__faq,
+    &__qs-guide,
     &__search {
         @include mobile {
             height: calc(var(--vh) - 280px);

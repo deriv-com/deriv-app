@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import classNames from 'classnames';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
+import { Analytics } from '@deriv/analytics';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Icon, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
-import { useDBotStore } from 'Stores/useDBotStore';
 import { useStore } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
 
 type TSymbol = {
@@ -28,11 +28,7 @@ const MarketOption: React.FC<TMarketOption> = ({ symbol }) => (
     </div>
 );
 
-type TSymbolSelect = {
-    fullWidth?: boolean;
-};
-
-const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
+const SymbolSelect: React.FC = () => {
     const { quick_strategy } = useDBotStore();
     const {
         ui: { is_mobile, is_desktop },
@@ -42,6 +38,14 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     const [is_input_started, setIsInputStarted] = useState(false);
     const [input_value, setInputValue] = useState({ text: '', value: '' });
     const { setFieldValue, values } = useFormikContext<TFormData>();
+
+    const sendAssetValueToRudderStack = (item: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_asset',
+            asset_type: item,
+            form_source: 'ce_bot_quick_strategy_form',
+        });
+    };
 
     useEffect(() => {
         const { active_symbols } = ApiHelpers.instance;
@@ -89,6 +93,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     const handleItemSelection = (item: TItem) => {
         if (item) {
             const { value } = item as TSymbol;
+            sendAssetValueToRudderStack(item.text);
             setFieldValue('symbol', value);
             setValue('symbol', value);
             setIsInputStarted(false);
@@ -106,7 +111,7 @@ const SymbolSelect: React.FC<TSymbolSelect> = ({ fullWidth = false }) => {
     };
 
     return (
-        <div className={classNames('qs__form__field', { 'full-width': fullWidth })}>
+        <div className='qs__form__field qs__form__field__input'>
             <Field name='symbol' key='asset' id='asset'>
                 {({ field: { value, ...rest_field } }: FieldProps) => (
                     <>

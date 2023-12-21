@@ -71,12 +71,10 @@ jest.mock('../config', () => ({
                 [
                     {
                         type: 'symbol',
-                        fullWidth: true,
                         name: 'symbol',
                     },
                     {
                         type: 'tradetype',
-                        fullWidth: true,
                         name: 'tradetype',
                         dependencies: ['symbol'],
                     },

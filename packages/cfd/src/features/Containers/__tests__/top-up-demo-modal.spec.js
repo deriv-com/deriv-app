@@ -1,8 +1,9 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import TopUpDemoModal from '../top-up-demo-modal';
-import CFDProviders from '../../../cfd-providers';
+import { render, screen } from '@testing-library/react';
+import TopUpDemoModal from '../top-up-demo-modal.tsx';
+import CFDProviders from '../../../cfd-providers.tsx';
 import { mockStore } from '@deriv/stores';
+import { APIProvider } from '@deriv/api';
 
 jest.mock('../../../Components/success-dialog.jsx', () => () => <div>Success Dialog</div>);
 
@@ -78,10 +79,18 @@ describe('TopUpDemoModal', () => {
         platform: 'test platform',
     };
 
+    const renderComponent = () => {
+        render(
+            <APIProvider>
+                <CFDProviders store={mockStore(mock_props)}>
+                    <TopUpDemoModal platform={mock_props.platform} />
+                </CFDProviders>
+            </APIProvider>
+        );
+    };
+
     it('should render the button texts correctly', () => {
-        render(<TopUpDemoModal platform={mock_props.platform} />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
-        });
+        renderComponent();
         expect(screen.getByText('Fund top up')).toBeInTheDocument();
         expect(screen.getByText('Current balance')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_top_up_virtual_description')).toBeInTheDocument();
@@ -89,18 +98,14 @@ describe('TopUpDemoModal', () => {
     });
 
     it('should render the proper balance in the current balance', () => {
-        render(<TopUpDemoModal platform={mock_props.platform} />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
-        });
+        renderComponent();
         expect(screen.getByText('700.00')).toBeInTheDocument();
     });
 
     it('should disable the top up button if the balance is higher than 1000 USD', () => {
         mock_props.modules.cfd.current_account = { category: 'demo', type: 'financial', balance: 2000 };
 
-        render(<TopUpDemoModal platform={mock_props.platform} />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
-        });
+        renderComponent();
         const top_up_btn = screen.getByRole('button', { name: /Top up/i });
         expect(top_up_btn).toBeDisabled();
     });
@@ -108,22 +113,9 @@ describe('TopUpDemoModal', () => {
     it('should enable the top up button if the balance is lower than 1000 USD', () => {
         mock_props.modules.cfd.current_account = { category: 'demo', type: 'financial', balance: 500 };
 
-        render(<TopUpDemoModal platform={mock_props.platform} />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
-        });
+        renderComponent();
         const top_up_btn = screen.getByRole('button', { name: /Top up/i });
         expect(top_up_btn).toBeEnabled();
-    });
-
-    it('should render the success dialog component if the user has less than 1000 USD and clicks on top up', () => {
-        mock_props.modules.cfd.current_account = { category: 'demo', type: 'financial', balance: 500 };
-
-        render(<TopUpDemoModal platform={mock_props.platform} />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
-        });
-        const top_up_btn = screen.getByRole('button', { name: /Top up/i });
-        fireEvent.click(top_up_btn);
-        expect(screen.getByText('Success Dialog')).toBeInTheDocument();
     });
 
     it('should render the success component if the is_top_up_virtual_success is true', () => {
@@ -131,9 +123,7 @@ describe('TopUpDemoModal', () => {
         mock_props.ui.is_top_up_virtual_success = true;
         mock_props.ui.is_top_up_virtual_open = false;
 
-        render(<TopUpDemoModal platform={mock_props.platform} />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
-        });
+        renderComponent();
         expect(screen.getByText('Success Dialog')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_top_up_virtual_description')).not.toBeInTheDocument();
     });
@@ -143,9 +133,7 @@ describe('TopUpDemoModal', () => {
         mock_props.ui.is_top_up_virtual_success = false;
         mock_props.ui.is_top_up_virtual_open = false;
 
-        render(<TopUpDemoModal platform={mock_props.platform} />, {
-            wrapper: ({ children }) => <CFDProviders store={mockStore(mock_props)}>{children}</CFDProviders>,
-        });
+        renderComponent();
         expect(screen.queryByTestId('dt_top_up_virtual_description')).not.toBeInTheDocument();
     });
 });

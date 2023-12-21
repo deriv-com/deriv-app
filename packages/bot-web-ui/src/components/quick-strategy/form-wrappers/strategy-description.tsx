@@ -25,13 +25,8 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
         const { selected_strategy } = quick_strategy;
         const { is_mobile } = ui;
 
-        const font_size = React.useMemo(() => {
-            if (is_mobile) {
-                return 'xxs';
-            }
-            return tutorial_selected_strategy ? 's' : 'xs';
-        }, [is_mobile, tutorial_selected_strategy]);
-
+        const desktop_font_size = tutorial_selected_strategy ? 's' : 'xs';
+        const font_size: string = React.useMemo<string>(() => (is_mobile ? 'xs' : desktop_font_size), [is_mobile]);
         const strategy = STRATEGIES[tutorial_selected_strategy || (selected_strategy as keyof typeof STRATEGIES)];
 
         const renderDescription = (data: TDescriptionItem) => {

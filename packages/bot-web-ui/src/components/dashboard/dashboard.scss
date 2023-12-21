@@ -645,17 +645,31 @@
         background-color: transparent;
         border: none;
         outline: none;
-        padding-left: 0;
+
+        @include desktop {
+            padding-left: 0;
+        }
+
         border-bottom: 1px solid var(--general-section-1);
+
         &--no-event {
             pointer-events: none;
             border-bottom: none;
+            padding: 0.6rem 0;
+
+            @include mobile {
+                padding: 0.6rem 0 0.6rem 1rem;
+            }
         }
     }
 
     &__header {
         width: 90%;
         text-align: left;
+
+        @include mobile {
+            width: 100%;
+        }
 
         span {
             color: var(--text-prominent);
@@ -678,6 +692,10 @@
         &--open {
             opacity: 1;
             max-height: 50rem;
+
+            @include mobile {
+                padding-left: 1rem; //
+            }
         }
 
         .joyride-content {

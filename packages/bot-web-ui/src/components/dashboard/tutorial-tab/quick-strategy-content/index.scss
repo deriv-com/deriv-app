@@ -64,6 +64,10 @@
         &__body__content__description {
             padding: 1rem 0;
             width: 85%;
+            @include mobile {
+                height: calc(100vh - 16rem);
+                width: 100%;
+            }
         }
 
         &__description__image {

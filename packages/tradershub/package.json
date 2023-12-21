@@ -36,7 +36,8 @@
         "react-router-dom": "^5.2.0",
         "react-transition-group": "4.4.2",
         "usehooks-ts": "^2.7.0",
-        "yup": "^0.32.11"
+        "yup": "^0.32.11",
+        "@deriv/account-v2": "2.0.0"
     },
     "devDependencies": {
         "@testing-library/react": "^12.0.0",

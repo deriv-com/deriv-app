@@ -65,6 +65,9 @@ module.exports = function (env) {
                     exclude: /node_modules/,
                     use: [
                         {
+                            loader: './deriv-account-v2-loader.js',
+                        },
+                        {
                             loader: 'babel-loader',
                             options: {
                                 cacheDirectory: true,

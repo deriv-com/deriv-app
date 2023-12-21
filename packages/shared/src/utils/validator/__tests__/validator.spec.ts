@@ -20,7 +20,6 @@ describe('validator.ts', () => {
         });
         it('should replace variables in brackets with items from content array only once, not twice', () => {
             expect(template('[_1] [_2]', ['[_2]', 'abc'])).toBe('[_2] abc');
-            expect(template('[_1] [_2]', ['[_2]', 'abc'])).not.toBe('abc abc');
         });
         it('should replace the 1st variable with provided content if content is a string instead of an array', () => {
             expect(template('[_1]', 'abc')).toBe('abc');

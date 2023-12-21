@@ -68,11 +68,11 @@ export const buildLoaders = (options: BuildOptions): RuleSetRule[] => {
                     sourceMap: true,
                 },
             },
-            'sass-loader',
-            {
-                loader: 'sass-resources-loader',
-                options: {},
-            },
+            // 'sass-loader',
+            // {
+            //     loader: 'sass-resources-loader',
+            //     options: {},
+            // },
         ],
     };
     const sourceMapLoader = {

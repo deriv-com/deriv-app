@@ -19,6 +19,7 @@ const Header = observer(() => {
         [
             routes.traders_hub,
             routes.traders_hub_v2,
+            routes.account_v2,
             routes.account,
             routes.cashier,
             routes.wallets,

@@ -1,8 +1,8 @@
 import { Configuration } from 'webpack';
+import { BuildOptions } from './types/build-types';
 import { buildLoaders } from './build-loaders';
 import { buildOptimization } from './build-optimization';
 import { buildResolvers } from './build-resolvers';
-import { BuildOptions } from './types/build-types';
 
 export const buildWebpackConfig = (options: BuildOptions): Configuration => ({
     devtool: options.isRelease ? 'source-map' : 'eval-cheap-module-source-map',

@@ -1,5 +1,5 @@
 import React from 'react';
-import SendbirdChat from '@sendbird/chat';
+import SendbirdChat, { User } from '@sendbird/chat';
 import useSendbirdServiceToken from './useSendbirdServiceToken';
 import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
 import useAdvertiserInfo from './p2p/useAdvertiserInfo';
@@ -23,94 +23,45 @@ type ChatMessage = {
     url?: string;
 };
 
-class Sendbird {
-    api: ReturnType<typeof SendbirdChat.init<GroupChannelModule[]>>;
-
-    constructor(app_id: string) {
-        this.api = SendbirdChat.init({
-            appId: app_id,
-            modules: [new GroupChannelModule()],
-        });
-    }
-
-    async connect(user_id: string, token: string) {
-        const user = await this.api.connect(user_id, token);
-        if (!user) {
-            throw new Error();
-        }
-    }
-}
-
 const useSendbird = (order_id: string) => {
     const sendbirdApiRef = React.useRef<ReturnType<typeof SendbirdChat.init<GroupChannelModule[]>>>();
 
     const [isChatLoading, setIsChatLoading] = React.useState(false);
     const [isChatError, setIsChatError] = React.useState(false);
-    const [chatChannelUrl, setChatChannelUrl] = React.useState('');
     const [messages, setMessages] = React.useState<ChatMessage[] | undefined>();
     const [chatChannel, setChatChannel] = React.useState<GroupChannel | undefined>();
 
     const { data: sendbirdServiceToken, isSuccess: isSuccessSendbirdServiceToken } = useSendbirdServiceToken();
     const { data: advertiserInfo, isSuccess: isSuccessAdvertiserInfo } = useAdvertiserInfo();
     const { mutate: createChat } = useChatCreate();
-    const { data: orderInfo, isSuccess: isOrderInfoSuccess } = useOrderInfo(order_id);
+    const { data: orderInfo } = useOrderInfo(order_id);
     const { data: serverTime } = useServerTime();
 
-    const initialiseChat = React.useCallback(async () => {
-        try {
-            if (
-                isSuccessSendbirdServiceToken &&
-                isSuccessAdvertiserInfo &&
-                sendbirdServiceToken?.app_id &&
-                advertiserInfo?.chat_user_id
-            ) {
-                setIsChatError(false);
-                setIsChatLoading(true);
-                const { app_id, token } = sendbirdServiceToken;
-
-                sendbirdApiRef.current = SendbirdChat.init({
-                    appId: app_id,
-                    modules: [new GroupChannelModule()],
-                });
-
-                const sendbirdUser = await sendbirdApiRef.current.connect(advertiserInfo.chat_user_id, token);
-                if (!sendbirdUser) {
-                    setIsChatError(true);
-                } else if (sendbirdApiRef?.current && orderInfo?.chat_channel_url) {
-                    sendbirdApiRef.current.groupChannel.addGroupChannelHandler(
-                        'P2P_SENDBIRD_GROUP_CHANNEL_HANDLER',
-                        new GroupChannelHandler()
-                    );
-                    const chatChannelUrl = orderInfo.chat_channel_url;
-                    const channel = await sendbirdApiRef.current.groupChannel.getChannel(chatChannelUrl);
-                    if (!channel) {
-                        setIsChatError(true);
-                    } else {
-                        setChatChannel(channel);
-                        initialiseMessages();
-                    }
-                }
-            }
-        } catch (err) {
-            setIsChatError(true);
-        } finally {
-            setIsChatLoading(false);
+    const getUser = async (user_id: string, token: string) => {
+        if (sendbirdApiRef?.current) {
+            const user = await sendbirdApiRef.current.connect(user_id, token);
+            return user;
         }
-    }, [
-        isSuccessSendbirdServiceToken,
-        isSuccessAdvertiserInfo,
-        sendbirdServiceToken,
-        advertiserInfo?.chat_user_id,
-        orderInfo?.chat_channel_url,
-    ]);
+    };
 
-    const initialiseMessages = async (from_timestamp?: number) => {
-        if (chatChannel && (from_timestamp || serverTime?.time)) {
+    const getChannel = React.useCallback(async (channel_url: string) => {
+        if (sendbirdApiRef?.current) {
+            sendbirdApiRef.current.groupChannel.addGroupChannelHandler(
+                'P2P_SENDBIRD_GROUP_CHANNEL_HANDLER',
+                new GroupChannelHandler()
+            );
+            const channel = await sendbirdApiRef.current.groupChannel.getChannel(channel_url);
+            return channel;
+        }
+    }, []);
+
+    const getMessages = React.useCallback(
+        async (channel: GroupChannel, from_timestamp: number) => {
             const messagesFormatted: ChatMessage[] = [];
             const timestamp = from_timestamp || serverTime?.time || 0;
 
             const shouldSortFromMostRecent = messages ? messages?.length > 0 : false;
-            const retrievedMessages = await chatChannel.getMessagesByTimestamp(timestamp, {
+            const retrievedMessages = await channel.getMessagesByTimestamp(timestamp, {
                 isInclusive: false,
                 prevResultSize: 50,
                 nextResultSize: 0,
@@ -150,13 +101,79 @@ const useSendbird = (order_id: string) => {
                     });
                 }
             });
-            setMessages(messagesFormatted);
+            return messagesFormatted;
+        },
+        [messages, serverTime?.time]
+    );
+
+    const initialiseChat = React.useCallback(async () => {
+        try {
+            if (
+                isSuccessSendbirdServiceToken &&
+                isSuccessAdvertiserInfo &&
+                sendbirdServiceToken?.app_id &&
+                advertiserInfo?.chat_user_id
+            ) {
+                setIsChatError(false);
+                setIsChatLoading(true);
+                const { app_id, token } = sendbirdServiceToken;
+
+                sendbirdApiRef.current = SendbirdChat.init({
+                    appId: app_id,
+                    modules: [new GroupChannelModule()],
+                });
+
+                // 1. Check if the user exists
+                const user = await getUser(advertiserInfo.chat_user_id, token || '');
+                if (!user) {
+                    setIsChatError(true);
+                } else if (orderInfo?.chat_channel_url) {
+                    // if there is no chat_channel_url, it needs to be created using useCreateChat hook first
+                    // 2. Retrieve the P2P channel for the specific order
+                    const channel = await getChannel(orderInfo.chat_channel_url);
+                    if (!channel) {
+                        setIsChatError(true);
+                    } else {
+                        setChatChannel(channel);
+                        // 3. Retrieve any existing messages in the channel
+                        const retrievedMessages = await getMessages(channel, serverTime?.time || 0);
+                        setMessages(retrievedMessages);
+                    }
+                }
+            }
+        } catch (err) {
+            setIsChatError(true);
+        } finally {
+            setIsChatLoading(false);
         }
-    };
+    }, [
+        isSuccessSendbirdServiceToken,
+        isSuccessAdvertiserInfo,
+        sendbirdServiceToken,
+        advertiserInfo?.chat_user_id,
+        orderInfo?.chat_channel_url,
+        getChannel,
+        getMessages,
+        serverTime?.time,
+    ]);
+
+    React.useEffect(() => {
+        if (!orderInfo?.chat_channel_url) {
+            createChat({
+                order_id,
+            });
+        } else {
+            initialiseChat();
+        }
+    }, [order_id, orderInfo?.chat_channel_url, createChat, initialiseChat]);
 
     return {
         messages,
         initialiseChat,
+        getChannel,
+        getMessages,
+        getUser,
+        isChatError,
         isChatLoading,
     };
 };

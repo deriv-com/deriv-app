@@ -17,12 +17,6 @@
             }
         }
 
-        &__navbar {
-            &--no-event {
-                pointer-events: none;
-            }
-        }
-
         &__icon svg {
             filter: none;
             width: 12px;

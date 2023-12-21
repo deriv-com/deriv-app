@@ -647,6 +647,9 @@
         outline: none;
         padding-left: 0;
         border-bottom: 1px solid var(--general-section-1);
+        &--no-event {
+            pointer-events: none;
+        }
     }
 
     &__header {

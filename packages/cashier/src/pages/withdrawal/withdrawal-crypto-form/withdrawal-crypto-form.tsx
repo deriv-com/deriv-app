@@ -113,7 +113,7 @@ const WithdrawalCryptoForm = observer(() => {
     if (is_loading) return <Loading />;
 
     return (
-        <div className='cashier__wrapper' data-testid='dt_withdrawal_crypto_form'>
+        <div className='withdrawal-crypto-form__wrapper' data-testid='dt_withdrawal_crypto_form'>
             {!is_mobile && <Header currency={currency} />}
             <div className={classNames({ 'withdrawal-crypto-form__icon': is_mobile })}>
                 <Icon icon={`IcCurrency-${account_details?.icon?.toLowerCase()}`} size={is_mobile ? 64 : 128} />

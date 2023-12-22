@@ -23,7 +23,7 @@ export * from './WalletLanguageSidePanel';
 export * from './WalletListCard';
 export * from './WalletListCardActions';
 export * from './WalletListCardBadge';
-export * from './WalletListCardIBalance';
+export * from './WalletListCardBalance';
 export * from './WalletListCardIDetails';
 export * from './WalletListCardTitle';
 export * from './WalletNoWalletFoundState';

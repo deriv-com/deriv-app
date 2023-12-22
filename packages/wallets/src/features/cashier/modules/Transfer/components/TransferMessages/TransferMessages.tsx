@@ -1,12 +1,14 @@
 import React from 'react';
 import { useFormikContext } from 'formik';
-import { FadedAnimatedList, WalletAlertMessage } from '../../../../../../components';
+import { Trans } from 'react-i18next';
+import { Link } from 'react-router-dom';
+import { FadedAnimatedList, WalletAlertMessage, WalletButton } from '../../../../../../components';
 import { useTransferMessages } from '../../hooks';
 import { useTransfer } from '../../provider';
 import { TInitialTransferFormValues } from '../../types';
 import './TransferMessages.scss';
 
-const TransferMessages = () => {
+const TransferMessages: React.FC = () => {
     const { values } = useFormikContext<TInitialTransferFormValues>();
 
     const { USDExchangeRates, accountLimits, activeWalletExchangeRates } = useTransfer();
@@ -22,9 +24,28 @@ const TransferMessages = () => {
 
     return (
         <FadedAnimatedList className='wallets-transfer-messages'>
-            {messages.map((message, index) => (
-                <WalletAlertMessage key={index + message.type} message={message.text} type={message.type} />
-            ))}
+            {messages.map(({ action, message: { text, values }, type }) => {
+                const message = <Trans defaults={text} values={values} />;
+
+                return (
+                    <WalletAlertMessage key={text} message={message} type={type}>
+                        {action?.buttonLabel && action?.navigateTo && (
+                            <WalletButton size='sm' type='button' variant='contained'>
+                                <Link
+                                    className='wallets-transfer-messages__link'
+                                    to={action.navigateTo}
+                                    {...(action?.shouldOpenInNewTab && {
+                                        rel: 'noopener noreferrer',
+                                        target: '_blank',
+                                    })}
+                                >
+                                    <Trans defaults={action.buttonLabel} />
+                                </Link>
+                            </WalletButton>
+                        )}
+                    </WalletAlertMessage>
+                );
+            })}
         </FadedAnimatedList>
     );
 };

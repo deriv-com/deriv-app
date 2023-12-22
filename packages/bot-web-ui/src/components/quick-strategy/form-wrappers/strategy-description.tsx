@@ -93,7 +93,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
             : [{ type: 'text', content: [strategy?.description] }];
 
         const [expanded_subtitles_storage, setExpandedSubtitlesStorage] = useState(expanded_subtitles_storage_default);
-
+        //test gpg
         return (
             <>
                 {active_tab === 'TRADE_PARAMETERS' ? (

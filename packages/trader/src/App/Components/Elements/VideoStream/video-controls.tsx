@@ -40,8 +40,6 @@ const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
     ) => {
         const [is_drag_dot_visible, setIsDragDotVisible] = React.useState(false);
 
-        const dummy_time = '00:00';
-
         const formatTime = (time?: number) => {
             if (time && !isNaN(time)) {
                 const minutes = Math.floor(time / 60);
@@ -50,7 +48,8 @@ const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
                 const formatSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
                 return `${formatMinutes}:${formatSeconds}`;
             }
-            return dummy_time;
+
+            return '00:00';
         };
 
         return (
@@ -98,8 +97,6 @@ const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
                             <Text size='xxxs' line_height='s' color='colored-background'>
                                 {formatTime(current_time)}
                                 {' / '}
-                            </Text>
-                            <Text size='xxxs' line_height='s' color='colored-background'>
                                 {formatTime(video_duration)}
                             </Text>
                         </div>

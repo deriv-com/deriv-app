@@ -37,6 +37,7 @@ type TUnsupported = {
     onfido: {
         submissions_left: number;
     };
+    is_for_mt5: boolean;
 };
 
 const Unsupported = ({
@@ -50,6 +51,7 @@ const Unsupported = ({
     allow_poi_resubmission,
     handleViewComplete,
     onfido,
+    is_for_mt5,
     ...props
 }: TUnsupported) => {
     const [detail, setDetail] = React.useState<number | null>(null);
@@ -99,11 +101,13 @@ const Unsupported = ({
                 <Localize i18n_default_text='Please upload one of the following documents:' />
             </Text>
             <Documents documents={documents} toggleDetail={toggleDetail} />
-            <FormFooter className='proof-of-identity__footer'>
-                <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
-                    <Localize i18n_default_text='Back' />
-                </Button>
-            </FormFooter>
+            {!is_for_mt5 && (
+                <FormFooter className='proof-of-identity__footer'>
+                    <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
+                        <Localize i18n_default_text='Back' />
+                    </Button>
+                </FormFooter>
+            )}
         </div>
     );
 };

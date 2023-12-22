@@ -147,7 +147,7 @@ const POISubmissionForMT5 = observer(
                         <Unsupported
                             onfido={onfido}
                             country_code={citizen_data.value}
-                            is_mt5
+                            is_for_mt5
                             handlePOIforMT5Complete={handlePOIComplete}
                         />
                     );

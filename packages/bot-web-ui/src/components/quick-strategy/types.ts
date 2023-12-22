@@ -9,7 +9,7 @@ export type TFormData = {
     [key: string]: string | number | boolean;
 };
 
-export type TValidationType = 'min' | 'max' | 'required' | 'number' | 'ceil' | 'floor';
+export type TValidationType = 'min' | 'max' | 'required' | 'number' | 'ceil' | 'floor' | 'integer';
 
 export interface ValidationObject {
     getMessage: (min: number | string) => string;
@@ -24,7 +24,6 @@ export type TValidationItem =
 
 type TPartialConfigItem = Partial<{
     name: keyof TFormData;
-    fullWidth: boolean;
     dependencies: string[];
     label: string;
     description: string;

@@ -164,6 +164,23 @@ const MAX_STAKE: TConfigItem = {
     attached: true,
 };
 
+const LABEL_LAST_DIGIT_PREDICTION: TConfigItem = {
+    type: 'label',
+    name: 'label_last_digit_prediction',
+    label: localize('Last Digit Prediction'),
+    description: localize('Your prediction of the last digit of the asset price.'),
+    should_have: [{ key: 'tradetype', value: '', multiple: ['matchesdiffers', 'overunder'] }],
+    hide_without_should_have: true,
+};
+
+const LAST_DIGIT_PREDICTION: TConfigItem = {
+    type: 'number',
+    name: 'last_digit_prediction',
+    validation: ['number', 'required', 'min', 'max', 'integer'],
+    should_have: [{ key: 'tradetype', value: '', multiple: ['matchesdiffers', 'overunder'] }],
+    hide_without_should_have: true,
+};
+
 export const STRATEGIES: TStrategies = {
     MARTINGALE: {
         name: 'martingale_max-stake',
@@ -177,6 +194,8 @@ export const STRATEGIES: TStrategies = {
                 TRADETYPE,
                 LABEL_PURCHASE_TYPE,
                 PURCHASE_TYPE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
                 LABEL_DURATION,
@@ -198,6 +217,8 @@ export const STRATEGIES: TStrategies = {
                 TRADETYPE,
                 LABEL_PURCHASE_TYPE,
                 PURCHASE_TYPE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
                 LABEL_DURATION,
@@ -219,6 +240,8 @@ export const STRATEGIES: TStrategies = {
                 TRADETYPE,
                 LABEL_PURCHASE_TYPE,
                 PURCHASE_TYPE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
                 LABEL_DURATION,
@@ -240,6 +263,8 @@ export const STRATEGIES: TStrategies = {
                 TRADETYPE,
                 LABEL_PURCHASE_TYPE,
                 PURCHASE_TYPE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
                 LABEL_DURATION,
@@ -261,6 +286,8 @@ export const STRATEGIES: TStrategies = {
                 TRADETYPE,
                 LABEL_PURCHASE_TYPE,
                 PURCHASE_TYPE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
                 LABEL_DURATION,
@@ -282,6 +309,8 @@ export const STRATEGIES: TStrategies = {
                 TRADETYPE,
                 LABEL_PURCHASE_TYPE,
                 PURCHASE_TYPE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
                 LABEL_DURATION,

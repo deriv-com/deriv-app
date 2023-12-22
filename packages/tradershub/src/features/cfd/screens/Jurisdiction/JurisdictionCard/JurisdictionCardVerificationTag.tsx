@@ -31,23 +31,22 @@ const verificationStatusIconMapper: Partial<
 const JurisdictionCardVerificationTag: React.FC<Props> = ({ category, icon }) => {
     const { data } = useAuthentication();
 
+    const renderStatusIcon = (category: string, status: string) => {
+        if (category && status && Object.keys(verificationStatusIconMapper).includes(status)) {
+            return (
+                <div className='absolute -top-[20%] -right-[20%]'>
+                    {verificationStatusIconMapper[status as keyof typeof verificationStatusIconMapper]}
+                </div>
+            );
+        }
+        return null;
+    };
+
     return (
         <div className='relative '>
             {icon}
-            {category === 'poi' &&
-                data?.poi_status &&
-                Object.keys(verificationStatusIconMapper).includes(data.poi_status) && (
-                    <div className='absolute -top-[20%] -right-[20%]'>
-                        {verificationStatusIconMapper[data.poi_status]}
-                    </div>
-                )}
-            {category === 'poa' &&
-                data?.poa_status &&
-                Object.keys(verificationStatusIconMapper).includes(data.poa_status) && (
-                    <div className='absolute -top-[-20%] -right-[20%]'>
-                        {verificationStatusIconMapper[data.poa_status]}
-                    </div>
-                )}
+            {category === 'poi' && renderStatusIcon(category, data?.poi_status || 'none')}
+            {category === 'poa' && renderStatusIcon(category, data?.poa_status || 'none')}
         </div>
     );
 };

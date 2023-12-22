@@ -63,7 +63,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', platform, webtrad
             )}
             {platform !== mt5Platform && app !== ctraderPlatform && (
                 <Button
-                    className='flex items-center border-none rounded-md cursor-pointer bg-system-dark-primary-background p-400 gap-400'
+                    className='flex justify-center items-center border-none rounded-md cursor-pointer bg-system-dark-primary-background p-400 gap-400'
                     colorStyle='black'
                     onClick={onClickWebTerminal}
                     variant='secondary'

@@ -27,6 +27,8 @@ const useCtraderAccountsList = () => {
                 landing_company_name: account.landing_company_short,
                 /** The platform of the account */
                 platform: 'ctrader' as const,
+                /** Formatted display balance */
+                formatted_balance: `${account.display_balance} ${account.currency}`,
             })),
         [ctrader_accounts?.trading_platform_accounts, getConfig]
     );

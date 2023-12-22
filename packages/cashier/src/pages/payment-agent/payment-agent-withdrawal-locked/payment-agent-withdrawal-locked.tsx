@@ -87,8 +87,8 @@ const PaymentAgentWithdrawalLocked = ({ error, history }: TPaymentAgentWithdrawa
 
     return (
         <React.Fragment>
-            {items.map((item, index) => {
-                return <PaymentAgentWithdrawalLockedItem item={item} key={index} />;
+            {items.map(item => {
+                return <PaymentAgentWithdrawalLockedItem item={item} key={item.title} />;
             })}
         </React.Fragment>
     );

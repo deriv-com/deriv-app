@@ -2,7 +2,7 @@ import React from 'react';
 import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
-import { validPassword } from '../../../../utils/passwordUtils';
+import { validPassword } from '../../../../utils/password';
 import { PlatformDetails } from '../../constants';
 import './CreatePassword.scss';
 
@@ -29,12 +29,14 @@ const CreatePassword: React.FC<TProps> = ({
     return (
         <div className='wallets-create-password'>
             {!isMobile && icon}
-            <WalletText lineHeight='xl' weight='bold'>
-                Create a {title} password
-            </WalletText>
-            <WalletText align='center' size='sm'>
-                You can use this password for all your {title} accounts.
-            </WalletText>
+            <div className='wallets-create-password__text'>
+                <WalletText align='center' lineHeight='xl' weight='bold'>
+                    Create a {title} password
+                </WalletText>
+                <WalletText align='center' size='sm'>
+                    You can use this password for all your {title} accounts.
+                </WalletText>
+            </div>
 
             <WalletPasswordField label={`${title} password`} onChange={onPasswordChange} password={password} />
             {!isMobile && (
@@ -43,8 +45,9 @@ const CreatePassword: React.FC<TProps> = ({
                     isLoading={isLoading}
                     onClick={onPrimaryClick}
                     size='lg'
-                    text={`Create ${title} password`}
-                />
+                >
+                    {`Create ${title} password`}
+                </WalletButton>
             )}
         </div>
     );

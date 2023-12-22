@@ -1,10 +1,10 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Icon, Tabs } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { TContent } from './config';
-import classNames from 'classnames';
 import SearchInput from './common/search-input';
+import { TContent } from './config';
 
 type TTutorialsTabDesktop = {
     tutorial_tabs: TContent;
@@ -14,17 +14,19 @@ type TTutorialsTabDesktop = {
 const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: TTutorialsTabDesktop) => {
     const { dashboard } = useDBotStore();
 
-    const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue } = dashboard;
+    const { active_tab_tutorials, faq_search_value, setActiveTabTutorial, setFAQSearchValue, resetTutorialTabContent } =
+        dashboard;
     const search = faq_search_value?.toLowerCase();
 
     const onCloseHandleSearch = () => {
         setFAQSearchValue('');
+        resetTutorialTabContent();
         setActiveTabTutorial(prev_active_tutorials);
     };
 
     React.useEffect(() => {
         if (faq_search_value !== '') {
-            setActiveTabTutorial(2);
+            setActiveTabTutorial(3);
         }
     }, [active_tab_tutorials]);
 
@@ -58,7 +60,8 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
                 className={classNames('tutorials', {
                     'tutorials-guide': prev_active_tutorials === 0,
                     'tutorials-faq': prev_active_tutorials === 1,
-                    'tutorials-search': active_tab_tutorials === 2,
+                    'tutorials-qs-guide': prev_active_tutorials === 2,
+                    'tutorials-search': active_tab_tutorials === 3,
                 })}
                 active_index={active_tab_tutorials}
                 onTabItemClick={setActiveTabTutorial}
@@ -67,7 +70,7 @@ const TutorialsTabDesktop = observer(({ tutorial_tabs, prev_active_tutorials }: 
                 {tutorial_tabs.map(
                     ({ label, content }) =>
                         content && (
-                            <div label={label} key={label}>
+                            <div label={label} key={`${content}_${label}`}>
                                 {content}
                             </div>
                         )

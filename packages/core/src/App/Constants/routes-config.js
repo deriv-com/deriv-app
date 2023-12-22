@@ -64,6 +64,13 @@ const Wallets = React.lazy(() =>
     })
 );
 
+const TradersHub = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "tradershub" */ '@deriv/tradershub');
+    })
+);
+
 const P2P = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved
@@ -71,6 +78,12 @@ const P2P = React.lazy(() =>
     })
 );
 
+const P2P_V2 = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "p2p-v2" */ '@deriv/p2p-v2');
+    })
+);
 const getModules = () => {
     const modules = [
         {
@@ -187,6 +200,11 @@ const getModules = () => {
                             component: Account,
                             getTitle: () => localize('Proof of ownership'),
                         },
+                        {
+                            path: routes.proof_of_income,
+                            component: Account,
+                            getTitle: () => localize('Proof of income'),
+                        },
                     ],
                 },
                 {
@@ -248,6 +266,18 @@ const getModules = () => {
             component: Wallets,
             is_authenticated: true,
             getTitle: () => localize('Wallets'),
+        },
+        {
+            path: routes.cashier_p2p_v2,
+            component: P2P_V2,
+            getTitle: () => localize('P2P-V2'),
+            is_authenticated: true,
+        },
+        {
+            path: routes.traders_hub_v2,
+            component: TradersHub,
+            is_authenticated: true,
+            getTitle: () => localize('Trader’s Hub V2'),
         },
         {
             path: routes.onboarding,

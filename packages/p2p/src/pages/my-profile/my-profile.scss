@@ -3,6 +3,7 @@
 
     @include mobile {
         display: block;
+        height: 100%;
     }
 
     &__content {
@@ -32,15 +33,6 @@
             .dc-mobile-full-page-modal {
                 opacity: 1 !important;
             }
-        }
-    }
-
-    &__navigation {
-        display: flex;
-        justify-content: space-between;
-
-        &:last-child {
-            margin-bottom: 1.6rem;
         }
     }
 }

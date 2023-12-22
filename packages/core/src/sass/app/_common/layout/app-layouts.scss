@@ -50,6 +50,27 @@
         /* Making the wrapper stack above the body */
         overscroll-behavior: none;
         z-index: 2;
+
+        .trade-notifications {
+            position: absolute;
+            width: 40rem;
+            max-width: calc(100% - 1.6rem);
+            z-index: 6;
+            inset: 0.8rem 0.8rem auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .notification-messages {
+            .trade-notifications {
+                position: relative;
+                inset: unset;
+                max-width: 32.8rem;
+                width: calc(100% - 0.8rem);
+                margin-right: 0.4rem;
+                top: -0.8rem;
+            }
+        }
     }
     .modal-root {
         height: 100% !important;
@@ -68,15 +89,6 @@
             top: #{$HEADER_HEIGHT};
             position: absolute;
             right: 1.6rem;
-        }
-        .dc-toast-popup-mobile {
-            display: inherit;
-            max-width: calc(100vw - 1.6rem);
-            position: absolute;
-            width: calc(100vw - 1.2rem);
-            top: 0.4rem;
-            left: 1.2rem;
-            right: 1.2rem;
         }
     }
 }

@@ -73,8 +73,8 @@ describe('<OnRampProviderCard />', () => {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
-        expect(screen.getByTestId('dti_provider_icon_dark')).toBeInTheDocument();
-        expect(screen.getByTestId('dti_payment_icon_dark')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_provider_icon_dark')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_payment_icon_dark')).toBeInTheDocument();
     });
 
     it('should trigger onClick callback, when "Select" button is clicked', () => {

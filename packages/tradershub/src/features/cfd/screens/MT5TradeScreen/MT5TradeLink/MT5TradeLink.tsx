@@ -26,17 +26,16 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', platform, webtrad
     const onClickWebTerminal = () => {
         const { isStaging, isTestLink } = getPlatformFromUrl();
         let url;
-        switch (platform) {
-            case dxtradePlatform:
-                url = isDemo ? PlatformUrls.dxtrade.demo : PlatformUrls.dxtrade.live;
-                break;
-            case ctraderPlatform:
-                url = isTestLink || isStaging ? PlatformUrls.ctrader.staging : PlatformUrls.ctrader.live;
-                if (ctraderToken) url += `?token=${ctraderToken}`;
-                break;
-            default:
-                url = '';
-        }
+        const platformType = isDemo ? 'demo' : 'live';
+        const ctraderType = isTestLink || isStaging ? 'staging' : 'live';
+
+        if (platform === dxtradePlatform || platform === ctraderPlatform) {
+            url = PlatformUrls[platform][platform === ctraderPlatform ? ctraderType : platformType];
+            if (platform === ctraderPlatform && ctraderToken) {
+                url += `?token=${ctraderToken}`;
+            }
+        } else return '';
+
         window.open(url);
     };
 

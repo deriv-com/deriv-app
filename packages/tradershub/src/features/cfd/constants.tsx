@@ -10,9 +10,10 @@ import LinuxIcon from '../../public/images/ic-linux-logo.svg';
 import MacOSIcon from '../../public/images/ic-macos-logo.svg';
 import MT5Icon from '../../public/images/ic-mt5.svg';
 import WindowsIcon from '../../public/images/ic-windows-logo.svg';
-import { TPlatforms } from '../../types';
+import { TMarketTypes, TPlatforms } from '../../types';
 
 type TAppContent = {
+    description: string;
     icon: ReactNode;
     link: string;
     text: string;
@@ -22,10 +23,14 @@ type TAppContent = {
 type TPlatform = 'ctrader' | 'linux' | 'macos' | 'web' | 'windows';
 
 type TAppToContentMapper = {
-    [key in TPlatform]: TAppContent;
+    [key in TPlatform]: Omit<TAppContent, 'description'>;
 };
 
-export const MarketTypeDetails = {
+type TMarketTypeDetails = {
+    [key in TMarketTypes.All]: Omit<TAppContent, 'link' | 'text'>;
+};
+
+export const MarketTypeDetails: TMarketTypeDetails = {
     all: {
         description:
             'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs',
@@ -42,7 +47,7 @@ export const MarketTypeDetails = {
         icon: <DerivedMT5Icon />,
         title: 'Derived',
     },
-} as const;
+};
 
 export const PlatformDetails = {
     ctrader: {
@@ -63,7 +68,7 @@ export const PlatformDetails = {
         platform: 'mt5' as TPlatforms.MT5,
         title: 'Deriv MT5',
     },
-} as const;
+};
 
 export const companyNamesAndUrls = {
     bvi: { name: 'Deriv (BVI) Ltd', shortcode: 'BVI', tncUrl: 'tnc/deriv-(bvi)-ltd.pdf' },
@@ -128,7 +133,15 @@ export const PlatformToLabelIconMapper = {
     dxtrade: <DerivXLabelIcon />,
 };
 
-export const PlatformUrls = {
+type TPlatformUrls = {
+    [key in TPlatforms.OtherAccounts]: {
+        demo?: string;
+        live: string;
+        staging?: string;
+    };
+};
+
+export const PlatformUrls: TPlatformUrls = {
     ctrader: {
         live: 'https://ct.deriv.com',
         staging: 'https://ct-uat.deriv.com',
@@ -137,4 +150,4 @@ export const PlatformUrls = {
         demo: 'https://dx-demo.deriv.com',
         live: 'https://dx.deriv.com',
     },
-} as const;
+};

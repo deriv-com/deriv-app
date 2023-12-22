@@ -3,8 +3,8 @@ import classnames from 'classnames';
 import { PropTypes } from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
 import { Button, DataList, Icon, Text, ThemedScrollbars } from '@deriv/components';
-import { isMobile, useNewRowTransition } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { useNewRowTransition } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import Download from 'Components/download';
 import { contract_stages } from 'Constants/contract-stage';
@@ -38,16 +38,15 @@ const TransactionItem = ({ row, is_new_row }) => {
 };
 
 const Transactions = observer(({ is_drawer_open }) => {
+    const { ui } = useStore();
     const { run_panel, transactions } = useDBotStore();
     const { contract_stage } = run_panel;
     const { transactions: transaction_list, onMount, onUnmount, toggleTransactionDetailsModal } = transactions;
-
+    const { is_mobile } = ui;
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
     }, [onMount, onUnmount]);
-
-    const is_mobile = isMobile();
 
     return (
         <div

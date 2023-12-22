@@ -95,22 +95,4 @@ describe('ErrorStore', () => {
         expect(error_store.is_ask_authentication).toBeFalsy();
         expect(error_store.is_ask_financial_risk_approval).toBeFalsy();
     });
-
-    // it('should set proper values when the setErrorMessage function is called', () => {
-    //     const error = {
-    //         code: 'ERROR_CODE',
-    //         details: { fields: 'FIELDS' },
-    //         message: 'ERROR_MESSAGE',
-    //     };
-
-    //     const mockOnClickButton = jest.fn();
-
-    //     error_store.setErrorMessage(error, mockOnClickButton, true);
-
-    //     expect(error_store.onClickButton).toBe(mockOnClickButton);
-    //     expect(error_store.code).toBe('ERROR_CODE');
-    //     expect(error_store.message).toBe('ERROR_MESSAGE');
-    //     expect(error_store.fields).toBe('FIELDS');
-    //     expect(error_store.is_show_full_page).toBeTruthy();
-    // });
 });

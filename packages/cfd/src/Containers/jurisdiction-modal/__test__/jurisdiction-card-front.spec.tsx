@@ -8,6 +8,7 @@ describe('JurisdictionCardFront', () => {
     const prompt_client_to_authenticate: 0 | 1 = 1;
     const mock_props = {
         account_status: {
+            p2p_poa_required: 1,
             currency_config: { usd: {} },
             p2p_status,
             prompt_client_to_authenticate,

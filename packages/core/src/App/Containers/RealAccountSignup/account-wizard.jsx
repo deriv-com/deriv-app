@@ -325,7 +325,7 @@ const AccountWizard = props => {
                 });
                 props.setIsRiskWarningVisible(false);
                 if (props.real_account_signup_target === 'maltainvest') {
-                    props.onFinishSuccess(response.new_account_maltainvest.currency.toLowerCase());
+                    props.onOpenDepositModal();
                 } else if (props.real_account_signup_target === 'samoa') {
                     props.onOpenWelcomeModal(response.new_account_samoa.currency.toLowerCase());
                 } else {
@@ -450,6 +450,7 @@ AccountWizard.propTypes = {
     fetchStatesList: PropTypes.func,
     has_currency: PropTypes.bool,
     has_real_account: PropTypes.bool,
+    is_eu_user: PropTypes.bool,
     has_residence: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_virtual: PropTypes.bool,
@@ -482,6 +483,7 @@ export default connect(({ client, notifications, ui, traders_hub }) => ({
     financial_assessment: client.financial_assessment,
     has_currency: !!client.currency,
     has_real_account: client.has_active_real_account,
+    is_eu_user: traders_hub.is_eu_user,
     has_residence: client.residence,
     is_fully_authenticated: client.is_fully_authenticated,
     is_virtual: client.is_virtual,

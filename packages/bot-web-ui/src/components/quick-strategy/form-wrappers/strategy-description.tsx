@@ -104,20 +104,20 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                             {Array.isArray(grouped_objects_by_title) &&
                                 grouped_objects_by_title?.map((data: TDescription) => {
                                     const subtitle_value = (data as TDescriptionItem[])?.[0]?.content?.[0] ?? '';
+                                    const executeContentData = () => ({
+                                        header: subtitle_value,
+                                        content:
+                                            (renderDescription(
+                                                data as TDataGroupedObjectsByTitle
+                                            ) as React.ReactElement[]) ??
+                                            (data as TDescriptionItem[])
+                                                ?.slice(1)
+                                                ?.map(element => renderDescription(element)),
+                                    });
                                     return (
                                         <Accordion
                                             key={`accordion-${subtitle_value}`}
-                                            content_data={{
-                                                header: subtitle_value,
-                                                content:
-                                                    (renderDescription(
-                                                        data as TDataGroupedObjectsByTitle
-                                                    ) as React.ReactElement[]) ??
-                                                    ((data as TDescriptionItem[])
-                                                        ?.slice(1)
-                                                        ?.map(element => renderDescription(element))
-                                                        .flatMap(item => item) as React.ReactElement[]),
-                                            }}
+                                            content_data={executeContentData()}
                                             expanded={!!(data as TDescriptionItem[])[0]?.expanded}
                                             is_cursive={false}
                                             no_collapsible={(data as TDescriptionItem[])[0]?.no_collapsible}

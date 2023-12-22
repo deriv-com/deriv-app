@@ -127,10 +127,6 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
         if (!is_dragging.current) return;
 
-        if (progress_bar_ref?.current && video_ref.current) {
-            progress_bar_ref.current.style.setProperty('transition', 'all 0.3s linear');
-        }
-
         video_ref?.current?.play();
         setIsPlaying(true);
         setIsEnded(false);
@@ -265,10 +261,8 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         >
             <Stream
                 autoplay={should_autoplay}
-                controls={false}
                 height={is_mobile ? '184.5px' : '270px'}
                 letterboxColor='transparent'
-                loop={false}
                 preload='auto'
                 responsive={false}
                 src={src}

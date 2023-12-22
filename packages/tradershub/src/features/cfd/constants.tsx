@@ -10,7 +10,7 @@ import LinuxIcon from '../../public/images/ic-linux-logo.svg';
 import MacOSIcon from '../../public/images/ic-macos-logo.svg';
 import MT5Icon from '../../public/images/ic-mt5.svg';
 import WindowsIcon from '../../public/images/ic-windows-logo.svg';
-import { TMarketTypes, TPlatforms } from '../../types';
+import { TMarketTypes, TMT5LandingCompanyName, TPlatforms } from '../../types';
 
 type TAppContent = {
     description: string;
@@ -22,13 +22,47 @@ type TAppContent = {
 
 type TPlatform = 'ctrader' | 'linux' | 'macos' | 'web' | 'windows';
 
+type TTM5FilterLandingCompany = Exclude<TMT5LandingCompanyName, 'malta' | 'seychelles' | undefined>;
+type TLandingCompanyDetails = { name: string; shortcode: string; tncUrl: string };
+
+type TMarketTypeDetails = {
+    [key in TMarketTypes.All]: Pick<TAppContent, 'description' | 'icon' | 'title'>;
+};
+
+type TPlatformDetails = {
+    [key in TPlatforms.All]: Omit<TAppContent, 'description' | 'text'> & {
+        platform: TPlatforms.MT5 | TPlatforms.OtherAccounts;
+    };
+};
+
+type TcompanyNamesAndUrls = {
+    [key in TTM5FilterLandingCompany]: TLandingCompanyDetails;
+};
+
 type TAppToContentMapper = {
     [key in TPlatform]: Omit<TAppContent, 'description'>;
 };
 
-type TMarketTypeDetails = {
-    [key in TMarketTypes.All]: Omit<TAppContent, 'link' | 'text'>;
+type TPlatformUrls = {
+    [key in TPlatforms.OtherAccounts]: {
+        demo?: string;
+        live: string;
+        staging?: string;
+    };
 };
+
+export const CFDPlatforms = {
+    CFDS: 'CFDs',
+    CTRADER: 'ctrader',
+    DXTRADE: 'dxtrade',
+    MT5: 'mt5',
+} as const;
+
+export const MarketType = {
+    ALL: 'all',
+    FINANCIAL: 'financial',
+    SYNTHETIC: 'synthetic',
+} as const;
 
 export const MarketTypeDetails: TMarketTypeDetails = {
     all: {
@@ -49,7 +83,7 @@ export const MarketTypeDetails: TMarketTypeDetails = {
     },
 };
 
-export const PlatformDetails = {
+export const PlatformDetails: TPlatformDetails = {
     ctrader: {
         icon: <CTraderIcon />,
         link: 'https://onelink.to/hyqpv7',
@@ -70,7 +104,7 @@ export const PlatformDetails = {
     },
 };
 
-export const companyNamesAndUrls = {
+export const companyNamesAndUrls: TcompanyNamesAndUrls = {
     bvi: { name: 'Deriv (BVI) Ltd', shortcode: 'BVI', tncUrl: 'tnc/deriv-(bvi)-ltd.pdf' },
     labuan: { name: 'Deriv (FX) Ltd', shortcode: 'Labuan', tncUrl: 'tnc/deriv-(fx)-ltd.pdf' },
     maltainvest: {
@@ -80,20 +114,7 @@ export const companyNamesAndUrls = {
     },
     svg: { name: 'Deriv (SVG) LLC', shortcode: 'SVG', tncUrl: 'tnc/deriv-(svg)-llc.pdf' },
     vanuatu: { name: 'Deriv (V) Ltd', shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
-} as const;
-
-export const CFDPlatforms = {
-    CFDS: 'CFDs',
-    CTRADER: 'ctrader',
-    DXTRADE: 'dxtrade',
-    MT5: 'mt5',
-} as const;
-
-export const MarketType = {
-    ALL: 'all',
-    FINANCIAL: 'financial',
-    SYNTHETIC: 'synthetic',
-} as const;
+};
 
 export const AppToContentMapper: TAppToContentMapper = {
     ctrader: {
@@ -128,17 +149,9 @@ export const AppToContentMapper: TAppToContentMapper = {
     },
 };
 
-export const PlatformToLabelIconMapper = {
+export const PlatformToLabelIconMapper: Record<TPlatforms.OtherAccounts, ReactNode> = {
     ctrader: <CTraderLabelIcon />,
     dxtrade: <DerivXLabelIcon />,
-};
-
-type TPlatformUrls = {
-    [key in TPlatforms.OtherAccounts]: {
-        demo?: string;
-        live: string;
-        staging?: string;
-    };
 };
 
 export const PlatformUrls: TPlatformUrls = {

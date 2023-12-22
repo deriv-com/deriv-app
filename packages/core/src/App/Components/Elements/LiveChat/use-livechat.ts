@@ -2,11 +2,16 @@ import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { liveChatInitialization } from './live-chat-initializer';
 import Cookies from 'js-cookie';
-import { deriv_urls } from '@deriv/shared';
+import { deriv_urls, getActionFromUrl } from '@deriv/shared';
 import { useIsMounted } from 'usehooks-ts';
 
 // Todo: Should break this into smaller hooks or utility functions.
 const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
+    const url_query_string = window.location.search;
+    const url_params = new URLSearchParams(url_query_string);
+    const reset_password = getActionFromUrl() === 'reset_password';
+    const should_not_run_livechat = url_params.get('code') && reset_password;
+
     const [isReady, setIsReady] = useState(false);
     const [reload, setReload] = useState(false);
     const history = useHistory();
@@ -43,12 +48,6 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     }, [isMounted]);
 
     const liveChatSetup = (is_logged_in: boolean) => {
-        const url_query_string = window.location.search;
-        const url_params = new URLSearchParams(url_query_string);
-        const code_param = url_params.get('code');
-        if (code_param) {
-            return null;
-        }
         if (window.LiveChatWidget) {
             window.LiveChatWidget.init();
             window.LiveChatWidget?.on('ready', () => {
@@ -132,13 +131,15 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     }, [history, isMounted, onHistoryChange]);
 
     useEffect(() => {
-        if (reload) {
+        if (reload && !should_not_run_livechat) {
             liveChatSetup(has_cookie_account);
             setReload(false);
         }
     }, [reload, has_cookie_account]);
 
-    useEffect(() => liveChatSetup(has_cookie_account), [has_cookie_account, active_loginid]);
+    useEffect(() => {
+        if (!should_not_run_livechat) liveChatSetup(has_cookie_account);
+    }, [has_cookie_account, active_loginid]);
 
     return {
         isReady,

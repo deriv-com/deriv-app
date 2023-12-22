@@ -14,15 +14,23 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
     const { isDesktop, isMobile } = useDevice();
 
     const renderFooter = useCallback(() => {
-        return isMobile ? <WalletButton isFullWidth onClick={() => hide()} size='lg' text='Done' /> : null;
+        return isMobile ? (
+            <WalletButton isFullWidth onClick={() => hide()} size='lg'>
+                Done
+            </WalletButton>
+        ) : null;
     }, [isMobile, hide]);
 
     const renderButtons = useCallback(() => {
-        return isDesktop ? <WalletButton onClick={() => hide()} size='lg' text='Done' /> : <></>;
+        return isDesktop ? (
+            <WalletButton onClick={() => hide()} size='lg'>
+                Done
+            </WalletButton>
+        ) : null;
     }, [isDesktop, hide]);
 
     return (
-        <ModalStepWrapper renderFooter={renderFooter} shouldHideFooter={isDesktop} title={`Manage ${title} password`}>
+        <ModalStepWrapper renderFooter={renderFooter} shouldFixedFooter={isDesktop} title={`Manage ${title} password`}>
             <div className='wallets-reset-mt5-password'>
                 <WalletsActionScreen
                     description={`You have a new ${title} password to log in to your ${title} accounts on the web and mobile apps.`}

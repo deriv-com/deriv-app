@@ -3,7 +3,7 @@ import { useTradingPlatformPasswordReset } from '@deriv/api';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
-import { validPassword } from '../../utils/passwordUtils';
+import { validPassword } from '../../utils/password';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup, WalletPasswordField, WalletText } from '../Base';
 import { WalletPasswordFieldProps } from '../Base/WalletPasswordField/WalletPasswordField';
 import { useModal } from '../ModalProvider';
@@ -43,26 +43,24 @@ const WalletsResetMT5Password = ({ onChange, password, platform, verificationCod
     const renderFooter = () => {
         return isMobile ? (
             <WalletButtonGroup isFullWidth>
-                <WalletButton onClick={() => hide()} size='lg' text='Cancel' variant='outlined' />
+                <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                    Cancel
+                </WalletButton>
                 <WalletButton
                     disabled={!validPassword(password)}
                     isLoading={status === 'loading'}
                     onClick={handleSubmit}
                     size='lg'
-                    text='Create'
                     variant='contained'
-                />
+                >
+                    Create
+                </WalletButton>
             </WalletButtonGroup>
         ) : null;
     };
 
     return (
-        <ModalStepWrapper
-            renderFooter={renderFooter}
-            shouldHideFooter={isDesktop}
-            shouldHideHeader={isDesktop}
-            title={`Manage ${title} password`}
-        >
+        <ModalStepWrapper renderFooter={renderFooter} shouldHideHeader={isDesktop} title={`Manage ${title} password`}>
             <div className='wallets-reset-mt5-password'>
                 <WalletText weight='bold'>Create a new {title} Password</WalletText>
                 <WalletPasswordField label={`${title} password`} onChange={onChange} password={password} />
@@ -72,14 +70,17 @@ const WalletsResetMT5Password = ({ onChange, password, platform, verificationCod
                 </WalletText>
                 {isDesktop && (
                     <div className='wallets-reset-mt5-password__button-group'>
-                        <WalletButton onClick={() => hide()} text='Cancel' variant='outlined' />
+                        <WalletButton onClick={() => hide()} variant='outlined'>
+                            Cancel
+                        </WalletButton>
                         <WalletButton
                             disabled={!validPassword(password)}
                             isLoading={status === 'loading'}
                             onClick={handleSubmit}
-                            text='Create'
                             variant='contained'
-                        />
+                        >
+                            Create
+                        </WalletButton>
                     </div>
                 )}
             </div>

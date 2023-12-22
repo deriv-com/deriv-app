@@ -358,17 +358,15 @@ const IdvFailed = ({
                         )}
                     </FormBody>
                     <FormFooter className='proof-of-identity__footer'>
-                        <div className='proof-of-identity__actions'>
-                            <Button
-                                className='proof-of-identity__submit-button'
-                                type='submit'
-                                has_effect
-                                is_disabled={!dirty || isSubmitting || !isValid}
-                                text={buttonText(shouldSkipIdv(values?.document_type?.id))}
-                                large
-                                primary
-                            />
-                        </div>
+                        <Button
+                            className='proof-of-identity__submit-button'
+                            type='submit'
+                            has_effect
+                            is_disabled={!dirty || isSubmitting || !isValid}
+                            text={buttonText(shouldSkipIdv(values?.document_type?.id))}
+                            large
+                            primary
+                        />
                     </FormFooter>
                 </Form>
             )}

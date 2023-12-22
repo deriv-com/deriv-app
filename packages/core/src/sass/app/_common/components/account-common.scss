@@ -918,27 +918,6 @@
             }
         }
 
-        .proof-of-identity {
-            &__actions {
-                @include desktop {
-                    display: flex;
-                    justify-content: flex-end;
-                    align-items: flex-end;
-                }
-            }
-
-            &__submit-button {
-                @include desktop {
-                    margin-top: 3.2rem;
-                    margin-left: auto;
-                }
-
-                @include mobile {
-                    margin-inline: 2.4rem;
-                }
-            }
-        }
-
         .account__scrollbars_container {
             @include desktop {
                 padding-top: 0;

@@ -2,9 +2,14 @@ import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
 
-type TVolumeControl = { onVolumeChange: (new_value: number) => void; volume?: number; is_mobile?: boolean };
+type TVolumeControl = {
+    onVolumeChange: (new_value: number) => void;
+    volume?: number;
+    is_mobile?: boolean;
+    toggleMute: (new_value: boolean) => void;
+};
 
-const VolumeControl = ({ onVolumeChange, volume, is_mobile }: TVolumeControl) => {
+const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolumeControl) => {
     const [show_volume, setShowVolume] = React.useState(false);
     const [is_muted, setIsMuted] = React.useState(false);
     const [shift_Y, setShiftY] = React.useState<number>(0);
@@ -39,11 +44,11 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile }: TVolumeControl) =>
 
     const buttonClickHandler = () => {
         if (is_muted) {
-            onVolumeChange(0.5);
-            volume_bar_ref?.current && volume_bar_ref.current.style.setProperty('height', '50%');
+            volume_bar_ref?.current && volume_bar_ref.current.style.setProperty('height', `${(volume ?? 0.5) * 100}%`);
+            toggleMute(false);
         } else {
-            onVolumeChange(0);
             volume_bar_ref?.current && volume_bar_ref.current.style.setProperty('height', '0%');
+            toggleMute(true);
         }
         setIsMuted(prev => !prev);
     };

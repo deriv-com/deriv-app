@@ -16,6 +16,7 @@ type TVideoControls = {
     video_duration?: number;
     show_controls?: boolean;
     volume?: number;
+    toggleMute: (new_value: boolean) => void;
 };
 
 const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
@@ -30,6 +31,7 @@ const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
             onVolumeChange,
             onPlaybackRateChange,
             togglePlaying,
+            toggleMute,
             show_controls,
             video_duration,
             volume,
@@ -103,7 +105,12 @@ const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
                         </div>
                     </div>
                     <div className='player__controls__bottom-bar controls__right'>
-                        <VolumeControl onVolumeChange={onVolumeChange} volume={volume} is_mobile={is_mobile} />
+                        <VolumeControl
+                            onVolumeChange={onVolumeChange}
+                            volume={volume}
+                            is_mobile={is_mobile}
+                            toggleMute={toggleMute}
+                        />
                         <PlaybackRateControl onPlaybackRateChange={onPlaybackRateChange} is_mobile={is_mobile} />
                     </div>
                 </div>

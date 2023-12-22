@@ -33,6 +33,12 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         video_ref.current.volume = new_value;
     };
 
+    const toggleMute = (new_value: boolean) => {
+        if (!video_ref?.current) return;
+
+        video_ref.current.muted = new_value;
+    };
+
     const onPlaybackRateChange = (new_value: number) => {
         if (!video_ref?.current) return;
 
@@ -273,6 +279,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
                 togglePlaying={togglePlaying}
                 video_duration={video_duration}
                 volume={video_ref.current?.volume}
+                toggleMute={toggleMute}
                 show_controls={show_controls}
                 ref={progress_bar_ref}
             />

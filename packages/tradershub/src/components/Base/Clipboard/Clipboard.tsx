@@ -1,20 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useCopyToClipboard, useHover } from 'usehooks-ts';
 import { useBreakpoint } from '@deriv/quill-design';
-import Clipboard from '../../../public/images/clipboard.svg';
+import ClipboardIcon from '../../../public/images/clipboard.svg';
 import CheckmarkCircle from '../../../public/images/ic-checkmark-circle.svg';
 import { Tooltip } from '../Tooltip';
 
 /**
- * Props for the WalletClipboard component.
+ * Props for the Clipboard component.
  * @property {string} textCopy - The text to be copied to the clipboard.
  *
  * @example
  * ```jsx
- * <WalletClipboard textCopy="Text to be copied" />
+ * <Clipboard textCopy="Text to be copied" />
  * ```
  */
-const WalletClipboard = (textCopy: string) => {
+const Clipboard = (textCopy: string) => {
     const [, copy] = useCopyToClipboard();
     const { isMobile } = useBreakpoint();
     const [isCopied, setIsCopied] = useState(false);
@@ -46,10 +46,10 @@ const WalletClipboard = (textCopy: string) => {
                 onClick={onClick}
                 ref={hoverRef}
             >
-                {isCopied ? <CheckmarkCircle /> : <Clipboard />}
+                {isCopied ? <CheckmarkCircle /> : <ClipboardIcon />}
             </button>
         </Tooltip>
     );
 };
 
-export default WalletClipboard;
+export default Clipboard;

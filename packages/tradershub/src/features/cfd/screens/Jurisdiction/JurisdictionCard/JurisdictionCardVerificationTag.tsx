@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { useAuthentication } from '@deriv/api';
 import VerificationFailedIcon from '../../../../../public/images/ic-verification-failed-status.svg';
 import VerificationPendingIcon from '../../../../../public/images/ic-verification-pending-status.svg';
@@ -28,7 +28,7 @@ const verificationStatusIconMapper: Partial<
  * @returns
  */
 
-const JurisdictionCardVerificationTag: React.FC<Props> = ({ category, icon }) => {
+const JurisdictionCardVerificationTag: FC<Props> = ({ category, icon }) => {
     const { data } = useAuthentication();
 
     const renderStatusIcon = (

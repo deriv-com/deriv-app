@@ -1,4 +1,4 @@
-import { TMessageFnProps } from '../types';
+import { TMessageFnProps } from '../../../types';
 
 const transferFeesBetweenWalletsMessageFn = ({
     displayMoney,
@@ -27,8 +27,17 @@ const transferFeesBetweenWalletsMessageFn = ({
         sourceAccount.currencyConfig.fractional_digits
     );
 
+    const text =
+        'Fee: {{feeMessageText}} ({{feePercentage}}% transfer fee or {{minimumFeeText}}, whichever is higher, applies for fund transfers between your {{targetAccountName}} and cryptocurrency Wallets)';
+    const values = {
+        feeMessageText,
+        feePercentage,
+        minimumFeeText,
+        targetAccountName: targetAccount.accountName,
+    };
+
     return {
-        text: `Fee: ${feeMessageText} (${feePercentage}% transfer fee or ${minimumFeeText}, whichever is higher, applies for fund transfers between your ${targetAccount.accountName} and cryptocurrency Wallets)`,
+        message: { text, values },
         type: 'info' as const,
     };
 };

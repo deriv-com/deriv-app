@@ -751,6 +751,14 @@
 
             .proof-of-identity__fieldset {
                 width: 100%;
+
+                @include mobile {
+                    margin-top: 0;
+
+                    .proof-of-identity__dropdown-container {
+                        margin-top: 0;
+                    }
+                }
             }
         }
         &-text {

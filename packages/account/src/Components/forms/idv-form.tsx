@@ -18,6 +18,7 @@ type TIDVFormProps = {
     hide_hint?: boolean;
     class_name?: string;
     is_for_real_account_signup_modal?: boolean;
+    is_for_mt5: boolean;
 };
 
 const IDVForm = ({
@@ -25,6 +26,7 @@ const IDVForm = ({
     selected_country,
     hide_hint,
     is_for_real_account_signup_modal = false,
+    is_for_mt5 = false,
 }: TIDVFormProps) => {
     const [document_list, setDocumentList] = React.useState<Array<TDocument>>([]);
     const [selected_doc, setSelectedDoc] = React.useState('');
@@ -82,9 +84,13 @@ const IDVForm = ({
                 };
             });
 
-            setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
+            if (is_for_mt5) {
+                setDocumentList([...new_document_list]);
+            } else {
+                setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
+            }
         }
-    }, [document_data, selected_country, IDV_NOT_APPLICABLE_OPTION]);
+    }, [document_data, selected_country, IDV_NOT_APPLICABLE_OPTION, is_for_mt5]);
 
     const resetDocumentItemSelected = () => {
         setFieldValue('document_type', default_document, true);

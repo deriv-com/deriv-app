@@ -5,8 +5,22 @@ import { onChangeContractType, onChangeExpiry } from '../duration';
 import moment from 'moment';
 
 jest.mock('@deriv/shared', () => {
-    const barrier_choices = ['-1.230', '-0.650', '+0.000', '+0.650', '+1.230'];
-    const barrier = '+0.000';
+    const barrier_intraday = '+0.000';
+    const barrier_choices_intraday = ['-1.230', '-0.650', barrier_intraday, '+0.650', '+1.230'];
+    const barrier_daily = '1790.00';
+    const barrier_choices_daily = [
+        '1680.00',
+        '1700.00',
+        '1720.00',
+        '1740.00',
+        '1760.00',
+        barrier_daily,
+        '1810.00',
+        '1830.00',
+        '1850.00',
+        '1870.00',
+        '1910.00',
+    ];
     const common_contracts_for_data = {
         exchange_name: 'RANDOM',
         market: 'synthetic_index',
@@ -16,15 +30,10 @@ jest.mock('@deriv/shared', () => {
     };
     const vanilla_contracts_for_data = {
         ...common_contracts_for_data,
-        barrier,
         barrier_category: 'euro_non_atm',
-        barrier_choices,
         barriers: 1,
         contract_category: 'vanilla',
         contract_category_display: 'Vanilla Options',
-        expiry_type: 'intraday',
-        max_contract_duration: '1d',
-        min_contract_duration: '1m',
     };
 
     return {
@@ -45,23 +54,55 @@ jest.mock('@deriv/shared', () => {
                                     contract_type: 'ACCU',
                                     expiry_type: 'no_expiry',
                                     growth_rate_range: [0.01, 0.02, 0.03, 0.04, 0.05],
-                                    high_barrier: barrier,
-                                    low_barrier: barrier,
+                                    high_barrier: barrier_intraday,
+                                    low_barrier: barrier_intraday,
                                     max_contract_duration: '0',
                                     min_contract_duration: '0',
                                     sentiment: 'low_vol',
                                 },
                                 {
                                     ...vanilla_contracts_for_data,
+                                    barrier: barrier_daily,
+                                    barrier_choices: barrier_choices_daily,
+                                    contract_display: 'Vanilla Long Call',
+                                    contract_type: 'VANILLALONGCALL',
+                                    expiry_type: 'daily',
+                                    max_contract_duration: '365d',
+                                    min_contract_duration: '1d',
+                                    sentiment: 'up',
+                                },
+                                {
+                                    ...vanilla_contracts_for_data,
+                                    barrier: barrier_daily,
+                                    barrier_choices: barrier_choices_daily,
                                     contract_display: 'Vanilla Long Put',
                                     contract_type: 'VANILLALONGPUT',
+                                    expiry_type: 'daily',
+                                    max_contract_duration: '365d',
+                                    min_contract_duration: '1d',
                                     sentiment: 'down',
                                 },
                                 {
                                     ...vanilla_contracts_for_data,
+                                    barrier: barrier_intraday,
+                                    barrier_choices: barrier_choices_intraday,
                                     contract_display: 'Vanilla Long Call',
                                     contract_type: 'VANILLALONGCALL',
+                                    expiry_type: 'intraday',
+                                    max_contract_duration: '1d',
+                                    min_contract_duration: '1m',
                                     sentiment: 'up',
+                                },
+                                {
+                                    ...vanilla_contracts_for_data,
+                                    barrier: barrier_intraday,
+                                    barrier_choices: barrier_choices_intraday,
+                                    contract_display: 'Vanilla Long Put',
+                                    contract_type: 'VANILLALONGPUT',
+                                    expiry_type: 'intraday',
+                                    max_contract_duration: '1d',
+                                    min_contract_duration: '1m',
+                                    sentiment: 'down',
                                 },
                             ],
                             close: 1703203199,
@@ -78,15 +119,35 @@ jest.mock('@deriv/shared', () => {
     };
 });
 
-const accumulators_title = 'Accumulators';
-const multipliers_title = 'Multipliers';
 const underlying = 'R_10';
-const vanillas_title = 'Vanillas';
-const call_put = 'Call/Put';
 
 describe('onChangeExpiry', () => {
+    const barrier_1 = '+0.000';
+    const barrier_choices = ['-1.230', '-0.650', barrier_1, '+0.650', '+1.230'];
     const trade_store = {
         ...mockStore({}).modules.trade,
+        barrier_1,
+        barrier_2: '',
+        barrier_choices,
+        contract_type: TRADE_TYPES.VANILLA.CALL,
+        contract_expiry_type: 'intraday',
+        duration_unit: 'm',
+        duration_units_list: [
+            {
+                text: 'Minutes',
+                value: 'm',
+            },
+            {
+                text: 'Hours',
+                value: 'h',
+            },
+            {
+                text: 'Days',
+                value: 'd',
+            },
+        ],
+        expiry_date: Date.now() / 1000 + 18000,
+        expiry_type: 'duration',
         root_store: {
             ...mockStore({}),
             common: {
@@ -94,38 +155,31 @@ describe('onChangeExpiry', () => {
                 server_time: moment(new Date()).utc(),
             },
         },
-    };
-    const accumulators_contract_data = {
-        [accumulators_title]: {
-            name: accumulators_title,
-            categories: [{ value: TRADE_TYPES.ACCUMULATOR, text: accumulators_title }],
-        },
-    };
-    const vanillas_contract_data = {
-        [vanillas_title]: {
-            name: vanillas_title,
-            categories: [
-                { value: TRADE_TYPES.VANILLA.CALL, text: call_put },
-                {
-                    value: TRADE_TYPES.VANILLA.PUT,
-                    text: call_put,
-                },
-            ],
-        },
+        strike_price_choices: { barrier: barrier_1, barrier_choices },
     };
 
     beforeAll(() => {
         ContractType.buildContractTypesConfig(underlying);
     });
 
-    it('should return an object with barriers and expiry type', () => {
-        trade_store.contract_types_list = { ...vanillas_contract_data, ...accumulators_contract_data };
-        trade_store.contract_type = TRADE_TYPES.VANILLA.CALL;
+    it('should return an object with expiry type only when duration_unit === m', () => {
         expect(onChangeExpiry(trade_store)).toMatchObject({
-            barrier_1: '+0.000',
+            contract_expiry_type: 'intraday',
+        });
+    });
+    it('should return an object with expiry type only when duration_unit === h', () => {
+        trade_store.duration_unit = 'h';
+        expect(onChangeExpiry(trade_store)).toMatchObject({
+            contract_expiry_type: 'intraday',
+        });
+    });
+    it('should return an object with barriers and expiry type when duration_unit === d', () => {
+        trade_store.duration_unit = 'd';
+        expect(onChangeExpiry(trade_store)).toMatchObject({
+            barrier_1: '1790.00',
             barrier_2: '',
             barrier_count: 1,
-            contract_expiry_type: 'intraday',
+            contract_expiry_type: 'daily',
         });
     });
 });

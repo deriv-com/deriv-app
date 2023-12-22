@@ -4,8 +4,22 @@ import { ContractType } from '../../Helpers/contract-type';
 import { TRADE_TYPES } from '@deriv/shared';
 
 jest.mock('@deriv/shared', () => {
-    const barrier_choices = ['-1.230', '-0.650', '+0.000', '+0.650', '+1.230'];
-    const barrier = '+0.000';
+    const barrier_intraday = '+0.000';
+    const barrier_choices_intraday = ['-1.230', '-0.650', barrier_intraday, '+0.650', '+1.230'];
+    const barrier_daily = '1790.00';
+    const barrier_choices_daily = [
+        '1680.00',
+        '1700.00',
+        '1720.00',
+        '1740.00',
+        '1760.00',
+        barrier_daily,
+        '1810.00',
+        '1830.00',
+        '1850.00',
+        '1870.00',
+        '1910.00',
+    ];
     const common_contracts_for_data = {
         exchange_name: 'RANDOM',
         market: 'synthetic_index',
@@ -15,15 +29,10 @@ jest.mock('@deriv/shared', () => {
     };
     const vanilla_contracts_for_data = {
         ...common_contracts_for_data,
-        barrier,
         barrier_category: 'euro_non_atm',
-        barrier_choices,
         barriers: 1,
         contract_category: 'vanilla',
         contract_category_display: 'Vanilla Options',
-        expiry_type: 'intraday',
-        max_contract_duration: '1d',
-        min_contract_duration: '1m',
     };
 
     return {
@@ -44,23 +53,55 @@ jest.mock('@deriv/shared', () => {
                                     contract_type: 'ACCU',
                                     expiry_type: 'no_expiry',
                                     growth_rate_range: [0.01, 0.02, 0.03, 0.04, 0.05],
-                                    high_barrier: barrier,
-                                    low_barrier: barrier,
+                                    high_barrier: barrier_intraday,
+                                    low_barrier: barrier_intraday,
                                     max_contract_duration: '0',
                                     min_contract_duration: '0',
                                     sentiment: 'low_vol',
                                 },
                                 {
                                     ...vanilla_contracts_for_data,
+                                    barrier: barrier_daily,
+                                    barrier_choices: barrier_choices_daily,
+                                    contract_display: 'Vanilla Long Call',
+                                    contract_type: 'VANILLALONGCALL',
+                                    expiry_type: 'daily',
+                                    max_contract_duration: '365d',
+                                    min_contract_duration: '1d',
+                                    sentiment: 'up',
+                                },
+                                {
+                                    ...vanilla_contracts_for_data,
+                                    barrier: barrier_daily,
+                                    barrier_choices: barrier_choices_daily,
                                     contract_display: 'Vanilla Long Put',
                                     contract_type: 'VANILLALONGPUT',
+                                    expiry_type: 'daily',
+                                    max_contract_duration: '365d',
+                                    min_contract_duration: '1d',
                                     sentiment: 'down',
                                 },
                                 {
                                     ...vanilla_contracts_for_data,
+                                    barrier: barrier_intraday,
+                                    barrier_choices: barrier_choices_intraday,
                                     contract_display: 'Vanilla Long Call',
                                     contract_type: 'VANILLALONGCALL',
+                                    expiry_type: 'intraday',
+                                    max_contract_duration: '1d',
+                                    min_contract_duration: '1m',
                                     sentiment: 'up',
+                                },
+                                {
+                                    ...vanilla_contracts_for_data,
+                                    barrier: barrier_intraday,
+                                    barrier_choices: barrier_choices_intraday,
+                                    contract_display: 'Vanilla Long Put',
+                                    contract_type: 'VANILLALONGPUT',
+                                    expiry_type: 'intraday',
+                                    max_contract_duration: '1d',
+                                    min_contract_duration: '1m',
+                                    sentiment: 'down',
                                 },
                             ],
                             close: 1703203199,
@@ -182,6 +223,10 @@ describe('onChangeContractType', () => {
                 {
                     text: 'Hours',
                     value: 'h',
+                },
+                {
+                    text: 'Days',
+                    value: 'd',
                 },
             ],
             expiry_type: 'duration',

@@ -87,7 +87,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         if (e.type === 'mousedown') e.preventDefault();
         e.stopPropagation();
 
-        const point = document.querySelector('.player__progress-dot');
+        const point = document.querySelector('.player__progress-dot') as HTMLElement;
         const client_X =
             e.type === 'mousedown'
                 ? (e as React.MouseEvent<HTMLElement, MouseEvent>).clientX
@@ -96,7 +96,14 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
         video_ref?.current?.pause();
         setIsPlaying(false);
+
         is_dragging.current = true;
+
+        if (is_mobile) {
+            point.style.width = '1.6rem';
+            point.style.height = '1.6rem';
+            point.style.bottom = '-0.6rem';
+        }
     };
 
     const dragMoveHandler = (e: React.MouseEvent<HTMLElement, MouseEvent> | React.TouchEvent<HTMLElement>) => {
@@ -129,6 +136,14 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         setIsEnded(false);
 
         is_dragging.current = false;
+
+        if (is_mobile) {
+            const point = document.querySelector('.player__progress-dot') as HTMLElement;
+
+            point.style.width = '1.2rem';
+            point.style.height = '1.2rem';
+            point.style.bottom = '-0.3rem';
+        }
     };
 
     const onRewind = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {

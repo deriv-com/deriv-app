@@ -37,9 +37,12 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
     const checkVolumeControl = (volume: number) => {
         if (!volume) {
             setIsMuted(true);
+            toggleMute(true);
+
             return;
         }
         setIsMuted(false);
+        toggleMute(false);
     };
 
     const buttonClickHandler = () => {
@@ -156,7 +159,7 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
                         <div
                             className='player__volume-bar__filled'
                             ref={volume_bar_ref}
-                            style={{ height: `${(volume ?? 0.5) * 100}%` }}
+                            style={{ height: `${is_muted ? 0 : (volume ?? 0.5) * 100}%` }}
                         >
                             <span
                                 className='player__volume-dot'

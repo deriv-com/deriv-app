@@ -17,7 +17,7 @@ describe('WalletListCardDetails', () => {
     it('should render with active real account details correctly', () => {
         render(
             <APIProvider>
-                <WalletListCardDetails isActive isDemo={false} loginid='VRW123456' title='USD' />
+                <WalletListCardDetails isActive isDemo={false} loginid='CRW123456' title='USD' />
             </APIProvider>
         );
         expect(screen.getByText('USD Wallet')).toBeInTheDocument();
@@ -37,7 +37,7 @@ describe('WalletListCardDetails', () => {
     it('should render with inactive real account details correctly', () => {
         render(
             <APIProvider>
-                <WalletListCardDetails isActive={false} isDemo={false} loginid='VRW123456' title='USD' />
+                <WalletListCardDetails isActive={false} isDemo={false} loginid='CRW123456' title='USD' />
             </APIProvider>
         );
         expect(screen.queryByText('Deposit')).not.toBeInTheDocument();

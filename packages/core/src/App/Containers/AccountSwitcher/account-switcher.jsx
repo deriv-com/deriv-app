@@ -67,6 +67,7 @@ const AccountSwitcher = ({
     virtual_account_loginid,
     setTogglePlatformType,
     currency,
+    selectRegion,
 }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(!is_virtual || should_show_real_accounts_list ? 0 : 1);
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
@@ -319,7 +320,10 @@ const AccountSwitcher = ({
                                                     if (real_account_creation_unlock_date) {
                                                         closeAccountsDialog();
                                                         setShouldShowCooldownModal(true);
-                                                    } else openRealAccountSignup('svg');
+                                                    } else {
+                                                        selectRegion('Non-EU');
+                                                        openRealAccountSignup('svg');
+                                                    }
                                                 }}
                                                 className='acc-switcher__new-account-btn'
                                                 secondary
@@ -393,6 +397,7 @@ const AccountSwitcher = ({
                                                     closeAccountsDialog();
                                                     setShouldShowCooldownModal(true);
                                                 } else {
+                                                    selectRegion('EU');
                                                     openRealAccountSignup('maltainvest');
                                                 }
                                             }}
@@ -590,6 +595,7 @@ AccountSwitcher.propTypes = {
     virtual_account_loginid: PropTypes.string,
     setTogglePlatformType: PropTypes.func,
     currency: PropTypes.string,
+    selectRegion: PropTypes.func,
 };
 
 const account_switcher = withRouter(
@@ -631,6 +637,7 @@ const account_switcher = withRouter(
         has_any_real_account: client.has_any_real_account,
         virtual_account_loginid: client.virtual_account_loginid,
         setTogglePlatformType: traders_hub.setTogglePlatformType,
+        selectRegion: traders_hub.selectRegion,
     }))(AccountSwitcher)
 );
 

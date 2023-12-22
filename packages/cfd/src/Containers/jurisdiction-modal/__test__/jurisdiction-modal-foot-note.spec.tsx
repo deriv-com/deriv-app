@@ -19,6 +19,7 @@ describe('JurisdictionModalFootNote', () => {
     const mock_context = new RootStore(mock_store);
     const mock_props = {
         account_status: {
+            p2p_poa_required: 1,
             authentication: {
                 document: {
                     status: 'none' as const,
@@ -96,6 +97,7 @@ describe('JurisdictionModalFootNote', () => {
 
     it('should render JurisdictionModalFootNote with bvi_restriction and poa is pending, then display resubmit poa message', () => {
         const mock_account_status = {
+            p2p_poa_required: 0,
             authentication: {
                 document: {
                     status: 'pending' as const,
@@ -159,6 +161,7 @@ describe('JurisdictionModalFootNote', () => {
 
     it('should render JurisdictionModalFootNote with vanuatu_restriction and poa is pending, then display resubmit poa message', () => {
         const mock_account_status = {
+            p2p_poa_required: 0,
             authentication: {
                 document: {
                     status: 'pending' as const,

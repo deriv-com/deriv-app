@@ -20,7 +20,7 @@ type TQSInput = {
 };
 
 const QSInput: React.FC<TQSInput> = observer(
-    ({ name, onChange, type = 'text', attached = false, disabled = false, min, max }) => {
+    ({ name, onChange, type = 'text', attached = false, disabled = false, min, max }: TQSInput) => {
         const {
             ui: { is_mobile },
         } = useStore();
@@ -68,6 +68,12 @@ const QSInput: React.FC<TQSInput> = observer(
             onChange(name, value);
             setFieldTouched(name, true, true);
             setFieldValue(name, value);
+        };
+
+        const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+            const input_value = e.target.value;
+            const value = is_number ? Number(input_value) : input_value;
+            onChange(name, value);
         };
 
         return (
@@ -140,10 +146,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         }
                                         {...field}
                                         disabled={disabled}
-                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                            const value = is_number ? Number(e.target.value) : e.target.value;
-                                            onChange(name, value);
-                                        }}
+                                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleOnChange(e)}
                                     />
                                 </Popover>
                             </div>

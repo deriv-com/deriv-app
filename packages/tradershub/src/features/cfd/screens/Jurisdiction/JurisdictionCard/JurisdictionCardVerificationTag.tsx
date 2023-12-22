@@ -31,7 +31,10 @@ const verificationStatusIconMapper: Partial<
 const JurisdictionCardVerificationTag: React.FC<Props> = ({ category, icon }) => {
     const { data } = useAuthentication();
 
-    const renderStatusIcon = (category: string, status: string) => {
+    const renderStatusIcon = (
+        category: Props['category'],
+        status: NonNullable<THooks.Authentication['poa_status' | 'poi_status']>
+    ) => {
         if (category && status && Object.keys(verificationStatusIconMapper).includes(status)) {
             return (
                 <div className='absolute -top-[20%] -right-[20%]'>

@@ -1,6 +1,6 @@
 import path from 'path';
-import { TBuildEnv, TBuildPaths } from './src/build/types/build-types';
-import { buildWebpackConfig } from './src/build/build-webpack-config';
+import { TBuildEnv, TBuildPaths } from './build/types/build-types';
+import { buildWebpackConfig } from './build/build-webpack-config';
 import { Configuration } from 'webpack';
 
 const isRelease =

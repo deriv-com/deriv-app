@@ -2,10 +2,7 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
 import { CFD_PLATFORMS, ContentFlag, formatMoney, getAppstorePlatforms, getCFDAvailableAccount } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-
-import { getMultipliersAccountStatus } from './Helpers/client';
 import BaseStore from './base-store';
-
 import { isEuCountry } from '_common/utility';
 
 export default class TradersHubStore extends BaseStore {
@@ -26,6 +23,7 @@ export default class TradersHubStore extends BaseStore {
     is_account_type_modal_visible = false;
     account_type_card = '';
     selected_platform_type = 'options';
+    mt5_existing_account = {};
     open_failed_verification_for = '';
     modal_data = {
         active_modal: '',
@@ -64,6 +62,7 @@ export default class TradersHubStore extends BaseStore {
             active_modal_tab: observable,
             active_modal_wallet_id: observable,
             selected_region: observable,
+            mt5_existing_account: observable,
             open_failed_verification_for: observable,
             is_real_wallets_upgrade_on: observable,
             is_wallet_migration_failed: observable,
@@ -83,10 +82,8 @@ export default class TradersHubStore extends BaseStore {
             is_eu_selected: computed,
             is_real: computed,
             is_low_risk_cr_eu_real: computed,
-            is_currency_switcher_disabled_for_mf: computed,
             no_CR_account: computed,
             no_MF_account: computed,
-            multipliers_account_status: computed,
             CFDs_restricted_countries: computed,
             financial_restricted_countries: computed,
             openDemoCFDAccount: action.bound,
@@ -109,6 +106,7 @@ export default class TradersHubStore extends BaseStore {
             setIsFirstTimeVisit: action.bound,
             setMT5NotificationModal: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
+            setMT5ExistingAccount: action.bound,
             openFailedVerificationModal: action.bound,
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
@@ -210,11 +208,17 @@ export default class TradersHubStore extends BaseStore {
     }
 
     async selectAccountType(account_type) {
-        const { account_list, switchAccount, prev_real_account_loginid } = this.root_store.client;
+        const { account_list, switchAccount, prev_real_account_loginid, has_active_real_account } =
+            this.root_store.client;
 
         if (account_type === 'demo') {
             await switchAccount(account_list.find(acc => acc.is_virtual && !acc.is_disabled)?.loginid);
         } else if (account_type === 'real') {
+            if (!has_active_real_account && this.content_flag === ContentFlag.EU_DEMO) {
+                this.root_store.client.real_account_creation_unlock_date
+                    ? this.root_store.ui.setShouldShowCooldownModal(true)
+                    : this.root_store.ui.openRealAccountSignup('maltainvest');
+            }
             if (prev_real_account_loginid) {
                 await switchAccount(prev_real_account_loginid);
             } else {
@@ -368,14 +372,6 @@ export default class TradersHubStore extends BaseStore {
 
     get has_any_real_account() {
         return this.selected_account_type === 'real' && this.root_store.client.has_active_real_account;
-    }
-
-    get is_currency_switcher_disabled_for_mf() {
-        return !!(
-            this.is_eu_user &&
-            this.multipliers_account_status &&
-            this.multipliers_account_status !== 'need_verification'
-        );
     }
 
     setTogglePlatformType(platform_type) {
@@ -562,18 +558,6 @@ export default class TradersHubStore extends BaseStore {
         return this.selected_region === 'EU';
     }
 
-    get multipliers_account_status() {
-        const { has_maltainvest_account, account_status } = this.root_store.client;
-
-        const multipliers_account_status = getMultipliersAccountStatus(account_status?.authentication);
-        const should_show_status_for_multipliers_account =
-            [ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU].includes(this.content_flag) &&
-            has_maltainvest_account &&
-            multipliers_account_status &&
-            ['pending', 'failed', 'need_verification'].includes(multipliers_account_status);
-        return should_show_status_for_multipliers_account ? multipliers_account_status : null;
-    }
-
     handleTabItemClick(idx) {
         if (idx === 0) {
             this.selected_region = 'Non-EU';
@@ -747,6 +731,10 @@ export default class TradersHubStore extends BaseStore {
         this.is_failed_verification_modal_visible = !this.is_failed_verification_modal_visible;
     }
 
+    setMT5ExistingAccount(existing_account) {
+        this.mt5_existing_account = existing_account;
+    }
+
     openFailedVerificationModal(selected_account_type) {
         const {
             common,
@@ -761,6 +749,7 @@ export default class TradersHubStore extends BaseStore {
                 category: selected_account_type.category,
                 type: selected_account_type.type,
             });
+            this.setMT5ExistingAccount(selected_account_type);
             setJurisdictionSelectedShortcode(selected_account_type.jurisdiction);
         } else {
             setJurisdictionSelectedShortcode('');

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, createContext, useContext, useEffect, useRef, useState } from 'react';
+import React, { PropsWithChildren, createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 // @ts-expect-error `@deriv/deriv-api` is not in TypeScript, Hence we ignore the TS error.
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getAppId, getSocketURL, useWS } from '@deriv/shared';
@@ -130,13 +130,16 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     const [environment, setEnvironment] = useState(getEnvironment(activeLoginid));
     const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI(() => setReconnect(true)) : null);
 
-    const switchEnvironment = (loginid: string | null | undefined) => {
-        if (!standalone) return;
-        const currentEnvironment = getEnvironment(loginid);
-        if (currentEnvironment !== 'custom' && currentEnvironment !== environment) {
-            setEnvironment(currentEnvironment);
-        }
-    };
+    const switchEnvironment = useCallback(
+        (loginid: string | null | undefined) => {
+            if (!standalone) return;
+            const currentEnvironment = getEnvironment(loginid);
+            if (currentEnvironment !== 'custom' && currentEnvironment !== environment) {
+                setEnvironment(currentEnvironment);
+            }
+        },
+        [environment, standalone]
+    );
 
     useEffect(() => {
         let interval_id: NodeJS.Timer;

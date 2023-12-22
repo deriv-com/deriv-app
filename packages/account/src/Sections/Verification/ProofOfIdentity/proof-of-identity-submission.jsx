@@ -1,15 +1,14 @@
 import React from 'react';
-import { formatIDVError, WS, IDV_ERROR_STATUS } from '@deriv/shared';
+import { formatIDVError, WS, IDV_ERROR_STATUS, POIContext } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import CountrySelector from 'Components/poi/poi-country-selector';
-import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
-import IdvFailed from 'Components/poi/idv-status/idv-failed';
-import IdvSubmitComplete from 'Components/poi/idv-status/idv-submit-complete';
-import Unsupported from 'Components/poi/status/unsupported';
-import UploadComplete from 'Components/poi/status/upload-complete';
+import CountrySelector from '../../../Components/poi/poi-country-selector';
+import IdvDocumentSubmit from '../../../Components/poi/idv-document-submit';
+import IdvFailed from '../../../Components/poi/idv-status/idv-failed';
+import IdvSubmitComplete from '../../../Components/poi/idv-status/idv-submit-complete';
+import Unsupported from '../../../Components/poi/status/unsupported';
+import UploadComplete from '../../../Components/poi/status/upload-complete';
 import OnfidoSdkViewContainer from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
-import { POIContext } from '../../../Helpers/poi-context';
 
 const POISubmission = observer(
     ({
@@ -131,7 +130,6 @@ const POISubmission = observer(
                     IDV_ERROR_STATUS.DobMismatch.code,
                     IDV_ERROR_STATUS.NameMismatch.code,
                     IDV_ERROR_STATUS.NameDobMismatch.code,
-                    IDV_ERROR_STATUS.HighRisk.code,
                 ].includes(mismatch_status) &&
                 idv.submissions_left > 0
             ) {

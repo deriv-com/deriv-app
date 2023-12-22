@@ -22,7 +22,7 @@ export default class RoutePromptDialogStore {
     last_location = null;
 
     shouldNavigateAfterPrompt(next_location) {
-        if (!this.is_confirmed && this?.root_store?.run_panel?.is_running) {
+        if (!this.is_confirmed) {
             this.last_location = next_location;
             if (next_location.pathname !== '/bot') this.should_show = true;
             return false;

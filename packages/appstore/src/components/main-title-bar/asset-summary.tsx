@@ -6,12 +6,17 @@ import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
-import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts } from '@deriv/hooks';
+import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts, useExchangeRate } from '@deriv/hooks';
 
 const AssetSummary = observer(() => {
-    const { traders_hub, client, common } = useStore();
+    const { exchange_rates } = useExchangeRate();
+
+    const { traders_hub, client, common, modules } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
-    const { is_logging_in, is_switching, default_currency } = client;
+    const { is_logging_in, is_switching, default_currency, is_landing_company_loaded } = client;
+    const { account_transfer, general_store } = modules.cashier;
+    const { is_transfer_confirm } = account_transfer;
+    const { is_loading } = general_store;
     const { current_language } = common;
     const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
     const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
@@ -29,8 +34,14 @@ const AssetSummary = observer(() => {
     const eu_account = is_eu_user && !no_MF_account;
     const cr_account = !is_eu_user && !no_CR_account;
 
-    //dont show loader if user has no respective regional account
-    if ((is_switching || is_logging_in) && (eu_account || cr_account)) {
+    const should_show_loader =
+        ((is_switching || is_logging_in) && (eu_account || cr_account)) ||
+        !is_landing_company_loaded ||
+        !exchange_rates ||
+        is_loading ||
+        is_transfer_confirm;
+
+    if (should_show_loader) {
         return (
             <React.Fragment>
                 <div className='asset-summary__container content-loader'>
@@ -51,7 +62,11 @@ const AssetSummary = observer(() => {
                     ) : null}
                     <Popover
                         alignment={isMobile() ? 'top' : 'left'}
-                        message={localize('Total assets in all your accounts')}
+                        message={
+                            is_eu_user
+                                ? localize('Total assets in your Deriv Apps and Deriv MT5 CFDs demo account.')
+                                : localize('Total assets in all your accounts')
+                        }
                         zIndex={9999}
                         is_bubble_hover_enabled
                     >

@@ -24,6 +24,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             trading_platform_available_accounts: [],
             account_limits: {},
             account_status: {
+                p2p_poa_required: 1,
                 authentication: {
                     attempts: {
                         count: 1,
@@ -288,6 +289,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_bot_allowed: false,
             account_open_date: undefined,
             setAccounts: jest.fn(),
+            updateMt5LoginList: jest.fn(),
         },
         common: {
             error: common_store_error,

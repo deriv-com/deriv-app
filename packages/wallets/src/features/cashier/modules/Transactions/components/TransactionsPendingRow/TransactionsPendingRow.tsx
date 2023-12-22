@@ -34,30 +34,29 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
     }, [modal, mutate, transaction.id]);
 
     const onCancelButtonClick = useCallback(() => {
-        if (isMobile)
-            modal.show(
-                <WalletActionModal
-                    actionButtonsOptions={[
-                        {
-                            onClick: modal.hide,
-                            text: "No, don't cancel",
-                        },
-                        {
-                            isPrimary: true,
-                            onClick: cancelTransaction,
-                            text: 'Yes, cancel',
-                        },
-                    ]}
-                    description='Are you sure you want to cancel this transaction?'
-                    hideCloseButton
-                    title='Cancel transaction'
-                />,
-                { defaultRootId: 'wallets_modal_root' }
-            );
-    }, [cancelTransaction, isMobile, modal]);
+        modal.show(
+            <WalletActionModal
+                actionButtonsOptions={[
+                    {
+                        onClick: modal.hide,
+                        text: "No, don't cancel",
+                    },
+                    {
+                        isPrimary: true,
+                        onClick: cancelTransaction,
+                        text: 'Yes, cancel',
+                    },
+                ]}
+                description='Are you sure you want to cancel this transaction?'
+                hideCloseButton
+                title='Cancel transaction'
+            />,
+            { defaultRootId: 'wallets_modal_root' }
+        );
+    }, [cancelTransaction, modal]);
 
-    const onMobileStatusClick = useCallback(
-        () =>
+    const onMobileStatusClick = useCallback(() => {
+        if (isMobile) {
             modal.show(
                 <WalletActionModal
                     actionButtonsOptions={[
@@ -72,9 +71,9 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     title='Transaction details'
                 />,
                 { defaultRootId: 'wallets_modal_root' }
-            ),
-        [modal, transaction.description]
-    );
+            );
+        }
+    }, [isMobile, modal, transaction.description]);
 
     return (
         <div className='wallets-transactions-pending-row'>

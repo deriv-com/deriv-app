@@ -11,6 +11,16 @@ const WithdrawalCryptoForm: React.FC = () => {
         useWithdrawalCryptoContext();
     const { validateCryptoAddress } = useWithdrawalCryptoValidator(activeWallet, fractionalDigits);
 
+    const getPercentageMessage = (value: string) => {
+        const amount = parseFloat(value);
+        if (!activeWallet?.balance) return;
+
+        if (amount <= activeWallet?.balance) {
+            const percentage = Math.round((amount * 100) / activeWallet?.balance);
+            return `${percentage}% of available balance ${activeWallet?.display_balance}`;
+        }
+    };
+
     return (
         <Formik
             initialValues={{
@@ -44,7 +54,10 @@ const WithdrawalCryptoForm: React.FC = () => {
                         <div className='wallets-withdrawal-crypto-form__percentage'>
                             <WalletsPercentageSelector
                                 amount={
-                                    !Number.isNaN(parseFloat(values.cryptoAmount)) && exchangeRates?.data?.rates
+                                    activeWallet?.balance &&
+                                    exchangeRates?.data?.rates &&
+                                    !Number.isNaN(parseFloat(values.cryptoAmount)) &&
+                                    parseFloat(values.cryptoAmount) <= activeWallet.balance
                                         ? parseFloat(values.cryptoAmount)
                                         : 0
                                 }
@@ -65,12 +78,11 @@ const WithdrawalCryptoForm: React.FC = () => {
                                     }
                                 }}
                             />
-                            <WalletText color='less-prominent' size='xs'>
-                                {!Number.isNaN(parseFloat(values.cryptoAmount)) && activeWallet?.balance
-                                    ? Math.round((parseFloat(values.cryptoAmount) * 100) / activeWallet?.balance)
-                                    : '0'}
-                                % of available balance ({activeWallet?.display_balance})
-                            </WalletText>
+                            <div className='wallets-withdrawal-crypto-form__percentage-message'>
+                                <WalletText color='less-prominent' size='xs'>
+                                    {getPercentageMessage(values.cryptoAmount)}
+                                </WalletText>
+                            </div>
                         </div>
                         <WithdrawalCryptoAmountConverter />
                         <div className='wallets-withdrawal-crypto-form__submit'>

@@ -1,20 +1,36 @@
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 import { qtMerge, Text } from '@deriv/quill-design';
 
+/**
+ * Props for the Tooltip component.
+ * @typedef {Object} TProps
+ * @property {'bottom' | 'left' | 'right' | 'top'} [alignment='left'] - The alignment of the tooltip.
+ * @property {ReactNode} children - The content that triggers the tooltip.
+ * @property {string} [className] - Additional CSS class for styling.
+ * @property {boolean} isVisible - Flag indicating whether the tooltip is visible.
+ * @property {string} message - The message to be displayed in the tooltip.
+ */
 type TProps = {
     alignment?: 'bottom' | 'left' | 'right' | 'top';
+    children: ReactNode;
     className?: string;
     isVisible: boolean;
     message: string;
 };
 
-const Tooltip: React.FC<React.PropsWithChildren<TProps>> = ({
-    alignment = 'left',
-    children,
-    className,
-    isVisible,
-    message,
-}) => {
+/**
+ * Tooltip component for displaying additional information.
+ * @param {TProps} props - The properties that define the Tooltip component.
+ * @returns {JSX.Element}
+ *
+ * @example
+ * ```jsx
+ * <Tooltip alignment='right' isVisible={true} message='This is a tooltip message'>
+ *   <button>Hover me</button>
+ * </Tooltip>
+ * ```
+ */
+const Tooltip: FC<TProps> = ({ alignment = 'left', children, className, isVisible, message }) => {
     return (
         <div className={qtMerge('relative w-max h-max', className)}>
             {children}

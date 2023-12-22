@@ -30,6 +30,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
         const strategy = STRATEGIES[tutorial_selected_strategy || (selected_strategy as keyof typeof STRATEGIES)];
 
         const renderDescription = (data: TDescriptionItem) => {
+            const class_name = data?.className ?? '';
             switch (data.type) {
                 case 'subtitle':
                     return data?.content?.map(text => (
@@ -38,7 +39,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                         </div>
                     ));
                 case 'text': {
-                    const class_names = classNames(`qs__description__content ${data?.className ?? ''}`);
+                    const class_names = classNames(`qs__description__content ${class_name}`);
                     return data?.content?.map(text => (
                         <div className={class_names} key={text}>
                             <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
@@ -52,7 +53,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                         </div>
                     ));
                 case 'text_italic': {
-                    const class_names = classNames(`qs__description__content italic ${data?.className ?? ''}`);
+                    const class_names = classNames(`qs__description__content italic ${class_name}`);
                     return data?.content?.map(text => (
                         <div className={class_names} key={text}>
                             <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
@@ -93,7 +94,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
             : [{ type: 'text', content: [strategy?.description] }];
 
         const [expanded_subtitles_storage, setExpandedSubtitlesStorage] = useState(expanded_subtitles_storage_default);
-        //test gpg
+
         return (
             <>
                 {active_tab === 'TRADE_PARAMETERS' ? (

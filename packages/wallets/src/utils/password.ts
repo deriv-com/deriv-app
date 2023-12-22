@@ -1,6 +1,4 @@
-import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
-import { dictionary } from '@zxcvbn-ts/language-common';
-import { passwordErrorMessage, passwordRegex, passwordValues, warningMessages } from '../constants/password';
+import { passwordRegex, passwordValues } from '../constants/password';
 
 export type Score = 0 | 1 | 2 | 3 | 4;
 export type passwordKeys =
@@ -54,22 +52,4 @@ export const calculateScore = (password: string) => {
     if (!isPasswordStrong(password) && isPasswordValid(password) && !isPasswordModerate(password)) return 2;
     if (!isPasswordStrong(password) && isPasswordValid(password) && isPasswordModerate(password)) return 3;
     if (isPasswordStrong(password)) return 4;
-};
-
-export const validatePassword = (password: string) => {
-    const score = calculateScore(password);
-    let errorMessage = '';
-
-    const options = { dictionary: { ...dictionary } };
-    zxcvbnOptions.setOptions(options);
-
-    const { feedback } = zxcvbn(password);
-    if (!passwordRegex.isLengthValid.test(password)) {
-        errorMessage = passwordErrorMessage.invalidLength;
-    } else if (!isPasswordValid(password)) {
-        errorMessage = passwordErrorMessage.missingCharacter;
-    } else {
-        errorMessage = warningMessages[feedback.warning as passwordKeys] || '';
-    }
-    return { errorMessage, score };
 };

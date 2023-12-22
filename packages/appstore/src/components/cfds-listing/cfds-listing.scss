@@ -935,6 +935,7 @@
             justify-content: center;
 
             &-details {
+                max-width: 68rem;
                 margin: auto;
                 @include mobile {
                     overflow-y: scroll;

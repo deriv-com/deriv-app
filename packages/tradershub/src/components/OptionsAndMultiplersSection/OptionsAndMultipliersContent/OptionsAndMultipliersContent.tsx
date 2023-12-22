@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount } from '@deriv/api';
 import { Button, Text, useBreakpoint } from '@deriv/quill-design';
@@ -10,7 +10,7 @@ type TShowButtonProps = Pick<typeof optionsAndMultipliersContent[number], 'isExt
 
 type TLinkTitleProps = Pick<typeof optionsAndMultipliersContent[number], 'icon' | 'title'>;
 
-const LinkTitle: React.FC<TLinkTitleProps> = ({ icon, title }) => {
+const LinkTitle: FC<TLinkTitleProps> = ({ icon, title }) => {
     const handleClick = (
         event:
             | React.KeyboardEvent<HTMLButtonElement>

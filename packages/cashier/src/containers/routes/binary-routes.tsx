@@ -23,7 +23,8 @@ const BinaryRoutes = (props: TBinaryRoutesProps) => {
     const { is_p2p_v2_enabled } = useFeatureFlags();
     const [routesConfig, setRoutesConfig] = React.useState(getRoutesConfig());
     useEffect(() => {
-        if (is_p2p_v2_enabled) {
+        const is_p2p_v2_added = routesConfig[0].routes?.some(route => route.path === routes.cashier_p2p_v2);
+        if (is_p2p_v2_enabled && !is_p2p_v2_added) {
             const routes_replicate = [...routesConfig];
             routes_replicate[0].routes?.push({
                 path: routes.cashier_p2p_v2,

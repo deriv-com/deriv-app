@@ -27,7 +27,40 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
 
         const desktop_font_size = tutorial_selected_strategy ? 's' : 'xs';
         const font_size: string = React.useMemo<string>(() => (is_mobile ? 'xs' : desktop_font_size), [is_mobile]);
+
+        const expanded_subtitles_storage_default: TExpandedSubtitlesStorageDefault = {};
+        const [expanded_subtitles_storage, setExpandedSubtitlesStorage] = useState(expanded_subtitles_storage_default);
+
         const strategy = STRATEGIES[tutorial_selected_strategy || (selected_strategy as keyof typeof STRATEGIES)];
+
+        const makeGroupedObjectsByTitle = () => {
+            return strategy?.description?.reduce((acc: TDescriptionItem[][], obj: TDescriptionItem) => {
+                const is_subtitle = obj.type === 'subtitle_italic' || obj.type === 'subtitle';
+                if (is_subtitle) {
+                    acc.push([]);
+
+                    const generateStorageKey = (obj: TDataGroupedObjectsByTitle, selected_strategy: string): string => {
+                        return `${obj.content[0]}__${selected_strategy}`.split(' ').join('_').toLowerCase();
+                    };
+
+                    expanded_subtitles_storage_default[
+                        generateStorageKey(obj as TDataGroupedObjectsByTitle, selected_strategy)
+                    ] = obj?.expanded ?? false;
+                }
+                //If long description available, show content intro paragraph under heading, skip short description.
+                const shouldShowLongDescriptionIntro = () => {
+                    return acc.length - 1 === 0 && obj.type === 'text' && obj.content?.length === 2;
+                };
+                if (shouldShowLongDescriptionIntro()) {
+                    obj.content?.shift();
+                }
+                acc[acc.length - 1].push(obj);
+                return acc;
+            }, []);
+        };
+        const grouped_objects_by_title = Array.isArray(strategy?.description)
+            ? makeGroupedObjectsByTitle()
+            : [{ type: 'text', content: [strategy?.description] }];
 
         const renderDescription = (data: TDescriptionItem) => {
             const class_name = data?.className ?? '';
@@ -70,30 +103,6 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                     return null;
             }
         };
-
-        const expanded_subtitles_storage_default: TExpandedSubtitlesStorageDefault = {};
-        const grouped_objects_by_title = Array.isArray(strategy?.description)
-            ? strategy?.description?.reduce((acc: TDescriptionItem[][], obj: TDescriptionItem) => {
-                  const is_subtitle = obj.type === 'subtitle_italic' || obj.type === 'subtitle';
-                  if (is_subtitle) {
-                      acc.push([]);
-                      expanded_subtitles_storage_default[
-                          `${(obj as TDataGroupedObjectsByTitle).content[0]}__${selected_strategy}`
-                              .split(' ')
-                              .join('_')
-                              .toLocaleLowerCase()
-                      ] = obj?.expanded ?? false;
-                  }
-                  //If long description available, show content intro paragraph under heading, skip short description.
-                  if (acc.length - 1 === 0 && obj.type === 'text' && obj.content?.length === 2) {
-                      obj.content.shift();
-                  }
-                  acc[acc.length - 1].push(obj);
-                  return acc;
-              }, [])
-            : [{ type: 'text', content: [strategy?.description] }];
-
-        const [expanded_subtitles_storage, setExpandedSubtitlesStorage] = useState(expanded_subtitles_storage_default);
 
         return (
             <>

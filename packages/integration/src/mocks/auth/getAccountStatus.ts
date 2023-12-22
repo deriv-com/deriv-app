@@ -8,6 +8,7 @@ export default function mockGetAccountStatus(context: Context) {
                 req_id: context.req_id,
             },
             get_account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     attempts: {
                         count: 0,

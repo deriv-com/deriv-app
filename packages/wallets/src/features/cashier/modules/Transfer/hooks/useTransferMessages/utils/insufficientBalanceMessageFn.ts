@@ -1,7 +1,7 @@
 import { TMessageFnProps } from '../../../types';
 
 const insufficientBalanceMessageFn = ({ sourceAccount, sourceAmount }: TMessageFnProps) => {
-    if (!sourceAccount.currency || !sourceAccount.currencyConfig) return null;
+    if (!sourceAccount.accountName || isNaN(Number(sourceAccount.balance))) return null;
 
     const sourceAccountBalance = Number(sourceAccount.balance);
 

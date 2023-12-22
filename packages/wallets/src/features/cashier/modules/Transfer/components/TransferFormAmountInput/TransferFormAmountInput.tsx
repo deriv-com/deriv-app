@@ -25,10 +25,10 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
         return newRates;
     }, [refetchAccountLimits, refetchExchangeRates]);
 
-    const hasNoMoney = Number(fromAccount?.balance) === 0;
+    const hasFunds = Number(fromAccount?.balance) > 0;
     const isFromAmountField = fieldName === 'fromAmount';
     const isSameCurrency = fromAccount?.currency === toAccount?.currency;
-    const isAmountInputDisabled = hasNoMoney || (fieldName === 'toAmount' && !toAccount);
+    const isAmountInputDisabled = !hasFunds || (fieldName === 'toAmount' && !toAccount);
     const isAmountFieldActive = fieldName === values.activeAmountFieldName;
     const isTimerVisible = !isFromAmountField && toAccount && !isSameCurrency && fromAmount > 0 && toAmount > 0;
 

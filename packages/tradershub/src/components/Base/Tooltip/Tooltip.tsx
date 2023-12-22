@@ -1,4 +1,5 @@
 import React from 'react';
+import { qtMerge, Text } from '@deriv/quill-design';
 
 type TProps = {
     alignment?: 'bottom' | 'left' | 'right' | 'top';
@@ -15,13 +16,13 @@ const Tooltip: React.FC<React.PropsWithChildren<TProps>> = ({
     message,
 }) => {
     return (
-        <div className={`relative w-max h-max ${className ?? ''}`}>
+        <div className={qtMerge('relative w-max h-max', className)}>
             {children}
             {isVisible && (
                 <div className={`absolute z-10 flex items-center transform-${alignment} ${className ?? ''}`}>
-                    <div className={`bg-[#d6dadb] w-1 h-2 clip-path-${alignment}`} />
-                    <div className='w-max max-w-[22rem] p-2 rounded-md text-[1.2rem] leading-[1.8rem] whitespace-pre-wrap bg-[#d6dadb]'>
-                        {message}
+                    <div className={`bg-system-light-active-background w-200 h-400 clip-path-${alignment}`} />
+                    <div className='w-max max-w-[22rem] p-200 rounded-md leading-[1.8rem] whitespace-pre-wrap bg-system-light-active-background'>
+                        <Text size='sm'>{message}</Text>
                     </div>
                 </div>
             )}

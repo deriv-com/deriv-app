@@ -8,6 +8,7 @@ import {
     WalletTourGuide,
 } from '../../components';
 import { useModal } from '../../components/ModalProvider';
+import { CFD_PLATFORMS } from '../../features/cfd/constants';
 import { getActionFromUrl } from '../../helpers/urls';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
@@ -26,8 +27,8 @@ const WalletsListingRoute: React.FC = () => {
     const firstLoginid = walletAccounts?.[0]?.loginid;
 
     const platformMapping: Record<string, Exclude<TPlatforms.All, 'ctrader'>> = {
-        trading_platform_dxtrade_password_reset: 'dxtrade',
-        trading_platform_mt5_password_reset: 'mt5',
+        trading_platform_dxtrade_password_reset: CFD_PLATFORMS.DXTRADE,
+        trading_platform_mt5_password_reset: CFD_PLATFORMS.MT5,
     };
 
     useEffect(() => {

@@ -12,6 +12,10 @@ import { useBlockScroll, useOnClickOutside } from '../../hooks';
 import ThemedScrollbars from '../themed-scrollbars/themed-scrollbars';
 import Icon from '../icon/icon';
 
+type t = string;
+
+const yo: t = 'hello';
+
 type TDropdown = {
     className?: string;
     classNameDisplay?: string;

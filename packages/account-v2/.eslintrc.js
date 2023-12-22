@@ -25,7 +25,7 @@ module.exports = {
         'typescript-sort-keys',
     ],
     root: true,
-    ignorePatterns: ['**/node_modules/**', '**/dist/**', '**/*.js', '**/*.config.ts'],
+    ignorePatterns: ['**/node_modules/**', '**/dist/**', '**/*.js', '**/*.config.*'],
     rules: {
         '@typescript-eslint/array-type': 'error',
         '@typescript-eslint/no-explicit-any': 'error',

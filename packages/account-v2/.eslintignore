@@ -1,2 +1,2 @@
 dist/*.js
-*.config.ts
+*.config.*

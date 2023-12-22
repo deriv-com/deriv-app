@@ -2,10 +2,6 @@
     .dbot-accordion {
         &__content {
             background-color: transparent;
-
-            &--open {
-                max-height: fit-content;
-            }
         }
 
         &__header {

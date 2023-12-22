@@ -698,10 +698,10 @@
 
         &--open {
             opacity: 1;
-            max-height: 50rem;
+            max-height: fit-content;
 
             @include mobile {
-                padding-left: 1rem; //
+                padding-left: 1rem;
             }
         }
 

@@ -31,6 +31,19 @@ describe('AppNotificationMessages', () => {
                     type: 'warning',
                 },
             ],
+            notification_messages: [
+                {
+                    action: {
+                        route: '/account/financial-assessment',
+                        text: 'Start now',
+                    },
+                    header: 'Pending action required',
+                    key: 'notify_financial_assessment',
+                    message: 'Please complete your financial assessment.',
+                    should_show_again: true,
+                    type: 'warning',
+                },
+            ],
             marked_notifications: [],
             should_show_popups: true,
         },

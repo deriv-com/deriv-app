@@ -64,9 +64,13 @@ const NotificationsContent = ({
 const AppNotificationMessages = observer(
     ({ is_notification_loaded, is_mt5, stopNotificationLoading, show_trade_notifications }) => {
         const { notifications } = useStore();
-        const { marked_notifications, removeNotificationMessage, markNotificationMessage, should_show_popups } =
-            notifications;
-        const notification_messages = notifications.notifications;
+        const {
+            marked_notifications,
+            notification_messages,
+            removeNotificationMessage,
+            markNotificationMessage,
+            should_show_popups,
+        } = notifications;
         const [style, setStyle] = React.useState({});
         const [notifications_ref, setNotificationsRef] = React.useState(null);
 

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment } from 'react';
 import { useActiveTradingAccount, useCtraderServiceToken } from '@deriv/api';
 import { Button, Text } from '@deriv/quill-design';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
@@ -44,10 +44,10 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', platform, webtrad
         <div className='flex items-center justify-between border-t border-system-light-secondary-background px-800 py-1200'>
             <div className='flex items-center gap-800'>
                 {(platform === mt5Platform || app === ctraderPlatform) && (
-                    <React.Fragment>
+                    <Fragment>
                         <div className='w-1600 h-1600'>{content.icon}</div>
                         <Text size='sm'>{content.title}</Text>
-                    </React.Fragment>
+                    </Fragment>
                 )}
                 {platform !== mt5Platform && app !== ctraderPlatform && (
                     <Text size='sm'>Run {PlatformDetails[platform ?? dxtradePlatform].title} on your browser</Text>

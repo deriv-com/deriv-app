@@ -19,8 +19,10 @@ type TAppContent = {
     title: string;
 };
 
-type AppToContentMapperType = {
-    [key: string]: TAppContent;
+type TPlatform = 'ctrader' | 'linux' | 'macos' | 'web' | 'windows';
+
+type TAppToContentMapper = {
+    [key in TPlatform]: TAppContent;
 };
 
 export const MarketTypeDetails = {
@@ -88,7 +90,7 @@ export const MarketType = {
     SYNTHETIC: 'synthetic',
 } as const;
 
-export const AppToContentMapper: AppToContentMapperType = {
+export const AppToContentMapper: TAppToContentMapper = {
     ctrader: {
         icon: <WindowsIcon />,
         link: 'https://getctrader.com/deriv/ctrader-deriv-setup.exe',

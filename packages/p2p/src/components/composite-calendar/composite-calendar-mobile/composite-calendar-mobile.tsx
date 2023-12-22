@@ -175,7 +175,7 @@ const CompositeCalendarMobile = ({
                                 className='composite-calendar-mobile__custom-date-range-start-date'
                                 disabled={!has_custom_date_range_selected}
                                 is_nativepicker
-                                placeholder={has_custom_date_range_selected ? localize('Start date') : ''}
+                                placeholder={localize('Start date')}
                                 value={from_date}
                                 max_date={to_date || today}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => selectDate(e, 'from')}
@@ -184,7 +184,7 @@ const CompositeCalendarMobile = ({
                                 className='composite-calendar-mobile__custom-date-range-end-date'
                                 disabled={!has_custom_date_range_selected}
                                 is_nativepicker
-                                placeholder={has_custom_date_range_selected ? localize('End date') : ''}
+                                placeholder={localize('End date')}
                                 value={to_date}
                                 max_date={today}
                                 min_date={from_date}

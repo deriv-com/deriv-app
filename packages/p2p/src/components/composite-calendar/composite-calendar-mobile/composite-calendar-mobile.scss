@@ -39,6 +39,10 @@
             &-end-date {
                 margin-bottom: 0.8rem;
             }
+
+            & .dc-datepicker__container--disabled .dc-datepicker__placeholder {
+                color: var(--text-disabled);
+            }
         }
     }
 }

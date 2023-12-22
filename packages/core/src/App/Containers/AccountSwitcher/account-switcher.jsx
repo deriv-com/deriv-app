@@ -56,7 +56,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         has_any_real_account,
         virtual_account_loginid,
     } = client;
-    const { show_eu_related_content, content_flag, setTogglePlatformType } = traders_hub;
+    const { show_eu_related_content, content_flag, selectRegion, setTogglePlatformType } = traders_hub;
     const {
         is_dark_mode_on,
         is_positions_drawer_on,
@@ -318,7 +318,10 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                                                     if (real_account_creation_unlock_date) {
                                                         closeAccountsDialog();
                                                         setShouldShowCooldownModal(true);
-                                                    } else openRealAccountSignup('svg');
+                                                    } else {
+                                                        selectRegion('Non-EU');
+                                                        openRealAccountSignup('svg');
+                                                    }
                                                 }}
                                                 className='acc-switcher__new-account-btn'
                                                 secondary
@@ -392,6 +395,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
                                                     closeAccountsDialog();
                                                     setShouldShowCooldownModal(true);
                                                 } else {
+                                                    selectRegion('EU');
                                                     openRealAccountSignup('maltainvest');
                                                 }
                                             }}

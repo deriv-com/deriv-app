@@ -1,6 +1,10 @@
 .manual-poi {
     @include mobile {
-        margin: 3.2rem 1.6rem 1.6rem;
+        margin: 3.2rem 0 1.6rem;
+    }
+
+    &__title {
+        margin-inline: 1.6rem;
     }
 
     .dc-card__wrapper {

@@ -97,7 +97,7 @@ const Unsupported = ({
 
     return (
         <div className='manual-poi'>
-            <Text as='h2' color='prominent' size='xs'>
+            <Text as='h2' color='prominent' size='xs' className='manual-poi__title'>
                 <Localize i18n_default_text='Please upload one of the following documents:' />
             </Text>
             <Documents documents={documents} toggleDetail={toggleDetail} />

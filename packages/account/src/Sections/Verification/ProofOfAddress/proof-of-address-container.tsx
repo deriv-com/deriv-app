@@ -4,14 +4,13 @@ import { Button, Loading } from '@deriv/components';
 import { WS, getPlatformRedirect, platforms, AUTH_STATUS_CODES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import Expired from '../../../Components/poa/status/expired';
 import NeedsReview from '../../../Components/poa/status/needs-review';
-import NotRequired from '../../../Components/poa/status/not-required';
 import ProofOfAddressForm from './proof-of-address-form';
 import Submitted from '../../../Components/poa/status/submitted';
-import Unverified from '../../../Components/poa/status/unverified';
 import Verified from '../../../Components/poa/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification.js';
+import VerificationStatus from '../../../Components/verification-status/verification-status';
+import { getPOAStatusMessages } from 'Sections/Verification/ProofOfAddress/proof-of-address-utils';
 
 type TProofOfAddressContainer = {
     onSubmit: () => void;
@@ -115,59 +114,56 @@ const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer
     } = authentication_status;
 
     const from_platform = getPlatformRedirect(app_routing_history);
-
     const should_show_redirect_btn = Object.keys(platforms).includes(from_platform?.ref ?? '');
 
-    const redirect_button = should_show_redirect_btn && (
-        <Button
-            primary
-            className='proof-of-identity__redirect'
-            onClick={() => {
-                const url = platforms[from_platform.ref as keyof typeof platforms]?.url;
-                if (url) {
-                    window.location.href = url;
-                    window.sessionStorage.removeItem('config.platform');
-                }
-            }}
-        >
-            <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
-        </Button>
+    const status_content = React.useMemo(
+        () => getPOAStatusMessages(document_status, needs_poi, should_show_redirect_btn),
+        [document_status, needs_poi]
     );
 
-    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (
-        !allow_document_upload ||
-        (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
-    )
-        return <NotRequired />;
-    if (has_submitted_poa && !poa_address_mismatch)
-        return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
-    if (
+    const is_resubmission_required =
         resubmit_poa ||
         allow_poa_resubmission ||
         (has_restricted_mt5_account &&
             document_status &&
-            ['expired', 'rejected', 'suspected'].includes(document_status)) ||
-        poa_address_mismatch
-    ) {
-        return <ProofOfAddressForm is_resubmit onSubmit={onSubmitDocument} />;
+            [AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.EXPIRED].includes(
+                document_status
+            )) ||
+        poa_address_mismatch;
+
+    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    if (
+        !allow_document_upload ||
+        (!is_age_verified && !allow_poa_resubmission && document_status === AUTH_STATUS_CODES.NONE && is_mx_mlt)
+    )
+        return (
+            <VerificationStatus
+                status_title={status_content.title}
+                status_description={status_content.description}
+                icon={status_content.icon}
+            />
+        );
+    // if (has_submitted_poa && !poa_address_mismatch)
+    //     return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
+
+    if (document_status === AUTH_STATUS_CODES.NONE || is_resubmission_required) {
+        return <ProofOfAddressForm is_resubmit={is_resubmission_required} onSubmit={onSubmit} />;
     }
 
-    switch (document_status) {
-        case AUTH_STATUS_CODES.NONE:
-            return <ProofOfAddressForm onSubmit={onSubmitDocument} />;
-        case AUTH_STATUS_CODES.PENDING:
-            return <NeedsReview needs_poi={needs_poi} redirect_button={redirect_button} />;
-        case AUTH_STATUS_CODES.VERIFIED:
-            return <Verified needs_poi={needs_poi} redirect_button={redirect_button} />;
-        case AUTH_STATUS_CODES.EXPIRED:
-            return <Expired onClick={handleResubmit} />;
-        case AUTH_STATUS_CODES.REJECTED:
-        case AUTH_STATUS_CODES.SUSPECTED:
-            return <Unverified onClick={handleResubmit} />;
-        default:
-            return null;
-    }
+    const buttonOnclick = [AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.EXPIRED].includes(
+        document_status
+    )
+        ? handleResubmit
+        : undefined;
+
+    return (
+        <VerificationStatus
+            status_title={status_content.title}
+            status_description={status_content.description}
+            icon={status_content.icon}
+            action_button={status_content.action_button?.(buttonOnclick)}
+        />
+    );
 });
 
 export default ProofOfAddressContainer;

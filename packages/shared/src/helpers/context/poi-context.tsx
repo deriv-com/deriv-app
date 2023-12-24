@@ -2,13 +2,13 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { ResidenceList } from '@deriv/api-types';
 
-const submission_status_code = {
+export const submission_status_code = {
     selecting: 'selecting',
     submitting: 'submitting',
     complete: 'complete',
 } as const;
 
-const service_code = {
+export const service_code = {
     idv: 'idv',
     onfido: 'onfido',
     manual: 'manual',

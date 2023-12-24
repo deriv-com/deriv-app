@@ -163,7 +163,7 @@ export type TServerError = {
     fields?: string[];
 };
 
-export type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+export type TAuthStatusCode = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
 
 export type TMT5AccountStatus = typeof MT5_ACCOUNT_STATUS[keyof typeof MT5_ACCOUNT_STATUS];
 

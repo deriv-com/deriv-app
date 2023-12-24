@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 3.2rem 0;
+
+    @include mobile {
+        margin: 1.6rem;
+    }
+}
+
+.statusTitle {
+    margin-top: 2.4rem;
+}
+
+.statusDescription {
+    margin-top: 1.6rem;
+}

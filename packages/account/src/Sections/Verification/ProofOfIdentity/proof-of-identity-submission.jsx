@@ -1,14 +1,24 @@
 import React from 'react';
-import { formatIDVError, WS, IDV_ERROR_STATUS, POIContext } from '@deriv/shared';
+import { useHistory } from 'react-router';
+import {
+    AUTH_STATUS_CODES,
+    formatIDVError,
+    getPlatformRedirect,
+    IDV_ERROR_STATUS,
+    platforms,
+    POIContext,
+    service_code,
+    submission_status_code,
+    WS,
+} from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import CountrySelector from '../../../Components/poi/poi-country-selector';
 import IdvDocumentSubmit from '../../../Components/poi/idv-document-submit';
 import IdvFailed from '../../../Components/poi/idv-status/idv-failed';
-import IdvSubmitComplete from '../../../Components/poi/idv-status/idv-submit-complete';
 import Unsupported from '../../../Components/poi/status/unsupported';
-import UploadComplete from '../../../Components/poi/status/upload-complete';
+import VerificationStatus from '../../../Components/verification-status/verification-status';
 import OnfidoSdkViewContainer from './onfido-sdk-view-container';
-import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
+import { getIDVStatusMessages, getUploadCompleteStatusMessages } from './proof-of-identity-configs';
 
 const POISubmission = observer(
     ({
@@ -36,11 +46,20 @@ const POISubmission = observer(
             setSelectedCountry,
         } = React.useContext(POIContext);
 
-        const { client, notifications } = useStore();
+        const history = useHistory();
 
-        const { account_settings, getChangeableFields, account_status } = client;
+        const { client, common, notifications, ui } = useStore();
+
+        const { account_settings, getChangeableFields, account_status, is_already_attempted } = client;
+        const { app_routing_history, routeBackInApp } = common;
         const { refreshNotifications } = notifications;
+        const { is_mobile } = ui;
+
         const is_high_risk = account_status.risk_classification === 'high';
+
+        const from_platform = getPlatformRedirect(app_routing_history);
+
+        const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 
         const handleSelectionNext = () => {
             if (Object.keys(selected_country).length) {
@@ -49,7 +68,6 @@ const POISubmission = observer(
                 const is_idv_supported = selected_country.identity.services.idv.is_country_supported;
                 const is_onfido_supported =
                     selected_country.identity.services.onfido.is_country_supported && selected_country.value !== 'ng';
-
                 if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
                     setSubmissionService(service_code.idv);
                 } else if (Number(onfido_submissions_left) > 0 && is_onfido_supported) {
@@ -63,7 +81,7 @@ const POISubmission = observer(
 
         const handleViewComplete = () => {
             if (onStateChange && typeof onStateChange === 'function') {
-                onStateChange(identity_status_codes.pending);
+                onStateChange(AUTH_STATUS_CODES.PENDING);
             }
             setSubmissionStatus(submission_status_code.complete);
 
@@ -71,17 +89,46 @@ const POISubmission = observer(
                 refreshNotifications();
             });
         };
-
         const handleBack = () => setSubmissionStatus(submission_status_code.selecting);
-
         const getCountryFromResidence = React.useCallback(
             country_code => residence_list.find(residence => residence.value === country_code),
             [residence_list]
         );
-
         const needs_resubmission = has_require_submission || allow_poi_resubmission;
 
         const mismatch_status = formatIDVError(idv.last_rejected, idv.status, is_high_risk);
+
+        const idv_status_content = getIDVStatusMessages(
+            idv.status,
+            { needs_poa, is_already_attempted, mismatch_status },
+            !!redirect_button,
+            is_from_external
+        );
+
+        const manual_upload_complete_status_content = getUploadCompleteStatusMessages(
+            AUTH_STATUS_CODES.PENDING,
+            { needs_poa, is_manual_upload: true },
+            !!redirect_button,
+            is_from_external
+        );
+
+        const onfido_upload_complete_status_content = getUploadCompleteStatusMessages(
+            AUTH_STATUS_CODES.PENDING,
+            { needs_poa },
+            !!redirect_button,
+            is_from_external
+        );
+
+        const onClickRedirectButton = () => {
+            const platform = platforms[from_platform.ref];
+            const { is_hard_redirect = false, url = '' } = platform ?? {};
+            if (is_hard_redirect) {
+                window.location.href = url;
+                window.sessionStorage.removeItem('config.platform');
+            } else {
+                routeBackTo(from_platform.route);
+            }
+        };
 
         const setIdentityService = React.useCallback(
             identity_last_attempt => {
@@ -117,7 +164,6 @@ const POISubmission = observer(
                 is_idv_disallowed,
             ]
         );
-
         React.useEffect(() => {
             if (submission_status != submission_status_code.selecting) {
                 return;
@@ -149,7 +195,6 @@ const POISubmission = observer(
             setSubmissionService,
             setSubmissionStatus,
         ]);
-
         switch (submission_status) {
             case submission_status_code.selecting: {
                 return (
@@ -160,7 +205,6 @@ const POISubmission = observer(
                     />
                 );
             }
-
             case submission_status_code.submitting: {
                 switch (submission_service) {
                     case service_code.idv:
@@ -211,42 +255,31 @@ const POISubmission = observer(
                 }
             }
             case submission_status_code.complete: {
-                switch (submission_service) {
-                    case service_code.idv:
-                        return (
-                            <IdvSubmitComplete
-                                is_from_external={is_from_external}
-                                mismatch_status={mismatch_status}
-                                needs_poa={needs_poa}
-                                redirect_button={redirect_button}
-                            />
-                        );
-                    // This will be replaced in the next Manual Upload Project
-                    case service_code.manual:
-                        return (
-                            <UploadComplete
-                                is_from_external={is_from_external}
-                                needs_poa={needs_poa}
-                                redirect_button={redirect_button}
-                                is_manual_upload
-                            />
-                        );
-                    case service_code.onfido:
-                        return (
-                            <UploadComplete
-                                is_from_external={is_from_external}
-                                needs_poa={needs_poa}
-                                redirect_button={redirect_button}
-                            />
-                        );
-                    default:
-                        return null;
+                let content = {};
+                if (submission_service === service_code.idv) {
+                    content = idv_status_content;
                 }
+                if (submission_service === service_code.manual) {
+                    content = manual_upload_complete_status_content;
+                }
+                if (submission_service === service_code.onfido) {
+                    content = onfido_upload_complete_status_content;
+                }
+
+                return (
+                    <VerificationStatus
+                        icon={content.icon}
+                        is_mobile={is_mobile}
+                        status_description={content.description}
+                        status_title={content.title}
+                    >
+                        {content.action_button?.({ onClick: onClickRedirectButton, platform_name: from_platform.name })}
+                    </VerificationStatus>
+                );
             }
             default:
                 return null;
         }
     }
 );
-
 export default POISubmission;

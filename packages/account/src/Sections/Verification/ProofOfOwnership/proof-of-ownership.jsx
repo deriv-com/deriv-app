@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
-import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
-import { POONotRequired, POOVerified, POORejected, POOSubmitted } from 'Components/poo/statuses';
 import { Loading } from '@deriv/components';
-import { POO_STATUSES } from './constants/constants';
-import getPaymentMethodsConfig from './payment-method-config.js';
+import { AUTH_STATUS_CODES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import VerificationStatus from '../../../Components/verification-status/verification-status';
+import getPaymentMethodsConfig from './payment-method-config.js';
+import ProofOfOwnershipForm from './proof-of-ownership-form.jsx';
+import { getPOOStatusMessages } from './proof-of-ownership-configs';
 
 export const ProofOfOwnership = observer(() => {
     const { client, notifications, ui } = useStore();
     const { account_status, email: client_email, updateAccountStatus } = client;
     const { refreshNotifications } = notifications;
-    const { is_dark_mode_on: is_dark_mode } = ui;
+    const { is_dark_mode_on: is_dark_mode, is_mobile } = ui;
     const cards = account_status?.authentication?.ownership?.requests;
-    const [status, setStatus] = useState(POO_STATUSES.none);
+    const [status, setStatus] = React.useState(AUTH_STATUS_CODES.NONE);
+    const [is_loading, setIsLoading] = React.useState(true);
     const citizen = client?.account_settings?.citizen || client?.account_settings?.country_code;
 
     const grouped_payment_method_data = React.useMemo(() => {
@@ -39,13 +41,21 @@ export const ProofOfOwnership = observer(() => {
         });
         return { groups };
     }, [cards, is_dark_mode]);
-    useEffect(() => {
+
+    React.useEffect(() => {
         setStatus(account_status?.authentication?.ownership?.status?.toLowerCase());
+        setIsLoading(false);
     }, [account_status]);
+
     const onTryAgain = () => {
-        setStatus(POO_STATUSES.none);
+        setStatus(AUTH_STATUS_CODES.NONE);
     };
-    if (cards?.length > 0 && status !== POO_STATUSES.rejected) {
+
+    const status_content = getPOOStatusMessages(status);
+
+    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
+
+    if (cards?.length > 0 && status !== AUTH_STATUS_CODES.REJECTED) {
         return (
             <ProofOfOwnershipForm
                 grouped_payment_method_data={grouped_payment_method_data.groups}
@@ -54,21 +64,18 @@ export const ProofOfOwnership = observer(() => {
                 client_email={client_email}
                 citizen={citizen}
             />
-        ); // Proof of ownership is required.
+        );
     }
-    if (status === POO_STATUSES.verified) {
-        return <POOVerified />; // Proof of ownership verified
-    }
-    if (status === POO_STATUSES.pending) {
-        return <POOSubmitted />; // Proof of ownership submitted pending review
-    }
-    if (status === POO_STATUSES.none) {
-        return <POONotRequired />; // Client does not need proof of ownership.
-    }
-    if (status === POO_STATUSES.rejected) {
-        return <POORejected onTryAgain={onTryAgain} />; // Proof of ownership rejected
-    }
-    return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    return (
+        <VerificationStatus
+            icon={status_content.icon}
+            is_mobile={is_mobile}
+            status_description={status_content.description}
+            status_title={status_content.title}
+        >
+            {status_content.action_button?.({ onClick: onTryAgain })}
+        </VerificationStatus>
+    );
 });
 
 export default withRouter(ProofOfOwnership);

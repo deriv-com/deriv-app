@@ -11,7 +11,7 @@ import {
 } from '@deriv/components';
 import { useFileUploader } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
-import { isEqualArray, WS } from '@deriv/shared';
+import { AUTH_STATUS_CODES, isEqualArray, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import FilesDescription from 'Components/file-uploader-container/files-descriptions';
 import FormBody from 'Components/form-body';
@@ -20,10 +20,11 @@ import FormSubHeader from 'Components/form-sub-header';
 import FileUploaderContainer from '../../../Components/file-uploader-container';
 import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
 import { isServerError } from 'Helpers/utils';
-import { income_status_codes, getPoincDocumentsList } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
+import { getPoincDocumentsList } from 'Sections/Verification/ProofOfIncome/proof-of-income-configs';
+import { TAuthStatusCode } from '../../../Types/common.type';
 
 type TProofOfIncomeForm = {
-    onSubmit: (status: typeof income_status_codes[keyof typeof income_status_codes]) => void;
+    onSubmit: (status: TAuthStatusCode) => void;
 };
 
 type TInitialValues = {
@@ -79,9 +80,7 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                         get_account_status_response.get_account_status.authentication;
                     const needs_poinc =
                         needs_verification.includes('income') &&
-                        [income_status_codes.REJECTED, income_status_codes.NONE].some(
-                            status => status === income?.status
-                        );
+                        [AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.NONE].some(status => status === income?.status);
                     removeNotificationMessage({ key: 'needs_poinc' });
                     removeNotificationByKey({ key: 'needs_poinc' });
                     removeNotificationMessage({ key: 'poinc_upload_limited' });

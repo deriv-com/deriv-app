@@ -1,10 +1,17 @@
 import React from 'react';
 import { AutoHeightWrapper } from '@deriv/components';
-import { WS, isVerificationServiceSupported, formatIDVFormValues, formatIDVError } from '@deriv/shared';
-import { useStore, observer } from '@deriv/stores';
+import {
+    AUTH_STATUS_CODES,
+    formatIDVError,
+    formatIDVFormValues,
+    isVerificationServiceSupported,
+    service_code,
+    submission_status_code,
+    WS,
+} from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import Unsupported from '../../../Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
-import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 import IdvFailed from '../../../Components/poi/idv-status/idv-failed';
 import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';
 import { makeSettingsRequest } from '../../../Helpers/utils';
@@ -38,11 +45,9 @@ const POISubmissionForMT5 = observer(
                 if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed && !is_eu_user) {
                     setSubmissionService(service_code.idv);
                     if (
-                        [
-                            identity_status_codes.rejected,
-                            identity_status_codes.suspected,
-                            identity_status_codes.expired,
-                        ].includes(status)
+                        [AUTH_STATUS_CODES.REJECTED, AUTH_STATUS_CODES.SUSPECTED, AUTH_STATUS_CODES.EXPIRED].includes(
+                            status
+                        )
                     ) {
                         setIdvMismatchStatus(formatIDVError(last_rejected, status));
                     }
@@ -57,7 +62,7 @@ const POISubmissionForMT5 = observer(
 
         const handlePOIComplete = () => {
             if (onStateChange && typeof onStateChange === 'function') {
-                onStateChange(identity_status_codes.pending);
+                onStateChange(AUTH_STATUS_CODES.PENDING);
             }
             WS.authorized.getAccountStatus().then(() => {
                 refreshNotifications();

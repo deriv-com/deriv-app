@@ -86,7 +86,7 @@ describe('proof-of-ownership.jsx', () => {
         });
         render(<ProofOfOwnershipScreen />);
 
-        const element = screen.getByTestId('dt_try-again-button', { exact: true });
+        const element = screen.getByRole('button', { name: /try again/i });
         expect(element).toBeInTheDocument();
     });
     it('should render ProofOfOwnershipForm', () => {

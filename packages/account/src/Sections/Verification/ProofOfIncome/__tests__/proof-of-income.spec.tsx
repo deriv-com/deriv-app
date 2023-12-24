@@ -1,23 +1,22 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { WS } from '@deriv/shared';
+import { AUTH_STATUS_CODES, WS } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import ProofOfIncome from 'Sections/Verification/ProofOfIncome';
-import { income_status_codes } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
 
 const mocked_account_status = {
     authentication: {
         attempts: { latest: { service: '' }, history: [] },
         document: {
-            status: 'none',
+            status: AUTH_STATUS_CODES.NONE,
         },
         identity: {
-            status: 'none',
+            status: AUTH_STATUS_CODES.NONE,
             services: { idv: {}, onfido: {}, manual: {} },
         },
         income: {
-            status: income_status_codes.NONE,
+            status: AUTH_STATUS_CODES.NONE,
         },
         needs_verification: [],
     },

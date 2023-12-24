@@ -1,10 +1,3 @@
-export const POO_STATUSES = {
-    none: 'none',
-    ownership: 'ownership',
-    pending: 'pending',
-    rejected: 'rejected',
-    verified: 'verified',
-};
 export const IDENTIFIER_TYPES = {
     account_id: 'account_id',
     account_number: 'account_number',

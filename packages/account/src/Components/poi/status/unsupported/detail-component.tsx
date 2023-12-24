@@ -1,15 +1,15 @@
 import React from 'react';
+import { FormikValues } from 'formik';
 import { Loading, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { WS } from '@deriv/shared';
-import { UploadComplete } from '../upload-complete/upload-complete';
+import { AUTH_STATUS_CODES, isMobile, WS } from '@deriv/shared';
 import PoiUnsupportedFailed from '../../../poi-unsupported-failed';
 import uploadFile from '../../../file-uploader-container/upload-file';
 import OnfidoUpload from '../../../../Sections/Verification/ProofOfIdentity/onfido-sdk-view-container';
-
 import CardDetails from './card-details';
 import { SELFIE_DOCUMENT, getDocumentIndex } from './constants';
-import { FormikValues } from 'formik';
+import VerificationStatus from '../../../verification-status/verification-status';
+import { getUploadCompleteStatusMessages } from '../../../../Sections/Verification/ProofOfIdentity/proof-of-identity-configs';
 
 const STATUS = {
     IS_UPLOADING: 'IS_UPLOADING',
@@ -47,6 +47,13 @@ const DetailComponent = ({
 }: TDetailComponent) => {
     const [status, setStatus] = React.useState('');
     const [response_error, setError] = React.useState('');
+
+    const manual_upload_complete_status_content = getUploadCompleteStatusMessages(
+        AUTH_STATUS_CODES.PENDING,
+        { needs_poa: false, is_manual_upload: true },
+        false,
+        true
+    );
 
     let is_any_failed = false;
 
@@ -118,7 +125,14 @@ const DetailComponent = ({
         case STATUS.IS_UPLOADING:
             return <Loading is_fullscreen={false} is_slow_loading status={[localize('Uploading documents')]} />;
         case STATUS.IS_COMPLETED:
-            return <UploadComplete is_from_external={true} needs_poa={false} is_manual_upload />;
+            return (
+                <VerificationStatus
+                    icon={manual_upload_complete_status_content.icon}
+                    is_mobile={isMobile()}
+                    status_description={manual_upload_complete_status_content.description}
+                    status_title={manual_upload_complete_status_content.title}
+                />
+            );
         case STATUS.IS_FAILED:
             return <PoiUnsupportedFailed error={response_error} />;
         default:

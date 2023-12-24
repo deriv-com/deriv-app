@@ -40,6 +40,7 @@ import {
 import { API_ERROR_CODES } from '../../../../Constants/api-error-codes';
 import { TIDVFormValues, TPersonalDetailsForm } from '../../../../Types';
 import LoadErrorMessage from '../../../load-error-message';
+import { TIdvDocumentSubmitForm } from 'Components/poi/idv-document-submit/idv-document-submit';
 
 type TRestState = {
     api_error: string;

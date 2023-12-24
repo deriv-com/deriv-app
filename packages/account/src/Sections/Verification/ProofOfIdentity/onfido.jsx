@@ -1,10 +1,9 @@
 import React from 'react';
-import { formatOnfidoError } from '@deriv/shared';
-import UploadComplete from '../../../Components/poi/status/upload-complete';
-import Verified from '../../../Components/poi/status/verified';
+import { AUTH_STATUS_CODES, isMobile, formatOnfidoError, getPlatformRedirect, platforms } from '@deriv/shared';
 import RejectedReasons from '../../../Components/poi/status/rejected-reasons';
 import Unsupported from '../../../Components/poi/status/unsupported';
-import { identity_status_codes } from './proof-of-identity-utils';
+import VerificationStatus from '../../../Components/verification-status/verification-status';
+import { getPOIStatusMessages, getUploadCompleteStatusMessages } from './proof-of-identity-configs';
 
 const Onfido = ({
     handleRequireSubmission,
@@ -16,21 +15,49 @@ const Onfido = ({
     setIsCfdPoiCompleted,
     country_code,
     handleViewComplete,
+    routeBackTo,
+    app_routing_history,
 }) => {
     const { status, submissions_left, last_rejected: rejected_reasons } = onfido;
+    const from_platform = getPlatformRedirect(app_routing_history);
+
+    const onClickRedirectButton = () => {
+        const platform = platforms[from_platform.ref];
+        const { is_hard_redirect = false, url = '' } = platform ?? {};
+        if (is_hard_redirect) {
+            window.location.href = url;
+            window.sessionStorage.removeItem('config.platform');
+        } else {
+            routeBackTo(from_platform.route);
+        }
+    };
+
+    const status_content = getPOIStatusMessages(status, { needs_poa }, !!redirect_button, is_from_external);
+
+    const upload_complete_status_content = getUploadCompleteStatusMessages(
+        AUTH_STATUS_CODES.PENDING,
+        { needs_poa },
+        !!redirect_button,
+        is_from_external
+    );
+
+    let onClick, content;
+    if (status === AUTH_STATUS_CODES.VERIFIED || status === AUTH_STATUS_CODES.PENDING) {
+        onClick = onClickRedirectButton;
+    } else if (status === AUTH_STATUS_CODES.EXPIRED) {
+        onClick = handleRequireSubmission;
+    }
+    if (status === AUTH_STATUS_CODES.PENDING) {
+        content = upload_complete_status_content;
+    }
+    if (content === AUTH_STATUS_CODES.VERIFIED || content === AUTH_STATUS_CODES.EXPIRED) {
+        content = status_content;
+    }
 
     switch (status) {
-        case identity_status_codes.pending:
-            return (
-                <UploadComplete
-                    is_from_external={is_from_external}
-                    needs_poa={needs_poa}
-                    redirect_button={redirect_button}
-                />
-            );
-        case identity_status_codes.rejected:
-        case identity_status_codes.suspected:
-        case identity_status_codes.expired: {
+        case AUTH_STATUS_CODES.REJECTED:
+        case AUTH_STATUS_CODES.SUSPECTED:
+        case AUTH_STATUS_CODES.EXPIRED: {
             const submission_errors = formatOnfidoError(status, rejected_reasons);
             if (Number(submissions_left) < 1) {
                 return (
@@ -51,13 +78,20 @@ const Onfido = ({
                 />
             );
         }
-        case identity_status_codes.verified:
+        case AUTH_STATUS_CODES.PENDING:
+        case AUTH_STATUS_CODES.VERIFIED:
             return (
-                <Verified is_from_external={is_from_external} needs_poa={needs_poa} redirect_button={redirect_button} />
+                <VerificationStatus
+                    icon={content.icon}
+                    is_mobile={isMobile()}
+                    status_description={content.description}
+                    status_title={content.title}
+                >
+                    {content.action_button?.({ onClick, platform_name: from_platform.name })}
+                </VerificationStatus>
             );
         default:
             return null;
     }
 };
-
 export default Onfido;

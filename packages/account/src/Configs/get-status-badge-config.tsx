@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { TAuthStatusCodes, TMT5AccountStatus } from '../Types/common.type';
+import { TAuthStatusCode, TMT5AccountStatus } from '../Types/common.type';
 import { Link } from 'react-router-dom';
 
 const getStatusBadgeConfig = (
@@ -10,7 +10,7 @@ const getStatusBadgeConfig = (
     openFailedVerificationModal?: (selected_account_type: string) => void,
     selected_account_type?: string,
     setIsVerificationModalVisible?: (value: boolean) => void,
-    user_account_status?: { poi_status: TAuthStatusCodes; poa_status: TAuthStatusCodes }
+    user_account_status?: { poi_status: TAuthStatusCode; poa_status: TAuthStatusCode }
 ) => {
     const BadgeTextComponent = <Text key={0} weight='bold' size='xxxs' color='warning' />;
 

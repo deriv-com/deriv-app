@@ -45,7 +45,7 @@ type TIDVDocumentSubmitProps = {
     getChangeableFields: () => Array<string>;
 };
 
-type TIdvDocumentSubmitForm = TIDVFormValues & TPersonalDetailsForm & { confirmation_checkbox: boolean };
+export type TIdvDocumentSubmitForm = TIDVFormValues & TPersonalDetailsForm & { confirmation_checkbox: boolean };
 
 const IdvDocumentSubmit = observer(({ handleBack, handleViewComplete, selected_country }: TIDVDocumentSubmitProps) => {
     const {

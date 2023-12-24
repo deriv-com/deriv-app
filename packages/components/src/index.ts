@@ -68,6 +68,7 @@ export { default as InputField } from './components/input-field';
 export { default as InputWithCheckbox } from './components/input-wth-checkbox';
 export { default as Label } from './components/label';
 export { default as LinearProgress } from './components/linear-progress';
+export { default as LiveChatLink } from './components/livechat-link';
 export { default as Loading } from './components/loading';
 export { default as MobileDialog } from './components/mobile-dialog';
 export { default as MobileDrawer } from './components/mobile-drawer';

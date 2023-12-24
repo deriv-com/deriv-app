@@ -37,7 +37,7 @@ type TUnsupported = {
     onfido: {
         submissions_left: number;
     };
-    is_for_mt5: boolean;
+    is_for_mt5?: boolean;
 };
 
 const Unsupported = ({

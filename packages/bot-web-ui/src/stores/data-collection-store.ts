@@ -2,9 +2,13 @@ import crc32 from 'crc-32/crc32';
 import { action, makeObservable, observable, reaction } from 'mobx';
 import { DBot } from '@deriv/bot-skeleton';
 import { cloneObject, isProduction } from '@deriv/shared';
+import RootStore from './root-store';
+import { TStores } from '@deriv/stores/types';
 
 export default class DataCollectionStore {
-    constructor(root_store, core) {
+    root_store: RootStore;
+    core: TStores;
+    constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
             IS_PENDING: observable,
             IS_PROCESSED: observable,
@@ -49,7 +53,7 @@ export default class DataCollectionStore {
     run_start = 0;
     should_post_xml = true;
     strategy_content = '';
-    transaction_ids = {};
+    transaction_ids: Record<string, unknown> = {};
 
     async trackRun() {
         const xml_dom = this.cleanXmlDom(Blockly.Xml.workspaceToDom(DBot.workspace, /* opt_noId */ true));
@@ -65,7 +69,15 @@ export default class DataCollectionStore {
         this.setRunStart(this.core.common.server_time.unix());
     }
 
-    async trackTransaction(contracts) {
+    async trackTransaction(
+        contracts: {
+            data: {
+                transaction_ids: {
+                    buy: number;
+                };
+            };
+        }[]
+    ) {
         const pako = await import(/* webpackChunkName: "dbot-collection" */ 'pako');
         const contract = contracts[0]; // Most recent contract.
 
@@ -111,22 +123,22 @@ export default class DataCollectionStore {
         }
     }
 
-    setRunId(run_id) {
+    setRunId(run_id: string) {
         this.run_id = run_id;
     }
 
-    setRunStart(timestamp) {
+    setRunStart(timestamp: number) {
         this.run_start = timestamp;
     }
 
-    setStrategyContent(strategy_content) {
+    setStrategyContent(strategy_content: string) {
         this.strategy_content = strategy_content;
     }
 
-    cleanXmlDom = xml_dom => {
+    cleanXmlDom = (xml_dom: XMLDocument) => {
         const useless_attributes = ['x', 'y', 'id'];
         const updated_dom = cloneObject(xml_dom);
-        const removeAttributesRecursively = element => {
+        const removeAttributesRecursively = (element: Element) => {
             useless_attributes.forEach(useless_attribute => element.removeAttribute(useless_attribute));
             Array.from(element.children).forEach(child => removeAttributesRecursively(child));
         };
@@ -135,5 +147,5 @@ export default class DataCollectionStore {
         return updated_dom;
     };
 
-    getHash = string => btoa(crc32.str(string));
+    getHash = (string: string) => btoa(String(crc32.str(string)));
 }

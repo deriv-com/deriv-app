@@ -2,9 +2,16 @@ import { action, makeObservable, reaction, when } from 'mobx';
 import { ApiHelpers, DBot, runIrreversibleEvents } from '@deriv/bot-skeleton';
 import { ContentFlag, isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import RootStore from './root-store';
+import { TStores } from '@deriv/stores/types';
 
 export default class AppStore {
-    constructor(root_store, core) {
+    root_store: any;
+    core: any;
+    dbot_store: null;
+    api_helpers_store: null;
+    timer: ReturnType<typeof setInterval>;
+    constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
             onMount: action.bound,
             onUnmount: action.bound,
@@ -40,7 +47,7 @@ export default class AppStore {
             title: is_logged_in
                 ? localize('Deriv Bot is not available for EU clients')
                 : localize('Deriv Bot is unavailable in the EU'),
-            link: is_logged_in && localize("Back to Trader's Hub"),
+            link: is_logged_in ? localize("Back to Trader's Hub") : '',
             route: routes.traders_hub,
         };
     };

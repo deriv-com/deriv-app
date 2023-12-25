@@ -2,12 +2,14 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 // import { tabs_title } from '../constants/bot-contents';
 import { ServerTime } from '@deriv/bot-skeleton';
 import { LocalStore } from '@deriv/shared';
+import RootStore from './root-store';
 
 const g_subscribers_map = {};
 let WS;
 
 export default class ChartStore {
-    constructor(root_store) {
+    root_store: RootStore;
+    constructor(root_store: RootStore) {
         makeObservable(this, {
             symbol: observable,
             is_chart_loading: observable,
@@ -66,7 +68,7 @@ export default class ChartStore {
 
     updateSymbol() {
         const workspace = Blockly.derivWorkspace;
-        const market_block = workspace.getAllBlocks().find(block => {
+        const market_block = workspace.getAllBlocks().find((block: Blockly.Block) => {
             return block.type === 'trade_definition_market';
         });
 

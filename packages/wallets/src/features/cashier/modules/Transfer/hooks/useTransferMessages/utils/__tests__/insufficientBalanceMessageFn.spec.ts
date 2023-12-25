@@ -1,7 +1,7 @@
 import insufficientBalanceMessageFn from '../insufficientBalanceMessageFn';
 
 describe('insufficientBalanceMessageFn', () => {
-    it('should not return the message when the missing accountName', () => {
+    it('should not return the message when accountName is missing', () => {
         const result = insufficientBalanceMessageFn({
             sourceAccount: {
                 balance: '0',

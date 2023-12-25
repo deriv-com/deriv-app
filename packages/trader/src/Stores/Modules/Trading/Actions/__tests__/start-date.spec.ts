@@ -164,25 +164,17 @@ jest.mock('_common/base/server_time', () => ({
 }));
 
 const underlying = 'R_10';
+const duration_units_list = [
+    { text: 'Minutes', value: 'm' },
+    { text: 'Hours', value: 'h' },
+    { text: 'Days', value: 'd' },
+];
 const trade_store = {
     ...mockStore({}).modules.trade,
     contract_type: TRADE_TYPES.VANILLA.CALL,
     contract_expiry_type: 'intraday',
     duration_unit: 'h',
-    duration_units_list: [
-        {
-            text: 'Minutes',
-            value: 'm',
-        },
-        {
-            text: 'Hours',
-            value: 'h',
-        },
-        {
-            text: 'Days',
-            value: 'd',
-        },
-    ],
+    duration_units_list,
     expiry_date: 1701428800,
     expiry_type: 'duration',
     start_date: 0,
@@ -196,11 +188,7 @@ describe('onChangeStartDate', () => {
     it('should return an object with start_time equal to null when start_date is 0', async () => {
         const result = {
             contract_start_type: 'spot',
-            duration_units_list: [
-                { text: 'Minutes', value: 'm' },
-                { text: 'Hours', value: 'h' },
-                { text: 'Days', value: 'd' },
-            ],
+            duration_units_list,
             duration_min_max: {
                 daily: { min: 86400, max: 31536000 },
                 intraday: { min: 60, max: 86400 },

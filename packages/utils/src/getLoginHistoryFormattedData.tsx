@@ -21,17 +21,15 @@ type TUserAgent =
 export const getLoginHistoryFormattedData = (login_history: LoginHistory) => {
     const data: TData = [];
     const fetch_limit = Math.min(50, login_history.length);
-    const data_object = {
-        date: '',
-        action: '',
-        browser: '',
-        ip: '',
-        status: '',
-        id: 0,
-    };
-
     for (let i = 0; i < fetch_limit; i++) {
-        data[i] = data_object;
+        data[i] = {
+            date: '',
+            action: '',
+            browser: '',
+            ip: '',
+            status: '',
+            id: 0,
+        };
         const environment = login_history[i].environment;
         const environment_split = environment.split(' ');
         const mobile_app_UA = environment.match(

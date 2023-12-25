@@ -32,7 +32,7 @@ const LoginHistory = observer(() => {
         };
 
         fetchData();
-    }, [isMounted]);
+    }, []);
 
     if (is_switching) return <Loading />;
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;

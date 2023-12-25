@@ -23,6 +23,7 @@ import { FormikHelpers, FormikValues } from 'formik';
 import { observer, useStore } from '@deriv/stores';
 
 type TSelfExclusion = {
+    is_app_settings?: boolean;
     overlay_ref: HTMLDivElement;
     setIsOverlayShown?: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -68,7 +69,7 @@ type TResponse = {
     };
 };
 
-const SelfExclusion = observer(({ overlay_ref, setIsOverlayShown }: TSelfExclusion) => {
+const SelfExclusion = observer(({ is_app_settings, overlay_ref, setIsOverlayShown }: TSelfExclusion) => {
     const { client, ui } = useStore();
     const { currency, is_virtual, is_switching, standpoint, is_eu, is_uk, logout, landing_company_shortcode } = client;
     const { is_tablet } = ui;
@@ -427,6 +428,7 @@ const SelfExclusion = observer(({ overlay_ref, setIsOverlayShown }: TSelfExclusi
     const session_duration_digits = six_weeks.toString().length;
 
     const context_value = {
+        is_app_settings,
         backFromConfirmLimits,
         backToReview,
         currency,
@@ -455,7 +457,7 @@ const SelfExclusion = observer(({ overlay_ref, setIsOverlayShown }: TSelfExclusi
     return (
         <SelfExclusionContext.Provider value={context_value}>
             <SelfExclusionWrapper>
-                <SelfExclusionModal />
+                {!is_app_settings && <SelfExclusionModal />}
                 <SelfExclusionForm />
             </SelfExclusionWrapper>
             {overlay_ref && state.show_article && <SelfExclusionArticleContent is_in_overlay />}

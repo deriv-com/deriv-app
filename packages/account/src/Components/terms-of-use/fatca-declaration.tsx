@@ -49,7 +49,12 @@ const FatcaDeclaration = ({ field: { value, onChange, name }, ...props }: TFATCA
         <div className='fatca-declaration__layout'>
             <ol>
                 {getFatcaDeclaration().map((item, idx) => (
-                    <Text as='li' key={idx} size={isDesktop() ? 'xs' : 'xxs'} className='fatca-declaration__points'>
+                    <Text
+                        as='li'
+                        key={idx} /* Since the list remains constant index can be used */
+                        size={isDesktop() ? 'xs' : 'xxs'}
+                        className='fatca-declaration__points'
+                    >
                         {idx + 1}. {item}
                     </Text>
                 ))}

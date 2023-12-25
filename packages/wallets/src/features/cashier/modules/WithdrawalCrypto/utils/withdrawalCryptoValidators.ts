@@ -22,6 +22,34 @@ const validateCryptoAddress = (address: string) => {
     return undefined;
 };
 
+const checkIfInvalidInput = (
+    fractionalDigits: TWithdrawalCryptoContext['fractionalDigits']['crypto' | 'fiat'],
+    value: string
+) => {
+    if (!fractionalDigits) return;
+
+    const splitValues = value.split('.');
+    const numberOfDecimalsPoints = splitValues.length - 1;
+    const integerPart = splitValues[0];
+    const fractionalPart = splitValues[1];
+
+    const isIntegerPartNumberRegex = new RegExp(/^\d+$/);
+    const isFractionalPartNumberRegex = new RegExp(/^\d+$/);
+    const fractionalPartPrecisionRegex = new RegExp(`^\\d{1,${fractionalDigits}}$`);
+
+    if (
+        (integerPart && !integerPart.match(isIntegerPartNumberRegex)) ||
+        numberOfDecimalsPoints > 1 ||
+        (numberOfDecimalsPoints === 1 && !fractionalPart) ||
+        (fractionalPart && !fractionalPart.match(isFractionalPartNumberRegex))
+    ) {
+        return helperMessageMapper.invalidInput;
+    }
+
+    if (fractionalPart && !fractionalPart.match(fractionalPartPrecisionRegex))
+        return helperMessageMapper.decimalPlacesExceeded(fractionalDigits);
+};
+
 const validateCryptoInput = (
     remainder: number,
     activeWallet: TWithdrawalCryptoContext['activeWallet'],
@@ -38,15 +66,11 @@ const validateCryptoInput = (
     )
         return;
 
-    const splitValues = value.split('.');
-    const fractionalPart = parseFloat(splitValues[1]);
+    const isInvalidInput = checkIfInvalidInput(fractionalDigits.crypto, value);
 
-    const amount = parseFloat(parseFloat(value).toFixed(fractionalDigits.crypto));
+    if (isInvalidInput) return isInvalidInput;
 
-    if (Number.isNaN(amount) || splitValues.length > 2 || (fractionalPart && Number.isNaN(fractionalPart)))
-        return helperMessageMapper.invalidInput;
-
-    if (amount > activeWallet.balance) return helperMessageMapper.insufficientFunds;
+    const amount = parseFloat(value);
 
     const MIN_WITHDRAWAL_AMOUNT = activeWallet.currency_config.minimum_withdrawal;
 
@@ -59,24 +83,13 @@ const validateCryptoInput = (
             `${MAX_WITHDRAWAL_AMOUNT.toFixed(fractionalDigits.crypto)} ${activeWallet.currency}`
         );
     }
-
-    if (fractionalPart && fractionalPart > fractionalDigits.crypto)
-        return helperMessageMapper.decimalPlacesExceeded(fractionalDigits.crypto);
 };
 
-const validateFiatInput = (
-    accountLimits: TWithdrawalCryptoContext['accountLimits'],
-    activeWallet: TWithdrawalCryptoContext['activeWallet'],
-    fractionalDigits: TWithdrawalCryptoContext['fractionalDigits'],
-    value: string
-) => {
-    if (!value.length) return;
+const validateFiatInput = (fractionalDigits: TWithdrawalCryptoContext['fractionalDigits'], value: string) => {
+    if (!value.length || !fractionalDigits.fiat) return;
 
-    if (Number.isNaN(parseFloat(value))) return helperMessageMapper.invalidInput;
-
-    const fractionalPart = value.split('.');
-    if (fractionalDigits.fiat && fractionalPart[1] && fractionalPart[1].length > fractionalDigits.fiat)
-        return helperMessageMapper.decimalPlacesExceeded(fractionalDigits.fiat);
+    const isInvalidInput = checkIfInvalidInput(fractionalDigits.fiat, value);
+    if (isInvalidInput) return isInvalidInput;
 };
 
 export { validateCryptoAddress, validateCryptoInput, validateFiatInput };

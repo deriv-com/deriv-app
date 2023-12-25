@@ -12,7 +12,7 @@ describe('insufficientBalanceMessageFn', () => {
         expect(result).toBe(null);
     });
 
-    it('should not return the message when the missing balance', () => {
+    it('should not return the message when balance is missing', () => {
         const result = insufficientBalanceMessageFn({
             sourceAccount: {
                 accountName: 'USD Wallet',

@@ -11,7 +11,7 @@ import QSInput from './inputs/qs-input';
 import QSCheckbox from './inputs/qs-checkbox';
 import QSInputLabel from './inputs/qs-input-label';
 import { STRATEGIES } from './config';
-import { TConfigItem, TFormData } from './types';
+import { TConfigItem, TFormData, TShouldHave } from './types';
 import { useFormikContext } from 'formik';
 import debounce from 'lodash.debounce';
 import { Analytics } from '@deriv/analytics';
@@ -63,6 +63,13 @@ const QuickStrategyForm = observer(() => {
         }
     };
 
+    const shouldEnable = (should_have: TShouldHave[]) =>
+        should_have.every(item => {
+            const item_value = values?.[item.key]?.toString();
+            if (item.multiple) return item.multiple.includes(item_value);
+            return values[item.key as keyof TFormData] === item.value;
+        });
+
     const renderForm = () => {
         return config.map((group, group_index) => {
             if (!group?.length) return null;
@@ -77,11 +84,13 @@ const QuickStrategyForm = observer(() => {
                         ) {
                             return null;
                         }
+
                         switch (field.type) {
                             // Generic or common fields
                             case 'number': {
                                 if (!field.name) return null;
-                                const { should_have = [] } = field;
+                                const { should_have = [], hide_without_should_have = false } = field;
+                                const should_enable = shouldEnable(should_have);
                                 const initial_stake = 1;
                                 let min = 1;
                                 let max;
@@ -96,11 +105,20 @@ const QuickStrategyForm = observer(() => {
                                         min = +initial_stake;
                                     }
                                 }
+                                if (should_validate && field.name === 'last_digit_prediction') {
+                                    if (
+                                        isNaN(+form_data?.last_digit_prediction) ||
+                                        +form_data?.last_digit_prediction === 1
+                                    ) {
+                                        min = 0;
+                                    }
+                                    if (+form_data?.last_digit_prediction > 0) {
+                                        min = +form_data?.last_digit_prediction - 1;
+                                    }
+                                    max = 9;
+                                }
                                 if (should_have?.length) {
-                                    const should_enable = should_have.every((item: TFormData) => {
-                                        return values[item.key as keyof TFormData] === item.value;
-                                    });
-                                    if (!should_enable && is_mobile) {
+                                    if (!should_enable && (is_mobile || hide_without_should_have)) {
                                         return null;
                                     }
                                     return (
@@ -126,12 +144,17 @@ const QuickStrategyForm = observer(() => {
                                     />
                                 );
                             }
-
-                            case 'label':
+                            case 'label': {
                                 if (!field.label) return null;
+                                const { should_have = [], hide_without_should_have = false } = field;
+                                const should_enable = shouldEnable(should_have);
+                                if (!should_enable && hide_without_should_have) {
+                                    return null;
+                                }
                                 return (
                                     <QSInputLabel key={key} label={field.label} description={field.description || ''} />
                                 );
+                            }
                             case 'checkbox':
                                 return (
                                     <QSCheckbox

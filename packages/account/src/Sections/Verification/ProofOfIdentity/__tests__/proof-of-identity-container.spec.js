@@ -216,7 +216,11 @@ describe('ProofOfIdentityContainer', () => {
         });
     });
 
-    it('should render messages that POA is not required', async () => {
+    it('should render messages that POI is not required', async () => {
+        populateVerificationStatus.mockReturnValue({
+            identity_status: AUTH_STATUS_CODES.NONE,
+        });
+
         renderComponent({});
         await waitFor(() => {
             expect(screen.getByText('Proof of identity verification not required')).toBeInTheDocument();

@@ -119,63 +119,59 @@ jest.mock('@deriv/shared', () => {
     };
 });
 
+const barrier_1 = '+0.000';
+const barrier_choices = ['-1.230', '-0.650', barrier_1, '+0.650', '+1.230'];
 const underlying = 'R_10';
+const trade_store = {
+    ...mockStore({}).modules.trade,
+    barrier_1,
+    barrier_2: '',
+    barrier_choices,
+    contract_type: TRADE_TYPES.VANILLA.CALL,
+    contract_expiry_type: 'intraday',
+    duration_unit: 'm',
+    duration_units_list: [
+        {
+            text: 'Minutes',
+            value: 'm',
+        },
+        {
+            text: 'Hours',
+            value: 'h',
+        },
+        {
+            text: 'Days',
+            value: 'd',
+        },
+    ],
+    expiry_date: Date.now() / 1000 + 18000,
+    expiry_type: 'duration',
+    root_store: {
+        ...mockStore({}),
+        common: {
+            ...mockStore({}).common,
+            server_time: moment(new Date()).utc(),
+        },
+    },
+    strike_price_choices: { barrier: barrier_1, barrier_choices },
+};
 
 describe('onChangeExpiry', () => {
-    const barrier_1 = '+0.000';
-    const barrier_choices = ['-1.230', '-0.650', barrier_1, '+0.650', '+1.230'];
-    const trade_store = {
-        ...mockStore({}).modules.trade,
-        barrier_1,
-        barrier_2: '',
-        barrier_choices,
-        contract_type: TRADE_TYPES.VANILLA.CALL,
-        contract_expiry_type: 'intraday',
-        duration_unit: 'm',
-        duration_units_list: [
-            {
-                text: 'Minutes',
-                value: 'm',
-            },
-            {
-                text: 'Hours',
-                value: 'h',
-            },
-            {
-                text: 'Days',
-                value: 'd',
-            },
-        ],
-        expiry_date: Date.now() / 1000 + 18000,
-        expiry_type: 'duration',
-        root_store: {
-            ...mockStore({}),
-            common: {
-                ...mockStore({}).common,
-                server_time: moment(new Date()).utc(),
-            },
-        },
-        strike_price_choices: { barrier: barrier_1, barrier_choices },
-    };
-
     beforeAll(() => {
         ContractType.buildContractTypesConfig(underlying);
     });
-
     it('should return an object with expiry type only when duration_unit === m', () => {
         expect(onChangeExpiry(trade_store)).toMatchObject({
             contract_expiry_type: 'intraday',
         });
     });
     it('should return an object with expiry type only when duration_unit === h', () => {
-        trade_store.duration_unit = 'h';
-        expect(onChangeExpiry(trade_store)).toMatchObject({
+        expect(onChangeExpiry({ ...trade_store, duration_unit: 'h' })).toMatchObject({
             contract_expiry_type: 'intraday',
         });
     });
     it('should return an object with barriers and expiry type when duration_unit === d', () => {
-        trade_store.duration_unit = 'd';
-        expect(onChangeExpiry(trade_store)).toMatchObject({
+        expect(onChangeExpiry({ ...trade_store, duration_unit: 'd' })).toMatchObject({
             barrier_1: '1790.00',
             barrier_2: '',
             barrier_count: 1,
@@ -184,96 +180,103 @@ describe('onChangeExpiry', () => {
     });
 });
 
-// describe('onChangeContractType', () => {
-//     const trade_store = {
-//         ...mockStore({}).modules.trade,
-//         root_store: {
-//             ...mockStore({}),
-//             common: {
-//                 ...mockStore({}).common,
-//                 server_time: moment(new Date()).utc(),
-//             },
-//         },
-//     };
-//     const resulting_store = {
-//         barrier_2: '',
-//         basis: 'stake',
-//         basis_list: [
-//             {
-//                 text: 'Stake',
-//                 value: 'stake',
-//             },
-//         ],
-//         cached_multiplier_cancellation_list: [],
-//         cancellation_range_list: [],
-//         contract_start_type: 'spot',
-//         has_cancellation: false,
-//         multiplier_range_list: [],
-//         start_date: 0,
-//         start_dates_list: [
-//             {
-//                 text: 'Now',
-//                 value: 0,
-//             },
-//         ],
-//     };
+describe('onChangeContractType', () => {
+    const daily_min_max = { min: 86400, max: 31536000 };
+    const intraday_min_max = { min: 60, max: 86400 };
+    const tick_min_max = { min: 5, max: 10 };
 
-//     beforeAll(() => {
-//         ContractType.buildContractTypesConfig(underlying);
-//     });
-//     it('should return an object with correct store values for Vanilla', () => {
-//         const barrier_1 = '+0.000';
-//         const barrier_choices = ['-1.230', '-0.650', barrier_1, '+0.650', '+1.230'];
-//         trade_store.contract_type = TRADE_TYPES.VANILLA.CALL;
-//         trade_store.strike_price_choices = { barrier: barrier_1, barrier_choices };
-//         expect(onChangeContractType(trade_store)).toMatchObject({
-//             ...resulting_store,
-//             accumulator_range_list: [],
-//             barrier_1,
-//             barrier_choices,
-//             barrier_count: 1,
-//             duration_min_max: {
-//                 intraday: {
-//                     max: 86400,
-//                     min: 60,
-//                 },
-//             },
-//             duration_unit: 'm',
-//             duration_units_list: [
-//                 {
-//                     text: 'Minutes',
-//                     value: 'm',
-//                 },
-//                 {
-//                     text: 'Hours',
-//                     value: 'h',
-//                 },
-//             ],
-//             expiry_type: 'duration',
-//             form_components: ['duration', 'amount', 'duration', 'strike', 'amount', 'trade_type_tabs'],
-//             trade_types: {
-//                 VANILLALONGCALL: 'Vanilla Long Call',
-//             },
-//         });
-//     });
-//     it('should return an object with correct store values for Accumulators', () => {
-//         trade_store.contract_type = TRADE_TYPES.ACCUMULATOR;
-//         expect(onChangeContractType(trade_store)).toMatchObject({
-//             ...resulting_store,
-//             accumulator_range_list: [0.01, 0.02, 0.03, 0.04, 0.05],
-//             barrier_1: '',
-//             barrier_choices: [],
-//             barrier_count: 2,
-//             duration_min_max: {},
-//             duration_units_list: [],
-//             expiry_type: null,
-//             form_components: ['amount', 'take_profit', 'accumulator', 'accu_info_display'],
-//             trade_types: {
-//                 ACCU: 'Accumulator Up',
-//             },
-//         });
-//     });
-//     it('should return an empty object when called with an empty object', () => {
-//         expect(onChangeContractType({} as typeof trade_store)).toMatchObject({});
-//     });
-// });
+    beforeAll(() => {
+        ContractType.buildContractTypesConfig(underlying);
+    });
+
+    it('should return an empty object if duration is correct, i.e. between min & max values', () => {
+        expect(
+            onChangeContractType({
+                ...trade_store,
+                duration: 5000,
+                duration_min_max: { intraday: intraday_min_max },
+            })
+        ).toMatchObject({});
+        expect(
+            onChangeContractType({
+                ...trade_store,
+                duration_unit: 'h',
+                duration: 3,
+                duration_min_max: { daily: daily_min_max, intraday: intraday_min_max, tick: tick_min_max },
+            })
+        ).toMatchObject({});
+    });
+    it('should return an object with a correct min duration if duration is less than min value in seconds', () => {
+        expect(
+            onChangeContractType({
+                ...trade_store,
+                duration: 0,
+                duration_min_max: { intraday: intraday_min_max },
+            })
+        ).toMatchObject({
+            duration: 1,
+        });
+        expect(
+            onChangeContractType({
+                ...trade_store,
+                duration: 3,
+                duration_min_max: { tick: tick_min_max },
+                duration_unit: 't',
+            })
+        ).toMatchObject({
+            duration: 5,
+        });
+    });
+    it('should return an object with a correct max duration if duration is more than max value in seconds', () => {
+        expect(
+            onChangeContractType({
+                ...trade_store,
+                duration: 1500,
+                duration_min_max: { intraday: intraday_min_max },
+            })
+        ).toMatchObject({
+            duration: 1440,
+        });
+        expect(
+            onChangeContractType({
+                ...trade_store,
+                duration: 1500,
+                duration_min_max: { daily: daily_min_max },
+                duration_unit: 'd',
+            })
+        ).toMatchObject({
+            duration: 365,
+        });
+    });
+    it('should return an empty object if duration, duration_unit, or duration_min_max are not available for intraday expiry_type', () => {
+        expect(
+            onChangeContractType({
+                ...trade_store,
+                duration: undefined,
+            })
+        ).toMatchObject({});
+        expect(
+            onChangeContractType({
+                ...trade_store,
+                duration_unit: undefined,
+                duration: 1,
+                duration_min_max: { intraday: intraday_min_max },
+            })
+        ).toMatchObject({});
+        expect(
+            onChangeContractType({
+                ...trade_store,
+                duration_unit: 'h',
+                duration: 1,
+                duration_min_max: {},
+            })
+        ).toMatchObject({});
+        expect(
+            onChangeContractType({
+                ...trade_store,
+                duration: 1,
+                duration_min_max: { daily: daily_min_max },
+            })
+        ).toMatchObject({});
+    });
+});

@@ -12,7 +12,7 @@ import { convertToMillis, getFormattedDateString } from 'Utils/date-time';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 
-import { get, init, timePromise } from '../utils/server_time';
+import { get, init } from 'Utils/server_time';
 
 export default class GeneralStore extends BaseStore {
     active_index = 0;
@@ -28,6 +28,7 @@ export default class GeneralStore extends BaseStore {
     contact_info = '';
     counterparty_advert_id = '';
     counterparty_advertiser_id = null;
+    default_advert_description = '';
     error_code = '';
     external_stores = {};
     feature_level = null;
@@ -72,7 +73,6 @@ export default class GeneralStore extends BaseStore {
     server_time = {
         get,
         init,
-        timePromise,
     };
 
     constructor(root_store) {
@@ -89,8 +89,10 @@ export default class GeneralStore extends BaseStore {
             advertiser_relations_response: observable, //TODO: Remove this when backend has fixed is_blocked flag issue
             block_unblock_user_error: observable,
             balance: observable,
+            contact_info: observable,
             counterparty_advert_id: observable,
             counterparty_advertiser_id: observable,
+            default_advert_description: observable,
             external_stores: observable,
             feature_level: observable,
             formik_ref: observable,
@@ -183,6 +185,16 @@ export default class GeneralStore extends BaseStore {
             updateAdvertiserInfo: action.bound,
             updateP2pNotifications: action.bound,
         });
+
+        reaction(
+            () => this.is_barred,
+            () => {
+                const { my_profile_store } = this.root_store;
+                if (!this.is_barred) this.setBlockUnblockUserError('');
+                my_profile_store.setSearchTerm('');
+                my_profile_store.getTradePartnersList({ startIndex: 0 }, true);
+            }
+        );
     }
 
     get active_tab_route() {

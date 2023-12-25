@@ -1,8 +1,8 @@
 import React from 'react';
-import { ModalStepWrapper, Tab, Tabs } from '../../../../components/Base';
+import { ModalStepWrapper } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import { PlatformDetails } from '../../constants';
-import MT5ChangeInvestorPasswordScreens from './InvestorPassword/MT5ChangeInvestorPasswordScreens';
+import MT5ChangePasswordScreens from './MT5ChangePasswordScreens';
 import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswordScreens';
 import './ChangePassword.scss';
 
@@ -20,14 +20,7 @@ const ChangePassword = () => {
                     {isDerivX ? (
                         <TradingPlatformChangePasswordScreens platform={platform} />
                     ) : (
-                        <Tabs wrapperClassName='wallets-change-password__tab'>
-                            <Tab title={`${title} Password`}>
-                                <TradingPlatformChangePasswordScreens platform={platform} />
-                            </Tab>
-                            <Tab title='Investor Password'>
-                                <MT5ChangeInvestorPasswordScreens />
-                            </Tab>
-                        </Tabs>
+                        <MT5ChangePasswordScreens />
                     )}
                 </div>
             </div>

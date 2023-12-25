@@ -20,10 +20,10 @@ import {
     AccountClosed,
     DeactivateAccount,
     LanguageSettings,
+    ProofOfIncome,
 } from '../Sections';
 
 import { TRoute, TRouteConfig } from '../Types';
-
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
 export type TPage404 = typeof Page404;
@@ -100,6 +100,11 @@ const initRoutesConfig = () => [
                         path: routes.proof_of_ownership,
                         component: ProofOfOwnership,
                         getTitle: () => localize('Proof of ownership'),
+                    },
+                    {
+                        path: routes.proof_of_income,
+                        component: ProofOfIncome,
+                        getTitle: () => localize('Proof of income'),
                     },
                 ],
             },

@@ -11,7 +11,7 @@ import { localize, Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
-import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
+import PaymentMethodCard from 'Components/payment-method-card';
 import { floatingPointValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';

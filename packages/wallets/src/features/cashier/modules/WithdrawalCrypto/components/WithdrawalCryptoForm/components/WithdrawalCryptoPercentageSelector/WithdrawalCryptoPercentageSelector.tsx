@@ -15,9 +15,10 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
 
         if (amount <= activeWallet.balance) {
             const percentage = Math.round((amount * 100) / activeWallet.balance);
-            return `${percentage}% of available balance ${activeWallet.display_balance}`;
+            return `${percentage}% of available balance (${activeWallet.display_balance})`;
         }
     };
+
     return (
         <div className='wallets-withdrawal-crypto-percentage__selector'>
             <WalletsPercentageSelector

@@ -5,7 +5,6 @@ import { mockStore } from '@deriv/stores';
 import { AccumulatorOptionsWidget, MultiplierOptionsWidget, MultiplierAmountWidget } from '../widgets';
 import TraderProviders from '../../../../../../../trader-providers';
 
-const new_label = 'NEW!';
 const radio_group_options_modal = 'RadioGroupOptionsModal';
 const multiplier_amount_modal = 'Multiplier Amount Modal';
 const multipliers_info = 'Multipliers Info';
@@ -107,17 +106,6 @@ describe('MultiplierOptionsWidget', () => {
         render(mockMultiplierOptionsWidget());
 
         expect(screen.getByText(/x10/i)).toBeInTheDocument();
-    });
-    it('should not render new! label if chosen symbol is not synthetic or is equal to Vol 150 (1 sec) or 250 (1 sec)', () => {
-        render(mockMultiplierOptionsWidget());
-
-        expect(screen.queryByText(new_label)).not.toBeInTheDocument();
-    });
-    it('should render new! label if chosen symbol is synthetic and is not equal to Vol 150 (1 sec) or 250 (1 sec)', () => {
-        default_mocked_store.modules.trade.symbol = '1HZ100V';
-        render(mockMultiplierOptionsWidget());
-
-        expect(screen.getByText(new_label)).toBeInTheDocument();
     });
     it('should open RadioGroupOptionsModal if user clicked on Multiplier mobile widget', () => {
         render(mockMultiplierOptionsWidget());

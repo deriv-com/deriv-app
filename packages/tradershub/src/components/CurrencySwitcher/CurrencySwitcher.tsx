@@ -3,14 +3,18 @@ import { useActiveTradingAccount } from '@deriv/api';
 import { Button, qtMerge, Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
+import { THooks } from '../../types';
 
-const AccountActionButton = () => {
-    const { data: activeAccount } = useActiveTradingAccount();
+type AccountActionButtonProps = {
+    balance: THooks.ActiveTradingAccount['balance'];
+    isDemo: THooks.ActiveTradingAccount['is_virtual'];
+};
 
+const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
     let buttonText = 'Deposit';
-    if (activeAccount?.is_virtual && activeAccount.balance !== 10000) {
+    if (isDemo && balance !== 10000) {
         buttonText = 'Reset Balance';
-    } else if (activeAccount?.is_virtual) {
+    } else if (isDemo) {
         return null;
     }
 
@@ -27,36 +31,31 @@ const AccountActionButton = () => {
 
 const CurrencySwitcher = () => {
     const { data: activeAccount } = useActiveTradingAccount();
+    const isDemo = activeAccount?.is_virtual;
+
+    const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency || 'virtual';
 
     return (
         <div className='flex items-center justify-between border-solid grow gap-800 h-3600 p-800 rounded-400 border-sm border-system-light-active-background shrink-0'>
-            {IconToCurrencyMapper[activeAccount?.currency || 'virtual'].icon}
+            {IconToCurrencyMapper[iconCurrency].icon}
             <div className='flex items-center justify-between grow gap-800'>
                 <div className='flex flex-col justify-center'>
-                    <Text
-                        bold
-                        className={qtMerge('flex', !activeAccount?.is_virtual && 'text-status-light-success')}
-                        size='sm'
-                    >
-                        {activeAccount?.is_virtual ? 'Demo' : activeAccount?.display_balance}
+                    <Text bold={!isDemo} className={qtMerge('flex', !isDemo && 'text-status-light-success')} size='sm'>
+                        {isDemo ? 'Demo' : activeAccount?.display_balance}
                     </Text>
                     <Text
-                        bold={activeAccount?.is_virtual}
+                        bold={isDemo}
                         className={qtMerge(
                             'flex',
-                            activeAccount?.is_virtual
-                                ? 'text-status-light-information'
-                                : 'text-system-light-less-prominent-text'
+                            isDemo ? 'text-status-light-information' : 'text-system-light-less-prominent-text'
                         )}
                         size='sm'
                     >
-                        {activeAccount?.is_virtual
-                            ? activeAccount.display_balance
-                            : IconToCurrencyMapper[activeAccount?.currency || 'virtual'].text}
+                        {isDemo ? activeAccount.display_balance : IconToCurrencyMapper[iconCurrency].text}
                     </Text>
                 </div>
-                <AccountActionButton />
-                <div className='cursor-pointer'>{!activeAccount?.is_virtual && <StandaloneChevronDownBoldIcon />}</div>
+                <AccountActionButton balance={activeAccount?.balance || 0} isDemo={isDemo || false} />
+                <div className='cursor-pointer'>{!isDemo && <StandaloneChevronDownBoldIcon />}</div>
             </div>
         </div>
     );

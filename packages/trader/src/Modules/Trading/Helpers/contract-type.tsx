@@ -58,9 +58,6 @@ export const getContractTypeCategoryIcons = () =>
  * @param {array}  unsupported_list - list of unsupported contract types
  */
 
-export const showLabelForMultipliers = (checked_symbol: string) =>
-    /R_|1HZ/i.test(checked_symbol) && !/1HZ150V|1HZ250V/i.test(checked_symbol);
-
 export const getAvailableContractTypes = (
     contract_types_list: TContractTypesList,
     unsupported_list: typeof unsupported_contract_types_list

@@ -15,7 +15,7 @@ const JurisdictionCardRow: React.FC<TJurisdictionCardRowProps> = ({ description,
                 <WalletText size='sm' weight='bold'>
                     {title}
                 </WalletText>
-                {renderTag && <div className='wallets-jurisdiction-card-row__header-tag'>{renderTag()}</div>}
+                {renderTag && <div>{renderTag()}</div>}
             </div>
             {description && <WalletText size='xs'>{description}</WalletText>}
         </div>

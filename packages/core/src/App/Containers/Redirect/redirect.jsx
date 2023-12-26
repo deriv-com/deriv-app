@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withRouter, useHistory } from 'react-router-dom';
 import { loginUrl, routes, redirectToLogin, SessionStore, PlatformContext } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -216,5 +217,9 @@ const Redirect = observer(() => {
 
     return null;
 });
+
+Redirect.propTypes = {
+    history: PropTypes.object,
+};
 
 export default withRouter(Redirect);

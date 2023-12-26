@@ -1,23 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, PasswordInput, PasswordMeter, Text } from '@deriv/components';
 import { redirectToLogin, validPassword, validLength, getErrorMessages, WS } from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 
-const ResetPasswordModal = ({
-    disableApp,
-    enableApp,
-    is_loading,
-    is_mobile,
-    is_visible,
-    logoutClient,
-    verification_code,
-    toggleResetPasswordModal,
-    toggleLinkExpiredModal,
-}) => {
+const ResetPasswordModal = observer(() => {
+    const { ui, client } = useStore();
+    const { logout: logoutClient, verification_code } = client;
+    const {
+        disableApp,
+        enableApp,
+        is_loading,
+        is_mobile,
+        is_reset_password_modal_visible: is_visible,
+        toggleResetPasswordModal,
+        toggleLinkExpiredModal,
+    } = ui;
     const onResetComplete = (error, actions) => {
         actions.setSubmitting(false);
         const error_code = error?.code;
@@ -44,7 +44,7 @@ const ResetPasswordModal = ({
         const api_request = {
             reset_password: 1,
             new_password: values.password,
-            verification_code,
+            verification_code: verification_code.reset_password,
         };
 
         WS.resetPassword(api_request).then(async response => {
@@ -161,28 +161,6 @@ const ResetPasswordModal = ({
             )}
         </Formik>
     );
-};
+});
 
-ResetPasswordModal.propTypes = {
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    is_loading: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    logoutClient: PropTypes.func,
-    verification_code: PropTypes.string,
-    toggleResetPasswordModal: PropTypes.func,
-    toggleLinkExpiredModal: PropTypes.func,
-};
-
-export default connect(({ ui, client }) => ({
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-    is_loading: ui.is_loading,
-    is_mobile: ui.is_mobile,
-    is_visible: ui.is_reset_password_modal_visible,
-    logoutClient: client.logout,
-    toggleResetPasswordModal: ui.toggleResetPasswordModal,
-    toggleLinkExpiredModal: ui.toggleLinkExpiredModal,
-    verification_code: client.verification_code.reset_password,
-}))(ResetPasswordModal);
+export default ResetPasswordModal;

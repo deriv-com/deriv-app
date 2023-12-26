@@ -37,5 +37,5 @@ export type TMessageFnProps = {
     limits?: THooks.AccountLimits;
     sourceAccount: NonNullable<TAccount>;
     sourceAmount: number;
-    targetAccount: NonNullable<TAccount>;
+    targetAccount: TAccount;
 };

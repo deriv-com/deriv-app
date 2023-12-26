@@ -1,7 +1,7 @@
 import React from 'react';
 import { THooks } from '../../types';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
-import WalletListCardIBalance from '../WalletListCardIBalance/WalletListCardIBalance';
+import WalletListCardBalance from '../WalletListCardBalance/WalletListCardBalance';
 import WalletListCardIDetails from '../WalletListCardIDetails/WalletListCardIDetails';
 import './WalletListCard.scss';
 
@@ -29,7 +29,7 @@ const WalletListCard: React.FC<TProps> = ({ badge, balance, currency, isActive, 
                     title={title}
                 />
             </div>
-            <WalletListCardIBalance balance={balance} />
+            <WalletListCardBalance balance={balance} />
         </div>
     </div>
 );

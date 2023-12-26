@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import { isMobile, isDesktop, VANILLALONG } from '@deriv/shared';
+import { isMobile, isDesktop, TRADE_TYPES } from '@deriv/shared';
 import TraderProviders from '../../../../../../trader-providers';
 import Strike from '../strike';
 import userEvent from '@testing-library/user-event';
@@ -16,7 +16,7 @@ const mocked_store = {
             validation_errors: {},
             expiry_type: 'endtime',
             expiry_date: null,
-            vanilla_trade_type: VANILLALONG.CALL,
+            vanilla_trade_type: TRADE_TYPES.VANILLA.CALL,
         },
     },
 };

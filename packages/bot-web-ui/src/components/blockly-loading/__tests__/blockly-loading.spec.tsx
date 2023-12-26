@@ -6,11 +6,6 @@ import RootStore from '../../../stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from '../../../stores/useDBotStore';
 import BlocklyLoading from '../blockly-loading';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
-}));
-
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
     saveRecentWorkspace: jest.fn(),

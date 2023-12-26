@@ -39,11 +39,11 @@ const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }: TPaymen
             )}
             {hasNormalizedPaymentMethods(payment_agent.supported_banks) && (
                 <div className='payment-agent-card__description-container-icons-container'>
-                    {getUniquePaymentAgentSupportedBanks(payment_agent.supported_banks).map((bank, idx) => {
+                    {getUniquePaymentAgentSupportedBanks(payment_agent.supported_banks).map(bank => {
                         return (
                             <Icon
                                 data_testid='dt_payment_method_icon'
-                                key={idx}
+                                key={bank}
                                 icon={`IcCashier${bank}${is_dark_mode_on ? 'Dark' : 'Light'}`}
                             />
                         );

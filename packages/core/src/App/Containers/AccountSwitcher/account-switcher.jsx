@@ -66,6 +66,8 @@ const AccountSwitcher = ({
     content_flag,
     virtual_account_loginid,
     setTogglePlatformType,
+    currency,
+    selectRegion,
 }) => {
     const [active_tab_index, setActiveTabIndex] = React.useState(!is_virtual || should_show_real_accounts_list ? 0 : 1);
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
@@ -318,7 +320,10 @@ const AccountSwitcher = ({
                                                     if (real_account_creation_unlock_date) {
                                                         closeAccountsDialog();
                                                         setShouldShowCooldownModal(true);
-                                                    } else openRealAccountSignup('svg');
+                                                    } else {
+                                                        selectRegion('Non-EU');
+                                                        openRealAccountSignup('svg');
+                                                    }
                                                 }}
                                                 className='acc-switcher__new-account-btn'
                                                 secondary
@@ -392,6 +397,7 @@ const AccountSwitcher = ({
                                                     closeAccountsDialog();
                                                     setShouldShowCooldownModal(true);
                                                 } else {
+                                                    selectRegion('EU');
                                                     openRealAccountSignup('maltainvest');
                                                 }
                                             }}
@@ -520,7 +526,7 @@ const AccountSwitcher = ({
                                 className='acc-switcher__btn--traders_hub'
                                 secondary
                                 onClick={
-                                    has_any_real_account && !hasSetCurrency
+                                    has_any_real_account && (!hasSetCurrency || !currency)
                                         ? setAccountCurrency
                                         : () => openRealAccountSignup('manage')
                                 }
@@ -588,12 +594,15 @@ AccountSwitcher.propTypes = {
     content_flag: PropTypes.string,
     virtual_account_loginid: PropTypes.string,
     setTogglePlatformType: PropTypes.func,
+    currency: PropTypes.string,
+    selectRegion: PropTypes.func,
 };
 
 const account_switcher = withRouter(
     connect(({ client, ui, traders_hub }) => ({
         available_crypto_currencies: client.available_crypto_currencies,
         account_loginid: client.loginid,
+        currency: client.currency,
         accounts: client.accounts,
         account_type: client.account_type,
         account_list: client.account_list,
@@ -628,6 +637,7 @@ const account_switcher = withRouter(
         has_any_real_account: client.has_any_real_account,
         virtual_account_loginid: client.virtual_account_loginid,
         setTogglePlatformType: traders_hub.setTogglePlatformType,
+        selectRegion: traders_hub.selectRegion,
     }))(AccountSwitcher)
 );
 

@@ -12,6 +12,7 @@ describe('JurisdictionTitleIndicator', () => {
         },
         type_of_card: Jurisdiction.BVI,
         account_status: {
+            p2p_poa_required: 0,
             authentication: {
                 document: {
                     status: 'none',
@@ -37,7 +38,7 @@ describe('JurisdictionTitleIndicator', () => {
             risk_classification: '',
             status: [''],
         },
-        verification_docs: ['not_applicable'],
+        verification_docs: [],
     };
     it('should render JurisdictionTitleIndicator with displayText', () => {
         render(<JurisdictionTitleIndicator {...mock_props} />);
@@ -65,6 +66,7 @@ describe('JurisdictionTitleIndicator', () => {
                 display_text: 'Test Display Text',
             },
             account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     ...mock_props.account_status.authentication,
                     document: {
@@ -105,6 +107,7 @@ describe('JurisdictionTitleIndicator', () => {
                 display_text: 'Test Display Text',
             },
             account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     ...mock_props.account_status.authentication,
                     document: {
@@ -145,6 +148,7 @@ describe('JurisdictionTitleIndicator', () => {
                 display_text: 'Test Display Text',
             },
             account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     ...mock_props.account_status.authentication,
                     document: {
@@ -186,6 +190,7 @@ describe('JurisdictionTitleIndicator', () => {
             },
             type_of_card: Jurisdiction.VANUATU,
             account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     ...mock_props.account_status.authentication,
                     document: {
@@ -224,6 +229,7 @@ describe('JurisdictionTitleIndicator', () => {
             },
             type_of_card: Jurisdiction.MALTA_INVEST,
             account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     ...mock_props.account_status.authentication,
                     document: {
@@ -262,6 +268,7 @@ describe('JurisdictionTitleIndicator', () => {
             },
             type_of_card: Jurisdiction.VANUATU,
             account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     ...mock_props.account_status.authentication,
                     document: {
@@ -300,6 +307,7 @@ describe('JurisdictionTitleIndicator', () => {
             },
             type_of_card: Jurisdiction.VANUATU,
             account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     ...mock_props.account_status.authentication,
                     document: {
@@ -338,6 +346,7 @@ describe('JurisdictionTitleIndicator', () => {
             },
             type_of_card: Jurisdiction.SVG,
             account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     ...mock_props.account_status.authentication,
                     document: {
@@ -366,6 +375,7 @@ describe('JurisdictionTitleIndicator', () => {
             },
             type_of_card: Jurisdiction.SVG,
             account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     ...mock_props.account_status.authentication,
                     document: {
@@ -394,6 +404,7 @@ describe('JurisdictionTitleIndicator', () => {
             },
             type_of_card: Jurisdiction.SVG,
             account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     ...mock_props.account_status.authentication,
                     document: {

@@ -1,6 +1,6 @@
-import { FastMarker } from 'Modules/SmartChart';
 import { toJS } from 'mobx';
 import React, { useMemo } from 'react';
+import { FastMarker } from 'Modules/SmartChart';
 
 type TChartMarker = {
     marker_config: {

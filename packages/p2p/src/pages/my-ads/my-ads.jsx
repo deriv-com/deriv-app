@@ -21,8 +21,7 @@ const MyAds = () => {
     const { general_store, my_ads_store, my_profile_store } = useStores();
     const is_poi_poa_verified =
         general_store.poi_status === identity_status_codes.VERIFIED &&
-        general_store.p2p_poa_required &&
-        general_store.poa_status === document_status_codes.VERIFIED;
+        (!general_store.p2p_poa_required || general_store.poa_status === document_status_codes.VERIFIED);
 
     React.useEffect(() => {
         my_ads_store.setIsLoading(true);

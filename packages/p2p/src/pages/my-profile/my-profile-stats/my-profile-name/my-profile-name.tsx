@@ -29,7 +29,7 @@ const MyProfileName = () => {
     } = general_store.advertiser_info;
     const { email_address } = client;
 
-    const date_joined = new Date(created_time * 1000).toISOString().split('T')[0];
+    const date_joined = created_time ? new Date(created_time * 1000).toISOString().split('T')[0] : '';
     const joined_since = daysSince(date_joined);
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;

@@ -10,7 +10,7 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     const reset_password = getActionFromUrl() === 'reset_password';
-    const should_not_run_livechat = url_params.get('code') && reset_password;
+    const should_disable_livechat = url_params.get('code') && reset_password;
 
     const [isReady, setIsReady] = useState(false);
     const [reload, setReload] = useState(false);
@@ -131,15 +131,15 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     }, [history, isMounted, onHistoryChange]);
 
     useEffect(() => {
-        if (reload && !should_not_run_livechat) {
+        if (reload && !should_disable_livechat) {
             liveChatSetup(has_cookie_account);
             setReload(false);
         }
-    }, [reload, has_cookie_account, should_not_run_livechat]);
+    }, [reload, has_cookie_account, should_disable_livechat]);
 
     useEffect(() => {
-        if (!should_not_run_livechat) liveChatSetup(has_cookie_account);
-    }, [has_cookie_account, active_loginid, should_not_run_livechat]);
+        if (!should_disable_livechat) liveChatSetup(has_cookie_account);
+    }, [has_cookie_account, active_loginid, should_disable_livechat]);
 
     return {
         isReady,

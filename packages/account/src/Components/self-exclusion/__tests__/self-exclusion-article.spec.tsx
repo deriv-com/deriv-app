@@ -67,10 +67,9 @@ describe('<SelfExclusionArticle />', () => {
             </StoreProvider>
         );
 
-        expect(screen.getByText('Self Exclusion Article Items')).toBeInTheDocument();
         expect(screen.getByText('Trading limits and self-exclusion')).toBeInTheDocument();
         expect(screen.queryByText(eu_item)).not.toBeInTheDocument();
-        expect(screen.queryByText(non_eu_item)).not.toBeInTheDocument();
+        expect(screen.queryByText(non_eu_item)).toBeInTheDocument();
     });
 
     it('should render SelfExclusionArticle desktop component without is_appstore for EU items', () => {

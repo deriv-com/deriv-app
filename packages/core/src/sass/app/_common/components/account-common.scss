@@ -224,6 +224,10 @@
 
         &__poi-additional-information {
             margin-top: 2rem;
+
+            .dc-checkbox__box {
+                margin-left: 0;
+            }
         }
 
         &__section {

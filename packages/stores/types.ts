@@ -207,7 +207,14 @@ type TAccountsList = {
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
 }[];
-
+type TRealAccount = {
+    active_modal_index: number;
+    current_currency: string;
+    error_message: string;
+    previous_currency: string;
+    success_message: string;
+    error_code: number;
+};
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: string | number;
@@ -298,6 +305,16 @@ type TNotificationMessage = {
     timeout?: number;
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
+};
+type TCommonVariables = {
+    language: string;
+    visitorId?: string;
+    currency?: string;
+    userId?: string;
+    email?: string;
+    loggedIn: boolean;
+    theme: string;
+    platform: string;
 };
 
 type TNotification =
@@ -392,6 +409,7 @@ type TClientStore = {
           }
     >;
     has_active_real_account: boolean;
+    has_cookie_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;
     has_restricted_mt5_account: boolean;
@@ -517,6 +535,7 @@ type TClientStore = {
     has_account_error_in_dxtrade_demo_list: boolean;
     has_fiat: boolean;
     is_fully_authenticated: boolean;
+    updateMt5LoginList: () => Promise<void>;
     states_list: StatesList;
     /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
     is_crypto: (currency?: string) => boolean;
@@ -539,11 +558,10 @@ type TClientStore = {
     ) => Promise<SetFinancialAssessmentResponse>;
     setIsAlreadyAttempted: (value: boolean) => void;
     is_already_attempted: boolean;
+    is_bot_allowed: boolean;
     prev_account_type: string;
     account_open_date: number | undefined;
-    is_bot_allowed: boolean;
-    setAccounts: (accounts: Record<string, TActiveAccount>) => void;
-    is_beta_chart: boolean;
+    setAccounts: () => (accounts: Record<string, TActiveAccount>) => void;
 };
 
 type TCommonStoreError = {
@@ -605,6 +623,7 @@ type TUiStore = {
     has_real_account_signup_ended: boolean;
     header_extension: JSX.Element | null;
     is_account_settings_visible: boolean;
+    is_account_switcher_disabled: boolean;
     is_additional_kyc_info_modal_open: boolean;
     is_advanced_duration: boolean;
     is_cashier_visible: boolean;
@@ -631,6 +650,7 @@ type TUiStore = {
     is_mobile_language_menu_open: boolean;
     is_positions_drawer_on: boolean;
     is_services_error_visible: boolean;
+    is_trading_assessment_for_existing_user_enabled: boolean;
     is_unsupported_contract_modal_visible: boolean;
     onChangeUiStore: ({ name, value }: { name: string; value: unknown }) => void;
     openPositionsDrawer: () => void;

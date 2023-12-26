@@ -38,12 +38,13 @@ const TradersHub = observer(() => {
 
     const [scrolled, setScrolled] = React.useState(false);
 
-    const handleScroll = () => {
+    const handleScroll = React.useCallback(() => {
         const element = traders_hub_ref?.current;
         if (element && is_tour_open) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-    };
+    }, [is_tour_open]);
+
     React.useEffect(() => {
         if (is_eu_user) setTogglePlatformType('cfd');
         if (
@@ -68,14 +69,14 @@ const TradersHub = observer(() => {
 
     React.useEffect(() => {
         if (is_eu_user) setTogglePlatformType('cfd');
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             handleScroll();
             setTimeout(() => {
                 setScrolled(true);
             }, 200);
         }, 100);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [is_tour_open]);
+        return () => clearTimeout(timer);
+    }, [handleScroll, is_eu_user, is_tour_open, setTogglePlatformType]);
 
     const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL || is_eu_user;
 

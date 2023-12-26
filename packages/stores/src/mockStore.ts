@@ -24,6 +24,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             trading_platform_available_accounts: [],
             account_limits: {},
             account_status: {
+                p2p_poa_required: 1,
                 authentication: {
                     attempts: {
                         count: 1,
@@ -129,6 +130,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             getTwoFAStatus: jest.fn(),
             has_fiat: false,
             has_logged_out: false,
+            has_cookie_account: false,
             has_maltainvest_account: false,
             has_restricted_mt5_account: false,
             initialized_broadcast: false,
@@ -195,6 +197,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 trading_platform_mt5_password_reset: '',
             },
             email: '',
+            fetchStatesList: jest.fn(),
             setVerificationCode: jest.fn(),
             updateAccountStatus: jest.fn(),
             is_authentication_needed: false,
@@ -265,7 +268,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             },
             is_fully_authenticated: false,
             states_list: [],
-            fetchStatesList: jest.fn(),
             is_crypto: jest.fn(),
             dxtrade_accounts_list: [],
             default_currency: 'USD',
@@ -278,7 +280,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_any_real_account: false,
             setPrevAccountType: jest.fn(),
             prev_account_type: 'demo',
-            is_beta_chart: true,
             setLoginInformation: jest.fn(),
             init: jest.fn(),
             setLoginId: jest.fn(),
@@ -288,6 +289,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_bot_allowed: false,
             account_open_date: undefined,
             setAccounts: jest.fn(),
+            updateMt5LoginList: jest.fn(),
         },
         common: {
             error: common_store_error,
@@ -325,6 +327,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             duration_t: 5,
             getDurationFromUnit: jest.fn(),
             is_account_settings_visible: false,
+            is_account_switcher_disabled: false,
             is_advanced_duration: false,
             is_loading: false,
             is_cashier_visible: false,
@@ -349,6 +352,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_verification_submitted: false,
             is_route_modal_on: false,
             is_services_error_visible: false,
+            is_trading_assessment_for_existing_user_enabled: false,
             is_unsupported_contract_modal_visible: false,
             disableApp: jest.fn(),
             enableApp: jest.fn(),

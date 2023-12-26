@@ -84,7 +84,7 @@ describe('<TradeType />', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should select item from list', async () => {
+    it('should select the first item from list on the first time the browser is used', async () => {
         render(<TradeType key='callputequal' />, {
             wrapper,
         });
@@ -92,9 +92,9 @@ describe('<TradeType />', () => {
         const autocomplete_element = screen.getByTestId('qs_autocomplete_tradetype');
         userEvent.click(autocomplete_element);
         await waitFor(() => {
-            const option_element = screen.getByText(/Rise Equals\/Fall Equals/i);
+            const option_element = screen.getByText(/Rise\/Fall/i);
             userEvent.click(option_element);
         });
-        expect(autocomplete_element).toHaveDisplayValue([/Rise Equals\/Fall Equals/i]);
+        expect(autocomplete_element).toHaveDisplayValue([/Rise\/Fall/i]);
     });
 });

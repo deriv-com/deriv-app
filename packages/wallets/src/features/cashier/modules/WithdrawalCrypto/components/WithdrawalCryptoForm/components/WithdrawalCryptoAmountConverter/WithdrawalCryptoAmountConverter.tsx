@@ -47,10 +47,10 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
                 name='cryptoAmount'
                 validate={(value: string) =>
                     validateCryptoInput(
-                        accountLimits?.remainder ?? 0,
                         activeWallet,
                         fractionalDigits,
                         isClientVerified,
+                        accountLimits?.remainder ?? 0,
                         value
                     )
                 }

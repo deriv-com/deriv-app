@@ -72,6 +72,14 @@
                 height: 0.4rem;
                 border-radius: $BORDER_RADIUS;
                 background-color: var(--brand-red-coral);
+
+                &--animated {
+                    transition: all 0.3s linear;
+                }
+
+                &--ended {
+                    width: 100% !important;
+                }
             }
         }
 
@@ -185,7 +193,15 @@
         left: 97.7%;
         bottom: -0.3rem;
 
-        &:hover {
+        @include desktop {
+            &:hover {
+                bottom: -0.6rem;
+                width: 1.6rem;
+                height: 1.6rem;
+            }
+        }
+
+        &--enlarged {
             bottom: -0.6rem;
             width: 1.6rem;
             height: 1.6rem;

@@ -9,6 +9,9 @@ type TVideoControls = {
     block_controls?: boolean;
     current_time?: number;
     dragStartHandler: (e: React.MouseEvent<HTMLSpanElement> | React.TouchEvent<HTMLSpanElement>) => void;
+    has_enlarged_dot?: boolean;
+    is_animated?: boolean;
+    is_ended?: boolean;
     is_playing?: boolean;
     is_mobile?: boolean;
     is_muted?: boolean;
@@ -29,6 +32,9 @@ const VideoControls = ({
     block_controls,
     current_time,
     dragStartHandler,
+    has_enlarged_dot,
+    is_animated,
+    is_ended,
     is_playing,
     is_mobile,
     is_muted,
@@ -61,10 +67,18 @@ const VideoControls = ({
                 onMouseLeave={() => setIsDragDotVisible(false)}
                 ref={progress_bar_ref}
             >
-                <div className='player__controls__progress-bar__filled' ref={progress_bar_filled_ref}>
+                <div
+                    className={classNames('player__controls__progress-bar__filled', {
+                        'player__controls__progress-bar__filled--animated': is_animated,
+                        'player__controls__progress-bar__filled--ended': is_ended,
+                    })}
+                    ref={progress_bar_filled_ref}
+                >
                     {(is_mobile || is_drag_dot_visible) && (
                         <span
-                            className='player__progress-dot'
+                            className={classNames('player__progress-dot', {
+                                'player__progress-dot--enlarged': has_enlarged_dot,
+                            })}
                             onMouseDown={dragStartHandler}
                             onTouchStart={dragStartHandler}
                             onDragStart={() => false}

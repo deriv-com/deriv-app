@@ -13,9 +13,11 @@ type TVideoPlayerProps = {
 const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     const should_autoplay =
         (!isSafari() || (is_mobile && mobileOSDetect() !== 'iOS' && mobileOSDetect() !== 'unknown')) ?? true;
+    const [is_animated, setIsAnimated] = React.useState(true);
     const [is_playing, setIsPlaying] = React.useState(false);
     const [is_ended, setIsEnded] = React.useState(false);
     const [is_muted, setIsMuted] = React.useState(false);
+    const [has_enlarged_dot, setHasEnlargedDot] = React.useState(false);
     const [current_time, setCurrentTime] = React.useState<number>();
     const [video_duration, setVideoDuration] = React.useState<number>();
     const [shift_X, setShiftX] = React.useState<number>(0);
@@ -52,10 +54,11 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
         if (is_playing) {
             video_ref.current.pause();
-            progress_bar_filled_ref.current.style.setProperty('transition', 'none');
+            setIsAnimated(false);
             cancelAnimationFrame(animation_ref.current);
         } else {
             video_ref.current.play();
+            setIsAnimated(true);
         }
 
         setIsPlaying(prev => !prev);
@@ -102,14 +105,11 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
         video_ref?.current?.pause();
         setIsPlaying(false);
+        setIsAnimated(false);
 
         is_dragging.current = true;
 
-        if (is_mobile) {
-            point.style.width = '1.6rem';
-            point.style.height = '1.6rem';
-            point.style.bottom = '-0.6rem';
-        }
+        if (is_mobile) setHasEnlargedDot(true);
     };
 
     const dragMoveHandler = (
@@ -122,7 +122,6 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
 
         const new_width = calculateNewWidth(e);
-        progress_bar_filled_ref.current.style.setProperty('transition', 'none');
         progress_bar_filled_ref.current.style.setProperty('width', `${new_width}%`);
         video_ref.current.currentTime = (Number(video_ref.current.duration) * new_width) / 100;
 
@@ -137,17 +136,12 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
         video_ref?.current?.play();
         setIsPlaying(true);
+        setIsAnimated(true);
         setIsEnded(false);
 
         is_dragging.current = false;
 
-        if (is_mobile) {
-            const point = progress_dot_ref.current as HTMLElement;
-
-            point.style.width = '1.2rem';
-            point.style.height = '1.2rem';
-            point.style.bottom = '-0.3rem';
-        }
+        if (is_mobile) setHasEnlargedDot(false);
     };
 
     const onRewind = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -158,16 +152,17 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
 
         video_ref.current.pause();
+        setIsAnimated(false);
 
         const new_width = calculateNewWidth(e);
 
-        progress_bar_filled_ref.current.style.setProperty('transition', 'none');
         progress_bar_filled_ref.current.style.setProperty('width', `${new_width}%`);
         video_ref.current.currentTime = (Number(video_ref.current.duration) * new_width) / 100;
 
         timer_ref.current = setTimeout(() => {
             video_ref?.current?.play();
             setIsPlaying(true);
+            setIsAnimated(true);
             setIsEnded(false);
         }, 500);
     };
@@ -183,16 +178,13 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     const onEnded = () => {
         setIsPlaying(false);
         setIsEnded(true);
-
-        // If user switch to another tab until the end of the video, the requestAnimationFrame will stop working, but we need to change progress bar to 100%
-        progress_bar_filled_ref.current && progress_bar_filled_ref.current.style.setProperty('width', '100%');
+        setIsAnimated(false);
     };
 
     const repeat = React.useCallback(() => {
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
 
         setCurrentTime(video_ref.current.currentTime);
-        progress_bar_filled_ref.current.style.setProperty('transition', 'all 0.3s linear');
         const new_width = (video_ref.current.currentTime / Number(video_ref.current.duration)) * 100;
         progress_bar_filled_ref.current.style.setProperty('width', `${new_width >= 99 ? 100 : new_width}%`);
 
@@ -262,6 +254,9 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
                 block_controls={is_dragging.current}
                 current_time={current_time}
                 dragStartHandler={dragStartHandler}
+                has_enlarged_dot={has_enlarged_dot}
+                is_animated={is_animated}
+                is_ended={is_ended}
                 is_playing={is_playing}
                 is_mobile={is_mobile}
                 is_muted={is_muted}

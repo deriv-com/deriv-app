@@ -1,1 +1,1 @@
-export * as payment_method_entity from './payment-method';
+export * as payment_method from './payment-method';

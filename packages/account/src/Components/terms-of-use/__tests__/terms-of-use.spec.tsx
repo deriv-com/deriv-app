@@ -99,7 +99,7 @@ describe('<TermsOfUse/>', () => {
 
     it('should allow users to accept or reject FATCA declaration ', () => {
         render(<TermsOfUse {...mock_props} />);
-        const el_fatca_form = screen.getByText('Please select');
+        const el_fatca_form = screen.getByText('Please select*');
 
         userEvent.click(el_fatca_form);
 

@@ -67,7 +67,10 @@ const AccordionStrategyGroup = observer(
         const { ui } = useStore();
         const { is_mobile } = ui;
         const desktop_font_size = tutorial_selected_strategy ? 's' : 'xs';
-        const font_size: string = React.useMemo<string>(() => (is_mobile ? 'xs' : desktop_font_size), [is_mobile]);
+        const font_size: string = React.useMemo<string>(
+            () => (is_mobile ? 'xs' : desktop_font_size),
+            [is_mobile, desktop_font_size]
+        );
 
         return (
             <>

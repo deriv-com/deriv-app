@@ -14,7 +14,7 @@ const JurisdictionCardRow: FC<TJurisdictionCardRowProps> = ({ description, rende
                 <Text bold size='sm'>
                     {title}
                 </Text>
-                {renderTag && <div className='wallets-jurisdiction-card-row__header-tag'>{renderTag()}</div>}
+                {renderTag && <div>{renderTag()}</div>}
             </div>
             {description && <Text size='sm'>{description}</Text>}
         </div>

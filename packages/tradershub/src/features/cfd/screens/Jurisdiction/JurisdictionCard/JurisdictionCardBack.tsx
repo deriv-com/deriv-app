@@ -45,9 +45,9 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
                     }}
                 />
                 <Text size='sm'>{verificationContents.shortDescription}</Text>
-                {verificationDocs.map((verificationDocument: TJurisdictionCardItemVerificationItem, i) => {
+                {verificationDocs.map((verificationDocument: TJurisdictionCardItemVerificationItem) => {
                     return (
-                        <div className='grid grid-flow-col gap-500' key={`${verificationDocument}-${i}`}>
+                        <div className='grid grid-flow-col gap-500' key={verificationDocument}>
                             {verificationIconsMapper[verificationDocument]}
                             <Text size='sm'>
                                 {verificationContents.requiredVerificationDocs[verificationDocument]?.text}
@@ -56,9 +56,9 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
                     );
                 })}
                 <div className='border-t border-solid border-[2px] border-system-light-secondary-background' />
-                {verificationContents.statusReferences.map((statusReference, i) => {
+                {verificationContents.statusReferences.map(statusReference => {
                     return (
-                        <div className='grid grid-flow-col gap-500' key={`${statusReference}-${i}`}>
+                        <div className='grid grid-flow-col gap-500' key={statusReference?.color}>
                             {verificationStatusIconsMapper[statusReference.icon]}
                             <Text size='sm'>{statusReference.text}</Text>
                         </div>

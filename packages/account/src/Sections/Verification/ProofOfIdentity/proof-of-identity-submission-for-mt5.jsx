@@ -34,7 +34,8 @@ const POISubmissionForMT5 = observer(
                 const {
                     authentication: { attempts },
                 } = account_status;
-                const { service } = attempts?.latest;
+
+                const { service } = attempts?.latest ?? {};
                 const { submissions_left: idv_submissions_left, last_rejected, status } = idv;
                 const { submissions_left: onfido_submissions_left } = onfido;
 

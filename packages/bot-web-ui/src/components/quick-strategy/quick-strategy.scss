@@ -160,11 +160,10 @@
             }
 
             &__description {
+                padding: 1rem 2.4rem;
                 @include desktop() {
                     width: 47rem;
                 }
-
-                padding: 1rem 2.4rem;
 
                 @include mobile {
                     padding: 1rem;
@@ -240,8 +239,8 @@
             }
 
             &--no-footer {
+                max-height: calc(100vh - 22rem) !important;
                 @include desktop() {
-                    max-height: calc(100vh - 22rem) !important;
                     height: 100% !important;
                 }
 

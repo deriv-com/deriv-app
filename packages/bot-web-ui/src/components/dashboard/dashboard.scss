@@ -646,9 +646,7 @@
         border: none;
         outline: none;
 
-        @include desktop {
-            padding-left: 0;
-        }
+        padding-left: 0;
         @include mobile {
             padding: 0.6rem 1rem;
         }
@@ -669,13 +667,11 @@
     &__header {
         width: 90%;
         text-align: left;
+        padding-left: 1rem;
 
         @include mobile {
             width: 100%;
-        }
-
-        @include desktop {
-            padding-left: 1rem;
+            padding-left: 0;
         }
 
         span {

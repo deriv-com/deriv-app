@@ -48,7 +48,7 @@ const Accordion = ({
     const should_be_expanded = is_expanded_section || is_open || !has_subtitle;
 
     return (
-        <div className='dbot-accordion' {...props}>
+        <div className='dbot-accordion'>
             <div>
                 {has_subtitle && (
                     <button

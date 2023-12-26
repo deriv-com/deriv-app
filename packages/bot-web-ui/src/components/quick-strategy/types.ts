@@ -40,23 +40,29 @@ export type TConfigItem = {
     type: string;
 } & TPartialConfigItem;
 
+export type TDataGroupedObjectsByTitle = {
+    type: string;
+    content: string[];
+};
+
 type TPartialDescriptionItem = Partial<{
+    type: string;
     content: string[];
     src: string;
     alt: string;
     className: string;
     expanded: boolean;
     no_collapsible: boolean;
+    font_size: string;
 }>;
 
 export type TDescriptionItem = {
-    type: string;
+    item: TDataGroupedObjectsByTitle & {
+        className: string;
+        src?: string;
+        alt?: string;
+    };
 } & TPartialDescriptionItem;
-
-export type TDataGroupedObjectsByTitle = {
-    type: string;
-    content: string[];
-};
 
 export type TDescription = TDescriptionItem[] | TDataGroupedObjectsByTitle;
 

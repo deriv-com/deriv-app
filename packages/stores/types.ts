@@ -518,6 +518,7 @@ type TClientStore = {
     has_account_error_in_dxtrade_demo_list: boolean;
     has_fiat: boolean;
     is_fully_authenticated: boolean;
+    updateMt5LoginList: () => Promise<void>;
     states_list: StatesList;
     /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
     is_crypto: (currency?: string) => boolean;
@@ -540,11 +541,10 @@ type TClientStore = {
     ) => Promise<SetFinancialAssessmentResponse>;
     setIsAlreadyAttempted: (value: boolean) => void;
     is_already_attempted: boolean;
+    is_bot_allowed: boolean;
     prev_account_type: string;
     account_open_date: number | undefined;
-    is_bot_allowed: boolean;
-    setAccounts: (accounts: Record<string, TActiveAccount>) => void;
-    is_beta_chart: boolean;
+    setAccounts: () => (accounts: Record<string, TActiveAccount>) => void;
 };
 
 type TCommonStoreError = {

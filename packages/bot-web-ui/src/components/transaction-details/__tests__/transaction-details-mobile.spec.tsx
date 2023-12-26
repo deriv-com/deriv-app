@@ -31,11 +31,6 @@ const mock_row_data = {
     underlying: '1HZ10V',
 };
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => true),
-}));
-
 jest.mock('../../../utils/session-storage', () => ({
     ...jest.requireActual('../../../utils/session-storage'),
     getStoredItemsByUser: jest.fn(() => [

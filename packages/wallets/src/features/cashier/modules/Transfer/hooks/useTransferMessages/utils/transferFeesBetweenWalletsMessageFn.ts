@@ -6,7 +6,7 @@ const transferFeesBetweenWalletsMessageFn = ({
     sourceAmount,
     targetAccount,
 }: TMessageFnProps) => {
-    if (!sourceAccount.currency || !sourceAccount.currencyConfig || !sourceAmount || !targetAccount.currency)
+    if (!sourceAccount.currency || !sourceAccount.currencyConfig || !sourceAmount || !targetAccount?.currency)
         return null;
 
     const minimumFeeAmount = 1 / Math.pow(10, sourceAccount.currencyConfig.fractional_digits);

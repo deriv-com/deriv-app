@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { mobileOSDetect, getPosition } from '@deriv/shared';
 import { TList, findNextFocusableNode, findPreviousFocusableNode, TListItem } from './utility';
-import { Localize } from '@deriv/translations';
 import Items from './items';
 import DisplayText from './display-text';
 import Text from '../text/text';
@@ -45,7 +44,6 @@ type TDropdown = {
     onClick?: () => void;
     placeholder?: string;
     suffix_icon?: string;
-    should_show_new_label?: boolean;
     should_open_on_hover?: boolean;
     test_id?: string;
     value?: string | number;
@@ -264,7 +262,6 @@ const Dropdown = ({
     onClick,
     placeholder,
     suffix_icon,
-    should_show_new_label = false,
     should_open_on_hover = false,
     test_id,
     value,
@@ -515,17 +512,6 @@ const Dropdown = ({
                         suffix_icon={suffix_icon}
                         value={value}
                     />
-                    {should_show_new_label && (
-                        <Text
-                            className='dc-dropdown__label--new'
-                            weight='bold'
-                            size='xxxs'
-                            line_height='s'
-                            color='colored-background'
-                        >
-                            <Localize i18n_default_text='NEW!' />
-                        </Text>
-                    )}
                 </div>
                 {!error && hint && (
                     <Text

@@ -131,14 +131,15 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     }, [history, isMounted, onHistoryChange]);
 
     useEffect(() => {
-        if (reload && !should_disable_livechat) {
+        if (reload || !should_disable_livechat) {
             liveChatSetup(has_cookie_account);
             setReload(false);
         }
     }, [reload, has_cookie_account, should_disable_livechat]);
 
     useEffect(() => {
-        if (!should_disable_livechat) liveChatSetup(has_cookie_account);
+        if (should_disable_livechat) return;
+        liveChatSetup(has_cookie_account);
     }, [has_cookie_account, active_loginid, should_disable_livechat]);
 
     return {

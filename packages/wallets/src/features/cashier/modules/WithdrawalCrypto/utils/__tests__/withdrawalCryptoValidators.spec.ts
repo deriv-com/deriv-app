@@ -1,8 +1,11 @@
-import { validateCryptoAddress, validateCryptoInput, validateFiatInput } from '../withdrawalCryptoValidators';
 import { THooks } from '../../../../../../types';
+import { validateCryptoAddress, validateCryptoInput, validateFiatInput } from '../withdrawalCryptoValidators';
 
 describe('withdrawalCryptoValidator', () => {
     let mockValue = '2.5';
+    let mockIsClientVerified = true;
+    let mockCryptoAddress = 'jds93e9f8wefun9w8efrn98wefn09inf0';
+
     const mockActiveWallet = {
         balance: 10,
         currency: 'BTC',
@@ -14,9 +17,7 @@ describe('withdrawalCryptoValidator', () => {
         crypto: 7,
         fiat: 2,
     };
-    const mockRemainder = 10_000;
-    const mockIsClientVerified = true;
-    let mockCryptoAddress = 'jds93e9f8wefun9w8efrn98wefn09inf0';
+    const mockRemainder = 9;
 
     it('should check if no errors are returned when valid inputs are provided for crypto address, crypto amount and fiat amount', () => {
         const cryptoAddressMessages = validateCryptoAddress(mockCryptoAddress);
@@ -79,7 +80,7 @@ describe('withdrawalCryptoValidator', () => {
         expect(cryptoAmountMessages).toEqual('Should be a valid number.');
         expect(fiatAmountMessages).toEqual('Should be a valid number.');
 
-        mockValue = '.09';
+        mockValue = '.';
 
         cryptoAmountMessages = validateCryptoInput(
             mockActiveWallet,
@@ -122,5 +123,38 @@ describe('withdrawalCryptoValidator', () => {
         );
 
         expect(cryptoAmountMessages).toEqual('Insufficient funds');
+    });
+
+    it('should return error if amount > max withdrawal limit OR amount < min withdrawal limit', () => {
+        // for verified user
+        mockValue = '11.0000000';
+
+        let cryptoAmountMessages = validateCryptoInput(
+            mockActiveWallet,
+            mockFractionalDigits,
+            mockIsClientVerified,
+            mockRemainder,
+            mockValue
+        );
+
+        expect(cryptoAmountMessages).toEqual('Insufficient funds');
+
+        // for unverified user show 10k limit
+
+        mockIsClientVerified = false;
+
+        cryptoAmountMessages = validateCryptoInput(
+            mockActiveWallet,
+            mockFractionalDigits,
+            mockIsClientVerified,
+            mockRemainder,
+            mockValue
+        );
+
+        expect(cryptoAmountMessages).toEqual(
+            `The current allowed withdraw amount is ${mockActiveWallet.currency_config.minimum_withdrawal.toFixed(
+                mockFractionalDigits.crypto
+            )} to ${mockRemainder.toFixed(mockFractionalDigits.crypto)} ${mockActiveWallet.currency}.`
+        );
     });
 });

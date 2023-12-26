@@ -38,8 +38,7 @@ const checkIfInvalidInput = (
     const fractionalPartPrecisionRegex = new RegExp(`^\\d{1,${fractionalDigits}}$`);
 
     if (
-        !integerPart ||
-        !integerPart.match(isIntegerPartNumberRegex) ||
+        (integerPart && !integerPart.match(isIntegerPartNumberRegex)) ||
         numberOfDecimalsPoints > 1 ||
         (numberOfDecimalsPoints === 1 && !fractionalPart) ||
         (fractionalPart && !fractionalPart.match(isFractionalPartNumberRegex))
@@ -75,10 +74,10 @@ const validateCryptoInput = (
 
     const MIN_WITHDRAWAL_AMOUNT = activeWallet.currency_config.minimum_withdrawal;
 
-    const MAX_WITHDRAWAL_AMOUNT =
-        !isClientVerified && remainder < activeWallet.balance ? remainder : activeWallet.balance;
+    const MAX_WITHDRAWAL_AMOUNT = remainder < activeWallet.balance ? remainder : activeWallet.balance;
 
-    if (MIN_WITHDRAWAL_AMOUNT && (amount < MIN_WITHDRAWAL_AMOUNT || amount > MAX_WITHDRAWAL_AMOUNT)) {
+    if (isClientVerified && amount > activeWallet.balance) return helperMessageMapper.insufficientFunds;
+    else if (MIN_WITHDRAWAL_AMOUNT && (amount < MIN_WITHDRAWAL_AMOUNT || amount > MAX_WITHDRAWAL_AMOUNT)) {
         return helperMessageMapper.withdrawalLimitError(
             MIN_WITHDRAWAL_AMOUNT.toFixed(fractionalDigits.crypto),
             `${MAX_WITHDRAWAL_AMOUNT.toFixed(fractionalDigits.crypto)} ${activeWallet.currency}`

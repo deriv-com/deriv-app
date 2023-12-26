@@ -49,8 +49,9 @@ const DescriptionItem = ({ item, font_size }: TDescriptionItem): React.ReactNode
 
 const DescriptionContent = ({ data, font_size }: TDescriptionContent): React.ReactNode => {
     const content_data = Array.isArray(data) ? data : (data as unknown as TDescriptionItem[]).slice(1);
+
     return content_data.map(item => (
-        <React.Fragment key={item?.content && item?.content[0]}>
+        <React.Fragment key={item.id}>
             <DescriptionItem item={item} font_size={font_size} />
         </React.Fragment>
     ));
@@ -71,7 +72,7 @@ const AccordionStrategyGroup = observer(
         return (
             <>
                 {Array.isArray(grouped_objects_by_title) &&
-                    grouped_objects_by_title.map((data: TDescription, idx: number) => {
+                    grouped_objects_by_title.map((data: TDescription, key: number) => {
                         const subtitle_value = (data as TDescriptionItem[])?.[0]?.content?.[0] ?? '';
                         return (
                             <Accordion

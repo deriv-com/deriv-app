@@ -27,7 +27,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
         const strategy = STRATEGIES[tutorial_selected_strategy || (selected_strategy as keyof typeof STRATEGIES)];
 
         const makeGroupedObjectsByTitle = () => {
-            return strategy?.description?.reduce((acc: TDescriptionItem[][], obj: TDescriptionItem) => {
+            return strategy?.description?.reduce((acc: TDescriptionItem[][], obj: TDescriptionItem, idx) => {
                 const is_subtitle = obj.type === 'subtitle_italic' || obj.type === 'subtitle';
                 if (is_subtitle) {
                     acc.push([]);
@@ -47,7 +47,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
                 if (shouldShowLongDescriptionIntro()) {
                     obj.content?.shift();
                 }
-                acc[acc.length - 1].push(obj);
+                acc[acc.length - 1].push({ ...obj, id: idx });
                 return acc;
             }, []);
         };
@@ -55,6 +55,7 @@ const StrategyDescription: React.FC<TStrategyDescription> = observer(
         const grouped_objects_by_title = Array.isArray(strategy?.description)
             ? makeGroupedObjectsByTitle()
             : [{ type: 'text', content: [strategy?.description] }];
+
         return (
             <>
                 {active_tab === 'TRADE_PARAMETERS' ? (

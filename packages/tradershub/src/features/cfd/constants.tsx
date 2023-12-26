@@ -29,12 +29,6 @@ type TMarketTypeDetails = {
     [key in TMarketTypes.All]: Pick<TAppContent, 'description' | 'icon' | 'title'>;
 };
 
-type TPlatformDetails = {
-    [key in TPlatforms.All]: Omit<TAppContent, 'description' | 'text'> & {
-        platform: TPlatforms.MT5 | TPlatforms.OtherAccounts;
-    };
-};
-
 type TcompanyNamesAndUrls = {
     [key in TTM5FilterLandingCompany]: TLandingCompanyDetails;
 };
@@ -83,7 +77,7 @@ export const MarketTypeDetails: TMarketTypeDetails = {
     },
 };
 
-export const PlatformDetails: TPlatformDetails = {
+export const PlatformDetails = {
     ctrader: {
         icon: <CTraderIcon />,
         link: 'https://onelink.to/hyqpv7',

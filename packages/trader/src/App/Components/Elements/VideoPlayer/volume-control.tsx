@@ -17,7 +17,7 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
     const volume_bar_ref = React.useRef<HTMLDivElement>(null);
     const is_dragging = React.useRef<boolean>(false);
 
-    const calculateNewHight = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const calculateNewHight = (e: React.MouseEvent<HTMLDivElement | HTMLSpanElement> | MouseEvent) => {
         const volume_bar = document.querySelector('.player__volume-bar');
 
         let new_height =
@@ -47,21 +47,21 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
 
     const buttonClickHandler = () => {
         if (is_muted) {
-            volume_bar_ref?.current && volume_bar_ref.current.style.setProperty('height', `${(volume ?? 0.5) * 100}%`);
+            volume_bar_ref.current?.style.setProperty('height', `${(volume ?? 0.5) * 100}%`);
             toggleMute(false);
         } else {
-            volume_bar_ref?.current && volume_bar_ref.current.style.setProperty('height', '0%');
+            volume_bar_ref.current?.style.setProperty('height', '0%');
             toggleMute(true);
         }
         setIsMuted(prev => !prev);
     };
 
-    const mouseMoveHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const mouseMoveHandler = (e: React.MouseEvent<HTMLElement> | MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
         if (!is_dragging.current) return;
-        if (!volume_bar_ref?.current) return;
+        if (!volume_bar_ref.current) return;
 
         const new_height = calculateNewHight(e);
 
@@ -72,13 +72,13 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
         checkVolumeControl(new_height);
     };
 
-    const mouseUpHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const mouseUpHandler = (e: MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
 
         if (!is_dragging.current) return;
 
-        if (volume_bar_ref?.current) {
+        if (volume_bar_ref.current) {
             volume_bar_ref.current.style.setProperty('transition', 'all 0.3s linear');
         }
         is_dragging.current = false;
@@ -87,7 +87,7 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
         if (!(e.target as HTMLElement).closest('.player__volume-bar__wrapper')) setShowVolume(false);
     };
 
-    const mouseDownHandler = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const mouseDownHandler = (e: React.MouseEvent<HTMLSpanElement>) => {
         e.preventDefault();
         e.stopPropagation();
 
@@ -97,12 +97,12 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
         is_dragging.current = true;
     };
 
-    const onRewind = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const onRewind = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
 
         if ((e.target as HTMLElement).className === 'player__volume-dot') return;
-        if (!volume_bar_ref?.current) return;
+        if (!volume_bar_ref.current) return;
 
         const new_height = calculateNewHight(e);
 
@@ -114,18 +114,12 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
     };
 
     React.useEffect(() => {
-        document.addEventListener('mousemove', mouseMoveHandler as unknown as (this: Document, ev: MouseEvent) => void);
-        document.addEventListener('mouseup', mouseUpHandler as unknown as (this: Document, ev: MouseEvent) => void);
+        document.addEventListener('mousemove', mouseMoveHandler);
+        document.addEventListener('mouseup', mouseUpHandler);
 
         return () => {
-            document.removeEventListener(
-                'mousemove',
-                mouseMoveHandler as unknown as (this: Document, ev: MouseEvent) => void
-            );
-            document.removeEventListener(
-                'mouseup',
-                mouseUpHandler as unknown as (this: Document, ev: MouseEvent) => void
-            );
+            document.removeEventListener('mousemove', mouseMoveHandler);
+            document.removeEventListener('mouseup', mouseUpHandler);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -155,7 +149,7 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
                 unmountOnExit
             >
                 <div className='player__volume-bar__wrapper'>
-                    <div className='player__volume-bar' onClick={e => onRewind(e)} onKeyDown={undefined}>
+                    <div className='player__volume-bar' onClick={onRewind} onKeyDown={undefined}>
                         <div
                             className='player__volume-bar__filled'
                             ref={volume_bar_ref}
@@ -163,7 +157,7 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
                         >
                             <span
                                 className='player__volume-dot'
-                                onMouseDown={e => mouseDownHandler(e)}
+                                onMouseDown={mouseDownHandler}
                                 onDragStart={() => false}
                             />
                         </div>

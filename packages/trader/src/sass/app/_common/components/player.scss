@@ -12,7 +12,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        // Line below fix the z-index problem in Safari
+        // Line below fixes the z-index problem in Safari
         -webkit-transform: translate3d(0, 0, 0);
 
         &__icon {
@@ -31,7 +31,7 @@
             background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
             opacity: 0;
             transition: opacity 0.25s linear;
-            // Line below fix the z-index problem in Safari
+            // Line below fixes the z-index problem in Safari
             -webkit-transform: translate3d(0, 0, 0);
         }
 
@@ -51,14 +51,14 @@
                 position: absolute;
                 bottom: 67%;
             }
-        }
 
-        &__progress-bar__filled {
-            position: relative;
-            width: 0%;
-            height: 0.4rem;
-            border-radius: $BORDER_RADIUS;
-            background-color: var(--brand-red-coral);
+            &__filled {
+                position: relative;
+                width: 0%;
+                height: 0.4rem;
+                border-radius: $BORDER_RADIUS;
+                background-color: var(--brand-red-coral);
+            }
         }
 
         &__bottom-bar {
@@ -142,15 +142,15 @@
         border-radius: $BORDER_RADIUS;
         cursor: pointer;
         background-color: var(--text-less-prominent);
-    }
 
-    &__volume-bar__filled {
-        position: absolute;
-        bottom: 0;
-        width: 0.4rem;
-        border-radius: $BORDER_RADIUS;
-        background-color: var(--brand-red-coral);
-        transition: all 0.3s linear;
+        &__filled {
+            position: absolute;
+            bottom: 0;
+            width: 0.4rem;
+            border-radius: $BORDER_RADIUS;
+            background-color: var(--brand-red-coral);
+            transition: all 0.3s linear;
+        }
     }
 
     &__progress-dot,
@@ -189,49 +189,51 @@
             left: 0;
         }
 
-        .dc-dropdown__select-arrow {
-            display: none;
-        }
-
-        .dc-dropdown__display--playback-rate {
-            width: 6.2rem;
-            height: 2.3rem;
-            background: none;
-            border: none;
-            border-radius: $BORDER_RADIUS * 2;
-            justify-content: flex-start;
-
-            .dc-dropdown__display-text {
-                padding: 0 0 0 2.5rem;
-                color: var(--text-colored-background);
-                font-size: 1rem;
+        .dc-dropdown {
+            &__select-arrow {
+                display: none;
             }
-        }
 
-        .dc-dropdown-container {
-            min-width: 6.2rem;
-            width: unset;
+            &__display--playback-rate {
+                width: 6.2rem;
+                height: 2.3rem;
+                background: none;
+                border: none;
+                border-radius: $BORDER_RADIUS * 2;
+                justify-content: flex-start;
 
-            &:before {
-                content: '';
-                display: block;
-                height: 1.7rem;
-                width: 7rem;
-                position: absolute;
-                bottom: 1rem;
+                .dc-dropdown__display-text {
+                    padding: 0 0 0 2.5rem;
+                    color: var(--text-colored-background);
+                    font-size: 1rem;
+                }
             }
-        }
-        .dc-dropdown__list {
-            width: 9.7rem;
-            right: 10%;
-            left: unset;
-        }
 
-        .dc-dropdown__display--playback-rate__item {
-            height: 4rem;
-            display: flex;
-            justify-content: start;
-            align-items: center;
+            &-container {
+                min-width: 6.2rem;
+                width: unset;
+
+                &:before {
+                    content: '';
+                    display: block;
+                    height: 1.7rem;
+                    width: 7rem;
+                    position: absolute;
+                    bottom: 1rem;
+                }
+            }
+            &__list {
+                width: 9.7rem;
+                right: 10%;
+                left: unset;
+            }
+
+            &__display--playback-rate__item {
+                height: 4rem;
+                display: flex;
+                justify-content: start;
+                align-items: center;
+            }
         }
 
         .dc-list,

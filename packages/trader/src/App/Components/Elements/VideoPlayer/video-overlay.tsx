@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon } from '@deriv/components';
 
 type TVideoOverlay = {
-    onClick: (e: React.MouseEvent<HTMLElement, MouseEvent> | React.KeyboardEvent<HTMLElement>) => void;
+    onClick: (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => void;
     is_ended?: boolean;
     is_mobile?: boolean;
 };
@@ -12,8 +12,8 @@ const VideoOverlay = ({ onClick, is_ended, is_mobile }: TVideoOverlay) => {
         <div
             className='player__overlay'
             style={{ opacity: `${is_ended ? '1' : '0'}` }}
-            onClick={e => onClick(e)}
-            onKeyDown={e => onClick(e)}
+            onClick={onClick}
+            onKeyDown={onClick}
         >
             <Icon
                 icon='IcReplay'

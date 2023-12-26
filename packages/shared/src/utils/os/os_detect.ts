@@ -83,7 +83,7 @@ export const mobileOSDetect = () => {
     return 'unknown';
 };
 
-export const checkUserBrowser = () => {
+const checkUserBrowser = () => {
     // We can't rely only on navigator.userAgent.index, the verification order is also important
     if ((navigator.userAgent.indexOf('Opera') || navigator.userAgent.indexOf('OPR')) !== -1) {
         return 'Opera';
@@ -97,4 +97,12 @@ export const checkUserBrowser = () => {
         return 'Firefox';
     }
     return 'unknown';
+};
+
+export const user_browser = {
+    isOpera: () => checkUserBrowser() === 'Opera',
+    isEdge: () => checkUserBrowser() === 'Edge',
+    isChrome: () => checkUserBrowser() === 'Chrome',
+    isSafari: () => checkUserBrowser() === 'Safari',
+    isFirefox: () => checkUserBrowser() === 'Firefox',
 };

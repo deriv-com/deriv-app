@@ -1,22 +1,23 @@
 import React from 'react';
 import { Text, Icon } from '@deriv/components';
+import { formatDurationTime } from '@deriv/shared';
 import VolumeControl from './volume-control';
 import PlaybackRateControl from './playback-rate-control';
 
 type TVideoControls = {
     block_controls?: boolean;
     current_time?: number;
+    dragStartHandler: (e: React.MouseEvent<HTMLSpanElement> | React.TouchEvent<HTMLSpanElement>) => void;
     is_playing?: boolean;
     is_mobile?: boolean;
-    onRewind: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-    dragStartHandler: (e: React.MouseEvent<HTMLElement, MouseEvent> | React.TouchEvent<HTMLElement>) => void;
+    onRewind: (e: React.MouseEvent<HTMLDivElement>) => void;
     onVolumeChange: (new_value: number) => void;
     onPlaybackRateChange: (new_value: number) => void;
-    togglePlaying: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-    video_duration?: number;
     show_controls?: boolean;
-    volume?: number;
+    togglePlaying: (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>) => void;
     toggleMute: (new_value: boolean) => void;
+    video_duration?: number;
+    volume?: number;
 };
 
 const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
@@ -24,33 +25,21 @@ const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
         {
             block_controls,
             current_time,
+            dragStartHandler,
             is_playing,
             is_mobile,
             onRewind,
-            dragStartHandler,
             onVolumeChange,
             onPlaybackRateChange,
+            show_controls,
             togglePlaying,
             toggleMute,
-            show_controls,
             video_duration,
             volume,
         },
         ref
     ) => {
         const [is_drag_dot_visible, setIsDragDotVisible] = React.useState(false);
-
-        const formatTime = (time?: number) => {
-            if (time && !isNaN(time)) {
-                const minutes = Math.floor(time / 60);
-                const formatMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-                const seconds = Math.floor(time % 60);
-                const formatSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-                return `${formatMinutes}:${formatSeconds}`;
-            }
-
-            return '00:00';
-        };
 
         return (
             <div
@@ -62,7 +51,7 @@ const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
             >
                 <div
                     className='player__controls__progress-bar'
-                    onClick={e => onRewind(e)}
+                    onClick={onRewind}
                     onKeyDown={undefined}
                     onMouseOver={() => setIsDragDotVisible(true)}
                     onMouseLeave={() => setIsDragDotVisible(false)}
@@ -71,8 +60,8 @@ const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
                         {(is_mobile || is_drag_dot_visible) && (
                             <span
                                 className='player__progress-dot'
-                                onMouseDown={e => dragStartHandler(e)}
-                                onTouchStart={e => dragStartHandler(e)}
+                                onMouseDown={dragStartHandler}
+                                onTouchStart={dragStartHandler}
                                 onDragStart={() => false}
                             />
                         )}
@@ -85,7 +74,7 @@ const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
                     style={{ pointerEvents: `${block_controls ? 'none' : 'auto'}` }}
                 >
                     <div className='player__controls__bottom-bar controls__left'>
-                        <button onClick={e => togglePlaying(e)} className='player__controls__button'>
+                        <button onClick={togglePlaying} className='player__controls__button'>
                             <Icon
                                 icon={is_playing ? 'IcPause' : 'IcPlay'}
                                 custom_color='var(--text-colored-background)'
@@ -95,9 +84,9 @@ const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
                         </button>
                         <div className='player__controls__time-wrapper'>
                             <Text size='xxxs' line_height='s' color='colored-background'>
-                                {formatTime(current_time)}
+                                {formatDurationTime(current_time)}
                                 {' / '}
-                                {formatTime(video_duration)}
+                                {formatDurationTime(video_duration)}
                             </Text>
                         </div>
                     </div>

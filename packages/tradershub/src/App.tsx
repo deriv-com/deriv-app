@@ -11,7 +11,6 @@ const App: FC = () => (
             <BreakpointProvider>
                 <AppContent />
             </BreakpointProvider>
-            <AppContent />
         </ModalProvider>
     </APIProvider>
 );

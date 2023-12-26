@@ -7,6 +7,7 @@ import { TTradingPlatformAvailableAccount } from 'Components/props.types';
 describe('JurisdictionCard', () => {
     type TMockProps = {
         account_status: {
+            p2p_poa_required: 0 | 1;
             authentication: {
                 document: {
                     status: 'none' | 'pending' | 'expired' | 'verified' | 'rejected';
@@ -48,6 +49,7 @@ describe('JurisdictionCard', () => {
     beforeEach(() => {
         mock_props = {
             account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     document: {
                         status: 'none',

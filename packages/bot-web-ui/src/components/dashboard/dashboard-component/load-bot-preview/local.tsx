@@ -107,20 +107,7 @@ const LocalComponent = observer(() => {
                                 <div className='load-strategy__preview-workspace'>
                                     <BotPreview id_ref={el_ref} type={'local'} />
                                 </div>
-                                <div className='load-strategy__button-group'>
-                                    <input
-                                        type='file'
-                                        ref={file_input_ref}
-                                        accept='.xml'
-                                        style={{ display: 'none' }}
-                                        onChange={e => {
-                                            clearInjectionDiv('component', el_ref);
-                                            onConfirmSave();
-                                            setIsFileSupported(handleFileChange(e, false));
-                                        }}
-                                    />
-                                    {renderOpenButton()}
-                                </div>
+                                <div className='load-strategy__button-group'>{renderOpenButton()}</div>
                             </>
                         )}
                         <MobileWrapper>

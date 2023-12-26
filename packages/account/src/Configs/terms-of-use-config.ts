@@ -11,6 +11,10 @@ const terms_of_use_config: TSchema = {
         supported_in: ['svg', 'maltainvest'],
         default_value: false,
     },
+    fatca_declaration: {
+        supported_in: ['svg', 'maltainvest'],
+        default_value: '',
+    },
 };
 
 const termsOfUseConfig = (

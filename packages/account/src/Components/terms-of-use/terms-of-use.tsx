@@ -19,6 +19,7 @@ import FatcaDeclaration from './fatca-declaration';
 type TTermsOfUseFormProps = {
     agreed_tos: boolean;
     agreed_tnc: boolean;
+    fatca_declaration: '0' | '1';
 };
 
 type TTermsOfUseProps = {
@@ -134,7 +135,12 @@ const TermsOfUse = ({
                             </Div100vhContainer>
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
-                                    is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
+                                    is_disabled={
+                                        isSubmitting ||
+                                        !values.agreed_tos ||
+                                        !values.agreed_tnc ||
+                                        !values.fatca_declaration
+                                    }
                                     label={getSubmitButtonLabel()}
                                     has_cancel
                                     is_absolute={isMobile()}

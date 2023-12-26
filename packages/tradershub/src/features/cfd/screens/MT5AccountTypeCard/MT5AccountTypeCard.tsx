@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { qtMerge, Text } from '@deriv/quill-design';
 
 type TProps = {
     description: string;
-    icon: React.ReactNode;
+    icon: ReactNode;
     isSelected: boolean;
     onClick: () => void;
     title: string;

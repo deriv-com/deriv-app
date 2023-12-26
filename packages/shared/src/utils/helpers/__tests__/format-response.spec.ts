@@ -1,8 +1,14 @@
 import { GetSettings, ResidenceList } from '@deriv/api-types';
-import { filterDisabledPositions, formatPortfolioPosition, isVerificationServiceSupported } from '../format-response';
+import {
+    filterDisabledPositions,
+    formatPortfolioPosition,
+    isVerificationServiceSupported,
+    formatIDVError,
+    formatOnfidoError,
+} from '../format-response';
 import { LocalStore } from '../../storage';
 import { CONTRACT_TYPES } from '../../contract';
-import { getContractTypeFeatureFlag } from '../../constants';
+import { IDV_ERROR_STATUS, STATUS_CODES, getContractTypeFeatureFlag } from '../../constants';
 
 jest.mock('../../constants', () => ({
     ...jest.requireActual('../../constants'),
@@ -121,6 +127,7 @@ describe('format-response', () => {
     it('should return true if residence is in the list of supported countries for onfido', () => {
         expect(isVerificationServiceSupported(residence_list, get_settings, 'onfido')).toBeTruthy();
     });
+
     describe('filterDisabledPositions', () => {
         const position = {
             contract_type: 'CALL',
@@ -145,6 +152,70 @@ describe('format-response', () => {
             };
             (LocalStore.getObject as jest.Mock).mockReturnValueOnce({ data: { rise_fall: true } });
             expect(filterDisabledPositions(transaction)).toBeTruthy();
+        });
+    });
+
+    describe('formatIDVError', () => {
+        it('should return null as error if no errors are present and status is NONE', () => {
+            expect(formatIDVError([], STATUS_CODES.NONE)).toBeNull();
+        });
+
+        it('should return null as error if no errors are present and status is NONE even for high risk client', () => {
+            expect(formatIDVError([], STATUS_CODES.NONE, true)).toBeNull();
+        });
+
+        it('should return null as error if no errors are present and status is VERIFIED', () => {
+            expect(formatIDVError([], STATUS_CODES.VERIFIED)).toBeNull();
+        });
+
+        it('should return HighRisk error code if no errors are present and status is VERIFIED', () => {
+            expect(formatIDVError([], STATUS_CODES.VERIFIED, true)).toBe(IDV_ERROR_STATUS.HighRisk.code);
+        });
+
+        it('should return Expired error code if status is Expired', () => {
+            expect(formatIDVError([], STATUS_CODES.EXPIRED)).toBe(IDV_ERROR_STATUS.Expired.code);
+        });
+
+        it('should return NameMismatch error code if errors array contains NameMismatch', () => {
+            expect(formatIDVError(['NameMismatch'], STATUS_CODES.REJECTED)).toBe(IDV_ERROR_STATUS.NameMismatch.code);
+        });
+
+        it('should return DobMismatch error code if errors array contains DobMismatch', () => {
+            expect(formatIDVError(['DobMismatch'], STATUS_CODES.REJECTED)).toBe(IDV_ERROR_STATUS.DobMismatch.code);
+        });
+
+        it('should return NameDobMismatch error code if errors array contains DobMismatch and NameMismatch', () => {
+            expect(formatIDVError(['DobMismatch', 'NameMismatch'], STATUS_CODES.REJECTED)).toBe(
+                IDV_ERROR_STATUS.NameDobMismatch.code
+            );
+        });
+
+        it('should return Failed error code if errors array contains DobMismatch and Failed', () => {
+            expect(formatIDVError(['DobMismatch', 'Failed'], STATUS_CODES.REJECTED)).toBe(IDV_ERROR_STATUS.Failed.code);
+        });
+
+        it('should return Underage error code if errors array contains Underage', () => {
+            expect(formatIDVError(['Underage'], STATUS_CODES.REJECTED)).toBe(IDV_ERROR_STATUS.Underage.code);
+        });
+
+        it('should return first error code from the error of error codes if errors array exists', () => {
+            expect(formatIDVError(['Expired', 'Underage'], STATUS_CODES.EXPIRED)).toBe(IDV_ERROR_STATUS.Expired.code);
+        });
+    });
+
+    describe('formatOnfidoError', () => {
+        it('should return Expired error code along with the rest of error codes if status is Expired', () => {
+            expect(formatOnfidoError(STATUS_CODES.EXPIRED, ['SelfieRejected'])).toHaveLength(2);
+        });
+
+        it('should return the rest of error codes if status is not Expired', () => {
+            expect(
+                formatOnfidoError(STATUS_CODES.REJECTED, [
+                    'SelfieRejected',
+                    'ImageIntegrityImageQuality',
+                    'DataValidationExpiryDate',
+                ])
+            ).toHaveLength(3);
         });
     });
 });

@@ -121,11 +121,6 @@ const getModules = () => {
             ],
         },
         {
-            path: routes.dxtrade,
-            component: props => <CFD {...props} platform='dxtrade' />,
-            getTitle: () => localize('Deriv X'),
-        },
-        {
             path: routes.compare_cfds,
             component: CFDCompareAccounts,
             getTitle: () => localize('Compare CFD accounts'),

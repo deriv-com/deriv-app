@@ -44,7 +44,7 @@ const FatcaDeclaration = ({ field: { value, onChange, name }, ...props }: TFATCA
                 {...props}
                 is_align_text_left
                 name={name}
-                placeholder={localize('Please select')}
+                placeholder={localize('Please select*')}
                 value={value}
                 list={getAgreementOptions()}
                 className='fatca-declaration__agreement'

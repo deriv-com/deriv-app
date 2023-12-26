@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Icon } from '@deriv/components';
 
 type TVideoOverlay = {
@@ -10,8 +11,9 @@ type TVideoOverlay = {
 const VideoOverlay = ({ onClick, is_ended, is_mobile }: TVideoOverlay) => {
     return (
         <div
-            className='player__overlay'
-            style={{ opacity: `${is_ended ? '1' : '0'}` }}
+            className={classNames('player__overlay', {
+                'player__overlay--visible': is_ended,
+            })}
             onClick={onClick}
             onKeyDown={onClick}
         >

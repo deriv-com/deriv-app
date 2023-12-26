@@ -44,7 +44,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         video_ref.current.playbackRate = new_value;
     };
 
-    const togglePlaying = (
+    const togglePlay = (
         e:
             | React.MouseEvent<HTMLDivElement | HTMLButtonElement>
             | React.KeyboardEvent<HTMLDivElement | HTMLButtonElement>
@@ -256,7 +256,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
                 onLoadedMetaData={onLoadedMetadata}
             />
             <VideoOverlay
-                onClick={is_mobile && !is_ended ? () => setShowControls(!show_controls) : togglePlaying}
+                onClick={is_mobile && !is_ended ? () => setShowControls(!show_controls) : togglePlay}
                 is_ended={is_ended}
                 is_mobile={is_mobile}
             />
@@ -270,7 +270,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
                 onVolumeChange={onVolumeChange}
                 onPlaybackRateChange={onPlaybackRateChange}
                 show_controls={show_controls}
-                togglePlaying={togglePlaying}
+                togglePlay={togglePlay}
                 toggleMute={toggleMute}
                 video_duration={video_duration}
                 volume={video_ref.current?.volume}

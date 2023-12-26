@@ -12,8 +12,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        opacity: 0;
         // Line below fixes the z-index problem in Safari
         -webkit-transform: translate3d(0, 0, 0);
+
+        &--visible {
+            opacity: 1;
+        }
 
         &__icon {
             margin: 0;
@@ -30,9 +35,18 @@
             padding: 0 1.6rem;
             background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
             opacity: 0;
+            pointer-events: none;
             transition: opacity 0.25s linear;
             // Line below fixes the z-index problem in Safari
             -webkit-transform: translate3d(0, 0, 0);
+
+            &--visible {
+                opacity: 1;
+            }
+
+            &--interactive {
+                pointer-events: auto;
+            }
         }
 
         &__progress-bar {
@@ -67,6 +81,10 @@
             align-items: center;
             height: 3.6rem;
             padding-bottom: 0.4rem;
+
+            &--blocked {
+                pointer-events: none;
+            }
 
             .controls__right {
                 width: 10.2rem;

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Text, Icon } from '@deriv/components';
 import { formatDurationTime } from '@deriv/shared';
 import VolumeControl from './volume-control';
@@ -14,7 +15,7 @@ type TVideoControls = {
     onVolumeChange: (new_value: number) => void;
     onPlaybackRateChange: (new_value: number) => void;
     show_controls?: boolean;
-    togglePlaying: (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>) => void;
+    togglePlay: (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>) => void;
     toggleMute: (new_value: boolean) => void;
     video_duration?: number;
     volume?: number;
@@ -32,7 +33,7 @@ const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
             onVolumeChange,
             onPlaybackRateChange,
             show_controls,
-            togglePlaying,
+            togglePlay,
             toggleMute,
             video_duration,
             volume,
@@ -43,11 +44,10 @@ const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
 
         return (
             <div
-                className='player__controls__wrapper'
-                style={{
-                    opacity: `${show_controls ? '1' : '0'}`,
-                    pointerEvents: `${show_controls ? 'auto' : 'none'}`,
-                }}
+                className={classNames('player__controls__wrapper', {
+                    'player__controls__wrapper--visible': show_controls,
+                    'player__controls__wrapper--interactive': show_controls,
+                })}
             >
                 <div
                     className='player__controls__progress-bar'
@@ -68,13 +68,14 @@ const VideoControls = React.forwardRef<HTMLDivElement, TVideoControls>(
                     </div>
                 </div>
                 <div
-                    className='player__controls__bottom-bar'
                     onClick={e => e.stopPropagation()}
                     onKeyDown={undefined}
-                    style={{ pointerEvents: `${block_controls ? 'none' : 'auto'}` }}
+                    className={classNames('player__controls__bottom-bar', {
+                        'player__controls__bottom-bar--blocked': block_controls,
+                    })}
                 >
                     <div className='player__controls__bottom-bar controls__left'>
-                        <button onClick={togglePlaying} className='player__controls__button'>
+                        <button onClick={togglePlay} className='player__controls__button'>
                             <Icon
                                 icon={is_playing ? 'IcPause' : 'IcPlay'}
                                 custom_color='var(--text-colored-background)'

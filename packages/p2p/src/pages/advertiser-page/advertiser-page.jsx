@@ -166,7 +166,6 @@ const AdvertiserPage = () => {
             advertiser_page_store.onUnmount();
             buy_sell_store.setShowAdvertiserPage(false);
             advertiser_page_store.setCounterpartyAdvertiserInfo({});
-            setCounterpartyAdvertId('');
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -251,6 +250,7 @@ const AdvertiserPage = () => {
                             my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                         history.push(general_store.active_tab_route);
                         setCounterpartyAdvertiserId(null);
+                        setCounterpartyAdvertId('');
                     }}
                     page_title={localize("Advertiser's page")}
                 />

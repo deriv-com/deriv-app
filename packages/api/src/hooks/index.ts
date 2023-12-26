@@ -55,7 +55,6 @@ export { default as useOtherCFDPlatformsDeposit } from './useOtherCFDPlatformsDe
 export { default as usePOA } from './usePOA';
 export { default as usePOI } from './usePOI';
 export { default as useResidenceList } from './useResidenceList';
-export { default as useSendbird } from './useSendbird';
 export { default as useSendbirdServiceToken } from './useSendbirdServiceToken';
 export { default as useServerTime } from './useServerTime';
 export { default as useSettings } from './useSettings';

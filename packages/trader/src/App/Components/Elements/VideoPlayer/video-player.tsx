@@ -13,6 +13,7 @@ type TVideoPlayerProps = {
 const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     const should_autoplay =
         (!isSafari() || (is_mobile && mobileOSDetect() !== 'iOS' && mobileOSDetect() !== 'unknown')) ?? true;
+
     const [is_animated, setIsAnimated] = React.useState(true);
     const [is_playing, setIsPlaying] = React.useState(false);
     const [is_ended, setIsEnded] = React.useState(false);

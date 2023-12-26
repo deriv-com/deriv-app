@@ -175,7 +175,10 @@
             width: 0.4rem;
             border-radius: $BORDER_RADIUS;
             background-color: var(--brand-red-coral);
-            transition: all 0.3s linear;
+
+            &--animated {
+                transition: all 0.3s linear;
+            }
         }
     }
 

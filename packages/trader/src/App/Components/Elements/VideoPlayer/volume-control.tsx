@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { Icon } from '@deriv/components';
 
@@ -11,11 +12,13 @@ type TVolumeControl = {
 };
 
 const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute }: TVolumeControl) => {
+    const [is_animated, setIsAnimated] = React.useState(true);
     const [show_volume, setShowVolume] = React.useState(false);
     const [shift_Y, setShiftY] = React.useState<number>(0);
 
     const volume_bar_filled_ref = React.useRef<HTMLDivElement>(null);
     const volume_bar_ref = React.useRef<HTMLDivElement>(null);
+    const volume_dot_ref = React.useRef<HTMLSpanElement>(null);
     const is_dragging = React.useRef<boolean>(false);
 
     const calculateNewHight = (e: React.MouseEvent<HTMLDivElement | HTMLSpanElement> | MouseEvent) => {
@@ -49,7 +52,6 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
             volume_bar_filled_ref.current?.style.setProperty('height', `${(volume ?? 0.5) * 100}%`);
             toggleMute(false);
         } else {
-            volume_bar_filled_ref.current?.style.setProperty('height', '0%');
             toggleMute(true);
         }
     };
@@ -62,8 +64,7 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
         if (!volume_bar_filled_ref.current) return;
 
         const new_height = calculateNewHight(e);
-
-        volume_bar_filled_ref.current.style.setProperty('transition', 'none');
+        setIsAnimated(false);
         volume_bar_filled_ref.current.style.setProperty('height', `${new_height}%`);
 
         onVolumeChange(new_height / 100);
@@ -76,9 +77,7 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
 
         if (!is_dragging.current) return;
 
-        if (volume_bar_filled_ref.current) {
-            volume_bar_filled_ref.current.style.setProperty('transition', 'all 0.3s linear');
-        }
+        if (volume_bar_filled_ref.current) setIsAnimated(true);
         is_dragging.current = false;
 
         // Hide volume bar if user finished changing volume outside of the container
@@ -89,7 +88,7 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
         e.preventDefault();
         e.stopPropagation();
 
-        const point = document.querySelector('.player__volume-dot');
+        const point = volume_dot_ref.current;
         setShiftY((point?.getBoundingClientRect().bottom ?? 0) - e.clientY);
 
         is_dragging.current = true;
@@ -102,9 +101,8 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
         if ((e.target as HTMLElement).className === 'player__volume-dot') return;
         if (!volume_bar_filled_ref.current) return;
 
+        setIsAnimated(false);
         const new_height = calculateNewHight(e);
-
-        volume_bar_filled_ref.current.style.setProperty('transition', 'none');
         volume_bar_filled_ref.current.style.setProperty('height', `${new_height}%`);
 
         onVolumeChange(new_height / 100);
@@ -149,7 +147,9 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
                 <div className='player__volume-bar__wrapper'>
                     <div className='player__volume-bar' onClick={onRewind} onKeyDown={undefined} ref={volume_bar_ref}>
                         <div
-                            className='player__volume-bar__filled'
+                            className={classNames('player__volume-bar__filled', {
+                                'player__volume-bar__filled--animated': is_animated,
+                            })}
                             ref={volume_bar_filled_ref}
                             style={{ height: `${is_muted ? 0 : (volume ?? 0.5) * 100}%` }}
                         >
@@ -157,6 +157,7 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
                                 className='player__volume-dot'
                                 onMouseDown={mouseDownHandler}
                                 onDragStart={() => false}
+                                ref={volume_dot_ref}
                             />
                         </div>
                     </div>

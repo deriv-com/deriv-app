@@ -16,8 +16,10 @@ type TOnboardingProps = {
         {
             component: React.ReactNode;
             eu_footer_header?: string;
+            eu_mt5_footer_header?: string;
             footer_header: string;
             eu_footer_text?: string;
+            eu_mt5_footer_text?: string;
             footer_text: string;
             next_content?: string;
             has_next_content: boolean;
@@ -27,7 +29,6 @@ type TOnboardingProps = {
 
 const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboardingProps) => {
     const history = useHistory();
-    const steps_list = Object.keys(contents);
     const { traders_hub, client, ui } = useStore();
     const {
         is_eu_country,
@@ -41,6 +42,7 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
     const [step, setStep] = React.useState<number>(1);
     const has_active_real_account = useHasActiveRealAccount();
+    const steps_list = Object.keys(contents).filter(key => is_mt5_allowed || key !== 'step3');
 
     const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose, trackDotNavigation } =
         useTradersHubTracking();
@@ -104,8 +106,13 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const footer_header = contents[onboarding_step]?.footer_header;
     const footer_text = contents[onboarding_step]?.footer_text;
 
-    const eu_footer_header = contents[onboarding_step]?.eu_footer_header || footer_header;
-    const eu_footer_text = contents[onboarding_step]?.eu_footer_text || footer_text;
+    const eu_footer_header =
+        (is_mt5_allowed
+            ? contents[onboarding_step]?.eu_footer_header
+            : contents[onboarding_step]?.eu_mt5_footer_header) || footer_header;
+    const eu_footer_text =
+        (is_mt5_allowed ? contents[onboarding_step]?.eu_footer_text : contents[onboarding_step]?.eu_mt5_footer_text) ||
+        footer_text;
 
     const footer_header_text = is_eu_user ? eu_footer_header : footer_header;
 

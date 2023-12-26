@@ -5,8 +5,10 @@ import StaticDashboard from 'Components/onboarding-new/static-dashboard';
 type TStep = {
     component: React.ReactNode;
     eu_footer_header?: string;
+    eu_mt5_footer_header?: string;
     footer_header: string;
     eu_footer_text?: string;
+    eu_mt5_footer_text?: string;
     footer_text: string;
     next_content?: string;
     has_next_content: boolean;
@@ -74,8 +76,12 @@ export const getTradingHubContents = (): TTradingHubContents => ({
             />
         ),
         footer_header: localize('Trading accounts'),
+        eu_mt5_footer_header: localize('Trading account'),
         footer_text: localize(
             'These are the trading accounts available to you. You can click on an account’s icon or description to find out more.'
+        ),
+        eu_mt5_footer_text: localize(
+            'This is the trading accounts available to you. You can click on an account’s icon or description to find out more.'
         ),
         has_next_content: false,
     },
@@ -182,6 +188,7 @@ export const getTradingHubContents = (): TTradingHubContents => ({
         ),
         footer_header: localize('Top-up your account'),
         footer_text: localize('Once you have an account click on ‘Deposit’ or ‘Transfer’ to add funds to an account.'),
+        eu_mt5_footer_text: localize('Once you have an account click on ‘Deposit’ to add funds to an account.'),
         has_next_content: false,
     },
     step6: {

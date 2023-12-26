@@ -75,7 +75,7 @@ const AccordionStrategyGroup = observer(
                         const subtitle_value = (data as TDescriptionItem[])?.[0]?.content?.[0] ?? '';
                         return (
                             <Accordion
-                                key={`accordion-${subtitle_value}-${idx}`}
+                                key={`accordion-${subtitle_value}`}
                                 content_data={{
                                     header: subtitle_value,
                                     content: <DescriptionContent data={data} font_size={font_size} />,

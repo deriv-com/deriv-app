@@ -22,14 +22,14 @@ type StaticLinkProps = {
  *
  * @returns {React.ElementType} The `StaticLink` component.
  */
-const StaticLink = ({ children, className, href, staticUrl, ...props }: StaticLinkProps) => {
+const StaticLink = ({ children, className, href, size, staticUrl }: StaticLinkProps) => {
     return (
         <Link
-            className={qtMerge(['underline text-brand-coral py-50 px-200 m-50', className])}
+            className={qtMerge(['underline text-brand-coral py-50 px-200 underline-offset-2', className])}
             href={href ?? (staticUrl ? getStaticUrl(staticUrl) : '#')}
             rel='noopener noreferrer'
+            size={size}
             target='_blank'
-            {...props}
         >
             {children}
         </Link>

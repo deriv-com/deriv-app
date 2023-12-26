@@ -327,7 +327,19 @@ const Dropdown = ({
         handleVisibility();
     };
 
-    const handleVisibility = () => {
+    const handleVisibility = (e?: React.MouseEvent<HTMLDivElement>) => {
+        if (should_open_on_hover) {
+            if (e?.type === 'mouseover') {
+                setIsListVisible(true);
+                return;
+            } else if (e?.type === 'mouseleave') {
+                setIsListVisible(false);
+                return;
+            }
+        } else if (e?.type === 'mouseover' || e?.type === 'mouseleave') {
+            return;
+        }
+
         if (typeof onClick === 'function') {
             onClick();
 
@@ -436,8 +448,8 @@ const Dropdown = ({
             <div
                 ref={wrapper_ref}
                 className={containerClassName()}
-                onMouseOver={should_open_on_hover ? () => setIsListVisible(true) : undefined}
-                onMouseLeave={should_open_on_hover ? () => setIsListVisible(false) : undefined}
+                onMouseOver={handleVisibility}
+                onMouseLeave={handleVisibility}
             >
                 <div
                     className={classNames('dc-dropdown__container', {
@@ -458,7 +470,7 @@ const Dropdown = ({
                         className={dropdownDisplayClassName()}
                         data-testid='dt_dropdown_display'
                         tabIndex={isSingleOption() ? -1 : 0}
-                        onClick={should_open_on_hover ? undefined : handleVisibility}
+                        onClick={handleVisibility}
                         onKeyDown={onKeyPressed as unknown as React.KeyboardEventHandler}
                         id='dropdown-display'
                         ref={dropdown_ref}

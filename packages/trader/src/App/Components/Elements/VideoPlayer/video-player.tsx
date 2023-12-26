@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stream, StreamPlayerApi } from '@cloudflare/stream-react';
-import { user_browser, mobileOSDetect } from '@deriv/shared';
+import { isSafari, mobileOSDetect } from '@deriv/shared';
 import VideoOverlay from './video-overlay';
 import VideoControls from './video-controls';
 
@@ -12,9 +12,7 @@ type TVideoPlayerProps = {
 
 const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     const should_autoplay =
-        (!user_browser.isSafari() || (is_mobile && mobileOSDetect() !== 'iOS' && mobileOSDetect() !== 'unknown')) ??
-        true;
-
+        (!isSafari() || (is_mobile && mobileOSDetect() !== 'iOS' && mobileOSDetect() !== 'unknown')) ?? true;
     const [is_playing, setIsPlaying] = React.useState(false);
     const [is_ended, setIsEnded] = React.useState(false);
     const [current_time, setCurrentTime] = React.useState<number>();

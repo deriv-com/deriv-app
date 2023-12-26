@@ -9,5 +9,7 @@ export const setWebsocket = (websocket: object) => {
  * A temporarily custom hook to expose the global `WS` object from the `shared` package.
  */
 export const useWS = () => {
+    // @ts-expect-error TODO: Remove this line when the `shared` package is refactored.
+    window.TEST_WS = WS;
     return WS;
 };

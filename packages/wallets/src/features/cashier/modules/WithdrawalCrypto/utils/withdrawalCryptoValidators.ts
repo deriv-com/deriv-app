@@ -38,7 +38,8 @@ const checkIfInvalidInput = (
     const fractionalPartPrecisionRegex = new RegExp(`^\\d{1,${fractionalDigits}}$`);
 
     if (
-        (integerPart && !integerPart.match(isIntegerPartNumberRegex)) ||
+        !integerPart ||
+        !integerPart.match(isIntegerPartNumberRegex) ||
         numberOfDecimalsPoints > 1 ||
         (numberOfDecimalsPoints === 1 && !fractionalPart) ||
         (fractionalPart && !fractionalPart.match(isFractionalPartNumberRegex))
@@ -51,10 +52,10 @@ const checkIfInvalidInput = (
 };
 
 const validateCryptoInput = (
-    remainder: number,
     activeWallet: TWithdrawalCryptoContext['activeWallet'],
     fractionalDigits: TWithdrawalCryptoContext['fractionalDigits'],
     isClientVerified: TWithdrawalCryptoContext['isClientVerified'],
+    remainder: number,
     value: string
 ) => {
     if (

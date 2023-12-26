@@ -5,6 +5,7 @@ import { THooks } from '../../../../../../types';
 import { TAccount, TInitialTransferFormValues, TMessageFnProps, TTransferMessage } from '../../types';
 import {
     cumulativeAccountLimitsMessageFn,
+    insufficientBalanceMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
     transferFeesBetweenWalletsMessageFn,
 } from './utils';
@@ -44,12 +45,14 @@ const useTransferMessages = ({
         [preferredLanguage]
     );
 
-    if (!activeWallet || !fromAccount || !toAccount) return [];
+    if (!activeWallet || !fromAccount) return [];
 
     const sourceAmount = formData.fromAmount;
 
     const messageFns: ((props: TMessageFnProps) => TTransferMessage | null)[] = [];
     const messages: TTransferMessage[] = [];
+
+    messageFns.push(insufficientBalanceMessageFn);
 
     if (isAccountVerified || (!isAccountVerified && !isTransferBetweenWallets)) {
         messageFns.push(cumulativeAccountLimitsMessageFn);
@@ -72,6 +75,10 @@ const useTransferMessages = ({
         });
         if (message) messages.push(message);
     });
+
+    if (messages.some(message => message.type === 'error')) {
+        return messages.filter(message => message.type === 'error');
+    }
 
     return messages;
 };

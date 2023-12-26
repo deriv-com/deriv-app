@@ -117,9 +117,6 @@ const TransactionsCryptoRow: React.FC<TProps> = ({ transaction }) => {
                     className={{ 'wallets-transactions-pending-row__transaction-confirmations': !isMobile }}
                     name='Confirmations'
                     value={transaction.formatted_confirmations.toString()}
-                    valueTextProps={{
-                        align: isMobile ? 'start' : 'center',
-                    }}
                 />
                 {isMobile && (
                     <React.Fragment>

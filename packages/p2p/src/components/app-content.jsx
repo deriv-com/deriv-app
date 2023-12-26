@@ -4,7 +4,7 @@ import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
 import { Loading, Tabs } from '@deriv/components';
-import { useP2PNotificationCount } from '@deriv/hooks';
+import { useIsSystemMaintenance, useP2PNotificationCount } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
@@ -26,6 +26,7 @@ const AppContent = ({ order_id }) => {
         client: { loginid },
     } = useStore();
     const notification_count = useP2PNotificationCount();
+    const is_system_maintenance = useIsSystemMaintenance();
     const history = useHistory();
 
     const handleDisclaimerTimeout = time_lapsed => {
@@ -36,7 +37,7 @@ const AppContent = ({ order_id }) => {
     };
 
     React.useEffect(() => {
-        if (!general_store.should_show_dp2p_blocked) {
+        if (!general_store.should_show_dp2p_blocked && !is_system_maintenance) {
             const time_lapsed = getHoursDifference(localStorage.getItem(`p2p_${loginid}_disclaimer_shown`));
             if (time_lapsed === undefined || time_lapsed > INTERVAL_DURATION) {
                 showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });
@@ -77,10 +78,12 @@ const AppContent = ({ order_id }) => {
         return <Loading is_fullscreen={false} />;
     }
 
-    // return empty or else the tabs will be shown above when displaying the advertiser page
+    // return empty or else the tabs will be shown above when displaying the advertiser page or when system maintenance is on
+    // or when the user is blocked from using DP2P
     if (
         (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) ||
-        general_store.should_show_dp2p_blocked
+        general_store.should_show_dp2p_blocked ||
+        is_system_maintenance
     ) {
         return <></>;
     }

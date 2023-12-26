@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
+import { WalletButton, WalletText, WalletPasswordFieldLazy } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
@@ -45,7 +45,7 @@ const EnterPassword: React.FC<TProps> = ({
                     <WalletText size='sm'>
                         Enter your {title} password to add a {title} {marketTypeTitle} account.
                     </WalletText>
-                    <WalletPasswordField
+                    <WalletPasswordFieldLazy
                         label={`${title} password`}
                         onChange={onPasswordChange}
                         password={password}

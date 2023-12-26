@@ -6,19 +6,20 @@ type TVolumeControl = {
     onVolumeChange: (new_value: number) => void;
     volume?: number;
     is_mobile?: boolean;
+    is_muted?: boolean;
     toggleMute: (new_value: boolean) => void;
 };
 
-const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolumeControl) => {
+const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute }: TVolumeControl) => {
     const [show_volume, setShowVolume] = React.useState(false);
-    const [is_muted, setIsMuted] = React.useState(false);
     const [shift_Y, setShiftY] = React.useState<number>(0);
 
+    const volume_bar_filled_ref = React.useRef<HTMLDivElement>(null);
     const volume_bar_ref = React.useRef<HTMLDivElement>(null);
     const is_dragging = React.useRef<boolean>(false);
 
     const calculateNewHight = (e: React.MouseEvent<HTMLDivElement | HTMLSpanElement> | MouseEvent) => {
-        const volume_bar = document.querySelector('.player__volume-bar');
+        const volume_bar = volume_bar_ref.current;
 
         let new_height =
             (((volume_bar?.getBoundingClientRect().bottom ?? 0) - e.clientY - shift_Y) /
@@ -36,24 +37,21 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
 
     const checkVolumeControl = (volume: number) => {
         if (!volume) {
-            setIsMuted(true);
             toggleMute(true);
 
             return;
         }
-        setIsMuted(false);
         toggleMute(false);
     };
 
     const buttonClickHandler = () => {
         if (is_muted) {
-            volume_bar_ref.current?.style.setProperty('height', `${(volume ?? 0.5) * 100}%`);
+            volume_bar_filled_ref.current?.style.setProperty('height', `${(volume ?? 0.5) * 100}%`);
             toggleMute(false);
         } else {
-            volume_bar_ref.current?.style.setProperty('height', '0%');
+            volume_bar_filled_ref.current?.style.setProperty('height', '0%');
             toggleMute(true);
         }
-        setIsMuted(prev => !prev);
     };
 
     const mouseMoveHandler = (e: React.MouseEvent<HTMLElement> | MouseEvent) => {
@@ -61,12 +59,12 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
         e.stopPropagation();
 
         if (!is_dragging.current) return;
-        if (!volume_bar_ref.current) return;
+        if (!volume_bar_filled_ref.current) return;
 
         const new_height = calculateNewHight(e);
 
-        volume_bar_ref.current.style.setProperty('transition', 'none');
-        volume_bar_ref.current.style.setProperty('height', `${new_height}%`);
+        volume_bar_filled_ref.current.style.setProperty('transition', 'none');
+        volume_bar_filled_ref.current.style.setProperty('height', `${new_height}%`);
 
         onVolumeChange(new_height / 100);
         checkVolumeControl(new_height);
@@ -78,8 +76,8 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
 
         if (!is_dragging.current) return;
 
-        if (volume_bar_ref.current) {
-            volume_bar_ref.current.style.setProperty('transition', 'all 0.3s linear');
+        if (volume_bar_filled_ref.current) {
+            volume_bar_filled_ref.current.style.setProperty('transition', 'all 0.3s linear');
         }
         is_dragging.current = false;
 
@@ -102,12 +100,12 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
         e.stopPropagation();
 
         if ((e.target as HTMLElement).className === 'player__volume-dot') return;
-        if (!volume_bar_ref.current) return;
+        if (!volume_bar_filled_ref.current) return;
 
         const new_height = calculateNewHight(e);
 
-        volume_bar_ref.current.style.setProperty('transition', 'none');
-        volume_bar_ref.current.style.setProperty('height', `${new_height}%`);
+        volume_bar_filled_ref.current.style.setProperty('transition', 'none');
+        volume_bar_filled_ref.current.style.setProperty('height', `${new_height}%`);
 
         onVolumeChange(new_height / 100);
         checkVolumeControl(new_height);
@@ -149,10 +147,10 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, toggleMute }: TVolum
                 unmountOnExit
             >
                 <div className='player__volume-bar__wrapper'>
-                    <div className='player__volume-bar' onClick={onRewind} onKeyDown={undefined}>
+                    <div className='player__volume-bar' onClick={onRewind} onKeyDown={undefined} ref={volume_bar_ref}>
                         <div
                             className='player__volume-bar__filled'
-                            ref={volume_bar_ref}
+                            ref={volume_bar_filled_ref}
                             style={{ height: `${is_muted ? 0 : (volume ?? 0.5) * 100}%` }}
                         >
                             <span

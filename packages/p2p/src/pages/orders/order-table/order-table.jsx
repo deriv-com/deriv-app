@@ -4,13 +4,15 @@ import { ButtonToggle } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/toggle-container';
+import CompositeCalendar from 'Components/composite-calendar';
 import { order_list } from 'Constants/order-list';
 import { useStores } from 'Stores';
 import OrderTableContent from './order-table-content.jsx';
 import './order-table.scss';
 
 const OrderTable = ({ showDetails }) => {
-    const { general_store } = useStores();
+    const { general_store, order_store } = useStores();
+    const { date_from, date_to, filtered_date_range, handleDateChange } = order_store;
 
     const orders_list_filters = [
         {
@@ -41,6 +43,16 @@ const OrderTable = ({ showDetails }) => {
                             has_rounded_button
                         />
                     </ToggleContainer>
+                    {!is_active_tab && (
+                        <div className='order-table__toggle-wrapper--search'>
+                            <CompositeCalendar
+                                input_date_range={filtered_date_range}
+                                onChange={handleDateChange}
+                                from={date_from}
+                                to={date_to}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
             <OrderTableContent showDetails={showDetails} is_active={is_active_tab} />

@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from 'react';
 import { Text } from '@deriv/quill-design';
 
 type TJurisdictionCardRowProps = {
-    description?: ReactNode | string;
+    description?: ReactNode;
     renderTag?: () => ReactNode;
     title: string;
 };

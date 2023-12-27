@@ -13,7 +13,7 @@ type AccountActionButtonProps = {
 
 const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
     const history = useHistory();
-    const { mutate } = useResetVirtualBalance();
+    const { mutate: resetVirtualBalance } = useResetVirtualBalance();
     let buttonText = 'Deposit';
     if (isDemo && balance !== 10000) {
         buttonText = 'Reset Balance';
@@ -27,7 +27,7 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
             colorStyle='black'
             onClick={() => {
                 if (isDemo) {
-                    mutate();
+                    resetVirtualBalance();
                 } else {
                     history.push('/cashier/deposit');
                 }

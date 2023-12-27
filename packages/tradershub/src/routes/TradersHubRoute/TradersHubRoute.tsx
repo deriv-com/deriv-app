@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Button, Heading, Text } from '@deriv/quill-design';
-import { OptionsAndMultiplersSection } from '../../components';
+import { OptionsAndMultipliersSection, StaticLink } from '../../components';
 
 const TradersHubRoute: FC = () => {
     return (
@@ -12,7 +12,7 @@ const TradersHubRoute: FC = () => {
                     <Heading.H3 className='text-status-light-information'>10,000.00 USD</Heading.H3>
                 </div>
             </div>
-            <OptionsAndMultiplersSection />
+            <OptionsAndMultipliersSection />
 
             <div className='border-solid p-1200 rounded-1200 border-xs border-opacity-black-100'>
                 <div className='pb-1200'>
@@ -23,8 +23,10 @@ const TradersHubRoute: FC = () => {
                         </Button>
                     </div>
                     <Text size='sm'>
-                        Trade with leverage and tight spreads for better returns on trades.{' '}
-                        <a className='underline cursor-pointer text-solid-coral-700 underline-offset-2'>Learn more</a>
+                        Trade with leverage and tight spreads for better returns on trades.
+                        <StaticLink size='md' staticUrl='/trade-types/cfds/'>
+                            Learn more
+                        </StaticLink>
                     </Text>
                 </div>
                 <div className='flex flex-col gap-y-1200'>

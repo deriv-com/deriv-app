@@ -251,7 +251,7 @@ export const STRATEGIES: TStrategies = {
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, CHECKBOX_MAX_STAKE, MAX_STAKE],
         ],
     },
-    REVERSE_MARINGALE: {
+    REVERSE_MARTINGALE: {
         name: 'reverse_martingale',
         label: localize('Reverse Martingale'),
         description: REVERSE_MARTINGALE,

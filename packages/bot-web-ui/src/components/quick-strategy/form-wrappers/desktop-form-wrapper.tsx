@@ -9,7 +9,7 @@ import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
 import FormTabs from './form-tabs';
-import StrategyDescription from './strategy-description';
+import StrategyTabContent from './strategy-tab-content';
 import useQsSubmitHandler from './useQsSubmitHandler';
 import '../quick-strategy.scss';
 
@@ -100,7 +100,12 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                         })}
                         autohide={false}
                     >
-                        <StrategyDescription formfields={children} active_tab={activeTab} />
+                        <FormTabs
+                            active_tab={activeTab}
+                            onChange={handleTabChange}
+                            description={strategy?.long_description}
+                        />
+                        <StrategyTabContent formfields={children} active_tab={activeTab} />
                     </ThemedScrollbars>
                     {activeTab === 'TRADE_PARAMETERS' && (
                         <div className='qs__body__content__footer'>

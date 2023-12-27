@@ -46,6 +46,7 @@ type TDropdown = {
     suffix_icon?: string;
     should_open_on_hover?: boolean;
     should_scroll_to_selected?: boolean;
+    should_autohide?: boolean;
     test_id?: string;
     value?: string | number;
     classNameIcon?: string;
@@ -70,6 +71,7 @@ type TDropdownList = {
     portal_id?: string;
     suffix_icon?: string;
     should_scroll_to_selected?: boolean;
+    should_autohide?: boolean;
     value?: string | number;
 };
 
@@ -93,6 +95,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
         portal_id,
         suffix_icon,
         should_scroll_to_selected,
+        should_autohide,
         value,
     } = props;
 
@@ -198,6 +201,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
                         height={list_dimensions[1] || '200px'}
                         scroll_height={scroll_height}
                         should_scroll_to_selected={should_scroll_to_selected}
+                        autohide={should_autohide}
                     >
                         {Array.isArray(list) ? (
                             <Items
@@ -274,6 +278,7 @@ const Dropdown = ({
     suffix_icon,
     should_open_on_hover = false,
     should_scroll_to_selected,
+    should_autohide,
     test_id,
     value,
     classNameIcon,
@@ -534,6 +539,7 @@ const Dropdown = ({
                         ref={list_ref}
                         suffix_icon={suffix_icon}
                         should_scroll_to_selected={should_scroll_to_selected}
+                        should_autohide={should_autohide}
                         value={value}
                     />
                 </div>

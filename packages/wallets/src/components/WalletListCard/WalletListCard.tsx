@@ -2,7 +2,7 @@ import React from 'react';
 import { THooks } from '../../types';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
 import WalletListCardBalance from '../WalletListCardBalance/WalletListCardBalance';
-import WalletListCardDetails from '../WalletListCardIDetails/WalletListCardDetails';
+import WalletListCardDetails from '../WalletListCardDetails/WalletListCardDetails';
 import './WalletListCard.scss';
 
 type TProps = {

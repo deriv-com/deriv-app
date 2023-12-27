@@ -6,3 +6,4 @@ export * from './ModalProvider';
 export * from './ModalStepWrapper';
 export * from './OptionsAndMultiplersSection';
 export * from './TradingAccountCard';
+export * from './TradingAccountsList';

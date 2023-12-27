@@ -4,6 +4,9 @@ import { Button, qtMerge, Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
 import { THooks } from '../../types';
+import { useModal } from '../ModalProvider';
+import { ModalStepWrapper } from '../ModalStepWrapper';
+import { TradingAccountsList } from '../TradingAccountsList';
 
 type AccountActionButtonProps = {
     balance: THooks.ActiveTradingAccount['balance'];
@@ -32,8 +35,22 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 const CurrencySwitcher = () => {
     const { data: activeAccount } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
+    const { show } = useModal();
 
-    const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency || 'virtual';
+    const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency ?? 'virtual';
+
+    const renderButton = () => {
+        return (
+            <Button
+                className='py-900 rounded-200 border-sm border-system-light-less-prominent-text'
+                colorStyle='black'
+                fullWidth
+                variant='secondary'
+            >
+                Add or manage account
+            </Button>
+        );
+    };
 
     return (
         <div className='flex items-center justify-between border-solid grow gap-800 h-3600 p-800 rounded-400 border-sm border-system-light-active-background shrink-0'>
@@ -54,8 +71,20 @@ const CurrencySwitcher = () => {
                         {isDemo ? activeAccount.display_balance : IconToCurrencyMapper[iconCurrency].text}
                     </Text>
                 </div>
-                <AccountActionButton balance={activeAccount?.balance || 0} isDemo={isDemo || false} />
-                <div className='cursor-pointer'>{!isDemo && <StandaloneChevronDownBoldIcon />}</div>
+                <AccountActionButton balance={activeAccount?.balance ?? 0} isDemo={isDemo ?? false} />
+                <div className='cursor-pointer'>
+                    {!isDemo && (
+                        <StandaloneChevronDownBoldIcon
+                            onClick={() => {
+                                show(
+                                    <ModalStepWrapper renderFooter={renderButton} title='Select account'>
+                                        <TradingAccountsList />
+                                    </ModalStepWrapper>
+                                );
+                            }}
+                        />
+                    )}
+                </div>
             </div>
         </div>
     );

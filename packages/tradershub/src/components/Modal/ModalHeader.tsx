@@ -3,12 +3,24 @@ import { Heading, qtMerge } from '@deriv/quill-design';
 import CloseIcon from '../../public/images/ic-close-dark.svg';
 import { useModal } from '../ModalProvider';
 
+/**
+ * Type for the ModalHeader component props
+ * @typedef TModalHeader
+ * @property {string} [className] - Optional CSS class name
+ * @property {boolean} [hideCloseButton] - Optional flag to hide the close button
+ * @property {string} [title] - Optional title for the header
+ */
 type TModalHeader = {
     className?: string;
     hideCloseButton?: boolean;
     title?: string;
 };
 
+/**
+ * ModalHeader component
+ * @param {TModalHeader} props - The properties that define the ModalHeader component.
+ * @returns {JSX.Element} The ModalHeader component.
+ */
 const ModalHeader = ({ className, hideCloseButton = false, title }: TModalHeader) => {
     const { hide } = useModal();
 

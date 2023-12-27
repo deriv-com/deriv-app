@@ -34,7 +34,7 @@ describe('<PlaybackRateControl />', () => {
         );
     });
 
-    it('should call onPlaybackRateChange if user choose another option', () => {
+    it('should call onPlaybackRateChange if user chooses another option', () => {
         render(<PlaybackRateControl {...mocked_props} />);
 
         expect(mocked_props.onPlaybackRateChange).not.toBeCalled();

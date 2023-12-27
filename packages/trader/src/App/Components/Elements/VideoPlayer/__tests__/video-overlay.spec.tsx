@@ -6,7 +6,7 @@ const mocked_props = {
     onClick: jest.fn(),
 };
 
-const icon_testid = 'player_overlay_icon';
+const icon_testid = 'dt_player_overlay_icon';
 
 describe('<VideoOverlay />', () => {
     it('should render the component', () => {
@@ -21,7 +21,7 @@ describe('<VideoOverlay />', () => {
         expect(screen.getByTestId(icon_testid)).toHaveAttribute('height', '128');
     });
 
-    it('should pass correct size to icon for desktop', () => {
+    it('should pass correct size to icon for mobile', () => {
         render(<VideoOverlay {...mocked_props} is_mobile />);
 
         expect(screen.getByTestId(icon_testid)).toHaveAttribute('height', '88');

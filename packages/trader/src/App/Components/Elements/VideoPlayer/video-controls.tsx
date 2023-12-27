@@ -62,10 +62,11 @@ const VideoControls = ({
             <div
                 className='player__controls__progress-bar'
                 onClick={onRewind}
-                onKeyDown={undefined}
+                role='button'
                 onMouseOver={() => setIsDragDotVisible(true)}
                 onMouseLeave={() => setIsDragDotVisible(false)}
                 ref={progress_bar_ref}
+                data-testid='dt_progress_bar'
             >
                 <div
                     className={classNames('player__controls__progress-bar__filled', {
@@ -73,6 +74,7 @@ const VideoControls = ({
                         'player__controls__progress-bar__filled--ended': is_ended,
                     })}
                     ref={progress_bar_filled_ref}
+                    data-testid='dt_progress_bar_filled'
                 >
                     {(is_mobile || is_drag_dot_visible) && (
                         <span
@@ -81,15 +83,13 @@ const VideoControls = ({
                             })}
                             onMouseDown={dragStartHandler}
                             onTouchStart={dragStartHandler}
-                            onDragStart={() => false}
                             ref={progress_dot_ref}
+                            data-testid='dt_progress_bar_dot'
                         />
                     )}
                 </div>
             </div>
             <div
-                onClick={e => e.stopPropagation()}
-                onKeyDown={undefined}
                 className={classNames('player__controls__bottom-bar', {
                     'player__controls__bottom-bar--blocked': block_controls,
                 })}

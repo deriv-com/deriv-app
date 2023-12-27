@@ -11,9 +11,9 @@ const mocked_props: React.ComponentProps<typeof VolumeControl> = {
     toggleMute: jest.fn(new_value => (mocked_props.is_muted = new_value)),
 };
 
-const volume_bar = 'volume_bar';
-const volume_bar_filled = 'volume_bar_filled';
-const volume_dot = 'volume_dot';
+const volume_bar = 'dt_volume_bar';
+const volume_bar_filled = 'dt_volume_bar_filled';
+const volume_dot = 'dt_volume_dot';
 
 jest.mock('react-transition-group', () => ({
     ...jest.requireActual('react-transition-group'),

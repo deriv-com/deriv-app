@@ -14,12 +14,12 @@ type TVolumeControl = {
 const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute }: TVolumeControl) => {
     const [is_animated, setIsAnimated] = React.useState(true);
     const [show_volume, setShowVolume] = React.useState(false);
-    const [shift_Y, setShiftY] = React.useState<number>(0);
+    const [shift_Y, setShiftY] = React.useState(0);
 
     const volume_bar_filled_ref = React.useRef<HTMLDivElement>(null);
     const volume_bar_ref = React.useRef<HTMLDivElement>(null);
     const volume_dot_ref = React.useRef<HTMLSpanElement>(null);
-    const is_dragging = React.useRef<boolean>(false);
+    const is_dragging = React.useRef(false);
 
     const calculateNewHight = (e: React.MouseEvent<HTMLDivElement | HTMLSpanElement> | MouseEvent) => {
         const volume_bar = volume_bar_ref.current;
@@ -145,9 +145,9 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
                     <div
                         className='player__volume-bar'
                         onClick={onRewind}
-                        onKeyDown={undefined}
+                        role='button'
                         ref={volume_bar_ref}
-                        data-testid='volume_bar'
+                        data-testid='dt_volume_bar'
                     >
                         <div
                             className={classNames('player__volume-bar__filled', {
@@ -155,14 +155,13 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
                             })}
                             ref={volume_bar_filled_ref}
                             style={{ height: `${is_muted ? 0 : (volume ?? 0.5) * 100}%` }}
-                            data-testid='volume_bar_filled'
+                            data-testid='dt_volume_bar_filled'
                         >
                             <span
                                 className='player__volume-dot'
                                 onMouseDown={mouseDownHandler}
-                                onDragStart={() => false}
                                 ref={volume_dot_ref}
-                                data-testid='volume_dot'
+                                data-testid='dt_volume_dot'
                             />
                         </div>
                     </div>

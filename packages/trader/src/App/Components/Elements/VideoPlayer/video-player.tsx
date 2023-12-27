@@ -22,16 +22,16 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     const [has_enlarged_dot, setHasEnlargedDot] = React.useState(false);
     const [current_time, setCurrentTime] = React.useState<number>();
     const [video_duration, setVideoDuration] = React.useState<number>();
-    const [shift_X, setShiftX] = React.useState<number>(0);
+    const [shift_X, setShiftX] = React.useState(0);
     const [show_controls, setShowControls] = React.useState(!should_autoplay);
 
     const video_ref = React.useRef<StreamPlayerApi>();
     const progress_bar_filled_ref = React.useRef<HTMLDivElement>(null);
     const progress_bar_ref = React.useRef<HTMLDivElement>(null);
     const progress_dot_ref = React.useRef<HTMLSpanElement>(null);
-    const animation_ref = React.useRef<number>(0);
+    const animation_ref = React.useRef(0);
     const timer_ref = React.useRef<ReturnType<typeof setTimeout>>();
-    const is_dragging = React.useRef<boolean>(false);
+    const is_dragging = React.useRef(false);
 
     const onVolumeChange = (new_value: number) => {
         if (!video_ref.current) return;

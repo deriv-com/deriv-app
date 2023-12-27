@@ -207,7 +207,14 @@ type TAccountsList = {
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
 }[];
-
+type TRealAccount = {
+    active_modal_index: number;
+    current_currency: string;
+    error_message: string;
+    previous_currency: string;
+    success_message: string;
+    error_code: number;
+};
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     balance?: string | number;
@@ -298,6 +305,16 @@ type TNotificationMessage = {
     timeout?: number;
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
+};
+type TCommonVariables = {
+    language: string;
+    visitorId?: string;
+    currency?: string;
+    userId?: string;
+    email?: string;
+    loggedIn: boolean;
+    theme: string;
+    platform: string;
 };
 
 type TNotification =
@@ -518,6 +535,7 @@ type TClientStore = {
     has_account_error_in_dxtrade_demo_list: boolean;
     has_fiat: boolean;
     is_fully_authenticated: boolean;
+    updateMt5LoginList: () => Promise<void>;
     states_list: StatesList;
     /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
     is_crypto: (currency?: string) => boolean;

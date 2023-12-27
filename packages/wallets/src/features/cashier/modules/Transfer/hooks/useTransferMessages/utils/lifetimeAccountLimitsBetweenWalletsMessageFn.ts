@@ -1,13 +1,19 @@
-import { TMessageFnProps } from '../types';
+import { TMessageFnProps, TTransferMessage } from '../../../types';
 
-// this function should work once BE WALL-1440 is delivered
+let text: TTransferMessage['message']['text'], values: TTransferMessage['message']['values'];
+
+const verifyPOIAction = {
+    buttonLabel: 'Verify',
+    navigateTo: '/account/proof-of-identity',
+    shouldOpenInNewTab: true,
+};
+
 const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
     activeWallet,
     activeWalletExchangeRates,
     displayMoney,
     limits,
     sourceAccount,
-    sourceAmount,
     targetAccount,
 }: TMessageFnProps) => {
     if (sourceAccount?.account_category !== 'wallet' || targetAccount?.account_category !== 'wallet') return null;
@@ -47,22 +53,14 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
         ] ?? 1);
 
     const sourceCurrencyLimit = transferDirection === 'from' ? allowedSumActiveWalletCurrency : allowedSumConverted;
-    const targetCurrencyLimit = transferDirection === 'from' ? allowedSumConverted : allowedSumActiveWalletCurrency;
 
     const sourceCurrencyRemainder =
         transferDirection === 'from' ? availableSumActiveWalletCurrency : availableSumConverted;
-    const targetCurrencyRemainder =
-        transferDirection === 'from' ? availableSumConverted : availableSumActiveWalletCurrency;
 
     const formattedSourceCurrencyLimit = displayMoney?.(
         sourceCurrencyLimit,
         sourceAccount.currencyConfig.display_code,
         sourceAccount.currencyConfig.fractional_digits
-    );
-    const formattedTargetCurrencyLimit = displayMoney?.(
-        targetCurrencyLimit,
-        targetAccount.currencyConfig.display_code,
-        targetAccount.currencyConfig?.fractional_digits
     );
 
     const formattedSourceCurrencyRemainder = displayMoney?.(
@@ -70,28 +68,75 @@ const lifetimeAccountLimitsBetweenWalletsMessageFn = ({
         sourceAccount.currencyConfig.display_code,
         sourceAccount.currencyConfig.fractional_digits
     );
-    const formattedTargetCurrencyRemainder = displayMoney?.(
-        targetCurrencyRemainder,
-        targetAccount.currencyConfig?.display_code,
-        targetAccount.currencyConfig?.fractional_digits
-    );
 
-    if (availableSumActiveWalletCurrency === 0)
+    if (availableSumActiveWalletCurrency === 0) {
+        text =
+            targetWalletType === 'crypto'
+                ? "You've reached the lifetime transfer limit from your {{sourceAccountName}} to any cryptocurrency Wallet. Verify your account to upgrade the limit."
+                : "You've reached the lifetime transfer limit from your {{sourceAccountName}} to any fiat Wallet. Verify your account to upgrade the limit.";
+        values = { sourceAccountName: sourceAccount.accountName };
+
         return {
-            text: `You've reached the lifetime transfer limit from your ${sourceAccount.accountName} to any ${targetWalletType} Wallet. Verify your account to upgrade the limit.`,
+            action: verifyPOIAction,
+            message: { text, values },
             type: 'error' as const,
         };
+    }
 
     if (allowedSumActiveWalletCurrency === availableSumActiveWalletCurrency)
-        return {
-            text: `The lifetime transfer limit from ${sourceAccount.accountName} to any ${targetWalletType} Wallet is ${formattedSourceCurrencyLimit} (${formattedTargetCurrencyLimit}).`,
-            type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
-        };
+        switch (limitsCaseKey) {
+            case 'fiat_to_crypto':
+            case 'crypto_to_fiat':
+                text =
+                    targetWalletType === 'crypto'
+                        ? 'The lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.'
+                        : 'The lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is up to {{formattedSourceCurrencyLimit}}.';
+                values = { formattedSourceCurrencyLimit, sourceAccountName: sourceAccount.accountName };
 
-    return {
-        text: `Remaining lifetime transfer limit is ${formattedSourceCurrencyRemainder} (${formattedTargetCurrencyRemainder}). Verify your account to upgrade the limit.`,
-        type: sourceAmount > sourceCurrencyRemainder ? ('error' as const) : ('success' as const),
-    };
+                return {
+                    message: { text, values },
+                    type: 'success' as const,
+                };
+            case 'crypto_to_crypto':
+                text =
+                    'The lifetime transfer limit between cryptocurrency Wallets is up to {{formattedSourceCurrencyLimit}}.';
+                values = { formattedSourceCurrencyLimit };
+
+                return {
+                    message: { text, values },
+                    type: 'success' as const,
+                };
+            default:
+                return null;
+        }
+
+    switch (limitsCaseKey) {
+        case 'fiat_to_crypto':
+        case 'crypto_to_fiat':
+            text =
+                targetWalletType === 'crypto'
+                    ? 'Your remaining lifetime transfer limit from {{sourceAccountName}} to any cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.'
+                    : 'Your remaining lifetime transfer limit from {{sourceAccountName}} to any fiat Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.';
+            values = { formattedSourceCurrencyRemainder, sourceAccountName: sourceAccount.accountName };
+
+            return {
+                action: verifyPOIAction,
+                message: { text, values },
+                type: 'success' as const,
+            };
+        case 'crypto_to_crypto':
+            text =
+                'Your remaining lifetime transfer limit between cryptocurrency Wallets is {{formattedSourceCurrencyRemainder}}. Verify your account to upgrade the limit.';
+            values = { formattedSourceCurrencyRemainder };
+
+            return {
+                action: verifyPOIAction,
+                message: { text, values },
+                type: 'success' as const,
+            };
+        default:
+            return null;
+    }
 };
 
 export default lifetimeAccountLimitsBetweenWalletsMessageFn;

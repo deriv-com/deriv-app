@@ -3,7 +3,6 @@ import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { STRATEGIES } from 'Components/quick-strategy/config';
-import { useDBotStore } from 'Stores/useDBotStore';
 import StrategyTabContent from 'Components/quick-strategy/form-wrappers/strategy-tab-content';
 
 type Tcontent = {
@@ -22,9 +21,6 @@ const QuickStrategyGuidesDetail = observer(
     ({ quick_strategy_content, tutorial_selected_strategy, setTutorialSelectedStrategy }: TQuickStrategyGuides) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
-        const { quick_strategy } = useDBotStore();
-        const { selected_strategy } = quick_strategy;
-        const strategy = STRATEGIES[tutorial_selected_strategy || (selected_strategy as keyof typeof STRATEGIES)];
         const text_size = is_mobile ? 'xxs' : 's';
 
         return (

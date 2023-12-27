@@ -21,12 +21,11 @@ const DescriptionContent = ({ item, font_size }: TDescriptionContent) => {
 
     return (
         <>
-            {content_data &&
-                content_data.map(item => (
-                    <React.Fragment key={item.id}>
-                        <StrategyDescription item={item} font_size={font_size} />
-                    </React.Fragment>
-                ))}
+            {content_data?.map(item => (
+                <React.Fragment key={item.id}>
+                    <StrategyDescription item={item} font_size={font_size} />
+                </React.Fragment>
+            ))}
         </>
     );
 };

@@ -41,6 +41,7 @@ if [ "$NODE_ENV" = "staging" ]; then
         fi
     fi
 
+    retry crowdin init &&
     echo "Running commands for staging environment..."
     message "Uploading source file to Crowdin" &&
     retry crowdin upload sources &&

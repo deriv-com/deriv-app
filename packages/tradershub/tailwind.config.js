@@ -4,6 +4,9 @@ module.exports = {
     presets: [require('@deriv/quill-design/quill-tailwind/tailwind.config.cjs')],
     theme: {
         extend: {
+            backfaceVisibility: {
+                hidden: 'hidden',
+            },
             button: {
                 primary: {
                     default: '#ff444f',

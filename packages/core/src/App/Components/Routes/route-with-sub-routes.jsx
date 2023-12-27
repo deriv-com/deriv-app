@@ -12,10 +12,13 @@ import {
 import { getLanguage } from '@deriv/translations';
 import Page404 from 'Modules/Page404';
 import { observer, useStore } from '@deriv/stores';
+import { useFeatureFlags } from '@deriv/hooks';
 
 const RouteWithSubRoutes = observer(route => {
     const { common } = useStore();
     const { checkAppId } = common;
+    const { is_next_account_enabled } = useFeatureFlags();
+
     const validateRoute = pathname => {
         if (pathname.startsWith('/cashier') && !pathname.includes('p2p') && !!route.routes) {
             return route.path === pathname || !!route?.routes.find(({ path }) => pathname === path);
@@ -27,6 +30,8 @@ const RouteWithSubRoutes = observer(route => {
                     : cashier_subroutes?.routes.find(({ path }) => pathname === path);
 
             return route.path === pathname || !!p2p_subroutes;
+        } else if (pathname.startsWith(routes.account_v2) && !is_next_account_enabled) {
+            return false;
         }
         return true;
     };

@@ -1,10 +1,12 @@
 import React, { FC } from 'react';
+import { Base } from '@deriv/library';
 import { Button, Heading, Text } from '@deriv/quill-design';
-import { OptionsAndMultipliersSection, StaticLink } from '../../components';
+import { OptionsAndMultipliersSection } from '../../components';
 
 const TradersHubRoute: FC = () => {
     return (
         <div className='flex flex-col gap-1200'>
+            {<Base.Button />}
             <div className='flex items-center justify-between align-start gap-100'>
                 <Heading.H3>Trader&apos;s Hub</Heading.H3>
                 <div className='flex flex-col items-end justify-end'>
@@ -24,9 +26,9 @@ const TradersHubRoute: FC = () => {
                     </div>
                     <Text size='sm'>
                         Trade with leverage and tight spreads for better returns on trades.
-                        <StaticLink size='md' staticUrl='/trade-types/cfds/'>
+                        <Base.StaticLink size='md' staticUrl='/trade-types/cfds/'>
                             Learn more
-                        </StaticLink>
+                        </Base.StaticLink>
                     </Text>
                 </div>
                 <div className='flex flex-col gap-y-1200'>

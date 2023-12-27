@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Text } from '@deriv/quill-design';
 
 /**
@@ -8,11 +9,14 @@ import { Button, Text } from '@deriv/quill-design';
  *
  * @returns {React.ReactElement} A `div` element containing the banner message and the button.
  */
-const GetADerivAccountBanner = () => (
-    <div className='flex items-center justify-center w-full p-800 gap-800 rounded-200 bg-system-light-secondary-background'>
-        <Text bold>You need a Deriv account to create a CFD account.</Text>
-        <Button className='rounded-200'>Get a Deriv account</Button>
-    </div>
-);
+const GetADerivAccountBanner = () => {
+    const { t } = useTranslation();
+    return (
+        <div className='flex items-center justify-center w-full p-800 gap-800 rounded-200 bg-system-light-secondary-background'>
+            <Text bold>{t('You need a Deriv account to create a CFD account.')}</Text>
+            <Button className='rounded-200'>{t('Get a Deriv account')}</Button>
+        </div>
+    );
+};
 
 export default GetADerivAccountBanner;

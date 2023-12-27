@@ -180,12 +180,13 @@ module.exports = function (env) {
         externals: [
             {
                 '@deriv/api': true,
-                '@deriv/library': true,
+                '@deriv/library': '@deriv/library',
                 classnames: true,
                 react: true,
                 'react-dom': true,
                 'react-router-dom': true,
             },
+            /^@deriv\/library\/.+$/,
         ],
     };
 };

@@ -27,7 +27,7 @@ const TradingAccountsList = () => {
                                 {IconToCurrencyMapper[iconCurrency].icon}
                                 <div className='flex flex-col items-start flex-1'>
                                     <Text size='sm'>{IconToCurrencyMapper[iconCurrency].text}</Text>
-                                    <Text size='xs'>{account.loginid}</Text>
+                                    <Text size='sm'>{account.loginid}</Text>
                                 </div>
                                 <div className='text-right'>
                                     <Text size='sm'>{account.display_balance}</Text>

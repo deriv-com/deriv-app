@@ -55,7 +55,7 @@ export type TDescriptionItem = {
 export type TStrategy = {
     name: string;
     label: string;
-    description?: string;
+    description: string;
     long_description?: TDescriptionItem[];
     fields: TConfigItem[][];
 };

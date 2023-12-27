@@ -263,6 +263,9 @@ export const STRATEGIES: TStrategies = {
     REVERSE_MARTINGALE: {
         name: 'reverse_martingale',
         label: localize('Reverse Martingale'),
+        description: localize(
+            'The Reverse Martingale strategy multiplies the stake by the chosen multiplier after every successful trade. The stake for the next trade will reset to the initial stake after a losing trade. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake.'
+        ),
         long_description: REVERSE_MARTINGALE,
         fields: [
             [

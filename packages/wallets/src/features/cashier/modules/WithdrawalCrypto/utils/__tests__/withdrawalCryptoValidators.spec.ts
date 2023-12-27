@@ -157,4 +157,22 @@ describe('withdrawalCryptoValidator', () => {
             )} to ${mockRemainder.toFixed(mockFractionalDigits.crypto)} ${mockActiveWallet.currency}.`
         );
     });
+
+    it('should return "This field is required." if no value is passed to crypto input field', () => {
+        const cryptoAmountMessages = validateCryptoInput(
+            mockActiveWallet,
+            mockFractionalDigits,
+            mockIsClientVerified,
+            mockRemainder,
+            ''
+        );
+
+        expect(cryptoAmountMessages).toEqual('This field is required.');
+    });
+
+    it('should return "This field is required." if no value is passed to crypto address field', () => {
+        const cryptoAddressMessages = validateCryptoAddress('');
+
+        expect(cryptoAddressMessages).toEqual('This field is required.');
+    });
 });

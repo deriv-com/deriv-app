@@ -1,5 +1,6 @@
 import React from 'react';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useHistory } from 'react-router-dom';
+import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
 import { Button, qtMerge, Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
@@ -11,6 +12,8 @@ type AccountActionButtonProps = {
 };
 
 const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
+    const history = useHistory();
+    const { mutate: resetVirtualBalance } = useResetVirtualBalance();
     let buttonText = 'Deposit';
     if (isDemo && balance !== 10000) {
         buttonText = 'Reset Balance';
@@ -22,6 +25,13 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
         <Button
             className='flex items-center justify-center border-solid h-1600 py-300 px-800 rounded-200 border-sm border-system-light-less-prominent-text'
             colorStyle='black'
+            onClick={() => {
+                if (isDemo) {
+                    resetVirtualBalance();
+                } else {
+                    history.push('/cashier/deposit');
+                }
+            }}
             variant='secondary'
         >
             {buttonText}

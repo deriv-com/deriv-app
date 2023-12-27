@@ -1,7 +1,7 @@
 import React, { FC, useRef } from 'react';
 import { useHover } from 'usehooks-ts';
 import { qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
-import { Tooltip, WalletClipboard } from '../../../../../components/Base';
+import { Clipboard, Tooltip } from '../../../../../components/Base';
 import { useModal } from '../../../../../components/ModalProvider';
 import EditIcon from '../../../../../public/images/ic-edit.svg';
 
@@ -34,7 +34,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ className, label, 
                             {value}
                         </Text>
                         {variant === 'clipboard' && (
-                            <WalletClipboard popoverAlignment='right' successMessage='' textCopy={value} />
+                            <Clipboard popoverAlignment='right' successMessage='' textCopy={value} />
                         )}
                         {variant === 'password' && (
                             <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>

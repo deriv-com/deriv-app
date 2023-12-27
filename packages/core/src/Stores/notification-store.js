@@ -52,7 +52,7 @@ export default class NotificationStore extends BaseStore {
     trade_notifications = [];
     p2p_order_props = {};
     p2p_redirect_to = {};
-    p2p_completed_orders = null;
+    p2p_completed_orders = [];
 
     constructor(root_store) {
         super({ root_store });
@@ -675,7 +675,7 @@ export default class NotificationStore extends BaseStore {
         this.notification_messages = this.notification_messages.filter(n => n.key !== key);
         // Add notification messages to LocalStore when user closes, check for redundancy
         const active_loginid = LocalStore.get('active_loginid');
-        if (!excluded_notifications.includes(key) && active_loginid) {
+        if (!excluded_notifications.includes(key) && !key.startsWith('p2p_order') && active_loginid) {
             let messages = LocalStore.getObject('notification_messages');
             // Check if same message already exists in LocalStore for this account
             if (messages[active_loginid] && messages[active_loginid].includes(key)) {

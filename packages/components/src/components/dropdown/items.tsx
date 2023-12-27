@@ -14,6 +14,7 @@ type TItem = {
     is_align_text_left?: boolean;
     nodes: Map<string, HTMLDivElement | null> | null;
     item: TListItem;
+    setScrollHeigh?: (new_value: number) => void;
 };
 
 type TItems = Omit<TItem, 'item'> & {
@@ -30,11 +31,21 @@ const Items = ({ items, ...props }: TItems) => {
     );
 };
 
-const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_align_text_left, className }: TItem) => {
+const Item = ({
+    onKeyPressed,
+    value,
+    item,
+    handleSelect,
+    nodes,
+    has_symbol,
+    is_align_text_left,
+    className,
+    setScrollHeigh,
+}: TItem) => {
     const item_ref = React.useRef<HTMLDivElement>(null);
     const symbol_type_class_name =
         item.text && typeof item.text === 'string' ? `symbols--${item.text.toLowerCase()}` : null;
-
+    const is_selected = value === item.value;
     React.useEffect(() => {
         const removeListeners = () => {
             nodes?.delete(item.value);
@@ -51,11 +62,17 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
         return () => removeListeners();
     }, [item, nodes, onKeyPressed]);
 
+    React.useEffect(() => {
+        if (setScrollHeigh && item_ref?.current?.scrollHeight && is_selected) {
+            setScrollHeigh(item_ref.current?.scrollHeight);
+        }
+    }, [item_ref, setScrollHeigh, is_selected]);
+
     return (
         <div
             className={classNames(
                 'dc-list__item',
-                { 'dc-list__item--selected': value === item.value },
+                { 'dc-list__item--selected': is_selected },
                 { 'dc-list__item--disabled': item.disabled }
             )}
             data-testid='dti_list_item'

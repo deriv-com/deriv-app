@@ -1,6 +1,6 @@
 {
     "name": "@deriv/account-v2",
-    "version": "2.0.0",
+    "version": "1.0.0",
     "main": "dist/account-v2/js/index.js",
     "engines": {
         "node": "18.x"

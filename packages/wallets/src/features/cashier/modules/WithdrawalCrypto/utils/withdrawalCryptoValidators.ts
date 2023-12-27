@@ -2,6 +2,7 @@ import { TWithdrawalCryptoContext } from '../provider';
 
 const helperMessageMapper = {
     decimalPlacesExceeded: (limit: number) => `Up to ${limit} decimal places are allowed.`,
+    fieldRequired: 'This field is required.',
     insufficientFunds: 'Insufficient funds',
     invalidInput: 'Should be a valid number.',
     withdrawalLimitError: (min: string, max: string) => {
@@ -13,7 +14,7 @@ const validateCryptoAddress = (address: string) => {
     const MIN_ADDRESS_LENGTH = 25;
     const MAX_ADDRESS_LENGTH = 64;
 
-    if (!address) return 'This field is required.';
+    if (!address) return helperMessageMapper.fieldRequired;
 
     if (address.length < MIN_ADDRESS_LENGTH || address.length > MAX_ADDRESS_LENGTH) {
         return 'Your wallet address should have 25 to 64 characters.';
@@ -57,13 +58,9 @@ const validateCryptoInput = (
     remainder: number,
     value: string
 ) => {
-    if (
-        !value.length ||
-        !activeWallet?.balance ||
-        !activeWallet?.currency ||
-        !activeWallet?.currency_config ||
-        !fractionalDigits.crypto
-    )
+    if (!value.length) return helperMessageMapper.fieldRequired;
+
+    if (!activeWallet?.balance || !activeWallet?.currency || !activeWallet?.currency_config || !fractionalDigits.crypto)
         return;
 
     const isInvalidInput = checkIfInvalidInput(fractionalDigits.crypto, value);

@@ -20,7 +20,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ className, label, 
     return (
         <div
             className={qtMerge(
-                'flex items-center h-1600 justify-between bg-system-light-secondary-background p-250 pl-400',
+                'flex items-center h-1600 justify-between bg-system-light-secondary-background p-[5px] pl-400',
                 className
             )}
         >

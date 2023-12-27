@@ -140,12 +140,4 @@ export const REVERSE_MARTINGALE: TDescriptionItem[] = [
             ),
         ],
     },
-    {
-        type: 'text_italic',
-        content: [
-            localize(
-                'The information contained in this article is for educational purposes only and is not intended as financial or investment advice.'
-            ),
-        ],
-    },
 ];

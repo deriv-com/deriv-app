@@ -1,24 +1,24 @@
-import React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useAdvertiserInfo, useChatCreate, useOrderInfo, useSendbirdServiceToken, useServerTime } from '@deriv/api';
 import SendbirdChat, { BaseChannel, User } from '@sendbird/chat';
-import { useSendbirdServiceToken, useAdvertiserInfo, useChatCreate, useOrderInfo, useServerTime } from '@deriv/api';
 import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
 import { BaseMessage, MessageType, MessageTypeFilter, UserMessage } from '@sendbird/chat/message';
 
 const ChatMessageStatus = {
-    PENDING: 'PENDING',
     ERRORED: 'ERRORED',
+    PENDING: 'PENDING',
 } as const;
 
 type ChatMessage = {
-    channel_url: string;
-    created_at: number;
-    custom_type?: string;
-    file_type?: 'file' | 'image' | 'pdf';
+    channelUrl: string;
+    createdAt: number;
+    customType?: string;
+    fileType?: 'file' | 'image' | 'pdf';
     id: string;
     message?: string;
-    message_type: string;
+    messageType: string;
     name?: string;
-    sender_user_id: string;
+    senderUserId: string;
     size?: number;
     status?: keyof typeof ChatMessageStatus;
     url?: string;
@@ -40,21 +40,21 @@ const getMessageType = (message: BaseMessage) => {
 
 function createChatMessage(sendbirdMessage: BaseMessage): ChatMessage {
     return {
-        created_at: sendbirdMessage.createdAt,
-        channel_url: sendbirdMessage.channelUrl,
-        custom_type: sendbirdMessage.customType,
-        file_type: getMessageType(sendbirdMessage),
+        channelUrl: sendbirdMessage.channelUrl,
+        createdAt: sendbirdMessage.createdAt,
+        customType: sendbirdMessage.customType,
+        fileType: getMessageType(sendbirdMessage),
         id: sendbirdMessage.messageId.toString(),
         message: sendbirdMessage.isUserMessage() ? sendbirdMessage.message : undefined,
-        message_type: sendbirdMessage.messageType,
+        messageType: sendbirdMessage.messageType,
         name: sendbirdMessage.isFileMessage() ? sendbirdMessage.name : undefined,
-        sender_user_id: (sendbirdMessage as UserMessage)?.sender.userId,
+        senderUserId: (sendbirdMessage as UserMessage)?.sender.userId,
         size: sendbirdMessage.isFileMessage() ? sendbirdMessage.size : undefined,
         url: sendbirdMessage.isFileMessage() ? sendbirdMessage.url : undefined,
     };
 }
 
-const useSendbird = (order_id: string) => {
+const useSendbird = (orderId: string) => {
     const sendbirdApiRef = useRef<ReturnType<typeof SendbirdChat.init<GroupChannelModule[]>>>();
 
     const [isChatLoading, setIsChatLoading] = useState(false);
@@ -71,12 +71,12 @@ const useSendbird = (order_id: string) => {
     } = useSendbirdServiceToken();
     const { data: advertiserInfo, isSuccess: isSuccessAdvertiserInfo } = useAdvertiserInfo();
     const { isError: isErrorChatCreate, mutate: createChat } = useChatCreate();
-    const { data: orderInfo, isError: isErrorOrderInfo } = useOrderInfo(order_id);
+    const { data: orderInfo, isError: isErrorOrderInfo } = useOrderInfo(orderId);
     const { data: serverTime, isError: isErrorServerTime } = useServerTime();
 
-    const getUser = async (user_id: string, token: string) => {
+    const getUser = async (userId: string, token: string) => {
         if (sendbirdApiRef?.current) {
-            const user = await sendbirdApiRef.current.connect(user_id, token);
+            const user = await sendbirdApiRef.current.connect(userId, token);
             return user;
         }
     };
@@ -97,7 +97,7 @@ const useSendbird = (order_id: string) => {
         onMessageReceived();
     }, [receivedMessage]);
 
-    const getChannel = async (channel_url: string) => {
+    const getChannel = async (channelUrl: string) => {
         if (sendbirdApiRef?.current) {
             sendbirdApiRef.current.groupChannel.addGroupChannelHandler(
                 'P2P_SENDBIRD_GROUP_CHANNEL_HANDLER',
@@ -106,23 +106,23 @@ const useSendbird = (order_id: string) => {
                         setReceivedMessage(_receivedMessage),
                 })
             );
-            const channel = await sendbirdApiRef.current.groupChannel.getChannel(channel_url);
+            const channel = await sendbirdApiRef.current.groupChannel.getChannel(channelUrl);
             return channel;
         }
     };
 
-    const getMessages = async (channel: GroupChannel, from_timestamp?: number) => {
+    const getMessages = async (channel: GroupChannel, fromTimestamp?: number) => {
         const messagesFormatted: ChatMessage[] = [];
-        const timestamp = from_timestamp || serverTime?.server_time_utc || 0;
+        const timestamp = fromTimestamp || serverTime?.server_time_utc || 0;
 
         const shouldSortFromMostRecent = messages ? messages?.length > 0 : false;
         const retrievedMessages = await channel.getMessagesByTimestamp(timestamp, {
-            isInclusive: false,
-            prevResultSize: 50,
-            nextResultSize: 0,
-            reverse: shouldSortFromMostRecent,
-            messageTypeFilter: MessageTypeFilter.ALL,
             customTypesFilter: [''],
+            isInclusive: false,
+            messageTypeFilter: MessageTypeFilter.ALL,
+            nextResultSize: 0,
+            prevResultSize: 50,
+            reverse: shouldSortFromMostRecent,
         });
 
         retrievedMessages.forEach(message => {
@@ -138,20 +138,20 @@ const useSendbird = (order_id: string) => {
 
         const messageToSendId = `${Date.now()}${message.substring(0, 9)}${messages.length}`;
         const messageToSend: ChatMessage = {
-            created_at: serverTime?.server_time_utc || Date.now(),
-            channel_url: chatChannel?.url ?? '',
-            message,
+            channelUrl: chatChannel?.url ?? '',
+            createdAt: serverTime?.server_time_utc || Date.now(),
             id: messageToSendId,
-            message_type: MessageType.USER,
-            sender_user_id: user?.userId || '',
+            message,
+            messageType: MessageType.USER,
+            senderUserId: user?.userId || '',
             status: ChatMessageStatus.PENDING,
         };
 
         setMessages([...messages, messageToSend]);
         chatChannel
             ?.sendUserMessage({
-                message: message.trim(),
                 data: messageToSendId,
+                message: message.trim(),
             })
             .onSucceeded(sentMessage => {
                 const idx = messages?.findIndex(msg => msg.id === messageToSendId);
@@ -161,11 +161,11 @@ const useSendbird = (order_id: string) => {
             })
             .onFailed(() => {
                 const idx = messages?.findIndex(msg => msg.id === messageToSendId);
-                const errored_message = {
+                const errorMessage = {
                     ...messageToSend,
                     status: ChatMessageStatus.ERRORED,
                 };
-                setMessages(previousMessages => previousMessages.toSpliced(idx, 1, errored_message));
+                setMessages(previousMessages => previousMessages.toSpliced(idx, 1, errorMessage));
             });
     };
 
@@ -183,10 +183,10 @@ const useSendbird = (order_id: string) => {
             ) {
                 setIsChatError(false);
                 setIsChatLoading(true);
-                const { app_id, token } = sendbirdServiceToken;
+                const { app_id: appId, token } = sendbirdServiceToken;
 
                 sendbirdApiRef.current = SendbirdChat.init({
-                    appId: app_id,
+                    appId,
                     modules: [new GroupChannelModule()],
                 });
 
@@ -231,21 +231,21 @@ const useSendbird = (order_id: string) => {
         // if the user has not created a chat URL for the order yet, create one using p2p_create_chat endpoint
         if (!orderInfo?.chat_channel_url) {
             createChat({
-                order_id,
+                order_id: orderId,
             });
         } else {
             initialiseChat();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [order_id, orderInfo?.chat_channel_url]);
+    }, [orderId, orderInfo?.chat_channel_url]);
 
     return {
+        isChatLoading,
+        isError:
+            isChatError || isErrorChatCreate || isErrorOrderInfo || isErrorServerTime || isErrorSendbirdServiceToken,
         messages,
         refreshChat: initialiseChat,
         sendMessage,
-        isError:
-            isChatError || isErrorChatCreate || isErrorOrderInfo || isErrorServerTime || isErrorSendbirdServiceToken,
-        isChatLoading,
     };
 };
 

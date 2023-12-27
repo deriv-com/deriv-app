@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Text, Popover } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import ApiTokenClipboard from './api-token-clipboard';
 
 type TApiTokenTableRowTokenCell = {
@@ -9,9 +9,9 @@ type TApiTokenTableRowTokenCell = {
 };
 
 const HiddenPasswordDots = () => (
-    <div className='da-api-token__pass-dot-container'>
-        {[...Array(15).keys()].map(el => (
-            <div key={el} className='da-api-token__pass-dot' />
+    <div data-testid='dt_hidden_tokens' className='da-api-token__pass-dot-container'>
+        {Array.from(Array(15).keys()).map(element => (
+            <div key={element} className='da-api-token__pass-dot' />
         ))}
     </div>
 );
@@ -33,15 +33,21 @@ const ApiTokenTableRowTokenCell = ({ token, scopes }: TApiTokenTableRowTokenCell
                 <HiddenPasswordDots />
             )}
             <ApiTokenClipboard
-                info_message={localize('Copy this token')}
-                success_message={localize('Token copied!')}
+                info_message={<Localize i18n_default_text='Copy this token' />}
+                success_message={<Localize i18n_default_text='Token copied!' />}
                 text_copy={token}
                 scopes={scopes}
             />
             <Popover
                 alignment='bottom'
                 classNameBubble='dc-clipboard__popover'
-                message={should_show_token ? localize('Hide this token') : localize('Show this token')}
+                message={
+                    should_show_token ? (
+                        <Localize i18n_default_text='Hide this token' />
+                    ) : (
+                        <Localize i18n_default_text='Show this token' />
+                    )
+                }
             >
                 <Icon
                     icon={should_show_token ? 'IcPasswordEyeVisible' : 'IcPasswordEyeHide'}

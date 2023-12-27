@@ -134,6 +134,13 @@ describe('getDocumentData', () => {
             example_format: '081234567F53',
         });
     });
+
+    it('should return default document data for other countries', () => {
+        expect(getDocumentData('uy', 'national_id')).toEqual({
+            new_display_name: '',
+            example_format: '',
+        });
+    });
 });
 
 describe('getRegex', () => {

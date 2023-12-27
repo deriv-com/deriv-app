@@ -99,6 +99,8 @@
         }
 
         &__content {
+            display: flex;
+            flex-direction: column;
             background-color: var(--general-main-1);
             width: calc(100% - var(--sidebar-width));
             position: relative;
@@ -161,6 +163,7 @@
 
             &__description {
                 padding: 1rem 2.4rem;
+
                 @include desktop() {
                     width: 47rem;
                 }
@@ -240,6 +243,7 @@
 
             &--no-footer {
                 max-height: calc(100vh - 22rem) !important;
+
                 @include desktop() {
                     height: 100% !important;
                 }

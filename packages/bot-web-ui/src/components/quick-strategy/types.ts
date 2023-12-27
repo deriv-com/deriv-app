@@ -44,12 +44,8 @@ export type TConfigItem = Partial<{
     hide_without_should_have: boolean;
 }>;
 
-export type TDataGroupedObjectsByTitle = {
+export type TDescriptionItem = Partial<{
     type: string;
-    content: string[];
-};
-
-type TPartialDescriptionItem = Partial<{
     content: string[];
     src: string;
     alt: string;
@@ -59,12 +55,7 @@ type TPartialDescriptionItem = Partial<{
     font_size: string;
     id: number;
 }>;
-
-export type TDescriptionItem = {
-    type: string;
-} & TPartialDescriptionItem;
-
-export type TDescription = TDescriptionItem[] | TDataGroupedObjectsByTitle;
+export type TDescription = TDescriptionItem[] | TDescriptionItem[][];
 
 export type TStrategy = {
     name: string;

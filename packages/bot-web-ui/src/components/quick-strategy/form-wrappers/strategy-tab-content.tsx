@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
-import { TDescriptionItem, TDataGroupedObjectsByTitle } from '../types';
+import { TDescriptionItem, TDescription } from '../types';
 import AccordionStrategyGroup from './accordion-strategy-group';
 import './strategy-accordion.scss';
 
@@ -16,6 +16,11 @@ type TExpandedSubtitlesStorageDefault = {
     [key: string]: boolean;
 };
 
+export type TDataGroupedObjectsByTitle = {
+    type: string;
+    content: string[];
+};
+
 const StrategyTabContent: React.FC<TStrategyDescription> = observer(
     ({ formfields, active_tab, tutorial_selected_strategy }) => {
         const { quick_strategy } = useDBotStore();
@@ -27,7 +32,7 @@ const StrategyTabContent: React.FC<TStrategyDescription> = observer(
         const strategy = STRATEGIES[tutorial_selected_strategy || (selected_strategy as keyof typeof STRATEGIES)];
 
         const makeGroupedObjectsByTitle = () => {
-            return strategy?.description?.reduce((acc: TDescriptionItem[][], obj: TDescriptionItem, idx) => {
+            return strategy?.description?.reduce((acc: TDescription, obj: TDescriptionItem, idx) => {
                 const is_subtitle = obj.type === 'subtitle_italic' || obj.type === 'subtitle';
                 if (is_subtitle) {
                     acc.push([]);
@@ -47,12 +52,12 @@ const StrategyTabContent: React.FC<TStrategyDescription> = observer(
                 if (shouldShowLongDescriptionIntro()) {
                     obj.content?.shift();
                 }
-                acc[acc.length - 1].push({ ...obj, id: idx });
+                (acc[acc.length - 1] as TDescriptionItem[]).push({ ...obj, id: idx });
                 return acc;
             }, []);
         };
 
-        const grouped_objects_by_title = Array.isArray(strategy?.description)
+        const grouped_objects_by_title: TDescription = Array.isArray(strategy?.description)
             ? makeGroupedObjectsByTitle()
             : [{ type: 'text', content: [strategy?.description] }];
 

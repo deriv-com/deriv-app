@@ -7,7 +7,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 
 type TContentData = {
     header: string;
-    content: React.ReactElement[];
+    content: JSX.Element | React.ReactNode[] | null;
 } | null;
 
 type TPartialAccordion = Partial<{

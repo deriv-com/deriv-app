@@ -22,6 +22,7 @@ const VideoOverlay = ({ onClick, is_ended, is_mobile }: TVideoOverlay) => {
                 custom_color='var(--border-normal-1)'
                 size={is_mobile ? 88 : 128}
                 className='player__overlay__icon'
+                data_testid='player_overlay_icon'
             />
         </div>
     );

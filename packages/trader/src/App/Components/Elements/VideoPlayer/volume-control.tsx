@@ -142,19 +142,27 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
                 unmountOnExit
             >
                 <div className='player__volume-bar__wrapper'>
-                    <div className='player__volume-bar' onClick={onRewind} onKeyDown={undefined} ref={volume_bar_ref}>
+                    <div
+                        className='player__volume-bar'
+                        onClick={onRewind}
+                        onKeyDown={undefined}
+                        ref={volume_bar_ref}
+                        data-testid='volume_bar'
+                    >
                         <div
                             className={classNames('player__volume-bar__filled', {
                                 'player__volume-bar__filled--animated': is_animated,
                             })}
                             ref={volume_bar_filled_ref}
                             style={{ height: `${is_muted ? 0 : (volume ?? 0.5) * 100}%` }}
+                            data-testid='volume_bar_filled'
                         >
                             <span
                                 className='player__volume-dot'
                                 onMouseDown={mouseDownHandler}
                                 onDragStart={() => false}
                                 ref={volume_dot_ref}
+                                data-testid='volume_dot'
                             />
                         </div>
                     </div>

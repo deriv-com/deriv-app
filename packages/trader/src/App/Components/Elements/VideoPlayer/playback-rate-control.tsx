@@ -40,7 +40,7 @@ const PlaybackRateControl = ({ onPlaybackRateChange, is_mobile }: TPlaybackRateC
                 onChange={changePlaybackRate}
                 value={playback_speed}
                 should_open_on_hover={!is_mobile}
-                should_scroll_to_selected={is_mobile}
+                should_scroll_to_selected
             />
         </button>
     );

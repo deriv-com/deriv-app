@@ -14,7 +14,7 @@ type TItem = {
     is_align_text_left?: boolean;
     nodes: Map<string, HTMLDivElement | null> | null;
     item: TListItem;
-    setScrollHeigh?: (new_value: number) => void;
+    setScrollHeight?: (new_value: number) => void;
 };
 
 type TItems = Omit<TItem, 'item'> & {
@@ -40,7 +40,7 @@ const Item = ({
     has_symbol,
     is_align_text_left,
     className,
-    setScrollHeigh,
+    setScrollHeight,
 }: TItem) => {
     const item_ref = React.useRef<HTMLDivElement>(null);
     const symbol_type_class_name =
@@ -63,10 +63,10 @@ const Item = ({
     }, [item, nodes, onKeyPressed]);
 
     React.useEffect(() => {
-        if (setScrollHeigh && item_ref?.current && is_selected) {
-            setScrollHeigh(item_ref.current.offsetTop - item_ref.current.scrollHeight);
+        if (setScrollHeight && item_ref?.current && is_selected) {
+            setScrollHeight(item_ref.current.offsetTop - item_ref.current.scrollHeight);
         }
-    }, [item_ref, setScrollHeigh, is_selected]);
+    }, [item_ref, setScrollHeight, is_selected]);
 
     return (
         <div

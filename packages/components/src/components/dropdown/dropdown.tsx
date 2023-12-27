@@ -98,7 +98,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
 
     const [list_dimensions, setListDimensions] = React.useState([initial_offset, 0]);
     const [style, setStyle] = React.useState({});
-    const [scroll_heigh, setScrollHeigh] = React.useState<number>();
+    const [scroll_height, setScrollHeight] = React.useState<number>();
 
     const is_portal = !!portal_id;
 
@@ -196,7 +196,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
                 >
                     <ThemedScrollbars
                         height={list_dimensions[1] || '200px'}
-                        scroll_heigh={scroll_heigh}
+                        scroll_height={scroll_height}
                         should_scroll_to_selected={should_scroll_to_selected}
                     >
                         {Array.isArray(list) ? (
@@ -209,7 +209,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
                                 is_align_text_left={is_align_text_left}
                                 value={value}
                                 nodes={nodes.current}
-                                setScrollHeigh={setScrollHeigh}
+                                setScrollHeight={setScrollHeight}
                             />
                         ) : (
                             Object.keys(list).map((key, idx) => (

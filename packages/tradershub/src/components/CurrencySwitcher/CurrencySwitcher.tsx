@@ -23,7 +23,7 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 
     return (
         <Button
-            className='flex items-center justify-center transition-all border-solid h-1600 py-300 px-800 rounded-200 border-sm border-system-light-less-prominent-text'
+            className='flex items-center justify-center border-solid h-1600 py-300 px-800 rounded-200 border-sm border-system-light-less-prominent-text'
             colorStyle='black'
             onClick={() => {
                 if (isDemo) {

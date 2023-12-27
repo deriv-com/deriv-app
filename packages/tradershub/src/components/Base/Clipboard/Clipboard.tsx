@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useCopyToClipboard, useHover } from 'usehooks-ts';
-import { useBreakpoint } from '@deriv/quill-design';
+import { Button, useBreakpoint } from '@deriv/quill-design';
 import ClipboardIcon from '../../../public/images/clipboard.svg';
 import CheckmarkCircle from '../../../public/images/ic-checkmark-circle.svg';
 import { Tooltip } from '../Tooltip';
+
+type TClipboardProps = {
+    textCopy: string;
+};
 
 /**
  * Props for the Clipboard component.
@@ -14,7 +18,7 @@ import { Tooltip } from '../Tooltip';
  * <Clipboard textCopy="Text to be copied" />
  * ```
  */
-const Clipboard = (textCopy: string) => {
+const Clipboard = ({ textCopy }: TClipboardProps) => {
     const [, copy] = useCopyToClipboard();
     const { isMobile } = useBreakpoint();
     const [isCopied, setIsCopied] = useState(false);
@@ -41,13 +45,9 @@ const Clipboard = (textCopy: string) => {
 
     return (
         <Tooltip alignment='right' isVisible={isHovered && !isMobile} message={isCopied ? 'Copied!' : 'Copy'}>
-            <button
-                className='all-unset rounded-r-md border-l-0 flex items-center justify-center cursor-pointer'
-                onClick={onClick}
-                ref={hoverRef}
-            >
+            <Button colorStyle='white' onClick={onClick} ref={hoverRef} size='sm'>
                 {isCopied ? <CheckmarkCircle /> : <ClipboardIcon />}
-            </button>
+            </Button>
         </Tooltip>
     );
 };

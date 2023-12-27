@@ -68,11 +68,6 @@ export const buildLoaders = (options: TBuildOptions): RuleSetRule[] => {
                     sourceMap: true,
                 },
             },
-            // 'sass-loader',
-            // {
-            //     loader: 'sass-resources-loader',
-            //     options: {},
-            // },
         ],
     };
     const sourceMapLoader = {

@@ -219,7 +219,7 @@
             @include mobile() {
                 margin-bottom: 0;
                 padding-bottom: 1.6rem;
-                max-height: calc(100vh - 12.2rem) !important;
+                max-height: calc(100% - 12.2rem) !important;
             }
             &--no-footer {
                 max-height: calc(100vh - 23rem + var(--footer-height)) !important;

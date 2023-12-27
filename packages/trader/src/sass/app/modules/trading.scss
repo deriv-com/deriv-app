@@ -782,11 +782,17 @@
     }
     .dc-dropdown--left {
         .dc-dropdown__display-text {
-            padding-left: 15px;
-            padding-right: unset;
+            padding-inline-start: 15px;
+            padding-inline-end: unset;
         }
         .dc-dropdown__select-arrow {
-            left: 0.3rem;
+            inset-inline-start: 0.3rem;
+            [dir='rtl'] & {
+                transform: rotate(180deg);
+                &--up {
+                    transform: rotate(0deg);
+                }
+            }
         }
     }
 }

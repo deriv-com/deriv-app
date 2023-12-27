@@ -2,7 +2,6 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import RouteWithSubRoutes from '../route-with-sub-routes';
-import { StoreProvider, mockStore } from '@deriv/stores';
 
 type TMockFunction = {
     path: string;
@@ -30,13 +29,7 @@ const route = {
     path: '/test-path',
 };
 
-const store = mockStore({});
-
-const MockRouteWithSubRoutes = () => (
-    <StoreProvider store={store}>
-        <RouteWithSubRoutes {...route} />
-    </StoreProvider>
-);
+const MockRouteWithSubRoutes = () => <RouteWithSubRoutes {...route} />;
 
 describe('RouteWithSubRoutes component', () => {
     it('should render the "RouteWithSubRoutes" component', () => {

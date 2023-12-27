@@ -22,7 +22,13 @@ export type TValidationItem =
           value: number | string;
       } & ValidationObject);
 
-type TPartialConfigItem = Partial<{
+export type TStrategyDescription = {
+    item: TDescriptionItem;
+    font_size: string;
+};
+
+export type TConfigItem = Partial<{
+    type: string;
     name: keyof TFormData;
     dependencies: string[];
     label: string;
@@ -33,12 +39,10 @@ type TPartialConfigItem = Partial<{
     should_have: {
         key: string;
         value: string | number | boolean;
+        multiple?: Array<string>;
     }[];
+    hide_without_should_have: boolean;
 }>;
-
-export type TConfigItem = {
-    type: string;
-} & TPartialConfigItem;
 
 export type TDataGroupedObjectsByTitle = {
     type: string;
@@ -46,7 +50,6 @@ export type TDataGroupedObjectsByTitle = {
 };
 
 type TPartialDescriptionItem = Partial<{
-    type: string;
     content: string[];
     src: string;
     alt: string;
@@ -54,14 +57,11 @@ type TPartialDescriptionItem = Partial<{
     expanded: boolean;
     no_collapsible: boolean;
     font_size: string;
+    id: number;
 }>;
 
 export type TDescriptionItem = {
-    item: TDataGroupedObjectsByTitle & {
-        className: string;
-        src?: string;
-        alt?: string;
-    };
+    type: string;
 } & TPartialDescriptionItem;
 
 export type TDescription = TDescriptionItem[] | TDataGroupedObjectsByTitle;

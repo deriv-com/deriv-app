@@ -114,6 +114,7 @@
             &__head {
                 @extend .xy-center;
                 padding-bottom: 1rem;
+                width: 47rem;
 
                 @include mobile() {
                     padding: 0 1.6rem 1.6rem;
@@ -226,10 +227,10 @@
         &__container {
             min-height: 10rem;
             // to overwrite the height of the ThemedScrollbar
-            max-height: calc(100vh - 27rem) !important;
+            max-height: calc(100% - 8rem) !important;
 
             @include desktop() {
-                height: calc(100vh - 27rem) !important;
+                height: calc(100% - 8rem) !important;
             }
 
             margin-bottom: 1rem;

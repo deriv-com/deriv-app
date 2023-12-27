@@ -124,7 +124,7 @@ export const REVERSE_MARTINGALE: TDescriptionItem[] = [
     },
     {
         type: 'subtitle_italic',
-        content: [localize('<i>Disclaimer:</i>')],
+        content: [localize('Disclaimer:')],
     },
     {
         type: 'text_italic',

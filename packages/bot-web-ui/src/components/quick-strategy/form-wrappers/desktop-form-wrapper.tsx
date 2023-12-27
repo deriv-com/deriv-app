@@ -93,7 +93,6 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                     </div>
                 </div>
                 <div className='qs__body__content'>
-                    <FormTabs active_tab={activeTab} onChange={handleTabChange} description={strategy?.description} />
                     <ThemedScrollbars
                         className={classNames('qs__form__container', {
                             'qs__form__container--no-footer': activeTab !== 'TRADE_PARAMETERS',
@@ -103,7 +102,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                         <FormTabs
                             active_tab={activeTab}
                             onChange={handleTabChange}
-                            description={strategy?.long_description}
+                            description={strategy?.description}
                         />
                         <StrategyTabContent formfields={children} active_tab={activeTab} />
                     </ThemedScrollbars>

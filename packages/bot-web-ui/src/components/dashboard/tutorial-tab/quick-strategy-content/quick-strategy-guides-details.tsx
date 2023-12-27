@@ -3,8 +3,8 @@ import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { STRATEGIES } from 'Components/quick-strategy/config';
-import StrategyDescription from 'Components/quick-strategy/descriptions/strategy-description';
 import { useDBotStore } from 'Stores/useDBotStore';
+import StrategyTabContent from 'Components/quick-strategy/form-wrappers/strategy-tab-content';
 
 type Tcontent = {
     qs_name: string;
@@ -99,11 +99,7 @@ const QuickStrategyGuidesDetail = observer(
                                 <Localize i18n_default_text={`About ${STRATEGIES[tutorial_selected_strategy].label}`} />
                             </Text>
                         </div>
-                        <div>
-                            {strategy?.long_description?.map((data, index) => (
-                                <StrategyDescription key={index} data={data} font_size={text_size} />
-                            ))}
-                        </div>
+                        <StrategyTabContent tutorial_selected_strategy={tutorial_selected_strategy} />
                     </>
                 )}
             </>

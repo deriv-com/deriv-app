@@ -1,14 +1,8 @@
 import React from 'react';
-import classNames from 'classnames';
-import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { TDescriptionItem, TDescription, TDataGroupedObjectsByTitle } from '../types';
+import { TDescriptionItem, TDescription, TDataGroupedObjectsByTitle, TStrategyDescription } from '../types';
 import Accordion from '../../dashboard/dbot-tours/common/accordion';
-
-type TDescriptionContent = {
-    data: TDataGroupedObjectsByTitle;
-    font_size: string;
-};
+import StrategyDescription from '../descriptions/strategy-description';
 
 type TAccordionStrategyGroupProps = {
     tutorial_selected_strategy?: string;
@@ -17,42 +11,12 @@ type TAccordionStrategyGroupProps = {
     setExpandedSubtitlesStorage: (value: { [key: string]: boolean }) => void;
 };
 
-const DescriptionItem = ({ item, font_size }: TDescriptionItem): React.ReactNode => {
-    const class_name = item?.className ?? '';
-    switch (item.type) {
-        case 'text': {
-            const class_names = classNames(`qs__description__content ${class_name}`);
-            return item?.content?.map((text: string) => (
-                <div className={class_names} key={text}>
-                    <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
-                </div>
-            ));
-        }
-        case 'text_italic': {
-            const class_names = classNames(`qs__description__content italic ${class_name}`);
-            return item?.content?.map((text: string) => (
-                <div className={class_names} key={text}>
-                    <Text size={font_size} dangerouslySetInnerHTML={{ __html: text }} />
-                </div>
-            ));
-        }
-        case 'media':
-            return (
-                <div>
-                    <img className='qs__description__image' src={item.src} alt={item.alt} />
-                </div>
-            );
-        default:
-            return null;
-    }
-};
-
-const DescriptionContent = ({ data, font_size }: TDescriptionContent): React.ReactNode => {
-    const content_data = Array.isArray(data) ? data : (data as unknown as TDescriptionItem[]).slice(1);
+const DescriptionContent = ({ item, font_size }: TStrategyDescription) => {
+    const content_data = Array.isArray(item) ? item : (item as unknown as TDescriptionItem[]).slice(1);
 
     return content_data.map(item => (
         <React.Fragment key={item.id}>
-            <DescriptionItem item={item} font_size={font_size} />
+            <StrategyDescription item={item} font_size={font_size} />
         </React.Fragment>
     ));
 };
@@ -82,7 +46,7 @@ const AccordionStrategyGroup = observer(
                                 key={`accordion-${subtitle_value}`}
                                 content_data={{
                                     header: subtitle_value,
-                                    content: <DescriptionContent data={data} font_size={font_size} />,
+                                    content: <DescriptionContent item={data} font_size={font_size} />,
                                 }}
                                 expanded={!!(data as TDescriptionItem[])[0]?.expanded}
                                 is_cursive={false}

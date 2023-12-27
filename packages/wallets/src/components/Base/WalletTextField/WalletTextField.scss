@@ -63,10 +63,6 @@
         border: 1px solid var(--brand-blue, #85acb0);
     }
 
-    &__box:has(&__field:valid) {
-        border: 1px solid var(--brand-blue, #85acb0);
-    }
-
     &__box:has(&__field:invalid) {
         border: 1px solid var(--status-light-danger, #ec3f3f);
     }

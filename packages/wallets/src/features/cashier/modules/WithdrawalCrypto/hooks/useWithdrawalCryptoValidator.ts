@@ -29,7 +29,7 @@ const useWithdrawalCryptoValidator = (
     };
 
     const validateCryptoInput = (value: string) => {
-        if (!value.length) return;
+        if (!value.length) return 'This field is required.';
 
         const amount = parseFloat(parseFloat(value).toFixed(fractionalDigits.crypto));
 

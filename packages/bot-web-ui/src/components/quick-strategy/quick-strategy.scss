@@ -104,6 +104,8 @@
             background-color: var(--general-main-1);
             width: calc(100% - var(--sidebar-width));
             position: relative;
+            padding: 0.8rem;
+
             @include mobile() {
                 width: 100%;
                 padding: 0;

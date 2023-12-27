@@ -53,7 +53,7 @@ const CurrencySwitcher = () => {
     };
 
     return (
-        <div className='flex items-center justify-between border-solid grow gap-800 h-3600 p-800 rounded-400 border-sm border-system-light-active-background shrink-0'>
+        <div className='flex items-center justify-between border-solid gap-800 h-3600 p-800 rounded-400 border-sm border-system-light-active-background shrink-0'>
             {IconToCurrencyMapper[iconCurrency].icon}
             <div className='flex items-center justify-between grow gap-800'>
                 <div className='flex flex-col justify-center'>

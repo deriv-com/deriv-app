@@ -41,10 +41,13 @@ if [ "$NODE_ENV" = "staging" ]; then
         fi
     fi
 
-    echo "Running commands for staging environment..."
-    message "Uploading source file to Crowdin" &&
-    retry crowdin upload sources --auto-update &&
-    message "Complete, new translations have been uploaded to Crowdin" &&
+    GENERATE_KEY=src/utils/generate-keys.ts
+    if [ -f "$GENERATE_KEY" ]; then
+      message "Uploading source file to Crowdin" &&
+      retry crowdin upload sources --auto-update &&
+      message "Complete, new translations have been uploaded to Crowdin"
+    fi
+
     message "Downloading wallets files from Crowdin (*.json)" &&
     retry crowdin download && rm -rf src/translations/messages.json &&
 

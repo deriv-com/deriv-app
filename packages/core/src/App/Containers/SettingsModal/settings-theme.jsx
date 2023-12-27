@@ -4,9 +4,11 @@ import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import DarkModeIcon from 'Assets/SvgComponents/settings/img-theme-dark.svg';
 import LightModeIcon from 'Assets/SvgComponents/settings/img-theme-light.svg';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 
-const ThemeSelectSettings = ({ is_dark_mode, setDarkMode }) => {
+const ThemeSelectSettings = observer(() => {
+    const { ui } = useStore();
+    const { is_dark_mode, setDarkMode } = ui;
     const darkOnClick = () => {
         setDarkMode(true);
     };
@@ -56,9 +58,6 @@ const ThemeSelectSettings = ({ is_dark_mode, setDarkMode }) => {
             </div>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ ui }) => ({
-    is_dark_mode: ui.is_dark_mode_on,
-    setDarkMode: ui.setDarkMode,
-}))(ThemeSelectSettings);
+export default ThemeSelectSettings;

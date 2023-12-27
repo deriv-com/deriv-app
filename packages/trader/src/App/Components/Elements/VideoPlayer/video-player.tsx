@@ -84,12 +84,8 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
             ((client_X - shift_X - (progress_bar?.getBoundingClientRect().left ?? 0)) /
                 (progress_bar?.getBoundingClientRect().width ?? 0)) *
             100;
-        if (new_width >= 100) {
-            new_width = 100;
-        }
-        if (new_width <= 0) {
-            new_width = 0;
-        }
+        if (new_width >= 100) new_width = 100;
+        if (new_width <= 0) new_width = 0;
 
         return new_width;
     };

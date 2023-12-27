@@ -29,12 +29,9 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
                 (volume_bar?.getBoundingClientRect().height ?? 0)) *
             100;
 
-        if (new_height >= 100) {
-            new_height = 100;
-        }
-        if (new_height <= 0) {
-            new_height = 0;
-        }
+        if (new_height >= 100) new_height = 100;
+        if (new_height <= 0) new_height = 0;
+
         return new_height;
     };
 

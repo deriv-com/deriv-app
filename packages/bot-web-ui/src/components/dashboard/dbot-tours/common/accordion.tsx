@@ -56,7 +56,8 @@ const Accordion = ({
                             'dbot-accordion__navbar--no-event': !no_collapsible,
                         })}
                         data-testid={test_id}
-                        onClick={() => {
+                        onClick={(e: React.MouseEvent) => {
+                            e.preventDefault();
                             setOpen(!should_be_expanded);
                             if (expanded_subtitles_storage && setExpandedSubtitlesStorage) {
                                 setExpandedSubtitlesStorage({

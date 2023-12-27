@@ -57,7 +57,7 @@
         display: flex;
 
         @include desktop() {
-            height: 74rem;
+            height: 72rem;
         }
 
         @include mobile() {
@@ -104,8 +104,6 @@
             background-color: var(--general-main-1);
             width: calc(100% - var(--sidebar-width));
             position: relative;
-            padding: 0.8rem;
-
             @include mobile() {
                 width: 100%;
                 padding: 0;
@@ -114,7 +112,6 @@
             &__head {
                 @extend .xy-center;
                 padding-bottom: 1rem;
-                width: 47rem;
 
                 @include mobile() {
                     padding: 0 1.6rem 1.6rem;
@@ -165,10 +162,6 @@
             &__description {
                 padding: 1rem 2.4rem;
 
-                @include desktop() {
-                    width: 47rem;
-                }
-
                 @include mobile {
                     padding: 1rem;
                 }
@@ -204,13 +197,15 @@
             }
 
             &__footer {
-                width: 100%;
                 height: var(--footer-height);
                 border-top: 1px solid var(--border-divider);
                 @extend .x-center;
                 justify-content: flex-end;
                 padding: 1.6rem 2.4rem;
                 background-color: var(--general-main-1);
+                position: fixed;
+                bottom: 0;
+                width: inherit;
 
                 button {
                     margin-right: 1rem;
@@ -227,10 +222,11 @@
         &__container {
             min-height: 10rem;
             // to overwrite the height of the ThemedScrollbar
-            max-height: calc(100% - 8rem) !important;
+            max-height: calc(100vh - 24rem) !important;
 
             @include desktop() {
-                height: calc(100% - 8rem) !important;
+                height: calc(100vh - 24rem) !important;
+                padding: 1rem;
             }
 
             margin-bottom: 1rem;

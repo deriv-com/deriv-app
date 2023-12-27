@@ -8,7 +8,7 @@ import { getSetting } from 'Utils/settings';
 import ReactJoyrideWrapper from '../common/react-joyride-wrapper';
 import TourEndDialog from '../common/tour-end-dialog';
 import TourStartDialog from '../common/tour-start-dialog';
-import { BOT_BUILDER_TOUR } from '../config';
+import { BOT_BUILDER_TOUR } from '../tour-content';
 import { useTourHandler } from '../hooks/useTourHandler';
 
 const BotBuilderTourDesktop = observer(() => {

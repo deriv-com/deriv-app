@@ -23,20 +23,13 @@ const StrikeParamModal = ({
     name,
     strike_price_list,
 }: TStrikeParamModalProps) => {
-    const [is_popover_open, setIsPopoverOpen] = React.useState(false);
-
-    const handleToggleModal = () => {
-        if (is_popover_open) setIsPopoverOpen(false);
-        toggleModal();
-    };
-
     return (
         <Modal
             className='trade-params dc-modal-header--title-bar'
             is_open={is_open}
             should_header_stick_body={false}
             is_title_centered
-            toggleModal={handleToggleModal}
+            toggleModal={toggleModal}
             height='auto'
             width='calc(100vw - 32px)'
             title={localize('Strike')}
@@ -44,7 +37,6 @@ const StrikeParamModal = ({
             <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
                 <div className='trade-params__vanilla-ic-info-wrapper'>
                     <Popover
-                        is_open={is_popover_open}
                         alignment='bottom'
                         icon='info'
                         id='dt_vanilla-stake__tooltip'
@@ -65,7 +57,6 @@ const StrikeParamModal = ({
                             />
                         }
                         classNameBubble='trade-params--modal-wrapper__content'
-                        onClick={() => setIsPopoverOpen(!is_popover_open)}
                     />
                 </div>
                 <div className={classNames('trade-params__amount-keypad', 'trade-params--mobile-strike')}>

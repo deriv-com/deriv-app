@@ -3,6 +3,7 @@ import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
 import {
+    POIProvider,
     initFormErrorMessages,
     setSharedCFDText,
     setUrlLanguage,
@@ -12,7 +13,6 @@ import {
 import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import WS from 'Services/ws-methods';
-import { MobxContentProvider } from 'Stores/connect';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -43,11 +43,7 @@ const AppWithoutTranslation = ({ root_store }) => {
 
     React.useEffect(() => {
         const loadSmartchartsStyles = () => {
-            if (root_store.client.is_beta_chart) {
-                import('@deriv/deriv-charts-beta/dist/smartcharts.css');
-            } else {
-                import('@deriv/deriv-charts/dist/smartcharts.css');
-            }
+            import('@deriv/deriv-charts/dist/smartcharts.css');
         };
 
         initializeTranslations();
@@ -89,15 +85,17 @@ const AppWithoutTranslation = ({ root_store }) => {
         <>
             {is_translation_loaded ? (
                 <Router basename={has_base ? `/${base}` : null}>
-                    <MobxContentProvider store={root_store}>
+                    <StoreProvider store={root_store}>
                         <APIProvider>
-                            <StoreProvider store={root_store}>
-                                <ExchangeRatesProvider>
-                                    <AppContent passthrough={platform_passthrough} />
-                                </ExchangeRatesProvider>
-                            </StoreProvider>
+                            <POIProvider>
+                                <StoreProvider store={root_store}>
+                                    <ExchangeRatesProvider>
+                                        <AppContent passthrough={platform_passthrough} />
+                                    </ExchangeRatesProvider>
+                                </StoreProvider>
+                            </POIProvider>
                         </APIProvider>
-                    </MobxContentProvider>
+                    </StoreProvider>
                 </Router>
             ) : (
                 <></>

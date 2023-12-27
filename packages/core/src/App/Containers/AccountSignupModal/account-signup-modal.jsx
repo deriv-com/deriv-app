@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
 import { getLocation, SessionStore } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { Analytics } from '@deriv/analytics';
 
 import { WS } from 'Services';
-import { connect } from 'Stores/connect';
-import { Analytics } from '@deriv/analytics';
+import { observer, useStore } from '@deriv/stores';
 
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
@@ -18,7 +18,15 @@ import validateSignupFields from './validate-signup-fields.jsx';
 
 import 'Sass/app/modules/account-signup.scss';
 
-const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, onSignup, residence_list }) => {
+const AccountSignup = ({
+    enableApp,
+    is_mobile,
+    isModalVisible,
+    clients_country,
+    onSignup,
+    residence_list,
+    setIsFromSignupAccount,
+}) => {
     const signupInitialValues = { citizenship: '', password: '', residence: '' };
     const [api_error, setApiError] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -91,6 +99,7 @@ const AccountSignup = ({ enableApp, is_mobile, isModalVisible, clients_country, 
             });
         } else {
             isModalVisible(false);
+            setIsFromSignupAccount(true);
             SessionStore.remove('signup_query_param');
             enableApp();
 
@@ -208,21 +217,22 @@ AccountSignup.propTypes = {
     residence_list: PropTypes.array,
     is_mobile: PropTypes.bool,
     isModalVisible: PropTypes.func,
+    setIsFromSignupAccount: PropTypes.func,
 };
 
-const AccountSignupModal = ({
-    enableApp,
-    disableApp,
-    clients_country,
-    is_loading,
-    is_mobile,
-    is_visible,
-    is_logged_in,
-    logout,
-    onSignup,
-    residence_list,
-    toggleAccountSignupModal,
-}) => {
+const AccountSignupModal = observer(() => {
+    const { ui, client } = useStore();
+    const { onSignup, is_logged_in, residence_list, clients_country, logout } = client;
+    const {
+        is_account_signup_modal_visible: is_visible,
+        toggleAccountSignupModal,
+        enableApp,
+        disableApp,
+        is_loading,
+        is_mobile,
+        setIsFromSignupAccount,
+    } = ui;
+
     React.useEffect(() => {
         // a logged in user should not be able to create a new account
         if (is_visible && is_logged_in) {
@@ -246,35 +256,10 @@ const AccountSignupModal = ({
                 is_mobile={is_mobile}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
+                setIsFromSignupAccount={setIsFromSignupAccount}
             />
         </Dialog>
     );
-};
+});
 
-AccountSignupModal.propTypes = {
-    clients_country: PropTypes.string,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    is_loading: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    logout: PropTypes.func,
-    onSignup: PropTypes.func,
-    residence_list: PropTypes.arrayOf(PropTypes.object),
-    toggleAccountSignupModal: PropTypes.func,
-};
-
-export default connect(({ ui, client }) => ({
-    is_visible: ui.is_account_signup_modal_visible,
-    toggleAccountSignupModal: ui.toggleAccountSignupModal,
-    enableApp: ui.enableApp,
-    disableApp: ui.disableApp,
-    is_loading: ui.is_loading,
-    is_mobile: ui.is_mobile,
-    onSignup: client.onSignup,
-    is_logged_in: client.is_logged_in,
-    residence_list: client.residence_list,
-    clients_country: client.clients_country,
-    logout: client.logout,
-}))(AccountSignupModal);
+export default AccountSignupModal;

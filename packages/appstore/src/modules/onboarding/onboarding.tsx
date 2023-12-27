@@ -16,10 +16,10 @@ type TOnboardingProps = {
         {
             component: React.ReactNode;
             eu_footer_header?: string;
-            eu_mt5_footer_header?: string;
+            eu_non_mt5_footer_header?: string;
             footer_header: string;
             eu_footer_text?: string;
-            eu_mt5_footer_text?: string;
+            eu_non_mt5_footer_text?: string;
             footer_text: string;
             next_content?: string;
             has_next_content: boolean;
@@ -109,10 +109,11 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const eu_footer_header =
         (is_mt5_allowed
             ? contents[onboarding_step]?.eu_footer_header
-            : contents[onboarding_step]?.eu_mt5_footer_header) || footer_header;
+            : contents[onboarding_step]?.eu_non_mt5_footer_header) ?? footer_header;
     const eu_footer_text =
-        (is_mt5_allowed ? contents[onboarding_step]?.eu_footer_text : contents[onboarding_step]?.eu_mt5_footer_text) ||
-        footer_text;
+        (is_mt5_allowed
+            ? contents[onboarding_step]?.eu_footer_text
+            : contents[onboarding_step]?.eu_non_mt5_footer_text) ?? footer_text;
 
     const footer_header_text = is_eu_user ? eu_footer_header : footer_header;
 

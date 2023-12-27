@@ -156,7 +156,7 @@ const useCryptoTransactions = () => {
             /** Formatted transaction hash */
             formatted_transaction_hash: transaction.transaction_hash
                 ? getTruncatedString(transaction.transaction_hash, { type: 'middle' })
-                : 'NA',
+                : 'Pending',
             /** Formatted address hash */
             formatted_address_hash: transaction.address_hash
                 ? getTruncatedString(transaction.address_hash, { type: 'middle' })

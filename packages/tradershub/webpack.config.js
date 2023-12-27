@@ -134,6 +134,22 @@ module.exports = function (env) {
                     include: /public\//,
                     use: svg_loaders,
                 },
+                {
+                    test: /\.(js|jsx|ts|tsx)$/,
+                    exclude: /node_modules/,
+                    use: [
+                        {
+                            loader: 'babel-loader',
+                            options: {
+                                cacheDirectory: true,
+                                rootMode: 'upward',
+                            },
+                        },
+                        {
+                            loader: path.resolve(__dirname, './localize-loader.js'),
+                        },
+                    ],
+                },
             ],
         },
         optimization: {

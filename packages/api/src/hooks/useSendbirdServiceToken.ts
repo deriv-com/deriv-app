@@ -1,6 +1,8 @@
 import useQuery from '../useQuery';
 import useSettings from './useSettings';
 
+const SEVEN_DAYS_MILLISECONDS = 604800000;
+
 /** A custom hook that get Service Token for Sendbird. */
 const useSendbirdServiceToken = () => {
     const { isSuccess } = useSettings();
@@ -10,7 +12,7 @@ const useSendbirdServiceToken = () => {
         },
         options: {
             enabled: isSuccess,
-            staleTime: 604800000, // Sendbird tokens expire 7 days by default
+            staleTime: SEVEN_DAYS_MILLISECONDS, // Sendbird tokens expire 7 days by default
         },
     });
 

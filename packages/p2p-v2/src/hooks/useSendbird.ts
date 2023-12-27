@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAdvertiserInfo, useChatCreate, useOrderInfo, useSendbirdServiceToken, useServerTime } from '@deriv/api';
+import { renameFile } from '@deriv/utils';
 import SendbirdChat, { BaseChannel, User } from '@sendbird/chat';
 import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
-import { BaseMessage, MessageType, MessageTypeFilter, UserMessage } from '@sendbird/chat/message';
+import { BaseMessage, MessageType, MessageTypeFilter } from '@sendbird/chat/message';
 
 const ChatMessageStatus = {
     ERRORED: 'ERRORED',
@@ -18,7 +19,7 @@ type ChatMessage = {
     message?: string;
     messageType: string;
     name?: string;
-    senderUserId: string;
+    senderUserId?: string;
     size?: number;
     status?: keyof typeof ChatMessageStatus;
     url?: string;
@@ -48,7 +49,10 @@ function createChatMessage(sendbirdMessage: BaseMessage): ChatMessage {
         message: sendbirdMessage.isUserMessage() ? sendbirdMessage.message : undefined,
         messageType: sendbirdMessage.messageType,
         name: sendbirdMessage.isFileMessage() ? sendbirdMessage.name : undefined,
-        senderUserId: (sendbirdMessage as UserMessage)?.sender.userId,
+        senderUserId:
+            sendbirdMessage.isUserMessage() || sendbirdMessage.isFileMessage()
+                ? sendbirdMessage.sender?.userId
+                : undefined,
         size: sendbirdMessage.isFileMessage() ? sendbirdMessage.size : undefined,
         url: sendbirdMessage.isFileMessage() ? sendbirdMessage.url : undefined,
     };
@@ -58,6 +62,7 @@ const useSendbird = (orderId: string) => {
     const sendbirdApiRef = useRef<ReturnType<typeof SendbirdChat.init<GroupChannelModule[]>>>();
 
     const [isChatLoading, setIsChatLoading] = useState(false);
+    const [isFileUploading, setIsFileUploading] = useState(false);
     const [isChatError, setIsChatError] = useState(false);
     const [user, setUser] = useState<User | null>(null);
     const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -86,16 +91,13 @@ const useSendbird = (orderId: string) => {
             receivedMessage?.channelUrl === chatChannel?.url &&
             (receivedMessage?.isUserMessage() || receivedMessage?.isFileMessage())
         ) {
-            setMessages([...messages, createChatMessage(receivedMessage)]);
+            setMessages(previousMessages => [...previousMessages, createChatMessage(receivedMessage)]);
         }
-
-        // NOTE: Do not add messages as dependency, this will cause the function to be recreated over and over again
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chatChannel?.url, receivedMessage]);
 
     useEffect(() => {
         onMessageReceived();
-    }, [receivedMessage]);
+    }, [receivedMessage, onMessageReceived]);
 
     const getChannel = async (channelUrl: string) => {
         if (sendbirdApiRef?.current) {
@@ -111,27 +113,30 @@ const useSendbird = (orderId: string) => {
         }
     };
 
-    const getMessages = async (channel: GroupChannel, fromTimestamp?: number) => {
-        const messagesFormatted: ChatMessage[] = [];
-        const timestamp = fromTimestamp || serverTime?.server_time_utc || 0;
+    const getMessages = useCallback(
+        async (channel: GroupChannel, fromTimestamp?: number) => {
+            const messagesFormatted: ChatMessage[] = [];
+            const timestamp = fromTimestamp || serverTime?.server_time_utc || 0;
 
-        const shouldSortFromMostRecent = messages ? messages?.length > 0 : false;
-        const retrievedMessages = await channel.getMessagesByTimestamp(timestamp, {
-            customTypesFilter: [''],
-            isInclusive: false,
-            messageTypeFilter: MessageTypeFilter.ALL,
-            nextResultSize: 0,
-            prevResultSize: 50,
-            reverse: shouldSortFromMostRecent,
-        });
+            const shouldSortFromMostRecent = messages ? messages?.length > 0 : false;
+            const retrievedMessages = await channel.getMessagesByTimestamp(timestamp, {
+                customTypesFilter: [''],
+                isInclusive: false,
+                messageTypeFilter: MessageTypeFilter.ALL,
+                nextResultSize: 0,
+                prevResultSize: 50,
+                reverse: shouldSortFromMostRecent,
+            });
 
-        retrievedMessages.forEach(message => {
-            if (message.isUserMessage() || message.isFileMessage()) {
-                messagesFormatted.push(createChatMessage(message));
-            }
-        });
-        return messagesFormatted;
-    };
+            retrievedMessages.forEach(message => {
+                if (message.isUserMessage() || message.isFileMessage()) {
+                    messagesFormatted.push(createChatMessage(message));
+                }
+            });
+            return messagesFormatted;
+        },
+        [messages, serverTime?.server_time_utc]
+    );
 
     const sendMessage = (message: string) => {
         if (message.trim().length === 0) return;
@@ -147,7 +152,7 @@ const useSendbird = (orderId: string) => {
             status: ChatMessageStatus.PENDING,
         };
 
-        setMessages([...messages, messageToSend]);
+        setMessages(previousMessages => [...previousMessages, messageToSend]);
         chatChannel
             ?.sendUserMessage({
                 data: messageToSendId,
@@ -167,6 +172,33 @@ const useSendbird = (orderId: string) => {
                 };
                 setMessages(previousMessages => previousMessages.toSpliced(idx, 1, errorMessage));
             });
+    };
+
+    const sendFile = (file: File) => {
+        const renamedFile = renameFile(file);
+
+        if (chatChannel) {
+            chatChannel
+                .sendFileMessage({
+                    file: renamedFile,
+                    fileName: file.name,
+                    fileSize: file.size,
+                    mimeType: file.type,
+                })
+                .onPending(() => {
+                    setIsFileUploading(true);
+                })
+                .onSucceeded(sentMessage => {
+                    if (sentMessage.channelUrl === chatChannel.url && sentMessage.isFileMessage()) {
+                        setMessages(previousMessages => [...previousMessages, createChatMessage(sentMessage)]);
+                    }
+                    setIsFileUploading(false);
+                })
+                .onFailed(() => {
+                    setIsChatError(true);
+                    setIsFileUploading(false);
+                });
+        }
     };
 
     const closeChat = () => {
@@ -220,6 +252,7 @@ const useSendbird = (orderId: string) => {
         sendbirdServiceToken,
         advertiserInfo?.chat_user_id,
         orderInfo?.chat_channel_url,
+        getMessages,
     ]);
 
     useEffect(() => {
@@ -236,15 +269,16 @@ const useSendbird = (orderId: string) => {
         } else {
             initialiseChat();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [orderId, orderInfo?.chat_channel_url]);
 
     return {
         isChatLoading,
         isError:
             isChatError || isErrorChatCreate || isErrorOrderInfo || isErrorServerTime || isErrorSendbirdServiceToken,
+        isFileUploading,
         messages,
         refreshChat: initialiseChat,
+        sendFile,
         sendMessage,
     };
 };

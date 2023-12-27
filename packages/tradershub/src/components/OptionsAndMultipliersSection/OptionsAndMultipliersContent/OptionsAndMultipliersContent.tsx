@@ -77,6 +77,10 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     return null;
 };
 
+/**
+ *  `OptionsAndMultipliersContent` is a component that renders the internal deriv trading platforms.
+ * @returns {React.ElementType} The `OptionsAndMultipliersContent` component.
+ */
 const OptionsAndMultipliersContent = () => {
     const { isMobile } = useBreakpoint();
     const { data } = useActiveTradingAccount();

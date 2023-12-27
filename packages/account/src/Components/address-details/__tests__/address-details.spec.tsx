@@ -51,7 +51,6 @@ describe('<AddressDetails/>', () => {
         'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.';
 
     let modal_root_el: HTMLDivElement;
-
     const mock_props: React.ComponentProps<typeof AddressDetails> = {
         getCurrentStep: jest.fn(),
         goToNextStep: jest.fn(),

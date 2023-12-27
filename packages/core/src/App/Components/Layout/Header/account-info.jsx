@@ -5,7 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import { AccountSwitcher } from 'App/Containers/AccountSwitcher';
+import AccountSwitcher from 'App/Containers/AccountSwitcher';
 import AccountSwitcherMobile from 'App/Containers/AccountSwitcher/account-switcher-mobile';
 import AccountInfoWrapper from './account-info-wrapper';
 import AccountInfoIcon from './account-info-icon';
@@ -13,7 +13,7 @@ import DisplayAccountType from './display-account-type';
 
 const AccountInfo = ({
     acc_switcher_disabled_message,
-    account_type,
+    account_type = '',
     balance,
     currency,
     country_standpoint,

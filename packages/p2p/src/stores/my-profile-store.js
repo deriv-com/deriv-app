@@ -87,7 +87,6 @@ export default class MyProfileStore extends BaseStore {
             initial_values: computed,
             payment_method_info: computed,
             payment_methods_list_items: computed,
-            payment_methods_list_values: computed,
             rendered_trade_partners_list: computed,
             trade_partner_dropdown_list: computed,
             getAdvertiserPaymentMethods: action.bound,
@@ -241,14 +240,6 @@ export default class MyProfileStore extends BaseStore {
         });
 
         return list_items;
-    }
-
-    get payment_methods_list_values() {
-        const list = [];
-
-        Object.entries(this.available_payment_methods).forEach(key => list.push(key[0]));
-
-        return list;
     }
 
     /**

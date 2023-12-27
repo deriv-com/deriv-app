@@ -1,15 +1,15 @@
 import path from 'path';
-import { BuildEnv, BuildPaths } from './src/build/types/build-types';
-import { buildWebpackConfig } from './src/build/build-webpack-config';
+import { TBuildEnv, TBuildPaths } from './build/types/build-types';
+import { buildWebpackConfig } from './build/build-webpack-config';
 import { Configuration } from 'webpack';
 
 const isRelease =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
 
-export default (env: BuildEnv) => {
+export default (env: TBuildEnv) => {
     const base = env?.base && env.base !== true ? `/${env.base}/` : '/';
 
-    const paths: BuildPaths = {
+    const paths: TBuildPaths = {
         entry: path.resolve(__dirname, 'src', 'index.tsx'),
         output: path.resolve(__dirname, 'dist'),
         root: path.resolve(__dirname),

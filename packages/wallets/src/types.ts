@@ -6,6 +6,7 @@ import type {
     useAllAccountsList,
     useAllWalletAccounts,
     useAuthentication,
+    useAuthorize,
     useAvailableMT5Accounts,
     useCreateOtherCFDAccount,
     useCreateWallet,
@@ -32,6 +33,7 @@ export namespace THooks {
     export type AccountLimits = NonNullable<ReturnType<typeof useAccountLimits>['data']>;
     export type Authentication = NonNullable<ReturnType<typeof useAuthentication>['data']>;
     export type AvailableMT5Accounts = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number];
+    export type Authorize = NonNullable<ReturnType<typeof useAuthorize>['data']>;
     export type CreateWallet = NonNullable<ReturnType<typeof useCreateWallet>['data']>;
     export type CtraderAccountsList = NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number];
     export type DxtradeAccountsList = NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[number];

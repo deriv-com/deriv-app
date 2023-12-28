@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, Fragment } from 'react';
 import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../components';
@@ -6,7 +6,7 @@ import { getStaticUrl } from '../../../../../helpers/urls';
 import CTrader from '../../../../../public/images/cfd/ctrader.svg';
 import { PlatformDetails } from '../../../constants';
 
-const AddedCTraderAccountsList: React.FC = () => {
+const AddedCTraderAccountsList: FC = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
 
@@ -46,7 +46,7 @@ const AddedCTraderAccountsList: React.FC = () => {
                     {cTraderAccounts
                         ?.filter(account => account.is_virtual === activeTrading?.is_virtual)
                         .map(account => (
-                            <React.Fragment key={`added-ctrader-${account.login}`}>
+                            <Fragment key={`added-ctrader-${account.login}`}>
                                 <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
                                 <Text bold size='sm'>
                                     {account?.formatted_balance}
@@ -54,7 +54,7 @@ const AddedCTraderAccountsList: React.FC = () => {
                                 <Text bold color='primary' size='sm'>
                                     {account.login}
                                 </Text>
-                            </React.Fragment>
+                            </Fragment>
                         ))}
                 </div>
             </TradingAccountCard>

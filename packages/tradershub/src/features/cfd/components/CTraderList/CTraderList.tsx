@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useCtraderAccountsList } from '@deriv/api';
 import { Text } from '@deriv/quill-design';
 import { PlatformDetails } from '../../constants';
 import { AddedCTraderAccountsList, AvailableCTraderAccountsList } from '../../flows/CTrader';
 
-const CTraderList: React.FC = () => {
+const CTraderList: FC = () => {
     const { data } = useCtraderAccountsList();
     const hasCTraderAccount = !!data?.length;
     return (

@@ -8,6 +8,7 @@ import {
     getRegex,
     isDocumentNumberValid,
     isFieldImmutable,
+    isSpecialPaymentMethod,
     preventEmptyClipboardPaste,
     shouldShowIdentityInformation,
     getOnfidoSupportedLocaleCode,
@@ -270,5 +271,23 @@ describe('verifyFields', () => {
 
     it('should return first name, last name and dob in the list when the the error is regarding rejection', () => {
         expect(verifyFields('Expired')).toEqual(['first_name', 'last_name', 'date_of_birth']);
+    });
+});
+
+describe('isSpecialPaymentMethod', () => {
+    it('should return false if payment method icon is IcCreditCard', () => {
+        expect(isSpecialPaymentMethod('IcCreditCard')).toBeFalsy();
+    });
+
+    it('should return true if payment method icon is IcOnlineNaira', () => {
+        expect(isSpecialPaymentMethod('IcOnlineNaira')).toBeTruthy();
+    });
+
+    it('should return true if payment method icon is IcAstroPayLight', () => {
+        expect(isSpecialPaymentMethod('IcAstroPayLight')).toBeTruthy();
+    });
+
+    it('should return true if payment method icon is IcAstroPayDark', () => {
+        expect(isSpecialPaymentMethod('IcAstroPayDark')).toBeTruthy();
     });
 });

@@ -75,7 +75,7 @@ export const buildLoaders = (options: TBuildOptions): RuleSetRule[] => {
                     // Provide path to the file with resources
                     resources: [
                         // eslint-disable-next-line global-require, import/no-dynamic-require
-                        ...require('../../../shared/src/styles/index.js'),
+                        ...require('../../shared/src/styles/index.js'),
                     ],
                 },
             },

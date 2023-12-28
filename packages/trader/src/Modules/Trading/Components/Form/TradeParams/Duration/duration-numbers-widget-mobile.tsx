@@ -69,20 +69,19 @@ const DurationNumbersWidgetMobile = observer(
                 />
             );
 
-            if (parseInt(value as string) < Number(min) || Math.trunc(selected_duration) > Number(max)) {
+            if (
+                Number(value) < Number(min) ||
+                Math.trunc(selected_duration) > Number(max) ||
+                value.toString().length < 1
+            ) {
                 addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
                 setDurationError(true);
                 setHasError(true);
                 return 'error';
-            } else if (parseInt(value as string) > Number(max)) {
+            } else if (Number(value) > Number(max)) {
                 addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
                 setHasError(true);
                 return 'error';
-            } else if (value.toString().length < 1) {
-                addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
-                setDurationError(true);
-                setHasError(true);
-                return false;
             }
 
             setDurationError(false);

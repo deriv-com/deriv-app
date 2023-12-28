@@ -13,7 +13,6 @@ jest.mock('@deriv/components', () => {
 
 jest.mock('../advanced-duration.tsx', () => jest.fn(() => 'MockedAdvancedDuration'));
 jest.mock('../simple-duration.tsx', () => jest.fn(() => 'MockedSimpleDuration'));
-// jest.mock('../duration-toggle.tsx', () => jest.fn(() => 'MockedDurationToggle'));
 jest.mock('App/Components/Form/RangeSlider', () => jest.fn(() => 'MockedRangeSlider'));
 
 describe('<DurationMobile />', () => {

@@ -1,11 +1,12 @@
-import React, { ComponentProps, isValidElement, PropsWithChildren, ReactElement, ReactNode } from 'react';
-import { Text } from '@deriv/quill-design';
+import React, { ComponentProps, isValidElement, PropsWithChildren, ReactNode } from 'react';
+import { qtMerge, Text } from '@deriv/quill-design';
 
 type TProps = {
+    className?: string;
     description: ReactNode;
     descriptionSize?: ComponentProps<typeof Text>['size'];
     icon?: ReactNode;
-    renderButtons?: () => ReactElement<ComponentProps<'div'>> | null;
+    renderButtons?: () => ReactNode;
     title?: string;
     titleSize?: ComponentProps<typeof Text>['size'];
 };
@@ -16,6 +17,7 @@ type TProps = {
  * at the moment of writing this, there are already 3 different patterns use to display ex
  */
 const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
+    className,
     description,
     descriptionSize = 'md',
     icon,
@@ -24,15 +26,26 @@ const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     titleSize = 'md',
 }) => {
     return (
-        <div className='flex p-1500 flex-col items-center gap-1200 w-auto h-auto bg-background-primary-container rounded-200'>
+        <div
+            className={qtMerge([
+                'flex flex-col items-center justify-center gap-1200  w-auto h-auto rounded-200',
+                className,
+            ])}
+        >
             {icon}
-            <div className='flex flex-col gap-400'>
+            <div className='flex flex-col items-center justify-center gap-400'>
                 {title && (
                     <Text bold size={titleSize}>
                         {title}
                     </Text>
                 )}
-                {isValidElement(description) ? description : <Text size={descriptionSize}>{description}</Text>}
+                {isValidElement(description) ? (
+                    description
+                ) : (
+                    <Text className='text-center' size={descriptionSize}>
+                        {description}
+                    </Text>
+                )}
             </div>
             {renderButtons?.()}
         </div>

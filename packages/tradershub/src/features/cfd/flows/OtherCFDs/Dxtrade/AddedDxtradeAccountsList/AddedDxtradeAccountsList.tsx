@@ -1,4 +1,4 @@
-import React, { FC, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { useDxtradeAccountsList } from '@deriv/api';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../../components';
@@ -6,7 +6,7 @@ import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/cfd/derivx.svg';
 import { PlatformDetails } from '../../../../constants';
 
-const AddedDxtradeAccountsList: FC = () => {
+const AddedDxtradeAccountsList = () => {
     const { data: dxTradeAccounts } = useDxtradeAccountsList();
 
     const leading = () => (
@@ -31,11 +31,13 @@ const AddedDxtradeAccountsList: FC = () => {
         <div className='flex flex-col gap-y-200'>
             <Button
                 // open transfer modal
+                className='rounded-200'
+                colorStyle='black'
                 variant='secondary'
             >
                 Transfer
             </Button>
-            <Button>Open</Button>
+            <Button className='rounded-200'>Open</Button>
         </div>
     );
 
@@ -48,7 +50,7 @@ const AddedDxtradeAccountsList: FC = () => {
                         <Text bold size='sm'>
                             {account?.display_balance}
                         </Text>
-                        <Text bold color='primary' size='xs'>
+                        <Text color='primary' size='sm'>
                             {account?.login}
                         </Text>
                     </Fragment>

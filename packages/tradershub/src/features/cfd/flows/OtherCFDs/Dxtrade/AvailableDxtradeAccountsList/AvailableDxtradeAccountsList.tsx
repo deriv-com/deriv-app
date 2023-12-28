@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
@@ -24,10 +24,14 @@ const leading = () => {
 };
 
 const trailing = () => {
-    return <Button variant='primary'>Get</Button>;
+    return (
+        <Button className='rounded-200' colorStyle='coral' variant='primary'>
+            Get
+        </Button>
+    );
 };
 
-const AvailableDxtradeAccountsList: FC = () => {
+const AvailableDxtradeAccountsList = () => {
     return (
         <TradingAccountCard leading={leading} trailing={trailing}>
             <div className='flex flex-col flex-grow'>

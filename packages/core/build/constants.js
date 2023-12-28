@@ -43,6 +43,7 @@ const HOISTED_PACKAGES = {
     mobx: path.resolve(__dirname, '../../../node_modules/mobx'),
     'mobx-react': path.resolve(__dirname, '../../../node_modules/mobx-react'),
     '@deriv/api': path.resolve(__dirname, '../node_modules/@deriv/api'),
+    '@deriv/library': path.resolve(__dirname, '../node_modules/@deriv/library'),
     '@deriv/shared': path.resolve(__dirname, '../node_modules/@deriv/shared'),
     '@deriv/components': path.resolve(__dirname, '../node_modules/@deriv/components'),
     '@deriv/translations': path.resolve(__dirname, '../node_modules/@deriv/translations'),

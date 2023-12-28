@@ -20,6 +20,7 @@ const mocked_props: React.ComponentProps<typeof VideoControls> = {
     toggleMute: jest.fn(),
     video_duration: 33,
     volume: 0.5,
+    playback_rate: 1,
 };
 
 const volume_control = 'VolumeControl component';

@@ -5,6 +5,7 @@ import PlaybackRateControl from '../playback-rate-control';
 
 const mocked_props = {
     onPlaybackRateChange: jest.fn(),
+    playback_rate: 1,
 };
 
 const default_selected_item = 'Normal';

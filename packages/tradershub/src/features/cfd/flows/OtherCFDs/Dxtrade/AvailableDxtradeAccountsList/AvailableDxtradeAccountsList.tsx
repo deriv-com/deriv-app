@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/cfd/derivx.svg';
 
-const leadingComponent = () => {
+const leading = () => {
     return (
         <div
             className='cursor-pointer'
@@ -23,20 +23,18 @@ const leadingComponent = () => {
     );
 };
 
-const trailingComponent = () => {
-    return <Button color='primary-light' /* open <DxtradeEnterPasswordModal /> */>Get</Button>;
+const trailing = () => {
+    return <Button variant='primary'>Get</Button>;
 };
 
-const AvailableDxtradeAccountsList: React.FC = () => {
+const AvailableDxtradeAccountsList: FC = () => {
     return (
-        <TradingAccountCard leading={leadingComponent} trailing={trailingComponent}>
-            <div className='flex-grow'>
-                <p>
-                    <Text size='sm' weight='bold'>
-                        Deriv X
-                    </Text>
-                </p>
-                <Text size='xs'>This account offers CFDs on a highly customisable CFD trading platform.</Text>
+        <TradingAccountCard leading={leading} trailing={trailing}>
+            <div className='flex flex-col flex-grow'>
+                <Text bold size='sm'>
+                    Deriv X
+                </Text>
+                <Text size='sm'>This account offers CFDs on a highly customisable CFD trading platform.</Text>
             </div>
         </TradingAccountCard>
     );

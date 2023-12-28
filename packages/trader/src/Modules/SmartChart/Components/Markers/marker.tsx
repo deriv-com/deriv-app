@@ -2,13 +2,41 @@ import { toJS } from 'mobx';
 import React, { useMemo } from 'react';
 import { FastMarker } from 'Modules/SmartChart';
 
+type TContentConfig = {
+    className?: string;
+    label?: string;
+    line_style?: string;
+    spot_className?: string;
+};
+
+export type TMarkerContentConfig = TContentConfig & {
+    align_label?: string;
+    is_value_hidden?: boolean;
+    marker_config?: {
+        [key: string]: {
+            type: string;
+            marker_config: {
+                ContentComponent: React.ComponentType<TMarkerContentConfig> | string;
+                className?: string;
+            };
+            content_config: TContentConfig;
+        };
+    };
+    spot_epoch?: string;
+    spot_count?: number;
+    spot_profit?: string;
+    spot_value?: string;
+    status?: string;
+};
+
 type TChartMarker = {
     marker_config: {
-        ContentComponent: 'div';
+        ContentComponent: React.ComponentType<TMarkerContentConfig> | string;
+        className?: string;
         x: string | number;
-        y: string | number;
+        y: string | number | null;
     };
-    marker_content_props: { className: string };
+    marker_content_props: TMarkerContentConfig;
 };
 type TRef = {
     setPosition: (position: { epoch: number | null; price: number | null }) => void;
@@ -33,10 +61,11 @@ const ChartMarker = ({ marker_config, marker_content_props }: TChartMarker) => {
             }
             ref.setPosition({
                 epoch: +marker_props.x,
-                price: +marker_props.y,
+                price: Number(marker_props.y),
             });
         }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const Component = useMemo(() => ContentComponent, []);
     return (
         <FastMarker markerRef={onRef}>

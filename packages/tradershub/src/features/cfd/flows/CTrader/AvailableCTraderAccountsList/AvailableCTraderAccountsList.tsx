@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../components';
@@ -6,7 +6,7 @@ import { getStaticUrl } from '../../../../../helpers/urls';
 import CTrader from '../../../../../public/images/cfd/ctrader.svg';
 import { PlatformDetails } from '../../../constants';
 
-const AvailableCTraderAccountsList: React.FC = () => {
+const AvailableCTraderAccountsList: FC = () => {
     const { mutate } = useCreateOtherCFDAccount();
     const { data: activeTradingAccount } = useActiveTradingAccount();
 

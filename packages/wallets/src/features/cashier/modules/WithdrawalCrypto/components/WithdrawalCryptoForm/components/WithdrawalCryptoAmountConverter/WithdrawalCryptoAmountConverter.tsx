@@ -22,7 +22,15 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
     const { errors, setValues } = useFormikContext<TWithdrawalForm>();
 
     const onChangeCryptoInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const convertedValue = !errors.cryptoAmount ? getConvertedFiatAmount(e.target.value) : '';
+        const convertedValue = !validateCryptoInput(
+            activeWallet,
+            fractionalDigits,
+            isClientVerified,
+            accountLimits?.remainder ?? 0,
+            e.target.value
+        )
+            ? getConvertedFiatAmount(e.target.value)
+            : '';
 
         setValues(values => ({
             ...values,
@@ -32,7 +40,9 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
     };
 
     const onChangeFiatInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const convertedValue = !errors.fiatAmount ? getConvertedCryptoAmount(e.target.value) : '';
+        const convertedValue = !validateFiatInput(fractionalDigits, e.target.value)
+            ? getConvertedCryptoAmount(e.target.value)
+            : '';
 
         setValues(values => ({
             ...values,

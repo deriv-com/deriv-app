@@ -1,8 +1,7 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, Fragment, useRef } from 'react';
 import { useHover } from 'usehooks-ts';
 import { qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
 import { Clipboard, Tooltip } from '../../../../../components/Base';
-import { useModal } from '../../../../../components/ModalProvider';
 import EditIcon from '../../../../../public/images/ic-edit.svg';
 
 type TMT5TradeDetailsItemProps = {
@@ -16,7 +15,6 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ className, label, 
     const { isDesktop } = useBreakpoint();
     const hoverRef = useRef(null);
     const isHovered = useHover(hoverRef);
-    const { show } = useModal();
     return (
         <div
             className={qtMerge(
@@ -25,17 +23,15 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ className, label, 
             )}
         >
             {variant !== 'info' && (
-                <React.Fragment>
-                    <Text color='less-prominent' size='sm'>
+                <Fragment>
+                    <Text colorStyle='subtle' size='sm'>
                         {label}
                     </Text>
                     <div className='flex items-center space-x-400 pr-400'>
-                        <Text size='sm' weight='bold'>
+                        <Text bold size='sm'>
                             {value}
                         </Text>
-                        {variant === 'clipboard' && (
-                            <Clipboard popoverAlignment='right' successMessage='' textCopy={value} />
-                        )}
+                        {variant === 'clipboard' && <Clipboard textCopy={value} />}
                         {variant === 'password' && (
                             <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>
                                 <div ref={hoverRef}>
@@ -44,10 +40,10 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ className, label, 
                             </Tooltip>
                         )}
                     </div>
-                </React.Fragment>
+                </Fragment>
             )}
             {variant === 'info' && (
-                <Text color='less-prominent' size={isDesktop ? 'sm' : 'md'}>
+                <Text colorStyle='subtle' size={isDesktop ? 'sm' : 'lg'}>
                     {value}
                 </Text>
             )}

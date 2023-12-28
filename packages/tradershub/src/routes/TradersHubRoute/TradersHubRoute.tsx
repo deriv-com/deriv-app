@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { Button, Heading, Text } from '@deriv/quill-design';
 import { OptionsAndMultipliersSection, StaticLink } from '../../components';
 import { CTraderList } from '../../features/cfd/components/CTraderList';
-import { DxtradePasswordModal } from '../../features/cfd/modals';
 
 const TradersHubRoute: FC = () => {
     return (

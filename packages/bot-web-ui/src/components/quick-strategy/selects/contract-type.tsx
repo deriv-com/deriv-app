@@ -1,13 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
+import { Analytics } from '@deriv/analytics';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
-import { Analytics } from '@deriv/analytics';
 
 type TContractTypesItem = {
     text: string;
@@ -16,11 +16,10 @@ type TContractTypesItem = {
 
 type TContractTypes = {
     name: string;
-    fullWidth?: boolean;
     attached?: boolean;
 };
 
-const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, name }) => {
+const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const [list, setList] = React.useState<TContractTypesItem[]>([]);
@@ -47,7 +46,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
     };
 
     React.useEffect(() => {
-        if (tradetype && symbol) {
+        if (tradetype && symbol && selected !== '') {
             const getContractTypes = async () => {
                 const { contracts_for } = ApiHelpers.instance;
                 const categories = await contracts_for.getContractTypes(tradetype);
@@ -62,7 +61,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
             getContractTypes();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [symbol, tradetype]);
+    }, [symbol, tradetype, selected]);
 
     const handleChange = (value: string) => {
         setFieldValue?.(name, value);
@@ -72,18 +71,14 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
     const key = `qs-contract-type-${name}`;
 
     return (
-        <div
-            className={classNames('qs__form__field no-top-border-radius no-top-spacing', {
-                'full-width': fullWidth,
-            })}
-        >
+        <div className='qs__form__field qs__form__field__input no-top-spacing'>
             <Field name={name} key={key} id={key}>
                 {({ field }: FieldProps) => {
-                    const selected_item = list?.find(item => item.value === field.value);
+                    const selected_item = list?.find((item: TContractTypesItem) => item.value === field.value);
                     if (is_mobile) {
                         return (
                             <ul className='qs__form__field__list' data-testid='dt-qs-contract-types'>
-                                {list.map(item => {
+                                {list.map((item: TContractTypesItem) => {
                                     const is_active = selected_item?.value === item.value;
                                     return (
                                         <li
@@ -108,6 +103,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ fullWidth = false, n
                     return (
                         <Autocomplete
                             {...field}
+                            readOnly
                             inputMode='none'
                             data-testid='qs_autocomplete_contract_type'
                             autoComplete='off'

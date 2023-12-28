@@ -1,6 +1,5 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
 import { scrollWorkspace } from '@deriv/bot-skeleton';
-import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 export default class ToolboxStore {
@@ -98,7 +97,7 @@ export default class ToolboxStore {
         const block_canvas_rect = workspace.svgBlockCanvas_?.getBoundingClientRect(); // eslint-disable-line
 
         if (Math.round(block_canvas_rect?.left) <= toolbox_width) {
-            const scroll_distance = isMobile()
+            const scroll_distance = this.core.ui.is_mobile
                 ? toolbox_width - block_canvas_rect.left + 20
                 : toolbox_width - block_canvas_rect.left + 36;
             scrollWorkspace(workspace, scroll_distance, true, false);

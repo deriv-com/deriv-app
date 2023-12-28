@@ -81,7 +81,6 @@ export default class ClientStore extends BaseStore {
     has_enabled_two_fa = false;
     has_changed_two_fa = false;
     landing_companies = {};
-    is_beta_chart = false;
 
     // All possible landing companies of user between all
     standpoint = {
@@ -389,8 +388,6 @@ export default class ClientStore extends BaseStore {
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
-            is_beta_chart: observable,
-            setIsBetaChart: action.bound,
         });
 
         reaction(
@@ -424,8 +421,6 @@ export default class ClientStore extends BaseStore {
             () => !this.is_logged_in && this.root_store.ui && this.root_store.ui.is_real_acc_signup_on,
             () => this.root_store.ui.closeRealAccountSignup()
         );
-
-        this.setIsBetaChart();
     }
 
     get balance() {
@@ -974,15 +969,11 @@ export default class ClientStore extends BaseStore {
     }
 
     isMT5Allowed = landing_companies => {
-        // default allowing mt5 to true before landing_companies gets populated
-        // since most clients are allowed to use mt5
-        if (!landing_companies || !Object.keys(landing_companies).length) return true;
-
-        if (!this.mt5_login_list.some(acc => acc.market_type === 'synthetic')) {
-            if (this.country_standpoint.is_belgium || this.country_standpoint.is_france) return false;
-        }
-
-        return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
+        return (
+            'mt_financial_company' in landing_companies ||
+            'mt_gaming_company' in landing_companies ||
+            'mt_all_company' in landing_companies
+        );
     };
 
     isDxtradeAllowed = landing_companies => {
@@ -1910,6 +1901,13 @@ export default class ClientStore extends BaseStore {
             if (this.accounts[obj_balance.loginid].is_virtual) {
                 this.root_store.notifications.resetVirtualBalanceNotification(obj_balance.loginid);
             }
+
+            //temporary workaround to sync this.loginid with selected wallet loginid
+            if (window.location.pathname.includes(routes.wallets_cashier)) {
+                this.resetLocalStorageValues(localStorage.getItem('active_loginid') ?? this.loginid);
+                return;
+            }
+
             this.resetLocalStorageValues(this.loginid);
         }
     }
@@ -2644,22 +2642,4 @@ export default class ClientStore extends BaseStore {
 
         return is_p2p_visible;
     }
-
-    setIsBetaChart = () => {
-        const website_status = Cookies.get('website_status');
-        if (!website_status) return;
-
-        try {
-            const cookie_value = JSON.parse(website_status);
-
-            if (cookie_value && cookie_value.clients_country) {
-                const client_country = cookie_value.clients_country;
-                /// Show beta chart only for these countries
-                this.is_beta_chart = ['ke', 'in', 'pk'].includes(client_country);
-            }
-        } catch {
-            this.is_beta_chart = false;
-        }
-    };
 }
-/* eslint-enable */

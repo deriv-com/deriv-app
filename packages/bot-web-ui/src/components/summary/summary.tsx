@@ -1,8 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { ThemedScrollbars } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import SummaryCard from './summary-card';
 
@@ -11,11 +10,11 @@ type TSummary = {
 };
 
 const Summary = observer(({ is_drawer_open }: TSummary) => {
+    const { ui } = useStore();
     const { dashboard, summary_card } = useDBotStore();
     const { is_contract_loading, contract_info } = summary_card;
     const { active_tour } = dashboard;
-
-    const is_mobile = isMobile();
+    const { is_mobile } = ui;
     return (
         <div
             className={classnames({

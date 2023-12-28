@@ -81,7 +81,7 @@ export const getTradingHubContents = (): TTradingHubContents => ({
             'These are the trading accounts available to you. You can click on an account’s icon or description to find out more.'
         ),
         eu_non_mt5_footer_text: localize(
-            'This is the trading accounts available to you. You can click on an account’s icon or description to find out more.'
+            'This is the trading account available to you. You can click on an account’s icon or description to find out more.'
         ),
         has_next_content: false,
     },
@@ -145,8 +145,10 @@ export const getTradingHubContents = (): TTradingHubContents => ({
                 }}
             />
         ),
-        footer_header: localize('‘Get’ your Deriv account'),
-        footer_text: localize('Click ‘Get’ to create a trading account.'),
+        footer_header: localize('‘Get’ the accounts you want'),
+        eu_non_mt5_footer_header: localize('‘Get’ your Deriv account'),
+        footer_text: localize('Click the ‘Get’ button to create an account'),
+        eu_non_mt5_footer_text: localize('Click ‘Get’ to create a trading account.'),
         has_next_content: false,
     },
     step5: {

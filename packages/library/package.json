@@ -1,0 +1,14 @@
+{
+    "name": "@deriv/library",
+    "private": true,
+    "version": "1.0.0",
+    "main": "src/index.ts",
+    "dependencies": {
+        "@deriv/quill-design": "^1.3.2",
+        "@deriv/quill-icons": "^1.0.10",
+        "react": "^17.0.2"
+    },
+    "devDependencies": {
+        "typescript": "^4.6.3"
+    }
+}

@@ -17,7 +17,7 @@ type TMenuLink = {
     link_to: string;
     onClickLink: () => void;
     suffix_icon: string;
-    text: string;
+    text: string | React.ReactElement;
 };
 
 const MenuLink = observer(

@@ -1,15 +1,16 @@
 import classNames from 'classnames';
 import React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import {
-    useOnrampVisible,
     useAccountTransferVisible,
-    useIsP2PEnabled,
-    usePaymentAgentTransferVisible,
     useFeatureFlags,
+    useIsP2PEnabled,
+    useIsPasskeySupported,
+    useOnrampVisible,
+    usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
-import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
+import { getStaticUrl, PlatformContext, removePasskeysFromRoutesMobile, routes, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
@@ -27,6 +28,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const {
         disableApp,
         enableApp,
+        is_mobile,
         is_mobile_language_menu_open,
         is_dark_mode_on: is_dark_mode,
         setDarkMode: toggleTheme,
@@ -55,34 +57,39 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { data: is_p2p_enabled } = useIsP2PEnabled();
 
+    const { is_passkey_supported, is_loading } = useIsPasskeySupported();
+    const { is_passkeys_enabled } = React.useContext(PlatformContext);
+
+    const { pathname: route } = useLocation();
+
+    const is_trading_hub_category =
+        route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
+
     const liveChat = useLiveChat(false, loginid);
     const [is_open, setIsOpen] = React.useState(false);
     const [transitionExit, setTransitionExit] = React.useState(false);
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
     const [is_submenu_expanded, expandSubMenu] = React.useState(false);
 
-    const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
     const history = useHistory();
     const { is_next_wallet_enabled } = useFeatureFlags();
 
+    const should_remove_passkeys_route = !is_passkeys_enabled || !is_mobile || !is_passkey_supported;
+
     React.useEffect(() => {
         const processRoutes = () => {
-            const routes_config = getRoutesConfig({ is_appstore });
+            if (is_loading) return;
+            let routes_config = getRoutesConfig({});
+
+            if (should_remove_passkeys_route) {
+                routes_config = removePasskeysFromRoutesMobile(routes_config);
+            }
             let primary_routes = [];
 
             const location = window.location.pathname;
 
-            if (is_appstore) {
-                primary_routes = [
-                    routes.my_apps,
-                    routes.explore,
-                    routes.wallets,
-                    routes.platforms,
-                    routes.trade_types,
-                    routes.markets,
-                ];
-            } else if (location === routes.traders_hub || is_trading_hub_category) {
+            if (location === routes.traders_hub || is_trading_hub_category) {
                 primary_routes = [routes.account, routes.cashier];
             } else if (location === routes.wallets || is_next_wallet_enabled) {
                 primary_routes = [routes.reports, routes.account];
@@ -97,7 +104,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
 
         return () => clearTimeout(timeout.current);
-    }, [is_appstore, account_status, should_allow_authentication, is_trading_hub_category, is_next_wallet_enabled]);
+    }, [
+        account_status,
+        should_allow_authentication,
+        is_trading_hub_category,
+        is_next_wallet_enabled,
+        should_remove_passkeys_route,
+        is_loading,
+    ]);
 
     const toggleDrawer = React.useCallback(() => {
         if (is_mobile_language_menu_open) setMobileLanguageMenuOpen(false);
@@ -232,23 +246,13 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         );
     };
 
-    const { pathname: route } = useLocation();
-
-    const is_trading_hub_category =
-        route.startsWith(routes.traders_hub) || route.startsWith(routes.cashier) || route.startsWith(routes.account);
-
     return (
         <React.Fragment>
             <a id='dt_mobile_drawer_toggle' onClick={toggleDrawer} className='header__mobile-drawer-toggle'>
-                <Icon
-                    icon={is_appstore && !is_logged_in ? 'IcHamburgerWhite' : 'IcHamburger'}
-                    width='16px'
-                    height='16px'
-                    className='header__mobile-drawer-icon'
-                />
+                <Icon icon={'IcHamburger'} width='16px' height='16px' className='header__mobile-drawer-icon' />
             </a>
             <MobileDrawer
-                alignment={is_appstore ? 'right' : 'left'}
+                alignment={'left'}
                 icon_class='header__menu-toggle'
                 is_open={is_open}
                 transitionExit={transitionExit}
@@ -263,13 +267,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             >
                 <Div100vhContainer height_offset='40px'>
                     <div className='header__menu-mobile-body-wrapper'>
-                        {is_appstore && (
-                            <MobileDrawer.Body>
-                                {primary_routes_config.map((route_config, idx) =>
-                                    getRoutesWithSubMenu(route_config, idx)
-                                )}
-                            </MobileDrawer.Body>
-                        )}
                         <React.Fragment>
                             {!is_trading_hub_category && (
                                 <MobileDrawer.SubHeader

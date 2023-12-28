@@ -1,7 +1,7 @@
 /** Add types that are shared between components */
 import React from 'react';
 import { Authorize, GetFinancialAssessment, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 import { AUTH_STATUS_CODES, MT5_ACCOUNT_STATUS, Platforms } from '@deriv/shared';
 
 export type TToken = {
@@ -66,7 +66,7 @@ export type TRoute = {
     icon?: string;
     default?: boolean;
     to?: string;
-    component?: ((routes?: TRoute[]) => JSX.Element) | typeof Redirect;
+    component?: React.ComponentType<RouteComponentProps> | React.ComponentType<Record<string, never>> | typeof Redirect;
     getTitle?: () => string;
     is_disabled?: boolean;
     subroutes?: TRoute[];

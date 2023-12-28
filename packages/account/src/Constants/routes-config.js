@@ -13,6 +13,7 @@ import {
     LanguageSettings,
     LoginHistory,
     Passwords,
+    Passkeys,
     PersonalDetails,
     ProofOfAddress,
     ProofOfIdentity,
@@ -114,6 +115,11 @@ const initRoutesConfig = () => [
                         path: routes.passwords,
                         component: Passwords,
                         getTitle: () => localize('Email and passwords'),
+                    },
+                    {
+                        path: routes.passkeys,
+                        component: Passkeys,
+                        getTitle: () => localize('Passkeys'),
                     },
                     {
                         path: routes.self_exclusion,

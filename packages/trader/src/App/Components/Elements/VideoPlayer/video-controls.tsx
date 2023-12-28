@@ -21,6 +21,7 @@ type TVideoControls = {
     progress_bar_filled_ref: React.RefObject<HTMLDivElement>;
     progress_bar_ref: React.RefObject<HTMLDivElement>;
     progress_dot_ref: React.RefObject<HTMLSpanElement>;
+    playback_rate: number;
     show_controls?: boolean;
     togglePlay: (e: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>) => void;
     toggleMute: (new_value: boolean) => void;
@@ -44,6 +45,7 @@ const VideoControls = ({
     progress_bar_filled_ref,
     progress_bar_ref,
     progress_dot_ref,
+    playback_rate,
     show_controls,
     togglePlay,
     toggleMute,
@@ -120,7 +122,11 @@ const VideoControls = ({
                         is_muted={is_muted}
                         toggleMute={toggleMute}
                     />
-                    <PlaybackRateControl onPlaybackRateChange={onPlaybackRateChange} is_mobile={is_mobile} />
+                    <PlaybackRateControl
+                        onPlaybackRateChange={onPlaybackRateChange}
+                        is_mobile={is_mobile}
+                        playback_rate={playback_rate}
+                    />
                 </div>
             </div>
         </div>

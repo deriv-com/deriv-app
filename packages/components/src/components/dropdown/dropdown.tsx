@@ -344,15 +344,10 @@ const Dropdown = ({
     };
 
     const handleVisibility = (e?: React.MouseEvent<HTMLDivElement>) => {
-        if (should_open_on_hover) {
-            if (e?.type === 'mouseover') {
-                setIsListVisible(true);
-                return;
-            } else if (e?.type === 'mouseleave') {
-                setIsListVisible(false);
-                return;
-            }
-        } else if (e?.type === 'mouseover' || e?.type === 'mouseleave') {
+        if (e && ['mouseover', 'mouseleave'].includes(e.type)) {
+            if (!should_open_on_hover) return;
+            if (e?.type === 'mouseover') setIsListVisible(true);
+            else setIsListVisible(false);
             return;
         }
 

@@ -15,15 +15,17 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         (!user_browser.isSafari() || (is_mobile && mobileOSDetect() !== 'iOS' && mobileOSDetect() !== 'unknown')) ??
         true;
 
+    const [current_time, setCurrentTime] = React.useState<number>();
+    const [has_enlarged_dot, setHasEnlargedDot] = React.useState(false);
     const [is_animated, setIsAnimated] = React.useState(true);
     const [is_playing, setIsPlaying] = React.useState(false);
     const [is_ended, setIsEnded] = React.useState(false);
     const [is_muted, setIsMuted] = React.useState(false);
-    const [has_enlarged_dot, setHasEnlargedDot] = React.useState(false);
-    const [current_time, setCurrentTime] = React.useState<number>();
-    const [video_duration, setVideoDuration] = React.useState<number>();
-    const [shift_X, setShiftX] = React.useState(0);
+    const [playback_rate, setPlaybackRate] = React.useState(1);
     const [show_controls, setShowControls] = React.useState(!should_autoplay);
+    const [shift_X, setShiftX] = React.useState(0);
+    const [video_duration, setVideoDuration] = React.useState<number>();
+    const [volume, setVolume] = React.useState(0.5);
 
     const video_ref = React.useRef<StreamPlayerApi>();
     const progress_bar_filled_ref = React.useRef<HTMLDivElement>(null);
@@ -32,18 +34,6 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     const animation_ref = React.useRef(0);
     const timer_ref = React.useRef<ReturnType<typeof setTimeout>>();
     const is_dragging = React.useRef(false);
-
-    const onVolumeChange = (new_value: number) => {
-        if (!video_ref.current) return;
-
-        video_ref.current.volume = new_value;
-    };
-
-    const onPlaybackRateChange = (new_value: number) => {
-        if (!video_ref.current) return;
-
-        video_ref.current.playbackRate = new_value;
-    };
 
     const togglePlay = (
         e:
@@ -171,7 +161,6 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
         setVideoDuration(video_ref.current.duration);
         setIsPlaying(should_autoplay);
-        video_ref.current.volume = 0.5;
     };
 
     const onEnded = () => {
@@ -243,6 +232,8 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
                 width='100%'
                 onEnded={onEnded}
                 onLoadedMetaData={onLoadedMetadata}
+                playbackRate={playback_rate}
+                volume={volume}
             />
             <VideoOverlay
                 onClick={is_mobile && !is_ended ? () => setShowControls(!show_controls) : togglePlay}
@@ -260,16 +251,17 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
                 is_mobile={is_mobile}
                 is_muted={is_muted}
                 onRewind={onRewind}
-                onVolumeChange={onVolumeChange}
-                onPlaybackRateChange={onPlaybackRateChange}
+                onVolumeChange={setVolume}
+                onPlaybackRateChange={setPlaybackRate}
                 show_controls={show_controls}
                 togglePlay={togglePlay}
                 toggleMute={setIsMuted}
                 video_duration={video_duration}
-                volume={video_ref.current?.volume}
+                volume={volume}
                 progress_bar_filled_ref={progress_bar_filled_ref}
                 progress_bar_ref={progress_bar_ref}
                 progress_dot_ref={progress_dot_ref}
+                playback_rate={playback_rate}
             />
         </div>
     );

@@ -2,11 +2,13 @@ import React from 'react';
 import { Dropdown, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-type TPlaybackRateControl = { onPlaybackRateChange: (new_value: number) => void; is_mobile?: boolean };
+type TPlaybackRateControl = {
+    onPlaybackRateChange: (new_value: number) => void;
+    is_mobile?: boolean;
+    playback_rate: number;
+};
 
-const PlaybackRateControl = ({ onPlaybackRateChange, is_mobile }: TPlaybackRateControl) => {
-    const [playback_speed, setPlaybackSpeed] = React.useState('1');
-
+const PlaybackRateControl = ({ onPlaybackRateChange, is_mobile, playback_rate }: TPlaybackRateControl) => {
     const playback_rate_list = [
         { text: '0.25x', value: '0.25' },
         { text: '0.5x', value: '0.5' },
@@ -17,7 +19,6 @@ const PlaybackRateControl = ({ onPlaybackRateChange, is_mobile }: TPlaybackRateC
     ];
 
     const changePlaybackRate = (e: { target: { name: string; value: string } }) => {
-        setPlaybackSpeed(e.target.value);
         onPlaybackRateChange(Number(e.target.value));
     };
 
@@ -38,7 +39,7 @@ const PlaybackRateControl = ({ onPlaybackRateChange, is_mobile }: TPlaybackRateC
                 name='playback_rate'
                 no_border
                 onChange={changePlaybackRate}
-                value={playback_speed}
+                value={`${playback_rate}`}
                 should_open_on_hover={!is_mobile}
                 should_scroll_to_selected
                 should_autohide={false}

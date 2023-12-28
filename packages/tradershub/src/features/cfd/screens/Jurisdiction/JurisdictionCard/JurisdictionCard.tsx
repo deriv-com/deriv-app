@@ -80,7 +80,6 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                                     descriptionClickHandler(description.tag);
                                 }
                             }}
-                            tabIndex={0}
                         >
                             {description.text}{' '}
                         </a>
@@ -107,7 +106,6 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                     !isAdded && onSelect(jurisdiction);
                 }
             }}
-            tabIndex={0}
         >
             <div className='flex flex-col justify-center w-full h-full transition-transform duration-300 px-800 pt-1000 pb-1800 backface-hidden transform-gpu'>
                 {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}

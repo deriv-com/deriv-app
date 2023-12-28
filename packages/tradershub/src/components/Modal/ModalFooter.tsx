@@ -1,18 +1,18 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { qtMerge } from '@deriv/quill-design';
+import { TModalComponents } from './Modal';
 import { ModalFooterClass, TModalFooterClass } from './Modal.classnames';
 
 /**
- * Interface for the ModalFooter component props
- * @interface TModalFooter
- * @extends {TModalFooterClass}
+ * Type for the ModalFooter component props
+ * @typedef TModalFooter
+ * @property {string} [align] - Optional alignment for the footer content. Default is 'right'.
  * @property {ReactNode} children - Children nodes
  * @property {string} [className] - Optional CSS class name
+ * @extends TModalComponents
+ * @extends TModalFooterClass
  */
-export interface TModalFooter extends TModalFooterClass {
-    children: ReactNode;
-    className?: string;
-}
+type TModalFooter = TModalComponents & TModalFooterClass;
 
 /**
  * ModalFooter component

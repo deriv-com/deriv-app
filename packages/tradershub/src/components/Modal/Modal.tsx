@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { qtMerge } from '@deriv/quill-design';
 import ModalContent from './ModalContent';
 import ModalFooter from './ModalFooter';
@@ -21,15 +21,6 @@ type TModalChildren =
  * @typedef TModal
  * @property {TModalChildren | TModalChildren[]} children - Children nodes, should be one of the predefined Modal components (Header, Content, Footer)
  * @property {string} [className] - Optional CSS class name
- *
- * @example
- * ```tsx
- * <Modal className="my-modal">
- *   <Modal.Header>My Modal</Modal.Header>
- *   <Modal.Content>Modal content goes here</Modal.Content>
- *   <Modal.Footer>OK</Modal.Footer>
- * </Modal>
- * ```
  */
 type TModal = {
     children: TModalChildren | TModalChildren[];
@@ -37,21 +28,20 @@ type TModal = {
 };
 
 /**
+ * Generic type for the Modal components
+ * @typedef TModalComponents
+ * @property {ReactNode} children - Children nodes
+ * @property {string} [className] - Optional CSS class name
+ */
+export type TModalComponents = {
+    children: ReactNode;
+    className?: string;
+};
+
+/**
  * Modal component
  * @param {TModal} props - The properties that define the Modal component.
  * @returns {JSX.Element} The Modal component.
- *
- * @example
- * ```tsx
- * <Modal>
- *   <Modal.Header title="Title"/>
- *   <Modal.Content>Modal content goes here</Modal.Content>
- *   <Modal.Footer>
- *      <Button>Primary Action</Button>
- *      <Button variant='secondary'>Secondary Action</Button>
- *   </Modal.Footer>
- * </Modal>
- * ```
  */
 const Modal = ({ children, className }: TModal) => {
     return (

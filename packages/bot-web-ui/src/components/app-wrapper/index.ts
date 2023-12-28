@@ -1,4 +1,4 @@
-import Dashboard from './dashboard';
-import './dashboard.scss';
+import AppWrapper from './app-wrapper';
+import './app-wrapper.scss';
 
-export default Dashboard;
+export default AppWrapper;

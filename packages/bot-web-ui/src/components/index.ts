@@ -1,6 +1,6 @@
+export { default as Chart } from '../tabs/chart';
 export { default as Audio } from './audio';
 export { default as BotNotificationMessages } from './bot-notification-messages';
-export { default as Chart } from './chart';
 export { default as ContractCardLoader } from './contract-card-loading';
 export { default as ContractResultOverlay } from './contract-result-overlay';
 export { default as Download } from './download';

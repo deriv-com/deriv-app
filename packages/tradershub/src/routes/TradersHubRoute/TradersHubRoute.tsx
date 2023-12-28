@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Button, Heading, Text } from '@deriv/quill-design';
 import { OptionsAndMultipliersSection, StaticLink } from '../../components';
+import { CTraderList } from '../../features/cfd/components/CTraderList';
 
 const TradersHubRoute: FC = () => {
     return (
@@ -40,13 +41,8 @@ const TradersHubRoute: FC = () => {
                             <div className='h-4000 rounded-300 bg-solid-slate-100' />
                         </div>
                     </div>
-                    <div>
-                        <Text bold className='pb-800' size='md'>
-                            Deriv cTrader
-                        </Text>
-                        <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                        </div>
+                    <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
+                        <CTraderList />
                     </div>
                     <div>
                         <Text bold className='pb-800' size='md'>

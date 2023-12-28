@@ -2,12 +2,13 @@ import React from 'react';
 import { api_base, ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import BotBuilder from 'Components/dashboard/bot-builder';
-import BotStopped from 'Components/dashboard/bot-stopped';
+import BotBuilder from 'Components/bot-builder';
+import BotStopped from 'Components/app-wrapper/bot-stopped';
 import TransactionDetailsModal from 'Components/transaction-details';
 import GTM from 'Utils/gtm';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from '../components';
+import { Audio, BotNotificationMessages, NetworkToastPopup, RoutePromptDialog } from '../components';
+import AppWrapper from '../components/app-wrapper';
 import BlocklyLoading from '../components/blockly-loading';
 import './app.scss';
 
@@ -116,7 +117,7 @@ const AppContent = observer(() => {
             <div className='bot-dashboard bot'>
                 <Audio />
                 <BotNotificationMessages />
-                <Dashboard />
+                <AppWrapper />
                 <NetworkToastPopup />
                 <BotBuilder />
                 <BotStopped />

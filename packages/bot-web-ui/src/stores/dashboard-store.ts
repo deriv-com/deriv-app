@@ -8,9 +8,9 @@ import {
     TGuideContent,
     TUserGuideContent,
     user_guide_content,
-} from 'Components/dashboard/tutorial-tab/config';
+} from 'Components/app-wrapper/tutorial-tab/config';
 import { clearInjectionDiv } from 'Constants/load-modal';
-import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
+import { setTourSettings, tour_type, TTourType } from '../components/app-wrapper/dbot-tours/utils';
 import RootStore from './root-store';
 
 export interface IDashboardStore {

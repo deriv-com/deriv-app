@@ -53,7 +53,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
             setIsAnimated(true);
         }
 
-        setIsPlaying(prev => !prev);
+        setIsPlaying(!is_playing);
         setIsEnded(false);
     };
 

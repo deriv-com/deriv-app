@@ -43,7 +43,7 @@ describe('<VideoControls />', () => {
         expect(screen.getByText(playback_rate_control)).toBeInTheDocument();
     });
 
-    it('should render drag dot if user mouseover the progress bar and hide it again if user mouseleave', () => {
+    it('should render drag dot on progress bar mouseover event and hide it on mouseleave event', () => {
         render(<VideoControls {...mocked_props} />);
         const progress = screen.getByTestId(progress_bar);
 

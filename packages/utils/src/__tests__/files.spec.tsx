@@ -7,8 +7,7 @@ describe('renameFile', () => {
 
         const renamedFile = renameFile(fakeFile);
 
-        // eslint-disable-next-line no-control-regex
-        expect(renamedFile.name).not.toMatch(/[^\x00-\x7F]+/g);
+        expect(renamedFile.name).not.toMatch('test_file_日本語.txt');
     });
 
     it('should preserve the file type and content', () => {

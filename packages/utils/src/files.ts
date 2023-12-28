@@ -11,7 +11,9 @@ declare global {
  */
 export const renameFile = (file: File) => {
     const new_file = new Blob([file], { type: file.type });
-    // eslint-disable-next-line no-control-regex
-    new_file.name = file.name.replace(/[^\x00-\x7F]+/g, '');
+    new_file.name = file.name
+        .split('')
+        .filter(char => char.charCodeAt(0) >= 32 && char.charCodeAt(0) <= 126)
+        .join('');
     return new_file;
 };

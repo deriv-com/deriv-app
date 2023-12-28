@@ -51,7 +51,7 @@ const marketTypeToDetailsMapper: Record<TPlatforms.All, PlatformDetails> = {
 
 const CFDSuccess = ({ description, marketType, platform, renderButtons }: TProps) => {
     let icon: React.ReactNode;
-    if (platform === 'mt5' && marketType) {
+    if (platform === 'mt5') {
         icon = marketTypeToDetailsMapper[platform][marketType]?.icon;
     } else {
         icon = marketTypeToDetailsMapper[platform].icon;

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api';
 import { TradingAccountCard, WalletError } from '../../../../../components';
 import { WalletButton, WalletText } from '../../../../../components/Base';
@@ -13,6 +14,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
     const { hide, show } = useModal();
     const { error, mutate, status } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { t } = useTranslation();
 
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
 

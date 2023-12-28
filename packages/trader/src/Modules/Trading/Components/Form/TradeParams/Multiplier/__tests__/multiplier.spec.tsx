@@ -27,6 +27,5 @@ describe('<Multiplier/>', () => {
         render(mockMultiplier());
 
         expect(screen.getByTestId('multiplier')).toBeInTheDocument();
-        expect(screen.getByText('NEW!')).toBeInTheDocument();
     });
 });

@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { useAccountLimits, useGetExchangeRate, useTransferBetweenAccounts } from '@deriv/api';
+import { useAccountLimits, useAuthorize, useGetExchangeRate, useTransferBetweenAccounts } from '@deriv/api';
 import type { THooks } from '../../../../../types';
 import { useExtendedTransferAccountProperties, useSortedTransferAccounts } from '../hooks';
 import type { TInitialTransferFormValues } from '../types';
@@ -21,6 +21,7 @@ export type TTransferContext = {
     activeWalletExchangeRates?: THooks.ExchangeRate;
     error: ReturnType<typeof useTransferBetweenAccounts>['error'];
     isLoading: boolean;
+    preferredLanguage: Intl.LocalesArgument;
     receipt?: TReceipt;
     refetchAccountLimits: ReturnType<typeof useAccountLimits>['refetch'];
     refetchExchangeRates: ReturnType<typeof useGetExchangeRate>['refetch'];
@@ -43,12 +44,13 @@ type TProps = {
 };
 
 const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts: transferAccounts, children }) => {
+    const { data: authorizeData, isLoading: isAuthorizeLoading } = useAuthorize();
     const { data, error, isLoading: isTransferAccountsLoading, mutate, mutateAsync } = useTransferBetweenAccounts();
     const {
         accounts,
         activeWallet,
         isLoading: isModifiedAccountsLoading,
-    } = useExtendedTransferAccountProperties(data?.accounts || transferAccounts);
+    } = useExtendedTransferAccountProperties(data?.accounts ?? transferAccounts, authorizeData);
     const [receipt, setReceipt] = useState<TReceipt>();
     const sortedAccounts = useSortedTransferAccounts(accounts);
 
@@ -58,10 +60,12 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
         base_currency: activeWallet?.currency ?? 'USD',
         loginid: activeWallet?.loginid,
     });
+
     const { data: USDExchangeRates, refetch: refetchUSDExchangeRates } = useGetExchangeRate({
         base_currency: 'USD',
         loginid: activeWallet?.loginid,
     });
+
     const refetchExchangeRates = useCallback(() => {
         refetchUSDExchangeRates();
         const updatedActiveWalletExchangeRates = refetchActiveWalletExchangeRates();
@@ -69,7 +73,11 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
         return updatedActiveWalletExchangeRates;
     }, [refetchUSDExchangeRates, refetchActiveWalletExchangeRates]);
 
-    const isLoading = (!data?.accounts && !transferAccounts) || isTransferAccountsLoading || isModifiedAccountsLoading;
+    const isLoading =
+        (!data?.accounts && !transferAccounts) ||
+        isTransferAccountsLoading ||
+        isModifiedAccountsLoading ||
+        isAuthorizeLoading;
 
     const requestTransferAccounts = useCallback(() => mutate({ accounts: 'all' }), [mutate]);
 
@@ -108,8 +116,9 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
 
     const resetTransfer = useCallback(() => {
         setReceipt(undefined);
+        refetchAccountLimits();
         requestTransferAccounts();
-    }, [requestTransferAccounts]);
+    }, [refetchAccountLimits, requestTransferAccounts]);
 
     useEffect(() => {
         if (!transferAccounts) requestTransferAccounts();
@@ -124,6 +133,7 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
                 activeWalletExchangeRates,
                 error,
                 isLoading,
+                preferredLanguage: authorizeData.preferred_language ?? 'en-US',
                 receipt,
                 refetchAccountLimits,
                 refetchExchangeRates,

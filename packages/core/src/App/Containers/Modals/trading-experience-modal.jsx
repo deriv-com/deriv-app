@@ -1,15 +1,16 @@
 import React from 'react';
-import { connect } from 'Stores/connect';
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
+import { observer, useStore } from '@deriv/stores';
 
-const TradingExperienceModal = ({
-    cfd_score,
-    is_trading_experience_incomplete,
-    setShouldShowTradingAssessmentModal,
-    should_show_trading_assessment_modal,
-    setShouldShowTradeAssessmentForm,
-}) => {
+const TradingExperienceModal = observer(() => {
+    const { client, ui } = useStore();
+    const { is_trading_experience_incomplete, cfd_score } = client;
+    const {
+        setShouldShowTradingAssessmentModal,
+        should_show_trading_assessment_modal,
+        setShouldShowTradeAssessmentForm,
+    } = ui;
     React.useEffect(() => {
         setShouldShowTradingAssessmentModal(cfd_score === 0);
     }, []);
@@ -42,12 +43,6 @@ const TradingExperienceModal = ({
             </Modal.Footer>
         </Modal>
     );
-};
+});
 
-export default connect(({ client, ui }) => ({
-    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
-    setShouldShowTradingAssessmentModal: ui.setShouldShowTradingAssessmentModal,
-    should_show_trading_assessment_modal: ui.should_show_trading_assessment_modal,
-    setShouldShowTradeAssessmentForm: ui.setShouldShowTradeAssessmentForm,
-    cfd_score: client.cfd_score,
-}))(TradingExperienceModal);
+export default TradingExperienceModal;

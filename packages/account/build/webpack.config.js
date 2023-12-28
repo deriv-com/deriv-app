@@ -52,7 +52,7 @@ module.exports = function (env) {
             'poi-poa-docs-submitted': 'Components/poi-poa-docs-submitted/poi-poa-docs-submitted',
             'reset-trading-password-modal': 'Components/reset-trading-password-modal',
             'risk-tolerance-warning-modal': 'Components/trading-assessment/risk-tolerance-warning-modal',
-            'self-exclusion': 'Components/self-exclusion',
+            'self-exclusion': 'Sections/Security/SelfExclusion',
             'scrollbars-container': 'Components/scrollbars-container',
             'sent-email-modal': 'Components/sent-email-modal',
             'terms-of-use': 'Components/terms-of-use',

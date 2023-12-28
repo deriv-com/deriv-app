@@ -5,7 +5,7 @@ import clsx from 'clsx';
 // const desktopStyle =
 //     'lg:h-2000 lg:bg-[length:100%_200%] lg:bg-bottom lg:bg-gradient-to-b lg:aria-[current=true]:bg-top';
 
-const StepConnector = ({ isActive }: { isActive: boolean }) => (
+const StepConnector = ({ isActive }: { isActive?: boolean }) => (
     <div
         aria-current={isActive}
         // className={clsx(
@@ -15,8 +15,7 @@ const StepConnector = ({ isActive }: { isActive: boolean }) => (
         // )}
         className='h-2000 bg-solid-coral-700 w-400'
     >
-        {/* {' '} */}
-        Hello world
+        {' '}
     </div>
 );
 

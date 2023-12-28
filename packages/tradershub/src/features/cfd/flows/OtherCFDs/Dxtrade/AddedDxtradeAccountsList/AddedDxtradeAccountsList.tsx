@@ -31,13 +31,13 @@ const AddedDxtradeAccountsList = () => {
         <div className='flex flex-col gap-y-200'>
             <Button
                 // open transfer modal
-                className='rounded-200'
+                className='border-opacity-black-400 rounded-200 px-800'
                 colorStyle='black'
                 variant='secondary'
             >
                 Transfer
             </Button>
-            <Button className='rounded-200'>Open</Button>
+            <Button className='rounded-200 px-800'>Open</Button>
         </div>
     );
 

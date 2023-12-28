@@ -49,50 +49,48 @@ const Accordion = ({
 
     return (
         <div className='dbot-accordion'>
-            <div>
-                {has_subtitle && (
-                    <button
-                        className={classNames('dbot-accordion__navbar', {
-                            'dbot-accordion__navbar--no-event': !no_collapsible,
-                        })}
-                        data-testid={test_id}
-                        onClick={(e: React.MouseEvent) => {
-                            e.preventDefault();
-                            setOpen(!should_be_expanded);
-                            if (expanded_subtitles_storage && setExpandedSubtitlesStorage) {
-                                setExpandedSubtitlesStorage({
-                                    ...expanded_subtitles_storage,
-                                    [accordion_subtitle]: !should_be_expanded,
-                                });
-                            }
-                        }}
-                    >
-                        <div
-                            className={classNames('dbot-accordion__header', {
-                                'dbot-accordion__header--cursive': is_cursive,
-                            })}
-                        >
-                            <Text as='span' size={font_size} weight='bold'>
-                                {localize(header)}
-                            </Text>
-                        </div>
-                        {no_collapsible && (
-                            <div className='dbot-accordion__icon'>
-                                <Icon icon={should_be_expanded ? 'IcMinus' : 'IcAdd'} />
-                            </div>
-                        )}
-                    </button>
-                )}
-                <div
-                    className={classNames('dbot-accordion__content', {
-                        'dbot-accordion__content--open': should_be_expanded,
+            {has_subtitle && (
+                <button
+                    className={classNames('dbot-accordion__navbar', {
+                        'dbot-accordion__navbar--no-event': !no_collapsible,
                     })}
-                    data-testid='accordion-content'
+                    data-testid={test_id}
+                    onClick={(e: React.MouseEvent) => {
+                        e.preventDefault();
+                        setOpen(!should_be_expanded);
+                        if (expanded_subtitles_storage && setExpandedSubtitlesStorage) {
+                            setExpandedSubtitlesStorage({
+                                ...expanded_subtitles_storage,
+                                [accordion_subtitle]: !should_be_expanded,
+                            });
+                        }
+                    }}
                 >
-                    <Text as='span' line_height='s' size={font_size}>
-                        {content}
-                    </Text>
-                </div>
+                    <div
+                        className={classNames('dbot-accordion__header', {
+                            'dbot-accordion__header--cursive': is_cursive,
+                        })}
+                    >
+                        <Text as='span' size={font_size} weight='bold'>
+                            {localize(header)}
+                        </Text>
+                    </div>
+                    {no_collapsible && (
+                        <div className='dbot-accordion__icon'>
+                            <Icon icon={should_be_expanded ? 'IcMinus' : 'IcAdd'} />
+                        </div>
+                    )}
+                </button>
+            )}
+            <div
+                className={classNames('dbot-accordion__content', {
+                    'dbot-accordion__content--open': should_be_expanded,
+                })}
+                data-testid='accordion-content'
+            >
+                <Text as='span' line_height='s' size={font_size}>
+                    {content}
+                </Text>
             </div>
         </div>
     );

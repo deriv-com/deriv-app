@@ -178,7 +178,7 @@
             }
 
             &__form {
-                padding: 0 2.4rem 2.4rem;
+                padding: 0 2.4rem;
 
                 @include mobile() {
                     padding: 0 1.6rem;
@@ -205,9 +205,6 @@
                 justify-content: flex-end;
                 padding: 1.6rem 2.4rem;
                 background-color: var(--general-main-1);
-                position: fixed;
-                bottom: 0;
-                width: inherit;
 
                 button {
                     margin-right: 1rem;
@@ -224,10 +221,10 @@
         &__container {
             min-height: 10rem;
             // to overwrite the height of the ThemedScrollbar
-            max-height: calc(100vh - 24rem) !important;
+            max-height: calc(100vh - 23rem) !important;
 
             @include desktop() {
-                height: calc(100vh - 24rem) !important;
+                height: calc(100vh - 23rem) !important;
                 padding: 1rem;
             }
 

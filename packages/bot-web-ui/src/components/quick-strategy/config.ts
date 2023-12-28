@@ -1,6 +1,6 @@
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
-import { D_ALEMBERT, MARTINGALE, OSCARS_GRIND } from './descriptions';
+import { D_ALEMBERT, MARTINGALE, OSCARS_GRIND, REVERSE_MARTINGALE } from './descriptions';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [
@@ -260,12 +260,13 @@ export const STRATEGIES: TStrategies = {
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, CHECKBOX_MAX_STAKE, MAX_STAKE],
         ],
     },
-    REVERSE_MARINGALE: {
+    REVERSE_MARTINGALE: {
         name: 'reverse_martingale',
         label: localize('Reverse Martingale'),
         description: localize(
             'The Reverse Martingale strategy multiplies the stake by the chosen multiplier after every successful trade. The stake for the next trade will reset to the initial stake after a losing trade. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake.'
         ),
+        long_description: REVERSE_MARTINGALE,
         fields: [
             [
                 LABEL_SYMBOL,

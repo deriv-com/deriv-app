@@ -5,7 +5,6 @@ import {
     isVerificationServiceSupported,
     formatIDVError,
     formatOnfidoError,
-    getOnfidoError,
 } from '../format-response';
 import { LocalStore } from '../../storage';
 import { CONTRACT_TYPES } from '../../contract';

@@ -15,7 +15,7 @@ type TVideoControls = {
     is_playing?: boolean;
     is_mobile?: boolean;
     is_muted?: boolean;
-    onRewind: (e: React.MouseEvent<HTMLDivElement>) => void;
+    onRewind: (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => void;
     onVolumeChange: (new_value: number) => void;
     onPlaybackRateChange: (new_value: number) => void;
     progress_bar_filled_ref: React.RefObject<HTMLDivElement>;
@@ -62,8 +62,9 @@ const VideoControls = ({
             <div
                 className='player__controls__progress-bar'
                 onClick={onRewind}
-                role='button'
+                onKeyDown={onRewind}
                 onMouseOver={() => setIsDragDotVisible(true)}
+                onFocus={() => null}
                 onMouseLeave={() => setIsDragDotVisible(false)}
                 ref={progress_bar_ref}
                 data-testid='dt_progress_bar'

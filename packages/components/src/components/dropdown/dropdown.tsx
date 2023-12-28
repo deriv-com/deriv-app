@@ -465,6 +465,7 @@ const Dropdown = ({
                 ref={wrapper_ref}
                 className={containerClassName()}
                 onMouseOver={handleVisibility}
+                onFocus={() => null}
                 onMouseLeave={handleVisibility}
             >
                 <div

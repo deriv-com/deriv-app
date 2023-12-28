@@ -91,15 +91,16 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
         is_dragging.current = true;
     };
 
-    const onRewind = (e: React.MouseEvent<HTMLDivElement>) => {
+    const onRewind = (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLSpanElement>) => {
         e.preventDefault();
         e.stopPropagation();
 
+        if (e.type === 'keydown') return;
         if ((e.target as HTMLElement).className === 'player__volume-dot') return;
         if (!volume_bar_filled_ref.current) return;
 
         setIsAnimated(false);
-        const new_height = calculateNewHight(e);
+        const new_height = calculateNewHight(e as React.MouseEvent<HTMLDivElement>);
         volume_bar_filled_ref.current.style.setProperty('height', `${new_height}%`);
 
         onVolumeChange(new_height / 100);
@@ -145,7 +146,7 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
                     <div
                         className='player__volume-bar'
                         onClick={onRewind}
-                        role='button'
+                        onKeyDown={onRewind}
                         ref={volume_bar_ref}
                         data-testid='dt_volume_bar'
                     >

@@ -142,17 +142,18 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         if (is_mobile) setHasEnlargedDot(false);
     };
 
-    const onRewind = (e: React.MouseEvent<HTMLDivElement>) => {
+    const onRewind = (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
 
+        if (e.type === 'keydown') return;
         if ((e.target as HTMLElement).className === 'player__progress-dot') return;
         if (!video_ref.current || !progress_bar_filled_ref.current) return;
 
         video_ref.current.pause();
         setIsAnimated(false);
 
-        const new_width = calculateNewWidth(e);
+        const new_width = calculateNewWidth(e as React.MouseEvent<HTMLDivElement>);
 
         progress_bar_filled_ref.current.style.setProperty('width', `${new_width}%`);
         video_ref.current.currentTime = (Number(video_ref.current.duration) * new_width) / 100;

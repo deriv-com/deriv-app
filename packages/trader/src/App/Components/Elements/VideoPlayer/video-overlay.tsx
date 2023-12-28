@@ -15,7 +15,7 @@ const VideoOverlay = ({ onClick, is_ended, is_mobile }: TVideoOverlay) => {
                 'player__overlay--visible': is_ended,
             })}
             onClick={onClick}
-            role='button'
+            onKeyDown={onClick}
         >
             <Icon
                 icon='IcReplay'

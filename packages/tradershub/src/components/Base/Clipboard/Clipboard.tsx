@@ -44,7 +44,7 @@ const Clipboard = ({ textCopy }: TClipboardProps) => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <Tooltip alignment='right' isVisible={isHovered && !isMobile} message={isCopied ? 'Copied!' : 'Copy'}>
+        <Tooltip isVisible={isHovered && !isMobile} message={isCopied ? 'Copied!' : 'Copy'}>
             <Button colorStyle='white' onClick={onClick} ref={hoverRef} size='sm'>
                 {isCopied ? <CheckmarkCircle /> : <ClipboardIcon />}
             </Button>

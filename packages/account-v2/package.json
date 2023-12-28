@@ -12,7 +12,8 @@
     },
     "dependencies": {
         "@deriv/api": "^1.0.0",
-        "@deriv/quill-design": "^1.2.10",
+        "@deriv/quill-design": "^1.3.2",
+        "@deriv/quill-icons": "^1.0.10",
         "clsx": "^2.0.0",
         "formik": "^2.1.4",
         "i18n-iso-countries": "^6.8.0",

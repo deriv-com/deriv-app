@@ -3,6 +3,7 @@ import { ApiHelpers, config as qs_config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { STRATEGIES } from 'Components/quick-strategy/config';
 import { TFormData } from 'Components/quick-strategy/types';
+import { addDynamicBlockToDOM } from 'Utils/xml-dom-quick-strategy';
 import RootStore from './root-store';
 
 export type TActiveSymbol = {
@@ -133,6 +134,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         const selected_strategy = STRATEGIES[this.selected_strategy];
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
         const strategy_dom = Blockly.Xml.textToDom(strategy_xml.default);
+        addDynamicBlockToDOM('PREDICTION', 'last_digit_prediction', trade_type_cat, strategy_dom);
 
         const modifyValueInputs = (key: string, value: number) => {
             const el_value_inputs = strategy_dom?.querySelectorAll(`value[strategy_value="${key}"]`);

@@ -5,10 +5,10 @@ import PropTypes from 'prop-types';
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
 import { getLocation, SessionStore } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { Analytics } from '@deriv/analytics';
 
 import { WS } from 'Services';
-import { connect } from 'Stores/connect';
-import { Analytics } from '@deriv/analytics';
+import { observer, useStore } from '@deriv/stores';
 
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
@@ -220,20 +220,19 @@ AccountSignup.propTypes = {
     setIsFromSignupAccount: PropTypes.func,
 };
 
-const AccountSignupModal = ({
-    enableApp,
-    disableApp,
-    clients_country,
-    is_loading,
-    is_mobile,
-    is_visible,
-    is_logged_in,
-    logout,
-    onSignup,
-    residence_list,
-    toggleAccountSignupModal,
-    setIsFromSignupAccount,
-}) => {
+const AccountSignupModal = observer(() => {
+    const { ui, client } = useStore();
+    const { onSignup, is_logged_in, residence_list, clients_country, logout } = client;
+    const {
+        is_account_signup_modal_visible: is_visible,
+        toggleAccountSignupModal,
+        enableApp,
+        disableApp,
+        is_loading,
+        is_mobile,
+        setIsFromSignupAccount,
+    } = ui;
+
     React.useEffect(() => {
         // a logged in user should not be able to create a new account
         if (is_visible && is_logged_in) {
@@ -261,34 +260,6 @@ const AccountSignupModal = ({
             />
         </Dialog>
     );
-};
+});
 
-AccountSignupModal.propTypes = {
-    clients_country: PropTypes.string,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    is_loading: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    logout: PropTypes.func,
-    onSignup: PropTypes.func,
-    residence_list: PropTypes.arrayOf(PropTypes.object),
-    toggleAccountSignupModal: PropTypes.func,
-    setIsFromSignupAccount: PropTypes.func,
-};
-
-export default connect(({ ui, client }) => ({
-    is_visible: ui.is_account_signup_modal_visible,
-    toggleAccountSignupModal: ui.toggleAccountSignupModal,
-    enableApp: ui.enableApp,
-    disableApp: ui.disableApp,
-    is_loading: ui.is_loading,
-    is_mobile: ui.is_mobile,
-    onSignup: client.onSignup,
-    is_logged_in: client.is_logged_in,
-    residence_list: client.residence_list,
-    clients_country: client.clients_country,
-    logout: client.logout,
-    setIsFromSignupAccount: ui.setIsFromSignupAccount,
-}))(AccountSignupModal);
+export default AccountSignupModal;

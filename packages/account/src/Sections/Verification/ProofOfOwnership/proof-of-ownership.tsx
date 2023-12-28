@@ -5,7 +5,7 @@ import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { AUTH_STATUS_CODES } from '@deriv/shared';
 import ProofOfOwnershipForm from './proof-of-ownership-form';
-import { POONotRequired, POOVerified, POORejetced, POOSubmitted } from '../../../Components/poo/statuses';
+import { POONotRequired, POOVerified, POORejected, POOSubmitted } from '../../../Components/poo/statuses';
 import getPaymentMethodsConfig from '../../../Configs/payment-method-config';
 import { TPaymentMethod, TPaymentMethodIdentifier, TPaymentMethodInfo, TAuthStatusCodes } from '../../../Types';
 
@@ -58,7 +58,7 @@ export const ProofOfOwnership = observer(() => {
     if (status === AUTH_STATUS_CODES.VERIFIED) return <POOVerified />;
     if (status === AUTH_STATUS_CODES.PENDING) return <POOSubmitted />;
     if (status === AUTH_STATUS_CODES.NONE) return <POONotRequired />;
-    if (status === AUTH_STATUS_CODES.REJECTED) return <POORejetced onTryAgain={onTryAgain} />;
+    if (status === AUTH_STATUS_CODES.REJECTED) return <POORejected onTryAgain={onTryAgain} />;
     return <Loading is_fullscreen={false} className='account__initial-loader' />;
 });
 

@@ -3,7 +3,7 @@ import { localize, Localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import FormSubHeader from 'Components/form-sub-header';
 import { RiskToleranceWarningModal, TestWarningModal } from 'Components/trading-assessment';
-import { trading_assessment_questions } from 'Configs/trading-assessment-config';
+import { getTradingAssessmentQuestions } from 'Constants/trading-assessment-questions';
 import {
     DesktopWrapper,
     Dropdown,
@@ -169,7 +169,7 @@ const TradingAssessment = observer(() => {
                                 title={localize('Trading Experience')}
                                 subtitle={localize('All fields are required')}
                             />
-                            {trading_assessment_questions().map(item => {
+                            {getTradingAssessmentQuestions().map(item => {
                                 const form_control = item.form_control;
                                 if (item.field_type === 'radio') {
                                     return (
@@ -217,7 +217,7 @@ const TradingAssessment = observer(() => {
                                     // eslint-disable-next-line no-else-return
                                 } else {
                                     return (
-                                        <div key={form_control}>
+                                        <div key={`${form_control}_dropdown`}>
                                             {item.questions.map(items => {
                                                 const sub_form_control = items.form_control;
                                                 return (

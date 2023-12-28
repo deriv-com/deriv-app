@@ -57,6 +57,7 @@ describe('personal-details-config', () => {
         },
         real_account_signup_target: 'maltainvest',
         account_status: {
+            p2p_poa_required: 0,
             cashier_validation: ['system_maintenance'],
             currency_config: {
                 USD: {

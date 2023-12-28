@@ -1,23 +1,14 @@
 import fs from 'fs';
-
-const parser = require('@babel/parser');
-const traverse = require('@babel/traverse').default;
-const generate = require('@babel/generator').default;
-
-function generateKey(value) {
-    return value
-        ?.split(' ')
-        .map(c => c.charAt(0))
-        .join('');
-}
+import generate from '@babel/generator';
+import { parse } from '@babel/parser';
+import traverse from '@babel/traverse';
+import generateKey from './src/utils/generate-keys';
 
 const messages = new Map();
 const values = new Set();
-let counter = 0;
 
 module.exports = async function (source) {
-    let shouldGen = false;
-    const ast = parser.parse(source, {
+    const ast = parse(source, {
         plugins: ['jsx', 'typescript'],
         sourceType: 'module',
     });
@@ -31,36 +22,40 @@ module.exports = async function (source) {
                     !values.has(path.node.arguments[0].value))
             ) {
                 const value = path.node.arguments[0].value;
-                values.add(value);
-                shouldGen = true;
-                let key = generateKey(path.node.arguments[0].value);
-                if (messages.has(key)) {
-                    key += `-${counter}`;
-                    counter += 1;
+                if (value) {
+                    values.add(value);
+                    const key = generateKey(path.node.arguments[0].value);
+                    if (messages.has(key) && messages.get(key) !== value)
+                        throw new Error(
+                            `Error while generating keys for translations: Key collision detected for strings ${messages.get(
+                                key
+                            )} and ${value}.`
+                        );
+                    path.node.arguments[0] = {
+                        type: 'StringLiteral',
+                        value: key,
+                    };
+                    messages.set(key, value);
                 }
-                path.node.arguments[0] = {
-                    type: 'StringLiteral',
-                    value: key,
-                };
-                messages.set(key, value);
             }
         },
         JSXIdentifier(path) {
             const value = path.parent?.attributes?.find(attr => attr.name?.name === 'defaults')?.value?.value;
-            if (path.node.name === 'Trans' && !values.has(value)) {
+            if (value && path.node.name === 'Trans' && !values.has(value)) {
                 values.add(value);
-                shouldGen = true;
-                let key = generateKey(value);
-                if (messages.has(key)) {
-                    key += `-${counter}`;
-                    counter += 1;
-                }
+                const key = generateKey(value);
+                if (messages.has(key) && messages.get(key) !== value)
+                    throw new Error(
+                        `Error while generating keys for translations: Key collision detected for strings ${messages.get(
+                            key
+                        )} and ${value}.`
+                    );
                 messages.set(key, value);
             }
         },
     });
 
-    if (shouldGen) {
+    if (messages.size > 0) {
         fs.writeFileSync('./src/translations/messages.json', JSON.stringify(Object.fromEntries(messages)));
         return generate(ast).code;
     }

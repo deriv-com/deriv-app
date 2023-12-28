@@ -101,6 +101,7 @@ module.exports = function (env) {
             /^@deriv\/shared\/.+$/,
             /^@deriv\/components\/.+$/,
             /^@deriv\/translations\/.+$/,
+            /^@deriv\/account-v2\/.+$/,
         ],
         target: 'web',
         plugins: plugins(base, false),

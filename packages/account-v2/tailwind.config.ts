@@ -1,5 +1,11 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss';
+import QuillTailwindConfig from '@deriv/quill-design/quill-tailwind/tailwind.config.cjs';
+
+export default {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
-    presets: [require('../../tailwind.config')],
-};
+    presets: [QuillTailwindConfig],
+    theme: {
+        extend: {},
+    },
+    plugins: [],
+} satisfies Config;

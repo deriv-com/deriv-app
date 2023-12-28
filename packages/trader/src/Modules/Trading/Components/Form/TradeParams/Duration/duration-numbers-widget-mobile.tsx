@@ -57,18 +57,16 @@ const DurationNumbersWidgetMobile = observer(
         const { value: duration_unit } = duration_unit_option;
         const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
         const [has_error, setHasError] = React.useState(false);
-
+        const localized_message = (
+            <Localize
+                i18n_default_text='Should be between {{min}} and {{max}}'
+                values={{
+                    min,
+                    max: addComma(max, 0, false),
+                }}
+            />
+        );
         const validateDuration = (value: number | string) => {
-            const localized_message = (
-                <Localize
-                    i18n_default_text='Should be between {{min}} and {{max}}'
-                    values={{
-                        min,
-                        max: addComma(max, 0, false),
-                    }}
-                />
-            );
-
             if (
                 Number(value) < Number(min) ||
                 Math.trunc(selected_duration) > Number(max) ||

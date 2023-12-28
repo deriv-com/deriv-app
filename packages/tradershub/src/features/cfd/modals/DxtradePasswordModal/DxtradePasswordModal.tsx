@@ -48,7 +48,6 @@ const DxtradePasswordModal = () => {
             if (accountType === 'demo') {
                 return (
                     <Button
-                        isFullWidth
                         onClick={() => {
                             hide();
                         }}
@@ -79,16 +78,10 @@ const DxtradePasswordModal = () => {
         if (!isDxtradePasswordNotSet) {
             return (
                 <ButtonGroup>
-                    <Button isFullWidth size='lg' variant='outlined'>
+                    <Button size='lg' variant='outlined'>
                         Forgot password?
                     </Button>
-                    <Button
-                        disabled={!password || isLoading}
-                        isFullWidth
-                        isLoading={isLoading}
-                        onClick={onSubmit}
-                        size='lg'
-                    >
+                    <Button disabled={!password || isLoading} isLoading={isLoading} onClick={onSubmit} size='lg'>
                         Add account
                     </Button>
                 </ButtonGroup>
@@ -147,6 +140,7 @@ const DxtradePasswordModal = () => {
         dxtradePlatform,
         error?.error?.code,
     ]);
+
     if (status === 'error' && error?.error?.code !== 'PasswordError') {
         return <ActionScreen description={error?.error.message} title={error?.error?.code} />;
     }

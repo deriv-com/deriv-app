@@ -129,7 +129,7 @@ export const formatOnfidoError = (status_code: string, errors: Array<TOnfidoErro
 };
 
 export const getOnfidoError = (error: TOnfidoErrorStatus) => {
-    return ONFIDO_ERROR_STATUS[error]?.message ?? ONFIDO_ERROR_STATUS.Default.message;
+    return ONFIDO_ERROR_STATUS[error]?.message ?? '';
 };
 
 export const getIDVError = (error: TIDVErrorStatus) => {

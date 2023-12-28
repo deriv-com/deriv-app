@@ -352,10 +352,4 @@ export const ONFIDO_ERROR_STATUS: TOnfidoErrorStatus = Object.freeze({
         code: 'VisualAuthenticityTemplate',
         message: <Localize i18n_default_text='Your document appears to be invalid.' />,
     },
-    Default: {
-        code: 'Default',
-        message: (
-            <Localize i18n_default_text='Some details on your document appear to be invalid, missing, or unclear.' />
-        ),
-    },
 });

@@ -5,6 +5,7 @@ import {
     isVerificationServiceSupported,
     formatIDVError,
     formatOnfidoError,
+    getOnfidoError,
 } from '../format-response';
 import { LocalStore } from '../../storage';
 import { CONTRACT_TYPES } from '../../contract';
@@ -216,6 +217,10 @@ describe('format-response', () => {
                     'DataValidationExpiryDate',
                 ])
             ).toHaveLength(3);
+        });
+
+        it('should return the rest of error codes if status is not Expired', () => {
+            expect(formatOnfidoError(STATUS_CODES.REJECTED, ['DuplicatedDocument'])).toHaveLength(1);
         });
     });
 });

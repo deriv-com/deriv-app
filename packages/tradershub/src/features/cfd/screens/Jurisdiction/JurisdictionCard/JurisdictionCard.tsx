@@ -75,6 +75,12 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                             className='text-brand-red-light '
                             key={description.text}
                             onClick={descriptionClickHandler(description.tag)}
+                            onKeyDown={event => {
+                                if (event.key === 'Enter') {
+                                    descriptionClickHandler(description.tag);
+                                }
+                            }}
+                            tabIndex={0}
                         >
                             {description.text}{' '}
                         </a>
@@ -96,6 +102,12 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
             onClick={() => {
                 !isAdded && onSelect(jurisdiction);
             }}
+            onKeyDown={event => {
+                if (event.key === 'Enter') {
+                    !isAdded && onSelect(jurisdiction);
+                }
+            }}
+            tabIndex={0}
         >
             <>
                 <div className='flex flex-col justify-center w-full h-full transition-transform duration-300 px-800 pt-1000 pb-1800 backface-hidden transform-gpu'>

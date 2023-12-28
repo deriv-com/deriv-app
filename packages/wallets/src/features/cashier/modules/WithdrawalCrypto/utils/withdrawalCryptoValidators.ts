@@ -39,15 +39,15 @@ const checkIfInvalidInput = (
     const fractionalPartPrecisionRegex = new RegExp(`^\\d{1,${fractionalDigits}}$`);
 
     if (
-        (integerPart && !integerPart.match(isIntegerPartNumberRegex)) ||
+        (integerPart && !isIntegerPartNumberRegex.exec(integerPart)) ||
         numberOfDecimalsPoints > 1 ||
         (numberOfDecimalsPoints === 1 && !fractionalPart) ||
-        (fractionalPart && !fractionalPart.match(isFractionalPartNumberRegex))
+        (fractionalPart && !isFractionalPartNumberRegex.exec(fractionalPart))
     ) {
         return helperMessageMapper.invalidInput;
     }
 
-    if (fractionalPart && !fractionalPart.match(fractionalPartPrecisionRegex))
+    if (fractionalPart && !fractionalPartPrecisionRegex.exec(fractionalPart))
         return helperMessageMapper.decimalPlacesExceeded(fractionalDigits);
 };
 

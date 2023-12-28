@@ -152,9 +152,7 @@ describe('withdrawalCryptoValidator', () => {
             mockValue
         );
 
-        expect(cryptoAmountMessages).toEqual(
-            `The current allowed withdraw amount is 1.0000000 to 9.0000000 ${mockActiveWallet.currency}.`
-        );
+        expect(cryptoAmountMessages).toEqual(`The current allowed withdraw amount is 1.0000000 to 9.0000000 BTC.`);
     });
 
     it('should return "This field is required." if no value is passed to crypto input field', () => {

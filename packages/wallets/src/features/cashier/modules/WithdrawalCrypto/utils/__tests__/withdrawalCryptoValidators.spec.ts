@@ -13,6 +13,7 @@ describe('withdrawalCryptoValidator', () => {
             minimum_withdrawal: 1,
         },
     } as THooks.ActiveWalletAccount;
+
     const mockFractionalDigits = {
         crypto: 7,
         fiat: 2,
@@ -152,9 +153,7 @@ describe('withdrawalCryptoValidator', () => {
         );
 
         expect(cryptoAmountMessages).toEqual(
-            `The current allowed withdraw amount is ${mockActiveWallet.currency_config.minimum_withdrawal.toFixed(
-                mockFractionalDigits.crypto
-            )} to ${mockRemainder.toFixed(mockFractionalDigits.crypto)} ${mockActiveWallet.currency}.`
+            `The current allowed withdraw amount is 1.0000000 to 9.0000000 ${mockActiveWallet.currency}.`
         );
     });
 

@@ -9,7 +9,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import { Audio, BotNotificationMessages, NetworkToastPopup, RoutePromptDialog } from '../components';
 import AppWrapper from '../components/app-wrapper';
 import BlocklyLoading from '../components/blockly-loading';
-import BotBuilder from '../tabs/bot-builder';
+import BotBuilder from '../pages/bot-builder';
 import './app.scss';
 
 const AppContent = observer(() => {

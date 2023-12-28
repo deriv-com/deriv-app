@@ -1,4 +1,4 @@
-export { default as Chart } from '../tabs/chart';
+export { default as Chart } from '../pages/chart';
 export { default as Audio } from './audio';
 export { default as BotNotificationMessages } from './bot-notification-messages';
 export { default as ContractCardLoader } from './contract-card-loading';

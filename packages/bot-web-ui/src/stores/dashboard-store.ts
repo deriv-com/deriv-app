@@ -10,7 +10,7 @@ import {
     TGuideContent,
     TUserGuideContent,
     user_guide_content,
-} from '../tabs/tutorials/config';
+} from '../pages/tutorials/config';
 import RootStore from './root-store';
 
 export interface IDashboardStore {

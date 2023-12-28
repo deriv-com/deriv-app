@@ -89,12 +89,11 @@ const DurationNumbersWidgetMobile = observer(
 
         const setDuration = (duration: string | number) => {
             const on_change_obj: Record<string, string | number> = {};
-            const should_update_object = trade_duration !== Number(duration) || trade_duration_unit !== duration_unit;
             // check for any amount changes from Amount trade params tab before submitting onChange object
             if (!has_amount_error)
                 updateAmountChanges(on_change_obj, stake_value, payout_value, basis_option, trade_basis, trade_amount);
 
-            if (should_update_object) {
+            if (trade_duration !== Number(duration) || trade_duration_unit !== duration_unit) {
                 on_change_obj.duration_unit = duration_unit;
                 on_change_obj.duration = duration;
                 on_change_obj.expiry_type = 'duration';

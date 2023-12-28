@@ -11,7 +11,7 @@ const CTraderList: FC = () => {
         <div className='pb-1200'>
             <Text bold>{PlatformDetails.ctrader.title}</Text>
 
-            <div className='grid grid-cols-3 gap-x-800 gap-y-2400 md:grid-cols-1 md:grid-rows-1'>
+            <div className='grid grid-cols-3 gap-x-800 gap-y-2400 lg:grid-cols-1 lg:grid-rows-1'>
                 {hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />}
             </div>
         </div>

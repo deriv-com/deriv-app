@@ -84,6 +84,7 @@ const WalletTourGuide = () => {
             disableOverlayClose
             floaterProps={{ disableAnimation: true }}
             run={walletsOnboarding === startValue && !isLoading && !isFetching && isSuccess}
+            scrollDuration={0}
             scrollOffset={150}
             steps={tourStepConfig(
                 false,

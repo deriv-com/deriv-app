@@ -1,7 +1,7 @@
 import React, { ComponentProps, CSSProperties, FC, PropsWithChildren, ReactElement } from 'react';
 import classNames from 'classnames';
+import { TGenericSizes } from '../../../types';
 import { Loader } from '../../Loader';
-import { TGenericSizes } from '../types';
 import { WalletText } from '../WalletText';
 import './WalletButton.scss';
 
@@ -9,6 +9,7 @@ type TVariant = 'contained' | 'ghost' | 'outlined';
 type TColor = 'black' | 'primary-light' | 'primary' | 'white';
 
 interface WalletButtonProps {
+    ariaLabel?: ComponentProps<'button'>['aria-label'];
     color?: TColor;
     disabled?: ComponentProps<'button'>['disabled'];
     icon?: ReactElement;
@@ -23,6 +24,7 @@ interface WalletButtonProps {
 }
 
 const WalletButton: FC<PropsWithChildren<WalletButtonProps>> = ({
+    ariaLabel,
     children,
     color = 'primary',
     disabled = false,
@@ -88,7 +90,13 @@ const WalletButton: FC<PropsWithChildren<WalletButtonProps>> = ({
     } as const;
 
     return (
-        <button className={buttonClassNames} disabled={disabled || isLoading} onClick={onClick} type={type}>
+        <button
+            aria-label={ariaLabel}
+            className={buttonClassNames}
+            disabled={disabled || isLoading}
+            onClick={onClick}
+            type={type}
+        >
             {isLoading && (
                 <div className='wallets-button__loader'>
                     <Loader color={isContained ? loaderColorMapper[color] : '#85ACB0'} isFullScreen={false} />

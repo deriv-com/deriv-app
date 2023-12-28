@@ -3,7 +3,7 @@ import { mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TraderProviders from '../../../../../trader-providers';
-import { LocalStore, TRADE_TYPES, WS } from '@deriv/shared';
+import { CONTRACT_TYPES, LocalStore, TRADE_TYPES, WS } from '@deriv/shared';
 import Trade from 'Modules/Trading';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { BrowserRouter } from 'react-router-dom';
@@ -18,7 +18,7 @@ const default_mocked_store = mockStore({
         trade: {
             basis: 'stake',
             basis_list: [{ text: 'Payout', value: 'payout' }],
-            contract_type: 'rise_fall',
+            contract_type: TRADE_TYPES.RISE_FALL,
             is_turbos: false,
             is_vanilla: false,
             onChangeMultiple: jest.fn(),
@@ -31,7 +31,7 @@ const default_mocked_store = mockStore({
             is_trade_enabled: true,
             should_show_active_symbols_loading: false,
             duration: 3,
-            stake_boundary: { [TRADE_TYPES.TURBOS.LONG]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
+            stake_boundary: { [CONTRACT_TYPES.TURBOS.LONG]: { min_stake: 1, max_stake: 10000 } } as ReturnType<
                 typeof useTraderStore
             >['stake_boundary'],
             show_digits_stats: true,
@@ -46,7 +46,7 @@ const default_mocked_store = mockStore({
             setContractTypes: jest.fn(),
             setMobileDigitView: jest.fn(),
             setIsDigitsWidgetActive: jest.fn(),
-            wsSendRequest: jest.fn(() => WS.storage.send([])),
+            wsSendRequest: jest.fn(() => jest.fn()),
             active_symbols: [{ symbol: 'R_10', pip: 2 }] as ActiveSymbols,
         },
     },
@@ -57,7 +57,6 @@ jest.mock('Assets/SvgComponents/launch/ic-chart-launch.svg', () => jest.fn(() =>
 jest.mock('Assets/SvgComponents/launch/ic-chart-launch-dark.svg', () => jest.fn(() => <div>Chart Svg</div>));
 jest.mock('Modules/Trading/Components/Form/form-layout', () => jest.fn(() => <div>Chart Form Layout</div>));
 jest.mock('App/Components/Elements/market-is-closed-overlay', () => jest.fn(() => <div>MarketIsClosedOverlay</div>));
-jest.mock('Modules/SmartChart/index.js', () => ({ SmartChart: jest.fn(() => <div>Smartchart</div>) }));
 
 const renderTradeComponent = () => {
     render(

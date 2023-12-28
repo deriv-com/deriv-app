@@ -36,6 +36,7 @@ describe('useSubscription', () => {
         const { result, waitForNextUpdate } = renderHook(() => useSubscription('p2p_order_info'), { wrapper });
 
         expect(result.current.isLoading).toBe(false);
+        expect(result.current.isIdle).toBe(false);
         expect(result.current.error).toBe(undefined);
         expect(result.current.data?.p2p_order_info).toBe(undefined);
 

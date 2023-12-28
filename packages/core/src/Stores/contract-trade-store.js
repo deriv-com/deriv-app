@@ -1,6 +1,7 @@
 import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS } from 'mobx';
 
 import {
+    CONTRACT_TYPES,
     getAccuBarriersDTraderTimeout,
     getContractTypesConfig,
     isAccumulatorContract,
@@ -14,7 +15,6 @@ import {
     isVanillaContract,
     LocalStore,
     switch_to_tick_chart,
-    CONTRACT_TYPES,
     TRADE_TYPES,
 } from '@deriv/shared';
 

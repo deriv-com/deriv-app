@@ -1,6 +1,6 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { sha256 as SHA256 } from 'sha.js';
+import generateKey from '../utils/generate-keys';
 import DE from './de.json';
 import EN from './en.json';
 import ID from './id.json';
@@ -48,14 +48,6 @@ const resources = {
         translations: MS,
     },
 };
-
-function generateKey(inputString: string) {
-    // Convert the string to an array buffer
-    const key = new SHA256().update(inputString).digest('hex');
-
-    // NOTE: If there are key collisions, increase the substring length
-    return key.substring(0, 8);
-}
 
 i18n.use(initReactI18next).init({
     defaultNS: 'translations',

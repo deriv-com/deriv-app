@@ -14,6 +14,6 @@ export * from './WalletButtonGroup';
 export * from './WalletClipboard';
 export * from './WalletDropdown';
 export * from './WalletLink';
-export * from './WalletPasswordField';
+export * from './WalletPasswordFieldLazy';
 export * from './WalletText';
 export * from './WalletTextField';

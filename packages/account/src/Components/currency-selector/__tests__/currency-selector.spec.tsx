@@ -32,12 +32,12 @@ describe('<CurrencySelector/>', () => {
 
     const fiat_msg =
         'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.';
-    const dxtrade_eu_msg =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs or Deriv X account.';
+    const mt5_cfd_msg =
+        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs account.';
     const dxtrade_non_eu_msg =
         'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real Deriv MT5 or Deriv X account.';
     const mt5_eu =
-        'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real CFDs account.';
+        "Enjoy a seamless trading experience with the selected fiat account. Please note that once you've made your first deposit or created a real CFDs account, your account currency cannot be changed.";
     const mt5_non_eu =
         'You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real Deriv MT5 account.';
 
@@ -319,11 +319,13 @@ describe('<CurrencySelector/>', () => {
                 ...store.client,
                 is_dxtrade_allowed: true,
                 is_mt5_allowed: true,
-                is_eu: true,
+            },
+            traders_hub: {
+                is_eu_user: true,
             },
         };
         renderComponent({ store_config: new_store });
-        runCommonTests(dxtrade_eu_msg);
+        runCommonTests(mt5_eu);
     });
 
     it('should render Fiat currencies when is_mt5_allowed and is_eu are true', () => {
@@ -332,7 +334,9 @@ describe('<CurrencySelector/>', () => {
             client: {
                 ...store.client,
                 is_mt5_allowed: true,
-                is_eu: true,
+            },
+            traders_hub: {
+                is_eu_user: true,
             },
         };
         renderComponent({ store_config: new_store });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
+import { WalletButton, WalletText, WalletPasswordFieldLazy } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
@@ -14,6 +14,7 @@ type TProps = {
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
     password: string;
+    passwordError?: boolean;
     platform: TPlatforms.All;
 };
 
@@ -24,6 +25,7 @@ const EnterPassword: React.FC<TProps> = ({
     onPrimaryClick,
     onSecondaryClick,
     password,
+    passwordError,
     platform,
 }) => {
     const { isDesktop } = useDevice();
@@ -39,16 +41,19 @@ const EnterPassword: React.FC<TProps> = ({
                 <WalletText lineHeight='xl' weight='bold'>
                     Enter your {title} password
                 </WalletText>
-                <WalletText size='sm'>
-                    Enter your {title} password to add a {title} {marketTypeTitle} account.
-                </WalletText>
-                <WalletPasswordField
-                    label={`${title} password`}
-                    onChange={onPasswordChange}
-                    password={password}
-                    shouldDisablePasswordMeter
-                    showMessage={false}
-                />
+                <div className='wallets-enter-password__content'>
+                    <WalletText size='sm'>
+                        Enter your {title} password to add a {title} {marketTypeTitle} account.
+                    </WalletText>
+                    <WalletPasswordFieldLazy
+                        label={`${title} password`}
+                        onChange={onPasswordChange}
+                        password={password}
+                        passwordError={passwordError}
+                        shouldDisablePasswordMeter
+                        showMessage={false}
+                    />
+                </div>
             </div>
             {isDesktop && (
                 <div className='wallets-enter-password__buttons'>
@@ -56,7 +61,7 @@ const EnterPassword: React.FC<TProps> = ({
                         Forgot password?
                     </WalletButton>
                     <WalletButton
-                        disabled={!password || isLoading || !validPassword(password)}
+                        disabled={!password || isLoading || !validPassword(password) || passwordError}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

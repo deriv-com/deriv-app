@@ -17,7 +17,10 @@ const ScrollToFieldWithError = ({
     const scrollToElement = (element_name: string, block: ScrollLogicalPosition = 'center') => {
         if (!element_name) return;
         const el = document.querySelector(`[name="${element_name}"]`) as HTMLInputElement;
-        (el?.parentElement ?? el)?.scrollIntoView({ behavior: 'smooth', block });
+        const target_element = el?.parentElement ?? el;
+        if (typeof target_element?.scrollIntoView === 'function') {
+            target_element?.scrollIntoView({ behavior: 'smooth', block });
+        }
         if (el?.type !== 'radio') el?.focus();
     };
 
@@ -27,7 +30,7 @@ const ScrollToFieldWithError = ({
     }, [should_recollect_inputs_names]);
     React.useEffect(() => {
         const current_error_field_name =
-            all_page_inputs_names.find(input_name => Object.hasOwn(errors, input_name)) || '';
+            all_page_inputs_names.find(input_name => Object.prototype.hasOwnProperty.call(errors, input_name)) || '';
 
         if (fields_to_scroll_top?.includes(current_error_field_name)) {
             scrollToElement(current_error_field_name, 'start');

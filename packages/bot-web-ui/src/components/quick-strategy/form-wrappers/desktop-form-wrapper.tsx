@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
+import { Analytics } from '@deriv/analytics';
 import { Button, Text, ThemedScrollbars } from '@deriv/components';
 import Icon from '@deriv/components/src/components/icon/icon';
 import { observer } from '@deriv/stores';
@@ -8,7 +9,7 @@ import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
 import FormTabs from './form-tabs';
-import StrategyDescription from './strategy-description';
+import StrategyTabContent from './strategy-tab-content';
 import useQsSubmitHandler from './useQsSubmitHandler';
 import '../quick-strategy.scss';
 
@@ -24,6 +25,10 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
     const strategy = STRATEGIES[selected_strategy as keyof typeof STRATEGIES];
     const { handleSubmit } = useQsSubmitHandler();
     const handleClose = () => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'close',
+            form_source: 'ce_bot_quick_strategy_form',
+        });
         setFormVisibility(false);
     };
 
@@ -34,6 +39,11 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
     const onChangeStrategy = (strategy: string) => {
         setSelectedStrategy(strategy);
         setActiveTab('TRADE_PARAMETERS');
+        // on strategy selection
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_strategy',
+            strategy_type: strategy,
+        });
     };
 
     const handleTabChange = (tab: string) => {
@@ -94,7 +104,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
                             onChange={handleTabChange}
                             description={strategy?.long_description}
                         />
-                        <StrategyDescription formfields={children} active_tab={activeTab} />
+                        <StrategyTabContent formfields={children} active_tab={activeTab} />
                     </ThemedScrollbars>
                     {activeTab === 'TRADE_PARAMETERS' && (
                         <div className='qs__body__content__footer'>

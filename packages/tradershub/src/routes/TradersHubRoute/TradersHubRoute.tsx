@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
 import { Button, Heading, Text } from '@deriv/quill-design';
-import { OptionsAndMultipliersSection, StaticLink } from '../../components';
+import { OptionsAndMultipliersSection, StaticLink, useModal } from '../../components';
 import { CTraderList } from '../../features/cfd/components/CTraderList';
+import { DxtradePasswordModal } from '../../features/cfd/modals';
 
 const TradersHubRoute: FC = () => {
+    const { show } = useModal();
     return (
         <div className='flex flex-col gap-1200'>
             <div className='flex items-center justify-between align-start gap-100'>
@@ -19,7 +21,13 @@ const TradersHubRoute: FC = () => {
                 <div className='pb-1200'>
                     <div className='flex items-center gap-200'>
                         <Heading.H4>CFDs</Heading.H4>
-                        <Button className='no-underline' colorStyle='coral' size='sm' variant='tertiary'>
+                        <Button
+                            className='no-underline'
+                            colorStyle='coral'
+                            onClick={() => show(<DxtradePasswordModal />)}
+                            size='sm'
+                            variant='tertiary'
+                        >
                             Compare Accounts
                         </Button>
                     </div>

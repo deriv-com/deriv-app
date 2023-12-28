@@ -1,4 +1,5 @@
 export * from './ActionScreen';
+export * from './ButtonGroup';
 export * from './ContentSwitcher';
 export * from './CurrencySwitcher';
 export * from './Dialog';

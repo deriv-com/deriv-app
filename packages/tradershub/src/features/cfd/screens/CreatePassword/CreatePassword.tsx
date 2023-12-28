@@ -28,16 +28,21 @@ const CreatePassword: FC<TProps> = ({ icon, isLoading, onPasswordChange, onPrima
 
     const title = PlatformDetails[platform].title;
     return (
-        <div className='inline-flex flex-col items-center w-full text-center gap-1200 p-1600 rounded-400 bg-system-light-primary-background lg:w-[400px]'>
+        <div className='inline-flex flex-col items-center w-full text-center gap-1200  rounded-400 bg-system-light-primary-background lg:w-[360px]'>
             {!isMobile && icon}
             <div className='flex flex-col justify-center gap-1200 lg:gap-400'>
                 <Text bold>Create a {title} password</Text>
                 <Text size='sm'>You can use this password for all your {title} accounts.</Text>
             </div>
-
-            <TextField onChange={onPasswordChange} placeholder={`${title} password`} value={password} />
+            <TextField
+                className='border-solid rounded-200 border-xs border-system-light-active-background text-75 h-2000'
+                onChange={onPasswordChange}
+                placeholder={`${title} password`}
+                value={password}
+            />
             {!isMobile && (
                 <Button
+                    className='rounded-200'
                     disabled={!password || isLoading || !validPassword(password)}
                     isLoading={isLoading}
                     onClick={onPrimaryClick}

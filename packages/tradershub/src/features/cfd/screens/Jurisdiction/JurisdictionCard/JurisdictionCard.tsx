@@ -72,7 +72,7 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                 if (description.type === 'link') {
                     return (
                         <a
-                            className='wallets-jurisdiction-card__link'
+                            className='text-brand-red-light '
                             key={description.text}
                             onClick={descriptionClickHandler(description.tag)}
                         >
@@ -139,9 +139,21 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                                             return (
                                                 <div
                                                     className={qtMerge(
-                                                        'rounded-200 bg-solid-red-1200 text-system-light-primary-background px-500 py-[5px]',
+                                                        'rounded-200 bg-brand-red-darker text-system-light-primary-background px-500 py-[5px]',
                                                         row.titleIndicators?.displayTextSkinColor === 'red-darker' &&
-                                                            'bg-solid-red-1200'
+                                                            'bg-brand-red-darker',
+                                                        row.titleIndicators?.displayTextSkinColor === 'red-dark' &&
+                                                            'bg-brand-red-dark',
+                                                        row.titleIndicators?.displayTextSkinColor === 'red-light' &&
+                                                            'bg-brand-red-light',
+                                                        row.titleIndicators?.displayTextSkinColor === 'yellow-dark' &&
+                                                            'bg-brand-yellow-dark',
+                                                        row.titleIndicators?.displayTextSkinColor === 'yellow-light' &&
+                                                            'bg-brand-yellow-light',
+                                                        row.titleIndicators?.displayTextSkinColor === 'voilet-dark' &&
+                                                            'bg-brand-voilet-dark',
+                                                        row.titleIndicators?.displayTextSkinColor === 'brown-dark' &&
+                                                            'bg-brand-brown-dark'
                                                     )}
                                                 >
                                                     <Text

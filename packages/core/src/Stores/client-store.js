@@ -297,7 +297,7 @@ export default class ClientStore extends BaseStore {
             is_eu_country: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
-            is_pending_proof_of_ownership: computed,
+            is_proof_of_ownership_enabled: computed,
             resetLocalStorageValues: action.bound,
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
@@ -2568,8 +2568,10 @@ export default class ClientStore extends BaseStore {
         return !!this.accounts[this.loginid]?.residence;
     }
 
-    get is_pending_proof_of_ownership() {
-        return this.account_status?.authentication?.needs_verification?.includes('ownership');
+    get is_proof_of_ownership_enabled() {
+        if (!this.account_status?.authentication) return false;
+        const { ownership, needs_verification } = this.account_status.authentication;
+        return needs_verification?.includes('ownership') || ownership?.status === 'verified';
     }
 
     fetchFinancialAssessment() {

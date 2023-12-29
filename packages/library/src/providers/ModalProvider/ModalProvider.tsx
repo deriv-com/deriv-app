@@ -32,7 +32,7 @@ type TModalContext = {
 };
 
 type TModalOptions = {
-    defaultRootId?: 'wallets_modal_root' | 'wallets_modal_show_header_root';
+    defaultRootId?: 'v2_modal_root' | 'v2_modal_show_header_root';
     rootRef?: RefObject<HTMLElement>;
     shouldHideDerivAppHeader?: boolean;
 };
@@ -57,7 +57,7 @@ export const ModalProvider = ({ children }: PropsWithChildren<unknown>) => {
     const [modalState, setModalState] = useState<Map<keyof TModalState, TModalState[keyof TModalState]>>(new Map());
     const { isDesktop } = useBreakpoint();
 
-    const rootRef = useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
+    const rootRef = useRef<HTMLElement>(document.getElementById('v2_modal_root'));
     const rootHeaderRef = useRef<HTMLElement | null>(document.getElementById('wallets_modal_show_header_root'));
 
     const getModalState = useCallback(
@@ -87,7 +87,7 @@ export const ModalProvider = ({ children }: PropsWithChildren<unknown>) => {
 
     useEffect(() => {
         if (!rootHeaderRef.current) {
-            rootHeaderRef.current = document.getElementById('wallets_modal_show_header_root');
+            rootHeaderRef.current = document.getElementById('v2_modal_show_header_root');
         }
     }, []);
 
@@ -101,10 +101,9 @@ export const ModalProvider = ({ children }: PropsWithChildren<unknown>) => {
         // if they specify their own root, prioritize this first
         if (modalOptions?.rootRef?.current) return modalOptions?.rootRef;
         // if user specifically specify they want to show on root or hide the Deriv.app header
-        if (modalOptions?.shouldHideDerivAppHeader || modalOptions?.defaultRootId === 'wallets_modal_root')
-            return rootRef;
+        if (modalOptions?.shouldHideDerivAppHeader || modalOptions?.defaultRootId === 'v2_modal_root') return rootRef;
         // otherwise do the default behaviour, show Deriv.app header if on responsive
-        if (modalOptions?.defaultRootId === 'wallets_modal_show_header_root' || !isDesktop) return rootHeaderRef;
+        if (modalOptions?.defaultRootId === 'v2_modal_show_header_root' || !isDesktop) return rootHeaderRef;
         return rootRef;
     }, [modalOptions?.rootRef, modalOptions?.shouldHideDerivAppHeader, modalOptions?.defaultRootId, isDesktop]);
 

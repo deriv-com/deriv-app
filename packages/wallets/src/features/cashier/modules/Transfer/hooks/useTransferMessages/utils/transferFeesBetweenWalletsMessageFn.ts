@@ -28,12 +28,12 @@ const transferFeesBetweenWalletsMessageFn = ({
     );
 
     const text =
-        'Fee: {{feeMessageText}} ({{feePercentage}}% transfer fee or {{minimumFeeText}}, whichever is higher, applies for fund transfers between your {{targetAccountName}} and cryptocurrency Wallets)';
+        'Fee: {{feeMessageText}} ({{feePercentage}}% transfer fee or {{minimumFeeText}}, whichever is higher, applies for fund transfers between your {{sourceAccountName}} and cryptocurrency Wallets)';
     const values = {
         feeMessageText,
         feePercentage,
         minimumFeeText,
-        targetAccountName: targetAccount.accountName,
+        sourceAccountName: sourceAccount.accountName,
     };
 
     return {

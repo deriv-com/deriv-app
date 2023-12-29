@@ -240,6 +240,7 @@
 }
 
 .ciq-chart > .cq-inchart-subholder {
+    z-index: 1;
     .chart-marker-line {
         &__icon {
             position: absolute;
@@ -588,6 +589,26 @@
         transform: translateX(-50%) translateY(-50%);
         border-radius: 50%;
         animation: 0.5s spot-emphasizer 0.2s;
+    }
+}
+.sc-reset_barrier {
+    width: 100vw;
+    height: 0.1rem;
+    border-bottom: 1px dashed var(--text-info-blue);
+}
+
+.sc-barrier_gradient {
+    width: 100vw;
+    height: 12rem;
+    position: absolute;
+    opacity: 0.3;
+
+    &--to-bottom {
+        background-image: linear-gradient(to bottom, transparent, $COLOR_GREEN_1);
+        bottom: 0;
+    }
+    &--to-top {
+        background-image: linear-gradient(to top, transparent, $COLOR_GREEN_1);
     }
 }
 

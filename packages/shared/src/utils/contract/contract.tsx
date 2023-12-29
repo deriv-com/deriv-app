@@ -335,13 +335,11 @@ export const clickAndKeyEventHandler = (
 };
 
 export const getSortedTradeTypes = (array: string[] = []) => {
-    let new_array = [...array];
     if (array.includes(TRADE_TYPES.TURBOS.LONG)) {
-        new_array.splice(array.indexOf(TRADE_TYPES.TURBOS.LONG), 1);
-        new_array = [TRADE_TYPES.TURBOS.LONG, ...new_array];
-    } else if (array.includes(TRADE_TYPES.MULTIPLIER)) {
-        new_array.splice(array.indexOf(TRADE_TYPES.MULTIPLIER), 1);
-        new_array = [TRADE_TYPES.MULTIPLIER, ...new_array];
+        return [TRADE_TYPES.TURBOS.LONG, ...array.filter(type => type !== TRADE_TYPES.TURBOS.LONG)];
     }
-    return new_array;
+    if (array.includes(TRADE_TYPES.MULTIPLIER)) {
+        return [TRADE_TYPES.MULTIPLIER, ...array.filter(type => type !== TRADE_TYPES.MULTIPLIER)];
+    }
+    return array;
 };

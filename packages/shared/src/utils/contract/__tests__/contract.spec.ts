@@ -639,36 +639,38 @@ describe('getLocalizedTurbosSubtype', () => {
 describe('getSortedTradeTypes', () => {
     it('should return an unchanged array if it does not contain turbos or multipliers', () => {
         const array = [ContractUtils.TRADE_TYPES.RISE_FALL, ContractUtils.TRADE_TYPES.HIGH_LOW];
-        const sorted_array = ContractUtils.getSortedTradeTypes(array);
-        expect(sorted_array).toEqual(array);
+        expect(ContractUtils.getSortedTradeTypes(array)).toEqual(array);
     });
     it('should return an array with turboslong as the 1st element if multipliers are not present', () => {
-        const sorted_array = ContractUtils.getSortedTradeTypes([
+        const sortedArrayWithTurbos = ContractUtils.getSortedTradeTypes([
             ContractUtils.TRADE_TYPES.RISE_FALL,
             ContractUtils.TRADE_TYPES.TURBOS.LONG,
         ]);
-        expect(sorted_array).toEqual([ContractUtils.TRADE_TYPES.TURBOS.LONG, ContractUtils.TRADE_TYPES.RISE_FALL]);
-    });
-    it('should return an array with turboslong as the 1st element and disregard multipliers', () => {
-        const sorted_array_with_multipliers = ContractUtils.getSortedTradeTypes([
-            ContractUtils.TRADE_TYPES.RISE_FALL,
-            ContractUtils.TRADE_TYPES.TURBOS.LONG,
-            ContractUtils.TRADE_TYPES.MULTIPLIER,
-        ]);
-        expect(sorted_array_with_multipliers).toEqual([
+        expect(sortedArrayWithTurbos).toEqual([
             ContractUtils.TRADE_TYPES.TURBOS.LONG,
             ContractUtils.TRADE_TYPES.RISE_FALL,
-            ContractUtils.TRADE_TYPES.MULTIPLIER,
         ]);
     });
     it('should return an array with multipliers as the 1st element if turboslong is not present', () => {
-        const sorted_array_with_multipliers = ContractUtils.getSortedTradeTypes([
+        const sortedArrayWithMultipliers = ContractUtils.getSortedTradeTypes([
             ContractUtils.TRADE_TYPES.RISE_FALL,
             ContractUtils.TRADE_TYPES.MULTIPLIER,
         ]);
-        expect(sorted_array_with_multipliers).toEqual([
+        expect(sortedArrayWithMultipliers).toEqual([
             ContractUtils.TRADE_TYPES.MULTIPLIER,
             ContractUtils.TRADE_TYPES.RISE_FALL,
+        ]);
+    });
+    it('should return an array with turboslong as the 1st element and disregard multipliers', () => {
+        const sortedArrayWithTurbosAndMultipliers = ContractUtils.getSortedTradeTypes([
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+            ContractUtils.TRADE_TYPES.TURBOS.LONG,
+            ContractUtils.TRADE_TYPES.MULTIPLIER,
+        ]);
+        expect(sortedArrayWithTurbosAndMultipliers).toEqual([
+            ContractUtils.TRADE_TYPES.TURBOS.LONG,
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+            ContractUtils.TRADE_TYPES.MULTIPLIER,
         ]);
     });
     it('should return an empty array if called with empty arguments or an empty array', () => {

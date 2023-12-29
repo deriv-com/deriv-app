@@ -248,18 +248,17 @@ export const ContractType = (() => {
         };
     };
 
-    const getContractType = (list: TTradeTypesCategories, contract_type: string) => {
-        const filtered_list = Object.keys(list || {})
+    const getContractType = (list: TTradeTypesCategories, contractType: string) => {
+        const filteredList = Object.keys(list || {})
             .reduce<string[]>((k, l) => [...k, ...(list[l].categories as TTextValueStrings[]).map(ct => ct.value)], [])
             .filter(
                 type =>
-                    unsupported_contract_types_list.indexOf(type as typeof unsupported_contract_types_list[number]) ===
-                    -1
+                    !unsupported_contract_types_list.includes(type as typeof unsupported_contract_types_list[number])
             );
-        const sorted_list = getSortedTradeTypes(filtered_list);
+        const sortedList = getSortedTradeTypes(filteredList);
 
         return {
-            contract_type: getArrayDefaultValue(sorted_list, contract_type),
+            contract_type: getArrayDefaultValue(sortedList, contractType),
         };
     };
 

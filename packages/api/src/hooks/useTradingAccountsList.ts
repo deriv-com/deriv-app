@@ -13,7 +13,11 @@ const useTradingAccountsList = () => {
 
     // Add additional information to each trading account.
     const modified_accounts = useMemo(() => {
-        return filtered_accounts?.map(trading => ({ ...trading }));
+        return filtered_accounts?.map(trading => ({
+            ...trading,
+            first_real_account: filtered_accounts?.find(account => account.account_type === 'real')?.loginid[0],
+            demo_loginid: filtered_accounts?.find(account => account.account_type === 'demo')?.loginid,
+        }));
     }, [filtered_accounts]);
 
     return {

@@ -26,7 +26,7 @@ type TProps = {
 const CreatePassword: FC<TProps> = ({ icon, isLoading, onPasswordChange, onPrimaryClick, password, platform }) => {
     const { isMobile } = useBreakpoint();
 
-    const title = PlatformDetails[platform].title;
+    const { title } = PlatformDetails[platform];
     return (
         <div className='inline-flex flex-col items-center w-full text-center gap-1200  rounded-400 bg-system-light-primary-background lg:w-[360px]'>
             {!isMobile && icon}

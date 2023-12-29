@@ -59,7 +59,7 @@ const DxtradePasswordModal = () => {
             }
             return (
                 <ButtonGroup>
-                    <Button onClick={() => hide()} size='lg' variant='outlined'>
+                    <Button colorStyle='black' onClick={() => hide()} size='lg' variant='secondary'>
                         Maybe later
                     </Button>
                     <Button
@@ -78,7 +78,7 @@ const DxtradePasswordModal = () => {
         if (!isDxtradePasswordNotSet) {
             return (
                 <ButtonGroup>
-                    <Button size='lg' variant='outlined'>
+                    <Button colorStyle='black' size='lg' variant='secondary'>
                         Forgot password?
                     </Button>
                     <Button disabled={!password || isLoading} isLoading={isLoading} onClick={onSubmit} size='lg'>

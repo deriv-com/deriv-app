@@ -7,18 +7,30 @@ import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
 import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardItems, TJurisdictionCardSection } from '../jurisdiction-contents/props.types';
+import {
+    JurisdictionCardClass,
+    JurisdictionCardClassProps,
+    JurisdictionCardTagClass,
+} from './JurisdictionCard.classnames';
 import JurisdictionCardBack from './JurisdictionCardBack';
 import JurisdictionCardRow from './JurisdictionCardRow';
 import JurisdictionCardTag from './JurisdictionCardTag';
 import JurisdictionCardVerificationTag from './JurisdictionCardVerificationTag';
 
-type TJurisdictionCardProps = {
-    isAdded: boolean;
-    isSelected: boolean;
+type TJurisdictionCardProps = JurisdictionCardClassProps & {
     jurisdiction: string;
     onSelect: (clickedJurisdiction: string) => void;
     tag?: string;
 };
+
+type TDisplayTextSkinColor =
+    | 'brown-dark'
+    | 'red-dark'
+    | 'red-darker'
+    | 'red-light'
+    | 'voilet-dark'
+    | 'yellow-dark'
+    | 'yellow-light';
 
 type TVerificationDocumentsMapper = {
     [key: string]: {
@@ -45,7 +57,12 @@ const verificationDocumentsMapper: TVerificationDocumentsMapper = {
     },
 };
 
-const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelected, jurisdiction, onSelect }) => {
+const JurisdictionCard = ({
+    isAdded = false,
+    isSelected = false,
+    jurisdiction = 'svg',
+    onSelect,
+}: TJurisdictionCardProps) => {
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
     const { getModalState } = useModal();
@@ -90,14 +107,26 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
         return row.description;
     };
 
+    const parseTag = (row: TJurisdictionCardSection) => {
+        if (row?.titleIndicators?.displayText) {
+            return (
+                <div
+                    className={JurisdictionCardTagClass({
+                        displayTextSkinColor: row?.titleIndicators
+                            ?.displayTextSkinColor as unknown as TDisplayTextSkinColor,
+                    })}
+                >
+                    <Text bold className='leading-[1] text-system-light-primary-background' size='sm'>
+                        {row?.titleIndicators.displayText}
+                    </Text>
+                </div>
+            );
+        }
+    };
+
     return (
         <div
-            className={qtMerge(
-                'items-center rounded-800 border-sm border-system-light-secondary-background cursor-pointer flex flex-col justify-center w-full lg:w-1/4 relative h-full transition-shadow duration-300 transform-gpu',
-                isAdded && 'cursor-not-allowed select-none',
-                isFlipped && 'rotate-180',
-                isSelected && 'border-sm border-solid border-system-light-primary-background'
-            )}
+            className={qtMerge(JurisdictionCardClass({ isAdded, isFlipped, isSelected }))}
             onClick={() => {
                 !isAdded && onSelect(jurisdiction);
             }}
@@ -143,37 +172,8 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                                             </div>
                                         );
                                     }
-
-                                    if (row?.titleIndicators?.displayText) {
-                                        return (
-                                            <div
-                                                className={qtMerge(
-                                                    'rounded-200 bg-brand-red-darker text-system-light-primary-background px-500 py-[5px]',
-                                                    row.titleIndicators?.displayTextSkinColor === 'red-darker' &&
-                                                        'bg-brand-red-darker',
-                                                    row.titleIndicators?.displayTextSkinColor === 'red-dark' &&
-                                                        'bg-brand-red-dark',
-                                                    row.titleIndicators?.displayTextSkinColor === 'red-light' &&
-                                                        'bg-brand-red-light',
-                                                    row.titleIndicators?.displayTextSkinColor === 'yellow-dark' &&
-                                                        'bg-brand-yellow-dark',
-                                                    row.titleIndicators?.displayTextSkinColor === 'yellow-light' &&
-                                                        'bg-brand-yellow-light',
-                                                    row.titleIndicators?.displayTextSkinColor === 'voilet-dark' &&
-                                                        'bg-brand-voilet-dark',
-                                                    row.titleIndicators?.displayTextSkinColor === 'brown-dark' &&
-                                                        'bg-brand-brown-dark'
-                                                )}
-                                            >
-                                                <Text
-                                                    bold
-                                                    className='leading-[1] text-system-light-primary-background'
-                                                    size='sm'
-                                                >
-                                                    {row.titleIndicators.displayText}
-                                                </Text>
-                                            </div>
-                                        );
+                                    if (row.titleIndicators.displayText) {
+                                        return parseTag(row);
                                     }
                                 }}
                                 title={row.title}

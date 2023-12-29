@@ -330,3 +330,15 @@ export const clickAndKeyEventHandler = (
         callback();
     }
 };
+
+export const getSortedTradeTypes = (array: string[] = []) => {
+    let new_array = [...array];
+    if (array.includes(TRADE_TYPES.TURBOS.LONG)) {
+        new_array.splice(array.indexOf(TRADE_TYPES.TURBOS.LONG), 1);
+        new_array = [TRADE_TYPES.TURBOS.LONG, ...new_array];
+    } else if (array.includes(TRADE_TYPES.MULTIPLIER)) {
+        new_array.splice(array.indexOf(TRADE_TYPES.MULTIPLIER), 1);
+        new_array = [TRADE_TYPES.MULTIPLIER, ...new_array];
+    }
+    return new_array;
+};

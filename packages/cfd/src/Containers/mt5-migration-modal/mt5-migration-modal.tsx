@@ -2,7 +2,6 @@ import React from 'react';
 import { DesktopWrapper, Modal, PageOverlay, UILoader, MobileWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MT5MigrationModalContent from './mt5-migration-modal-content';
 import { MT5MigrationModalContext } from './mt5-migration-modal-context';
 
@@ -16,7 +15,6 @@ const MT5MigrationModal = observer(() => {
         toggleMT5MigrationModal,
         setMT5MigrationModalEnabled,
     } = ui;
-    const { mt5_migration_error } = useCfdStore();
 
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
 
@@ -25,13 +23,6 @@ const MT5MigrationModal = observer(() => {
             <Localize i18n_default_text='Enhancing your trading experience' />
         </Text>
     );
-
-    React.useEffect(() => {
-        if (is_mt5_migration_modal_open) {
-            const has_mt5_migration_error = !!mt5_migration_error;
-            setShowModalFrontSide(!has_mt5_migration_error);
-        }
-    }, [mt5_migration_error, setShowModalFrontSide, is_mt5_migration_modal_open]);
 
     const closeModal = () => {
         setShowModalFrontSide(true);

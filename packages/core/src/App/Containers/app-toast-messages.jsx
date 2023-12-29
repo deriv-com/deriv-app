@@ -1,11 +1,12 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Div100vhContainer, Toast } from '@deriv/components';
-import { connect } from 'Stores/connect';
 import 'Sass/app/_common/components/app-toast-message.scss';
+import { observer, useStore } from '@deriv/stores';
 
-const AppToastMessages = ({ toasts, removeToast }) => {
+const AppToastMessages = observer(() => {
+    const { ui } = useStore();
+    const { toasts, removeToast } = ui;
     if (toasts.length === 0) return null;
 
     const top_toasts = toasts.filter(t => !t.is_bottom);
@@ -28,22 +29,6 @@ const AppToastMessages = ({ toasts, removeToast }) => {
     );
 
     return ReactDOM.createPortal(toast_messages, document.getElementById('popup_root'));
-};
+});
 
-AppToastMessages.propTypes = {
-    toasts: PropTypes.arrayOf(
-        PropTypes.shape({
-            key: PropTypes.string,
-            timeout: PropTypes.number,
-            content: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
-            type: PropTypes.oneOf(['error', 'info']),
-            is_bottom: PropTypes.bool,
-        })
-    ),
-    removeToast: PropTypes.func,
-};
-
-export default connect(({ ui }) => ({
-    toasts: ui.toasts,
-    removeToast: ui.removeToast,
-}))(AppToastMessages);
+export default AppToastMessages;

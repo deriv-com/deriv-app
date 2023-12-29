@@ -1,18 +1,41 @@
 import React from 'react';
 import { Button, Modal, Text, HintBox } from '@deriv/components';
+import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import { CFD_PLATFORMS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import MT5MigrationAccountIcons from './mt5-migration-account-icons';
-import { useMT5MigrationModalContext } from './mt5-migration-modal-context';
+import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import Icon from '@deriv/components/src/components/icon/icon';
 
 const MT5MigrationFrontSideContent = observer(() => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
-    const content_size = is_mobile ? 'xs' : 's';
-    const { setShowModalFrontSide } = useMT5MigrationModalContext();
+    const { ui, common } = useStore();
+    const { is_mobile, setMT5MigrationModalEnabled, toggleMT5MigrationModal } = ui;
+    const { setAppstorePlatform } = common;
+    const { enableCFDPasswordModal, mt5_migration_error, setJurisdictionSelectedShortcode } = useCfdStore();
+    const content_size = is_mobile ? 'xxs' : 'xs';
+    const { getEligibleAccountToMigrate } = useMT5SVGEligibleToMigrate();
+
+    const onConfirmMigration = () => {
+        setAppstorePlatform(CFD_PLATFORMS.MT5);
+        setJurisdictionSelectedShortcode(getEligibleAccountToMigrate());
+        setMT5MigrationModalEnabled(true);
+        toggleMT5MigrationModal();
+        enableCFDPasswordModal();
+    };
 
     return (
         <React.Fragment>
+            {!!mt5_migration_error && (
+                <div className='mt5-migration-modal__error'>
+                    <div className='mt5-migration-modal__error-header'>
+                        <Icon icon='IcAlertDanger' />
+                        <Text align='center' size='xs'>
+                            <Localize i18n_default_text={mt5_migration_error} value={{ mt5_migration_error }} />
+                        </Text>
+                    </div>
+                </div>
+            )}
             <div className='mt5-migration-modal__description'>
                 <Text as='p' size={content_size} align='center'>
                     <Localize i18n_default_text='We are giving you a new MT5 account(s) to enhance your trading experience' />
@@ -38,7 +61,7 @@ const MT5MigrationFrontSideContent = observer(() => {
                 />
             </div>
             <Modal.Footer has_separator>
-                <Button type='button' has_effect large primary onClick={() => setShowModalFrontSide(false)}>
+                <Button type='button' has_effect large primary onClick={onConfirmMigration}>
                     <Localize i18n_default_text='Next' />
                 </Button>
             </Modal.Footer>

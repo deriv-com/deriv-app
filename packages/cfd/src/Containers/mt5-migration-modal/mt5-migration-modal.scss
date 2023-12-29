@@ -16,6 +16,9 @@
         margin: 1.6rem;
         text-align: unset;
     }
+    &__message {
+        padding: 0 3.2rem 3.2rem;
+    }
     &__description {
         margin: 3.2rem 2.4rem 0;
         @include mobile {

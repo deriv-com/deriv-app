@@ -3,17 +3,11 @@ import MT5MigrationFrontSideContent from '../mt5-migration-front-side-content';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import { useMT5MigrationModalContext } from '../mt5-migration-modal-context';
-import userEvent from '@testing-library/user-event';
+import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useMT5SVGEligibleToMigrate: jest.fn(),
-}));
-
-jest.mock('../mt5-migration-modal-context', () => ({
-    ...jest.requireActual('../mt5-migration-modal-context'),
-    useMT5MigrationModalContext: jest.fn(),
 }));
 
 const mock_store = mockStore({
@@ -26,20 +20,16 @@ const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.Mocked
     typeof useMT5SVGEligibleToMigrate
 >;
 
-const mockUseMT5MigrationModalContext = useMT5MigrationModalContext as jest.MockedFunction<
-    typeof useMT5MigrationModalContext
->;
-
 describe('MT5MigrationFrontSideContent', () => {
-    let migration_response: ReturnType<typeof useMT5SVGEligibleToMigrate>,
-        context_response: ReturnType<typeof useMT5MigrationModalContext>;
+    let migration_response: ReturnType<typeof useMT5SVGEligibleToMigrate>;
 
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_store}>{children}</StoreProvider>
+            <StoreProvider store={mock_store}>
+                <CFDStoreProvider>{children}</CFDStoreProvider>
+            </StoreProvider>
         );
         mockUseMT5SVGEligibleToMigrate.mockReturnValue(migration_response);
-        mockUseMT5MigrationModalContext.mockReturnValue(context_response);
         render(<MT5MigrationFrontSideContent />, { wrapper });
     };
 
@@ -50,16 +40,12 @@ describe('MT5MigrationFrontSideContent', () => {
             eligible_svg_to_bvi_financial_accounts: false,
             eligible_svg_to_vanuatu_derived_accounts: false,
             eligible_svg_to_vanuatu_financial_accounts: false,
-            getEligibleAccountToMigrate: jest.fn(),
+            getEligibleAccountToMigrate: jest.fn(() => 'bvi'),
             has_derived_and_financial_mt5: false,
             has_derived_mt5_to_migrate: false,
             has_svg_accounts_to_migrate: false,
             no_of_svg_accounts_to_migrate: 0,
             svg_accounts_to_migrate: [],
-        };
-        context_response = {
-            show_modal_front_side: false,
-            setShowModalFrontSide: jest.fn(),
         };
     });
 
@@ -74,14 +60,6 @@ describe('MT5MigrationFrontSideContent', () => {
         expect(screen.getByText(/MT5 SVG/i)).toBeInTheDocument();
         expect(screen.getByText(/account\(s\) will remain accessible/i)).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument();
-    });
-
-    it('should render setShowModalFrontSide after clicking on Next button', () => {
-        renderComponent();
-        const next_button = screen.getByRole('button', { name: 'Next' });
-        expect(next_button).toBeInTheDocument();
-        userEvent.click(next_button);
-        expect(context_response.setShowModalFrontSide).toBeCalled();
     });
 
     it('should render svg to bvi derived Icons', () => {

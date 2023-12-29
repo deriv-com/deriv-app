@@ -111,11 +111,22 @@ const TradersHub = observer(() => {
         );
     };
 
-    const mt5_ordered_platform_sections = is_mt5_allowed ? (
-        <OrderedPlatformSections />
-    ) : (
-        <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />
-    );
+    const getOrderedPlatformSections = (isDesktop = false) => {
+        if (is_mt5_allowed) {
+            return isDesktop ? (
+                <OrderedPlatformSections />
+            ) : (
+                <OrderedPlatformSections
+                    is_cfd_visible={selected_platform_type === 'cfd'}
+                    is_options_and_multipliers_visible={selected_platform_type === 'options'}
+                />
+            );
+        }
+        return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
+    };
+
+    const mt5_ordered_platform_sections = getOrderedPlatformSections();
+    const mt5_ordered_platform_sections_desktop = getOrderedPlatformSections(true);
 
     return (
         <>
@@ -129,7 +140,7 @@ const TradersHub = observer(() => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
-                    <DesktopWrapper>{mt5_ordered_platform_sections}</DesktopWrapper>
+                    <DesktopWrapper>{mt5_ordered_platform_sections_desktop}</DesktopWrapper>
                     <MobileWrapper>
                         {is_mt5_allowed &&
                             (is_landing_company_loaded ? (

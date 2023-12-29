@@ -1,8 +1,8 @@
 import { useFormikContext } from 'formik';
+import { Analytics } from '@deriv/analytics';
 import { useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
-import { Analytics } from '@deriv/analytics';
 
 const useQsSubmitHandler = () => {
     const { client } = useStore();

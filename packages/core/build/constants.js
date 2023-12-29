@@ -42,11 +42,12 @@ const HOISTED_PACKAGES = {
     'react-router-dom': path.resolve(__dirname, '../../../node_modules/react-router-dom'),
     mobx: path.resolve(__dirname, '../../../node_modules/mobx'),
     'mobx-react': path.resolve(__dirname, '../../../node_modules/mobx-react'),
+    '@deriv/api': path.resolve(__dirname, '../node_modules/@deriv/api'),
+    '@deriv/library': path.resolve(__dirname, '../node_modules/@deriv/library'),
     '@deriv/shared': path.resolve(__dirname, '../node_modules/@deriv/shared'),
     '@deriv/components': path.resolve(__dirname, '../node_modules/@deriv/components'),
     '@deriv/translations': path.resolve(__dirname, '../node_modules/@deriv/translations'),
     '@deriv/deriv-charts': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts'),
-    '@deriv/deriv-charts-beta': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta'),
 };
 
 const ALIASES = {
@@ -118,11 +119,6 @@ const MINIMIZERS = !IS_RELEASE
           new TerserPlugin({
               test: /\.js$/,
               exclude: /(smartcharts)/,
-              parallel: 2,
-          }),
-          new TerserPlugin({
-              test: /\.js$/,
-              exclude: /(smartchartsbeta)/,
               parallel: 2,
           }),
           new CssMinimizerPlugin(),

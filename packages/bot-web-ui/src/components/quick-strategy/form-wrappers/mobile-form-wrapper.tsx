@@ -7,7 +7,7 @@ import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
 import FormTabs from './form-tabs';
-import QSTabContent from './strategy-description';
+import StrategyTabContent from './strategy-tab-content';
 import useQsSubmitHandler from './useQsSubmitHandler';
 import '../quick-strategy.scss';
 
@@ -75,7 +75,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                             onChange={handleTabChange}
                             description={strategy?.long_description}
                         />
-                        <QSTabContent formfields={children} active_tab={active_tab} />
+                        <StrategyTabContent formfields={children} active_tab={active_tab} />
                     </ThemedScrollbars>
                     {active_tab === 'TRADE_PARAMETERS' && (
                         <div className='qs__body__content__footer'>

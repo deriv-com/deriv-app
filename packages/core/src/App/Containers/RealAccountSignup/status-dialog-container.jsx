@@ -4,11 +4,11 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Div100vhContainer, Icon } from '@deriv/components';
 import { routes, isDesktop, isMobile } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import { EXPERIAN, getExperianResult } from './helpers/constants';
 import { DialogHeading } from './helpers/dialog-heading.jsx';
 import { DialogMessage } from './helpers/dialog-message.jsx';
 import { DialogButtons } from './helpers/dialog-buttons.jsx';
+import { observer, useStore } from '@deriv/stores';
 
 const MainIcon = ({ currency }) => <Icon icon={`IcCurrency-${currency.toLowerCase()}`} size={120} />;
 const Checkmark = ({ className }) => <Icon className={className} icon='IcCheckmarkCircle' color='green' size={24} />;
@@ -20,19 +20,12 @@ const CloseIcon = ({ closeModal }) => (
     </div>
 );
 
-const StatusDialogContainer = ({
-    closeModal,
-    country_standpoint,
-    currency,
-    history,
-    icon_size,
-    is_age_verified,
-    is_belgium_residence,
-    is_fully_authenticated,
-    is_isle_of_man_residence,
-    landing_company_shortcode,
-    switchToVirtual,
-}) => {
+const StatusDialogContainer = observer(({ closeModal, currency, history, icon_size }) => {
+    const { client } = useStore();
+    const { country_standpoint, landing_company_shortcode, is_fully_authenticated, is_age_verified } = client;
+    const is_isle_of_man_residence = client.residence === 'im'; // TODO: [deriv-eu] refactor this once more residence checks are required
+    const is_belgium_residence = client.residence === 'be'; // TODO: [deriv-eu] refactor this once more residence checks are required
+    const switchToVirtual = () => client.switchAccount(client.virtual_account_loginid);
     const closeModalAndOpenCashier = () => {
         closeModal();
         history.push(routes.cashier_deposit);
@@ -103,7 +96,7 @@ const StatusDialogContainer = ({
             />
         </Div100vhContainer>
     );
-};
+});
 
 StatusDialogContainer.defaultProps = {
     icon_size: 'large',
@@ -111,25 +104,10 @@ StatusDialogContainer.defaultProps = {
 
 StatusDialogContainer.propTypes = {
     closeModal: PropTypes.func,
-    country_standpoint: PropTypes.object,
     currency: PropTypes.string,
     history: PropTypes.object,
     icon: PropTypes.object,
     icon_size: PropTypes.string,
-    is_age_verified: PropTypes.bool,
-    is_belgium_residence: PropTypes.bool,
-    is_fully_authenticated: PropTypes.bool,
-    is_isle_of_man_residence: PropTypes.bool,
-    landing_company_shortcode: PropTypes.string,
-    switchToVirtual: PropTypes.func,
 };
 
-export default connect(({ client }) => ({
-    country_standpoint: client.country_standpoint,
-    landing_company_shortcode: client.landing_company_shortcode,
-    is_fully_authenticated: client.is_fully_authenticated,
-    is_age_verified: client.is_age_verified,
-    is_isle_of_man_residence: client.residence === 'im', // TODO: [deriv-eu] refactor this once more residence checks are required
-    is_belgium_residence: client.residence === 'be', // TODO: [deriv-eu] refactor this once more residence checks are required
-    switchToVirtual: () => client.switchAccount(client.virtual_account_loginid),
-}))(withRouter(StatusDialogContainer));
+export default withRouter(StatusDialogContainer);

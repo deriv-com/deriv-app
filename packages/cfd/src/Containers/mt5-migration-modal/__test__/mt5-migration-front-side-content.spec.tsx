@@ -3,6 +3,7 @@ import MT5MigrationFrontSideContent from '../mt5-migration-front-side-content';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import { CFDStoreProvider } from 'Stores/Modules/CFD/Helpers/useCfdStores';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -24,7 +25,9 @@ describe('MT5MigrationFrontSideContent', () => {
 
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock_store}>{children}</StoreProvider>
+            <StoreProvider store={mock_store}>
+                <CFDStoreProvider>{children}</CFDStoreProvider>
+            </StoreProvider>
         );
         mockUseMT5SVGEligibleToMigrate.mockReturnValue(response);
         render(<MT5MigrationFrontSideContent />, { wrapper });
@@ -37,7 +40,7 @@ describe('MT5MigrationFrontSideContent', () => {
             eligible_svg_to_bvi_financial_accounts: false,
             eligible_svg_to_vanuatu_derived_accounts: false,
             eligible_svg_to_vanuatu_financial_accounts: false,
-            getEligibleAccountToMigrate: jest.fn(),
+            getEligibleAccountToMigrate: jest.fn(() => 'bvi'),
             has_derived_and_financial_mt5: false,
             has_derived_mt5_to_migrate: false,
             has_svg_accounts_to_migrate: false,
@@ -53,12 +56,12 @@ describe('MT5MigrationFrontSideContent', () => {
         expect(
             getByTextCaseInsensitive('We’re upgrading your SVG account(s) by moving them to the bvi jurisdiction.')
         ).toBeInTheDocument();
-        expect(screen.getByText(/Click/)).toBeInTheDocument();
+        expect(screen.getByText(/By clicking on/)).toBeInTheDocument();
         const elements = screen.getAllByText(/Next/);
         elements.forEach(element => {
             expect(element).toBeInTheDocument();
         });
-        expect(screen.getByText(/to start your transition./)).toBeInTheDocument();
+        expect(screen.getByText(/you agree to move your SVG MT5 account\(s\) under Deriv bvi Ltd/)).toBeInTheDocument();
     });
 
     it('should render svg to bvi derived Icons', () => {

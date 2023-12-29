@@ -23,13 +23,11 @@ import { observer, useStore } from '@deriv/stores';
 import LeaveConfirm from 'Components/leave-confirm';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
-import FormBodySection from 'Components/form-body-section';
 import { DateOfBirthField } from 'Components/forms/form-fields';
 import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
-import { salutation_list } from './constants';
 import InputGroup from './input-group';
 import { getPersonalDetailsInitialValues, getPersonalDetailsValidationSchema, makeSettingsRequest } from './validation';
 import FormSelectField from 'Components/forms/form-select-field';
@@ -241,29 +239,14 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                     {show_form && (
                         <Form
                             noValidate
-                            className={classNames('account-form account-form__personal-details', {})}
+                            className='account-form account-form__personal-details'
                             onSubmit={handleSubmit}
                             data-testid='dt_account_personal_details_section'
                         >
                             <FormBody scroll_offset={is_mobile ? '199px' : '80px'}>
                                 <FormSubHeader title={localize('Details')} />
                                 {!is_virtual && (
-                                    <FormBodySection
-                                        side_note={localize(
-                                            'We use the information you give us only for verification purposes. All information is kept confidential.'
-                                        )}
-                                    >
-                                        {'salutation' in values && (
-                                            <fieldset className='account-form__fieldset'>
-                                                <FormSelectField
-                                                    label={localize('Title')}
-                                                    name='salutation'
-                                                    list_items={salutation_list}
-                                                    required
-                                                    disabled={isFieldDisabled('salutation')}
-                                                />
-                                            </fieldset>
-                                        )}
+                                    <React.Fragment>
                                         <DesktopWrapper>
                                             <InputGroup className='account-form__fieldset--2-cols'>
                                                 <Input
@@ -361,9 +344,9 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                                 />
                                             </fieldset>
                                         )}
-                                    </FormBodySection>
+                                    </React.Fragment>
                                 )}
-                                <FormBodySection>
+                                <React.Fragment>
                                     <fieldset className='account-form__fieldset'>
                                         <Input
                                             data-lpignore='true'
@@ -395,293 +378,276 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                             />
                                         </fieldset>
                                     )}
-                                </FormBodySection>
+                                </React.Fragment>
                                 {!is_virtual && (
-                                    <FormBodySection>
-                                        <fieldset className='account-form__fieldset'>
-                                            <Input
-                                                data-lpignore='true'
-                                                type='text'
-                                                name='phone'
-                                                id={'phone'}
-                                                label={localize('Phone number*')}
-                                                //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
-                                                value={values.phone}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                required
-                                                error={errors.phone}
-                                                disabled={isFieldDisabled('phone')}
-                                                data-testid='dt_phone'
-                                            />
-                                        </fieldset>
-                                    </FormBodySection>
+                                    <fieldset className='account-form__fieldset'>
+                                        <Input
+                                            data-lpignore='true'
+                                            type='text'
+                                            name='phone'
+                                            id={'phone'}
+                                            label={localize('Phone number*')}
+                                            //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
+                                            value={values.phone}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            required
+                                            error={errors.phone}
+                                            disabled={isFieldDisabled('phone')}
+                                            data-testid='dt_phone'
+                                        />
+                                    </fieldset>
                                 )}
                                 <React.Fragment>
                                     {'tax_residence' in values && (
                                         <React.Fragment>
                                             <FormSubHeader title={localize('Tax information')} />
-                                            <FormBodySection
-                                                side_note={localize(
-                                                    'We’re legally obliged to ask for your tax information.'
-                                                )}
-                                            >
-                                                {'tax_residence' in values && (
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <FormSelectField
-                                                            label={localize('Tax residence*')}
-                                                            name='tax_residence'
-                                                            list_items={residence_list}
-                                                            disabled={isFieldDisabled('tax_residence')}
-                                                        />
-                                                    </fieldset>
-                                                )}
-                                                {'tax_identification_number' in values && (
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <Input
-                                                            data-lpignore='true'
-                                                            type='text'
-                                                            id={'tax_identification_number'}
-                                                            name='tax_identification_number'
-                                                            label={localize('Tax identification number*')}
-                                                            //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
-                                                            value={values.tax_identification_number}
+                                            {'tax_residence' in values && (
+                                                <fieldset className='account-form__fieldset'>
+                                                    <FormSelectField
+                                                        label={localize('Tax residence*')}
+                                                        name='tax_residence'
+                                                        list_items={residence_list}
+                                                        disabled={isFieldDisabled('tax_residence')}
+                                                    />
+                                                </fieldset>
+                                            )}
+                                            {'tax_identification_number' in values && (
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        type='text'
+                                                        id={'tax_identification_number'}
+                                                        name='tax_identification_number'
+                                                        label={localize('Tax identification number*')}
+                                                        //@ts-expect-error type of residence should not be null: needs to be updated in GetSettings type
+                                                        value={values.tax_identification_number}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        error={errors.tax_identification_number}
+                                                        disabled={isFieldDisabled('tax_identification_number')}
+                                                        required
+                                                    />
+                                                </fieldset>
+                                            )}
+                                            {'employment_status' in values && (
+                                                <fieldset className='account-form__fieldset'>
+                                                    <DesktopWrapper>
+                                                        <Dropdown
+                                                            placeholder={localize('Employment status')}
+                                                            is_align_text_left
+                                                            name='employment_status'
+                                                            list={getEmploymentStatusList()}
+                                                            value={values.employment_status}
                                                             onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            error={errors.tax_identification_number}
-                                                            disabled={isFieldDisabled('tax_identification_number')}
-                                                            required
+                                                            handleBlur={handleBlur}
+                                                            error={
+                                                                touched.employment_status
+                                                                    ? errors.employment_status
+                                                                    : undefined
+                                                            }
                                                         />
-                                                    </fieldset>
-                                                )}
-                                                {'employment_status' in values && (
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <DesktopWrapper>
-                                                            <Dropdown
-                                                                placeholder={localize('Employment status')}
-                                                                is_align_text_left
-                                                                name='employment_status'
-                                                                list={getEmploymentStatusList()}
-                                                                value={values.employment_status}
-                                                                onChange={handleChange}
-                                                                handleBlur={handleBlur}
-                                                                error={
-                                                                    touched.employment_status
-                                                                        ? errors.employment_status
-                                                                        : undefined
-                                                                }
-                                                            />
-                                                        </DesktopWrapper>
-                                                        <MobileWrapper>
-                                                            <SelectNative
-                                                                className={'emp-status'}
-                                                                placeholder={localize('Please select')}
-                                                                name='employment_status'
-                                                                label={localize('Employment status')}
-                                                                list_items={getEmploymentStatusList()}
-                                                                value={values.employment_status ?? ''}
-                                                                error={
-                                                                    touched.employment_status
-                                                                        ? errors.employment_status
-                                                                        : undefined
-                                                                }
-                                                                onChange={e => {
-                                                                    setFieldTouched('employment_status', true);
-                                                                    handleChange(e);
-                                                                }}
-                                                            />
-                                                        </MobileWrapper>
-                                                    </fieldset>
-                                                )}
-                                            </FormBodySection>
+                                                    </DesktopWrapper>
+                                                    <MobileWrapper>
+                                                        <SelectNative
+                                                            className={'emp-status'}
+                                                            placeholder={localize('Please select')}
+                                                            name='employment_status'
+                                                            label={localize('Employment status')}
+                                                            list_items={getEmploymentStatusList()}
+                                                            value={values.employment_status ?? ''}
+                                                            error={
+                                                                touched.employment_status
+                                                                    ? errors.employment_status
+                                                                    : undefined
+                                                            }
+                                                            onChange={e => {
+                                                                setFieldTouched('employment_status', true);
+                                                                handleChange(e);
+                                                            }}
+                                                        />
+                                                    </MobileWrapper>
+                                                </fieldset>
+                                            )}
                                         </React.Fragment>
                                     )}
                                     {!is_virtual && (
                                         <React.Fragment>
                                             {has_poa_address_mismatch && <POAAddressMismatchHintBox />}
                                             <FormSubHeader title={localize('Address')} />
-                                            <FormBodySection>
-                                                <div className='account-address__details-section'>
-                                                    <fieldset className='account-form__fieldset'>
+                                            <div className='account-address__details-section'>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        autoComplete='off' // prevent chrome autocomplete
+                                                        type='text'
+                                                        maxLength={70}
+                                                        name='address_line_1'
+                                                        id='address_line_1'
+                                                        label={localize('First line of address*')}
+                                                        value={values.address_line_1}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        error={errors.address_line_1}
+                                                        required
+                                                        disabled={isFieldDisabled('address_line_1')}
+                                                        data-testid='dt_address_line_1'
+                                                    />
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        autoComplete='off' // prevent chrome autocomplete
+                                                        type='text'
+                                                        maxLength={70}
+                                                        name='address_line_2'
+                                                        id='address_line_2'
+                                                        label={localize('Second line of address (optional)')}
+                                                        value={values.address_line_2}
+                                                        error={errors.address_line_2}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={isFieldDisabled('address_line_2')}
+                                                    />
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        autoComplete='off' // prevent chrome autocomplete
+                                                        type='text'
+                                                        name='address_city'
+                                                        id='address_city'
+                                                        label={localize('Town/City*')}
+                                                        value={values.address_city}
+                                                        error={errors.address_city}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        required
+                                                        disabled={isFieldDisabled('address_city')}
+                                                        data-testid='dt_address_city'
+                                                    />
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    {states_list.length ? (
+                                                        <FormSelectField
+                                                            label={localize('State/Province (optional)')}
+                                                            name='address_state'
+                                                            list_items={states_list}
+                                                            disabled={isFieldDisabled('address_state')}
+                                                        />
+                                                    ) : (
                                                         <Input
                                                             data-lpignore='true'
                                                             autoComplete='off' // prevent chrome autocomplete
                                                             type='text'
-                                                            maxLength={70}
-                                                            name='address_line_1'
-                                                            id='address_line_1'
-                                                            label={localize('First line of address*')}
-                                                            value={values.address_line_1}
+                                                            name='address_state'
+                                                            id='address_state'
+                                                            label={localize('State/Province (optional)')}
+                                                            value={values.address_state}
+                                                            error={errors.address_state}
                                                             onChange={handleChange}
                                                             onBlur={handleBlur}
-                                                            error={errors.address_line_1}
-                                                            required
-                                                            disabled={isFieldDisabled('address_line_1')}
-                                                            data-testid='dt_address_line_1'
+                                                            disabled={isFieldDisabled('address_state')}
                                                         />
-                                                    </fieldset>
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <Input
-                                                            data-lpignore='true'
-                                                            autoComplete='off' // prevent chrome autocomplete
-                                                            type='text'
-                                                            maxLength={70}
-                                                            name='address_line_2'
-                                                            id='address_line_2'
-                                                            label={localize('Second line of address (optional)')}
-                                                            value={values.address_line_2}
-                                                            error={errors.address_line_2}
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            required
-                                                            disabled={isFieldDisabled('address_line_2')}
-                                                        />
-                                                    </fieldset>
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <Input
-                                                            data-lpignore='true'
-                                                            autoComplete='off' // prevent chrome autocomplete
-                                                            type='text'
-                                                            name='address_city'
-                                                            id='address_city'
-                                                            label={localize('Town/City*')}
-                                                            value={values.address_city}
-                                                            error={errors.address_city}
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            required
-                                                            disabled={isFieldDisabled('address_city')}
-                                                            data-testid='dt_address_city'
-                                                        />
-                                                    </fieldset>
-                                                    <fieldset className='account-form__fieldset'>
-                                                        {states_list.length ? (
-                                                            <FormSelectField
-                                                                label={localize('State/Province (optional)')}
-                                                                name='address_state'
-                                                                list_items={states_list}
-                                                                disabled={isFieldDisabled('address_state')}
-                                                            />
-                                                        ) : (
-                                                            <Input
-                                                                data-lpignore='true'
-                                                                autoComplete='off' // prevent chrome autocomplete
-                                                                type='text'
-                                                                name='address_state'
-                                                                id='address_state'
-                                                                label={localize('State/Province (optional)')}
-                                                                value={values.address_state}
-                                                                error={errors.address_state}
-                                                                onChange={handleChange}
-                                                                onBlur={handleBlur}
-                                                                disabled={isFieldDisabled('address_state')}
-                                                            />
-                                                        )}
-                                                    </fieldset>
-                                                    <fieldset className='account-form__fieldset'>
-                                                        <Input
-                                                            data-lpignore='true'
-                                                            autoComplete='off' // prevent chrome autocomplete
-                                                            type='text'
-                                                            name='address_postcode'
-                                                            id='address_postcode'
-                                                            label={localize('Postal/ZIP code')}
-                                                            value={values.address_postcode}
-                                                            error={errors.address_postcode}
-                                                            onChange={handleChange}
-                                                            onBlur={handleBlur}
-                                                            disabled={isFieldDisabled('address_postcode')}
-                                                        />
-                                                    </fieldset>
-                                                </div>
-                                            </FormBodySection>
+                                                    )}
+                                                </fieldset>
+                                                <fieldset className='account-form__fieldset'>
+                                                    <Input
+                                                        data-lpignore='true'
+                                                        autoComplete='off' // prevent chrome autocomplete
+                                                        type='text'
+                                                        name='address_postcode'
+                                                        id='address_postcode'
+                                                        label={localize('Postal/ZIP code')}
+                                                        value={values.address_postcode}
+                                                        error={errors.address_postcode}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        disabled={isFieldDisabled('address_postcode')}
+                                                    />
+                                                </fieldset>
+                                            </div>
                                         </React.Fragment>
                                     )}
                                 </React.Fragment>
                                 {!!current_landing_company?.support_professional_client && (
-                                    <>
+                                    <React.Fragment>
                                         <div className='account-form__divider' />
                                         <div className='pro-client'>
                                             <FormSubHeader title={localize('Professional Client')} />
-                                            <FormBodySection>
-                                                <fieldset className='account-form__fieldset'>
-                                                    <div>
-                                                        <Text as='p' size='xs'>
-                                                            <Localize
-                                                                i18n_default_text='By default, all {{brand_website_name}} clients are retail clients but anyone can request to be treated as a professional client.'
-                                                                values={{
-                                                                    brand_website_name: getBrandWebsiteName(),
-                                                                }}
-                                                            />
-                                                        </Text>
-                                                        <Text as='p' size='xs'>
-                                                            <Localize i18n_default_text='A professional client receives a lower degree of client protection due to the following.' />
-                                                        </Text>
-                                                        <Text as='p' size='xs'>
-                                                            <Localize i18n_default_text='We presume that you possess the experience, knowledge, and expertise to make your own investment decisions and properly assess the risk involved.' />
-                                                        </Text>
-                                                        <Text as='p' size='xs' className='last-child'>
-                                                            <Localize i18n_default_text='We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.' />
-                                                        </Text>
-                                                    </div>
-                                                    {is_account_verified ? (
-                                                        <Checkbox
-                                                            name='request_professional_status'
-                                                            value={!!values.request_professional_status}
-                                                            onChange={() => {
-                                                                setFieldValue(
-                                                                    'request_professional_status',
-                                                                    values.request_professional_status ? 0 : 1
-                                                                );
-                                                                setFieldTouched(
-                                                                    'request_professional_status',
-                                                                    true,
-                                                                    true
-                                                                );
+                                            <fieldset className='account-form__fieldset'>
+                                                <div>
+                                                    <Text as='p' size='xs'>
+                                                        <Localize
+                                                            i18n_default_text='By default, all {{brand_website_name}} clients are retail clients but anyone can request to be treated as a professional client.'
+                                                            values={{
+                                                                brand_website_name: getBrandWebsiteName(),
                                                             }}
-                                                            label={localize(
-                                                                'I would like to be treated as a professional client.'
-                                                            )}
-                                                            id='request_professional_status'
-                                                            disabled={
-                                                                is_virtual ||
-                                                                !!account_settings.request_professional_status
-                                                            }
-                                                            greyDisabled
                                                         />
-                                                    ) : (
-                                                        <HintBox
-                                                            icon='IcInfoBlue'
-                                                            icon_height={20}
-                                                            icon_width={30}
-                                                            message={
-                                                                <Text as='p' size='xs'>
-                                                                    <Localize
-                                                                        i18n_default_text='You’ll need to authenticate your account before requesting to become a professional client. <0>Authenticate my account</0>'
-                                                                        components={[
-                                                                            <a
-                                                                                key={0}
-                                                                                className='link--no-bold'
-                                                                                rel='noopener noreferrer'
-                                                                                target='_blank'
-                                                                                href={getRedirectionLink()}
-                                                                            />,
-                                                                        ]}
-                                                                    />
-                                                                </Text>
-                                                            }
-                                                            is_info
-                                                            is_inline
-                                                        />
-                                                    )}
-                                                </fieldset>
-                                            </FormBodySection>
+                                                    </Text>
+                                                    <Text as='p' size='xs'>
+                                                        <Localize i18n_default_text='A professional client receives a lower degree of client protection due to the following.' />
+                                                    </Text>
+                                                    <Text as='p' size='xs'>
+                                                        <Localize i18n_default_text='We presume that you possess the experience, knowledge, and expertise to make your own investment decisions and properly assess the risk involved.' />
+                                                    </Text>
+                                                    <Text as='p' size='xs' className='last-child'>
+                                                        <Localize i18n_default_text='We’re not obliged to conduct an appropriateness test, nor provide you with any risk warnings.' />
+                                                    </Text>
+                                                </div>
+                                                {is_account_verified ? (
+                                                    <Checkbox
+                                                        name='request_professional_status'
+                                                        value={!!values.request_professional_status}
+                                                        onChange={() => {
+                                                            setFieldValue(
+                                                                'request_professional_status',
+                                                                values.request_professional_status ? 0 : 1
+                                                            );
+                                                            setFieldTouched('request_professional_status', true, true);
+                                                        }}
+                                                        label={localize(
+                                                            'I would like to be treated as a professional client.'
+                                                        )}
+                                                        id='request_professional_status'
+                                                        disabled={
+                                                            is_virtual || !!account_settings.request_professional_status
+                                                        }
+                                                        greyDisabled
+                                                    />
+                                                ) : (
+                                                    <HintBox
+                                                        icon='IcInfoBlue'
+                                                        icon_height={20}
+                                                        icon_width={30}
+                                                        message={
+                                                            <Text as='p' size='xs'>
+                                                                <Localize
+                                                                    i18n_default_text='You’ll need to authenticate your account before requesting to become a professional client. <0>Authenticate my account</0>'
+                                                                    components={[
+                                                                        <a
+                                                                            key={0}
+                                                                            className='link--no-bold'
+                                                                            rel='noopener noreferrer'
+                                                                            target='_blank'
+                                                                            href={getRedirectionLink()}
+                                                                        />,
+                                                                    ]}
+                                                                />
+                                                            </Text>
+                                                        }
+                                                        is_info
+                                                        is_inline
+                                                    />
+                                                )}
+                                            </fieldset>
                                         </div>
                                         <div className='account-form__divider' />
-                                    </>
+                                    </React.Fragment>
                                 )}
                                 <FormSubHeader title={localize('Email preference')} />
-                                <FormBodySection side_note={localize('Check this box to receive updates via email.')}>
+                                <React.Fragment>
                                     <fieldset
                                         className={classNames(
                                             'account-form__fieldset',
@@ -701,7 +667,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                             disabled={isFieldDisabled('email_consent') && !is_virtual}
                                         />
                                     </fieldset>
-                                </FormBodySection>
+                                </React.Fragment>
                             </FormBody>
                             <FormFooter>
                                 {status?.msg && <FormSubmitErrorMessage message={status?.msg} />}

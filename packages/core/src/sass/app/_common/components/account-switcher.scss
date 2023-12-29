@@ -190,12 +190,16 @@
 
     &__wallets {
         padding: 1.2rem 1.6rem;
+        gap: 0.8rem;
+
+        &-notification-icon {
+            margin-right: 1rem;
+        }
 
         &-container {
             align-items: center;
             display: flex;
             gap: 0.8rem;
-            margin-right: 0.8rem;
         }
 
         &-account-type-and-balance {

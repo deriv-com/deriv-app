@@ -27,7 +27,11 @@ const route = {
     exact: true,
     path: '/test-path',
 };
-const store = mockStore();
+const store = mockStore({
+    feature_flags: {
+        data: {},
+    },
+});
 store.client.is_logging_in = true;
 store.client.is_logged_in = true;
 const MockRouteWithSubRoutesRender = () => (

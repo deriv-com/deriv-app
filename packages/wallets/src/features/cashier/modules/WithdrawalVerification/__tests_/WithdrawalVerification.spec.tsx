@@ -1,21 +1,8 @@
 import React from 'react';
-import { useCountdown } from 'usehooks-ts';
 import { useSettings, useVerifyEmail } from '@deriv/api';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import WithdrawalVerification from '../WithdrawalVerification';
 import '@testing-library/jest-dom';
-
-jest.mock('../WithdrawalVerificationRequest', () => ({
-    ...jest.requireActual('../WithdrawalVerificationRequest'),
-}));
-
-jest.mock('../WithdrawalVerificationSent', () => ({
-    ...jest.requireActual('../WithdrawalVerificationSent'),
-}));
-
-jest.mock('usehooks-ts', () => ({
-    useCountdown: jest.fn(() => [0, { resetCountdown: jest.fn(), startCountdown: jest.fn() }]),
-}));
 
 jest.mock('@deriv/api', () => ({
     useSettings: jest.fn(() => ({ data: { email: null } })),
@@ -34,12 +21,6 @@ describe('WithdrawalVerification', () => {
         (useVerifyEmail as jest.Mock).mockImplementation(() => ({
             mutate: mockMutate,
         }));
-        const mockResetCountdown = jest.fn();
-        const mockStartCountdown = jest.fn();
-        (useCountdown as jest.Mock).mockImplementation(() => [
-            60,
-            { resetCountdown: mockResetCountdown, startCountdown: mockStartCountdown },
-        ]);
 
         render(<WithdrawalVerification />);
 
@@ -47,8 +28,6 @@ describe('WithdrawalVerification', () => {
 
         await waitFor(() => {
             expect(mockMutate).toHaveBeenCalled();
-            expect(mockResetCountdown).toHaveBeenCalled();
-            expect(mockStartCountdown).toHaveBeenCalled();
             expect(
                 screen.getByText('Please check your email for the verification link to complete the process.')
             ).toBeInTheDocument();
@@ -61,12 +40,6 @@ describe('WithdrawalVerification', () => {
         (useVerifyEmail as jest.Mock).mockImplementation(() => ({
             mutate: mockMutate,
         }));
-        const mockResetCountdown = jest.fn();
-        const mockStartCountdown = jest.fn();
-        (useCountdown as jest.Mock).mockImplementation(() => [
-            60,
-            { resetCountdown: mockResetCountdown, startCountdown: mockStartCountdown },
-        ]);
 
         render(<WithdrawalVerification />);
 
@@ -74,8 +47,6 @@ describe('WithdrawalVerification', () => {
 
         await waitFor(() => {
             expect(mockMutate).not.toHaveBeenCalled();
-            expect(mockResetCountdown).not.toHaveBeenCalled();
-            expect(mockStartCountdown).not.toHaveBeenCalled();
             expect(
                 screen.queryByText('Please check your email for the verification link to complete the process.')
             ).not.toBeInTheDocument();

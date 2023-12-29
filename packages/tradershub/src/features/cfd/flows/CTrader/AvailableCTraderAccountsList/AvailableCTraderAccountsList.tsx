@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../components';
@@ -6,7 +6,7 @@ import { getStaticUrl } from '../../../../../helpers/urls';
 import CTrader from '../../../../../public/images/cfd/ctrader.svg';
 import { PlatformDetails } from '../../../constants';
 
-const AvailableCTraderAccountsList: FC = () => {
+const AvailableCTraderAccountsList = () => {
     const { mutate } = useCreateOtherCFDAccount();
     const { data: activeTradingAccount } = useActiveTradingAccount();
 
@@ -40,12 +40,7 @@ const AvailableCTraderAccountsList: FC = () => {
     );
 
     const trailingButton = () => (
-        <Button
-            onClick={() => {
-                onSubmit();
-            }}
-            variant='primary'
-        >
+        <Button className='rounded-200' colorStyle='coral' onClick={onSubmit} variant='primary'>
             Get
         </Button>
     );

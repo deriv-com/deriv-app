@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useDxtradeAccountsList } from '@deriv/api';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../../components';
@@ -6,10 +6,10 @@ import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/cfd/derivx.svg';
 import { PlatformDetails } from '../../../../constants';
 
-const AddedDxtradeAccountsList: React.FC = () => {
-    const { data } = useDxtradeAccountsList();
+const AddedDxtradeAccountsList = () => {
+    const { data: dxTradeAccounts } = useDxtradeAccountsList();
 
-    const leadingComponent = () => (
+    const leading = () => (
         <div
             className='cursor-pointer'
             onClick={() => {
@@ -27,31 +27,33 @@ const AddedDxtradeAccountsList: React.FC = () => {
         </div>
     );
 
-    const trailingComponent = () => (
-        <div className='flex flex-col space-y-1'>
+    const trailing = () => (
+        <div className='flex flex-col gap-y-200'>
             <Button
                 // open transfer modal
-                variant='outlined'
+                className='border-opacity-black-400 rounded-200 px-800'
+                colorStyle='black'
+                variant='secondary'
             >
                 Transfer
             </Button>
-            <Button /* show <MT5TradeModal/> */>Open</Button>
+            <Button className='rounded-200 px-800'>Open</Button>
         </div>
     );
 
     return (
-        <TradingAccountCard leading={leadingComponent} trailing={trailingComponent}>
-            <div className='flex flex-col fles-grow'>
-                {data?.map(account => (
-                    <React.Fragment key={account?.account_id}>
+        <TradingAccountCard leading={leading} trailing={trailing}>
+            <div className='flex flex-col flex-grow'>
+                {dxTradeAccounts?.map(account => (
+                    <Fragment key={account?.account_id}>
                         <Text size='sm'>{PlatformDetails.dxtrade.title}</Text>
-                        <Text size='sm' weight='bold'>
+                        <Text bold size='sm'>
                             {account?.display_balance}
                         </Text>
-                        <Text color='primary' size='xs' weight='bold'>
+                        <Text color='primary' size='sm'>
                             {account?.login}
                         </Text>
-                    </React.Fragment>
+                    </Fragment>
                 ))}
             </div>
         </TradingAccountCard>

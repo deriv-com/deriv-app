@@ -19,7 +19,6 @@ describe('useIsPasskeySupported', () => {
     });
 
     it('sets state correctly when passkey is not supported', async () => {
-        // Mocking the external function to return false
         (platformAuthenticatorIsAvailable as jest.Mock).mockResolvedValue(false);
 
         const { result, waitForNextUpdate } = renderHook(() => useIsPasskeySupported());

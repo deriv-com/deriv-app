@@ -4,18 +4,6 @@ import { APIProvider } from '@deriv/api';
 import { fireEvent, render, screen } from '@testing-library/react';
 import FiatOnRamp from '../FiatOnRamp';
 
-jest.mock('../components/FiatOnRampDisclaimer', () => ({
-    ...jest.requireActual('../components/FiatOnRampDisclaimer'),
-}));
-
-jest.mock('../components/FiatOnRampProviderCard', () => ({
-    ...jest.requireActual('../components/FiatOnRampProviderCard'),
-}));
-
-jest.mock('../constants', () => ({
-    ...jest.requireActual('../constants'),
-}));
-
 jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
 }));

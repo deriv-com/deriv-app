@@ -1,0 +1,28 @@
+.wallets-sent-email-content {
+    display: inline-flex;
+    padding: 3.2rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2.4rem;
+    width: 40rem;
+    border-radius: 0.8rem;
+    background: var(--system-light-8-primary-background, #fff);
+
+    @include mobile {
+        width: 100%;
+    }
+
+    &__resend {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+
+        &-item {
+            display: grid;
+            grid-template-columns: 3.2rem auto;
+            grid-gap: 0.8rem;
+        }
+    }
+}

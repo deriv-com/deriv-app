@@ -1,13 +1,21 @@
 /** @define dc-result */
 .dc-result {
+    &__content {
+        display: flex;
+        justify-items: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
     &__caption {
         text-transform: capitalize;
-        font-size: 1.6em;
+        font-size: 1.4em;
         font-weight: bold;
         display: flex;
         justify-content: center;
         align-items: center;
         transition: opacity 0.25s ease;
+        gap: 0.4rem;
 
         &--won {
             color: var(--text-profit-success);
@@ -44,9 +52,6 @@
             font-weight: 300;
             color: var(--text-general);
         }
-    }
-    &__icon {
-        margin-left: 10px;
     }
     &__positions-overlay {
         max-width: 218px;

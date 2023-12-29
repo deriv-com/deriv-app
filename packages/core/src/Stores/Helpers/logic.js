@@ -18,7 +18,7 @@ export const getChartConfig = contract_info => {
     const start_epoch = should_show_10_last_ticks ? first_tick_epoch : start;
     const scroll_to_epoch = should_show_10_last_ticks ? first_tick_epoch : contract_info.purchase_time;
     return {
-        chart_type: contract_info.tick_count ? 'mountain' : chart_type,
+        chart_type: contract_info.tick_count ? 'line' : chart_type,
         granularity: contract_info.tick_count ? 0 : granularity,
         end_epoch: end,
         start_epoch,
@@ -40,7 +40,7 @@ const getExpiryTime = time => time || ServerTime.get().unix();
 export const getChartType = (start_time, expiry_time) => {
     const duration = moment.duration(moment.unix(getExpiryTime(expiry_time)).diff(moment.unix(start_time))).asHours();
     // use line chart if duration is equal or less than 1 hour
-    return duration <= 1 ? 'mountain' : 'candle';
+    return duration <= 1 ? 'line' : 'candles';
 };
 
 export const getChartGranularity = (start_time, expiry_time) =>

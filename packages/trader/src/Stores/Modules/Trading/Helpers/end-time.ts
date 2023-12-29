@@ -17,8 +17,8 @@ const getClosestTime = (time: moment.Moment | string, interval: number): moment.
 export const getSelectedTime = (
     server_time: TTime['server_time'],
     selected_time: TTime['selected_time'],
-    market_open_times: TTime['market_open_times'],
-    market_close_times: TTime['market_close_times']
+    market_open_times: moment.Moment[],
+    market_close_times: moment.Moment[]
 ) => {
     for (let i = 0; i < market_open_times.length; i++) {
         if (selected_time.isAfter(market_open_times[i]) && selected_time.isBefore(market_close_times[i])) {
@@ -38,8 +38,8 @@ export const getSelectedTime = (
 
 export const getBoundaries = (
     server_time: TTime['server_time'],
-    market_open_times: TTime['market_open_times'],
-    market_close_times: TTime['market_close_times']
+    market_open_times: moment.Moment[],
+    market_close_times: moment.Moment[]
 ) => {
     const boundaries = {
         start: market_open_times.map(open_time =>

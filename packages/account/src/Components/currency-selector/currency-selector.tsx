@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field, Formik, FormikHandlers, FormikProps, FormikState } from 'formik';
+import { Field, Formik, FormikHandlers, FormikState } from 'formik';
 import { WebsiteStatus } from '@deriv/api-types';
 import { AutoHeightWrapper, FormSubmitButton, Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
-import { getPlatformSettings, reorderCurrencies, getAddressDetailsFields } from '@deriv/shared';
+import { getPlatformSettings, reorderCurrencies, getAddressDetailsFields, CURRENCY_TYPE } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import RadioButton from './radio-button';
@@ -11,11 +11,6 @@ import RadioButtonGroup from './radio-button-group';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 
 export const Hr = () => <div className='currency-hr' />;
-
-const CURRENCY_TYPE: Record<string, 'crypto' | 'fiat'> = {
-    CRYPTO: 'crypto',
-    FIAT: 'fiat',
-};
 
 export type TCurrencySelectorFormProps = {
     currency: string;
@@ -37,7 +32,6 @@ type TCurrencySelectorExtend = {
         action: (isSubmitting: boolean) => void,
         next_step: () => void
     ) => void;
-    selected_step_ref?: React.RefObject<FormikProps<TCurrencySelectorFormProps>>;
     set_currency: boolean;
     validate: (values: TCurrencySelectorFormProps) => TCurrencySelectorFormProps;
     value: TCurrencySelectorFormProps;
@@ -58,7 +52,6 @@ type TCurrencySelector = React.HTMLAttributes<HTMLInputElement | HTMLLabelElemen
  * @param onCancel - To handle click on cancel button
  * @param onSave - To handle click on save button
  * @param onSubmit - To handle click on submit button
- * @param selected_step_ref - Ref of the selected step
  * @param set_currency - Is current set
  * @param alidate - To validate the form
  * @param alue - Value of the form
@@ -76,11 +69,10 @@ const CurrencySelector = observer(
         set_currency,
         validate,
         has_cancel = false,
-        selected_step_ref,
         has_wallet_account,
         value,
     }: TCurrencySelector) => {
-        const { client, ui } = useStore();
+        const { client, ui, traders_hub } = useStore();
 
         const {
             currency,
@@ -91,8 +83,9 @@ const CurrencySelector = observer(
             is_mt5_allowed,
             has_fiat,
             accounts,
-            is_eu,
         } = client;
+
+        const { is_eu_user } = traders_hub;
 
         const has_currency = Boolean(currency);
 
@@ -113,10 +106,6 @@ const CurrencySelector = observer(
         const should_disable_fiat = !!Object.values(accounts).filter(
             item => item.landing_company_shortcode === real_account_signup_target
         ).length;
-
-        const isSubmitDisabled = (values: TCurrencySelectorFormProps) => {
-            return selected_step_ref?.current?.isSubmitting || !values.currency;
-        };
 
         const handleCancel = (values: TCurrencySelectorFormProps) => {
             const current_step = getCurrentStep() - 1;
@@ -170,10 +159,17 @@ const CurrencySelector = observer(
         };
 
         const description = React.useMemo(() => {
-            const dmt5_label = is_eu ? localize('CFDs') : localize('Deriv MT5');
+            const dmt5_label = is_eu_user ? localize('CFDs') : localize('Deriv MT5');
             const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
-            if (is_dxtrade_allowed && is_mt5_allowed) {
+            if (is_eu_user && is_mt5_allowed) {
+                return (
+                    <Localize
+                        i18n_default_text="Enjoy a seamless trading experience with the selected fiat account. Please note that once you've made your first deposit or created a real {{dmt5_label}} account, your account currency cannot be changed."
+                        values={{ dmt5_label }}
+                    />
+                );
+            } else if (is_dxtrade_allowed && is_mt5_allowed) {
                 return (
                     <Localize
                         i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} or {{platform_name_dxtrade}} account.'
@@ -192,11 +188,10 @@ const CurrencySelector = observer(
             return (
                 <Localize i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit.' />
             );
-        }, [is_eu, is_dxtrade_allowed, is_mt5_allowed]);
+        }, [is_eu_user, is_dxtrade_allowed, is_mt5_allowed]);
 
         return (
             <Formik
-                innerRef={selected_step_ref}
                 initialValues={value}
                 onSubmit={(values, actions) => {
                     onSubmit(getCurrentStep ? getCurrentStep() - 1 : null, values, actions.setSubmitting, goToNextStep);
@@ -281,14 +276,14 @@ const CurrencySelector = observer(
                                         )}
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer is_bypassed={is_mobile}>
+                                <Modal.Footer has_separator is_bypassed={is_mobile}>
                                     <FormSubmitButton
                                         className={
                                             set_currency
                                                 ? 'currency-selector--set-currency'
                                                 : 'currency-selector--deriv-account'
                                         }
-                                        is_disabled={isSubmitDisabled(values)}
+                                        is_disabled={!values.currency}
                                         is_center={false}
                                         is_absolute={set_currency}
                                         label={getSubmitLabel()}

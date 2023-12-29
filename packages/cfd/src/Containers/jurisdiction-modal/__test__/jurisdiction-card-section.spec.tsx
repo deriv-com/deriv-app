@@ -6,6 +6,7 @@ import { Jurisdiction } from '@deriv/shared';
 describe('JurisdictionCardSection', () => {
     type TMockProps = {
         account_status: {
+            p2p_poa_required: 0 | 1;
             authentication: {
                 document: {
                     status: 'none' | 'pending' | 'verified' | 'expired' | 'rejected' | undefined;
@@ -49,10 +50,11 @@ describe('JurisdictionCardSection', () => {
         };
         type_of_card: 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
         toggleCardFlip: jest.Mock;
-        verification_docs: ['document_number' | 'selfie' | 'identity_document' | 'name_and_address' | 'not_applicable'];
+        verification_docs: ['document_number' | 'selfie' | 'identity_document' | 'name_and_address'] | [];
     };
     const mock_props: TMockProps = {
         account_status: {
+            p2p_poa_required: 0,
             authentication: {
                 document: {
                     status: 'none',
@@ -90,7 +92,7 @@ describe('JurisdictionCardSection', () => {
         },
         type_of_card: Jurisdiction.SVG,
         toggleCardFlip: jest.fn(),
-        verification_docs: ['not_applicable'],
+        verification_docs: [],
     };
 
     it('should render JurisdictionCardSection component', () => {

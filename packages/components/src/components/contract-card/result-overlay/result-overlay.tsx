@@ -4,8 +4,11 @@ import { CSSTransition } from 'react-transition-group';
 import { NavLink } from 'react-router-dom';
 import Icon from '../../icon';
 import { TGetCardLables, TGetContractPath } from '../../types';
+import Text from '../../text';
+import Money from '../../money';
 
 type TResultOverlayProps = {
+    currency?: string;
     contract_id?: number;
     getCardLabels: TGetCardLables;
     getContractPath?: TGetContractPath;
@@ -15,6 +18,7 @@ type TResultOverlayProps = {
     is_visible: boolean;
     onClick: () => void;
     onClickRemove?: (contract_id?: number) => void;
+    payout_info: number;
     result: string;
 };
 
@@ -30,21 +34,13 @@ export const ResultStatusIcon = ({ getCardLabels, is_contract_won }: TResultStat
             'dc-result__caption--lost': !is_contract_won,
         })}
     >
-        {is_contract_won ? (
-            <React.Fragment>
-                {getCardLabels().WON}
-                <Icon icon='IcCheckmarkCircle' className='dc-result__icon' color='green' />
-            </React.Fragment>
-        ) : (
-            <React.Fragment>
-                {getCardLabels().LOST}
-                <Icon icon='IcCrossCircle' className='dc-result__icon' color='red' />
-            </React.Fragment>
-        )}
+        <Icon icon='IcPositionClosed' className='dc-result__icon' color={is_contract_won ? 'green' : 'red'} />
+        {getCardLabels().CLOSED}
     </span>
 );
 
 const ResultOverlay = ({
+    currency,
     contract_id,
     getCardLabels,
     getContractPath,
@@ -53,6 +49,7 @@ const ResultOverlay = ({
     is_visible,
     onClick,
     onClickRemove,
+    payout_info,
     result,
 }: TResultOverlayProps) => {
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -88,7 +85,9 @@ const ResultOverlay = ({
                         <span
                             id={`dc_contract_card_${contract_id}_result_close_icon`}
                             className='dc-result__close-btn'
-                            onClick={() => onClickRemove?.(contract_id)}
+                            onClick={() => {
+                                if (contract_id) onClickRemove?.(contract_id);
+                            }}
                         />
                     )}
                     {getContractPath && (
@@ -98,7 +97,17 @@ const ResultOverlay = ({
                             onClick={handleClick}
                         />
                     )}
-                    <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={is_contract_won} />
+                    <div className='dc-result__content'>
+                        <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={is_contract_won} />
+                        <Text
+                            weight='bold'
+                            size='s'
+                            line_height='xxl'
+                            color={is_contract_won ? 'profit-success' : 'loss-danger'}
+                        >
+                            <Money amount={payout_info} currency={currency} has_sign show_currency />
+                        </Text>
+                    </div>
                 </div>
             </CSSTransition>
         </React.Fragment>

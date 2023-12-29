@@ -1,4 +1,6 @@
 import React from 'react';
+import { FormikHelpers as FormikActions } from 'formik';
+
 import {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
@@ -6,25 +8,26 @@ import {
     ResidenceList,
     VerifyEmailResponse,
 } from '@deriv/api-types';
-import { FormikHelpers as FormikActions } from 'formik';
-import { TCFDPasswordFormValues } from './cfd-password-modal';
+
 import {
-    TTradingPlatformAvailableAccount,
-    TExistingData,
-    TJurisdictionCardSection,
-    TJurisdictionCardSectionTitleIndicators,
+    TCFDsPlatformType,
     TClickableDescription,
+    TExistingData,
     TJurisdictionCardItems,
     TJurisdictionCardItemVerification,
-    TCFDsPlatformType,
+    TJurisdictionCardSection,
+    TJurisdictionCardSectionTitleIndicators,
+    TTradingPlatformAvailableAccount,
 } from '../Components/props.types';
 import RootStore from '../Stores/index';
+
+import { TCFDPasswordFormValues } from './cfd-password-modal';
 
 export type TCFDPersonalDetailsContainerProps = {
     onSubmit: (index: number, value: { [key: string]: string }) => void;
 };
 
-type CFD_Platform = 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
+type CFD_Platform = 'dxtrade' | 'mt5' | 'ctrader';
 
 export type TCFDChangePasswordConfirmationProps = {
     confirm_label?: string;
@@ -44,10 +47,6 @@ export type TCFDDashboardContainer = {
         real: string;
     };
     ctrader_tokens: {
-        demo: string;
-        real: string;
-    };
-    derivez_tokens: {
         demo: string;
         real: string;
     };
@@ -159,7 +158,7 @@ export type TCFDPasswordManagerModal = {
 export type TJurisdictionCardProps = {
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     account_type: string;
     disabled: boolean;
     is_non_idv_design: boolean;
@@ -175,7 +174,7 @@ export type TJurisdictionCardBackProps = {
 };
 
 export type TJurisdictionCardFrontProps = TJurisdictionCardBackProps & {
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     card_data: TJurisdictionCardSection[];
     card_values: TJurisdictionCardItems;
     disabled: boolean;
@@ -188,14 +187,14 @@ export type TJurisdictionClickableDescriptionProps = {
 };
 
 export type TJurisdictionTitleIndicatorProps = {
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     title_indicators: TJurisdictionCardSectionTitleIndicators;
     type_of_card: TJurisdictionCardType;
     verification_docs: TJurisdictionCardItemVerification | undefined;
 };
 
 export type TJurisdictionCardSectionProps = {
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     card_section_item: TJurisdictionCardSection;
     toggleCardFlip: React.MouseEventHandler<HTMLSpanElement>;
     type_of_card: TJurisdictionCardType;
@@ -205,7 +204,7 @@ export type TJurisdictionCardSectionProps = {
 export type TJurisdictionCardType = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
 
 export type TVerificationStatusBannerProps = {
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     account_settings: GetSettings;
     account_type: string;
     card_classname: string;
@@ -227,7 +226,7 @@ export type TJurisdictionCheckBoxProps = {
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
 };
-type TOpenAccountTransferMeta = {
+export type TOpenAccountTransferMeta = {
     category: string;
     type?: string;
 };
@@ -241,7 +240,7 @@ export type TJurisdictionModalProps = {
 };
 
 export type TJurisdictionModalContentProps = {
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     account_type: string;
     is_non_idv_design: boolean;
     jurisdiction_selected_shortcode: string;
@@ -262,7 +261,8 @@ export type TJurisdictionModalTitleProps = {
     platform: TCFDsPlatformType;
 };
 
-type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+type TAccountStatus = Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
+    Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
 
 export type TJurisdictionModalFootNoteProps = {
     account_status: TAccountStatus;

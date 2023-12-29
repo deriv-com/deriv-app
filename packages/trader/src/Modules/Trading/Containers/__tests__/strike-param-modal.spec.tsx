@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { screen, render } from '@testing-library/react';
+import { TRADE_TYPES } from '@deriv/shared';
 import StrikeParamModal from '../strike-param-modal';
 import userEvent from '@testing-library/user-event';
 
@@ -39,7 +40,7 @@ jest.mock('@deriv/components', () => {
 
 describe('<StrikeParamModal />', () => {
     const props = {
-        contract_type: 'vanillalongcall',
+        contract_type: TRADE_TYPES.VANILLA.CALL,
         is_open: true,
         name: 'barrier_1',
         onChange: jest.fn(),
@@ -94,6 +95,7 @@ describe('<StrikeParamModal />', () => {
         );
     });
     it('should show tooltip when user clicks "info" icon and hide tooltip upon second click', () => {
+        window.innerWidth = 720;
         renderStrikeParamModal(props);
         const info_icon = screen.getByTestId('dt_popover_wrapper');
 
@@ -103,16 +105,10 @@ describe('<StrikeParamModal />', () => {
         userEvent.click(info_icon);
         expect(screen.queryByText(/If you buy/i)).not.toBeInTheDocument();
     });
-    it('should hide tooltip when user closes StrikeParamModal if info tooltip is still open', () => {
+    it('should toggle modal when user closes StrikeParamModal', () => {
         renderStrikeParamModal(props);
-        const info_icon = screen.getByTestId('dt_popover_wrapper');
         const close_icon = screen.getByText('IcCross');
-
-        userEvent.click(info_icon);
-        expect(screen.getByText(/If you buy/i)).toBeInTheDocument();
-
         userEvent.click(close_icon);
-        expect(screen.queryByText(/If you buy/i)).not.toBeInTheDocument();
         expect(props.toggleModal).toHaveBeenCalled();
     });
 });

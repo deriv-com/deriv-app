@@ -10,15 +10,11 @@
     flex-direction: column;
     overflow: hidden;
 
-    &__content {
-        padding: 0 1.6rem;
-    }
-
     & .dc-tabs {
-        &--p2p__tabs {
-            @include mobile {
-                overflow: hidden;
-            }
+        width: 100%;
+
+        &::-webkit-scrollbar {
+            display: none;
         }
 
         .dc-themed-scrollbars-wrapper li {
@@ -62,32 +58,6 @@
         }
         &--highlight {
             background-color: var(--state-normal) !important;
-        }
-    }
-
-    &__separator {
-        width: 100%;
-        border-top: 1px solid var(--general-section-1);
-    }
-
-    &__advertiser-tab {
-        @include mobile {
-            .dc-tabs {
-                &__item {
-                    padding: 0 1.6rem;
-                    margin: auto;
-                }
-                &__list {
-                    position: fixed;
-                    margin-bottom: unset !important;
-                    background-color: var(--general-main-1);
-                    z-index: 2;
-                    width: 100%;
-                }
-                &__content {
-                    margin-top: 4rem;
-                }
-            }
         }
     }
 

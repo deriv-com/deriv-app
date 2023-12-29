@@ -9,15 +9,21 @@ import {
     getEstimatedWorthList,
     getIncomeSourceList,
     getNetIncomeList,
-    getOccupationList,
+    getFormattedOccupationList,
     getSourceOfWealthList,
-} from 'Configs/financial-details-config';
+} from '../../Configs/financial-details-config';
+import { EMPLOYMENT_VALUES } from '../../Constants/financial-details';
 
 type TFinancialDetailsDropdownFieldProps = {
     dropdown_list: Array<object>;
     field_key: string;
     placeholder?: string;
     label: string;
+    employment_status?: string;
+};
+
+type TFinancialInformationProps = {
+    employment_status?: string;
 };
 
 /**
@@ -27,6 +33,7 @@ type TFinancialDetailsDropdownFieldProps = {
  * @param {string} field_key - field reference of the field
  * @param {string} placeholder - placeholder of the field
  * @param {string} label - label of the field
+ *  @param {string} employment_status - selected employment_status,
  * @returns {JSX.Element}
  */
 const FinancialDetailsDropdownField = ({
@@ -49,13 +56,13 @@ const FinancialDetailsDropdownField = ({
                             is_align_text_left
                             name={field.name}
                             list={dropdown_list}
-                            value={values[field_key]}
+                            value={values?.[field_key]}
                             onChange={handleChange}
                             handleBlur={handleBlur}
                             error={touched?.[field_key] && errors?.[field_key]}
                             list_portal_id='modal_root'
-                            {...field}
                             required
+                            {...field}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -70,8 +77,8 @@ const FinancialDetailsDropdownField = ({
                                 handleChange(e);
                                 setFieldValue('field_key', e.target.value, true);
                             }}
-                            {...field}
                             required
+                            {...field}
                         />
                     </MobileWrapper>
                 </React.Fragment>
@@ -80,12 +87,71 @@ const FinancialDetailsDropdownField = ({
     );
 };
 
+const FinancialDetailsOccupationDropdownField = ({
+    dropdown_list,
+    field_key,
+    placeholder = localize('Please select'),
+    label,
+    employment_status,
+}: TFinancialDetailsDropdownFieldProps) => {
+    const { values, handleChange, handleBlur, touched, errors, setFieldValue } = useFormikContext<{
+        [key: string]: string;
+    }>();
+
+    const getFormattedOccupationValues = () =>
+        employment_status === EMPLOYMENT_VALUES.EMPLOYED && values?.occupation === EMPLOYMENT_VALUES.UNEMPLOYED
+            ? ''
+            : values?.occupation;
+
+    return (
+        <Field name={field_key}>
+            {({ field }: FormikValues) => (
+                <React.Fragment>
+                    <DesktopWrapper>
+                        <Dropdown
+                            {...field}
+                            placeholder={label}
+                            is_align_text_left
+                            name={field.name}
+                            list={dropdown_list}
+                            value={getFormattedOccupationValues()}
+                            onChange={e => {
+                                setFieldValue(field_key, getFormattedOccupationValues(), true);
+                                handleChange(e);
+                            }}
+                            handleBlur={handleBlur}
+                            error={touched?.[field_key] && errors?.[field_key]}
+                            list_portal_id='modal_root'
+                            required
+                        />
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <SelectNative
+                            {...field}
+                            placeholder={placeholder}
+                            name={field.name}
+                            label={label}
+                            list_items={dropdown_list}
+                            value={getFormattedOccupationValues()}
+                            error={touched?.[field_key] && errors?.[field_key]}
+                            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                                setFieldValue(field_key, getFormattedOccupationValues(), true);
+                                handleChange(e);
+                            }}
+                            required
+                        />
+                    </MobileWrapper>
+                </React.Fragment>
+            )}
+        </Field>
+    );
+};
 /**
  * Wrapper for financial details form fields.
  * @name FinancialInformation
  * @returns {JSX.Element}
  */
-const FinancialInformation = () => {
+const FinancialInformation = ({ employment_status }: TFinancialInformationProps) => {
     return (
         <React.Fragment>
             <FinancialDetailsDropdownField
@@ -98,10 +164,11 @@ const FinancialInformation = () => {
                 field_key='employment_industry'
                 label={localize('Industry of employment')}
             />
-            <FinancialDetailsDropdownField
-                dropdown_list={getOccupationList()}
+            <FinancialDetailsOccupationDropdownField
+                dropdown_list={getFormattedOccupationList(employment_status)}
                 field_key='occupation'
                 label={localize('Occupation')}
+                employment_status={employment_status}
             />
             <FinancialDetailsDropdownField
                 dropdown_list={getSourceOfWealthList()}

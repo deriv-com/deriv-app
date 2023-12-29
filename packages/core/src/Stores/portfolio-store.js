@@ -11,6 +11,7 @@ import {
     getCurrentTick,
     getDisplayStatus,
     WS,
+    filterDisabledPositions,
     formatPortfolioPosition,
     contractCancelled,
     contractSold,
@@ -18,10 +19,12 @@ import {
     getDurationTime,
     getDurationUnitText,
     getEndTime,
+    TRADE_TYPES,
     removeBarrier,
-    TURBOS,
+    routes,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
+import { Analytics } from '@deriv/analytics';
 import { ChartBarrierStore } from './chart-barrier-store';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
 
@@ -87,7 +90,6 @@ export default class PortfolioStore extends BaseStore {
             active_positions_count: computed,
             is_empty: computed,
             setPurchaseSpotBarrier: action,
-            updateBarrierColor: action,
             updateLimitOrderBarriers: action,
             setContractType: action,
             is_accumulator: computed,
@@ -131,6 +133,7 @@ export default class PortfolioStore extends BaseStore {
         this.error = '';
         if (response.portfolio.contracts) {
             this.positions = response.portfolio.contracts
+                .filter(filterDisabledPositions)
                 .map(pos => formatPortfolioPosition(pos, this.root_store.active_symbols.active_symbols))
                 .sort((pos1, pos2) => pos2.reference - pos1.reference); // new contracts first
 
@@ -167,8 +170,8 @@ export default class PortfolioStore extends BaseStore {
             const i = this.getPositionIndexById(contract_id);
 
             if (!this.positions[i]) {
-                // On a page refresh, portfolio call has returend empty,
-                // even though we we get a transaction.sell response.
+                // On a page refresh, portfolio call has returned empty,
+                // even though we get a transaction.sell response.
                 return;
             }
             this.positions[i].is_loading = true;
@@ -303,7 +306,7 @@ export default class PortfolioStore extends BaseStore {
                         type: response.msg_type,
                         ...response.error,
                     });
-                } else {
+                } else if (window.location.pathname !== routes.trade || !this.root_store.ui.is_mobile) {
                     this.root_store.notifications.addNotificationMessage(contractCancelled());
                 }
             });
@@ -340,9 +343,17 @@ export default class PortfolioStore extends BaseStore {
                 sell_price: response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
-            this.root_store.notifications.addNotificationMessage(
-                contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
-            );
+            if (window.location.pathname !== routes.trade || !this.root_store.ui.is_mobile) {
+                this.root_store.notifications.addNotificationMessage(
+                    contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
+                );
+            }
+
+            Analytics.trackEvent('ce_reports_form', {
+                action: 'close_contract',
+                form_name: 'default',
+                subform_name: 'open_positions_form',
+            });
         }
     }
 
@@ -400,6 +411,14 @@ export default class PortfolioStore extends BaseStore {
         if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
 
         this.positions[i].is_loading = false;
+
+        if (
+            this.root_store.ui.is_mobile &&
+            getEndTime(contract_response) &&
+            window.location.pathname === routes.trade
+        ) {
+            this.root_store.notifications.addTradeNotification(this.positions[i].contract_info);
+        }
     };
 
     populateContractUpdate({ contract_update }, contract_id) {
@@ -560,16 +579,7 @@ export default class PortfolioStore extends BaseStore {
             purchase_spot_barrier.draggable = false;
             purchase_spot_barrier.hideOffscreenBarrier = true;
             purchase_spot_barrier.isSingleBarrier = true;
-            purchase_spot_barrier.updateBarrierColor(this.root_store.ui.is_dark_mode_on);
             this.barriers.push(purchase_spot_barrier);
-        }
-    }
-
-    updateBarrierColor(is_dark_mode) {
-        const { main_barrier } = JSON.parse(localStorage.getItem('trade_store')) || {};
-        this.main_barrier = main_barrier;
-        if (this.main_barrier) {
-            this.main_barrier.updateBarrierColor(is_dark_mode);
         }
     }
 
@@ -589,14 +599,14 @@ export default class PortfolioStore extends BaseStore {
     }
 
     get is_accumulator() {
-        return this.contract_type === 'accumulator';
+        return this.contract_type === TRADE_TYPES.ACCUMULATOR;
     }
 
     get is_multiplier() {
-        return this.contract_type === 'multiplier';
+        return this.contract_type === TRADE_TYPES.MULTIPLIER;
     }
 
     get is_turbos() {
-        return this.contract_type === TURBOS.LONG || this.contract_type === TURBOS.SHORT;
+        return this.contract_type === TRADE_TYPES.TURBOS.LONG || this.contract_type === TRADE_TYPES.TURBOS.SHORT;
     }
 }

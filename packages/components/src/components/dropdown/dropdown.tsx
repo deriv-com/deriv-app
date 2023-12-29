@@ -25,6 +25,7 @@ type TDropdown = {
     };
     has_symbol?: boolean;
     hint?: string;
+    id?: string;
     initial_offset?: number;
     initial_height_offset?: number;
     is_align_text_left?: boolean;
@@ -448,7 +449,7 @@ const Dropdown = ({
                     )}
                     <div
                         className={dropdownDisplayClassName()}
-                        data-testid='dti_dropdown_display'
+                        data-testid='dt_dropdown_display'
                         tabIndex={isSingleOption() ? -1 : 0}
                         onClick={handleVisibility}
                         onKeyDown={onKeyPressed as unknown as React.KeyboardEventHandler}

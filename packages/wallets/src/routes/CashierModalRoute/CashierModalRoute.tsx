@@ -1,5 +1,5 @@
 import React from 'react';
-import { WalletCashier } from '../../components';
+import { WalletCashier } from '../../features';
 import './CashierModalRoute.scss';
 
 const CashierModalRoute: React.FC = () => (

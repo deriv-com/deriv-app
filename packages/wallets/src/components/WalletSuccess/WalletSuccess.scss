@@ -1,0 +1,16 @@
+.wallets-success {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2.4rem;
+    width: 40rem;
+    border-radius: 1rem;
+    text-align: center;
+    background: var(--system-light-8-primary-background, #fff);
+
+    @include mobile {
+        width: 100%;
+        height: calc(100% - 8.5rem);
+    }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useOnClickOutside } from '@deriv/components';
 import { TFilterDialogProps } from '../journal.types';
-import { Filters } from '.';
+import Filters from './filters';
 
 const FilterDialog = ({
     toggle_ref,

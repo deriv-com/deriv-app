@@ -1,0 +1,66 @@
+.wallets-transactions {
+    width: 100%;
+    height: fit-content;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    // ignore CashierContent top padding
+    margin-top: -4.8rem;
+    @include mobile {
+        margin-top: -2.4rem;
+    }
+
+    // adjust filter dropdown width
+    .wallets-dropdown {
+        max-width: 19.5rem;
+        @include mobile {
+            max-width: unset;
+        }
+    }
+
+    // don't need details/error message
+    .wallets-textfield__message-container {
+        display: none;
+    }
+
+    // don't show text selection
+    .wallets-textfield__field::selection {
+        background: none;
+    }
+
+    &__header {
+        position: sticky;
+        top: -4.8rem; // ignore CashierContent padding
+        width: 100%;
+        max-width: 80rem;
+        padding: 2.4rem 0 0.8rem;
+        display: flex;
+        gap: 1.6rem;
+        justify-content: flex-end;
+        z-index: 2;
+        background-color: var(--system-light-8-primary-background, #fff);
+
+        @include mobile {
+            top: -2.4rem;
+            padding: 1.6rem 0;
+            flex-direction: column;
+        }
+    }
+
+    #toggle-pending {
+        position: absolute;
+    }
+
+    &__toggle {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--system-light-2-general-text, #333);
+
+        @include mobile {
+            align-self: flex-end;
+        }
+    }
+}

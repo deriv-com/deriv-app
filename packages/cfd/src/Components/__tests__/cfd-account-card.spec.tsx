@@ -447,7 +447,7 @@ describe('CFDAccountCard', () => {
         expect(screen.getByText(/username/i)).toBeInTheDocument();
         expect(screen.getByText(/mtd20103240/i)).toBeInTheDocument();
         expect(screen.getByText(/password/i)).toBeInTheDocument();
-        expect(screen.getByText(/•••••••••••••••/i)).toBeInTheDocument();
+        expect(screen.getByText('***************')).toBeInTheDocument();
         expect(screen.getByText(/icedit/i)).toBeInTheDocument();
         expect(screen.getByText(/trade on web terminal/i)).toBeInTheDocument();
     });

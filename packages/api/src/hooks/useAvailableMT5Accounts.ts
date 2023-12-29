@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import useQuery from '../useQuery';
+import useAuthorize from './useAuthorize';
 
 const market_type_to_leverage_mapper: Record<string, number> = {
     gaming: 500,
@@ -9,8 +10,10 @@ const market_type_to_leverage_mapper: Record<string, number> = {
 
 /** A custom hook to get the list of available MT5 accounts. */
 const useAvailableMT5Accounts = () => {
+    const { isSuccess } = useAuthorize();
     const { data: mt5_available_accounts, ...rest } = useQuery('trading_platform_available_accounts', {
         payload: { platform: 'mt5' },
+        options: { enabled: isSuccess },
     });
 
     const modified_mt5_available_accounts = useMemo(

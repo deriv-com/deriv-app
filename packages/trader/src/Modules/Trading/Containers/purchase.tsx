@@ -36,22 +36,23 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
         basis,
         contract_type,
         currency,
-        is_accumulator,
-        is_multiplier,
         growth_rate,
         has_cancellation,
+        has_open_accu_contract,
+        is_accumulator,
+        is_multiplier,
         is_purchase_enabled,
+        is_trade_enabled,
         is_turbos,
+        is_vanilla_fx,
         is_vanilla,
-        onPurchase: onClickPurchase,
         onHoverPurchase,
+        onPurchase: onClickPurchase,
         proposal_info,
         purchase_info,
         symbol,
-        validation_errors = {},
         trade_types,
-        is_trade_enabled,
-        has_open_accu_contract,
+        validation_errors,
     } = useTraderStore();
 
     const is_high_low = /^high_low$/.test(contract_type.toLowerCase());
@@ -92,10 +93,10 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
                 basis={basis}
                 buy_info={purchase_info}
                 currency={currency}
-                growth_rate={growth_rate}
                 info={info}
                 key={type}
                 index={getSortedIndex(type, index)}
+                growth_rate={growth_rate}
                 has_cancellation={has_cancellation}
                 is_accumulator={is_accumulator}
                 is_disabled={is_disabled}
@@ -105,6 +106,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
                 is_multiplier={is_multiplier}
                 is_turbos={is_turbos}
                 is_vanilla={is_vanilla}
+                is_vanilla_fx={is_vanilla_fx}
                 is_proposal_empty={is_proposal_empty}
                 is_proposal_error={!!is_proposal_error}
                 purchased_states_arr={purchased_states_arr}
@@ -138,6 +140,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed?: boolean })
                     is_sell_requested={active_accu_contract?.is_sell_requested}
                     current_stake={indicative}
                     currency={currency}
+                    key={type}
                 />
             );
         }

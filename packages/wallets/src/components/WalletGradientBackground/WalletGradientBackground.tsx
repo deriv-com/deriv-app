@@ -1,17 +1,21 @@
 import React from 'react';
+import classNames from 'classnames';
+import { THooks } from '../../types';
 import './WalletGradientBackground.scss';
 
 type TProps = {
+    bodyClassName?: string;
     children: React.ReactNode;
-    currency: string;
+    currency: THooks.WalletAccountsList['wallet_currency_type'];
     device?: 'desktop' | 'mobile';
     hasShine?: boolean;
-    isDemo?: boolean;
-    theme?: 'dark' | 'light';
+    isDemo?: THooks.WalletAccountsList['is_virtual'];
+    theme?: 'dark' | 'grey' | 'light';
     type?: 'card' | 'header';
 };
 
 const WalletGradientBackground: React.FC<TProps> = ({
+    bodyClassName,
     children,
     currency,
     device = 'desktop',
@@ -20,14 +24,21 @@ const WalletGradientBackground: React.FC<TProps> = ({
     theme = 'light',
     type = 'card',
 }) => {
-    const className = isDemo
-        ? `wallets-gradient--demo-${device}-${type}-${theme}`
-        : `wallets-gradient--${currency}-${device}-${type}-${theme}`;
+    const getClassName = () => {
+        if (isDemo) return `wallets-gradient--demo-${device}-${type}-${theme}`;
+        if (theme !== 'dark' && theme !== 'light') return `wallets-gradient__palette--${theme}`;
+        return `wallets-gradient--${currency}-${device}-${type}-${theme}`;
+    };
 
     return (
-        <div className={`wallets-gradient ${className}`}>
+        <div
+            className={classNames(`wallets-gradient ${getClassName()}`, {
+                [`${bodyClassName}`]: !!bodyClassName,
+            })}
+            data-testid='dt_wallet_gradient_background'
+        >
             {hasShine && !isDemo && <span className='wallets-gradient__shine' />}
-            {children}
+            <div className='wallets-gradient__content'>{children}</div>
         </div>
     );
 };

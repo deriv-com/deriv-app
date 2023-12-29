@@ -444,6 +444,85 @@ export default class ContractsFor {
         return dropdown_options;
     }
 
+    getHiddenCategories = trade_types => {
+        // TODO: Temporary filtering of barrier + prediction types. Should later
+        // render more inputs for these types. We should only filter out trade type
+        // categories which only feature prediction/barrier trade types. e.g.
+        // in Digits category, users can still purchase Even/Odd types.
+        let hidden_categories = 0;
+
+        for (let j = 0; j < trade_types.length; j++) {
+            const trade_type = trade_types[j];
+            const has_barrier = config.QUICK_STRATEGY.DISABLED.BARRIER_TRADE_TYPES.includes(trade_type.value);
+            const has_prediction = config.QUICK_STRATEGY.DISABLED.PREDICTION_TRADE_TYPES.includes(trade_type.value);
+
+            if (has_barrier || has_prediction) {
+                hidden_categories++;
+            }
+        }
+
+        return hidden_categories;
+    };
+
+    getTradeTypeOptions = (trade_types, trade_type_category) => {
+        const trade_type_options = [];
+        trade_types.forEach(trade_type => {
+            const has_barrier = config.QUICK_STRATEGY.DISABLED.BARRIER_TRADE_TYPES.includes(trade_type.value);
+            const has_prediction = config.QUICK_STRATEGY.DISABLED.PREDICTION_TRADE_TYPES.includes(trade_type.value);
+            const is_muliplier = ['multiplier'].includes(trade_type.value);
+
+            // TODO: Render extra inputs for barrier + prediction and multiplier types.
+            if (!has_barrier && !has_prediction && !is_muliplier) {
+                trade_type_options.push({
+                    text: trade_type.name,
+                    value: trade_type.value,
+                    group: trade_type_category[0],
+                    icon: trade_type.icon,
+                });
+            }
+        });
+        return trade_type_options;
+    };
+
+    async getTradeTypesForQuickStrategy(symbol) {
+        const trade_type_options = [];
+        const filtered_trade_type_categories = [];
+        const market = await this.getMarketBySymbol(symbol);
+        const submarket = await this.getSubmarketBySymbol(symbol);
+        const trade_type_categories = await this.getTradeTypeCategories(market, submarket, symbol);
+
+        for (let i = 0; i < trade_type_categories.length; i++) {
+            const trade_type_category = trade_type_categories[i];
+            // eslint-disable-next-line no-await-in-loop
+            const trade_types = await this.getTradeTypeByTradeCategory(
+                market,
+                submarket,
+                symbol,
+                trade_type_category[1]
+            );
+
+            const hidden_categories = this.getHiddenCategories(trade_types);
+
+            if (hidden_categories < trade_types.length) {
+                filtered_trade_type_categories.push(trade_type_category);
+            }
+        }
+
+        for (let i = 0; i < filtered_trade_type_categories.length; i++) {
+            const trade_type_category = filtered_trade_type_categories[i]; // e.g. ['Up/Down', 'callput']
+            // eslint-disable-next-line no-await-in-loop
+            const trade_types = await this.getTradeTypeByTradeCategory(
+                market,
+                submarket,
+                symbol,
+                trade_type_category[1]
+            );
+
+            trade_type_options.push(...this.getTradeTypeOptions(trade_types, trade_type_category));
+        }
+        return trade_type_options;
+    }
+
     async getTradeTypeCategories(market, submarket, symbol) {
         const { TRADE_TYPE_CATEGORY_NAMES, NOT_AVAILABLE_DROPDOWN_OPTIONS } = config;
         const contracts = await this.getContractsFor(symbol);
@@ -523,4 +602,13 @@ export default class ContractsFor {
     disposeCache() {
         this.contracts_for = {};
     }
+
+    getContractTypes = trade_type => {
+        const { opposites } = config;
+        const categories = opposites[trade_type.toUpperCase()].map(opposite => ({
+            value: Object.keys(opposite)[0],
+            text: Object.values(opposite)[0],
+        }));
+        return categories;
+    };
 }

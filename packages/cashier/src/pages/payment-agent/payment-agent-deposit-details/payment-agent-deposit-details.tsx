@@ -10,67 +10,74 @@ type TPaymentAgentDepositDetails = {
     payment_agent: TPaymentAgent;
 };
 
+const PaymentAgentPhonesDetails = ({ phone_numbers }: Pick<TPaymentAgent, 'phone_numbers'>) => {
+    return (
+        <PaymentAgentDetail action='tel' icon='IcPhone' title={<Localize i18n_default_text='Phone number' />}>
+            {phone_numbers.map(phone => phone.phone_number)}
+        </PaymentAgentDetail>
+    );
+};
+
+const PaymentAgentTransferLimitDetails = ({
+    min_withdrawal,
+    max_withdrawal,
+    currency,
+}: Pick<TPaymentAgent, 'min_withdrawal' | 'max_withdrawal' | 'currency'>) => {
+    return (
+        <PaymentAgentDetail icon='IcAccountTransfer' title={<Localize i18n_default_text='Transfer limit' />}>
+            <Money amount={min_withdrawal || ''} currency={currency} show_currency />
+            <Text size='xs'> - </Text>
+            <Money amount={max_withdrawal || ''} currency={currency} show_currency />
+        </PaymentAgentDetail>
+    );
+};
+
+const PaymentAgentDepositComissionDetails = ({ deposit_commission }: Pick<TPaymentAgent, 'deposit_commission'>) => {
+    return (
+        <PaymentAgentDetail
+            icon='IcCashierCommissionDeposit'
+            className='deposit-commission'
+            title={<Localize i18n_default_text='Commission on deposits' />}
+        >
+            {`${deposit_commission}%`}
+        </PaymentAgentDetail>
+    );
+};
+
+const PaymentAgentWithdrawalComissionDetails = ({
+    withdrawal_commission,
+}: Pick<TPaymentAgent, 'withdrawal_commission'>) => {
+    return (
+        <PaymentAgentDetail
+            icon='IcCashierCommissionWithdrawal'
+            className='withdrawal_commission'
+            title={<Localize i18n_default_text='Commission on withdrawal' />}
+        >
+            {`${withdrawal_commission}%`}
+        </PaymentAgentDetail>
+    );
+};
+
 const PaymentAgentDepositDetails = ({ payment_agent }: TPaymentAgentDepositDetails) => {
-    const payment_agent_phones = toJS(payment_agent.phone_numbers);
+    const { phone_numbers, min_withdrawal, max_withdrawal, currency, deposit_commission, withdrawal_commission } =
+        payment_agent;
 
-    const PaymentAgentPhonesDetails = () => {
-        return (
-            <PaymentAgentDetail action='tel' icon='IcPhone' title={<Localize i18n_default_text='Phone number' />}>
-                {payment_agent.phone_numbers.map(phone => phone.phone_number)}
-            </PaymentAgentDetail>
-        );
-    };
-
-    const PaymentAgentTransferLimitDetails = () => {
-        return (
-            <PaymentAgentDetail icon='IcAccountTransfer' title={<Localize i18n_default_text='Transfer limit' />}>
-                <React.Fragment>
-                    <Money
-                        amount={payment_agent.min_withdrawal || ''}
-                        currency={payment_agent.currency}
-                        show_currency
-                    />
-                    <Text size='xs'> - </Text>
-                    <Money
-                        amount={payment_agent.max_withdrawal || ''}
-                        currency={payment_agent.currency}
-                        show_currency
-                    />
-                </React.Fragment>
-            </PaymentAgentDetail>
-        );
-    };
-
-    const PaymentAgentDepositComissionDetails = () => {
-        return (
-            <PaymentAgentDetail
-                icon='IcCashierCommissionDeposit'
-                className='deposit-commission'
-                title={<Localize i18n_default_text='Commission on deposits' />}
-            >
-                {`${payment_agent.deposit_commission}%`}
-            </PaymentAgentDetail>
-        );
-    };
-
-    const PaymentAgentWithdrawalComissionDetails = () => {
-        return (
-            <PaymentAgentDetail
-                icon='IcCashierCommissionWithdrawal'
-                className='withdrawal_commission'
-                title={<Localize i18n_default_text='Commission on withdrawal' />}
-            >
-                {`${payment_agent.withdrawal_commission}%`}
-            </PaymentAgentDetail>
-        );
-    };
+    const payment_agent_phones = toJS(phone_numbers);
 
     return (
         <div className='payment-agent-deposit-details'>
-            {payment_agent_phones && <PaymentAgentPhonesDetails />}
-            {payment_agent.min_withdrawal && payment_agent.max_withdrawal && <PaymentAgentTransferLimitDetails />}
-            {payment_agent.deposit_commission && <PaymentAgentDepositComissionDetails />}
-            {payment_agent.withdrawal_commission && <PaymentAgentWithdrawalComissionDetails />}
+            {payment_agent_phones && <PaymentAgentPhonesDetails phone_numbers={phone_numbers} />}
+            {min_withdrawal && max_withdrawal && (
+                <PaymentAgentTransferLimitDetails
+                    min_withdrawal={min_withdrawal}
+                    max_withdrawal={max_withdrawal}
+                    currency={currency}
+                />
+            )}
+            {deposit_commission && <PaymentAgentDepositComissionDetails deposit_commission={deposit_commission} />}
+            {withdrawal_commission && (
+                <PaymentAgentWithdrawalComissionDetails withdrawal_commission={withdrawal_commission} />
+            )}
         </div>
     );
 };

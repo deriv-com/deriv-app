@@ -1,39 +1,28 @@
 import React from 'react';
-import { connect } from 'Stores/connect';
-import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { withRouter } from 'react-router';
 import WarningMessageModal from './warning-close-create-real-account-content';
 import './warning-close-create-real-account-modal.scss';
+import { observer, useStore } from '@deriv/stores';
 
-const WarningCloseCreateRealAccountModal = ({
-    is_closing_create_real_account_modal,
-    setIsClosingCreateRealAccountModal,
-    closeRealAccountSignup,
-    routing_history,
-}) => (
-    <React.Fragment>
-        <DesktopWrapper>
-            <WarningMessageModal
-                is_closing_create_real_account_modal={is_closing_create_real_account_modal}
-                setIsClosingCreateRealAccountModal={setIsClosingCreateRealAccountModal}
-                closeRealAccountSignup={closeRealAccountSignup}
-                routing_history={routing_history}
-            />
-        </DesktopWrapper>
-        <MobileWrapper>
-            <WarningMessageModal
-                is_closing_create_real_account_modal={is_closing_create_real_account_modal}
-                setIsClosingCreateRealAccountModal={setIsClosingCreateRealAccountModal}
-                closeRealAccountSignup={closeRealAccountSignup}
-                routing_history={routing_history}
-            />
-        </MobileWrapper>
-    </React.Fragment>
-);
+const WarningCloseCreateRealAccountModal = observer(() => {
+    const { common, ui } = useStore();
+    const {
+        closeRealAccountSignup,
+        is_closing_create_real_account_modal,
+        setIsClosingCreateRealAccountModal,
+        real_account_signup_target,
+    } = ui;
+    const { app_routing_history: routing_history } = common;
 
-export default connect(({ ui, common }) => ({
-    is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
-    setIsClosingCreateRealAccountModal: ui.setIsClosingCreateRealAccountModal,
-    closeRealAccountSignup: ui.closeRealAccountSignup,
-    routing_history: common.app_routing_history,
-}))(withRouter(WarningCloseCreateRealAccountModal));
+    return (
+        <WarningMessageModal
+            closeRealAccountSignup={closeRealAccountSignup}
+            is_closing_create_real_account_modal={is_closing_create_real_account_modal}
+            setIsClosingCreateRealAccountModal={setIsClosingCreateRealAccountModal}
+            real_account_signup_target={real_account_signup_target}
+            routing_history={routing_history}
+        />
+    );
+});
+
+export default withRouter(WarningCloseCreateRealAccountModal);

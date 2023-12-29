@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 const BlockUserOverlay = ({ children, is_visible, onClickUnblock }) => {
     const { advertiser_page_store } = useStores();
+    const { advertiser_details_name, counterparty_advertiser_info } = advertiser_page_store;
 
     if (is_visible) {
         return (
@@ -16,7 +17,7 @@ const BlockUserOverlay = ({ children, is_visible, onClickUnblock }) => {
                     <Text className='block-user-overlay__wrapper-text' weight='bold'>
                         <Localize
                             i18n_default_text='You have blocked {{advertiser_name}}.'
-                            values={{ advertiser_name: advertiser_page_store.advertiser_details_name }}
+                            values={{ advertiser_name: advertiser_details_name ?? counterparty_advertiser_info?.name }}
                         />
                     </Text>
                     <Button className='block-user-overlay__wrapper-button' large onClick={onClickUnblock} secondary>

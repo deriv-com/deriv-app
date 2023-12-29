@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { routes, getAuthenticationStatusInfo, WS, CFD_PLATFORMS } from '@deriv/shared';
+import { routes, getAuthenticationStatusInfo, WS } from '@deriv/shared';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -13,12 +13,13 @@ import {
     isDxtradeAccountAdded,
     isCTraderAccountAdded,
 } from '../../Helpers/compare-accounts-config';
+import { CATEGORY, CFD_PLATFORMS } from '../../Helpers/cfd-config';
 
 const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TCompareAccountsCard) => {
     const history = useHistory();
 
     const market_type = getMarketType(trading_platforms);
-    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
+    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode ?? '');
     const {
         modules: { cfd },
         common,
@@ -49,14 +50,14 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
 
     const {
         poi_or_poa_not_submitted,
-        poi_acknowledged_for_vanuatu_maltainvest,
-        poi_acknowledged_for_bvi_labuan,
+        poi_acknowledged_for_maltainvest,
+        poi_acknowledged_for_bvi_labuan_vanuatu,
+        poa_resubmit_for_labuan,
         poa_acknowledged,
-        poa_pending,
     } = getAuthenticationStatusInfo(account_status);
 
     const type_of_account = {
-        category: is_demo ? 'demo' : 'real',
+        category: is_demo ? CATEGORY.DEMO : CATEGORY.REAL,
         type: market_type,
     };
 
@@ -91,19 +92,25 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
                 setHasSubmittedPersonalDetails(true);
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [
+        account_settings,
+        has_submitted_personal_details,
+        is_logged_in,
+        is_virtual,
+        setAccountSettings,
+        updateMT5Status,
+    ]);
 
     const is_account_status_verified = getAccountVerficationStatus(
         market_type_shortcode,
         poi_or_poa_not_submitted,
-        poi_acknowledged_for_vanuatu_maltainvest,
-        poi_acknowledged_for_bvi_labuan,
+        poi_acknowledged_for_maltainvest,
+        poi_acknowledged_for_bvi_labuan_vanuatu,
         poa_acknowledged,
-        poa_pending,
+        poa_resubmit_for_labuan,
+        has_submitted_personal_details,
         should_restrict_bvi_account_creation,
         should_restrict_vanuatu_account_creation,
-        has_submitted_personal_details,
         is_demo
     );
 

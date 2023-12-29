@@ -9,7 +9,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import { getSetting } from 'Utils/settings';
 
 import TourButton from '../common/tour-button';
-import { DBOT_ONBOARDING_MOBILE, TMobileTourConfig } from '../config';
+import { DBOT_ONBOARDING_MOBILE, TMobileTourConfig } from '../tour-content';
 
 const default_tour_data = {
     content: [],
@@ -135,7 +135,7 @@ const OnboardingTourMobile = observer(() => {
                     <ProgressBarTracker
                         step={tour_step}
                         steps_list={DBOT_ONBOARDING_MOBILE.map(v => v.tour_step_key.toString())}
-                        setStep={setStep}
+                        onStepChange={setStep}
                     />
                 </div>
                 <div className='dbot-slider__button-group'>

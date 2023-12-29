@@ -4,8 +4,8 @@ import { Icon, Text } from '@deriv/components';
 type TInlineNoteWithIconExtend = {
     icon?: string;
     font_size?: string;
-    message: React.ReactNode;
-    title?: string;
+    message: React.ReactElement;
+    title: React.ReactElement;
 };
 
 const InlineNoteWithIcon = ({ icon, message, font_size = 'xxxs', title }: TInlineNoteWithIconExtend) => {
@@ -17,7 +17,7 @@ const InlineNoteWithIcon = ({ icon, message, font_size = 'xxxs', title }: TInlin
                 </div>
             )}
             <Text as='p' size={font_size} line_height='s'>
-                {title && <strong>{title}: </strong>}
+                {title && <strong> {title} </strong>}
                 {message}
             </Text>
         </div>

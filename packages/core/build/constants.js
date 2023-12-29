@@ -13,7 +13,6 @@ const TerserPlugin = require('terser-webpack-plugin');
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
-const webpack = require('webpack');
 
 const {
     copyConfig,
@@ -43,6 +42,8 @@ const HOISTED_PACKAGES = {
     'react-router-dom': path.resolve(__dirname, '../../../node_modules/react-router-dom'),
     mobx: path.resolve(__dirname, '../../../node_modules/mobx'),
     'mobx-react': path.resolve(__dirname, '../../../node_modules/mobx-react'),
+    '@deriv/api': path.resolve(__dirname, '../node_modules/@deriv/api'),
+    '@deriv/library': path.resolve(__dirname, '../node_modules/@deriv/library'),
     '@deriv/shared': path.resolve(__dirname, '../node_modules/@deriv/shared'),
     '@deriv/components': path.resolve(__dirname, '../node_modules/@deriv/components'),
     '@deriv/translations': path.resolve(__dirname, '../node_modules/@deriv/translations'),
@@ -133,11 +134,11 @@ const plugins = ({ base, is_test_env }) => {
                 process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE
             ),
             'process.env.DATADOG_SESSION_SAMPLE_RATE': JSON.stringify(process.env.DATADOG_SESSION_SAMPLE_RATE),
-            'process.env.CIRCLE_TAG': JSON.stringify(process.env.CIRCLE_TAG),
-            'process.env.CIRCLE_JOB': JSON.stringify(process.env.CIRCLE_JOB),
-            'process.env.RUDDERSTACK_URL': JSON.stringify(process.env.RUDDERSTACK_URL),
-            'process.env.RUDDERSTACK_PRODUCTION_KEY': JSON.stringify(process.env.RUDDERSTACK_PRODUCTION_KEY),
-            'process.env.RUDDERSTACK_STAGING_KEY': JSON.stringify(process.env.RUDDERSTACK_STAGING_KEY),
+            'process.env.REF_NAME': JSON.stringify(process.env.REF_NAME),
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+            'process.env.RUDDERSTACK_KEY': JSON.stringify(process.env.RUDDERSTACK_KEY),
+            'process.env.GROWTHBOOK_CLIENT_KEY': JSON.stringify(process.env.GROWTHBOOK_CLIENT_KEY),
+            'process.env.GROWTHBOOK_DECRYPTION_KEY': JSON.stringify(process.env.GROWTHBOOK_DECRYPTION_KEY),
         }),
         new CleanWebpackPlugin(),
         new CopyPlugin(copyConfig(base)),
@@ -146,9 +147,6 @@ const plugins = ({ base, is_test_env }) => {
         new PreloadWebpackPlugin(htmlPreloadConfig()),
         new IgnorePlugin({ resourceRegExp: /^\.\/locale$/, contextRegExp: /moment$/ }),
         new MiniCssExtractPlugin(cssConfig()),
-        new webpack.optimize.LimitChunkCountPlugin({
-            maxChunks: 10,
-        }),
         new CircularDependencyPlugin({ exclude: /node_modules/, failOnError: true }),
         ...(IS_RELEASE
             ? []

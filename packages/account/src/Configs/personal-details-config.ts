@@ -176,13 +176,17 @@ export const personal_details_config = ({
                 text: '',
                 value: '',
                 example_format: '',
-                sample_image: '',
             },
             supported_in: ['svg'],
             rules: [],
         },
         document_number: {
             default_value: account_settings.document_number ?? '',
+            supported_in: ['svg'],
+            rules: [],
+        },
+        confirmation_checkbox: {
+            default_value: false,
             supported_in: ['svg'],
             rules: [],
         },
@@ -251,7 +255,6 @@ const personalDetailsConfig = <T>(
                 })
             ),
             is_svg: upgrade_info?.can_upgrade_to === 'svg',
-            is_mf: real_account_signup_target === 'maltainvest',
             account_opening_reason_list: [
                 {
                     text: localize('Hedging'),

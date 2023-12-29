@@ -1,0 +1,64 @@
+.withdrawal-crypto-form {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2.4rem;
+
+    .dc-input__field {
+        height: auto;
+    }
+
+    .dc-field--error {
+        line-height: 1.5;
+        padding-left: 1.6rem;
+    }
+
+    .withdraw__input {
+        width: 100%;
+    }
+
+    .cashier__form-submit-button {
+        margin: 0;
+    }
+
+    &__wrapper {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    &__submit {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        margin: 2.4rem auto 0;
+        @include desktop {
+            padding: 1.6rem 2.4rem;
+        }
+
+        > * {
+            width: auto;
+        }
+    }
+    &__icon {
+        margin: 2.4rem 0 0.4rem;
+    }
+    &__percentage {
+        &-container {
+            width: 100%;
+            margin-top: 2.4rem;
+        }
+        &-selector {
+            margin-bottom: 1.6rem;
+            width: 100%;
+            @include mobile {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    }
+}

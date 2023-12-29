@@ -24,12 +24,13 @@ const Toolbar = observer(() => {
     } = toolbar;
     const { toggleSaveModal } = save_modal;
     const { toggleLoadModal } = load_modal;
-    const { loadDataStrategy } = quick_strategy;
     const { is_running } = run_panel;
-
+    const { setFormVisibility } = quick_strategy;
     const confirm_button_text = is_running ? localize('Yes') : localize('OK');
     const cancel_button_text = is_running ? localize('No') : localize('Cancel');
-
+    const handleQuickStrategyOpen = () => {
+        setFormVisibility(true);
+    };
     return (
         <React.Fragment>
             <div className='toolbar dashboard__toolbar' data-testid='dashboard__toolbar'>
@@ -39,7 +40,7 @@ const Toolbar = observer(() => {
                             popover_message={localize('Click here to start building your Deriv Bot.')}
                             button_id='db-toolbar__get-started-button'
                             button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
-                            buttonOnClick={loadDataStrategy}
+                            buttonOnClick={handleQuickStrategyOpen}
                             button_text={localize('Quick strategy')}
                         />
                     )}
@@ -69,7 +70,7 @@ const Toolbar = observer(() => {
             >
                 {is_running ? (
                     <Localize
-                        i18n_default_text='Deriv Bot will not proceed with any new trades. Any ongoing trades will be completed by our system. Any unsaved changes will be lost.<0>Note: Please check your statement to view completed transactions.</0>'
+                        i18n_default_text='The workspace will be reset to the default strategy and any unsaved changes will be lost. <0>Note: This will not affect your running bot.</0>'
                         components={[
                             <div
                                 key={0}

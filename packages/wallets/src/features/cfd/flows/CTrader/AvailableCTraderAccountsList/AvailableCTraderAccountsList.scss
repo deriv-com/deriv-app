@@ -1,0 +1,11 @@
+.wallets-available-ctrader {
+    &__icon {
+        cursor: pointer;
+    }
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+}

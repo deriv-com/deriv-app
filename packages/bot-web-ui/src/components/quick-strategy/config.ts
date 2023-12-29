@@ -1,6 +1,6 @@
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
-import { D_ALEMBERT, MARTINGALE, OSCARS_GRIND, REVERSE_MARTINGALE } from './descriptions';
+import { D_ALEMBERT, MARTINGALE, OSCARS_GRIND, REVERSE_MARTINGALE, STRATEGY_1_3_2_6 } from './descriptions';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [
@@ -317,6 +317,7 @@ export const STRATEGIES: TStrategies = {
         description: localize(
             'The 1-3-2-6 strategy aims to maximise profits with four consecutive wins. One unit is equal to the amount of the initial stake. The stake will adjust from 1 unit to 3 units after the first successful trade, then to 2 units after your second successful trade, and to 6 units after the third successful trade. The stake for the next trade will reset to the initial stake if there is a losing trade or a completion of the trade cycle.'
         ),
+        long_description: STRATEGY_1_3_2_6,
         fields: [
             [
                 LABEL_SYMBOL,

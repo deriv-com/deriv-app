@@ -24,7 +24,7 @@ export * from './WalletListCard';
 export * from './WalletListCardActions';
 export * from './WalletListCardBadge';
 export * from './WalletListCardBalance';
-export * from './WalletListCardIDetails';
+export * from './WalletListCardDetails';
 export * from './WalletListCardTitle';
 export * from './WalletNoWalletFoundState';
 export * from './WalletsAccordion';

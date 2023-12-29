@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ButtonToggle } from '@deriv/components';
+import { toMoment } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/toggle-container';
@@ -12,7 +14,10 @@ import './order-table.scss';
 
 const OrderTable = ({ showDetails }) => {
     const { general_store, order_store } = useStores();
-    const { date_from, date_to, filtered_date_range, handleDateChange } = order_store;
+    const {
+        ui: { is_desktop },
+    } = useStore();
+    const { date_from, date_to, filtered_date_range, handleDateChange, setDateTo } = order_store;
 
     const orders_list_filters = [
         {
@@ -28,6 +33,12 @@ const OrderTable = ({ showDetails }) => {
     ];
 
     const is_active_tab = general_store.order_table_type === order_list.ACTIVE;
+
+    React.useEffect(() => {
+        if (is_desktop && !date_to) {
+            setDateTo(toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix());
+        }
+    }, []);
     return (
         <React.Fragment>
             <div className='order-table'>

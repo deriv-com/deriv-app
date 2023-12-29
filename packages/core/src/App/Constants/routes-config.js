@@ -91,6 +91,14 @@ const P2P_V2 = React.lazy(() =>
         return import(/* webpackChunkName: "p2p-v2" */ '@deriv/p2p-v2');
     })
 );
+
+const Account_V2 = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "p2p-v2" */ '@deriv/account-v2');
+    })
+);
+
 const getModules = () => {
     const modules = [
         {
@@ -288,7 +296,7 @@ const getModules = () => {
         },
         {
             path: routes.account_v2,
-            component: AccountV2,
+            component: Account_V2,
             is_authenticated: true,
             getTitle: () => localize('Account V2'),
         },

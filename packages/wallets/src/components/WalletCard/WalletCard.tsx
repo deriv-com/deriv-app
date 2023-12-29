@@ -38,7 +38,10 @@ const WalletCard: React.FC<TProps> = ({ balance, currency, iconSize = 'lg', isDe
                             {currency} Wallet
                         </WalletText>
                         {isLoading ? (
-                            <div className='wallets-skeleton wallets-card--balance-loader' />
+                            <div
+                                className='wallets-skeleton wallets-card--balance-loader'
+                                data-testid='dt_wallet_card_balance_loader'
+                            />
                         ) : (
                             <WalletText color={isDemo ? 'white' : 'black'} size='sm' weight='bold'>
                                 {balance}

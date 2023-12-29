@@ -12,7 +12,7 @@ import {
     AUTH_STATUS_CODES,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { getIDVDocuments } from '../Constants/idv-document-config';
+import { getIDVDocuments } from '../Configs/idv-document-config';
 import { TServerError } from '../Types';
 import { LANGUAGE_CODES } from '../Constants/onfido';
 
@@ -77,7 +77,10 @@ export const getDocumentData = (country_code: string, document_type: string) => 
         example_format: '',
     };
     const IDV_DOCUMENT_DATA: any = getIDVDocuments(country_code);
-    return IDV_DOCUMENT_DATA[document_type] ?? DEFAULT_CONFIG;
+    if (IDV_DOCUMENT_DATA) {
+        return IDV_DOCUMENT_DATA[document_type] ?? DEFAULT_CONFIG;
+    }
+    return DEFAULT_CONFIG;
 };
 
 export const preventEmptyClipboardPaste = (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -276,3 +279,6 @@ export const verifyFields = (status: TIDVErrorStatus) => {
             return ['first_name', 'last_name', 'date_of_birth'];
     }
 };
+
+export const isSpecialPaymentMethod = (payment_method_icon: string) =>
+    ['IcOnlineNaira', 'IcAstroPayLight', 'IcAstroPayDark'].some(icon => icon === payment_method_icon);

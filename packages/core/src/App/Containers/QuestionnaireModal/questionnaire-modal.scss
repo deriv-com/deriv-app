@@ -1,0 +1,66 @@
+.questionnaire-modal {
+    border-radius: 1.6rem;
+
+    @include mobile {
+        border-radius: 1.6rem;
+        padding-inline: 0;
+    }
+    .dc-btn {
+        height: unset;
+        padding: unset;
+    }
+    .dc-modal__container_questionnaire-modal {
+        padding-block: 3.8rem;
+    }
+    &__answers {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1.6rem;
+        padding-block-start: 3.2rem;
+
+        &_content {
+            display: flex;
+            justify-content: space-between;
+            inline-size: 32.8rem;
+            padding-block: 2rem;
+            padding-inline: 1.6rem;
+            box-shadow: 0 0.4rem 0.6rem -0.2rem rgba(14, 14, 14, 0.03), 0 1.2rem 1.6rem -0.4rem rgba(14, 14, 14, 0.08);
+            border-radius: $BORDER-RADIUS * 4;
+            border: 0.1rem solid var(--general-active);
+            @include mobile {
+                inline-size: 28rem;
+            }
+            &:hover {
+                box-shadow: 0 0.2rem 0.8rem 0 var(--shadow-menu);
+            }
+        }
+    }
+    &__options {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1.6rem;
+        padding-block-start: 3.2rem;
+
+        &_card {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-inline-size: 15rem;
+            min-block-size: 13.8rem;
+            box-shadow: 0 0.4rem 0.6rem -0.2rem rgba(14, 14, 14, 0.03), 0 1.2rem 1.6rem -0.4rem rgba(14, 14, 14, 0.08);
+            border-radius: $BORDER-RADIUS * 4;
+            border: 0.1rem solid var(--general-active);
+            &:hover {
+                box-shadow: 0 0.2rem 0.8rem 0 var(--shadow-menu);
+            }
+            @include mobile {
+                min-inline-size: 13.2rem;
+                min-block-size: 13.8rem;
+            }
+        }
+    }
+}

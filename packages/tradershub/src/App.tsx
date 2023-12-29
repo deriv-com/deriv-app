@@ -8,11 +8,11 @@ import './index.scss';
 
 const App: FC = () => (
     <APIProvider standalone>
-        <ModalProvider>
-            <BreakpointProvider>
+        <BreakpointProvider>
+            <ModalProvider>
                 <AppContent />
-            </BreakpointProvider>
-        </ModalProvider>
+            </ModalProvider>
+        </BreakpointProvider>
     </APIProvider>
 );
 

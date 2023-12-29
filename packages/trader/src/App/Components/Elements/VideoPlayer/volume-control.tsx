@@ -36,21 +36,16 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
     };
 
     const checkVolumeControl = (volume: number) => {
-        if (!volume) {
-            toggleMute(true);
-
-            return;
-        }
-        toggleMute(false);
+        if (volume) toggleMute(false);
+        else toggleMute(true);
     };
 
     const buttonClickHandler = () => {
         if (is_muted) {
             volume_bar_filled_ref.current?.style.setProperty('height', `${(volume ?? 0.5) * 100}%`);
-            toggleMute(false);
-        } else {
-            toggleMute(true);
         }
+
+        toggleMute(!is_muted);
     };
 
     const mouseMoveHandler = (e: React.MouseEvent<HTMLElement> | MouseEvent) => {

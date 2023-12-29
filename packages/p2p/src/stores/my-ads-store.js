@@ -123,8 +123,11 @@ export default class MyAdsStore extends BaseStore {
                 if (response) {
                     if (!response.error) {
                         const { get_account_status } = response;
-                        const { status } = get_account_status?.authentication?.identity ?? {};
-                        this.root_store.general_store.setPoiStatus(status);
+                        const { authentication } = get_account_status;
+                        const { document, identity } = authentication;
+
+                        this.root_store.general_store.setPoiStatus(identity.status);
+                        this.root_store.general_store.setPoaStatus(document.status);
                     } else {
                         this.setErrorMessage(response.error);
                     }

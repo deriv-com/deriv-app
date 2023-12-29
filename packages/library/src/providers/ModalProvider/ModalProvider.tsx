@@ -58,7 +58,7 @@ export const ModalProvider = ({ children }: PropsWithChildren<unknown>) => {
     const { isDesktop } = useBreakpoint();
 
     const rootRef = useRef<HTMLElement>(document.getElementById('v2_modal_root'));
-    const rootHeaderRef = useRef<HTMLElement | null>(document.getElementById('wallets_modal_show_header_root'));
+    const rootHeaderRef = useRef<HTMLElement | null>(document.getElementById('v2_modal_show_header_root'));
 
     const getModalState = useCallback(
         <T extends keyof TModalState>(key: T): TModalState[T] => {

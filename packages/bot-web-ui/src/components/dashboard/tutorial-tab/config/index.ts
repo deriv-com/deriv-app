@@ -486,4 +486,12 @@ export const quick_strategy_content: TQuickStrategyContent[] = [
             localize('An example of Reverse Martingale strategy'),
         ],
     },
+    {
+        qs_name: 'REVERSE_D_ALEMBERT',
+        type: localize('About Reverse D’Alembert'),
+        content: [
+            localize('Exploring the Reverse D’Alembert strategy in Deriv Bot'),
+            localize('An example of Reverse D’Alembert strategy'),
+        ],
+    },
 ];

@@ -1,6 +1,6 @@
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
-import { D_ALEMBERT, MARTINGALE, OSCARS_GRIND, REVERSE_MARTINGALE } from './descriptions';
+import { D_ALEMBERT, MARTINGALE, OSCARS_GRIND, REVERSE_D_ALEMBERT, REVERSE_MARTINGALE } from './descriptions';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [
@@ -292,6 +292,7 @@ export const STRATEGIES: TStrategies = {
         description: localize(
             "The Reverse D'Alembert strategy increases the stake after a successful trade and reduces the stake after a losing trade by the number of units that traders decide. One unit is equal to the amount of the initial stake. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake."
         ),
+        long_description: REVERSE_D_ALEMBERT,
         fields: [
             [
                 LABEL_SYMBOL,

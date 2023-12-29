@@ -77,7 +77,10 @@ export const getDocumentData = (country_code: string, document_type: string) => 
         example_format: '',
     };
     const IDV_DOCUMENT_DATA: any = getIDVDocuments(country_code);
-    return IDV_DOCUMENT_DATA[document_type] ?? DEFAULT_CONFIG;
+    if (IDV_DOCUMENT_DATA) {
+        return IDV_DOCUMENT_DATA[document_type] ?? DEFAULT_CONFIG;
+    }
+    return DEFAULT_CONFIG;
 };
 
 export const preventEmptyClipboardPaste = (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {

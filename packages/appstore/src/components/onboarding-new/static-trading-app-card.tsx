@@ -18,10 +18,10 @@ const StaticTradingAppCard = ({
     has_applauncher_account,
     is_item_blurry,
     is_animated,
-    is_mt5_allowed,
+    is_mt5_allowed = true,
 }: AvailableAccount &
     TDetailsOfEachMT5Loginid & { has_divider?: boolean; is_animated: boolean; is_mt5_allowed?: boolean }) => {
-    const { app_desc } = getAppstorePlatforms().find(config => config.name === name) || {
+    const { app_desc } = (is_mt5_allowed && getAppstorePlatforms().find(config => config.name === name)) || {
         app_desc: is_mt5_allowed ? description : localize('Multipliers trading platform.'),
         link_to: '',
     };

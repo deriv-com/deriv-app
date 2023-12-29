@@ -19,7 +19,7 @@ export const useCFDContext = () => {
     const context = React.useContext(CFDContext);
 
     if (!context) {
-        throw new Error('useCFDContext must be used within a CFDProvider');
+        throw new Error('useCFDContext must be used within a CFDProvider. Please import Provider from @deriv/library');
     }
 
     return context;

@@ -48,4 +48,4 @@ const PlaybackRateControl = ({ onPlaybackRateChange, is_mobile, playback_rate }:
     );
 };
 
-export default PlaybackRateControl;
+export default React.memo(PlaybackRateControl);

@@ -8,24 +8,22 @@ type TVideoOverlay = {
     is_mobile?: boolean;
 };
 
-const VideoOverlay = ({ onClick, is_ended, is_mobile }: TVideoOverlay) => {
-    return (
-        <div
-            className={classNames('player__overlay', {
-                'player__overlay--visible': is_ended,
-            })}
-            onClick={onClick}
-            onKeyDown={onClick}
-        >
-            <Icon
-                icon='IcReplay'
-                custom_color='var(--border-normal-1)'
-                size={is_mobile ? 88 : 128}
-                className='player__overlay__icon'
-                data_testid='dt_player_overlay_icon'
-            />
-        </div>
-    );
-};
+const VideoOverlay = ({ onClick, is_ended, is_mobile }: TVideoOverlay) => (
+    <div
+        className={classNames('player__overlay', {
+            'player__overlay--visible': is_ended,
+        })}
+        onClick={onClick}
+        onKeyDown={onClick}
+    >
+        <Icon
+            icon='IcReplay'
+            custom_color='var(--border-normal-1)'
+            size={is_mobile ? 88 : 128}
+            className='player__overlay__icon'
+            data_testid='dt_player_overlay_icon'
+        />
+    </div>
+);
 
-export default VideoOverlay;
+export default React.memo(VideoOverlay);

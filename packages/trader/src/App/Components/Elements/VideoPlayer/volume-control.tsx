@@ -172,4 +172,4 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
     );
 };
 
-export default VolumeControl;
+export default React.memo(VolumeControl);

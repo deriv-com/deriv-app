@@ -49,10 +49,13 @@ const WalletTextField = forwardRef(
                     'wallets-textfield--disabled': disabled,
                     'wallets-textfield--error': isInvalid,
                 })}
+                data-testid='dt_wallets_textfield'
             >
-                <div className='wallets-textfield__box'>
+                <div className='wallets-textfield__box' data-testid='dt_wallets_textfield_box'>
                     {typeof renderLeftIcon === 'function' && (
-                        <div className='wallets-textfield__icon-left'>{renderLeftIcon()}</div>
+                        <div className='wallets-textfield__icon-left' data-testid='dt_wallets_textfield_icon_left'>
+                            {renderLeftIcon()}
+                        </div>
                     )}
                     <input
                         className='wallets-textfield__field'
@@ -71,7 +74,9 @@ const WalletTextField = forwardRef(
                         </label>
                     )}
                     {typeof renderRightIcon === 'function' && (
-                        <div className='wallets-textfield__icon-right'>{renderRightIcon()}</div>
+                        <div className='wallets-textfield__icon-right' data-testid='dt_wallets_textfield_icon_right'>
+                            {renderRightIcon()}
+                        </div>
                     )}
                 </div>
                 <div className='wallets-textfield__message-container'>
@@ -91,6 +96,7 @@ const WalletTextField = forwardRef(
                                     isError
                                     maxLength={maxLength}
                                     message={errorMessage as string}
+                                    messageVariant='error'
                                 />
                             )}
                         </>

@@ -76,8 +76,8 @@ describe('AddedCTraderAccountsList', () => {
             </Router>
         );
 
-        const icon = screen.getByText('CTrader');
-        fireEvent.click(icon);
+        const icon = screen.getAllByText('CTrader');
+        fireEvent.click(icon[0]);
         expect(mockWindowOpen).toHaveBeenCalledWith('https://deriv.com/deriv-ctrader');
     });
 
@@ -91,8 +91,8 @@ describe('AddedCTraderAccountsList', () => {
             </Router>
         );
 
-        const icon = screen.getByText('CTrader');
-        fireEvent.keyDown(icon, { code: 'Enter', key: 'Enter' });
+        const icon = screen.getAllByText('CTrader');
+        fireEvent.keyDown(icon[0], { code: 'Enter', key: 'Enter' });
         expect(mockWindowOpen).toHaveBeenCalledWith('https://deriv.com/deriv-ctrader');
     });
 
@@ -103,8 +103,8 @@ describe('AddedCTraderAccountsList', () => {
             </Router>
         );
 
-        const transferButton = screen.getByText('Transfer');
-        fireEvent.click(transferButton);
+        const transferButton = screen.getAllByText('Transfer');
+        fireEvent.click(transferButton[0]);
         expect(history.location.pathname).toEqual('/wallets/cashier/transfer');
     });
 
@@ -115,8 +115,8 @@ describe('AddedCTraderAccountsList', () => {
             </Router>
         );
 
-        const openButton = screen.getByText('Open');
-        fireEvent.click(openButton);
+        const openButton = screen.getAllByText('Open');
+        fireEvent.click(openButton[0]);
         expect(mockShow).toHaveBeenCalled();
     });
 });

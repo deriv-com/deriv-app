@@ -69,10 +69,10 @@ export const STRATEGY_1_3_2_6: TDescriptionItem[] = [
                 '4. However, if any trade results in a loss, your stake will reset back to the initial stake of 1 USD for the next trade. The third trade results in a loss hence the stake resets to the initial stake of 1 USD for the next trade.'
             ),
             localize(
-                '5. Upon reaching the initial stake, if the next trade still results in a loss, your stake will remain at the initial stake of 1 USD. This strategy will minimally trade at the initial stake. Refer to the fourth and fifth trade'
+                '5. Upon reaching the initial stake, if the next trade still results in a loss, your stake will remain at the initial stake of 1 USD. This strategy will minimally trade at the initial stake. Refer to the fourth and fifth trade.'
             ),
             localize(
-                '6. Upon reaching the initial stake, if the next trade still results in a loss, your stake will remain at the initial stake of 1 USD. This strategy will minimally trade at the initial stake. Refer to the fourth and fifth trade'
+                '6. If consecutive successful trades were to happen, the stake would follow a sequence of adjustment from 1 to 3, then 2, and 6 units of initial stake. After 4 consecutive successful trades, it completes one cycle and then the strategy will repeat itself for another cycle. If any trade results in a loss, your stake will reset back to the initial stake for the next trade.'
             ),
         ],
     },

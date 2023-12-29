@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Modal, Text, HintBox } from '@deriv/components';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import { CFD_PLATFORMS } from '@deriv/shared';
+import { CFD_PLATFORMS, Jurisdiction, getCFDPlatformNames } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import MT5MigrationAccountIcons from './mt5-migration-account-icons';
@@ -38,7 +38,12 @@ const MT5MigrationFrontSideContent = observer(() => {
             )}
             <div className='mt5-migration-modal__description'>
                 <Text as='p' size={content_size} align='center'>
-                    <Localize i18n_default_text='We are giving you a new MT5 account(s) to enhance your trading experience' />
+                    <Localize
+                        i18n_default_text='We are giving you a new {{platform}} account(s) to enhance your trading experience'
+                        values={{
+                            platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
+                        }}
+                    />
                 </Text>
             </div>
             <div className='mt5-migration-modal__migration_content'>
@@ -52,8 +57,12 @@ const MT5MigrationFrontSideContent = observer(() => {
                     message={
                         <Text as='p' size='xxxs'>
                             <Localize
-                                i18n_default_text='Your existing <0>MT5 SVG</0> account(s) will remain accessible.'
+                                i18n_default_text='Your existing <0>{{platform}} {{account}}</0> account(s) will remain accessible.'
                                 components={[<strong key={0} />]}
+                                values={{
+                                    account: Jurisdiction.SVG.toUpperCase(),
+                                    platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
+                                }}
                             />
                         </Text>
                     }

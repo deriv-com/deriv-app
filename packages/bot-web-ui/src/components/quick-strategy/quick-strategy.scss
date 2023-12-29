@@ -225,7 +225,6 @@
 
             @include desktop() {
                 height: calc(100vh - 23rem) !important;
-                padding: 1rem;
             }
 
             margin-bottom: 1rem;
@@ -238,11 +237,8 @@
             }
 
             &--no-footer {
-                max-height: calc(100vh - 22rem) !important;
-
-                @include desktop() {
-                    height: 100% !important;
-                }
+                height: 100% !important;
+                max-height: 100% !important;
 
                 @include mobile() {
                     max-height: calc(100vh - 8rem) !important;

@@ -26,7 +26,7 @@ export const compressImageFiles = (files?: File[]) => {
     const promises: Promise<Blob>[] = [];
     Array.from(files).forEach(file => {
         const promise = new Promise<Blob>(resolve => {
-            if (isImageType(file.type)) {
+            if (isImageType(file?.type)) {
                 convertToBase64(file).then(img => {
                     compressImg(img as TImage).then(resolve);
                 });
@@ -56,7 +56,7 @@ export const readFiles = (
                     buffer: fr.result,
                     documentFormat: getFormatFromMIME(f),
                     file_size: f.size,
-                    documentType: settings?.document_type ?? DOCUMENT_TYPES.utility_bill,
+                    documentType: settings?.document_type ?? UPLOAD_FILE_TYPE.utility_bill,
                     documentId: settings?.document_id,
                     expirationDate: settings?.expiration_date,
                     lifetimeValid: settings?.lifetime_valid,
@@ -89,21 +89,27 @@ export const max_document_size = 8388608;
 
 export const supported_filetypes = 'image/png, image/jpeg, image/jpg, image/gif, application/pdf';
 
+export const UPLOAD_FILE_TYPE = Object.freeze({
+    amlglobalcheck: 'amlglobalcheck',
+    bankstatement: 'bankstatement',
+    docverification: 'docverification',
+    driverslicense: 'driverslicense',
+    driving_licence: 'driving_licence',
+    national_identity_card: 'national_identity_card',
+    other: 'other',
+    passport: 'passport',
+    power_of_attorney: 'power_of_attorney',
+    proof_of_ownership: 'proof_of_ownership',
+    proofaddress: 'proofaddress',
+    proofid: 'proofid',
+    utility_bill: 'utility_bill',
+});
+
+export const PAGE_TYPE = Object.freeze({
+    back: 'back',
+    front: 'front',
+    photo: 'photo',
+});
+
 export const getSupportedFiles = (filename: string) =>
     /^.*\.(png|PNG|jpg|JPG|jpeg|JPEG|gif|GIF|pdf|PDF)$/.test(filename);
-
-export const DOCUMENT_TYPES = {
-    passport: 'passport',
-    national_identity_card: 'national_identity_card',
-    driving_licence: 'driving_licence',
-    utility_bill: 'utility_bill',
-    bankstatement: 'bankstatement',
-    power_of_attorney: 'power_of_attorney',
-    amlglobalcheck: 'amlglobalcheck',
-    docverification: 'docverification',
-    proofid: 'proofid',
-    driverslicense: 'driverslicense',
-    proofaddress: 'proofaddress',
-    proof_of_ownership: 'proof_of_ownership',
-    other: 'other',
-} as const;

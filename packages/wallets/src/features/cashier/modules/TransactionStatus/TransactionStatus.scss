@@ -31,4 +31,8 @@
     @include mobile {
         width: 100%;
     }
+
+    &__loader {
+        margin: 4rem 0;
+    }
 }

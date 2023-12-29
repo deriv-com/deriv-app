@@ -24,6 +24,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             trading_platform_available_accounts: [],
             account_limits: {},
             account_status: {
+                p2p_poa_required: 1,
                 authentication: {
                     attempts: {
                         count: 1,
@@ -151,7 +152,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_logging_in: false,
             is_mt5_password_not_set: false,
             is_mt5_account_list_updated: false,
-            is_pending_proof_of_ownership: false,
+            is_proof_of_ownership_enabled: false,
             is_poa_expired: false,
             is_populating_dxtrade_account_list: false,
             is_social_signup: false,
@@ -196,6 +197,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 trading_platform_mt5_password_reset: '',
             },
             email: '',
+            fetchStatesList: jest.fn(),
             setVerificationCode: jest.fn(),
             updateAccountStatus: jest.fn(),
             is_authentication_needed: false,
@@ -266,7 +268,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             },
             is_fully_authenticated: false,
             states_list: [],
-            fetchStatesList: jest.fn(),
             is_crypto: jest.fn(),
             dxtrade_accounts_list: [],
             default_currency: 'USD',
@@ -288,6 +289,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_bot_allowed: false,
             account_open_date: undefined,
             setAccounts: jest.fn(),
+            updateMt5LoginList: jest.fn(),
         },
         common: {
             error: common_store_error,

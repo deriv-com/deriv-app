@@ -2,6 +2,8 @@
     position: relative;
     width: 100%;
     max-width: 80rem;
+    display: flex;
+    flex-grow: 1;
 
     &__group-title {
         margin: 0 0 0.8rem 1.6rem;

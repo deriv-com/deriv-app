@@ -387,6 +387,7 @@ export default class TradeStore extends BaseStore {
             is_market_closed: observable,
             is_mobile_digit_view_selected: observable,
             is_purchase_enabled: observable,
+            is_synthetics_trading_market_available: computed,
             is_trade_component_mounted: observable,
             is_trade_enabled: observable,
             is_trade_params_expanded: observable,
@@ -1150,7 +1151,7 @@ export default class TradeStore extends BaseStore {
 
     get is_synthetics_trading_market_available() {
         return !!this.active_symbols?.find(
-            item => item.market === 'synthetic_index' && !isMarketClosed(this.active_symbols, item.symbol)
+            item => item.subgroup === 'synthetics' && !isMarketClosed(this.active_symbols, item.symbol)
         );
     }
 

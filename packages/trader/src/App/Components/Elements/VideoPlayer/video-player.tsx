@@ -52,15 +52,20 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
                 cancelAnimationFrame(animation_ref.current);
             } else {
                 video_ref.current.play();
-                replay_animation_timeout.current = setTimeout(() => {
+
+                if (is_ended) {
+                    replay_animation_timeout.current = setTimeout(() => {
+                        setIsAnimated(true);
+                    }, 100);
+                } else {
                     setIsAnimated(true);
-                }, 100);
+                }
             }
 
             setIsPlaying(!is_playing);
             setIsEnded(false);
         },
-        [is_playing, animation_ref, video_ref, progress_bar_filled_ref]
+        [is_playing, animation_ref, video_ref, progress_bar_filled_ref, is_ended]
     );
 
     const calculateNewWidth = (
@@ -154,12 +159,12 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         progress_bar_filled_ref.current.style.setProperty('width', `${new_width}%`);
         video_ref.current.currentTime = (Number(video_ref.current.duration) * new_width) / 100;
 
+        setIsEnded(false);
         play_on_rewind_timeout.current = setTimeout(() => {
             video_ref?.current?.play();
             setIsPlaying(true);
             setIsAnimated(true);
-            setIsEnded(false);
-        }, 100);
+        }, 200);
     };
 
     const onLoadedMetaData = () => {

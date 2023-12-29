@@ -122,7 +122,11 @@ const VolumeControl = ({ onVolumeChange, volume, is_mobile, is_muted, toggleMute
         <div
             className='player__volume__wrapper'
             onMouseOver={is_mobile ? undefined : () => setShowVolume(true)}
-            onMouseLeave={is_mobile || is_dragging.current ? undefined : () => setShowVolume(false)}
+            onMouseLeave={() => {
+                if (!is_mobile && !is_dragging.current) {
+                    setShowVolume(false);
+                }
+            }}
         >
             <button className='player__controls__button' onClick={buttonClickHandler}>
                 <Icon

@@ -45,13 +45,7 @@ const StrategyTabContent: React.FC<TStrategyDescription> = observer(
                         generateStorageKey(obj as TDataGroupedObjectsByTitle, selected_strategy)
                     ] = obj?.expanded ?? false;
                 }
-                //If long description available, show content intro paragraph under heading, skip short description.
-                const shouldShowLongDescriptionIntro = () => {
-                    return acc.length - 1 === 0 && obj.type === 'text' && obj.content?.length === 2;
-                };
-                if (shouldShowLongDescriptionIntro()) {
-                    obj.content?.shift();
-                }
+
                 (acc[acc.length - 1] as TDescriptionItem[]).push({ ...obj, id: idx });
                 return acc;
             }, []);

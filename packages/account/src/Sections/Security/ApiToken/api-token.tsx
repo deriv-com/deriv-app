@@ -212,7 +212,7 @@ const ApiToken = observer(() => {
                                                                 message={
                                                                     <Localize i18n_default_text='To avoid loss of funds, do not share tokens with the Admin scope with unauthorised parties.' />
                                                                 }
-                                                                title={<Localize i18n_default_text='Note' />}
+                                                                title={<Localize i18n_default_text='Note:' />}
                                                             />
                                                         )}
                                                     </ApiTokenCard>

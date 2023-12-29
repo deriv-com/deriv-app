@@ -3,7 +3,7 @@ import { THooks } from '../../types';
 import WalletListCardActions from '../WalletListCardActions/WalletListCardActions';
 import WalletListCardBadge from '../WalletListCardBadge/WalletListCardBadge';
 import WalletListCardTitle from '../WalletListCardTitle/WalletListCardTitle';
-import './WalletListCardIDetails.scss';
+import './WalletListCardDetails.scss';
 
 type TProps = {
     badge?: THooks.WalletAccountsList['landing_company_name'];
@@ -13,7 +13,7 @@ type TProps = {
     title: Exclude<THooks.WalletAccountsList['currency'], undefined>;
 };
 
-const WalletListCardIDetails: React.FC<TProps> = ({ badge, isActive, isDemo, loginid, title }) => (
+const WalletListCardDetails: React.FC<TProps> = ({ badge, isActive, isDemo, loginid, title }) => (
     <div className='wallets-list-details__action-container'>
         <div className='wallets-list-details__elements'>
             <WalletListCardTitle title={title} />
@@ -23,4 +23,4 @@ const WalletListCardIDetails: React.FC<TProps> = ({ badge, isActive, isDemo, log
     </div>
 );
 
-export default WalletListCardIDetails;
+export default WalletListCardDetails;

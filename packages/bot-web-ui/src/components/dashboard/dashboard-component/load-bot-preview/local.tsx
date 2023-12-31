@@ -97,7 +97,7 @@ const LocalComponent = observer(() => {
                     {!is_mobile && (
                         <>
                             <div className='load-strategy__preview-workspace'>
-                                <BotPreview id_ref={el_ref} type={'local'} />
+                                <BotPreview id_ref={el_ref} />
                             </div>
                             <div className='load-strategy__button-group'>{renderOpenButton()}</div>
                         </>
@@ -110,8 +110,9 @@ const LocalComponent = observer(() => {
                             className='dc-dialog__wrapper--preview'
                             has_close_icon
                             title={localize('Preview')}
+                            onConfirm={() => null}
                         >
-                            <BotPreview id_ref={el_ref} type='local' />
+                            <BotPreview id_ref={el_ref} />
                             <div className='load-strategy__button-group'>{renderOpenButton()}</div>
                         </Dialog>
                     </MobileWrapper>

@@ -91,7 +91,7 @@ describe('DatePicker Component', () => {
                     test: <FlowTextField name='test' />,
                 }}
             >
-                {() => <DatePicker name='Test Component' onDateChange={mockOnDateChange} variant='expiry' />}
+                {() => <DatePicker name='Test Component' onDateChange={mockOnDateChange} />}
             </FlowProvider>
         );
 

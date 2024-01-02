@@ -12,7 +12,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
     const { activeWallet, fractionalDigits, getConvertedCryptoAmount, getConvertedFiatAmount } =
         useWithdrawalCryptoContext();
     const { validateCryptoInput, validateFiatInput } = useWithdrawalCryptoValidator(activeWallet, fractionalDigits);
-    const [isCryptoInputActive, setIsCryptoInputActive] = useState(false);
+    const [isCryptoInputActive, setIsCryptoInputActive] = useState(true);
     const { errors, setValues } = useFormikContext<TWithdrawalForm>();
 
     const onChangeCryptoInput = (e: React.ChangeEvent<HTMLInputElement>) => {

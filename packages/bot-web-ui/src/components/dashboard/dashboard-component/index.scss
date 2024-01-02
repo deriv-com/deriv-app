@@ -522,17 +522,6 @@
                     }
                 }
             }
-
-            .load-strategy {
-                &__recent-item-time {
-                    font-size: var(--text-size-xs);
-                }
-
-                &__recent-item-text,
-                &__recent-item-saved {
-                    @include recent-list-properties;
-                }
-            }
         }
     }
 }

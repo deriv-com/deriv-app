@@ -14,17 +14,12 @@ const RecentComponent = observer(() => {
         return (
             <div className='load-strategy__container load-strategy__container--has-footer'>
                 <div className='load-strategy__recent'>
-                    <div className='load-strategy__recent-files'>
-                        <div className='load-strategy__title'>
-                            <Localize i18n_default_text='Recent' />
-                        </div>
-                        <div className='load-strategy__recent-files-list'>
-                            {recent_strategies.map(workspace => (
-                                <RecentWorkspace key={workspace.id} workspace={workspace} />
-                            ))}
-                        </div>
+                    <div className='load-strategy__recent__files'>
+                        {recent_strategies.map(workspace => (
+                            <RecentWorkspace key={workspace.id} workspace={workspace} />
+                        ))}
                     </div>
-                    <div className='load-strategy__recent-preview'>
+                    <div className='load-strategy__recent__preview'>
                         <div className='load-strategy__title load-strategy__recent-preview-title'>
                             <Localize i18n_default_text='Preview' />
                         </div>

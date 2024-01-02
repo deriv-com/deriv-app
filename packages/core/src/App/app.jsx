@@ -23,6 +23,7 @@ import 'Sass/app.scss';
 import { Analytics } from '@deriv/analytics';
 import initHotjar from '../Utils/Hotjar';
 import { BreakpointProvider } from '@deriv/quill-design';
+import { Provider } from '@deriv/library';
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
@@ -88,15 +89,17 @@ const AppWithoutTranslation = ({ root_store }) => {
                 <Router basename={has_base ? `/${base}` : null}>
                     <StoreProvider store={root_store}>
                         <BreakpointProvider>
-                            <APIProvider>
-                                <POIProvider>
-                                    <StoreProvider store={root_store}>
-                                        <ExchangeRatesProvider>
-                                            <AppContent passthrough={platform_passthrough} />
-                                        </ExchangeRatesProvider>
-                                    </StoreProvider>
-                                </POIProvider>
-                            </APIProvider>
+                            <Provider.ModalProvider>
+                                <APIProvider>
+                                    <POIProvider>
+                                        <StoreProvider store={root_store}>
+                                            <ExchangeRatesProvider>
+                                                <AppContent passthrough={platform_passthrough} />
+                                            </ExchangeRatesProvider>
+                                        </StoreProvider>
+                                    </POIProvider>
+                                </APIProvider>
+                            </Provider.ModalProvider>
                         </BreakpointProvider>
                     </StoreProvider>
                 </Router>

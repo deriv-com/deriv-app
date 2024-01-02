@@ -254,7 +254,8 @@ export type TJurisdictionModalTitleProps = {
     show_eu_related_content: boolean;
 };
 
-type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+type TAccountStatus = Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
+    Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
 
 export type TJurisdictionModalFootNoteProps = {
     account_type: TAccountCategory;

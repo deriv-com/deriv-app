@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { MouseEvent, useMemo, useState } from 'react';
 import { qtMerge, Text } from '@deriv/quill-design';
 import { useModal } from '../../../../../components/ModalProvider';
 import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
@@ -67,7 +67,7 @@ const JurisdictionCard = ({
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
     const { getModalState } = useModal();
 
-    const descriptionClickHandler = (tag?: string) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const descriptionClickHandler = (tag?: string) => (event: MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.stopPropagation();
         if (tag === 'dynamicLeverage') {
             toggleDynamicLeverage();

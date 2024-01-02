@@ -27,7 +27,7 @@ export const JurisdictionCardTagClass = cva(
         variants: {
             displayTextSkinColor: {
                 'brown-dark': 'bg-brand-brown-dark',
-                default: 'bg-brand-red-dark', // default value
+                default: 'bg-brand-red-dark',
                 'red-dark': 'bg-brand-red-dark',
                 'red-darker': 'bg-brand-red-darker',
                 'red-light': 'bg-brand-red-light',

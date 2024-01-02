@@ -2,9 +2,23 @@ import { action, makeObservable, reaction, when } from 'mobx';
 import { ApiHelpers, DBot, runIrreversibleEvents } from '@deriv/bot-skeleton';
 import { ContentFlag, isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import RootStore from './root-store';
+import { TStores } from '@deriv/stores/types';
+import { TApiHelpersStore, TDbotStore } from 'src/types/stores.types';
 
+const Blockly = window.Blockly;
 export default class AppStore {
-    constructor(root_store, core) {
+    root_store: RootStore;
+    core: TStores;
+    dbot_store: TDbotStore | null;
+    api_helpers_store: TApiHelpersStore | null;
+    timer: ReturnType<typeof setInterval> | null;
+    disposeReloadOnLanguageChangeReaction: unknown;
+    disposeCurrencyReaction: unknown;
+    disposeSwitchAccountListener: unknown;
+    disposeLandingCompanyChangeReaction: unknown;
+    disposeResidenceChangeReaction: unknown;
+    constructor(root_store: RootStore, core: TStores) {
         makeObservable(this, {
             onMount: action.bound,
             onUnmount: action.bound,
@@ -40,7 +54,7 @@ export default class AppStore {
             title: is_logged_in
                 ? localize('Deriv Bot is not available for EU clients')
                 : localize('Deriv Bot is unavailable in the EU'),
-            link: is_logged_in && localize("Back to Trader's Hub"),
+            link: is_logged_in ? localize("Back to Trader's Hub") : '',
             route: routes.traders_hub,
         };
     };
@@ -96,7 +110,7 @@ export default class AppStore {
         }
 
         if (show_default_error && common.has_error) {
-            common.setError(false, null);
+            if (common.setError) common.setError(false, { message: '' });
         }
         return false;
     };
@@ -113,7 +127,7 @@ export default class AppStore {
                 window.sendRequestsStatistic(false);
                 performance.clearMeasures();
                 if (timer_counter === 6 || run_panel?.is_running) {
-                    clearInterval(this.timer);
+                    if (this.timer) clearInterval(this.timer);
                 } else {
                     timer_counter++;
                 }
@@ -125,7 +139,7 @@ export default class AppStore {
             blockly_store.setContainerSize();
             blockly_store.setLoading(false);
         });
-        this.registerReloadOnLanguageChange(this);
+        this.registerReloadOnLanguageChange();
         this.registerCurrencyReaction.call(this);
         this.registerOnAccountSwitch.call(this);
         this.registerLandingCompanyChangeReaction.call(this);
@@ -137,7 +151,7 @@ export default class AppStore {
         blockly_store.getCachedActiveTab();
 
         when(
-            () => [client?.should_show_eu_error, client?.is_landing_company_loaded],
+            () => client?.should_show_eu_error || client?.is_landing_company_loaded,
             () => this.showDigitalOptionsMaltainvestError()
         );
 
@@ -183,7 +197,7 @@ export default class AppStore {
         performance.clearMeasures();
     }
 
-    onBeforeUnload = event => {
+    onBeforeUnload = (event: Event) => {
         const { is_stop_button_visible } = this.root_store.run_panel;
 
         if (is_stop_button_visible) {
@@ -233,21 +247,23 @@ export default class AppStore {
                 if (!switch_broadcast) return;
                 this.showDigitalOptionsMaltainvestError();
 
-                const { active_symbols, contracts_for } = ApiHelpers.instance;
+                if (ApiHelpers.instance) {
+                    const { active_symbols, contracts_for } = ApiHelpers.instance;
 
-                if (Blockly.derivWorkspace) {
-                    active_symbols.retrieveActiveSymbols(true).then(() => {
-                        contracts_for.disposeCache();
-                        Blockly.derivWorkspace
-                            .getAllBlocks()
-                            .filter(block => block.type === 'trade_definition_market')
-                            .forEach(block => {
-                                runIrreversibleEvents(() => {
-                                    const fake_create_event = new Blockly.Events.Create(block);
-                                    Blockly.Events.fire(fake_create_event);
+                    if (Blockly.derivWorkspace) {
+                        active_symbols.retrieveActiveSymbols(true).then(() => {
+                            contracts_for.disposeCache();
+                            Blockly.derivWorkspace
+                                .getAllBlocks()
+                                .filter(block => block.type === 'trade_definition_market')
+                                .forEach(block => {
+                                    runIrreversibleEvents(() => {
+                                        const fake_create_event = new Blockly.Events.Create(block);
+                                        Blockly.Events.fire(fake_create_event);
+                                    });
                                 });
-                            });
-                    });
+                        });
+                    }
                 }
             }
         );
@@ -273,20 +289,10 @@ export default class AppStore {
 
     setDBotEngineStores() {
         // DO NOT pass the rootstore in, if you need a prop define it in dbot-skeleton-store ans pass it through.
-        const {
-            flyout,
-            toolbar,
-            save_modal,
-            dashboard,
-            quick_strategy,
-            load_modal,
-            run_panel,
-            blockly_store,
-            summary_card,
-        } = this.root_store;
+        const { flyout, toolbar, save_modal, dashboard, load_modal, run_panel, blockly_store, summary_card } =
+            this.root_store;
         const { client } = this.core;
         const { handleFileChange } = load_modal;
-        const { loadDataStrategy } = quick_strategy;
         const { setLoading } = blockly_store;
         const { setContractUpdateConfig } = summary_card;
 
@@ -300,7 +306,6 @@ export default class AppStore {
             run_panel,
             setLoading,
             setContractUpdateConfig,
-            loadDataStrategy,
             handleFileChange,
         };
 
@@ -310,10 +315,12 @@ export default class AppStore {
         };
     }
 
-    onClickOutsideBlockly = event => {
+    onClickOutsideBlockly = (event: Event) => {
         if (document.querySelector('.injectionDiv')) {
             const path = event.path || (event.composedPath && event.composedPath());
-            const is_click_outside_blockly = !path.some(el => el.classList && el.classList.contains('injectionDiv'));
+            const is_click_outside_blockly = !path.some(
+                (el: Element) => el.classList && el.classList.contains('injectionDiv')
+            );
 
             if (is_click_outside_blockly) {
                 Blockly?.hideChaff(/* allowToolbox */ false);

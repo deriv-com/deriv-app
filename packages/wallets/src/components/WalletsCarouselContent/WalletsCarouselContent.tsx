@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useStaleWalletsAccountsList } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api';
 import { ProgressBar } from '../Base';
 import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
@@ -19,68 +19,84 @@ type TProps = {
  */
 const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     const { switchAccount } = useAuthorize();
-    const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useStaleWalletsAccountsList();
+    const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
-    const [selectedEmblaIndex, setSelectedEmblaIndex] = useState(-1);
-    const [isInitialDataLoading, setIsInitialDataLoading] = useState(true);
+    const [selectedLoginId, setSelectedLoginId] = useState('');
+    const [currentIndex, setCurrentIndex] = useState(-1);
+    const [isInitialDataLoaded, setIsInitialDataLoaded] = useState(false);
+
+    // for the embla "on select" callback
+    // to avoid unbinding / cleaning etc, just let it use up-to-date list
+    const walletsAccountsListRef = useRef(walletAccountsList);
 
     const [walletsCarouselEmblaRef, walletsCarouselEmblaApi] = useEmblaCarousel({
         containScroll: false,
         skipSnaps: true,
     });
 
-    // set initial wallet id
     useEffect(() => {
-        if (selectedEmblaIndex === -1 && !isActiveWalletLoading && walletsCarouselEmblaApi) {
-            const activeWalletIndex = walletAccountsList?.findIndex(({ loginid }) => loginid === activeWallet?.loginid);
-            if (activeWalletIndex !== undefined && activeWalletIndex !== -1) {
-                // exception from general rule of Embla being single source of truth
-                // as this is needed to set the initial active wallet
-                setSelectedEmblaIndex(activeWalletIndex);
-                walletsCarouselEmblaApi?.scrollTo(activeWalletIndex, true);
-            }
-        }
+        walletsAccountsListRef.current = walletAccountsList;
+    }, [walletAccountsList]);
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeWallet, isActiveWalletLoading, walletsCarouselEmblaApi]);
+    // set login ID once wallet changes
+    useEffect(() => {
+        if (activeWallet) {
+            setSelectedLoginId(activeWallet?.loginid);
+        }
+    }, [activeWallet]);
 
     // bind to embla events
     useEffect(() => {
-        if (!walletsCarouselEmblaApi) {
-            return;
-        }
+        walletsCarouselEmblaApi?.on('select', () => {
+            const index = walletsCarouselEmblaApi?.selectedScrollSnap();
+            if (index === undefined) {
+                return;
+            }
+            const loginId = walletsAccountsListRef?.current?.[index]?.loginid;
 
-        walletsCarouselEmblaApi.on('select', () => {
-            const scrollSnapIndex = walletsCarouselEmblaApi?.selectedScrollSnap();
-            setSelectedEmblaIndex(scrollSnapIndex);
+            loginId && setSelectedLoginId(loginId);
         });
 
         // on settle, this is only for tutorial / onboarding plugin in some other components,
-        walletsCarouselEmblaApi.on('settle', () => {
+        walletsCarouselEmblaApi?.on('settle', () => {
             onWalletSettled?.(true);
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [walletsCarouselEmblaApi]);
 
     // load active wallet whenever its scrolled
     useEffect(() => {
-        const selectedLoginId = walletAccountsList?.[selectedEmblaIndex]?.loginid;
         if (selectedLoginId) {
             switchAccount(selectedLoginId);
+            const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
+            walletsCarouselEmblaApi?.scrollTo(index);
         }
-    }, [selectedEmblaIndex, switchAccount, walletAccountsList]);
+    }, [selectedLoginId, walletAccountsList]);
+
+    // initial loading
+    useEffect(() => {
+        if (walletsCarouselEmblaApi && isInitialDataLoaded) {
+            const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
+            walletsCarouselEmblaApi?.scrollTo(index, true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [walletsCarouselEmblaApi, isInitialDataLoaded]);
+
+    useEffect(() => {
+        const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
+        setCurrentIndex(index);
+    }, [selectedLoginId, walletAccountsList]);
 
     // set the initial data loading flag to false once all "is loading" flags are false,
     // as then and only then we can display all the stuff and we want to display it permanently after that
     useEffect(() => {
         if (!isWalletAccountsListLoading && !isActiveWalletLoading && !isCurrencyConfigLoading) {
-            setIsInitialDataLoading(false);
+            setIsInitialDataLoaded(true);
         }
     }, [isWalletAccountsListLoading, isActiveWalletLoading, isCurrencyConfigLoading]);
 
-    if (isInitialDataLoading) {
+    if (!isInitialDataLoaded) {
         return <WalletsCarouselLoader />;
     }
 
@@ -99,7 +115,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
             </div>
             <div className='wallets-carousel-content__progress-bar'>
                 <ProgressBar
-                    activeIndex={selectedEmblaIndex}
+                    activeIndex={currentIndex}
                     count={walletAccountsList?.length ?? 0}
                     onClick={walletsCarouselEmblaApi?.scrollTo}
                 />

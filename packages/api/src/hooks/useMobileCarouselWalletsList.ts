@@ -16,12 +16,14 @@ const useMobileCarouselWalletsList = () => {
             setStaleWalletAccountslist(walletAccountsList);
         }
 
+        // due to quirky nature of underlying hooks chain, need this complex list of conditions
         if (
             !isLoading &&
             !isCurrencyConfigLoading &&
             walletAccountsList &&
             staleWalletAccountsList &&
-            staleWalletAccountsList?.length !== walletAccountsList?.length
+            staleWalletAccountsList?.length !== walletAccountsList?.length &&
+            walletAccountsList?.length > staleWalletAccountsList?.length
         ) {
             setStaleWalletAccountslist(walletAccountsList);
         }

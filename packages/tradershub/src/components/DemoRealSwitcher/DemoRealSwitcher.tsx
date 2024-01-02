@@ -35,10 +35,9 @@ const DemoRealSwitcher = () => {
                             </Text>
                             <LabelPairedChevronDownSmRegularIcon
                                 className={qtMerge(
+                                    'transform transition duration-200 ease-in-out',
                                     value === 'demo' ? 'fill-status-light-information' : 'fill-status-light-success',
-                                    open
-                                        ? 'transform -rotate-180 transition duration-200 ease-in-out'
-                                        : 'transition duration-200 ease-in-out'
+                                    open && ' -rotate-180'
                                 )}
                             />
                         </Listbox.Button>

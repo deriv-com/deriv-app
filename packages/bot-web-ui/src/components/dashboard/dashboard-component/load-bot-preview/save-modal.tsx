@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import { config, save_types } from '@deriv/bot-skeleton';
 import { Button, Icon, Input, MobileFullPageModal, Modal, RadioGroup, Text, ThemedScrollbars } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from '../../../../stores/useDBotStore';
@@ -179,10 +178,8 @@ const SaveModal = observer(() => {
         validateBotName,
     } = save_modal;
     const { is_authorised } = google_drive;
-    const { is_onscreen_keyboard_active, setCurrentFocus } = ui;
+    const { is_onscreen_keyboard_active, setCurrentFocus, is_mobile } = ui;
     const { active_tab } = dashboard;
-
-    const is_mobile = isMobile();
 
     useEffect(() => {
         if (active_tab === 1) {

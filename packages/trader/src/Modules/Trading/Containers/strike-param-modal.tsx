@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
 import { Div100vhContainer, Modal, Popover, RadioGroup } from '@deriv/components';
-import { VANILLALONG } from '@deriv/shared';
+import { TRADE_TYPES } from '@deriv/shared';
 import classNames from 'classnames';
 
 type TStrikeParamModalProps = {
@@ -23,20 +23,13 @@ const StrikeParamModal = ({
     name,
     strike_price_list,
 }: TStrikeParamModalProps) => {
-    const [is_popover_open, setIsPopoverOpen] = React.useState(false);
-
-    const handleToggleModal = () => {
-        if (is_popover_open) setIsPopoverOpen(false);
-        toggleModal();
-    };
-
     return (
         <Modal
             className='trade-params dc-modal-header--title-bar'
             is_open={is_open}
             should_header_stick_body={false}
             is_title_centered
-            toggleModal={handleToggleModal}
+            toggleModal={toggleModal}
             height='auto'
             width='calc(100vw - 32px)'
             title={localize('Strike')}
@@ -44,7 +37,6 @@ const StrikeParamModal = ({
             <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
                 <div className='trade-params__vanilla-ic-info-wrapper'>
                     <Popover
-                        is_open={is_popover_open}
                         alignment='bottom'
                         icon='info'
                         id='dt_vanilla-stake__tooltip'
@@ -55,14 +47,16 @@ const StrikeParamModal = ({
                                 i18n_default_text='If you buy a "<0>{{trade_type}}</0>" option, you receive a payout at expiry if the final price is {{payout_status}} the strike price. Otherwise, your “<0>{{trade_type}}</0>” option will expire worthless.'
                                 components={[<strong key={0} />]}
                                 values={{
-                                    trade_type: contract_type === VANILLALONG.CALL ? localize('Call') : localize('Put'),
+                                    trade_type:
+                                        contract_type === TRADE_TYPES.VANILLA.CALL ? localize('Call') : localize('Put'),
                                     payout_status:
-                                        contract_type === VANILLALONG.CALL ? localize('above') : localize('below'),
+                                        contract_type === TRADE_TYPES.VANILLA.CALL
+                                            ? localize('above')
+                                            : localize('below'),
                                 }}
                             />
                         }
                         classNameBubble='trade-params--modal-wrapper__content'
-                        onClick={() => setIsPopoverOpen(!is_popover_open)}
                     />
                 </div>
                 <div className={classNames('trade-params__amount-keypad', 'trade-params--mobile-strike')}>

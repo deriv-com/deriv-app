@@ -8,6 +8,7 @@ import {
     getCFDPlatformLabel,
     getPlatformSettings,
     getUrlBase,
+    MT5_ACCOUNT_STATUS,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -42,8 +43,11 @@ const getTitle = (market_type: string, show_eu_related_content: boolean) => {
 
 const DMT5TradeModal = observer(
     ({ mt5_trade_account, show_eu_related_content, onPasswordManager, toggleModal }: TMT5TradeModalProps) => {
-        const { ui } = useStore();
+        const { ui, client } = useStore();
         const { is_mobile } = ui;
+        const {
+            account_status: { authentication },
+        } = client;
 
         const getCompanyShortcode = () => {
             if (
@@ -73,7 +77,21 @@ const DMT5TradeModal = observer(
             return 'Financial';
         };
 
-        const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(mt5_trade_account?.status);
+        const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
+            mt5_trade_account?.status,
+            undefined,
+            undefined,
+            undefined,
+            {
+                poi_status: authentication?.identity?.status,
+                poa_status: authentication?.document?.status,
+            }
+        );
+
+        const has_migration_status = [
+            MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION,
+            MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION,
+        ].includes(mt5_trade_account?.status);
 
         return (
             <div className='cfd-trade-modal-container'>
@@ -105,7 +123,7 @@ const DMT5TradeModal = observer(
                                 />
                             </Text>
                         )}
-                        {mt5_trade_account?.status && (
+                        {has_migration_status && (
                             <StatusBadge
                                 className='trading-app-card__acc_status_badge'
                                 account_status={mt5_trade_account.status}

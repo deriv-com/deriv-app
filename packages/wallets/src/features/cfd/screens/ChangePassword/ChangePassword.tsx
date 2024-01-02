@@ -1,21 +1,28 @@
 import React from 'react';
-import { ModalStepWrapper, Tab, Tabs } from '../../../../components/Base';
+import { ModalStepWrapper } from '../../../../components/Base';
+import { useModal } from '../../../../components/ModalProvider';
+import { PlatformDetails } from '../../constants';
 import MT5ChangePasswordScreens from './MT5ChangePasswordScreens';
+import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswordScreens';
 import './ChangePassword.scss';
 
 const ChangePassword = () => {
+    const { getModalState } = useModal();
+    const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
+    const { title } = PlatformDetails[platform];
+
+    const isDerivX = platform === PlatformDetails.dxtrade.platform;
+
     return (
-        <ModalStepWrapper title='Manage Deriv MT5 password'>
+        <ModalStepWrapper title={`Manage ${title} password`}>
             <div className='wallets-change-password__modal-wrapper'>
-                <Tabs wrapperClassName='wallets-change-password__container'>
-                    <Tab title='Deriv MT5 Password'>
+                <div className='wallets-change-password__container'>
+                    {isDerivX ? (
+                        <TradingPlatformChangePasswordScreens platform={platform} />
+                    ) : (
                         <MT5ChangePasswordScreens />
-                    </Tab>
-                    <Tab title='Investor Password'>
-                        {/* TODO: Add Investor Password */}
-                        <></>
-                    </Tab>
-                </Tabs>
+                    )}
+                </div>
             </div>
         </ModalStepWrapper>
     );

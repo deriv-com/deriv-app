@@ -7,7 +7,7 @@ import { useDBotStore } from 'Stores/useDBotStore';
 import Accordion from '../common/accordion';
 import TourButton from '../common/tour-button';
 import TourStartDialog from '../common/tour-start-dialog';
-import { BOT_BUILDER_MOBILE } from '../config';
+import { BOT_BUILDER_MOBILE } from '../tour-content';
 import { highlightLoadModalButton } from '../utils';
 
 const BotBuilderTourMobile = observer(() => {
@@ -60,7 +60,7 @@ const BotBuilderTourMobile = observer(() => {
                                 <ProgressBarTracker
                                     step={tour_step}
                                     steps_list={BOT_BUILDER_MOBILE.map(v => v.tour_step_key.toString())}
-                                    setStep={setTourStep}
+                                    onStepChange={setTourStep}
                                 />
                             }
                         </div>

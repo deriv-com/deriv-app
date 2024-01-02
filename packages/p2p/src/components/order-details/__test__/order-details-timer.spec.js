@@ -1,6 +1,6 @@
 import React from 'react';
 import { useStores } from 'Stores';
-import ServerTime from 'Utils/server-time';
+import { getDistanceToServerTime } from 'Utils/server_time';
 import { render, screen } from '@testing-library/react';
 import OrderDetailsTimer from '../order-details-timer.jsx';
 
@@ -18,12 +18,12 @@ jest.mock('Stores', () => ({
     })),
 }));
 
-jest.mock('Utils/server-time.js', () => ({
+jest.mock('Utils/server_time', () => ({
     getDistanceToServerTime: jest.fn().mockReturnValue(8),
 }));
 
 jest.mock('Utils/date-time', () => ({
-    secondsToTimer: jest.fn().mockReturnValue(17),
+    millisecondsToTimer: jest.fn().mockReturnValue(17),
 }));
 
 describe('<OrderDetailsTimer/>', () => {
@@ -46,7 +46,7 @@ describe('<OrderDetailsTimer/>', () => {
 
     it('should invoke clearInterval method when timer expires', () => {
         const spiedClearIntervalFn = jest.spyOn(global, 'clearInterval');
-        ServerTime.getDistanceToServerTime.mockReturnValue(-1);
+        getDistanceToServerTime.mockReturnValue(-1);
         render(<OrderDetailsTimer />);
 
         expect(spiedClearIntervalFn).toHaveBeenCalled();

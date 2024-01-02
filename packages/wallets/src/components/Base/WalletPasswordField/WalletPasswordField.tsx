@@ -1,37 +1,80 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
+import { dictionary } from '@zxcvbn-ts/language-common';
+import { passwordErrorMessage, passwordRegex, warningMessages } from '../../../constants/password';
+import { calculateScore, isPasswordValid, passwordKeys, Score, validPassword } from '../../../utils/password';
+import { WalletPasswordFieldProps } from '../WalletPasswordFieldLazy/WalletPasswordFieldLazy';
 import { WalletTextField } from '../WalletTextField';
-import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
-import { passwordChecker, passwordPattern, Score } from './PasswordFieldUtils';
 import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
-interface WalletPasswordFieldProps extends WalletTextFieldProps {
-    password: string;
-    shouldDisablePasswordMeter?: boolean;
-}
+export const validatePassword = (password: string) => {
+    const score = calculateScore(password);
+    let errorMessage = '';
+
+    const options = { dictionary: { ...dictionary } };
+    zxcvbnOptions.setOptions(options);
+
+    const { feedback } = zxcvbn(password);
+    if (!passwordRegex.isLengthValid.test(password)) {
+        errorMessage = passwordErrorMessage.invalidLength;
+    } else if (!isPasswordValid(password)) {
+        errorMessage = passwordErrorMessage.missingCharacter;
+    } else {
+        errorMessage = warningMessages[feedback.warning as passwordKeys] ?? '';
+    }
+    return { errorMessage, score };
+};
 
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
+    autoComplete,
     label,
+    name = 'walletPasswordField',
     onChange,
     password,
+    passwordError,
     shouldDisablePasswordMeter = false,
+    showMessage,
 }) => {
-    const [viewPassword, setViewPassword] = useState(false);
-    const { message, score } = passwordChecker(password);
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [isTouched, setIsTouched] = useState(false);
+
+    const { errorMessage, score } = validatePassword(password);
+
+    const handleChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => {
+            onChange?.(e);
+            if (!isTouched) {
+                setIsTouched(true);
+            }
+        },
+        [isTouched, onChange]
+    );
+
+    const handleBlur = useCallback(() => {
+        if (!isTouched) {
+            setIsTouched(true);
+        }
+    }, [isTouched]);
 
     return (
         <div className='wallets-password'>
             <WalletTextField
-                errorMessage={message}
-                isInvalid={Boolean(password.length && !new RegExp(passwordPattern).test(password))}
+                autoComplete={autoComplete}
+                errorMessage={passwordError ? passwordErrorMessage.PasswordError : errorMessage}
+                isInvalid={(!validPassword(password) && isTouched) || passwordError}
                 label={label}
-                onChange={onChange}
+                message={isTouched ? errorMessage : ''}
+                messageVariant='warning'
+                name={name}
+                onBlur={handleBlur}
+                onChange={handleChange}
                 renderRightIcon={() => (
-                    <PasswordViewerIcon setViewPassword={setViewPassword} viewPassword={viewPassword} />
+                    <PasswordViewerIcon setViewPassword={setIsPasswordVisible} viewPassword={isPasswordVisible} />
                 )}
-                showMessage
-                type={viewPassword ? 'text' : 'password'}
+                showMessage={showMessage}
+                type={isPasswordVisible ? 'text' : 'password'}
                 value={password}
             />
             {!shouldDisablePasswordMeter && <PasswordMeter score={score as Score} />}

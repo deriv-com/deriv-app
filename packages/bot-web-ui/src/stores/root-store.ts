@@ -59,7 +59,7 @@ export default class RootStore {
         this.flyout_help = new FlyoutHelpStore(this);
         this.google_drive = new GoogleDriveStore(this);
         this.journal = new JournalStore(this, core);
-        this.load_modal = new LoadModalStore(this);
+        this.load_modal = new LoadModalStore(this, core);
         this.run_panel = new RunPanelStore(this, core);
         this.save_modal = new SaveModalStore(this);
         this.summary = new SummaryStore(this);
@@ -69,7 +69,7 @@ export default class RootStore {
         this.quick_strategy = new QuickStrategyStore(this);
         this.route_prompt_dialog = new RoutePromptDialogStore(this, core);
         this.self_exclusion = new SelfExclusionStore(this, core);
-        this.dashboard = new DashboardStore(this);
+        this.dashboard = new DashboardStore(this, core);
 
         // need to be at last for dependency
         this.chart_store = new ChartStore(this);

@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { TCoreStores } from '@deriv/stores/types';
+import { TRADE_TYPES } from '@deriv/shared';
 import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../../trader-providers';
 import ScreenSmall from '../screen-small';
@@ -158,12 +159,12 @@ describe('<ScreenSmall />', () => {
     it('should render specific for allow_equals component inside CollapsibleTradeParams', () => {
         default_mock_store.modules.trade.is_turbos = false;
         default_mock_store.modules.trade.is_equal = true;
-        default_mock_store.modules.trade.contract_type = 'rise_fall_equal';
+        default_mock_store.modules.trade.contract_type = TRADE_TYPES.RISE_FALL_EQUAL;
         default_mock_store.modules.trade.contract_types_list = {
             'Ups & Downs': {
                 categories: [
-                    { text: 'Rise/Fall', value: 'rise_fall' },
-                    { text: 'Rise/Fall', value: 'rise_fall_equal' },
+                    { text: 'Rise/Fall', value: TRADE_TYPES.RISE_FALL },
+                    { text: 'Rise/Fall', value: TRADE_TYPES.RISE_FALL_EQUAL },
                 ],
                 name: 'Ups & Downs',
             },

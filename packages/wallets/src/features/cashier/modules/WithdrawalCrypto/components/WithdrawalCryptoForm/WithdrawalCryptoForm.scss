@@ -1,0 +1,13 @@
+.wallets-withdrawal-crypto-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.4rem;
+
+    &__submit {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+}

@@ -1,12 +1,13 @@
 import React from 'react';
-import { connect } from 'Stores/connect';
 import { Modal, DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { PropTypes } from 'prop-types';
 import { withRouter } from 'react-router';
 import './warning-scam-message-modal.scss';
 import WarningScamMessageModal from './warning-scam-message-modal';
+import { observer, useStore } from '@deriv/stores';
 
-const WarningScamMessage = ({ is_warning_scam_message_modal_visible, setScamMessageLocalStorage }) => {
+const WarningScamMessage = observer(() => {
+    const { ui } = useStore();
+    const { is_warning_scam_message_modal_visible, setScamMessageLocalStorage } = ui;
     const [is_message_read, setIsMessageRead] = React.useState(false);
     const toggleModal = () => false;
 
@@ -50,14 +51,6 @@ const WarningScamMessage = ({ is_warning_scam_message_modal_visible, setScamMess
         );
     }
     return null;
-};
+});
 
-WarningScamMessage.propTypes = {
-    is_warning_scam_message_modal_visible: PropTypes.bool,
-    setScamMessageLocalStorage: PropTypes.func,
-};
-
-export default connect(({ ui }) => ({
-    is_warning_scam_message_modal_visible: ui.is_warning_scam_message_modal_visible,
-    setScamMessageLocalStorage: ui.setScamMessageLocalStorage,
-}))(withRouter(WarningScamMessage));
+export default withRouter(WarningScamMessage);

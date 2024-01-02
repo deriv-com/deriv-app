@@ -13,10 +13,9 @@ import './main-title-bar.scss';
 import TradersHubBanner from 'Components/traders-hub-banner';
 
 const MainTitleBar = () => {
-    const { traders_hub, client, notifications } = useStore();
+    const { traders_hub, client } = useStore();
     const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
-    const { removeAllNotificationMessages, filterNotificationMessages } = notifications;
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
@@ -27,14 +26,6 @@ const MainTitleBar = () => {
 
     // TODO: Uncomment once useWalletMigration hook is optimized for production release.
     // const { is_wallet_enabled } = useFeatureFlags();
-
-    // TODO: Remove this when we have BE API ready
-    removeAllNotificationMessages(true);
-
-    React.useEffect(() => {
-        filterNotificationMessages();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     return (
         <React.Fragment>

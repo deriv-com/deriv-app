@@ -60,6 +60,14 @@ export const createMarkerStartTime = contract_info => {
     });
 };
 
+export const createMarkerResetTime = contract_info => {
+    if (!contract_info.reset_time) return false;
+
+    return createMarkerConfig(MARKER_TYPES_CONFIG.LINE_RESET.type, +contract_info.reset_time, null, {
+        marker_config: MARKER_TYPES_CONFIG,
+    });
+};
+
 // -------------------- Spots --------------------
 export const createMarkerSpotEntry = contract_info => {
     if (!contract_info.entry_tick_time) return false;

@@ -42,11 +42,12 @@ const HOISTED_PACKAGES = {
     'react-router-dom': path.resolve(__dirname, '../../../node_modules/react-router-dom'),
     mobx: path.resolve(__dirname, '../../../node_modules/mobx'),
     'mobx-react': path.resolve(__dirname, '../../../node_modules/mobx-react'),
+    '@deriv/api': path.resolve(__dirname, '../node_modules/@deriv/api'),
+    '@deriv/library': path.resolve(__dirname, '../node_modules/@deriv/library'),
     '@deriv/shared': path.resolve(__dirname, '../node_modules/@deriv/shared'),
     '@deriv/components': path.resolve(__dirname, '../node_modules/@deriv/components'),
     '@deriv/translations': path.resolve(__dirname, '../node_modules/@deriv/translations'),
     '@deriv/deriv-charts': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts'),
-    '@deriv/deriv-charts-beta': path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta'),
 };
 
 const ALIASES = {
@@ -120,11 +121,6 @@ const MINIMIZERS = !IS_RELEASE
               exclude: /(smartcharts)/,
               parallel: 2,
           }),
-          new TerserPlugin({
-              test: /\.js$/,
-              exclude: /(smartchartsbeta)/,
-              parallel: 2,
-          }),
           new CssMinimizerPlugin(),
       ];
 
@@ -140,7 +136,6 @@ const plugins = ({ base, is_test_env }) => {
             'process.env.DATADOG_SESSION_SAMPLE_RATE': JSON.stringify(process.env.DATADOG_SESSION_SAMPLE_RATE),
             'process.env.REF_NAME': JSON.stringify(process.env.REF_NAME),
             'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-            'process.env.RUDDERSTACK_URL': JSON.stringify(process.env.RUDDERSTACK_URL),
             'process.env.RUDDERSTACK_KEY': JSON.stringify(process.env.RUDDERSTACK_KEY),
             'process.env.GROWTHBOOK_CLIENT_KEY': JSON.stringify(process.env.GROWTHBOOK_CLIENT_KEY),
             'process.env.GROWTHBOOK_DECRYPTION_KEY': JSON.stringify(process.env.GROWTHBOOK_DECRYPTION_KEY),

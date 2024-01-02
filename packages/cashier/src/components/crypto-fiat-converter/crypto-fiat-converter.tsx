@@ -1,23 +1,23 @@
 import React from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@deriv/components';
-import { getCurrencyDisplayCode } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
-import { observer } from '@deriv/stores';
-import { TReactChangeEvent } from '../../types';
-import { useCashierStore } from '../../stores/useCashierStores';
-import { useExchangeRate } from '@deriv/hooks';
-import './crypto-fiat-converter.scss';
 
-type TTimerProps = {
-    onComplete: VoidFunction;
-};
+import { DesktopWrapper, Icon, Input, MobileWrapper } from '@deriv/components';
+import { useExchangeRate } from '@deriv/hooks';
+import { getCurrencyDisplayCode } from '@deriv/shared';
+import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+
+import { useCashierStore } from '../../stores/useCashierStores';
+import { TReactChangeEvent } from '../../types';
+
+import './crypto-fiat-converter.scss';
 
 type TInputGroupProps = React.PropsWithChildren<{
     className: string;
 }>;
 
 type TCryptoFiatConverterProps = {
+    arrow_icon_direction: 'right' | 'left';
     from_currency: string;
     hint?: React.ReactNode;
     onChangeConverterFromAmount: (
@@ -33,33 +33,10 @@ type TCryptoFiatConverterProps = {
         converted_amount?: number
     ) => void;
     resetConverter: VoidFunction;
+    setArrowIconDirection: React.Dispatch<React.SetStateAction<'right' | 'left'>>;
     to_currency: string;
     validateFromAmount: VoidFunction;
     validateToAmount: VoidFunction;
-};
-
-const Timer = ({ onComplete }: TTimerProps) => {
-    const initial_time = 60;
-    const [remaining_time, setRemainingTime] = React.useState<number>(initial_time);
-
-    useInterval(() => {
-        if (remaining_time > 0) {
-            setRemainingTime(remaining_time - 1);
-        }
-    }, 1000);
-
-    React.useEffect(() => {
-        if (remaining_time === 0) {
-            onComplete();
-            setRemainingTime(initial_time);
-        }
-    }, [onComplete, remaining_time]);
-
-    return (
-        <Text as='p' size='xs' color='less-prominent' className='timer'>
-            <Localize i18n_default_text='{{remaining_time}}s' values={{ remaining_time }} />
-        </Text>
-    );
 };
 
 const InputGroup = ({ children, className }: TInputGroupProps) => {
@@ -72,11 +49,13 @@ const InputGroup = ({ children, className }: TInputGroupProps) => {
 
 const CryptoFiatConverter = observer(
     ({
+        arrow_icon_direction,
         from_currency,
         hint,
         onChangeConverterFromAmount,
         onChangeConverterToAmount,
         resetConverter,
+        setArrowIconDirection,
         to_currency,
         validateFromAmount,
         validateToAmount,
@@ -88,7 +67,6 @@ const CryptoFiatConverter = observer(
             crypto_fiat_converter;
 
         const { handleChange } = useFormikContext();
-        const [arrow_icon_direction, setArrowIconDirection] = React.useState<string>('right');
 
         React.useEffect(() => {
             return () => resetConverter();
@@ -133,11 +111,13 @@ const CryptoFiatConverter = observer(
                     {arrow_icon_direction === 'right' ? <Icon icon='IcArrowDownBold' /> : <Icon icon='IcArrowUpBold' />}
                 </MobileWrapper>
                 <DesktopWrapper>
-                    {arrow_icon_direction === 'right' ? (
-                        <Icon icon='IcArrowRightBold' id='arrow_right_bold' data_testid='dti_arrow_right_bold' />
-                    ) : (
-                        <Icon icon='IcArrowLeftBold' id='arrow_left_bold' data_testid='dti_arrow_left_bold' />
-                    )}
+                    <div className='crypto-fiat-converter__arrow-container'>
+                        {arrow_icon_direction === 'right' ? (
+                            <Icon icon='IcArrowRightBold' id='arrow_right_bold' data_testid='dti_arrow_right_bold' />
+                        ) : (
+                            <Icon icon='IcArrowLeftBold' id='arrow_left_bold' data_testid='dti_arrow_left_bold' />
+                        )}
+                    </div>
                 </DesktopWrapper>
                 <Field name='converter_to_amount' validate={validateToAmount}>
                     {({ field }: FieldProps<string>) => (

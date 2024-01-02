@@ -5,7 +5,7 @@ import { WalletSuccess, WalletText } from '../../../../components';
 import { WalletGradientBackground } from '../../../../components/WalletGradientBackground';
 import { WalletMarketCurrencyIcon } from '../../../../components/WalletMarketCurrencyIcon';
 import useDevice from '../../../../hooks/useDevice';
-import { TDisplayBalance, TMarketTypes, TPlatforms } from '../../../../types';
+import { TDisplayBalance, THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import './CFDSuccess.scss';
 
@@ -15,6 +15,7 @@ type TSuccessProps = {
         | TDisplayBalance.CtraderAccountsList
         | TDisplayBalance.DxtradeAccountsList
         | TDisplayBalance.MT5AccountsList;
+    landingCompany?: THooks.AvailableMT5Accounts['shortcode'];
     marketType?: TMarketTypes.SortedMT5Accounts;
     platform?: TPlatforms.All;
     renderButton?: ComponentProps<typeof WalletSuccess>['renderButtons'];
@@ -24,6 +25,7 @@ type TSuccessProps = {
 const CFDSuccess: React.FC<TSuccessProps> = ({
     description,
     displayBalance,
+    landingCompany = 'svg',
     marketType,
     platform,
     renderButton,
@@ -32,22 +34,24 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
     const { data } = useActiveWalletAccount();
     const { isDesktop } = useDevice();
     const isDemo = data?.is_virtual;
-    const landingCompanyName = data?.landing_company_name?.toUpperCase();
+    const landingCompanyName = landingCompany.toUpperCase();
 
-    const isMarketTypeAll = marketType === 'all';
+    const isDxtradeOrCtrader =
+        marketType === 'all' &&
+        (platform === PlatformDetails.dxtrade.platform || platform === PlatformDetails.ctrader.platform);
 
     let marketTypeTitle = 'Deriv Apps';
 
     if (marketType && platform) {
         const isPlatformValid = Object.keys(PlatformDetails).includes(platform);
-        if (isMarketTypeAll && isPlatformValid) {
+        if (isDxtradeOrCtrader && isPlatformValid) {
             marketTypeTitle = PlatformDetails[platform].title;
         } else {
             marketTypeTitle = MarketTypeDetails[marketType].title;
         }
     }
 
-    const platformTitlePrefix = platform === 'mt5' ? PlatformDetails.mt5.title : '';
+    const platformTitlePrefix = platform === PlatformDetails.mt5.platform ? PlatformDetails.mt5.title : '';
 
     return (
         <WalletSuccess
@@ -56,7 +60,7 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
             renderIcon={() => (
                 <WalletGradientBackground
                     bodyClassName='wallets-cfd-success__gradient'
-                    currency={data?.currency || 'USD'}
+                    currency={data?.currency ?? 'USD'}
                     hasShine
                     theme='grey'
                 >
@@ -73,14 +77,15 @@ const CFDSuccess: React.FC<TSuccessProps> = ({
                                 </WalletText>
                             </div>
                             <WalletMarketCurrencyIcon
-                                currency={data?.currency || 'USD'}
-                                isDemo={isDemo || false}
+                                currency={data?.currency ?? 'USD'}
+                                isDemo={isDemo ?? false}
                                 marketType={marketType}
                                 platform={platform}
                             />
                             <div className='wallets-cfd-success__info'>
                                 <WalletText size='2xs'>
-                                    {platformTitlePrefix} {marketTypeTitle} {!isDemo && `(${landingCompanyName})`}
+                                    {platformTitlePrefix} {marketTypeTitle}{' '}
+                                    {!isDemo && !isDxtradeOrCtrader && `(${landingCompanyName})`}
                                 </WalletText>
                                 <WalletText color='primary' size='2xs'>
                                     {data?.currency} Wallet

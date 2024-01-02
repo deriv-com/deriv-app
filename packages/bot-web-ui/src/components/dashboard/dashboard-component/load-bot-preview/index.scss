@@ -116,7 +116,7 @@
         padding: 1.5rem;
         border-radius: $BORDER_RADIUS;
         border: solid 1px var(--border-normal);
-        height: calc(100vh - 32.4rem);
+        height: calc(100vh - 30.4rem);
         position: relative;
         overflow: hidden;
         margin: 0 1.6rem 1.6rem 0;
@@ -155,9 +155,9 @@
             flex-basis: 100%;
 
             &__list {
-                overflow: auto;
+                overflow-y: scroll;
                 width: 100%;
-                height: calc(100vh - 56rem);
+                height: calc(100vh - 52rem);
                 @include mobile {
                     height: calc(100vh - 46rem);
                     padding-bottom: 15rem;
@@ -654,5 +654,153 @@
 .toolbar {
     &__dialog {
         transition: none;
+    }
+}
+
+.flex-align-center {
+    display: flex;
+    align-items: center;
+}
+
+.bot-list {
+    &__wrapper {
+        height: calc(100vh - 46.4rem);
+        overflow: auto;
+    }
+    &__header {
+        @extend .flex-align-center;
+        padding: 0 0.8rem;
+        border-bottom: 1px solid var(--border-divider);
+
+        @include mobile {
+            padding: 0;
+        }
+
+        &__label {
+            padding: 0.8rem;
+            width: 35%;
+            @include mobile {
+                width: 40%;
+                padding-left: 0;
+            }
+        }
+        &__time-stamp {
+            width: 20%;
+            padding: 0.8rem;
+            @include mobile {
+                width: 25%;
+                padding-right: 0;
+            }
+        }
+        &__load-type {
+            width: 25%;
+            padding: 0.8rem;
+        }
+    }
+    &__item {
+        @extend .flex-align-center;
+        padding: 0 0.8rem;
+        border-bottom: 1px solid var(--border-divider);
+        user-select: none;
+        position: relative;
+        &:hover {
+            cursor: pointer;
+        }
+
+        &__label {
+            padding: 0.8rem;
+            width: 35%;
+            .text-wrapper {
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                display: -webkit-box;
+                max-width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-all;
+            }
+
+            @include mobile {
+                width: 40%;
+                padding-left: 0;
+            }
+        }
+
+        &__time-stamp {
+            width: 20%;
+            padding: 0.8rem;
+            @include mobile {
+                width: 25%;
+            }
+        }
+
+        &__load-type {
+            @extend .flex-align-center;
+            width: 25%;
+            padding: 0.8rem;
+
+            .dc-icon {
+                margin-right: 0.8rem;
+            }
+        }
+
+        &__actions {
+            @extend .flex-align-center;
+            width: 20%;
+            padding: 0.8rem;
+            justify-content: flex-end;
+            &__action-item {
+                margin-right: 1.6rem;
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+
+            @include mobile {
+                width: 10%;
+            }
+        }
+
+        &__responsive {
+            background: var(--general-main-1);
+            box-shadow: 0 0 2rem rgba(0, 0, 0, 0.05), 0 1.6rem 2rem rgba(0, 0, 0, 0.05);
+            display: none;
+            min-width: 15rem;
+            position: absolute;
+            right: 3rem;
+            top: 4rem;
+            z-index: 100;
+            &--active {
+                display: block;
+            }
+
+            &__menu {
+                align-items: center;
+                display: flex;
+                height: 4rem;
+                padding: 0.8rem 1.1rem;
+                .dc-icon {
+                    margin-right: 0.8rem;
+                }
+
+                &:last-child {
+                    box-shadow: inset 0 0.1rem 0 var(--border-divider);
+                }
+            }
+        }
+
+        &:nth-last-child(-n + 4) {
+            .bot-list__item__responsive {
+                top: -15rem;
+                &--min {
+                    top: 1rem;
+                    right: 6rem;
+                }
+            }
+        }
+
+        &--selected {
+            background-color: var(--general-section-1);
+        }
     }
 }

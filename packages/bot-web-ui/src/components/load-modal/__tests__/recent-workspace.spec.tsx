@@ -20,7 +20,7 @@ const mock_workspace = {
     id: 'test-id-1',
     name: 'sample',
     save_type: 'local',
-    timestamp: 1697621094136,
+    timestamp: 1704052800000,
     xml: '<xml>Sample</xml>',
 };
 
@@ -47,7 +47,7 @@ describe('RecentWorkspace', () => {
 
     it('should show strategy saved time in proper format', () => {
         render(<RecentWorkspace workspace={mock_workspace} />, { wrapper });
-        expect(screen.getByText('18 Oct2023')).toBeInTheDocument();
+        expect(screen.getByText('1 Jan2024')).toBeInTheDocument();
     });
 
     it('should update selected strategy ID on clicking the strategy', () => {

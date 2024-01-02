@@ -1,7 +1,7 @@
 import React from 'react';
 
 type TInputGroup = {
-    className: string;
+    className?: string;
 };
 
 const InputGroup = ({ children, className }: React.PropsWithChildren<TInputGroup>) => (

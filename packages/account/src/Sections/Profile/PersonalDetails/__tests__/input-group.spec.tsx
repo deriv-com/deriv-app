@@ -5,7 +5,7 @@ import InputGroup from '../input-group';
 describe('InputGroup', () => {
     const children = 'This is children';
     it('should render InputGroup with children passed inside', () => {
-        render(<InputGroup className='children_class'>{children}</InputGroup>);
+        render(<InputGroup>{children}</InputGroup>);
         expect(screen.getByText(/This is children/)).toBeInTheDocument();
     });
 

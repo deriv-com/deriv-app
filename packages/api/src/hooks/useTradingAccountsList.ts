@@ -15,7 +15,7 @@ const useTradingAccountsList = () => {
     const modified_accounts = useMemo(() => {
         return filtered_accounts?.map(trading => ({
             ...trading,
-            first_real_account: filtered_accounts?.find(account => account.account_type === 'real')?.loginid[0],
+            first_real_loginid: filtered_accounts?.find(account => account.account_type === 'real')?.loginid[0],
             demo_loginid: filtered_accounts?.find(account => account.account_type === 'demo')?.loginid,
         }));
     }, [filtered_accounts]);

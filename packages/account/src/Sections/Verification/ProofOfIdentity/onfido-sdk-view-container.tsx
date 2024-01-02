@@ -45,7 +45,6 @@ const OnfidoSdkViewContainer = observer(
         const [is_onfido_initialized, setIsOnfidoInitialized] = React.useState(false);
         // used to check that we only initialize and load the onfido script once
         const [is_onfido_loaded, setIsOnfidoLoaded] = React.useState(false);
-        // use to check that we do not re-attempt to reload the onfido script while its still loading
         const { data: account_settings } = useSettings();
 
         const { send, isSuccess: isNotified } = useNotificationEvent();

@@ -77,7 +77,7 @@ describe('DatePicker Component', () => {
 
         const container = screen.getByTestId('wallets_datepicker_container');
         expect(screen.getByTestId('wallets_datepicker_container')).toBeInTheDocument();
-        expect(container).toHaveClass('above');
+        expect(container).toHaveClass('wallets-datepicker__container--above');
     });
 
     test('should trigger onDateChange callback with correct date when date is selected', () => {
@@ -97,14 +97,11 @@ describe('DatePicker Component', () => {
 
         const calendarButton = screen.getByTestId('wallets_datepicker_button');
         fireEvent.click(calendarButton);
-        fireEvent.click(screen.getByText('›'));
 
-        const testDay = '15';
-        const dateElement = screen.getByText(testDay);
-        fireEvent.click(dateElement);
-        const testDate = `${moment().add(1, 'month').format('YYYY')}-${moment()
-            .add(1, 'month')
-            .format('MM')}-${testDay}`;
+        const testDay = moment().format('D');
+        const dateElements = screen.getAllByText(testDay);
+        fireEvent.click(dateElements[0]);
+        const testDate = `${moment().format('YYYY')}-${moment().format('MM')}-${moment().format('DD')}`;
 
         expect(mockOnDateChange).toHaveBeenCalledWith(testDate);
     });

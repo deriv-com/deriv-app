@@ -54,20 +54,8 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: build
-        path: .
+        path: packages/core/dist
         retention-days: 1
-
-    - name: Build Docker image and push to Docker hub and K8S
-      uses: "./.github/actions/build_and_push_docker_image"
-      with:
-        DOCKERHUB_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        DOCKERHUB_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        DOCKERHUB_ORGANISATION: ${{ secrets.DOCKERHUB_ORGANISATION }}
-        K8S_NAMESPACE: ${{ secrets.K8S_NAMESPACE }}
-        KUBE_SERVER: ${{ secrets.KUBE_SERVER }}
-        SERVICEACCOUNT_TOKEN: ${{ secrets.SERVICEACCOUNT_TOKEN }}
-        CA_CRT: ${{ secrets.CA_CRT }}
-        APP_VERSION: latest
 
   send_slack_notification:
       name: Send Release Slack notification
@@ -100,10 +88,13 @@ jobs:
     environment: Production
     needs: [build_test_and_publish]
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
           name: build
+          path: packages/core/dist
       - name: Build Docker image and push to Docker hub and K8S
         id: build_and_push_docker_image
         uses: "./.github/actions/build_and_push_docker_image"

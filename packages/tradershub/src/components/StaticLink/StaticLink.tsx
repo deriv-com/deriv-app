@@ -6,6 +6,7 @@ type StaticLinkProps = {
     children: ReactNode;
     className?: string;
     href?: AnchorHTMLAttributes<HTMLAnchorElement>['href'];
+    onClick?: AnchorHTMLAttributes<HTMLAnchorElement>['onClick'];
     size: ComponentProps<typeof Link>['size'];
     staticUrl?: AnchorHTMLAttributes<HTMLAnchorElement>['href'];
 };

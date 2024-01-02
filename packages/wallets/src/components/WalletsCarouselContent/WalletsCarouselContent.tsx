@@ -63,6 +63,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         walletsCarouselEmblaApi?.on('settle', () => {
             onWalletSettled?.(true);
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [walletsCarouselEmblaApi]);
 
     // load active wallet whenever its scrolled

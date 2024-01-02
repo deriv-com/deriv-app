@@ -4,7 +4,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
     contents: {
         all: [
             {
-                description: 'Synthetics, Forex, Stocks, Stock Indices, Cryptocurrencies, and ETFs',
+                description: 'Forex, stocks, stock indices, commodities, cryptocurrencies, ETFs and synthetic indices',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {
@@ -38,7 +38,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
         ],
         financial: [
             {
-                description: 'Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies',
+                description: 'Forex (standard/micro), stocks, stock indices, commodities, cryptocurrencies and ETFs',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {
@@ -88,7 +88,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
         ],
         synthetic: [
             {
-                description: 'Synthetics, Baskets and Derived FX',
+                description: 'Synthetic indices, basket indices, and derived FX',
                 key: 'assets',
                 title: 'Assets',
                 titleIndicators: {
@@ -124,7 +124,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
     header: 'St. Vincent & Grenadines',
     isOverHeaderAvailable: false,
     verificationDocs: {
-        financial: ['notApplicable'],
-        synthetic: ['notApplicable'],
+        financial: [],
+        synthetic: [],
     },
 });

@@ -98,7 +98,7 @@ const JurisdictionCard = ({
                                 }
                             }}
                         >
-                            {description.text}{' '}
+                            {description.text}
                         </a>
                     );
                 }

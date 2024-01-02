@@ -2,7 +2,7 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { ExcludeAllNull } from '@deriv/quill-design';
 
 export const JurisdictionCardClass = cva(
-    'bg-brand-orange items-center rounded-800 border-sm border-system-light-secondary-background cursor-pointer flex flex-col justify-center w-full lg:w-1/4 relative h-full transition-shadow duration-300 transform-gpu',
+    'items-center rounded-800 border-sm border-system-light-secondary-background cursor-pointer flex flex-col justify-center w-full lg:w-1/4 relative h-full transition-shadow duration-300 transform-gpu',
     {
         variants: {
             isAdded: {

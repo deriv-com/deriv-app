@@ -1,6 +1,7 @@
 import React, { MouseEvent, useMemo, useState } from 'react';
 import { qtMerge, Text } from '@deriv/quill-design';
 import { useModal } from '../../../../../components/ModalProvider';
+import { StaticLink } from '../../../../../components/StaticLink';
 import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
@@ -11,6 +12,7 @@ import {
     JurisdictionCardClass,
     JurisdictionCardClassProps,
     JurisdictionCardTagClass,
+    JurisdictionCardTagProps,
 } from './JurisdictionCard.classnames';
 import JurisdictionCardBack from './JurisdictionCardBack';
 import JurisdictionCardRow from './JurisdictionCardRow';
@@ -23,14 +25,7 @@ type TJurisdictionCardProps = JurisdictionCardClassProps & {
     tag?: string;
 };
 
-type TDisplayTextSkinColor =
-    | 'brown-dark'
-    | 'red-dark'
-    | 'red-darker'
-    | 'red-light'
-    | 'voilet-dark'
-    | 'yellow-dark'
-    | 'yellow-light';
+type TDisplayTextSkinColor = JurisdictionCardTagProps['displayTextSkinColor'];
 
 type TVerificationDocumentsMapper = {
     [key: string]: {
@@ -67,7 +62,7 @@ const JurisdictionCard = ({
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
     const { getModalState } = useModal();
 
-    const descriptionClickHandler = (tag?: string) => (event: MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const descriptionClickHandler = (tag?: TJurisdictionCardProps['tag']) => (event: MouseEvent) => {
         event.stopPropagation();
         if (tag === 'dynamicLeverage') {
             toggleDynamicLeverage();
@@ -82,47 +77,36 @@ const JurisdictionCard = ({
     );
     const marketType = getModalState('marketType') || 'all';
     const rows = contents[marketType] || [];
-
     const parseDescription = (row: TJurisdictionCardSection) => {
         if (row.clickableDescription)
             return row.clickableDescription.map(description => {
                 if (description.type === 'link') {
-                    return (
-                        <a
-                            className='text-brand-red-light '
-                            key={description.text}
-                            onClick={descriptionClickHandler(description.tag)}
-                            onKeyDown={event => {
-                                if (event.key === 'Enter') {
-                                    descriptionClickHandler(description.tag);
-                                }
-                            }}
-                        >
-                            {description.text}
-                        </a>
-                    );
+                    <StaticLink
+                        className='text-brand-red-light '
+                        href={descriptionClickHandler(description.tag) as unknown as string}
+                        size='md'
+                    >
+                        {description.text}
+                    </StaticLink>;
                 }
                 return description.text;
             });
         return row.description;
     };
 
-    const parseTag = (row: TJurisdictionCardSection) => {
-        if (row?.titleIndicators?.displayText) {
-            return (
-                <div
-                    className={JurisdictionCardTagClass({
-                        displayTextSkinColor: row?.titleIndicators
-                            ?.displayTextSkinColor as unknown as TDisplayTextSkinColor,
-                    })}
-                >
-                    <Text bold className='leading-[1] text-system-light-primary-background' size='sm'>
-                        {row?.titleIndicators.displayText}
-                    </Text>
-                </div>
-            );
-        }
-    };
+    const parseTag = (row: TJurisdictionCardSection) =>
+        row?.titleIndicators?.displayText && (
+            <div
+                className={JurisdictionCardTagClass({
+                    displayTextSkinColor: row?.titleIndicators
+                        ?.displayTextSkinColor as unknown as TDisplayTextSkinColor,
+                })}
+            >
+                <Text bold className='leading-[1] text-system-light-primary-background' size='sm'>
+                    {row?.titleIndicators.displayText}
+                </Text>
+            </div>
+        );
 
     return (
         <div
@@ -144,42 +128,40 @@ const JurisdictionCard = ({
                     </Text>
                 </div>
                 <div className='border-sm border-system-light-secondary-background'>
-                    {rows.map(row => {
-                        return (
-                            <JurisdictionCardRow
-                                description={parseDescription(row)}
-                                key={`wallets-jurisdiction-card--${row?.title}`}
-                                renderTag={() => {
-                                    if (!row?.titleIndicators) return;
+                    {rows.map(row => (
+                        <JurisdictionCardRow
+                            description={parseDescription(row)}
+                            key={`wallets-jurisdiction-card--${row?.title}`}
+                            renderTag={() => {
+                                if (!row?.titleIndicators) return;
 
-                                    if (
-                                        row.titleIndicators?.type === 'displayIcons' &&
-                                        verificationDocs &&
-                                        marketType &&
-                                        marketType !== 'all'
-                                    ) {
-                                        return (
-                                            <div className='flex gap-300'>
-                                                {!(marketType in verificationDocs)
-                                                    ? verificationDocumentsMapper.notApplicable.icon
-                                                    : verificationDocs[marketType]?.map(doc => (
-                                                          <JurisdictionCardVerificationTag
-                                                              category={verificationDocumentsMapper[doc].category}
-                                                              icon={verificationDocumentsMapper[doc].icon}
-                                                              key={`verification-doc-${doc}`}
-                                                          />
-                                                      ))}
-                                            </div>
-                                        );
-                                    }
-                                    if (row.titleIndicators.displayText) {
-                                        return parseTag(row);
-                                    }
-                                }}
-                                title={row.title}
-                            />
-                        );
-                    })}
+                                if (
+                                    row.titleIndicators?.type === 'displayIcons' &&
+                                    verificationDocs &&
+                                    marketType &&
+                                    marketType !== 'all'
+                                ) {
+                                    return (
+                                        <div className='flex gap-300'>
+                                            {!(marketType in verificationDocs)
+                                                ? verificationDocumentsMapper.notApplicable.icon
+                                                : verificationDocs[marketType]?.map(doc => (
+                                                      <JurisdictionCardVerificationTag
+                                                          category={verificationDocumentsMapper[doc].category}
+                                                          icon={verificationDocumentsMapper[doc].icon}
+                                                          key={`verification-doc-${doc}`}
+                                                      />
+                                                  ))}
+                                        </div>
+                                    );
+                                }
+                                if (row.titleIndicators.displayText) {
+                                    return parseTag(row);
+                                }
+                            }}
+                            title={row.title}
+                        />
+                    ))}
                 </div>
                 {isAdded && (
                     <div className='absolute w-full text-center rounded-b-[13px] rounded-t-50 bottom-50 left-50 p-400 bg-random-blue'>

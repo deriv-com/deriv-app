@@ -14,6 +14,9 @@ import './advertiser-page-row.scss';
 const AdvertiserPageRow = ({ row: advert }) => {
     const { advertiser_page_store, buy_sell_store, general_store } = useStores();
     const {
+        counterparty_advertiser_info: { id: counterparty_details_id },
+    } = advertiser_page_store;
+    const {
         client: { currency },
     } = useStore();
     const {
@@ -26,10 +29,11 @@ const AdvertiserPageRow = ({ row: advert }) => {
         rate_type,
         rate,
     } = advert;
+
     const { showModal } = useModalManagerContext();
 
     const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
-    const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
+    const is_my_advert = counterparty_details_id === general_store.advertiser_id;
     const exchange_rate = useP2PExchangeRate(local_currency);
 
     const { display_effective_rate } = generateEffectiveRate({

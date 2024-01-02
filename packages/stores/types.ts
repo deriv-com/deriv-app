@@ -412,7 +412,8 @@ type TClientStore = {
         api_initial_load_error?: string;
     };
     account_list: TAccountsList;
-    account_status: GetAccountStatus;
+    account_status: Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
+        Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
     available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;
     balance?: string | number;
     can_change_fiat_currency: boolean;
@@ -463,7 +464,7 @@ type TClientStore = {
     is_low_risk: boolean;
     is_mt5_password_not_set: boolean;
     is_mt5_account_list_updated: boolean;
-    is_pending_proof_of_ownership: boolean;
+    is_proof_of_ownership_enabled: boolean;
     is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
     is_switching: boolean;

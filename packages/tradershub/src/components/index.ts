@@ -3,6 +3,7 @@ export * from './ContentSwitcher';
 export * from './CurrencySwitcher';
 export * from './Dialog';
 export * from './GetADerivAccountBanner';
+export * from './Modal';
 export * from './ModalProvider';
 export * from './ModalStepWrapper';
 export * from './OptionsAndMultipliersSection';

@@ -1,17 +1,16 @@
 import React, { FC } from 'react';
 import { APIProvider } from '@deriv/api';
-import { BreakpointProvider } from '@deriv/quill-design';
+import { Provider } from '@deriv/library';
 import AppContent from './AppContent';
-import { ModalProvider } from './components';
 import './index.scss';
 
 const App: FC = () => (
     <APIProvider standalone>
-        <ModalProvider>
-            <BreakpointProvider>
+        <Provider.ModalProvider>
+            <Provider.CFDProvider>
                 <AppContent />
-            </BreakpointProvider>
-        </ModalProvider>
+            </Provider.CFDProvider>
+        </Provider.ModalProvider>
     </APIProvider>
 );
 

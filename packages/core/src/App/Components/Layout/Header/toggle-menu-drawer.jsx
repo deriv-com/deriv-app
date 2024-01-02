@@ -43,7 +43,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         should_allow_poinc_authentication,
         landing_company_shortcode: active_account_landing_company,
         is_landing_company_loaded,
-        is_pending_proof_of_ownership,
+        is_proof_of_ownership_enabled,
         is_eu,
     } = client;
     const { cashier } = modules;
@@ -149,7 +149,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             } else if (/proof-of-income/.test(route_path)) {
                 return !should_allow_poinc_authentication;
             } else if (/proof-of-ownership/.test(route_path)) {
-                return is_virtual || !is_pending_proof_of_ownership;
+                return is_virtual || !is_proof_of_ownership_enabled;
             }
             return false;
         };

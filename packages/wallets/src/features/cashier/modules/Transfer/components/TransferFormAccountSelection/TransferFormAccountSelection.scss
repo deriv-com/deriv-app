@@ -41,6 +41,7 @@
         display: flex;
         flex-direction: column;
         padding: 1.6rem 0.8rem;
+        gap: 0.8rem;
 
         &--divider {
             border-bottom: 4px solid var(--system-light-7-secondary-background, #f2f3f4);
@@ -48,7 +49,13 @@
 
         @include mobile {
             padding: 0;
+            gap: 0.4rem;
         }
+    }
+
+    &__grouped-accounts {
+        display: flex;
+        flex-direction: column;
     }
 
     &__account {

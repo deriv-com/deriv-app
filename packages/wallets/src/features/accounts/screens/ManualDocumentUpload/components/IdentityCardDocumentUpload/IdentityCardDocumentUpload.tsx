@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { DatePicker, Divider, Dropzone, FlowTextField, useFlow, WalletText } from '../../../../../../components';
 import IdentityCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import IdentityCardFront from '../../../../../../public/images/accounts/identity-card-front.svg';
@@ -26,11 +27,12 @@ const IdentityCardDocumentUpload = () => {
                 <DatePicker
                     defaultValue={formValues.identityCardExpiryDate ?? ''}
                     label='Expiry date*'
+                    maxDate={undefined}
+                    minDate={moment().add(2, 'days').toDate()}
                     name='identityCardExpiryDate'
                     onDateChange={handleDateChange}
                     placeholder='DD/MM/YYYY'
                     validationSchema={expiryDateValidator}
-                    variant='expiry'
                 />
             </div>
             <Divider />

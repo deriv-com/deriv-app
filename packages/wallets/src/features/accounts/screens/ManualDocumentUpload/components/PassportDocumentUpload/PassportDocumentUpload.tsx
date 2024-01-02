@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { DatePicker, Dropzone, FlowTextField, useFlow } from '../../../../../../components';
 import { Divider, WalletText } from '../../../../../../components/Base';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
@@ -26,11 +27,12 @@ const PassportDocumentUpload = () => {
                 <DatePicker
                     defaultValue={formValues.passportExpiryDate ?? ''}
                     label='Expiry date*'
+                    maxDate={undefined}
+                    minDate={moment().add(2, 'days').toDate()}
                     name='passportExpiryDate'
                     onDateChange={handleDateChange}
                     placeholder='DD/MM/YYYY'
                     validationSchema={expiryDateValidator}
-                    variant='expiry'
                 />
             </div>
             <Divider />

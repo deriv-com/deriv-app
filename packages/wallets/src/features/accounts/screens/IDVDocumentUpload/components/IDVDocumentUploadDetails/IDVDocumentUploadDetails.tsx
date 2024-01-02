@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 import { useSettings } from '@deriv/api';
 import { DatePicker, FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../../../components';
 import SideNote from '../../../../../../public/images/accounts/side-note-example-image.svg';
@@ -46,7 +47,9 @@ const IDVDocumentUploadDetails = () => {
                     <DatePicker
                         defaultValue={unixToDateString(dateOfBirth)}
                         label='Date of birth*'
+                        maxDate={moment().subtract(18, 'years').toDate()}
                         message='Your date of birth as in your identity document'
+                        minDate={moment().subtract(100, 'years').toDate()}
                         mobileAlignment='above'
                         name='dateOfBirth'
                         onDateChange={handleDateChange}

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
+import { useOnClickOutside } from 'usehooks-ts';
 import CalendarIcon from '../../public/images/ic-calendar.svg';
 import FlowTextField, { TFlowFieldProps } from '../FlowField/FlowTextField';
 import unixToDateString, { customFormatShortWeekday } from './utils';
@@ -32,6 +33,10 @@ const DatePicker = ({
         setIsCalendarOpen(prevState => !prevState);
     };
 
+    useOnClickOutside(datePickerRef, () => {
+        setIsCalendarOpen(false);
+    });
+
     const handleDateChange: CalendarProps['onChange'] = value => {
         const calendarSelectedDate = Array.isArray(value) ? value[0] : value;
         setSelectedDate(calendarSelectedDate);
@@ -44,20 +49,6 @@ const DatePicker = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedDate]);
-
-    useEffect(() => {
-        const handleOutsideClick = (event: MouseEvent) => {
-            if (isCalendarOpen && datePickerRef.current && !datePickerRef.current.contains(event.target as Node)) {
-                setIsCalendarOpen(false);
-            }
-        };
-
-        document.addEventListener('mousedown', handleOutsideClick);
-
-        return () => {
-            document.removeEventListener('mousedown', handleOutsideClick);
-        };
-    }, [isCalendarOpen]);
 
     return (
         <div className='wallets-datepicker' ref={datePickerRef}>

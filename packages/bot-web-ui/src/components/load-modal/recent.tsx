@@ -36,26 +36,26 @@ const RecentComponent = observer(() => {
 
     return (
         <div className='load-strategy__container'>
-            <div className='load-strategy__recent-empty'>
-                <Icon icon='IcEmptyFolder' className='load-strategy__recent-empty-icon' size={128} />
-                <div className='load-strategy__recent-empty-title'>
+            <div className='load-strategy__recent__empty'>
+                <Icon icon='IcEmptyFolder' className='load-strategy__recent__empty-icon' size={128} />
+                <div className='load-strategy__recent__empty-title'>
                     <Localize i18n_default_text='You do not have any recent bots' />
                 </div>
-                <div className='load-strategy__recent-empty-description'>
+                <div className='load-strategy__recent__empty-description'>
                     <Localize i18n_default_text='Create one or upload one from your local drive or Google Drive.' />
                 </div>
-                <div className='load-strategy__recent-empty-expand' onClick={toggleExplanationExpand}>
+                <div className='load-strategy__recent__empty-expand' onClick={toggleExplanationExpand}>
                     <Localize i18n_default_text="Why can't I see my recent bots?" />
                 </div>
                 <div
-                    className={classnames('load-strategy__recent-empty-explanation', {
-                        'load-strategy__recent-empty-explanation--show': is_explanation_expand,
+                    className={classnames('load-strategy__recent__empty-explanation', {
+                        'load-strategy__recent__empty-explanation--show': is_explanation_expand,
                     })}
                 >
                     <div>
                         <Localize i18n_default_text="If you've recently used bots but don't see them in this list, it may be because you:" />
                     </div>
-                    <ol className='load-strategy__recent-empty-explanation-list'>
+                    <ol className='load-strategy__recent__empty-explanation-list'>
                         <li>
                             <Localize i18n_default_text='1. Logged in from a different device' />
                         </li>

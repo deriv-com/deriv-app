@@ -63,8 +63,9 @@ export const getPersonalDetailsInitialValues = (
         address_line_1: account_settings.address_line_1,
         address_city: account_settings.address_city,
         address_state: '',
-        tax_identification_number: account_settings.tax_identification_number ?? '',
-        email_consent: account_settings.email_consent ?? 0,
+        address_postcode: '',
+        tax_identification_number: account_settings.tax_identification_number,
+        email_consent: account_settings.email_consent,
     };
 
     const isGetSettingsKey = (value: string): value is keyof GetSettings =>
@@ -87,6 +88,10 @@ export const getPersonalDetailsInitialValues = (
 
     if (account_settings.employment_status) {
         initialValues.employment_status = account_settings.employment_status;
+    }
+
+    if (account_settings.address_postcode) {
+        initialValues.address_postcode = account_settings.address_postcode;
     }
 
     if (account_settings.request_professional_status) {

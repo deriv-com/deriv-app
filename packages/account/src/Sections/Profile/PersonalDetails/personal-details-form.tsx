@@ -118,7 +118,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
     const onSubmit = async (values: GetSettings, { setStatus, setSubmitting }: FormikHelpers<GetSettings>) => {
         setStatus({ msg: '' });
-        const request = makeSettingsRequest(values, residence_list, states_list, is_virtual);
+        const request = makeSettingsRequest({ ...values }, residence_list, states_list, is_virtual);
         setIsBtnLoading(true);
         const data = await WS.setSettings(request);
 
@@ -172,7 +172,11 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
         if (start_on_submit_timeout.is_timeout_started) {
             timeout_id = setTimeout(() => {
                 setIsSubmitSuccess(false);
-            }, 10000);
+                setStartOnSubmitTimeout({
+                    is_timeout_started: false,
+                    timeout_callback: () => setIsSubmitSuccess(false),
+                });
+            }, 3000);
         }
 
         return () => {
@@ -688,7 +692,9 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
                                         'dc-btn--green': is_submit_success,
                                     })}
                                     type='submit'
-                                    is_disabled={isSubmitting || !dirty || !isValid || is_btn_loading}
+                                    is_disabled={
+                                        isSubmitting || !dirty || !isValid || is_btn_loading || is_submit_success
+                                    }
                                     has_effect
                                     is_loading={is_btn_loading}
                                     is_submit_success={is_submit_success}

@@ -47,6 +47,7 @@ export default class OrderStore {
             onPageReturn: action.bound,
             onUnmount: action.bound,
             setActiveOrder: action.bound,
+            setDateTo: action.bound,
             setForceRerenderOrders: action.bound,
             setShouldNavigateToBuySell: action.bound,
             setApiErrorMessage: action.bound,
@@ -206,7 +207,7 @@ export default class OrderStore {
             this.date_from = null;
         }
 
-        if (to) this.date_to = toMoment(to).unix();
+        if (to) this.setDateTo(toMoment(to).unix());
         this.setIsLoading(true);
         this.loadMoreOrders({}, true);
     }
@@ -381,6 +382,10 @@ export default class OrderStore {
 
     setActiveOrder(active_order) {
         this.active_order = active_order;
+    }
+
+    setDateTo(date_to) {
+        this.date_to = date_to;
     }
 
     setQueryDetails(input_order) {

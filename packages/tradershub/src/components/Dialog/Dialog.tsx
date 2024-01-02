@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { useEventListener } from 'usehooks-ts';
+import { Provider } from '@deriv/library';
 import { qtMerge } from '@deriv/quill-design';
-import { useModal } from '../ModalProvider';
 import DialogAction from './DialogAction';
 import DialogContent from './DialogContent';
 import DialogHeader from './DialogHeader';
@@ -45,7 +45,7 @@ type TDialog = {
  * ```
  */
 const Dialog = ({ children, className, shouldPreventCloseOnEscape = false }: TDialog) => {
-    const { hide } = useModal();
+    const { hide } = Provider.useModal();
 
     useEventListener('keydown', (event: KeyboardEvent) => {
         if (!shouldPreventCloseOnEscape && event.key === 'Escape') {

@@ -1,23 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import { Button, Dialog, Text, Input } from '@deriv/components';
 import { validEmail, getErrorMessages } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { ConfirmEmailModal } from '../ConfirmEmailModal/confirm-email-modal.jsx';
+import { observer, useStore } from '@deriv/stores';
 
-const ResetEmailModal = ({
-    disableApp,
-    email,
-    enableApp,
-    is_loading,
-    is_visible,
-    toggleResetEmailModal,
-    verification_code,
-    is_social_signup,
-}) => {
+const ResetEmailModal = observer(() => {
+    const { ui, client } = useStore();
+    const { disableApp, enableApp, is_loading, is_reset_email_modal_visible: is_visible, toggleResetEmailModal } = ui;
+    const { is_social_signup, email } = client;
+    const verification_code = client.verification_code.request_email;
     const [is_confirm_email_modal_open, setIsConfirmResetEmailModal] = React.useState(false);
     const [email_error_msg, setEmailErrorMsg] = React.useState(null);
     const [new_email, setNewEmail] = React.useState(null);
@@ -137,26 +131,6 @@ const ResetEmailModal = ({
             )}
         </Formik>
     );
-};
+});
 
-ResetEmailModal.propTypes = {
-    disableApp: PropTypes.func,
-    email: PropTypes.string,
-    enableApp: PropTypes.func,
-    is_loading: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    verification_code: PropTypes.string,
-    toggleResetEmailModal: PropTypes.func,
-    is_social_signup: PropTypes.bool,
-};
-
-export default connect(({ ui, client }) => ({
-    disableApp: ui.disableApp,
-    email: client.email,
-    enableApp: ui.enableApp,
-    is_loading: ui.is_loading,
-    is_visible: ui.is_reset_email_modal_visible,
-    toggleResetEmailModal: ui.toggleResetEmailModal,
-    verification_code: client.verification_code.request_email,
-    is_social_signup: client.is_social_signup,
-}))(ResetEmailModal);
+export default ResetEmailModal;

@@ -707,12 +707,6 @@ export default class MyAdsStore extends BaseStore {
             }
         });
 
-        if (Object.values(errors).includes('Enter a valid amount')) {
-            Object.entries(errors).forEach(([key, value]) => {
-                errors[key] = value === 'Enter a valid amount' ? value : undefined;
-            });
-        }
-
         return errors;
     }
 
@@ -840,12 +834,6 @@ export default class MyAdsStore extends BaseStore {
                 }
             }
         });
-
-        if (Object.values(errors).includes('Enter a valid amount')) {
-            Object.entries(errors).forEach(([key, value]) => {
-                errors[key] = value === 'Enter a valid amount' ? value : undefined;
-            });
-        }
 
         return errors;
     }

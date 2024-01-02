@@ -1,17 +1,15 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import SaveModal, { SaveModalForm } from '../save-modal';
+import SaveModal from '../save-modal';
 import DashboardStore from 'Stores/dashboard-store';
 import LoadModalStore from 'Stores/load-modal-store';
 import GoogleDriveStore from 'Stores/google-drive-store';
-import { TStores } from '@deriv/stores/types';
 import userEvent from '@testing-library/user-event';
-import { json } from 'stream/consumers';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -45,7 +43,6 @@ describe('RecentComponent', () => {
         mock_DBot_store: RootStore | undefined;
     const mock_store = mockStore({
         ui: {
-            is_onscreen_keyboard_active: false,
             setCurrentFocus: jest.fn(),
             is_mobile: false,
         },
@@ -141,10 +138,12 @@ describe('RecentComponent', () => {
     });
 
     it('Should check save to bot-name empty ', async () => {
-        (mock_DBot_store?.save_modal.validateBotName as jest.Mock).mockReturnValue({
-            bot_name: 'Strategy name cannot be empty',
-        }),
-            render(<SaveModal />, { wrapper });
+        if (mock_DBot_store) {
+            (mock_DBot_store.save_modal.validateBotName as jest.Mock).mockReturnValue({
+                bot_name: 'Strategy name cannot be empty',
+            });
+        }
+        render(<SaveModal />, { wrapper });
         const input = screen.getByRole('textbox', { name: /Bot name/i });
 
         userEvent.clear(input);

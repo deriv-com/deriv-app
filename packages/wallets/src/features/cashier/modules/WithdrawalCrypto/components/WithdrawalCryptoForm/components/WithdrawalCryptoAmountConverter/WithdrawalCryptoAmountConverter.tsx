@@ -18,7 +18,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
         isClientVerified,
     } = useWithdrawalCryptoContext();
 
-    const [isCryptoInputActive, setIsCryptoInputActive] = useState(false);
+    const [isCryptoInputActive, setIsCryptoInputActive] = useState(true);
     const { errors, setValues } = useFormikContext<TWithdrawalForm>();
 
     const onChangeCryptoInput = (e: React.ChangeEvent<HTMLInputElement>) => {

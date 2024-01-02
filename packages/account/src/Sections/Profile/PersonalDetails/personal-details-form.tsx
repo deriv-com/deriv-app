@@ -17,7 +17,7 @@ import {
     Text,
 } from '@deriv/components';
 import { GetSettings } from '@deriv/api-types';
-import { WS, getBrandWebsiteName, routes, useIsMounted } from '@deriv/shared';
+import { AUTH_STATUS_CODES, WS, getBrandWebsiteName, routes, useIsMounted } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import LeaveConfirm from 'Components/leave-confirm';
@@ -198,8 +198,8 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
-    const is_poa_verified = authentication_status?.document_status === 'verified';
-    const is_poi_verified = authentication_status?.identity_status === 'verified';
+    const is_poa_verified = authentication_status?.document_status === AUTH_STATUS_CODES.VERIFIED;
+    const is_poi_verified = authentication_status?.identity_status === AUTH_STATUS_CODES.VERIFIED;
 
     const is_account_verified = is_poa_verified && is_poi_verified;
 

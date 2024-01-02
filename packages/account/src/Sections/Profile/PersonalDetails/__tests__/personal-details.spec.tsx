@@ -13,8 +13,6 @@ jest.mock('@deriv/components', () => ({
 }));
 
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
-    __esModule: true, // this property makes it work,
-    default: 'mockedDefaultExport',
     WS: {
         wait: (...payload: []) => Promise.resolve([...payload]),
     },

@@ -443,6 +443,8 @@ export default class MyProfileStore extends BaseStore {
     }
 
     handleSubmit(values) {
+        const { general_store } = this.root_store;
+
         requestWS({
             p2p_advertiser_update: 1,
             contact_info: values.contact_info,
@@ -450,7 +452,11 @@ export default class MyProfileStore extends BaseStore {
             default_advert_description: values.default_advert_description,
         }).then(response => {
             if (!response.error) {
+                const { contact_info, default_advert_description } = response.p2p_advertiser_update;
+
                 this.setIsSubmitSuccess(true);
+                general_store.setContactInfo(contact_info);
+                general_store.setDefaultAdvertDescription(default_advert_description);
             } else {
                 this.setFormError(response.error.message);
             }

@@ -7,11 +7,12 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import { useStores } from 'Stores';
 
 type TNicknameModalProps = {
-    onConfirm: () => void;
+    onCancel?: () => void;
+    onConfirm?: () => void;
     should_hide_close_btn?: boolean;
 };
 
-const NicknameModal = ({ onConfirm, should_hide_close_btn = false }: TNicknameModalProps) => {
+const NicknameModal = ({ onCancel, onConfirm, should_hide_close_btn = false }: TNicknameModalProps) => {
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { general_store } = useStores();
     const { notifications } = useStore();
@@ -35,7 +36,7 @@ const NicknameModal = ({ onConfirm, should_hide_close_btn = false }: TNicknameMo
                                 type: 'announce',
                             });
                             hideModal();
-                            onConfirm();
+                            onConfirm?.();
                         }
                     }}
                 >
@@ -82,6 +83,7 @@ const NicknameModal = ({ onConfirm, should_hide_close_btn = false }: TNicknameMo
                                         onClick={() => {
                                             hideModal();
                                             general_store.setNicknameError('');
+                                            onCancel?.();
                                         }}
                                         large
                                     >

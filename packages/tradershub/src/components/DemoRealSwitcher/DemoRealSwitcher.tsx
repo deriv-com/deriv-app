@@ -17,7 +17,7 @@ const DemoRealSwitcher = () => {
         <div className='w-auto'>
             <Listbox as='div' onChange={setSelected} value={selected}>
                 {({ open }) => (
-                    <div className='relative mt-1'>
+                    <div className='relative'>
                         <Listbox.Button
                             as='button'
                             className={`cursor-pointer relative w-full py-[3px] px-400 border-75 rounded-200 flex gap-x-400 items-center ${

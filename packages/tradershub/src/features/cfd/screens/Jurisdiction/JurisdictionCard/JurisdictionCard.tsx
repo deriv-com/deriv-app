@@ -83,7 +83,7 @@ const JurisdictionCard = ({
                 if (description.type === 'link') {
                     <StaticLink
                         className='text-brand-red-light '
-                        href={descriptionClickHandler(description.tag) as unknown as string}
+                        onClick={descriptionClickHandler(description.tag)}
                         size='md'
                     >
                         {description.text}

@@ -77,17 +77,21 @@ const JurisdictionCard = ({
     );
     const marketType = getModalState('marketType') || 'all';
     const rows = contents[marketType] || [];
+
     const parseDescription = (row: TJurisdictionCardSection) => {
         if (row.clickableDescription)
             return row.clickableDescription.map(description => {
                 if (description.type === 'link') {
-                    <StaticLink
-                        className='text-brand-red-light '
-                        onClick={descriptionClickHandler(description.tag)}
-                        size='md'
-                    >
-                        {description.text}
-                    </StaticLink>;
+                    return (
+                        <StaticLink
+                            className='text-brand-red-light '
+                            key={`jurisdiction-card-description-${description.text}`}
+                            onClick={descriptionClickHandler(description.tag)}
+                            size='md'
+                        >
+                            {description.text}
+                        </StaticLink>
+                    );
                 }
                 return description.text;
             });

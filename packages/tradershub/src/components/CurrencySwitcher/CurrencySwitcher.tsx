@@ -1,11 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
+import { Provider } from '@deriv/library';
 import { Button, qtMerge, Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
 import { THooks } from '../../types';
-import { useModal } from '../ModalProvider';
 import { ModalStepWrapper } from '../ModalStepWrapper';
 import { TradingAccountsList } from '../TradingAccountsList';
 
@@ -45,7 +45,7 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 const CurrencySwitcher = () => {
     const { data: activeAccount } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
-    const { show } = useModal();
+    const { show } = Provider.useModal();
 
     const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency ?? 'virtual';
 

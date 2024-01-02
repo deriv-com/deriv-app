@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
+import { Provider } from '@deriv/library';
 import { Link, Text, useBreakpoint } from '@deriv/quill-design';
-import { useModal } from '../../../../../components/ModalProvider';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
 import { companyNamesAndUrls } from '../../../constants';
@@ -24,8 +24,8 @@ type TProps = {
 
 const JurisdictionTncSection: FC<TProps> = ({ isCheckBoxChecked, selectedJurisdiction, setIsCheckBoxChecked }) => {
     const { isMobile } = useBreakpoint();
-    const { getModalState } = useModal();
-    const marketType = getModalState('marketType') || 'all';
+    const { getCFDState } = Provider.useCFDContext();
+    const marketType = getCFDState('marketType') || 'all';
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (

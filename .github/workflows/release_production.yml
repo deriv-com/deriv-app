@@ -41,7 +41,7 @@ jobs:
     - name: Versioning
       uses: "./.github/actions/versioning"
       with:
-        release_type: ${{ env.RELEASE_TYPE }}
+        RELEASE_TYPE: ${{ env.RELEASE_TYPE }}
     - name: Extract version
       id: extract_version
       run: echo "RELEASE_VERSION=${version}" >> $GITHUB_OUTPUT

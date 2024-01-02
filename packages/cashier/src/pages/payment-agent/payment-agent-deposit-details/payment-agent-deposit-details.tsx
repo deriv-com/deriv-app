@@ -25,9 +25,11 @@ const PaymentAgentTransferLimitDetails = ({
 }: Pick<TPaymentAgent, 'min_withdrawal' | 'max_withdrawal' | 'currency'>) => {
     return (
         <PaymentAgentDetail icon='IcAccountTransfer' title={<Localize i18n_default_text='Transfer limit' />}>
-            <Money amount={min_withdrawal || ''} currency={currency} show_currency />
-            <Text size='xs'> - </Text>
-            <Money amount={max_withdrawal || ''} currency={currency} show_currency />
+            <React.Fragment>
+                <Money amount={min_withdrawal || ''} currency={currency} show_currency />
+                <Text size='xs'> - </Text>
+                <Money amount={max_withdrawal || ''} currency={currency} show_currency />
+            </React.Fragment>
         </PaymentAgentDetail>
     );
 };

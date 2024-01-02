@@ -11,6 +11,8 @@ const cumulativeAccountLimitsMessageFn = ({
     sourceAmount,
     targetAccount,
 }: TMessageFnProps) => {
+    if (!targetAccount) return null;
+
     const isTransferBetweenWallets =
         sourceAccount.account_category === 'wallet' && targetAccount.account_category === 'wallet';
 

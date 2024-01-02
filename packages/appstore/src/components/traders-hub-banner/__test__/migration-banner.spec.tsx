@@ -1,9 +1,11 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import MigrationBanner from '../migration-banner';
+import userEvent from '@testing-library/user-event';
+import { Analytics } from '@deriv/analytics';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import { APIProvider } from '@deriv/api';
+import MigrationBanner from '../migration-banner';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
@@ -77,6 +79,17 @@ describe('MigrationBanner', () => {
         });
         expect(screen.getByRole('button', { name: /upgrade now/i })).toBeInTheDocument();
         expect(screen.getByTestId('dt_migrate_desktop')).toBeInTheDocument();
+    });
+
+    it('should call upgrade button tracking event on clicking upgrade now button ', () => {
+        renderComponent();
+        expect(screen.getByTestId('dt_migrate_desktop')).toBeInTheDocument();
+        const upgrade_now_button = screen.getByRole('button', { name: /upgrade now/i });
+        expect(upgrade_now_button).toBeInTheDocument();
+        userEvent.click(upgrade_now_button);
+        expect(Analytics.trackEvent).toHaveBeenCalledWith('ce_upgrade_mt5_banner', {
+            action: 'push_cta_upgrade',
+        });
     });
 
     it('should render MigrationBanner with migration mobile image', () => {

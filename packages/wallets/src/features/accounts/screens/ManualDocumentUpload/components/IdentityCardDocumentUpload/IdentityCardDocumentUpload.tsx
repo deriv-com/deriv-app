@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Dropzone, FlowTextField, useFlow, WalletText } from '../../../../../../components';
+import { DatePicker, Divider, Dropzone, FlowTextField, useFlow, WalletText } from '../../../../../../components';
 import IdentityCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import IdentityCardFront from '../../../../../../public/images/accounts/identity-card-front.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
@@ -8,6 +8,10 @@ import './IdentityCardDocumentUpload.scss';
 
 const IdentityCardDocumentUpload = () => {
     const { formValues, setFormValues } = useFlow();
+
+    const handleDateChange = (formattedDate: string | null) => {
+        setFormValues('identityCardExpiryDate', formattedDate);
+    };
 
     return (
         <div className='wallets-identity-card-document-upload' data-testid='dt_identity-card-document-upload'>
@@ -19,12 +23,14 @@ const IdentityCardDocumentUpload = () => {
                     name='identityCardNumber'
                     validationSchema={documentRequiredValidator('Identity card number')}
                 />
-                <FlowTextField
+                <DatePicker
                     defaultValue={formValues.identityCardExpiryDate ?? ''}
                     label='Expiry date*'
                     name='identityCardExpiryDate'
-                    type='date'
+                    onDateChange={handleDateChange}
+                    placeholder='DD/MM/YYYY'
                     validationSchema={expiryDateValidator}
+                    variant='expiry'
                 />
             </div>
             <Divider />

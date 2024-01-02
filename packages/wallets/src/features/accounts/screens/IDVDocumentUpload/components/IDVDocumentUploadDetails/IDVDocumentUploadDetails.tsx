@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSettings } from '@deriv/api';
-import { FlowTextField, InlineMessage, WalletText } from '../../../../../../components';
+import { DatePicker, FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../../../components';
 import SideNote from '../../../../../../public/images/accounts/side-note-example-image.svg';
 import unixToDateString from '../../../../utils';
 import { dateOfBirthValidator, firstNameValidator, lastNameValidator } from '../../../../validations';
@@ -8,6 +8,11 @@ import './IDVDocumentUploadDetails.scss';
 
 const IDVDocumentUploadDetails = () => {
     const { data: getSettings } = useSettings();
+    const { setFormValues } = useFlow();
+
+    const handleDateChange = (formattedDate: string | null) => {
+        setFormValues('dateOfBirth', formattedDate);
+    };
 
     const dateOfBirth = getSettings?.date_of_birth || 0;
 
@@ -38,14 +43,14 @@ const IDVDocumentUploadDetails = () => {
                         showMessage
                         validationSchema={lastNameValidator}
                     />
-                    {/* TODO: Replace with DatePicker component*/}
-                    <FlowTextField
+                    <DatePicker
                         defaultValue={unixToDateString(dateOfBirth)}
                         label='Date of birth*'
                         message='Your date of birth as in your identity document'
+                        mobileAlignment='above'
                         name='dateOfBirth'
+                        onDateChange={handleDateChange}
                         showMessage
-                        type='date'
                         validationSchema={dateOfBirthValidator}
                     />
                 </div>

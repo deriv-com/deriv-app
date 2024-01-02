@@ -1,14 +1,14 @@
 import React from 'react';
 import { Field, FieldProps, Formik } from 'formik';
-import { WalletButton, WalletsPercentageSelector, WalletText, WalletTextField } from '../../../../../../components';
+import { WalletButton, WalletTextField } from '../../../../../../components';
 import { useWithdrawalCryptoValidator } from '../../hooks';
 import { useWithdrawalCryptoContext } from '../../provider/WithdrawalCryptoProvider';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
+import { WithdrawalCryptoPercentageSelector } from './components/WithdrawalCryptoPercentageSelector';
 import './WithdrawalCryptoForm.scss';
 
 const WithdrawalCryptoForm: React.FC = () => {
-    const { activeWallet, exchangeRates, fractionalDigits, getConvertedFiatAmount, requestCryptoWithdrawal } =
-        useWithdrawalCryptoContext();
+    const { activeWallet, fractionalDigits, requestCryptoWithdrawal } = useWithdrawalCryptoContext();
     const { validateCryptoAddress } = useWithdrawalCryptoValidator(activeWallet, fractionalDigits);
 
     return (
@@ -25,7 +25,7 @@ const WithdrawalCryptoForm: React.FC = () => {
                 })
             }
         >
-            {({ errors, handleSubmit, isSubmitting, setValues, values }) => {
+            {({ errors, handleSubmit, isSubmitting, values }) => {
                 return (
                     <form autoComplete='off' className='wallets-withdrawal-crypto-form' onSubmit={handleSubmit}>
                         <div className='wallets-withdrawal-crypto-address'>
@@ -41,37 +41,7 @@ const WithdrawalCryptoForm: React.FC = () => {
                                 )}
                             </Field>
                         </div>
-                        <div className='wallets-withdrawal-crypto-form__percentage'>
-                            <WalletsPercentageSelector
-                                amount={
-                                    !Number.isNaN(parseFloat(values.cryptoAmount)) && exchangeRates?.data?.rates
-                                        ? parseFloat(values.cryptoAmount)
-                                        : 0
-                                }
-                                balance={activeWallet?.balance ?? 0}
-                                onChangePercentage={percentage => {
-                                    if (activeWallet?.balance) {
-                                        const fraction = percentage / 100;
-                                        const cryptoAmount = (activeWallet?.balance * fraction).toFixed(
-                                            fractionalDigits.crypto
-                                        );
-                                        const fiatAmount = getConvertedFiatAmount(cryptoAmount);
-
-                                        return setValues({
-                                            ...values,
-                                            cryptoAmount,
-                                            fiatAmount,
-                                        });
-                                    }
-                                }}
-                            />
-                            <WalletText color='less-prominent' size='xs'>
-                                {!Number.isNaN(parseFloat(values.cryptoAmount)) && activeWallet?.balance
-                                    ? Math.round((parseFloat(values.cryptoAmount) * 100) / activeWallet?.balance)
-                                    : '0'}
-                                % of available balance ({activeWallet?.display_balance})
-                            </WalletText>
-                        </div>
+                        <WithdrawalCryptoPercentageSelector />
                         <WithdrawalCryptoAmountConverter />
                         <div className='wallets-withdrawal-crypto-form__submit'>
                             <WalletButton

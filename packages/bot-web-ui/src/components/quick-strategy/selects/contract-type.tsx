@@ -103,6 +103,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
                     return (
                         <Autocomplete
                             {...field}
+                            readOnly
                             inputMode='none'
                             data-testid='qs_autocomplete_contract_type'
                             autoComplete='off'

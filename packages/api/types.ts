@@ -1602,6 +1602,49 @@ type TPrivateSocketEndpoints = {
             [k: string]: unknown;
         };
     };
+    account_closure: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            account_closure: 1;
+            /**
+             * Reason for closing off accounts.
+             */
+            reason: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * If set to `1`, all accounts are closed.
+             */
+            account_closure?: 0 | 1;
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'account_closure';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
     trading_platform_investor_password_change: {
         request: {
             /**

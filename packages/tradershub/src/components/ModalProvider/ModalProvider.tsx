@@ -54,7 +54,7 @@ const ModalProvider = ({ children }: PropsWithChildren<unknown>) => {
     const [content, setContent] = useState<ReactNode | null>();
     const [modalOptions, setModalOptions] = useState<TModalOptions>({});
     const [modalState, setModalState] = useState<Map<keyof TModalState, TModalState[keyof TModalState]>>(new Map());
-    const { isLg, isMd, isSm, isXXl, isXl, isXs } = useBreakpoint();
+    const { isDesktop } = useBreakpoint();
 
     const rootRef = useRef<HTMLElement>(document.getElementById('wallets_modal_root'));
     const rootHeaderRef = useRef<HTMLElement | null>(document.getElementById('wallets_modal_show_header_root'));
@@ -85,7 +85,7 @@ const ModalProvider = ({ children }: PropsWithChildren<unknown>) => {
         setContent(null);
     };
 
-    useOnClickOutside(modalRef, isLg || isXl || isXXl ? hide : () => undefined);
+    useOnClickOutside(modalRef, isDesktop ? hide : () => undefined);
 
     const modalRootRef = useMemo(() => {
         // if they specify their own root, prioritize this first
@@ -94,10 +94,9 @@ const ModalProvider = ({ children }: PropsWithChildren<unknown>) => {
         if (modalOptions?.shouldHideDerivAppHeader || modalOptions?.defaultRootId === 'wallets_modal_root')
             return rootRef;
         // otherwise do the default behaviour, show Deriv.app header if on responsive
-        if (modalOptions?.defaultRootId === 'wallets_modal_show_header_root' || isMd || isSm || isXs)
-            return rootHeaderRef;
+        if (modalOptions?.defaultRootId === 'wallets_modal_show_header_root' || !isDesktop) return rootHeaderRef;
         return rootRef;
-    }, [modalOptions?.rootRef, modalOptions?.shouldHideDerivAppHeader, modalOptions?.defaultRootId, isMd, isSm, isXs]);
+    }, [modalOptions?.rootRef, modalOptions?.shouldHideDerivAppHeader, modalOptions?.defaultRootId, isDesktop]);
 
     return (
         <ModalContext.Provider

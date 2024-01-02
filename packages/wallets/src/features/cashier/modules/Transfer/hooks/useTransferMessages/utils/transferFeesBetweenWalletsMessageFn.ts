@@ -2,11 +2,12 @@ import { TMessageFnProps } from '../../../types';
 
 const transferFeesBetweenWalletsMessageFn = ({
     displayMoney,
+    fiatAccount,
     sourceAccount,
     sourceAmount,
     targetAccount,
 }: TMessageFnProps) => {
-    if (!sourceAccount.currency || !sourceAccount.currencyConfig || !sourceAmount || !targetAccount.currency)
+    if (!sourceAccount.currency || !sourceAccount.currencyConfig || !sourceAmount || !targetAccount?.currency)
         return null;
 
     const minimumFeeAmount = 1 / Math.pow(10, sourceAccount.currencyConfig.fractional_digits);
@@ -28,12 +29,12 @@ const transferFeesBetweenWalletsMessageFn = ({
     );
 
     const text =
-        'Fee: {{feeMessageText}} ({{feePercentage}}% transfer fee or {{minimumFeeText}}, whichever is higher, applies for fund transfers between your {{targetAccountName}} and cryptocurrency Wallets)';
+        'Fee: {{feeMessageText}} ({{feePercentage}}% transfer fee or {{minimumFeeText}}, whichever is higher, applies for fund transfers between your {{fiatAccountName}} and cryptocurrency Wallets)';
     const values = {
         feeMessageText,
         feePercentage,
+        fiatAccountName: fiatAccount?.wallet_currency_type,
         minimumFeeText,
-        targetAccountName: targetAccount.accountName,
     };
 
     return {

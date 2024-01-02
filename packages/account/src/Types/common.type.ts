@@ -2,8 +2,8 @@
 import React from 'react';
 import { IDENTIFIER_TYPES } from '../Constants/poo-identifier';
 import getPaymentMethodsConfig from '../Configs/payment-method-config';
-import { Redirect, RouteProps } from 'react-router-dom';
-import { TPage404 } from '../Constants/routes-config';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { TAccountLimitsProps, TPage404, TSelfExclusionProps } from '../Constants/routes-config';
 import {
     Authorize,
     GetAccountStatus,
@@ -75,7 +75,12 @@ export type TRoute = {
     icon?: string;
     default?: boolean;
     to?: string;
-    component?: ((props?: RouteProps['component']) => JSX.Element) | Partial<typeof Redirect> | TPage404;
+    component?:
+        | React.ComponentType<RouteComponentProps>
+        | React.ComponentType<TSelfExclusionProps>
+        | React.ComponentType<TAccountLimitsProps>
+        | Partial<typeof Redirect>
+        | TPage404;
     getTitle?: () => string;
     is_disabled?: boolean;
     subroutes?: TRoute[];
@@ -149,7 +154,7 @@ export type TIDVFormValues = {
     error_message?: string;
 };
 
-export type TPlatforms = typeof Platforms[keyof typeof Platforms];
+export type TPlatforms = (typeof Platforms)[keyof typeof Platforms];
 
 export type TServerError = {
     code: string;
@@ -157,7 +162,7 @@ export type TServerError = {
     details?: { [key: string]: string };
     fields?: string[];
 };
-export type TCFDPlatform = typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
+export type TCFDPlatform = (typeof CFD_PLATFORMS)[keyof typeof CFD_PLATFORMS];
 
 export type TClosingAccountFormValues = {
     'financial-priorities': boolean;
@@ -228,7 +233,7 @@ export type TLoginHistoryItems = {
     status: string;
 };
 
-export type TPaymentMethodIdentifier = typeof IDENTIFIER_TYPES[keyof typeof IDENTIFIER_TYPES];
+export type TPaymentMethodIdentifier = (typeof IDENTIFIER_TYPES)[keyof typeof IDENTIFIER_TYPES];
 
 export type TPaymentMethodInfo = {
     documents_required: number;
@@ -261,9 +266,9 @@ export type TProofOfOwnershipErrors = Record<
     Array<{ payment_method_identifier?: string; files?: Array<string> }>
 >;
 
-export type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+export type TAuthStatusCodes = (typeof AUTH_STATUS_CODES)[keyof typeof AUTH_STATUS_CODES];
 
-export type TMT5AccountStatus = typeof MT5_ACCOUNT_STATUS[keyof typeof MT5_ACCOUNT_STATUS];
+export type TMT5AccountStatus = (typeof MT5_ACCOUNT_STATUS)[keyof typeof MT5_ACCOUNT_STATUS];
 
 export type TFilesDescription = {
     descriptions: { id: string; value: JSX.Element }[];

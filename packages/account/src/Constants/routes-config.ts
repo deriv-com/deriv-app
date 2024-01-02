@@ -23,13 +23,22 @@ import {
     ProofOfIncome,
 } from '../Sections';
 
-import { TRoute, TRouteConfig } from '../Types';
+import { TRouteConfig } from '../Types';
 // Error Routes
-const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')));
+const Page404 = React.lazy(
+    () =>
+        moduleLoader(() => import(/* webpackChunkName: "404" */ 'Modules/Page404')) as Promise<{
+            default: React.ComponentType<Record<string, never>>;
+        }>
+);
+
 export type TPage404 = typeof Page404;
 
+export type TSelfExclusionProps = React.ComponentProps<typeof SelfExclusion>;
+export type TAccountLimitsProps = React.ComponentProps<typeof AccountLimits>;
+
 // Order matters
-const initRoutesConfig = () => [
+const initRoutesConfig: () => TRouteConfig[] = () => [
     {
         path: routes.account_closed,
         component: AccountClosed,
@@ -163,9 +172,9 @@ const initRoutesConfig = () => [
 let routesConfig: TRouteConfig[] | undefined;
 
 // For default page route if page/path is not found, must be kept at the end of routes_config array
-const route_default: TRoute = { component: Page404, getTitle: () => localize('Error 404') };
+const route_default = { component: Page404, getTitle: () => localize('Error 404') };
 
-const getRoutesConfig = (): TRouteConfig[] => {
+const getRoutesConfig = () => {
     if (!routesConfig) {
         routesConfig = initRoutesConfig();
         routesConfig.push(route_default);

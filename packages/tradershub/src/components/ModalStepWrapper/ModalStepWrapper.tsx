@@ -1,9 +1,9 @@
 import React, { FC, PropsWithChildren, ReactNode, useEffect } from 'react';
 import classNames from 'classnames';
 import { useEventListener } from 'usehooks-ts';
+import { Provider } from '@deriv/library';
 import { Text } from '@deriv/quill-design';
 import CloseIcon from '../../public/images/ic-close-dark.svg';
-import { useModal } from '../ModalProvider';
 import './ModalStepWrapper.scss';
 
 type TModalStepWrapperProps = {
@@ -24,7 +24,7 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
     shouldPreventCloseOnEscape = false,
     title,
 }) => {
-    const { hide, setModalOptions } = useModal();
+    const { hide, setModalOptions } = Provider.useModal();
     const hasRenderFooter = typeof renderFooter === 'function';
     const fixedFooter = shouldFixedFooter && hasRenderFooter;
 

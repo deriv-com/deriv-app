@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePOA, usePOI } from '@deriv/api';
+import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
-import { useModal } from '../../../../components/ModalProvider';
 
 const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
     if (isPOIFailed && isPOAFailed) return 'proof of identity and proof of address';
@@ -16,7 +16,7 @@ const reasons = ['Document details do not match profile details', 'Expired docum
  */
 
 const VerificationFailed = () => {
-    const { hide } = useModal();
+    const { hide } = Provider.useModal();
     const { data: poiStatus } = usePOI();
     const { data: poaStatus } = usePOA();
 
@@ -34,7 +34,7 @@ const VerificationFailed = () => {
             </Text>
             <ul>
                 {reasons.map(reason => (
-                    <li className=' left-500 relative list-disc' key={reason}>
+                    <li className='relative list-disc  left-500' key={reason}>
                         <Text size='sm'>{reason}</Text>
                     </li>
                 ))}

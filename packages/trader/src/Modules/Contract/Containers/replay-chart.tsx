@@ -4,6 +4,7 @@ import { getDurationPeriod, getDurationUnitText, getEndTime, getPlatformRedirect
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ChartBottomWidgets, ChartTopWidgets } from './contract-replay-widget';
+import ResetContractChartElements from 'Modules/SmartChart/Components/Markers/reset-contract-chart-elements';
 import { SmartChart } from 'Modules/SmartChart';
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker';
 
@@ -11,9 +12,11 @@ const ReplayChart = observer(
     ({
         is_dark_theme_prop,
         is_accumulator_contract,
+        is_reset_contract,
     }: {
         is_dark_theme_prop?: boolean;
         is_accumulator_contract?: boolean;
+        is_reset_contract?: boolean;
     }) => {
         const trade = useTraderStore();
         const { contract_replay, common, ui } = useStore();
@@ -116,6 +119,9 @@ const ReplayChart = observer(
                 {markers_array.map(({ content_config, marker_config, react_key }) => (
                     <ChartMarker key={react_key} marker_config={marker_config} marker_content_props={content_config} />
                 ))}
+                {is_reset_contract && contract_info?.reset_time && (
+                    <ResetContractChartElements contract_info={contract_info} />
+                )}
             </SmartChart>
         );
     }

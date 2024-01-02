@@ -3,13 +3,13 @@ import { Text } from '@deriv/quill-design';
 import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
 import { Listbox, Transition } from '@headlessui/react';
 
-const currencyState = [
+const accountTypes = [
     { color: 'information', label: 'Demo', value: 'demo' },
     { color: 'success', label: 'Real', value: 'real' },
 ];
 
 const DemoRealSwitcher = () => {
-    const [selected, setSelected] = useState(currencyState[0]);
+    const [selected, setSelected] = useState(accountTypes[0]);
     const { color, label } = selected;
 
     return (
@@ -30,12 +30,12 @@ const DemoRealSwitcher = () => {
                             as='div'
                             className='absolute mt-200 max-h-3000 w-full rounded-200 bg-system-light-primary-background shadow-210'
                         >
-                            {currencyState?.map(currency => (
+                            {accountTypes?.map(account => (
                                 <Listbox.Option
                                     as='div'
                                     className='cursor-pointer bg-system-light-primary-background hover:bg-system-light-hover-background'
-                                    key={currency.label}
-                                    value={currency}
+                                    key={account.label}
+                                    value={account}
                                 >
                                     {({ selected }) => (
                                         <Text
@@ -45,7 +45,7 @@ const DemoRealSwitcher = () => {
                                             }`}
                                             size='sm'
                                         >
-                                            {currency.label}
+                                            {account.label}
                                         </Text>
                                     )}
                                 </Listbox.Option>

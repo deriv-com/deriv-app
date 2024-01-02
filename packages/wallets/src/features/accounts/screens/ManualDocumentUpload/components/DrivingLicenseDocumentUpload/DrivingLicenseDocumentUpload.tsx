@@ -27,7 +27,6 @@ const DrivingLicenseDocumentUpload = () => {
                 <DatePicker
                     defaultValue={formValues.drivingLicenseExpiryDate ?? ''}
                     label='Expiry date*'
-                    maxDate={undefined}
                     minDate={moment().add(2, 'days').toDate()}
                     name='drivingLicenseExpiryDate'
                     onDateChange={handleDateChange}

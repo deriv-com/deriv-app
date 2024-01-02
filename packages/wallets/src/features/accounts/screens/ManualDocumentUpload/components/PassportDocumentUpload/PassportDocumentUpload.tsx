@@ -27,7 +27,6 @@ const PassportDocumentUpload = () => {
                 <DatePicker
                     defaultValue={formValues.passportExpiryDate ?? ''}
                     label='Expiry date*'
-                    maxDate={undefined}
                     minDate={moment().add(2, 'days').toDate()}
                     name='passportExpiryDate'
                     onDateChange={handleDateChange}

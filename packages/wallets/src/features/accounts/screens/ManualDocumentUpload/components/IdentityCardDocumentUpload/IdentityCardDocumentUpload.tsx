@@ -27,7 +27,6 @@ const IdentityCardDocumentUpload = () => {
                 <DatePicker
                     defaultValue={formValues.identityCardExpiryDate ?? ''}
                     label='Expiry date*'
-                    maxDate={undefined}
                     minDate={moment().add(2, 'days').toDate()}
                     name='identityCardExpiryDate'
                     onDateChange={handleDateChange}

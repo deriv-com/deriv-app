@@ -22,7 +22,6 @@ abbr[title] {
         display: inline-block;
         width: 28rem;
         transform: translateY(4rem);
-        transition: transform 0.25s ease, opacity 0.25s linear;
 
         @include mobile {
             align-self: center;

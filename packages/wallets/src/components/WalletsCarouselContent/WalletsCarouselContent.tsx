@@ -73,6 +73,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
             const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
             walletsCarouselEmblaApi?.scrollTo(index);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedLoginId, walletAccountsList]);
 
     // initial loading

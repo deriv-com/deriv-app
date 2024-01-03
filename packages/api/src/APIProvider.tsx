@@ -22,13 +22,7 @@ declare global {
 // This is a temporary workaround to share a single `QueryClient` instance between all the packages.
 const getSharedQueryClientContext = (): QueryClient => {
     if (!window.ReactQueryClient) {
-        window.ReactQueryClient = new QueryClient({
-            logger: {
-                log: console.log, // eslint-disable-line no-console
-                warn: console.warn, // eslint-disable-line no-console
-                error: () => null,
-            },
-        });
+        window.ReactQueryClient = new QueryClient();
     }
 
     return window.ReactQueryClient;

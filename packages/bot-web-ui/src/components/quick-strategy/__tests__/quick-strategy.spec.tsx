@@ -103,18 +103,15 @@ jest.mock('../config', () => ({
         MARTINGALE: {
             name: 'martingale',
             label: 'martingale',
-            description: 'test',
-            long_description: 'martingale',
+            description: 'martingale',
             fields: [
                 [
                     {
                         type: 'symbol',
-                        fullWidth: true,
                         name: 'symbol',
                     },
                     {
                         type: 'tradetype',
-                        fullWidth: true,
                         name: 'tradetype',
                         dependencies: ['symbol'],
                     },

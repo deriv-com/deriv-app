@@ -18,7 +18,13 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const { setFieldValue, setValues, values } = useFormikContext<TInitialTransferFormValues>();
     const { fromAccount, fromAmount, toAccount, toAmount } = values;
 
-    const { USDExchangeRates, activeWalletExchangeRates, refetchAccountLimits, refetchExchangeRates } = useTransfer();
+    const {
+        USDExchangeRates,
+        activeWalletExchangeRates,
+        preferredLanguage,
+        refetchAccountLimits,
+        refetchExchangeRates,
+    } = useTransfer();
 
     const refetchExchangeRatesAndLimits = useCallback(() => {
         refetchAccountLimits();
@@ -27,20 +33,21 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
         return newRates;
     }, [refetchAccountLimits, refetchExchangeRates]);
 
-    const isFromAmountFieldName = fieldName === 'fromAmount';
+    const hasFunds = Number(fromAccount?.balance) > 0;
+    const isFromAmountField = fieldName === 'fromAmount';
     const isSameCurrency = fromAccount?.currency === toAccount?.currency;
-    const isAmountInputDisabled = fieldName === 'toAmount' && !toAccount;
+    const isAmountInputDisabled = !hasFunds || (fieldName === 'toAmount' && !toAccount);
     const isAmountFieldActive = fieldName === values.activeAmountFieldName;
-    const isTimerVisible = !isFromAmountFieldName && toAccount && !isSameCurrency && fromAmount > 0 && toAmount > 0;
+    const isTimerVisible = !isFromAmountField && toAccount && !isSameCurrency && fromAmount > 0 && toAmount > 0;
 
-    const amountValue = isFromAmountFieldName ? fromAmount : toAmount;
+    const amountValue = isFromAmountField ? fromAmount : toAmount;
     const debouncedAmountValue = useDebounce(amountValue, 500);
 
     const toAmountLabel = isSameCurrency || !toAccount ? 'Amount you receive' : 'Estimated amount';
-    const amountLabel = isFromAmountFieldName ? 'Amount you send' : toAmountLabel;
+    const amountLabel = isFromAmountField ? 'Amount you send' : toAmountLabel;
 
-    const currency = isFromAmountFieldName ? fromAccount?.currency : toAccount?.currency;
-    const fractionDigits = isFromAmountFieldName
+    const currency = isFromAmountField ? fromAccount?.currency : toAccount?.currency;
+    const fractionDigits = isFromAmountField
         ? fromAccount?.currencyConfig?.fractional_digits
         : toAccount?.currencyConfig?.fractional_digits;
 
@@ -55,27 +62,35 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
 
     const amountConverterHandler = useCallback(
         (value: number) => {
-            if (!toAccount?.currency || !activeWalletExchangeRates?.rates || !isAmountFieldActive) return;
+            if (
+                !toAccount?.currency ||
+                !fromAccount?.currency ||
+                !activeWalletExchangeRates?.rates ||
+                !isAmountFieldActive
+            )
+                return;
 
+            const fromRate = activeWalletExchangeRates.rates[fromAccount.currency];
             const toRate = activeWalletExchangeRates.rates[toAccount.currency];
 
-            if (isFromAmountFieldName) {
+            if (isFromAmountField) {
                 const convertedToAmount = Number(
-                    (value * toRate).toFixed(toAccount?.currencyConfig?.fractional_digits)
+                    (toRate ? value * toRate : value / fromRate).toFixed(toAccount?.currencyConfig?.fractional_digits)
                 );
                 setFieldValue('toAmount', convertedToAmount);
             } else {
                 const convertedFromAmount = Number(
-                    (value / toRate).toFixed(fromAccount?.currencyConfig?.fractional_digits)
+                    (toRate ? value / toRate : value * fromRate).toFixed(fromAccount?.currencyConfig?.fractional_digits)
                 );
                 setFieldValue('fromAmount', convertedFromAmount);
             }
         },
         [
             activeWalletExchangeRates?.rates,
+            fromAccount?.currency,
             fromAccount?.currencyConfig?.fractional_digits,
             isAmountFieldActive,
-            isFromAmountFieldName,
+            isFromAmountField,
             setFieldValue,
             toAccount?.currency,
             toAccount?.currencyConfig?.fractional_digits,
@@ -130,6 +145,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
                 disabled={isAmountInputDisabled}
                 fractionDigits={fractionDigits}
                 label={amountLabel}
+                locale={preferredLanguage}
                 maxDigits={maxDigits}
                 onBlur={() => setFieldValue('activeAmountFieldName', undefined)}
                 onChange={onChangeHandler}

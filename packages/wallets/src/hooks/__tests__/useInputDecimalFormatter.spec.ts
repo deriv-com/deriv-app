@@ -2,6 +2,12 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import useInputDecimalFormatter from '../useInputDecimalFormatter';
 
 describe('useInputDecimalFormatter', () => {
+    it('should add zeros when fractionDigits is more then the actual fractional digits', () => {
+        const { result } = renderHook(() => useInputDecimalFormatter(1.23, { fractionDigits: 8 }));
+
+        expect(result.current.value).toBe('1.23000000');
+    });
+
     it('should update the input value correctly when onChange is called', () => {
         const { result } = renderHook(() => useInputDecimalFormatter());
 

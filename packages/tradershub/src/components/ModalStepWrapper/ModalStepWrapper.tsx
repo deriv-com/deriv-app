@@ -42,28 +42,26 @@ const ModalStepWrapper: FC<PropsWithChildren<TModalStepWrapperProps>> = ({
 
     return (
         <div
-            className={classNames('wallets-modal-step-wrapper', {
-                'wallets-modal-step-wrapper--fixed-footer': fixedFooter && !shouldHideHeader,
-                'wallets-modal-step-wrapper--hide-deriv-app-header': shouldHideDerivAppHeader,
-                'wallets-modal-step-wrapper--no-header': shouldHideHeader && !fixedFooter,
-                'wallets-modal-step-wrapper--no-header--fixed-footer': shouldHideHeader && fixedFooter,
+            className={classNames('modal-step-wrapper', {
+                'modal-step-wrapper--fixed-footer': fixedFooter && !shouldHideHeader,
+                'modal-step-wrapper--hide-deriv-app-header': shouldHideDerivAppHeader,
+                'modal-step-wrapper--no-header': shouldHideHeader && !fixedFooter,
+                'modal-step-wrapper--no-header--fixed-footer': shouldHideHeader && fixedFooter,
             })}
         >
             {!shouldHideHeader && (
-                <div className='wallets-modal-step-wrapper__header'>
+                <div className='modal-step-wrapper__header'>
                     <Text bold>{title}</Text>
-                    <CloseIcon className='wallets-modal-step-wrapper__header-close-icon' onClick={hide} />
+                    <CloseIcon className='modal-step-wrapper__header-close-icon' onClick={hide} />
                 </div>
             )}
-            <div className='wallets-modal-step-wrapper__body'>
+            <div className='modal-step-wrapper__body'>
                 {children}
                 {!shouldFixedFooter && hasRenderFooter && (
-                    <div className='wallets-modal-step-wrapper__footer'>{renderFooter()}</div>
+                    <div className='modal-step-wrapper__footer'>{renderFooter()}</div>
                 )}
             </div>
-            {shouldFixedFooter && hasRenderFooter && (
-                <div className='wallets-modal-step-wrapper__footer'>{renderFooter()}</div>
-            )}
+            {shouldFixedFooter && hasRenderFooter && <div className='modal-step-wrapper__footer'>{renderFooter()}</div>}
         </div>
     );
 };

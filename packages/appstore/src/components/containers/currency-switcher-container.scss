@@ -47,11 +47,11 @@
 
         &__arrow {
             @include mobile {
-                margin-left: 1.5rem;
+                margin-inline-start: 1.5rem;
             }
 
             &--onboarding {
-                padding-left: 1rem;
+                padding-inline-start: 1rem;
             }
         }
         &--left {

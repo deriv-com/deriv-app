@@ -18,6 +18,12 @@
             display: block;
             width: 100%;
         }
+
+        @include rtl {
+            > svg {
+                transform: scaleX(-1);
+            }
+        }
     }
 
     &__title {
@@ -48,6 +54,12 @@
         @include mobile {
             display: flex;
             flex-direction: column;
+        }
+
+        @include rtl {
+            > svg {
+                transform: scaleX(-1);
+            }
         }
     }
 }

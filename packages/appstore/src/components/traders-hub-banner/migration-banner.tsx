@@ -1,4 +1,5 @@
 import React from 'react';
+import { Analytics } from '@deriv/analytics';
 import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -21,6 +22,9 @@ const MigrationBanner = observer(() => {
 
     const openMT5MigrationModal = () => {
         setMT5MigrationError('');
+        Analytics.trackEvent('ce_upgrade_mt5_banner', {
+            action: 'push_cta_upgrade',
+        });
         toggleMT5MigrationModal();
     };
 

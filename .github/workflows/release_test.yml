@@ -6,7 +6,7 @@ on:
 
 jobs:
   build_test_and_publish:
-    name: Build, Test and Publish to Cloudflare Test 
+    name: Build, Test and Publish to Cloudflare Test
     runs-on: Runner_8cores_Deriv-app
     environment: Staging
     steps:
@@ -21,7 +21,7 @@ jobs:
       with:
         NODE_ENV: staging
         CROWDIN_WALLETS_API_KEY: ${{ secrets.CROWDIN_WALLETS_API_KEY }}
-        DATADOG_APPLICATION_ID: ${{ vars.DATADOG_APPLICATION_ID }} 
+        DATADOG_APPLICATION_ID: ${{ vars.DATADOG_APPLICATION_ID }}
         DATADOG_CLIENT_TOKEN: ${{ vars.DATADOG_CLIENT_TOKEN }}
         DATADOG_CLIENT_TOKEN_LOGS: ${{ vars.DATADOG_CLIENT_TOKEN_LOGS }}
         DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ vars.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
@@ -31,11 +31,13 @@ jobs:
         GD_APP_ID: ${{ secrets.GD_APP_ID }}
         GD_CLIENT_ID: ${{ secrets.GD_CLIENT_ID }}
         RUDDERSTACK_KEY: ${{ vars.RUDDERSTACK_KEY }}
+        GROWTHBOOK_CLIENT_KEY: ${{ vars.GROWTHBOOK_CLIENT_KEY }}
+        GROWTHBOOK_DECRYPTION_KEY: ${{ vars.GROWTHBOOK_DECRYPTION_KEY }}
         REF_NAME: ${{ github.ref_name }}
     - name: Run tests
       run: npm test
-    - name: Publish to Cloudflare Pages Test 
+    - name: Publish to Cloudflare Pages Test
       uses: "./.github/actions/publish_to_pages_test"
-      with:       
+      with:
         CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

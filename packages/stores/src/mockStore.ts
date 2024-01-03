@@ -152,7 +152,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_logging_in: false,
             is_mt5_password_not_set: false,
             is_mt5_account_list_updated: false,
-            is_pending_proof_of_ownership: false,
+            is_proof_of_ownership_enabled: false,
             is_poa_expired: false,
             is_populating_dxtrade_account_list: false,
             is_social_signup: false,
@@ -290,6 +290,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             account_open_date: undefined,
             setAccounts: jest.fn(),
             updateMt5LoginList: jest.fn(),
+            should_show_eu_error: false,
+            is_options_blocked: false,
         },
         common: {
             error: common_store_error,

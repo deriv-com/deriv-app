@@ -1,7 +1,7 @@
 import React from 'react';
+import { Provider } from '@deriv/library';
 import { Heading, qtMerge } from '@deriv/quill-design';
 import CloseIcon from '../../public/images/ic-close-dark.svg';
-import { useModal } from '../ModalProvider';
 
 /**
  * Type for the DialogHeader component props
@@ -22,7 +22,7 @@ type TDialogHeader = {
  * @returns {JSX.Element} The DialogHeader component.
  */
 const DialogHeader = ({ className, hideCloseButton = false, title }: TDialogHeader) => {
-    const { hide } = useModal();
+    const { hide } = Provider.useModal();
 
     return (
         <div className={qtMerge('flex items-start', title ? 'justify-between' : 'justify-end', className)}>

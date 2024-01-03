@@ -1,4 +1,4 @@
-export * from './ActionScreen';
+export * from './CFDSuccess';
 export * from './CreatePassword';
 export * from './GetMoreMT5Accounts';
 export * from './MT5AccountType';

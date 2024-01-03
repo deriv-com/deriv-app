@@ -83,7 +83,7 @@ export const buildLoaders = (options: TBuildOptions): RuleSetRule[] => {
     };
     const sourceMapLoader = {
         loader: 'source-map-loader',
-        test: (input: string) => options.isRelease && /\.js$/.test(input),
+        test: (input: string) => options.isRelease && input.endsWith('.js'),
     };
 
     return [

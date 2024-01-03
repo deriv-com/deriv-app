@@ -3,6 +3,10 @@
     width: calc(100vw - 3.2rem);
     height: var(--bot-content-height);
     top: 4rem;
+
+    @include mobile {
+        width: 100%;
+    }
 }
 
 .blocklyTextRootBlockHeader {

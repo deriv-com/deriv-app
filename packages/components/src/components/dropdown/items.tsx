@@ -63,7 +63,7 @@ const Item = ({
     }, [item, nodes, onKeyPressed]);
 
     React.useEffect(() => {
-        if (setScrollHeight && item_ref?.current && is_selected) {
+        if (setScrollHeight && item_ref.current && is_selected) {
             setScrollHeight(item_ref.current.offsetTop - item_ref.current.scrollHeight);
         }
     }, [item_ref, setScrollHeight, is_selected]);

@@ -54,7 +54,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
 
     const loginId = useMemo(() => {
         if (platform === mt5Platform) {
-            return (details as THooks.MT5AccountsList)?.loginid;
+            return (details as THooks.MT5AccountsList)?.display_login;
         } else if (platform === dxtradePlatform) {
             return (details as THooks.DxtradeAccountsList)?.account_id;
         }

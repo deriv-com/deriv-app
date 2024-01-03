@@ -2,12 +2,21 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 // import { tabs_title } from '../constants/bot-contents';
 import { ServerTime } from '@deriv/bot-skeleton';
 import { LocalStore } from '@deriv/shared';
+import RootStore from './root-store';
+import {
+    ActiveSymbolsRequest,
+    ServerTimeRequest,
+    TicksHistoryRequest,
+    TicksStreamRequest,
+    TradingTimesRequest,
+} from '@deriv/api-types';
 
-const g_subscribers_map = {};
-let WS;
+const g_subscribers_map: Partial<Record<string, ReturnType<typeof WS.subscribeTicksHistory>>> = {};
+let WS: RootStore['ws'];
 
 export default class ChartStore {
-    constructor(root_store) {
+    root_store: RootStore;
+    constructor(root_store: RootStore) {
         makeObservable(this, {
             symbol: observable,
             is_chart_loading: observable,
@@ -40,10 +49,10 @@ export default class ChartStore {
         this.restoreFromStorage();
     }
 
-    symbol;
-    is_chart_loading;
-    chart_type;
-    granularity;
+    symbol: string | undefined;
+    is_chart_loading: boolean | undefined;
+    chart_type: string | undefined;
+    granularity: number | undefined;
 
     get is_contract_ended() {
         const { transactions } = this.root_store;
@@ -66,7 +75,7 @@ export default class ChartStore {
 
     updateSymbol() {
         const workspace = Blockly.derivWorkspace;
-        const market_block = workspace.getAllBlocks().find(block => {
+        const market_block = workspace.getAllBlocks().find((block: Blockly.Block) => {
             return block.type === 'trade_definition_market';
         });
 
@@ -76,22 +85,22 @@ export default class ChartStore {
         }
     }
 
-    onSymbolChange(symbol) {
+    onSymbolChange(symbol: string) {
         this.symbol = symbol;
         this.saveToLocalStorage();
     }
 
-    updateGranularity(granularity) {
+    updateGranularity(granularity: number) {
         this.granularity = granularity;
         this.saveToLocalStorage();
     }
 
-    updateChartType(chart_type) {
+    updateChartType(chart_type: string) {
         this.chart_type = chart_type;
         this.saveToLocalStorage();
     }
 
-    setChartStatus(status) {
+    setChartStatus(status: boolean) {
         this.is_chart_loading = status;
     }
 
@@ -125,7 +134,7 @@ export default class ChartStore {
     }
 
     // #region WS
-    wsSubscribe = (req, callback) => {
+    wsSubscribe = (req: TicksStreamRequest, callback: () => void) => {
         if (req.subscribe === 1) {
             const key = JSON.stringify(req);
             const subscriber = WS.subscribeTicksHistory(req, callback);
@@ -133,20 +142,20 @@ export default class ChartStore {
         }
     };
 
-    wsForget = req => {
+    wsForget = (req: TicksHistoryRequest) => {
         const key = JSON.stringify(req);
         if (g_subscribers_map[key]) {
-            g_subscribers_map[key].unsubscribe();
+            g_subscribers_map[key]?.unsubscribe();
             delete g_subscribers_map[key];
         }
     };
 
-    wsForgetStream = stream_id => {
+    wsForgetStream = (stream_id: string) => {
         WS.forgetStream(stream_id);
     };
 
-    wsSendRequest = req => {
-        if (req.time) {
+    wsSendRequest = (req: TradingTimesRequest | ActiveSymbolsRequest | ServerTimeRequest) => {
+        if ('time' in req && req.time) {
             return ServerTime.timePromise().then(() => {
                 return {
                     msg_type: 'time',
@@ -154,13 +163,13 @@ export default class ChartStore {
                 };
             });
         }
-        if (req.active_symbols) {
+        if ('active_symbols' in req && req.active_symbols) {
             return WS.activeSymbols();
         }
-        return WS.storage.send(req);
+        if (WS.storage.send) return WS.storage.send(req);
     };
 
-    getMarketsOrder = active_symbols => {
+    getMarketsOrder = (active_symbols: { market: string; display_name: string }[]) => {
         const synthetic_index = 'synthetic_index';
 
         const has_synthetic_index = !!active_symbols.find(s => s.market === synthetic_index);

@@ -1,14 +1,16 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv/components';
-import { formatMoney, TFile } from '@deriv/shared';
+import { Button, InlineMessage, Modal, Text } from '@deriv/components';
+import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import FormError from 'Components/section-error';
 import FileUploaderComponent from 'Components/file-uploader-component';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
+import { TFile } from 'Types';
 import { accepted_file_types, max_pot_file_size } from 'Utils/file-uploader';
 import { removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from 'Utils/format-value';
+import { getInlineTextSize } from 'Utils/responsive';
 
 type TDocumentFile = {
     files: TFile[];
@@ -35,7 +37,7 @@ const OrderDetailsConfirmModal = () => {
             <Modal
                 className='order-details-confirm-modal'
                 is_open={is_modal_open}
-                toggleModal={hideModal}
+                toggleModal={() => hideModal()}
                 renderTitle={() => (
                     <Text
                         color='prominent'
@@ -68,6 +70,14 @@ const OrderDetailsConfirmModal = () => {
                     >
                         <Localize i18n_default_text='We accept JPG, PDF, or PNG (up to 5MB).' />
                     </Text>
+                    <div className='order-details-confirm-modal__inline-message'>
+                        <InlineMessage
+                            message={localize(
+                                'Sending forged documents will result in an immediate and permanent ban.'
+                            )}
+                            size={getInlineTextSize('sm', 'xs')}
+                        />
+                    </div>
                     <FileUploaderComponent
                         accept={accepted_file_types}
                         hover_message={localize('Upload receipt here')}

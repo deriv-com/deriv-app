@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Button, Heading, Text } from '@deriv/quill-design';
-import { OptionsAndMultipliersSection, StaticLink } from '../../components';
+import { Clipboard, OptionsAndMultipliersSection, StaticLink, Tooltip } from '../../components';
 import { CTraderList } from '../../features/cfd/components/CTraderList';
 import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
 
@@ -15,6 +15,15 @@ const TradersHubRoute: FC = () => {
                 </div>
             </div>
             <OptionsAndMultipliersSection />
+            <div className='flex w-full place-content-center gap-200'>
+                <Tooltip alignment='top' isVisible message='This is message'>
+                    <div>Test</div>
+                </Tooltip>
+                <Clipboard textCopy='top' tooltip='top' />
+                <Clipboard textCopy='bottom' tooltip='bottom' />
+                <Clipboard textCopy='left' tooltip='left' />
+                <Clipboard textCopy='right' tooltip='right' />
+            </div>
 
             <div className='border-solid p-1200 rounded-1200 border-xs border-opacity-black-100'>
                 <div className='pb-1200'>

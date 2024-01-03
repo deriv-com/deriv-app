@@ -39,7 +39,7 @@ const Tooltip: FC<TProps> = ({ alignment = 'bottom', children, className, messag
                 <div className={qtMerge(TooltipPointerClass({ alignment }), className)} />
 
                 <span className='rounded-md bg-system-light-active-background p-200 '>
-                    <Text variant='sm'>{message}</Text>
+                    <Text size='sm'>{message}</Text>
                 </span>
             </div>
         </div>

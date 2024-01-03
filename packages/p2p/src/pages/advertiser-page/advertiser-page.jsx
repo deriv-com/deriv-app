@@ -39,9 +39,11 @@ const AdvertiserPage = () => {
         setCounterpartyAdvertiserId,
     } = general_store;
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
-    const { advertiser_details_name, advertiser_details_id, counterparty_advertiser_info } = advertiser_page_store;
+    const { advertiser_details_name, counterparty_advertiser_info } = advertiser_page_store;
+    const { id: counterparty_details_id } = counterparty_advertiser_info;
 
-    const is_my_advert = advertiser_details_id === advertiser_id;
+    const is_my_advert =
+        !!counterparty_details_id && !!advertiser_id ? counterparty_details_id === advertiser_id : null;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
     const info = is_my_advert ? advertiser_info : counterparty_advertiser_info;
 
@@ -77,6 +79,7 @@ const AdvertiserPage = () => {
         isSuccess: has_p2p_advert_info,
     } = useP2PAdvertInfo(counterparty_advert_id, {
         enabled: !!counterparty_advert_id,
+        retry: false,
     });
 
     const showErrorModal = () => {
@@ -119,14 +122,14 @@ const AdvertiserPage = () => {
     );
 
     React.useEffect(() => {
-        if (is_advertiser && !is_barred) {
+        if (is_advertiser && !is_barred && is_my_advert !== null && !is_my_advert) {
             if (isFetching && isDesktop()) {
                 showModal({ key: 'LoadingModal' });
             } else if (counterparty_advert_id) {
                 setShowAdvertInfo();
             }
         }
-    }, [counterparty_advert_id, isFetching, setShowAdvertInfo]);
+    }, [counterparty_advert_id, isFetching, setShowAdvertInfo, is_my_advert]);
 
     React.useEffect(() => {
         if (location.search || counterparty_advertiser_id) {
@@ -246,6 +249,7 @@ const AdvertiserPage = () => {
                             my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                         history.push(general_store.active_tab_route);
                         setCounterpartyAdvertiserId(null);
+                        setCounterpartyAdvertId('');
                     }}
                     page_title={localize("Advertiser's page")}
                 />

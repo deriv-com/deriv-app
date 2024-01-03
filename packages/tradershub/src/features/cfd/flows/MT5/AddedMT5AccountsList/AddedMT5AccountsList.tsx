@@ -1,34 +1,13 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuthorize, useJurisdictionStatus } from '@deriv/api';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
-import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails } from '../../../constants';
+import { MT5AccountIcon } from '../MT5AccountIcon';
 
-type TProps = {
-    account: THooks.MT5AccountsList;
-};
-
-const MT5AccountIcon: FC<TProps> = ({ account }) => {
-    const handleClick = () => {
-        window.open(getStaticUrl('/dmt5'));
-    };
-    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-        // Fix sonarcloud issue
-        if (event.key === 'Enter' || event.key === ' ') {
-            handleClick();
-        }
-    };
-    return (
-        <div className='cursor-pointer' onClick={handleClick} onKeyDown={handleKeyDown} role='button' tabIndex={0}>
-            {MarketTypeDetails[account.market_type || 'all'].icon}
-        </div>
-    );
-};
-
-const AddedMT5AccountsList: FC<TProps> = ({ account }) => {
+const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
     const { data: activeWallet } = useAuthorize();
     const history = useHistory();
     const { data: jurisdictionStatus } = useJurisdictionStatus(account.landing_company_short || 'svg', account.status);
@@ -58,10 +37,10 @@ const AddedMT5AccountsList: FC<TProps> = ({ account }) => {
             )}
         >
             <div className='flex-grow user-select-none'>
-                <div className='flex flex-center gap-400 self-stretch'>
+                <div className='flex self-stretch flex-center gap-400'>
                     <Text size='sm'>{title}</Text>
                     {!activeWallet?.is_virtual && (
-                        <div className='flex h-1200 py-50 px-200 gap-200 items-center rounded-md bg-system-light-secondary-background'>
+                        <div className='flex items-center rounded-md h-1200 py-50 px-200 gap-200 bg-system-light-secondary-background'>
                             <Text bold size='sm'>
                                 {account.landing_company_short?.toUpperCase()}
                             </Text>

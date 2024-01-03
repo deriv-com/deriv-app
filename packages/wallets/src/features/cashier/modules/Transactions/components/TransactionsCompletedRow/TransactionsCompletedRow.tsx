@@ -64,7 +64,7 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
                 />
             )}
             <div className='wallets-transactions-completed-row__transaction-details'>
-                <WalletText color={transaction.amount > 0 ? 'success' : 'red'} size='xs' weight='bold'>
+                <WalletText color={transaction.amount > 0 ? 'success' : 'error'} size='xs' weight='bold'>
                     {transaction.amount && transaction.amount > 0 ? '+' : ''}
                     {transaction.display_amount}
                 </WalletText>

@@ -284,6 +284,33 @@ type TChartStateChangeOption = {
     time_interval_name?: string;
 };
 
+type TContentConfig = {
+    className?: string;
+    label?: string;
+    line_style?: string;
+    spot_className?: string;
+};
+
+type TMarkerContentConfig = TContentConfig & {
+    align_label?: string;
+    is_value_hidden?: boolean;
+    marker_config?: {
+        [key: string]: {
+            type: string;
+            marker_config: {
+                ContentComponent: React.ComponentType<TMarkerContentConfig> | string;
+                className?: string;
+            };
+            content_config: TContentConfig;
+        };
+    };
+    spot_epoch?: string;
+    spot_count?: number;
+    spot_profit?: string;
+    spot_value?: string;
+    status?: string;
+};
+
 type TNotificationMessage = {
     action?: TActionProps;
     className?: string;
@@ -385,7 +412,8 @@ type TClientStore = {
         api_initial_load_error?: string;
     };
     account_list: TAccountsList;
-    account_status: GetAccountStatus;
+    account_status: Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
+        Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
     available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;
     balance?: string | number;
     can_change_fiat_currency: boolean;
@@ -436,7 +464,7 @@ type TClientStore = {
     is_low_risk: boolean;
     is_mt5_password_not_set: boolean;
     is_mt5_account_list_updated: boolean;
-    is_pending_proof_of_ownership: boolean;
+    is_proof_of_ownership_enabled: boolean;
     is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
     is_switching: boolean;
@@ -540,7 +568,7 @@ type TClientStore = {
     /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
     is_crypto: (currency?: string) => boolean;
     ctrader_accounts_list: TCtraderAccountsList[];
-    dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
+    dxtrade_accounts_list: (DetailsOfEachMT5Loginid & { account_id?: string })[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;
@@ -562,6 +590,8 @@ type TClientStore = {
     prev_account_type: string;
     account_open_date: number | undefined;
     setAccounts: () => (accounts: Record<string, TActiveAccount>) => void;
+    should_show_eu_error: boolean;
+    is_options_blocked: boolean;
 };
 
 type TCommonStoreError = {
@@ -1072,8 +1102,13 @@ type TContractReplay = {
         markers_array:
             | []
             | Array<{
-                  content_config: { className: string };
-                  marker_config: { ContentComponent: 'div'; x: string | number; y: string | number };
+                  content_config: TMarkerContentConfig;
+                  marker_config: {
+                      ContentComponent: React.ComponentType<TMarkerContentConfig> | string;
+                      className?: string;
+                      x: string | number;
+                      y: string | number | null;
+                  };
                   react_key: string;
                   type: string;
               }>;

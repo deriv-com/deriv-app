@@ -14,14 +14,18 @@ export { default as useAccesiblePlatforms } from './useAccesiblePlatforms';
 export { default as useAvailableMT5Accounts } from './useAvailableMT5Accounts';
 export { default as useAvailableWallets } from './useAvailableWallets';
 export { default as useBalance } from './useBalance';
+export { default as useCloseDerivAccount } from './useCloseDerivAccount';
 export { default as useCFDAccountsList } from './useCFDAccountsList';
 export { default as useCFDCompareAccounts } from './useCFDCompareAccounts';
 export { default as useCancelCryptoTransaction } from './useCancelCryptoTransaction';
 export { default as useCashierFiatAddress } from './useCashierFiatAddress';
+// TODO: Export these into P2P entities
+export { default as useChatCreate } from './p2p/useChatCreate';
+export { default as useAdvertiserInfo } from './p2p/useAdvertiserInfo';
+export { default as useOrderInfo } from './p2p/useOrderInfo';
+
 export { default as useCountryConfig } from './useCountryConfig';
-export { default as useCreateMT5Account } from './useCreateMT5Account';
 export { default as useCreateNewRealAccount } from './useCreateNewRealAccount';
-export { default as useCreateOtherCFDAccount } from './useCreateOtherCFDAccount';
 export { default as useCreateWallet } from './useCreateWallet';
 export { default as useCryptoTransactions } from './useCryptoTransactions';
 export { default as useCryptoWithdrawal } from './useCryptoWithdrawal';
@@ -50,11 +54,15 @@ export { default as useOtherCFDPlatformsDeposit } from './useOtherCFDPlatformsDe
 export { default as usePOA } from './usePOA';
 export { default as usePOI } from './usePOI';
 export { default as useResidenceList } from './useResidenceList';
+export { default as useSendbirdServiceToken } from './useSendbirdServiceToken';
+export { default as useServerTime } from './useServerTime';
 export { default as useSettings } from './useSettings';
 export { default as useSortedMT5Accounts } from './useSortedMT5Accounts';
 export { default as useStatesList } from './useStatesList';
 export { default as useTradingAccountsList } from './useTradingAccountsList';
 export { default as useTradingPlatformInvestorPasswordChange } from './useTradingPlatformInvestorPasswordChange';
+export { default as useCreateMT5Account } from './useCreateMT5Account';
+export { default as useCreateOtherCFDAccount } from './useCreateOtherCFDAccount';
 export { default as useTradingPlatformInvestorPasswordReset } from './useTradingPlatformInvestorPasswordReset';
 export { default as useTradingPlatformPasswordChange } from './useTradingPlatformPasswordChange';
 export { default as useTransactions } from './useTransactions';

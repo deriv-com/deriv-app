@@ -3,7 +3,7 @@ import { Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { quick_strategy_content } from '../config';
-import QuickStrategyCards from './quick-strategy-cards';
+import QuickStrategyGuidesDetail from './quick-strategy-guides-details';
 import './index.scss';
 
 const QuickStrategyGuides = () => {
@@ -25,7 +25,7 @@ const QuickStrategyGuides = () => {
                     {localize('Quick strategy guides')}
                 </Text>
             )}
-            <QuickStrategyCards
+            <QuickStrategyGuidesDetail
                 tutorial_selected_strategy={tutorial_selected_strategy}
                 setTutorialSelectedStrategy={setTutorialSelectedStrategy}
                 quick_strategy_content={quick_strategy_content}

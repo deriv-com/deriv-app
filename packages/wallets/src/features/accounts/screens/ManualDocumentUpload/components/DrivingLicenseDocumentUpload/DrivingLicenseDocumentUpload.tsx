@@ -1,5 +1,6 @@
 import React from 'react';
-import { Divider, Dropzone, FlowTextField, useFlow, WalletText } from '../../../../../../components';
+import moment from 'moment';
+import { DatePicker, Divider, Dropzone, FlowTextField, useFlow, WalletText } from '../../../../../../components';
 import DrivingLicenseCardBack from '../../../../../../public/images/accounts/document-back.svg';
 import DrivingLicenseCardFront from '../../../../../../public/images/accounts/driving-license-front.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
@@ -8,6 +9,10 @@ import './DrivingLicenseDocumentUpload.scss';
 
 const DrivingLicenseDocumentUpload = () => {
     const { formValues, setFormValues } = useFlow();
+
+    const handleDateChange = (formattedDate: string | null) => {
+        setFormValues('drivingLicenseExpiryDate', formattedDate);
+    };
 
     return (
         <div className='wallets-driving-license-document-upload' data-testid='dt_driving-license-document-upload'>
@@ -19,11 +24,13 @@ const DrivingLicenseDocumentUpload = () => {
                     name='drivingLicenceNumber'
                     validationSchema={documentRequiredValidator('Driving licence number')}
                 />
-                <FlowTextField
+                <DatePicker
                     defaultValue={formValues.drivingLicenseExpiryDate ?? ''}
                     label='Expiry date*'
+                    minDate={moment().add(2, 'days').toDate()}
                     name='drivingLicenseExpiryDate'
-                    type='date'
+                    onDateChange={handleDateChange}
+                    placeholder='DD/MM/YYYY'
                     validationSchema={expiryDateValidator}
                 />
             </div>

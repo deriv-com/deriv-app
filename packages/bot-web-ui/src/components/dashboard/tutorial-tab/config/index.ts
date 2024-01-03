@@ -494,4 +494,9 @@ export const quick_strategy_content: TQuickStrategyContent[] = [
             localize('An example of Reverse D’Alembert strategy'),
         ],
     },
+    {
+        qs_name: '1_3_2_6',
+        type: localize('About 1-3-2-6'),
+        content: [localize('Exploring the 1-3-2-6 strategy in Deriv Bot'), localize('An example of 1-3-2-6 strategy')],
+    },
 ];

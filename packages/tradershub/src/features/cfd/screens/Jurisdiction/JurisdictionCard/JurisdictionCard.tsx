@@ -1,6 +1,6 @@
 import React, { MouseEvent, useMemo, useState } from 'react';
+import { Provider } from '@deriv/library';
 import { qtMerge, Text } from '@deriv/quill-design';
-import { useModal } from '../../../../../components/ModalProvider';
 import { StaticLink } from '../../../../../components/StaticLink';
 import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
@@ -60,7 +60,7 @@ const JurisdictionCard = ({
 }: TJurisdictionCardProps) => {
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
-    const { getModalState } = useModal();
+    const { getCFDState } = Provider.useCFDContext();
 
     const descriptionClickHandler = (tag?: TJurisdictionCardProps['tag']) => (event: MouseEvent) => {
         event.stopPropagation();
@@ -75,7 +75,7 @@ const JurisdictionCard = ({
         () => getJurisdictionContents()[jurisdiction],
         [jurisdiction]
     );
-    const marketType = getModalState('marketType') || 'all';
+    const marketType = getCFDState('marketType') || 'all';
     const rows = contents[marketType] || [];
 
     const parseDescription = (row: TJurisdictionCardSection) => {

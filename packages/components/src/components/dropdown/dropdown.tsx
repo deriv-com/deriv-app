@@ -122,7 +122,7 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
     };
     const computed_offset_left = () => {
         return {
-            transform: `translate3d(calc-(${list_dimensions[0]}px - 12px), 0, 0px)`,
+            transform: `translate3d(calc(-${list_dimensions[0]}px - 12px), 0, 0px)`,
         };
     };
 
@@ -173,9 +173,9 @@ const DropdownList = React.forwardRef<HTMLDivElement, TDropdownList>((props, lis
     const getDropDownAlignment = () => {
         if (is_portal) return undefined;
 
-        if (is_alignment_left && !is_rtl) return computed_offset_left();
-        else if (is_rtl) return computed_offset_right();
-        else if (is_alignment_top) return computed_offset_top();
+        if (is_alignment_left) {
+            return is_rtl ? computed_offset_right() : computed_offset_left();
+        } else if (is_alignment_top) return computed_offset_top();
 
         return undefined;
     };

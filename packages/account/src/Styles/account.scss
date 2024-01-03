@@ -1611,6 +1611,12 @@ $MIN_HEIGHT_FLOATING: calc(
             @include mobile {
                 padding-left: 5%;
             }
+
+            @include rtl {
+                & > li {
+                    width: fit-content;
+                }
+            }
         }
     }
 
@@ -1639,12 +1645,12 @@ $MIN_HEIGHT_FLOATING: calc(
     &__button {
         &--cancel {
             margin-top: 2.4rem;
-            margin-right: 10px;
+            margin-inline-end: 10px;
             float: right;
 
             @include mobile {
                 margin-top: -8px;
-                margin-right: 10px;
+                margin-inline-end: 10px;
                 float: right;
 
                 &--dashboard {

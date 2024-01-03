@@ -10,7 +10,7 @@
                 .sc-toolbar-widget,
                 .stx-panel-control {
                     transform: translate3d(248px, 0, 0);
-                    [dir='rtl'] & {
+                    @include rtl {
                         transform: translate3d(-248px, 0, 0);
                     }
                 }

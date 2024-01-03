@@ -26,7 +26,7 @@ $header-height: 3.6em;
     background-color: var(--general-section-1);
     color: var(--text-prominent);
 
-    [dir='rtl'] & {
+    @include rtl {
         transform: translateX(100%);
     }
 
@@ -50,7 +50,7 @@ $header-height: 3.6em;
     &--open {
         transform: translateX(#{$POSITIONS_DRAWER_MARGIN});
         opacity: 1;
-        [dir='rtl'] & {
+        @include rtl {
             transform: translateX(#{-$POSITIONS_DRAWER_MARGIN});
         }
     }

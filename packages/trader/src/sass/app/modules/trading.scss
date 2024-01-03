@@ -787,7 +787,7 @@
         }
         .dc-dropdown__select-arrow {
             inset-inline-start: 0.3rem;
-            [dir='rtl'] & {
+            @include rtl {
                 transform: rotate(180deg);
                 &--up {
                     transform: rotate(0deg);

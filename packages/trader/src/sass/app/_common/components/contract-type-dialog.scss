@@ -94,7 +94,7 @@
     &--enter,
     &--exit {
         transform: translate3d(20%, 0, 0);
-        [dir='rtl'] & {
+        @include rtl {
             transform: translate3d(-20%, 0, 0);
         }
         pointer-events: none;

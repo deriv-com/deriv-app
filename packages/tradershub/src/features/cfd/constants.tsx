@@ -158,16 +158,3 @@ export const PlatformUrls: TPlatformUrls = {
         live: 'https://dx.deriv.com',
     },
 };
-
-export const CFD_PLATFORMS = {
-    CFDS: 'CFDs',
-    CTRADER: 'ctrader',
-    DXTRADE: 'dxtrade',
-    MT5: 'mt5',
-} as const;
-
-export const MARKET_TYPE = {
-    ALL: 'all',
-    FINANCIAL: 'financial',
-    SYNTHETIC: 'synthetic',
-} as const;

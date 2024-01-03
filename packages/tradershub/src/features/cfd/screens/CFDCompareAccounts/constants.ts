@@ -1,11 +1,11 @@
-import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
+import { CFDPlatforms, MarketType } from '../../constants';
 
 export const ACCOUNT_ICONS = {
-    [MARKET_TYPE.SYNTHETIC]: 'Derived',
-    [MARKET_TYPE.FINANCIAL]: 'Financial',
-    [MARKET_TYPE.ALL]: 'SwapFree',
-    [CFD_PLATFORMS.DXTRADE]: 'DerivX',
-    [CFD_PLATFORMS.CTRADER]: 'CTrader',
+    [MarketType.SYNTHETIC]: 'Derived',
+    [MarketType.FINANCIAL]: 'Financial',
+    [MarketType.ALL]: 'SwapFree',
+    [CFDPlatforms.DXTRADE]: 'DerivX',
+    [CFDPlatforms.CTRADER]: 'CTrader',
     default: 'CFDs',
 } as const;
 

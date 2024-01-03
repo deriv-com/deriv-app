@@ -478,4 +478,12 @@ export const quick_strategy_content: TQuickStrategyContent[] = [
             localize('An example of Oscar’s Grind strategy'),
         ],
     },
+    {
+        qs_name: 'REVERSE_MARTINGALE',
+        type: localize('About Reverse Martingale'),
+        content: [
+            localize('Exploring the Reverse Martingale strategy in Deriv Bot'),
+            localize('An example of Reverse Martingale strategy'),
+        ],
+    },
 ];

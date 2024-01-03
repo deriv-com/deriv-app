@@ -23,7 +23,7 @@
             rotate: 180deg;
 
             @include mobile {
-                rotate: 270deg;
+                rotate: -90deg;
                 margin-bottom: 2.2rem;
             }
         }

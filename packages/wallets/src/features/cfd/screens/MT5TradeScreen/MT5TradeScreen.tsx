@@ -54,7 +54,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
 
     const loginId = useMemo(() => {
         if (platform === mt5Platform) {
-            return (details as THooks.MT5AccountsList)?.loginid;
+            return (details as THooks.MT5AccountsList)?.display_login;
         } else if (platform === dxtradePlatform) {
             return (details as THooks.DxtradeAccountsList)?.account_id;
         }
@@ -136,16 +136,20 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 </div>
             </div>
             <div className='wallets-mt5-trade-screen__links'>
-                {isDesktop && platform === mt5Platform && (
+                {platform === mt5Platform && (
                     <Fragment>
                         <MT5TradeLink
                             app='web'
                             platform={mt5Platform}
                             webtraderUrl={(details as THooks.MT5AccountsList)?.webtrader_url}
                         />
-                        <MT5TradeLink app='windows' platform={mt5Platform} />
-                        <MT5TradeLink app='macos' platform={mt5Platform} />
-                        <MT5TradeLink app='linux' platform={mt5Platform} />
+                        {isDesktop && (
+                            <Fragment>
+                                <MT5TradeLink app='windows' platform={mt5Platform} />
+                                <MT5TradeLink app='macos' platform={mt5Platform} />
+                                <MT5TradeLink app='linux' platform={mt5Platform} />
+                            </Fragment>
+                        )}
                     </Fragment>
                 )}
                 {platform === dxtradePlatform && (

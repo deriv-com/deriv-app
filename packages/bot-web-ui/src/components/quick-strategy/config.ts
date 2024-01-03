@@ -1,6 +1,6 @@
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
-import { D_ALEMBERT, MARTINGALE, OSCARS_GRIND } from './descriptions';
+import { D_ALEMBERT, MARTINGALE, OSCARS_GRIND, REVERSE_MARTINGALE } from './descriptions';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [
@@ -164,6 +164,23 @@ const MAX_STAKE: TConfigItem = {
     attached: true,
 };
 
+const LABEL_LAST_DIGIT_PREDICTION: TConfigItem = {
+    type: 'label',
+    name: 'label_last_digit_prediction',
+    label: localize('Last Digit Prediction'),
+    description: localize('Your prediction of the last digit of the asset price.'),
+    should_have: [{ key: 'tradetype', value: '', multiple: ['matchesdiffers', 'overunder'] }],
+    hide_without_should_have: true,
+};
+
+const LAST_DIGIT_PREDICTION: TConfigItem = {
+    type: 'number',
+    name: 'last_digit_prediction',
+    validation: ['number', 'required', 'min', 'max', 'integer'],
+    should_have: [{ key: 'tradetype', value: '', multiple: ['matchesdiffers', 'overunder'] }],
+    hide_without_should_have: true,
+};
+
 export const STRATEGIES: TStrategies = {
     MARTINGALE: {
         name: 'martingale_max-stake',
@@ -180,6 +197,8 @@ export const STRATEGIES: TStrategies = {
                 TRADETYPE,
                 LABEL_PURCHASE_TYPE,
                 PURCHASE_TYPE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
                 LABEL_DURATION,
@@ -204,6 +223,8 @@ export const STRATEGIES: TStrategies = {
                 TRADETYPE,
                 LABEL_PURCHASE_TYPE,
                 PURCHASE_TYPE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
                 LABEL_DURATION,
@@ -228,6 +249,8 @@ export const STRATEGIES: TStrategies = {
                 TRADETYPE,
                 LABEL_PURCHASE_TYPE,
                 PURCHASE_TYPE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
                 LABEL_DURATION,
@@ -237,12 +260,13 @@ export const STRATEGIES: TStrategies = {
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, CHECKBOX_MAX_STAKE, MAX_STAKE],
         ],
     },
-    REVERSE_MARINGALE: {
+    REVERSE_MARTINGALE: {
         name: 'reverse_martingale',
         label: localize('Reverse Martingale'),
         description: localize(
             'The Reverse Martingale strategy multiplies the stake by the chosen multiplier after every successful trade. The stake for the next trade will reset to the initial stake after a losing trade. To manage risk, set the maximum stake for a single trade. The stake for the next trade will reset to the initial stake if it exceeds the maximum stake.'
         ),
+        long_description: REVERSE_MARTINGALE,
         fields: [
             [
                 LABEL_SYMBOL,
@@ -251,6 +275,8 @@ export const STRATEGIES: TStrategies = {
                 TRADETYPE,
                 LABEL_PURCHASE_TYPE,
                 PURCHASE_TYPE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
                 LABEL_DURATION,
@@ -274,6 +300,8 @@ export const STRATEGIES: TStrategies = {
                 TRADETYPE,
                 LABEL_PURCHASE_TYPE,
                 PURCHASE_TYPE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
                 LABEL_DURATION,
@@ -297,6 +325,8 @@ export const STRATEGIES: TStrategies = {
                 TRADETYPE,
                 LABEL_PURCHASE_TYPE,
                 PURCHASE_TYPE,
+                LABEL_LAST_DIGIT_PREDICTION,
+                LAST_DIGIT_PREDICTION,
                 LABEL_STAKE,
                 STAKE,
                 LABEL_DURATION,

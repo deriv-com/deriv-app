@@ -19,7 +19,7 @@ type TDurationUnit = {
     attached?: boolean;
 };
 
-const DurationUnit: React.FC<TDurationUnit> = ({ attached }) => {
+const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
     const [list, setList] = React.useState<TDurationUnitItem[]>([]);
     const { quick_strategy } = useDBotStore();
     const { setValue, setCurrentDurationMinMax } = quick_strategy;
@@ -81,6 +81,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ attached }) => {
                     return (
                         <Autocomplete
                             {...field}
+                            readOnly
                             inputMode='none'
                             data-testid='qs_autocomplete_durationtype'
                             autoComplete='off'

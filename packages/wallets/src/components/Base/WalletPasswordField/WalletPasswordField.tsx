@@ -1,17 +1,31 @@
 import React, { useCallback, useState } from 'react';
-import { passwordErrorMessage } from '../../../constants/password';
-import { Score, validatePassword, validPassword } from '../../../utils/password';
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
+import { dictionary } from '@zxcvbn-ts/language-common';
+import { passwordErrorMessage, passwordRegex, warningMessages } from '../../../constants/password';
+import { calculateScore, isPasswordValid, passwordKeys, Score, validPassword } from '../../../utils/password';
+import { WalletPasswordFieldProps } from '../WalletPasswordFieldLazy/WalletPasswordFieldLazy';
 import { WalletTextField } from '../WalletTextField';
-import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
 
-interface WalletPasswordFieldProps extends WalletTextFieldProps {
-    password: string;
-    passwordError?: boolean;
-    shouldDisablePasswordMeter?: boolean;
-}
+export const validatePassword = (password: string) => {
+    const score = calculateScore(password);
+    let errorMessage = '';
+
+    const options = { dictionary: { ...dictionary } };
+    zxcvbnOptions.setOptions(options);
+
+    const { feedback } = zxcvbn(password);
+    if (!passwordRegex.isLengthValid.test(password)) {
+        errorMessage = passwordErrorMessage.invalidLength;
+    } else if (!isPasswordValid(password)) {
+        errorMessage = passwordErrorMessage.missingCharacter;
+    } else {
+        errorMessage = warningMessages[feedback.warning as passwordKeys] ?? '';
+    }
+    return { errorMessage, score };
+};
 
 const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     autoComplete,
@@ -61,7 +75,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 )}
                 showMessage={showMessage}
                 type={isPasswordVisible ? 'text' : 'password'}
-                value={passwordError ? '' : password}
+                value={password}
             />
             {!shouldDisablePasswordMeter && <PasswordMeter score={score as Score} />}
         </div>

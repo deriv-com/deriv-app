@@ -20,7 +20,7 @@ type TTradeTypeOption = {
     trade_type: TTradeType;
 };
 
-const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type }) => (
+const TradeTypeOption: React.FC<TTradeTypeOption> = ({ trade_type }: TTradeTypeOption) => (
     <div key={trade_type.value} className='qs__select__option'>
         <IconTradeTypes type={trade_type.icon[0]} className='qs__select__option__icon' />
         <IconTradeTypes type={trade_type.icon[1]} className='qs__select__option__icon' />
@@ -45,14 +45,23 @@ const TradeTypeSelect: React.FC = () => {
     };
 
     React.useEffect(() => {
-        if (values?.symbol) {
+        const first_time_user_data = !(JSON.parse(localStorage?.getItem('qs-fields') as string) as TFormData);
+        if (first_time_user_data) {
+            setFieldValue?.('tradetype', (trade_types?.[0] as TTradeType)?.value);
+            validateForm();
+            setValue('tradetype', (trade_types?.[0] as TTradeType)?.value);
+        }
+    }, []);
+
+    React.useEffect(() => {
+        if (values?.symbol && selected !== '') {
             const { contracts_for } = ApiHelpers.instance;
             const getTradeTypes = async () => {
                 const trade_types = await contracts_for.getTradeTypesForQuickStrategy(values?.symbol);
                 setTradeTypes(trade_types);
                 const has_selected = trade_types?.some((trade_type: TTradeType) => trade_type.value === selected);
                 if (!has_selected && trade_types?.[0]?.value !== selected) {
-                    await setFieldValue?.('tradetype', trade_types?.[0].value);
+                    await setFieldValue?.('tradetype', trade_types?.[0].value || '');
                     await validateForm();
                     setValue('tradetype', trade_types?.[0].value);
                 }
@@ -62,7 +71,7 @@ const TradeTypeSelect: React.FC = () => {
             }, 100)();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [values?.symbol]);
+    }, [values?.symbol, selected]);
 
     const trade_type_dropdown_options = React.useMemo(
         () =>
@@ -78,11 +87,12 @@ const TradeTypeSelect: React.FC = () => {
             <Field name='tradetype' key='tradetype' id='tradetype'>
                 {({ field }: FieldProps) => {
                     const selected_trade_type = trade_type_dropdown_options?.find(
-                        trade_type => trade_type.value === field.value
+                        (trade_type: TTradeType) => trade_type.value === field.value
                     );
                     return (
                         <Autocomplete
                             {...field}
+                            readOnly
                             inputMode='none'
                             data-testid='qs_autocomplete_tradetype'
                             autoComplete='off'

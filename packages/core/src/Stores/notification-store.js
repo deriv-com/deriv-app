@@ -318,7 +318,7 @@ export default class NotificationStore extends BaseStore {
             is_financial_information_incomplete,
             has_restricted_mt5_account,
             has_mt5_account_with_rejected_poa,
-            is_pending_proof_of_ownership,
+            is_proof_of_ownership_enabled,
             p2p_advertiser_info,
             is_p2p_enabled,
             is_poa_expired,
@@ -433,7 +433,7 @@ export default class NotificationStore extends BaseStore {
                 const poinc_upload_limited = needs_verification.includes('income') && income?.status === 'locked';
                 const onfido_submissions_left = identity?.services.onfido.submissions_left;
                 const poo_required = ownership?.requests?.length > 0 && ownership?.status?.toLowerCase() !== 'rejected';
-                const poo_rejected = is_pending_proof_of_ownership && ownership?.status?.toLowerCase() === 'rejected';
+                const poo_rejected = is_proof_of_ownership_enabled && ownership?.status?.toLowerCase() === 'rejected';
                 const svg_needs_poi_poa =
                     cr_account &&
                     status.includes('allow_document_upload') &&

@@ -16,28 +16,29 @@ const useExchangeRates = <T extends TCurrencyPayload>() => {
     const [data, setData] = useState<Record<TCurrencyPayload, TCurrencyRateData>>();
 
     const subscribe = async ({ base_currency, target_currencies }: TCurrenyExchangeSubscribeFunction<T>) => {
-        target_currencies.forEach(async c => {
-            const { id, subscription } = await _subscribe('exchange_rates', {
-                payload: { base_currency, target_currency: c },
-            });
-            if (!exchangeRatesSubscriptions.current.includes(id)) {
-                exchangeRatesSubscriptions.current.push(id);
-                subscription.subscribe((response: TSocketResponseData<'exchange_rates'>) => {
-                    const rates = response.exchange_rates?.rates;
-                    if (rates) {
-                        setData(prev => {
-                            const currentData = { ...(prev || {}) };
-                            if (currentData) {
-                                currentData[base_currency] = { ...currentData[base_currency], ...rates };
-                                return currentData;
-                            }
-                            return { [base_currency]: rates };
-                        });
-                    }
+        await Promise.all(
+            target_currencies.map(async c => {
+                const { id, subscription } = await _subscribe('exchange_rates', {
+                    payload: { base_currency, target_currency: c },
                 });
-            }
-            return { id, subscription };
-        });
+                if (!exchangeRatesSubscriptions.current.includes(id)) {
+                    exchangeRatesSubscriptions.current.push(id);
+                    subscription.subscribe((response: TSocketResponseData<'exchange_rates'>) => {
+                        const rates = response.exchange_rates?.rates;
+                        if (rates) {
+                            setData(prev => {
+                                const currentData = { ...(prev || {}) };
+                                if (currentData) {
+                                    currentData[base_currency] = { ...currentData[base_currency], ...rates };
+                                    return currentData;
+                                }
+                                return { [base_currency]: rates };
+                            });
+                        }
+                    });
+                }
+            })
+        );
     };
 
     const unsubscribe = async (payload: TCurrenyExchangeSubscribeFunction<T>) => {

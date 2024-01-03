@@ -12,6 +12,7 @@ export const buildWebpackConfig = (options: TBuildOptions): Configuration => ({
     externals: [
         {
             '@deriv/api': true,
+            '@deriv/library': true,
             react: true,
             'react-dom': true,
             'react-router-dom': true,

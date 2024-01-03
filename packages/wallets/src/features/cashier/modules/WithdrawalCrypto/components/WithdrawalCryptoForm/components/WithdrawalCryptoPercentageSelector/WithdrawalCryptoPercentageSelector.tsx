@@ -3,11 +3,13 @@ import { useFormikContext } from 'formik';
 import { WalletsPercentageSelector, WalletText } from '../../../../../../../../components';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import { TWithdrawalForm } from '../../../../types';
+import { validateCryptoInput } from '../../../../utils';
 import './WithdrawalCryptoPercentageSelector.scss';
 
 const WithdrawalCryptoPercentageSelector: React.FC = () => {
     const { setValues, values } = useFormikContext<TWithdrawalForm>();
-    const { activeWallet, fractionalDigits, getConvertedFiatAmount } = useWithdrawalCryptoContext();
+    const { accountLimits, activeWallet, fractionalDigits, getConvertedFiatAmount, isClientVerified } =
+        useWithdrawalCryptoContext();
 
     const getPercentageMessage = (value: string) => {
         const amount = parseFloat(value);
@@ -34,7 +36,15 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
                     if (activeWallet?.balance) {
                         const fraction = percentage / 100;
                         const cryptoAmount = (activeWallet.balance * fraction).toFixed(fractionalDigits.crypto);
-                        const fiatAmount = getConvertedFiatAmount(cryptoAmount);
+                        const fiatAmount = !validateCryptoInput(
+                            activeWallet,
+                            fractionalDigits,
+                            isClientVerified,
+                            accountLimits?.remainder ?? 0,
+                            cryptoAmount
+                        )
+                            ? getConvertedFiatAmount(cryptoAmount)
+                            : '';
 
                         return setValues({
                             ...values,

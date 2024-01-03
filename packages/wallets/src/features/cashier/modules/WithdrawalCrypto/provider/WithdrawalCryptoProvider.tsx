@@ -1,14 +1,18 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
+    useAccountLimits,
     useActiveWalletAccount,
     useCryptoWithdrawal,
     useCurrencyConfig,
     useExchangeRateSubscription,
+    usePOA,
+    usePOI,
 } from '@deriv/api';
 import { THooks } from '../../../../../types';
 import { TWithdrawalReceipt } from '../types';
 
 export type TWithdrawalCryptoContext = {
+    accountLimits: ReturnType<typeof useAccountLimits>['data'];
     activeWallet: ReturnType<typeof useActiveWalletAccount>['data'];
     exchangeRates: Partial<ReturnType<typeof useExchangeRateSubscription>>;
     fractionalDigits: {
@@ -18,6 +22,7 @@ export type TWithdrawalCryptoContext = {
     getConvertedCryptoAmount: (fiatInput: number | string) => string;
     getConvertedFiatAmount: (cryptoInput: number | string) => string;
     getCurrencyConfig: ReturnType<typeof useCurrencyConfig>['getConfig'];
+    isClientVerified: boolean | undefined;
     isWithdrawalSuccess: ReturnType<typeof useCryptoWithdrawal>['isSuccess'];
     onClose: () => void;
     requestCryptoWithdrawal: (values: Parameters<THooks.CryptoWithdrawal>[0]) => void;
@@ -47,7 +52,10 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     onClose,
     verificationCode,
 }) => {
+    const { data: accountLimits } = useAccountLimits();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { data: poaStatus } = usePOA();
+    const { data: poiStatus } = usePOI();
     const { isSuccess: isWithdrawalSuccess, mutateAsync } = useCryptoWithdrawal();
     const { getConfig } = useCurrencyConfig();
     const [withdrawalReceipt, setWithdrawalReceipt] = useState<TWithdrawalReceipt>({});
@@ -64,6 +72,11 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
             });
         return () => unsubscribe();
     }, [activeWallet?.currency, activeWallet?.loginid, subscribe, unsubscribe]);
+
+    const getClientVerificationStatus = () => {
+        const isVerified = poaStatus?.is_verified && poiStatus?.is_verified;
+        return isVerified;
+    };
 
     const getConvertedCryptoAmount = (fiatInput: number | string) => {
         const value = typeof fiatInput === 'string' ? parseFloat(fiatInput) : fiatInput;
@@ -101,6 +114,7 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
     };
 
     const value = {
+        accountLimits,
         activeWallet,
         exchangeRates: {
             data: exchangeRates,
@@ -114,6 +128,7 @@ const WithdrawalCryptoProvider: React.FC<React.PropsWithChildren<TWithdrawalCryp
         getConvertedCryptoAmount,
         getConvertedFiatAmount,
         getCurrencyConfig: getConfig,
+        isClientVerified: getClientVerificationStatus(),
         isWithdrawalSuccess,
         onClose,
         requestCryptoWithdrawal,

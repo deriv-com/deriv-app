@@ -61,16 +61,17 @@ const POISubmission = observer(
 
         const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
 
-        const handleSelectionNext = () => {
+        const handleSelectionNext = (should_show_manual = false) => {
             if (Object.keys(selected_country).length) {
                 const { submissions_left: idv_submissions_left } = idv;
                 const { submissions_left: onfido_submissions_left } = onfido;
                 const is_idv_supported = selected_country.identity.services.idv.is_country_supported;
                 const is_onfido_supported =
                     selected_country.identity.services.onfido.is_country_supported && selected_country.value !== 'ng';
-                if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
+
+                if (!should_show_manual && is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
                     setSubmissionService(service_code.idv);
-                } else if (Number(onfido_submissions_left) > 0 && is_onfido_supported) {
+                } else if (!should_show_manual && Number(onfido_submissions_left) > 0 && is_onfido_supported) {
                     setSubmissionService(service_code.onfido);
                 } else {
                     setSubmissionService(service_code.manual);
@@ -164,6 +165,7 @@ const POISubmission = observer(
                 is_idv_disallowed,
             ]
         );
+
         React.useEffect(() => {
             if (submission_status != submission_status_code.selecting) {
                 return;
@@ -195,6 +197,7 @@ const POISubmission = observer(
             setSubmissionService,
             setSubmissionStatus,
         ]);
+
         switch (submission_status) {
             case submission_status_code.selecting: {
                 return (
@@ -205,6 +208,7 @@ const POISubmission = observer(
                     />
                 );
             }
+
             case submission_status_code.submitting: {
                 switch (submission_service) {
                     case service_code.idv:
@@ -217,9 +221,11 @@ const POISubmission = observer(
                                 handleSubmit={handleViewComplete}
                                 latest_status={identity_last_attempt}
                                 selected_country={selected_country}
+                                handleSelectionNext={handleSelectionNext}
                             />
                         ) : (
                             <IdvDocumentSubmit
+                                handleSelectionNext={handleSelectionNext}
                                 handleViewComplete={handleViewComplete}
                                 handleBack={handleBack}
                                 selected_country={selected_country}
@@ -248,6 +254,7 @@ const POISubmission = observer(
                                 allow_poi_resubmission={allow_poi_resubmission}
                                 handleViewComplete={handleViewComplete}
                                 onfido={onfido}
+                                handleBack={handleBack}
                             />
                         );
                     default:
@@ -282,4 +289,5 @@ const POISubmission = observer(
         }
     }
 );
+
 export default POISubmission;

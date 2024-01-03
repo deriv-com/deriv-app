@@ -1,10 +1,9 @@
 import React from 'react';
-import classNames from 'classnames';
 import { FormikValues } from 'formik';
-import { Timeline } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { AUTH_STATUS_CODES, getPlatformRedirect, isMobile, platforms } from '@deriv/shared';
 import { TStores } from '@deriv/stores/types';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import {
     getPOIStatusMessages,
     getUploadCompleteStatusMessages,
@@ -14,6 +13,7 @@ import { DOCUMENT_TYPES, getDocumentIndex } from './constants';
 import DetailComponent from './detail-component';
 import { Documents } from './documents';
 import VerificationStatus from '../../../verification-status/verification-status';
+import FormFooter from '../../../form-footer';
 
 const checkNimcStep = (documents: FormikValues) => {
     let has_nimc = false;
@@ -33,12 +33,14 @@ type TUnsupported = {
     };
     redirect_button: React.ReactElement;
     needs_poa: boolean;
+    handleBack: () => void;
     handleRequireSubmission: () => void;
     handleViewComplete: () => void;
     allow_poi_resubmission: boolean;
     onfido?: {
         submissions_left: number;
     };
+    is_for_mt5?: boolean;
     app_routing_history: TStores['common']['app_routing_history'];
     routeBackTo: (redirect_route: string) => void;
 };
@@ -49,14 +51,16 @@ const Unsupported = ({
     manual,
     redirect_button,
     needs_poa,
+    handleBack,
     handleRequireSubmission,
     allow_poi_resubmission,
     handleViewComplete,
     onfido,
     routeBackTo,
     app_routing_history = [],
+    is_for_mt5,
     ...props
-}: Partial<TUnsupported>) => {
+}: TUnsupported) => {
     const [detail, setDetail] = React.useState<number | null>(null);
     const toggleDetail = (index: number) => setDetail(index);
 
@@ -148,19 +152,19 @@ const Unsupported = ({
     }
 
     return (
-        <Timeline
-            className={classNames('manual-poi', {
-                'manual-poi--mobile': isMobile(),
-            })}
-            disabled_items={[2]}
-        >
-            <Timeline.Item item_title={localize('Please upload one of the following documents:')}>
-                <Documents documents={documents} toggleDetail={toggleDetail} />
-            </Timeline.Item>
-            <Timeline.Item item_title={localize('Upload your selfie')}>
-                <div />
-            </Timeline.Item>
-        </Timeline>
+        <div className='manual-poi'>
+            <Text as='h2' color='prominent' size='xs' className='manual-poi__title'>
+                <Localize i18n_default_text='Please upload one of the following documents:' />
+            </Text>
+            <Documents documents={documents} toggleDetail={toggleDetail} />
+            {!is_for_mt5 && (
+                <FormFooter className='proof-of-identity__footer'>
+                    <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
+                        <Localize i18n_default_text='Back' />
+                    </Button>
+                </FormFooter>
+            )}
+        </div>
     );
 };
 export default Unsupported;

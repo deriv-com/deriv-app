@@ -3,10 +3,27 @@ import React, { PropsWithChildren, createContext, useCallback, useContext, useEf
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import { getAppId, getSocketURL, useWS } from '@deriv/shared';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+    TSocketEndpointNames,
+    TSocketError,
+    TSocketRequestPayload,
+    TSocketResponseData,
+    TSocketSubscribableEndpointNames,
+} from '../types';
+import { hashObject } from './utils';
 
 type APIContextData = {
     derivAPI: DerivAPIBasic | null;
     switchEnvironment: (loginid: string | null | undefined) => void;
+    send: <T extends TSocketEndpointNames>(
+        name: T,
+        payload?: TSocketRequestPayload<T>
+    ) => Promise<TSocketResponseData<T> & TSocketError<T>>;
+    subscribe: <T extends TSocketSubscribableEndpointNames>(
+        name: T,
+        payload?: TSocketRequestPayload<T>
+    ) => Promise<{ id: string; subscription: DerivAPIBasic['subscribe'] }>;
+    unsubscribe: (id: string) => void;
 };
 
 const APIContext = createContext<APIContextData | null>(null);
@@ -123,12 +140,60 @@ type TAPIProviderProps = {
     standalone?: boolean;
 };
 
+type TSendFunction = <T extends TSocketEndpointNames>(
+    name: T,
+    payload?: TSocketRequestPayload<T>
+) => Promise<TSocketResponseData<T> & TSocketError<T>>;
+
+type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
+    name: T,
+    payload?: TSocketRequestPayload<T>
+) => Promise<{ id: string; subscription: DerivAPIBasic['subscribe'] }>;
+
+type TUnsubscribeFunction = (id: string) => void;
+
 const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
     const WS = useWS();
     const [reconnect, setReconnect] = useState(false);
     const activeLoginid = window.localStorage.getItem('active_loginid');
     const [environment, setEnvironment] = useState(getEnvironment(activeLoginid));
     const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI(() => setReconnect(true)) : null);
+
+    const derivAPI = useRef<DerivAPIBasic>(new DerivAPIBasic({ connection: new WebSocket(getWebSocketURL()) }));
+    const subscriptions = useRef<Record<string, DerivAPIBasic['subscribe']>>({});
+
+    const send: TSendFunction = (name, payload) => {
+        return derivAPI.current?.send({ [name]: 1, ...payload });
+    };
+
+    const subscribe: TSubscribeFunction = async (name, payload) => {
+        const id = await hashObject({ name, payload });
+        const matchingSubscription = subscriptions.current?.[id];
+        if (matchingSubscription) return { id, subscription: matchingSubscription };
+
+        const subscription = derivAPI.current?.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) });
+        subscriptions.current = { ...(subscriptions.current || {}), ...{ [id]: subscription } };
+        return { id, subscription };
+    };
+
+    const unsubscribe: TUnsubscribeFunction = id => {
+        const matchingSubscription = subscriptions.current?.[id];
+        if (matchingSubscription) matchingSubscription.unsubscribe();
+    };
+
+    useEffect(() => {
+        const currentDerivApi = derivAPI.current;
+        const currentSubscriptions = subscriptions.current;
+
+        return () => {
+            if (currentSubscriptions) {
+                Object.keys(currentSubscriptions).forEach(key => {
+                    currentSubscriptions[key].unsubscribe();
+                });
+            }
+            if (currentDerivApi && currentDerivApi.connection.readyState === 1) currentDerivApi.disconnect();
+        };
+    }, []);
 
     const switchEnvironment = useCallback(
         (loginid: string | null | undefined) => {
@@ -164,7 +229,15 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     }, [environment, reconnect, standalone]);
 
     return (
-        <APIContext.Provider value={{ derivAPI: standalone ? standaloneDerivAPI.current : WS, switchEnvironment }}>
+        <APIContext.Provider
+            value={{
+                derivAPI: standalone ? standaloneDerivAPI.current : WS,
+                switchEnvironment,
+                send,
+                subscribe,
+                unsubscribe,
+            }}
+        >
             <QueryClientProvider client={queryClient}>
                 {children}
                 {/* <ReactQueryDevtools /> */}

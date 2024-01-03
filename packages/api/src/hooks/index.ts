@@ -67,3 +67,4 @@ export { default as useWalletMigration } from './useWalletMigration';
 export { default as useTradingPlatformPasswordReset } from './useTradingPlatformPasswordReset';
 export { default as useResetVirtualBalance } from './useResetVirtualBalance';
 export { default as useTotalAssets } from './useTotalAssets';
+export { default as useExchangeRates } from './useExchangeRates';

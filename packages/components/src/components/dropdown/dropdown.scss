@@ -118,15 +118,6 @@
     &__container {
         position: relative;
     }
-    &__label--new {
-        position: absolute;
-        right: 0.8rem;
-        top: calc(50% - 7px);
-        padding: 0 0.4rem;
-        border-radius: $BORDER_RADIUS * 4;
-        background-color: var(--text-loss-danger);
-        color: var(--status-colored-background);
-    }
     &__hint {
         margin-left: 1.2rem;
     }

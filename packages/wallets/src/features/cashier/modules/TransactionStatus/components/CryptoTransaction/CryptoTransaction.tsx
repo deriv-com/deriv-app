@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import classNames from 'classnames';
+import moment from 'moment';
+import { useCancelCryptoTransaction } from '@deriv/api';
 import { WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
 import IcCrossLight from '../../../../../../public/images/ic-cross-light.svg';
 import { THooks } from '../../../../../../types';
-import useRecentTransactions from '../../hooks/useRecentTransactions';
-import { CancelTransactionModal } from '../CancelTransactionModal';
+import { WalletActionModal } from '../../../../components/WalletActionModal';
 import './CryptoTransaction.scss';
 
 type TCryptoTransaction = {
     currencyDisplayCode: THooks.CurrencyConfig['code'];
-    transaction: NonNullable<ReturnType<typeof useRecentTransactions>['recentTransactions']>[number];
+    transaction: THooks.CryptoTransactions;
 };
 
 const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: currency, transaction }) => {
-    const { show } = useModal();
+    const { hide, show } = useModal();
+
+    const { mutate } = useCancelCryptoTransaction();
+
+    const cancelTransaction = useCallback(() => {
+        mutate({ payload: { id: transaction.id } });
+        hide();
+    }, [hide, mutate, transaction.id]);
 
     return (
         <div className='wallets-crypto-transaction'>
@@ -32,12 +40,31 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                         )}
                     />
                     <WalletText lineHeight='2xs' size='2xs'>
-                        {transaction.statusName}
+                        {transaction.status_name}
                     </WalletText>
                     {!!transaction.is_valid_to_cancel && (
                         <button
                             className='wallets-crypto-transaction__cancel-button'
-                            onClick={() => show(<CancelTransactionModal transactionId={transaction.id} />)}
+                            onClick={() =>
+                                show(
+                                    <WalletActionModal
+                                        actionButtonsOptions={[
+                                            {
+                                                onClick: hide,
+                                                text: "No, don't cancel",
+                                            },
+                                            {
+                                                isPrimary: true,
+                                                onClick: cancelTransaction,
+                                                text: 'Yes, cancel',
+                                            },
+                                        ]}
+                                        description='Are you sure you want to cancel this transaction?'
+                                        hideCloseButton={true}
+                                        title='Cancel transaction'
+                                    />
+                                )
+                            }
                         >
                             <IcCrossLight />
                         </button>
@@ -49,18 +76,28 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                     {transaction.amount} {currency}
                 </WalletText>
                 <WalletText color='less-prominent' size='2xs'>
-                    {transaction.submitDateDisplay}
+                    {moment.unix(transaction.submit_date).utc().format('MMM D, YYYY')}
                 </WalletText>
             </div>
             <WalletText lineHeight='2xs' size='2xs'>
                 Address:{' '}
-                <a className='wallets-crypto-transaction__red-text' href={transaction.address_url}>
+                <a
+                    className='wallets-crypto-transaction__red-text'
+                    href={transaction.address_url}
+                    rel='noopener noreferrer'
+                    target='_blank'
+                >
                     {transaction.formatted_address_hash}
                 </a>
             </WalletText>
             <WalletText lineHeight='2xs' size='2xs'>
                 Transaction hash:{' '}
-                <a className='wallets-crypto-transaction__red-text' href={transaction.transaction_url}>
+                <a
+                    className='wallets-crypto-transaction__red-text'
+                    href={transaction.transaction_url}
+                    rel='noopener noreferrer'
+                    target='_blank'
+                >
                     {transaction.formatted_transaction_hash}
                 </a>
             </WalletText>
@@ -68,7 +105,9 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                 <div>
                     <WalletText lineHeight='2xs' size='2xs'>
                         Confirmations:{' '}
-                        <span className='wallets-crypto-transaction__red-text'>{transaction.confirmationDisplay}</span>
+                        <span className='wallets-crypto-transaction__red-text'>
+                            {transaction.formatted_confirmations}
+                        </span>
                     </WalletText>
                 </div>
             )}

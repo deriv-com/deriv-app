@@ -7,7 +7,7 @@ const DepositCryptoCurrencyDetails = () => {
 
     return (
         <WalletText align='center' size='md' weight='bold'>
-            Send only {data?.currency_config?.name} ({data?.currency_config?.display_code}) to this address.
+            Send only {data?.currency_config?.name} ({data?.currency_config?.display_code}) to this address
         </WalletText>
     );
 };

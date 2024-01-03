@@ -1,11 +1,9 @@
 .wallets-clipboard {
     all: unset;
     border-radius: 0rem 0.4rem 0.4rem 0rem;
-    border: 0.1rem solid #e6e6e6;
     border-left: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 3rem;
-    height: 3rem;
+    cursor: pointer;
 }

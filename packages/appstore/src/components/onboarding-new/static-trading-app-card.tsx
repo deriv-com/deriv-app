@@ -17,9 +17,12 @@ const StaticTradingAppCard = ({
     sub_title,
     has_applauncher_account,
     is_item_blurry,
-}: AvailableAccount & TDetailsOfEachMT5Loginid & { has_divider?: boolean }) => {
-    const { app_desc } = getAppstorePlatforms().find(config => config.name === name) || {
-        app_desc: description,
+    is_animated,
+    is_mt5_allowed = true,
+}: AvailableAccount &
+    TDetailsOfEachMT5Loginid & { has_divider?: boolean; is_animated: boolean; is_mt5_allowed?: boolean }) => {
+    const { app_desc } = (is_mt5_allowed && getAppstorePlatforms().find(config => config.name === name)) || {
+        app_desc: is_mt5_allowed ? description : localize('Multipliers trading platform.'),
         link_to: '',
     };
     const icon_size = isMobile() || has_applauncher_account ? 48 : 32;
@@ -66,6 +69,7 @@ const StaticTradingAppCard = ({
                     className={classNames('static-trading-app-card__actions--active', {
                         'static-trading-app-card__actions--blurry': is_item_blurry,
                         'static-trading-app-card__button--hidden': !has_applauncher_account,
+                        'static-trading-app-card__button--animated': is_animated,
                     })}
                 >
                     {localize('Open')}

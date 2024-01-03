@@ -1,23 +1,24 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
-import { Button, Input, Checkbox, Text } from '@deriv/components';
+import { Button, Checkbox, Input, Text } from '@deriv/components';
 import {
-    getDebugServiceWorker,
     getAppId,
+    getDebugServiceWorker,
     getSocketURL,
-    PlatformContext,
     isMobile,
-    website_domain,
     TRADE_FEATURE_FLAGS,
+    website_domain,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 
 const FeatureFlagsSection = observer(() => {
     const { feature_flags } = useStore();
+    const HIDDEN_FEATURE_FLAGS = ['wallet'];
+
     const visible_feature_flags = Object.entries(feature_flags.data ?? {})?.reduce(
         (flags, [key, value]) => {
             const is_production = location.hostname === website_domain;
-            if (!is_production || !TRADE_FEATURE_FLAGS.includes(key)) {
+            if ((!is_production || !TRADE_FEATURE_FLAGS.includes(key)) && !HIDDEN_FEATURE_FLAGS.includes(key)) {
                 flags[key] = value;
             }
             return flags;
@@ -65,14 +66,11 @@ const InputField = props => {
 
 // doesn't need localization as it's for internal use
 const Endpoint = () => {
-    const platform_store = React.useContext(PlatformContext);
-
     return (
         <Formik
             initialValues={{
                 app_id: getAppId(),
                 server: getSocketURL(),
-                is_appstore_enabled: platform_store.is_appstore,
                 is_debug_service_worker_enabled: !!getDebugServiceWorker(),
             }}
             validate={values => {
@@ -86,17 +84,14 @@ const Endpoint = () => {
 
                 if (!values.server) {
                     errors.server = 'Server is required.';
-                } else if (!/^[\w|\-|.]+$/.test(values.server)) {
-                    errors.server = 'Please enter a valid server.';
                 }
+
                 return errors;
             }}
             onSubmit={values => {
                 localStorage.setItem('config.app_id', values.app_id);
                 localStorage.setItem('config.server_url', values.server);
-                localStorage.setItem(platform_store.DERIV_APPSTORE_KEY, values.is_appstore_enabled);
                 localStorage.setItem('debug_service_worker', values.is_debug_service_worker_enabled ? 1 : 0);
-                platform_store.setIsAppStore(values.is_appstore_enabled);
                 sessionStorage.removeItem('config.platform');
                 location.reload();
             }}
@@ -131,21 +126,6 @@ const Endpoint = () => {
                             </React.Fragment>
                         }
                     />
-                    <Field name='is_appstore_enabled'>
-                        {({ field }) => (
-                            <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
-                                <Checkbox
-                                    {...field}
-                                    label='Enable Appstore'
-                                    value={values.is_appstore_enabled}
-                                    onChange={e => {
-                                        handleChange(e);
-                                        setFieldTouched('is_appstore_enabled', true);
-                                    }}
-                                />
-                            </div>
-                        )}
-                    </Field>
                     <Field name='is_debug_service_worker_enabled'>
                         {({ field }) => (
                             <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
@@ -165,10 +145,7 @@ const Endpoint = () => {
                         type='submit'
                         is_disabled={
                             !!(
-                                (!touched.server &&
-                                    !touched.app_id &&
-                                    !touched.is_appstore_enabled &&
-                                    !touched.is_debug_service_worker_enabled) ||
+                                (!touched.server && !touched.app_id && !touched.is_debug_service_worker_enabled) ||
                                 !values.server ||
                                 !values.app_id ||
                                 errors.server ||

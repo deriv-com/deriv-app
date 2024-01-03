@@ -9,6 +9,7 @@ import CreateAd from './create-ad.jsx';
 import EditAd from './edit-ad.jsx';
 import MyAdsTable from './my-ads-table.jsx';
 import Verification from 'Components/verification';
+import { document_status_codes, identity_status_codes } from 'Constants/account-status-codes';
 
 const MyAdsState = ({ message }) => (
     <div className='my-ads__state'>
@@ -17,17 +18,20 @@ const MyAdsState = ({ message }) => (
 );
 
 const MyAds = () => {
-    const { general_store, my_ads_store } = useStores();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
+    const is_poi_poa_verified =
+        general_store.poi_status === identity_status_codes.VERIFIED &&
+        (!general_store.p2p_poa_required || general_store.poa_status === document_status_codes.VERIFIED);
 
     React.useEffect(() => {
         my_ads_store.setIsLoading(true);
         my_ads_store.setShowEditAdForm(false);
         my_ads_store.getAccountStatus();
+        my_profile_store.getPaymentMethodsList();
         if (general_store.active_index !== 2) general_store.setActiveIndex(2);
 
         return () => {
             my_ads_store.setShowAdForm(false);
-            general_store.setShouldShowPopup(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -44,7 +48,7 @@ const MyAds = () => {
         return <MyAdsState message={my_ads_store.error_message} />;
     }
 
-    if (general_store.is_advertiser) {
+    if (general_store.is_advertiser || is_poi_poa_verified) {
         if (my_ads_store.show_ad_form) {
             return (
                 <div className='my-ads'>

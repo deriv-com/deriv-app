@@ -23,6 +23,7 @@ export const domain_app_ids = {
     'app.deriv.be': 30767,
     'staging-app.deriv.be': 31186,
     'binary.com': 1,
+    'test-app.deriv.com': 51072,
 };
 
 export const platform_app_ids = {
@@ -42,7 +43,7 @@ export const isTestLink = () => {
     return /^((.*)\.binary\.sx)$/i.test(window.location.hostname);
 };
 
-export const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
+export const isLocal = () => /localhost(:\d+)?$/i.test(window.location.hostname);
 
 export const getAppId = () => {
     let app_id = null;

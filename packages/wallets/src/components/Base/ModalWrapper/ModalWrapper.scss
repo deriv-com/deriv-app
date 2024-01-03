@@ -1,9 +1,18 @@
 .wallets-modal-wrapper {
     position: relative;
+    animation: popup 0.4s;
+
+    @include mobile {
+        animation: popup 0.2s;
+    }
+
+    @include mobile {
+        width: calc(100vw - 3.2rem);
+    }
 
     &__close-icon {
         position: absolute;
-        top: 2rem;
+        top: 2.4rem;
         right: 2rem;
         cursor: pointer;
     }

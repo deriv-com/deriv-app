@@ -37,7 +37,9 @@ const ContractInfo = ({
 }: TContractInfo) => {
     const localized_basis = getLocalizedBasis();
     const vanilla_payout_text = is_vanilla_fx ? localized_basis.payout_per_pip : localized_basis.payout_per_point;
-
+    const turbos_payout_message = (
+        <Localize i18n_default_text='This is the amount you’ll receive at expiry for every point of change in the underlying price, if the spot price never touches or breaches the barrier throughout the contract duration.' />
+    );
     const vanilla_payout_message = is_vanilla_fx ? (
         <Localize
             i18n_default_text='The payout at expiry is equal to the payout per pip multiplied by the difference, <0>in pips</0>, between the final price and the strike price.'
@@ -78,20 +80,8 @@ const ContractInfo = ({
     const { message, obj_contract_basis, stake } = proposal_info;
 
     const setHintMessage = () => {
-        if (is_turbos) {
-            return (
-                <Localize
-                    i18n_default_text='{{message}}'
-                    values={{
-                        message,
-                    }}
-                />
-            );
-        }
-        if (is_vanilla) {
-            return vanilla_payout_message;
-        }
-
+        if (is_turbos) return turbos_payout_message;
+        if (is_vanilla) return vanilla_payout_message;
         return message;
     };
 

@@ -1,56 +1,66 @@
 .wallets-transactions {
-    width: 70vw;
+    width: 100%;
+    height: fit-content;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    // ignore CashierContent top padding
+    margin-top: -4.8rem;
+    @include mobile {
+        margin-top: -2.4rem;
+    }
+
+    // adjust filter dropdown width
+    .wallets-dropdown {
+        max-width: 19.5rem;
+        @include mobile {
+            max-width: unset;
+        }
+    }
+
+    // don't need details/error message
+    .wallets-textfield__message-container {
+        display: none;
+    }
+
+    // don't show text selection
+    .wallets-textfield__field::selection {
+        background: none;
+    }
 
     &__header {
+        position: sticky;
+        top: -4.8rem; // ignore CashierContent padding
+        width: 100%;
+        max-width: 80rem;
+        padding: 2.4rem 0 0.8rem;
         display: flex;
-        gap: 16px;
+        gap: 1.6rem;
         justify-content: flex-end;
+        z-index: 2;
+        background-color: var(--system-light-8-primary-background, #fff);
+
+        @include mobile {
+            top: -2.4rem;
+            padding: 1.6rem 0;
+            flex-direction: column;
+        }
+    }
+
+    #toggle-pending {
+        position: absolute;
     }
 
     &__toggle {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 0.4rem;
         color: var(--system-light-2-general-text, #333);
 
-        /* desktop/paragraph/P2 - regular */
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 20px; /* 142.857% */
-
-        &-switch {
-            height: 0;
-            width: 0;
-            visibility: hidden;
-
-            &__label {
-                display: flex;
-                align-items: center;
-                margin-left: auto;
-                margin-right: 1.6rem;
-                padding-left: 0.4rem;
-                cursor: pointer;
-                width: 4.9rem;
-                height: 2.52rem;
-                background: var(--general-disabled);
-                border-radius: 4.9rem;
-                transition: background-color 0.25s;
-            }
-            &__button {
-                width: 1.9rem;
-                height: 1.9rem;
-                border-radius: 1.9rem;
-                transition: transform 0.25s;
-                background: var(--text-colored-background);
-            }
-
-            &:checked + &__label {
-                background: #4bb4b3;
-            }
-            &:checked + &__label &__button {
-                transform: translateX(2.25rem);
-            }
+        @include mobile {
+            align-self: flex-end;
         }
     }
 }

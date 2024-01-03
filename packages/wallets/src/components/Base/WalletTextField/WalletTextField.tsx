@@ -1,90 +1,111 @@
-import React, { ChangeEvent, ComponentProps, ReactElement, useState } from 'react';
-import { WalletButton } from '../WalletButton';
-import WalletText from '../WalletText/WalletText';
+import React, { ChangeEvent, ComponentProps, forwardRef, Ref, useState } from 'react';
+import classNames from 'classnames';
+import { FormikErrors } from 'formik';
+import HelperMessage, { HelperMessageProps } from './HelperMessage';
 import './WalletTextField.scss';
 
-interface WalletTextFieldProps {
+export interface WalletTextFieldProps extends ComponentProps<'input'>, HelperMessageProps {
     defaultValue?: string;
-    helperMessage?: string;
-    icon?: ReactElement;
-    id?: ComponentProps<'input'>['id'];
+    disabled?: boolean;
+    errorMessage?: FormikErrors<unknown> | FormikErrors<unknown>[] | string[] | string;
+    isInvalid?: boolean;
     label?: string;
-    leftIcon?: React.ReactNode;
-    maxLength?: ComponentProps<'input'>['maxLength'];
-    onChange?: ComponentProps<'input'>['onChange'];
-    onClickIcon?: ComponentProps<'button'>['onClick'];
+    renderLeftIcon?: () => React.ReactNode;
+    renderRightIcon?: () => React.ReactNode;
     showMessage?: boolean;
-    type?: ComponentProps<'input'>['type'];
 }
 
-type MessageContainerProps = {
-    helperMessage?: WalletTextFieldProps['helperMessage'];
-    maxLength?: WalletTextFieldProps['maxLength'];
-};
+const WalletTextField = forwardRef(
+    (
+        {
+            defaultValue = '',
+            disabled,
+            errorMessage,
+            isInvalid,
+            label,
+            maxLength,
+            message,
+            messageVariant = 'general',
+            name = 'walletTextField',
+            onChange,
+            renderLeftIcon,
+            renderRightIcon,
+            showMessage = false,
+            ...rest
+        }: WalletTextFieldProps,
+        ref: Ref<HTMLInputElement>
+    ) => {
+        const [value, setValue] = useState(defaultValue);
 
-const WalletTextField: React.FC<WalletTextFieldProps> = ({
-    defaultValue = '',
-    helperMessage,
-    icon,
-    id = 'wallet-textfield',
-    label,
-    maxLength,
-    onChange,
-    onClickIcon,
-    showMessage = false,
-    type = 'text',
-}) => {
-    const [value, setValue] = useState(defaultValue);
+        const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+            const newValue = e.target.value;
+            setValue(newValue);
+            onChange?.(e);
+        };
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const newValue = e.target.value;
-        setValue(newValue);
-        onChange?.(e);
-    };
-
-    const MessageContainer: React.FC<MessageContainerProps> = ({ helperMessage, maxLength }) => (
-        <>
-            {helperMessage && (
-                <div className='wallets-textfield__message-container--msg'>
-                    <WalletText color='less-prominent' size='xs'>
-                        {helperMessage}
-                    </WalletText>
+        return (
+            <div
+                className={classNames('wallets-textfield', {
+                    'wallets-textfield--disabled': disabled,
+                    'wallets-textfield--error': isInvalid,
+                })}
+                data-testid='dt_wallets_textfield'
+            >
+                <div className='wallets-textfield__box' data-testid='dt_wallets_textfield_box'>
+                    {typeof renderLeftIcon === 'function' && (
+                        <div className='wallets-textfield__icon-left' data-testid='dt_wallets_textfield_icon_left'>
+                            {renderLeftIcon()}
+                        </div>
+                    )}
+                    <input
+                        className='wallets-textfield__field'
+                        disabled={disabled}
+                        id={name}
+                        maxLength={maxLength}
+                        onChange={handleChange}
+                        placeholder={label}
+                        ref={ref}
+                        value={value}
+                        {...rest}
+                    />
+                    {label && (
+                        <label className='wallets-textfield__label' htmlFor={name}>
+                            {label}
+                        </label>
+                    )}
+                    {typeof renderRightIcon === 'function' && (
+                        <div className='wallets-textfield__icon-right' data-testid='dt_wallets_textfield_icon_right'>
+                            {renderRightIcon()}
+                        </div>
+                    )}
                 </div>
-            )}
-            {maxLength && (
-                <div className='wallets-textfield__message-container--maxchar'>
-                    <WalletText align='right' color='less-prominent' size='xs'>
-                        {value.length} / {maxLength}
-                    </WalletText>
+                <div className='wallets-textfield__message-container'>
+                    {!disabled && (
+                        <>
+                            {showMessage && !isInvalid && (
+                                <HelperMessage
+                                    inputValue={value}
+                                    maxLength={maxLength}
+                                    message={message}
+                                    messageVariant={messageVariant}
+                                />
+                            )}
+                            {errorMessage && isInvalid && (
+                                <HelperMessage
+                                    inputValue={value}
+                                    isError
+                                    maxLength={maxLength}
+                                    message={errorMessage as string}
+                                    messageVariant='error'
+                                />
+                            )}
+                        </>
+                    )}
                 </div>
-            )}
-        </>
-    );
-
-    return (
-        <div className='wallets-textfield'>
-            <div className='wallets-textfield__content'>
-                <input
-                    className='wallets-textfield__field'
-                    id={id}
-                    maxLength={maxLength}
-                    onChange={handleChange}
-                    placeholder={label}
-                    type={type}
-                    value={value}
-                />
-                {label && (
-                    <label className='wallets-textfield__label' htmlFor={id}>
-                        {label}
-                    </label>
-                )}
-                {icon && <WalletButton icon={icon} onClick={onClickIcon} rounded='md' size='sm' variant='ghost' />}
             </div>
-            <div className='wallets-textfield__message-container'>
-                {showMessage && <MessageContainer helperMessage={helperMessage} maxLength={maxLength} />}
-            </div>
-        </div>
-    );
-};
+        );
+    }
+);
 
+WalletTextField.displayName = 'WalletTextField';
 export default WalletTextField;

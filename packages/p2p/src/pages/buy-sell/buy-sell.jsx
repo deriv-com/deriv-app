@@ -15,14 +15,11 @@ const BuySell = () => {
 
     React.useEffect(() => {
         if (general_store.active_index !== 0) general_store.setActiveIndex(0);
-        const disposeIsListedReaction = buy_sell_store.registerIsListedReaction();
         const disposeAdvertIntervalReaction = buy_sell_store.registerAdvertIntervalReaction();
         buy_sell_store.setLocalCurrency(buy_sell_store.selected_local_currency);
 
         return () => {
-            disposeIsListedReaction();
             disposeAdvertIntervalReaction();
-            general_store.setShouldShowPopup(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -36,13 +33,11 @@ const BuySell = () => {
     if (buy_sell_store.should_show_verification) {
         return (
             <React.Fragment>
-                {!general_store.should_show_popup && (
-                    <PageReturn
-                        className='buy-sell__page-return'
-                        onClick={buy_sell_store.hideVerification}
-                        page_title={localize('Verification')}
-                    />
-                )}
+                <PageReturn
+                    className='buy-sell__page-return'
+                    onClick={buy_sell_store.hideVerification}
+                    page_title={localize('Verification')}
+                />
                 <Verification />
             </React.Fragment>
         );

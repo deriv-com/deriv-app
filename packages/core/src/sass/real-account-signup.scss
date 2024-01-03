@@ -203,6 +203,8 @@
             justify-content: end;
             display: flex;
             border-top: 1px solid var(--general-section-1);
+            max-width: initial;
+
             @include mobile {
                 width: 100%;
                 position: relative;
@@ -217,9 +219,7 @@
         }
     }
     .account-form__footer {
-        @include desktop {
-            position: relative;
-        }
+        position: relative;
     }
 }
 
@@ -228,7 +228,8 @@
     height: 100%;
     @include mobile {
         width: 100%;
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-rows: 1fr auto;
+        padding: unset;
     }
 }

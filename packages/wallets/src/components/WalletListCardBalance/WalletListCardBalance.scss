@@ -1,0 +1,15 @@
+@import '../../components/SkeletonLoader/SkeletonLoader.scss';
+
+.wallets-balance {
+    &__container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    &--loader {
+        padding: 1rem;
+        width: 12rem;
+        height: 3rem;
+    }
+}

@@ -1,11 +1,12 @@
 import React from 'react';
-import PasswordShowIcon from '../../../../public/images/ic-password-show.svg';
-import { TMarketTypes, TPlatforms } from '../../../../types';
-import { PlatformToTitleMapper } from '../../constants';
+import { useActiveWalletAccount } from '@deriv/api';
+import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
+import { TMarketTypes, TPlatforms } from '../../../../types';
+import { validPassword } from '../../../../utils/password';
+import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
-// TODO: Refactor the unnecessary props out once FlowProvider is integrated
 type TProps = {
     isLoading?: boolean;
     marketType: TMarketTypes.CreateOtherCFDAccount;
@@ -13,44 +14,60 @@ type TProps = {
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
     password: string;
+    passwordError?: boolean;
     platform: TPlatforms.All;
 };
 
 const EnterPassword: React.FC<TProps> = ({
-    isLoading = false,
+    isLoading,
     marketType,
     onPasswordChange,
     onPrimaryClick,
     onSecondaryClick,
     password,
+    passwordError,
     platform,
 }) => {
     const { isDesktop } = useDevice();
-    const title = PlatformToTitleMapper[platform];
+    const title = PlatformDetails[platform].title;
+    const { data } = useActiveWalletAccount();
+    const accountType = data?.is_virtual ? 'Demo' : 'Real';
+    const marketTypeTitle =
+        platform === PlatformDetails.dxtrade.platform ? accountType : MarketTypeDetails[marketType].title;
+
     return (
         <div className='wallets-enter-password'>
-            <div className='wallets-enter-password--container'>
-                {isDesktop && <div className='wallets-enter-password-title'>Enter your {title} password</div>}
-                <span className='wallets-enter-password-subtitle'>
-                    Enter your {title} password to add a {title} {marketType} account.
-                </span>
-                <div className='wallets-enter-password-input'>
-                    <input onChange={onPasswordChange} placeholder={`${title} password`} type='password' />
-                    <PasswordShowIcon className='wallets-create-password-input-trailing-icon' />
+            <div className='wallets-enter-password__container'>
+                <WalletText lineHeight='xl' weight='bold'>
+                    Enter your {title} password
+                </WalletText>
+                <div className='wallets-enter-password__content'>
+                    <WalletText size='sm'>
+                        Enter your {title} password to add a {title} {marketTypeTitle} account.
+                    </WalletText>
+                    <WalletPasswordFieldLazy
+                        label={`${title} password`}
+                        onChange={onPasswordChange}
+                        password={password}
+                        passwordError={passwordError}
+                        shouldDisablePasswordMeter
+                        showMessage={false}
+                    />
                 </div>
             </div>
             {isDesktop && (
-                <div className='wallets-enter-password-buttons'>
-                    <button className='wallets-enter-password-forgot-password-button' onClick={onSecondaryClick}>
+                <div className='wallets-enter-password__buttons'>
+                    <WalletButton onClick={onSecondaryClick} size='lg' variant='outlined'>
                         Forgot password?
-                    </button>
-                    <button
-                        className='wallets-enter-password-add-button'
-                        disabled={isLoading || !password}
+                    </WalletButton>
+                    <WalletButton
+                        disabled={!password || isLoading || !validPassword(password)}
+                        isLoading={isLoading}
                         onClick={onPrimaryClick}
+                        size='lg'
                     >
                         Add account
-                    </button>
+                    </WalletButton>
                 </div>
             )}
         </div>

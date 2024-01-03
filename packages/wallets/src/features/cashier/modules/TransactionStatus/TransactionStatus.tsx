@@ -1,12 +1,11 @@
-import React, { useCallback, useMemo } from 'react';
-import { useActiveWalletAccount } from '@deriv/api';
+import React, { useCallback, useEffect } from 'react';
+import { useActiveWalletAccount, useCryptoTransactions } from '@deriv/api';
+import { Loader } from '../../../../components';
 import { Divider, WalletText } from '../../../../components/Base';
-import { Loader } from '../../../../components/Loader';
 import Warning from '../../../../public/images/warning.svg';
 import { THooks } from '../../../../types';
 import { TransactionStatusError } from './components/TransactionStatusError';
 import { TransactionStatusSuccess } from './components/TransactionStatusSuccess';
-import useRecentTransactions from './hooks/useRecentTransactions';
 import './TransactionStatus.scss';
 
 type TTransactionStatus = {
@@ -15,11 +14,13 @@ type TTransactionStatus = {
 
 const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) => {
     const {
+        data: transactions,
         error: recentTransactionsError,
         isLoading: isTransactionsLoading,
-        recentTransactions,
-        refresh: refreshRecentTransactions,
-    } = useRecentTransactions(transactionType);
+        resetData,
+        subscribe,
+        unsubscribe,
+    } = useCryptoTransactions();
     const {
         data: wallet,
         error: activeWalletAccountError,
@@ -27,35 +28,42 @@ const TransactionStatus: React.FC<TTransactionStatus> = ({ transactionType }) =>
         refetch,
     } = useActiveWalletAccount();
 
-    const isLoading = useMemo(
-        () => isTransactionsLoading || isActiveWalletAccountLoading,
-        [isTransactionsLoading, isActiveWalletAccountLoading]
-    );
+    useEffect(() => {
+        subscribe({ payload: { transaction_type: transactionType } });
+        return () => unsubscribe();
+    }, [subscribe, transactionType, unsubscribe]);
 
-    const isError = useMemo(
-        () => !!activeWalletAccountError || !!recentTransactionsError,
-        [activeWalletAccountError, recentTransactionsError]
-    );
+    const isLoading = isTransactionsLoading || isActiveWalletAccountLoading;
+    const isError = !!activeWalletAccountError || !!recentTransactionsError;
+    const isTransactionStatusSuccessVisible = !isLoading && !isError && wallet;
 
     const refresh = useCallback(() => {
-        refreshRecentTransactions();
+        unsubscribe();
+        resetData();
+        subscribe({ payload: { transaction_type: transactionType } });
         refetch();
-    }, [refetch, refreshRecentTransactions]);
+    }, [refetch, resetData, subscribe, transactionType, unsubscribe]);
 
     return (
         <div className='wallets-transaction-status'>
             <div className='wallets-transaction-status__header'>
-                <WalletText weight='bold'>Transaction status</WalletText>
+                <WalletText size='sm' weight='bold'>
+                    Transaction status
+                </WalletText>
                 {isError && <Warning />}
             </div>
             <Divider color='#d6dadb' /> {/* --color-grey-5 */}
             <div className='wallets-transaction-status__body'>
-                {!isError && isLoading && <Loader color='#85acb0' />}
+                {!isError && isLoading && (
+                    <div className='wallets-transaction-status__loader'>
+                        <Loader />
+                    </div>
+                )}
                 {isError && <TransactionStatusError refresh={refresh} />}
-                {!isLoading && !isError && wallet && (
+                {isTransactionStatusSuccessVisible && (
                     <TransactionStatusSuccess
-                        recentTransactions={recentTransactions}
                         transactionType={transactionType}
+                        transactions={transactions || []}
                         wallet={wallet}
                     />
                 )}

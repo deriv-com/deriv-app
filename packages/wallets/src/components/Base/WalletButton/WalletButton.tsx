@@ -1,39 +1,44 @@
-import React, { ComponentProps, CSSProperties, ReactElement } from 'react';
+import React, { ComponentProps, CSSProperties, FC, PropsWithChildren, ReactElement } from 'react';
 import classNames from 'classnames';
-import { TGenericSizes } from '../types';
+import { TGenericSizes } from '../../../types';
+import { Loader } from '../../Loader';
 import { WalletText } from '../WalletText';
 import './WalletButton.scss';
 
 type TVariant = 'contained' | 'ghost' | 'outlined';
+type TColor = 'black' | 'primary-light' | 'primary' | 'white';
 
 interface WalletButtonProps {
-    color?: CSSProperties['color'] | 'primary-light' | 'primary';
+    ariaLabel?: ComponentProps<'button'>['aria-label'];
+    color?: TColor;
     disabled?: ComponentProps<'button'>['disabled'];
     icon?: ReactElement;
     isFullWidth?: boolean;
+    isLoading?: boolean;
     onClick?: ComponentProps<'button'>['onClick'];
     rounded?: Extract<TGenericSizes, 'md' | 'sm'>;
     size?: Extract<TGenericSizes, 'lg' | 'md' | 'sm'>;
-    text?: React.ReactNode;
+    textSize?: ComponentProps<typeof WalletText>['size'];
+    type?: ComponentProps<'button'>['type'];
     variant?: TVariant;
 }
 
-const WalletButton: React.FC<WalletButtonProps> = ({
+const WalletButton: FC<PropsWithChildren<WalletButtonProps>> = ({
+    ariaLabel,
+    children,
     color = 'primary',
     disabled = false,
     icon,
     isFullWidth = false,
+    isLoading = false,
     onClick,
     rounded = 'sm',
     size = 'md',
-    text,
+    textSize,
+    type,
     variant = 'contained',
 }) => {
     const isContained = variant === 'contained';
-    const isOutlined = variant === 'outlined';
-    const isGhost = variant === 'ghost';
-    const hasIcon = !!icon;
-    const hasText = !!text;
 
     const buttonClassNames = classNames(
         'wallets-button',
@@ -44,44 +49,68 @@ const WalletButton: React.FC<WalletButtonProps> = ({
         isFullWidth && 'wallets-button__full-width'
     );
 
-    const buttonFontColor = () => {
-        if (isContained) {
-            switch (color) {
-                case 'black':
-                    return 'white';
-                case 'primary-light':
-                    return 'error';
-                case 'primary':
-                    return 'white';
-                case 'white':
-                    return 'general';
-                default:
-                    return 'white';
-            }
-        } else if (isOutlined) {
-            return 'general';
-        } else if (isGhost) {
-            return 'error';
-        }
+    type TButtonFontColor = {
+        [key in TVariant]: {
+            [key in TColor]: string;
+        };
+    };
+
+    const fontColorMapper: TButtonFontColor = {
+        contained: {
+            black: 'white',
+            primary: 'white',
+            'primary-light': 'error',
+            white: 'general',
+        },
+        ghost: {
+            black: 'error',
+            primary: 'error',
+            'primary-light': 'error',
+            white: 'error',
+        },
+        outlined: {
+            black: 'general',
+            primary: 'general',
+            'primary-light': 'general',
+            white: 'general',
+        },
+    };
+
+    const loaderColorMapper: Record<TColor, CSSProperties['color']> = {
+        black: '#333333',
+        primary: '#FFFFFF',
+        'primary-light': '#EC3F3F',
+        white: '#85ACB0',
     };
 
     const buttonFontSizeMapper = {
-        lg: 'sm',
+        lg: 'md',
         md: 'sm',
         sm: 'xs',
     } as const;
 
     return (
-        <button className={buttonClassNames} disabled={disabled} onClick={onClick}>
-            {hasIcon && icon}
-            {hasText && (
+        <button
+            aria-label={ariaLabel}
+            className={buttonClassNames}
+            disabled={disabled || isLoading}
+            onClick={onClick}
+            type={type}
+        >
+            {isLoading && (
+                <div className='wallets-button__loader'>
+                    <Loader color={isContained ? loaderColorMapper[color] : '#85ACB0'} isFullScreen={false} />
+                </div>
+            )}
+            {icon && !isLoading && icon}
+            {children && !isLoading && (
                 <WalletText
                     align='center'
-                    color={buttonFontColor()}
-                    size={buttonFontSizeMapper[size] || 'sm'}
+                    color={fontColorMapper[variant][color]}
+                    size={textSize || buttonFontSizeMapper[size] || 'sm'}
                     weight='bold'
                 >
-                    {text}
+                    {children}
                 </WalletText>
             )}
         </button>

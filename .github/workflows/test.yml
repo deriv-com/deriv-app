@@ -1,4 +1,4 @@
-name: Deriv App Test Workflow
+name: Deriv App PR Test Workflow
 on:
   pull_request:
     branches:
@@ -7,10 +7,10 @@ on:
 jobs:
   build_and_test:
     name: Build And Test
-    runs-on: Runner_16cores_Deriv-app
+    runs-on: Runner_8cores_Deriv-app
     environment: Preview
     steps:
-    - name: Checkout 
+    - name: Checkout
       uses: actions/checkout@v4
     - name: Setup Node
       uses: "./.github/actions/setup_node"
@@ -31,10 +31,20 @@ jobs:
       run: npx tsc --project packages/stores/tsconfig.json -noEmit
     - name: Check TypeScript for @deriv/wallets
       run: npx tsc --project packages/wallets/tsconfig.json -noEmit
+    - name: Check TypeScript for @deriv/tradershub
+      run: npx tsc --project packages/tradershub/tsconfig.json -noEmit
+    - name: Check TypeScript for @deriv/account-v2
+      run: npx tsc --project packages/account-v2/tsconfig.json -noEmit
     - name: Check ESLint for @deriv/wallets
       run: npx eslint --fix --ignore-path packages/wallets/.eslintignore --config packages/wallets/.eslintrc.js packages/wallets
+    - name: Check ESLint for @deriv/tradershub
+      run: npx eslint --fix --ignore-path packages/tradershub/.eslintignore --config packages/tradershub/.eslintrc.js packages/tradershub
+    - name: Check ESLint for @deriv/account-v2
+      run: npx eslint --fix --ignore-path packages/account-v2/.eslintignore --config packages/account-v2/.eslintrc.js packages/account-v2
     - name: Check Stylelint for @deriv/wallets
       run: npx stylelint packages/wallets/**/*.scss
+    - name: Check Stylelint for @deriv/account-v2
+      run: npx stylelint packages/account-v2/**/*.scss
     - name: Check tests for @deriv/hooks
       run: bash ./scripts/check-tests.sh packages/hooks/src
     - name: Check tests for @deriv/utils

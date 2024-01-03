@@ -1,0 +1,57 @@
+.wallets-withdrawal-crypto {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 2.4rem;
+
+    @include mobile {
+        height: fit-content;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__content {
+        width: 100%;
+        max-width: 58.8rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.4rem;
+
+        @include mobile {
+            gap: 1.6rem;
+        }
+
+        & .wallets-textfield {
+            width: 100%;
+            max-width: none;
+        }
+    }
+
+    &__side-pane {
+        height: fit-content;
+        display: flex;
+        flex: 1 1 0;
+        justify-content: flex-end;
+
+        @include mobile {
+            width: 100%;
+        }
+
+        .wallets-transaction-status {
+            margin-top: -2.4rem;
+            margin-right: 2.4rem;
+
+            @include mobile {
+                margin: 0;
+            }
+        }
+    }
+}
+
+.wallets-withdrawal-crypto-address {
+    width: 100%;
+    height: fit-content;
+}

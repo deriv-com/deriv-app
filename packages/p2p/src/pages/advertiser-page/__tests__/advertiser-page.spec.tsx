@@ -10,6 +10,12 @@ const mock_modal_manager = {
     useRegisterModalProps: jest.fn(),
     is_modal_open: true,
 };
+jest.mock('@deriv/hooks', () => {
+    return {
+        ...jest.requireActual('@deriv/hooks'),
+        useP2PAdvertInfo: jest.fn(() => ({ data: true, isLoading: false, isSuccess: true })),
+    };
+});
 
 jest.mock('Components/modal-manager/modal-manager-context');
 const mocked_useModalManagerContext = useModalManagerContext as jest.MockedFunction<
@@ -29,7 +35,7 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
         is_counterparty_advertiser_blocked: false,
         onAdvertiserIdUpdate: jest.fn(),
         onMount: jest.fn(),
-        onTabChange: jest.fn(),
+        setCounterpartyAdvertiserInfo: jest.fn(),
         setIsDropdownMenuVisible: jest.fn(),
         onUnmount: jest.fn(),
         onCancel: jest.fn(),
@@ -84,6 +90,13 @@ jest.mock('react-router-dom', () => ({
         key: '0',
         pathname: '/cashier/p2p/advertiser',
         search: '?id=39',
+    })),
+}));
+
+jest.mock('Hooks', () => ({
+    ...jest.requireActual('Hooks'),
+    useP2PAdvertiserAdverts: jest.fn(() => ({
+        isLoading: false,
     })),
 }));
 

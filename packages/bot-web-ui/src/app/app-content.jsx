@@ -6,7 +6,6 @@ import BotBuilder from 'Components/dashboard/bot-builder';
 import BotStopped from 'Components/dashboard/bot-stopped';
 import TransactionDetailsModal from 'Components/transaction-details';
 import GTM from 'Utils/gtm';
-import hotjar from 'Utils/hotjar';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from '../components';
 import BlocklyLoading from '../components/blockly-loading';
@@ -65,13 +64,9 @@ const AppContent = observer(() => {
     }, [is_dark_mode_on]);
 
     React.useEffect(() => {
-        hotjar(client);
-    }, []);
-
-    React.useEffect(() => {
         showDigitalOptionsMaltainvestError(client, common);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [client.is_options_blocked, client.account_settings.country_code]);
+    }, [client.is_options_blocked, client.account_settings.country_code, client.clients_country]);
 
     const init = () => {
         GTM.init(combinedStore);

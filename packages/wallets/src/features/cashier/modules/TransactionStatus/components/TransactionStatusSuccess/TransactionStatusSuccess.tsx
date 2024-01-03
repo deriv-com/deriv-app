@@ -2,24 +2,19 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Divider, WalletButton, WalletText } from '../../../../../../components/Base';
 import { THooks } from '../../../../../../types';
-import useRecentTransactions from '../../hooks/useRecentTransactions';
 import { CryptoTransaction } from '../CryptoTransaction';
 
 type TTransactionStatusSuccess = {
-    recentTransactions: ReturnType<typeof useRecentTransactions>['recentTransactions'];
     transactionType?: THooks.CryptoTransactions['transaction_type'];
+    transactions: THooks.CryptoTransactions[];
     wallet: THooks.ActiveWalletAccount;
 };
 
-const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({
-    recentTransactions,
-    transactionType,
-    wallet,
-}) => {
+const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transactionType, transactions, wallet }) => {
     const history = useHistory();
 
     const filteredTransactions =
-        recentTransactions?.filter(
+        transactions?.filter(
             el => !transactionType || (transactionType === 'deposit' ? el.is_deposit : el.is_withdrawal)
         ) || [];
 
@@ -41,21 +36,21 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({
                     ))}
                     {filteredTransactions.length > 3 && (
                         <WalletButton
-                            color='transparent'
-                            isFullWidth={true}
+                            isFullWidth
                             onClick={() => {
                                 // should navigate to transactions page with "Pending transactions" toggle on and filter set to `transactionType`
                                 history.push('wallets/cashier/transactions');
                             }}
                             size='sm'
-                            text='View more'
                             variant='outlined'
-                        />
+                        >
+                            View more
+                        </WalletButton>
                     )}
                 </React.Fragment>
             ) : (
                 <React.Fragment>
-                    <WalletText size='xs'>No recent transactions.</WalletText>
+                    <WalletText size='sm'>No recent transactions.</WalletText>
                     <Divider color='#d6dadb' /> {/* --color-grey-5 */}
                 </React.Fragment>
             )}

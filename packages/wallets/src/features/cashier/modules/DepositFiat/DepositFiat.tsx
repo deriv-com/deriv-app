@@ -1,21 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useAuthorize, useDepositFiatAddress } from '@deriv/api';
-import { WalletsErrorScreen } from '../../../../components';
+import React, { useEffect } from 'react';
+import { useAuthorize, useCashierFiatAddress } from '@deriv/api';
+import { Loader, WalletsErrorScreen } from '../../../../components';
 import { isServerError } from '../../../../utils/utils';
 import './DepositFiat.scss';
 
 const DepositFiat = () => {
     const { isSuccess: isAuthorizeSuccess } = useAuthorize();
-    const { data: iframeUrl, error: depositError, isError, mutate } = useDepositFiatAddress();
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        setIsLoading(true);
-    }, [iframeUrl]);
+    const { data: iframeUrl, error: depositError, isError, isLoading, mutate } = useCashierFiatAddress();
 
     useEffect(() => {
         if (isAuthorizeSuccess) {
-            mutate();
+            mutate('deposit');
         }
     }, [isAuthorizeSuccess, mutate]);
 
@@ -24,14 +19,13 @@ const DepositFiat = () => {
 
     return (
         <React.Fragment>
-            {isLoading && <p>Loading...</p>}
-            {iframeUrl && (
+            {isLoading && <Loader />}
+            {iframeUrl && !isLoading && (
                 <iframe
                     className='wallets-deposit-fiat__iframe'
+                    data-testid='dt_deposit-fiat-iframe'
                     key={iframeUrl}
-                    onLoad={() => setIsLoading(false)}
                     src={iframeUrl}
-                    style={{ display: isLoading ? 'none' : 'block' }}
                 />
             )}
         </React.Fragment>

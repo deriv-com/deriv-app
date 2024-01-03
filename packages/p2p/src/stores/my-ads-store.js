@@ -11,7 +11,6 @@ import { generateErrorDialogTitle } from 'Utils/adverts';
 import { api_error_codes } from '../constants/api-error-codes';
 
 export default class MyAdsStore extends BaseStore {
-    activate_deactivate_error_message = '';
     advert_details = null;
     adverts = [];
     adverts_archive_period = null;
@@ -27,12 +26,12 @@ export default class MyAdsStore extends BaseStore {
     is_form_loading = false;
     is_table_loading = false;
     is_loading = false;
+    maximum_order_amount = 0;
     p2p_advert_information = {};
     show_ad_form = false;
     selected_ad_id = '';
     should_show_add_payment_method = false;
     show_edit_ad_form = false;
-    update_payment_methods_error_message = '';
     required_ad_type;
     error_code = '';
 
@@ -44,7 +43,6 @@ export default class MyAdsStore extends BaseStore {
         super(root_store);
 
         makeObservable(this, {
-            activate_deactivate_error_message: observable,
             advert_details: observable,
             adverts: observable,
             adverts_archive_period: observable,
@@ -60,12 +58,12 @@ export default class MyAdsStore extends BaseStore {
             is_form_loading: observable,
             is_table_loading: observable,
             is_loading: observable,
+            maximum_order_amount: observable,
             p2p_advert_information: observable,
             selected_ad_id: observable,
             should_show_add_payment_method: observable,
             show_ad_form: observable,
             show_edit_ad_form: observable,
-            update_payment_methods_error_message: observable,
             required_ad_type: observable,
             error_code: observable,
             selected_ad_type: computed,
@@ -84,7 +82,6 @@ export default class MyAdsStore extends BaseStore {
             restrictLength: action.bound,
             restrictDecimalPlace: action.bound,
             showQuickAddModal: action.bound,
-            setActivateDeactivateErrorMessage: action.bound,
             setAdvertDetails: action.bound,
             setAdverts: action.bound,
             setAdvertsArchivePeriod: action.bound,
@@ -101,6 +98,7 @@ export default class MyAdsStore extends BaseStore {
             setIsFormLoading: action.bound,
             setIsLoading: action.bound,
             setIsTableLoading: action.bound,
+            setMaximumOrderAmount: action.bound,
             setP2pAdvertInformation: action.bound,
             setSelectedAdId: action.bound,
             setShouldShowAddPaymentMethod: action.bound,
@@ -108,7 +106,7 @@ export default class MyAdsStore extends BaseStore {
             setShowEditAdForm: action.bound,
             onToggleSwitchModal: action.bound,
             setRequiredAdType: action.bound,
-            setUpdatePaymentMethodsErrorMessage: action.bound,
+            toggleMyAdsRateSwitchModal: action.bound,
             validateCreateAdForm: action.bound,
             validateEditAdForm: action.bound,
         });
@@ -125,8 +123,11 @@ export default class MyAdsStore extends BaseStore {
                 if (response) {
                     if (!response.error) {
                         const { get_account_status } = response;
-                        const { status } = get_account_status?.authentication?.identity ?? {};
-                        this.root_store.general_store.setPoiStatus(status);
+                        const { authentication } = get_account_status;
+                        const { document, identity } = authentication;
+
+                        this.root_store.general_store.setPoiStatus(identity.status);
+                        this.root_store.general_store.setPoaStatus(document.status);
                     } else {
                         this.setErrorMessage(response.error);
                     }
@@ -256,7 +257,6 @@ export default class MyAdsStore extends BaseStore {
                 if (response) {
                     if (response.error) {
                         this.setApiErrorCode(response.error.code);
-                        this.setActivateDeactivateErrorMessage(response.error.message);
                         this.root_store.general_store.showModal({
                             key: 'ErrorModal',
                             props: {
@@ -379,7 +379,6 @@ export default class MyAdsStore extends BaseStore {
                 this.loadMoreAds({ startIndex: 0 });
                 this.hideQuickAddModal();
             } else {
-                this.setUpdatePaymentMethodsErrorMessage(response.error.message);
                 this.root_store.general_store.hideModal();
                 this.root_store.general_store.showModal({
                     key: 'ErrorModal',
@@ -427,7 +426,7 @@ export default class MyAdsStore extends BaseStore {
                     }
                 } else if (response.error.code === api_error_codes.PERMISSION_DENIED) {
                     general_store.setIsBlocked(true);
-                } else {
+                } else if (response.error.code !== api_error_codes.ADVERTISER_NOT_REGISTERED) {
                     this.setApiErrorMessage(response.error.message);
                 }
 
@@ -461,10 +460,6 @@ export default class MyAdsStore extends BaseStore {
     showQuickAddModal(advert) {
         this.setSelectedAdId(advert);
         this.root_store.general_store.showModal({ key: 'QuickAddModal', props: { advert } });
-    }
-
-    setActivateDeactivateErrorMessage(activate_deactivate_error_message) {
-        this.activate_deactivate_error_message = activate_deactivate_error_message;
     }
 
     setAdvertDetails(advert_details) {
@@ -531,6 +526,10 @@ export default class MyAdsStore extends BaseStore {
         this.is_table_loading = is_table_loading;
     }
 
+    setMaximumOrderAmount(maximum_order_amount) {
+        this.maximum_order_amount = maximum_order_amount;
+    }
+
     setP2pAdvertInformation(p2p_advert_information) {
         this.p2p_advert_information = p2p_advert_information;
     }
@@ -549,9 +548,6 @@ export default class MyAdsStore extends BaseStore {
 
     setShowEditAdForm(show_edit_ad_form) {
         this.show_edit_ad_form = show_edit_ad_form;
-        if (!this.show_edit_ad_form) {
-            // this.setRequiredAdType(null);
-        }
     }
 
     onToggleSwitchModal(ad_id) {
@@ -561,10 +557,6 @@ export default class MyAdsStore extends BaseStore {
 
     setRequiredAdType(change_ad_type) {
         this.required_ad_type = change_ad_type;
-    }
-
-    setUpdatePaymentMethodsErrorMessage(update_payment_methods_error_message) {
-        this.update_payment_methods_error_message = update_payment_methods_error_message;
     }
 
     validateCreateAdForm(values) {
@@ -613,7 +605,7 @@ export default class MyAdsStore extends BaseStore {
                         : true,
                 v =>
                     floating_rate_store.rate_type === ad_type.FLOAT
-                        ? rangeValidator(parseFloat(v), floating_rate_store.float_rate_offset_limit)
+                        ? rangeValidator(parseFloat(v), parseFloat(floating_rate_store.float_rate_offset_limit))
                         : true,
             ],
         };
@@ -662,16 +654,16 @@ export default class MyAdsStore extends BaseStore {
 
         const getMaxTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to 2 decimals are allowed.'),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not be below Min limit', { field_name }),
         ];
 
         const getMinTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to 2 decimals are allowed.'),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not exceed Max limit', { field_name }),
         ];
@@ -715,12 +707,6 @@ export default class MyAdsStore extends BaseStore {
             }
         });
 
-        if (Object.values(errors).includes('Enter a valid amount')) {
-            Object.entries(errors).forEach(([key, value]) => {
-                errors[key] = value === 'Enter a valid amount' ? value : undefined;
-            });
-        }
-
         return errors;
     }
 
@@ -760,7 +746,7 @@ export default class MyAdsStore extends BaseStore {
                         : true,
                 v =>
                     this.required_ad_type === ad_type.FLOAT
-                        ? rangeValidator(v, parseFloat(floating_rate_store.float_rate_offset_limit))
+                        ? rangeValidator(parseFloat(v), parseFloat(floating_rate_store.float_rate_offset_limit))
                         : true,
             ],
         };
@@ -799,16 +785,16 @@ export default class MyAdsStore extends BaseStore {
 
         const getMaxTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to 2 decimals are allowed.'),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not be below Min limit', { field_name }),
         ];
 
         const getMinTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to 2 decimals are allowed.'),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not exceed Max limit', { field_name }),
         ];
@@ -848,12 +834,6 @@ export default class MyAdsStore extends BaseStore {
                 }
             }
         });
-
-        if (Object.values(errors).includes('Enter a valid amount')) {
-            Object.entries(errors).forEach(([key, value]) => {
-                errors[key] = value === 'Enter a valid amount' ? value : undefined;
-            });
-        }
 
         return errors;
     }

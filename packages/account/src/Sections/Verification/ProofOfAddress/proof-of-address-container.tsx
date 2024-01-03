@@ -1,18 +1,21 @@
 import React from 'react';
 import { AccountStatusResponse, GetAccountStatus } from '@deriv/api-types';
 import { Button, Loading } from '@deriv/components';
-import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
+import { WS, getPlatformRedirect, platforms, AUTH_STATUS_CODES } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import Expired from '../../../Components/poa/status/expired';
 import NeedsReview from '../../../Components/poa/status/needs-review';
 import NotRequired from '../../../Components/poa/status/not-required';
-import PoaStatusCodes from '../../../Components/poa/status/status-codes';
 import ProofOfAddressForm from './proof-of-address-form';
 import Submitted from '../../../Components/poa/status/submitted';
 import Unverified from '../../../Components/poa/status/unverified';
 import Verified from '../../../Components/poa/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification.js';
+
+type TProofOfAddressContainer = {
+    onSubmit: () => void;
+};
 
 type TAuthenticationStatus = Record<
     | 'allow_document_upload'
@@ -28,7 +31,7 @@ type TAuthenticationStatus = Record<
     boolean
 > & { document_status?: DeepRequired<GetAccountStatus>['authentication']['document']['status'] };
 
-const ProofOfAddressContainer = observer(() => {
+const ProofOfAddressContainer = observer(({ onSubmit }: TProofOfAddressContainer) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [authentication_status, setAuthenticationStatus] = React.useState<TAuthenticationStatus>({
         allow_document_upload: false,
@@ -44,9 +47,10 @@ const ProofOfAddressContainer = observer(() => {
         poa_address_mismatch: false,
     });
 
-    const { client, notifications, common } = useStore();
+    const { client, notifications, common, ui } = useStore();
     const { app_routing_history } = common;
     const { landing_company_shortcode, has_restricted_mt5_account, is_switching } = client;
+    const { is_verification_modal_visible } = ui;
     const { refreshNotifications } = notifications;
 
     const is_mx_mlt = landing_company_shortcode === 'iom' || landing_company_shortcode === 'malta';
@@ -89,11 +93,14 @@ const ProofOfAddressContainer = observer(() => {
         setAuthenticationStatus(authentication_status => ({ ...authentication_status, ...{ resubmit_poa: true } }));
     };
 
-    const onSubmit = (needs_poi: boolean) => {
+    const onSubmitDocument = (needs_poi: boolean) => {
         setAuthenticationStatus(authentication_status => ({
             ...authentication_status,
             ...{ has_submitted_poa: true, needs_poi },
         }));
+        if (is_verification_modal_visible) {
+            onSubmit();
+        }
     };
 
     const {
@@ -143,20 +150,20 @@ const ProofOfAddressContainer = observer(() => {
             ['expired', 'rejected', 'suspected'].includes(document_status)) ||
         poa_address_mismatch
     ) {
-        return <ProofOfAddressForm is_resubmit onSubmit={onSubmit} />;
+        return <ProofOfAddressForm is_resubmit onSubmit={onSubmitDocument} />;
     }
 
     switch (document_status) {
-        case PoaStatusCodes.none:
-            return <ProofOfAddressForm onSubmit={onSubmit} />;
-        case PoaStatusCodes.pending:
+        case AUTH_STATUS_CODES.NONE:
+            return <ProofOfAddressForm onSubmit={onSubmitDocument} />;
+        case AUTH_STATUS_CODES.PENDING:
             return <NeedsReview needs_poi={needs_poi} redirect_button={redirect_button} />;
-        case PoaStatusCodes.verified:
+        case AUTH_STATUS_CODES.VERIFIED:
             return <Verified needs_poi={needs_poi} redirect_button={redirect_button} />;
-        case PoaStatusCodes.expired:
+        case AUTH_STATUS_CODES.EXPIRED:
             return <Expired onClick={handleResubmit} />;
-        case PoaStatusCodes.rejected:
-        case PoaStatusCodes.suspected:
+        case AUTH_STATUS_CODES.REJECTED:
+        case AUTH_STATUS_CODES.SUSPECTED:
             return <Unverified onClick={handleResubmit} />;
         default:
             return null;

@@ -7,11 +7,11 @@ import Duration from 'Modules/Trading/Components/Form/TradeParams/Duration';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit';
 import CancelDeal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/cancel-deal';
 import Accumulator from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulator';
-import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss.jsx';
-import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
-import Expiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration.jsx';
+import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss';
+import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit';
+import Expiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration';
 import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display';
-import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
+import Strike from 'Modules/Trading/Components/Form/TradeParams/strike';
 import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -29,10 +29,7 @@ const TradeParams = observer(({ is_minimized = false }: TTradeParams) => {
 
     return (
         <React.Fragment>
-            {isVisible('duration') && (
-                // @ts-expect-error: TODO: check if TS error is gone after <Duration /> is migrated to TS
-                <Duration key={'duration'} is_minimized={is_minimized} />
-            )}
+            {isVisible('duration') && <Duration key={'duration'} is_minimized={is_minimized} />}
             {isVisible('barrier') && <Barrier key={'barrier'} is_minimized={is_minimized} />}
             {isVisible('last_digit') && <LastDigit key={'last_digit'} is_minimized={is_minimized} />}
             {isVisible('accumulator') && <Accumulator key={'accumulator'} />}

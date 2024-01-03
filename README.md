@@ -133,15 +133,6 @@ You can find the names of packages by first navigating to the `packages` folder.
 
 ### Usage
 
-### Configuring Hosts file
-
-In order to run our solution for the first time, you need to configure your `hosts` file:
-
-1. Open terminal.
-2. Open `hosts` file in your preferred text editor, f.e `sudo vim /etc/hosts`.
-3. Add a new entry pointing to `127.0.0.1 localhost.binary.sx`.
-4. Save the file and proceed to the next step.
-
 ### Starting a Development Server
 
 If you wish to work on Core, simply run `npm run serve core`.
@@ -228,14 +219,12 @@ There is a 4th type of release: releasing npm registry packages (currently `@der
 
 <br />
 
-## PR Guidelines
+## PR format recommendations
 
-1. Use the `developer 1|developer 2/task_name` format for PR titles. (e.g.: `dev1|dev2/fixed_emoji_issue`, `dev1/added_superfast_jellyfish`)
-    - Optional square bracket tag (e.g. `[WIP]`) can be at the end.
-2. Use the appropriate package labels available on the repo to indicate which packages your PR modifies.
+1. Use the `[{Project Code}] {Developer}/{Clickup Card ID}/{Description}` format for PR titles. (e.g.: `[COJ] evgeniy/COJ-247/Align next-button on mt5 modal`), where [COJ] is a clickup project code.
+2. Add screenshots of change for easier reviewing (whenever applicable) and brief description
 3. Use Draft PRs if you don't mean to request for reviews yet. [Read more here.](https://github.blog/2019-02-14-introducing-draft-pull-requests/)
-
-<br />
+   <br />
 
 ## Test link deployment
 

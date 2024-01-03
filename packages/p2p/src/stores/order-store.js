@@ -1,4 +1,4 @@
-import { cloneObject } from '@deriv/shared';
+import { cloneObject, toMoment } from '@deriv/shared';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
@@ -13,8 +13,11 @@ export default class OrderStore {
             cancellation_block_duration: observable,
             cancellation_count_period: observable,
             cancellation_limit: observable,
+            date_from: observable,
+            date_to: observable,
             error_code: observable,
             error_message: observable,
+            filtered_date_range: observable,
             has_more_items_to_load: observable,
             is_invalid_verification_link_modal_open: observable,
             is_loading: observable,
@@ -25,7 +28,6 @@ export default class OrderStore {
             order_payment_method_details: observable,
             order_rerender_timeout: observable,
             rating_value: observable,
-            user_email_address: observable,
             verification_code: observable,
             verification_link_error_message: observable,
             should_navigate_to_buy_sell: observable,
@@ -35,8 +37,8 @@ export default class OrderStore {
             confirmOrderRequest: action.bound,
             confirmOrder: action.bound,
             getP2POrderList: action.bound,
-            getSettings: action.bound,
             getWebsiteStatus: action.bound,
+            handleDateChange: action.bound,
             handleRating: action.bound,
             hideDetails: action.bound,
             loadMoreOrders: action.bound,
@@ -45,6 +47,7 @@ export default class OrderStore {
             onPageReturn: action.bound,
             onUnmount: action.bound,
             setActiveOrder: action.bound,
+            setDateTo: action.bound,
             setForceRerenderOrders: action.bound,
             setShouldNavigateToBuySell: action.bound,
             setApiErrorMessage: action.bound,
@@ -63,14 +66,12 @@ export default class OrderStore {
             setOrders: action.bound,
             setOrderRendererTimeout: action.bound,
             setQueryDetails: action.bound,
-            setData: action.bound,
             setOrderRating: action.bound,
             subscribeToCurrentOrder: action.bound,
             syncOrder: action.bound,
             unsubscribeFromCurrentOrder: action.bound,
             verifyEmailVerificationCode: action.bound,
             setRatingValue: action.bound,
-            setUserEmailAddress: action.bound,
             setVerificationCode: action.bound,
             setVerificationLinkErrorMessage: action.bound,
         });
@@ -90,8 +91,11 @@ export default class OrderStore {
     cancellation_block_duration = 0;
     cancellation_count_period = 0;
     cancellation_limit = 0;
+    date_from = null;
+    date_to = null;
     error_code = '';
     error_message = '';
+    filtered_date_range = null;
     has_more_items_to_load = false;
     is_invalid_verification_link_modal_open = false;
     should_navigate_to_buy_sell = false;
@@ -103,7 +107,6 @@ export default class OrderStore {
     order_payment_method_details = null;
     order_rerender_timeout = null;
     rating_value = 0;
-    user_email_address = '';
     verification_code = '';
     verification_link_error_message = '';
 
@@ -193,6 +196,22 @@ export default class OrderStore {
         });
     }
 
+    handleDateChange(date_values, { date_range } = {}) {
+        const { from, to, is_batch } = date_values;
+
+        this.filtered_date_range = date_range;
+
+        if (from) {
+            this.date_from = toMoment(from).unix();
+        } else if (is_batch) {
+            this.date_from = null;
+        }
+
+        if (to) this.setDateTo(toMoment(to).unix());
+        this.setIsLoading(true);
+        this.loadMoreOrders({}, true);
+    }
+
     getP2POrderList() {
         requestWS({ p2p_order_list: 1 }).then(response => {
             if (response) {
@@ -208,14 +227,6 @@ export default class OrderStore {
                         this.setOrders(list);
                     }
                 }
-            }
-        });
-    }
-
-    getSettings() {
-        requestWS({ get_settings: 1 }).then(response => {
-            if (response && !response.error) {
-                this.setUserEmailAddress(response.get_settings.email);
             }
         });
     }
@@ -249,17 +260,21 @@ export default class OrderStore {
         this.setActiveOrder(null);
     }
 
-    loadMoreOrders({ startIndex }) {
+    loadMoreOrders({ startIndex = 0 }, should_reset = false) {
         this.setApiErrorMessage('');
         return new Promise(resolve => {
             const { general_store } = this.root_store;
             const active = general_store.is_active_tab ? 1 : 0;
-            requestWS({
+            const order_request = {
                 p2p_order_list: 1,
                 active,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
-            }).then(response => {
+            };
+            if (this.date_from && !active) order_request.date_from = this.date_from;
+            if (this.date_to && !active) order_request.date_to = this.date_to;
+
+            requestWS(order_request).then(response => {
                 if (!response?.error) {
                     // Ignore any responses that don't match our request. This can happen
                     // due to quickly switching between Active/Past tabs.
@@ -267,7 +282,7 @@ export default class OrderStore {
                         const { list } = response.p2p_order_list;
                         this.setHasMoreItemsToLoad(list.length >= general_store.list_item_limit);
 
-                        const old_list = [...this.orders];
+                        const old_list = should_reset ? [] : [...this.orders];
                         const new_list = [];
 
                         list?.forEach(order => {
@@ -284,7 +299,7 @@ export default class OrderStore {
                     }
                 } else if (response?.error?.code === api_error_codes.PERMISSION_DENIED) {
                     this.root_store.general_store.setIsBlocked(true);
-                } else {
+                } else if (response.error.code !== api_error_codes.ADVERTISER_NOT_FOUND) {
                     this.setApiErrorMessage(response.error.message);
                 }
 
@@ -369,6 +384,10 @@ export default class OrderStore {
         this.active_order = active_order;
     }
 
+    setDateTo(date_to) {
+        this.date_to = date_to;
+    }
+
     setQueryDetails(input_order) {
         const { general_store } = this.root_store;
         const order_information = createExtendedOrderDetails(
@@ -445,7 +464,7 @@ export default class OrderStore {
         if (this.order_id === null) {
             // When we're looking at a list, it's safe to move orders from Active to Past.
             if (order_idx === -1) {
-                this.orders.unshift(p2p_order_info);
+                return;
             } else if (
                 (get_order_status.is_completed_order && get_order_status.has_review_details) ||
                 !get_order_status.is_reviewable
@@ -554,10 +573,6 @@ export default class OrderStore {
         this.should_navigate_to_buy_sell = should_navigate_to_buy_sell;
     }
 
-    setData(data) {
-        this.data = data;
-    }
-
     setErrorCode(error_code) {
         this.error_code = error_code;
     }
@@ -605,10 +620,6 @@ export default class OrderStore {
 
     setRatingValue(rating_value) {
         this.rating_value = rating_value;
-    }
-
-    setUserEmailAddress(user_email_address) {
-        this.user_email_address = user_email_address;
     }
 
     // This is only for the order confirmation request,

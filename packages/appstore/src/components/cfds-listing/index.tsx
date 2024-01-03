@@ -1,8 +1,7 @@
 import React from 'react';
-import { Text, StaticUrl } from '@deriv/components';
-import { useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
+import { Text, StaticUrl } from '@deriv/components';
+import { isMobile, formatMoney, getAuthenticationStatusInfo, Jurisdiction, MT5_ACCOUNT_STATUS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import AddOptionsAccount from 'Components/add-options-account';
@@ -10,16 +9,9 @@ import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import CompareAccount from 'Components/compare-account';
 import GetMoreAccounts from 'Components/get-more-accounts';
-import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
-import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import './cfds-listing.scss';
-
-type TDetailedExistingAccount = AvailableAccount &
-    TDetailsOfEachMT5Loginid &
-    Actions & {
-        key: string;
-    };
+import { useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
 
 const CFDsListing = observer(() => {
     const {
@@ -55,9 +47,14 @@ const CFDsListing = observer(() => {
     } = traders_hub;
 
     const { setAccountType } = cfd;
-    const { is_landing_company_loaded, real_account_creation_unlock_date, account_status } = client;
+    const {
+        is_landing_company_loaded,
+        real_account_creation_unlock_date,
+        account_status,
+        is_populating_mt5_account_list,
+    } = client;
     const { setAppstorePlatform } = common;
-    const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
+    const { openDerivRealAccountNeededModal, setShouldShowCooldownModal, setIsMT5VerificationFailedModal } = ui;
     const has_no_real_account = !has_any_real_account;
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
@@ -83,14 +80,14 @@ const CFDsListing = observer(() => {
                             current_acc_status === 'proof_failed',
                         ])
                     ) {
-                        return 'failed';
+                        return MT5_ACCOUNT_STATUS.FAILED;
                     } else if (
                         getAuthStatus([
                             poi_pending_for_bvi_labuan_vanuatu,
                             current_acc_status === 'verification_pending',
                         ])
                     ) {
-                        return 'pending';
+                        return MT5_ACCOUNT_STATUS.PENDING;
                     }
                     return null;
                 }
@@ -103,23 +100,30 @@ const CFDsListing = observer(() => {
                             current_acc_status === 'proof_failed',
                         ])
                     ) {
-                        return 'failed';
+                        return MT5_ACCOUNT_STATUS.FAILED;
                     } else if (
                         getAuthStatus([
                             poi_pending_for_bvi_labuan_vanuatu,
                             current_acc_status === 'verification_pending',
                         ])
                     ) {
-                        return 'pending';
+                        return MT5_ACCOUNT_STATUS.PENDING;
                     }
                     return null;
                 }
                 default:
                     if (current_acc_status === 'proof_failed') {
-                        return 'failed';
+                        return MT5_ACCOUNT_STATUS.FAILED;
                     } else if (current_acc_status === 'verification_pending') {
-                        return 'pending';
+                        return MT5_ACCOUNT_STATUS.PENDING;
+                    } else if (current_acc_status === 'needs_verification') {
+                        return MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
+                    } else if (current_acc_status === 'migrated_with_position') {
+                        return MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;
+                    } else if (current_acc_status === 'migrated_without_position') {
+                        return MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION;
                     }
+                    return null;
             }
         }
         return null;
@@ -180,18 +184,18 @@ const CFDsListing = observer(() => {
                     {localize('Deriv MT5')}
                 </Text>
             </div>
-            {is_landing_company_loaded ? (
+
+            {is_landing_company_loaded && !is_populating_mt5_account_list ? (
                 <React.Fragment>
-                    {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
+                    {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
                         const has_mt5_account_status =
-                            existing_account.status || is_idv_revoked
+                            existing_account?.status || is_idv_revoked
                                 ? getMT5AccountAuthStatus(
-                                      existing_account.status,
+                                      existing_account?.status,
                                       existing_account?.landing_company_short
                                   )
                                 : null;
-
                         return (
                             <TradingAppCard
                                 action_type={existing_account.action_type}
@@ -228,6 +232,11 @@ const CFDsListing = observer(() => {
                                             showTopUpModal(existing_account);
                                             setAppstorePlatform(existing_account.platform);
                                         } else {
+                                            if (has_mt5_account_status === MT5_ACCOUNT_STATUS.FAILED && is_eu_user) {
+                                                setIsMT5VerificationFailedModal(true);
+                                                openFailedVerificationModal(existing_account);
+                                                return;
+                                            }
                                             startTrade(existing_account.platform, existing_account);
                                         }
                                     }
@@ -240,6 +249,7 @@ const CFDsListing = observer(() => {
                                     jurisdiction: existing_account.landing_company_short,
                                 }}
                                 openFailedVerificationModal={openFailedVerificationModal}
+                                market_type={existing_account?.market_type}
                             />
                         );
                     })}
@@ -269,11 +279,11 @@ const CFDsListing = observer(() => {
             )}
 
             {is_landing_company_loaded
-                ? available_ctrader_accounts.map((account: AvailableAccount) => {
+                ? available_ctrader_accounts.map(account => {
                       const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                       const has_existing_accounts = existing_accounts.length > 0;
                       return has_existing_accounts ? (
-                          existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
+                          existing_accounts.map(existing_account => (
                               <TradingAppCard
                                   action_type='multi-action'
                                   availability={selected_region}
@@ -344,11 +354,11 @@ const CFDsListing = observer(() => {
                 </React.Fragment>
             )}
             {is_landing_company_loaded ? (
-                available_dxtrade_accounts?.map((account: AvailableAccount) => {
+                available_dxtrade_accounts?.map(account => {
                     const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                     const has_existing_accounts = existing_accounts.length > 0;
                     return has_existing_accounts ? (
-                        existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
+                        existing_accounts.map(existing_account => (
                             <TradingAppCard
                                 action_type='multi-action'
                                 availability={selected_region}

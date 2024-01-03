@@ -1,5 +1,5 @@
 import React from 'react';
-import { Collapsible } from '@deriv/components';
+import { Collapsible, Text } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals';
 import {
@@ -10,24 +10,25 @@ import {
 import {
     AccumulatorOptionsWidget,
     MultiplierOptionsWidget,
-} from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets.jsx';
+} from 'Modules/Trading/Components/Form/TradeParams/Multiplier/widgets';
 import AccumulatorsAmountMobile from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-amount-mobile';
 import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display';
 import { BarrierMobile, LastDigitMobile } from 'Modules/Trading/Containers/trade-params-mobile';
 import ContractType from 'Modules/Trading/Containers/contract-type';
-import MobileWidget from 'Modules/Trading/Components/Elements/mobile-widget.jsx';
+import MobileWidget from 'Modules/Trading/Components/Elements/mobile-widget';
 import Purchase from 'Modules/Trading/Containers/purchase';
 import RiskManagementInfo from 'Modules/Trading/Components/Elements/Multiplier/risk-management-info';
-import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
+import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit';
 import 'Sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
 import AccumulatorsStats from 'Modules/Contract/Components/AccumulatorsStats';
-import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
+import Strike from 'Modules/Trading/Components/Form/TradeParams/strike';
 import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector';
 import PayoutPerPointMobile from 'Modules/Trading/Components/Elements/payout-per-point-mobile';
 import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { Localize } from '@deriv/translations';
 
 type TCollapsibleTradeParams = Pick<
     ReturnType<typeof useTraderStore>,
@@ -42,6 +43,7 @@ type TCollapsibleTradeParams = Pick<
     | 'onChange'
     | 'take_profit'
     | 'setIsTradeParamsExpanded'
+    | 'last_digit'
 > & {
     has_allow_equals: boolean;
     is_allow_equal: boolean;
@@ -61,6 +63,7 @@ const CollapsibleTradeParams = ({
     onChange,
     take_profit,
     setIsTradeParamsExpanded,
+    last_digit,
 }: TCollapsibleTradeParams) => {
     React.useEffect(() => {
         if (previous_symbol && is_allow_equal && has_allow_equals) setIsTradeParamsExpanded(true);
@@ -87,6 +90,19 @@ const CollapsibleTradeParams = ({
                 {is_multiplier && <MultiplierOptionsWidget />}
                 {isVisible('trade_type_tabs') && <TradeTypeTabs />}
                 {is_accumulator && <AccumulatorOptionsWidget />}
+                {isVisible('last_digit') && is_collapsed && (
+                    <Text
+                        as='p'
+                        size='xxs'
+                        color='prominent'
+                        line_height='s'
+                        weight='bold'
+                        className='mobile-widget__digit'
+                        onClick={toggleDigitsWidget}
+                    >
+                        <Localize i18n_default_text='Digit: {{last_digit}} ' values={{ last_digit }} />
+                    </Text>
+                )}
             </div>
             {isVisible('last_digit') && (
                 <div data-collapsible='true'>
@@ -108,9 +124,7 @@ const CollapsibleTradeParams = ({
                     <Strike />
                 </div>
             )}
-            {/* 
-            // @ts-expect-error Observer wrapped component needs to be ts migrated before props can be detected */}
-            {!is_accumulator && <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />}
+            {!is_accumulator && <MobileWidget />}
             {has_allow_equals && (
                 <div data-collapsible='true'>
                     <AllowEqualsMobile />
@@ -129,7 +143,6 @@ const CollapsibleTradeParams = ({
                     className={classNames('take-profit', 'mobile-widget')}
                 >
                     <TakeProfit
-                        //@ts-expect-error Observer wrapped component needs to be ts migrated before props can be detected
                         take_profit={take_profit}
                         has_take_profit={has_take_profit}
                         onChange={onChange}
@@ -143,7 +156,6 @@ const CollapsibleTradeParams = ({
             {is_turbos && (
                 <div data-collapsible='true' className={classNames('take-profit', 'mobile-widget')}>
                     <TakeProfit
-                        //@ts-expect-error Observer wrapped component needs to be ts migrated before props can be detected
                         take_profit={take_profit}
                         has_take_profit={has_take_profit}
                         onChange={onChange}
@@ -183,6 +195,7 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
         is_trade_params_expanded,
         setIsTradeParamsExpanded,
         take_profit,
+        last_digit,
     } = trade_store;
     const is_allow_equal = !!trade_store.is_equal;
 
@@ -199,6 +212,7 @@ const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean 
         setIsTradeParamsExpanded,
         take_profit,
         is_allow_equal,
+        last_digit,
     };
 
     const has_callputequal_duration = hasDurationForCallPutEqual(

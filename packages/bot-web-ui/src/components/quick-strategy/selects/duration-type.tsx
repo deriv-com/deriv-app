@@ -1,11 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
+import { Analytics } from '@deriv/analytics';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { TDurationItemRaw } from '../types';
+import { TDurationItemRaw, TFormData } from '../types';
 
 type TDurationUnitItem = {
     text: string;
@@ -15,21 +16,24 @@ type TDurationUnitItem = {
 };
 
 type TDurationUnit = {
-    selected?: string;
-    data: {
-        symbol?: string;
-        tradetype?: string;
-    };
-    fullWidth?: boolean;
     attached?: boolean;
 };
 
-const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = false, attached }) => {
+const DurationUnit: React.FC<TDurationUnit> = ({ attached }: TDurationUnit) => {
     const [list, setList] = React.useState<TDurationUnitItem[]>([]);
-    const { symbol, tradetype } = data;
     const { quick_strategy } = useDBotStore();
-    const { setValue } = quick_strategy;
-    const { setFieldValue, validateForm } = useFormikContext();
+    const { setValue, setCurrentDurationMinMax } = quick_strategy;
+    const { setFieldValue, validateForm, values } = useFormikContext<TFormData>();
+    const { symbol, tradetype } = values;
+    const selected = values?.durationtype;
+
+    const sendDurationTypeToRudderStack = (item: string) => {
+        Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_duration',
+            duration_type: item,
+            form_source: 'ce_bot_quick_strategy_form',
+        });
+    };
 
     React.useEffect(() => {
         if (tradetype && symbol) {
@@ -50,6 +54,14 @@ const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = fal
                         validateForm();
                     });
                     setValue('durationtype', durations?.[0]?.unit);
+                    setCurrentDurationMinMax(durations?.[0]?.min, durations?.[0]?.max);
+                } else {
+                    const duration = duration_units?.find((duration: TDurationUnitItem) => duration.value === selected);
+                    setFieldValue?.('duration', duration?.min).then(() => {
+                        validateForm();
+                    });
+                    setValue('duration', duration?.min);
+                    setCurrentDurationMinMax(duration?.min, duration?.max);
                 }
             };
             getDurationUnits();
@@ -59,8 +71,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = fal
 
     return (
         <div
-            className={classNames('qs__form__field', {
-                'full-width': fullWidth,
+            className={classNames('qs__form__field qs__form__field__input', {
                 'no-top-border-radius': attached,
             })}
         >
@@ -70,6 +81,7 @@ const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = fal
                     return (
                         <Autocomplete
                             {...field}
+                            readOnly
                             inputMode='none'
                             data-testid='qs_autocomplete_durationtype'
                             autoComplete='off'
@@ -77,9 +89,18 @@ const DurationUnit: React.FC<TDurationUnit> = ({ selected, data, fullWidth = fal
                             value={selected_item?.text || ''}
                             list_items={list}
                             onItemSelection={(item: TItem) => {
-                                if (item?.value) {
+                                sendDurationTypeToRudderStack(item?.text);
+                                if ((item as TDurationUnitItem)?.value) {
+                                    setCurrentDurationMinMax(
+                                        (item as TDurationUnitItem)?.min,
+                                        (item as TDurationUnitItem)?.max
+                                    );
                                     setFieldValue?.('durationtype', (item as TDurationUnitItem)?.value as string);
                                     setValue('durationtype', (item as TDurationUnitItem)?.value as string);
+                                    setFieldValue?.('duration', (item as TDurationUnitItem)?.min).then(() => {
+                                        validateForm();
+                                    });
+                                    setValue('duration', (item as TDurationUnitItem)?.min);
                                 }
                             }}
                         />

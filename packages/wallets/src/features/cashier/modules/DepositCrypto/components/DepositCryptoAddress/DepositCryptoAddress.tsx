@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
 import { useAuthorize, useDepositCryptoAddress } from '@deriv/api';
-import { WalletClipboard } from '../../../../../../components/Base';
-import { Loader } from '../../../../../../components/Loader';
+import { WalletsDepositCryptoAddressLoader } from '../../../../../../components';
+import { WalletClipboard, WalletText } from '../../../../../../components/Base';
 import useDevice from '../../../../../../hooks/useDevice';
 import './DepositCryptoAddress.scss';
 
@@ -19,22 +19,28 @@ const DepositCryptoAddress = () => {
 
     if (isLoading)
         return (
-            <div className='wallets-deposit-crypto-address__loader'>
-                <Loader />
+            <div className='wallets-deposit-crypto-address__loader' data-testid='dt_deposit-crypto-address-loader'>
+                <WalletsDepositCryptoAddressLoader />
             </div>
         );
 
     return (
         <div className='wallets-deposit-crypto-address'>
-            <QRCode size={128} value={depositCryptoAddress || ''} />
-            <div className='wallets-deposit-crypto-address__hash-container'>
-                <p className='wallets-deposit-crypto-address__hash'>{depositCryptoAddress}</p>
-                <WalletClipboard
-                    infoMessage={isMobile ? undefined : 'copy'}
-                    popoverAlignment={isMobile ? 'left' : 'bottom'}
-                    successMessage='copied'
-                    textCopy={depositCryptoAddress || ''}
-                />
+            <QRCode data-testid='dt_deposit-crypto-address-qr-code' size={128} value={depositCryptoAddress || ''} />
+            <div className='wallets-deposit-crypto-address__hash'>
+                <div className='wallets-deposit-crypto-address__hash-text'>
+                    <WalletText size='sm' weight='bold'>
+                        {depositCryptoAddress}
+                    </WalletText>
+                </div>
+                <div className='wallets-deposit-crypto-address__hash-clipboard'>
+                    <WalletClipboard
+                        infoMessage={isMobile ? undefined : 'copy'}
+                        popoverAlignment={isMobile ? 'left' : 'bottom'}
+                        successMessage='copied'
+                        textCopy={depositCryptoAddress || ''}
+                    />
+                </div>
             </div>
         </div>
     );

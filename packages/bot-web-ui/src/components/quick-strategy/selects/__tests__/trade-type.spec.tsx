@@ -1,16 +1,13 @@
 import React from 'react';
 import { Formik } from 'formik';
-
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen, waitFor } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
-
+import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import { mock_ws } from 'Utils/mock';
-
 import TradeType from '../trade-type';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
@@ -65,6 +62,8 @@ describe('<TradeType />', () => {
         mock_DBot_store = mockDBotStore(mock_store, mock_ws);
         const mock_onSubmit = jest.fn();
         const initial_value = {
+            durationtype: 1,
+            symbol: 'R_100',
             tradetype: 'callput',
         };
 
@@ -85,17 +84,17 @@ describe('<TradeType />', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should select item from list', async () => {
-        render(<TradeType key='callputequal' symbol='1HZ100V' />, {
+    it('should select the first item from list on the first time the browser is used', async () => {
+        render(<TradeType key='callputequal' />, {
             wrapper,
         });
 
         const autocomplete_element = screen.getByTestId('qs_autocomplete_tradetype');
         userEvent.click(autocomplete_element);
         await waitFor(() => {
-            const option_element = screen.getByText(/Rise Equals\/Fall Equals/i);
+            const option_element = screen.getByText(/Rise\/Fall/i);
             userEvent.click(option_element);
         });
-        expect(autocomplete_element).toHaveDisplayValue([/Rise Equals\/Fall Equals/i]);
+        expect(autocomplete_element).toHaveDisplayValue([/Rise\/Fall/i]);
     });
 });

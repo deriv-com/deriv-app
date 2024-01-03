@@ -1,6 +1,7 @@
 import React from 'react';
 import PageError from '../page-error';
 import UnhandledErrorModal from '../unhandled-error-modal';
+import ErrorModal from '../error-modal';
 
 type TPageErrorContainer = {
     buttonOnClick?: () => void;
@@ -15,6 +16,10 @@ type TPageErrorContainer = {
 const PageErrorContainer = ({ error_header, error_messages, ...props }: TPageErrorContainer) => {
     if (error_header && error_messages) {
         return <PageError header={error_header} messages={error_messages} {...props} />;
+    }
+    // If there are error messages from the backend, show an error modal with the messages
+    if (error_messages) {
+        return <ErrorModal messages={error_messages} />;
     }
     return <UnhandledErrorModal />;
 };

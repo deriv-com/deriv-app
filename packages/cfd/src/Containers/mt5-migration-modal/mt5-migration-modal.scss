@@ -1,0 +1,124 @@
+.mt5-migration-modal {
+    &__error {
+        margin: 3.2rem 2.4rem 0;
+        background-color: var(--button-primary-light-default);
+        border-radius: $BORDER-RADIUS;
+        &-header {
+            display: flex;
+            gap: 0.8rem;
+            padding: 0.8rem;
+        }
+        @include mobile {
+            margin: 1.6rem;
+        }
+    }
+    &__mobile-header {
+        margin: 1.6rem;
+        text-align: unset;
+    }
+    &__message {
+        padding: 0 3.2rem 3.2rem;
+    }
+    &__description {
+        margin: 3.2rem 2.4rem 0;
+        @include mobile {
+            margin: 1.6rem;
+        }
+    }
+    &__migration_content {
+        margin: 3.2rem 15rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-gap: 1.6rem;
+        &-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
+            justify-items: center;
+            align-items: center;
+
+            @include mobile {
+                flex-direction: row;
+            }
+            &__list {
+                display: flex;
+                align-items: center;
+                gap: 3.6rem;
+                @include mobile {
+                    flex-direction: column;
+                    gap: 1.6rem;
+                }
+            }
+        }
+        @include mobile {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+    &__existing-accounts {
+        margin: 3.2rem 2.4rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 1.6rem;
+
+        @include mobile {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &-card {
+            height: 29.6rem;
+            width: 26.2rem;
+            background-color: var(--general-section-1);
+            border-radius: $BORDER-RADIUS * 2;
+            &-content {
+                margin: 1.6rem;
+                display: flex;
+                flex-direction: column;
+                gap: 1.6rem;
+                &__message {
+                    display: grid;
+                    grid-template-columns: 0.2fr auto;
+                    grid-gap: 0.4rem;
+                }
+            }
+            @include mobile {
+                width: 32.8rem;
+                height: auto;
+            }
+        }
+    }
+}
+
+.dc-modal__container_mt5-migration-modal {
+    .dc-modal-header {
+        border-bottom: 0.2rem solid var(--general-section-1);
+    }
+}
+
+.mt5-migration-modal__mobile-container {
+    overflow-x: hidden;
+    overflow-y: auto;
+    .dc-modal-footer {
+        position: fixed;
+        bottom: 4rem;
+        width: 100%;
+
+        .dc-btn {
+            width: 100%;
+        }
+    }
+}
+
+.dc-mobile-dialog__mt5-migration-modal {
+    overflow-x: hidden;
+    overflow-y: auto;
+    .dc-modal-footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+    }
+}

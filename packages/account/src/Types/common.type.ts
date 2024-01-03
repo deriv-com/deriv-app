@@ -1,9 +1,17 @@
 /** Add types that are shared between components */
 import React from 'react';
-import { FormikHandlers, FormikProps, FormikValues } from 'formik';
-import { Authorize, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
-import { Redirect } from 'react-router-dom';
-import { Platforms } from '@deriv/shared';
+import { IDENTIFIER_TYPES } from '../Constants/poo-identifier';
+import getPaymentMethodsConfig from '../Configs/payment-method-config';
+import { Redirect, RouteProps } from 'react-router-dom';
+import { TPage404 } from '../Constants/routes-config';
+import {
+    Authorize,
+    GetAccountStatus,
+    DetailsOfEachMT5Loginid,
+    GetFinancialAssessment,
+    IdentityVerificationAddDocumentResponse,
+} from '@deriv/api-types';
+import { AUTH_STATUS_CODES, CFD_PLATFORMS, MT5_ACCOUNT_STATUS, Platforms } from '@deriv/shared';
 
 export type TToken = {
     display_name: string;
@@ -67,7 +75,7 @@ export type TRoute = {
     icon?: string;
     default?: boolean;
     to?: string;
-    component?: ((routes?: TRoute[]) => JSX.Element) | typeof Redirect;
+    component?: ((props?: RouteProps['component']) => JSX.Element) | Partial<typeof Redirect> | TPage404;
     getTitle?: () => string;
     is_disabled?: boolean;
     subroutes?: TRoute[];
@@ -105,16 +113,6 @@ type TIdentity = {
     };
 };
 
-export type TFile = {
-    path: string;
-    lastModified: number;
-    lastModifiedDate: Date;
-    name: string;
-    size: number;
-    type: string;
-    webkitRelativePath: string;
-};
-
 export type TPOIStatus = {
     needs_poa?: boolean;
     redirect_button?: React.ReactElement;
@@ -123,32 +121,15 @@ export type TPOIStatus = {
 };
 
 export type TPersonalDetailsForm = {
-    warning_items?: Record<string, string>;
-    is_virtual?: boolean;
-    is_mf?: boolean;
-    is_svg?: boolean;
-    is_qualified_for_idv?: boolean;
-    should_hide_helper_image: boolean;
-    is_appstore?: boolean;
-    editable_fields: Array<string>;
-    has_real_account?: boolean;
-    residence_list?: ResidenceList;
-    is_fully_authenticated?: boolean;
-    account_opening_reason_list?: Record<string, string>[];
-    closeRealAccountSignup: () => void;
-    salutation_list?: Record<string, string>[];
-    is_rendered_for_onfido?: boolean;
-    should_close_tooltip?: boolean;
-    setShouldCloseTooltip?: (should_close_tooltip: boolean) => void;
-} & FormikProps<FormikValues>;
+    first_name: string;
+    last_name: string;
+    date_of_birth: string;
+    confirmation_checkbox?: boolean;
+};
 
 export type TInputFieldValues = Record<string, string>;
 
 export type TIDVVerificationResponse = IdentityVerificationAddDocumentResponse & { error: { message: string } };
-
-export type TVerificationStatus = Readonly<
-    Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
->;
 
 export type TDocument = {
     id: string;
@@ -168,14 +149,6 @@ export type TIDVFormValues = {
     error_message?: string;
 };
 
-export type TIDVForm = {
-    selected_country: ResidenceList[0];
-    hide_hint?: boolean;
-    class_name?: string;
-    can_skip_document_verification: boolean;
-} & Partial<FormikHandlers> &
-    FormikProps<TIDVFormValues>;
-
 export type TPlatforms = typeof Platforms[keyof typeof Platforms];
 
 export type TServerError = {
@@ -183,4 +156,139 @@ export type TServerError = {
     message: string;
     details?: { [key: string]: string };
     fields?: string[];
+};
+export type TCFDPlatform = typeof CFD_PLATFORMS[keyof typeof CFD_PLATFORMS];
+
+export type TClosingAccountFormValues = {
+    'financial-priorities': boolean;
+    'stop-trading': boolean;
+    'not-interested': boolean;
+    'another-website': boolean;
+    'not-user-friendly': boolean;
+    'difficult-transactions': boolean;
+    'lack-of-features': boolean;
+    'unsatisfactory-service': boolean;
+    'other-reasons': boolean;
+    other_trading_platforms: string;
+    do_to_improve: string;
+};
+
+export type TAccounts = {
+    account?: {
+        balance?: string | number;
+        currency?: string;
+        disabled?: boolean;
+        error?: JSX.Element | string;
+        is_crypto?: boolean;
+        is_dxtrade?: boolean;
+        is_mt?: boolean;
+        market_type?: string;
+        nativepicker_text?: string;
+        platform_icon?: {
+            Derived: React.SVGAttributes<SVGElement>;
+            Financial: React.SVGAttributes<SVGElement>;
+            Options: React.SVGAttributes<SVGElement>;
+            CFDs: React.SVGAttributes<SVGAElement>;
+        };
+        text?: JSX.Element | string;
+        value?: string;
+    };
+    icon?: string;
+    idx?: string | number;
+    is_dark_mode_on?: boolean;
+    is_virtual?: boolean | number;
+    loginid?: string;
+    mt5_login_list?: DetailsOfEachMT5Loginid[];
+    title?: string;
+};
+
+type TPendingAccountDetails = {
+    balance?: number;
+    currency?: string;
+    display_login?: string;
+    positions?: number;
+    withdrawals?: number;
+};
+
+export type TDetailsOfDerivAccount = TAccounts & TPendingAccountDetails;
+export type TDetailsOfMT5Account = DetailsOfEachMT5Loginid & TPendingAccountDetails;
+export type TDetailsOfDerivXAccount = TDetailsOfMT5Account & { account_id?: string };
+export type TDetailsOfCtraderAccount = DetailsOfEachMT5Loginid & {
+    display_balance?: string;
+    platform?: string;
+    account_id?: string;
+};
+
+export type TLoginHistoryItems = {
+    id: number;
+    date: string;
+    action: string;
+    browser: string;
+    ip: string;
+    status: string;
+};
+
+export type TPaymentMethodIdentifier = typeof IDENTIFIER_TYPES[keyof typeof IDENTIFIER_TYPES];
+
+export type TPaymentMethodInfo = {
+    documents_required: number;
+    icon: string;
+    payment_method: string;
+    items: DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
+    instructions: string[] | JSX.Element[];
+    input_label: string | null;
+    identifier_type: TPaymentMethodIdentifier | '';
+    is_generic_pm: boolean;
+};
+
+export type TFile = File & { file: Blob };
+
+export type TPaymentMethod = keyof ReturnType<typeof getPaymentMethodsConfig>;
+
+export type TProofOfOwnershipFormValue = Record<TPaymentMethod, Record<number | string, TProofOfOwnershipData>>;
+
+export type TProofOfOwnershipData = {
+    documents_required: number;
+    id: number;
+    identifier_type: TPaymentMethodIdentifier | '';
+    is_generic_pm: boolean;
+    files: Array<TFile>;
+    payment_method_identifier: string;
+};
+
+export type TProofOfOwnershipErrors = Record<
+    TPaymentMethod,
+    Array<{ payment_method_identifier?: string; files?: Array<string> }>
+>;
+
+export type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
+
+export type TMT5AccountStatus = typeof MT5_ACCOUNT_STATUS[keyof typeof MT5_ACCOUNT_STATUS];
+
+export type TFilesDescription = {
+    descriptions: { id: string; value: JSX.Element }[];
+    title: React.ReactNode;
+};
+
+export type TTradingAssessmentForm = Required<
+    Pick<
+        GetFinancialAssessment,
+        | 'cfd_experience'
+        | 'cfd_frequency'
+        | 'cfd_trading_definition'
+        | 'leverage_trading_high_risk_stop_loss'
+        | 'leverage_impact_trading'
+        | 'required_initial_margin'
+        | 'risk_tolerance'
+        | 'source_of_experience'
+        | 'trading_experience_financial_instruments'
+        | 'trading_frequency_financial_instruments'
+    >
+>;
+
+export type TQuestion = {
+    question_text: string;
+    form_control: keyof TTradingAssessmentForm;
+    answer_options: { text: string; value: string }[];
+    field_type?: string;
 };

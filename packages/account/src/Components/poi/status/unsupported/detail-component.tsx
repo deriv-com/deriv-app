@@ -27,7 +27,7 @@ type TDetailComponent = {
     is_onfido_supported?: boolean;
     is_from_external?: boolean;
     setIsCfdPoiCompleted?: () => void;
-    is_mt5?: boolean;
+    is_for_mt5?: boolean;
     handlePOIforMT5Complete?: () => void;
 };
 
@@ -41,7 +41,7 @@ const DetailComponent = ({
     is_onfido_supported,
     is_from_external,
     setIsCfdPoiCompleted,
-    is_mt5,
+    is_for_mt5,
     handlePOIforMT5Complete,
     ...props
 }: TDetailComponent) => {
@@ -63,11 +63,11 @@ const DetailComponent = ({
                 const expiration_date =
                     typeof data.expiry_date?.format === 'function' ? data.expiry_date.format('YYYY-MM-DD') : undefined;
                 uploadFile(file, WS.getSocket, {
-                    documentType: document_type,
-                    pageType,
-                    expirationDate: expiration_date,
-                    documentId: data.document_id || '',
-                    lifetimeValid: +(lifetime_valid && !expiration_date),
+                    document_type,
+                    page_type: pageType,
+                    expiration_date,
+                    document_id: data.document_id || '',
+                    lifetime_valid: +(lifetime_valid && !expiration_date),
                     document_issuing_country: country_code_key,
                 })
                     .then(response => {
@@ -101,7 +101,7 @@ const DetailComponent = ({
         uploadFiles(values)
             .then(() => {
                 if (!is_any_failed) {
-                    if (is_mt5) {
+                    if (is_for_mt5) {
                         handlePOIforMT5Complete?.();
                     } else {
                         setStatus(STATUS.IS_COMPLETED);
@@ -142,9 +142,9 @@ const DetailComponent = ({
                                 country_code={country_code_key}
                                 documents_supported={[document.onfido_name]}
                                 height={height ?? null}
-                                handleComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
+                                handleComplete={is_for_mt5 ? handlePOIforMT5Complete : handleComplete}
                                 is_default_enabled
-                                handleViewComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
+                                handleViewComplete={is_for_mt5 ? handlePOIforMT5Complete : handleComplete}
                                 {...props}
                             />
                         </React.Fragment>

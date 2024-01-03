@@ -6,7 +6,7 @@ import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import AddPaymentMethod from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
+import AddPaymentMethod from 'Components/add-payment-method';
 import BuyAdPaymentMethodsList from 'Pages/my-ads/buy-ad-payment-methods-list.jsx';
 import SellAdPaymentMethodsList from 'Pages/my-ads/sell-ad-payment-methods-list.jsx';
 import { buy_sell } from 'Constants/buy-sell';
@@ -92,7 +92,7 @@ const QuickAddModal = ({ advert }) => {
                                 text={localize('Cancel')}
                             />
                             <Button
-                                className='quick-add-modal--button'
+                                className='quick-add-modal__button'
                                 has_effect
                                 is_disabled={
                                     selected_methods.length === 0 || my_ads_store.payment_method_names.length === 0
@@ -105,7 +105,7 @@ const QuickAddModal = ({ advert }) => {
                         </>
                     )}
                 >
-                    <div className='quick-add-modal--info'>
+                    <div className='quick-add-modal__info'>
                         <Text color='prominent' size='xxs'>
                             <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
                         </Text>
@@ -132,8 +132,8 @@ const QuickAddModal = ({ advert }) => {
                 pageHeaderReturnFn={() => setShouldCloseAllModals(false)}
                 secondary
                 text={localize('Cancel')}
-                renderPageFooterChildren={() =>
-                    !my_ads_store.should_show_add_payment_method && (
+                {...(!my_ads_store.should_show_add_payment_method && {
+                    renderPageFooterChildren: () => (
                         <>
                             <Button
                                 has_effect
@@ -154,11 +154,11 @@ const QuickAddModal = ({ advert }) => {
                                 text={localize('Add')}
                             />
                         </>
-                    )
-                }
+                    ),
+                })}
             >
                 {my_ads_store.should_show_add_payment_method ? (
-                    <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
+                    <AddPaymentMethod should_show_page_return={false} />
                 ) : (
                     <>
                         <Text color='prominent' size='xxs'>
@@ -257,7 +257,7 @@ const QuickAddModal = ({ advert }) => {
                 })}
             >
                 {my_ads_store.should_show_add_payment_method ? (
-                    <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
+                    <AddPaymentMethod should_show_page_return={false} />
                 ) : (
                     <>
                         <Text color='prominent' size='xs'>

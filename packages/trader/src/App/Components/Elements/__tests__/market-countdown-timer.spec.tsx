@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { ActiveSymbols, TradingTimesResponse } from '@deriv/api-types';
@@ -61,8 +61,6 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<MarketCountdownTimer />', () => {
-    Date.now = jest.fn(() => 1487030400000);
-
     const mockMarketCountdownTimer = (
         mocked_store: TCoreStores,
         mock_props: React.ComponentProps<typeof MarketCountdownTimer>
@@ -75,21 +73,24 @@ describe('<MarketCountdownTimer />', () => {
     };
 
     it('should not render component with children if is_main_page is true', () => {
-        const new_props = { ...mock_default_props };
-        new_props.is_main_page = true;
+        const new_props = { ...mock_default_props, is_main_page: true };
         const { container } = render(mockMarketCountdownTimer(mockStore(default_mock_store), new_props));
 
         expect(container).toBeEmptyDOMElement();
     });
     it('should render component with children if is_main_page is false', async () => {
         jest.useFakeTimers();
+        const { rerender } = render(mockMarketCountdownTimer(mockStore(default_mock_store), mock_default_props));
         await waitFor(() => {
-            const { rerender } = render(mockMarketCountdownTimer(mockStore(default_mock_store), mock_default_props));
             rerender(mockMarketCountdownTimer(mockStore(default_mock_store), mock_default_props));
         });
-        jest.runOnlyPendingTimers();
-
-        expect(screen.getByText('It will reopen at')).toBeInTheDocument();
-        expect(screen.getByText('Please come back in')).toBeInTheDocument();
+        await act(async () => {
+            jest.runOnlyPendingTimers();
+        });
+        await waitFor(() => {
+            expect(screen.getByText('It will reopen at')).toBeInTheDocument();
+            expect(screen.getByText('Please come back in')).toBeInTheDocument();
+        });
+        jest.useRealTimers();
     });
 });

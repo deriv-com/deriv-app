@@ -453,8 +453,8 @@ export default class ContractsFor {
 
         for (let j = 0; j < trade_types.length; j++) {
             const trade_type = trade_types[j];
-            const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
-            const has_prediction = config.PREDICTION_TRADE_TYPES.includes(trade_type.value);
+            const has_barrier = config.QUICK_STRATEGY.DISABLED.BARRIER_TRADE_TYPES.includes(trade_type.value);
+            const has_prediction = config.QUICK_STRATEGY.DISABLED.PREDICTION_TRADE_TYPES.includes(trade_type.value);
 
             if (has_barrier || has_prediction) {
                 hidden_categories++;
@@ -467,8 +467,8 @@ export default class ContractsFor {
     getTradeTypeOptions = (trade_types, trade_type_category) => {
         const trade_type_options = [];
         trade_types.forEach(trade_type => {
-            const has_barrier = config.BARRIER_TRADE_TYPES.includes(trade_type.value);
-            const has_prediction = config.PREDICTION_TRADE_TYPES.includes(trade_type.value);
+            const has_barrier = config.QUICK_STRATEGY.DISABLED.BARRIER_TRADE_TYPES.includes(trade_type.value);
+            const has_prediction = config.QUICK_STRATEGY.DISABLED.PREDICTION_TRADE_TYPES.includes(trade_type.value);
             const is_muliplier = ['multiplier'].includes(trade_type.value);
 
             // TODO: Render extra inputs for barrier + prediction and multiplier types.
@@ -520,7 +520,6 @@ export default class ContractsFor {
 
             trade_type_options.push(...this.getTradeTypeOptions(trade_types, trade_type_category));
         }
-
         return trade_type_options;
     }
 
@@ -603,4 +602,13 @@ export default class ContractsFor {
     disposeCache() {
         this.contracts_for = {};
     }
+
+    getContractTypes = trade_type => {
+        const { opposites } = config;
+        const categories = opposites[trade_type.toUpperCase()].map(opposite => ({
+            value: Object.keys(opposite)[0],
+            text: Object.values(opposite)[0],
+        }));
+        return categories;
+    };
 }

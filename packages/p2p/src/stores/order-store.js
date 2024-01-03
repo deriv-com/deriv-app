@@ -299,7 +299,7 @@ export default class OrderStore {
                     }
                 } else if (response?.error?.code === api_error_codes.PERMISSION_DENIED) {
                     this.root_store.general_store.setIsBlocked(true);
-                } else {
+                } else if (response.error.code !== api_error_codes.ADVERTISER_NOT_FOUND) {
                     this.setApiErrorMessage(response.error.message);
                 }
 

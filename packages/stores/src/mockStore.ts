@@ -290,6 +290,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             account_open_date: undefined,
             setAccounts: jest.fn(),
             updateMt5LoginList: jest.fn(),
+            should_show_eu_error: false,
+            is_options_blocked: false,
         },
         common: {
             error: common_store_error,

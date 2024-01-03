@@ -37,13 +37,14 @@ type TChartMarker = {
         y: string | number | null;
     };
     marker_content_props: TMarkerContentConfig;
+    is_positioned_behind?: boolean;
 };
 type TRef = {
     setPosition: (position: { epoch: number | null; price: number | null }) => void;
     div: HTMLDivElement;
 };
 
-const ChartMarker = ({ marker_config, marker_content_props }: TChartMarker) => {
+const ChartMarker = ({ marker_config, marker_content_props, is_positioned_behind = false }: TChartMarker) => {
     const { ContentComponent, ...marker_props } = marker_config;
 
     // TODO:
@@ -59,6 +60,7 @@ const ChartMarker = ({ marker_config, marker_content_props }: TChartMarker) => {
             } else {
                 ref.div.style.zIndex = '1';
             }
+            if (is_positioned_behind) ref.div.style.zIndex = '-1';
             ref.setPosition({
                 epoch: +marker_props.x,
                 price: Number(marker_props.y),

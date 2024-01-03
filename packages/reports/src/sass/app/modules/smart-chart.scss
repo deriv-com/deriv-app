@@ -573,6 +573,25 @@
         animation: 0.5s spot-emphasizer 0.2s;
     }
 }
+.sc-reset_barrier {
+    width: 100vw;
+    height: 1px;
+    border-bottom: 1px dashed var(--text-info-blue);
+}
+.sc-barrier_gradient {
+    width: 100vw;
+    height: 12rem;
+    position: absolute;
+    opacity: 0.3;
+
+    &--to-bottom {
+        background-image: linear-gradient(to bottom, transparent, $COLOR_GREEN_1);
+        bottom: 0;
+    }
+    &--to-top {
+        background-image: linear-gradient(to top, transparent, $COLOR_GREEN_1);
+    }
+}
 
 //Vanilla specific styles
 .vanilla-trade-chart {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import { WalletButton, WalletText, WalletPasswordFieldLazy } from '../../../../components/Base';
+import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
@@ -61,7 +61,7 @@ const EnterPassword: React.FC<TProps> = ({
                         Forgot password?
                     </WalletButton>
                     <WalletButton
-                        disabled={!password || isLoading || !validPassword(password) || passwordError}
+                        disabled={!password || isLoading || !validPassword(password)}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

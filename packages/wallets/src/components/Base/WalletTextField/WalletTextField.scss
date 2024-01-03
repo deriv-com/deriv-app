@@ -2,6 +2,9 @@
     min-width: 12rem;
     width: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
 
     &--error {
         .wallets-textfield__box,
@@ -63,10 +66,6 @@
         border: 1px solid var(--brand-blue, #85acb0);
     }
 
-    &__box:has(&__field:valid) {
-        border: 1px solid var(--brand-blue, #85acb0);
-    }
-
     &__box:has(&__field:invalid) {
         border: 1px solid var(--status-light-danger, #ec3f3f);
     }
@@ -88,14 +87,15 @@
     &__field:placeholder-shown ~ &__label {
         font-size: 1.4rem;
         cursor: text;
-        top: 1.3rem;
+        top: 2rem;
         padding: 0;
     }
 
     label,
     &__field:focus ~ &__label {
         position: absolute;
-        top: -10%;
+        top: 0%;
+        transform: translateY(-50%);
         display: block;
         transition: 0.2s;
         font-size: 1rem;
@@ -128,7 +128,7 @@
 
     &__message-container {
         height: 2rem;
-        padding: 0.2rem 0rem 0rem 1.6rem;
+        padding: 0rem 0rem 0rem 1.6rem;
         width: 100%;
 
         &--maxchar {

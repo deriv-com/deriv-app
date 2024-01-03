@@ -79,6 +79,7 @@ const AdvertiserPage = () => {
         isSuccess: has_p2p_advert_info,
     } = useP2PAdvertInfo(counterparty_advert_id, {
         enabled: !!counterparty_advert_id,
+        retry: false,
     });
 
     const showErrorModal = () => {
@@ -149,8 +150,6 @@ const AdvertiserPage = () => {
 
                     if (is_barred) {
                         history.push(routes.p2p_buy_sell);
-                    } else if (!is_advertiser) {
-                        history.push(routes.p2p_my_ads);
                     }
 
                     // Need to set active index to 0 when users navigate to advertiser page via url,

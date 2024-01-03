@@ -152,12 +152,10 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     const activeLoginid = window.localStorage.getItem('active_loginid');
     const [environment, setEnvironment] = useState(getEnvironment(activeLoginid));
     const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI(() => setReconnect(true)) : null);
-
-    const derivAPI = useRef<DerivAPIBasic>(new DerivAPIBasic({ connection: new WebSocket(getWebSocketURL()) }));
-    const subscriptions = useRef<Record<string, DerivAPIBasic['subscribe']>>({});
+    const subscriptions = useRef<Record<string, DerivAPIBasic['subscribe']>>();
 
     const send: TSendFunction = (name, payload) => {
-        return derivAPI.current?.send({ [name]: 1, ...payload });
+        return standaloneDerivAPI.current?.send({ [name]: 1, ...payload });
     };
 
     const subscribe: TSubscribeFunction = async (name, payload) => {
@@ -165,7 +163,7 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
         const matchingSubscription = subscriptions.current?.[id];
         if (matchingSubscription) return { id, subscription: matchingSubscription };
 
-        const subscription = derivAPI.current?.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) });
+        const subscription = standaloneDerivAPI.current?.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) });
         subscriptions.current = { ...(subscriptions.current || {}), ...{ [id]: subscription } };
         return { id, subscription };
     };
@@ -176,7 +174,7 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     };
 
     useEffect(() => {
-        const currentDerivApi = derivAPI.current;
+        const currentDerivApi = standaloneDerivAPI.current;
         const currentSubscriptions = subscriptions.current;
 
         return () => {

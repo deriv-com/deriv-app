@@ -17,10 +17,13 @@ const useExchangeRates = <T extends TCurrencyPayload>() => {
 
     const subscribe = async ({ base_currency, target_currencies }: TCurrenyExchangeSubscribeFunction<T>) => {
         target_currencies.forEach(async c => {
-            const { id, subscription } = await _subscribe('exchange_rates', { base_currency, target_currency: c });
+            const { id, subscription } = await _subscribe('exchange_rates', {
+                base_currency,
+                target_currency: c,
+            });
             if (!exchangeRatesSubscriptions.current.includes(id)) {
                 exchangeRatesSubscriptions.current.push(id);
-                subscription.subscribe((response: any) => {
+                subscription.subscribe((response: TSocketResponseData<'exchange_rates'>) => {
                     const rates = response.exchange_rates?.rates;
                     if (rates) {
                         setData(prev => {
@@ -53,7 +56,14 @@ const useExchangeRates = <T extends TCurrencyPayload>() => {
         exchangeRatesSubscriptions.current.forEach(s => _unsubscribe(s));
     };
 
-    return { data, subscribe, unsubscribe };
+    const getExchangeRate = (base: string, target: string) => {
+        if (data) {
+            return data?.[base]?.[target] ?? 1;
+        }
+        return 1;
+    };
+
+    return { data, subscribe, unsubscribe, getExchangeRate };
 };
 
 export default useExchangeRates;

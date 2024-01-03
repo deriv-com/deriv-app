@@ -1,5 +1,7 @@
+import { useTraderStore } from 'Stores/useTraderStores';
+
 export const updateAmountChanges = (
-    obj: Record<string, string | number>,
+    obj: Partial<ReturnType<typeof useTraderStore>>,
     stake_value: number,
     payout_value: number,
     basis: string,

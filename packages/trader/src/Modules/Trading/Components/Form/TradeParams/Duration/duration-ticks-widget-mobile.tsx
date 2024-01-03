@@ -58,7 +58,7 @@ const DurationTicksWidgetMobile = observer(
 
         const setTickDuration = (value: { target: { value: number; name: string } }) => {
             const { value: duration } = value.target;
-            const on_change_obj: Record<string, string | number> = {};
+            const on_change_obj: Partial<ReturnType<typeof useTraderStore>> = {};
 
             // check for any amount changes from Amount trade params tab before submitting onChange object
             if (!has_amount_error)

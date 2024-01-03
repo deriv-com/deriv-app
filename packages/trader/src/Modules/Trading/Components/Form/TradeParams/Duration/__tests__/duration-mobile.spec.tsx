@@ -7,7 +7,12 @@ import { mockStore } from '@deriv/stores';
 jest.mock('@deriv/components', () => {
     return {
         ...jest.requireActual('@deriv/components'),
-        Tabs: jest.fn(({ onTabItemClick, children }) => <div onClick={() => onTabItemClick(0)}>{children}</div>),
+        Tabs: jest.fn(({ onTabItemClick, children }) => (
+            <div>
+                {children}
+                <button onClick={() => onTabItemClick(0)}>Button</button>
+            </div>
+        )),
     };
 });
 

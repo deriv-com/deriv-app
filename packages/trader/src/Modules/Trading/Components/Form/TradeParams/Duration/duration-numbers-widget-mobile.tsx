@@ -88,14 +88,14 @@ const DurationNumbersWidgetMobile = observer(
         };
 
         const setDuration = (duration: string | number) => {
-            const on_change_obj: Record<string, string | number> = {};
+            const on_change_obj: Partial<ReturnType<typeof useTraderStore>> = {};
             // check for any amount changes from Amount trade params tab before submitting onChange object
             if (!has_amount_error)
                 updateAmountChanges(on_change_obj, stake_value, payout_value, basis_option, trade_basis, trade_amount);
 
             if (trade_duration !== Number(duration) || trade_duration_unit !== duration_unit) {
                 on_change_obj.duration_unit = duration_unit;
-                on_change_obj.duration = duration;
+                on_change_obj.duration = Number(duration);
                 on_change_obj.expiry_type = 'duration';
             }
 

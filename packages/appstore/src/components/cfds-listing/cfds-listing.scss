@@ -928,13 +928,18 @@
 
         .manual-poi {
             margin: auto;
-            width: max-content;
             height: 100%;
+            max-width: 68rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
 
+            .dc-card__wrapper {
+                margin-bottom: 0;
+            }
+
             &-details {
+                max-width: 68rem;
                 margin: auto;
                 @include mobile {
                     overflow-y: scroll;
@@ -944,11 +949,10 @@
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
-                }
 
-                &__btns {
-                    height: 7.2rem;
-                    padding-bottom: 0;
+                    .account-form__footer {
+                        max-width: 100%;
+                    }
                 }
 
                 &__field {
@@ -979,6 +983,10 @@
         .proof-of-identity__mismatch-container {
             max-width: 70.2rem;
             margin-inline: auto;
+
+            .proof-of-identity__footer {
+                max-width: 100%;
+            }
 
             .account__scrollbars_container {
                 padding-top: 2.4rem;

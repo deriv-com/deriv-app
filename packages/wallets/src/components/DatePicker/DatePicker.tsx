@@ -82,7 +82,7 @@ const DatePicker = ({
                         maxDate={maxDate}
                         minDate={minDate}
                         onChange={handleDateChange}
-                        value={selectedDate !== null ? unixToDateString(selectedDate) : ''}
+                        value={selectedDate !== null ? selectedDate : ''}
                     />
                 </div>
             )}

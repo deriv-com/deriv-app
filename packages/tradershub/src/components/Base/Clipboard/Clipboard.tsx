@@ -7,6 +7,7 @@ import { Tooltip } from '../Tooltip';
 
 type TClipboardProps = {
     textCopy: string;
+    tooltip: 'bottom' | 'left' | 'right' | 'top';
 };
 
 /**
@@ -18,7 +19,7 @@ type TClipboardProps = {
  * <Clipboard textCopy="Text to be copied" />
  * ```
  */
-const Clipboard = ({ textCopy }: TClipboardProps) => {
+const Clipboard = ({ textCopy, tooltip }: TClipboardProps) => {
     const [, copy] = useCopyToClipboard();
     const { isMobile } = useBreakpoint();
     const [isCopied, setIsCopied] = useState(false);
@@ -44,7 +45,7 @@ const Clipboard = ({ textCopy }: TClipboardProps) => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <Tooltip isVisible={isHovered && !isMobile} message={isCopied ? 'Copied!' : 'Copy'}>
+        <Tooltip alignment={tooltip} isVisible={isHovered && !isMobile} message={isCopied ? 'Copied!' : 'Copy'}>
             <Button colorStyle='white' onClick={onClick} ref={hoverRef} size='sm'>
                 {isCopied ? <CheckmarkCircle /> : <ClipboardIcon />}
             </Button>

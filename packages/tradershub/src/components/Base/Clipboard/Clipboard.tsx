@@ -7,7 +7,7 @@ import { Tooltip } from '../Tooltip';
 
 type TClipboardProps = {
     textCopy: string;
-    tooltip: 'bottom' | 'left' | 'right' | 'top';
+    tooltip?: 'bottom' | 'left' | 'right' | 'top';
 };
 
 /**

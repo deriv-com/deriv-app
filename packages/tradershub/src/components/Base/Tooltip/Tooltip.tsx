@@ -11,7 +11,7 @@ import { TooltipClass, TooltipPointerClass } from './Tooltip.classnames';
  * @property {string} message - The message to be displayed in the tooltip.
  */
 type TProps = {
-    alignment: 'bottom' | 'left' | 'right' | 'top';
+    alignment?: 'bottom' | 'left' | 'right' | 'top';
     children: ReactNode;
     className?: string;
     isVisible: boolean;

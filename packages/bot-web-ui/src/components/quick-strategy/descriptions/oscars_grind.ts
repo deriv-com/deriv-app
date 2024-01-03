@@ -62,7 +62,7 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                'The table above demonstrates this principle by showing that when a successful trade occurs and meets the target of one unit of profit which is 1 USD in this example, the session ends. If trading continues, a new session will begin.'
+                'The table above demonstrates this principle by showing that when a successful trade occurs and meets the target of one unit of potential profit which is 1 USD in this example, the session ends. If trading continues, a new session will begin.'
             ),
         ],
     },
@@ -92,7 +92,7 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                'In round 7, the stake is adjusted downwards from 2 USD to 1 USD, to meet the target profit of $1.'
+                'In round 7, the stake is adjusted downwards from 2 USD to 1 USD, to meet the target profit of 1 USD.'
             ),
         ],
     },
@@ -106,7 +106,7 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                'The second session concludes upon reaching the aim of one unit of profit per session, equivalent to 1 USD. If trading continues, a new session will commence again.'
+                'The second session concludes upon reaching the aim of one unit of potential profit per session, equivalent to 1 USD. If trading continues, a new session will commence again.'
             ),
         ],
     },
@@ -118,7 +118,7 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                'With Deriv Bot, traders can set the profit and loss thresholds to secure profits and limit potential losses. This means that the trading bot will automatically stop when either the profit or loss threshold is reached. This is a form of risk management that can potentially boost successful trades whilst limiting the impact of loss. For example, if a trader sets the profit threshold at 100 USD and the strategy exceeds 100 USD of profit from all trades, then the bot will stop running.'
+                'With Deriv Bot, traders can set the profit and loss thresholds to secure potential profits and limit potential losses. This means that the trading bot will automatically stop when either the profit or loss threshold is reached. This is a form of risk management that can potentially boost successful trades whilst limiting the impact of loss. For example, if a trader sets the profit threshold at 100 USD and the strategy exceeds 100 USD of profit from all trades, then the bot will stop running.'
             ),
         ],
     },
@@ -136,13 +136,13 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
     },
     {
         type: 'subtitle_italic',
-        content: [localize('Disclaimers:')],
+        content: [localize('Disclaimers')],
     },
     {
         type: 'text_italic',
         content: [
             localize(
-                '<i>Please be aware that while we may use rounded figures for illustration, a stake of a specific amount does not guarantee an exact amount in successful trades. For example, a 1 USD stake does not necessarily equate to a 1 USD profit in successful trades. Trading inherently involves risks, and actual profits can fluctuate due to various factors, including market volatility and other unforeseen variables. As such, exercise caution and conduct thorough research before engaging in any trading activities.</i>'
+                'Please be aware that while we may use rounded figures for illustration, a stake of a specific amount does not guarantee an exact amount in successful trades. For example, a 1 USD stake does not necessarily equate to a 1 USD profit in successful trades.'
             ),
         ],
     },
@@ -150,7 +150,7 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
         type: 'text_italic',
         content: [
             localize(
-                '<i>The information contained in this article is for educational purposes only and is not intended as financial or investment advice.</i>'
+                'Trading inherently involves risks, and actual profits can fluctuate due to various factors, including market volatility and other unforeseen variables. As such, exercise caution and conduct thorough research before engaging in any trading activities.'
             ),
         ],
     },

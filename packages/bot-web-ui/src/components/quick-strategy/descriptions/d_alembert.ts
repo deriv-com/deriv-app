@@ -142,8 +142,8 @@ export const D_ALEMBERT: TDescriptionItem[] = [
         ],
     },
     {
-        type: 'subtitle_italic',
-        content: [localize('Disclaimer')],
+        type: 'text_italic',
+        content: [localize('<strong>Disclaimer:</strong>')],
     },
     {
         type: 'text_italic',

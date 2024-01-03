@@ -163,7 +163,14 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
         const matchingSubscription = subscriptions.current?.[id];
         if (matchingSubscription) return { id, subscription: matchingSubscription };
 
-        const subscription = standaloneDerivAPI.current?.subscribe({ [name]: 1, subscribe: 1, ...(payload || {}) });
+        const { payload: _payload } = payload || {};
+
+        const subscription = standaloneDerivAPI.current?.subscribe({
+            [name]: 1,
+            subscribe: 1,
+            ...(_payload || {}),
+        });
+
         subscriptions.current = { ...(subscriptions.current || {}), ...{ [id]: subscription } };
         return { id, subscription };
     };

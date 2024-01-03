@@ -18,8 +18,7 @@ const useExchangeRates = <T extends TCurrencyPayload>() => {
     const subscribe = async ({ base_currency, target_currencies }: TCurrenyExchangeSubscribeFunction<T>) => {
         target_currencies.forEach(async c => {
             const { id, subscription } = await _subscribe('exchange_rates', {
-                base_currency,
-                target_currency: c,
+                payload: { base_currency, target_currency: c },
             });
             if (!exchangeRatesSubscriptions.current.includes(id)) {
                 exchangeRatesSubscriptions.current.push(id);

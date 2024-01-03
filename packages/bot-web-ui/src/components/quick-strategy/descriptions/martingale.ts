@@ -6,6 +6,8 @@ export const MARTINGALE: TDescriptionItem[] = [
     {
         type: 'subtitle',
         content: [localize('Exploring the Martingale strategy in Deriv Bot')],
+        expanded: true,
+        no_collapsible: false,
     },
     {
         type: 'text',
@@ -177,7 +179,7 @@ export const MARTINGALE: TDescriptionItem[] = [
     },
     {
         type: 'subtitle_italic',
-        content: [localize('<i>Disclaimer:</i>')],
+        content: [localize('Disclaimer:')],
     },
     {
         type: 'text_italic',

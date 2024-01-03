@@ -1,5 +1,6 @@
 import React from 'react';
-import { useDevice } from '../../hooks';
+import { useBreakpoint } from '@deriv/quill-design';
+// import { useDevice } from '../../hooks';
 import Stepper, { TStep } from './stepper';
 import StepConnector from './step-connector';
 
@@ -16,7 +17,8 @@ type TFormProgressProps = {
 export const FormProgress = ({ activeStep, steps = [] }: TFormProgressProps) => {
     // const [activeStep, setActiveStep] = React.useState(0);
 
-    const { isMobile } = useDevice();
+    const { isMobile } = useBreakpoint();
+    console.log('isMobile: ', isMobile);
 
     // const updateStep = (index: number) => {
     //     if (steps[index - 1]?.isFilled || index === 0) {

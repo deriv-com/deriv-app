@@ -19,6 +19,7 @@ import {
     isTurbosContract,
     isVanillaContract,
     isSmartTraderContract,
+    isResetContract,
     urlFor,
 } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
@@ -103,6 +104,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
     const is_turbos = isTurbosContract(contract_info.contract_type);
     const is_vanilla = isVanillaContract(contract_info.contract_type);
     const is_smarttrader_contract = isSmartTraderContract(contract_info.contract_type);
+    const is_reset_contract = isResetContract(contract_info.contract_type);
 
     const contract_drawer_el = (
         <ContractDrawer
@@ -178,6 +180,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
                                 <ReplayChart
                                     is_dark_theme_prop={is_dark_theme}
                                     is_accumulator_contract={is_accumulator}
+                                    is_reset_contract={is_reset_contract}
                                 />
                             </DesktopWrapper>
                             <MobileWrapper>
@@ -201,6 +204,7 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
                                     <ReplayChart
                                         is_dark_theme_prop={is_dark_theme}
                                         is_accumulator_contract={is_accumulator}
+                                        is_reset_contract={is_reset_contract}
                                     />
                                 )}
                             </MobileWrapper>

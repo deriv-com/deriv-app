@@ -1,39 +1,20 @@
-name: send_slack_notifications
-description: Send Slack notifications
+name: send_slack_notification
+description: Send Slack notification
 inputs:
   SLACK_WEBHOOK_URL:
     description: 'Slack webhook URL'
     required: true
-  status:
-    description: 'Job status'
+  MESSAGE:
+    description: 'Status message'
     required: true
-  release_type:
-    description: 'Release type'
-    required: true
-  version:
-    description: 'Version'
-    required: true
-    default: 'N/A'
 runs:
   using: composite
   steps:
-  - name: Send Slack Notification on Success
-
-    if: inputs.status == 'success'
+  - name: Send Slack Notification
     run: |
         curl -X POST -H 'Content-type: application/json' \
         --data '{
-        "text": "${{ inputs.RELEASE_TYPE }} Release succeeded for app.deriv.com with version ${{ inputs.VERSION }}"
+        "text": "${{ inputs.MESSAGE }}"
         }' \
-          ${{ inputs.SLACK_WEBHOOK_URL }}
-    shell: bash
-  
-  - name: Send Slack Notification on Failure
-    if: inputs.status == 'failure'
-    run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{
-            "text": "${{ inputs.RELEASE_TYPE }} Release failed for app.deriv.com with version ${{ inputs.VERSION }}"
-          }' \
           ${{ inputs.SLACK_WEBHOOK_URL }}
     shell: bash

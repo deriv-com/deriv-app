@@ -164,8 +164,9 @@ const CompositeCalendar = (props: TCompositeCalendarProps) => {
             onChange({ to: toMoment(date).endOf('day') });
         } else {
             onChange({ from: toMoment(date) });
-            hideCalendar();
         }
+
+        hideCalendar();
     };
 
     /**

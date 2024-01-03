@@ -1,6 +1,6 @@
 import InstrumentsIcons from '../../../../public/images/cfd/tradingInstruments';
 import { THooks, TPlatforms } from '../../../../types';
-import { CFD_PLATFORMS, MARKET_TYPE } from '../../constants';
+import { CFDPlatforms, MarketType } from '../../constants';
 import { JURISDICTION, MARKET_TYPE_SHORTCODE } from './constants';
 
 type THighlightedIconLabel = {
@@ -27,8 +27,8 @@ const getHighlightedIconLabel = (
         } else if (marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN) {
             return 'Forex: standard/exotic';
         } else if (
-            (platform === CFD_PLATFORMS.MT5 && marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_SVG) ||
-            platform === CFD_PLATFORMS.CTRADER
+            (platform === CFDPlatforms.MT5 && marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_SVG) ||
+            platform === CFDPlatforms.CTRADER
         ) {
             return 'Forex: major/minor';
         }
@@ -36,7 +36,7 @@ const getHighlightedIconLabel = (
     })();
 
     switch (marketType) {
-        case MARKET_TYPE.SYNTHETIC:
+        case MarketType.SYNTHETIC:
             return [
                 { highlighted: false, icon: 'Forex', text: forexLabel },
                 { highlighted: false, icon: 'Stocks', text: 'Stocks' },
@@ -48,7 +48,7 @@ const getHighlightedIconLabel = (
                 { highlighted: true, icon: 'Baskets', text: 'Basket indices' },
                 { highlighted: true, icon: 'DerivedFX', text: 'Derived FX' },
             ];
-        case MARKET_TYPE.FINANCIAL:
+        case MarketType.FINANCIAL:
             switch (shortCode) {
                 case JURISDICTION.MALTAINVEST:
                     return [
@@ -84,9 +84,9 @@ const getHighlightedIconLabel = (
                         { highlighted: false, icon: 'DerivedFX', text: 'Derived FX' },
                     ];
             }
-        case MARKET_TYPE.ALL:
+        case MarketType.ALL:
         default:
-            if (platform === CFD_PLATFORMS.MT5) {
+            if (platform === CFDPlatforms.MT5) {
                 return [
                     { highlighted: true, icon: 'Forex', text: forexLabel },
                     { highlighted: true, icon: 'Stocks', text: 'Stocks' },
@@ -115,11 +115,11 @@ const getHighlightedIconLabel = (
 
 const getPlatformType = (platform: TPlatforms.All) => {
     switch (platform) {
-        case CFD_PLATFORMS.MT5:
+        case CFDPlatforms.MT5:
             return 'MT5';
-        case CFD_PLATFORMS.CTRADER:
+        case CFDPlatforms.CTRADER:
             return 'CTrader';
-        case CFD_PLATFORMS.DXTRADE:
+        case CFDPlatforms.DXTRADE:
         default:
             return 'OtherCFDs';
     }
@@ -280,20 +280,20 @@ const isMt5AccountAdded = (
             item.account_type === currentAccountType &&
             item.market_type === marketType &&
             item.landing_company_short === companyShortCode &&
-            item.platform === CFD_PLATFORMS.MT5
+            item.platform === CFDPlatforms.MT5
         );
     });
 
 const isDxtradeAccountAdded = (list: THooks.DxtradeAccountsList[], isDemo?: boolean) =>
     list.some(item => {
         const currentAccountType = isDemo ? 'demo' : 'real';
-        return item.account_type === currentAccountType && item.platform === CFD_PLATFORMS.DXTRADE;
+        return item.account_type === currentAccountType && item.platform === CFDPlatforms.DXTRADE;
     });
 
 const isCTraderAccountAdded = (list: THooks.CtraderAccountsList[], isDemo?: boolean) =>
     list.some(item => {
         const currentAccountType = isDemo ? 'demo' : 'real';
-        return item.account_type === currentAccountType && item.platform === CFD_PLATFORMS.CTRADER;
+        return item.account_type === currentAccountType && item.platform === CFDPlatforms.CTRADER;
     });
 
 export {

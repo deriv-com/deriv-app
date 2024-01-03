@@ -66,4 +66,3 @@ export namespace TDisplayBalance {
 
 export type TLandingCompanyName = Extract<THooks.MT5AccountsList['landing_company_short'], 'malta' | 'svg'> | 'virtual';
 export type TMT5LandingCompanyName = THooks.MT5AccountsList['landing_company_short'];
-// export type TMT5AccountListProps = { account: THooks.MT5AccountsList };

@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
 import { useOnClickOutside } from 'usehooks-ts';
 import CalendarIcon from '../../public/images/ic-calendar.svg';
+import unixToDateString from '../../utils/utils';
 import FlowTextField, { TFlowFieldProps } from '../FlowField/FlowTextField';
-import unixToDateString, { customFormatShortWeekday } from './utils';
+import customFormatShortWeekday from './utils';
 import 'react-calendar/dist/Calendar.css';
 import './DatePicker.scss';
 

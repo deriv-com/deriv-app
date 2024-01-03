@@ -3,7 +3,7 @@ import moment from 'moment';
 import { useSettings } from '@deriv/api';
 import { DatePicker, FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../../../components';
 import SideNote from '../../../../../../public/images/accounts/side-note-example-image.svg';
-import unixToDateString from '../../../../utils';
+import unixToDateString from '../../../../../../utils/utils';
 import { dateOfBirthValidator, firstNameValidator, lastNameValidator } from '../../../../validations';
 import './IDVDocumentUploadDetails.scss';
 
@@ -16,6 +16,7 @@ const IDVDocumentUploadDetails = () => {
     };
 
     const dateOfBirth = getSettings?.date_of_birth || 0;
+    const formattedDateOfBirth = new Date(dateOfBirth * 1000);
 
     return (
         <div className='wallets-idv-document-details'>
@@ -45,7 +46,7 @@ const IDVDocumentUploadDetails = () => {
                         validationSchema={lastNameValidator}
                     />
                     <DatePicker
-                        defaultValue={unixToDateString(dateOfBirth)}
+                        defaultValue={unixToDateString(formattedDateOfBirth)}
                         label='Date of birth*'
                         maxDate={moment().subtract(18, 'years').toDate()}
                         message='Your date of birth as in your identity document'

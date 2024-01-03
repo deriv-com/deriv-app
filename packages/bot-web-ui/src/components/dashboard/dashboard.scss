@@ -517,7 +517,7 @@
         background: var(--general-section-1);
         text-align: center;
         width: 100%;
-        height: calc(100vh - 24rem);
+        height: 55%;
         margin-bottom: 1.6rem;
     }
 
@@ -527,6 +527,7 @@
 
     video {
         height: 100%;
+        width: 65%;
     }
 
     &__progress-bar {

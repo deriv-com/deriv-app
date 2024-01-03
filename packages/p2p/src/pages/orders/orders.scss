@@ -13,12 +13,6 @@
         }
     }
     & .p2p-empty {
-        &__button {
-            @include mobile {
-                width: 100%;
-                padding: 1rem;
-            }
-        }
         @include mobile {
             padding: 4rem 1.6rem;
             margin: 0rem;

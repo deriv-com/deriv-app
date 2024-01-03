@@ -73,7 +73,7 @@ const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children }) 
                         <FormTabs
                             active_tab={active_tab}
                             onChange={handleTabChange}
-                            description={strategy?.long_description}
+                            description={strategy?.description}
                         />
                         <StrategyTabContent formfields={children} active_tab={active_tab} />
                     </ThemedScrollbars>

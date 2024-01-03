@@ -1,46 +1,72 @@
-import React from 'react';
-import { Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
+import React, { useState } from 'react';
+import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
-import StrategyDescription from '../descriptions/strategy-description';
+import { TDescription, TDescriptionItem } from '../types';
+import AccordionStrategyGroup from './accordion-strategy-group';
+import './strategy-accordion.scss';
 
-type TStrategyTabContent = Partial<{
+type TStrategyDescription = Partial<{
     formfields: React.ReactNode;
     active_tab: string;
     tutorial_selected_strategy: string;
 }>;
 
-const StrategyTabContent: React.FC<TStrategyTabContent> = observer(
+type TExpandedSubtitlesStorageDefault = {
+    [key: string]: boolean;
+};
+
+export type TDataGroupedObjectsByTitle = {
+    type: string;
+    content: string[];
+};
+
+const StrategyTabContent: React.FC<TStrategyDescription> = observer(
     ({ formfields, active_tab, tutorial_selected_strategy }) => {
-        const { ui } = useStore();
         const { quick_strategy } = useDBotStore();
         const { selected_strategy } = quick_strategy;
-        const { is_mobile } = ui;
+
+        const expanded_subtitles_storage_default: TExpandedSubtitlesStorageDefault = {};
+        const [expanded_subtitles_storage, setExpandedSubtitlesStorage] = useState(expanded_subtitles_storage_default);
+
         const strategy = STRATEGIES[tutorial_selected_strategy || (selected_strategy as keyof typeof STRATEGIES)];
-        const desktop_font_size = tutorial_selected_strategy ? 's' : 'xs';
-        const font_size: string = React.useMemo<string>(() => (is_mobile ? 'xxs' : desktop_font_size), [is_mobile]);
+
+        const makeGroupedObjectsByTitle = () => {
+            return strategy?.description?.reduce((acc: TDescription, obj: TDescriptionItem, idx) => {
+                const is_subtitle = obj.type === 'subtitle_italic' || obj.type === 'subtitle';
+                if (is_subtitle) {
+                    acc.push([]);
+
+                    const generateStorageKey = (obj: TDataGroupedObjectsByTitle, selected_strategy: string): string => {
+                        return `${obj.content[0]}__${selected_strategy}`.split(' ').join('_').toLowerCase();
+                    };
+
+                    expanded_subtitles_storage_default[
+                        generateStorageKey(obj as TDataGroupedObjectsByTitle, selected_strategy)
+                    ] = obj?.expanded ?? false;
+                }
+
+                (acc[acc.length - 1] as TDescriptionItem[]).push({ ...obj, id: idx });
+                return acc;
+            }, []);
+        };
+
+        const grouped_objects_by_title: TDescription = Array.isArray(strategy?.description)
+            ? makeGroupedObjectsByTitle()
+            : [{ type: 'text', content: [strategy?.description] }];
 
         return (
             <>
                 {active_tab === 'TRADE_PARAMETERS' ? (
-                    <>
-                        {strategy.description && (
-                            <div className='qs__body__content__description'>
-                                <div>
-                                    <Text size={font_size}>{strategy.description}</Text>
-                                </div>
-                            </div>
-                        )}
-                        <div className='qs__body__content__form'>{formfields}</div>
-                    </>
+                    <div className='qs__body__content__form'>{formfields}</div>
                 ) : (
                     <div className='qs__body__content__description'>
-                        <div>
-                            {strategy?.long_description?.map((data, index) => (
-                                <StrategyDescription key={index} data={data} font_size={font_size} />
-                            ))}
-                        </div>
+                        <AccordionStrategyGroup
+                            tutorial_selected_strategy={tutorial_selected_strategy}
+                            grouped_objects_by_title={grouped_objects_by_title}
+                            expanded_subtitles_storage={expanded_subtitles_storage}
+                            setExpandedSubtitlesStorage={setExpandedSubtitlesStorage}
+                        />
                     </div>
                 )}
             </>

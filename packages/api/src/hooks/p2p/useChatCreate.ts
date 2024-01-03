@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 import useMutation from '../../useMutation';
+import useInvalidateQuery from '../../useInvalidateQuery';
+import { getQueryKeys } from '../../utils';
 
 type TPayload = NonNullable<Parameters<ReturnType<typeof useMutation<'p2p_chat_create'>>['mutate']>>[0]['payload'];
 
@@ -11,7 +13,16 @@ type TPayload = NonNullable<Parameters<ReturnType<typeof useMutation<'p2p_chat_c
  * mutate({ order_id: 'order_id' });
  * **/
 const useChatCreate = () => {
-    const { data, mutate: _mutate, ...rest } = useMutation('p2p_chat_create');
+    const invalidate = useInvalidateQuery();
+    const {
+        data,
+        mutate: _mutate,
+        ...rest
+    } = useMutation('p2p_chat_create', {
+        onSuccess: () => {
+            invalidate('p2p_order_info');
+        },
+    });
     const mutate = useCallback((payload: TPayload) => _mutate({ payload }), [_mutate]);
 
     return {

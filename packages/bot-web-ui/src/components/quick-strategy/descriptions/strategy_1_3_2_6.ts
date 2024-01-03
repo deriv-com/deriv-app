@@ -4,6 +4,12 @@ import { TDescriptionItem } from '../types';
 
 export const STRATEGY_1_3_2_6: TDescriptionItem[] = [
     {
+        type: 'subtitle',
+        content: [localize('Exploring the 1-3-2-6 strategy in Deriv Bot')],
+        expanded: true,
+        no_collapsible: false,
+    },
+    {
         type: 'text',
         content: [
             localize(
@@ -121,8 +127,8 @@ export const STRATEGY_1_3_2_6: TDescriptionItem[] = [
         ],
     },
     {
-        type: 'subtitle_italic',
-        content: [localize('Disclaimer:')],
+        type: 'text_italic',
+        content: [localize('<strong>Disclaimer:</strong>')],
     },
     {
         type: 'text_italic',

@@ -150,8 +150,6 @@ const AdvertiserPage = () => {
 
                     if (is_barred) {
                         history.push(routes.p2p_buy_sell);
-                    } else if (!is_advertiser) {
-                        history.push(routes.p2p_my_ads);
                     }
 
                     // Need to set active index to 0 when users navigate to advertiser page via url,

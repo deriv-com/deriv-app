@@ -1,6 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { useStores } from 'Stores/index';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import MyProfile from '../my-profile';
 
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;
@@ -8,6 +9,15 @@ let mock_store: DeepPartial<ReturnType<typeof useStores>>;
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store),
+}));
+
+const mock_modal_manager: DeepPartial<ReturnType<typeof useModalManagerContext>> = {
+    showModal: jest.fn(),
+};
+
+jest.mock('Components/modal-manager/modal-manager-context', () => ({
+    ...jest.requireActual('Components/modal-manager/modal-manager-context'),
+    useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
 jest.mock('Components/verification', () => jest.fn(() => <div>Verification</div>));

@@ -17,6 +17,7 @@ import {
     isProduction,
     isStaging,
     isTestLink,
+    isTestDerivApp,
     LocalStore,
     redirectToLogin,
     removeCookies,
@@ -2146,12 +2147,15 @@ export default class ClientStore extends BaseStore {
             this.setIsLoggingIn(true);
 
             const redirect_url = sessionStorage.getItem('redirect_url');
+            const is_next_wallet_enabled = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
+
+            const target_url = is_next_wallet_enabled ? routes.wallets : routes.traders_hub;
 
             if (
                 (redirect_url?.endsWith('/') || redirect_url?.endsWith(routes.bot)) &&
-                (isTestLink() || isProduction() || isLocal() || isStaging())
+                (isTestLink() || isProduction() || isLocal() || isStaging() || isTestDerivApp())
             ) {
-                window.history.replaceState({}, document.title, '/appstore/traders-hub');
+                window.history.replaceState({}, document.title, target_url);
             } else {
                 window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
             }

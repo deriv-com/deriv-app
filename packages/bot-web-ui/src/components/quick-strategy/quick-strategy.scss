@@ -56,6 +56,10 @@
     &__body {
         display: flex;
 
+        @include desktop() {
+            height: 72rem;
+        }
+
         @include mobile() {
             display: block;
         }
@@ -95,6 +99,8 @@
         }
 
         &__content {
+            display: flex;
+            flex-direction: column;
             background-color: var(--general-main-1);
             width: calc(100% - var(--sidebar-width));
             position: relative;
@@ -107,6 +113,7 @@
 
             &__head {
                 @extend .xy-center;
+                padding-bottom: 1rem;
 
                 @include mobile() {
                     padding: 0 1.6rem 1.6rem;
@@ -156,6 +163,10 @@
 
             &__description {
                 padding: 1rem 2.4rem;
+
+                @include mobile {
+                    padding: 1rem;
+                }
             }
 
             &__select {
@@ -167,7 +178,7 @@
             }
 
             &__form {
-                padding: 2.4rem;
+                padding: 0 2.4rem;
 
                 @include mobile() {
                     padding: 0 1.6rem;
@@ -188,7 +199,6 @@
             }
 
             &__footer {
-                width: 100%;
                 height: var(--footer-height);
                 border-top: 1px solid var(--border-divider);
                 @extend .x-center;
@@ -212,17 +222,24 @@
             min-height: 10rem;
             // to overwrite the height of the ThemedScrollbar
             max-height: calc(100vh - 23rem) !important;
+
+            @include desktop() {
+                height: calc(100vh - 23rem) !important;
+            }
+
             margin-bottom: 1rem;
-            height: auto;
             overflow-y: auto;
 
             @include mobile() {
                 margin-bottom: 0;
-                padding-bottom: 1.6rem;
+                padding: 0 1.9rem 1.6rem;
                 max-height: calc(100vh - 12.2rem) !important;
             }
+
             &--no-footer {
-                max-height: calc(100vh - 23rem + var(--footer-height)) !important;
+                height: 100% !important;
+                max-height: 100% !important;
+
                 @include mobile() {
                     max-height: calc(100vh - 8rem) !important;
                 }
@@ -231,6 +248,7 @@
 
         &__field {
             width: 100%;
+
             &__input {
                 margin-bottom: 0.8rem;
             }
@@ -240,6 +258,7 @@
                     .dc-input__leading-icon {
                         height: 2.4rem;
                         width: auto;
+
                         .dc-icon {
                             height: 1.4rem;
                             width: 1.4rem;
@@ -327,6 +346,7 @@
                     font-weight: normal;
                 }
             }
+
             &:last-child {
                 .dc-input__container {
                     margin-bottom: 0;
@@ -431,6 +451,7 @@
             &__icon {
                 background-color: var(--icon-grey-background);
                 margin-left: 0.8rem;
+
                 &:first-child {
                     margin-left: 0;
                 }
@@ -467,9 +488,11 @@
 
     &__input {
         margin: 0;
+
         &.highlight {
             border: 1px solid var(--status-warning);
         }
+
         .dc-input {
             &__container {
                 height: var(--input-height);
@@ -538,6 +561,7 @@
     &__input-label {
         @extend .x-center;
         height: var(--input-height);
+
         &__wrapper {
             margin-right: 1rem;
         }
@@ -554,8 +578,10 @@
             height: calc(var(--input-height) - 0.5rem);
             width: 100%;
             padding: 0 2.4rem 0 1.6rem;
+
             .dc-checkbox {
                 margin-right: 1rem;
+
                 .dc-text {
                     font-weight: bold;
                 }
@@ -563,29 +589,34 @@
         }
     }
 
-    &__long_description {
-        &__title {
-            margin: 0.8rem 0;
-            &.italic {
-                font-style: italic;
-                margin-bottom: 0;
-            }
-        }
+    &__description {
         &__content {
             margin-bottom: 0.8rem;
+
+            @include desktop {
+                padding-left: 1rem;
+            }
+
             &.italic {
                 font-style: italic;
             }
+
             &.no-margin {
                 margin-bottom: 0;
+
                 &:last-child {
                     margin-bottom: 0.8rem;
                 }
             }
         }
+
         &__image {
             width: 100%;
             margin-bottom: 2rem;
+
+            @include desktop {
+                padding-left: 1rem;
+            }
         }
     }
 }

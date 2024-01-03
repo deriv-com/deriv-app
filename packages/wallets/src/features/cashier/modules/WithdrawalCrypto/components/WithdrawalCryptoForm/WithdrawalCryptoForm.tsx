@@ -1,15 +1,14 @@
 import React from 'react';
 import { Field, FieldProps, Formik } from 'formik';
 import { WalletButton, WalletTextField } from '../../../../../../components';
-import { useWithdrawalCryptoValidator } from '../../hooks';
 import { useWithdrawalCryptoContext } from '../../provider/WithdrawalCryptoProvider';
+import { validateCryptoAddress } from '../../utils';
 import { WithdrawalCryptoAmountConverter } from './components/WithdrawalCryptoAmountConverter';
 import { WithdrawalCryptoPercentageSelector } from './components/WithdrawalCryptoPercentageSelector';
 import './WithdrawalCryptoForm.scss';
 
 const WithdrawalCryptoForm: React.FC = () => {
     const { activeWallet, fractionalDigits, requestCryptoWithdrawal } = useWithdrawalCryptoContext();
-    const { validateCryptoAddress } = useWithdrawalCryptoValidator(activeWallet, fractionalDigits);
 
     return (
         <Formik

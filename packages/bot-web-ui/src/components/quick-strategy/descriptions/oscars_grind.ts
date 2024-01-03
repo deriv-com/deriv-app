@@ -135,8 +135,8 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
         ],
     },
     {
-        type: 'subtitle_italic',
-        content: [localize('Disclaimers')],
+        type: 'text_italic',
+        content: [localize('<strong>Disclaimer:</strong>')],
     },
     {
         type: 'text_italic',

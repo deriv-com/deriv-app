@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useActiveWalletAccount, useAuthorize, usePOI } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, usePOI, useWalletAccountsList } from '@deriv/api';
 import { displayMoney as displayMoney_ } from '@deriv/api/src/utils';
 import { THooks } from '../../../../../../types';
 import { TAccount, TInitialTransferFormValues, TMessageFnProps, TTransferMessage } from '../../types';
@@ -29,6 +29,7 @@ const useTransferMessages = ({
 }: TProps) => {
     const { data: authorizeData } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { data: walletAccounts } = useWalletAccountsList();
     const { preferred_language: preferredLanguage } = authorizeData;
     const { data: poi } = usePOI();
 
@@ -46,6 +47,8 @@ const useTransferMessages = ({
     );
 
     if (!activeWallet || !fromAccount) return [];
+
+    const fiatAccount = walletAccounts?.find(account => account.account_type === 'doughflow');
 
     const sourceAmount = formData.fromAmount;
 
@@ -67,6 +70,7 @@ const useTransferMessages = ({
             activeWallet,
             activeWalletExchangeRates,
             displayMoney,
+            fiatAccount,
             limits: accountLimits,
             sourceAccount: fromAccount,
             sourceAmount,

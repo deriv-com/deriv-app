@@ -1,26 +1,12 @@
 .manual-poi {
-    margin: 0 -1rem;
-
-    &--mobile {
-        margin: 0;
-        padding: 4rem 0.6rem 0;
+    @include mobile {
+        margin: 3.2rem 0 1.6rem;
     }
 
-    .dc-timeline {
-        &__container {
-            flex: 1;
-            max-width: 63.4rem;
-
-            @at-root .manual-poi--mobile .dc-timeline__container {
-                max-width: none;
-            }
-        }
-        &__title {
-            font-size: var(--text-size-s);
-            line-height: 2.4rem;
-            margin: -4px 0 2.4rem;
-        }
+    &__title {
+        margin-inline: 1.6rem;
     }
+
     .dc-card__wrapper {
         justify-content: center;
     }

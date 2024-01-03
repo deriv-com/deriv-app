@@ -103,8 +103,7 @@ jest.mock('../config', () => ({
         MARTINGALE: {
             name: 'martingale',
             label: 'martingale',
-            description: 'test',
-            long_description: 'martingale',
+            description: 'martingale',
             fields: [
                 [
                     {

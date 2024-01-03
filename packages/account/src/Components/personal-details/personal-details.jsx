@@ -1,7 +1,7 @@
 import React from 'react';
-import InlineNoteWithIcon from '../inline-note-with-icon';
 import classNames from 'classnames';
 import { Form, Formik } from 'formik';
+import { Analytics } from '@deriv/analytics';
 import {
     AutoHeightWrapper,
     Div100vhContainer,
@@ -12,6 +12,7 @@ import {
 } from '@deriv/components';
 import { getIDVNotApplicableOption, isDesktop, isMobile, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { useStore, observer } from '@deriv/stores';
 import {
     isAdditionalDocumentValid,
     isDocumentNumberValid,
@@ -22,10 +23,9 @@ import PoiNameDobExample from '../../Assets/ic-poi-name-dob-example.svg';
 import FormSubHeader from '../form-sub-header';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
+import InlineNoteWithIcon from '../inline-note-with-icon';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
-import { useStore, observer } from '@deriv/stores';
-import { Analytics } from '@deriv/analytics';
 
 const PersonalDetails = observer(
     ({
@@ -221,8 +221,8 @@ const PersonalDetails = observer(
                                                     <FormSubHeader title={localize('Identity verification')} />
                                                     <IDVForm
                                                         selected_country={selected_country}
-                                                        hide_hint={true}
-                                                        can_skip_document_verification={true}
+                                                        hide_hint
+                                                        is_for_real_account_signup_modal
                                                     />
                                                 </React.Fragment>
                                             )}

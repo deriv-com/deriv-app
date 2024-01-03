@@ -1,6 +1,6 @@
 import React from 'react';
-import { THooks } from '@deriv/library/src/types';
 import { getStaticUrl } from '../../../../helpers/urls';
+import { THooks } from '../../../../types';
 import { MarketTypeDetails } from '../../constants';
 
 export const MT5AccountIcon = ({ account }: { account: THooks.MT5AccountsList }) => {

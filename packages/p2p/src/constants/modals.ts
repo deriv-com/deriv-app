@@ -28,6 +28,12 @@ export const Modals = {
     BuySellModal: React.lazy(
         () => import(/* webpackChunkName: "buy-sell-modal" */ 'Components/modal-manager/modals/buy-sell-modal')
     ),
+    BlockUserFilterModal: React.lazy(
+        () =>
+            import(
+                /* webpackChunkName: "block-user-filter-modal" */ 'Components/modal-manager/modals/block-user-filter-modal'
+            )
+    ),
     BlockUserModal: React.lazy(
         () => import(/* webpackChunkName: "block-user-modal" */ 'Components/modal-manager/modals/block-user-modal')
     ),
@@ -43,6 +49,12 @@ export const Modals = {
                 /* webpackChunkName: "cancel-edit-payment-method-modal" */ 'Components/modal-manager/modals/cancel-edit-payment-method-modal'
             )
     ),
+    ConfirmDeletePaymentMethodModal: React.lazy(
+        () =>
+            import(
+                /* webpackChunkName: "confirm-delete-payment-method-modal" */ 'Components/modal-manager/modals/confirm-delete-payment-method-modal'
+            )
+    ),
     CreateAdAddPaymentMethodModal: React.lazy(
         () =>
             import(
@@ -54,6 +66,9 @@ export const Modals = {
             import(
                 /* webpackChunkName: "currency-selector-modal" */ 'Components/modal-manager/modals/currency-selector-modal'
             )
+    ),
+    DailyLimitModal: React.lazy(
+        () => import(/* webpackChunkName: "daily-limit-modal" */ 'Components/modal-manager/modals/daily-limit-modal')
     ),
     DeletePaymentMethodConfirmationModal: React.lazy(
         () =>
@@ -138,6 +153,12 @@ export const Modals = {
         () =>
             import(
                 /* webpackChunkName: "my-ads-floating-rate-switch-modal" */ 'Components/modal-manager/modals/my-ads-floating-rate-switch-modal'
+            )
+    ),
+    MyProfileBalanceModal: React.lazy(
+        () =>
+            import(
+                /* webpackChunkName: "my-profile-balance-modal" */ 'Components/modal-manager/modals/my-profile-balance-modal'
             )
     ),
     NicknameModal: React.lazy(

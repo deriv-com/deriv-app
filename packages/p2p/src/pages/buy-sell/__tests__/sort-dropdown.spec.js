@@ -55,6 +55,6 @@ describe('<SortDropdown/>', () => {
         isDesktop.mockReturnValue(true);
         render(<SortDropdown />);
 
-        expect(screen.getByTestId('dti_dropdown_display')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_dropdown_display')).toBeInTheDocument();
     });
 });

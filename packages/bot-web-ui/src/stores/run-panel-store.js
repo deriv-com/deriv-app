@@ -459,10 +459,10 @@ export default class RunPanelStore {
     }
 
     registerReactions() {
-        const { client, notifications } = this.core;
+        const { client, common, notifications } = this.core;
 
         const registerIsSocketOpenedListener = () => {
-            if (client.email) {
+            if (common.is_socket_opened) {
                 this.disposeIsSocketOpenedListener = reaction(
                     () => client.loginid,
                     loginid => {
@@ -481,7 +481,7 @@ export default class RunPanelStore {
         registerIsSocketOpenedListener();
 
         this.disposeLogoutListener = reaction(
-            () => client.email,
+            () => common.is_socket_opened,
             () => registerIsSocketOpenedListener()
         );
 
@@ -654,11 +654,12 @@ export default class RunPanelStore {
 
     showErrorMessage(data) {
         const { journal } = this.root_store;
-        const { notifications } = this.core;
+        const { notifications, ui } = this.core;
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
             this.toggleDrawer(true);
             this.setActiveTabIndex(run_panel.JOURNAL);
+            ui.setPromptHandler(false);
         } else {
             notifications.addNotificationMessage(journalError(this.switchToJournal));
             notifications.removeNotificationMessage({ key: 'bot_error' });

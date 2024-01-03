@@ -7,6 +7,7 @@ import { TTradingPlatformAvailableAccount } from 'Components/props.types';
 describe('JurisdictionCard', () => {
     type TMockProps = {
         account_status: {
+            p2p_poa_required: 0 | 1;
             authentication: {
                 document: {
                     status: 'none' | 'pending' | 'expired' | 'verified' | 'rejected';
@@ -48,6 +49,7 @@ describe('JurisdictionCard', () => {
     beforeEach(() => {
         mock_props = {
             account_status: {
+                p2p_poa_required: 0,
                 authentication: {
                     document: {
                         status: 'none',
@@ -213,9 +215,9 @@ describe('JurisdictionCard', () => {
     it('should render JurisdictionCard on the back', () => {
         render(<JurisdictionCard {...mock_props} />);
         expect(screen.getByText('We need you to submit these in order to get this account:')).toBeInTheDocument();
-        expect(screen.getByText('Your document is pending for verification.')).toBeInTheDocument();
-        expect(screen.getByText('Verification failed. Resubmit during account creation.')).toBeInTheDocument();
-        expect(screen.getByText('Your document is verified.')).toBeInTheDocument();
+        expect(screen.getByText('Verification in review.')).toBeInTheDocument();
+        expect(screen.getByText('Verification failed. Resubmit your details.')).toBeInTheDocument();
+        expect(screen.getByText('Verification successful.')).toBeInTheDocument();
     });
 
     it('should click on JurisdictionCard and render setJurisdictionSelectedShortCode function', () => {

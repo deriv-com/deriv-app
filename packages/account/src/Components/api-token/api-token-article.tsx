@@ -1,10 +1,10 @@
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import AccountArticle from 'Components/article';
 
 const ApiTokenArticle = () => (
     <AccountArticle
-        title={localize('API token')}
+        title={<Localize i18n_default_text='API token' />}
         descriptions={[
             <Localize
                 key={0}

@@ -78,7 +78,7 @@ export const D_ALEMBERT: TDescriptionItem[] = [
                 '4. If the second trade results in a loss, the Deriv Bot will automatically increase your stake for the next trade by 2 USD. Deriv Bot will continue to add 2 USD to the previous round’s stake after every losing trade. See A2.'
             ),
             localize(
-                '5. If the next trades are profitable, the stake for the following trade will be reduced by $2.This can be shown above where the stake of 3 USD is reduced to 1 USD.See A3.'
+                '5. If the next trades are profitable, the stake for the following trade will be reduced by 2 USD.This can be shown above where the stake of 3 USD is reduced to 1 USD. See A3.'
             ),
         ],
     },
@@ -90,7 +90,7 @@ export const D_ALEMBERT: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                "With Deriv Bot, traders can set the profit and loss thresholds to secure profits and limit potential losses. This means that the trading bot will automatically stop when either the profit or loss thresholds are reached. It's a form of risk management that can potentially enhance returns.For example, if a trader sets the profit threshold at 100 USD and the strategy exceeds 100 USD of profit from all trades, then the bot will stop running."
+                "With Deriv Bot, traders can set the profit and loss thresholds to secure potential profits and limit potential losses. This means that the trading bot will automatically stop when either the profit or loss thresholds are reached. It's a form of risk management that can potentially enhance returns.For example, if a trader sets the profit threshold at 100 USD and the strategy exceeds 100 USD of profit from all trades, then the bot will stop running."
             ),
         ],
     },
@@ -142,14 +142,14 @@ export const D_ALEMBERT: TDescriptionItem[] = [
         ],
     },
     {
-        type: 'subtitle_italic',
-        content: [localize('Disclaimer:')],
+        type: 'text_italic',
+        content: [localize('<strong>Disclaimer:</strong>')],
     },
     {
         type: 'text_italic',
         content: [
             localize(
-                'Please be aware that while we may use rounded figures for illustration, a stake of a specific amount does not guarantee an exact amount in successful trades. For example, a 1 USD stake does not necessarily equate to a 1 USD profit in successful trades. Trading inherently involves risks, and actual profits can fluctuate due to various factors, including market volatility and other unforeseen variables. As such, exercise caution and conduct thorough research before engaging in any trading activities.'
+                'Please be aware that while we may use rounded figures for illustration, a stake of a specific amount does not guarantee an exact amount in successful trades. For example, a 1 USD stake does not necessarily equate to a 1 USD profit in successful trades.'
             ),
         ],
     },
@@ -157,7 +157,7 @@ export const D_ALEMBERT: TDescriptionItem[] = [
         type: 'text_italic',
         content: [
             localize(
-                'The information contained in this article is for educational purposes only and is not intended as financial or investment advice.'
+                'Trading inherently involves risks, and actual profits can fluctuate due to various factors, including market volatility and other unforeseen variables. As such, exercise caution and conduct thorough research before engaging in any trading activities.'
             ),
         ],
     },

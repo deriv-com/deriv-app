@@ -1,5 +1,6 @@
 import React from 'react';
-import { Dropzone, FlowTextField, useFlow } from '../../../../../../components';
+import moment from 'moment';
+import { DatePicker, Dropzone, FlowTextField, useFlow } from '../../../../../../components';
 import { Divider, WalletText } from '../../../../../../components/Base';
 import PassportPlaceholder from '../../../../../../public/images/accounts/passport-placeholder.svg';
 import { documentRequiredValidator, expiryDateValidator } from '../../../../validations';
@@ -8,6 +9,10 @@ import './PassportDocumentUpload.scss';
 
 const PassportDocumentUpload = () => {
     const { formValues, setFormValues } = useFlow();
+
+    const handleDateChange = (formattedDate: string | null) => {
+        setFormValues('passportExpiryDate', formattedDate);
+    };
 
     return (
         <div className='wallets-passport-document-upload' data-testid='dt_passport-document-upload'>
@@ -19,12 +24,13 @@ const PassportDocumentUpload = () => {
                     name='passportNumber'
                     validationSchema={documentRequiredValidator('Passport number')}
                 />
-                <FlowTextField
+                <DatePicker
                     defaultValue={formValues.passportExpiryDate ?? ''}
                     label='Expiry date*'
+                    minDate={moment().add(2, 'days').toDate()}
                     name='passportExpiryDate'
+                    onDateChange={handleDateChange}
                     placeholder='DD/MM/YYYY'
-                    type='date'
                     validationSchema={expiryDateValidator}
                 />
             </div>

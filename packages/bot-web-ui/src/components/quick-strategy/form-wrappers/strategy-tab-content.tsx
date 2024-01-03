@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { STRATEGIES } from '../config';
-import { TDescriptionItem, TDescription } from '../types';
+import { TDescription, TDescriptionItem } from '../types';
 import AccordionStrategyGroup from './accordion-strategy-group';
 import './strategy-accordion.scss';
 

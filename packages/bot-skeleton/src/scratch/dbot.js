@@ -96,12 +96,12 @@ class DBot {
             DBotStore.setInstance(store);
             const window_width = window.innerWidth;
             try {
-                let workspaceScale = 0.8;
+                let workspaceScale = 0.7;
 
                 const { handleFileChange } = DBotStore.instance;
                 if (window_width < 1640) {
                     if (is_mobile) {
-                        workspaceScale = 0.7;
+                        workspaceScale = 0.6;
                     } else {
                         const scratch_div_width = document.getElementById('scratch_div')?.offsetWidth;
                         const zoom_scale = scratch_div_width / window_width / 1.5;

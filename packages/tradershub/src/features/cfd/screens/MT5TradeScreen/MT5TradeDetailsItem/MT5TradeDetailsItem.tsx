@@ -29,7 +29,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ className, label, 
                 <Text bold size='sm'>
                     {value}
                 </Text>
-                {variant === 'clipboard' && <Clipboard textCopy={value} />}
+                {variant === 'clipboard' && <Clipboard textCopy={value} tooltip='bottom' />}
                 {variant === 'password' && (
                     <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>
                         <div ref={hoverRef}>

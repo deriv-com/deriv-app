@@ -6,11 +6,20 @@ const useIsPasskeySupported = () => {
     const [is_loading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
-        platformAuthenticatorIsAvailable().then(result => {
-            setIsPasskeySupported(result);
-            setIsLoading(false);
-        });
-    });
+        const checkPasskeySupport = async () => {
+            try {
+                const result = await platformAuthenticatorIsAvailable();
+                setIsPasskeySupported(result);
+            } catch (error) {
+                /* eslint-disable no-console */
+                console.error('Error checking passkey support:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        checkPasskeySupport();
+    }, []);
 
     return { is_passkey_supported, is_loading };
 };

@@ -12,11 +12,7 @@ const TradersHubRoute: FC = () => {
                     <Heading.H3>Trader&apos;s Hub</Heading.H3>
                     <DemoRealSwitcher />
                 </div>
-                <div className='flex flex-col items-end justify-end'>
-                    <Text size='sm'>Total assets</Text>
-                    <Heading.H3 className='text-status-light-information'>10,000.00 USD</Heading.H3>
-                    <TotalAssets />
-                </div>
+                <TotalAssets />
             </div>
             <OptionsAndMultipliersSection />
 

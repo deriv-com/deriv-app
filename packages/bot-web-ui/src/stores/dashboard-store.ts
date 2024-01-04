@@ -4,8 +4,10 @@ import { TStores } from '@deriv/stores/types';
 import {
     faq_content,
     guide_content,
+    quick_strategy_content,
     TFaqContent,
     TGuideContent,
+    TQuickStrategyContent,
     TUserGuideContent,
     user_guide_content,
 } from 'Components/dashboard/tutorial-tab/config';
@@ -47,7 +49,7 @@ export interface IDashboardStore {
 export default class DashboardStore implements IDashboardStore {
     root_store: RootStore;
     core: TStores;
-    tutorials_combined_content: (TFaqContent | TGuideContent | TUserGuideContent)[] = [];
+    tutorials_combined_content: (TFaqContent | TGuideContent | TUserGuideContent | TQuickStrategyContent)[] = [];
     combined_search: string[] = [];
 
     constructor(root_store: RootStore, core: TStores) {
@@ -93,6 +95,7 @@ export default class DashboardStore implements IDashboardStore {
             toast_message: observable,
             guide_tab_content: observable,
             faq_tab_content: observable,
+            quick_strategy_tab_content: observable,
             video_tab_content: observable,
             setStrategySaveType: action.bound,
             setShowMobileTourDialog: action.bound,
@@ -117,7 +120,19 @@ export default class DashboardStore implements IDashboardStore {
                 .join(' ')}`;
         });
 
-        this.combined_search = [...getUserGuideContent, ...getVideoContent, ...getFaqContent];
+        const getQuickStrategyContent = quick_strategy_content.map(
+            item =>
+                `${item.search_id}# ${item.type.toLowerCase()} ${item.content
+                    .map(contentItem => contentItem.toLowerCase())
+                    .join(' ')}`
+        );
+
+        this.combined_search = [
+            ...getUserGuideContent,
+            ...getVideoContent,
+            ...getFaqContent,
+            ...getQuickStrategyContent,
+        ];
 
         const {
             load_modal: { previewRecentStrategy, current_workspace_id },
@@ -184,6 +199,7 @@ export default class DashboardStore implements IDashboardStore {
     guide_tab_content = user_guide_content;
     video_tab_content = guide_content;
     faq_tab_content = faq_content;
+    quick_strategy_tab_content = quick_strategy_content;
     filtered_tab_list = [];
     is_chart_modal_visible = false;
 
@@ -191,6 +207,7 @@ export default class DashboardStore implements IDashboardStore {
         this.guide_tab_content = user_guide_content;
         this.video_tab_content = guide_content;
         this.faq_tab_content = faq_content;
+        this.quick_strategy_tab_content = quick_strategy_content;
     };
 
     filterTuotrialTab = (search_param: string) => {
@@ -202,6 +219,7 @@ export default class DashboardStore implements IDashboardStore {
         const filtered_user_guide: [] = [];
         const filter_video_guide: [] = [];
         const filtered_faq_content: [] = [];
+        const filtered_quick_strategy_content: [] = [];
 
         const filtered_tutorial_content = foundItems.map(item => {
             const identifier = item.split('#')[0];
@@ -212,14 +230,18 @@ export default class DashboardStore implements IDashboardStore {
             } else if (identifier.includes('gc')) {
                 filter_video_guide.push(guide_content[Number(index)]);
                 return guide_content[Number(index)];
+            } else if (identifier.includes('faq')) {
+                filtered_faq_content.push(faq_content[Number(index)]);
+                return faq_content[Number(index)];
             }
-            filtered_faq_content.push(faq_content[Number(index)]);
-            return faq_content[Number(index)];
+            filtered_quick_strategy_content.push(quick_strategy_content[Number(index)]);
+            return quick_strategy_content[Number(index)];
         });
 
         this.guide_tab_content = filtered_user_guide;
         this.video_tab_content = filter_video_guide;
         this.faq_tab_content = filtered_faq_content;
+        this.quick_strategy_tab_content = filtered_quick_strategy_content;
 
         return filtered_tutorial_content;
     };

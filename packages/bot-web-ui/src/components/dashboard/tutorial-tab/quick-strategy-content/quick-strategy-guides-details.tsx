@@ -12,13 +12,13 @@ type Tcontent = {
 };
 
 type TQuickStrategyGuides = {
-    quick_strategy_content: Tcontent[];
+    quick_strategy_tab_content: Tcontent[];
     tutorial_selected_strategy: string;
     setTutorialSelectedStrategy: (value: string) => void;
 };
 
 const QuickStrategyGuidesDetail = observer(
-    ({ quick_strategy_content, tutorial_selected_strategy, setTutorialSelectedStrategy }: TQuickStrategyGuides) => {
+    ({ quick_strategy_tab_content, tutorial_selected_strategy, setTutorialSelectedStrategy }: TQuickStrategyGuides) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
         const text_size = is_mobile ? 'xxs' : 's';
@@ -27,7 +27,7 @@ const QuickStrategyGuidesDetail = observer(
             <>
                 {tutorial_selected_strategy === '' ? (
                     <div className='tutorials-quick-strategy__cards'>
-                        {quick_strategy_content?.map(({ qs_name, content, type }, index) => (
+                        {quick_strategy_tab_content?.map(({ qs_name, content, type }, index) => (
                             <div
                                 className='tutorials-quick-strategy__placeholder'
                                 key={type}

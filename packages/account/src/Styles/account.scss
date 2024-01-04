@@ -377,27 +377,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         &__personal-details {
-            &--dashboard {
-                & .account-form__fieldset {
-                    margin-bottom: 3.2rem;
-
-                    @include mobile {
-                        margin-bottom: 3.2rem;
-                    }
-                }
-
-                & .dc-field--error {
-                    color: var(--text-loss-danger);
-                }
-
-                & .account-form__footer-note {
-                    width: unset;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                }
-            }
-
             @include desktop {
                 .account__scrollbars_container {
                     padding-top: 2.4rem;
@@ -1646,10 +1625,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: -8px;
                 margin-right: 10px;
                 float: right;
-
-                &--dashboard {
-                    width: 100%;
-                }
             }
         }
 
@@ -1660,10 +1635,6 @@ $MIN_HEIGHT_FLOATING: calc(
             @include mobile {
                 float: none;
                 margin: 2.4rem auto 3.2rem;
-
-                &--dashboard {
-                    width: 100%;
-                }
             }
         }
     }
@@ -1673,27 +1644,6 @@ $MIN_HEIGHT_FLOATING: calc(
         font-size: var(--text-size-xs);
         line-height: 1.43;
         font-weight: bold;
-
-        &--dashboard {
-            & .dc-form-submit-button {
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                flex: 1;
-
-                & .dc-btn__large {
-                    width: 100%;
-                }
-            }
-
-            & .closing-account-reasons__title {
-                margin: 1.6rem 0 0.8rem;
-            }
-
-            & form {
-                width: 100%;
-            }
-        }
 
         &__title {
             margin-bottom: 18px;

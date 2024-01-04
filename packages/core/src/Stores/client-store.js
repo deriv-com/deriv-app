@@ -17,6 +17,7 @@ import {
     isProduction,
     isStaging,
     isTestLink,
+    isTestDerivApp,
     LocalStore,
     redirectToLogin,
     removeCookies,
@@ -297,7 +298,7 @@ export default class ClientStore extends BaseStore {
             is_eu_country: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
-            is_pending_proof_of_ownership: computed,
+            is_proof_of_ownership_enabled: computed,
             resetLocalStorageValues: action.bound,
             getBasicUpgradeInfo: action.bound,
             setMT5DisabledSignupTypes: action.bound,
@@ -969,15 +970,11 @@ export default class ClientStore extends BaseStore {
     }
 
     isMT5Allowed = landing_companies => {
-        // default allowing mt5 to true before landing_companies gets populated
-        // since most clients are allowed to use mt5
-        if (!landing_companies || !Object.keys(landing_companies).length) return true;
-
-        if (!this.mt5_login_list.some(acc => acc.market_type === 'synthetic')) {
-            if (this.country_standpoint.is_belgium || this.country_standpoint.is_france) return false;
-        }
-
-        return 'mt_financial_company' in landing_companies || 'mt_gaming_company' in landing_companies;
+        return (
+            'mt_financial_company' in landing_companies ||
+            'mt_gaming_company' in landing_companies ||
+            'mt_all_company' in landing_companies
+        );
     };
 
     isDxtradeAllowed = landing_companies => {
@@ -2150,12 +2147,15 @@ export default class ClientStore extends BaseStore {
             this.setIsLoggingIn(true);
 
             const redirect_url = sessionStorage.getItem('redirect_url');
+            const is_next_wallet_enabled = localStorage.getObject('FeatureFlagsStore')?.data?.next_wallet;
+
+            const target_url = is_next_wallet_enabled ? routes.wallets : routes.traders_hub;
 
             if (
                 (redirect_url?.endsWith('/') || redirect_url?.endsWith(routes.bot)) &&
-                (isTestLink() || isProduction() || isLocal() || isStaging())
+                (isTestLink() || isProduction() || isLocal() || isStaging() || isTestDerivApp())
             ) {
-                window.history.replaceState({}, document.title, '/appstore/traders-hub');
+                window.history.replaceState({}, document.title, target_url);
             } else {
                 window.history.replaceState({}, document.title, sessionStorage.getItem('redirect_url'));
             }
@@ -2572,8 +2572,10 @@ export default class ClientStore extends BaseStore {
         return !!this.accounts[this.loginid]?.residence;
     }
 
-    get is_pending_proof_of_ownership() {
-        return this.account_status?.authentication?.needs_verification?.includes('ownership');
+    get is_proof_of_ownership_enabled() {
+        if (!this.account_status?.authentication) return false;
+        const { ownership, needs_verification } = this.account_status.authentication;
+        return needs_verification?.includes('ownership') || ownership?.status === 'verified';
     }
 
     fetchFinancialAssessment() {

@@ -3,15 +3,16 @@ import { Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
-import { getLocation, SessionStore } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { getLocation, SessionStore, shuffleArray } from '@deriv/shared';
+import { getLanguage, localize } from '@deriv/translations';
+import { Analytics } from '@deriv/analytics';
 
 import { WS } from 'Services';
-import { connect } from 'Stores/connect';
-import { Analytics } from '@deriv/analytics';
+import { observer, useStore } from '@deriv/stores';
 
 import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import PasswordSelectionModal from '../PasswordSelectionModal/password-selection-modal.jsx';
+import QuestionnaireModal from '../QuestionnaireModal';
 import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 
 import validateSignupFields from './validate-signup-fields.jsx';
@@ -35,6 +36,10 @@ const AccountSignup = ({
     const [pw_input, setPWInput] = React.useState('');
     const [is_password_modal, setIsPasswordModal] = React.useState(false);
     const [is_disclaimer_accepted, setIsDisclaimerAccepted] = React.useState(false);
+    const [is_questionnaire, setIsQuestionnaire] = React.useState(false);
+    const [ab_questionnaire, setABQuestionnaire] = React.useState();
+    const [modded_state, setModdedState] = React.useState({});
+    const language = getLanguage();
 
     const checkResidenceIsBrazil = selected_country =>
         selected_country && residence_list[indexOfSelection(selected_country)]?.value?.toLowerCase() === 'br';
@@ -58,6 +63,23 @@ const AccountSignup = ({
             }
             setIsLoading(false);
         });
+        // need to modify data from ab testing platform to reach translation and tracking needs
+        const fetchQuestionnarieData = () => {
+            let ab_value = Analytics.getFeatureValue('questionnaire-config', 'inactive');
+            const default_ab_value = ab_value;
+            ab_value = ab_value?.[language] ?? ab_value?.EN ?? ab_value;
+            if (ab_value?.show_answers_in_random_order) {
+                ab_value = [
+                    { ...default_ab_value.default },
+                    {
+                        ...ab_value,
+                        answers: shuffleArray(ab_value.answers),
+                    },
+                ];
+            } else if (ab_value !== 'inactive') ab_value = [{ ...default_ab_value.default }, { ...ab_value }];
+            return ab_value;
+        };
+        setABQuestionnaire(fetchQuestionnarieData());
 
         Analytics.trackEvent('ce_virtual_signup_form', {
             action: 'signup_confirmed',
@@ -75,6 +97,8 @@ const AccountSignup = ({
     const indexOfSelection = selected_country =>
         residence_list.findIndex(item => item.text.toLowerCase() === selected_country?.toLowerCase());
 
+    const handleSignup = () => onSignup(modded_state, onSignupComplete);
+
     const onSignupPassthrough = values => {
         const index_of_selected_residence = indexOfSelection(values.residence);
         const index_of_selected_citizenship = indexOfSelection(values.citizenship);
@@ -84,8 +108,12 @@ const AccountSignup = ({
             residence: residence_list[index_of_selected_residence].value,
             citizenship: residence_list[index_of_selected_citizenship].value,
         };
+        setModdedState(modded_values);
 
-        onSignup(modded_values, onSignupComplete);
+        // a/b test
+        ab_questionnaire === 'inactive'
+            ? onSignup(modded_values, onSignupComplete)
+            : setIsQuestionnaire(!!ab_questionnaire);
     };
 
     const onSignupComplete = error => {
@@ -188,19 +216,28 @@ const AccountSignup = ({
                                     </div>
                                 </div>
                             ) : (
-                                <PasswordSelectionModal
-                                    api_error={api_error}
-                                    errors={errors}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    isModalVisible={isModalVisible}
-                                    isSubmitting={isSubmitting}
-                                    touched={touched}
-                                    pw_input={pw_input}
-                                    setFieldTouched={setFieldTouched}
-                                    updatePassword={updatePassword}
-                                    values={values}
-                                />
+                                <React.Fragment>
+                                    {is_questionnaire ? (
+                                        <QuestionnaireModal
+                                            ab_questionnaire={ab_questionnaire}
+                                            handleSignup={handleSignup}
+                                        />
+                                    ) : (
+                                        <PasswordSelectionModal
+                                            api_error={api_error}
+                                            errors={errors}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            isModalVisible={isModalVisible}
+                                            isSubmitting={isSubmitting}
+                                            touched={touched}
+                                            pw_input={pw_input}
+                                            setFieldTouched={setFieldTouched}
+                                            updatePassword={updatePassword}
+                                            values={values}
+                                        />
+                                    )}
+                                </React.Fragment>
                             )}
                         </Form>
                     )}
@@ -220,20 +257,19 @@ AccountSignup.propTypes = {
     setIsFromSignupAccount: PropTypes.func,
 };
 
-const AccountSignupModal = ({
-    enableApp,
-    disableApp,
-    clients_country,
-    is_loading,
-    is_mobile,
-    is_visible,
-    is_logged_in,
-    logout,
-    onSignup,
-    residence_list,
-    toggleAccountSignupModal,
-    setIsFromSignupAccount,
-}) => {
+const AccountSignupModal = observer(() => {
+    const { ui, client } = useStore();
+    const { onSignup, is_logged_in, residence_list, clients_country, logout } = client;
+    const {
+        is_account_signup_modal_visible: is_visible,
+        toggleAccountSignupModal,
+        enableApp,
+        disableApp,
+        is_loading,
+        is_mobile,
+        setIsFromSignupAccount,
+    } = ui;
+
     React.useEffect(() => {
         // a logged in user should not be able to create a new account
         if (is_visible && is_logged_in) {
@@ -261,34 +297,6 @@ const AccountSignupModal = ({
             />
         </Dialog>
     );
-};
+});
 
-AccountSignupModal.propTypes = {
-    clients_country: PropTypes.string,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    is_loading: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    logout: PropTypes.func,
-    onSignup: PropTypes.func,
-    residence_list: PropTypes.arrayOf(PropTypes.object),
-    toggleAccountSignupModal: PropTypes.func,
-    setIsFromSignupAccount: PropTypes.func,
-};
-
-export default connect(({ ui, client }) => ({
-    is_visible: ui.is_account_signup_modal_visible,
-    toggleAccountSignupModal: ui.toggleAccountSignupModal,
-    enableApp: ui.enableApp,
-    disableApp: ui.disableApp,
-    is_loading: ui.is_loading,
-    is_mobile: ui.is_mobile,
-    onSignup: client.onSignup,
-    is_logged_in: client.is_logged_in,
-    residence_list: client.residence_list,
-    clients_country: client.clients_country,
-    logout: client.logout,
-    setIsFromSignupAccount: ui.setIsFromSignupAccount,
-}))(AccountSignupModal);
+export default AccountSignupModal;

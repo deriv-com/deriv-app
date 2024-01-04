@@ -50,10 +50,10 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
 
     const {
         poi_or_poa_not_submitted,
-        poi_acknowledged_for_vanuatu_maltainvest,
-        poi_acknowledged_for_bvi_labuan,
+        poi_acknowledged_for_maltainvest,
+        poi_acknowledged_for_bvi_labuan_vanuatu,
+        poa_resubmit_for_labuan,
         poa_acknowledged,
-        poa_pending,
     } = getAuthenticationStatusInfo(account_status);
 
     const type_of_account = {
@@ -104,13 +104,13 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
     const is_account_status_verified = getAccountVerficationStatus(
         market_type_shortcode,
         poi_or_poa_not_submitted,
-        poi_acknowledged_for_vanuatu_maltainvest,
-        poi_acknowledged_for_bvi_labuan,
+        poi_acknowledged_for_maltainvest,
+        poi_acknowledged_for_bvi_labuan_vanuatu,
         poa_acknowledged,
-        poa_pending,
+        poa_resubmit_for_labuan,
+        has_submitted_personal_details,
         should_restrict_bvi_account_creation,
         should_restrict_vanuatu_account_creation,
-        has_submitted_personal_details,
         is_demo
     );
 

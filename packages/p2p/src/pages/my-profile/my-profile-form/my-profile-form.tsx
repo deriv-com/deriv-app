@@ -5,7 +5,7 @@ import { Observer } from 'mobx-react-lite';
 import { Button, DesktopWrapper, Input, Loading, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
-import FormError from 'Components/section-error';
+import SectionError from 'Components/section-error';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 
@@ -64,21 +64,23 @@ const MyProfileForm = () => {
                             )}
                         </Field>
                         <div className='my-profile-form__footer'>
-                            <FormError message={my_profile_store.form_error} />
                             <Observer>
                                 {() => (
-                                    <Button
-                                        className={classNames('my-profile-form__footer-button', {
-                                            'dc-btn--green': my_profile_store.is_submit_success,
-                                        })}
-                                        has_effect
-                                        is_disabled={!dirty || isSubmitting || !isValid}
-                                        is_submit_success={my_profile_store.is_submit_success}
-                                        large
-                                        primary
-                                    >
-                                        <Localize i18n_default_text='Save' />
-                                    </Button>
+                                    <React.Fragment>
+                                        <SectionError message={my_profile_store.form_error} />
+                                        <Button
+                                            className={classNames('my-profile-form__footer-button', {
+                                                'dc-btn--green': my_profile_store.is_submit_success,
+                                            })}
+                                            has_effect
+                                            is_disabled={!dirty || isSubmitting || !isValid}
+                                            is_submit_success={my_profile_store.is_submit_success}
+                                            large
+                                            primary
+                                        >
+                                            <Localize i18n_default_text='Save' />
+                                        </Button>
+                                    </React.Fragment>
                                 )}
                             </Observer>
                         </div>

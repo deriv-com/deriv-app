@@ -78,13 +78,6 @@ const P2P = React.lazy(() =>
     })
 );
 
-const AccountV2 = React.lazy(() =>
-    moduleLoader(() => {
-        // eslint-disable-next-line import/no-unresolved
-        return import(/* webpackChunkName: "account-v2" */ '@deriv/account-v2');
-    })
-);
-
 const P2P_V2 = React.lazy(() =>
     moduleLoader(() => {
         // eslint-disable-next-line import/no-unresolved

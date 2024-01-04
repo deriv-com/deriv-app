@@ -2,8 +2,6 @@ import React from 'react';
 import { DesktopWrapper, Modal, PageOverlay, UILoader, MobileWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MT5MigrationModalContent from './mt5-migration-modal-content';
 import { MT5MigrationModalContext } from './mt5-migration-modal-context';
 
@@ -17,8 +15,6 @@ const MT5MigrationModal = observer(() => {
         toggleMT5MigrationModal,
         setMT5MigrationModalEnabled,
     } = ui;
-    const { mt5_migration_error } = useCfdStore();
-    const { no_of_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
 
     const [show_modal_front_side, setShowModalFrontSide] = React.useState(true);
 
@@ -32,13 +28,6 @@ const MT5MigrationModal = observer(() => {
         setShowModalFrontSide(true);
         setMT5MigrationModalEnabled(false);
         toggleMT5MigrationModal();
-    };
-
-    const getModalHeight = () => {
-        if (mt5_migration_error) {
-            return 'auto';
-        }
-        return no_of_svg_accounts_to_migrate > 1 ? '54.2rem' : '44rem';
     };
 
     return (
@@ -55,7 +44,6 @@ const MT5MigrationModal = observer(() => {
                             title={modal_title}
                             toggleModal={closeModal}
                             width='58.8rem'
-                            height={getModalHeight()}
                         >
                             <MT5MigrationModalContent />
                         </Modal>

@@ -9,13 +9,22 @@ const MT5MigrationAccountIcons = () => {
         eligible_svg_to_bvi_financial_accounts,
         eligible_svg_to_vanuatu_derived_accounts,
         eligible_svg_to_vanuatu_financial_accounts,
+        no_of_svg_accounts_to_migrate,
     } = useMT5SVGEligibleToMigrate();
+
+    let existing_account_title = 'Existing account';
+    let new_account_title = 'New account';
+
+    if (no_of_svg_accounts_to_migrate > 2) {
+        existing_account_title = 'Existing accounts';
+        new_account_title = 'New accounts';
+    }
 
     return (
         <div className='mt5-migration-modal__migration_content-items__list'>
             <div className='mt5-migration-modal__migration_content-items__list--container'>
                 <Text weight='bold' size='xs'>
-                    <Localize i18n_default_text='Existing account' />
+                    <Localize i18n_default_text='{{existing_account_title}}' value={{ existing_account_title }} />
                 </Text>
                 <div className='mt5-migration-modal__migration_content-items__list--container__icons'>
                     {(eligible_svg_to_bvi_derived_accounts || eligible_svg_to_vanuatu_derived_accounts) && (
@@ -28,7 +37,7 @@ const MT5MigrationAccountIcons = () => {
             </div>
             <div className='mt5-migration-modal__migration_content-items__list--container'>
                 <Text weight='bold' size='xs'>
-                    <Localize i18n_default_text='New account' />
+                    <Localize i18n_default_text='{{new_account_title}}' value={{ new_account_title }} />
                 </Text>
                 <div className='mt5-migration-modal__migration_content-items__list--container__icons'>
                     {eligible_svg_to_bvi_derived_accounts && (

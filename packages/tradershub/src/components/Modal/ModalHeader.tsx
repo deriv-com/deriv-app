@@ -1,7 +1,7 @@
 import React from 'react';
+import { Provider } from '@deriv/library';
 import { Heading, qtMerge } from '@deriv/quill-design';
 import CloseIcon from '../../public/images/ic-close-dark.svg';
-import { useModal } from '../ModalProvider';
 import { TModalComponents } from './Modal';
 
 /**
@@ -20,7 +20,7 @@ type TModalHeader = TModalComponents & { hideCloseButton?: boolean; title?: stri
  * @returns {JSX.Element} The ModalHeader component.
  */
 const ModalHeader = ({ className, hideCloseButton = false, title }: TModalHeader) => {
-    const { hide } = useModal();
+    const { hide } = Provider.useModal();
 
     return (
         <div

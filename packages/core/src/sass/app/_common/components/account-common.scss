@@ -290,14 +290,12 @@
             border-top: 1px solid var(--general-section-1);
             background-color: var(--general-main-1);
 
-            &--reset {
-                padding: 2.4rem 0;
-                position: relative;
-                margin-top: 2rem;
-            }
-
             .back-btn {
                 margin-right: 8px;
+
+                @include mobile {
+                    width: 100%;
+                }
 
                 .back-btn-icon {
                     margin-right: 0.8rem;
@@ -650,10 +648,13 @@
 
     &__main-container {
         max-width: 68.2rem;
+        height: 100%;
     }
 
     .min-height {
-        min-height: 50vh;
+        & .idv-layout {
+            min-height: 30vh;
+        }
 
         @include mobile {
             min-height: unset;
@@ -665,11 +666,12 @@
         flex-direction: column;
         justify-content: flex-start;
         align-items: center;
+        height: 100%;
+        padding-bottom: 1.6rem;
 
         @include mobile {
             min-height: unset;
             overflow-y: scroll;
-            justify-content: center;
             padding: 0 1.6rem;
 
             &--status {
@@ -744,8 +746,26 @@
         }
     }
 
-    &__country-text {
-        margin-bottom: 1.6rem;
+    &__country {
+        &-container {
+            max-width: 68rem;
+            align-items: flex-start;
+
+            .proof-of-identity__fieldset {
+                width: 100%;
+
+                @include mobile {
+                    margin-top: 0;
+
+                    .proof-of-identity__dropdown-container {
+                        margin-top: 0;
+                    }
+                }
+            }
+        }
+        &-text {
+            margin-bottom: 1.6rem;
+        }
     }
 
     &__text {
@@ -771,10 +791,10 @@
     }
 
     &__header {
-        margin: 5.4rem 0 1.6rem;
+        margin-bottom: 1.6rem;
 
         @include mobile {
-            margin: 2.4rem 0 0.8rem;
+            margin: 1.6rem 0;
         }
     }
 
@@ -789,6 +809,8 @@
     }
 
     &__footer {
+        max-width: 68rem;
+
         @include mobile {
             display: flex;
             flex-direction: row;
@@ -796,6 +818,10 @@
             justify-content: flex-end;
             position: fixed;
             bottom: 0;
+
+            .proof-of-identity__submit-button {
+                width: 100%;
+            }
         }
     }
 
@@ -881,37 +907,18 @@
 
     &__failed {
         &-message {
-            margin: 1.6rem auto 3.2rem;
+            margin: 1.6rem auto;
             border-radius: $BORDER_RADIUS * 2;
             width: 100%;
         }
     }
 
     &__mismatch-container {
+        height: 100%;
+
         .idv-form {
             @include desktop {
                 margin-bottom: 1.6rem;
-            }
-        }
-
-        .proof-of-identity {
-            &__actions {
-                @include desktop {
-                    display: flex;
-                    justify-content: flex-end;
-                    align-items: flex-end;
-                }
-            }
-
-            &__submit-button {
-                @include desktop {
-                    margin-top: 3.2rem;
-                    margin-left: auto;
-                }
-
-                @include mobile {
-                    margin-inline: 2.4rem;
-                }
             }
         }
 

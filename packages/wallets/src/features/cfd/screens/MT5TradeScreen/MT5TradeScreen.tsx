@@ -46,6 +46,16 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         [ctraderAccountsList, dxtradeAccountsList, mt5Account]
     );
 
+    const shouldShowMT5AccountBalance = useMemo(() => {
+        if (
+            platform === mt5Platform &&
+            platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]?.status ===
+                'migrated_without_position'
+        )
+            return false;
+        return true;
+    }, [marketType, mt5Platform, platform, platformToAccountsListMapper.mt5]);
+
     const details = useMemo(() => {
         return platform === mt5Platform
             ? platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]
@@ -61,7 +71,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         return details?.login;
     }, [details, dxtradePlatform, mt5Platform, platform]);
 
-    const showMigrationMessage = useMemo(() => {
+    const migrationMessage = useMemo(() => {
         if (platform === mt5Platform && !activeWalletData?.is_virtual) {
             switch (
                 platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]?.status
@@ -112,12 +122,10 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         </div>
                     </div>
                     <div className='wallets-mt5-trade-screen__details-description--right'>
-                        {!(
-                            platform === mt5Platform &&
-                            platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]
-                                ?.status === 'migrated_without_position'
-                        ) && <WalletText weight='bold'>{details?.display_balance}</WalletText>}
-                        {showMigrationMessage}
+                        {shouldShowMT5AccountBalance && (
+                            <WalletText weight='bold'>{details?.display_balance}</WalletText>
+                        )}
+                        {migrationMessage}
                     </div>
                 </div>
 

@@ -19,7 +19,6 @@ const RouteWithSubRoutes = observer(route => {
 
     const { is_next_account_enabled } = useFeatureFlags();
     const { checkAppId } = common;
-
     const validateRoute = pathname => {
         if (pathname.startsWith('/cashier') && !pathname.includes('p2p') && !!route.routes) {
             return route.path === pathname || !!route?.routes.find(({ path }) => pathname === path);

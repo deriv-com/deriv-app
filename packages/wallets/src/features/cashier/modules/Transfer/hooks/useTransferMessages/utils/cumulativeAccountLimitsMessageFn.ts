@@ -39,7 +39,9 @@ const cumulativeAccountLimitsMessageFn = ({
         !sourceAccount.currency ||
         !targetAccount.currency ||
         !sourceAccount.currencyConfig ||
-        !targetAccount.currencyConfig
+        !targetAccount.currencyConfig ||
+        !allowedSumUSD ||
+        !availableSumUSD
     )
         return null;
 
@@ -110,7 +112,7 @@ const cumulativeAccountLimitsMessageFn = ({
         };
     }
 
-    if (allowedSumUSD === availableSumUSD) {
+    if (allowedSumUSD === availableSumUSD && formattedSourceCurrencyLimit) {
         text = isTransferBetweenWallets
             ? 'The daily transfer limit between your Wallets is {{formattedSourceCurrencyLimit}}.'
             : 'The daily transfer limit between your {{sourceAccountName}} and {{targetAccountName}} is {{formattedSourceCurrencyLimit}}.';

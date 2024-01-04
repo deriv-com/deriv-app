@@ -1,0 +1,11 @@
+.p2p-v2-my-profile-stats {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid grey;
+    }
+}

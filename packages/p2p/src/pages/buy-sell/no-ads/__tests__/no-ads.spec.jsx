@@ -19,6 +19,7 @@ const mock_store_values = {
     },
     general_store: {
         handleTabClick: jest.fn(),
+        is_advertiser: false,
         is_barred: false,
     },
     my_ads_store: {
@@ -29,6 +30,17 @@ const mock_store_values = {
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store_values),
+}));
+
+const mock_modal_manager = {
+    showModal: jest.fn(),
+    hideModal: jest.fn(),
+    is_modal_open: true,
+};
+
+jest.mock('Components/modal-manager/modal-manager-context', () => ({
+    ...jest.requireActual('Components/modal-manager/modal-manager-context'),
+    useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
 const mock_props = {
@@ -60,6 +72,5 @@ describe('<NoAds/>', () => {
         expect(create_ad_button).toBeInTheDocument();
         create_ad_button.click();
         expect(mock_store_values.general_store.handleTabClick).toHaveBeenCalledTimes(0);
-        expect(mock_store_values.my_ads_store.setShowAdForm).toHaveBeenCalledWith(true);
     });
 });

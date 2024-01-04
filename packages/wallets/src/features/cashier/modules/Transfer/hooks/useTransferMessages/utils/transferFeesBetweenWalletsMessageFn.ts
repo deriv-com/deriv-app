@@ -33,7 +33,7 @@ const transferFeesBetweenWalletsMessageFn = ({
     const text =
         'Fee: {{feeMessageText}} ({{feePercentage}}% transfer fee or {{minimumFeeText}}, whichever is higher, applies for fund transfers between your {{fiatAccountName}}{{conjunction}} cryptocurrency Wallets)';
     const values = {
-        conjunction: isTransferBetweenCryptoWallets ? '' : ' and ',
+        conjunction: isTransferBetweenCryptoWallets ? '' : ' Wallet and ',
         feeMessageText,
         feePercentage,
         fiatAccountName: isTransferBetweenCryptoWallets ? '' : fiatAccount?.wallet_currency_type,

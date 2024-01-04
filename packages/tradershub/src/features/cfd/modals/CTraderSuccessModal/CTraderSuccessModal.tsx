@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useBreakpoint, Button } from '@deriv/quill-design';
 import { ButtonGroup } from '../../../../components/Base/ButtonGroup';
-import { ModalStepWrapper } from '../../../../components/ModalStepWrapper';
+import { Modal } from '../../../../components/Modal';
 import { Provider } from '@deriv/library';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens';
@@ -20,14 +20,14 @@ const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
         () =>
             isDemo ? (
                 <ButtonGroup>
-                    <Button className='rounded-200' onClick={() => hide()} size='lg'>
+                    <Button className='rounded-200 ' onClick={() => hide()} size='lg'>
                         Continue
                     </Button>
                 </ButtonGroup>
             ) : (
                 <ButtonGroup>
                     <Button
-                        className='rounded-200'
+                        className='rounded-200 border-system-light-less-prominent border-100'
                         colorStyle='black'
                         onClick={() => hide()}
                         size='lg'
@@ -47,7 +47,7 @@ const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
                     </Button>
                 </ButtonGroup>
             ),
-        [hide, history]
+        [hide, history, isDemo]
     );
 
     const description = isDemo
@@ -56,28 +56,24 @@ const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
 
     if (isMobile) {
         return (
-            <ModalStepWrapper shouldHideHeader>
-                <div className='max-w-[330px] p-800'>
-                    <CFDSuccess
-                        description={description}
-                        platform={PlatformDetails.ctrader.platform}
-                        renderButtons={renderButtons}
-                    />
-                </div>
-            </ModalStepWrapper>
-        );
-    }
-
-    return (
-        <ModalStepWrapper shouldHideHeader>
-            <div className='max-w-[440px] p-1200'>
+            <Modal className='max-w-[330px] p-800'>
                 <CFDSuccess
                     description={description}
                     platform={PlatformDetails.ctrader.platform}
                     renderButtons={renderButtons}
                 />
-            </div>
-        </ModalStepWrapper>
+            </Modal>
+        );
+    }
+
+    return (
+        <Modal className='max-w-[440px] p-1200'>
+            <CFDSuccess
+                description={description}
+                platform={PlatformDetails.ctrader.platform}
+                renderButtons={renderButtons}
+            />
+        </Modal>
     );
 };
 

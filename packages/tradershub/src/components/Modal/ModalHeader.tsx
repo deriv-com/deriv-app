@@ -30,7 +30,7 @@ const ModalHeader = ({ className, hideCloseButton = false, title }: TModalHeader
                 className
             )}
         >
-            {title && <Heading.H3 className='flex-1'>{title}</Heading.H3>}
+            {title && <Heading.H3 className={qtMerge('flex-1', className)}>{title}</Heading.H3>}
             {!hideCloseButton && <CloseIcon className='cursor-pointer' onClick={hide} />}
         </div>
     );

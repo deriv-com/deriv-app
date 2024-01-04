@@ -74,6 +74,7 @@ module.exports = {
                         'primary-background': '#0e0e0e',
                         'prominent-text': '#ffffff',
                         'secondary-background': '#151717',
+                        'less-prominent': '#999999',
                     },
                     light: {
                         'active-background': '#d6dadb',
@@ -84,6 +85,7 @@ module.exports = {
                         'primary-background': '#ffffff',
                         'prominent-text': '#333333',
                         'secondary-background': '#f2f3f4',
+                        'less-prominent': '#999999',
                     },
                 },
             },

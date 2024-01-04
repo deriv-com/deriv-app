@@ -8,6 +8,7 @@ import { IconToCurrencyMapper } from '../../constants/constants';
 import { THooks } from '../../types';
 import { ModalStepWrapper } from '../ModalStepWrapper';
 import { TradingAccountsList } from '../TradingAccountsList';
+import { Modal } from '../Modal';
 
 type AccountActionButtonProps = {
     balance: THooks.ActiveTradingAccount['balance'];
@@ -87,9 +88,16 @@ const CurrencySwitcher = () => {
                         <StandaloneChevronDownBoldIcon
                             onClick={() => {
                                 show(
-                                    <ModalStepWrapper renderFooter={renderButton} title='Select account'>
-                                        <TradingAccountsList />
-                                    </ModalStepWrapper>
+                                    <Modal>
+                                        <Modal.Header
+                                            className='text-body-md text-typography-default'
+                                            title='Select account'
+                                        />
+                                        <Modal.Content className='overflow-y-scroll'>
+                                            <TradingAccountsList />
+                                        </Modal.Content>
+                                        <Modal.Footer>{renderButton()}</Modal.Footer>
+                                    </Modal>
                                 );
                             }}
                         />

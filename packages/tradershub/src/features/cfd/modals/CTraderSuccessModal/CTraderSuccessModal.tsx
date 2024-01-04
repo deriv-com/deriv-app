@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useBreakpoint, Button } from '@deriv/quill-design';
-import { ButtonGroup } from '../../../../components/Base/ButtonGroup';
-import { Modal } from '../../../../components/Modal';
+import { ButtonGroup, Modal } from '../../../../components';
 import { Provider } from '@deriv/library';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens';

@@ -34,7 +34,7 @@ const CompareAccountsCarousel = ({ children }: PropsWithChildren) => {
                     {children}
                 </div>
             </div>
-            <CFDCompareAccountsCarouselButton enabled={prevBtnEnabled} isNext={false} onClick={scrollPrev} />
+            <CFDCompareAccountsCarouselButton enabled={prevBtnEnabled} onClick={scrollPrev} />
             <CFDCompareAccountsCarouselButton enabled={nextBtnEnabled} isNext onClick={scrollNext} />
         </div>
     );

@@ -127,13 +127,12 @@ const OnfidoSdkViewContainer = observer(
                         ],
                     });
                     setIsOnfidoInitialized(true);
-                    setIsOnfidoLoaded(true);
                 } catch (err) {
                     setAPIError(err?.message ?? err);
-                    setIsOnfidoLoaded(true);
-
                     setIsOnfidoDisabled(true);
                     onfido_init.current = undefined;
+                } finally {
+                    setIsOnfidoLoaded(true);
                 }
             },
             [onComplete, onfido_documents, onfido_country_code, current_language]

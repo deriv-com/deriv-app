@@ -1,2 +1,2 @@
-export * as p2p_payment_methods from './p2p-payment-methods';
-export * as p2p_advertiser_payment_methods from './p2p-advertiser-payment-methods';
+export * as paymentMethods from './p2p-payment-methods';
+export * as advertiserPaymentMethods from './p2p-advertiser-payment-methods';

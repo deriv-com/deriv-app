@@ -110,7 +110,7 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
  * root-blocks are sorted in columns first, then all other blocks are positioned below
  * the lowest hanging root-block.
  */
-Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_to_clean = []) {
+Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 54, blocks_to_clean = []) {
     this.setResizesEnabled(false);
     Blockly.Events.setGroup(Blockly.Events.getGroup() || true);
 
@@ -143,23 +143,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_to_clean
             if (column_index === 0) {
                 block.moveBy(cursor_x, cursor_y);
             } else {
-                const start = (column_index - 1) * blocks_per_column;
-                const initialValue = {
-                    getHeightWidth: () => ({
-                        width: 0,
-                    }),
-                };
-
-                const fat_neighbour_block = root_blocks
-                    .slice(start, start + blocks_per_column)
-                    ?.reduce((a, b) => (a.getHeightWidth().width > b.getHeightWidth().width ? a : b), initialValue);
-
-                let position_x = cursor_x + fat_neighbour_block.getHeightWidth().width + Blockly.BlockSvg.MIN_BLOCK_X;
-                if (!is_import) {
-                    position_x += fat_neighbour_block.getRelativeToSurfaceXY().x;
-                }
-
-                block.moveBy(position_x, cursor_y);
+                block.moveBy(10, cursor_y);
             }
 
             block.snapToGrid();

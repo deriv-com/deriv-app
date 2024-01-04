@@ -5,7 +5,7 @@ import { Tooltip } from '../../../../components/Base/Tooltip';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFDPlatforms } from '../../constants';
-import { ACCOUNT_ICONS, MARKET_TYPE_SHORTCODE } from './constants';
+import { AccountIcons, MarketTypeShortcode } from './constants';
 import TradingPlatformIcons from './tradingPlatformIcons';
 
 type TMarketType = THooks.AvailableMT5Accounts['market_type'];
@@ -21,28 +21,28 @@ type TMarketWithShortCode = `${TMarketType}_${string}`;
 
 const getAccountIcon = (platform: TPlatforms.All, marketType: TMarketType) => {
     if (platform === CFDPlatforms.DXTRADE || platform === CFDPlatforms.CTRADER) {
-        return ACCOUNT_ICONS[platform];
+        return AccountIcons[platform];
     }
-    return (marketType && ACCOUNT_ICONS[marketType]) || ACCOUNT_ICONS.default;
+    return (marketType && AccountIcons[marketType]) || AccountIcons.default;
 };
 
 const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherAccounts, isDemo?: boolean) => {
     switch (shortCode) {
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
+        case MarketTypeShortcode.SYNTHETIC_SVG:
             return isDemo ? 'Derived Demo' : 'Derived - SVG';
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
+        case MarketTypeShortcode.SYNTHETIC_BVI:
             return 'Derived - BVI';
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
+        case MarketTypeShortcode.SYNTHETIC_VANUATU:
             return 'Derived - Vanuatu';
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
+        case MarketTypeShortcode.FINANCIAL_SVG:
             return isDemo ? 'Financial Demo' : 'Financial - SVG';
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
+        case MarketTypeShortcode.FINANCIAL_BVI:
             return 'Financial - BVI';
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU:
+        case MarketTypeShortcode.FINANCIAL_VANUATU:
             return 'Financial - Vanuatu';
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
+        case MarketTypeShortcode.FINANCIAL_LABUAN:
             return 'Financial - Labuan';
-        case MARKET_TYPE_SHORTCODE.ALL_SVG:
+        case MarketTypeShortcode.ALL_SVG:
             return isDemo ? 'Swap-Free Demo' : 'Swap-Free - SVG';
         case CFDPlatforms.DXTRADE:
             return isDemo ? 'Deriv X Demo' : 'Deriv X';
@@ -78,7 +78,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
                     <Text bold size='sm'>
                         {jurisdictionCardTitle}
                     </Text>
-                    {marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN && (
+                    {marketTypeShortCode === MarketTypeShortcode.FINANCIAL_LABUAN && (
                         <Tooltip
                             alignment='bottom'
                             className='-translate-x-[80%]'

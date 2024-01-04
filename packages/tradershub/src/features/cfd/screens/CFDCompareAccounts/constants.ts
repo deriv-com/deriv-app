@@ -1,6 +1,6 @@
 import { CFDPlatforms, MarketType } from '../../constants';
 
-export const ACCOUNT_ICONS = {
+export const AccountIcons = {
     [MarketType.SYNTHETIC]: 'Derived',
     [MarketType.FINANCIAL]: 'Financial',
     [MarketType.ALL]: 'SwapFree',
@@ -9,7 +9,7 @@ export const ACCOUNT_ICONS = {
     default: 'CFDs',
 } as const;
 
-export const MARKET_TYPE_SHORTCODE = {
+export const MarketTypeShortcode = {
     ALL_DXTRADE: 'all_',
     ALL_SVG: 'all_svg',
     FINANCIAL_BVI: 'financial_bvi',
@@ -23,7 +23,7 @@ export const MARKET_TYPE_SHORTCODE = {
     SYNTHETIC_VANUATU: 'synthetic_vanuatu',
 } as const;
 
-export const JURISDICTION = {
+export const Jurisdiction = {
     BVI: 'bvi',
     LABUAN: 'labuan',
     MALTAINVEST: 'maltainvest',

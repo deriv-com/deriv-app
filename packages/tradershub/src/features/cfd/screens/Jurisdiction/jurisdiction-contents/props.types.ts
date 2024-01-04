@@ -19,12 +19,7 @@ export type TJurisdictionCardSection = {
     titleIndicators?: TJurisdictionCardSectionTitleIndicators;
 };
 export type TJurisdictionCardVerificationStatus = 'Default' | 'Failed' | 'Pending' | 'Verified';
-export type TJurisdictionCardItemVerificationItem =
-    | 'documentNumber'
-    | 'identityDocument'
-    | 'nameAndAddress'
-    | 'notApplicable'
-    | 'selfie';
+export type TJurisdictionCardItemVerificationItem = 'documentNumber' | 'identityDocument' | 'nameAndAddress' | 'selfie';
 export type TJurisdictionCardItemVerification = TJurisdictionCardItemVerificationItem[];
 export type TJurisdictionCardItems = {
     contents: {
@@ -52,7 +47,6 @@ export type TJurisdictionVerificationItems = {
     identityDocument?: TJurisdictionVerificationSection;
     identityNumber?: TJurisdictionVerificationSection;
     nameAndAddress?: TJurisdictionVerificationSection;
-    notApplicable?: TJurisdictionVerificationSection;
     selfie?: TJurisdictionVerificationSection;
 };
 

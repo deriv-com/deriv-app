@@ -10,7 +10,7 @@ type TPaymentAgentDetail = {
     has_red_color?: boolean;
     icon?: string;
     is_link?: boolean;
-    title?: string;
+    title?: string | React.ReactNode;
     rel?: string;
     target?: string;
 };

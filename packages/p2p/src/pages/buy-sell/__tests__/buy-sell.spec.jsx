@@ -1,12 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useStores } from 'Stores/index';
 import BuySell from '../buy-sell';
 
 const mock_store = {
     general_store: {
-        should_show_popup: false,
-        setShouldShowPopup: jest.fn(),
         setActiveIndex: jest.fn(),
         active_index: 1,
     },
@@ -37,17 +34,5 @@ describe('<BuySellPage/>', () => {
 
         expect(screen.getByText('Verification')).toBeInTheDocument();
         expect(screen.getByText('Verification Section')).toBeInTheDocument();
-    });
-    it('should not render the page return section when nickname form is open ', () => {
-        useStores.mockReturnValue({
-            ...mock_store,
-            general_store: {
-                ...mock_store.general_store,
-                should_show_popup: true,
-            },
-        });
-        render(<BuySell />);
-
-        expect(screen.queryByText('Verification')).not.toBeInTheDocument();
     });
 });

@@ -11,7 +11,7 @@ const mockUsePOI = usePOI as jest.MockedFunction<typeof usePOI>;
 const mockUseResidenceList = useResidenceList as jest.MockedFunction<typeof useResidenceList>;
 
 describe('useVerificationDocs', () => {
-    it('should return verification docs for idv unsupported country', () => {
+    it('should return onfido/manual verification docs for idv unsupported country', () => {
         mockUsePOI.mockReturnValue({
             // @ts-expect-error need a way to mock useQuery data
             data: {
@@ -51,7 +51,7 @@ describe('useVerificationDocs', () => {
         });
     });
 
-    it('should return verification docs for idv supported country', () => {
+    it('should return idv verification docs for idv supported country and client has idv attempts left', () => {
         mockUsePOI.mockReturnValue({
             // @ts-expect-error need a way to mock useQuery data
             data: {
@@ -91,7 +91,7 @@ describe('useVerificationDocs', () => {
         });
     });
 
-    it('should return verification docs for idv supported country with no attempts left', () => {
+    it('should return onfido/manual verification docs for idv supported country with no attempts left', () => {
         mockUsePOI.mockReturnValue({
             // @ts-expect-error need a way to mock useQuery data
             data: {

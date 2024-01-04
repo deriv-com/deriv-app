@@ -339,13 +339,13 @@ const ctrader_data: TModifiedTradingPlatformAvailableAccount = {
 const getAccountVerficationStatus = (
     market_type_shortcode: string,
     poi_or_poa_not_submitted: boolean,
-    poi_acknowledged_for_vanuatu_maltainvest: boolean,
-    poi_acknowledged_for_bvi_labuan: boolean,
+    poi_acknowledged_for_maltainvest: boolean,
+    poi_acknowledged_for_bvi_labuan_vanuatu: boolean,
     poa_acknowledged: boolean,
-    poa_pending: boolean,
+    poa_resubmit_for_labuan: boolean,
+    has_submitted_personal_details: boolean,
     should_restrict_bvi_account_creation: boolean,
     should_restrict_vanuatu_account_creation: boolean,
-    has_submitted_personal_details: boolean,
     is_demo?: boolean
 ) => {
     switch (market_type_shortcode) {
@@ -356,7 +356,7 @@ const getAccountVerficationStatus = (
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
         case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
             if (
-                poi_acknowledged_for_bvi_labuan &&
+                poi_acknowledged_for_bvi_labuan_vanuatu &&
                 !poi_or_poa_not_submitted &&
                 !should_restrict_bvi_account_creation &&
                 has_submitted_personal_details &&
@@ -368,7 +368,7 @@ const getAccountVerficationStatus = (
         case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
         case MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU:
             if (
-                poi_acknowledged_for_vanuatu_maltainvest &&
+                poi_acknowledged_for_bvi_labuan_vanuatu &&
                 !poi_or_poa_not_submitted &&
                 !should_restrict_vanuatu_account_creation &&
                 has_submitted_personal_details &&
@@ -379,13 +379,18 @@ const getAccountVerficationStatus = (
             return false;
 
         case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
-            if (poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_personal_details) {
+            if (
+                poi_acknowledged_for_bvi_labuan_vanuatu &&
+                poa_acknowledged &&
+                has_submitted_personal_details &&
+                !poa_resubmit_for_labuan
+            ) {
                 return true;
             }
             return false;
 
         case MARKET_TYPE_SHORTCODE.FINANCIAL_MALTA_INVEST:
-            if ((poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) || is_demo) {
+            if ((poi_acknowledged_for_maltainvest && poa_acknowledged) || is_demo) {
                 return true;
             }
             return false;

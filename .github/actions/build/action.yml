@@ -24,7 +24,7 @@ inputs:
   DATADOG_SESSION_REPLAY_SAMPLE_RATE:
     description: 'Datadog session replay sample rate'
     required: false
-  DATADOG_SESSION_SAMPLE_RATE: 
+  DATADOG_SESSION_SAMPLE_RATE:
     description: 'Datadog session sample rate'
     required: false
   GD_API_KEY:
@@ -33,11 +33,17 @@ inputs:
   GD_APP_ID:
     description: 'Google drive app id'
     required: false
-  GD_CLIENT_ID: 
+  GD_CLIENT_ID:
     description: 'Google drive client id'
     required: false
   RUDDERSTACK_KEY:
     description: 'Rudderstack key'
+    required: false
+  GROWTHBOOK_CLIENT_KEY:
+    description: 'Growthbook key'
+    required: false
+  GROWTHBOOK_DECRYPTION_KEY:
+    description: 'Growthbook decryption key'
     required: false
   DATADOG_SESSION_SAMPLE_RATE_LOGS:
     description: 'Datadog session sample rate for logs'
@@ -50,7 +56,7 @@ runs:
     env:
       NODE_ENV: ${{ inputs.NODE_ENV }}
       CROWDIN_WALLETS_API_KEY: ${{ inputs.CROWDIN_WALLETS_API_KEY }}
-      DATADOG_APPLICATION_ID: ${{ inputs.DATADOG_APPLICATION_ID }} 
+      DATADOG_APPLICATION_ID: ${{ inputs.DATADOG_APPLICATION_ID }}
       DATADOG_CLIENT_TOKEN: ${{ inputs.DATADOG_CLIENT_TOKEN }}
       DATADOG_CLIENT_TOKEN_LOGS: ${{ inputs.DATADOG_CLIENT_TOKEN_LOGS }}
       DATADOG_SESSION_REPLAY_SAMPLE_RATE: ${{ inputs.DATADOG_SESSION_REPLAY_SAMPLE_RATE }}
@@ -60,6 +66,8 @@ runs:
       GD_APP_ID: ${{ inputs.GD_APP_ID }}
       GD_CLIENT_ID: ${{ inputs.GD_CLIENT_ID }}
       RUDDERSTACK_KEY: ${{ inputs.RUDDERSTACK_KEY }}
+      GROWTHBOOK_CLIENT_KEY: ${{ inputs.GROWTHBOOK_CLIENT_KEY }}
+      GROWTHBOOK_DECRYPTION_KEY: ${{ inputs.GROWTHBOOK_DECRYPTION_KEY }}
       REF_NAME: ${{ inputs.REF_NAME }}
     run: npm run build:all
     shell: bash

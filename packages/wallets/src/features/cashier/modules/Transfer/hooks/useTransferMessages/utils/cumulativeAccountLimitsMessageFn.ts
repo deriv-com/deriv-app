@@ -11,13 +11,15 @@ const cumulativeAccountLimitsMessageFn = ({
     sourceAmount,
     targetAccount,
 }: TMessageFnProps) => {
+    if (!targetAccount) return null;
+
     const isTransferBetweenWallets =
         sourceAccount.account_category === 'wallet' && targetAccount.account_category === 'wallet';
 
     const isDemoTransfer = activeWallet?.is_virtual;
 
     const keyAccountType =
-        [sourceAccount, targetAccount].find(acc => acc.account_category !== 'wallet')?.account_type ?? 'wallets';
+        [sourceAccount, targetAccount].find(acc => acc.account_category !== 'wallet')?.account_type ?? 'internal';
 
     const platformKey = keyAccountType === 'standard' ? 'dtrade' : keyAccountType;
 

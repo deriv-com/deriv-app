@@ -11,8 +11,8 @@ const CompareAccountsCarousel = ({ children }: PropsWithChildren) => {
     const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
     const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
 
-    const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-    const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+    const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
+    const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
     const onSelect = useCallback((emblaApi: EmblaCarouselType) => {
         setPrevBtnEnabled(emblaApi.canScrollPrev());

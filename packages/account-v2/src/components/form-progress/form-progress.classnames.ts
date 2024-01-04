@@ -1,14 +1,37 @@
 import { cva } from 'class-variance-authority';
 
-const stepperBaseStyles =
-    'z-10 box-border flex h-800 w-800 items-center rounded-pill outline outline-2 outline-solid-grey-1';
+const stepperBaseStyles = 'z-10 box-border flex h-800 w-800 items-center rounded-pill outline outline-2';
 
 export const stepperVariants = cva(stepperBaseStyles, {
     variants: {
-        variant: {
-            isActive: {
-                true: 'group-aria-[current=true]:outline-solid-coral-700 group-aria-[current=true]:transition-all group-aria-[current=true]:delay-700 group-aria-[current=true]:duration-700 group-aria-[current=true]:ease-out',
-            },
+        isActive: {
+            true: 'transition-all delay-700 duration-700 ease-out  outline-solid-coral-700',
+            false: 'outline-solid-grey-5',
+        },
+        isFilled: {
+            true: '',
         },
     },
+    compoundVariants: [
+        {
+            isActive: false,
+            isFilled: true,
+            class: 'bg-solid-grey-5',
+        },
+        {
+            isActive: true,
+            isFilled: true,
+            class: 'bg-solid-coral-700',
+        },
+    ],
 });
+
+export const desktopStyle = {
+    stepper: 'lg:flex lg:w-fit lg:items-end lg:gap-800',
+    connector:
+        'lg:h-2000 lg:w-100 lg:bg-[length:100%_200%] lg:bg-bottom lg:bg-gradient-to-b lg:aria-[current=true]:bg-top',
+};
+
+export const mobileStyle = {
+    connector: 'h-100 bg-[length:200%_100%] bg-right bg-gradient-to-r aria-[current=true]:bg-left w-auto',
+};

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { Fragment, useRef } from 'react';
 import { useHover } from 'usehooks-ts';
 import { Text, useBreakpoint } from '@deriv/quill-design';
 import { Tooltip } from '../../../../components/Base/Tooltip';
@@ -71,7 +71,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
     const TradingPlatformIcon = TradingPlatformIcons[jurisdictionCardIcon];
 
     return (
-        <React.Fragment>
+        <Fragment>
             <div className={'flex flex-col gap-[5px] pt-1000 items-center'}>
                 <TradingPlatformIcon height={48} width={48} />
                 <div className='flex items-center gap-400'>
@@ -93,7 +93,7 @@ const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: T
                 </div>
             </div>
             <hr className='w-[213px] border-t-[5px] border-solid border-system-light-less-prominent-text' />
-        </React.Fragment>
+        </Fragment>
     );
 };
 

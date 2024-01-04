@@ -1,8 +1,6 @@
-// TODO: Create a Generic component for this once the designed is finalized.
-import React, { useState } from 'react';
-import { qtMerge, Text } from '@deriv/quill-design';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Button, qtMerge, Text } from '@deriv/quill-design';
 import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
-import { Listbox, Transition } from '@headlessui/react';
 
 const accountTypes = [
     { label: 'Demo', value: 'demo' },
@@ -10,67 +8,64 @@ const accountTypes = [
 ];
 
 const DemoRealSwitcher = () => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selected, setSelected] = useState(accountTypes[0]);
     const { label, value } = selected;
 
+    useEffect(() => {
+        setIsDropdownOpen(false);
+    }, [selected]);
+
+    const toggleDropdown = useCallback(() => {
+        setIsDropdownOpen(prevState => !prevState);
+    }, []);
+
+    const selectAccount = useCallback(account => {
+        setSelected(account);
+    }, []);
+
     return (
-        <div className='w-auto'>
-            <Listbox as='div' onChange={setSelected} value={selected}>
-                {({ open }) => (
-                    <div className='relative'>
-                        <Listbox.Button
-                            as='button'
-                            className={`cursor-pointer relative w-full py-[3px] px-400 border-75 rounded-200 flex gap-x-400 items-center ${
-                                value === 'demo' ? 'border-status-light-information' : 'border-status-light-success'
-                            }`}
-                        >
-                            <Text
-                                bold
-                                className={
-                                    value === 'demo' ? 'text-status-light-information' : 'text-status-light-success'
-                                }
-                                size='sm'
-                            >
-                                {label}
-                            </Text>
-                            <LabelPairedChevronDownSmRegularIcon
-                                className={qtMerge(
-                                    'transform transition duration-200 ease-in-out',
-                                    value === 'demo' ? 'fill-status-light-information' : 'fill-status-light-success',
-                                    open && ' -rotate-180'
-                                )}
-                            />
-                        </Listbox.Button>
-                        <Transition leave='transition ease-in duration-100' leaveFrom='opacity-100' leaveTo='opacity-0'>
-                            <Listbox.Options
-                                as='div'
-                                className='absolute mt-200 max-h-3000 w-full rounded-200 bg-system-light-primary-background shadow-210'
-                            >
-                                {accountTypes?.map(account => (
-                                    <Listbox.Option
-                                        as='div'
-                                        className='cursor-pointer bg-system-light-primary-background hover:bg-system-light-hover-background'
-                                        key={account.label}
-                                        value={account}
-                                    >
-                                        {({ selected }) => (
-                                            <Text
-                                                bold={selected}
-                                                className={`px-800 py-300 text-center ${
-                                                    selected && 'bg-system-light-active-background'
-                                                }`}
-                                                size='sm'
-                                            >
-                                                {account.label}
-                                            </Text>
-                                        )}
-                                    </Listbox.Option>
-                                ))}
-                            </Listbox.Options>
-                        </Transition>
-                    </div>
+        <div className='relative inline-block w-auto'>
+            <Button
+                className={qtMerge(
+                    'cursor-pointer w-full py-[3px] px-400 border-75 rounded-200 [&>span]:flex [&>span]:items-center [&>span]:text-[14px]',
+                    value === 'demo'
+                        ? 'border-status-light-information text-status-light-information'
+                        : 'border-status-light-success text-status-light-success'
                 )}
-            </Listbox>
+                colorStyle='white'
+                iconPosition='end'
+                onClick={toggleDropdown}
+                size='sm'
+                variant='secondary'
+            >
+                {label}
+                <LabelPairedChevronDownSmRegularIcon
+                    className={qtMerge(
+                        'transform transition duration-200 ease-in-out ml-400',
+                        value === 'demo' ? 'fill-status-light-information' : 'fill-status-light-success',
+                        isDropdownOpen && '-rotate-180'
+                    )}
+                />
+            </Button>
+            {isDropdownOpen && (
+                <div className='absolute top-1400 z-10 rounded-200 bg-system-light-primary-background shadow-320 w-full'>
+                    {accountTypes.map(account => (
+                        <div
+                            className={qtMerge(
+                                'cursor-pointer hover:bg-system-light-hover-background',
+                                account.value === value && 'bg-system-light-active-background'
+                            )}
+                            key={account.value}
+                            onClick={() => selectAccount(account)}
+                        >
+                            <Text bold={account.value === value} className='px-800 py-300 text-center' size='sm'>
+                                {account.label}
+                            </Text>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

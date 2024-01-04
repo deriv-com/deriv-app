@@ -4,7 +4,7 @@ import { Text, useBreakpoint } from '@deriv/quill-design';
 import { Tooltip } from '../../../../components/Base/Tooltip';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
-import { CFDPlatforms, getAccountCardTitle } from '../../constants';
+import { CFDPlatforms } from '../../constants';
 import { ACCOUNT_ICONS, MARKET_TYPE_SHORTCODE } from './constants';
 import TradingPlatformIcons from './tradingPlatformIcons';
 
@@ -25,6 +25,33 @@ const getAccountIcon = (platform: TPlatforms.All, marketType: TMarketType) => {
 };
 
 type TMarketWithShortCode = `${TMarketType}_${string}`;
+
+const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherAccounts, isDemo?: boolean) => {
+    switch (shortCode) {
+        case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
+            return isDemo ? 'Derived Demo' : 'Derived - SVG';
+        case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
+            return 'Derived - BVI';
+        case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
+            return 'Derived - Vanuatu';
+        case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
+            return isDemo ? 'Financial Demo' : 'Financial - SVG';
+        case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
+            return 'Financial - BVI';
+        case MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU:
+            return 'Financial - Vanuatu';
+        case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
+            return 'Financial - Labuan';
+        case MARKET_TYPE_SHORTCODE.ALL_SVG:
+            return isDemo ? 'Swap-Free Demo' : 'Swap-Free - SVG';
+        case CFDPlatforms.DXTRADE:
+            return isDemo ? 'Deriv X Demo' : 'Deriv X';
+        case CFDPlatforms.CTRADER:
+            return isDemo ? 'Deriv cTrader Demo' : 'Deriv cTrader';
+        default:
+            return isDemo ? 'CFDs Demo' : 'CFDs';
+    }
+};
 
 const CompareAccountsTitleIcon = ({ isDemo, marketType, platform, shortCode }: TCompareAccountsTitleIcon) => {
     const marketTypeShortCode: TMarketWithShortCode = `${marketType}_${shortCode}`;

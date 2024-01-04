@@ -10,8 +10,7 @@ import LinuxIcon from '../../public/images/ic-linux-logo.svg';
 import MacOSIcon from '../../public/images/ic-macos-logo.svg';
 import MT5Icon from '../../public/images/ic-mt5.svg';
 import WindowsIcon from '../../public/images/ic-windows-logo.svg';
-import { THooks, TMarketTypes, TMT5LandingCompanyName, TPlatforms } from '../../types';
-import { MARKET_TYPE_SHORTCODE } from './screens/CFDCompareAccounts/constants';
+import { TMarketTypes, TMT5LandingCompanyName, TPlatforms } from '../../types';
 
 type TAppContent = {
     description: string;
@@ -45,10 +44,6 @@ type TPlatformUrls = {
         staging?: string;
     };
 };
-
-type TMarketType = THooks.AvailableMT5Accounts['market_type'];
-
-type TMarketWithShortCode = `${TMarketType}_${string}`;
 
 export const CFDPlatforms = {
     CFDS: 'CFDs',
@@ -162,31 +157,4 @@ export const PlatformUrls: TPlatformUrls = {
         demo: 'https://dx-demo.deriv.com',
         live: 'https://dx.deriv.com',
     },
-};
-
-export const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherAccounts, isDemo?: boolean) => {
-    switch (shortCode) {
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
-            return isDemo ? 'Derived Demo' : 'Derived - SVG';
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
-            return 'Derived - BVI';
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
-            return 'Derived - Vanuatu';
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
-            return isDemo ? 'Financial Demo' : 'Financial - SVG';
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
-            return 'Financial - BVI';
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU:
-            return 'Financial - Vanuatu';
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
-            return 'Financial - Labuan';
-        case MARKET_TYPE_SHORTCODE.ALL_SVG:
-            return isDemo ? 'Swap-Free Demo' : 'Swap-Free - SVG';
-        case CFDPlatforms.DXTRADE:
-            return isDemo ? 'Deriv X Demo' : 'Deriv X';
-        case CFDPlatforms.CTRADER:
-            return isDemo ? 'Deriv cTrader Demo' : 'Deriv cTrader';
-        default:
-            return isDemo ? 'CFDs Demo' : 'CFDs';
-    }
 };

@@ -46,7 +46,7 @@ const Clipboard = ({ textCopy, tooltip }: TClipboardProps) => {
 
     return (
         <Tooltip
-            alignment={tooltip || 'bottom'}
+            alignment={tooltip ?? 'bottom'}
             isVisible={isHovered && !isMobile}
             message={isCopied ? 'Copied!' : 'Copy'}
         >

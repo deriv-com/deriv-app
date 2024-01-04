@@ -3,6 +3,10 @@
     "private": true,
     "version": "1.0.0",
     "main": "src/index.ts",
+    "scripts": {
+        "build": "tailwindcss -i ./src/index.css -o ./src/main.css",
+        "serve": "tailwindcss -i ./src/index.css -o ./src/main.css --watch"
+    },
     "dependencies": {
         "@deriv/quill-design": "^1.3.2",
         "@deriv/quill-icons": "^1.0.10",

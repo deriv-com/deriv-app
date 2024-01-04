@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { qtMerge, Text } from '@deriv/quill-design';
 import { THooks } from '../../../../types';
 import { getJurisdictionDescription } from './CompareAccountsConfig';
@@ -31,7 +31,7 @@ const CompareAccountsDescription = ({ isDemo, isEuRegion, marketType, shortCode 
                 </div>
             )}
             {!isDemo && (
-                <React.Fragment>
+                <Fragment>
                     <div className='m-[9px]'>
                         <Text bold size='sm'>
                             {jurisdictionData.counterparty_company}
@@ -53,7 +53,7 @@ const CompareAccountsDescription = ({ isDemo, isEuRegion, marketType, shortCode 
                         )}
                         <Text size='sm'>{jurisdictionData.regulator_description}</Text>
                     </div>
-                </React.Fragment>
+                </Fragment>
             )}
         </div>
     );

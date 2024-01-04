@@ -37,7 +37,11 @@ const AppContent = ({ order_id }) => {
     };
 
     React.useEffect(() => {
-        if (!general_store.should_show_dp2p_blocked && !is_system_maintenance) {
+        if (
+            !general_store.should_show_dp2p_blocked &&
+            !is_system_maintenance &&
+            !general_store.counterparty_advert_id
+        ) {
             const time_lapsed = getHoursDifference(localStorage.getItem(`p2p_${loginid}_disclaimer_shown`));
             if (time_lapsed === undefined || time_lapsed > INTERVAL_DURATION) {
                 showModal({ key: 'DisclaimerModal', props: { handleDisclaimerTimeout } });

@@ -590,6 +590,8 @@ type TClientStore = {
     prev_account_type: string;
     account_open_date: number | undefined;
     setAccounts: () => (accounts: Record<string, TActiveAccount>) => void;
+    should_show_eu_error: boolean;
+    is_options_blocked: boolean;
 };
 
 type TCommonStoreError = {

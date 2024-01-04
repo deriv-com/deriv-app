@@ -1,3 +1,4 @@
+export * from './Base';
 export * from './ActionScreen';
 export * from './ContentSwitcher';
 export * from './CurrencySwitcher';
@@ -5,7 +6,6 @@ export * from './DemoRealSwitcher';
 export * from './Dialog';
 export * from './GetADerivAccountBanner';
 export * from './Modal';
-export * from './ModalProvider';
 export * from './ModalStepWrapper';
 export * from './OptionsAndMultipliersSection';
 export * from './StaticLink';

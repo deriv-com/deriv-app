@@ -2,6 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Button, qtMerge, Text } from '@deriv/quill-design';
 import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
 
+type TAccount = {
+    label: string;
+    value: string;
+};
+
 const accountTypes = [
     { label: 'Demo', value: 'demo' },
     { label: 'Real', value: 'real' },
@@ -20,7 +25,7 @@ const DemoRealSwitcher = () => {
         setIsDropdownOpen(prevState => !prevState);
     }, []);
 
-    const selectAccount = useCallback(account => {
+    const selectAccount = useCallback((account: TAccount) => {
         setSelected(account);
     }, []);
 

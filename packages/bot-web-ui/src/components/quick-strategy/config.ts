@@ -1,6 +1,14 @@
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
-import { D_ALEMBERT, MARTINGALE, OSCARS_GRIND, REVERSE_MARTINGALE, REVERSE_D_ALEMBERT, _1_3_2_6 } from './descriptions';
+// import { _1_3_2_6 } from './descriptions/1_3_2_6';
+import {
+    D_ALEMBERT,
+    MARTINGALE,
+    OSCARS_GRIND,
+    REVERSE_D_ALEMBERT,
+    REVERSE_MARTINGALE,
+    STRATEGY_1_3_2_6,
+} from './descriptions';
 import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [
@@ -300,7 +308,7 @@ export const STRATEGIES: TStrategies = {
     '1_3_2_6': {
         name: '1_3_2_6',
         label: localize('1-3-2-6'),
-        description: _1_3_2_6,
+        description: STRATEGY_1_3_2_6,
         fields: [
             [
                 LABEL_SYMBOL,

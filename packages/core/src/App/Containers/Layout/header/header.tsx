@@ -1,8 +1,8 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { useFeatureFlags, useP2PCompletedOrdersNotification, useStoreWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 import DefaultHeader from './default-header';
 import DTraderHeader from './dtrader-header';
 import TradersHubHeader from './traders-hub-header';
@@ -13,6 +13,8 @@ const Header = observer(() => {
     const { client } = useStore();
     const { accounts, is_logged_in, setAccounts, loginid, switchAccount } = client;
     const { pathname } = useLocation();
+
+    useP2PCompletedOrdersNotification();
     const is_wallets_cashier_route = pathname.includes(routes.wallets_cashier);
 
     const traders_hub_routes =

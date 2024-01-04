@@ -6,6 +6,8 @@ export const REVERSE_D_ALEMBERT: TDescriptionItem[] = [
     {
         type: 'subtitle',
         content: [localize('Exploring the Reverse D’Alembert strategy in Deriv Bot')],
+        expanded: true,
+        no_collapsible: false,
     },
     {
         type: 'text',

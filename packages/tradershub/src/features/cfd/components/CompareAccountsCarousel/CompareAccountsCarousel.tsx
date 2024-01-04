@@ -1,12 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { PropsWithChildren, useCallback, useEffect, useState } from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel-react';
 import CFDCompareAccountsCarouselButton from './CompareAccountsCarouselButton';
 
-type TCompareAccountsCarousel = {
-    children: React.ReactNode;
-};
-
-const CompareAccountsCarousel = (props: TCompareAccountsCarousel) => {
+const CompareAccountsCarousel = ({ children }: PropsWithChildren) => {
     const options: EmblaOptionsType = {
         align: 0,
         containScroll: 'trimSnaps',
@@ -35,7 +31,7 @@ const CompareAccountsCarousel = (props: TCompareAccountsCarousel) => {
         <div className='relative overflow-hidden'>
             <div className='w-full h-full overflow-hidden pb-3000' ref={emblaRef}>
                 <div className='flex flex-row invisible max-h-screen ease-in-out duration-0 -ml-500 touch-pan-y'>
-                    {props.children}
+                    {children}
                 </div>
             </div>
             <CFDCompareAccountsCarouselButton enabled={prevBtnEnabled} isNext={false} onClick={scrollPrev} />

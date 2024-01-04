@@ -61,17 +61,32 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         return details?.login;
     }, [details, dxtradePlatform, mt5Platform, platform]);
 
-    const showNoNewPositionsMessage = useMemo(() => {
-        return (
-            !activeWalletData?.is_virtual &&
-            details?.landing_company_short === 'svg' &&
-            ['synthetic', 'financial'].includes(marketType ?? '') && (
-                <InlineMessage type='warning' variant='outlined'>
-                    No new positions
-                </InlineMessage>
-            )
-        );
-    }, [activeWalletData?.is_virtual, details?.landing_company_short, marketType]);
+    const showMigrationMessage = useMemo(() => {
+        if (platform === mt5Platform && !activeWalletData?.is_virtual) {
+            switch (
+                platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]?.status
+            ) {
+                case 'migrated_with_position':
+                    return (
+                        <InlineMessage size='sm' type='warning' variant='outlined'>
+                            <WalletText color='warning' size='2xs' weight='bold'>
+                                No new positions
+                            </WalletText>
+                        </InlineMessage>
+                    );
+                case 'migrated_without_position':
+                    return (
+                        <InlineMessage size='sm' type='warning' variant='outlined'>
+                            <WalletText color='warning' size='2xs' weight='bold'>
+                                Account closed
+                            </WalletText>
+                        </InlineMessage>
+                    );
+                default:
+                    return null;
+            }
+        }
+    }, [activeWalletData?.is_virtual, marketType, mt5Platform, platform, platformToAccountsListMapper.mt5]);
 
     return (
         <div className='wallets-mt5-trade-screen'>
@@ -97,8 +112,12 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         </div>
                     </div>
                     <div className='wallets-mt5-trade-screen__details-description--right'>
-                        <WalletText weight='bold'>{details?.display_balance}</WalletText>
-                        {showNoNewPositionsMessage}
+                        {!(
+                            platform === mt5Platform &&
+                            platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]
+                                ?.status === 'migrated_without_position'
+                        ) && <WalletText weight='bold'>{details?.display_balance}</WalletText>}
+                        {showMigrationMessage}
                     </div>
                 </div>
 

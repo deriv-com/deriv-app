@@ -89,8 +89,8 @@ const CurrencySwitcher = () => {
                                 show(
                                     <Modal>
                                         <Modal.Header
-                                            className='text-body-md text-typography-default'
                                             title='Select account'
+                                            titleClassName='text-body-md text-typography-default'
                                         />
                                         <Modal.Content className='overflow-y-scroll'>
                                             <TradingAccountsList />

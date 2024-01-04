@@ -12,7 +12,7 @@ const MT5AccountTypeModal = () => {
 
     return (
         <Modal>
-            <Modal.Header className='text-body-md' title='Select Deriv MT5’s account type' />
+            <Modal.Header title='Select Deriv MT5’s account type' titleClassName='text-body-md' />
             <Modal.Content>
                 <MT5AccountType onMarketTypeSelect={setSelectedMarketType} selectedMarketType={selectedMarketType} />
             </Modal.Content>

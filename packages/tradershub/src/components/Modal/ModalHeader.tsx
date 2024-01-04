@@ -12,14 +12,14 @@ import { TModalComponents } from './Modal';
  * @property {string} [title] - Optional title for the header
  * @extends TModalComponents
  */
-type TModalHeader = TModalComponents & { hideCloseButton?: boolean; title?: string };
+type TModalHeader = TModalComponents & { hideCloseButton?: boolean; title?: string; titleClassName?: string };
 
 /**
  * ModalHeader component
  * @param {TModalHeader} props - The properties that define the ModalHeader component.
  * @returns {JSX.Element} The ModalHeader component.
  */
-const ModalHeader = ({ className, hideCloseButton = false, title }: TModalHeader) => {
+const ModalHeader = ({ className, hideCloseButton = false, title, titleClassName }: TModalHeader) => {
     const { hide } = Provider.useModal();
 
     return (
@@ -30,7 +30,7 @@ const ModalHeader = ({ className, hideCloseButton = false, title }: TModalHeader
                 className
             )}
         >
-            {title && <Heading.H3 className={qtMerge('flex-1', className)}>{title}</Heading.H3>}
+            {title && <Heading.H3 className={qtMerge('flex-1', titleClassName)}>{title}</Heading.H3>}
             {!hideCloseButton && <CloseIcon className='cursor-pointer' onClick={hide} />}
         </div>
     );

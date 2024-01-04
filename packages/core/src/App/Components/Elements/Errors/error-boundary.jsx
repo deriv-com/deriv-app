@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'Stores/connect';
 import ErrorComponent from './index';
 
 class ErrorBoundary extends React.Component {
@@ -8,7 +7,6 @@ class ErrorBoundary extends React.Component {
         super(props);
         this.state = { hasError: false };
     }
-
     componentDidCatch = (error, info) => {
         if (window.TrackJS) window.TrackJS.console.log(this.props.root_store);
 
@@ -18,7 +16,6 @@ class ErrorBoundary extends React.Component {
             info,
         });
     };
-
     render = () => (this.state.hasError ? <ErrorComponent should_show_refresh={true} /> : this.props.children);
 }
 
@@ -27,6 +24,4 @@ ErrorBoundary.propTypes = {
     children: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
 
-export default connect(store => ({
-    root_store: store,
-}))(ErrorBoundary);
+export default ErrorBoundary;

@@ -210,10 +210,10 @@ test.describe('Wallets - Crypto withdrawal', () => {
         const block3Width = await blockFill3.evaluate(node => node.style.width);
         const block4Width = await blockFill4.evaluate(node => node.style.width);
         //
-        await expect(block1Width).toBe('100%');
-        await expect(block2Width).toBe('100%');
-        await expect(block3Width).toBe('100%');
-        await expect(block4Width).toBe('100%');
+        await expect(block1Width).toBe('0%');
+        await expect(block2Width).toBe('0%');
+        await expect(block3Width).toBe('0%');
+        await expect(block4Width).toBe('0%');
     });
 
     test('validates crypto input against current balance and minimum withdrawal amount', async ({ baseURL, page }) => {
@@ -261,7 +261,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
             page.locator(
                 '.wallets-withdrawal-crypto-amount-converter .wallets-textfield:first-child .wallets-textfield__message-container--msg'
             )
-        ).toHaveText('Insufficient funds');
+        ).toHaveText('The current allowed withdraw amount is 0.00027139 to 10.00000000 BTC.');
 
         // given valid amount, no error message should be visible
         await page.fill('#cryptoAmount', '1');

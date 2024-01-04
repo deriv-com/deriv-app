@@ -3,4 +3,3 @@ export { default as WalletsAccordionLoader } from './WalletsAccordionLoader/Wall
 export { default as WalletsAddMoreLoader } from './WalletsAddMoreLoader/WalletsAddMoreLoader';
 export { default as WalletsCarouselLoader } from './WalletsCarouselLoader/WalletsCarouselLoader';
 export { default as WalletsDepositCryptoAddressLoader } from './WalletsDepositCryptoAddressLoader/WalletsDepositCryptoAddressLoader';
-export { default as WalletsTransactionStatusLoader } from './WalletsTransactionStatusLoader/WalletsTransactionStatusLoader';

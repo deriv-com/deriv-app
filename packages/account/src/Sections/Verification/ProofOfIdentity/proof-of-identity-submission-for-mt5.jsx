@@ -25,16 +25,27 @@ const POISubmissionForMT5 = observer(
         const [idv_mismatch_status, setIdvMismatchStatus] = React.useState(null);
 
         const { client, notifications, traders_hub } = useStore();
-        const { account_settings, getChangeableFields } = client;
+        const { account_settings, getChangeableFields, account_status } = client;
         const { refreshNotifications } = notifications;
         const { is_eu_user } = traders_hub;
 
         React.useEffect(() => {
             if (citizen_data) {
+                const {
+                    authentication: { attempts },
+                } = account_status;
+
+                const { service } = attempts?.latest ?? {};
                 const { submissions_left: idv_submissions_left, last_rejected, status } = idv;
                 const { submissions_left: onfido_submissions_left } = onfido;
-                const is_idv_supported = isVerificationServiceSupported(residence_list, account_settings, 'idv');
-                const is_onfido_supported = isVerificationServiceSupported(residence_list, account_settings, 'onfido');
+
+                const is_idv_supported =
+                    service === service_code.idv ||
+                    (!service && isVerificationServiceSupported(residence_list, account_settings, 'idv'));
+                const is_onfido_supported =
+                    service === service_code.onfido ||
+                    (!service && isVerificationServiceSupported(residence_list, account_settings, 'onfido'));
+
                 if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed && !is_eu_user) {
                     setSubmissionService(service_code.idv);
                     if (
@@ -53,7 +64,7 @@ const POISubmissionForMT5 = observer(
                 }
                 setSubmissionStatus(submission_status_code.submitting);
             }
-        }, [citizen_data]);
+        }, [citizen_data, account_status]);
 
         const handlePOIComplete = () => {
             if (onStateChange && typeof onStateChange === 'function') {
@@ -147,7 +158,7 @@ const POISubmissionForMT5 = observer(
                         <Unsupported
                             onfido={onfido}
                             country_code={citizen_data.value}
-                            is_mt5
+                            is_for_mt5
                             handlePOIforMT5Complete={handlePOIComplete}
                         />
                     );

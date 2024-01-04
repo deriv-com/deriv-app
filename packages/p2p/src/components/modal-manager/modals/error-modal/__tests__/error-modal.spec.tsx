@@ -1,7 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import ErrorModal from '../error-modal';
 
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <StoreProvider store={mockStore({})}>{children}</StoreProvider>
+);
 const mock_modal_manager_context = {
     hideModal: jest.fn(),
     is_modal_open: true,
@@ -29,7 +33,8 @@ describe('<ErrorModal/>', () => {
                 error_message='error message'
                 error_modal_button_text='Close'
                 error_modal_title='Something went wrong'
-            />
+            />,
+            { wrapper }
         );
         expect(screen.getByText('error message')).toBeInTheDocument();
         expect(screen.getByText('Something went wrong')).toBeInTheDocument();
@@ -38,7 +43,9 @@ describe('<ErrorModal/>', () => {
 
     it("should call onClose when footer's button is clicked", () => {
         const mock_on_close = jest.fn();
-        render(<ErrorModal error_message='error message' error_modal_button_text='Close' onClose={mock_on_close} />);
+        render(<ErrorModal error_message='error message' error_modal_button_text='Close' onClose={mock_on_close} />, {
+            wrapper,
+        });
         const close_button = screen.getByText('Close');
         expect(close_button).toBeInTheDocument();
         close_button.click();
@@ -46,7 +53,9 @@ describe('<ErrorModal/>', () => {
     });
 
     it("should call hideModal when footer's button is clicked", () => {
-        render(<ErrorModal error_message='error message' />);
+        render(<ErrorModal error_message='error message' />, {
+            wrapper,
+        });
         const ok_button = screen.getByText('Ok');
         expect(ok_button).toBeInTheDocument();
         ok_button.click();

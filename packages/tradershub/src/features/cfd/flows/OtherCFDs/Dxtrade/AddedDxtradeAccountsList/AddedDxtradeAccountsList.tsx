@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { useDxtradeAccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useDxtradeAccountsList } from '@deriv/api';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
@@ -8,6 +8,7 @@ import { PlatformDetails } from '../../../../constants';
 
 const AddedDxtradeAccountsList = () => {
     const { data: dxTradeAccounts } = useDxtradeAccountsList();
+    const { data: activeTrading } = useActiveTradingAccount();
 
     const leading = () => (
         <div
@@ -44,17 +45,19 @@ const AddedDxtradeAccountsList = () => {
     return (
         <TradingAccountCard leading={leading} trailing={trailing}>
             <div className='flex flex-col flex-grow'>
-                {dxTradeAccounts?.map(account => (
-                    <Fragment key={account?.account_id}>
-                        <Text size='sm'>{PlatformDetails.dxtrade.title}</Text>
-                        <Text bold size='sm'>
-                            {account?.display_balance}
-                        </Text>
-                        <Text color='primary' size='sm'>
-                            {account?.login}
-                        </Text>
-                    </Fragment>
-                ))}
+                {dxTradeAccounts
+                    ?.filter(account => account.is_virtual === activeTrading?.is_virtual)
+                    ?.map(account => (
+                        <Fragment key={account?.account_id}>
+                            <Text size='sm'>{PlatformDetails.dxtrade.title}</Text>
+                            <Text bold size='sm'>
+                                {account?.display_balance}
+                            </Text>
+                            <Text color='primary' size='sm'>
+                                {account?.login}
+                            </Text>
+                        </Fragment>
+                    ))}
             </div>
         </TradingAccountCard>
     );

@@ -15,7 +15,7 @@ const MT5MigrationAccountIcons = () => {
     let existing_account_title = 'Existing account';
     let new_account_title = 'New account';
 
-    if (no_of_svg_accounts_to_migrate > 2) {
+    if (no_of_svg_accounts_to_migrate > 1) {
         existing_account_title = 'Existing accounts';
         new_account_title = 'New accounts';
     }

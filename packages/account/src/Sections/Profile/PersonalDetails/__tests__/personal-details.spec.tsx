@@ -1,5 +1,5 @@
 import React from 'react';
-import { cleanup, render, waitFor, screen, fireEvent } from '@testing-library/react';
+import { cleanup, render, waitFor, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { PersonalDetailsForm } from '../personal-details-form';
@@ -102,7 +102,7 @@ describe('<PersonalDetailsForm />', () => {
         renderComponent();
         await waitFor(() => {
             const last_name = screen.getByTestId('dt_last_name');
-            fireEvent.input(last_name, { target: { value: 'b' } });
+            userEvent.type(last_name, 'b');
             expect(screen.getByText(/You should enter 2-50 characters./)).toBeInTheDocument();
         });
     });
@@ -111,7 +111,7 @@ describe('<PersonalDetailsForm />', () => {
         renderComponent();
         await waitFor(() => {
             const first_name = screen.getByTestId('dt_first_name');
-            fireEvent.input(first_name, { target: { value: 'fifty chars fifty chars fifty chars fifty chars fifty' } });
+            userEvent.type(first_name, 'fifty chars fifty chars fifty chars fifty chars fifty');
             expect(screen.getByText(/You should enter 2-50 characters./)).toBeInTheDocument();
         });
     });
@@ -121,7 +121,7 @@ describe('<PersonalDetailsForm />', () => {
 
         await waitFor(() => {
             const first_name = screen.getByTestId('dt_first_name');
-            fireEvent.input(first_name, { target: { value: 'test 3' } });
+            userEvent.type(first_name, 'test 3');
             expect(screen.getByText('Letters, spaces, periods, hyphens, apostrophes only.')).toBeInTheDocument();
         });
     });
@@ -130,7 +130,7 @@ describe('<PersonalDetailsForm />', () => {
         renderComponent();
         await waitFor(() => {
             const first_name = screen.getByTestId('dt_first_name');
-            fireEvent.input(first_name, { target: { value: "test-with' chars." } });
+            userEvent.type(first_name, "test-with' chars.");
             expect(screen.queryByText('Letters, spaces, periods, hyphens, apostrophes only.')).not.toBeInTheDocument();
         });
     });
@@ -155,7 +155,7 @@ describe('<PersonalDetailsForm />', () => {
         expect(auth_link).toBe('/account/proof-of-identity');
     });
 
-    it('should render POI auth link', async () => {
+    it('should render POI auth link', () => {
         mock_store.client.current_landing_company.support_professional_client = 'true';
         renderComponent();
         const auth_text = screen.getByText(/Authenticate my account/);
@@ -172,7 +172,7 @@ describe('<PersonalDetailsForm />', () => {
         expect(auth_link).toBe('/account/proof-of-address');
     });
 
-    it('should render professional client if support_professional_client is true with verified account', async () => {
+    it('should render professional client if support_professional_client is true with verified account', () => {
         mock_store.client.current_landing_company.support_professional_client = 'true';
         mock_store.client.authentication_status.document_status = 'verified';
         mock_store.client.authentication_status.identity_status = 'verified';
@@ -182,13 +182,12 @@ describe('<PersonalDetailsForm />', () => {
         ).toBeInTheDocument();
     });
 
-    it('should update user profile after clicking on submit', async () => {
+    it('should update user profile after clicking on submit', () => {
         renderComponent();
         const first_name = screen.getByTestId('dt_first_name') as HTMLInputElement;
-        await waitFor(() => {
-            expect(first_name.value).toBe('John');
-            fireEvent.input(first_name, { target: { value: 'James' } });
-        });
+        expect(first_name.value).toBe('John');
+        userEvent.clear(first_name);
+        userEvent.type(first_name, 'James');
         const submit_button = screen.getByRole('button', { name: /Submit/ });
         userEvent.click(submit_button);
         expect(first_name.value).toBe('James');

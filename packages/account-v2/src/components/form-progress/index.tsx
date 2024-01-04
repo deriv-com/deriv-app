@@ -5,7 +5,7 @@ import StepConnector from './step-connector';
 
 type TFormProgressProps = {
     steps: Array<TStep>;
-    activeStep: number;
+    activeStep: number; // [TODO]:Mock - Enable once isActive comes from Modal
 };
 
 /**

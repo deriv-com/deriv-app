@@ -13,7 +13,8 @@ const App: React.FC = () => (
             <div className='p-300'>
                 <BrandDerivLogoCoralIcon height='120px' width='120px' />
             </div>
-            <FormProgress steps={stepProgress} activeStep={1} />
+            {/* [TODO]:Mock - Remove hardcoded initial value once isActive comes from Modal */}
+            <FormProgress steps={stepProgress} activeStep={1} /> 
         </BreakpointProvider>
     </APIProvider>
 );

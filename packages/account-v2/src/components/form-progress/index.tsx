@@ -14,17 +14,17 @@ type TFormProgressProps = {
  * @param steps - List of steps to be rendered
  * @returns React Component
  */
-export const FormProgress = ({ activeStep, steps = [] }: TFormProgressProps) => {
-    // const [activeStep, setActiveStep] = React.useState(0);
+export const FormProgress = ({ steps = [] }: TFormProgressProps) => {
+    const [activeStep, setActiveStep] = React.useState(0);
 
     const { isMobile } = useBreakpoint();
     console.log('isMobile: ', isMobile);
 
-    // const updateStep = (index: number) => {
-    //     if (steps[index - 1]?.isFilled || index === 0) {
-    //         setActiveStep(index);
-    //     }
-    // };
+    const updateStep = (index: number) => {
+        if (steps[index - 1]?.isFilled || index === 0) {
+            setActiveStep(index);
+        }
+    };
 
     return (
         <React.Fragment>
@@ -37,7 +37,15 @@ export const FormProgress = ({ activeStep, steps = [] }: TFormProgressProps) => 
             ) : (
                 <React.Fragment>
                     {steps.map((step, index) => (
-                        <Stepper key={step.title} step={step} stepCount={index} isActive={index <= activeStep} />
+                        <Stepper
+                            key={step.title}
+                            step={step}
+                            stepCount={index}
+                            isActive={index <= activeStep}
+                            onClick={() => {
+                                if (steps[index - 1]?.isFilled || index === 0) setActiveStep(index);
+                            }}
+                        />
                     ))}
                 </React.Fragment>
             )}

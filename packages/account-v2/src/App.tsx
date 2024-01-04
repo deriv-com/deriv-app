@@ -4,6 +4,7 @@ import { BrandDerivLogoCoralIcon } from '@deriv/quill-icons';
 import './index.scss';
 import { BreakpointProvider } from '@deriv/quill-design';
 import { FormProgress } from './components/form-progress';
+import { stepProgress } from './mocks/form-progress.mock';
 
 const App: React.FC = () => (
     <APIProvider standalone>
@@ -12,14 +13,7 @@ const App: React.FC = () => (
             <div className='p-300'>
                 <BrandDerivLogoCoralIcon height='120px' width='120px' />
             </div>
-            <FormProgress
-                steps={[
-                    { title: 'Step 1', isFilled: true },
-                    { title: 'Step 2', isFilled: true },
-                    { title: 'Step 3', isFilled: false },
-                ]}
-                activeStep={1}
-            />
+            <FormProgress steps={stepProgress} activeStep={1} />
         </BreakpointProvider>
     </APIProvider>
 );

@@ -204,6 +204,7 @@ export const load = async ({
         if (workspace === Blockly.derivWorkspace) {
             globalObserver.emit('ui.log.success', { log_type: log_types.LOAD_BLOCK });
         }
+        await workspace.cleanUp(0, 82);
     } catch (e) {
         console.error(e); // eslint-disable-line
         return showInvalidStrategyError();

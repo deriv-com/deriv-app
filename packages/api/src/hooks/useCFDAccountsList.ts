@@ -10,16 +10,19 @@ const useCFDAccountsList = () => {
         data: mt5_accounts,
         isError: isMT5AccountsListError,
         isLoading: isMT5AccountsListLoading,
+        isSuccess: isMT5AccountsListSuccess,
     } = useMT5AccountsList();
     const {
         data: dxtrade_accounts,
         isError: isDxtradeAccountsListError,
         isLoading: isDxtradeAccountsListLoading,
+        isSuccess: isDxtradeAccountsListSuccess,
     } = useDxtradeAccountsList();
     const {
         data: ctrader_accounts,
         isError: isCtraderAccountsListError,
         isLoading: CtraderAccountsListLoading,
+        isSuccess: isCtraderAccountsListSuccess,
     } = useCtraderAccountsList();
 
     const data = useMemo(() => {
@@ -36,10 +39,13 @@ const useCFDAccountsList = () => {
 
     const isLoading = isMT5AccountsListLoading || isDxtradeAccountsListLoading || CtraderAccountsListLoading;
 
+    const isSuccess = isMT5AccountsListSuccess && isDxtradeAccountsListSuccess && isCtraderAccountsListSuccess;
+
     return {
         data,
         isError,
         isLoading,
+        isSuccess,
     };
 };
 

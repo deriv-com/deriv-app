@@ -1,3 +1,3 @@
-import { ButtonGroup } from './ButtonGroup';
-
-export { ButtonGroup };
+export * from './ButtonGroup';
+export * from './Clipboard';
+export * from './Tooltip';

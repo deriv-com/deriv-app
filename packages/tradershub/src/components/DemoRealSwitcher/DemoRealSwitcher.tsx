@@ -58,6 +58,12 @@ const DemoRealSwitcher = () => {
                             )}
                             key={account.value}
                             onClick={() => selectAccount(account)}
+                            onKeyDown={event => {
+                                if (event.key === 'Enter') {
+                                    selectAccount(account);
+                                }
+                            }}
+                            role='button'
                         >
                             <Text bold={account.value === value} className='px-800 py-300 text-center' size='sm'>
                                 {account.label}

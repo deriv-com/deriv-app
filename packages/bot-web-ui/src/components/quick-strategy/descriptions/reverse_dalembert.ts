@@ -6,6 +6,8 @@ export const REVERSE_D_ALEMBERT: TDescriptionItem[] = [
     {
         type: 'subtitle',
         content: [localize('Exploring the Reverse D’Alembert strategy in Deriv Bot')],
+        expanded: true,
+        no_collapsible: false,
     },
     {
         type: 'text',
@@ -15,6 +17,14 @@ export const REVERSE_D_ALEMBERT: TDescriptionItem[] = [
             ),
             localize('These are the trade parameters used for the Reverse D’Alembert strategy in Deriv Bot.'),
         ],
+    },
+    {
+        type: 'subtitle',
+        content: [localize('Key Parameters')],
+    },
+    {
+        type: 'text',
+        content: [localize(`These are the trade parameters used in Deriv Bot with Reverse D'Alembert strategy.`)],
     },
     {
         type: 'text',

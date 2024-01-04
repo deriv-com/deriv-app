@@ -5,10 +5,9 @@ import { Provider } from '@deriv/library';
 import { Button, qtMerge, Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
-import { THooks } from '../../types';
-import { ModalStepWrapper } from '../ModalStepWrapper';
-import { TradingAccountsList } from '../TradingAccountsList';
 import { Modal } from '../Modal';
+import { THooks } from '../../types';
+import { TradingAccountsList } from '../TradingAccountsList';
 
 type AccountActionButtonProps = {
     balance: THooks.ActiveTradingAccount['balance'];

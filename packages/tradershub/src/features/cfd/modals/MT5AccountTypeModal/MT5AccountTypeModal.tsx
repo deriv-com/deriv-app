@@ -1,9 +1,8 @@
 import React, { ComponentProps, useState } from 'react';
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
-import { Modal, ModalStepWrapper } from '../../../../components';
+import { Modal } from '../../../../components';
 import { MT5AccountType } from '../../screens';
-import { Modal } from '../../../../components/Modal';
 
 type TMarketTypes = ComponentProps<typeof MT5AccountType>['selectedMarketType'];
 

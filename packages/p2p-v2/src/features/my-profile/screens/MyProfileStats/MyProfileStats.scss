@@ -1,11 +1,37 @@
 .p2p-v2-my-profile-stats {
-    display: grid;
-    grid-template-rows: repeat(2, 1fr);
-    grid-template-columns: repeat(4, 1fr);
+    $root: &;
 
-    &__item {
-        display: flex;
-        flex-direction: column;
-        border-right: 1px solid grey;
+    &__row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        margin-bottom: 2.4rem;
+
+        #{$root}__item {
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid grey;
+            padding-right: 2rem;
+
+            span {
+                font-size: 14px;
+                color: grey;
+            }
+
+            em {
+                font-style: italic;
+            }
+
+            &--lifetime {
+                color: red;
+            }
+
+            strong {
+                line-height: 1.5;
+            }
+        }
+
+        #{$root}__item:last-child {
+            border-right: none;
+        }
     }
 }

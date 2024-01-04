@@ -17,14 +17,14 @@ type TCompareAccountsTitleIcon = {
     shortCode: THooks.AvailableMT5Accounts['shortcode'];
 };
 
+type TMarketWithShortCode = `${TMarketType}_${string}`;
+
 const getAccountIcon = (platform: TPlatforms.All, marketType: TMarketType) => {
     if (platform === CFDPlatforms.DXTRADE || platform === CFDPlatforms.CTRADER) {
         return ACCOUNT_ICONS[platform];
     }
     return (marketType && ACCOUNT_ICONS[marketType]) || ACCOUNT_ICONS.default;
 };
-
-type TMarketWithShortCode = `${TMarketType}_${string}`;
 
 const getAccountCardTitle = (shortCode: TMarketWithShortCode | TPlatforms.OtherAccounts, isDemo?: boolean) => {
     switch (shortCode) {

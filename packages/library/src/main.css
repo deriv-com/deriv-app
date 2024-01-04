@@ -1,446 +1,8 @@
-/*
-! tailwindcss v3.3.6 | MIT License | https://tailwindcss.com
-*/
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
 
-/*
-1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
-2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
-*/
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
-*,
-::before,
-::after {
-    box-sizing: border-box;
-    /* 1 */
-    border-width: 0;
-    /* 2 */
-    border-style: solid;
-    /* 2 */
-    border-color: #e5e7eb;
-    /* 2 */
-}
-
-::before,
-::after {
-    --tw-content: '';
-}
-
-/*
-1. Use a consistent sensible line-height in all browsers.
-2. Prevent adjustments of font size after orientation changes in iOS.
-3. Use a more readable tab size.
-4. Use the user's configured `sans` font-family by default.
-5. Use the user's configured `sans` font-feature-settings by default.
-6. Use the user's configured `sans` font-variation-settings by default.
-*/
-
-html {
-    line-height: 1.5;
-    /* 1 */
-    -webkit-text-size-adjust: 100%;
-    /* 2 */
-    -moz-tab-size: 4;
-    /* 3 */
-    -o-tab-size: 4;
-    tab-size: 4;
-    /* 3 */
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
-        Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-    /* 4 */
-    font-feature-settings: normal;
-    /* 5 */
-    font-variation-settings: normal;
-    /* 6 */
-}
-
-/*
-1. Remove the margin in all browsers.
-2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
-*/
-
-body {
-    margin: 0;
-    /* 1 */
-    line-height: inherit;
-    /* 2 */
-}
-
-/*
-1. Add the correct height in Firefox.
-2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
-3. Ensure horizontal rules are visible by default.
-*/
-
-hr {
-    height: 0;
-    /* 1 */
-    color: inherit;
-    /* 2 */
-    border-top-width: 1px;
-    /* 3 */
-}
-
-/*
-Add the correct text decoration in Chrome, Edge, and Safari.
-*/
-
-abbr:where([title]) {
-    -webkit-text-decoration: underline dotted;
-    text-decoration: underline dotted;
-}
-
-/*
-Remove the default font size and weight for headings.
-*/
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-size: inherit;
-    font-weight: inherit;
-}
-
-/*
-Reset links to optimize for opt-in styling instead of opt-out.
-*/
-
-a {
-    color: inherit;
-    text-decoration: inherit;
-}
-
-/*
-Add the correct font weight in Edge and Safari.
-*/
-
-b,
-strong {
-    font-weight: bolder;
-}
-
-/*
-1. Use the user's configured `mono` font-family by default.
-2. Use the user's configured `mono` font-feature-settings by default.
-3. Use the user's configured `mono` font-variation-settings by default.
-4. Correct the odd `em` font sizing in all browsers.
-*/
-
-code,
-kbd,
-samp,
-pre {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
-    /* 1 */
-    font-feature-settings: normal;
-    /* 2 */
-    font-variation-settings: normal;
-    /* 3 */
-    font-size: 1em;
-    /* 4 */
-}
-
-/*
-Add the correct font size in all browsers.
-*/
-
-small {
-    font-size: 80%;
-}
-
-/*
-Prevent `sub` and `sup` elements from affecting the line height in all browsers.
-*/
-
-sub,
-sup {
-    font-size: 75%;
-    line-height: 0;
-    position: relative;
-    vertical-align: baseline;
-}
-
-sub {
-    bottom: -0.25em;
-}
-
-sup {
-    top: -0.5em;
-}
-
-/*
-1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
-2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
-3. Remove gaps between table borders by default.
-*/
-
-table {
-    text-indent: 0;
-    /* 1 */
-    border-color: inherit;
-    /* 2 */
-    border-collapse: collapse;
-    /* 3 */
-}
-
-/*
-1. Change the font styles in all browsers.
-2. Remove the margin in Firefox and Safari.
-3. Remove default padding in all browsers.
-*/
-
-button,
-input,
-optgroup,
-select,
-textarea {
-    font-family: inherit;
-    /* 1 */
-    font-feature-settings: inherit;
-    /* 1 */
-    font-variation-settings: inherit;
-    /* 1 */
-    font-size: 100%;
-    /* 1 */
-    font-weight: inherit;
-    /* 1 */
-    line-height: inherit;
-    /* 1 */
-    color: inherit;
-    /* 1 */
-    margin: 0;
-    /* 2 */
-    padding: 0;
-    /* 3 */
-}
-
-/*
-Remove the inheritance of text transform in Edge and Firefox.
-*/
-
-button,
-select {
-    text-transform: none;
-}
-
-/*
-1. Correct the inability to style clickable types in iOS and Safari.
-2. Remove default button styles.
-*/
-
-button,
-[type='button'],
-[type='reset'],
-[type='submit'] {
-    -webkit-appearance: button;
-    /* 1 */
-    background-color: transparent;
-    /* 2 */
-    background-image: none;
-    /* 2 */
-}
-
-/*
-Use the modern Firefox focus style for all focusable elements.
-*/
-
-:-moz-focusring {
-    outline: auto;
-}
-
-/*
-Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
-*/
-
-:-moz-ui-invalid {
-    box-shadow: none;
-}
-
-/*
-Add the correct vertical alignment in Chrome and Firefox.
-*/
-
-progress {
-    vertical-align: baseline;
-}
-
-/*
-Correct the cursor style of increment and decrement buttons in Safari.
-*/
-
-::-webkit-inner-spin-button,
-::-webkit-outer-spin-button {
-    height: auto;
-}
-
-/*
-1. Correct the odd appearance in Chrome and Safari.
-2. Correct the outline style in Safari.
-*/
-
-[type='search'] {
-    -webkit-appearance: textfield;
-    /* 1 */
-    outline-offset: -2px;
-    /* 2 */
-}
-
-/*
-Remove the inner padding in Chrome and Safari on macOS.
-*/
-
-::-webkit-search-decoration {
-    -webkit-appearance: none;
-}
-
-/*
-1. Correct the inability to style clickable types in iOS and Safari.
-2. Change font properties to `inherit` in Safari.
-*/
-
-::-webkit-file-upload-button {
-    -webkit-appearance: button;
-    /* 1 */
-    font: inherit;
-    /* 2 */
-}
-
-/*
-Add the correct display in Chrome and Safari.
-*/
-
-summary {
-    display: list-item;
-}
-
-/*
-Removes the default spacing and border for appropriate elements.
-*/
-
-blockquote,
-dl,
-dd,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-hr,
-figure,
-p,
-pre {
-    margin: 0;
-}
-
-fieldset {
-    margin: 0;
-    padding: 0;
-}
-
-legend {
-    padding: 0;
-}
-
-ol,
-ul,
-menu {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-/*
-Reset default styling for dialogs.
-*/
-
-dialog {
-    padding: 0;
-}
-
-/*
-Prevent resizing textareas horizontally by default.
-*/
-
-textarea {
-    resize: vertical;
-}
-
-/*
-1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
-2. Set the default placeholder color to the user's configured gray 400 color.
-*/
-
-input::-moz-placeholder,
-textarea::-moz-placeholder {
-    opacity: 1;
-    /* 1 */
-    color: #9ca3af;
-    /* 2 */
-}
-
-input::placeholder,
-textarea::placeholder {
-    opacity: 1;
-    /* 1 */
-    color: #9ca3af;
-    /* 2 */
-}
-
-/*
-Set the default cursor for buttons.
-*/
-
-button,
-[role='button'] {
-    cursor: pointer;
-}
-
-/*
-Make sure disabled buttons don't get the pointer cursor.
-*/
-
-:disabled {
-    cursor: default;
-}
-
-/*
-1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
-2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
-   This can trigger a poorly considered lint error in some tools but is included by design.
-*/
-
-img,
-svg,
-video,
-canvas,
-audio,
-iframe,
-embed,
-object {
-    display: block;
-    /* 1 */
-    vertical-align: middle;
-    /* 2 */
-}
-
-/*
-Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
-*/
-
-img,
-video {
-    max-width: 100%;
-    height: auto;
-}
-
-/* Make elements with the HTML hidden attribute stay hidden by default */
-
-[hidden] {
-    display: none;
-}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 *,
 ::before,
@@ -542,6 +104,737 @@ video {
     --tw-backdrop-opacity: ;
     --tw-backdrop-saturate: ;
     --tw-backdrop-sepia: ;
+}
+
+.quill-design :is(.static) {
+    position: static;
+}
+
+.quill-design :is(.px-200) {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.quill-design :is(.py-50) {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.quill-design :is(.text-heading-h1) {
+    font-size: var(--semantic-font-size-heading-h1);
+}
+
+.quill-design :is(.text-solid-red-700) {
+    --tw-text-opacity: 1;
+    color: rgb(230 25 14 / var(--tw-text-opacity));
+}
+
+.quill-design :is(.underline) {
+    text-decoration-line: underline;
+}
+
+.quill-design :is(.underline-offset-2) {
+    text-underline-offset: 2px;
+}
+
+:root {
+    --semantic-spacing-general-none: 0;
+    --semantic-spacing-general-3xs: 1px;
+    --semantic-spacing-general-2xs: 2px;
+    --semantic-spacing-general-xs: 4px;
+    --semantic-spacing-general-sm: 8px;
+    --semantic-spacing-general-md: 16px;
+    --semantic-spacing-general-lg: 24px;
+    --semantic-spacing-general-xl: 24px;
+    --semantic-spacing-general-2xl: 32px;
+    --semantic-spacing-general-3xl: 32px;
+    --semantic-spacing-general-4xl: 48px;
+    --semantic-spacing-general-5xl: 48px;
+    --semantic-spacing-gap-none: 0;
+    --semantic-spacing-gap-2xs: 1px;
+    --semantic-spacing-gap-xs: 2px;
+    --semantic-spacing-gap-sm: 4px;
+    --semantic-spacing-gap-md: 8px;
+    --semantic-spacing-gap-lg: 16px;
+    --semantic-spacing-gap-xl: 24px;
+    --semantic-spacing-gap-2xl: 24px;
+    --semantic-spacing-gap-3xl: 32px;
+    --semantic-spacing-gap-4xl: 32px;
+    --semantic-border-radius-none: 0px;
+    --semantic-border-radius-xs: 2px;
+    --semantic-border-radius-sm: 4px;
+    --semantic-border-radius-md: 8px;
+    --semantic-border-radius-lg: 16px;
+    --semantic-border-radius-xl: 24px;
+    --semantic-border-radius-2xl: 48px;
+    --semantic-border-radius-pill: 96px;
+    --semantic-font-size-heading-hero: 64px;
+    --semantic-font-size-heading-h1: 34px;
+    --semantic-font-size-heading-h2: 28px;
+    --semantic-font-size-heading-h3: 20px;
+    --semantic-font-size-heading-h4: 18px;
+    --semantic-font-size-heading-h5: 16px;
+    --semantic-font-size-heading-h6: 14px;
+    --semantic-font-size-body-xl: 20px;
+    --semantic-font-size-body-lg: 18px;
+    --semantic-font-size-body-md: 16px;
+    --semantic-font-size-body-sm: 14px;
+    --semantic-font-size-caption: 12px;
+    --semantic-font-size-code-xl: 20px;
+    --semantic-font-size-code-lg: 18px;
+    --semantic-font-size-code-md: 16px;
+    --semantic-font-size-code-sm: 14px;
+    --semantic-font-size-icon-label-paired-xl: 20px;
+    --semantic-font-size-icon-label-paired-lg: 18px;
+    --semantic-font-size-icon-label-paired-md: 16px;
+    --semantic-font-size-icon-label-paired-sm: 14px;
+    --semantic-font-size-icon-label-paired-caption: 12px;
+    --semantic-font-size-icon-standalone-2xl: 64px;
+    --semantic-font-size-icon-standalone-xl: 40px;
+    --semantic-font-size-icon-standalone-lg: 32px;
+    --semantic-font-size-icon-standalone-md: 20px;
+    --semantic-font-size-icon-standalone-sm: 16px;
+    --semantic-paragraph-spacing-heading-hero: 64px;
+    --semantic-paragraph-spacing-heading-h1: 34px;
+    --semantic-paragraph-spacing-heading-h2: 28px;
+    --semantic-paragraph-spacing-heading-h3: 20px;
+    --semantic-paragraph-spacing-heading-h4: 18px;
+    --semantic-paragraph-spacing-heading-h5: 16px;
+    --semantic-paragraph-spacing-heading-h6: 14px;
+    --semantic-paragraph-spacing-body-xl: 20px;
+    --semantic-paragraph-spacing-body-lg: 18px;
+    --semantic-paragraph-spacing-body-md: 16px;
+    --semantic-paragraph-spacing-body-sm: 14px;
+    --semantic-paragraph-spacing-caption: 12px;
+    --semantic-paragraph-spacing-code-xl: 20px;
+    --semantic-paragraph-spacing-code-lg: 18px;
+    --semantic-paragraph-spacing-code-md: 16px;
+    --semantic-paragraph-spacing-code-sm: 14px;
+    --semantic-line-height-heading-hero: normal;
+    --semantic-line-height-heading-h1: normal;
+    --semantic-line-height-heading-h2: normal;
+    --semantic-line-height-heading-h3: normal;
+    --semantic-line-height-heading-h4: normal;
+    --semantic-line-height-heading-h5: normal;
+    --semantic-line-height-heading-h6: normal;
+    --semantic-line-height-body-xl: 30px;
+    --semantic-line-height-body-lg: 28px;
+    --semantic-line-height-body-md: 24px;
+    --semantic-line-height-body-sm: 22px;
+    --semantic-line-height-caption: 18px;
+    --semantic-line-height-code-xl: 30px;
+    --semantic-line-height-code-lg: 28px;
+    --semantic-line-height-code-md: 24px;
+    --semantic-line-height-code-sm: 22px;
+    --semantic-line-height-icon-label-paired-xl: 30px;
+    --semantic-line-height-icon-label-paired-lg: 28px;
+    --semantic-line-height-icon-label-paired-md: 24px;
+    --semantic-line-height-icon-label-paired-sm: 22px;
+    --semantic-line-height-icon-label-paired-caption: 18px;
+    --semantic-line-height-icon-standalone-2xl: 96px;
+    --semantic-line-height-icon-standalone-xl: 64px;
+    --semantic-line-height-icon-standalone-lg: 48px;
+    --semantic-line-height-icon-standalone-md: 32px;
+    --semantic-line-height-icon-standalone-sm: 24px;
+}
+
+@media screen and (min-width: 640px) {
+    :root {
+        --semantic-spacing-general-none: 0;
+        --semantic-spacing-general-3xs: 1px;
+        --semantic-spacing-general-2xs: 2px;
+        --semantic-spacing-general-xs: 4px;
+        --semantic-spacing-general-sm: 8px;
+        --semantic-spacing-general-md: 16px;
+        --semantic-spacing-general-lg: 24px;
+        --semantic-spacing-general-xl: 24px;
+        --semantic-spacing-general-2xl: 32px;
+        --semantic-spacing-general-3xl: 32px;
+        --semantic-spacing-general-4xl: 48px;
+        --semantic-spacing-general-5xl: 48px;
+        --semantic-spacing-gap-none: 0;
+        --semantic-spacing-gap-2xs: 1px;
+        --semantic-spacing-gap-xs: 2px;
+        --semantic-spacing-gap-sm: 4px;
+        --semantic-spacing-gap-md: 8px;
+        --semantic-spacing-gap-lg: 16px;
+        --semantic-spacing-gap-xl: 24px;
+        --semantic-spacing-gap-2xl: 24px;
+        --semantic-spacing-gap-3xl: 32px;
+        --semantic-spacing-gap-4xl: 32px;
+        --semantic-border-radius-none: 0px;
+        --semantic-border-radius-xs: 2px;
+        --semantic-border-radius-sm: 4px;
+        --semantic-border-radius-md: 8px;
+        --semantic-border-radius-lg: 16px;
+        --semantic-border-radius-xl: 24px;
+        --semantic-border-radius-2xl: 48px;
+        --semantic-border-radius-pill: 96px;
+        --semantic-font-size-heading-hero: 64px;
+        --semantic-font-size-heading-h1: 34px;
+        --semantic-font-size-heading-h2: 28px;
+        --semantic-font-size-heading-h3: 20px;
+        --semantic-font-size-heading-h4: 18px;
+        --semantic-font-size-heading-h5: 16px;
+        --semantic-font-size-heading-h6: 14px;
+        --semantic-font-size-body-xl: 20px;
+        --semantic-font-size-body-lg: 18px;
+        --semantic-font-size-body-md: 16px;
+        --semantic-font-size-body-sm: 14px;
+        --semantic-font-size-caption: 12px;
+        --semantic-font-size-code-xl: 20px;
+        --semantic-font-size-code-lg: 18px;
+        --semantic-font-size-code-md: 16px;
+        --semantic-font-size-code-sm: 14px;
+        --semantic-font-size-icon-label-paired-xl: 20px;
+        --semantic-font-size-icon-label-paired-lg: 18px;
+        --semantic-font-size-icon-label-paired-md: 16px;
+        --semantic-font-size-icon-label-paired-sm: 14px;
+        --semantic-font-size-icon-label-paired-caption: 12px;
+        --semantic-font-size-icon-standalone-2xl: 64px;
+        --semantic-font-size-icon-standalone-xl: 40px;
+        --semantic-font-size-icon-standalone-lg: 32px;
+        --semantic-font-size-icon-standalone-md: 20px;
+        --semantic-font-size-icon-standalone-sm: 16px;
+        --semantic-paragraph-spacing-heading-hero: 64px;
+        --semantic-paragraph-spacing-heading-h1: 34px;
+        --semantic-paragraph-spacing-heading-h2: 28px;
+        --semantic-paragraph-spacing-heading-h3: 20px;
+        --semantic-paragraph-spacing-heading-h4: 18px;
+        --semantic-paragraph-spacing-heading-h5: 16px;
+        --semantic-paragraph-spacing-heading-h6: 14px;
+        --semantic-paragraph-spacing-body-xl: 20px;
+        --semantic-paragraph-spacing-body-lg: 18px;
+        --semantic-paragraph-spacing-body-md: 16px;
+        --semantic-paragraph-spacing-body-sm: 14px;
+        --semantic-paragraph-spacing-caption: 12px;
+        --semantic-paragraph-spacing-code-xl: 20px;
+        --semantic-paragraph-spacing-code-lg: 18px;
+        --semantic-paragraph-spacing-code-md: 16px;
+        --semantic-paragraph-spacing-code-sm: 14px;
+        --semantic-line-height-heading-hero: normal;
+        --semantic-line-height-heading-h1: normal;
+        --semantic-line-height-heading-h2: normal;
+        --semantic-line-height-heading-h3: normal;
+        --semantic-line-height-heading-h4: normal;
+        --semantic-line-height-heading-h5: normal;
+        --semantic-line-height-heading-h6: normal;
+        --semantic-line-height-body-xl: 30px;
+        --semantic-line-height-body-lg: 28px;
+        --semantic-line-height-body-md: 24px;
+        --semantic-line-height-body-sm: 22px;
+        --semantic-line-height-caption: 18px;
+        --semantic-line-height-code-xl: 30px;
+        --semantic-line-height-code-lg: 28px;
+        --semantic-line-height-code-md: 24px;
+        --semantic-line-height-code-sm: 22px;
+        --semantic-line-height-icon-label-paired-xl: 30px;
+        --semantic-line-height-icon-label-paired-lg: 28px;
+        --semantic-line-height-icon-label-paired-md: 24px;
+        --semantic-line-height-icon-label-paired-sm: 22px;
+        --semantic-line-height-icon-label-paired-caption: 18px;
+        --semantic-line-height-icon-standalone-2xl: 96px;
+        --semantic-line-height-icon-standalone-xl: 64px;
+        --semantic-line-height-icon-standalone-lg: 48px;
+        --semantic-line-height-icon-standalone-md: 32px;
+        --semantic-line-height-icon-standalone-sm: 24px;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    :root {
+        --semantic-spacing-general-none: 0;
+        --semantic-spacing-general-3xs: 1px;
+        --semantic-spacing-general-2xs: 2px;
+        --semantic-spacing-general-xs: 4px;
+        --semantic-spacing-general-sm: 8px;
+        --semantic-spacing-general-md: 16px;
+        --semantic-spacing-general-lg: 24px;
+        --semantic-spacing-general-xl: 24px;
+        --semantic-spacing-general-2xl: 32px;
+        --semantic-spacing-general-3xl: 32px;
+        --semantic-spacing-general-4xl: 48px;
+        --semantic-spacing-general-5xl: 48px;
+        --semantic-spacing-gap-none: 0;
+        --semantic-spacing-gap-2xs: 1px;
+        --semantic-spacing-gap-xs: 2px;
+        --semantic-spacing-gap-sm: 4px;
+        --semantic-spacing-gap-md: 8px;
+        --semantic-spacing-gap-lg: 16px;
+        --semantic-spacing-gap-xl: 24px;
+        --semantic-spacing-gap-2xl: 24px;
+        --semantic-spacing-gap-3xl: 32px;
+        --semantic-spacing-gap-4xl: 32px;
+        --semantic-border-radius-none: 0px;
+        --semantic-border-radius-xs: 2px;
+        --semantic-border-radius-sm: 4px;
+        --semantic-border-radius-md: 8px;
+        --semantic-border-radius-lg: 16px;
+        --semantic-border-radius-xl: 24px;
+        --semantic-border-radius-2xl: 48px;
+        --semantic-border-radius-pill: 96px;
+        --semantic-font-size-heading-hero: 64px;
+        --semantic-font-size-heading-h1: 34px;
+        --semantic-font-size-heading-h2: 28px;
+        --semantic-font-size-heading-h3: 20px;
+        --semantic-font-size-heading-h4: 18px;
+        --semantic-font-size-heading-h5: 16px;
+        --semantic-font-size-heading-h6: 14px;
+        --semantic-font-size-body-xl: 20px;
+        --semantic-font-size-body-lg: 18px;
+        --semantic-font-size-body-md: 16px;
+        --semantic-font-size-body-sm: 14px;
+        --semantic-font-size-caption: 12px;
+        --semantic-font-size-code-xl: 20px;
+        --semantic-font-size-code-lg: 18px;
+        --semantic-font-size-code-md: 16px;
+        --semantic-font-size-code-sm: 14px;
+        --semantic-font-size-icon-label-paired-xl: 20px;
+        --semantic-font-size-icon-label-paired-lg: 18px;
+        --semantic-font-size-icon-label-paired-md: 16px;
+        --semantic-font-size-icon-label-paired-sm: 14px;
+        --semantic-font-size-icon-label-paired-caption: 12px;
+        --semantic-font-size-icon-standalone-2xl: 64px;
+        --semantic-font-size-icon-standalone-xl: 40px;
+        --semantic-font-size-icon-standalone-lg: 32px;
+        --semantic-font-size-icon-standalone-md: 20px;
+        --semantic-font-size-icon-standalone-sm: 16px;
+        --semantic-paragraph-spacing-heading-hero: 64px;
+        --semantic-paragraph-spacing-heading-h1: 34px;
+        --semantic-paragraph-spacing-heading-h2: 28px;
+        --semantic-paragraph-spacing-heading-h3: 20px;
+        --semantic-paragraph-spacing-heading-h4: 18px;
+        --semantic-paragraph-spacing-heading-h5: 16px;
+        --semantic-paragraph-spacing-heading-h6: 14px;
+        --semantic-paragraph-spacing-body-xl: 20px;
+        --semantic-paragraph-spacing-body-lg: 18px;
+        --semantic-paragraph-spacing-body-md: 16px;
+        --semantic-paragraph-spacing-body-sm: 14px;
+        --semantic-paragraph-spacing-caption: 12px;
+        --semantic-paragraph-spacing-code-xl: 20px;
+        --semantic-paragraph-spacing-code-lg: 18px;
+        --semantic-paragraph-spacing-code-md: 16px;
+        --semantic-paragraph-spacing-code-sm: 14px;
+        --semantic-line-height-heading-hero: normal;
+        --semantic-line-height-heading-h1: normal;
+        --semantic-line-height-heading-h2: normal;
+        --semantic-line-height-heading-h3: normal;
+        --semantic-line-height-heading-h4: normal;
+        --semantic-line-height-heading-h5: normal;
+        --semantic-line-height-heading-h6: normal;
+        --semantic-line-height-body-xl: 30px;
+        --semantic-line-height-body-lg: 28px;
+        --semantic-line-height-body-md: 24px;
+        --semantic-line-height-body-sm: 22px;
+        --semantic-line-height-caption: 18px;
+        --semantic-line-height-code-xl: 30px;
+        --semantic-line-height-code-lg: 28px;
+        --semantic-line-height-code-md: 24px;
+        --semantic-line-height-code-sm: 22px;
+        --semantic-line-height-icon-label-paired-xl: 30px;
+        --semantic-line-height-icon-label-paired-lg: 28px;
+        --semantic-line-height-icon-label-paired-md: 24px;
+        --semantic-line-height-icon-label-paired-sm: 22px;
+        --semantic-line-height-icon-label-paired-caption: 18px;
+        --semantic-line-height-icon-standalone-2xl: 96px;
+        --semantic-line-height-icon-standalone-xl: 64px;
+        --semantic-line-height-icon-standalone-lg: 48px;
+        --semantic-line-height-icon-standalone-md: 32px;
+        --semantic-line-height-icon-standalone-sm: 24px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    :root {
+        --semantic-spacing-general-none: 0;
+        --semantic-spacing-general-3xs: 1px;
+        --semantic-spacing-general-2xs: 2px;
+        --semantic-spacing-general-xs: 4px;
+        --semantic-spacing-general-sm: 8px;
+        --semantic-spacing-general-md: 16px;
+        --semantic-spacing-general-lg: 24px;
+        --semantic-spacing-general-xl: 24px;
+        --semantic-spacing-general-2xl: 32px;
+        --semantic-spacing-general-3xl: 32px;
+        --semantic-spacing-general-4xl: 48px;
+        --semantic-spacing-general-5xl: 48px;
+        --semantic-spacing-gap-none: 0;
+        --semantic-spacing-gap-2xs: 1px;
+        --semantic-spacing-gap-xs: 2px;
+        --semantic-spacing-gap-sm: 4px;
+        --semantic-spacing-gap-md: 8px;
+        --semantic-spacing-gap-lg: 16px;
+        --semantic-spacing-gap-xl: 24px;
+        --semantic-spacing-gap-2xl: 24px;
+        --semantic-spacing-gap-3xl: 32px;
+        --semantic-spacing-gap-4xl: 32px;
+        --semantic-border-radius-none: 0px;
+        --semantic-border-radius-xs: 2px;
+        --semantic-border-radius-sm: 4px;
+        --semantic-border-radius-md: 8px;
+        --semantic-border-radius-lg: 16px;
+        --semantic-border-radius-xl: 24px;
+        --semantic-border-radius-2xl: 48px;
+        --semantic-border-radius-pill: 96px;
+        --semantic-font-size-heading-hero: 64px;
+        --semantic-font-size-heading-h1: 34px;
+        --semantic-font-size-heading-h2: 28px;
+        --semantic-font-size-heading-h3: 20px;
+        --semantic-font-size-heading-h4: 18px;
+        --semantic-font-size-heading-h5: 16px;
+        --semantic-font-size-heading-h6: 14px;
+        --semantic-font-size-body-xl: 20px;
+        --semantic-font-size-body-lg: 18px;
+        --semantic-font-size-body-md: 16px;
+        --semantic-font-size-body-sm: 14px;
+        --semantic-font-size-caption: 12px;
+        --semantic-font-size-code-xl: 20px;
+        --semantic-font-size-code-lg: 18px;
+        --semantic-font-size-code-md: 16px;
+        --semantic-font-size-code-sm: 14px;
+        --semantic-font-size-icon-label-paired-xl: 20px;
+        --semantic-font-size-icon-label-paired-lg: 18px;
+        --semantic-font-size-icon-label-paired-md: 16px;
+        --semantic-font-size-icon-label-paired-sm: 14px;
+        --semantic-font-size-icon-label-paired-caption: 12px;
+        --semantic-font-size-icon-standalone-2xl: 64px;
+        --semantic-font-size-icon-standalone-xl: 40px;
+        --semantic-font-size-icon-standalone-lg: 32px;
+        --semantic-font-size-icon-standalone-md: 20px;
+        --semantic-font-size-icon-standalone-sm: 16px;
+        --semantic-paragraph-spacing-heading-hero: 64px;
+        --semantic-paragraph-spacing-heading-h1: 34px;
+        --semantic-paragraph-spacing-heading-h2: 28px;
+        --semantic-paragraph-spacing-heading-h3: 20px;
+        --semantic-paragraph-spacing-heading-h4: 18px;
+        --semantic-paragraph-spacing-heading-h5: 16px;
+        --semantic-paragraph-spacing-heading-h6: 14px;
+        --semantic-paragraph-spacing-body-xl: 20px;
+        --semantic-paragraph-spacing-body-lg: 18px;
+        --semantic-paragraph-spacing-body-md: 16px;
+        --semantic-paragraph-spacing-body-sm: 14px;
+        --semantic-paragraph-spacing-caption: 12px;
+        --semantic-paragraph-spacing-code-xl: 20px;
+        --semantic-paragraph-spacing-code-lg: 18px;
+        --semantic-paragraph-spacing-code-md: 16px;
+        --semantic-paragraph-spacing-code-sm: 14px;
+        --semantic-line-height-heading-hero: normal;
+        --semantic-line-height-heading-h1: normal;
+        --semantic-line-height-heading-h2: normal;
+        --semantic-line-height-heading-h3: normal;
+        --semantic-line-height-heading-h4: normal;
+        --semantic-line-height-heading-h5: normal;
+        --semantic-line-height-heading-h6: normal;
+        --semantic-line-height-body-xl: 30px;
+        --semantic-line-height-body-lg: 28px;
+        --semantic-line-height-body-md: 24px;
+        --semantic-line-height-body-sm: 22px;
+        --semantic-line-height-caption: 18px;
+        --semantic-line-height-code-xl: 30px;
+        --semantic-line-height-code-lg: 28px;
+        --semantic-line-height-code-md: 24px;
+        --semantic-line-height-code-sm: 22px;
+        --semantic-line-height-icon-label-paired-xl: 30px;
+        --semantic-line-height-icon-label-paired-lg: 28px;
+        --semantic-line-height-icon-label-paired-md: 24px;
+        --semantic-line-height-icon-label-paired-sm: 22px;
+        --semantic-line-height-icon-label-paired-caption: 18px;
+        --semantic-line-height-icon-standalone-2xl: 96px;
+        --semantic-line-height-icon-standalone-xl: 64px;
+        --semantic-line-height-icon-standalone-lg: 48px;
+        --semantic-line-height-icon-standalone-md: 32px;
+        --semantic-line-height-icon-standalone-sm: 24px;
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    :root {
+        --semantic-spacing-general-none: 0;
+        --semantic-spacing-general-3xs: 1px;
+        --semantic-spacing-general-2xs: 2px;
+        --semantic-spacing-general-xs: 4px;
+        --semantic-spacing-general-sm: 8px;
+        --semantic-spacing-general-md: 16px;
+        --semantic-spacing-general-lg: 24px;
+        --semantic-spacing-general-xl: 32px;
+        --semantic-spacing-general-2xl: 48px;
+        --semantic-spacing-general-3xl: 64px;
+        --semantic-spacing-general-4xl: 72px;
+        --semantic-spacing-general-5xl: 96px;
+        --semantic-spacing-gap-none: 0;
+        --semantic-spacing-gap-2xs: 1px;
+        --semantic-spacing-gap-xs: 2px;
+        --semantic-spacing-gap-sm: 4px;
+        --semantic-spacing-gap-md: 8px;
+        --semantic-spacing-gap-lg: 16px;
+        --semantic-spacing-gap-xl: 24px;
+        --semantic-spacing-gap-2xl: 32px;
+        --semantic-spacing-gap-3xl: 48px;
+        --semantic-spacing-gap-4xl: 64px;
+        --semantic-border-radius-none: 0px;
+        --semantic-border-radius-xs: 2px;
+        --semantic-border-radius-sm: 4px;
+        --semantic-border-radius-md: 8px;
+        --semantic-border-radius-lg: 16px;
+        --semantic-border-radius-xl: 24px;
+        --semantic-border-radius-2xl: 48px;
+        --semantic-border-radius-pill: 96px;
+        --semantic-font-size-heading-hero: 80px;
+        --semantic-font-size-heading-h1: 64px;
+        --semantic-font-size-heading-h2: 48px;
+        --semantic-font-size-heading-h3: 24px;
+        --semantic-font-size-heading-h4: 20px;
+        --semantic-font-size-heading-h5: 16px;
+        --semantic-font-size-heading-h6: 14px;
+        --semantic-font-size-body-xl: 24px;
+        --semantic-font-size-body-lg: 20px;
+        --semantic-font-size-body-md: 16px;
+        --semantic-font-size-body-sm: 14px;
+        --semantic-font-size-caption: 12px;
+        --semantic-font-size-code-xl: 24px;
+        --semantic-font-size-code-lg: 20px;
+        --semantic-font-size-code-md: 16px;
+        --semantic-font-size-code-sm: 14px;
+        --semantic-font-size-icon-label-paired-xl: 24px;
+        --semantic-font-size-icon-label-paired-lg: 20px;
+        --semantic-font-size-icon-label-paired-md: 16px;
+        --semantic-font-size-icon-label-paired-sm: 14px;
+        --semantic-font-size-icon-label-paired-caption: 12px;
+        --semantic-font-size-icon-standalone-2xl: 64px;
+        --semantic-font-size-icon-standalone-xl: 40px;
+        --semantic-font-size-icon-standalone-lg: 32px;
+        --semantic-font-size-icon-standalone-md: 20px;
+        --semantic-font-size-icon-standalone-sm: 16px;
+        --semantic-paragraph-spacing-heading-hero: 80px;
+        --semantic-paragraph-spacing-heading-h1: 64px;
+        --semantic-paragraph-spacing-heading-h2: 48px;
+        --semantic-paragraph-spacing-heading-h3: 24px;
+        --semantic-paragraph-spacing-heading-h4: 20px;
+        --semantic-paragraph-spacing-heading-h5: 16px;
+        --semantic-paragraph-spacing-heading-h6: 14px;
+        --semantic-paragraph-spacing-body-xl: 24px;
+        --semantic-paragraph-spacing-body-lg: 20px;
+        --semantic-paragraph-spacing-body-md: 16px;
+        --semantic-paragraph-spacing-body-sm: 14px;
+        --semantic-paragraph-spacing-caption: 12px;
+        --semantic-paragraph-spacing-code-xl: 24px;
+        --semantic-paragraph-spacing-code-lg: 20px;
+        --semantic-paragraph-spacing-code-md: 16px;
+        --semantic-paragraph-spacing-code-sm: 14px;
+        --semantic-line-height-heading-hero: normal;
+        --semantic-line-height-heading-h1: normal;
+        --semantic-line-height-heading-h2: normal;
+        --semantic-line-height-heading-h3: normal;
+        --semantic-line-height-heading-h4: normal;
+        --semantic-line-height-heading-h5: normal;
+        --semantic-line-height-heading-h6: normal;
+        --semantic-line-height-body-xl: 36px;
+        --semantic-line-height-body-lg: 30px;
+        --semantic-line-height-body-md: 24px;
+        --semantic-line-height-body-sm: 22px;
+        --semantic-line-height-caption: 18px;
+        --semantic-line-height-code-xl: 36px;
+        --semantic-line-height-code-lg: 30px;
+        --semantic-line-height-code-md: 24px;
+        --semantic-line-height-code-sm: 22px;
+        --semantic-line-height-icon-label-paired-xl: 36px;
+        --semantic-line-height-icon-label-paired-lg: 30px;
+        --semantic-line-height-icon-label-paired-md: 24px;
+        --semantic-line-height-icon-label-paired-sm: 22px;
+        --semantic-line-height-icon-label-paired-caption: 18px;
+        --semantic-line-height-icon-standalone-2xl: 96px;
+        --semantic-line-height-icon-standalone-xl: 64px;
+        --semantic-line-height-icon-standalone-lg: 48px;
+        --semantic-line-height-icon-standalone-md: 32px;
+        --semantic-line-height-icon-standalone-sm: 24px;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    :root {
+        --semantic-spacing-general-none: 0;
+        --semantic-spacing-general-3xs: 1px;
+        --semantic-spacing-general-2xs: 2px;
+        --semantic-spacing-general-xs: 4px;
+        --semantic-spacing-general-sm: 8px;
+        --semantic-spacing-general-md: 16px;
+        --semantic-spacing-general-lg: 24px;
+        --semantic-spacing-general-xl: 32px;
+        --semantic-spacing-general-2xl: 48px;
+        --semantic-spacing-general-3xl: 64px;
+        --semantic-spacing-general-4xl: 72px;
+        --semantic-spacing-general-5xl: 96px;
+        --semantic-spacing-gap-none: 0;
+        --semantic-spacing-gap-2xs: 1px;
+        --semantic-spacing-gap-xs: 2px;
+        --semantic-spacing-gap-sm: 4px;
+        --semantic-spacing-gap-md: 8px;
+        --semantic-spacing-gap-lg: 16px;
+        --semantic-spacing-gap-xl: 24px;
+        --semantic-spacing-gap-2xl: 32px;
+        --semantic-spacing-gap-3xl: 48px;
+        --semantic-spacing-gap-4xl: 64px;
+        --semantic-border-radius-none: 0px;
+        --semantic-border-radius-xs: 2px;
+        --semantic-border-radius-sm: 4px;
+        --semantic-border-radius-md: 8px;
+        --semantic-border-radius-lg: 16px;
+        --semantic-border-radius-xl: 24px;
+        --semantic-border-radius-2xl: 48px;
+        --semantic-border-radius-pill: 96px;
+        --semantic-font-size-heading-hero: 80px;
+        --semantic-font-size-heading-h1: 64px;
+        --semantic-font-size-heading-h2: 48px;
+        --semantic-font-size-heading-h3: 24px;
+        --semantic-font-size-heading-h4: 20px;
+        --semantic-font-size-heading-h5: 16px;
+        --semantic-font-size-heading-h6: 14px;
+        --semantic-font-size-body-xl: 24px;
+        --semantic-font-size-body-lg: 20px;
+        --semantic-font-size-body-md: 16px;
+        --semantic-font-size-body-sm: 14px;
+        --semantic-font-size-caption: 12px;
+        --semantic-font-size-code-xl: 24px;
+        --semantic-font-size-code-lg: 20px;
+        --semantic-font-size-code-md: 16px;
+        --semantic-font-size-code-sm: 14px;
+        --semantic-font-size-icon-label-paired-xl: 24px;
+        --semantic-font-size-icon-label-paired-lg: 20px;
+        --semantic-font-size-icon-label-paired-md: 16px;
+        --semantic-font-size-icon-label-paired-sm: 14px;
+        --semantic-font-size-icon-label-paired-caption: 12px;
+        --semantic-font-size-icon-standalone-2xl: 64px;
+        --semantic-font-size-icon-standalone-xl: 40px;
+        --semantic-font-size-icon-standalone-lg: 32px;
+        --semantic-font-size-icon-standalone-md: 20px;
+        --semantic-font-size-icon-standalone-sm: 16px;
+        --semantic-paragraph-spacing-heading-hero: 80px;
+        --semantic-paragraph-spacing-heading-h1: 64px;
+        --semantic-paragraph-spacing-heading-h2: 48px;
+        --semantic-paragraph-spacing-heading-h3: 24px;
+        --semantic-paragraph-spacing-heading-h4: 20px;
+        --semantic-paragraph-spacing-heading-h5: 16px;
+        --semantic-paragraph-spacing-heading-h6: 14px;
+        --semantic-paragraph-spacing-body-xl: 24px;
+        --semantic-paragraph-spacing-body-lg: 20px;
+        --semantic-paragraph-spacing-body-md: 16px;
+        --semantic-paragraph-spacing-body-sm: 14px;
+        --semantic-paragraph-spacing-caption: 12px;
+        --semantic-paragraph-spacing-code-xl: 24px;
+        --semantic-paragraph-spacing-code-lg: 20px;
+        --semantic-paragraph-spacing-code-md: 16px;
+        --semantic-paragraph-spacing-code-sm: 14px;
+        --semantic-line-height-heading-hero: normal;
+        --semantic-line-height-heading-h1: normal;
+        --semantic-line-height-heading-h2: normal;
+        --semantic-line-height-heading-h3: normal;
+        --semantic-line-height-heading-h4: normal;
+        --semantic-line-height-heading-h5: normal;
+        --semantic-line-height-heading-h6: normal;
+        --semantic-line-height-body-xl: 36px;
+        --semantic-line-height-body-lg: 30px;
+        --semantic-line-height-body-md: 24px;
+        --semantic-line-height-body-sm: 22px;
+        --semantic-line-height-caption: 18px;
+        --semantic-line-height-code-xl: 36px;
+        --semantic-line-height-code-lg: 30px;
+        --semantic-line-height-code-md: 24px;
+        --semantic-line-height-code-sm: 22px;
+        --semantic-line-height-icon-label-paired-xl: 36px;
+        --semantic-line-height-icon-label-paired-lg: 30px;
+        --semantic-line-height-icon-label-paired-md: 24px;
+        --semantic-line-height-icon-label-paired-sm: 22px;
+        --semantic-line-height-icon-label-paired-caption: 18px;
+        --semantic-line-height-icon-standalone-2xl: 96px;
+        --semantic-line-height-icon-standalone-xl: 64px;
+        --semantic-line-height-icon-standalone-lg: 48px;
+        --semantic-line-height-icon-standalone-md: 32px;
+        --semantic-line-height-icon-standalone-sm: 24px;
+    }
+}
+
+html {
+    --semantic-color-background-primary-base: #f6f7f8;
+    --semantic-color-background-primary-container: #ffffff;
+    --semantic-color-background-secondary-base: #ffffff;
+    --semantic-color-background-secondary-container: #f6f7f8;
+    --semantic-color-background-overflow-1-top: linear-gradient(1.93deg, rgba(255, 255, 255, 0) 1.56%, #ffffff 49.91%);
+    --semantic-color-background-overflow-1-right: linear-gradient(
+        88.07deg,
+        rgba(255, 255, 255, 0) 1.63%,
+        #ffffff 50.02%
+    );
+    --semantic-color-background-overflow-1-bottom: linear-gradient(
+        181.93deg,
+        rgba(255, 255, 255, 0) 1.63%,
+        #ffffff 50.01%
+    );
+    --semantic-color-background-overflow-1-left: linear-gradient(
+        271.93deg,
+        rgba(255, 255, 255, 0) 1.63%,
+        #ffffff 49.98%
+    );
+    --semantic-color-background-overflow-2-top: linear-gradient(1.93deg, rgba(246, 247, 248, 0) 1.56%, #f6f7f8 49.91%);
+    --semantic-color-background-overflow-2-right: linear-gradient(
+        88.07deg,
+        rgba(246, 247, 248, 0) 1.63%,
+        #f6f7f8 50.02%
+    );
+    --semantic-color-background-overflow-2-bottom: linear-gradient(
+        181.93deg,
+        rgba(246, 247, 248, 0) 1.63%,
+        #f6f7f8 50.01%
+    );
+    --semantic-color-background-overflow-2-left: linear-gradient(
+        271.93deg,
+        rgba(246, 247, 248, 0) 1.63%,
+        #f6f7f8 49.98%
+    );
+    --semantic-color-background-overlay: rgba(0, 0, 0, 0.72);
+    --semantic-color-background-dialog: #ffffff;
+    --semantic-color-typography-prominent: #000000;
+    --semantic-color-typography-default: rgba(0, 0, 0, 0.72);
+    --semantic-color-typography-subtle: rgba(0, 0, 0, 0.48);
+    --semantic-color-typography-disabled: rgba(0, 0, 0, 0.24);
+    --semantic-color-typography-link: #ff444f;
+    --semantic-color-status-info: #1789e1;
+    --semantic-color-status-success: #00822a;
+    --semantic-color-status-warning: #e18d00;
+    --semantic-color-status-danger: #db0800;
+}
+
+html.dark {
+    --semantic-color-background-primary-base: #11141b;
+    --semantic-color-background-primary-container: #181c25;
+    --semantic-color-background-secondary-base: #11141b;
+    --semantic-color-background-secondary-container: #181c25;
+    --semantic-color-background-overflow-1-top: linear-gradient(1.93deg, rgba(17, 20, 27, 0) 1.56%, #11141b 49.91%);
+    --semantic-color-background-overflow-1-right: linear-gradient(88.07deg, rgba(17, 20, 27, 0) 1.63%, #11141b 50.02%);
+    --semantic-color-background-overflow-1-bottom: linear-gradient(
+        181.93deg,
+        rgba(17, 20, 27, 0) 1.63%,
+        #11141b 50.01%
+    );
+    --semantic-color-background-overflow-1-left: linear-gradient(271.93deg, rgba(17, 20, 27, 0) 1.63%, #11141b 49.98%);
+    --semantic-color-background-overflow-2-top: linear-gradient(1.93deg, rgba(24, 28, 37, 0) 1.56%, #181c25 49.91%);
+    --semantic-color-background-overflow-2-right: linear-gradient(88.07deg, rgba(24, 28, 37, 0) 1.63%, #181c25 50.02%);
+    --semantic-color-background-overflow-2-bottom: linear-gradient(
+        181.93deg,
+        rgba(24, 28, 37, 0) 1.63%,
+        #181c25 50.01%
+    );
+    --semantic-color-background-overflow-2-left: linear-gradient(271.93deg, rgba(24, 28, 37, 0) 1.63%, #181c25 49.98%);
+    --semantic-color-background-overlay: rgba(0, 0, 0, 0.72);
+    --semantic-color-background-dialog: #181c25;
+    --semantic-color-typography-prominent: #ffffff;
+    --semantic-color-typography-default: rgba(255, 255, 255, 0.72);
+    --semantic-color-typography-subtle: rgba(255, 255, 255, 0.48);
+    --semantic-color-typography-disabled: rgba(255, 255, 255, 0.24);
+    --semantic-color-typography-link: #ff444f;
+    --semantic-color-status-info: #3daaff;
+    --semantic-color-status-success: #26a44e;
+    --semantic-color-status-warning: #ffae26;
+    --semantic-color-status-danger: #f92e26;
 }
 
 svg {

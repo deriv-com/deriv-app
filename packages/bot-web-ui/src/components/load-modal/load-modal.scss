@@ -119,14 +119,11 @@
                 &-location {
                     justify-content: flex-start;
                     display: flex;
-                    align-items: flex-start;
+                    align-items: center;
                     width: 100%;
                     word-break: break-word;
                     color: var(--text-general);
                     height: 100%;
-                    .dc-icon {
-                        margin-top: 0.2rem;
-                    }
                 }
             }
 

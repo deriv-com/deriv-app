@@ -8,14 +8,14 @@ type TCurrencyPayload = Exclude<
     undefined
 >;
 type TCurrencyRateData = NonNullable<TSocketResponseData<'exchange_rates'>['exchange_rates']>['rates'];
-type TCurrenyExchangeSubscribeFunction<T> = { base_currency: T; target_currencies: T[] };
+type TCurrencyExchangeSubscribeFunction<T> = { base_currency: T; target_currencies: T[] };
 
 const useExchangeRates = <T extends TCurrencyPayload>() => {
     const { subscribe: _subscribe, unsubscribe: _unsubscribe } = useAPIContext();
     const exchangeRatesSubscriptions = useRef<string[]>([]);
     const [data, setData] = useState<Record<TCurrencyPayload, TCurrencyRateData>>();
 
-    const subscribe = async ({ base_currency, target_currencies }: TCurrenyExchangeSubscribeFunction<T>) => {
+    const subscribe = async ({ base_currency, target_currencies }: TCurrencyExchangeSubscribeFunction<T>) => {
         await Promise.all(
             target_currencies.map(async c => {
                 const { id, subscription } = await _subscribe('exchange_rates', {
@@ -27,7 +27,7 @@ const useExchangeRates = <T extends TCurrencyPayload>() => {
                         const rates = response.exchange_rates?.rates;
                         if (rates) {
                             setData(prev => {
-                                const currentData = { ...(prev || {}) };
+                                const currentData = { ...(prev ?? {}) };
                                 if (currentData) {
                                     currentData[base_currency] = { ...currentData[base_currency], ...rates };
                                     return currentData;
@@ -41,13 +41,13 @@ const useExchangeRates = <T extends TCurrencyPayload>() => {
         );
     };
 
-    const unsubscribe = async (payload: TCurrenyExchangeSubscribeFunction<T>) => {
+    const unsubscribe = async (payload: TCurrencyExchangeSubscribeFunction<T>) => {
         if (payload) {
             const id = await hashObject({ name: 'exchange_rates', payload });
             exchangeRatesSubscriptions.current = exchangeRatesSubscriptions.current.filter(s => s !== id);
             _unsubscribe(id);
             setData(prev => {
-                const currData = { ...(prev || {}) };
+                const currData = { ...(prev ?? {}) };
                 delete currData[payload.base_currency];
                 return currData;
             });

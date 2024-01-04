@@ -12,18 +12,24 @@ import {
 } from '../types';
 import { hashObject } from './utils';
 
+type TSendFunction = <T extends TSocketEndpointNames>(
+    name: T,
+    payload?: TSocketRequestPayload<T>
+) => Promise<TSocketResponseData<T> & TSocketError<T>>;
+
+type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
+    name: T,
+    payload?: TSocketRequestPayload<T>
+) => Promise<{ id: string; subscription: DerivAPIBasic['subscribe'] }>;
+
+type TUnsubscribeFunction = (id: string) => void;
+
 type APIContextData = {
     derivAPI: DerivAPIBasic | null;
     switchEnvironment: (loginid: string | null | undefined) => void;
-    send: <T extends TSocketEndpointNames>(
-        name: T,
-        payload?: TSocketRequestPayload<T>
-    ) => Promise<TSocketResponseData<T> & TSocketError<T>>;
-    subscribe: <T extends TSocketSubscribableEndpointNames>(
-        name: T,
-        payload?: TSocketRequestPayload<T>
-    ) => Promise<{ id: string; subscription: DerivAPIBasic['subscribe'] }>;
-    unsubscribe: (id: string) => void;
+    send: TSendFunction;
+    subscribe: TSubscribeFunction;
+    unsubscribe: TUnsubscribeFunction;
 };
 
 const APIContext = createContext<APIContextData | null>(null);
@@ -133,18 +139,6 @@ type TAPIProviderProps = {
     /** If set to true, the APIProvider will instantiate it's own socket connection. */
     standalone?: boolean;
 };
-
-type TSendFunction = <T extends TSocketEndpointNames>(
-    name: T,
-    payload?: TSocketRequestPayload<T>
-) => Promise<TSocketResponseData<T> & TSocketError<T>>;
-
-type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
-    name: T,
-    payload?: TSocketRequestPayload<T>
-) => Promise<{ id: string; subscription: DerivAPIBasic['subscribe'] }>;
-
-type TUnsubscribeFunction = (id: string) => void;
 
 const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
     const WS = useWS();

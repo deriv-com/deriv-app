@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useCopyToClipboard, useHover } from 'usehooks-ts';
 import { Button, useBreakpoint } from '@deriv/quill-design';
-import ClipboardIcon from '../../../public/images/clipboard.svg';
-import CheckmarkCircle from '../../../public/images/ic-checkmark-circle.svg';
+import ClipboardIcon from '../../public/images/clipboard.svg';
+import CheckmarkCircle from '../../public/images/ic-checkmark-circle.svg';
 import { Tooltip } from '../Tooltip';
 
 type TClipboardProps = {

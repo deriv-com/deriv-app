@@ -36,9 +36,3 @@ export const platformLabel = {
     MT5: 'MT5 Platform',
     OtherCFDs: 'Other CFDs Platform',
 } as const;
-
-export const headerColor = {
-    CTrader: 'orange',
-    MT5: 'blue',
-    OtherCFDs: 'green',
-} as const;

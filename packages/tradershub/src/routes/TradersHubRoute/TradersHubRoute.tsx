@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Button, Heading, Text } from '@deriv/quill-design';
-import { DemoRealSwitcher, OptionsAndMultipliersSection, StaticLink } from '../../components';
+import { DemoRealSwitcher, OptionsAndMultipliersSection, StaticLink, TotalAssets } from '../../components';
 import { CTraderList } from '../../features/cfd/components/CTraderList';
 import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
 
@@ -15,6 +15,7 @@ const TradersHubRoute: FC = () => {
                 <div className='flex flex-col items-end justify-end'>
                     <Text size='sm'>Total assets</Text>
                     <Heading.H3 className='text-status-light-information'>10,000.00 USD</Heading.H3>
+                    <TotalAssets />
                 </div>
             </div>
             <OptionsAndMultipliersSection />

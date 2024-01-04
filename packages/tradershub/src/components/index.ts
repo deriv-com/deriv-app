@@ -1,5 +1,6 @@
-export * from './Base';
 export * from './ActionScreen';
+export * from './Base';
+export * from './Base/ButtonGroup';
 export * from './ContentSwitcher';
 export * from './CurrencySwitcher';
 export * from './DemoRealSwitcher';
@@ -9,5 +10,6 @@ export * from './Modal';
 export * from './ModalStepWrapper';
 export * from './OptionsAndMultipliersSection';
 export * from './StaticLink';
+export * from './TotalAssets';
 export * from './TradingAccountCard';
 export * from './TradingAccountsList';

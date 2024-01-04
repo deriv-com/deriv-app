@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useHover } from 'usehooks-ts';
-import { Text, Tooltip, useBreakpoint } from '@deriv/quill-design';
+import { Text, useBreakpoint } from '@deriv/quill-design';
+import { Tooltip } from '../../../../components/Base/Tooltip';
 import InfoIcon from '../../../../public/images/ic-info-outline.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFDPlatforms, getAccountCardTitle } from '../../constants';

@@ -233,7 +233,7 @@
             @include mobile() {
                 margin-bottom: 0;
                 padding: 0 1.9rem 1.6rem;
-                max-height: calc(100vh - 12.2rem) !important;
+                max-height: calc(100% - 12.2rem) !important;
             }
 
             &--no-footer {
@@ -241,7 +241,7 @@
                 max-height: 100% !important;
 
                 @include mobile() {
-                    max-height: calc(100vh - 8rem) !important;
+                    max-height: calc(100% - 8rem) !important;
                 }
             }
         }

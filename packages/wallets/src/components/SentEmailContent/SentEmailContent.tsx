@@ -11,13 +11,13 @@ import { WalletButton } from '../Base';
 import { WalletsActionScreen } from '../WalletsActionScreen';
 import './SentEmailContent.scss';
 
-type TProps = {
+type SentEmailContentProps = {
     description?: string;
     isInvestorPassword?: boolean;
     platform?: TPlatforms.All;
 };
 
-const SentEmailContent: FC<TProps> = ({ description, isInvestorPassword = false, platform }) => {
+const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPassword = false, platform }) => {
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { data } = useSettings();

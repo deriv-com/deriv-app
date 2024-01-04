@@ -36,27 +36,32 @@ const SentEmailContent: FC<TProps> = ({ description, isInvestorPassword = false,
 
     const { data: activeTrading } = useActiveTradingAccount();
 
+    const renderButton = () => {
+        if (shouldShowResendEmailReasons && isInvestorPassword) {
+            return null;
+        }
+        return (
+            <Button
+                className='border-none'
+                colorStyle='coral'
+                onClick={() => {
+                    setShouldShowResendEmailReasons(true);
+                }}
+                size={emailLinkSize}
+                variant='secondary'
+            >
+                Didn&apos;t receive the email?
+            </Button>
+        );
+    };
+
     return (
         <div className='w-full lg:w-[400px] inline-flex p-1600 flex-col justify-center items-center gap-1200 rounded-400 bg-system-light-primary-background'>
             <ActionScreen
                 description={description ?? `Please click on the link in the email to change your ${title} password.`}
                 descriptionSize={descriptionSize}
                 icon={<ChangePassword />}
-                renderButtons={() =>
-                    shouldShowResendEmailReasons && isInvestorPassword ? null : (
-                        <Button
-                            className='border-none'
-                            colorStyle='coral'
-                            onClick={() => {
-                                setShouldShowResendEmailReasons(true);
-                            }}
-                            size={emailLinkSize}
-                            variant='secondary'
-                        >
-                            Didn&apos;t receive the email?
-                        </Button>
-                    )
-                }
+                renderButtons={renderButton}
                 title='We’ve sent you an email'
                 titleSize={titleSize}
             />

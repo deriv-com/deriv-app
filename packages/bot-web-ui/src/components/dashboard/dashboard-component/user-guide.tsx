@@ -31,6 +31,7 @@ const UserGuide: React.FC<TUserGuide> = ({ is_mobile, handleTabChange, setActive
                     handleTabChange(DBOT_TABS.TUTORIAL);
                     setActiveTabTutorial(0);
                 }}
+                data-testid='btn-user-guide'
             >
                 <Icon className='user-guide__icon' icon={'IcDbotUserGuide'} />
                 {!is_mobile && (

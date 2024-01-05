@@ -42,8 +42,18 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
     );
 };
 
+const Loader = () => (
+    <div className='flex items-center justify-between border-solid gap-800 h-3600 p-800 rounded-400 border-sm border-system-light-active-background shrink-0'>
+        <div className='flex rounded-full animate-pulse bg-solid-slate-100 w-2000 h-2000 rounded-1500' />
+        <div className='flex flex-col justify-center gap-500'>
+            <div className='flex animate-pulse bg-solid-slate-100 w-2500 h-500 rounded-200' />
+            <div className='flex animate-pulse bg-solid-slate-100 w-5000 h-500 rounded-200' />
+        </div>
+    </div>
+);
+
 const CurrencySwitcher = () => {
-    const { data: activeAccount } = useActiveTradingAccount();
+    const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
     const { show } = Provider.useModal();
 
@@ -61,6 +71,8 @@ const CurrencySwitcher = () => {
             </Button>
         );
     };
+
+    if (!isSuccess) return <Loader />;
 
     return (
         <div className='flex items-center justify-between border-solid gap-800 h-3600 p-800 rounded-400 border-sm border-system-light-active-background shrink-0'>

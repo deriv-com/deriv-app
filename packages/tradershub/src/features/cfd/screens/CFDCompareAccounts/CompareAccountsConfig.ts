@@ -1,7 +1,7 @@
 import InstrumentsIcons from '../../../../public/images/cfd/tradingInstruments';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFDPlatforms, MarketType } from '../../constants';
-import { JURISDICTION, MARKET_TYPE_SHORTCODE } from './constants';
+import { Jurisdiction, MarketTypeShortcode } from './constants';
 
 type THighlightedIconLabel = {
     highlighted: boolean;
@@ -24,10 +24,10 @@ const getHighlightedIconLabel = (
     const forexLabel = (() => {
         if (isEuRegion) {
             return 'Forex';
-        } else if (marketTypeShortCode === MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN) {
+        } else if (marketTypeShortCode === MarketTypeShortcode.FINANCIAL_LABUAN) {
             return 'Forex: standard/exotic';
         } else if (
-            (platform === CFDPlatforms.MT5 && marketTypeShortCode === MARKET_TYPE_SHORTCODE.ALL_SVG) ||
+            (platform === CFDPlatforms.MT5 && marketTypeShortCode === MarketTypeShortcode.ALL_SVG) ||
             platform === CFDPlatforms.CTRADER
         ) {
             return 'Forex: major/minor';
@@ -50,7 +50,7 @@ const getHighlightedIconLabel = (
             ];
         case MarketType.FINANCIAL:
             switch (shortCode) {
-                case JURISDICTION.MALTAINVEST:
+                case Jurisdiction.MALTAINVEST:
                     return [
                         { highlighted: true, icon: 'Forex', text: forexLabel },
                         { highlighted: true, icon: 'Stocks', text: 'Stocks' },
@@ -59,7 +59,7 @@ const getHighlightedIconLabel = (
                         { highlighted: true, icon: 'Cryptocurrencies', text: 'Cryptocurrencies' },
                         { highlighted: true, icon: 'Synthetics', isAsterisk: true, text: 'Synthetic indices' },
                     ];
-                case JURISDICTION.LABUAN:
+                case Jurisdiction.LABUAN:
                     return [
                         { highlighted: true, icon: 'Forex', text: forexLabel },
                         { highlighted: false, icon: 'Stocks', text: 'Stocks' },
@@ -141,8 +141,8 @@ const cfdConfig = {
 
 const getJurisdictionDescription = (shortcode?: string) => {
     switch (shortcode) {
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_BVI:
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_BVI:
+        case MarketTypeShortcode.SYNTHETIC_BVI:
+        case MarketTypeShortcode.FINANCIAL_BVI:
             return {
                 ...cfdConfig,
                 counterparty_company: 'Deriv (BVI) Ltd',
@@ -151,8 +151,8 @@ const getJurisdictionDescription = (shortcode?: string) => {
                 regulator_description: 'Regulator/External dispute resolution',
                 regulator_license: '(License no. SIBA/L/18/1114)',
             };
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_VANUATU:
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_VANUATU:
+        case MarketTypeShortcode.SYNTHETIC_VANUATU:
+        case MarketTypeShortcode.FINANCIAL_VANUATU:
             return {
                 ...cfdConfig,
                 counterparty_company: 'Deriv (V) Ltd',
@@ -161,7 +161,7 @@ const getJurisdictionDescription = (shortcode?: string) => {
                 regulator_description: 'Regulator/External dispute resolution',
                 regulator_license: '',
             };
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_LABUAN:
+        case MarketTypeShortcode.FINANCIAL_LABUAN:
             return {
                 ...cfdConfig,
                 counterparty_company: 'Deriv (FX) Ltd',
@@ -171,7 +171,7 @@ const getJurisdictionDescription = (shortcode?: string) => {
                 regulator_description: 'Regulator/External dispute resolution',
                 regulator_license: '(License no. MB/18/0024)',
             };
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_MALTAINVEST:
+        case MarketTypeShortcode.FINANCIAL_MALTAINVEST:
             return {
                 ...cfdConfig,
                 counterparty_company: 'Deriv Investments (Europe) Limited',
@@ -181,10 +181,10 @@ const getJurisdictionDescription = (shortcode?: string) => {
                 regulator_description: '',
                 regulator_license: 'Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)',
             };
-        case MARKET_TYPE_SHORTCODE.ALL_DXTRADE:
-        case MARKET_TYPE_SHORTCODE.ALL_SVG:
-        case MARKET_TYPE_SHORTCODE.SYNTHETIC_SVG:
-        case MARKET_TYPE_SHORTCODE.FINANCIAL_SVG:
+        case MarketTypeShortcode.ALL_DXTRADE:
+        case MarketTypeShortcode.ALL_SVG:
+        case MarketTypeShortcode.SYNTHETIC_SVG:
+        case MarketTypeShortcode.FINANCIAL_SVG:
         default:
             return cfdConfig;
     }
@@ -239,10 +239,10 @@ const getAccountVerificationStatus = (
     const poiAcknowledgedForMaltainvest = getPoiAcknowledgedForMaltainvest(authenticationInfo);
     const poiAcknowledgedForBviLabuanVanuatu = getPoiAcknowledgedForBviLabuanVanuatu(authenticationInfo);
 
-    if (shortCode === JURISDICTION.SVG) {
+    if (shortCode === Jurisdiction.SVG) {
         return true;
     }
-    if (shortCode === JURISDICTION.BVI) {
+    if (shortCode === Jurisdiction.BVI) {
         return (
             poiAcknowledgedForBviLabuanVanuatu &&
             !poiOrPoaNotSubmitted &&
@@ -251,7 +251,7 @@ const getAccountVerificationStatus = (
             poaAcknowledged
         );
     }
-    if (shortCode === JURISDICTION.VANUATU) {
+    if (shortCode === Jurisdiction.VANUATU) {
         return (
             poiAcknowledgedForBviLabuanVanuatu &&
             !poiOrPoaNotSubmitted &&
@@ -260,10 +260,10 @@ const getAccountVerificationStatus = (
             poaAcknowledged
         );
     }
-    if (shortCode === JURISDICTION.LABUAN) {
+    if (shortCode === Jurisdiction.LABUAN) {
         return poiAcknowledgedForBviLabuanVanuatu && poaAcknowledged && hasSubmittedPersonalDetails;
     }
-    if (shortCode === JURISDICTION.MALTAINVEST) {
+    if (shortCode === Jurisdiction.MALTAINVEST) {
         return (poiAcknowledgedForMaltainvest && poaAcknowledged) || isDemo;
     }
 };

@@ -30,12 +30,13 @@ const CurrencyDropdown = () => {
                 className={classNames('currency-dropdown__list', {
                     'currency-dropdown__list--visible': is_list_visible,
                 })}
-                label={localize('Currency')}
+                is_align_text_left
                 list={local_currencies}
                 onClick={() => {
                     if (isMobile()) showModal({ key: 'CurrencySelectorModal' });
                     else setIsListVisible(!is_list_visible);
                 }}
+                placeholder={localize('Currency')}
                 value={selected_local_currency}
             />
             {is_list_visible && (

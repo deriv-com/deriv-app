@@ -314,6 +314,7 @@
     "-1862812590": "Giới hạn {{ min_order }}–{{ max_order }} {{ currency }}",
     "-375836822": "Mua {{account_currency}}",
     "-1035421133": "Bán {{account_currency}}",
+    "-1876891031": "Currency",
     "-1503997652": "Không có quảng cáo cho loại tiền tệ này.",
     "-1048001140": "Không tìm thấy kết quả cho \"{{value}}”.",
     "-254484597": "Bạn không có quảng cáo nào 😞",

@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useCopyToClipboard, useHover } from 'usehooks-ts';
 import { Button, useBreakpoint } from '@deriv/quill-design';
-import ClipboardIcon from '../../../public/images/clipboard.svg';
-import CheckmarkCircle from '../../../public/images/ic-checkmark-circle.svg';
+import ClipboardIcon from '../../public/images/clipboard.svg';
+import CheckmarkCircle from '../../public/images/ic-checkmark-circle.svg';
 import { Tooltip } from '../Tooltip';
 
 type TClipboardProps = {
     textCopy: string;
-    tooltip: 'bottom' | 'left' | 'right' | 'top';
+    tooltip?: 'bottom' | 'left' | 'right' | 'top';
 };
 
 /**
@@ -45,7 +45,11 @@ const Clipboard = ({ textCopy, tooltip = 'bottom' }: TClipboardProps) => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <Tooltip alignment={tooltip} isVisible={isHovered && !isMobile} message={isCopied ? 'Copied!' : 'Copy'}>
+        <Tooltip
+            alignment={tooltip ?? 'bottom'}
+            isVisible={isHovered && !isMobile}
+            message={isCopied ? 'Copied!' : 'Copy'}
+        >
             <Button colorStyle='white' onClick={onClick} ref={hoverRef} size='sm'>
                 {isCopied ? <CheckmarkCircle /> : <ClipboardIcon />}
             </Button>

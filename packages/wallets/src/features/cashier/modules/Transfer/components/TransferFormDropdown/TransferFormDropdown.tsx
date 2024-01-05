@@ -62,38 +62,19 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
         (account: TInitialTransferFormValues['fromAccount']) => {
             if (account?.loginid === selectedAccount?.loginid) return;
 
-            const swapAccounts = () => {
+            if (isFromAccountDropdown) {
                 setValues(prev => {
+                    const toAccount = account?.loginid !== activeWallet?.loginid ? activeWallet : undefined;
+
                     return {
                         ...prev,
                         activeAmountFieldName: undefined,
-                        fromAccount: isFromAccountDropdown ? account : prev.toAccount,
-                        fromAmount: prev.toAmount,
-                        toAccount: isFromAccountDropdown ? prev.fromAccount : account,
-                        toAmount: prev.fromAmount,
+                        fromAccount: account,
+                        fromAmount: 0,
+                        toAccount,
+                        toAmount: 0,
                     };
                 });
-            };
-
-            if (isFromAccountDropdown) {
-                if (account?.loginid === values.toAccount?.loginid) {
-                    swapAccounts();
-                } else {
-                    setValues(prev => {
-                        const toAccount = account?.loginid !== activeWallet?.loginid ? activeWallet : undefined;
-
-                        return {
-                            ...prev,
-                            activeAmountFieldName: undefined,
-                            fromAccount: account,
-                            fromAmount: 0,
-                            toAccount,
-                            toAmount: 0,
-                        };
-                    });
-                }
-            } else if (account?.loginid === values.fromAccount?.loginid) {
-                swapAccounts();
             } else {
                 setValues(prev => ({
                     ...prev,
@@ -103,7 +84,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 }));
             }
         },
-        [activeWallet, isFromAccountDropdown, selectedAccount?.loginid, setValues, values.fromAccount, values.toAccount]
+        [activeWallet, isFromAccountDropdown, selectedAccount?.loginid, setValues]
     );
 
     return (

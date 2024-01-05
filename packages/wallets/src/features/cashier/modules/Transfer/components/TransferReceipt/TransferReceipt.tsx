@@ -79,7 +79,7 @@ const TransferReceipt = () => {
                 <ReceiptCard
                     account={fromAccount}
                     activeWallet={activeWallet}
-                    balance={`- ${displayTransferredFromAmount}`}
+                    balance={`-${displayTransferredFromAmount}`}
                 />
                 <div className='wallets-transfer-receipt__arrow-icon'>
                     <Arrow />
@@ -87,7 +87,7 @@ const TransferReceipt = () => {
                 <ReceiptCard
                     account={toAccount}
                     activeWallet={activeWallet}
-                    balance={`+ ${displayTransferredToAmount}`}
+                    balance={`+${displayTransferredToAmount}`}
                 />
             </div>
             <div

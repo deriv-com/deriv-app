@@ -4,7 +4,6 @@ import useAuthentication from '../hooks/useAuthentication';
 import usePOI from '../hooks/usePOI';
 import useJurisdictionStatus from '../hooks/useJurisdictionStatus';
 import APIProvider from '../APIProvider';
-import exp from 'constants';
 
 jest.mock('@deriv/shared');
 jest.mock('../hooks/useAuthentication');

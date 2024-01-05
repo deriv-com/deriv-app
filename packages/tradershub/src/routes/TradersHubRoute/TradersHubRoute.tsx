@@ -1,17 +1,15 @@
 import React, { FC } from 'react';
 import { Button, Heading, Text } from '@deriv/quill-design';
-import { OptionsAndMultipliersSection, StaticLink } from '../../components';
+import { OptionsAndMultipliersSection, StaticLink, TotalAssets } from '../../components';
 import { CTraderList } from '../../features/cfd/components/CTraderList';
+import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
 
 const TradersHubRoute: FC = () => {
     return (
         <div className='flex flex-col gap-1200'>
             <div className='flex items-center justify-between align-start gap-100'>
                 <Heading.H3>Trader&apos;s Hub</Heading.H3>
-                <div className='flex flex-col items-end justify-end'>
-                    <Text size='sm'>Total assets</Text>
-                    <Heading.H3 className='text-status-light-information'>10,000.00 USD</Heading.H3>
-                </div>
+                <TotalAssets />
             </div>
             <OptionsAndMultipliersSection />
 
@@ -44,13 +42,8 @@ const TradersHubRoute: FC = () => {
                     <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
                         <CTraderList />
                     </div>
-                    <div>
-                        <Text bold className='pb-800' size='md'>
-                            Other CFDs
-                        </Text>
-                        <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                        </div>
+                    <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
+                        <OtherCFDPlatformsList />
                     </div>
                 </div>
             </div>

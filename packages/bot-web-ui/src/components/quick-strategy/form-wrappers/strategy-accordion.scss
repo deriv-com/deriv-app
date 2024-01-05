@@ -1,0 +1,89 @@
+.dbot-accordion {
+    width: 100%;
+
+    &__navbar {
+        display: flex;
+        width: 100%;
+        padding: 0.6rem 1.6rem;
+        cursor: pointer;
+        background-color: transparent;
+        border: none;
+        outline: none;
+
+        padding-left: 0;
+
+        @include mobile {
+            padding: 0.6rem 1rem;
+        }
+
+        border-bottom: 1px solid var(--general-section-1);
+
+        &--no-event {
+            pointer-events: none;
+            border-bottom: none;
+            padding: 0.6rem 0;
+
+            @include mobile {
+                padding: 0.6rem 0 0.6rem 1rem;
+            }
+        }
+    }
+
+    &__header {
+        width: 90%;
+        text-align: left;
+        padding-left: 1rem;
+
+        @include mobile {
+            width: 100%;
+            padding-left: 0;
+        }
+
+        span {
+            color: var(--text-prominent);
+        }
+    }
+
+    &__icon {
+        width: 10%;
+        color: $color-white;
+        text-align: end;
+    }
+
+    &__content {
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        color: var(--text-prominent);
+        padding: 1rem 0;
+
+        &--open {
+            opacity: 1;
+            max-height: fit-content;
+
+            @include mobile {
+                padding-left: 1rem;
+            }
+        }
+
+        .joyride-content {
+            line-height: 1.8rem;
+        }
+    }
+}
+
+.qs {
+    .dbot-accordion {
+        &__content {
+            background-color: transparent;
+        }
+
+        &__header {
+            text-align: left;
+
+            &--cursive {
+                font-style: italic;
+            }
+        }
+    }
+}

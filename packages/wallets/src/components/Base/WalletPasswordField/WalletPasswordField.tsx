@@ -1,13 +1,13 @@
-import React, { useCallback, useState } from 'react';
-import { Score, calculateScore, validPassword, isPasswordValid, passwordKeys } from '../../../utils/password';
+import React, { useCallback, useMemo, useState } from 'react';
+import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
+import { dictionary } from '@zxcvbn-ts/language-common';
+import { passwordErrorMessage, passwordRegex, warningMessages } from '../../../constants/password';
+import { calculateScore, isPasswordValid, passwordKeys, Score, validPassword } from '../../../utils/password';
+import { WalletPasswordFieldProps } from '../WalletPasswordFieldLazy/WalletPasswordFieldLazy';
 import { WalletTextField } from '../WalletTextField';
 import PasswordMeter from './PasswordMeter';
 import PasswordViewerIcon from './PasswordViewerIcon';
 import './WalletPasswordField.scss';
-import { passwordErrorMessage, passwordRegex, warningMessages } from '../../../constants/password';
-import { zxcvbn, zxcvbnOptions } from '@zxcvbn-ts/core';
-import { dictionary } from '@zxcvbn-ts/language-common';
-import { WalletPasswordFieldProps } from '../WalletPasswordFieldLazy/WalletPasswordFieldLazy';
 
 export const validatePassword = (password: string) => {
     const score = calculateScore(password);
@@ -40,7 +40,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const [isTouched, setIsTouched] = useState(false);
 
-    const { errorMessage, score } = validatePassword(password);
+    const { errorMessage, score } = useMemo(() => validatePassword(password), [password]);
 
     const handleChange = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +62,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
         <div className='wallets-password'>
             <WalletTextField
                 autoComplete={autoComplete}
-                errorMessage={passwordError ? passwordErrorMessage.PasswordError : errorMessage}
+                errorMessage={isTouched && (passwordError ? passwordErrorMessage.PasswordError : errorMessage)}
                 isInvalid={(!validPassword(password) && isTouched) || passwordError}
                 label={label}
                 message={isTouched ? errorMessage : ''}
@@ -75,7 +75,7 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 )}
                 showMessage={showMessage}
                 type={isPasswordVisible ? 'text' : 'password'}
-                value={passwordError ? '' : password}
+                value={password}
             />
             {!shouldDisablePasswordMeter && <PasswordMeter score={score as Score} />}
         </div>

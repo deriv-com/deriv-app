@@ -19,10 +19,6 @@ export const jurisdictionVerificationContents = (): TJurisdictionVerificationCon
             icon: 'IcNameAndAddressVerification',
             text: 'A recent utility bill (eg. electricity, water or gas) or recent bank statement or government-issued letter with your name and address.',
         },
-        notApplicable: {
-            icon: 'IcNotApplicableVerification',
-            text: '',
-        },
         selfie: {
             icon: 'IcSelfieVerification',
             text: 'A selfie of yourself.',

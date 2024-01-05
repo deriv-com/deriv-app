@@ -81,13 +81,23 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
             </div>
             <WalletText lineHeight='2xs' size='2xs'>
                 Address:{' '}
-                <a className='wallets-crypto-transaction__red-text' href={transaction.address_url}>
+                <a
+                    className='wallets-crypto-transaction__red-text'
+                    href={transaction.address_url}
+                    rel='noopener noreferrer'
+                    target='_blank'
+                >
                     {transaction.formatted_address_hash}
                 </a>
             </WalletText>
             <WalletText lineHeight='2xs' size='2xs'>
                 Transaction hash:{' '}
-                <a className='wallets-crypto-transaction__red-text' href={transaction.transaction_url}>
+                <a
+                    className='wallets-crypto-transaction__red-text'
+                    href={transaction.transaction_url}
+                    rel='noopener noreferrer'
+                    target='_blank'
+                >
                     {transaction.formatted_transaction_hash}
                 </a>
             </WalletText>

@@ -1,9 +1,12 @@
 /** Add types that are shared between components */
 import React from 'react';
+import { IDENTIFIER_TYPES } from '../Constants/poo-identifier';
+import getPaymentMethodsConfig from '../Configs/payment-method-config';
 import { Redirect, RouteProps } from 'react-router-dom';
 import { TPage404 } from '../Constants/routes-config';
 import {
     Authorize,
+    GetAccountStatus,
     DetailsOfEachMT5Loginid,
     GetFinancialAssessment,
     IdentityVerificationAddDocumentResponse,
@@ -110,16 +113,6 @@ type TIdentity = {
     };
 };
 
-export type TFile = {
-    path: string;
-    lastModified: number;
-    lastModifiedDate: Date;
-    name: string;
-    size: number;
-    type: string;
-    webkitRelativePath: string;
-};
-
 export type TPOIStatus = {
     needs_poa?: boolean;
     redirect_button?: React.ReactElement;
@@ -148,10 +141,6 @@ export type TDocument = {
         example_format?: string;
     };
 };
-
-export type TVerificationStatus = Readonly<
-    Record<'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected', string>
->;
 
 export type TIDVFormValues = {
     document_type: TDocument;
@@ -238,6 +227,39 @@ export type TLoginHistoryItems = {
     ip: string;
     status: string;
 };
+
+export type TPaymentMethodIdentifier = typeof IDENTIFIER_TYPES[keyof typeof IDENTIFIER_TYPES];
+
+export type TPaymentMethodInfo = {
+    documents_required: number;
+    icon: string;
+    payment_method: string;
+    items: DeepRequired<GetAccountStatus>['authentication']['ownership']['requests'];
+    instructions: string[] | JSX.Element[];
+    input_label: string | null;
+    identifier_type: TPaymentMethodIdentifier | '';
+    is_generic_pm: boolean;
+};
+
+export type TFile = File & { file: Blob };
+
+export type TPaymentMethod = keyof ReturnType<typeof getPaymentMethodsConfig>;
+
+export type TProofOfOwnershipFormValue = Record<TPaymentMethod, Record<number | string, TProofOfOwnershipData>>;
+
+export type TProofOfOwnershipData = {
+    documents_required: number;
+    id: number;
+    identifier_type: TPaymentMethodIdentifier | '';
+    is_generic_pm: boolean;
+    files: Array<TFile>;
+    payment_method_identifier: string;
+};
+
+export type TProofOfOwnershipErrors = Record<
+    TPaymentMethod,
+    Array<{ payment_method_identifier?: string; files?: Array<string> }>
+>;
 
 export type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
 

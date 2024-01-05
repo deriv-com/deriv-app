@@ -1,3 +1,11 @@
+import moment from 'moment';
+
+export default function unixToDateString(date: Date) {
+    const formattedDate = moment(date).format('YYYY-MM-DD');
+
+    return formattedDate;
+}
+
 type TServerError = {
     code: string;
     details?: { [key: string]: string };

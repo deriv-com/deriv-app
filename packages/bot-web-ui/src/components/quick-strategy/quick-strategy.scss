@@ -16,6 +16,7 @@
         --footer-height: 4.2rem;
         --input-action-height: 3rem;
         --input-action-width: 3rem;
+        width: 100%;
     }
 
     .xy-center {
@@ -232,7 +233,6 @@
 
             @include mobile() {
                 margin-bottom: 0;
-                padding: 0 1.9rem 1.6rem;
                 max-height: calc(100% - 12.2rem) !important;
             }
 

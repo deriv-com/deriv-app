@@ -40,7 +40,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     } = load_modal;
 
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
-    const toggle_ref = React.useRef<HTMLInputElement>(null);
+    const toggle_ref = React.useRef<HTMLButtonElement>(null);
     const is_div_triggered_once = React.useRef<boolean>(false);
     const visible = useComponentVisibility(toggle_ref);
     const { setDropdownVisibility, is_dropdown_visible } = visible;
@@ -218,7 +218,7 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
             </DesktopWrapper>
             <MobileWrapper>
                 <div className='bot-list__item__actions'>
-                    <button ref={toggle_ref} onClick={onToggleDropdown}>
+                    <button ref={toggle_ref} onClick={onToggleDropdown} tabIndex={0}>
                         <Icon icon='IcMenuDots' />
                     </button>
                 </div>

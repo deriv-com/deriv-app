@@ -50,7 +50,6 @@ const RecentComponent = observer(() => {
                     onKeyDown={(e: React.KeyboardEvent) => {
                         if (e.key === 'Enter') toggleExplanationExpand();
                     }}
-                    role='button'
                 >
                     <Localize i18n_default_text="Why can't I see my recent bots?" />
                 </div>

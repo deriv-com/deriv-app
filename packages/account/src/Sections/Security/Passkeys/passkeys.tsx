@@ -1,8 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { useGetPasskeysList } from '@deriv/api';
 import { Loading } from '@deriv/components';
-import { useIsPasskeySupported } from '@deriv/hooks';
+import { useGetPasskeysList, useIsPasskeySupported } from '@deriv/hooks';
 import { PlatformContext, routes } from '@deriv/shared';
 import { useBreakpoint } from '@deriv/quill-design';
 import NoPasskeysSet from './no-passkeys-set';

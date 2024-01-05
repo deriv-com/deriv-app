@@ -1,4 +1,4 @@
-import useQuery from '../useQuery';
+import { useQuery } from '@deriv/api';
 import useAuthorize from './useAuthorize';
 
 const useGetPasskeysList = () => {

@@ -123,8 +123,11 @@ export default class MyAdsStore extends BaseStore {
                 if (response) {
                     if (!response.error) {
                         const { get_account_status } = response;
-                        const { status } = get_account_status?.authentication?.identity ?? {};
-                        this.root_store.general_store.setPoiStatus(status);
+                        const { authentication } = get_account_status;
+                        const { document, identity } = authentication;
+
+                        this.root_store.general_store.setPoiStatus(identity.status);
+                        this.root_store.general_store.setPoaStatus(document.status);
                     } else {
                         this.setErrorMessage(response.error);
                     }
@@ -423,7 +426,7 @@ export default class MyAdsStore extends BaseStore {
                     }
                 } else if (response.error.code === api_error_codes.PERMISSION_DENIED) {
                     general_store.setIsBlocked(true);
-                } else {
+                } else if (response.error.code !== api_error_codes.ADVERTISER_NOT_REGISTERED) {
                     this.setApiErrorMessage(response.error.message);
                 }
 
@@ -704,12 +707,6 @@ export default class MyAdsStore extends BaseStore {
             }
         });
 
-        if (Object.values(errors).includes('Enter a valid amount')) {
-            Object.entries(errors).forEach(([key, value]) => {
-                errors[key] = value === 'Enter a valid amount' ? value : undefined;
-            });
-        }
-
         return errors;
     }
 
@@ -837,12 +834,6 @@ export default class MyAdsStore extends BaseStore {
                 }
             }
         });
-
-        if (Object.values(errors).includes('Enter a valid amount')) {
-            Object.entries(errors).forEach(([key, value]) => {
-                errors[key] = value === 'Enter a valid amount' ? value : undefined;
-            });
-        }
 
         return errors;
     }

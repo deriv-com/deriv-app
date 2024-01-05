@@ -15,10 +15,10 @@ import {
     useOnClickOutside,
     Loading,
 } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { routes, formatMoney, ContentFlag, getStaticUrl } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
-import { connect } from 'Stores/connect';
 import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
@@ -26,49 +26,47 @@ import { BinaryLink } from 'App/Components/Routes';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { Analytics } from '@deriv/analytics';
 
-const AccountSwitcher = ({
-    available_crypto_currencies,
-    account_list,
-    account_loginid,
-    accounts,
-    account_type,
-    client_residence,
-    country_standpoint,
-    has_active_real_account,
-    has_any_real_account,
-    has_fiat,
-    history,
-    is_dark_mode_on,
-    is_eu,
-    is_landing_company_loaded,
-    is_low_risk,
-    is_high_risk,
-    is_logged_in,
-    is_mobile,
-    is_positions_drawer_on,
-    is_virtual,
-    is_visible,
-    landing_company_shortcode,
-    logoutClient,
-    mt5_login_list,
-    obj_total_balance,
-    openRealAccountSignup,
-    should_show_real_accounts_list,
-    show_eu_related_content,
-    switchAccount,
-    resetVirtualBalance,
-    toggleAccountsDialog,
-    togglePositionsDrawer,
-    toggleSetCurrencyModal,
-    upgradeable_landing_companies,
-    real_account_creation_unlock_date,
-    setShouldShowCooldownModal,
-    content_flag,
-    virtual_account_loginid,
-    setTogglePlatformType,
-    currency,
-    selectRegion,
-}) => {
+const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
+    const { client, ui, traders_hub } = useStore();
+    const {
+        available_crypto_currencies,
+        loginid: account_loginid,
+        accounts,
+        account_type,
+        account_list,
+        residence: client_residence,
+        country_standpoint,
+        currency,
+        is_eu,
+        is_landing_company_loaded,
+        is_low_risk,
+        is_high_risk,
+        is_logged_in,
+        is_virtual,
+        has_fiat,
+        landing_company_shortcode,
+        mt5_login_list,
+        obj_total_balance,
+        switchAccount,
+        resetVirtualBalance,
+        has_active_real_account,
+        logout: logoutClient,
+        upgradeable_landing_companies,
+        real_account_creation_unlock_date,
+        has_any_real_account,
+        virtual_account_loginid,
+    } = client;
+    const { show_eu_related_content, content_flag, selectRegion, setTogglePlatformType } = traders_hub;
+    const {
+        is_dark_mode_on,
+        is_positions_drawer_on,
+        openRealAccountSignup,
+        toggleAccountsDialog,
+        togglePositionsDrawer,
+        toggleSetCurrencyModal,
+        should_show_real_accounts_list,
+        setShouldShowCooldownModal,
+    } = ui;
     const [active_tab_index, setActiveTabIndex] = React.useState(!is_virtual || should_show_real_accounts_list ? 0 : 1);
     const [is_deriv_demo_visible, setDerivDemoVisible] = React.useState(true);
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
@@ -551,94 +549,11 @@ const AccountSwitcher = ({
             )}
         </div>
     );
-};
+});
 
 AccountSwitcher.propTypes = {
-    available_crypto_currencies: PropTypes.array,
-    account_list: PropTypes.array,
-    account_loginid: PropTypes.string,
-    accounts: PropTypes.object,
-    account_type: PropTypes.string,
-    client_residence: PropTypes.string,
-    country_standpoint: PropTypes.object,
-    has_active_real_account: PropTypes.bool,
-    has_any_real_account: PropTypes.bool,
-    has_fiat: PropTypes.bool,
-    history: PropTypes.object,
-    is_dark_mode_on: PropTypes.bool,
-    is_eu: PropTypes.bool,
-    is_landing_company_loaded: PropTypes.bool,
-    is_low_risk: PropTypes.bool,
-    is_high_risk: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_positions_drawer_on: PropTypes.bool,
-    is_virtual: PropTypes.bool,
     is_visible: PropTypes.bool,
-    landing_company_shortcode: PropTypes.string,
-    logoutClient: PropTypes.func,
-    mt5_login_list: PropTypes.array,
-    obj_total_balance: PropTypes.object,
-    openAccountNeededModal: PropTypes.func,
-    openRealAccountSignup: PropTypes.func,
-    should_show_real_accounts_list: PropTypes.bool,
-    show_eu_related_content: PropTypes.bool,
-    switchAccount: PropTypes.func,
-    resetVirtualBalance: PropTypes.func,
-    toggleAccountsDialog: PropTypes.func,
-    togglePositionsDrawer: PropTypes.func,
-    toggleSetCurrencyModal: PropTypes.func,
-    upgradeable_landing_companies: PropTypes.array,
-    real_account_creation_unlock_date: PropTypes.number,
-    setShouldShowCooldownModal: PropTypes.func,
-    content_flag: PropTypes.string,
-    virtual_account_loginid: PropTypes.string,
-    setTogglePlatformType: PropTypes.func,
-    currency: PropTypes.string,
-    selectRegion: PropTypes.func,
+    history: PropTypes.object,
 };
 
-const account_switcher = withRouter(
-    connect(({ client, ui, traders_hub }) => ({
-        available_crypto_currencies: client.available_crypto_currencies,
-        account_loginid: client.loginid,
-        currency: client.currency,
-        accounts: client.accounts,
-        account_type: client.account_type,
-        account_list: client.account_list,
-        client_residence: client.residence,
-        country_standpoint: client.country_standpoint,
-        is_dark_mode_on: ui.is_dark_mode_on,
-        is_eu: client.is_eu,
-        is_landing_company_loaded: client.is_landing_company_loaded,
-        is_low_risk: client.is_low_risk,
-        is_high_risk: client.is_high_risk,
-        is_logged_in: client.is_logged_in,
-        is_virtual: client.is_virtual,
-        has_fiat: client.has_fiat,
-        landing_company_shortcode: client.landing_company_shortcode,
-        mt5_login_list: client.mt5_login_list,
-        obj_total_balance: client.obj_total_balance,
-        switchAccount: client.switchAccount,
-        resetVirtualBalance: client.resetVirtualBalance,
-        has_active_real_account: client.has_active_real_account,
-        logoutClient: client.logout,
-        upgradeable_landing_companies: client.upgradeable_landing_companies,
-        is_positions_drawer_on: ui.is_positions_drawer_on,
-        openRealAccountSignup: ui.openRealAccountSignup,
-        toggleAccountsDialog: ui.toggleAccountsDialog,
-        togglePositionsDrawer: ui.togglePositionsDrawer,
-        toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
-        should_show_real_accounts_list: ui.should_show_real_accounts_list,
-        real_account_creation_unlock_date: client.real_account_creation_unlock_date,
-        setShouldShowCooldownModal: ui.setShouldShowCooldownModal,
-        show_eu_related_content: traders_hub.show_eu_related_content,
-        content_flag: traders_hub.content_flag,
-        has_any_real_account: client.has_any_real_account,
-        virtual_account_loginid: client.virtual_account_loginid,
-        setTogglePlatformType: traders_hub.setTogglePlatformType,
-        selectRegion: traders_hub.selectRegion,
-    }))(AccountSwitcher)
-);
-
-export { account_switcher as AccountSwitcher };
+export default withRouter(AccountSwitcher);

@@ -400,14 +400,6 @@ export const getMarketNamesMap = () =>
 
 export const getUnsupportedContracts = () =>
     ({
-        RESETCALL: {
-            name: localize('Reset Call'),
-            position: 'top',
-        },
-        RESETPUT: {
-            name: localize('Reset Put'),
-            position: 'bottom',
-        },
         TICKHIGH: {
             name: localize('High Tick'),
             position: 'top',
@@ -555,6 +547,14 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
         },
         [CONTRACT_TYPES.ASIAN.DOWN]: {
             name: localize('Asian Down'),
+            position: 'bottom',
+        },
+        RESETCALL: {
+            name: localize('Reset Call'),
+            position: 'top',
+        },
+        RESETPUT: {
+            name: localize('Reset Put'),
             position: 'bottom',
         },
         // To add a feature flag for a new trade_type, please add 'feature_flag' to its config here:

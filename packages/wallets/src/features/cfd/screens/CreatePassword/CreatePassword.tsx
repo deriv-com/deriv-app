@@ -1,5 +1,5 @@
 import React from 'react';
-import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
+import { WalletButton, WalletText, WalletPasswordFieldLazy } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
@@ -38,7 +38,7 @@ const CreatePassword: React.FC<TProps> = ({
                 </WalletText>
             </div>
 
-            <WalletPasswordField label={`${title} password`} onChange={onPasswordChange} password={password} />
+            <WalletPasswordFieldLazy label={`${title} password`} onChange={onPasswordChange} password={password} />
             {!isMobile && (
                 <WalletButton
                     disabled={!password || isLoading || !validPassword(password)}

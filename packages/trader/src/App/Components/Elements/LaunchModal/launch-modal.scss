@@ -1,20 +1,29 @@
 // For Web Modal
-.dc-modal__container_modal_root {
+.dc-modal__container_launch-modal-root {
     text-align: center;
+
+    .dc-modal-header {
+        justify-content: flex-end;
+
+        &__close {
+            margin: 0;
+            padding: 1rem 1rem 0 0;
+            align-self: flex-end;
+            border: none;
+            font: inherit;
+            background-color: transparent;
+        }
+    }
+
     .dc-modal-body {
         justify-content: center;
         display: flex;
         height: 100%;
         flex-direction: column;
-        .chart-image {
-            margin-bottom: 2.4rem;
-            margin-right: 4rem;
-        }
-    }
 
-    .dc-modal-footer {
-        border-top: 0.2rem solid var(--general-section-5);
-        padding: 1.6rem 2.4rem;
+        .modal-image {
+            margin-bottom: 2.4rem;
+        }
     }
 }
 
@@ -31,8 +40,9 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        .chart-image {
-            margin-right: 5rem;
+        padding: 1rem;
+
+        .modal-image {
             margin-bottom: 2.4rem;
         }
     }
@@ -40,7 +50,8 @@
     .dc-modal-footer {
         border-top: 0.2rem solid var(--general-section-5);
         padding: 1.6rem 2.4rem;
-        .continue-button {
+
+        .launch-button {
             height: 4rem;
             width: 100%;
         }

@@ -12,8 +12,8 @@ import {
     getActionFromUrl,
 } from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { WS } from 'Services';
+import { observer, useStore } from '@deriv/stores';
 
 const UnlinkPassword = ({
     logoutClient,
@@ -200,18 +200,19 @@ UnlinkPassword.propTypes = {
     social_identity_provider: PropTypes.string,
 };
 
-const UnlinkPasswordModal = ({
-    disableApp,
-    enableApp,
-    is_loading,
-    is_visible,
-    logoutClient,
-    social_identity_provider,
-    toggleResetPasswordModal,
-    reset_verification_code,
-    unlink_verification_code,
-    new_email,
-}) => {
+const UnlinkPasswordModal = observer(() => {
+    const { ui, client } = useStore();
+    const { logout: logoutClient, social_identity_provider, verification_code } = client;
+    const {
+        disableApp,
+        enableApp,
+        is_loading,
+        is_reset_password_modal_visible: is_visible,
+        toggleResetPasswordModal,
+    } = ui;
+    const reset_verification_code = verification_code.reset_password;
+    const unlink_verification_code = verification_code.social_email_change;
+    const new_email = client.new_email.social_email_change;
     return (
         <Dialog
             className='unlink-password__dialog'
@@ -229,31 +230,6 @@ const UnlinkPasswordModal = ({
             />
         </Dialog>
     );
-};
+});
 
-UnlinkPasswordModal.propTypes = {
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    is_loading: PropTypes.bool,
-    is_visible: PropTypes.bool,
-    logoutClient: PropTypes.func,
-    social_identity_provider: PropTypes.string,
-    toggleResetPasswordModal: PropTypes.func,
-    reset_verification_code: PropTypes.string,
-    unlink_verification_code: PropTypes.string,
-    new_email: PropTypes.string,
-};
-
-export default connect(({ ui, client }) => ({
-    email: client.email,
-    new_email: client.new_email.social_email_change,
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-    is_loading: ui.is_loading,
-    is_visible: ui.is_reset_password_modal_visible,
-    logoutClient: client.logout,
-    social_identity_provider: client.social_identity_provider,
-    toggleResetPasswordModal: ui.toggleResetPasswordModal,
-    reset_verification_code: client.verification_code.reset_password,
-    unlink_verification_code: client.verification_code.social_email_change,
-}))(UnlinkPasswordModal);
+export default UnlinkPasswordModal;

@@ -71,8 +71,10 @@ export const priority_toast_messages = [
     'need_fa',
     'p2p_daily_limit_increase',
     'authenticate',
+    'poinc_upload_limited',
     'wallets_migrated',
     'wallets_failed',
+    'needs_poinc',
     'notify_financial_assessment',
     'additional_kyc_info',
     'poa_expired',
@@ -83,5 +85,6 @@ export const priority_toast_messages = [
     'poa_failed',
     'svg_poi_expired',
     'mt5_notification',
+    'p2p_advertiser_nickname_added',
     ...maintenance_notifications,
 ];

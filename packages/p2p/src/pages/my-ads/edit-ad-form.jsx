@@ -160,7 +160,7 @@ const EditAdForm = () => {
                 validate={my_ads_store.validateEditAdForm}
                 validateOnMount
             >
-                {({ dirty, errors, handleChange, isSubmitting, isValid, touched, values }) => {
+                {({ dirty, errors, handleChange, isSubmitting, isValid, setFieldTouched, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
                     // Form should not be checked for value change when ad switch is triggered
                     const check_dirty =
@@ -205,6 +205,7 @@ const EditAdForm = () => {
                                                             onChange={e => {
                                                                 my_ads_store.restrictLength(e, handleChange);
                                                             }}
+                                                            onFocus={() => setFieldTouched('offer_amount', true)}
                                                             hint={
                                                                 // Using two "==" is intentional as we're checking for nullish
                                                                 // rather than falsy values.
@@ -246,6 +247,7 @@ const EditAdForm = () => {
                                                                         floating_rate_store.float_rate_offset_limit *
                                                                         -1,
                                                                 }}
+                                                                onFocus={() => setFieldTouched('rate_type', true)}
                                                                 required
                                                                 change_handler={e => {
                                                                     my_ads_store.restrictDecimalPlace(e, handleChange);
@@ -278,6 +280,7 @@ const EditAdForm = () => {
                                                                 onChange={e => {
                                                                     my_ads_store.restrictLength(e, handleChange);
                                                                 }}
+                                                                onFocus={() => setFieldTouched('rate_type', true)}
                                                                 required
                                                             />
                                                         )
@@ -306,6 +309,7 @@ const EditAdForm = () => {
                                                             onChange={e => {
                                                                 my_ads_store.restrictLength(e, handleChange);
                                                             }}
+                                                            onFocus={() => setFieldTouched('min_transaction', true)}
                                                             required
                                                         />
                                                     )}
@@ -331,6 +335,7 @@ const EditAdForm = () => {
                                                             onChange={e => {
                                                                 my_ads_store.restrictLength(e, handleChange);
                                                             }}
+                                                            onFocus={() => setFieldTouched('max_transaction', true)}
                                                             required
                                                         />
                                                     )}
@@ -356,6 +361,7 @@ const EditAdForm = () => {
                                                                 required
                                                                 has_character_counter
                                                                 max_characters={300}
+                                                                onFocus={() => setFieldTouched('contact_info', true)}
                                                             />
                                                         )}
                                                     </Field>
@@ -379,6 +385,7 @@ const EditAdForm = () => {
                                                         initial_character_count={description ? description.length : 0}
                                                         has_character_counter
                                                         max_characters={300}
+                                                        onFocus={() => setFieldTouched('description', true)}
                                                     />
                                                 )}
                                             </Field>
@@ -447,7 +454,7 @@ const EditAdForm = () => {
                 title={generateErrorDialogTitle(my_ads_store.error_code)}
             >
                 <Modal.Body>
-                    <Text as='p' size='xs' color='prominent'>
+                    <Text as='p' size='xs' color='prominent' className='ad-create-edit-error-modal__message'>
                         {generateErrorDialogBody(my_ads_store.error_code, my_ads_store.edit_ad_form_error)}
                     </Text>
                 </Modal.Body>

@@ -98,21 +98,20 @@ window.Blockly = {
 };
 
 jest.mock('../config', () => ({
+    ...jest.requireActual('../config'),
     STRATEGIES: {
         MARTINGALE: {
             name: 'martingale',
             label: 'martingale',
-            description: 'test',
+            description: 'martingale',
             fields: [
                 [
                     {
                         type: 'symbol',
-                        fullWidth: true,
                         name: 'symbol',
                     },
                     {
                         type: 'tradetype',
-                        fullWidth: true,
                         name: 'tradetype',
                         dependencies: ['symbol'],
                     },

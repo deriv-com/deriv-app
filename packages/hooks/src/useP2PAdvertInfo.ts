@@ -3,6 +3,7 @@ import { useFetch } from '@deriv/api';
 import { TSocketRequestQueryOptions } from '@deriv/api/types';
 
 /**
+ * @deprecated Please use `useAdvertInfo` from the `api` package instead.
  * This custom hook returns the advert info for a specific advert by calling 'p2p_advert_info' endpoint
  */
 const useP2PAdvertInfo = (id: string, options: TSocketRequestQueryOptions<'p2p_advert_info'>) => {

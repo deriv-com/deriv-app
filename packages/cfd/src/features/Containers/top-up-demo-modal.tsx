@@ -1,21 +1,35 @@
 import React from 'react';
 import SuccessDialog from '../../Components/success-dialog.jsx';
+import { getTopUpConfig } from '../../Helpers/constants';
+import { useIsEuRegion, useDxtradeAccountsList, useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
 import { getCFDPlatformLabel } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import {
+    getCTraderCompanies,
+    getDxCompanies,
+    getMtCompanies,
+    TCTraderCompanies,
     TDxCompanies,
     TMtCompanies,
-    TCTraderCompanies,
-    getCTraderCompanies,
 } from '../../Stores/Modules/CFD/Helpers/cfd-config';
-import { getTopUpConfig } from '../../Helpers/constants';
-import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { CFD_PLATFORMS } from '../../Helpers/cfd-config';
+import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 type TTopUpDemoModalProps = {
-    platform: string;
+    platform: typeof CFD_PLATFORMS.DXTRADE | typeof CFD_PLATFORMS.CTRADER | typeof CFD_PLATFORMS.MT5;
+};
+
+type TDxtrade = NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[0];
+
+type TCFDOtherPlatform = typeof CFD_PLATFORMS.DXTRADE | typeof CFD_PLATFORMS.CTRADER;
+
+type TCurrentAccount = DetailsOfEachMT5Loginid & {
+    account_id: Exclude<TDxtrade['account_id'], undefined>;
+    category: string;
+    type: string;
 };
 
 const TopUpDemoModal = observer(({ platform }: TTopUpDemoModalProps) => {
@@ -29,9 +43,27 @@ const TopUpDemoModal = observer(({ platform }: TTopUpDemoModalProps) => {
         closeSuccessTopUpModal,
     } = ui;
 
-    const { current_account, dxtrade_companies, mt5_companies, topUpVirtual } = useCfdStore();
+    const { current_account } = useCfdStore();
+    const { data: isEuRegion } = useIsEuRegion();
+    const { mutateAsync: MT5Deposit } = useMT5Deposit();
+    const { mutateAsync: OtherCFDPlatformsDeposit } = useOtherCFDPlatformsDeposit();
 
     const ctrader_companies = getCTraderCompanies();
+    const dxtrade_companies = getDxCompanies();
+    const mt5_companies = getMtCompanies(isEuRegion);
+
+    const topUpVirtual = async (platform: string) => {
+        if (platform === CFD_PLATFORMS.MT5) {
+            await MT5Deposit({
+                to_mt5: current_account?.login as unknown as string,
+            });
+        } else {
+            await OtherCFDPlatformsDeposit({
+                to_account: (current_account as unknown as TCurrentAccount).account_id,
+                platform: platform as TCFDOtherPlatform,
+            });
+        }
+    };
 
     const getAccountTitle = React.useCallback(() => {
         let title = '';
@@ -61,7 +93,7 @@ const TopUpDemoModal = observer(({ platform }: TTopUpDemoModalProps) => {
         }
 
         return title;
-    }, [mt5_companies, dxtrade_companies, current_account, platform, ctrader_companies]);
+    }, [mt5_companies, dxtrade_companies, current_account, ctrader_companies, platform]);
 
     const onCloseSuccess = () => {
         closeSuccessTopUpModal();

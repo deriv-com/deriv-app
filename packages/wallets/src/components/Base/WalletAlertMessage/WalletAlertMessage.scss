@@ -1,7 +1,7 @@
 .wallets-alert-message {
     display: flex;
     flex-direction: row;
-    column-gap: 0.8rem;
+    column-gap: 0.4rem;
     justify-content: flex-start;
 
     @include mobile {
@@ -34,7 +34,11 @@
     }
 
     &__message-container {
-        padding: 0.6rem 0;
+        padding: 0.7rem 0;
+
+        @include mobile {
+            padding: 0.9rem 0;
+        }
     }
 
     &__button-container {

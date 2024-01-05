@@ -142,12 +142,8 @@ const CreateAdForm = () => {
                 }}
                 onSubmit={my_ads_store.handleSubmit}
                 validate={my_ads_store.validateCreateAdForm}
-                initialErrors={{
-                    // Pass one error to ensure Post ad button is disabled initially.
-                    offer_amount: true,
-                }}
             >
-                {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
+                {({ errors, handleChange, isSubmitting, isValid, setFieldTouched, setFieldValue, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
 
                     const onChangeAdTypeHandler = user_input => {
@@ -225,6 +221,7 @@ const CreateAdForm = () => {
                                                                     {currency}
                                                                 </Text>
                                                             }
+                                                            onFocus={() => setFieldTouched('offer_amount', true)}
                                                             onChange={e => {
                                                                 my_ads_store.restrictLength(e, handleChange);
                                                             }}
@@ -247,7 +244,6 @@ const CreateAdForm = () => {
                                                                       )
                                                             }
                                                             is_relative_hint
-                                                            required
                                                         />
                                                     )}
                                                 </Field>
@@ -261,6 +257,7 @@ const CreateAdForm = () => {
                                                                 fiat_currency={currency}
                                                                 local_currency={local_currency}
                                                                 onChange={handleChange}
+                                                                onFocus={() => setFieldTouched('rate_type', true)}
                                                                 offset={{
                                                                     upper_limit: parseInt(
                                                                         floating_rate_store.float_rate_offset_limit
@@ -300,6 +297,7 @@ const CreateAdForm = () => {
                                                                 onChange={e => {
                                                                     my_ads_store.restrictLength(e, handleChange);
                                                                 }}
+                                                                onFocus={() => setFieldTouched('rate_type', true)}
                                                                 required
                                                             />
                                                         )
@@ -328,6 +326,7 @@ const CreateAdForm = () => {
                                                             onChange={e => {
                                                                 my_ads_store.restrictLength(e, handleChange);
                                                             }}
+                                                            onFocus={() => setFieldTouched('min_transaction', true)}
                                                             required
                                                         />
                                                     )}
@@ -353,6 +352,7 @@ const CreateAdForm = () => {
                                                             onChange={e => {
                                                                 my_ads_store.restrictLength(e, handleChange);
                                                             }}
+                                                            onFocus={() => setFieldTouched('max_transaction', true)}
                                                             required
                                                         />
                                                     )}
@@ -380,6 +380,7 @@ const CreateAdForm = () => {
                                                                 required
                                                                 has_character_counter
                                                                 max_characters={300}
+                                                                onFocus={() => setFieldTouched('contact_info', true)}
                                                             />
                                                         )}
                                                     </Field>
@@ -408,6 +409,9 @@ const CreateAdForm = () => {
                                                         }
                                                         has_character_counter
                                                         max_characters={300}
+                                                        onFocus={() =>
+                                                            setFieldTouched('default_advert_description', true)
+                                                        }
                                                         required
                                                     />
                                                 )}

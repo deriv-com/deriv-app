@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
@@ -10,7 +10,6 @@ type TErrorModalProps = {
     error_modal_title?: string;
     has_close_icon?: boolean;
     onClose?: () => void;
-    width?: string;
 };
 
 const ErrorModal = ({
@@ -19,8 +18,9 @@ const ErrorModal = ({
     error_modal_title,
     has_close_icon,
     onClose,
-    width,
 }: TErrorModalProps) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     return (
@@ -30,7 +30,7 @@ const ErrorModal = ({
             is_open={is_modal_open}
             title={error_modal_title}
             toggleModal={onClose ?? hideModal}
-            width={width}
+            width={is_mobile ? '90rem' : '40rem'}
         >
             <Modal.Body className='error-modal__body'>
                 <Text>

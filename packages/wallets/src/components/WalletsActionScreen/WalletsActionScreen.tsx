@@ -10,7 +10,8 @@ type TProps = {
     renderButtons?: () =>
         | ReactElement<ComponentProps<'div'>>
         | ReactElement<ComponentProps<typeof WalletButton>>
-        | ReactElement<ComponentProps<typeof WalletButtonGroup>>;
+        | ReactElement<ComponentProps<typeof WalletButtonGroup>>
+        | null;
     title?: string;
     titleSize?: ComponentProps<typeof WalletText>['size'];
 };

@@ -1,6 +1,10 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import x from './messages.json';
+import generateKey from '../utils/generate-keys';
+import DE from './de.json';
+import EN from './en.json';
+import ID from './id.json';
+import MS from './ms.json';
 
 const DEFAULT_LANGUAGE = 'EN';
 
@@ -31,11 +35,17 @@ export const setLanguage = (lang: string) => {
 export const getCurrentLanguage = () => currentLanguage;
 
 const resources = {
-    EN: {
-        translations: x,
+    DE: {
+        translations: DE,
     },
-    FR: {
-        translations: x,
+    EN: {
+        translations: EN,
+    },
+    ID: {
+        translations: ID,
+    },
+    MS: {
+        translations: MS,
     },
 };
 
@@ -44,6 +54,14 @@ i18n.use(initReactI18next).init({
     fallbackLng: 'EN',
     lng: currentLanguage,
     ns: ['translations'],
+    react: {
+        bindI18n: 'loaded languageChanged',
+        bindI18nStore: 'added',
+        hashTransKey(defaultValue: string) {
+            return generateKey(defaultValue);
+        },
+        useSuspense: false,
+    },
     resources,
 });
 

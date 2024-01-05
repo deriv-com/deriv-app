@@ -2,10 +2,12 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { toGMTFormat, toLocalFormat } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import { Popover } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 
-const ServerTime = ({ is_mobile, server_time }) => {
+const ServerTime = observer(({ is_mobile }) => {
+    const { common } = useStore();
+    const { server_time } = common;
     const gmt_time = toGMTFormat(server_time);
     const local_time = toLocalFormat(server_time);
     return (
@@ -20,13 +22,10 @@ const ServerTime = ({ is_mobile, server_time }) => {
             {gmt_time}
         </Popover>
     );
-};
+});
 
 ServerTime.propTypes = {
     is_mobile: PropTypes.bool,
-    server_time: PropTypes.object,
 };
 
-export default connect(({ common }) => ({
-    server_time: common.server_time,
-}))(ServerTime);
+export default ServerTime;

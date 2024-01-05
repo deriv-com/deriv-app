@@ -1,8 +1,8 @@
 import React from 'react';
 import { THooks } from '../../types';
 import { WalletCurrencyCard } from '../WalletCurrencyCard';
-import WalletListCardIBalance from '../WalletListCardIBalance/WalletListCardIBalance';
-import WalletListCardIDetails from '../WalletListCardIDetails/WalletListCardIDetails';
+import WalletListCardBalance from '../WalletListCardBalance/WalletListCardBalance';
+import WalletListCardDetails from '../WalletListCardDetails/WalletListCardDetails';
 import './WalletListCard.scss';
 
 type TProps = {
@@ -21,16 +21,15 @@ const WalletListCard: React.FC<TProps> = ({ badge, balance, currency, isActive, 
             <div className='wallets-list-header__details-container'>
                 <WalletCurrencyCard currency={currency} isDemo={isDemo} />
 
-                <WalletListCardIDetails
+                <WalletListCardDetails
                     badge={badge}
-                    currency={currency}
                     isActive={isActive}
                     isDemo={isDemo}
                     loginid={loginid}
                     title={title}
                 />
             </div>
-            <WalletListCardIBalance balance={balance} />
+            <WalletListCardBalance balance={balance} />
         </div>
     </div>
 );

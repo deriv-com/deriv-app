@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 import { Field, useFormikContext } from 'formik';
-
 import {
     Autocomplete,
     Checkbox,
@@ -28,7 +27,7 @@ const PersonalDetailsForm = props => {
     const {
         inline_note_text,
         is_virtual,
-        is_mf,
+        is_eu_user,
         is_svg,
         is_rendered_for_idv,
         editable_fields = [],
@@ -50,7 +49,7 @@ const PersonalDetailsForm = props => {
     } = props;
     const autocomplete_value = 'none';
     // need to put this check related to DIEL clients
-    const is_svg_only = is_svg && !is_mf;
+    const is_svg_only = is_svg && !is_eu_user;
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
@@ -65,7 +64,7 @@ const PersonalDetailsForm = props => {
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
     const getNameAndDobLabels = () => {
-        const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_rendered_for_idv;
+        const is_asterisk_needed = is_svg || is_eu_user || is_rendered_for_onfido || is_rendered_for_idv;
         const first_name_label = is_asterisk_needed ? localize('First name*') : localize('First name');
         const last_name_label = is_asterisk_needed ? localize('Last name*') : localize('Last name');
         const dob_label = is_asterisk_needed ? localize('Date of birth*') : localize('Date of birth');
@@ -142,7 +141,7 @@ const PersonalDetailsForm = props => {
                     type='image'
                 >
                     <fieldset className='account-form__fieldset'>
-                        {'salutation' in values && (
+                        {'salutation' in values && !is_eu_user && (
                             <div>
                                 <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
                                     {is_virtual ? (
@@ -165,7 +164,7 @@ const PersonalDetailsForm = props => {
                                 </Text>
                             </div>
                         )}
-                        {is_mf && !is_rendered_for_onfido && !is_qualified_for_poa && (
+                        {is_eu_user && !is_rendered_for_onfido && !is_qualified_for_poa && (
                             <FormSubHeader
                                 title={'salutation' in values ? localize('Title and name') : localize('Name')}
                             />
@@ -224,7 +223,7 @@ const PersonalDetailsForm = props => {
                                 data-testid='last_name'
                             />
                         )}
-                        {is_mf && !is_qualified_for_poa && <FormSubHeader title={localize('Other details')} />}
+                        {is_eu_user && !is_qualified_for_poa && <FormSubHeader title={localize('Other details')} />}
                         {'date_of_birth' in values && (
                             <DateOfBirthField
                                 name='date_of_birth'
@@ -371,7 +370,7 @@ const PersonalDetailsForm = props => {
                                                 data-lpignore='true'
                                                 autoComplete={autocomplete_value} // prevent chrome autocomplete
                                                 type='text'
-                                                label={is_mf ? localize('Citizenship*') : localize('Citizenship')}
+                                                label={is_eu_user ? localize('Citizenship*') : localize('Citizenship')}
                                                 error={touched.citizen && errors.citizen}
                                                 disabled={
                                                     (values?.citizen && is_fully_authenticated) ||
@@ -396,7 +395,7 @@ const PersonalDetailsForm = props => {
                                                     isFieldImmutable('citizen', editable_fields) ||
                                                     (values?.citizen && has_real_account)
                                                 }
-                                                label={is_mf ? localize('Citizenship*') : localize('Citizenship')}
+                                                label={is_eu_user ? localize('Citizenship*') : localize('Citizenship')}
                                                 list_items={residence_list}
                                                 value={values.citizen}
                                                 use_text
@@ -451,7 +450,7 @@ const PersonalDetailsForm = props => {
                                         <DesktopWrapper>
                                             <Dropdown
                                                 placeholder={
-                                                    is_mf
+                                                    is_eu_user
                                                         ? localize('Employment status*')
                                                         : localize('Employment status')
                                                 }
@@ -470,7 +469,7 @@ const PersonalDetailsForm = props => {
                                                 placeholder={localize('Please select')}
                                                 name='employment_status'
                                                 label={
-                                                    is_mf
+                                                    is_eu_user
                                                         ? localize('Employment status*')
                                                         : localize('Employment status')
                                                 }

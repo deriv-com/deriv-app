@@ -26,7 +26,7 @@ export const STRATEGY_1_3_2_6: TDescriptionItem[] = [
     },
     {
         type: 'text',
-        content: [localize('These are the trade parameters used in Deriv Bot with strategy.')],
+        content: [localize('These are the trade parameters used in Deriv Bot with 1-3-2-6 strategy.')],
     },
     {
         type: 'text',

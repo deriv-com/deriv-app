@@ -46,7 +46,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         [ctraderAccountsList, dxtradeAccountsList, mt5Account]
     );
 
-    const shouldShowMT5AccountBalance = useMemo(() => {
+    const shouldShowAccountBalance = useMemo(() => {
         if (
             platform === mt5Platform &&
             platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]?.status ===
@@ -122,9 +122,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                         </div>
                     </div>
                     <div className='wallets-mt5-trade-screen__details-description--right'>
-                        {shouldShowMT5AccountBalance && (
-                            <WalletText weight='bold'>{details?.display_balance}</WalletText>
-                        )}
+                        {shouldShowAccountBalance && <WalletText weight='bold'>{details?.display_balance}</WalletText>}
                         {migrationMessage}
                     </div>
                 </div>

@@ -112,7 +112,7 @@ const TransferReceipt = () => {
                 </WalletText>
             </div>
             <div className='wallets-transfer-receipt__button'>
-                <WalletButton onClick={() => resetTransfer()} size='lg'>
+                <WalletButton onClick={() => resetTransfer()} size='lg' textSize='sm'>
                     Make a new transfer
                 </WalletButton>
             </div>

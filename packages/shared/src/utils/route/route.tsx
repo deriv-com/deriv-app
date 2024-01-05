@@ -28,8 +28,7 @@ type TGetSelectedRoute = {
     pathname: string;
 };
 
-// @ts-expect-error as this is a utility function with dynamic types
-export const matchRoute = <T,>(route: T, pathname: string) => new RegExp(`^${route?.path}(/.*)?$`).test(pathname);
+export const matchRoute = (route: TRoute, pathname: string) => new RegExp(`^${route?.path}(/.*)?$`).test(pathname);
 
 export const getSelectedRoute = ({ routes, pathname }: TGetSelectedRoute) => {
     const matching_route = routes.find(route => matchRoute(route, pathname));
@@ -44,7 +43,7 @@ export const isRouteVisible = (route: TRoute, is_logged_in: boolean) =>
 
 export const removePasskeysFromRoutes = (routes_array: TRoute[]) => {
     return (deepCopy(routes_array) as TRoute[]).filter(route => {
-        if (route.icon === 'IcSecurity') {
+        if (route?.id === 'security_routes') {
             route.subroutes = route.subroutes?.filter(subroute => subroute.path !== routes.passkeys);
         }
         return route;

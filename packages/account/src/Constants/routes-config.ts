@@ -112,6 +112,7 @@ const initRoutesConfig = () => [
             {
                 getTitle: () => localize('Security and safety'),
                 icon: 'IcSecurity',
+                id: 'security_routes',
                 subroutes: [
                     {
                         path: routes.passwords,

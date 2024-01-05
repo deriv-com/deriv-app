@@ -252,7 +252,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 <Icon icon={'IcHamburger'} width='16px' height='16px' className='header__mobile-drawer-icon' />
             </a>
             <MobileDrawer
-                alignment={'left'}
+                alignment='left'
                 icon_class='header__menu-toggle'
                 is_open={is_open}
                 transitionExit={transitionExit}

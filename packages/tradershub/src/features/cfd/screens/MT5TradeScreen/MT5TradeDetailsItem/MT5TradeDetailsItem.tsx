@@ -6,9 +6,9 @@ import EditIcon from '../../../../../public/images/ic-edit.svg';
 
 type TMT5TradeDetailsItemProps = {
     className?: string;
-    label: string;
+    label?: string;
     value: string;
-    variant: 'clipboard' | 'password';
+    variant?: 'clipboard' | 'info' | 'password';
 };
 
 const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ className, label, value, variant = 'clipboard' }) => {

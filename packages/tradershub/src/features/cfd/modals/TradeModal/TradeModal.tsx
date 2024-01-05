@@ -2,9 +2,10 @@ import React, { FC, useEffect } from 'react';
 import { Provider } from '@deriv/library';
 import { Modal } from '../../../../components/Modal';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
+import { MT5TradeScreen } from '../../screens/MT5TradeScreen';
 
 type TTradeModalProps = {
-    account?: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
+    account?: THooks.MT5AccountsList;
     marketType?: TMarketTypes.All;
     platform: TPlatforms.All;
 };
@@ -19,12 +20,12 @@ const TradeModal: FC<TTradeModalProps> = ({ account, marketType, platform }) => 
     }, []);
 
     return (
-        // <ModalTradeWrapper platform={platform}>
-        //     <TradeScreen mt5Account={mt5Account} />
-        // </ModalTradeWrapper>
         <Modal>
-            <Modal.Content className='overflow-y-scroll'>Interesting</Modal.Content>
+            <MT5TradeScreen mt5Account={account} />
         </Modal>
+        // <Modal>
+        //     <Modal.Content className='overflow-y-scroll'>Interesting</Modal.Content>
+        // </Modal>
     );
 };
 

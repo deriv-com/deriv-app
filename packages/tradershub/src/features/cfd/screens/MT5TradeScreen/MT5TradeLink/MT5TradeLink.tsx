@@ -7,6 +7,7 @@ import { AppToContentMapper, PlatformDetails, PlatformToLabelIconMapper, Platfor
 
 type TMT5TradeLinkProps = {
     app?: keyof typeof AppToContentMapper;
+    isDemo?: boolean;
     platform?: TPlatforms.All;
     webtraderUrl?: THooks.MT5AccountsList['webtrader_url'];
 };

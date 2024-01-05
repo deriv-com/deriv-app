@@ -1,6 +1,7 @@
 export * from './AccountsList';
 export * from './AppCard';
 export * from './Base';
+export * from './DatePicker';
 export * from './DerivAppsSection';
 export * from './DesktopWalletsList';
 export * from './Dropzone';
@@ -24,7 +25,7 @@ export * from './WalletListCard';
 export * from './WalletListCardActions';
 export * from './WalletListCardBadge';
 export * from './WalletListCardBalance';
-export * from './WalletListCardIDetails';
+export * from './WalletListCardDetails';
 export * from './WalletListCardTitle';
 export * from './WalletNoWalletFoundState';
 export * from './WalletsAccordion';

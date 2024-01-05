@@ -4,13 +4,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 
 import RealAccountSignup from '../real-account-signup.jsx';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { Analytics } from '@deriv/analytics';
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -41,62 +36,92 @@ jest.mock('../account-wizard.jsx', () => ({
 }));
 
 describe('<RealAccountSignup />', () => {
-    const mock_props = {
-        available_crypto_currencies: [],
-        closeRealAccountSignup: jest.fn(),
-        country_standpoint: '',
-        currency: 'USD',
-        deposit_real_account_signup_target: 'mf',
-        deposit_target: '',
-        redirectToLegacyPlatform: jest.fn(),
-        fetchAccountSettings: jest.fn(),
-        fetchFinancialAssessment: jest.fn(),
-        has_fiat: false,
-        has_real_account: false,
-        is_belgium_residence: false,
-        is_from_restricted_country: false,
-        is_isle_of_man_residence: false,
-        is_real_acc_signup_on: true,
-        real_account_signup_target: 'maltainvest',
-        realAccountSignup: jest.fn(),
-        setCFDScore: jest.fn(),
-        setIsDeposit: jest.fn(),
-        setIsTradingAssessmentForNewUserEnabled: jest.fn(),
-        setIsClosingCreateRealAccountModal: jest.fn(),
-        setParams: jest.fn(),
-        setShouldShowAppropriatenessWarningModal: jest.fn(),
-        setShouldShowRiskWarningModal: jest.fn(),
-        setShouldShowVerifiedAccount: jest.fn(),
-        should_show_all_available_currencies: true,
-        should_show_appropriateness_warning_modal: false,
-        should_show_risk_warning_modal: false,
-        state_value: {
-            active_modal_index: -1,
-            previous_currency: '',
-            current_currency: '',
-            success_message: '',
-            error_message: '',
+    const store = mockStore({
+        client: {
+            available_crypto_currencies: [],
+            country_standpoint: '',
+            currency: 'USD',
+            fetchAccountSettings: jest.fn(),
+            residence: 'gb',
+            has_active_real_account: false,
+            has_fiat: false,
+            is_from_restricted_country: false,
+            realAccountSignup: jest.fn(),
+            redirectToLegacyPlatform: jest.fn(),
         },
-        show_eu_related_content: true,
-        is_trading_assessment_for_new_user_enabled: false,
-    };
-
-    const renderwithRouter = component => {
-        render(<BrowserRouter>{component}</BrowserRouter>);
+        traders_hub: {
+            show_eu_related_content: true,
+        },
+        modules: {
+            cashier: {
+                general_store: {
+                    deposit_target: '',
+                    setIsDeposit: jest.fn(),
+                },
+            },
+        },
+        ui: {
+            closeRealAccountSignup: jest.fn(),
+            deposit_real_account_signup_target: 'mf',
+            is_real_acc_signup_on: true,
+            real_account_signup_target: 'maltainvest',
+            setIsTradingAssessmentForNewUserEnabled: jest.fn(),
+            setIsClosingCreateRealAccountModal: jest.fn(),
+            setRealAccountSignupParams: jest.fn(),
+            setShouldShowAppropriatenessWarningModal: jest.fn(),
+            setShouldShowRiskWarningModal: jest.fn(),
+            setShouldShowVerifiedAccount: jest.fn(),
+            should_show_all_available_currencies: true,
+            should_show_appropriateness_warning_modal: false,
+            should_show_risk_warning_modal: false,
+            real_account_signup: {
+                active_modal_index: -1,
+                previous_currency: '',
+                current_currency: '',
+                success_message: '',
+                error_message: '',
+            },
+            is_trading_assessment_for_new_user_enabled: false,
+        },
+        fetchFinancialAssessment: jest.fn(),
+        setCFDScore: jest.fn(),
+    });
+    const renderComponent = (mock_store = mockStore({})) => {
+        return render(
+            <StoreProvider store={mock_store}>
+                <BrowserRouter>
+                    <RealAccountSignup />
+                </BrowserRouter>
+            </StoreProvider>
+        );
     };
 
     it('should render RealAccountSignupModal if is_real_account_signup is true', () => {
-        renderwithRouter(<RealAccountSignup {...mock_props} />);
+        renderComponent(store);
         expect(screen.getByText('RealAccountModalContent')).toBeInTheDocument();
     });
 
     it('should call Analytics.trackEvent on mount if real account signup target is not maltainvest', () => {
-        renderwithRouter(<RealAccountSignup {...mock_props} real_account_signup_target='svg' />);
+        const updatedStore = {
+            ...store,
+            ui: {
+                ...store.ui,
+                real_account_signup_target: 'svg',
+            },
+        };
+        renderComponent(updatedStore);
         expect(Analytics.trackEvent).toHaveBeenCalled();
     });
 
     it('should render TestWarningModal if should_show_appropriateness_warning_modal is set to true', () => {
-        renderwithRouter(<RealAccountSignup {...mock_props} should_show_appropriateness_warning_modal />);
+        const updatedStore = {
+            ...store,
+            ui: {
+                ...store.ui,
+                should_show_appropriateness_warning_modal: true,
+            },
+        };
+        renderComponent(updatedStore);
         expect(screen.getByText('TestWarningModal')).toBeInTheDocument();
         expect(screen.queryByText('RealAccountModalContent')).not.toBeInTheDocument();
     });

@@ -92,6 +92,7 @@ const TradeTypeSelect: React.FC = () => {
                     return (
                         <Autocomplete
                             {...field}
+                            readOnly
                             inputMode='none'
                             data-testid='qs_autocomplete_tradetype'
                             autoComplete='off'

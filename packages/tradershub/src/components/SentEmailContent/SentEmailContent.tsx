@@ -55,6 +55,24 @@ const SentEmailContent: FC<TProps> = ({ description, isInvestorPassword = false,
         );
     };
 
+    const handleButtonClick = () => {
+        if (data?.email) {
+            verifyEmail({
+                type:
+                    platform === mt5Platform
+                        ? 'trading_platform_mt5_password_reset'
+                        : 'trading_platform_dxtrade_password_reset',
+                url_parameters: {
+                    redirect_to: platformPasswordResetRedirectLink(platform ?? mt5Platform, activeTrading?.is_virtual),
+                },
+                verify_email: data?.email,
+            });
+            resetCountdown();
+            startCountdown();
+            setHasCountdownStarted(true);
+        }
+    };
+
     return (
         <div className='w-full lg:w-[400px] inline-flex p-1600 flex-col justify-center items-center gap-1200 rounded-400 bg-system-light-primary-background'>
             <ActionScreen
@@ -77,29 +95,7 @@ const SentEmailContent: FC<TProps> = ({ description, isInvestorPassword = false,
                             />
                         </div>
                     )}
-                    <Button
-                        disabled={hasCountdownStarted}
-                        onClick={() => {
-                            if (data?.email) {
-                                verifyEmail({
-                                    type:
-                                        platform === mt5Platform
-                                            ? 'trading_platform_mt5_password_reset'
-                                            : 'trading_platform_dxtrade_password_reset',
-                                    url_parameters: {
-                                        redirect_to: platformPasswordResetRedirectLink(
-                                            platform ?? mt5Platform,
-                                            activeTrading?.is_virtual
-                                        ),
-                                    },
-                                    verify_email: data?.email,
-                                });
-                                resetCountdown();
-                                startCountdown();
-                                setHasCountdownStarted(true);
-                            }
-                        }}
-                    >
+                    <Button disabled={hasCountdownStarted} onClick={handleButtonClick}>
                         {hasCountdownStarted ? `Resend email in ${count}` : 'Resend email'}
                     </Button>
                 </Fragment>

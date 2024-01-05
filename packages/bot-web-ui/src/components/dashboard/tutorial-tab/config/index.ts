@@ -501,7 +501,7 @@ export const quick_strategy_content: TQuickStrategyContent[] = [
         search_id: 'qs-4',
     },
     {
-        qs_name: '1_3_2_6',
+        qs_name: 'STRATEGY_1_3_2_6',
         type: localize('About 1-3-2-6'),
         content: [localize('Exploring the 1-3-2-6 strategy in Deriv Bot'), localize('An example of 1-3-2-6 strategy')],
         search_id: 'qs-5',

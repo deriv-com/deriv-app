@@ -5,6 +5,7 @@ import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
 import { POIProvider } from '@deriv/shared';
+import { BreakpointProvider } from '@deriv/quill-design';
 
 // TODO: add correct types for WS after implementing them
 type TAppProps = {
@@ -21,13 +22,15 @@ const App = ({ passthrough }: TAppProps) => {
 
     return (
         <StoreProvider store={root_store}>
-            <APIProvider>
-                <POIProvider>
-                    {Notifications && <Notifications />}
-                    <Routes />
-                    <ResetTradingPassword />
-                </POIProvider>
-            </APIProvider>
+            <BreakpointProvider>
+                <APIProvider>
+                    <POIProvider>
+                        {Notifications && <Notifications />}
+                        <Routes />
+                        <ResetTradingPassword />
+                    </POIProvider>
+                </APIProvider>
+            </BreakpointProvider>
         </StoreProvider>
     );
 };

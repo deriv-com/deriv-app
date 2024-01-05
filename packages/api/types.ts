@@ -1867,6 +1867,27 @@ type TPrivateSocketEndpoints = {
     };
 };
 
+//TODO remove custom passkeys types after implementing them inside api-types
+type PasskeysListRequest = {
+    passkeys_list: 1;
+    req_id?: number;
+};
+type PasskeysListResponse = {
+    passkeys_list?: {
+        id: number;
+        name: string;
+        last_used_at: number;
+        created_at: number;
+        stored_on?: unknown;
+    }[];
+    echo_req: {
+        [k: string]: unknown;
+    };
+    msg_type: 'passkeys_list';
+    req_id?: number;
+    [k: string]: unknown;
+};
+
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
@@ -2159,6 +2180,10 @@ type TSocketEndpoints = {
     p2p_ping: {
         request: P2PPingRequest;
         response: P2PPingResponse;
+    };
+    passkeys_list: {
+        request: PasskeysListRequest;
+        response: PasskeysListResponse;
     };
     payment_methods: {
         request: PaymentMethodsRequest;

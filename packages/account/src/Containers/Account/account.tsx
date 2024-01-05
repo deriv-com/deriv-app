@@ -31,12 +31,12 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
         should_allow_authentication,
         should_allow_poinc_authentication,
     } = client;
-    const { toggleAccountSettings, is_account_settings_visible, is_mobile } = ui;
+    const { toggleAccountSettings, is_account_settings_visible, is_mobile, is_desktop } = ui;
     const { is_passkeys_enabled } = React.useContext(PlatformContext);
     const [available_routes, setAvailableRoutes] = React.useState(routes);
     const { is_passkey_supported, is_loading } = useIsPasskeySupported();
 
-    const should_remove_passkey_route = !is_passkeys_enabled || (!is_mobile && !is_passkey_supported);
+    const should_remove_passkey_route = !is_passkeys_enabled || is_desktop || (is_mobile && !is_passkey_supported);
 
     React.useEffect(() => {
         if (is_loading) return;

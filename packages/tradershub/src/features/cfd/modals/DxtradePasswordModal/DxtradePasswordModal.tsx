@@ -6,8 +6,9 @@ import {
     useCreateOtherCFDAccount,
     useDxtradeAccountsList,
 } from '@deriv/api';
+import { Provider } from '@deriv/library';
 import { Button, useBreakpoint } from '@deriv/quill-design';
-import { ActionScreen, ButtonGroup, Dialog, ModalStepWrapper, useModal } from '../../../../components';
+import { ActionScreen, ButtonGroup, Dialog, ModalStepWrapper } from '../../../../components';
 import DxTradePasswordIcon from '../../../../public/images/cfd/dxtrade-password.svg';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
@@ -20,7 +21,7 @@ const DxtradePasswordModal = () => {
     const { error, isLoading, isSuccess, mutate, status } = useCreateOtherCFDAccount();
     const { isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
-    const { hide } = useModal();
+    const { hide } = Provider.useModal();
     const accountType = activeTrading?.is_virtual ? 'demo' : 'real';
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
 

@@ -19,7 +19,7 @@ const cumulativeAccountLimitsMessageFn = ({
     const isDemoTransfer = activeWallet?.is_virtual;
 
     const keyAccountType =
-        [sourceAccount, targetAccount].find(acc => acc.account_category !== 'wallet')?.account_type ?? 'wallets';
+        [sourceAccount, targetAccount].find(acc => acc.account_category !== 'wallet')?.account_type ?? 'internal';
 
     const platformKey = keyAccountType === 'standard' ? 'dtrade' : keyAccountType;
 
@@ -39,7 +39,9 @@ const cumulativeAccountLimitsMessageFn = ({
         !sourceAccount.currency ||
         !targetAccount.currency ||
         !sourceAccount.currencyConfig ||
-        !targetAccount.currencyConfig
+        !targetAccount.currencyConfig ||
+        !allowedSumUSD ||
+        !availableSumUSD
     )
         return null;
 

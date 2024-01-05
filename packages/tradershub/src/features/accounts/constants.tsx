@@ -1,3 +1,4 @@
+import { ComponentType, ReactNode, SVGAttributes } from 'react';
 import IcBlurryDocument from '../../public/images/accounts/ic-blurry-document.svg';
 import IcCroppedDocument from '../../public/images/accounts/ic-cropped-document.svg';
 import IcDocumentAddressMismatch from '../../public/images/accounts/ic-document-address-mismatch.svg';
@@ -7,8 +8,8 @@ import IcOldIssuedDocument from '../../public/images/accounts/ic-old-issued-docu
 import { THooks } from '../../types';
 
 type TExampleImageConfig = {
-    description: React.ReactNode;
-    image: React.ComponentType<React.SVGAttributes<SVGElement>>;
+    description: ReactNode;
+    image: ComponentType<SVGAttributes<SVGElement>>;
 };
 
 type TStatusCodes = Exclude<THooks.POA['status'] | THooks.POI['current']['status'], undefined>;

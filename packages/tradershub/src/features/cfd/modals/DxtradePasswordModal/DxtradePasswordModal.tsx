@@ -21,6 +21,7 @@ const DxtradePasswordModal = () => {
     const { error, isLoading, isSuccess, mutate, status } = useCreateOtherCFDAccount();
     const { isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
+    const isDemo = activeTrading?.is_virtual;
     const { hide } = Provider.useModal();
     const accountType = activeTrading?.is_virtual ? 'demo' : 'real';
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
@@ -37,12 +38,6 @@ const DxtradePasswordModal = () => {
             },
         });
     }, [mutate, accountType, password, dxtradePlatform]);
-
-    const successDescription = useMemo(() => {
-        return accountType === 'demo'
-            ? `Congratulations, you have successfully created your demo Deriv X account.`
-            : `Congratulations, you have successfully created your real Deriv X account. To start trading, transfer funds from your Deriv account into this account.`;
-    }, [accountType]);
 
     const renderFooter = useMemo(() => {
         if (isSuccess) {
@@ -97,16 +92,21 @@ const DxtradePasswordModal = () => {
     }, [accountType, hide, history, isDxtradePasswordNotSet, isLoading, isSuccess, onSubmit, password]);
 
     const successComponent = useMemo(() => {
+        const renderSuccessDescription = () => {
+            return isDemo
+                ? `Congratulations, you have successfully created your demo Deriv X account.`
+                : `Congratulations, you have successfully created your real Deriv X account. To start trading, transfer funds from your Deriv account into this account.`;
+        };
         if (isSuccess && dxtradeAccountListSuccess) {
             return (
                 <CFDSuccess
-                    description={successDescription}
+                    description={renderSuccessDescription()}
                     platform={dxtradePlatform}
                     renderButtons={() => renderFooter}
                 />
             );
         }
-    }, [isSuccess, dxtradeAccountListSuccess, successDescription, dxtradePlatform, renderFooter]);
+    }, [isSuccess, dxtradeAccountListSuccess, isDemo, dxtradePlatform, renderFooter]);
 
     const passwordComponent = useMemo(() => {
         if (!isSuccess && accountStatusSuccess) {

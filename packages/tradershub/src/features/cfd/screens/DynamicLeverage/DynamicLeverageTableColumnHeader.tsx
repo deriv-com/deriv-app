@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { CaptionText, Text } from '@deriv/quill-design';
 
 type TDynamicLeverageTableColumnHeader = {
@@ -6,7 +6,7 @@ type TDynamicLeverageTableColumnHeader = {
     title: string;
 };
 
-export const DynamicLeverageTableColumnHeader: FC<TDynamicLeverageTableColumnHeader> = ({ subtitle, title }) => (
+export const DynamicLeverageTableColumnHeader = ({ subtitle, title }: TDynamicLeverageTableColumnHeader) => (
     <div className='flex flex-col'>
         <Text align='center' bold size='sm'>
             {title}

@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useOnClickOutside } from 'usehooks-ts';
+import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
 import { Button, qtMerge, Text } from '@deriv/quill-design';
 import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
 
@@ -13,9 +15,23 @@ const accountTypes = [
 ];
 
 const DemoRealSwitcher = () => {
+    const { data: tradingAccountsList } = useTradingAccountsList();
+    const { data: activeTradingAccount } = useActiveTradingAccount();
+    const { switchAccount } = useAuthorize();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selected, setSelected] = useState(accountTypes[0]);
     const { label, value } = selected;
+
+    const ref = useRef(null);
+    useOnClickOutside(ref, () => setIsDropdownOpen(false));
+
+    useEffect(() => {
+        const activeAccountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
+        const activeAccount = accountTypes.find(account => account.value === activeAccountType);
+        if (activeAccount) {
+            setSelected(activeAccount);
+        }
+    }, [activeTradingAccount]);
 
     useEffect(() => {
         setIsDropdownOpen(false);
@@ -25,12 +41,21 @@ const DemoRealSwitcher = () => {
         setIsDropdownOpen(prevState => !prevState);
     }, []);
 
-    const selectAccount = useCallback((account: TAccount) => {
+    const firstRealLoginId = tradingAccountsList?.find(acc => !acc.is_virtual)?.loginid;
+
+    const demoLoginId = tradingAccountsList?.find(acc => acc.is_virtual)?.loginid;
+
+    const selectAccount = (account: TAccount) => {
         setSelected(account);
-    }, []);
+
+        const loginId = account.value === 'demo' ? demoLoginId : firstRealLoginId;
+        if (loginId) {
+            switchAccount(loginId);
+        }
+    };
 
     return (
-        <div className='relative inline-block w-auto'>
+        <div className='relative inline-block w-auto' ref={ref}>
             <Button
                 className={qtMerge(
                     'cursor-pointer w-full py-[3px] px-400 border-75 rounded-200 [&>span]:flex [&>span]:items-center [&>span]:text-[14px]',
@@ -54,11 +79,11 @@ const DemoRealSwitcher = () => {
                 />
             </Button>
             {isDropdownOpen && (
-                <div className='absolute top-1400 z-10 rounded-200 bg-system-light-primary-background shadow-320 w-full'>
+                <div className='absolute z-10 w-full top-1400 rounded-200 bg-system-light-primary-background shadow-320'>
                     {accountTypes.map(account => (
                         <div
                             className={qtMerge(
-                                'cursor-pointer hover:bg-system-light-hover-background',
+                                'cursor-pointer hover:bg-system-light-hover-background rounded-200',
                                 account.value === value && 'bg-system-light-active-background'
                             )}
                             key={account.value}
@@ -70,7 +95,7 @@ const DemoRealSwitcher = () => {
                             }}
                             role='button'
                         >
-                            <Text bold={account.value === value} className='px-800 py-300 text-center' size='sm'>
+                            <Text bold={account.value === value} className='text-center px-800 py-300' size='sm'>
                                 {account.label}
                             </Text>
                         </div>

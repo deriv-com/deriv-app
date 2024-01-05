@@ -33,6 +33,8 @@
             padding: 0 1.6rem 1.6rem;
             gap: 1.6rem;
             overflow-y: unset;
+            //prevent content bouncing on scroll on iPhone devices
+            overscroll-behavior: none;
         }
     }
 

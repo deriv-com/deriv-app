@@ -30,7 +30,6 @@
         overflow-y: auto;
 
         @include mobile {
-            margin-top: 6rem;
             padding: 0 1.6rem 1.6rem;
             gap: 1.6rem;
             overflow-y: unset;
@@ -88,7 +87,8 @@
         border-bottom: 2px solid var(--system-light-7-secondary-background, #f2f3f4);
 
         @include mobile {
-            position: fixed;
+            position: sticky;
+            top: -2.4rem;
             left: 0;
             right: 0;
             border: none;

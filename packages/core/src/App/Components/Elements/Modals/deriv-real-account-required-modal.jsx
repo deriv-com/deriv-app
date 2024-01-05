@@ -1,18 +1,19 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 import './deriv-real-account-required-modal.scss';
 
-const DerivRealAccountRequiredModal = ({
-    is_open,
-    onClose,
-    disableApp,
-    enableApp,
-    openRealAccountSignup,
-    is_eu_user,
-}) => {
+const DerivRealAccountRequiredModal = observer(() => {
+    const { ui, traders_hub } = useStore();
+    const { is_eu_user } = traders_hub;
+    const {
+        is_deriv_account_needed_modal_visible: is_open,
+        openDerivRealAccountNeededModal: onClose,
+        disableApp,
+        enableApp,
+        openRealAccountSignup,
+    } = ui;
     const createAccount = () => {
         if (is_eu_user) {
             onClose();
@@ -40,22 +41,6 @@ const DerivRealAccountRequiredModal = ({
             {localize('A Deriv account will allow you to fund (and withdraw from) your CFDs account(s).')}
         </Dialog>
     );
-};
+});
 
-DerivRealAccountRequiredModal.propTypes = {
-    is_open: PropTypes.bool,
-    onClose: PropTypes.func,
-    disableApp: PropTypes.func,
-    enableApp: PropTypes.func,
-    openRealAccountSignup: PropTypes.func,
-    is_eu_user: PropTypes.string,
-};
-
-export default connect(({ ui, traders_hub }) => ({
-    is_open: ui.is_deriv_account_needed_modal_visible,
-    onClose: ui.openDerivRealAccountNeededModal,
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-    openRealAccountSignup: ui.openRealAccountSignup,
-    is_eu_user: traders_hub.is_eu_user,
-}))(DerivRealAccountRequiredModal);
+export default DerivRealAccountRequiredModal;

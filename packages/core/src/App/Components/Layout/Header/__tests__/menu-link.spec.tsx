@@ -8,15 +8,6 @@ import { getStaticUrl, isMobile, routes } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import MenuLink from 'App/Components/Layout/Header/menu-link';
 
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect:
-        () =>
-        <T,>(Component: T) =>
-            Component,
-}));
-
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Icon: jest.fn(() => <div>Mock Link Icon</div>),

@@ -3,6 +3,7 @@ import { formatDate, formatTime } from '@deriv/shared';
 import { Text } from '@deriv/components';
 
 type TContractAuditItem = {
+    additional_info?: React.ReactNode | string;
     icon?: React.ReactNode;
     id: string;
     label?: string;
@@ -11,7 +12,7 @@ type TContractAuditItem = {
     value2?: React.ReactNode;
 };
 
-const ContractAuditItem = ({ icon, id, label, timestamp, value, value2 }: TContractAuditItem) => (
+const ContractAuditItem = ({ additional_info, icon, id, label, timestamp, value, value2 }: TContractAuditItem) => (
     <div id={id} className='contract-audit__grid' data-testid={id}>
         {icon && <div className='contract-audit__icon'>{icon}</div>}
         <div className='contract-audit__item'>
@@ -25,6 +26,16 @@ const ContractAuditItem = ({ icon, id, label, timestamp, value, value2 }: TContr
                 {value2 && (
                     <Text weight='bold' size='xxs' line_height='m' color='prominent' className='contract-audit__value2'>
                         {value2}
+                    </Text>
+                )}
+                {additional_info && (
+                    <Text
+                        size='xxxs'
+                        line_height='s'
+                        color='less-prominent'
+                        className='contract-audit__timestamp-value'
+                    >
+                        {additional_info}
                     </Text>
                 )}
             </div>

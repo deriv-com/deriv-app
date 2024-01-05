@@ -8,7 +8,7 @@ import { TDescriptionItem } from '../types';
 type TFormTabs = {
     active_tab: string;
     onChange: (tab: string) => void;
-    description?: TDescriptionItem[];
+    description?: TDescriptionItem[] | string;
 };
 
 const FormTabs: React.FC<TFormTabs> = observer(({ active_tab, onChange, description }) => (

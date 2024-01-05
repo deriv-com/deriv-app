@@ -1,14 +1,7 @@
 import React from 'react';
-import { Button, Modal, Text, StaticUrl } from '@deriv/components';
+import { Button, Modal, Text, HintBox } from '@deriv/components';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import {
-    getFormattedJurisdictionCode,
-    Jurisdiction,
-    JURISDICTION_MARKET_TYPES,
-    DBVI_COMPANY_NAMES,
-    CFD_PLATFORMS,
-    getCFDPlatformNames,
-} from '@deriv/shared';
+import { CFD_PLATFORMS, Jurisdiction, getCFDPlatformNames } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import MT5MigrationAccountIcons from './mt5-migration-account-icons';
@@ -21,14 +14,7 @@ const MT5MigrationFrontSideContent = observer(() => {
     const { setAppstorePlatform } = common;
     const { enableCFDPasswordModal, mt5_migration_error, setJurisdictionSelectedShortcode } = useCfdStore();
     const content_size = is_mobile ? 'xxs' : 'xs';
-    const {
-        eligible_account_to_migrate_label,
-        eligible_svg_to_bvi_derived_accounts,
-        eligible_svg_to_bvi_financial_accounts,
-        eligible_svg_to_vanuatu_derived_accounts,
-        eligible_svg_to_vanuatu_financial_accounts,
-        getEligibleAccountToMigrate,
-    } = useMT5SVGEligibleToMigrate();
+    const { getEligibleAccountToMigrate } = useMT5SVGEligibleToMigrate();
 
     const onConfirmMigration = () => {
         setAppstorePlatform(CFD_PLATFORMS.MT5);
@@ -53,54 +39,35 @@ const MT5MigrationFrontSideContent = observer(() => {
             <div className='mt5-migration-modal__description'>
                 <Text as='p' size={content_size} align='center'>
                     <Localize
-                        i18n_default_text='We’re upgrading your {{from_account}} account(s) by moving them to the {{to_account}} jurisdiction.'
+                        i18n_default_text='We are giving you a new {{platform}} account(s) to enhance your trading experience'
                         values={{
-                            from_account: getFormattedJurisdictionCode(Jurisdiction.SVG),
-                            to_account: eligible_account_to_migrate_label,
+                            platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                         }}
                     />
                 </Text>
             </div>
             <div className='mt5-migration-modal__migration_content'>
                 <div className='mt5-migration-modal__migration_content-items'>
-                    {eligible_svg_to_bvi_derived_accounts && (
-                        <MT5MigrationAccountIcons to={Jurisdiction.BVI} type={JURISDICTION_MARKET_TYPES.DERIVED} />
-                    )}
-                    {eligible_svg_to_bvi_financial_accounts && (
-                        <MT5MigrationAccountIcons to={Jurisdiction.BVI} type={JURISDICTION_MARKET_TYPES.FINANCIAL} />
-                    )}
-                </div>
-                <div className='mt5-migration-modal__migration_content-items'>
-                    {eligible_svg_to_vanuatu_derived_accounts && (
-                        <MT5MigrationAccountIcons to={Jurisdiction.VANUATU} type={JURISDICTION_MARKET_TYPES.DERIVED} />
-                    )}
-                    {eligible_svg_to_vanuatu_financial_accounts && (
-                        <MT5MigrationAccountIcons
-                            to={Jurisdiction.VANUATU}
-                            type={JURISDICTION_MARKET_TYPES.FINANCIAL}
-                        />
-                    )}
+                    <MT5MigrationAccountIcons />
                 </div>
             </div>
-            <div className='mt5-migration-modal__message'>
-                <Text as='p' size={content_size} align='center'>
-                    <Localize
-                        i18n_default_text='By clicking on <0>"Next"</0> you agree to move your {{account}} {{platform}} account(s) under Deriv {{account_to_migrate}} Ltd’s <1>terms and conditions</1>.'
-                        components={[
-                            <strong key={0} />,
-                            <StaticUrl
-                                key={0}
-                                className='link'
-                                href={DBVI_COMPANY_NAMES[getEligibleAccountToMigrate()].tnc_url}
-                            />,
-                        ]}
-                        values={{
-                            account: Jurisdiction.SVG.toUpperCase(),
-                            platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
-                            account_to_migrate: eligible_account_to_migrate_label,
-                        }}
-                    />
-                </Text>
+            <div className='mt5-migration-modal__migration_infobox'>
+                <HintBox
+                    icon='IcInfoBlue'
+                    message={
+                        <Text as='p' size='xxxs'>
+                            <Localize
+                                i18n_default_text='Your existing <0>{{platform}} {{account}}</0> account(s) will remain accessible.'
+                                components={[<strong key={0} />]}
+                                values={{
+                                    account: Jurisdiction.SVG.toUpperCase(),
+                                    platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
+                                }}
+                            />
+                        </Text>
+                    }
+                    is_info
+                />
             </div>
             <Modal.Footer has_separator>
                 <Button type='button' has_effect large primary onClick={onConfirmMigration}>

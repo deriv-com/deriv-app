@@ -7,7 +7,7 @@ import FileUploaderComponent from 'Components/file-uploader-component';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
-import { accepted_file_types, max_pot_file_size } from 'Utils/file-uploader';
+import { getErrorMessage, max_pot_file_size } from 'Utils/file-uploader';
 import { removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from 'Utils/format-value';
 
 type TDocumentFile = {
@@ -25,6 +25,20 @@ const OrderDetailsConfirmModal = () => {
     const { sendFile } = sendbird_store;
     const { amount_display, local_currency, other_user_details, rate, id } = order_information ?? {};
     const [document_file, setDocumentFile] = React.useState<TDocumentFile>({ files: [], error_message: null });
+
+    const handleAcceptedFiles = (files: TFile[]) => {
+        if (files.length > 0) {
+            setDocumentFile({ files, error_message: null });
+        }
+    };
+
+    const removeFile = () => {
+        setDocumentFile({ files: [], error_message: null });
+    };
+
+    const handleRejectedFiles = (files: TFile[]) => {
+        setDocumentFile({ files, error_message: getErrorMessage(files) });
+    };
 
     const display_payment_amount = removeTrailingZeros(
         formatMoney(local_currency, amount_display * Number(roundOffDecimal(rate, setDecimalPlaces(rate, 6))), true)
@@ -69,10 +83,12 @@ const OrderDetailsConfirmModal = () => {
                         <Localize i18n_default_text='We accept JPG, PDF, or PNG (up to 5MB).' />
                     </Text>
                     <FileUploaderComponent
-                        accept={accepted_file_types}
+                        accept='image/png, image/jpeg, image/jpg, application/pdf'
                         hover_message={localize('Upload receipt here')}
                         max_size={max_pot_file_size}
-                        setDocumentFile={setDocumentFile}
+                        onClickClose={removeFile}
+                        onDropAccepted={handleAcceptedFiles}
+                        onDropRejected={handleRejectedFiles}
                         upload_message={localize('Upload receipt here')}
                         validation_error_message={document_file.error_message}
                         value={document_file.files}

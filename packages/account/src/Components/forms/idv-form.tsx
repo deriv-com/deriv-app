@@ -17,14 +17,16 @@ type TIDVFormProps = {
     selected_country: ResidenceList[0];
     hide_hint?: boolean;
     class_name?: string;
-    can_skip_document_verification?: boolean;
+    is_for_real_account_signup_modal?: boolean;
+    is_for_mt5: boolean;
 };
 
 const IDVForm = ({
     class_name,
     selected_country,
     hide_hint,
-    can_skip_document_verification = false,
+    is_for_real_account_signup_modal = false,
+    is_for_mt5 = false,
 }: TIDVFormProps) => {
     const [document_list, setDocumentList] = React.useState<Array<TDocument>>([]);
     const [selected_doc, setSelectedDoc] = React.useState('');
@@ -40,7 +42,10 @@ const IDVForm = ({
         example_format: '',
     };
 
-    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
+    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(
+        () => getIDVNotApplicableOption(is_for_real_account_signup_modal),
+        [is_for_real_account_signup_modal]
+    );
 
     React.useEffect(() => {
         if (document_data && selected_country && selected_country.value) {
@@ -79,13 +84,13 @@ const IDVForm = ({
                 };
             });
 
-            if (can_skip_document_verification) {
-                setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
-            } else {
+            if (is_for_mt5) {
                 setDocumentList([...new_document_list]);
+            } else {
+                setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
             }
         }
-    }, [document_data, selected_country, can_skip_document_verification, IDV_NOT_APPLICABLE_OPTION]);
+    }, [document_data, selected_country, IDV_NOT_APPLICABLE_OPTION, is_for_mt5]);
 
     const resetDocumentItemSelected = () => {
         setFieldValue('document_type', default_document, true);

@@ -53,7 +53,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             setCaret(newCaretPosition);
             setCaretNeedsRepositioning(true);
 
-            if (maxDigits && input.value.replace(separatorRegex, '').length > maxDigits) return;
+            if (maxDigits && input.value.replace(separatorRegex, '').replace(/^0+/, '').length > maxDigits) return;
 
             const hasNoChangeInDigits =
                 input.value.length + 1 === prevFormattedValue.length &&

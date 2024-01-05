@@ -57,11 +57,13 @@ const useTransferMessages = ({
 
     messageFns.push(insufficientBalanceMessageFn);
 
+    if (!isAccountVerified && isTransferBetweenWallets) {
+        messageFns.push(lifetimeAccountLimitsBetweenWalletsMessageFn);
+    }
     if (isAccountVerified || (!isAccountVerified && !isTransferBetweenWallets)) {
         messageFns.push(cumulativeAccountLimitsMessageFn);
     }
-    if (!isAccountVerified && isTransferBetweenWallets) {
-        messageFns.push(lifetimeAccountLimitsBetweenWalletsMessageFn);
+    if (isTransferBetweenWallets) {
         messageFns.push(transferFeesBetweenWalletsMessageFn);
     }
 

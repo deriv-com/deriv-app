@@ -90,13 +90,13 @@ const WalletTextField = forwardRef(
                                     messageVariant={messageVariant}
                                 />
                             )}
-                            {errorMessage && isInvalid && (
+                            {errorMessage && (
                                 <HelperMessage
                                     inputValue={value}
-                                    isError
+                                    isError={isInvalid}
                                     maxLength={maxLength}
                                     message={errorMessage as string}
-                                    messageVariant='error'
+                                    messageVariant={isInvalid ? 'error' : 'warning'}
                                 />
                             )}
                         </>

@@ -3,9 +3,9 @@ import { getDefaultFields, isDesktop } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { GetSettings } from '@deriv/api-types';
 
-type TTermsOfConfigSettings = GetSettings & { fatca_declaration: 0 | 1 };
+type TTermsOfConfigSettings = GetSettings & { fatca_declaration: number };
 
-const getTermsOfUseConfig = (account_settings: TTermsOfConfigSettings) => ({
+const getTermsOfUseConfig = (account_settings: Partial<TTermsOfConfigSettings>) => ({
     agreed_tos: {
         supported_in: ['svg', 'maltainvest'],
         default_value: false,

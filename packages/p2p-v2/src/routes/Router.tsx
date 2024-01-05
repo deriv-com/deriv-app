@@ -14,10 +14,17 @@ declare module 'react-router-dom' {
 
 const Router: React.FC = () => {
     return (
-        <Switch>
-            <Route component={() => <Home path='Inner' />} exact path={`${prefix}/inner`} />
-            <Route component={() => <Home path='Root' />} exact path={`${prefix}/`} />
-        </Switch>
+        <div>
+            <ul>
+                <li>test1</li>
+                <li>test2</li>
+                <li>test3</li>
+            </ul>
+            <Switch>
+                <Route component={() => <Home path='x' />} exact path={`${prefix}/x`} />
+                <Route component={() => <Home path='Root' />} exact path={`${prefix}/`} />
+            </Switch>
+        </div>
     );
 };
 

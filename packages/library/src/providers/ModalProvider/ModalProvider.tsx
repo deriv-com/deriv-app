@@ -19,6 +19,9 @@ import { useBreakpoint } from '@deriv/quill-design';
 type TModalState = {
     // Add your modal states here
     modalType?: string; // Just an example
+    marketType?: string;
+    platform?: string;
+    accountId?: string;
 };
 
 type TModalContext = {

@@ -217,8 +217,10 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
-                <div className='bot-list__item__actions' ref={toggle_ref} onClick={onToggleDropdown}>
-                    <Icon icon='IcMenuDots' />
+                <div className='bot-list__item__actions'>
+                    <button ref={toggle_ref} onClick={onToggleDropdown}>
+                        <Icon icon='IcMenuDots' />
+                    </button>
                 </div>
                 <div
                     className={classnames('bot-list__item__responsive', {

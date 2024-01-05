@@ -464,6 +464,13 @@
             @include mobile {
                 width: 10%;
             }
+
+            button {
+                background: transparent;
+                border: none;
+                width: unset;
+                padding: 0;
+            }
         }
 
         &__responsive {

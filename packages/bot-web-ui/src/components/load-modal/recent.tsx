@@ -44,7 +44,14 @@ const RecentComponent = observer(() => {
                 <div className='load-strategy__recent__empty-description'>
                     <Localize i18n_default_text='Create one or upload one from your local drive or Google Drive.' />
                 </div>
-                <div className='load-strategy__recent__empty-expand' onClick={toggleExplanationExpand}>
+                <div
+                    className='load-strategy__recent__empty-expand'
+                    onClick={toggleExplanationExpand}
+                    onKeyDown={(e: React.KeyboardEvent) => {
+                        if (e.key === 'Enter') toggleExplanationExpand();
+                    }}
+                    role='button'
+                >
                     <Localize i18n_default_text="Why can't I see my recent bots?" />
                 </div>
                 <div

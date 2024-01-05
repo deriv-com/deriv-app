@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { CaptionText, Text } from '@deriv/quill-design';
 import { THooks } from '../../../../types';
 import { DynamicLeverageTableColumnHeader } from './DynamicLeverageTableColumnHeader';
@@ -11,15 +11,15 @@ type TDynamicLeverageMarketCardProps = {
     min: number;
 };
 
-export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
+export const DynamicLeverageMarketCard = ({
     data,
     displayName,
     instruments,
     max,
     min,
-}) => (
-    <div className='overflow-hidden border rounded-400 border-system-light-less-prominent-text h-[248px]'>
-        <div className='flex flex-col pt-500 h-3500 bg-system-light-hover-background'>
+}: TDynamicLeverageMarketCardProps) => (
+    <div className='overflow-hidden border-75 border-solid rounded-400 border-system-light-less-prominent-text h-[248px] bg-system-light-hover-background'>
+        <div className='flex flex-col pt-500 h-3500 bg-system-light-secondary-background'>
             <Text align='center' bold size='sm'>
                 {displayName}
             </Text>
@@ -33,7 +33,7 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
             </CaptionText>
         </div>
         <div className='pb-500'>
-            <div className='grid grid-cols-[1fr_0.5fr_1.25fr] justify-items-center border-b-0 py-200 bg-system-light-hover-background'>
+            <div className='grid grid-cols-[1fr_0.5fr_1.25fr] justify-items-center border-b-50 py-200 bg-system-light-hover-background'>
                 <DynamicLeverageTableColumnHeader subtitle='(lots)' title='From' />
                 <DynamicLeverageTableColumnHeader subtitle='(lots)' title='to' />
                 <DynamicLeverageTableColumnHeader subtitle='(1:x)' title='Leverage' />
@@ -41,7 +41,7 @@ export const DynamicLeverageMarketCard: FC<TDynamicLeverageMarketCardProps> = ({
             <div>
                 {data?.map(columns => (
                     <div
-                        className='grid grid-cols-[1fr_0.5fr_1.25fr] justify-items-center border-b-0 py-200 '
+                        className='grid grid-cols-[1fr_0.5fr_1.25fr] justify-items-center border-b-50 py-200 even:bg-system-light-hover-background odd:bg-system-light-secondary-background'
                         key={`${columns.from}-${columns.to}-${columns.leverage}`}
                     >
                         {Object.entries(columns).map(([columnKey, value]) => (

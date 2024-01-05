@@ -13,8 +13,11 @@ type TProps = {
     renderButtons?: () => React.ReactNode;
 } & (
     | {
+          displayBalance: string;
+          landingCompany?: string;
           marketType: TMarketTypes.SortedMT5Accounts;
           platform: 'mt5';
+          title: string;
       }
     | {
           marketType?: never;

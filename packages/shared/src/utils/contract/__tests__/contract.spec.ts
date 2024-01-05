@@ -636,6 +636,49 @@ describe('getLocalizedTurbosSubtype', () => {
     });
 });
 
+describe('getSortedTradeTypes', () => {
+    it('should return an unchanged array if it does not contain turbos or multipliers', () => {
+        const array = [ContractUtils.TRADE_TYPES.RISE_FALL, ContractUtils.TRADE_TYPES.HIGH_LOW];
+        expect(ContractUtils.getSortedTradeTypes(array)).toEqual(array);
+    });
+    it('should return an array with turboslong as the 1st element if multipliers are not present', () => {
+        const sortedArrayWithTurbos = ContractUtils.getSortedTradeTypes([
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+            ContractUtils.TRADE_TYPES.TURBOS.LONG,
+        ]);
+        expect(sortedArrayWithTurbos).toEqual([
+            ContractUtils.TRADE_TYPES.TURBOS.LONG,
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+        ]);
+    });
+    it('should return an array with multipliers as the 1st element if turboslong is not present', () => {
+        const sortedArrayWithMultipliers = ContractUtils.getSortedTradeTypes([
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+            ContractUtils.TRADE_TYPES.MULTIPLIER,
+        ]);
+        expect(sortedArrayWithMultipliers).toEqual([
+            ContractUtils.TRADE_TYPES.MULTIPLIER,
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+        ]);
+    });
+    it('should return an array with turboslong as the 1st element and disregard multipliers', () => {
+        const sortedArrayWithTurbosAndMultipliers = ContractUtils.getSortedTradeTypes([
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+            ContractUtils.TRADE_TYPES.TURBOS.LONG,
+            ContractUtils.TRADE_TYPES.MULTIPLIER,
+        ]);
+        expect(sortedArrayWithTurbosAndMultipliers).toEqual([
+            ContractUtils.TRADE_TYPES.TURBOS.LONG,
+            ContractUtils.TRADE_TYPES.RISE_FALL,
+            ContractUtils.TRADE_TYPES.MULTIPLIER,
+        ]);
+    });
+    it('should return an empty array if called with empty arguments or an empty array', () => {
+        expect(ContractUtils.getSortedTradeTypes()).toEqual([]);
+        expect(ContractUtils.getSortedTradeTypes([])).toEqual([]);
+    });
+});
+
 describe('isSmartTraderContract', () => {
     it('should return true if contract_type is RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET', () => {
         expect(ContractUtils.isSmartTraderContract('range')).toBe(true);

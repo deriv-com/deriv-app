@@ -91,4 +91,19 @@ describe('WalletTextField', () => {
         expect(helperMessageProps.message).toBe('Invalid input');
         expect(helperMessageProps.messageVariant).toBe('error');
     });
+
+    it('should render with a warning message correctly', () => {
+        render(<WalletTextField {...defaultProps} errorMessage='This is very common password' ref={createRef()} />);
+
+        expect(HelperMessage).toHaveBeenCalled();
+        const helperMessageProps = (HelperMessage as jest.Mock).mock.calls[
+            (HelperMessage as jest.Mock).mock.calls.length - 1
+        ][0];
+
+        expect(helperMessageProps.inputValue).toBe('');
+        expect(helperMessageProps.isError).toBe(false);
+        expect(helperMessageProps.maxLength).toBe(undefined);
+        expect(helperMessageProps.message).toBe('This is very common password');
+        expect(helperMessageProps.messageVariant).toBe('warning');
+    });
 });

@@ -3,15 +3,16 @@ import { Redirect } from 'react-router-dom';
 import { Loading } from '@deriv/components';
 import { useGetPasskeysList, useIsPasskeySupported } from '@deriv/hooks';
 import { PlatformContext, routes } from '@deriv/shared';
-import { useBreakpoint } from '@deriv/quill-design';
+import { observer, useStore } from '@deriv/stores';
 import NoPasskeysSet from './no-passkeys-set';
 import './passkeys.scss';
 
-const Passkeys = () => {
+const Passkeys = observer(() => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { is_passkeys_enabled } = React.useContext(PlatformContext);
     const { is_passkey_supported, is_loading: is_passkey_support_checked } = useIsPasskeySupported();
-    const { isMobile } = useBreakpoint();
-    const should_show_passkeys = is_passkeys_enabled && is_passkey_supported && isMobile;
+    const should_show_passkeys = is_passkeys_enabled && is_passkey_supported && is_mobile;
 
     const { data: passkeys_list, isLoading: is_passkeys_list_loading } = useGetPasskeysList();
 
@@ -24,6 +25,6 @@ const Passkeys = () => {
     }
 
     return <div className='passkeys'>{!passkeys_list?.length && <NoPasskeysSet />}</div>;
-};
+});
 
 export default Passkeys;

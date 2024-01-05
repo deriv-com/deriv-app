@@ -14,7 +14,7 @@ const DynamicLeverageScreen = () => {
     return (
         <div
             className={qtMerge(
-                'flex flex-col gap-1200 mt-[15px] mx-[128px] mb-0 sm:mx-1200 sm:mb-1200 pb-5000 absolute top-0 [transform:rotateY(180deg)] transition-transform ease-in backface-hidden',
+                'flex flex-col gap-1200 mt-[15px] mx-1200 mb-1200 sm:mx-[128px] sm:mb-50 pb-5000 absolute top-50 [transform:rotateY(180deg)] transition-transform ease-in backface-hidden',
                 isDynamicLeverageVisible && '[transform:rotateY(0deg)]'
             )}
         >
@@ -23,7 +23,7 @@ const DynamicLeverageScreen = () => {
                 commodities, cryptocurrencies, and stock indices markets. Our dynamic leverage adjusts automatically to
                 your trading position, based on asset type and trading volume.
             </Text>
-            <div className='grid grid-cols-2 gap-1200 mx-5000 my-0 sm:grid-cols-1 sm:mx-[65px]'>
+            <div className='grid grid-cols-1 gap-1200 mx-[65px] my-50 sm:grid-cols-2 sm:mx-5000'>
                 {(['forex', 'metals', 'cryptocurrencies', 'stock_indices'] as const).map(key => {
                     const {
                         display_name: displayName,

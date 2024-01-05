@@ -8,6 +8,7 @@ import './terms-of-use.scss';
 
 type TFATCADeclarationProps = {
     field: FieldInputProps<'0' | '1'>;
+    is_disabled: boolean;
 } & React.ComponentPropsWithoutRef<typeof Dropdown>;
 
 /**
@@ -49,6 +50,7 @@ const FatcaDeclaration = ({ field: { value, onChange, name }, ...props }: TFATCA
                 list={getAgreementOptions()}
                 className='fatca-declaration__agreement'
                 onChange={onChange}
+                disabled={props.is_disabled}
             />
         </div>
     </React.Fragment>

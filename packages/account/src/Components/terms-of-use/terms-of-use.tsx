@@ -36,6 +36,7 @@ type TTermsOfUseProps = {
     value: TTermsOfUseFormProps;
     real_account_signup_target: TBrokerCodes;
     form_error?: string;
+    is_multi_account: boolean;
 };
 
 /**
@@ -96,7 +97,11 @@ const TermsOfUse = ({
                                     <div className={className('details-form__elements', 'terms-of-use')}>
                                         <BrokerSpecificMessage target={real_account_signup_target} />
                                         <Hr />
-                                        <Field component={FatcaDeclaration} name='fatca_declaration' />
+                                        <Field
+                                            component={FatcaDeclaration}
+                                            name='fatca_declaration'
+                                            is_disabled={props.is_multi_account}
+                                        />
                                         <Hr />
                                         <SharedMessage />
                                         <Hr />

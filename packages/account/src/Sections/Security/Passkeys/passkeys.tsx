@@ -24,7 +24,7 @@ const Passkeys = () => {
         return <Redirect to={routes.traders_hub} />;
     }
 
-    return <div className='passkeys'>{!passkeys_list.length && <NoPasskeysSet />}</div>;
+    return <div className='passkeys'>{!passkeys_list?.length && <NoPasskeysSet />}</div>;
 };
 
 export default Passkeys;

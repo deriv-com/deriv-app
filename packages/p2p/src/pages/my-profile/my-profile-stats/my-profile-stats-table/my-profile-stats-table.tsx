@@ -19,14 +19,14 @@ const MyProfileStatsTable = () => {
     const {
         buy_completion_rate,
         buy_orders_amount,
-        buy_orders_count,
+        buy_orders_count = 0,
         buy_time_avg,
         partner_count,
         release_time_avg,
         sell_completion_rate,
         sell_orders_amount,
-        sell_orders_count,
-        total_orders_count,
+        sell_orders_count = 0,
+        total_orders_count = 0,
         total_turnover,
     } = general_store.advertiser_info;
 

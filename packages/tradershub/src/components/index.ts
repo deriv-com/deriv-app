@@ -9,6 +9,7 @@ export * from './GetADerivAccountBanner';
 export * from './Modal';
 export * from './ModalStepWrapper';
 export * from './OptionsAndMultipliersSection';
+export * from './ResponsiveTradersHub';
 export * from './StaticLink';
 export * from './Tooltip';
 export * from './TotalAssets';

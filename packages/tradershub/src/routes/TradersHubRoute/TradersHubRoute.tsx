@@ -1,10 +1,14 @@
 import React, { FC } from 'react';
-import { Button, Heading, Text } from '@deriv/quill-design';
-import { OptionsAndMultipliersSection, StaticLink, TotalAssets } from '../../components';
+import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
+import { OptionsAndMultipliersSection, ResponsiveTradersHub, StaticLink, TotalAssets } from '../../components';
 import { CTraderList } from '../../features/cfd/components/CTraderList';
 import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
 
 const TradersHubRoute: FC = () => {
+    const { isMobile } = useBreakpoint();
+
+    if (isMobile) return <ResponsiveTradersHub />;
+
     return (
         <div className='flex flex-col gap-1200'>
             <div className='flex items-center justify-between align-start gap-100'>

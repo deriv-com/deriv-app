@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heading, Text, useBreakpoint } from '@deriv/quill-design';
+import { Heading, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
 import { CurrencySwitcher } from '../../CurrencySwitcher';
 import { StaticLink } from '../../StaticLink';
 
@@ -10,7 +10,9 @@ import { StaticLink } from '../../StaticLink';
 const OptionsAndMultipliersHeading = () => {
     const { isMobile } = useBreakpoint();
     return (
-        <div className='flex items-start self-stretch gap-2400'>
+        <div
+            className={qtMerge('flex items-start self-stretch gap-2400', isMobile && 'flex-col gap-1200 items-center')}
+        >
             <div className='flex flex-col'>
                 {!isMobile && <Heading.H4>Options & multipliers</Heading.H4>}
                 <Text className='space-y-50' size='sm'>

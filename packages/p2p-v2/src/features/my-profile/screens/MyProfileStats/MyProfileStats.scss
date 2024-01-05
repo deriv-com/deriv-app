@@ -14,7 +14,7 @@
 
             span {
                 font-size: 14px;
-                color: grey;
+                color: #999999;
             }
 
             em {
@@ -22,11 +22,12 @@
             }
 
             &--lifetime {
-                color: red;
+                color: #ff444f;
             }
 
             strong {
                 line-height: 1.5;
+                color: #333333;
             }
         }
 

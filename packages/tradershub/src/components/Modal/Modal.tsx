@@ -25,7 +25,6 @@ type TModalChildren =
 type TModal = {
     children: TModalChildren | TModalChildren[];
     className?: string;
-    hideCloseButton?: boolean;
 };
 
 /**

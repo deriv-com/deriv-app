@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
     useAccountStatus,
@@ -23,7 +23,7 @@ type TProps = {
     platform: TPlatforms.All;
 };
 
-const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
+const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
     const [password, setPassword] = useState('');
     const { error, isLoading: createMT5AccountLoading, isSuccess, mutate, status } = useCreateMT5Account();
     const { isLoading: tradingPlatformPasswordChangeLoading, mutate: tradingPasswordChange } =

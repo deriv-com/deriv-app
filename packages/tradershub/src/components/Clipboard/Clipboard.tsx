@@ -19,7 +19,7 @@ type TClipboardProps = {
  * <Clipboard textCopy="Text to be copied" />
  * ```
  */
-const Clipboard = ({ textCopy, tooltip = 'bottom' }: TClipboardProps) => {
+const Clipboard = ({ textCopy, tooltip }: TClipboardProps) => {
     const [, copy] = useCopyToClipboard();
     const { isMobile } = useBreakpoint();
     const [isCopied, setIsCopied] = useState(false);

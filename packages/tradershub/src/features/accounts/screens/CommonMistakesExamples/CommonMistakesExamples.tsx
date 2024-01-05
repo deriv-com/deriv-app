@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { Text } from '@deriv/quill-design';
 import StatusLoss from '../../../../public/images/status-loss.svg';
 
 type TCommonMistakeExamplePartialsProps = {
-    description: React.ReactNode;
-    image: React.ReactElement;
+    description: ReactNode;
+    image: ReactElement;
 };
 
 const CommonMistakesExamples = ({ description, image }: TCommonMistakeExamplePartialsProps) => (

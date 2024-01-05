@@ -11,6 +11,8 @@ import {
     TUserGuideContent,
     user_guide_content,
 } from 'Components/dashboard/tutorial-tab/config';
+import * as strategy_description from 'Components/quick-strategy/descriptions';
+import { TDescriptionItem } from 'Components/quick-strategy/types';
 import { clearInjectionDiv } from 'Constants/load-modal';
 import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
 import RootStore from './root-store';
@@ -120,12 +122,23 @@ export default class DashboardStore implements IDashboardStore {
                 .join(' ')}`;
         });
 
-        const getQuickStrategyContent = quick_strategy_content.map(
-            item =>
-                `${item.search_id}# ${item.type.toLowerCase()} ${item.content
-                    .map(contentItem => contentItem.toLowerCase())
-                    .join(' ')}`
-        );
+        const getQSDescriptionContent = (strategy: any) => {
+            if (!strategy) return [];
+            const content: string[] = [];
+            strategy.forEach((item: TDescriptionItem) => {
+                if (item?.type !== 'media') {
+                    item.content?.forEach((text: string) => content.push(text));
+                }
+            });
+            return content;
+        };
+
+        const getQuickStrategyContent = quick_strategy_content.map(item => {
+            const qs_card_content = item.content.join(' ').toLowerCase();
+            let qs_description_content = getQSDescriptionContent(strategy_description?.[item.qs_name]);
+            qs_description_content = qs_description_content.join(' ').toLowerCase();
+            return `${item.search_id}# ${item.type.toLowerCase()} ${qs_description_content + qs_card_content}`;
+        });
 
         this.combined_search = [
             ...getUserGuideContent,

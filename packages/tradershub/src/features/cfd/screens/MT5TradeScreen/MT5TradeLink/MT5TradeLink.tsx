@@ -55,9 +55,11 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', platform, webtrad
             </div>
             {(platform === mt5Platform || app === ctraderPlatform) && (
                 <Button
+                    className='border-opacity-black-400 rounded-200 px-800'
+                    colorStyle='black'
                     onClick={() => window.open(app === 'web' ? webtraderUrl : content.link)}
                     size='sm'
-                    variant='outlined'
+                    variant='secondary'
                 >
                     {content.text}
                 </Button>

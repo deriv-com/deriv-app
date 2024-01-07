@@ -4,12 +4,12 @@ import { Provider } from '@deriv/library';
 import { Text, useBreakpoint } from '@deriv/quill-design';
 import ImportantIcon from '../../../../public/images/ic-important.svg';
 import { THooks, TPlatforms } from '../../../../types';
-import { MarketTypeDetails, PlatformDetails } from '../../constants';
+import { AppToContentMapper, MarketTypeDetails, PlatformDetails } from '../../constants';
 import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
 import { MT5TradeLink } from './MT5TradeLink';
 
 type MT5TradeScreenProps = {
-    mt5Account?: THooks.MT5AccountsList;
+    account?: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
 };
 
 const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
@@ -20,8 +20,8 @@ const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
     mt5: 'Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.',
 };
 
-const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
-    const { isDesktop } = useBreakpoint();
+const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ account }) => {
+    const { isMobile } = useBreakpoint();
     const { getModalState } = Provider.useModal();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
@@ -36,18 +36,14 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
 
     const platformToAccountsListMapper = useMemo(
         () => ({
-            ctrader: ctraderAccountsList,
-            dxtrade: dxtradeAccountsList,
-            mt5: [mt5Account],
+            ctrader: ctraderAccountsList?.find(account => account.is_virtual === activeData?.is_virtual),
+            dxtrade: dxtradeAccountsList?.find(account => account.is_virtual === activeData?.is_virtual),
+            mt5: account,
         }),
-        [ctraderAccountsList, dxtradeAccountsList, mt5Account]
+        [ctraderAccountsList, dxtradeAccountsList, account, activeData?.is_virtual]
     );
 
-    const details = useMemo(() => {
-        return platform === mt5Platform
-            ? platformToAccountsListMapper.mt5?.filter(account => account?.market_type === marketType)[0]
-            : platformToAccountsListMapper.dxtrade?.[0];
-    }, [platform, mt5Platform, platformToAccountsListMapper.mt5, platformToAccountsListMapper.dxtrade, marketType]);
+    const details = platformToAccountsListMapper[platform as TPlatforms.All];
 
     const loginId = useMemo(() => {
         if (platform === mt5Platform) {
@@ -55,72 +51,61 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
         } else if (platform === dxtradePlatform) {
             return (details as THooks.DxtradeAccountsList)?.account_id;
         }
-        return details?.login;
+        return (details as THooks.CtraderAccountsList)?.login;
     }, [details, dxtradePlatform, mt5Platform, platform]);
-
-    const showNoNewPositionsMessage = useMemo(() => {
-        return (
-            !activeData?.is_virtual &&
-            details?.landing_company_short === 'svg' &&
-            ['synthetic', 'financial'].includes(marketType ?? '') && (
-                // <InlineMessage type='warning' variant='outlined'>
-                <p>No new positions</p>
-                // </InlineMessage>
-            )
-        );
-    }, [activeData?.is_virtual, details?.landing_company_short, marketType]);
 
     return (
         <div className='lg:w-[45vw] lg:min-w-[51.2rem] lg:max-w-[60rem] w-full min-w-full h-auto'>
             <div className='flex flex-col p-1200 gap-800'>
                 <div className='flex items-center justify-between w-full'>
                     <div className='flex items-center'>
-                        {platform === mt5Platform
-                            ? MarketTypeDetails[marketType ?? 'all'].icon
-                            : PlatformDetails[platform].icon}
+                        <div className='mr-400'>
+                            {platform === mt5Platform
+                                ? MarketTypeDetails[(marketType ?? 'all') as keyof typeof MarketTypeDetails].icon
+                                : PlatformDetails[platform as keyof typeof PlatformDetails].icon}
+                        </div>
                         <div className='flex flex-col'>
                             <div className='flex items-center flex-row gap-300'>
-                                {/* <WalletText lineHeight='3xs' size='sm'> */}
-                                <Text>
+                                <Text size='md'>
                                     {platform === mt5Platform
-                                        ? MarketTypeDetails[marketType ?? 'all'].title
-                                        : PlatformDetails[platform].title}{' '}
+                                        ? MarketTypeDetails[(marketType ?? 'all') as keyof typeof MarketTypeDetails]
+                                              .title
+                                        : PlatformDetails[platform as keyof typeof PlatformDetails].title}{' '}
                                     {!activeData?.is_virtual && details?.landing_company_short?.toUpperCase()}
-                                    {/* </WalletText> */}
                                 </Text>
-                                {/* {activeWalletData?.is_virtual && <WalletListCardBadge isDemo label='virtual' />} */}
                             </div>
-                            {/* <WalletText color='less-prominent' size='xs'> */}
-                            <Text>{loginId}</Text>
-                            {/* </WalletText> */}
+                            <Text className='text-system-light-less-prominent-text' size='sm'>
+                                {loginId}
+                            </Text>
                         </div>
                     </div>
                     <div className='flex flex-col items-end'>
-                        {/* <WalletText weight='bold'>{details?.display_balance}</WalletText> */}
-                        <Text weight='bold'>{details?.display_balance}</Text>
-                        {showNoNewPositionsMessage}
+                        <Text bold>{details?.display_balance}</Text>
                     </div>
                 </div>
                 <div className='flex flex-col gap-100'>
                     {/* <div className='wallets-mt5-trade-screen__details-clipboards'> */}
-                    {getModalState('platform') === mt5Platform && (
+                    {platform === mt5Platform && (
                         <Fragment>
                             <MT5TradeDetailsItem label='Broker' value='Deriv Holdings (Guernsey) Ltd' />
                             <MT5TradeDetailsItem
                                 label='Server'
-                                value={details?.server_info?.environment ?? 'Deriv-Server'}
+                                value={(details as THooks.MT5AccountsList)?.server_info?.environment ?? 'Deriv-Server'}
                             />
                             <MT5TradeDetailsItem label='Login ID' value={loginId ?? '12345678'} />
                             <MT5TradeDetailsItem label='Password' value='********' variant='password' />
                         </Fragment>
                     )}
-                    {getModalState('platform') === dxtradePlatform && (
+                    {platform === dxtradePlatform && (
                         <Fragment>
-                            <MT5TradeDetailsItem label='Username' value={details?.login ?? '12345678'} />
+                            <MT5TradeDetailsItem
+                                label='Username'
+                                value={(details as THooks.DxtradeAccountsList)?.login ?? '12345678'}
+                            />
                             <MT5TradeDetailsItem label='Password' value='********' variant='password' />
                         </Fragment>
                     )}
-                    {getModalState('platform') === ctraderPlatform && (
+                    {platform === ctraderPlatform && (
                         <MT5TradeDetailsItem
                             value=' Use your Deriv account email and password to login into the cTrader platform.'
                             variant='info'
@@ -130,7 +115,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 <div className='grid grid-cols-[2.5rem_auto]'>
                     <ImportantIcon />
                     {/* <WalletText color='less-prominent' size='2xs'> */}
-                    <Text>{serviceMaintenanceMessages[platform || mt5Platform]}</Text>
+                    <Text size='2xs'>{serviceMaintenanceMessages[(platform || mt5Platform) as TPlatforms.All]}</Text>
                     {/* </WalletText> */}
                 </div>
             </div>
@@ -142,7 +127,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                             platform={mt5Platform}
                             webtraderUrl={(details as THooks.MT5AccountsList)?.webtrader_url}
                         />
-                        {isDesktop && (
+                        {!isMobile && (
                             <Fragment>
                                 <MT5TradeLink app='windows' platform={mt5Platform} />
                                 <MT5TradeLink app='macos' platform={mt5Platform} />
@@ -157,7 +142,10 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ mt5Account }) => {
                 {platform === ctraderPlatform && (
                     <Fragment>
                         <MT5TradeLink platform={ctraderPlatform} />
-                        <MT5TradeLink app={ctraderPlatform} platform={ctraderPlatform} />
+                        <MT5TradeLink
+                            app={ctraderPlatform as keyof typeof AppToContentMapper}
+                            platform={ctraderPlatform}
+                        />
                     </Fragment>
                 )}
             </div>

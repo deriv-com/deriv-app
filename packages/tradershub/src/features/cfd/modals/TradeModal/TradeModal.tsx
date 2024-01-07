@@ -2,7 +2,6 @@ import React, { FC, useEffect } from 'react';
 import QRCode from 'qrcode.react';
 import { Provider } from '@deriv/library';
 import { Text } from '@deriv/quill-design';
-// import { ModalStepWrapper } from '../../../../components';
 import { Modal } from '../../../../components/Modal';
 import InstallationAppleIcon from '../../../../public/images/ic-installation-apple.svg';
 import InstallationGoogleIcon from '../../../../public/images/ic-installation-google.svg';
@@ -69,21 +68,6 @@ const TradeModal: FC<TTradeModalProps> = ({ account, marketType, platform }) => 
             </Modal.Content>
             <Modal.Footer>
                 {/* <div className='wallets-modal-trade-wrapper__footer'> */}
-                {/* display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        height: fit-content;
-        width: 100%;
-        gap: 1.6rem;
-
-        @include mobile {
-            padding-top: 0;
-            min-height: 19rem;
-
-            .wallets-text {
-                width: 50%;
-            } */}
                 <div className='pt-50 min-h-[19rem] lg:pt-[inherit] lg:min-h-[inherit] flex justify-center items-center flex-col h-fit w-full gap-800'>
                     <Text align='center' size='sm' weight='bold'>
                         Download {PlatformDetails[platform].title} on your phone to trade with the{' '}

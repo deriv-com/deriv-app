@@ -30,7 +30,7 @@ const ModalHeader = ({ className, hideCloseButton = false, title }: TModalHeader
                 className
             )}
         >
-            {title && <Heading.H3 className='flex-1'>{title}</Heading.H3>}
+            {title && <Heading.H5 className='flex-1'>{title}</Heading.H5>}
             {!hideCloseButton && <CloseIcon className='cursor-pointer' onClick={hide} />}
         </div>
     );

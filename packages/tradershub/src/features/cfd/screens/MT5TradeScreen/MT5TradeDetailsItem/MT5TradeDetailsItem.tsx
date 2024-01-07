@@ -1,6 +1,6 @@
 import React, { FC, useRef } from 'react';
 import { useHover } from 'usehooks-ts';
-import { qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
+import { Button, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
 import { Clipboard, Tooltip } from '../../../../../components';
 import EditIcon from '../../../../../public/images/ic-edit.svg';
 
@@ -25,7 +25,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ className, label, 
             <Text colorStyle='subtle' size='sm'>
                 {label}
             </Text>
-            <div className='flex items-center space-x-400 pr-400'>
+            <div className='flex items-center space-x-400'>
                 <Text bold size='sm'>
                     {value}
                 </Text>
@@ -33,7 +33,9 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ className, label, 
                 {variant === 'password' && (
                     <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>
                         <div ref={hoverRef}>
-                            <EditIcon className='cursor-pointer' />
+                            <Button colorStyle='prominent' size='sm'>
+                                <EditIcon className='cursor-pointer' />
+                            </Button>
                         </div>
                     </Tooltip>
                 )}

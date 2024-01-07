@@ -1,14 +1,10 @@
 import React, { FC } from 'react';
-import { Provider } from '@deriv/library';
 import { Button, Heading, Text } from '@deriv/quill-design';
 import { DemoRealSwitcher, OptionsAndMultipliersSection, StaticLink, TotalAssets } from '../../components';
 import { CTraderList } from '../../features/cfd/components/CTraderList';
 import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
-import { TradeModal } from '../../features/cfd/modals/TradeModal';
 
 const TradersHubRoute: FC = () => {
-    const { show } = Provider.useModal();
-
     return (
         <div className='flex flex-col gap-1200'>
             <div className='flex items-center justify-between align-start gap-100'>
@@ -44,9 +40,6 @@ const TradersHubRoute: FC = () => {
                             <div className='h-4000 rounded-300 bg-solid-slate-100' />
                             <div className='h-4000 rounded-300 bg-solid-slate-100' />
                             <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                            <button onClick={() => show(<TradeModal marketType='all' platform='mt5' />)}>
-                                show modal
-                            </button>
                         </div>
                     </div>
                     <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>

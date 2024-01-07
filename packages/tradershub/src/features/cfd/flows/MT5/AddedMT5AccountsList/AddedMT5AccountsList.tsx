@@ -1,15 +1,16 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { useAuthorize, useJurisdictionStatus } from '@deriv/api';
+import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails } from '../../../constants';
+import { TradeModal } from '../../../modals/TradeModal';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
     const { data: activeWallet } = useAuthorize();
-    const history = useHistory();
+    const { show } = Provider.useModal();
     const { data: jurisdictionStatus } = useJurisdictionStatus(account.landing_company_short || 'svg', account.status);
     const { title } = MarketTypeDetails[account.market_type ?? 'all'];
 
@@ -19,17 +20,23 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
             trailing={() => (
                 <div className='flex flex-col gap-y-200'>
                     <Button
+                        className='border-opacity-black-400 rounded-200 px-800'
+                        colorStyle='black'
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => {
-                            history.push('/wallets/cashier/transfer');
+                            // why wallets ???
+                            // history.push('/wallets/cashier/transfer');
                         }}
                         variant='secondary'
                     >
                         Transfer
                     </Button>
                     <Button
+                        className='rounded-200 px-800'
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
-                        // onClick show MT5TradeModal
+                        onClick={() =>
+                            show(<TradeModal account={account} marketType={account?.market_type} platform='mt5' />)
+                        }
                     >
                         Open
                     </Button>

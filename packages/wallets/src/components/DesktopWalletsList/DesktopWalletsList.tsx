@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useActiveWalletAccount, useAuthorize, useMobileCarouselWalletsList } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useStaleWalletsList } from '@deriv/api';
 import { AccountsList } from '../AccountsList';
 import { WalletsAccordionLoader } from '../SkeletonLoader';
 import { WalletListCard } from '../WalletListCard';
@@ -7,7 +7,7 @@ import { WalletsAccordion } from '../WalletsAccordion';
 import './DesktopWalletsList.scss';
 
 const DesktopWalletsList: React.FC = () => {
-    const { data: wallets, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
+    const { data: wallets, isLoading: isWalletAccountsListLoading } = useStaleWalletsList();
     const { data: activeWallet } = useActiveWalletAccount();
 
     const { switchAccount } = useAuthorize();

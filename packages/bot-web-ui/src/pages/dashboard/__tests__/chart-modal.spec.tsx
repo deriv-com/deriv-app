@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import ChartModal from '../chart-modal';
+import ChartModal from '../../chart/chart-modal';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import { mock_ws } from 'Utils/mock';

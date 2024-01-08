@@ -12,7 +12,7 @@ import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { waitForDomElement } from 'Utils/dom-observer';
 
-import { useComponentVisibility } from '../../hooks/useComponentVisibility';
+import { useComponentVisibility } from '../../../components/app-wrapper/hooks/useComponentVisibility';
 
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from './constants';
 

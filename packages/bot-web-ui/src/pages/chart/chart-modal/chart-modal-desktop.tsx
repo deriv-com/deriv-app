@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import Chart from 'Components/chart';
-import Draggable from '../../../draggable';
-import { observer } from '@deriv/stores';
+import Chart from '..';
+import Draggable from '../../../components/draggable';
 
 const ChartModalDesktop = observer(() => {
     const { dashboard } = useDBotStore();

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { useDBotStore } from '../../../../stores/useDBotStore';
+import { useDBotStore } from '../../../stores/useDBotStore';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';
 import { ToolboxItems } from './toolbox-items';

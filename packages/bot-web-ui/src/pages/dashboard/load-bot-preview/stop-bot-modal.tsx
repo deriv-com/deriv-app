@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from '@deriv/stores';
-import { useDBotStore } from '../../../../stores/useDBotStore';
+import { useDBotStore } from '../../../stores/useDBotStore';
 import StopBotModalContent from '../stop-bot-modal-content';
 
 const StopBotModal = observer(() => {

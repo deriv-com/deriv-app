@@ -4,7 +4,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { render } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import TutorialsTab from '../tutorial-tab';
+import TutorialsTab from '../tutorials';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());

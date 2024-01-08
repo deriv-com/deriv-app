@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv/analytics';
+import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import OnboardTourHandler from '../dbot-tours/onboarding-tour';
+import OnboardTourHandler from '../../components/app-wrapper/dbot-tours/onboarding-tour';
 import Local from './load-bot-preview/local';
 import Cards from './cards';
 import InfoPanel from './info-panel';

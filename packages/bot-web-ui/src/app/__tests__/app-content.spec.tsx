@@ -53,7 +53,7 @@ jest.mock('Components/network-toast-popup', () => ({
     __esModule: true,
     default: () => <div>NetworkToastPopup</div>,
 }));
-jest.mock('Components/dashboard/bot-builder', () => ({
+jest.mock('../../pages/bot-builder', () => ({
     __esModule: true,
     default: () => <div>BotBuilder</div>,
 }));

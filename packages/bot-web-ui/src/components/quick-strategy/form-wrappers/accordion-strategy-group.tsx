@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { TDescriptionItem, TDescription } from '../types';
-import Accordion from '../../dashboard/dbot-tours/common/accordion';
+import Accordion from '../../app-wrapper/dbot-tours/common/accordion';
 import StrategyDescription from '../descriptions/strategy-description';
 
 type TAccordionStrategyGroupProps = {

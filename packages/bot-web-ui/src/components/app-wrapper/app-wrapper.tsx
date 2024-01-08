@@ -1,24 +1,25 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import { Analytics } from '@deriv/analytics';
+import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import Chart from 'Components/chart';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
+import Chart from '../../pages/chart';
+import ChartModal from '../../pages/chart/chart-modal';
+import Dashboard from '../../pages/dashboard';
+import RunStrategy from '../../pages/dashboard/run-strategy';
+import Tutorial from '../../pages/tutorials';
 import RunPanel from '../run-panel';
-import RunStrategy from './dashboard-component/run-strategy';
 import { tour_list } from './dbot-tours/utils';
-import { ChartModal, DashboardComponent } from './dashboard-component';
 import StrategyNotification from './strategy-notification';
-import Tutorial from './tutorial-tab';
 
-const Dashboard = observer(() => {
+const AppWrapper = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
     const {
         active_tab,
@@ -148,7 +149,7 @@ const Dashboard = observer(() => {
                             label={<Localize i18n_default_text='Dashboard' />}
                             id='id-dbot-dashboard'
                         >
-                            <DashboardComponent handleTabChange={handleTabChange} />
+                            <Dashboard handleTabChange={handleTabChange} />
                         </div>
                         <div
                             icon='IcBotBuilderTabIcon'
@@ -202,4 +203,4 @@ const Dashboard = observer(() => {
     );
 });
 
-export default Dashboard;
+export default AppWrapper;

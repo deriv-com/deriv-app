@@ -5,7 +5,7 @@ import { Button, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import ContractResultOverlay from 'Components/contract-result-overlay';
-import BotStopNotification from 'Components/dashboard/bot-stop-notification';
+import BotStopNotification from 'Components/app-wrapper/bot-stop-notification';
 import { contract_stages } from 'Constants/contract-stage';
 import { useDBotStore } from 'Stores/useDBotStore';
 

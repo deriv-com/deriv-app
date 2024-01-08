@@ -1,8 +1,9 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 // eslint-disable-next-line import/no-extraneous-dependencies
+import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import QuickStrategyGuidesDetails from '../quick-strategy-guides-details';
@@ -36,7 +37,7 @@ describe('<QuickStrategyGuidesDetail />', () => {
         );
     });
 
-    it('renders QuickStrategyGuidesDetail component with tutorial_selected_strategy as empty string', () => {
+    it('should render QuickStrategyGuidesDetail component', () => {
         render(
             <QuickStrategyGuidesDetails
                 quick_strategy_tab_content={mockQuickStrategyTabContent}
@@ -51,7 +52,7 @@ describe('<QuickStrategyGuidesDetail />', () => {
         expect(screen.getByText('Explore Martingale')).toBeInTheDocument();
     });
 
-    it('On press of enter keydown should run', async () => {
+    it('should render onClick on press of enter keydown', async () => {
         const mockEventListener = jest.fn();
         document.addEventListener('keydown', mockEventListener);
         render(
@@ -64,8 +65,42 @@ describe('<QuickStrategyGuidesDetail />', () => {
                 wrapper,
             }
         );
-        const input = screen.getByTestId('quick-strategy-guides-details');
-        fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
+        const input = screen.getByTestId('dt_quick_strategy_guides_details');
+        userEvent.type(input, '{Enter}');
         expect(mockEventListener).toHaveBeenCalledWith(expect.objectContaining({ key: 'Enter', code: 'Enter' }));
+    });
+
+    it('should not render onClick on press of space keydown', () => {
+        const mockEventListener = jest.fn();
+        document.addEventListener('keydown', mockEventListener);
+        render(
+            <QuickStrategyGuidesDetails
+                quick_strategy_tab_content={mockQuickStrategyTabContent}
+                tutorial_selected_strategy=''
+                setTutorialSelectedStrategy={setTutorialSelectedStrategyMock}
+            />,
+            {
+                wrapper,
+            }
+        );
+        const input = screen.getByTestId('dt_quick_strategy_guides_details');
+        userEvent.type(input, 'Space');
+        expect(mockEventListener).not.toHaveBeenCalledWith(expect.objectContaining({ key: 'Enter', code: 'Enter' }));
+    });
+
+    it('should render back with click on breadcrumb', () => {
+        render(
+            <QuickStrategyGuidesDetails
+                quick_strategy_tab_content={mockQuickStrategyTabContent}
+                tutorial_selected_strategy='D_ALEMBERT'
+                setTutorialSelectedStrategy={setTutorialSelectedStrategyMock}
+            />,
+            {
+                wrapper,
+            }
+        );
+        const breadcrumb = screen.getByText('Quick strategy guides >');
+        userEvent.click(breadcrumb);
+        expect(setTutorialSelectedStrategyMock).toBeCalledWith('');
     });
 });

@@ -33,7 +33,7 @@ const QuickStrategyGuidesDetail = observer(
                                 key={type}
                                 onClick={() => setTutorialSelectedStrategy(qs_name)}
                                 tabIndex={index}
-                                data-testid={'quick-strategy-guides-details'}
+                                data-testid={'dt_quick_strategy_guides_details'}
                                 onKeyDown={(e: KeyboardEvent) => {
                                     if (e.key === 'Enter') {
                                         setTutorialSelectedStrategy(qs_name);

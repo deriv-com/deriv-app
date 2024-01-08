@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useMemo } from 'react';
+import React, { Fragment, useMemo } from 'react';
 import { useActiveAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Text, useBreakpoint } from '@deriv/quill-design';
@@ -20,7 +20,7 @@ const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
     mt5: 'Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.',
 };
 
-const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ account }) => {
+const MT5TradeScreen = ({ account }: MT5TradeScreenProps) => {
     const { isMobile } = useBreakpoint();
     const { getCFDState } = Provider.useCFDContext();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();

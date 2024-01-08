@@ -41,7 +41,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', platform, webtrad
     };
 
     return (
-        <div className='flex items-center justify-between border-t-100 border-solid border-system-light-secondary-background px-800 py-1200'>
+        <div className='flex items-center justify-between border-t-100 border-system-light-secondary-background px-800 py-1200'>
             <div className='flex items-center gap-800'>
                 {(platform === mt5Platform || app === ctraderPlatform) && (
                     <Fragment>
@@ -73,7 +73,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', platform, webtrad
                 >
                     <span className='flex justify-center items-center gap-400'>
                         {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}
-                        <Text bold className='text-[white]' colorStyle='white' size='sm'>
+                        <Text bold className='text-system-light-primary-background' size='sm'>
                             Web terminal
                         </Text>
                     </span>

@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
 import { Provider } from '@deriv/library';
 import { Text, useBreakpoint } from '@deriv/quill-design';
@@ -13,7 +13,7 @@ type TTradeModalProps = {
     platform: TPlatforms.All;
 };
 
-const TradeModal: FC<TTradeModalProps> = ({ account, marketType, platform }) => {
+const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
     const { isDesktop } = useBreakpoint();
     const { setCfdState } = Provider.useCFDContext();
 
@@ -33,7 +33,7 @@ const TradeModal: FC<TTradeModalProps> = ({ account, marketType, platform }) => 
                 <MT5TradeScreen account={account} />
             </Modal.Content>
             <Modal.Footer>
-                <div className='pt-50 min-h-[19rem] lg:pt-[inherit] lg:min-h-[inherit] flex justify-center items-center flex-col h-fit w-full gap-800'>
+                <div className='pt-50 min-h-[19rem] flex justify-center items-center flex-col h-fit w-full gap-800'>
                     <Text align='center' size='sm' weight='bold'>
                         Download {PlatformDetails[platform].title} on your phone to trade with the{' '}
                         {PlatformDetails[platform].title} account
@@ -57,7 +57,7 @@ const TradeModal: FC<TTradeModalProps> = ({ account, marketType, platform }) => 
                             })}
                         </div>
                         {isDesktop && (
-                            <div className='border-[1px_solid_hover-background] rounded-200 flex flex-col justify-center items-center w-[15rem] gap-[0.5rem] p-400'>
+                            <div className='border-75 border-system-light-hover-background rounded-200 flex flex-col justify-center items-center w-[15rem] gap-[0.5rem] p-400'>
                                 <QRCode size={80} value={PlatformDetails[platform].link} />
                                 <Text align='center' size='xs'>
                                     Scan the QR code to download {PlatformDetails[platform].title}

@@ -25,7 +25,7 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ className, label, 
             <Text colorStyle='subtle' size='sm'>
                 {label}
             </Text>
-            <div className='flex items-center space-x-400'>
+            <div className='flex items-center gap-x-400'>
                 <Text bold size='sm'>
                     {value}
                 </Text>

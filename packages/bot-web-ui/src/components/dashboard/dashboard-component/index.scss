@@ -308,9 +308,6 @@
             }
 
             &--not-listed {
-                @include mobile {
-                    height: calc(100vh - 32rem);
-                }
                 @include desktop {
                     width: 100%;
                     margin-top: 4.8rem;

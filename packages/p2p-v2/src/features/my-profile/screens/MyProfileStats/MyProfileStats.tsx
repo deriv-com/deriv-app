@@ -1,8 +1,8 @@
-import React from 'react';
-import { useAdvertiserStats } from '../../../../hooks';
-import './MyProfileStats.scss';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { useActiveAccount } from '@deriv/api';
+import { useAdvertiserStats } from '../../../../hooks';
+import './MyProfileStats.scss';
 
 type MyProfileStatsItemProps = {
     currency?: string;
@@ -64,10 +64,6 @@ const MyProfileStatsItem = ({
     );
 };
 
-const MyProfileStatsRow = ({ children }: React.PropsWithChildren<unknown>) => {
-    return <div className='p2p-v2-my-profile-stats__row'>{children}</div>;
-};
-
 type MyProfileStatsProps = {
     advertiserId?: string;
 };
@@ -99,57 +95,46 @@ export const MyProfileStats = ({ advertiserId }: MyProfileStatsProps) => {
 
     const getTimeValueText = (minutes: number) => `${minutes === 1 ? '< ' : ''}${minutes} min`;
     const getCurrencyText = (currency: number) =>
-        new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(
+        new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2, style: 'decimal' }).format(
             currency
         );
 
     return (
         <div className='p2p-v2-my-profile-stats'>
-            <MyProfileStatsRow>
-                <MyProfileStatsItem
-                    duration='30d'
-                    label='Buy completion'
-                    value={buyCompletionRate ? `${buyCompletionRate}% (${buyOrdersCount})` : '-'}
-                />
-                <MyProfileStatsItem
-                    duration='30d'
-                    label='Sell completion'
-                    value={sellCompletionRate ? `${sellCompletionRate}% (${sellOrdersCount})` : '-'}
-                />
-                <MyProfileStatsItem duration='30d' label='Avg pay time' value={getTimeValueText(averagePayTime)} />
-                <MyProfileStatsItem
-                    duration='30d'
-                    label='Avg release time'
-                    value={getTimeValueText(averageReleaseTime)}
-                />
-            </MyProfileStatsRow>
-            <MyProfileStatsRow>
-                <MyProfileStatsItem
-                    currency='USD'
-                    duration='30d'
-                    label='Trade volume'
-                    onClickLifetime={hasClickedLifetime => setShouldShowTradeVolumeLifetime(hasClickedLifetime)}
-                    shouldShowLifetime
-                    value={
-                        shouldShowTradeVolumeLifetime
-                            ? getCurrencyText(tradeVolumeLifetime)
-                            : getCurrencyText(tradeVolume)
-                    }
-                />
-                <MyProfileStatsItem
-                    currency='USD'
-                    duration='30d'
-                    label='Total orders'
-                    onClickLifetime={hasClickedLifetime => setShouldShowTotalOrdersLifetime(hasClickedLifetime)}
-                    shouldShowLifetime
-                    value={
-                        shouldShowTotalOrdersLifetime
-                            ? getCurrencyText(totalOrdersLifetime)
-                            : getCurrencyText(totalOrders)
-                    }
-                />
-                <MyProfileStatsItem duration='30d' label='Trade partners' value={tradePartners?.toString()} />
-            </MyProfileStatsRow>
+            <MyProfileStatsItem
+                duration='30d'
+                label='Buy completion'
+                value={buyCompletionRate ? `${buyCompletionRate}% (${buyOrdersCount})` : '-'}
+            />
+            <MyProfileStatsItem
+                duration='30d'
+                label='Sell completion'
+                value={sellCompletionRate ? `${sellCompletionRate}% (${sellOrdersCount})` : '-'}
+            />
+            <MyProfileStatsItem duration='30d' label='Avg pay time' value={getTimeValueText(averagePayTime)} />
+            <MyProfileStatsItem
+                duration='30d'
+                label='Avg release time'
+                value={averageReleaseTime ? getTimeValueText(averageReleaseTime) : '-'}
+            />
+            <MyProfileStatsItem
+                currency='USD'
+                duration='30d'
+                label='Trade volume'
+                onClickLifetime={hasClickedLifetime => setShouldShowTradeVolumeLifetime(hasClickedLifetime)}
+                shouldShowLifetime
+                value={
+                    shouldShowTradeVolumeLifetime ? getCurrencyText(tradeVolumeLifetime) : getCurrencyText(tradeVolume)
+                }
+            />
+            <MyProfileStatsItem
+                duration='30d'
+                label='Total orders'
+                onClickLifetime={hasClickedLifetime => setShouldShowTotalOrdersLifetime(hasClickedLifetime)}
+                shouldShowLifetime
+                value={shouldShowTotalOrdersLifetime ? totalOrdersLifetime.toString() : totalOrders.toString()}
+            />
+            <MyProfileStatsItem duration='30d' label='Trade partners' value={tradePartners?.toString()} />
         </div>
     );
 };

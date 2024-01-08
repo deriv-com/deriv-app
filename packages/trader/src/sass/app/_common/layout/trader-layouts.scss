@@ -835,6 +835,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     border-top: 1px solid var(--general-section-1);
     border-top-right-radius: 1.4rem;
     border-top-left-radius: 1.4rem;
+    box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.04), 0px -1px 4px 0px rgba(0, 0, 0, 0.08);
 
     &_bottom-sheet {
         height: 12.2rem;
@@ -859,6 +860,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
             width: 100%;
             font-size: 1.4rem;
             line-height: 2.2rem;
+            color: var(--core-color-opacity-black-600, rgba(0, 0, 0, 0.72));
         }
 
         &_button {
@@ -906,6 +908,135 @@ $FLOATING_HEADER_HEIGHT: 41px;
     &_container {
         height: 100%;
         overflow-y: scroll;
-        font-size: 1.6rem;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .trade-type {
+            &_section {
+                background-color: var(--general-section-1);
+                padding: 0.8rem;
+                height: 6.8rem;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            &_container {
+                background-color: var(--general-main-1);
+                padding: 0.8rem 1.6rem;
+                height: 6rem;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-radius: 0.8rem;
+
+                &_left,
+                &_right {
+                    height: 4.4rem;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 0.8rem;
+                }
+            }
+
+            &_name {
+                font-size: 1.4rem;
+                font-weight: 700;
+                line-height: 2.2rem;
+            }
+
+            &_price {
+                text-align: right;
+                font-size: 1.4rem;
+                line-height: 2.2rem;
+            }
+        }
+
+        .chart {
+            &_section {
+                min-height: 5.6rem;
+                padding: 1.6rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 1.6rem;
+                font-weight: 700;
+                line-height: 2.4rem;
+            }
+        }
+
+        .trade-param {
+            &_section {
+                padding: 0.8rem 1.6rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+
+                &_title {
+                    height: 4.4rem;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 4px;
+                    justify-content: space-between;
+                    color: var(--core-color-opacity-black-700, rgba(0, 0, 0, 0.8));
+                    font-size: 12px;
+                    line-height: 18px;
+
+                    .bold {
+                        font-weight: 700;
+                        font-size: 14px;
+                        line-height: 22px;
+                    }
+                }
+            }
+
+            &_toggle-button {
+                margin: 0.8rem 0;
+                width: 100%;
+                border-radius: 0.8rem;
+
+                .dc-button-menu__button:first-child {
+                    border-radius: 0.4rem;
+                }
+                .dc-button-menu__button {
+                    padding: 0.5rem 0.8rem;
+
+                    .dc-btn__text {
+                        font-size: 14px;
+                        font-weight: 400;
+                        line-height: 22px;
+
+                        &:before {
+                            content: '';
+                            width: 1.3rem;
+                            height: 1.3rem;
+                            border: 1px dashed var(--core-color-solid-slate-1400, #000);
+                            border-radius: 0.2rem;
+                            margin-right: 0.4rem;
+                        }
+                    }
+                }
+            }
+
+            &_container {
+                height: 5.6rem;
+                margin-bottom: 0.8rem;
+                border-radius: 0.8rem;
+                background-color: var(--general-section-1);
+                color: var(--core-color-opacity-black-600, rgba(0, 0, 0, 0.72));
+                padding: 0.8rem 1.6rem;
+            }
+
+            &_name {
+                font-size: 12px;
+                line-height: 18px;
+            }
+        }
     }
 }

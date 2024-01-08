@@ -3,6 +3,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { routes, getDecimalPlaces, platforms } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { Icon } from '@deriv/components';
 import { MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
@@ -81,10 +82,12 @@ const DTraderHeader = observer(() => {
     if (is_mobile) {
         return (
             <header className='header'>
-                <div className='header_platform-icon'>Logo</div>
+                <div className='header_platform-icon'>
+                    <Icon icon='IcRebrandingDerivTraderDashboard' size={24} />
+                </div>
                 <div className='header_account-info'>
                     <div>[Account name]</div>
-                    <div>10,000.00 USD</div>
+                    <div style={{ fontWeight: 'bold' }}>10,000.00 USD</div>
                 </div>
                 <button className='header_deposit'>Deposit</button>
             </header>

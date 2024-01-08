@@ -57,6 +57,8 @@ jobs:
       environment: Production
       if: always()
       steps:
+      - name: Checkout
+        uses: actions/checkout@v4
       - name: Send Slack Notification
         uses: "./.github/actions/send_slack_notifications"
         with:

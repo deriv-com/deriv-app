@@ -97,7 +97,7 @@ const DMT5TradeModal = observer(
         const mobileWebtraderURL = () => {
             const deepLink = `metatrader5://account?server=${
                 (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
-            }&login=${mt5_trade_account?.login}`;
+            }&login=${(mt5_trade_account as TTradingPlatformAccounts)?.display_login}}`;
 
             // Check if the deep link opens successfully (app is installed)
             const isAppInstalled = () => {
@@ -122,20 +122,6 @@ const DMT5TradeModal = observer(
                 return getPlatformMt5DownloadLink('huawei');
             }
         };
-
-        // const isAppInstalled = (scheme: string) => {
-        //     const iframe = document.createElement('iframe');
-        //     iframe.style.display = 'none';
-        //     iframe.src = `${scheme}://test`;
-
-        //     document.body.appendChild(iframe);
-
-        //     setTimeout(function () {
-        //         document.body.removeChild(iframe);
-        //     }, 300);
-
-        //     return true; // The result is not accurate due to browser restrictions
-        // };
 
         return (
             <div className='cfd-trade-modal-container'>

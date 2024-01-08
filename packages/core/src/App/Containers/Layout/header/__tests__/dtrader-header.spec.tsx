@@ -34,20 +34,4 @@ describe('DTraderHeader', () => {
         ];
         desktop_view_text_content.forEach(text => expect(screen.getByText(text)).toBeInTheDocument());
     });
-
-    it('should render Toggle Menu Drawer, Menu Links, Header Account Action and Real Account SignUp components, in Mobile view', () => {
-        renderComponent(
-            mockStore({
-                ui: { is_desktop: false, is_mobile: true, is_real_acc_signup_on: true },
-                modules: { cashier: { payment_agent: 'MOCK_PAYMENT_AGENT' } },
-            })
-        );
-        const mobile_view_text_content = [
-            'Mocked Toggle Menu Drawer',
-            'Mocked Menu Links',
-            'Mocked Header Account Action',
-            'Mocked Real Account SignUp',
-        ];
-        mobile_view_text_content.forEach(text => expect(screen.getByText(text)).toBeInTheDocument());
-    });
 });

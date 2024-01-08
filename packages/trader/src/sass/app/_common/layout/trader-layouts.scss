@@ -917,7 +917,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
             &_section {
                 background-color: var(--general-section-1);
                 padding: 0.8rem;
-                height: 6.8rem;
+                height: 7.6rem;
                 width: 100%;
                 display: flex;
                 justify-content: center;
@@ -1001,9 +1001,14 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 width: 100%;
                 border-radius: 0.8rem;
 
+                .dc-button-menu__wrapper {
+                    background-color: none;
+                }
+
                 .dc-button-menu__button:first-child {
                     border-radius: 0.4rem;
                 }
+
                 .dc-button-menu__button {
                     padding: 0.5rem 0.8rem;
 

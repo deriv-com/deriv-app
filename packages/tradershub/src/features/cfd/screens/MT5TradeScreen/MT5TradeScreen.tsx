@@ -22,25 +22,25 @@ const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
 
 const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ account }) => {
     const { isMobile } = useBreakpoint();
-    const { getModalState } = Provider.useModal();
+    const { getCFDState } = Provider.useCFDContext();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
-    const { data: activeData } = useActiveAccount();
+    const { data: activeAccount } = useActiveAccount();
 
     const mt5Platform = PlatformDetails.mt5.platform;
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
     const ctraderPlatform = PlatformDetails.ctrader.platform;
 
-    const marketType = getModalState('marketType');
-    const platform = getModalState('platform') ?? mt5Platform;
+    const marketType = getCFDState('marketType');
+    const platform = getCFDState('platform') ?? mt5Platform;
 
     const platformToAccountsListMapper = useMemo(
         () => ({
-            ctrader: ctraderAccountsList?.find(account => account.is_virtual === activeData?.is_virtual),
-            dxtrade: dxtradeAccountsList?.find(account => account.is_virtual === activeData?.is_virtual),
+            ctrader: ctraderAccountsList?.find(account => account.is_virtual === activeAccount?.is_virtual),
+            dxtrade: dxtradeAccountsList?.find(account => account.is_virtual === activeAccount?.is_virtual),
             mt5: account,
         }),
-        [ctraderAccountsList, dxtradeAccountsList, account, activeData?.is_virtual]
+        [ctraderAccountsList, dxtradeAccountsList, account, activeAccount?.is_virtual]
     );
 
     const details = platformToAccountsListMapper[platform as TPlatforms.All];
@@ -57,7 +57,6 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ account }) => {
     return (
         <div className='lg:w-[45vw] lg:min-w-[51.2rem] lg:max-w-[60rem] w-full min-w-full h-auto'>
             <div className='flex flex-col p-1200 gap-800 border-b-100 border-system-light-secondary-background'>
-                {/* border-top: 0.2rem solid #f2f3f4; */}
                 <div className='flex items-center justify-between w-full'>
                     <div className='flex items-center'>
                         <div className='mr-400'>
@@ -72,7 +71,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ account }) => {
                                         ? MarketTypeDetails[(marketType ?? 'all') as keyof typeof MarketTypeDetails]
                                               .title
                                         : PlatformDetails[platform as keyof typeof PlatformDetails].title}{' '}
-                                    {!activeData?.is_virtual && details?.landing_company_short?.toUpperCase()}
+                                    {!activeAccount?.is_virtual && details?.landing_company_short?.toUpperCase()}
                                 </Text>
                             </div>
                             <Text className='text-system-light-less-prominent-text' size='sm'>
@@ -85,7 +84,6 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ account }) => {
                     </div>
                 </div>
                 <div className='flex flex-col gap-100'>
-                    {/* <div className='wallets-mt5-trade-screen__details-clipboards'> */}
                     {platform === mt5Platform && (
                         <Fragment>
                             <MT5TradeDetailsItem label='Broker' value='Deriv Holdings (Guernsey) Ltd' />
@@ -136,7 +134,7 @@ const MT5TradeScreen: FC<MT5TradeScreenProps> = ({ account }) => {
                     </Fragment>
                 )}
                 {platform === dxtradePlatform && (
-                    <MT5TradeLink isDemo={activeData?.is_virtual} platform={dxtradePlatform} />
+                    <MT5TradeLink isDemo={activeAccount?.is_virtual} platform={dxtradePlatform} />
                 )}
                 {platform === ctraderPlatform && (
                     <Fragment>

@@ -5,7 +5,7 @@ import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/cfd/derivx.svg';
-import { PlatformDetails } from '../../../../constants';
+import { CFDPlatforms, PlatformDetails } from '../../../../constants';
 import { TradeModal } from '../../../../modals/TradeModal';
 
 const AddedDxtradeAccountsList = () => {
@@ -46,7 +46,13 @@ const AddedDxtradeAccountsList = () => {
                 className='rounded-200 px-800'
                 onClick={() =>
                     account &&
-                    show(<TradeModal account={account} marketType={account?.market_type} platform='dxtrade' />)
+                    show(
+                        <TradeModal
+                            account={account}
+                            marketType={account?.market_type}
+                            platform={CFDPlatforms.DXTRADE}
+                        />
+                    )
                 }
             >
                 Open

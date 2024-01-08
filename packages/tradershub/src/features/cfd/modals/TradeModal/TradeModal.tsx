@@ -3,41 +3,9 @@ import QRCode from 'qrcode.react';
 import { Provider } from '@deriv/library';
 import { Text, useBreakpoint } from '@deriv/quill-design';
 import { Modal } from '../../../../components/Modal';
-import InstallationAppleIcon from '../../../../public/images/ic-installation-apple.svg';
-import InstallationGoogleIcon from '../../../../public/images/ic-installation-google.svg';
-import InstallationHuaweiIcon from '../../../../public/images/ic-installation-huawei.svg';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
-import { PlatformDetails } from '../../constants';
+import { AppToIconMapper, LinksMapper, PlatformDetails, TAppLinks } from '../../constants';
 import { MT5TradeScreen } from '../../screens/MT5TradeScreen';
-
-type TAppLinks = {
-    android: string;
-    huawei?: string;
-    ios: string;
-};
-
-const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
-    ctrader: {
-        android: 'https://play.google.com/store/apps/details?id=com.deriv.ct',
-        ios: 'https://apps.apple.com/cy/app/ctrader/id767428811',
-    },
-    dxtrade: {
-        android: 'https://play.google.com/store/apps/details?id=com.deriv.dx',
-        huawei: 'https://appgallery.huawei.com/app/C104633219',
-        ios: 'https://apps.apple.com/us/app/deriv-x/id1563337503',
-    },
-    mt5: {
-        android: 'https://download.mql5.com/cdn/mobile/mt5/android?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
-        huawei: 'https://appgallery.huawei.com/#/app/C102015329',
-        ios: 'https://download.mql5.com/cdn/mobile/mt5/ios?server=Deriv-Demo,Deriv-Server,Deriv-Server-02',
-    },
-};
-
-const AppToIconMapper: Record<string, React.ComponentType<React.SVGAttributes<SVGElement>>> = {
-    android: InstallationGoogleIcon,
-    huawei: InstallationHuaweiIcon,
-    ios: InstallationAppleIcon,
-};
 
 type TTradeModalProps = {
     account?: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
@@ -46,13 +14,13 @@ type TTradeModalProps = {
 };
 
 const TradeModal: FC<TTradeModalProps> = ({ account, marketType, platform }) => {
-    const { setModalState } = Provider.useModal();
     const { isDesktop } = useBreakpoint();
+    const { setCfdState } = Provider.useCFDContext();
 
     useEffect(() => {
-        setModalState('marketType', marketType);
-        setModalState('platform', platform);
-        if (platform === 'mt5') setModalState('accountId', (account as THooks.MT5AccountsList)?.loginid);
+        setCfdState('marketType', marketType);
+        setCfdState('platform', platform);
+        if (platform === 'mt5') setCfdState('accountId', (account as THooks.MT5AccountsList)?.loginid);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -71,7 +39,7 @@ const TradeModal: FC<TTradeModalProps> = ({ account, marketType, platform }) => 
                         {PlatformDetails[platform].title} account
                     </Text>
                     <div className='flex gap-800'>
-                        <div className='flex flex-col justify-center gap-400 svg'>
+                        <div className='flex flex-col justify-center gap-400'>
                             {appOrder.map(app => {
                                 const AppsLinkMapper = LinksMapper[platform][app as keyof TAppLinks];
                                 if (AppsLinkMapper) {

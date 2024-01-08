@@ -58,8 +58,6 @@ const validateCryptoInput = (
     remainder: number,
     value: string
 ) => {
-    if (!value.length) return helperMessageMapper.fieldRequired;
-
     if (!activeWallet?.balance || !activeWallet?.currency || !activeWallet?.currency_config || !fractionalDigits.crypto)
         return;
 

@@ -15,18 +15,19 @@ const QuickStrategyGuides = () => {
 
     return (
         <div className='tutorials-quick-strategy'>
-            {tutorial_selected_strategy === '' && (
-                <Text
-                    className='tutorials-quick-strategy__title'
-                    weight='bold'
-                    color='prominent'
-                    line_height='s'
-                    size={is_mobile ? 'xxs' : 's'}
-                    as='div'
-                >
-                    {localize('Quick strategy guides')}
-                </Text>
-            )}
+            {tutorial_selected_strategy === '' ||
+                (quick_strategy_tab_content.length > 0 && (
+                    <Text
+                        className='tutorials-quick-strategy__title'
+                        weight='bold'
+                        color='prominent'
+                        line_height='s'
+                        size={is_mobile ? 'xxs' : 's'}
+                        as='div'
+                    >
+                        {localize('Quick strategy guides')}
+                    </Text>
+                ))}
             <QuickStrategyGuidesDetail
                 tutorial_selected_strategy={tutorial_selected_strategy}
                 setTutorialSelectedStrategy={setTutorialSelectedStrategy}

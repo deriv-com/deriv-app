@@ -1,6 +1,6 @@
 import React from 'react';
-import useDevice from '../../../../../../../../hooks/useDevice';
 import { WalletClipboard, WalletText } from '../../../../../../../../components';
+import useDevice from '../../../../../../../../hooks/useDevice';
 import './WithdrawalCryptoDestinationAddress.scss';
 
 const WithdrawalCryptoDestinationAddress: React.FC<{ address?: string }> = ({ address }) => {

@@ -43,19 +43,19 @@ const MigrationBanner = observer(() => {
                     {has_derived_and_financial_mt5 ? (
                         <Text size={size}>
                             <Localize
-                                i18n_default_text='Upgrade your <0>{{account_1}}</0> and <0>{{account_2}} {{platform}} </0> accounts.'
+                                i18n_default_text='Upgrade your <0>{{account_1}}</0> <1/>and <0>{{account_2}} {{platform}} </0> accounts.'
                                 values={{
                                     account_1: getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.DERIVED),
                                     account_2: getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.FINANCIAL),
                                     platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                                 }}
-                                components={[<strong key={0} />]}
+                                components={[<strong key={0} />, <br key={1} />]}
                             />
                         </Text>
                     ) : (
                         <Text size={size}>
                             <Localize
-                                i18n_default_text='We’re upgrading your <0>{{account_title}} {{platform}} </0> account.'
+                                i18n_default_text='Upgrade your <1/><0>{{account_title}} {{platform}} </0> account'
                                 values={{
                                     account_title: getFormattedJurisdictionMarketTypes(
                                         has_derived_mt5_to_migrate
@@ -64,7 +64,7 @@ const MigrationBanner = observer(() => {
                                     ),
                                     platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                                 }}
-                                components={[<strong key={0} />]}
+                                components={[<strong key={0} />, <br key={1} />]}
                             />
                         </Text>
                     )}

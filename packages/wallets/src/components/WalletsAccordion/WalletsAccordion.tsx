@@ -31,9 +31,7 @@ const WalletsAccordion: React.FC<React.PropsWithChildren<TProps>> = ({
 
     return (
         <div
-            className={`wallets-accordion wallets-accordion ${
-                isDemo ? 'wallets-accordion wallets-accordion--virtual' : ''
-            }`}
+            className={`wallets-accordion ${isDemo ? 'wallets-accordion wallets-accordion--virtual' : ''}`}
             ref={accordionRef}
         >
             <div

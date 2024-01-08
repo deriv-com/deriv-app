@@ -1,5 +1,5 @@
-import React from 'react';
-import { useAuthorize, useCurrencyConfig, useWalletAccountsList } from '@deriv/api';
+import React, { useState } from 'react';
+import { useActiveWalletAccount, useAuthorize, useMobileCarouselWalletsList } from '@deriv/api';
 import { AccountsList } from '../AccountsList';
 import { WalletsAccordionLoader } from '../SkeletonLoader';
 import { WalletListCard } from '../WalletListCard';
@@ -7,20 +7,30 @@ import { WalletsAccordion } from '../WalletsAccordion';
 import './DesktopWalletsList.scss';
 
 const DesktopWalletsList: React.FC = () => {
-    const { data: wallets } = useWalletAccountsList();
-    const { isLoading: isAuthorizeLoading, switchAccount } = useAuthorize();
-    const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
+    const { data: wallets, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
+    const { data: activeWallet } = useActiveWalletAccount();
+
+    const { switchAccount } = useAuthorize();
+
+    const [selectedLoginId, setSelectedLoginId] = useState(activeWallet?.loginid);
+
+    function onWalletToggle(loginid: string) {
+        if (loginid !== activeWallet?.loginid) {
+            setSelectedLoginId(loginid);
+            switchAccount(loginid);
+        }
+    }
 
     return (
         <div className='wallets-desktop-wallets-list'>
-            {(isAuthorizeLoading || isCurrencyConfigLoading) && <WalletsAccordionLoader />}
+            {isWalletAccountsListLoading && <WalletsAccordionLoader />}
             {wallets?.map(account => {
                 return (
                     <WalletsAccordion
                         isDemo={account.is_virtual}
-                        isOpen={account.is_active}
+                        isOpen={account.loginid == selectedLoginId}
                         key={`wallets-accordion-${account.loginid}`}
-                        onToggle={() => switchAccount(account.loginid)}
+                        onToggle={onWalletToggle.bind(this, account.loginid)}
                         renderHeader={() => (
                             <WalletListCard
                                 badge={account.landing_company_name}

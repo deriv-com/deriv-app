@@ -36,7 +36,7 @@ const DesktopWalletsList: React.FC = () => {
                                 badge={account.landing_company_name}
                                 balance={account.display_balance}
                                 currency={account.wallet_currency_type || 'USD'}
-                                isActive={account.is_active}
+                                isActive={account.loginid == selectedLoginId}
                                 isDemo={account.is_virtual}
                                 loginid={account.loginid}
                                 title={account.currency || 'USD'}

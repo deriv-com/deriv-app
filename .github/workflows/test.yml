@@ -51,3 +51,14 @@ jobs:
       run: bash ./scripts/check-tests.sh packages/utils/src
     - name: Run tests
       run: npm run test:ci
+  send_slack_notification:
+      name: Send Release Slack notification
+      runs-on: Runner_8cores_Deriv-app
+      environment: Production
+      if: always()
+      steps:
+      - name: Send Slack Notification
+        uses: "./.github/actions/send_slack_notifications"
+        with:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          MESSAGE: 'Please Ignore!!!! This is a test message'

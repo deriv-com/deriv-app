@@ -103,7 +103,7 @@ const DMT5TradeModal = observer(
             const isAppInstalled = () => {
                 const tester = document.createElement('a');
                 tester.href = deepLink;
-                return tester.protocol === 'http:' || tester.protocol === 'https:';
+                return tester.protocol !== 'about:';
             };
 
             if (isAppInstalled()) {

@@ -6,10 +6,10 @@
     padding: 0.5rem 0.6rem;
     position: absolute;
     top: -4rem;
-    left: 23.2rem;
+    inset-inline-start: 23.2rem;
     background-color: var(--general-main-1);
     @include mobile {
-        left: 1.4rem;
+        inset-inline-start: 1.4rem;
         overflow-x: auto;
         overflow-y: hidden;
         width: 100%;

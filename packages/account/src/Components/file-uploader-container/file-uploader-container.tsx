@@ -19,6 +19,7 @@ const FileUploaderContainer = observer(
         return (
             <div className='file-uploader__container' data-testid='dt_file_uploader_container'>
                 {files_description}
+                {examples}
                 <Text size={is_mobile ? 'xxs' : 'xs'} as='div' className='file-uploader__file-title' weight='bold'>
                     <Localize i18n_default_text='Upload file' />
                 </Text>
@@ -33,7 +34,6 @@ const FileUploaderContainer = observer(
                         <Localize i18n_default_text='Maximum size: 8MB' />
                     </Text>
                 </div>
-                {examples}
             </div>
         );
     }

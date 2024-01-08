@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from '@deriv/quill-design';
 import { ButtonGroup, Modal } from '../../../../components';

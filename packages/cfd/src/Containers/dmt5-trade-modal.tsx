@@ -95,24 +95,22 @@ const DMT5TradeModal = observer(
         ].includes(mt5_trade_account?.status);
 
         const mobileWebtraderURL = () => {
-            // const appScheme = 'metatrader5';
-            // if (isAppInstalled(appScheme)) {
-            //     return `metatrader5://account?server=${
-            //         (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
-            //     }&login=${mt5_trade_account?.login}`;
-            // }
-            // if (mobileOSDetect() === 'Android') {
-            //     return getPlatformMt5DownloadLink('android');
-            // } else if (mobileOSDetect() === 'iOS') {
-            //     return getPlatformMt5DownloadLink('ios');
-            // } else if (mobileOSDetect() === 'Huawei') {
-            //     return getPlatformMt5DownloadLink('huawei');
-            // }
-            return (
-                `metatrader5://account?server=${
-                    (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
-                }&login=${mt5_trade_account?.login}` ?? platformUrl()
-            );
+            const deepLink = `metatrader5://account?server=${
+                (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
+            }&login=${mt5_trade_account?.login}`;
+
+            // Check if the deep link opens successfully (app is installed)
+            const isAppInstalled = () => {
+                const tester = document.createElement('a');
+                tester.href = deepLink;
+                return tester.protocol === 'http:' || tester.protocol === 'https:';
+            };
+
+            if (isAppInstalled()) {
+                return deepLink; // Open the app if installed
+            }
+            // Fallback to redirecting to app store
+            return platformUrl();
         };
 
         const platformUrl = () => {

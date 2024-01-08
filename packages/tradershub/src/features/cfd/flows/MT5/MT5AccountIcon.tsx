@@ -3,7 +3,7 @@ import { getStaticUrl } from '../../../../helpers/urls';
 import { THooks } from '../../../../types';
 import { MarketTypeDetails } from '../../constants';
 
-export const MT5AccountIcon = ({ account }: { account: THooks.MT5AccountsList }) => {
+export const MT5AccountIcon = ({ account }: { account: THooks.SortedMT5Accounts }) => {
     const handleClick = () => {
         window.open(getStaticUrl('/dmt5'));
     };

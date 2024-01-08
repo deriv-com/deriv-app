@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { Button, Heading, Text } from '@deriv/quill-design';
 import { OptionsAndMultipliersSection, StaticLink, TotalAssets } from '../../components';
+import { MT5PlatformsList } from 'src/features/cfd/components/MT5PlatformsList';
 import { CTraderList } from '../../features/cfd/components/CTraderList';
 import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
 
@@ -34,9 +35,7 @@ const TradersHubRoute: FC = () => {
                             Deriv MT5
                         </Text>
                         <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
+                            <MT5PlatformsList />
                         </div>
                     </div>
                     <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>

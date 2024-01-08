@@ -5,7 +5,7 @@ import { THooks } from '../../../../../types';
 import { MarketTypeDetails } from '../../../constants';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
-const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
+const AvailableMT5AccountsList = ({ account }: { account: THooks.SortedMT5Accounts }) => {
     const { description, title } = MarketTypeDetails[account.market_type || 'all'];
 
     return (

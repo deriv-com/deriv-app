@@ -92,8 +92,15 @@ describe('WalletTextField', () => {
         expect(helperMessageProps.messageVariant).toBe('error');
     });
 
-    it('should render with a warning message correctly', () => {
-        render(<WalletTextField {...defaultProps} errorMessage='This is very common password' ref={createRef()} />);
+    it('should render with a warning message if error message exist but value is valid', () => {
+        render(
+            <WalletTextField
+                {...defaultProps}
+                errorMessage='This is very common password'
+                ref={createRef()}
+                shouldShowWarningMessage
+            />
+        );
 
         expect(HelperMessage).toHaveBeenCalled();
         const helperMessageProps = (HelperMessage as jest.Mock).mock.calls[

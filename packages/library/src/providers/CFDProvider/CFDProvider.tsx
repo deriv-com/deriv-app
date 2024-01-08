@@ -27,8 +27,9 @@ export const useCFDContext = () => {
     return context;
 };
 
-export const CFDProvider = ({ children }: { children: React.ReactNode }) => {
+export const CFDProvider = ({ children }: { children: ReactNode }) => {
     const [cfdState, setCfdState] = useState<TCFDState>({});
+    const [modalContent, setModalContent] = useState<ReactNode | null>(null);
 
     const getCFDState = useCallback(
         <T extends keyof TCFDState>(key: T): TCFDState[T] => {
@@ -41,7 +42,18 @@ export const CFDProvider = ({ children }: { children: React.ReactNode }) => {
         setCfdState(prevState => ({ ...prevState, [key]: value }));
     };
 
-    const providerValue = useMemo(() => ({ getCFDState, setCfdState: updateCFDState }), [getCFDState]);
+    const hide = useCallback(() => {
+        setModalContent(null);
+    }, []);
+
+    const show = useCallback((ModalContent: ReactNode) => {
+        setModalContent(ModalContent);
+    }, []);
+
+    const providerValue = useMemo(
+        () => ({ getCFDState, setCfdState: updateCFDState, modalContent, hide, show }),
+        [getCFDState, modalContent, hide, show]
+    );
 
     return <CFDContext.Provider value={providerValue}>{children}</CFDContext.Provider>;
 };

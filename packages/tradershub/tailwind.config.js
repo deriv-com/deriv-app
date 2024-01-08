@@ -1,6 +1,20 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin');
+
 module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
+    plugins: [
+        plugin(({ addUtilities }) => {
+            addUtilities({
+                '.backface-hidden': {
+                    'backface-visibility': 'hidden',
+                },
+                '.backface-visible': {
+                    'backface-visibility': 'visible',
+                },
+            });
+        }),
+    ],
     presets: [require('@deriv/quill-design/quill-tailwind/tailwind.config.cjs')],
     theme: {
         extend: {

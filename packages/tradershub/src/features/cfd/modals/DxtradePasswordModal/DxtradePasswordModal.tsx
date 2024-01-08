@@ -10,7 +10,7 @@ import { Provider } from '@deriv/library';
 import { Button, useBreakpoint } from '@deriv/quill-design';
 import { ActionScreen, ButtonGroup, Dialog, ModalStepWrapper, SentEmailContent } from '../../../../components';
 import DxTradePasswordIcon from '../../../../public/images/cfd/dxtrade-password.svg';
-import { PlatformDetails } from '../../constants';
+import { PlatformDetails, QueryStatus } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 
 const DxtradePasswordModal = () => {
@@ -144,7 +144,7 @@ const DxtradePasswordModal = () => {
         error?.error?.code,
     ]);
 
-    if (status === 'error' && error?.error?.code !== 'PasswordError') {
+    if (status === QueryStatus.ERROR && error?.error?.code !== 'PasswordError') {
         return <ActionScreen description={error?.error.message} title={error?.error?.code} />;
     }
 

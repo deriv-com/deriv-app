@@ -45,6 +45,11 @@ type TPlatformUrls = {
     };
 };
 
+export const Category = {
+    DEMO: 'demo',
+    REAL: 'real',
+} as const;
+
 export const CFDPlatforms = {
     CFDS: 'CFDs',
     CTRADER: 'ctrader',
@@ -56,6 +61,13 @@ export const MarketType = {
     ALL: 'all',
     FINANCIAL: 'financial',
     SYNTHETIC: 'synthetic',
+} as const;
+
+export const QueryStatus = {
+    ERROR: 'error',
+    IDLE: 'idle',
+    LOADING: 'loading',
+    SUCCESS: 'success',
 } as const;
 
 export const MarketTypeDetails: TMarketTypeDetails = {

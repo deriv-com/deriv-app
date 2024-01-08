@@ -15,8 +15,16 @@ import { ActionScreen, ButtonGroup, Dialog, ModalStepWrapper, SentEmailContent }
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
-import { companyNamesAndUrls, MarketTypeDetails, PlatformDetails } from '../../constants';
+import {
+    Category,
+    companyNamesAndUrls,
+    MarketType,
+    MarketTypeDetails,
+    PlatformDetails,
+    QueryStatus,
+} from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
+import { Jurisdiction } from '../../screens/CFDCompareAccounts/constants';
 
 type TMT5PasswordModalProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -42,7 +50,7 @@ const MT5PasswordModal: FC<TMT5PasswordModalProps> = ({ marketType, platform }) 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeTrading?.is_virtual;
     const marketTypeTitle =
-        marketType === 'all' && Object.keys(PlatformDetails).includes(platform)
+        marketType === MarketType.ALL && Object.keys(PlatformDetails).includes(platform)
             ? PlatformDetails[platform].title
             : MarketTypeDetails[marketType].title;
     const selectedJurisdiction = getCFDState('selectedJurisdiction');
@@ -52,7 +60,7 @@ const MT5PasswordModal: FC<TMT5PasswordModalProps> = ({ marketType, platform }) 
     })`;
 
     const onSubmit = useCallback(async () => {
-        const accountType = marketType === 'synthetic' ? 'gaming' : marketType;
+        const accountType = marketType === MarketType.SYNTHETIC ? 'gaming' : marketType;
 
         // in order to create account, we need to set a password through trading_platform_password_change endpoint first
         // then only mt5_create_account can be called, otherwise it will response an error for password required
@@ -75,9 +83,9 @@ const MT5PasswordModal: FC<TMT5PasswordModalProps> = ({ marketType, platform }) 
                 email: settings?.email ?? '',
                 leverage: availableMT5Accounts?.find(acc => acc.market_type === marketType)?.leverage ?? 500,
                 mainPassword: password,
-                ...(marketType === 'financial' && { mt5_account_type: 'financial' }),
+                ...(marketType === MarketType.FINANCIAL && { mt5_account_type: 'financial' }),
                 ...(selectedJurisdiction &&
-                    (selectedJurisdiction !== 'labuan'
+                    (selectedJurisdiction !== Jurisdiction.LABUAN
                         ? {
                               account_type: categoryAccountType,
                               ...(selectedJurisdiction === 'financial' && { mt5_account_type: 'financial' }),
@@ -86,7 +94,7 @@ const MT5PasswordModal: FC<TMT5PasswordModalProps> = ({ marketType, platform }) 
                               account_type: 'financial',
                               mt5_account_type: 'financial_stp',
                           })),
-                ...(marketType === 'all' && { sub_account_category: 'swap_free' }),
+                ...(marketType === MarketType.ALL && { sub_account_category: 'swap_free' }),
                 name: settings?.first_name ?? '',
                 phone: settings?.phone ?? '',
                 state: settings?.address_state ?? '',
@@ -116,7 +124,9 @@ const MT5PasswordModal: FC<TMT5PasswordModalProps> = ({ marketType, platform }) 
         if (isSuccess) {
             return ' ';
         }
-        return `${hasMT5Account ? 'Add' : 'Create'} a ${isDemo ? 'demo' : 'real'} ${PlatformDetails.mt5.title} account`;
+        return `${hasMT5Account ? 'Add' : 'Create'} a ${isDemo ? Category.DEMO : Category.REAL} ${
+            PlatformDetails.mt5.title
+        } account`;
     }, [hasMT5Account, isDemo, isSuccess]);
 
     const renderSuccessButton = useCallback(() => {
@@ -277,7 +287,7 @@ const MT5PasswordModal: FC<TMT5PasswordModalProps> = ({ marketType, platform }) 
         platform,
     ]);
 
-    if (status === 'error' && error?.error?.code !== 'PasswordError') {
+    if (status === QueryStatus.ERROR && error?.error?.code !== 'PasswordError') {
         return <ActionScreen description={error?.error.message} title={error?.error?.code} />;
     }
 

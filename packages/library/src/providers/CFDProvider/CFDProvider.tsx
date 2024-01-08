@@ -42,17 +42,17 @@ export const CFDProvider = ({ children }: { children: ReactNode }) => {
         setCfdState(prevState => ({ ...prevState, [key]: value }));
     };
 
-    const hide = useCallback(() => {
+    const hide = () => {
         setModalContent(null);
-    }, []);
+    };
 
-    const show = useCallback((ModalContent: ReactNode) => {
+    const show = (ModalContent: ReactNode) => {
         setModalContent(ModalContent);
-    }, []);
+    };
 
     const providerValue = useMemo(
         () => ({ getCFDState, setCfdState: updateCFDState, modalContent, hide, show }),
-        [getCFDState, modalContent, hide, show]
+        [getCFDState, modalContent]
     );
 
     return <CFDContext.Provider value={providerValue}>{children}</CFDContext.Provider>;

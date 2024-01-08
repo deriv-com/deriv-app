@@ -1,9 +1,9 @@
 import React, { FC, Fragment, useEffect, useMemo } from 'react';
-import { useActiveWalletAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
+import { useActiveTradingAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
 import { THooks } from '../../../../types';
 import { AddedMT5AccountsList, AvailableMT5AccountsList } from '../../flows/MT5';
 import { GetMoreMT5Accounts } from '../../screens';
-import './MT5PlatformsList.scss';
+import { Text } from '@deriv/quill-design';
 
 type TProps = {
     onMT5PlatformListLoaded?: (value: boolean) => void;
@@ -12,7 +12,7 @@ type TProps = {
 const MT5PlatformsList: FC<TProps> = ({ onMT5PlatformListLoaded }) => {
     const { isFetching } = useAuthorize();
     const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts();
-    const { data: activeWallet } = useActiveWalletAccount();
+    const { data: activeTradingAccount } = useActiveTradingAccount();
     const invalidate = useInvalidateQuery();
 
     const hasMT5Account = useMemo(() => {
@@ -32,12 +32,10 @@ const MT5PlatformsList: FC<TProps> = ({ onMT5PlatformListLoaded }) => {
 
     return (
         <Fragment>
-            <section className='wallets-mt5-list'>
-                <div className='wallets-mt5-list__title'>
-                    <h1>Deriv MT5</h1>
-                </div>
+            <section>
+                <Text bold>Deriv MT5</Text>
             </section>
-            <div className='wallets-mt5-list__content'>
+            <div className='grid gap-x-2400 gap-y-800 grid-cols-3 pb-6'>
                 {isFetchedAfterMount &&
                     data?.map((account, index) => {
                         if (account.is_added)
@@ -55,7 +53,7 @@ const MT5PlatformsList: FC<TProps> = ({ onMT5PlatformListLoaded }) => {
                             />
                         );
                     })}
-                {hasMT5Account && !activeWallet?.is_virtual && !areAllAccountsCreated && <GetMoreMT5Accounts />}
+                {hasMT5Account && !activeTradingAccount?.is_virtual && !areAllAccountsCreated && <GetMoreMT5Accounts />}
             </div>
         </Fragment>
     );

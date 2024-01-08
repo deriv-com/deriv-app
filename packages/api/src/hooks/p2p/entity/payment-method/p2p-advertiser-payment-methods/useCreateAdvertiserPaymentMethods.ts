@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import useInvalidateQuery from '../../useInvalidateQuery';
-import useMutation from '../../useMutation';
+import useInvalidateQuery from '../../../../../useInvalidateQuery';
+import useMutation from '../../../../../useMutation';
 
 type TPayloads = NonNullable<
     NonNullable<Parameters<ReturnType<typeof useMutation<'p2p_advertiser_payment_methods'>>['mutate']>[0]>['payload']

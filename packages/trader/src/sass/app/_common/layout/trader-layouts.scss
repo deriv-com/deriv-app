@@ -821,3 +821,91 @@ $FLOATING_HEADER_HEIGHT: 41px;
         );
     }
 }
+
+.footer-new {
+    position: fixed;
+    z-index: 99;
+    box-sizing: border-box;
+    height: 17.9rem;
+    width: 100%;
+    bottom: 0;
+    transition: opacity 0.3s;
+    backface-visibility: hidden;
+    background-color: var(--general-main-1);
+    border-top: 1px solid var(--general-section-1);
+    border-top-right-radius: 1.4rem;
+    border-top-left-radius: 1.4rem;
+
+    &_bottom-sheet {
+        height: 12.2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 1.6rem 1.6rem;
+
+        &_separator {
+            width: 4.8rem;
+            height: 0.4rem;
+            border-radius: 0.4rem;
+            background-color: var(--general-section-1);
+        }
+
+        &_payout {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 2.2rem;
+            width: 100%;
+            font-size: 1.4rem;
+            line-height: 2.2rem;
+        }
+
+        &_button {
+            width: 100%;
+            height: 4.8rem;
+            padding: 1.2rem 1.6rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 1.6rem;
+            background: var(--core-color-solid-emerald-700, #00c390);
+            border: none;
+            color: var(--core-color-solid-slate-50, #fff);
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 2.4rem;
+        }
+    }
+
+    &_navigation {
+        height: 5.6rem;
+        border: 1px solid var(--general-section-1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem 1.6rem;
+
+        &_icon {
+            width: 6.52rem;
+            height: 4rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.8rem;
+
+            &-selected {
+                background-color: var(--text-general);
+                color: var(--core-color-solid-slate-50, #fff);
+            }
+        }
+    }
+}
+
+.content {
+    &_container {
+        height: 100%;
+        overflow-y: scroll;
+        font-size: 1.6rem;
+    }
+}

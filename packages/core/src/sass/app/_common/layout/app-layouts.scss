@@ -169,11 +169,9 @@
         height: inherit;
     }
     @include mobile {
-        // no footer:
-        margin-bottom: 0;
-        height: calc(100% - #{$MOBILE_HEADER_HEIGHT});
+        height: calc(100% - 4.8rem - 17.9rem);
         position: relative;
-        margin-top: $MOBILE_HEADER_HEIGHT;
+        margin: 4.8rem 0 17.9rem;
 
         &--is-scrollable {
             overflow-y: auto;

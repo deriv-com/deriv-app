@@ -153,6 +153,57 @@ const Trade = observer(() => {
         LocalStore.set('launchModalShown', true);
     };
 
+    if (is_mobile) {
+        return (
+            <React.Fragment>
+                <div className='content_container'>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi reprehenderit, fugit quidem dicta
+                    possimus harum illo eos rerum nostrum impedit quibusdam perferendis enim minima atque doloremque, id
+                    quia, aut error?Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi reprehenderit, fugit
+                    quidem dicta possimus harum illo eos rerum nostrum impedit quibusdam perferendis enim minima atque
+                    doloremque, id quia, aut error?Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi
+                    reprehenderit, fugit quidem dicta possimus harum illo eos rerum nostrum impedit quibusdam
+                    perferendis enim minima atque doloremque, id quia, aut error?Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Quasi reprehenderit, fugit quidem dicta possimus harum illo eos rerum nostrum
+                    impedit quibusdam perferendis enim minima atque doloremque, id quia, aut error?Lorem ipsum dolor sit
+                    amet consectetur adipisicing elit. Quasi reprehenderit, fugit quidem dicta possimus harum illo eos
+                    rerum nostrum impedit quibusdam perferendis enim minima atque doloremque, id quia, aut error?Lorem
+                    ipsum dolor sit amet consectetur adipisicing elit. Quasi reprehenderit, fugit quidem dicta possimus
+                    harum illo eos rerum nostrum impedit quibusdam perferendis enim minima atque doloremque, id quia,
+                    aut error?Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi reprehenderit, fugit quidem
+                    dicta possimus harum illo eos rerum nostrum impedit quibusdam perferendis enim minima atque
+                    doloremque, id quia, aut error?Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi
+                    reprehenderit, fugit quidem dicta possimus harum illo eos rerum nostrum impedit quibusdam
+                    perferendis enim minima atque doloremque, id quia, aut error?Lorem ipsum dolor sit amet consectetur
+                    adipisicing elit. Quasi reprehenderit, fugit quidem dicta possimus harum illo eos rerum nostrum
+                    impedit quibusdam perferendis enim minima atque doloremque, id quia, aut error?Lorem ipsum dolor sit
+                    amet consectetur adipisicing elit. Quasi reprehenderit, fugit quidem dicta possimus harum illo eos
+                    rerum nostrum impedit quibusdam perferendis enim minima atque doloremque, id quia, aut error?Lorem
+                    ipsum dolor sit amet consectetur adipisicing elit. Quasi reprehenderit, fugit quidem dicta possimus
+                    harum illo eos rerum nostrum impedit quibusdam perferendis enim minima atque doloremque, id quia,
+                    aut error?
+                </div>
+                <footer className='footer-new'>
+                    <div className='footer-new_bottom-sheet'>
+                        <div className='footer-new_bottom-sheet_separator' />
+                        <div className='footer-new_bottom-sheet_payout'>
+                            <div>Expected payout</div>
+                            <div>19.57 USD</div>
+                        </div>
+                        <button className='footer-new_bottom-sheet_button'>Buy</button>
+                    </div>
+                    <div className='footer-new_navigation'>
+                        <div className='footer-new_navigation_icon footer-new_navigation_icon-selected'>Icon 1</div>
+                        <div className='footer-new_navigation_icon'>Icon 2</div>
+                        <div className='footer-new_navigation_icon'>Icon 3</div>
+                        <div className='footer-new_navigation_icon'>Icon 4</div>
+                        <div className='footer-new_navigation_icon'>Icon 5</div>
+                    </div>
+                </footer>
+            </React.Fragment>
+        );
+    }
+
     return (
         <React.Fragment>
             {open_launch_modal && is_logged_in && !is_already_shown && (

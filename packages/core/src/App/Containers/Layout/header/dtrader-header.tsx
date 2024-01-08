@@ -78,6 +78,19 @@ const DTraderHeader = observer(() => {
             return true;
         });
 
+    if (is_mobile) {
+        return (
+            <header className='header'>
+                <div className='header_platform-icon'>Logo</div>
+                <div className='header_account-info'>
+                    <div>[Account name]</div>
+                    <div>10,000.00 USD</div>
+                </div>
+                <button className='header_deposit'>Deposit</button>
+            </header>
+        );
+    }
+
     return (
         <header
             className={classNames('header', {

@@ -85,11 +85,6 @@ const MenuRight = observer(() => {
                 'header__menu-right--hidden': is_mobile && is_logging_in,
             })}
         >
-            <DesktopWrapper>
-                <div className='header__menu--dtrader--separator--account'>
-                    <Divider />
-                </div>
-            </DesktopWrapper>
             {(is_logging_in || is_switching) && (
                 <div
                     id='dt_core_header_acc-info-preloader'

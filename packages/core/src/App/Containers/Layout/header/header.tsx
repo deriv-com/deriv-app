@@ -4,6 +4,7 @@ import { useFeatureFlags, useP2PCompletedOrdersNotification, useStoreWalletAccou
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import DefaultHeader from './default-header';
+import DefaultHeaderWallets from './defaut-header-wallets';
 import DTraderHeader from './dtrader-header';
 import TradersHubHeader from './traders-hub-header';
 import DTraderHeaderWallets from './dtrader-header-wallets';
@@ -63,7 +64,7 @@ const Header = observer(() => {
     } else if (pathname === routes.onboarding) {
         return null;
     }
-    return <DefaultHeader />;
+    return is_next_wallet_enabled ? <DefaultHeaderWallets /> : <DefaultHeader />;
 });
 
 export default Header;

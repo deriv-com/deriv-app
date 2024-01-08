@@ -111,11 +111,11 @@ const DMT5TradeModal = observer(
             return (
                 `metatrader5://account?server=${
                     (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
-                }&login=${mt5_trade_account?.login}` ?? getPlatformSettings()
+                }&login=${mt5_trade_account?.login}` ?? platformUrl()
             );
         };
 
-        const getPlatformSettings = () => {
+        const platformUrl = () => {
             if (mobileOSDetect() === 'Android') {
                 return getPlatformMt5DownloadLink('android');
             } else if (mobileOSDetect() === 'iOS') {
@@ -336,7 +336,7 @@ const DMT5TradeModal = observer(
                         <img src={getUrlBase('/public/images/common/mt5_download.png')} width={80} height={80} />
                         <Text align='center' size='xxs'>
                             {localize('Scan the QR code to download {{ platform }}.', {
-                                platform: getPlatformSettings('mt5').name,
+                                platform: getPlatformSettings('mt5')?.name,
                             })}
                         </Text>
                     </div>

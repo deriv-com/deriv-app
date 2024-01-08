@@ -149,7 +149,6 @@ const DxtradePasswordModal = () => {
     if (isMobile) {
         return (
             <Modal>
-                <Modal.Header title=' ' />
                 <Modal.Content>
                     {successComponent}
                     {passwordComponent}

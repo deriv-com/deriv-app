@@ -54,7 +54,6 @@ export default class GeneralStore extends BaseStore {
     p2p_poa_required = false;
     poa_status = null;
     poi_status = null;
-    review_period;
     saved_form_state = null;
     should_show_real_name = false;
     should_show_poa = false;
@@ -118,7 +117,6 @@ export default class GeneralStore extends BaseStore {
             p2p_poa_required: observable,
             poa_status: observable,
             poi_status: observable,
-            review_period: observable,
             saved_form_state: observable,
             should_show_real_name: observable,
             should_show_poa: observable,
@@ -133,7 +131,6 @@ export default class GeneralStore extends BaseStore {
             blockUnblockUser: action.bound,
             createAdvertiser: action.bound,
             setCounterpartyAdvertiserId: action.bound,
-            getWebsiteStatus: action.bound,
             handleNotifications: action.bound,
             setP2POrderTab: action.bound,
             showCompletedOrderNotification: action.bound,
@@ -167,13 +164,11 @@ export default class GeneralStore extends BaseStore {
             setNickname: action.bound,
             setNicknameError: action.bound,
             setOrderTableType: action.bound,
-            setP2PConfig: action.bound,
             setP2pPoaRequired: action.bound,
             setP2pOrderList: action.bound,
             setParameters: action.bound,
             setPoaStatus: action.bound,
             setPoiStatus: action.bound,
-            setReviewPeriod: action.bound,
             setBlockUnblockUserError: action.bound,
             setIsAdvertiserBlocked: action.bound,
             setIsBlockUnblockUserLoading: action.bound,
@@ -309,20 +304,6 @@ export default class GeneralStore extends BaseStore {
         }
 
         return local_storage_settings;
-    }
-
-    getWebsiteStatus() {
-        requestWS({ website_status: 1 }).then(response => {
-            if (response && !response.error) {
-                const { buy_sell_store } = this.root_store;
-                const { p2p_config } = response.website_status;
-                const { feature_level, local_currencies, review_period } = p2p_config || {};
-
-                this.setFeatureLevel(feature_level);
-                buy_sell_store.setLocalCurrencies(local_currencies);
-                this.setReviewPeriod(review_period);
-            }
-        });
     }
 
     handleNotifications(old_orders, new_orders) {
@@ -508,7 +489,6 @@ export default class GeneralStore extends BaseStore {
 
             const { sendbird_store } = this.root_store;
 
-            this.setP2PConfig();
             this.ws_subscriptions = {
                 advertiser_subscription: subscribeWS(
                     {
@@ -689,27 +669,6 @@ export default class GeneralStore extends BaseStore {
         this.order_table_type = order_table_type;
     }
 
-    setP2PConfig() {
-        const { floating_rate_store, my_ads_store } = this.root_store;
-        requestWS({ website_status: 1 }).then(response => {
-            if (!!response && response.error) {
-                floating_rate_store.setApiErrorMessage(response.error.message);
-            } else {
-                const {
-                    float_rate_adverts,
-                    float_rate_offset_limit,
-                    fixed_rate_adverts_end_date,
-                    maximum_order_amount,
-                } = response.website_status.p2p_config;
-                my_ads_store.setMaximumOrderAmount(maximum_order_amount);
-                floating_rate_store.setFloatingRateAdvertStatus(float_rate_adverts);
-                floating_rate_store.setFloatRateOffsetLimit(float_rate_offset_limit);
-                floating_rate_store.setFixedRateAdvertsEndDate(fixed_rate_adverts_end_date || null);
-                floating_rate_store.setApiErrorMessage(null);
-            }
-        });
-    }
-
     setP2pOrderList(order_response) {
         if (order_response.error) {
             this.ws_subscriptions.order_list_subscription.unsubscribe();
@@ -759,10 +718,6 @@ export default class GeneralStore extends BaseStore {
 
     setPoiStatus(poi_status) {
         this.poi_status = poi_status;
-    }
-
-    setReviewPeriod(review_period) {
-        this.review_period = review_period;
     }
 
     setShouldShowRealName(should_show_real_name) {

@@ -4,9 +4,6 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import MyAdsTable from '../my-ads-table';
 
 const mock_store_values = {
-    general_store: {
-        setP2PConfig: jest.fn(),
-    },
     my_ads_store: {
         setAdverts: jest.fn(),
         setSelectedAdId: jest.fn(),
@@ -15,9 +12,6 @@ const mock_store_values = {
         api_error_message: null,
         setApiErrorCode: jest.fn(),
         adverts: [],
-    },
-    floating_rate_store: {
-        setChangeAdAlert: jest.fn(),
     },
 };
 

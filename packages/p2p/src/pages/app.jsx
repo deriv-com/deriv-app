@@ -1,10 +1,11 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
+import { Loading } from '@deriv/components';
+import { useP2PSettings } from '@deriv/hooks';
+import { routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
-import { Loading } from '@deriv/components';
-import { routes, WS } from '@deriv/shared';
 import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -26,6 +27,11 @@ const App = () => {
     const location = useLocation();
 
     const { buy_sell_store, general_store, order_store } = useStores();
+    const {
+        subscribe,
+        p2p_settings,
+        rest: { isSubscribed },
+    } = useP2PSettings();
 
     const lang = getLanguage();
 
@@ -38,7 +44,7 @@ const App = () => {
 
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
-        general_store.getWebsiteStatus();
+        subscribe();
 
         setP2PRedirectTo({
             routeToMyProfile: () => {
@@ -127,6 +133,19 @@ const App = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    React.useEffect(() => {
+        if (p2p_settings) {
+            p2p_settings.local_currencies.forEach(currency => {
+                const { is_default, value } = currency;
+
+                if (is_default && !buy_sell_store.selected_local_currency) {
+                    buy_sell_store.setSelectedLocalCurrency(value);
+                    buy_sell_store.setLocalCurrency(value);
+                }
+            });
+        }
+    }, [p2p_settings]);
 
     // Redirect to /p2p/buy-sell if user navigates to /p2p without a subroute
     React.useEffect(() => {
@@ -254,7 +273,7 @@ const App = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [action_param, code_param]);
 
-    if (is_logging_in || general_store.is_loading) {
+    if (is_logging_in || general_store.is_loading || !isSubscribed) {
         return <Loading is_fullscreen />;
     }
 

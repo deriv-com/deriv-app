@@ -22,7 +22,7 @@ const getHeaders = offered_currency => [
 ];
 
 const MyAdsTable = () => {
-    const { floating_rate_store, general_store, my_ads_store } = useStores();
+    const { general_store, my_ads_store } = useStores();
     const {
         client: { currency },
     } = useStore();
@@ -31,10 +31,9 @@ const MyAdsTable = () => {
         my_ads_store.setAdverts([]);
         my_ads_store.setSelectedAdId('');
         my_ads_store.loadMoreAds({ startIndex: 0 }, true);
-        general_store.setP2PConfig();
+
         return () => {
             my_ads_store.setApiErrorCode(null);
-            floating_rate_store.setChangeAdAlert(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

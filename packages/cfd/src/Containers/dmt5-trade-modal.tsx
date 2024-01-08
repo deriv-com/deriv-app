@@ -95,12 +95,27 @@ const DMT5TradeModal = observer(
         ].includes(mt5_trade_account?.status);
 
         const mobileWebtraderURL = () => {
-            const appScheme = 'metatrader5';
-            if (isAppInstalled(appScheme)) {
-                return `metatrader5://account?server=${(mt5_trade_account as DetailsOfEachMT5Loginid)?.server}&login=${
-                    mt5_trade_account?.login
-                }`;
-            }
+            // const appScheme = 'metatrader5';
+            // if (isAppInstalled(appScheme)) {
+            //     return `metatrader5://account?server=${
+            //         (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
+            //     }&login=${mt5_trade_account?.login}`;
+            // }
+            // if (mobileOSDetect() === 'Android') {
+            //     return getPlatformMt5DownloadLink('android');
+            // } else if (mobileOSDetect() === 'iOS') {
+            //     return getPlatformMt5DownloadLink('ios');
+            // } else if (mobileOSDetect() === 'Huawei') {
+            //     return getPlatformMt5DownloadLink('huawei');
+            // }
+            return (
+                `metatrader5://account?server=${
+                    (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
+                }&login=${mt5_trade_account?.login}` ?? getPlatformSettings()
+            );
+        };
+
+        const getPlatformSettings = () => {
             if (mobileOSDetect() === 'Android') {
                 return getPlatformMt5DownloadLink('android');
             } else if (mobileOSDetect() === 'iOS') {
@@ -108,23 +123,21 @@ const DMT5TradeModal = observer(
             } else if (mobileOSDetect() === 'Huawei') {
                 return getPlatformMt5DownloadLink('huawei');
             }
-
-            return undefined;
         };
 
-        const isAppInstalled = (scheme: string) => {
-            const iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.src = `${scheme}://test`;
+        // const isAppInstalled = (scheme: string) => {
+        //     const iframe = document.createElement('iframe');
+        //     iframe.style.display = 'none';
+        //     iframe.src = `${scheme}://test`;
 
-            document.body.appendChild(iframe);
+        //     document.body.appendChild(iframe);
 
-            setTimeout(function () {
-                document.body.removeChild(iframe);
-            }, 300);
+        //     setTimeout(function () {
+        //         document.body.removeChild(iframe);
+        //     }, 300);
 
-            return true; // The result is not accurate due to browser restrictions
-        };
+        //     return true; // The result is not accurate due to browser restrictions
+        // };
 
         return (
             <div className='cfd-trade-modal-container'>
@@ -229,7 +242,7 @@ const DMT5TradeModal = observer(
                             href={
                                 !is_mobile
                                     ? (mt5_trade_account.webtrader_url as unknown as string)
-                                    : mobileWebtraderURL() || ''
+                                    : mobileWebtraderURL() ?? ''
                             }
                             target='_blank'
                             rel='noopener noreferrer'

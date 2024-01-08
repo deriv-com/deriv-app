@@ -6,4 +6,7 @@ export { default as getWalletCurrencyIcon } from './getWalletCurrencyIcon';
 export { default as groupTransactionsByDay } from './groupTransactionsByDay';
 export { default as getTruncatedString } from './getTruncatedString';
 export { default as unFormatLocaleString } from './unFormatLocaleString';
+export { default as getLoginHistoryFormattedData } from './getLoginHistoryFormattedData';
 export * from './parse-url';
+export * from './moment';
+export * from './files';

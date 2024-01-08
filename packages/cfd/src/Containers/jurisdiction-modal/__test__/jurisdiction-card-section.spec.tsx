@@ -6,6 +6,7 @@ import { Jurisdiction } from '@deriv/shared';
 describe('JurisdictionCardSection', () => {
     type TMockProps = {
         account_status: {
+            p2p_poa_required: 0 | 1;
             authentication: {
                 document: {
                     status: 'none' | 'pending' | 'verified' | 'expired' | 'rejected' | undefined;
@@ -53,6 +54,7 @@ describe('JurisdictionCardSection', () => {
     };
     const mock_props: TMockProps = {
         account_status: {
+            p2p_poa_required: 0,
             authentication: {
                 document: {
                     status: 'none',

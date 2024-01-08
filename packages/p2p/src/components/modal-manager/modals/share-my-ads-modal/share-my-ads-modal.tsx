@@ -14,7 +14,7 @@ import { websiteUrl } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import MyProfileSeparatorContainer from 'Pages/my-profile/my-profile-separator-container';
+import SeparatorContainerLine from 'Components/separator-container-line';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { TAdvert } from 'Types';
@@ -31,7 +31,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
     const advert_url = `${websiteUrl()}cashier/p2p/advertiser?id=${advertiser_id}&advert_id=${id}`;
     const is_buy_ad = type === buy_sell.BUY;
     const custom_message = localize(
-        "Hi! I'd like to exchange {{first_currency}} for {{second_currency}} at {{rate_display}}{{rate_type}} on Deriv P2P.\n\nIf you're interested, check out my ad 👉\n\n{{- advert_url}}\n\nThanks!",
+        "Hi! I'd like to exchange {{first_currency}} for {{second_currency}} at {{rate_display}}{{rate_type}} on Deriv P2P.nnIf you're interested, check out my ad 👉nn{{- advert_url}}nnThanks!",
         {
             first_currency: is_buy_ad ? local_currency : account_currency,
             second_currency: is_buy_ad ? account_currency : local_currency,
@@ -40,6 +40,8 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
             advert_url,
         }
     );
+
+    const formatted_message = custom_message.replace(/nn/g, '\n\n');
 
     const onCopy = (event: { stopPropagation: () => void }) => {
         copyToClipboard(advert_url);
@@ -65,7 +67,7 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
 
     const handleShareLink = () => {
         navigator.share({
-            text: custom_message,
+            text: formatted_message,
         });
     };
 
@@ -127,11 +129,8 @@ const ShareMyAdsModal = ({ advert }: TAdvert) => {
                                 <Text weight='bold'>
                                     <Localize i18n_default_text='Share via' />
                                 </Text>
-                                <ShareMyAdsSocials advert_url={advert_url} custom_message={custom_message} />
-                                <MyProfileSeparatorContainer.Line
-                                    className='share-my-ads-modal__line'
-                                    is_invisible={false}
-                                />
+                                <ShareMyAdsSocials advert_url={advert_url} custom_message={formatted_message} />
+                                <SeparatorContainerLine className='share-my-ads-modal__line' />
                                 <Text>
                                     <Localize i18n_default_text='Or copy this link' />
                                 </Text>

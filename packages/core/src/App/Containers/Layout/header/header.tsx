@@ -1,10 +1,10 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { useFeatureFlags, useP2PCompletedOrdersNotification, useStoreWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
-import DefaultHeader from './default-header.jsx';
-import DTraderHeader from './dtrader-header.jsx';
+import DefaultHeader from './default-header';
+import DTraderHeader from './dtrader-header';
 import TradersHubHeader from './traders-hub-header';
 import DTraderHeaderWallets from './dtrader-header-wallets';
 import TradersHubHeaderWallets from './traders-hub-header-wallets';
@@ -14,9 +14,22 @@ const Header = observer(() => {
     const { client } = useStore();
     const { accounts, is_logged_in, setAccounts, loginid, switchAccount } = client;
     const { pathname } = useLocation();
+
+    useP2PCompletedOrdersNotification();
+    const is_wallets_cashier_route = pathname.includes(routes.wallets_cashier);
+
     const traders_hub_routes =
-        [routes.traders_hub, routes.account, routes.cashier, routes.wallets, routes.compare_cfds].includes(pathname) ||
-        pathname.startsWith(routes.compare_cfds);
+        [
+            routes.traders_hub,
+            routes.traders_hub_v2,
+            routes.account,
+            routes.cashier,
+            routes.wallets,
+            routes.wallets_compare_accounts,
+            routes.compare_cfds,
+        ].includes(pathname) ||
+        pathname.startsWith(routes.compare_cfds) ||
+        is_wallets_cashier_route;
 
     const client_accounts = useReadLocalStorage('client.accounts');
     const { is_next_wallet_enabled } = useFeatureFlags();

@@ -2,14 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { toJS } from 'mobx';
 import { DesktopWrapper, MobileWrapper, Popover, Text } from '@deriv/components';
-import {
-    getMarketNamesMap,
-    isMobile,
-    useIsMounted,
-    isContractElapsed,
-    TContractStore,
-    TTickSpotData,
-} from '@deriv/shared';
+import { TickSpotData } from '@deriv/api-types';
+import { getMarketNamesMap, useIsMounted, isContractElapsed, TContractStore } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { Bounce, SlideIn } from 'App/Components/Animations';
 import { DigitSpot, LastDigitPrediction } from '../LastDigitPrediction';
@@ -35,15 +29,16 @@ type TDigits = Pick<TContractStore, 'contract_info' | 'digits_info'> & {
     is_digit_contract?: TContractStore['is_digit_contract'];
     is_ended?: TContractStore['is_ended'];
     is_trade_page?: boolean;
+    is_mobile: boolean;
     onDigitChange?: TTraderStore['onChange'];
     selected_digit?: TTraderStore['last_digit'];
     trade_type?: TTraderStore['contract_type'];
-    tick?: TTickSpotData;
+    tick?: TickSpotData | null;
     underlying?: TTraderStore['symbol'];
 };
 type TTickStream = NonNullable<TContractStore['contract_info']['tick_stream']>[number];
 type TTickData =
-    | TTickSpotData
+    | TickSpotData
     | null
     | undefined
     | {
@@ -62,6 +57,7 @@ const DigitsWrapper = ({
     is_digit_contract,
     is_ended,
     is_trade_page,
+    is_mobile,
     onDigitChange,
     selected_digit,
     trade_type,
@@ -102,7 +98,7 @@ const DigitsWrapper = ({
         <LastDigitPrediction
             // dimension of a single digit widget including margin/padding (number)
             // i.e - 40px + 6px left and 6px right padding/margin = 52
-            dimension={isMobile() ? 64 : 52}
+            dimension={is_mobile ? 64 : 52}
             has_entry_spot={!!contract_info.entry_tick}
             barrier={!is_contract_elapsed && is_tick_ready ? Number(contract_info.barrier) : null}
             contract_type={!is_contract_elapsed && is_tick_ready ? contract_info.contract_type : ''}

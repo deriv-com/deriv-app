@@ -4,7 +4,7 @@ import './FiatOnRampProviderCard.scss';
 
 type TFiatOnRampProvider = {
     description: string;
-    getPaymentIcons: () => React.ReactNode[];
+    getPaymentIcons: () => { icon: JSX.Element; name: string }[];
     handleDisclaimer: MouseEventHandler<HTMLButtonElement>;
     icon: React.ReactNode;
     name: string;
@@ -28,14 +28,14 @@ const FiatOnRampProviderCard: React.FC<TFiatOnRampProvider> = ({
                 </WalletText>
                 <WalletText size='sm'>{description}</WalletText>
                 <div className='wallets-fiat-onramp-provider__icons'>
-                    {paymentIcons.map((paymentIcon, index) => (
-                        <div key={`payment-method-icon-${index}`}>{paymentIcon}</div>
+                    {paymentIcons.map(paymentIcon => (
+                        <div key={`payment-method-icon-${paymentIcon.name}`}>{paymentIcon.icon}</div>
                     ))}
                 </div>
             </div>
             <div className='wallets-fiat-onramp-provider__mobile-icons'>
-                {paymentIcons.map((paymentIcon, index) => (
-                    <div key={`payment-method-icon-${index}`}>{paymentIcon}</div>
+                {paymentIcons.map(paymentIcon => (
+                    <div key={`payment-method-icon-${paymentIcon.name}`}>{paymentIcon.icon}</div>
                 ))}
             </div>
             <WalletButton onClick={handleDisclaimer} size='md'>

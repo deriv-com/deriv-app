@@ -3,6 +3,12 @@ import { localize } from '@deriv/translations';
 import moment from 'moment';
 import { TContractInfo } from '../contract';
 
+type TUnitMap = {
+    name_plural?: string;
+    name_singular?: string;
+    name?: string;
+};
+
 export const getDurationUnitValue = (obj_duration: moment.Duration) => {
     const duration_ms = obj_duration.asMilliseconds() / 1000;
     // Check with isEndTime to find out if value of duration has decimals
@@ -40,7 +46,7 @@ export const getUnitMap = () => {
         m: { name_plural: localize('minutes'), name_singular: localize('minute') },
         s: { name: localize('seconds') },
         t: { name_plural: localize('ticks'), name_singular: localize('tick') },
-    };
+    } as { [key: string]: TUnitMap };
 };
 
 const TIME = {
@@ -71,6 +77,24 @@ export const getDurationUnitText = (obj_duration: moment.Duration, should_ignore
         return unit_map.s.name;
     }
     return unit_map.s.name;
+};
+
+export const formatResetDuration = (contract_info: TContractInfo) => {
+    const time_duration = getUnitMap();
+    const duration_ms = getDurationPeriod(contract_info).asMilliseconds() / TIME.SECOND / 2;
+    const reset_hours =
+        duration_ms === TIME.HOUR ? `h [${time_duration.h.name_singular}] ` : `h [${time_duration.h.name_plural}] `;
+    const reset_minutes =
+        duration_ms === TIME.MINUTE ? `m [${time_duration.m.name_singular}] ` : `m [${time_duration.m.name_plural}] `;
+    const reset_seconds = duration_ms % TIME.MINUTE === 0 ? '' : `s [${time_duration.s.name}]`;
+
+    return moment
+        .utc(moment.duration(duration_ms, 'milliseconds').asMilliseconds())
+        .format(
+            `${duration_ms >= TIME.HOUR ? reset_hours : ''}${
+                duration_ms >= TIME.MINUTE && duration_ms % TIME.HOUR !== 0 ? reset_minutes : ''
+            }${reset_seconds}`.trim()
+        );
 };
 
 export const getDurationPeriod = (contract_info: TContractInfo) =>

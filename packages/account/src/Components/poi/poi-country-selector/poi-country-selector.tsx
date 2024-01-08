@@ -2,14 +2,13 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
 import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
-import { IDV_ERROR_STATUS, isMobile, TIDVErrorStatus } from '@deriv/shared';
+import { IDV_ERROR_STATUS, isMobile, TIDVErrorStatus, POIContext } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import FormFooter from 'Components/form-footer';
-import { POIContext } from '../../../Helpers/poi-context';
+import FormFooter from '../../form-footer';
 import { useResidenceList } from '@deriv/api';
 
 type TCountrySelector = {
-    handleSelectionNext: () => void;
+    handleSelectionNext?: () => void;
     is_from_external: boolean;
     mismatch_status?: TIDVErrorStatus;
 };
@@ -66,7 +65,7 @@ const CountrySelector = ({ handleSelectionNext, is_from_external, mismatch_statu
             }) => (
                 <React.Fragment>
                     <div
-                        className={classNames('proof-of-identity__container', {
+                        className={classNames('proof-of-identity__container proof-of-identity__country-container', {
                             'min-height': !is_from_external,
                         })}
                     >

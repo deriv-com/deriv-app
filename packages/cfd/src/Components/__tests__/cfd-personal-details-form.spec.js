@@ -212,7 +212,7 @@ describe('<CFDPersonalDetailsForm />', () => {
         const place_of_birth_input = screen.getByRole('textbox', { name: /place of birth/i });
         const tax_residence_input = screen.getByRole('textbox', { name: /tax residence/i });
         const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
-        const opening_reason_input = screen.getByTestId(/dti_dropdown_display/i);
+        const opening_reason_input = screen.getByTestId(/dt_dropdown_display/i);
         const next_button = screen.getByRole('button', { name: /next/i });
 
         fireEvent.blur(citizenship_input);
@@ -242,7 +242,7 @@ describe('<CFDPersonalDetailsForm />', () => {
         const place_of_birth_input = screen.getByRole('textbox', { name: /place of birth/i });
         const tax_residence_input = screen.getByRole('textbox', { name: /tax residence/i });
         const tax_id_input = screen.getByRole('textbox', { name: /tax identification number/i });
-        const opening_reason_input = screen.getByTestId(/dti_dropdown_display/i);
+        const opening_reason_input = screen.getByTestId(/dt_dropdown_display/i);
         const next_button = screen.getByRole('button', { name: /next/i });
 
         await waitFor(() => expect(screen.getByRole('button', { name: /next/i })).toBeDisabled());
@@ -254,6 +254,11 @@ describe('<CFDPersonalDetailsForm />', () => {
         fireEvent.click(opening_reason_input);
         const income_earning = within(screen.getByRole('list')).getByText('Income Earning');
         fireEvent.click(income_earning);
+
+        const crs_confirmation_checkbox = screen.getByRole('checkbox', {
+            name: /i confirm that my tax information is accurate and complete/i,
+        });
+        fireEvent.click(crs_confirmation_checkbox);
 
         await waitFor(() => {
             expect(screen.queryByText(citizenship_required_error)).not.toBeInTheDocument();
@@ -307,7 +312,7 @@ describe('<CFDPersonalDetailsForm />', () => {
         const citizenship_input = screen.getByRole('textbox', { name: /citizenship/i });
         const place_of_birth_input = screen.getByRole('textbox', { name: /place of birth/i });
         const tax_residence_input = screen.getByRole('textbox', { name: /tax residence/i });
-        const opening_reason_input = screen.getByTestId(/dti_dropdown_display/i);
+        const opening_reason_input = screen.getByTestId(/dt_dropdown_display/i);
         const next_button = screen.getByRole('button', { name: /next/i });
         const tax_id_input = screen.queryByRole('textbox', { name: /tax identification number/i });
 

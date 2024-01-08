@@ -53,7 +53,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             setCaret(newCaretPosition);
             setCaretNeedsRepositioning(true);
 
-            if (maxDigits && input.value.replace(separatorRegex, '').length > maxDigits) return;
+            if (maxDigits && input.value.replace(separatorRegex, '').replace(/^0+/, '').length > maxDigits) return;
 
             const hasNoChangeInDigits =
                 input.value.length + 1 === prevFormattedValue.length &&
@@ -114,7 +114,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             if (Number(unFormatLocaleString(formattedValue, locale)) === 0) {
                 const pasted = (e.clipboardData || window.clipboardData).getData('Text');
                 const pastedValue = Number(unFormatLocaleString(pasted, locale));
-                if (!isNaN(pastedValue) && isFinite(pastedValue))
+                if (!isNaN(pastedValue) && isFinite(pastedValue) && pastedValue >= 0)
                     onChange({
                         target: {
                             value: `${pastedValue.toLocaleString(locale, {

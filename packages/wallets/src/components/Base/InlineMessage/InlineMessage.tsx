@@ -43,8 +43,14 @@ const InlineMessage: React.FC<TProps> = ({ children, message, size = 'xs', title
                          wallets-inline-message--${size} 
                          wallets-inline-message--${variant} 
                          `}
+            data-testid={`dt_inline_message`}
         >
-            <Icon className={`wallets-inline-message__icon--${size}`} height={iconSize} width={iconSize} />
+            <Icon
+                className={`wallets-inline-message__icon--${size}`}
+                data-testid='dt_inline_message_icon'
+                height={iconSize}
+                width={iconSize}
+            />
             <span className={`wallets-inline-message__messages inline-message__messages--${size}`} style={{ fontSize }}>
                 {title && <strong>{title}</strong>}
                 {message && <span>{message}</span>}

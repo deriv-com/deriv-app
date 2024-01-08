@@ -106,7 +106,7 @@ MarkerSpotLabel.defaultProps = {
 };
 
 MarkerSpotLabel.propTypes = {
-    align_label: PropTypes.oneOf(['top', 'bottom']),
+    align_label: PropTypes.oneOf(['top', 'middle', 'bottom']),
     has_hover_toggle: PropTypes.bool,
     is_value_hidden: PropTypes.bool,
     spot_className: PropTypes.string,

@@ -1,4 +1,5 @@
 import { useFormikContext } from 'formik';
+import { Analytics } from '@deriv/analytics';
 import { useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { TFormData } from '../types';
@@ -38,6 +39,10 @@ const useQsSubmitHandler = () => {
             submitForm();
             toggleStopBotDialog();
         } else {
+            Analytics.trackEvent('ce_bot_quick_strategy_form', {
+                action: 'run_strategy',
+                form_source: 'ce_bot_quick_strategy_form',
+            });
             await setFieldValue('action', 'RUN');
             submitForm();
         }

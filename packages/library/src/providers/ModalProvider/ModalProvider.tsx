@@ -19,7 +19,6 @@ import { useBreakpoint } from '@deriv/quill-design';
 type TModalState = {
     // Add your modal states here
     modalType?: string; // Just an example
-    selectedJurisdiction?: string;
 };
 
 type TModalContext = {

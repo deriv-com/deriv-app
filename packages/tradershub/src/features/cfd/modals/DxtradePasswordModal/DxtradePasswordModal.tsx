@@ -8,7 +8,7 @@ import {
 } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, useBreakpoint } from '@deriv/quill-design';
-import { ActionScreen, ButtonGroup, Dialog, ModalStepWrapper } from '../../../../components';
+import { ActionScreen, ButtonGroup, Dialog, ModalStepWrapper, SentEmailContent } from '../../../../components';
 import DxTradePasswordIcon from '../../../../public/images/cfd/dxtrade-password.svg';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
@@ -22,7 +22,7 @@ const DxtradePasswordModal = () => {
     const { isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
     const isDemo = activeTrading?.is_virtual;
-    const { hide } = Provider.useModal();
+    const { hide, show } = Provider.useModal();
     const accountType = activeTrading?.is_virtual ? 'demo' : 'real';
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
 
@@ -85,7 +85,7 @@ const DxtradePasswordModal = () => {
         }
 
         return (
-            <Button disabled={!password || isLoading} isFullWidth isLoading={isLoading} onClick={onSubmit} size='lg'>
+            <Button disabled={!password || isLoading} fullWidth isLoading={isLoading} onClick={onSubmit} size='lg'>
                 {`Create ${PlatformDetails.dxtrade.title} password`}
             </Button>
         );
@@ -94,8 +94,8 @@ const DxtradePasswordModal = () => {
     const successComponent = useMemo(() => {
         const renderSuccessDescription = () => {
             return isDemo
-                ? `Congratulations, you have successfully created your demo Deriv X account.`
-                : `Congratulations, you have successfully created your real Deriv X account. To start trading, transfer funds from your Deriv account into this account.`;
+                ? `Congratulations, you have successfully created your demo ${PlatformDetails.dxtrade.title} account.`
+                : `Congratulations, you have successfully created your real ${PlatformDetails.dxtrade.title} account. To start trading, transfer funds from your Deriv account into this account.`;
         };
         if (isSuccess && dxtradeAccountListSuccess) {
             return (
@@ -125,6 +125,7 @@ const DxtradePasswordModal = () => {
                     marketType='all'
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
+                    onSecondaryClick={() => show(<SentEmailContent platform={dxtradePlatform} />)}
                     password={password}
                     passwordError={error?.error?.code === 'PasswordError'}
                     platform={dxtradePlatform}
@@ -138,6 +139,7 @@ const DxtradePasswordModal = () => {
         isLoading,
         onSubmit,
         password,
+        show,
         dxtradePlatform,
         error?.error?.code,
     ]);

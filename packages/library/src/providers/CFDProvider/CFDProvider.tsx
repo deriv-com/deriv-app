@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useMemo, useState, ReactNode } from 'react';
 import { TMarketTypes, TPlatforms, THooks } from '../../types';
 
 type TCFDState = {
@@ -11,6 +11,8 @@ type TCFDState = {
 type TCFDContext = {
     getCFDState: <T extends keyof TCFDState>(key: T) => TCFDState[T];
     setCfdState: <T extends keyof TCFDState>(key: T, value: TCFDState[T]) => void;
+    hide: () => void;
+    show: (ModalContent: ReactNode) => void;
 };
 
 const CFDContext = createContext<TCFDContext | null>(null);

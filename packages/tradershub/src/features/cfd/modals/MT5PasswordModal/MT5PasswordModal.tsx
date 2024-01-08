@@ -11,41 +11,41 @@ import {
 } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, useBreakpoint } from '@deriv/quill-design';
-import { ActionScreen, ButtonGroup, Dialog, ModalStepWrapper } from '../../../../components';
+import { ActionScreen, ButtonGroup, Dialog, ModalStepWrapper, SentEmailContent } from '../../../../components';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
 import { companyNamesAndUrls, MarketTypeDetails, PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 
-type TProps = {
+type TMT5PasswordModalProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
     platform: TPlatforms.All;
 };
 
-const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
+const MT5PasswordModal: FC<TMT5PasswordModalProps> = ({ marketType, platform }) => {
     const [password, setPassword] = useState('');
     const { error, isLoading: createMT5AccountLoading, isSuccess, mutate, status } = useCreateMT5Account();
-    const { isLoading: tradingPlatformPasswordChangeLoading, mutate: tradingPasswordChange } =
+    const { isLoading: tradingPlatformPasswordChangeLoading, mutateAsync: tradingPasswordChange } =
         useTradingPlatformPasswordChange();
     const { data: accountStatus } = useAccountStatus();
-    const { data: ActiveTradingAccount } = useActiveTradingAccount();
+    const { data: activeTrading } = useActiveTradingAccount();
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: settings } = useSettings();
-    const { getModalState, hide, show } = Provider.useModal();
+    const { getCFDState, hide, show } = Provider.useCFDContext();
     const { isMobile } = useBreakpoint();
     const history = useHistory();
 
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
-    const isDemo = ActiveTradingAccount?.is_virtual;
+    const isDemo = activeTrading?.is_virtual;
     const marketTypeTitle =
         marketType === 'all' && Object.keys(PlatformDetails).includes(platform)
             ? PlatformDetails[platform].title
             : MarketTypeDetails[marketType].title;
-    const selectedJurisdiction = getModalState('selectedJurisdiction');
+    const selectedJurisdiction = getCFDState('selectedJurisdiction');
 
     const landingCompanyName = `(${
         companyNamesAndUrls?.[selectedJurisdiction as keyof typeof companyNamesAndUrls]?.shortcode
@@ -63,7 +63,7 @@ const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
             });
         }
 
-        const categoryAccountType = ActiveTradingAccount?.is_virtual ? 'demo' : accountType;
+        const categoryAccountType = activeTrading?.is_virtual ? 'demo' : accountType;
 
         mutate({
             payload: {
@@ -94,7 +94,7 @@ const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
             },
         });
     }, [
-        ActiveTradingAccount?.is_virtual,
+        activeTrading?.is_virtual,
         availableMT5Accounts,
         isMT5PasswordNotSet,
         marketType,
@@ -116,10 +116,7 @@ const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
         if (isSuccess) {
             return ' ';
         }
-        if (hasMT5Account) {
-            return `Add a ${isDemo ? 'demo' : 'real'} ${PlatformDetails.mt5.title} account`;
-        }
-        return `Create a ${isDemo ? 'demo' : 'real'} ${PlatformDetails.mt5.title} account`;
+        return `${hasMT5Account ? 'Add' : 'Create'} a ${isDemo ? 'demo' : 'real'} ${PlatformDetails.mt5.title} account`;
     }, [hasMT5Account, isDemo, isSuccess]);
 
     const renderSuccessButton = useCallback(() => {
@@ -140,7 +137,7 @@ const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
                 <Button
                     onClick={() => {
                         hide();
-                        history.push('/wallets/cashier/transfer');
+                        history.push('/cashier/transfer');
                     }}
                     size='lg'
                 >
@@ -156,11 +153,11 @@ const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
             return (
                 <ButtonGroup className='w-full'>
                     <Button
-                        className='w-full'
+                        fullWidth
                         onClick={() => {
                             show(
                                 <ModalStepWrapper title="We've sent you an email">
-                                    {/* <SentEmailContent platform={platform} /> */}
+                                    <SentEmailContent platform={platform} />
                                 </ModalStepWrapper>
                             );
                         }}
@@ -170,8 +167,8 @@ const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
                         Forgot password?
                     </Button>
                     <Button
-                        className='w-full'
                         disabled={!password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading}
+                        fullWidth
                         isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                         onClick={onSubmit}
                         size='lg'
@@ -182,13 +179,13 @@ const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
             );
         return (
             <Button
-                className='w-full'
                 disabled={
                     !password ||
                     createMT5AccountLoading ||
                     tradingPlatformPasswordChangeLoading ||
                     !validPassword(password)
                 }
+                fullWidth
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                 onClick={onSubmit}
                 size='lg'
@@ -202,6 +199,7 @@ const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
         isSuccess,
         onSubmit,
         password,
+        platform,
         renderSuccessButton,
         show,
         tradingPlatformPasswordChangeLoading,
@@ -210,8 +208,8 @@ const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
     const successComponent = useMemo(() => {
         const renderSuccessDescription = () => {
             return isDemo
-                ? `Let's practise trading with ${ActiveTradingAccount?.display_balance} virtual funds.`
-                : `Transfer funds from your ${ActiveTradingAccount?.currency} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
+                ? `Let's practise trading with ${activeTrading?.display_balance} virtual funds.`
+                : `Transfer funds from your ${activeTrading?.currency} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
         };
 
         if (isSuccess) {
@@ -232,8 +230,8 @@ const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
     }, [
         isSuccess,
         isDemo,
-        ActiveTradingAccount?.currency,
-        ActiveTradingAccount?.display_balance,
+        activeTrading?.currency,
+        activeTrading?.display_balance,
         marketTypeTitle,
         landingCompanyName,
         mt5Accounts,
@@ -259,7 +257,7 @@ const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
                     marketType={marketType}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
-                    // onSecondaryClick={() => <show SentEmailContent platform={platform} />}
+                    onSecondaryClick={() => show(<SentEmailContent platform={platform} />)}
                     password={password}
                     passwordError={error?.error?.code === 'PasswordError'}
                     platform={PlatformDetails.mt5.platform}
@@ -267,14 +265,16 @@ const MT5PasswordModal: FC<TProps> = ({ marketType, platform }) => {
             );
         }
     }, [
-        createMT5AccountLoading,
-        error?.error?.code,
-        isMT5PasswordNotSet,
         isSuccess,
-        marketType,
+        isMT5PasswordNotSet,
+        tradingPlatformPasswordChangeLoading,
+        createMT5AccountLoading,
         onSubmit,
         password,
-        tradingPlatformPasswordChangeLoading,
+        marketType,
+        error?.error?.code,
+        show,
+        platform,
     ]);
 
     if (status === 'error' && error?.error?.code !== 'PasswordError') {

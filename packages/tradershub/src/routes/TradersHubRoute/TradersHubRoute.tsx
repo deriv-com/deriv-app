@@ -3,6 +3,8 @@ import { Button, Heading, Text } from '@deriv/quill-design';
 import { DemoRealSwitcher, OptionsAndMultipliersSection, StaticLink, TotalAssets } from '../../components';
 import { CTraderList } from '../../features/cfd/components/CTraderList';
 import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
+import { DxtradePasswordModal } from '../../features/cfd/modals';
+import { MT5PasswordModal } from '../../features/cfd/modals/MT5PasswordModal';
 
 const TradersHubRoute: FC = () => {
     return (
@@ -15,6 +17,8 @@ const TradersHubRoute: FC = () => {
                 <TotalAssets />
             </div>
             <OptionsAndMultipliersSection />
+            <MT5PasswordModal marketType='all' platform='mt5' />
+            <DxtradePasswordModal />
 
             <div className='border-solid p-1200 rounded-1200 border-xs border-opacity-black-100'>
                 <div className='pb-1200'>

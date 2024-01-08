@@ -18,11 +18,24 @@
         span {
             font-size: 14px;
             color: #999999;
+
+            button {
+                padding-left: 0;
+                background: none;
+                font-size: 14px;
+                border: none;
+                font-style: italic;
+                cursor: pointer;
+
+                &:hover {
+                    background: none;
+                    text-decoration: none;
+                }
+            }
         }
 
-        em {
-            font-style: italic;
-            cursor: pointer;
+        &--inactive {
+            color: #999999;
         }
 
         &--active {

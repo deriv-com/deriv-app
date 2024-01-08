@@ -26,8 +26,9 @@ const MyProfileStatsItem = ({
         <div className='p2p-v2-my-profile-stats__item'>
             <span>
                 {label}{' '}
-                <em
+                <button
                     className={clsx(
+                        'p2p-v2-my-profile-stats__item--inactive',
                         !hasClickedLifetime && shouldShowLifetime && 'p2p-v2-my-profile-stats__item--active'
                     )}
                     onClick={() => {
@@ -36,13 +37,13 @@ const MyProfileStatsItem = ({
                     }}
                 >
                     {duration}
-                </em>{' '}
+                </button>{' '}
                 {shouldShowLifetime && (
                     <>
                         |{' '}
-                        <em
+                        <button
                             className={clsx(
-                                'p2p-v2-my-profile-stats__item-lifetime',
+                                'p2p-v2-my-profile-stats__item--inactive',
                                 hasClickedLifetime && 'p2p-v2-my-profile-stats__item--active'
                             )}
                             onClick={() => {
@@ -51,7 +52,7 @@ const MyProfileStatsItem = ({
                             }}
                         >
                             lifetime
-                        </em>
+                        </button>
                     </>
                 )}
             </span>

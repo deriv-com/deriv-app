@@ -1,39 +1,41 @@
-import { useAdvertiserInfo } from '@deriv/api';
 import React from 'react';
+import { useAdvertiserInfo } from '@deriv/api';
 
 /**
  *
  * @param advertiserId
  * @param shouldShowLifetime - If set to true, values such as `tradeVolume` will show the total value since registration
  */
-const useAdvertiserStats = (advertiserId?: string, shouldShowLifetime?: boolean) => {
+const useAdvertiserStats = (advertiserId?: string) => {
     const { data, isSuccess } = useAdvertiserInfo(advertiserId);
 
-    const transformedData = React.useMemo(() => {
+    const transformedData = useMemo(() => {
         if (!isSuccess) return;
 
         return {
             /** The percentage of completed orders out of total orders as a buyer within the past 30 days. */
-            buyCompletionRate: data?.buy_completion_rate,
+            buyCompletionRate: data?.buy_completion_rate || 0,
             /**  */
-            sellCompletionRate: data?.sell_completion_rate,
+            sellCompletionRate: data?.sell_completion_rate || 0,
             /** The average buy time in minutes */
             averagePayTime: data?.buy_time_avg && data.buy_time_avg > 60 ? Math.round(data.buy_time_avg / 60) : 1,
             /** The average release time in minutes */
             averageReleaseTime:
                 data?.release_time_avg && data.release_time_avg > 60 ? Math.round(data.release_time_avg / 60) : 1,
-            /** The total trade volume since advertiser registration */
-            tradeVolume: shouldShowLifetime
-                ? data?.total_turnover
-                : Number(data?.buy_orders_amount) + Number(data?.sell_orders_amount),
-            /** The total number of orders completed since advertiser registration. */
-            totalOrders: shouldShowLifetime
-                ? data?.total_orders_count
-                : Number(data?.buy_orders_count) + Number(data?.sell_orders_count),
+            /** The total trade volume within 30 days */
+            tradeVolume: Number(data?.buy_orders_amount) + Number(data?.sell_orders_amount),
+            /** The total trade volume since registration */
+            tradeVolumeLifetime: Number(data?.total_turnover) || 0,
+            /** The total number of orders completed */
+            totalOrders: Number(data?.buy_orders_count) + Number(data?.sell_orders_count),
+            /** The total number of orders completed since registration */
+            totalOrdersLifetime: Number(data?.total_orders_count) || 0,
             /** Number of different users the advertiser has traded with since registration. */
-            tradePartners: data?.partner_count || 0,
-            buyOrdersCount: data?.buy_orders_count || 0,
-            sellOrdersCount: data?.sell_orders_count || 0,
+            tradePartners: Number(data?.partner_count) || 0,
+            /** The number of buy order completed within the past 30 days. */
+            buyOrdersCount: Number(data?.buy_orders_count) || 0,
+            /** The number of sell order orders completed within the past 30 days. */
+            sellOrdersCount: Number(data?.sell_orders_count) || 0,
         };
     }, [data, isSuccess]);
 

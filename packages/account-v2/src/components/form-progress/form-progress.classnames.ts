@@ -27,11 +27,11 @@ export const stepperVariants = cva(stepperBaseStyles, {
 });
 
 export const desktopStyle = {
-    stepper: 'lg:flex lg:w-fit lg:items-end lg:gap-800',
+    stepper: 'lg:flex lg:w-fit lg:items-end lg:gap-gap-lg',
     connector:
         'lg:h-2000 lg:w-100 lg:bg-[length:100%_200%] lg:bg-bottom lg:bg-gradient-to-b lg:aria-[current=true]:bg-top',
 };
 
 export const mobileStyle = {
-    connector: 'h-100 bg-[length:200%_100%] bg-right bg-gradient-to-r aria-[current=true]:bg-left w-auto',
+    connector: 'bg-[length:200%_100%] bg-right bg-gradient-to-r aria-[current=true]:bg-left w-auto h-general-2xs',
 };

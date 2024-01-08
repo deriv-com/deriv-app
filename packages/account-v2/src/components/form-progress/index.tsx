@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useBreakpoint } from '@deriv/quill-design';
-import Stepper, { TStep } from './stepper';
 import StepConnector from './step-connector';
+import Stepper, { TStep } from './stepper';
 
 type TFormProgressProps = {
-    steps: Array<TStep>;
-    activeStep: number; // [TODO]:Mock - Enable once isActive comes from Modal
+    activeStep: number;
+    steps: TStep[]; // [TODO]:Mock - Enable once isActive comes from Modal
 };
 
 /**
@@ -14,7 +14,7 @@ type TFormProgressProps = {
  * @returns React Component
  */
 export const FormProgress = ({ steps = [] }: TFormProgressProps) => {
-    const [activeStep, setActiveStep] = React.useState(0); // [TODO]:Mock - remove once isActive comes from Modal
+    const [activeStep, setActiveStep] = useState(0); // [TODO]:Mock - remove once isActive comes from Modal
 
     const { isMobile } = useBreakpoint();
 
@@ -31,7 +31,7 @@ export const FormProgress = ({ steps = [] }: TFormProgressProps) => {
                 <React.Fragment>
                     {' '}
                     {/* [TODO]:Mock - remove Fragment once isActive comes from Modal*/}
-                    <div className='grid grid-flow-col gap-75'>
+                    <div className='grid grid-flow-col gap-gap-2xs'>
                         {steps.map((step, index) => (
                             <StepConnector isActive={index <= activeStep} key={step.title} />
                         ))}
@@ -50,13 +50,13 @@ export const FormProgress = ({ steps = [] }: TFormProgressProps) => {
                 <React.Fragment>
                     {steps.map((step, index) => (
                         <Stepper
-                            key={step.title}
-                            step={step}
-                            stepCount={index}
                             isActive={index <= activeStep}
+                            key={step.title}
                             onClick={() => {
                                 if (steps[index - 1]?.isFilled || index === 0) setActiveStep(index);
                             }}
+                            step={step}
+                            stepCount={index}
                         />
                     ))}
                 </React.Fragment>

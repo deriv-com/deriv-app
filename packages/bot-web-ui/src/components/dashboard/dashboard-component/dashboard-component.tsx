@@ -88,8 +88,8 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                         >
                             <Cards has_dashboard_strategies={has_dashboard_strategies} is_mobile={is_mobile} />
                         </div>
+                        {is_mobile && <Local />}
                     </div>
-                    {is_mobile && <Local />}
                     <div className={classNames('preview-panel', { 'preview-panel--active': has_dashboard_strategies })}>
                         {has_dashboard_strategies && !is_mobile && (
                             <div className='tab__dashboard__preview'>

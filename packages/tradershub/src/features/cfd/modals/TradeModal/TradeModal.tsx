@@ -4,7 +4,7 @@ import { Provider } from '@deriv/library';
 import { Text, useBreakpoint } from '@deriv/quill-design';
 import { Modal } from '../../../../components/Modal';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
-import { AppToIconMapper, LinksMapper, PlatformDetails, TAppLinks } from '../../constants';
+import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '../../constants';
 import { MT5TradeScreen } from '../../screens/MT5TradeScreen';
 
 type TTradeModalProps = {
@@ -20,7 +20,7 @@ const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
     useEffect(() => {
         setCfdState('marketType', marketType);
         setCfdState('platform', platform);
-        if (platform === 'mt5') setCfdState('accountId', (account as THooks.MT5AccountsList)?.loginid);
+        if (platform === CFDPlatforms.MT5) setCfdState('accountId', (account as THooks.MT5AccountsList)?.loginid);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

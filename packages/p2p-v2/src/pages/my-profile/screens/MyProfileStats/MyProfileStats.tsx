@@ -42,24 +42,20 @@ export const MyProfileStats = ({ advertiserId }: MyProfileStatsProps) => {
     return (
         <div className='p2p-v2-my-profile-stats'>
             <MyProfileStatsItem
-                duration='30d'
                 label='Buy completion'
                 value={buyCompletionRate ? `${buyCompletionRate}% (${buyOrdersCount})` : '-'}
             />
             <MyProfileStatsItem
-                duration='30d'
                 label='Sell completion'
                 value={sellCompletionRate ? `${sellCompletionRate}% (${sellOrdersCount})` : '-'}
             />
-            <MyProfileStatsItem duration='30d' label='Avg pay time' value={getTimeValueText(averagePayTime)} />
+            <MyProfileStatsItem label='Avg pay time' value={getTimeValueText(averagePayTime)} />
             <MyProfileStatsItem
-                duration='30d'
                 label='Avg release time'
                 value={averageReleaseTime ? getTimeValueText(averageReleaseTime) : '-'}
             />
             <MyProfileStatsItem
                 currency='USD'
-                duration='30d'
                 label='Trade volume'
                 onClickLifetime={hasClickedLifetime => setShouldShowTradeVolumeLifetime(hasClickedLifetime)}
                 shouldShowLifetime
@@ -68,13 +64,12 @@ export const MyProfileStats = ({ advertiserId }: MyProfileStatsProps) => {
                 }
             />
             <MyProfileStatsItem
-                duration='30d'
                 label='Total orders'
                 onClickLifetime={hasClickedLifetime => setShouldShowTotalOrdersLifetime(hasClickedLifetime)}
                 shouldShowLifetime
                 value={shouldShowTotalOrdersLifetime ? totalOrdersLifetime.toString() : totalOrders.toString()}
             />
-            <MyProfileStatsItem duration='30d' label='Trade partners' value={tradePartners?.toString()} />
+            <MyProfileStatsItem label='Trade partners' shouldShowDuration={false} value={tradePartners?.toString()} />
         </div>
     );
 };

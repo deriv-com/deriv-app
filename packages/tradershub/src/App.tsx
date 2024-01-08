@@ -1,18 +1,21 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { APIProvider } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { BreakpointProvider } from '@deriv/quill-design';
 import AppContent from './AppContent';
+import { ContentSwitcher } from './components';
 import './index.scss';
 
-const App: FC = () => (
+const App = () => (
     <APIProvider standalone>
         <BreakpointProvider>
-            <Provider.CFDProvider>
-                <Provider.ModalProvider>
-                    <AppContent />
-                </Provider.ModalProvider>
-            </Provider.CFDProvider>
+            <Provider.ModalProvider>
+                <Provider.CFDProvider>
+                    <ContentSwitcher>
+                        <AppContent />
+                    </ContentSwitcher>
+                </Provider.CFDProvider>
+            </Provider.ModalProvider>
         </BreakpointProvider>
     </APIProvider>
 );

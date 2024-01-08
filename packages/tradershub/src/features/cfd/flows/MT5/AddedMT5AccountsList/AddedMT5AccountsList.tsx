@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveAccount, useJurisdictionStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
@@ -12,8 +12,12 @@ import { MT5AccountIcon } from '../MT5AccountIcon';
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
     const { data: activeAccount } = useActiveAccount();
     const { show } = Provider.useModal();
-    const { data: jurisdictionStatus } = useJurisdictionStatus(account.landing_company_short || 'svg', account.status);
     const history = useHistory();
+    const { getVerificationStatus } = useJurisdictionStatus();
+    const jurisdictionStatus = useMemo(
+        () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
+        [account.landing_company_short, account.status, getVerificationStatus]
+    );
     const { title } = MarketTypeDetails[account.market_type ?? 'all'];
 
     return (

@@ -8,7 +8,7 @@ import {
 } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, useBreakpoint } from '@deriv/quill-design';
-import { ActionScreen, ButtonGroup, Dialog, ModalStepWrapper } from '../../../../components';
+import { ActionScreen, ButtonGroup, Dialog, Modal } from '../../../../components';
 import DxTradePasswordIcon from '../../../../public/images/cfd/dxtrade-password.svg';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
@@ -148,10 +148,14 @@ const DxtradePasswordModal = () => {
 
     if (isMobile) {
         return (
-            <ModalStepWrapper renderFooter={() => renderFooter} title={' '}>
-                {successComponent}
-                {passwordComponent}
-            </ModalStepWrapper>
+            <Modal>
+                <Modal.Header title=' ' />
+                <Modal.Content>
+                    {successComponent}
+                    {passwordComponent}
+                </Modal.Content>
+                <Modal.Footer>{renderFooter}</Modal.Footer>
+            </Modal>
         );
     }
     return (

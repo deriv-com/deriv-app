@@ -51,7 +51,7 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
 }));
 
 describe('<AddPaymentMethod />', () => {
-    it('should render the AddPaymentMethod component as default', () => {
+    it('should render the AddPaymentMethod component as expected', () => {
         render(<AddPaymentMethod />, { wrapper });
 
         expect(screen.getByTestId('dt_page_return_icon')).toBeInTheDocument();

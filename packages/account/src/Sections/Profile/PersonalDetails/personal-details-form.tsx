@@ -42,7 +42,6 @@ type TRestState = {
 
 export const PersonalDetailsForm = observer(({ history }: { history: BrowserHistory }) => {
     const [is_loading, setIsLoading] = React.useState(true);
-    const [is_state_loading, setIsStateLoading] = React.useState(false);
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
     const [is_submit_success, setIsSubmitSuccess] = React.useState(false);
 
@@ -104,9 +103,9 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
                 if (has_residence) {
                     if (!is_language_changing) {
-                        setIsStateLoading(true);
+                        setIsLoading(true);
                         fetchStatesList().then(() => {
-                            setIsStateLoading(false);
+                            setIsLoading(false);
                         });
                     }
                 }
@@ -194,7 +193,7 @@ export const PersonalDetailsForm = observer(({ history }: { history: BrowserHist
 
     if (api_error) return <LoadErrorMessage error_message={api_error} />;
 
-    if (is_loading || is_state_loading || !residence_list.length) {
+    if (is_loading || !residence_list.length) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 

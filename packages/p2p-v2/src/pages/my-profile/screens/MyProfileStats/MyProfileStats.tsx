@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useActiveAccount } from '@deriv/api';
 import { useAdvertiserStats } from '../../../../hooks';
 import MyProfileStatsItem from './MyProfileStatsItem';
 import './MyProfileStats.scss';
@@ -12,12 +11,8 @@ export const MyProfileStats = ({ advertiserId }: MyProfileStatsProps) => {
     const [shouldShowTradeVolumeLifetime, setShouldShowTradeVolumeLifetime] = useState(false);
     const [shouldShowTotalOrdersLifetime, setShouldShowTotalOrdersLifetime] = useState(false);
     const { data } = useAdvertiserStats(advertiserId);
-    const { data: activeAccountData } = useActiveAccount();
 
-    if (!data || !activeAccountData) return <h1>Loading...</h1>;
-
-    // NOTE: This component is only visible for accounts with USD currency
-    if (activeAccountData?.currency !== 'USD') return <></>;
+    if (!data) return <h1>Loading...</h1>;
 
     const {
         averagePayTime,

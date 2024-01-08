@@ -4,8 +4,8 @@ import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
 import { validPassword } from '../../utils/password';
-import { ModalStepWrapper, WalletButton, WalletButtonGroup, WalletPasswordField, WalletText } from '../Base';
-import { WalletPasswordFieldProps } from '../Base/WalletPasswordField/WalletPasswordField';
+import { ModalStepWrapper, WalletButton, WalletButtonGroup, WalletPasswordFieldLazy, WalletText } from '../Base';
+import { WalletPasswordFieldProps } from '../Base/WalletPasswordFieldLazy/WalletPasswordFieldLazy';
 import { useModal } from '../ModalProvider';
 import WalletSuccessResetMT5Password from './WalletSuccessResetMT5Password';
 import './WalletsResetMT5Password.scss';
@@ -63,7 +63,7 @@ const WalletsResetMT5Password = ({ onChange, password, platform, verificationCod
         <ModalStepWrapper renderFooter={renderFooter} shouldHideHeader={isDesktop} title={`Manage ${title} password`}>
             <div className='wallets-reset-mt5-password'>
                 <WalletText weight='bold'>Create a new {title} Password</WalletText>
-                <WalletPasswordField label={`${title} password`} onChange={onChange} password={password} />
+                <WalletPasswordFieldLazy label={`${title} password`} onChange={onChange} password={password} />
                 <WalletText size='sm'>
                     Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers,
                     and symbols.

@@ -35,7 +35,6 @@ const WithdrawalCryptoPercentageSelector: React.FC = () => {
             <WalletsPercentageSelector
                 amount={
                     activeWallet?.balance &&
-                    isInvalidInput &&
                     !Number.isNaN(parseFloat(values.cryptoAmount)) &&
                     parseFloat(values.cryptoAmount) <= activeWallet.balance
                         ? parseFloat(values.cryptoAmount)

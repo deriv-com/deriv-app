@@ -6,11 +6,11 @@ import {
     getSymbolDisplayName,
     getCardLabels,
     getContractTypeDisplay,
+    getMarketInformation,
     isCryptoContract,
     isDesktop,
     toMoment,
 } from '@deriv/shared';
-import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import { SwipeableContractDrawer } from './swipeable-components';
 import MarketClosedContractOverlay from './market-closed-contract-overlay';
 import { useTraderStore } from 'Stores/useTraderStores';

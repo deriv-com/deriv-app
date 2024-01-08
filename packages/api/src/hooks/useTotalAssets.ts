@@ -39,7 +39,10 @@ const useTotalAssets = () => {
 
     const demoMT5AccountBalance = cfdAccount?.mt5.find(account => account.is_virtual)?.converted_balance ?? 0;
 
-    const realMT5AccountBalance = cfdAccount?.mt5.reduce((total, account) => total + account.converted_balance, 0) ?? 0;
+    const realMT5AccountBalance =
+        cfdAccount?.mt5
+            .filter(account => !account.is_virtual)
+            .reduce((total, account) => total + account.converted_balance, 0) ?? 0;
 
     const demoDxtradeAccountBalance = cfdAccount?.dxtrade.find(account => account.is_virtual)?.converted_balance ?? 0;
 

@@ -9,6 +9,7 @@ import {
     getPlatformSettings,
     getUrlBase,
     MT5_ACCOUNT_STATUS,
+    mobileOSDetect,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -92,6 +93,38 @@ const DMT5TradeModal = observer(
             MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION,
             MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION,
         ].includes(mt5_trade_account?.status);
+
+        const mobileWebtraderURL = () => {
+            const appScheme = 'metatrader5';
+            if (isAppInstalled(appScheme)) {
+                return `metatrader5://account?server=${(mt5_trade_account as DetailsOfEachMT5Loginid)?.server}&login=${
+                    mt5_trade_account?.login
+                }`;
+            }
+            if (mobileOSDetect() === 'Android') {
+                return getPlatformMt5DownloadLink('android');
+            } else if (mobileOSDetect() === 'iOS') {
+                return getPlatformMt5DownloadLink('ios');
+            } else if (mobileOSDetect() === 'Huawei') {
+                return getPlatformMt5DownloadLink('huawei');
+            }
+
+            return undefined;
+        };
+
+        const isAppInstalled = (scheme: string) => {
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = `${scheme}://test`;
+
+            document.body.appendChild(iframe);
+
+            setTimeout(function () {
+                document.body.removeChild(iframe);
+            }, 300);
+
+            return true; // The result is not accurate due to browser restrictions
+        };
 
         return (
             <div className='cfd-trade-modal-container'>
@@ -193,7 +226,11 @@ const DMT5TradeModal = observer(
                         <a
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
-                            href={mt5_trade_account.webtrader_url}
+                            href={
+                                !is_mobile
+                                    ? (mt5_trade_account.webtrader_url as unknown as string)
+                                    : mobileWebtraderURL() || ''
+                            }
                             target='_blank'
                             rel='noopener noreferrer'
                         >

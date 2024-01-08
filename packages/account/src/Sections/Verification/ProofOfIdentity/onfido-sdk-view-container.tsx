@@ -140,26 +140,25 @@ const OnfidoSdkViewContainer = observer(
 
         const loadOnfidoSdkScript = React.useCallback(
             (token: string) => {
-                const onfido_script_node = document.getElementById('onfido_sdk');
+                document.getElementById('onfido_sdk')?.remove();
+                document.getElementById('onfido_style')?.remove();
+
                 // check if the onfido sdk script has been loaded, and if its still loading the onfido script, don't re-attempt to load the script again
-                if (!onfido_script_node) {
-                    const script_node = document.createElement('script');
-                    const link_node = document.createElement('link');
+                const script_node = document.createElement('script');
+                const link_node = document.createElement('link');
 
-                    script_node.id = 'onfido_sdk';
-                    script_node.src = 'https://assets.onfido.com/web-sdk-releases/latest/onfido.min.js';
-                    link_node.href = 'https://assets.onfido.com/web-sdk-releases/latest/style.css';
-                    link_node.rel = 'stylesheet';
+                script_node.id = 'onfido_sdk';
+                script_node.src = 'https://assets.onfido.com/web-sdk-releases/latest/onfido.min.js';
+                link_node.href = 'https://assets.onfido.com/web-sdk-releases/latest/style.css';
+                link_node.rel = 'stylesheet';
+                link_node.id = 'onfido_style';
 
-                    document.body.appendChild(script_node);
-                    document.body.appendChild(link_node);
+                document.body.appendChild(script_node);
+                document.body.appendChild(link_node);
 
-                    script_node.addEventListener('load', () => {
-                        initOnfido(token);
-                    });
-                } else {
+                script_node.addEventListener('load', () => {
                     initOnfido(token);
-                }
+                });
             },
             [initOnfido]
         );
@@ -189,15 +188,7 @@ const OnfidoSdkViewContainer = observer(
             } else if (isError) {
                 handleError(error as TAPIError);
             }
-        }, [
-            error,
-            initOnfido,
-            isError,
-            is_onfido_loaded,
-            isSuccess,
-            loadOnfidoSdkScript,
-            service_token?.onfido?.token,
-        ]);
+        }, [error, isError, isSuccess, is_onfido_loaded, loadOnfidoSdkScript, service_token?.onfido?.token]);
 
         React.useEffect(() => {
             /**

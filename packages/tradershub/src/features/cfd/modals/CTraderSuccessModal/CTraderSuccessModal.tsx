@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useBreakpoint, Button } from '@deriv/quill-design';
+import { Button } from '@deriv/quill-design';
 import { ButtonGroup, Modal } from '../../../../components';
 import { Provider } from '@deriv/library';
 import { PlatformDetails } from '../../constants';
@@ -11,18 +11,15 @@ type TCTraderSuccessModal = {
 };
 
 const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
-    const { isMobile } = useBreakpoint();
     const history = useHistory();
     const { hide } = Provider.useModal();
 
     const renderButtons = useCallback(
         () =>
             isDemo ? (
-                <ButtonGroup>
-                    <Button className='rounded-200 ' onClick={() => hide()} size='lg'>
-                        Continue
-                    </Button>
-                </ButtonGroup>
+                <Button className='rounded-200 ' onClick={() => hide()} size='lg'>
+                    Continue
+                </Button>
             ) : (
                 <ButtonGroup>
                     <Button
@@ -53,20 +50,8 @@ const CTraderSuccessModal = ({ isDemo }: TCTraderSuccessModal) => {
         ? `Congratulations, you have successfully created your demo ${PlatformDetails.ctrader.title} CFDs account.`
         : `Congratulations, you have successfully created your real ${PlatformDetails.ctrader.title} CFDs account. To start trading, transfer funds from your Deriv account into this account.`;
 
-    if (isMobile) {
-        return (
-            <Modal className='max-w-[330px] p-800'>
-                <CFDSuccess
-                    description={description}
-                    platform={PlatformDetails.ctrader.platform}
-                    renderButtons={renderButtons}
-                />
-            </Modal>
-        );
-    }
-
     return (
-        <Modal className='max-w-[440px] p-1200'>
+        <Modal className='max-w-[330px] p-800 md:max-w-[440px] md:p-1200'>
             <CFDSuccess
                 description={description}
                 platform={PlatformDetails.ctrader.platform}

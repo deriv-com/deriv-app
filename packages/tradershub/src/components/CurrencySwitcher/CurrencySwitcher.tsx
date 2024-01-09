@@ -5,8 +5,8 @@ import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
+import { Modal } from '../Modal';
 import { THooks } from '../../types';
-import { ModalStepWrapper } from '../ModalStepWrapper';
 import { TradingAccountsList } from '../TradingAccountsList';
 
 type AccountActionButtonProps = {
@@ -85,9 +85,13 @@ const CurrencySwitcher = () => {
                     className='cursor-pointer flex-none'
                     onClick={() => {
                         show(
-                            <ModalStepWrapper renderFooter={renderButton} title='Select account'>
-                                <TradingAccountsList />
-                            </ModalStepWrapper>
+                            <Modal>
+                               <Modal.Header title='Select account' titleClassName='text-typography-default' />
+                                   <Modal.Content className='overflow-y-scroll'>
+                                       <TradingAccountsList />
+                                   </Modal.Content>
+                                   <Modal.Footer>{renderButton()}</Modal.Footer>
+                            </Modal>
                         );
                     }}
                 />

@@ -25,7 +25,7 @@ export default function Draggable({
     dragHandleClassName,
     enableResizing = false,
     header_title,
-    height = 'fit-content',
+    height = 600,
     is_visible,
     minWidth,
     onCloseDraggable,
@@ -37,6 +37,24 @@ export default function Draggable({
     const [first_drag_y, setFirstDragY] = useState(yaxis);
     const [first_left, setFirstLeft] = useState(0);
     const [first_top, setFirstTop] = useState(0);
+
+    // const handleStyles = {
+    //     bottomRight: {
+    //         cursor: 'nwse-resize',
+    //         resize: 'both',
+    //     },
+    //     bottom: {
+    //         cursor: 'row-resize',
+    //     },
+    //     right: {
+    //         cursor: 'col-resize',
+    //     },
+    //     left: {
+    //         cursor: 'col-resize',
+    //         transform: 'scaleX(-1)',
+    //     },
+    //     // Add styles for other resize handles as needed
+    // };
 
     return is_visible ? (
         <Rnd
@@ -54,27 +72,12 @@ export default function Draggable({
                 top: yaxis,
             }}
             dragHandleClassName={dragHandleClassName}
-            enableResizing={enableResizing}
+            // enableResizing={{right:true, bottom:true, bottomRight:true}}
+            enableResizing={true}
             minHeight={height}
             minWidth={minWidth}
-            onDrag={(e, data) => {
-                //we need these calculations since we no longer use the 'transform: translate(x, y)' property
-                //as it causes unexpected behaviour of Beta Chart styles & helps avoid bounce bug upon the first drag
-                data.node.style.left = `${data.lastX - first_drag_x + first_left + data.deltaX}px`;
-                data.node.style.top = `${data.lastY - first_drag_y + first_top + data.deltaY}px`;
-            }}
-            onDragStart={(e, data) => {
-                setFirstDragX(data.x);
-                setFirstDragY(data.y);
-                setFirstLeft(parseInt(data.node.style.left));
-                setFirstTop(parseInt(data.node.style.top));
-                // on responsive devices touch event is not triggering the close button action
-                // need to handle it manually
-                const parentElement = (e?.target as HTMLDivElement)?.parentElement;
-                if (parentElement?.role === 'button' || parentElement?.tagName === 'svg') {
-                    onCloseDraggable();
-                }
-            }}
+
+            // resizeHandleStyles={handleStyles}
         >
             <CSSTransition
                 appear
@@ -100,7 +103,11 @@ export default function Draggable({
                             <Icon icon='IcCross' />
                         </div>
                     </div>
-                    {children}
+                    <iframe
+                        id='iframe'
+                        style={{ width: '100%', height: '100%' }}
+                        src='https://tradingview.deriv.com/deriv'
+                    />
                 </>
             </CSSTransition>
         </Rnd>

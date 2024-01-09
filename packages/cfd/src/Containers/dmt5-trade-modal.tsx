@@ -9,6 +9,7 @@ import {
     getPlatformSettings,
     getUrlBase,
     MT5_ACCOUNT_STATUS,
+    mobileOSDetect,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -102,7 +103,11 @@ const DMT5TradeModal = observer(
         const urlCheck = () => {
             value2 = window.location.replace(deepLink);
             setTimeout(function () {
-                value2 = window.location.replace(getPlatformMt5DownloadLink('ios'));
+                if (mobileOSDetect() === 'iOS') {
+                    value2 = window.location.replace(getPlatformMt5DownloadLink('ios'));
+                } else {
+                    value2 = window.location.replace(getPlatformMt5DownloadLink('android'));
+                }
             }, 2000);
         };
 

@@ -208,10 +208,10 @@
                 background-color: var(--general-main-1);
 
                 button {
-                    margin-right: 1rem;
+                    margin-inline-end: 1rem;
 
                     &:last-child {
-                        margin-right: 0;
+                        margin-inline-end: 0;
                     }
                 }
             }
@@ -388,7 +388,7 @@
             }
 
             &__field {
-                margin-left: 6rem;
+                margin-inline-start: 6rem;
                 font-weight: bold;
                 color: var(--text-general);
             }
@@ -563,7 +563,7 @@
         height: var(--input-height);
 
         &__wrapper {
-            margin-right: 1rem;
+            margin-inline-end: 1rem;
         }
     }
 
@@ -580,7 +580,7 @@
             padding: 0 2.4rem 0 1.6rem;
 
             .dc-checkbox {
-                margin-right: 1rem;
+                margin-inline-end: 1rem;
 
                 .dc-text {
                     font-weight: bold;

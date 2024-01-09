@@ -216,7 +216,7 @@
     &__toolbox {
         position: absolute;
         top: -4rem;
-        left: 0;
+        inset-inline-start: 0;
         width: 23.6rem;
         padding: 0.8rem;
         background: var(--general-main-1);
@@ -231,7 +231,7 @@
 
                 &__chevron {
                     position: absolute;
-                    right: 0;
+                    inset-inline-end: 0;
                     top: 0.3rem;
                     transition: transform 0.3s ease;
 

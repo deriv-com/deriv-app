@@ -829,7 +829,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
     width: 100%;
     bottom: 0;
     transition: opacity 0.3s;
-    backface-visibility: hidden;
     background-color: var(--general-main-1);
     border-top: 1px solid var(--general-section-1);
     border-top-right-radius: 1.4rem;
@@ -1062,8 +1061,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
         position: absolute;
         height: 60%;
         width: 100%;
-        // bottom: 0;
-        top: 40%;
+        bottom: 0;
+        // top: 40%;
         // opacity: 0;
         transition: opacity 0.3s;
         background-color: var(--general-main-1);
@@ -1077,12 +1076,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
         padding: 0.8rem 1.6rem 1.6rem;
         -webkit-transform: translate3d(0, 0, 0);
 
-        &:has(.trade-param_popup_input:focus) {
-            top: 10%;
-            height: 60%;
-        }
         &--expanded {
-            top: 10%;
+            // top: 10%;
             height: 90%;
         }
         // &--enter,

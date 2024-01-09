@@ -7,21 +7,11 @@ const NewTradeParamPopup = ({ onClick, show_details }: { onClick: () => void; sh
 
     const onClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        setShouldExpand(!should_expand);
+        setShouldExpand(true);
     };
 
     return (
         <div className='trade-param_popup_overlay' onClick={onClick}>
-            {/* <CSSTransition
-                in={show_details}
-                timeout={500}
-                classNames={{
-                    enter: 'trade-param_popup_container--enter',
-                    enterDone: 'trade-param_popup_container--enterDone',
-                    exit: 'trade-param_popup_container--exit',
-                }}
-                unmountOnExit
-            > */}
             <div
                 onClick={onClickHandler}
                 className={classNames('trade-param_popup_container', {
@@ -62,7 +52,6 @@ const NewTradeParamPopup = ({ onClick, show_details }: { onClick: () => void; sh
                     <button className='footer-new_bottom-sheet_button'>Save</button>
                 </div>
             </div>
-            {/* </CSSTransition> */}
         </div>
     );
 };

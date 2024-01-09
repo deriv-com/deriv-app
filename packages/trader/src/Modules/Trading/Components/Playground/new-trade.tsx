@@ -15,7 +15,12 @@ const NewTrade = () => {
                 <NewTradeParamsContainer onClick={() => setShowDetails(!show_details)} />
             </div>
             {show_details && (
-                <NewTradeParamPopup onClick={() => setShowDetails(!show_details)} show_details={show_details} />
+                <NewTradeParamPopup
+                    onClick={() => {
+                        setShowDetails(!show_details);
+                    }}
+                    // show_details={show_details}
+                />
             )}
             <div className='footer-new'>
                 <div className='footer-new_bottom-sheet'>

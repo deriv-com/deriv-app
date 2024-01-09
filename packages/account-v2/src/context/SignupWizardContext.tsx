@@ -41,7 +41,6 @@ export const SignupWizardContext = createContext<TSignupWizardContext>({
 
 export const useSignupWizardContext = () => {
     const context = useContext<TSignupWizardContext>(SignupWizardContext);
-
     if (!context)
         throw new Error('useSignupWizardContext() must be called within a component wrapped in SignupWizardProvider.');
 

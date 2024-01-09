@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import useAuthorize from '../useAuthorize';
-import useQuery from '../../useQuery';
+import useAuthorize from '../../../../useAuthorize';
+import useQuery from '../../../../../useQuery';
 
 /** A custom hook that returns a list of P2P available payment methods **/
 const usePaymentMethods = () => {

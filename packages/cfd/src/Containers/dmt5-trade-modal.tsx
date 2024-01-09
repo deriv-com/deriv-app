@@ -94,22 +94,6 @@ const DMT5TradeModal = observer(
             MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION,
         ].includes(mt5_trade_account?.status);
 
-        const isCustomSchemeSupported = (customScheme: string) => {
-            // Create an anchor element with the custom scheme
-            const tester = document.createElement('a');
-            tester.href = `${customScheme}://test`;
-
-            // Attempt to open the link
-            let openedSuccessfully = true;
-            try {
-                window.location.href = tester.href;
-            } catch (error) {
-                openedSuccessfully = false;
-            }
-
-            return openedSuccessfully;
-        };
-
         const platformUrl = () => {
             if (mobileOSDetect() === 'Android') {
                 return getPlatformMt5DownloadLink('android');
@@ -120,16 +104,26 @@ const DMT5TradeModal = observer(
             }
         };
 
-        const mobileWebtraderURL = () => {
+        const mobileWebtraderURL = async () => {
             const deepLink = `metatrader5://account?server=${
                 (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
             }&login=${(mt5_trade_account as TTradingPlatformAccounts)?.display_login}}`;
 
-            const customSchemeToCheck = 'metatrader5';
-            if (isCustomSchemeSupported(customSchemeToCheck)) {
-                return deepLink;
+            try {
+                const response = await fetch(deepLink);
+
+                if (!response.ok) {
+                    return platformUrl();
+                }
+
+                const data = await response.json();
+
+                return data ? deepLink : platformUrl();
+            } catch (error) {
+                if (error) {
+                    return platformUrl();
+                }
             }
-            return platformUrl();
         };
 
         // Check if the deep link opens successfully (app is installed)

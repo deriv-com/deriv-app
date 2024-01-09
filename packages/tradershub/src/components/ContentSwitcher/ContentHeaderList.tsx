@@ -1,10 +1,11 @@
-import React, { FC, memo } from 'react';
+import React, { ComponentProps, FC, memo } from 'react';
 import { Button, qtJoin, qtMerge } from '@deriv/quill-design';
 import { useContentSwitch } from './ContentSwitcher';
 
 type TContentHeaderList = {
     className?: string;
     list: string[];
+    size?: ComponentProps<typeof Button>['size'];
 };
 
 /**
@@ -12,7 +13,7 @@ type TContentHeaderList = {
  * @param {TContentHeaderList} props The props for the component.
  * @returns {JSX.Element} The rendered component.
  */
-const ContentHeaderList: FC<TContentHeaderList> = memo(({ className, list }) => {
+const ContentHeaderList: FC<TContentHeaderList> = memo(({ className, list, size }) => {
     const { activeTabIndex, setActiveTabIndex } = useContentSwitch();
 
     return (
@@ -27,7 +28,7 @@ const ContentHeaderList: FC<TContentHeaderList> = memo(({ className, list }) => 
                     fullWidth
                     key={`tradershub-tab-${tabLabel}`}
                     onClick={() => setActiveTabIndex(index)}
-                    size='lg'
+                    size={size}
                 >
                     {tabLabel}
                 </Button>

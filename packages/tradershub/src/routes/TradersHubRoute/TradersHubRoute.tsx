@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useActiveTradingAccount } from '@deriv/api';
 import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
 import {
     ContentSwitcher,
@@ -12,6 +13,23 @@ import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPla
 
 const TradersHubRoute = () => {
     const { isMobile } = useBreakpoint();
+    const { data: activeTrading } = useActiveTradingAccount();
+
+    const showRegulationSwitcher = useMemo(() => {
+        if (!activeTrading?.is_virtual) {
+            return (
+                <div className='flex items-center gap-400'>
+                    <Text size='sm'>Regulation:</Text>
+                    <ContentSwitcher>
+                        <ContentSwitcher.HeaderList className='w-[200px] h-2000' list={['Non-EU', 'EU']} />
+                        <ContentSwitcher.PanelContainer />
+                    </ContentSwitcher>
+                </div>
+            );
+        }
+
+        return null;
+    }, [activeTrading?.is_virtual]);
 
     if (isMobile)
         return (
@@ -24,7 +42,7 @@ const TradersHubRoute = () => {
                     <TotalAssets />
                 </div>
                 <ContentSwitcher>
-                    <ContentSwitcher.HeaderList list={['Options & Multiplier', 'CFDs']} />
+                    <ContentSwitcher.HeaderList list={['Options & Multiplier', 'CFDs']} size='lg' />
                     <ContentSwitcher.PanelContainer>
                         <OptionsAndMultipliersSection />
                     </ContentSwitcher.PanelContainer>
@@ -39,6 +57,7 @@ const TradersHubRoute = () => {
                     <Heading.H3>Trader&apos;s Hub</Heading.H3>
                     <DemoRealSwitcher />
                 </div>
+                {showRegulationSwitcher}
                 <TotalAssets />
             </div>
             <OptionsAndMultipliersSection />

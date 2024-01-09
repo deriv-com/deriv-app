@@ -8,7 +8,7 @@ import { OptionsAndMultipliersContent } from './OptionsAndMultipliersContent';
  */
 const OptionsAndMultipliersSection = () => {
     return (
-        <div className='border-solid p-1200 rounded-1200 border-xs border-opacity-black-100 '>
+        <div className='pt-800 overflow-y-scroll sm:border-solid sm:p-1200 sm:rounded-1200 sm:border-xs sm:border-opacity-black-100 '>
             <div className='flex-col w-full gap-1200 '>
                 <OptionsAndMultipliersHeading />
                 <OptionsAndMultipliersContent />

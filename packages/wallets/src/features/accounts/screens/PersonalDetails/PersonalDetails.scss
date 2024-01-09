@@ -9,7 +9,8 @@
     padding: 2.4rem;
 
     @include mobile {
-        width: 100%;
+        min-width: 100%;
+        min-height: 100%;
     }
 
     &__header {

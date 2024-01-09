@@ -72,12 +72,12 @@ const CurrencySwitcher = () => {
                     className='cursor-pointer flex-none'
                     onClick={() => {
                         show(
-                            <Modal className='w-full lg:w-[440px] lg:h-auto'>
+                            <Modal>
                                 <Modal.Header title='Select account' titleClassName='text-[14px] sm:text-[16px]' />
                                 <Modal.Content>
                                     <TradingAccountsList />
                                 </Modal.Content>
-                                <Modal.Footer>
+                                <Modal.Footer className='grid-cols-1'>
                                     <Button
                                         className='py-900 rounded-200 border-sm border-system-light-less-prominent-text'
                                         colorStyle='black'

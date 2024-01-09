@@ -2,11 +2,12 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button, qtMerge, Text } from '@deriv/quill-design';
+import { Button, Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
 import { THooks } from '../../types';
-import { ModalStepWrapper } from '../ModalStepWrapper';
+import { CurrencySwitcherLoader } from '../Loaders';
+import { Modal } from '../Modal';
 import { TradingAccountsList } from '../TradingAccountsList';
 
 type AccountActionButtonProps = {
@@ -26,7 +27,7 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 
     return (
         <Button
-            className='flex items-center justify-center border-solid h-1600 py-300 px-800 rounded-200 border-sm border-system-light-less-prominent-text'
+            className='flex items-center justify-center border-solid h-1600 py-300 px-800 rounded-200 border-75 border-system-light-less-prominent-text'
             colorStyle='black'
             onClick={() => {
                 if (isDemo) {
@@ -43,7 +44,7 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 };
 
 const CurrencySwitcher = () => {
-    const { data: activeAccount } = useActiveTradingAccount();
+    const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
     const { show } = Provider.useModal();
 
@@ -62,40 +63,42 @@ const CurrencySwitcher = () => {
         );
     };
 
+    if (!isSuccess) return <CurrencySwitcherLoader />;
+
     return (
-        <div className='flex items-center justify-between border-solid gap-800 h-3600 p-800 rounded-400 border-sm border-system-light-active-background shrink-0'>
-            {IconToCurrencyMapper[iconCurrency].icon}
-            <div className='flex items-center justify-between grow gap-800'>
-                <div className='flex flex-col justify-center'>
-                    <Text bold={!isDemo} className={qtMerge('flex', !isDemo && 'text-status-light-success')} size='sm'>
-                        {isDemo ? 'Demo' : activeAccount?.display_balance}
-                    </Text>
-                    <Text
-                        bold={isDemo}
-                        className={qtMerge(
-                            'flex',
-                            isDemo ? 'text-status-light-information' : 'text-system-light-less-prominent-text'
-                        )}
-                        size='sm'
-                    >
-                        {isDemo ? activeAccount.display_balance : IconToCurrencyMapper[iconCurrency].text}
-                    </Text>
-                </div>
-                <AccountActionButton balance={activeAccount?.balance ?? 0} isDemo={isDemo ?? false} />
-                <div className='cursor-pointer'>
-                    {!isDemo && (
-                        <StandaloneChevronDownBoldIcon
-                            onClick={() => {
-                                show(
-                                    <ModalStepWrapper renderFooter={renderButton} title='Select account'>
-                                        <TradingAccountsList />
-                                    </ModalStepWrapper>
-                                );
-                            }}
-                        />
-                    )}
-                </div>
+        <div className='flex items-center justify-between w-full border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background sm:w-auto sm:shrink-0 gap-800'>
+            <div className='flex-none '>{IconToCurrencyMapper[iconCurrency].icon}</div>
+            <div className='text-left grow'>
+                <Text bold={!isDemo} className={!isDemo ? 'text-status-light-success' : undefined} size='sm'>
+                    {isDemo ? 'Demo' : activeAccount?.display_balance}
+                </Text>
+                <Text
+                    bold={isDemo}
+                    className={isDemo ? 'text-status-light-information' : 'text-system-light-less-prominent-text'}
+                    size='sm'
+                >
+                    {isDemo ? activeAccount.display_balance : IconToCurrencyMapper[iconCurrency].text}
+                </Text>
             </div>
+            <div className='flex-none'>
+                <AccountActionButton balance={activeAccount?.balance ?? 0} isDemo={isDemo ?? false} />
+            </div>
+            {!isDemo && (
+                <StandaloneChevronDownBoldIcon
+                    className='flex-none cursor-pointer'
+                    onClick={() => {
+                        show(
+                            <Modal>
+                                <Modal.Header title='Select account' titleClassName='text-typography-default' />
+                                <Modal.Content className='overflow-y-scroll'>
+                                    <TradingAccountsList />
+                                </Modal.Content>
+                                <Modal.Footer>{renderButton()}</Modal.Footer>
+                            </Modal>
+                        );
+                    }}
+                />
+            )}
         </div>
     );
 };

@@ -33,7 +33,7 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
     return (
         <Fragment>
             <Text bold>Deriv MT5</Text>
-            <div className='grid grid-cols-3 pb-6 gap-x-2400 gap-y-800'>
+            <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
                 {isFetchedAfterMount &&
                     data?.map((account, index) => {
                         if (account.is_added)

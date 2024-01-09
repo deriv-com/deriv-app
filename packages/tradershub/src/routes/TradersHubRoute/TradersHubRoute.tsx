@@ -27,7 +27,14 @@ const TradersHubRoute = () => {
                 <ContentSwitcher>
                     <ContentSwitcher.HeaderList list={['Options & Multiplier', 'CFDs']} />
                     <ContentSwitcher.PanelContainer>
-                        <OptionsAndMultipliersSection />
+                        <ContentSwitcher.Panel>
+                            <OptionsAndMultipliersSection />
+                        </ContentSwitcher.Panel>
+                        <ContentSwitcher.Panel>
+                            <MT5PlatformsList />
+                            <CTraderList />
+                            <OtherCFDPlatformsList />
+                        </ContentSwitcher.Panel>
                     </ContentSwitcher.PanelContainer>
                 </ContentSwitcher>
             </div>
@@ -59,12 +66,12 @@ const TradersHubRoute = () => {
                         </StaticLink>
                     </Text>
                 </div>
-                <div className='flex flex-col gap-y-1200'>
+                <div className='space-y-1200'>
                     <MT5PlatformsList />
-                    <div className='grid grid-cols-1 sm:grid-cols-3 gap-1200'>
+                    <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
                         <CTraderList />
                     </div>
-                    <div className='grid grid-cols-1 sm:grid-cols-3 gap-1200'>
+                    <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
                         <OtherCFDPlatformsList />
                     </div>
                 </div>

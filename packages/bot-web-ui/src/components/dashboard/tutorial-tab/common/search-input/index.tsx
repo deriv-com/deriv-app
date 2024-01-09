@@ -20,6 +20,11 @@ const SearchInput = observer(({ faq_value, setFaqSearchContent, prev_active_tuto
                     action: 'search',
                     search_string: value,
                 });
+                // eslint-disable-next-line no-console
+                console.log('ce_bot_tutorial_form', {
+                    action: 'search',
+                    search_string: value,
+                });
                 if (value === '') {
                     setActiveTabTutorial(prev_active_tutorials);
                 }

@@ -190,11 +190,21 @@ const QuickStrategy = observer(() => {
                 action: 'open',
                 form_source: 'ce_bot_quick_strategy_form',
             });
+            // eslint-disable-next-line no-console
+            console.log('ce_bot_quick_strategy_form', {
+                action: 'open',
+                form_source: 'ce_bot_quick_strategy_form',
+            });
         }
     }, [is_open]);
 
     const handleClose = () => {
         Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'close',
+            form_source: 'ce_bot_quick_strategy_form',
+        });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_quick_strategy_form', {
             action: 'close',
             form_source: 'ce_bot_quick_strategy_form',
         });

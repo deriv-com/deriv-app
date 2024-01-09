@@ -15,6 +15,11 @@ const QSInputLabel: React.FC<TQSInputLabel> = observer(({ label, description }) 
             action: 'info_popup_open',
             form_source: 'ce_bot_quick_strategy_form',
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_quick_strategy_form', {
+            action: 'info_popup_open',
+            form_source: 'ce_bot_quick_strategy_form',
+        });
     };
 
     return (

@@ -32,6 +32,12 @@ const QuickStrategyForm = observer(() => {
             parameter_value: value,
             parameter_type: key,
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_quick_strategy_form', {
+            action: 'change_parameter_value',
+            parameter_value: value,
+            parameter_type: key,
+        });
     };
 
     const debounceChange = React.useCallback(

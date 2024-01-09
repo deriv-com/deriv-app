@@ -42,6 +42,12 @@ const TradeTypeSelect: React.FC = () => {
             trade_type: item,
             form_source: 'ce_bot_quick_strategy_form',
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_quick_strategy_form', {
+            action: 'choose_trade_type',
+            trade_type: item,
+            form_source: 'ce_bot_quick_strategy_form',
+        });
     };
 
     React.useEffect(() => {

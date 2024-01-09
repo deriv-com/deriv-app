@@ -19,6 +19,11 @@ const SearchIcon = observer(({ search, is_search_loading, onClick }: TSearchIcon
                     search_string: search,
                     action: 'search',
                 });
+                // eslint-disable-next-line no-console
+                console.log('ce_bot_builder_form', {
+                    search_string: search,
+                    action: 'search',
+                });
             }
         }, 2000)();
     }, [is_search_loading]);

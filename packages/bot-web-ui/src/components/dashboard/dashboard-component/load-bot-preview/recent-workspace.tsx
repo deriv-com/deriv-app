@@ -57,6 +57,12 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
             form_source: 'ce_bot_dashboard_form',
             bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_builder_form', {
+            action,
+            form_source: 'ce_bot_dashboard_form',
+            bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
+        });
     };
 
     React.useEffect(() => {
@@ -103,6 +109,11 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
             action: 'open',
             form_source: 'bot_dashboard_form-open',
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_builder_form', {
+            action: 'open',
+            form_source: 'bot_dashboard_form-open',
+        });
     };
 
     const handleEdit = async () => {
@@ -112,11 +123,21 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
             action: 'close',
             form_source: 'bot_dashboard_form-edit',
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_builder_form', {
+            action: 'close',
+            form_source: 'bot_dashboard_form-edit',
+        });
     };
 
     const handleSave = () => {
         /* Send the event on rudderstack on strategy save */
         Analytics.trackEvent('ce_bot_dashboard_form', {
+            bot_name: workspace?.name,
+            form_source: 'ce_bot_dashboard_form',
+        });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_dashboard_form', {
             bot_name: workspace?.name,
             form_source: 'ce_bot_dashboard_form',
         });

@@ -87,6 +87,11 @@ const Dashboard = observer(() => {
                 action: 'open',
                 form_source: 'bot_header_form',
             });
+            // eslint-disable-next-line no-console
+            console.log('ce_bot_builder_form', {
+                action: 'open',
+                form_source: 'bot_header_form',
+            });
             if (is_drawer_open) {
                 initTrashCan(400, -748);
             } else {

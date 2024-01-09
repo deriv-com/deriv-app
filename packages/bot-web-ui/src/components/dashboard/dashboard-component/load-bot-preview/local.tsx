@@ -28,9 +28,19 @@ const LocalComponent = observer(() => {
             action: 'push_open_button',
             form_source: 'ce_bot_dashboard_form',
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_dashboard_form', {
+            action: 'push_open_button',
+            form_source: 'ce_bot_dashboard_form',
+        });
 
         //this is to track from which open button user has come to bot builder tab
         Analytics.trackEvent('ce_bot_builder_form', {
+            action: 'open',
+            form_source: 'bot_dashboard_form_open',
+        });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_builder_form', {
             action: 'open',
             form_source: 'bot_dashboard_form_open',
         });
@@ -38,6 +48,11 @@ const LocalComponent = observer(() => {
 
     const sendToRudderStackForUserGuide = () => {
         Analytics.trackEvent('ce_bot_dashboard_form', {
+            action: 'push_user_guide',
+            form_source: 'ce_bot_dashboard_form',
+        });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_dashboard_form', {
             action: 'push_user_guide',
             form_source: 'ce_bot_dashboard_form',
         });

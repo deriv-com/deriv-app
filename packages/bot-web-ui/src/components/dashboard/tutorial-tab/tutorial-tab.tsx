@@ -24,8 +24,18 @@ const TutorialsTab = observer(() => {
             action: 'open',
             form_source: 'bot_header_form',
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_tutorial_form', {
+            action: 'open',
+            form_source: 'bot_header_form',
+        });
         return () => {
             Analytics.trackEvent('ce_bot_tutorial_form', {
+                action: 'close',
+                form_source: 'bot_header_form',
+            });
+            // eslint-disable-next-line no-console
+            console.log('ce_bot_tutorial_form', {
                 action: 'close',
                 form_source: 'bot_header_form',
             });

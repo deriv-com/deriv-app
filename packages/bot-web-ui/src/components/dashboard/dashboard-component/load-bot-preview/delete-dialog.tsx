@@ -65,6 +65,11 @@ const DeleteDialog = observer(() => {
             delete_popup_respond: param,
             form_source: 'ce_bot_dashboard_form',
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_builder_form', {
+            delete_popup_respond: param,
+            form_source: 'ce_bot_dashboard_form',
+        });
     };
 
     const onHandleChange = (type: string, param: boolean) => {

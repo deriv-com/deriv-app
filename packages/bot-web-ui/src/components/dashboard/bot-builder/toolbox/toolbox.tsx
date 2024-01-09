@@ -49,6 +49,11 @@ const Toolbox = observer(() => {
             action: 'open',
             form_source: 'bot_builder_form',
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_quick_strategy_form', {
+            action: 'open',
+            form_source: 'bot_builder_form',
+        });
     };
 
     if (!is_mobile) {

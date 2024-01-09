@@ -29,6 +29,11 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
             action: 'close',
             form_source: 'ce_bot_quick_strategy_form',
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_quick_strategy_form', {
+            action: 'close',
+            form_source: 'ce_bot_quick_strategy_form',
+        });
         setFormVisibility(false);
     };
 
@@ -41,6 +46,11 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children }) => {
         setActiveTab('TRADE_PARAMETERS');
         // on strategy selection
         Analytics.trackEvent('ce_bot_quick_strategy_form', {
+            action: 'choose_strategy',
+            strategy_type: strategy,
+        });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_quick_strategy_form', {
             action: 'choose_strategy',
             strategy_type: strategy,
         });

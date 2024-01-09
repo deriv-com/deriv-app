@@ -44,6 +44,12 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             form_source: 'bot_dashboard_form-shortcut',
             action: 'choose_shortcut',
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_builder_form', {
+            shortcut_name: type,
+            form_source: 'bot_dashboard_form-shortcut',
+            action: 'choose_shortcut',
+        });
     };
 
     // this is check if the user has opened quick strategy model from the dashboard
@@ -52,11 +58,22 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
             shortcut_name: 'quick-strategy',
             form_source: 'bot_dashboard',
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_quick_strategy_form', {
+            shortcut_name: 'quick-strategy',
+            form_source: 'bot_dashboard',
+        });
     };
 
     //this is to check which icon is clicked on dashboard
     const sentToRudderStack = (type: string) => {
         Analytics.trackEvent('ce_bot_builder_form', {
+            shortcut_name: type,
+            action: 'choose_shortcut',
+            form_source: 'ce_bot_dashboard_form',
+        });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_builder_form', {
             shortcut_name: type,
             action: 'choose_shortcut',
             form_source: 'ce_bot_dashboard_form',

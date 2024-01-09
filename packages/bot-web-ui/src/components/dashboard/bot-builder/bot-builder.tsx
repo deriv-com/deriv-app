@@ -28,8 +28,18 @@ const BotBuilder = observer(() => {
                 action: 'open',
                 form_source: 'ce_bot_builder_form',
             });
+            // eslint-disable-next-line no-console
+            console.log('ce_bot_builder_form', {
+                action: 'open',
+                form_source: 'ce_bot_builder_form',
+            });
             return () => {
                 Analytics.trackEvent('ce_bot_builder_form', {
+                    action: 'close',
+                    form_source: 'ce_bot_builder_form',
+                });
+                // eslint-disable-next-line no-console
+                console.log('ce_bot_builder_form', {
                     action: 'close',
                     form_source: 'ce_bot_builder_form',
                 });

@@ -33,6 +33,11 @@ const RecentComponent = observer(() => {
                     action: param,
                     form_source: 'ce_bot_dashboard_form',
                 });
+                // eslint-disable-next-line no-console
+                console.log('ce_bot_dashboard_form', {
+                    action: param,
+                    form_source: 'ce_bot_dashboard_form',
+                });
                 get_instacee.current = true;
             }
         };
@@ -45,6 +50,11 @@ const RecentComponent = observer(() => {
             const getStratagiesForRudderStack = async () => {
                 const recent_strategies = await getSavedWorkspaces();
                 Analytics.trackEvent('ce_bot_dashboard_form', {
+                    bot_last_modified_time: recent_strategies?.[0]?.timestamp,
+                    form_source: 'bot_header_form',
+                });
+                // eslint-disable-next-line no-console
+                console.log('ce_bot_dashboard_form', {
                     bot_last_modified_time: recent_strategies?.[0]?.timestamp,
                     form_source: 'bot_header_form',
                 });

@@ -37,10 +37,22 @@ const QSInput: React.FC<TQSInput> = observer(
                 parameter_value: value,
                 plus_push_amount: value,
             });
+            // eslint-disable-next-line no-console
+            console.log('ce_bot_quick_strategy_form', {
+                action: 'change_parameter_value',
+                parameter_value: value,
+                plus_push_amount: value,
+            });
         };
 
         const sendMinusValueToRudderstack = (value: string) => {
             Analytics.trackEvent('ce_bot_quick_strategy_form', {
+                action: 'change_parameter_value',
+                parameter_value: value,
+                minus_push_amount: value,
+            });
+            // eslint-disable-next-line no-console
+            console.log('ce_bot_quick_strategy_form', {
                 action: 'change_parameter_value',
                 parameter_value: value,
                 minus_push_amount: value,

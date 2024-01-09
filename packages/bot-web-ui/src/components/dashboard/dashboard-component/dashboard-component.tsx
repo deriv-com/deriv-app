@@ -74,8 +74,18 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                 action: 'open',
                 form_source: 'ce_bot_dashboard_form',
             });
+            // eslint-disable-next-line no-console
+            console.log('ce_bot_dashboard_form', {
+                action: 'open',
+                form_source: 'ce_bot_dashboard_form',
+            });
             return () => {
                 Analytics.trackEvent('ce_bot_dashboard_form', {
+                    action: 'close',
+                    form_source: 'ce_bot_dashboard_form',
+                });
+                // eslint-disable-next-line no-console
+                console.log('ce_bot_dashboard_form', {
                     action: 'close',
                     form_source: 'ce_bot_dashboard_form',
                 });

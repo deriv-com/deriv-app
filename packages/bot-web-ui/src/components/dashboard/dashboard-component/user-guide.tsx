@@ -16,7 +16,17 @@ const UserGuide = observer(({ setActiveTab, setActiveTabTutorial }: TUserGuide) 
             action: 'push_user_guide',
             form_source: 'ce_bot_dashboard_form',
         });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_dashboard_form', {
+            action: 'push_user_guide',
+            form_source: 'ce_bot_dashboard_form',
+        });
         Analytics.trackEvent('ce_bot_tutorial_form', {
+            action: 'push_user_guide',
+            form_source: 'bot_dashboard_form',
+        });
+        // eslint-disable-next-line no-console
+        console.log('ce_bot_tutorial_form', {
             action: 'push_user_guide',
             form_source: 'bot_dashboard_form',
         });

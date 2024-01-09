@@ -39,6 +39,7 @@
             padding-left: 2.4rem;
 
             @include mobile {
+                margin: unset;
                 padding-left: 0;
                 &__text {
                     width: 90%;

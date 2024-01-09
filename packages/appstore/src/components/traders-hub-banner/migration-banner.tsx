@@ -40,10 +40,10 @@ const MigrationBanner = observer(() => {
         <div className='traders-hub-banner__container traders-hub-banner__migrate-banner'>
             <div className='traders-hub-banner__migrate-banner-description'>
                 <div className='traders-hub-banner__migrate-banner-description__text'>
-                    {has_derived_and_financial_mt5 ? (
+                    {!has_derived_and_financial_mt5 ? (
                         <Text size={size}>
                             <Localize
-                                i18n_default_text='Upgrade your <0>{{account_1}}</0> <1/>and <0>{{account_2}} {{platform}} </0> accounts.'
+                                i18n_default_text='Upgrade your <0>{{account_1}}</0> <1/>and <0>{{account_2}} {{platform}} </0> account(s)'
                                 values={{
                                     account_1: getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.DERIVED),
                                     account_2: getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.FINANCIAL),
@@ -55,7 +55,7 @@ const MigrationBanner = observer(() => {
                     ) : (
                         <Text size={size}>
                             <Localize
-                                i18n_default_text='Upgrade your <1/><0>{{account_title}} {{platform}} </0> account'
+                                i18n_default_text='Upgrade your <1/><0>{{account_title}} {{platform}} </0> account(s)'
                                 values={{
                                     account_title: getFormattedJurisdictionMarketTypes(
                                         has_derived_mt5_to_migrate

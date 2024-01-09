@@ -76,7 +76,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                                 className={classNames('subtitle', { 'subtitle__has-list': has_dashboard_strategies })}
                             >
                                 {localize(
-                                    'Import bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'
+                                    'Import a bot from your computer or Google Drive, build it from scratch, or start with a quick strategy.'
                                 )}
                             </Text>
                         </div>

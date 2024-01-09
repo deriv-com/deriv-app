@@ -220,6 +220,8 @@
 
 .tab {
     &__dashboard {
+        --header-height: 7.2rem;
+
         display: flex;
         width: 100%;
 
@@ -232,6 +234,8 @@
         }
         &__header {
             padding: 1.6rem;
+            height: var(--header-height);
+
             .title {
                 text-align: center;
             }
@@ -267,11 +271,11 @@
                 align-items: flex-start;
             }
             .quick-panel {
-                flex: 1 1 40%;
+                flex: 1 1 44%;
             }
             .preview-panel {
                 display: none;
-                flex: 1 1 60%;
+                flex: 1 1 56%;
                 &--active {
                     display: block;
                     @include mobile {
@@ -493,6 +497,7 @@
                     width: 9.1rem;
                     word-wrap: break-word;
                     text-align: center;
+                    height: 4.2rem;
                 }
 
                 &--minimized {

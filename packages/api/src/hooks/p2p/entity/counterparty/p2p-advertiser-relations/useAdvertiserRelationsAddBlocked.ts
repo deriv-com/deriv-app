@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import useAdvertiserRelations from './entity/counterparty/p2p-advertiser-relations/useAdvertiserRelations';
+import useAdvertiserRelations from './useAdvertiserRelations';
 
 /** This hook blocks advertisers of the current user by passing the advertiser id. */
 const useAdvertiserRelationsAddBlocked = () => {

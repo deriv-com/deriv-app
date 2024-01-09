@@ -52,7 +52,7 @@ const AvailableCTraderAccountsList = () => {
                     <Text bold size='sm'>
                         {PlatformDetails.ctrader.title}
                     </Text>
-                    <Text size='sm'>This account offers CFDs on a feature-rich trading platform.</Text>
+                    <Text className='text-[12px]'>This account offers CFDs on a feature-rich trading platform.</Text>
                 </div>
             </TradingAccountCard>
         </div>

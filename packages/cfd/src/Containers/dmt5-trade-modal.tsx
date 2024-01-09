@@ -107,40 +107,34 @@ const DMT5TradeModal = observer(
             (mt5_trade_account as TTradingPlatformAccounts)?.display_login
         }&server=${(mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment}`;
 
-        const mobileWebtraderURL = React.useCallback(async (): Promise<string | undefined> => {
-            try {
-                // const response = await fetch(deepLink);
+        const mobileWebtraderURL = React.useCallback(async (): Promise<string | boolean | undefined> => {
+            const testURL = deepLink; // Change "example" to a valid identifier in your custom scheme
 
-                // if (response.ok) {
-                alert('resposne Ok');
-                //     alert(response.status);
-                //     // Deep link is recognized, navigate to it
-                //     return deepLink;
-                // }
-                window.location.href = deepLink;
+            // Save the current URL before attempting navigation
+            const currentURL = window.location.href;
 
-                return deepLink;
-                // Deep link is not recognized, redirect to Play Store
-                // return platformUrl();
-            } catch (error) {
-                alert(error);
-                // Fetch failed, redirect to Play Store
-                return platformUrl();
-            }
+            // Attempt to navigate to the test URL
+            window.location.href = testURL;
+
+            // Wait for a short delay
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
+
+            // Check if the URL has changed
+            return window.location.href !== currentURL;
         }, [deepLink]);
 
         React.useEffect(() => {
             const fetchWebTraderURL = async () => {
                 try {
                     const result = await mobileWebtraderURL();
-                    setWebTraderURL(result);
+                    setWebTraderURL(result ? deepLink : platformUrl());
                 } catch (error) {
                     setWebTraderURL(platformUrl());
                 }
             };
 
             fetchWebTraderURL();
-        }, [mobileWebtraderURL]);
+        }, [mobileWebtraderURL, deepLink]);
 
         return (
             <div className='cfd-trade-modal-container'>
@@ -245,7 +239,7 @@ const DMT5TradeModal = observer(
                             href={
                                 !is_mobile ? (mt5_trade_account.webtrader_url as unknown as string) : webTraderURL ?? ''
                             }
-                            target='_blank'
+                            // target='_blank'
                             rel='noopener noreferrer'
                         >
                             <Text size='xxs' weight='bold' color='prominent'>

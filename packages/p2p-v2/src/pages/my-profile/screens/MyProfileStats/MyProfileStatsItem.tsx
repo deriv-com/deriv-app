@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import './MyProfileStatsItem.scss';
 
-type MyProfileStatsItemProps = {
+type TMyProfileStatsItemProps = {
     currency?: string;
     label: string;
     onClickLifetime?: (isLifetimeClicked: boolean) => void;
@@ -17,8 +17,13 @@ const MyProfileStatsItem = ({
     shouldShowDuration = true,
     shouldShowLifetime,
     value,
-}: MyProfileStatsItemProps) => {
+}: TMyProfileStatsItemProps) => {
     const [hasClickedLifetime, setHasClickedLifetime] = useState(false);
+
+    const onClickLabel = (showLifetime: boolean) => {
+        setHasClickedLifetime(showLifetime);
+        onClickLifetime?.(showLifetime);
+    };
 
     return (
         <div className='p2p-v2-my-profile-stats__item'>
@@ -26,14 +31,10 @@ const MyProfileStatsItem = ({
                 {label}{' '}
                 {shouldShowDuration && (
                     <button
-                        className={clsx(
-                            'p2p-v2-my-profile-stats__item--inactive',
-                            !hasClickedLifetime && shouldShowLifetime && 'p2p-v2-my-profile-stats__item--active'
-                        )}
-                        onClick={() => {
-                            setHasClickedLifetime(false);
-                            onClickLifetime?.(false);
-                        }}
+                        className={clsx('p2p-v2-my-profile-stats__item--inactive', {
+                            'p2p-v2-my-profile-stats__item--active': !hasClickedLifetime && shouldShowLifetime,
+                        })}
+                        onClick={() => onClickLabel(false)}
                     >
                         30d
                     </button>
@@ -42,14 +43,10 @@ const MyProfileStatsItem = ({
                     <>
                         |{' '}
                         <button
-                            className={clsx(
-                                'p2p-v2-my-profile-stats__item--inactive',
-                                hasClickedLifetime && 'p2p-v2-my-profile-stats__item--active'
-                            )}
-                            onClick={() => {
-                                setHasClickedLifetime(true);
-                                onClickLifetime?.(true);
-                            }}
+                            className={clsx('p2p-v2-my-profile-stats__item--inactive', {
+                                'p2p-v2-my-profile-stats__item--active': hasClickedLifetime,
+                            })}
+                            onClick={() => onClickLabel(true)}
                         >
                             lifetime
                         </button>

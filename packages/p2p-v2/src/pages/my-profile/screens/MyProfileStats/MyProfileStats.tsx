@@ -3,11 +3,11 @@ import { useAdvertiserStats } from '../../../../hooks';
 import MyProfileStatsItem from './MyProfileStatsItem';
 import './MyProfileStats.scss';
 
-type MyProfileStatsProps = {
+type TMyProfileStatsProps = {
     advertiserId?: string;
 };
 
-export const MyProfileStats = ({ advertiserId }: MyProfileStatsProps) => {
+export const MyProfileStats = ({ advertiserId }: TMyProfileStatsProps) => {
     const [shouldShowTradeVolumeLifetime, setShouldShowTradeVolumeLifetime] = useState(false);
     const [shouldShowTotalOrdersLifetime, setShouldShowTotalOrdersLifetime] = useState(false);
     const { data } = useAdvertiserStats(advertiserId);

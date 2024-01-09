@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
     useAccountStatus,
@@ -31,7 +31,7 @@ type TMT5PasswordModalProps = {
     platform: TPlatforms.All;
 };
 
-const MT5PasswordModal: FC<TMT5PasswordModalProps> = ({ marketType, platform }) => {
+const MT5PasswordModal = ({ marketType, platform }: TMT5PasswordModalProps) => {
     const [password, setPassword] = useState('');
     const { error, isLoading: createMT5AccountLoading, isSuccess, mutate, status } = useCreateMT5Account();
     const { isLoading: tradingPlatformPasswordChangeLoading, mutateAsync: tradingPasswordChange } =
@@ -41,7 +41,8 @@ const MT5PasswordModal: FC<TMT5PasswordModalProps> = ({ marketType, platform }) 
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: settings } = useSettings();
-    const { getCFDState, hide, show } = Provider.useCFDContext();
+    const { getCFDState } = Provider.useCFDContext();
+    const { hide, show } = Provider.useModal();
     const { isMobile } = useBreakpoint();
     const history = useHistory();
 
@@ -132,11 +133,9 @@ const MT5PasswordModal: FC<TMT5PasswordModalProps> = ({ marketType, platform }) 
     const renderSuccessButton = useCallback(() => {
         if (isDemo) {
             return (
-                <div className='w-5000 sm:w-full'>
-                    <Button className='w-full' onClick={hide} size='lg'>
-                        OK
-                    </Button>
-                </div>
+                <Button onClick={hide} size='lg'>
+                    OK
+                </Button>
             );
         }
         return (

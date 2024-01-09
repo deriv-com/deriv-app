@@ -8,7 +8,7 @@ import MT5SwapFreeSuccess from '../../../../public/images/cfd/mt5-swap-free-succ
 import CheckMark from '../../../../public/images/checkmark.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 
-type TProps = {
+type TCFDSuccess = {
     description: string;
     renderButtons?: () => ReactNode;
 } & (
@@ -52,7 +52,7 @@ const marketTypeToDetailsMapper: Record<TPlatforms.All, PlatformDetails> = {
     },
 };
 
-const CFDSuccess = ({ description, marketType, platform, renderButtons }: TProps) => {
+const CFDSuccess = ({ description, marketType, platform, renderButtons }: TCFDSuccess) => {
     let icon: ReactNode;
     if (platform === 'mt5') {
         icon = marketTypeToDetailsMapper[platform][marketType]?.icon;

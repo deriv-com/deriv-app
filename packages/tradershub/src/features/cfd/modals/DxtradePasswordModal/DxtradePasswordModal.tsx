@@ -43,12 +43,7 @@ const DxtradePasswordModal = () => {
         if (isSuccess) {
             if (accountType === 'demo') {
                 return (
-                    <Button
-                        onClick={() => {
-                            hide();
-                        }}
-                        size='lg'
-                    >
+                    <Button onClick={hide} size='lg'>
                         OK
                     </Button>
                 );

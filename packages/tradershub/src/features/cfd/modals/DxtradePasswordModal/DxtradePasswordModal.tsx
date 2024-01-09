@@ -145,10 +145,13 @@ const DxtradePasswordModal = () => {
 
     if (isMobile) {
         return (
-            <ModalStepWrapper renderFooter={() => renderFooter} title={' '}>
-                {successComponent}
-                {passwordComponent}
-            </ModalStepWrapper>
+            <Modal>
+                <Modal.Content>
+                    {successComponent}
+                    {passwordComponent}
+                </Modal.Content>
+                <Modal.Footer>{renderFooter}</Modal.Footer>
+            </Modal>
         );
     }
     return (

@@ -47,7 +47,7 @@ const Modal = ({ children, className }: TModal) => {
     return (
         <div
             className={qtMerge(
-                'flex flex-col h-screen w-screen bg-background-primary-base lg:mx-auto lg:h-full lg:w-full lg:rounded-400',
+                'flex flex-col h-screen w-screen bg-system-light-primary-background lg:mx-auto lg:h-full lg:w-full lg:rounded-400',
                 className
             )}
         >

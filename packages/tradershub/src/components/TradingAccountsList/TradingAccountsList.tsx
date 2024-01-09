@@ -9,7 +9,7 @@ const TradingAccountsList = () => {
     const { switchAccount } = useAuthorize();
 
     return (
-        <div className='flex w-[500px] h-[350px] flex-col items-center rounded-400 bg-system-light-primary-background'>
+        <div className='flex w-[500px] h-[350px] flex-col items-center rounded-400'>
             <div className='flex flex-col items-start self-stretch flex-1 p-400 gap-200'>
                 {tradingAccountsList
                     ?.filter(account => !account.is_virtual)

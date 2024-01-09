@@ -5,8 +5,8 @@ import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
-import { Modal } from '../Modal';
 import { THooks } from '../../types';
+import { Modal } from '../Modal';
 import { TradingAccountsList } from '../TradingAccountsList';
 
 type AccountActionButtonProps = {
@@ -49,19 +49,6 @@ const CurrencySwitcher = () => {
 
     const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency ?? 'virtual';
 
-    const renderButton = () => {
-        return (
-            <Button
-                className='py-900 rounded-200 border-sm border-system-light-less-prominent-text'
-                colorStyle='black'
-                fullWidth
-                variant='secondary'
-            >
-                Add or manage account
-            </Button>
-        );
-    };
-
     return (
         <div className='flex items-center justify-between border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background w-full sm:w-auto sm:shrink-0 gap-800'>
             <div className='flex-none '>{IconToCurrencyMapper[iconCurrency].icon}</div>
@@ -85,12 +72,21 @@ const CurrencySwitcher = () => {
                     className='cursor-pointer flex-none'
                     onClick={() => {
                         show(
-                            <Modal>
-                               <Modal.Header title='Select account' titleClassName='text-typography-default' />
-                                   <Modal.Content className='overflow-y-scroll'>
-                                       <TradingAccountsList />
-                                   </Modal.Content>
-                                   <Modal.Footer>{renderButton()}</Modal.Footer>
+                            <Modal className='w-full lg:w-[440px] lg:h-auto'>
+                                <Modal.Header title='Select account' titleClassName='text-[14px] sm:text-[16px]' />
+                                <Modal.Content>
+                                    <TradingAccountsList />
+                                </Modal.Content>
+                                <Modal.Footer>
+                                    <Button
+                                        className='py-900 rounded-200 border-sm border-system-light-less-prominent-text'
+                                        colorStyle='black'
+                                        fullWidth
+                                        variant='secondary'
+                                    >
+                                        Add or manage account
+                                    </Button>
+                                </Modal.Footer>
                             </Modal>
                         );
                     }}

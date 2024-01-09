@@ -9,6 +9,7 @@
 
     &__icon-container {
         position: relative;
+        margin-right: 0.4rem;
 
         &__line {
             border: 1px solid var(--light-5-active-background, #d6dadb);
@@ -26,19 +27,10 @@
         }
     }
 
-    &__message-container,
-    &__button-container {
+    &__message-container {
         display: flex;
         align-items: center;
-    }
-
-    &__message-container {
         width: 100%;
-        padding: 0.7rem 0;
-        margin: 0 0.8rem 0 0.4rem;
-
-        @include mobile {
-            padding: 0.9rem 0;
-        }
+        padding: 0.8rem 0;
     }
 }

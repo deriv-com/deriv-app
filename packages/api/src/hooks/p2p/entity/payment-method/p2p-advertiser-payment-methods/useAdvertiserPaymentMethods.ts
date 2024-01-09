@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import useAuthorize from '../useAuthorize';
-import useQuery from '../../useQuery';
+import useAuthorize from '../../../../useAuthorize';
+import useQuery from '../../../../../useQuery';
 
 /** A custom hook that returns the list of P2P Advertiser Payment Methods */
 const useAdvertiserPaymentMethods = () => {

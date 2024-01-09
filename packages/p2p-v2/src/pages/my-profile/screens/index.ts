@@ -1,1 +1,1 @@
-export * from './MyProfileStats';
+export * from './MyProfileAdDetails';

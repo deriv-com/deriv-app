@@ -112,14 +112,15 @@ const DMT5TradeModal = observer(
                 const response = await fetch(deepLink);
 
                 if (response.ok) {
-                    alert('ok');
+                    alert('resposne Ok');
+                    alert(response.status);
                     // Deep link is recognized, navigate to it
                     return deepLink;
                 }
                 // Deep link is not recognized, redirect to Play Store
                 return platformUrl();
             } catch (error) {
-                alert('error');
+                alert(error);
                 // Fetch failed, redirect to Play Store
                 return platformUrl();
             }

@@ -1,1 +1,1 @@
-export { default as useUpdate } from './useAdvertiserRelations';
+export { default as useGet } from './useAdvertiserRelations';

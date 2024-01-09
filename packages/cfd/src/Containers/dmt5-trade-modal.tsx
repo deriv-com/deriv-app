@@ -112,12 +112,14 @@ const DMT5TradeModal = observer(
                 const response = await fetch(deepLink);
 
                 if (response.ok) {
+                    alert('ok');
                     // Deep link is recognized, navigate to it
                     return deepLink;
                 }
                 // Deep link is not recognized, redirect to Play Store
                 return platformUrl();
             } catch (error) {
+                alert('error');
                 // Fetch failed, redirect to Play Store
                 return platformUrl();
             }
@@ -127,6 +129,7 @@ const DMT5TradeModal = observer(
             const fetchWebTraderURL = async () => {
                 try {
                     const result = await mobileWebtraderURL();
+                    console.log(result);
                     setWebTraderURL(result);
                 } catch (error) {
                     setWebTraderURL(platformUrl());
@@ -135,8 +138,6 @@ const DMT5TradeModal = observer(
 
             fetchWebTraderURL();
         }, [mobileWebtraderURL]);
-
-        // Check if the deep link opens successfully (app is installed)
 
         return (
             <div className='cfd-trade-modal-container'>

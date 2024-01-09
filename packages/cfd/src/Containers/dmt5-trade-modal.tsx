@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Text, Icon, Money, StatusBadge } from '@deriv/components';
@@ -92,6 +92,21 @@ const DMT5TradeModal = observer(
             MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION,
             MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION,
         ].includes(mt5_trade_account?.status);
+
+        const deepLink = `metatrader5://account?login=${
+            (mt5_trade_account as TTradingPlatformAccounts)?.display_login
+        }&server=${(mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment}`;
+
+        let value2;
+
+        const urlCheck = () => {
+            value2 = window.location.replace(deepLink);
+            setTimeout(function () {
+                value2 = window.location.replace(getPlatformMt5DownloadLink('ios'));
+            }, 2000);
+        };
+
+        urlCheck();
 
         return (
             <div className='cfd-trade-modal-container'>
@@ -193,9 +208,10 @@ const DMT5TradeModal = observer(
                         <a
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
-                            href={mt5_trade_account.webtrader_url}
-                            target='_blank'
-                            rel='noopener noreferrer'
+                            href={value2}
+                            // href={!is_mobile ? mt5_trade_account.webtrader_url : value2}
+                            // target='_blank'
+                            // rel='noopener noreferrer'
                         >
                             <Text size='xxs' weight='bold' color='prominent'>
                                 {localize('Open')}

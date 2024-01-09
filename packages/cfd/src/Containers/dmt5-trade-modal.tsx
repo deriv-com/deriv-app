@@ -109,16 +109,19 @@ const DMT5TradeModal = observer(
 
         const mobileWebtraderURL = React.useCallback(async (): Promise<string | undefined> => {
             try {
-                const response = await fetch(deepLink);
+                // const response = await fetch(deepLink);
 
-                if (response.ok) {
-                    alert('resposne Ok');
-                    alert(response.status);
-                    // Deep link is recognized, navigate to it
-                    return deepLink;
-                }
+                // if (response.ok) {
+                alert('resposne Ok');
+                //     alert(response.status);
+                //     // Deep link is recognized, navigate to it
+                //     return deepLink;
+                // }
+                window.location.href = deepLink;
+
+                return deepLink;
                 // Deep link is not recognized, redirect to Play Store
-                return platformUrl();
+                // return platformUrl();
             } catch (error) {
                 alert(error);
                 // Fetch failed, redirect to Play Store
@@ -130,7 +133,6 @@ const DMT5TradeModal = observer(
             const fetchWebTraderURL = async () => {
                 try {
                     const result = await mobileWebtraderURL();
-                    console.log(result);
                     setWebTraderURL(result);
                 } catch (error) {
                     setWebTraderURL(platformUrl());

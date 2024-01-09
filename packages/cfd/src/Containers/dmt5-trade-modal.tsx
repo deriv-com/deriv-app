@@ -94,23 +94,20 @@ const DMT5TradeModal = observer(
             MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION,
         ].includes(mt5_trade_account?.status);
 
-        const mobileWebtraderURL = () => {
-            const deepLink = `metatrader5://account?server=${
-                (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
-            }&login=${(mt5_trade_account as TTradingPlatformAccounts)?.display_login}}`;
+        const isCustomSchemeSupported = (customScheme: string) => {
+            // Create an anchor element with the custom scheme
+            const tester = document.createElement('a');
+            tester.href = `${customScheme}://test`;
 
-            // Check if the deep link opens successfully (app is installed)
-            const isAppInstalled = () => {
-                const tester = document.createElement('a');
-                tester.href = deepLink;
-                return tester.protocol !== 'about:';
-            };
-
-            if (isAppInstalled()) {
-                return deepLink; // Open the app if installed
+            // Attempt to open the link
+            let openedSuccessfully = true;
+            try {
+                window.location.href = tester.href;
+            } catch (error) {
+                openedSuccessfully = false;
             }
-            // Fallback to redirecting to app store
-            return platformUrl();
+
+            return openedSuccessfully;
         };
 
         const platformUrl = () => {
@@ -122,6 +119,20 @@ const DMT5TradeModal = observer(
                 return getPlatformMt5DownloadLink('huawei');
             }
         };
+
+        const mobileWebtraderURL = () => {
+            const deepLink = `metatrader5://account?server=${
+                (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
+            }&login=${(mt5_trade_account as TTradingPlatformAccounts)?.display_login}}`;
+
+            const customSchemeToCheck = 'metatrader5';
+            if (isCustomSchemeSupported(customSchemeToCheck)) {
+                return deepLink;
+            }
+            return platformUrl();
+        };
+
+        // Check if the deep link opens successfully (app is installed)
 
         return (
             <div className='cfd-trade-modal-container'>

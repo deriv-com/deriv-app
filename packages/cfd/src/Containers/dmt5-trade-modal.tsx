@@ -104,7 +104,7 @@ const DMT5TradeModal = observer(
             }
         };
 
-        const mobileWebtraderURL = async () => {
+        const mobileWebtraderURL = async (): Promise<string | undefined> => {
             const deepLink = `metatrader5://account?server=${
                 (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
             }&login=${(mt5_trade_account as TTradingPlatformAccounts)?.display_login}}`;
@@ -231,7 +231,7 @@ const DMT5TradeModal = observer(
                             href={
                                 !is_mobile
                                     ? (mt5_trade_account.webtrader_url as unknown as string)
-                                    : mobileWebtraderURL() ?? ''
+                                    : (mobileWebtraderURL() as unknown as string) ?? ''
                             }
                             target='_blank'
                             rel='noopener noreferrer'

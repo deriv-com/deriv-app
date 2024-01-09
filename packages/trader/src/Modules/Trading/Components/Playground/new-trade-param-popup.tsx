@@ -14,15 +14,14 @@ const NewTradeParamPopup = ({ onClick }: { onClick: () => void }) => {
                     <div className='footer-new_bottom-sheet_separator' />
                     <div>Duration</div>
                     <div>Minutes</div>
-                    {/* <input
+                    <input
                         type='number'
                         style={{ border: '1px solid black' }}
                         min='0'
                         inputMode='numeric'
                         pattern='[0-9]*'
                         title='Non-negative integral number'
-                    /> */}
-                    <input type='text' style={{ border: '1px solid black' }} />
+                    />
                     <div>Acceptable range: 1 - 1,440</div>
                 </div>
                 <div className='trade-param_popup_bottom'>

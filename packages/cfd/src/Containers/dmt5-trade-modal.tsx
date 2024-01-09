@@ -116,7 +116,7 @@ const DMT5TradeModal = observer(
                 }
                 throw new Error('Fetch failed');
             } catch (error) {
-                return 'abc';
+                return platformUrl();
             }
         };
         (async () => {

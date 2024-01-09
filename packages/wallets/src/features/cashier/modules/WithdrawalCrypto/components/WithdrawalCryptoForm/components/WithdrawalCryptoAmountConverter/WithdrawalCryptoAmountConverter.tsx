@@ -3,20 +3,34 @@ import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import { WalletTextField } from '../../../../../../../../components';
 import ArrowBold from '../../../../../../../../public/images/ic-back-arrow.svg';
-import { useWithdrawalCryptoValidator } from '../../../../hooks';
 import { useWithdrawalCryptoContext } from '../../../../provider';
 import type { TWithdrawalForm } from '../../../../types';
+import { validateCryptoInput, validateFiatInput } from '../../../../utils';
 import './WithdrawalCryptoAmountConverter.scss';
 
 const WithdrawalCryptoAmountConverter: React.FC = () => {
-    const { activeWallet, fractionalDigits, getConvertedCryptoAmount, getConvertedFiatAmount } =
-        useWithdrawalCryptoContext();
-    const { validateCryptoInput, validateFiatInput } = useWithdrawalCryptoValidator(activeWallet, fractionalDigits);
-    const [isCryptoInputActive, setIsCryptoInputActive] = useState(false);
+    const {
+        accountLimits,
+        activeWallet,
+        fractionalDigits,
+        getConvertedCryptoAmount,
+        getConvertedFiatAmount,
+        isClientVerified,
+    } = useWithdrawalCryptoContext();
+
+    const [isCryptoInputActive, setIsCryptoInputActive] = useState(true);
     const { errors, setValues } = useFormikContext<TWithdrawalForm>();
 
     const onChangeCryptoInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const convertedValue = getConvertedFiatAmount(e.target.value);
+        const convertedValue = !validateCryptoInput(
+            activeWallet,
+            fractionalDigits,
+            isClientVerified,
+            accountLimits?.remainder ?? 0,
+            e.target.value
+        )
+            ? getConvertedFiatAmount(e.target.value)
+            : '';
 
         setValues(values => ({
             ...values,
@@ -26,7 +40,9 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
     };
 
     const onChangeFiatInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const convertedValue = getConvertedCryptoAmount(e.target.value);
+        const convertedValue = !validateFiatInput(fractionalDigits, e.target.value)
+            ? getConvertedCryptoAmount(e.target.value)
+            : '';
 
         setValues(values => ({
             ...values,
@@ -37,7 +53,18 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
 
     return (
         <div className='wallets-withdrawal-crypto-amount-converter'>
-            <Field name='cryptoAmount' validate={validateCryptoInput}>
+            <Field
+                name='cryptoAmount'
+                validate={(value: string) =>
+                    validateCryptoInput(
+                        activeWallet,
+                        fractionalDigits,
+                        isClientVerified,
+                        accountLimits?.remainder ?? 0,
+                        value
+                    )
+                }
+            >
                 {({ field }: FieldProps<string>) => (
                     <WalletTextField
                         {...field}
@@ -57,7 +84,7 @@ const WithdrawalCryptoAmountConverter: React.FC = () => {
             >
                 <ArrowBold />
             </div>
-            <Field name='fiatAmount' validate={validateFiatInput}>
+            <Field name='fiatAmount' validate={(value: string) => validateFiatInput(fractionalDigits, value)}>
                 {({ field }: FieldProps<string>) => (
                     <WalletTextField
                         {...field}

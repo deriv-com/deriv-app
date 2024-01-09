@@ -59,7 +59,7 @@ const TransferReceipt = () => {
 
     if (!receipt) return null;
 
-    const { feeAmount, feePercentage, fromAccount, fromAmount, toAccount, toAmount } = receipt;
+    const { feeAmount, fromAccount, fromAmount, toAccount, toAmount } = receipt;
 
     const isSameCurrency = fromAccount?.currency === toAccount?.currency;
     const displayTransferredFromAmount = `${fromAmount.toFixed(fromAccount?.currencyConfig?.fractional_digits)} ${
@@ -71,9 +71,7 @@ const TransferReceipt = () => {
     const transferredAmountMessage = isSameCurrency
         ? displayTransferredFromAmount
         : `${displayTransferredFromAmount} (${displayTransferredToAmount})`;
-    const feeMessage = feeAmount
-        ? `${feePercentage}% transfer fees: ${feeAmount} ${fromAccount?.currencyConfig?.display_code}`
-        : '';
+    const feeMessage = feeAmount ? `Transfer fees: ${feeAmount} ${fromAccount?.currencyConfig?.display_code}` : '';
 
     return (
         <div className='wallets-transfer-receipt'>
@@ -81,7 +79,7 @@ const TransferReceipt = () => {
                 <ReceiptCard
                     account={fromAccount}
                     activeWallet={activeWallet}
-                    balance={`+ ${displayTransferredFromAmount}`}
+                    balance={`-${displayTransferredFromAmount}`}
                 />
                 <div className='wallets-transfer-receipt__arrow-icon'>
                     <Arrow />
@@ -89,7 +87,7 @@ const TransferReceipt = () => {
                 <ReceiptCard
                     account={toAccount}
                     activeWallet={activeWallet}
-                    balance={`- ${displayTransferredToAmount}`}
+                    balance={`+${displayTransferredToAmount}`}
                 />
             </div>
             <div

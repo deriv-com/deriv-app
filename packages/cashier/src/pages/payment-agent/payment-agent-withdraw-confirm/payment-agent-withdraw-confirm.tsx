@@ -19,16 +19,16 @@ const PaymentAgentWithdrawConfirm = observer(() => {
     return (
         <TransferConfirm
             data={[
-                { label: localize('From account number'), value: client_loginid || '', key: 'transfer_from' },
+                { label: localize('From account number'), value: client_loginid || '', item_key: 'transfer_from' },
                 {
                     label: [localize('To account number'), localize('Account holder name')],
                     value: [loginid.toUpperCase(), payment_agent_name],
-                    key: 'transfer_to',
+                    item_key: 'transfer_to',
                 },
                 {
                     label: localize('Amount'),
                     value: <Money currency={currency} amount={amount} show_currency />,
-                    key: 'amount',
+                    item_key: 'amount',
                 },
             ]}
             error={error}

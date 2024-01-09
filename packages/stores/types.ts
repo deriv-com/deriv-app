@@ -20,6 +20,7 @@ import type {
     SetFinancialAssessmentResponse,
     StatesList,
     Transaction,
+    P2POrderListResponse,
     WebsiteStatus,
 } from '@deriv/api-types';
 
@@ -412,7 +413,8 @@ type TClientStore = {
         api_initial_load_error?: string;
     };
     account_list: TAccountsList;
-    account_status: GetAccountStatus;
+    account_status: Omit<GetAccountStatus, 'status' | 'p2p_poa_required'> &
+        Partial<Pick<GetAccountStatus, 'status'>> & { p2p_poa_required: number };
     available_crypto_currencies: Array<WebsiteStatus['currencies_config']>;
     balance?: string | number;
     can_change_fiat_currency: boolean;
@@ -463,7 +465,7 @@ type TClientStore = {
     is_low_risk: boolean;
     is_mt5_password_not_set: boolean;
     is_mt5_account_list_updated: boolean;
-    is_pending_proof_of_ownership: boolean;
+    is_proof_of_ownership_enabled: boolean;
     is_poa_expired: boolean;
     is_populating_dxtrade_account_list: boolean;
     is_switching: boolean;
@@ -589,6 +591,8 @@ type TClientStore = {
     prev_account_type: string;
     account_open_date: number | undefined;
     setAccounts: () => (accounts: Record<string, TActiveAccount>) => void;
+    should_show_eu_error: boolean;
+    is_options_blocked: boolean;
 };
 
 type TCommonStoreError = {
@@ -935,6 +939,7 @@ type TNotificationStore = {
     is_notifications_visible: boolean;
     filterNotificationMessages: () => void;
     notifications: TNotificationMessage[];
+    p2p_completed_orders: NonNullable<P2POrderListResponse['p2p_order_list']>['list'];
     refreshNotifications: () => void;
     removeAllNotificationMessages: (should_close_persistent: boolean) => void;
     removeNotifications: (should_close_persistent: boolean) => void;

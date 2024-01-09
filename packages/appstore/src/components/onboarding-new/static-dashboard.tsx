@@ -68,14 +68,14 @@ const StaticDashboard = observer(
     }: TStaticDashboard) => {
         const { client, traders_hub } = useStore();
         const { content_flag, CFDs_restricted_countries, financial_restricted_countries } = traders_hub;
-        const { is_eu_country, is_logged_in } = client;
+        const { is_eu_country, is_logged_in, is_mt5_allowed } = client;
         const eu_user =
             content_flag === ContentFlag.LOW_RISK_CR_EU ||
             content_flag === ContentFlag.EU_REAL ||
             content_flag === ContentFlag.EU_DEMO;
         const is_eu_user = (is_logged_in && eu_user) || (!is_logged_in && is_eu_country);
 
-        const [index, setIndex] = React.useState<number>(is_eu_user ? 1 : 0);
+        const [index, setIndex] = React.useState<number>(is_eu_user && is_mt5_allowed ? 1 : 0);
 
         const Divider = () => <div className='divider' />;
 
@@ -88,7 +88,7 @@ const StaticDashboard = observer(
 
         React.useEffect(() => {
             const change_index_interval_id = setInterval(() => {
-                if (isMobile()) {
+                if (isMobile() && is_mt5_allowed) {
                     if (index === 0) {
                         setIndex(1);
                     } else {
@@ -101,7 +101,8 @@ const StaticDashboard = observer(
         }, [index]);
 
         const is_eu_title = eu_user ? localize('Multipliers') : localize('Options & Multipliers');
-        const is_eu_account_title = eu_user ? localize('Multipliers account') : localize('Deriv account');
+        const is_eu_account_title =
+            eu_user && is_mt5_allowed ? localize('Multipliers account') : localize('Deriv account');
         const compare_accounts_title = eu_user ? localize('Account Information') : localize('Compare accounts');
 
         return (
@@ -120,7 +121,7 @@ const StaticDashboard = observer(
                                         'static-dashboard-wrapper__header--limited-width': has_account,
                                     })}
                                 >
-                                    {isMobile() ? (
+                                    {isMobile() && is_mt5_allowed ? (
                                         <React.Fragment>
                                             <ButtonToggle
                                                 buttons_arr={is_eu_user ? toggle_options_eu : toggle_options}
@@ -275,6 +276,7 @@ const StaticDashboard = observer(
                                         is_item_blurry={is_blurry.platformlauncher}
                                         has_divider={!eu_user && !financial_restricted_countries}
                                         is_animated={is_onboarding_animated.button}
+                                        is_mt5_allowed={is_mt5_allowed}
                                     />
                                 </div>
 
@@ -332,7 +334,7 @@ const StaticDashboard = observer(
                         </div>
                     )}
 
-                    {(isDesktop() || (isMobile() && index === 1)) && (
+                    {((isDesktop() && is_mt5_allowed) || (isMobile() && index === 1)) && (
                         <div className='static-dashboard-wrapper__bordered'>
                             <div className='static-dashboard-wrapper__header'>
                                 {isMobile() ? (

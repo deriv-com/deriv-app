@@ -60,16 +60,6 @@ const TradersHubRoute = () => {
                     </Text>
                 </div>
                 <div className='flex flex-col gap-y-1200'>
-                    {/* <div>
-                        <Text bold className='pb-800' size='md'>
-                            Deriv MT5
-                        </Text>
-                        <div className='grid grid-cols-1 sm:grid-cols-3 gap-1200'>
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                        </div>
-                    </div> */}
                     <MT5PlatformsList />
                     <div className='grid grid-cols-1 sm:grid-cols-3 gap-1200'>
                         <CTraderList />

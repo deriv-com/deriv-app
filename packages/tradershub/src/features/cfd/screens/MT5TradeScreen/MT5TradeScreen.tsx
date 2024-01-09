@@ -112,8 +112,10 @@ const MT5TradeScreen = ({ account }: MT5TradeScreenProps) => {
                     )}
                 </div>
                 <div className='flex gap-400'>
-                    <ImportantIcon />
-                    <Text size='2xs'>{serviceMaintenanceMessages[(platform || mt5Platform) as TPlatforms.All]}</Text>
+                    <div className='w-800 h-800'>
+                        <ImportantIcon />
+                    </div>
+                    <Text size='sm'>{serviceMaintenanceMessages[(platform || mt5Platform) as TPlatforms.All]}</Text>
                 </div>
             </div>
             <div className='w-full'>

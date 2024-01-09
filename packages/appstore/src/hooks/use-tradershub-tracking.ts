@@ -6,10 +6,6 @@ import { useCallback, useEffect, useMemo } from 'react';
 export const useTradersHubTracking = () => {
     const { traders_hub, ui, client } = useStore();
 
-    const { is_mobile } = ui;
-
-    const { loginid } = client;
-
     const { is_first_time_visit } = traders_hub;
 
     const form_source = useMemo(
@@ -18,13 +14,6 @@ export const useTradersHubTracking = () => {
     );
 
     const event_name = 'ce_tradershub_onboarding_form';
-
-    useEffect(() => {
-        Analytics.setAttributes({
-            device_type: is_mobile ? 'mobile' : 'desktop',
-            account_type: loginid?.slice(0, 2),
-        });
-    }, [is_mobile, loginid]);
 
     const trackDotNavigation = useCallback(
         (step: number) => {

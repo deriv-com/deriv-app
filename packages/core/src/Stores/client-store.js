@@ -27,7 +27,6 @@ import {
     State,
     toMoment,
     urlForLanguage,
-    getAppId,
 } from '@deriv/shared';
 import { Analytics } from '@deriv/analytics';
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
@@ -1571,15 +1570,7 @@ export default class ClientStore extends BaseStore {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
-
-                // Client comes back from oauth and logs in
-                Analytics.setAttributes({
-                    app_id: getAppId(),
-                    account_type: this.loginid.substring(0, 2),
-                });
                 Analytics?.identifyEvent();
-                const current_page = window.location.hostname + window.location.pathname;
-                Analytics?.pageView(current_page);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -1649,7 +1640,7 @@ export default class ClientStore extends BaseStore {
             }
 
             if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
-            this.loginid !== 'null' && Analytics.setAttributes({ account_type: this.loginid.substring(0, 2) });
+
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
             if (this.account_settings && !this.account_settings.residence) {

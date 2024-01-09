@@ -6,6 +6,7 @@ import { Button, qtMerge, Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
 import { THooks } from '../../types';
+import { CurrencySwitcherLoader } from '../Loaders';
 import { ModalStepWrapper } from '../ModalStepWrapper';
 import { TradingAccountsList } from '../TradingAccountsList';
 
@@ -42,16 +43,6 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
     );
 };
 
-const Loader = () => (
-    <div className='flex items-center justify-between border-solid gap-800 h-3600 p-800 rounded-400 border-sm border-system-light-active-background shrink-0'>
-        <div className='rounded-full animate-pulse bg-solid-slate-100 w-2000 h-2000 rounded-1500' />
-        <div className='space-y-500'>
-            <div className='animate-pulse bg-solid-slate-100 w-2500 h-500 rounded-200' />
-            <div className='animate-pulse bg-solid-slate-100 w-5000 h-500 rounded-200' />
-        </div>
-    </div>
-);
-
 const CurrencySwitcher = () => {
     const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
@@ -72,7 +63,7 @@ const CurrencySwitcher = () => {
         );
     };
 
-    if (!isSuccess) return <Loader />;
+    if (!isSuccess) return <CurrencySwitcherLoader />;
 
     return (
         <div className='flex items-center justify-between border-solid gap-800 h-3600 p-800 rounded-400 border-sm border-system-light-active-background shrink-0'>

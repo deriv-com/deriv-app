@@ -126,15 +126,15 @@ const DMT5TradeModal = observer(
         React.useEffect(() => {
             const fetchWebTraderURL = async () => {
                 try {
-                    await mobileWebtraderURL();
-                    setWebTraderURL(deepLink);
+                    const result = await mobileWebtraderURL();
+                    setWebTraderURL(result);
                 } catch (error) {
                     setWebTraderURL(platformUrl());
                 }
             };
 
             fetchWebTraderURL();
-        }, [deepLink, mobileWebtraderURL]);
+        }, [mobileWebtraderURL]);
 
         // Check if the deep link opens successfully (app is installed)
 

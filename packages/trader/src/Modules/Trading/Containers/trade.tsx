@@ -1,13 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import {
-    DesktopWrapper,
-    Div100vhContainer,
-    MobileWrapper,
-    SwipeableWrapper,
-    Icon,
-    ButtonToggle,
-} from '@deriv/components';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { TickSpotData } from '@deriv/api-types';
 import { LocalStore, isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -17,6 +10,7 @@ import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay';
 import { ChartTopWidgets, DigitsWidget } from './chart-widgets';
 import FormLayout from '../Components/Form/form-layout';
+import NewTrade from '../Components/Playground/new-trade';
 import TradeChart from './trade-chart';
 import LaunchModal from 'Modules/SmartChartBeta/Components/LaunchModal/launch-modal';
 
@@ -161,88 +155,7 @@ const Trade = observer(() => {
     };
 
     if (is_mobile) {
-        return (
-            <React.Fragment>
-                <div className='content_container'>
-                    <div className='trade-type_section'>
-                        <div className='trade-type_container'>
-                            <div className='trade-type_container_left'>
-                                <Icon icon='IcUnderlyingR_75' size={32} />
-                                <div className='trade-type_name'>
-                                    <div>Turbos - Long/Short</div>
-                                    <div style={{ color: 'var(--core-color-opacity-black-400, rgba(0, 0, 0, 0.48))' }}>
-                                        Volatility 75 Index
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='trade-type_container_right'>
-                                <div className='trade-type_price'>
-                                    <div>333440.0000</div>
-                                    <div style={{ color: 'var(--core-color-solid-emerald-700, #00C390)' }}>+ 0.00%</div>
-                                </div>
-                                <Icon icon='IcChevronRight' size={24} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className='chart_section'>
-                        <div>Chart</div> <Icon icon='IcChevronDown' size={24} />
-                    </div>
-                    <div className='trade-param_section'>
-                        <div className='trade-param_section_title'>
-                            <div className='bold'>Parameters</div>
-                            <div>Configure your trade parameters here.</div>
-                        </div>
-                        <div className='contract-type-info__button-wrapper trade-param_toggle-button'>
-                            <ButtonToggle
-                                buttons_arr={[
-                                    { text: 'Long', value: 'Long' },
-                                    { text: 'Short', value: 'Short' },
-                                ]}
-                                name='description_glossary_filter'
-                                is_animated
-                                has_rounded_button
-                                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                                onChange={() => {}}
-                                value='Long'
-                            />
-                        </div>
-                        <div className='trade-param_container'>
-                            <div className='trade-param_name'>Duration</div>
-                            <div style={{ fontSize: '16px', lineHeight: '24px' }}>1 minute</div>
-                        </div>
-                        <div className='trade-param_container'>
-                            <div className='trade-param_name'>Barrier</div>
-                            <div style={{ fontSize: '16px', lineHeight: '24px' }}>333440.0000</div>
-                        </div>
-                        <div className='trade-param_container'>
-                            <div className='trade-param_name'>Stake</div>
-                            <div style={{ fontSize: '16px', lineHeight: '24px' }}>10.00 USD</div>
-                        </div>
-                        <div className='trade-param_container'>
-                            <div className='trade-param_name'>Risk management</div>
-                            <div style={{ fontSize: '16px', lineHeight: '24px' }}>-</div>
-                        </div>
-                    </div>
-                </div>
-                <footer className='footer-new'>
-                    <div className='footer-new_bottom-sheet'>
-                        <div className='footer-new_bottom-sheet_separator' />
-                        <div className='footer-new_bottom-sheet_payout'>
-                            <div>Expected payout</div>
-                            <div style={{ fontWeight: '700' }}>19.57 USD</div>
-                        </div>
-                        <button className='footer-new_bottom-sheet_button'>Buy</button>
-                    </div>
-                    <div className='footer-new_navigation'>
-                        <div className='footer-new_navigation_icon footer-new_navigation_icon-selected'>Icon 1</div>
-                        <div className='footer-new_navigation_icon'>Icon 2</div>
-                        <div className='footer-new_navigation_icon'>Icon 3</div>
-                        <div className='footer-new_navigation_icon'>Icon 4</div>
-                        <div className='footer-new_navigation_icon'>Icon 5</div>
-                    </div>
-                </footer>
-            </React.Fragment>
-        );
+        return <NewTrade />;
     }
 
     return (

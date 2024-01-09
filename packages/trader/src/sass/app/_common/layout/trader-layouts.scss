@@ -824,8 +824,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
 .footer-new {
     position: fixed;
-    z-index: 99;
-    box-sizing: border-box;
+    -webkit-transform: translate3d(0, 0, 0);
     height: 17.9rem;
     width: 100%;
     bottom: 0;
@@ -1042,6 +1041,57 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 font-size: 12px;
                 line-height: 18px;
             }
+        }
+    }
+}
+
+.trade-param_popup {
+    &_overlay {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 99;
+        background-color: rgba(0, 0, 0, 0.4);
+        -webkit-transform: translate3d(0, 0, 0);
+    }
+
+    &_container {
+        position: absolute;
+        height: 60%;
+        width: 100%;
+        bottom: 0;
+        // transition: opacity 0.3s;
+        background-color: var(--general-main-1);
+        border-top: 1px solid var(--general-section-1);
+        border-top-right-radius: 1.4rem;
+        border-top-left-radius: 1.4rem;
+        box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.04), 0px -1px 4px 0px rgba(0, 0, 0, 0.08);
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0.8rem 1.6rem 1.6rem;
+        -webkit-transform: translate3d(0, 0, 0);
+    }
+
+    &_top,
+    &_bottom {
+        width: 100%;
+    }
+
+    &_top {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &_bottom {
+        .footer-new_bottom-sheet_button {
+            opacity: 0.48;
+            background: var(--core-color-solid-slate-1400, #000);
         }
     }
 }

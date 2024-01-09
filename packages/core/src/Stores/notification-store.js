@@ -1,5 +1,4 @@
 import React from 'react';
-import debounce from 'lodash.debounce';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
 import { StaticUrl } from '@deriv/components';
@@ -53,7 +52,7 @@ export default class NotificationStore extends BaseStore {
     trade_notifications = [];
     p2p_order_props = {};
     p2p_redirect_to = {};
-    p2p_completed_orders = null;
+    p2p_completed_orders = [];
 
     constructor(root_store) {
         super({ root_store });
@@ -66,7 +65,6 @@ export default class NotificationStore extends BaseStore {
             addVerificationNotifications: action.bound,
             client_notifications: observable,
             filterNotificationMessages: action.bound,
-            getP2pCompletedOrders: action.bound,
             handleClientNotifications: action.bound,
             is_notifications_empty: computed,
             is_notifications_visible: observable,
@@ -98,8 +96,6 @@ export default class NotificationStore extends BaseStore {
             updateNotifications: action.bound,
         });
 
-        const debouncedGetP2pCompletedOrders = debounce(this.getP2pCompletedOrders, 1000);
-
         reaction(
             () => root_store.common.app_routing_history.map(i => i.pathname),
             () => {
@@ -120,17 +116,7 @@ export default class NotificationStore extends BaseStore {
                 this.p2p_order_props.order_id,
                 root_store.client.p2p_advertiser_info,
             ],
-            async () => {
-                if (
-                    root_store.client.is_logged_in &&
-                    !root_store.client.is_virtual &&
-                    Object.keys(root_store.client.account_status || {}).length > 0 &&
-                    Object.keys(root_store.client.landing_companies || {}).length > 0 &&
-                    root_store.client.is_p2p_enabled
-                ) {
-                    await debouncedGetP2pCompletedOrders();
-                }
-
+            () => {
                 if (
                     !root_store.client.is_logged_in ||
                     (Object.keys(root_store.client.account_status || {}).length > 0 &&
@@ -143,6 +129,12 @@ export default class NotificationStore extends BaseStore {
                     this.filterNotificationMessages();
                     this.checkNotificationMessages();
                 }
+            }
+        );
+        reaction(
+            () => this.p2p_completed_orders,
+            () => {
+                this.handleClientNotifications();
             }
         );
     }
@@ -640,6 +632,7 @@ export default class NotificationStore extends BaseStore {
             ),
             platform: 'P2P',
             type: 'p2p_completed_order',
+            should_show_again: true,
         });
     }
 
@@ -682,7 +675,7 @@ export default class NotificationStore extends BaseStore {
         this.notification_messages = this.notification_messages.filter(n => n.key !== key);
         // Add notification messages to LocalStore when user closes, check for redundancy
         const active_loginid = LocalStore.get('active_loginid');
-        if (!excluded_notifications.includes(key) && active_loginid) {
+        if (!excluded_notifications.includes(key) && !key.startsWith('p2p_order') && active_loginid) {
             let messages = LocalStore.getObject('notification_messages');
             // Check if same message already exists in LocalStore for this account
             if (messages[active_loginid] && messages[active_loginid].includes(key)) {
@@ -1617,13 +1610,4 @@ export default class NotificationStore extends BaseStore {
             platform: 'Account',
         });
     };
-
-    async getP2pCompletedOrders() {
-        await WS.wait('authorize');
-        const response = await WS.send?.({ p2p_order_list: 1, active: 0 });
-
-        if (!response?.error) {
-            this.p2p_completed_orders = response?.p2p_order_list?.list || [];
-        }
-    }
 }

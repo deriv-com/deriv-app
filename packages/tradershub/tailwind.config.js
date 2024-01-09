@@ -1,6 +1,20 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin');
+
 module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
+    plugins: [
+        plugin(({ addUtilities }) => {
+            addUtilities({
+                '.backface-hidden': {
+                    'backface-visibility': 'hidden',
+                },
+                '.backface-visible': {
+                    'backface-visibility': 'visible',
+                },
+            });
+        }),
+    ],
     presets: [require('@deriv/quill-design/quill-tailwind/tailwind.config.cjs')],
     theme: {
         extend: {
@@ -70,6 +84,7 @@ module.exports = {
                         'disabled-text': '#3e3e3e',
                         'general-text': '#c2c2c2',
                         'hover-background': '#242828',
+                        'less-prominent': '#6e6e6e',
                         'less prominent-text': '#6e6e6e',
                         'primary-background': '#0e0e0e',
                         'prominent-text': '#ffffff',
@@ -80,6 +95,7 @@ module.exports = {
                         'disabled-text': '#d6d6d6',
                         'general-text': '#333333',
                         'hover-background': '#e6e9e9',
+                        'less-prominent': '#999999',
                         'less-prominent-text': '#999999',
                         'primary-background': '#ffffff',
                         'prominent-text': '#333333',

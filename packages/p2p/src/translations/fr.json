@@ -314,7 +314,7 @@
     "-1862812590": "Limites : {{ currency }} {{ min_order }}–{{ max_order }}",
     "-375836822": "Acheter {{account_currency}}",
     "-1035421133": "Vendre {{account_currency}}",
-    "-1876891031": "Currency",
+    "-1876891031": "Devise",
     "-1503997652": "Aucune annonce pour cette devise.",
     "-1048001140": "Aucun résultat pour « {{value}} ».",
     "-254484597": "Vous n'avez aucune annonce 😞",

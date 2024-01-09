@@ -6,6 +6,7 @@ import { Button, Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
 import { THooks } from '../../types';
+import { CurrencySwitcherLoader } from '../Loaders';
 import { Modal } from '../Modal';
 import { TradingAccountsList } from '../TradingAccountsList';
 
@@ -43,16 +44,18 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 };
 
 const CurrencySwitcher = () => {
-    const { data: activeAccount } = useActiveTradingAccount();
+    const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
     const { show } = Provider.useModal();
 
     const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency ?? 'virtual';
 
+    if (!isSuccess) return <CurrencySwitcherLoader />;
+
     return (
-        <div className='flex items-center justify-between border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background w-full sm:w-auto sm:shrink-0 gap-800'>
+        <div className='flex items-center justify-between w-full border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background sm:w-auto sm:shrink-0 gap-800'>
             <div className='flex-none '>{IconToCurrencyMapper[iconCurrency].icon}</div>
-            <div className='grow text-left'>
+            <div className='text-left grow'>
                 <Text bold={!isDemo} className={!isDemo ? 'text-status-light-success' : undefined} size='sm'>
                     {isDemo ? 'Demo' : activeAccount?.display_balance}
                 </Text>
@@ -69,7 +72,7 @@ const CurrencySwitcher = () => {
             </div>
             {!isDemo && (
                 <StandaloneChevronDownBoldIcon
-                    className='cursor-pointer flex-none'
+                    className='flex-none cursor-pointer'
                     onClick={() => {
                         show(
                             <Modal>

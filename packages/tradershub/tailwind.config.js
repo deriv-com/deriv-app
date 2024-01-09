@@ -85,7 +85,7 @@ module.exports = {
                         'general-text': '#c2c2c2',
                         'hover-background': '#242828',
                         'less-prominent': '#6e6e6e',
-                        'less prominent-text': '#6e6e6e',
+                        'less-prominent-text': '#6e6e6e',
                         'primary-background': '#0e0e0e',
                         'prominent-text': '#ffffff',
                         'secondary-background': '#151717',

@@ -103,28 +103,30 @@ const DMT5TradeModal = observer(
                 return getPlatformMt5DownloadLink('huawei');
             }
         };
+        const deepLink = `metatrader5://account?server=${
+            (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
+        }&login=${(mt5_trade_account as TTradingPlatformAccounts)?.display_login}}`;
 
         const mobileWebtraderURL = async (): Promise<string | undefined> => {
-            const deepLink = `metatrader5://account?server=${
-                (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
-            }&login=${(mt5_trade_account as TTradingPlatformAccounts)?.display_login}}`;
-
             try {
                 const response = await fetch(deepLink);
 
-                if (!response.ok) {
-                    return platformUrl();
+                if (response.ok) {
+                    return deepLink;
                 }
-
-                const data = await response.json();
-
-                return data ? deepLink : platformUrl();
+                throw new Error('Fetch failed');
             } catch (error) {
-                if (error) {
-                    return platformUrl();
-                }
+                return 'abc';
             }
         };
+        (async () => {
+            try {
+                await mobileWebtraderURL();
+                return deepLink;
+            } catch (error) {
+                return platformUrl();
+            }
+        })();
 
         // Check if the deep link opens successfully (app is installed)
 

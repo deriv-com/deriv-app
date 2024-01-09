@@ -5,15 +5,12 @@ import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import {
-    getMT5AccountTitle,
     JURISDICTION_MARKET_TYPES,
-    Jurisdiction,
     getFormattedJurisdictionMarketTypes,
     getCFDPlatformNames,
     CFD_PLATFORMS,
 } from '@deriv/shared';
-import TradersHubBannerImage from './traders-hub-banner-image';
-import { platform } from 'os';
+import MigrateCard from 'Assets/svgs/banner/migrate-card.svg';
 
 const MigrationBanner = observer(() => {
     const {
@@ -37,10 +34,10 @@ const MigrationBanner = observer(() => {
     };
 
     return (
-        <div className='traders-hub-banner__container traders-hub-banner__migrate-banner'>
+        <div className='traders-hub-banner__migrate-banner'>
             <div className='traders-hub-banner__migrate-banner-description'>
                 <div className='traders-hub-banner__migrate-banner-description__text'>
-                    {!has_derived_and_financial_mt5 ? (
+                    {has_derived_and_financial_mt5 ? (
                         <Text size={size}>
                             <Localize
                                 i18n_default_text='Upgrade your <0>{{account_1}}</0> <1/>and <0>{{account_2}} {{platform}} </0> account(s)'
@@ -73,7 +70,7 @@ const MigrationBanner = observer(() => {
                     <Localize i18n_default_text='Upgrade' />
                 </Button>
             </div>
-            <TradersHubBannerImage image={image} class_name='traders-hub-banner__image' />
+            <MigrateCard className='traders-hub-banner__migrate-banner__image' data-testid='dt_migrate_card' />;
         </div>
     );
 });

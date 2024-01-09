@@ -1,4 +1,4 @@
-import TradersHubBanner from './traders-hub-banner';
-import './traders-hub-banner.scss';
+import MigrationBanner from './migration-banner';
+import './migration-banner.scss';
 
-export default TradersHubBanner;
+export default MigrationBanner;

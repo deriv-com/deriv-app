@@ -12,7 +12,7 @@ import GetMoreAccounts from 'Components/get-more-accounts';
 import { getHasDivider } from 'Constants/utils';
 import './cfds-listing.scss';
 import { useCFDCanGetMoreMT5Accounts, useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import MigrationBanner from 'Components/traders-hub-banner/migration-banner';
+import MigrationBanner from 'Components/traders-hub-banner';
 
 const CFDsListing = observer(() => {
     const {

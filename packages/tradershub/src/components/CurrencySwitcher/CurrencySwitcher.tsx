@@ -7,7 +7,7 @@ import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
 import { THooks } from '../../types';
 import { CurrencySwitcherLoader } from '../Loaders';
-import { ModalStepWrapper } from '../ModalStepWrapper';
+import { Modal } from '../Modal';
 import { TradingAccountsList } from '../TradingAccountsList';
 
 type AccountActionButtonProps = {
@@ -66,9 +66,9 @@ const CurrencySwitcher = () => {
     if (!isSuccess) return <CurrencySwitcherLoader />;
 
     return (
-        <div className='flex items-center justify-between border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background w-full sm:w-auto sm:shrink-0 gap-800'>
+        <div className='flex items-center justify-between w-full border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background sm:w-auto sm:shrink-0 gap-800'>
             <div className='flex-none '>{IconToCurrencyMapper[iconCurrency].icon}</div>
-            <div className='grow text-left'>
+            <div className='text-left grow'>
                 <Text bold={!isDemo} className={!isDemo ? 'text-status-light-success' : undefined} size='sm'>
                     {isDemo ? 'Demo' : activeAccount?.display_balance}
                 </Text>
@@ -85,12 +85,16 @@ const CurrencySwitcher = () => {
             </div>
             {!isDemo && (
                 <StandaloneChevronDownBoldIcon
-                    className='cursor-pointer flex-none'
+                    className='flex-none cursor-pointer'
                     onClick={() => {
                         show(
-                            <ModalStepWrapper renderFooter={renderButton} title='Select account'>
-                                <TradingAccountsList />
-                            </ModalStepWrapper>
+                            <Modal>
+                                <Modal.Header title='Select account' titleClassName='text-typography-default' />
+                                <Modal.Content className='overflow-y-scroll'>
+                                    <TradingAccountsList />
+                                </Modal.Content>
+                                <Modal.Footer>{renderButton()}</Modal.Footer>
+                            </Modal>
                         );
                     }}
                 />

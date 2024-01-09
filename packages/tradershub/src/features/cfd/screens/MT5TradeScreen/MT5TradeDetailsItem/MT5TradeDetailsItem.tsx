@@ -1,7 +1,7 @@
 import React, { FC, useRef } from 'react';
 import { useHover } from 'usehooks-ts';
 import { qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
-import { Clipboard, Tooltip } from '../../../../../components/Base';
+import { Clipboard, Tooltip } from '../../../../../components';
 import EditIcon from '../../../../../public/images/ic-edit.svg';
 
 type TMT5TradeDetailsItemProps = {

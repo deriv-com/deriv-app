@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuthorize, useJurisdictionStatus } from '@deriv/api';
 import { InlineMessage, WalletButton, WalletText } from '../../../../../components/Base';
@@ -35,7 +35,11 @@ const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
     const history = useHistory();
-    const { data: jurisdictionStatus } = useJurisdictionStatus(account.landing_company_short || 'svg', account.status);
+    const { getVerificationStatus } = useJurisdictionStatus();
+    const jurisdictionStatus = useMemo(
+        () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
+        [account.landing_company_short, account.status, getVerificationStatus]
+    );
     const { title } = MarketTypeDetails[account.market_type ?? 'all'];
     const { show } = useModal();
 

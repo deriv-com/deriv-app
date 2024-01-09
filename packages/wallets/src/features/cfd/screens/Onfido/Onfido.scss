@@ -6,7 +6,21 @@
 
     @include mobile {
         width: auto;
-        height: auto;
+        height: 100%;
+        padding: 1.6rem;
+
+        & > :first-child {
+            display: flex;
+            justify-content: center;
+        }
+
+        // stylelint-disable-next-line selector-class-pattern
+        & .onfido-sdk-ui-Modal-inner {
+            margin-inline: 3.9rem;
+            width: 32.8rem;
+            min-height: 38.2rem;
+            height: 60%; // height from figma is too small so make it relative
+        }
     }
 
     &--success {

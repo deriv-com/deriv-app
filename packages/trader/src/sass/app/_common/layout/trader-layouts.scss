@@ -1064,7 +1064,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
         width: 100%;
         // bottom: 0;
         top: 40%;
-        // transition: opacity 0.3s;
+        // opacity: 0;
+        transition: opacity 0.3s;
         background-color: var(--general-main-1);
         border-top: 1px solid var(--general-section-1);
         border-top-right-radius: 1.4rem;
@@ -1078,7 +1079,21 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
         &:has(.trade-param_popup_input:focus) {
             top: 10%;
+            height: 60%;
         }
+        &--expanded {
+            top: 10%;
+            height: 90%;
+        }
+        // &--enter,
+        // &--exit {
+        //     opacity: 0;
+        //     pointer-events: none;
+        // }
+        // &--enter-done {
+        //     opacity: 1;
+        //     pointer-events: auto;
+        // }
     }
 
     &_top {

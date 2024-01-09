@@ -1,15 +1,33 @@
 import React from 'react';
-// import classNames from 'classnames';
-// import { ButtonToggle } from '@deriv/components';
+import classNames from 'classnames';
+// import { CSSTransition } from 'react-transition-group';
 
-const NewTradeParamPopup = ({ onClick }: { onClick: () => void }) => {
+const NewTradeParamPopup = ({ onClick, show_details }: { onClick: () => void; show_details?: boolean }) => {
+    const [should_expand, setShouldExpand] = React.useState(false);
+
     const onClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
+        setShouldExpand(!should_expand);
     };
 
     return (
         <div className='trade-param_popup_overlay' onClick={onClick}>
-            <div className='trade-param_popup_container' onClick={onClickHandler}>
+            {/* <CSSTransition
+                in={show_details}
+                timeout={500}
+                classNames={{
+                    enter: 'trade-param_popup_container--enter',
+                    enterDone: 'trade-param_popup_container--enterDone',
+                    exit: 'trade-param_popup_container--exit',
+                }}
+                unmountOnExit
+            > */}
+            <div
+                onClick={onClickHandler}
+                className={classNames('trade-param_popup_container', {
+                    'trade-param_popup_container--expanded': should_expand,
+                })}
+            >
                 <div className='trade-param_popup_top'>
                     <div className='footer-new_bottom-sheet_separator' />
                     <div className='trade-param_popup_title'>
@@ -35,7 +53,7 @@ const NewTradeParamPopup = ({ onClick }: { onClick: () => void }) => {
                             pattern='[0-9]*'
                             title='Non-negative integral number'
                             className='trade-param_popup_input'
-                            value={1}
+                            defaultValue={1}
                         />
                         <div className='trade-param_popup_input_text'>Acceptable range: 1 - 1,440 minutes</div>
                     </div>
@@ -44,6 +62,7 @@ const NewTradeParamPopup = ({ onClick }: { onClick: () => void }) => {
                     <button className='footer-new_bottom-sheet_button'>Save</button>
                 </div>
             </div>
+            {/* </CSSTransition> */}
         </div>
     );
 };

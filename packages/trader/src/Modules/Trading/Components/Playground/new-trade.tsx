@@ -1,5 +1,4 @@
 import React from 'react';
-// import classNames from 'classnames';
 import NewTradeTypeWidget from './new-trade-type-widget';
 import NewChartDropdown from './new-chart-dropdown';
 import NewTradeParamsContainer from './new-trade-params-container';
@@ -15,7 +14,9 @@ const NewTrade = () => {
                 <NewChartDropdown />
                 <NewTradeParamsContainer onClick={() => setShowDetails(!show_details)} />
             </div>
-            {show_details && <NewTradeParamPopup onClick={() => setShowDetails(!show_details)} />}
+            {show_details && (
+                <NewTradeParamPopup onClick={() => setShowDetails(!show_details)} show_details={show_details} />
+            )}
             <div className='footer-new'>
                 <div className='footer-new_bottom-sheet'>
                     <div className='footer-new_bottom-sheet_separator' />

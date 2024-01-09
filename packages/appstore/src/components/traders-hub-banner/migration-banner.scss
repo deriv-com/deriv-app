@@ -2,13 +2,13 @@
     position: relative;
     margin-bottom: 2.4rem;
     overflow: hidden;
-    background-color: #f2f3f4;
+    background-color: $color-grey-4;
     border: 1px solid var(--traders-hub-banner-border-color);
     border-radius: $BORDER_RADIUS * 4;
 
     @include mobile {
         padding: 1.4rem 1.6rem;
-        border-radius: $BORDER_RADIUS * 2;
+        border: none;
     }
     &-description {
         position: relative;

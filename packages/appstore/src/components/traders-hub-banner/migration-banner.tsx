@@ -17,13 +17,10 @@ const MigrationBanner = observer(() => {
         ui,
         modules: { cfd },
     } = useStore();
-    const { is_mobile, toggleMT5MigrationModal } = ui;
+    const { toggleMT5MigrationModal } = ui;
     const { setMT5MigrationError } = cfd;
 
     const { has_derived_mt5_to_migrate, has_derived_and_financial_mt5 } = useMT5SVGEligibleToMigrate();
-
-    const image = is_mobile ? 'migrate_mobile' : 'migrate_desktop';
-    const size = 'xs';
 
     const openMT5MigrationModal = () => {
         setMT5MigrationError('');
@@ -38,7 +35,7 @@ const MigrationBanner = observer(() => {
             <div className='traders-hub-banner__migrate-banner-description'>
                 <div className='traders-hub-banner__migrate-banner-description__text'>
                     {has_derived_and_financial_mt5 ? (
-                        <Text size={size}>
+                        <Text size='xs'>
                             <Localize
                                 i18n_default_text='Upgrade your <0>{{account_1}}</0> <1/>and <0>{{account_2}} {{platform}} </0> account(s)'
                                 values={{
@@ -50,9 +47,9 @@ const MigrationBanner = observer(() => {
                             />
                         </Text>
                     ) : (
-                        <Text size={size}>
+                        <Text size='xs'>
                             <Localize
-                                i18n_default_text='Upgrade your <1/><0>{{account_title}} {{platform}} </0> account(s)'
+                                i18n_default_text='Upgrade your <0/><1>{{account_title}} {{platform}} </1> account(s)'
                                 values={{
                                     account_title: getFormattedJurisdictionMarketTypes(
                                         has_derived_mt5_to_migrate
@@ -61,7 +58,7 @@ const MigrationBanner = observer(() => {
                                     ),
                                     platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                                 }}
-                                components={[<strong key={0} />, <br key={1} />]}
+                                components={[<br key={0} />, <strong key={1} />]}
                             />
                         </Text>
                     )}
@@ -70,7 +67,7 @@ const MigrationBanner = observer(() => {
                     <Localize i18n_default_text='Upgrade' />
                 </Button>
             </div>
-            <MigrateCard className='traders-hub-banner__migrate-banner__image' data-testid='dt_migrate_card' />;
+            <MigrateCard className='traders-hub-banner__migrate-banner__image' data-testid='dt_migrate_card' />
         </div>
     );
 });

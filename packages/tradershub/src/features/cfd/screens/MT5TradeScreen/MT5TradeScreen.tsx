@@ -55,7 +55,7 @@ const MT5TradeScreen = ({ account }: MT5TradeScreenProps) => {
     }, [details, dxtradePlatform, mt5Platform, platform]);
 
     return (
-        <div className='lg:w-[45vw] lg:min-w-[51.2rem] lg:max-w-[60rem] w-full min-w-full h-auto'>
+        <div className='lg:w-[45vw] lg:min-w-[512px] lg:max-w-[600px] w-full min-w-full h-auto'>
             <div className='flex flex-col p-1200 gap-800 border-b-100 border-system-light-secondary-background'>
                 <div className='flex items-center justify-between w-full'>
                     <div className='flex items-center'>
@@ -111,7 +111,7 @@ const MT5TradeScreen = ({ account }: MT5TradeScreenProps) => {
                         />
                     )}
                 </div>
-                <div className='grid grid-cols-[2.5rem_auto]'>
+                <div className='flex gap-400'>
                     <ImportantIcon />
                     <Text size='2xs'>{serviceMaintenanceMessages[(platform || mt5Platform) as TPlatforms.All]}</Text>
                 </div>

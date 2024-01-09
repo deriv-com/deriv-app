@@ -26,14 +26,14 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ className, label, 
                 {label}
             </Text>
             <div className='flex items-center gap-x-400'>
-                <Text bold size='sm'>
+                <Text bold={variant !== 'info'} size='sm'>
                     {value}
                 </Text>
                 {variant === 'clipboard' && <Clipboard textCopy={value} />}
                 {variant === 'password' && (
                     <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>
                         <div ref={hoverRef}>
-                            <Button colorStyle='prominent' size='sm'>
+                            <Button colorStyle='white' size='sm' variant='tertiary'>
                                 <EditIcon className='cursor-pointer' />
                             </Button>
                         </div>

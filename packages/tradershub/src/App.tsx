@@ -9,13 +9,13 @@ import './index.scss';
 const App = () => (
     <APIProvider standalone>
         <BreakpointProvider>
-            <Provider.ModalProvider>
-                <Provider.CFDProvider>
+            <Provider.CFDProvider>
+                <Provider.ModalProvider>
                     <ContentSwitcher>
                         <AppContent />
                     </ContentSwitcher>
-                </Provider.CFDProvider>
-            </Provider.ModalProvider>
+                </Provider.ModalProvider>
+            </Provider.CFDProvider>
         </BreakpointProvider>
     </APIProvider>
 );

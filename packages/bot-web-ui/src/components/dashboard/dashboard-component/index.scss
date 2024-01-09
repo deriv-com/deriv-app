@@ -220,8 +220,6 @@
 
 .tab {
     &__dashboard {
-        --header-height: 7.2rem;
-
         display: flex;
         width: 100%;
 
@@ -234,10 +232,20 @@
         }
         &__header {
             padding: 1.6rem;
-            height: var(--header-height);
-
+            margin-top: 4.8rem;
+            &--listed {
+                margin-top: 0.6rem;
+            }
+            @include mobile {
+                height: auto;
+                margin-top: 0;
+            }
             .title {
                 text-align: center;
+                height: 7.2;
+                @include mobile {
+                    height: auto;
+                }
             }
             .subtitle {
                 text-align: center;
@@ -498,6 +506,9 @@
                     word-wrap: break-word;
                     text-align: center;
                     height: 4.2rem;
+                    @include mobile {
+                        height: auto;
+                    }
                 }
 
                 &--minimized {
@@ -507,6 +518,9 @@
                         width: 8rem;
                         text-align: center;
                     }
+                }
+                &:nth-last-child(2) {
+                    padding-right: 0;
                 }
             }
 

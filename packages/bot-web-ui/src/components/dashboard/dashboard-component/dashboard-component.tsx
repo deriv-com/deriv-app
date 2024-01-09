@@ -55,13 +55,17 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                         setActiveTabTutorial={setActiveTabTutorial}
                     />
                     <div className='quick-panel'>
-                        <div className='tab__dashboard__header'>
+                        <div
+                            className={classNames('tab__dashboard__header', {
+                                'tab__dashboard__header--listed': !is_mobile && has_dashboard_strategies,
+                            })}
+                        >
                             {!has_dashboard_strategies && (
                                 <Text
                                     className='title'
                                     as='h2'
                                     color='prominent'
-                                    size={is_mobile ? 's' : 'm'}
+                                    size={is_mobile ? 's' : 'sm'}
                                     line_height='xxl'
                                     weight='bold'
                                 >
@@ -72,7 +76,7 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                                 as='p'
                                 color='prominent'
                                 line_height='s'
-                                size={is_mobile ? 'xxs' : 'xs'}
+                                size={is_mobile ? 'xxs' : 's'}
                                 className={classNames('subtitle', { 'subtitle__has-list': has_dashboard_strategies })}
                             >
                                 {localize(

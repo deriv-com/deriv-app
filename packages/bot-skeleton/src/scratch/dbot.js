@@ -158,7 +158,7 @@ class DBot {
                 const { save_modal } = DBotStore.instance;
 
                 save_modal.updateBotName(file_name);
-                this.workspace.cleanUp();
+                this.workspace.cleanUp(0, is_mobile ? 60 : 56);
                 this.workspace.clearUndo();
 
                 window.dispatchEvent(new Event('resize'));

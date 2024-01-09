@@ -110,7 +110,7 @@ Blockly.WorkspaceSvg.prototype.addBlockNode = function (block_node) {
  * root-blocks are sorted in columns first, then all other blocks are positioned below
  * the lowest hanging root-block.
  */
-Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 54, blocks_to_clean = []) {
+Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_to_clean = []) {
     this.setResizesEnabled(false);
     Blockly.Events.setGroup(Blockly.Events.getGroup() || true);
 

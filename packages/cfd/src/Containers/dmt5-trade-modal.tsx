@@ -103,9 +103,9 @@ const DMT5TradeModal = observer(
                 return getPlatformMt5DownloadLink('huawei');
             }
         };
-        const deepLink = `metatrader5://account?server=${
-            (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
-        }&login=${(mt5_trade_account as TTradingPlatformAccounts)?.display_login}}`;
+        const deepLink = `metatrader5://account?login=${
+            (mt5_trade_account as TTradingPlatformAccounts)?.display_login
+        }&server=${(mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment}`;
 
         const mobileWebtraderURL = React.useCallback(async (): Promise<string | undefined> => {
             try {

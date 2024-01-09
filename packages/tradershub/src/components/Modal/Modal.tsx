@@ -34,7 +34,7 @@ type TModal = {
  * @property {string} [className] - Optional CSS class name
  */
 export type TModalComponents = {
-    children: ReactNode;
+    children?: ReactNode;
     className?: string;
 };
 

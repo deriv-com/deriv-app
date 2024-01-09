@@ -155,12 +155,13 @@ const IdvDocumentSubmit = observer(
             };
 
             const idv_update_response = await WS.send(submit_data);
+
             if (idv_update_response?.error) {
                 const response_error =
                     idv_update_response.error?.code === API_ERROR_CODES.CLAIMED_DOCUMENT
                         ? CLAIMED_DOCUMENT_ERROR_MESSAGE
                         : idv_update_response.error?.message ?? GENERIC_ERROR_MESSAGE;
-                setStatus({ error_msg: response_error });
+                setStatus({ ...status, error_message: response_error });
                 setSubmitting(false);
                 return;
             }

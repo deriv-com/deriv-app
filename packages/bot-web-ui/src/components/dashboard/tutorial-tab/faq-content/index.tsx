@@ -99,11 +99,9 @@ const FAQContent = ({ faq_list }: TFAQContent) => {
                 <div className='faq__wrapper' ref={faq_wrapper_element}>
                     {faq_list?.length > 0 && (
                         <>
-                            {active_tab_tutorials === 2 && (
-                                <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
-                                    <Localize i18n_default_text='FAQ' />
-                                </Text>
-                            )}
+                            <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
+                                <Localize i18n_default_text='FAQ' />
+                            </Text>
                             <div
                                 data-testid='id-accordion-test'
                                 onClick={handleAccordionClick}

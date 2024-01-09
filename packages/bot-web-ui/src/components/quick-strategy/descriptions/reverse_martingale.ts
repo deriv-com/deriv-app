@@ -22,7 +22,7 @@ export const REVERSE_MARTINGALE: TDescriptionItem[] = [
     },
     {
         type: 'subtitle',
-        content: [localize('Key Parameters')],
+        content: [localize('Key parameters')],
     },
     {
         type: 'text',
@@ -100,13 +100,13 @@ export const REVERSE_MARTINGALE: TDescriptionItem[] = [
     },
     {
         type: 'subtitle',
-        content: [localize('Profit and Loss Thresholds')],
+        content: [localize('Profit and loss thresholds')],
     },
     {
         type: 'text',
         content: [
             localize(
-                'Deriv Bot allows setting profit and loss thresholds to manage risk. A profit threshold will automatically stop trading after reaching a preset amount to lock your profits. A loss threshold will stop trading after accumulating a preset loss amount. These thresholds secure profits and limit losses as part of your risk management. For example, with a 100 USD profit threshold, the bot will stop after exceeding 100 USD in total profit.'
+                'With Deriv Bot, traders can set the profit and loss thresholds to secure potential profits and limit potential losses. This means that the trading bot will automatically stop when either the profit or loss threshold is reached. This is a form of risk management that can potentially boost successful trades whilst limiting the impact of loss. For example, if a trader sets the profit threshold at 100 USD and the strategy exceeds 100 USD of profit from all trades, then the bot will stop running.'
             ),
         ],
     },

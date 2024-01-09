@@ -19,7 +19,7 @@ export const REVERSE_D_ALEMBERT: TDescriptionItem[] = [
     },
     {
         type: 'subtitle',
-        content: [localize('Key Parameters')],
+        content: [localize('Key parameters')],
     },
     {
         type: 'text',
@@ -81,7 +81,7 @@ export const REVERSE_D_ALEMBERT: TDescriptionItem[] = [
     },
     {
         type: 'subtitle',
-        content: [localize('Profit and Loss Thresholds')],
+        content: [localize('Profit and loss thresholds')],
     },
     {
         type: 'text',

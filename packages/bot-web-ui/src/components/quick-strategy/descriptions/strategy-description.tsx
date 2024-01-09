@@ -30,16 +30,18 @@ const StrategyDescription = ({ item, font_size }: TStrategyDescription) => {
                 </>
             );
         }
-        case 'media':
+        case 'media': {
+            const class_names = classNames(`qs__description__image ${class_name}`);
             return (
                 <>
                     {
                         <div>
-                            <img className='qs__description__image' src={item.src} alt={item.alt} />
+                            <img className={class_names} src={item.src} alt={item.alt} />
                         </div>
                     }
                 </>
             );
+        }
         default:
             return null;
     }

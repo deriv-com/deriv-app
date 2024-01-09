@@ -19,7 +19,7 @@ export const D_ALEMBERT: TDescriptionItem[] = [
     },
     {
         type: 'subtitle',
-        content: [localize('Key Parameters')],
+        content: [localize('Key parameters')],
     },
     {
         type: 'text',
@@ -29,7 +29,7 @@ export const D_ALEMBERT: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                '<strong>Initial stake:</strong> The amount you pay to enter a trade. In this example, we will use 1 USD.'
+                '<strong>Initial stake:</strong> The amount that you are willing to place as a stake to enter a trade. This is the starting point for any changes in stake depending on the dynamic of the strategy being used.'
             ),
         ],
     },
@@ -78,25 +78,25 @@ export const D_ALEMBERT: TDescriptionItem[] = [
                 '4. If the second trade results in a loss, the Deriv Bot will automatically increase your stake for the next trade by 2 USD. Deriv Bot will continue to add 2 USD to the previous round’s stake after every losing trade. See A2.'
             ),
             localize(
-                '5. If the next trades are profitable, the stake for the following trade will be reduced by 2 USD.This can be shown above where the stake of 3 USD is reduced to 1 USD. See A3.'
+                '5. If the next trades are profitable, the stake for the following trade will be reduced by 2 USD. This can be shown above where the stake of 3 USD is reduced to 1 USD. See A3.'
             ),
         ],
     },
     {
         type: 'subtitle',
-        content: [localize('Profit and Loss Thresholds')],
+        content: [localize('Profit and loss thresholds')],
     },
     {
         type: 'text',
         content: [
             localize(
-                "With Deriv Bot, traders can set the profit and loss thresholds to secure potential profits and limit potential losses. This means that the trading bot will automatically stop when either the profit or loss thresholds are reached. It's a form of risk management that can potentially enhance returns.For example, if a trader sets the profit threshold at 100 USD and the strategy exceeds 100 USD of profit from all trades, then the bot will stop running."
+                "With Deriv Bot, traders can set the profit and loss thresholds to secure potential profits and limit potential losses. This means that the trading bot will automatically stop when either the profit or loss thresholds are reached. It's a form of risk management that can potentially enhance returns. For example, if a trader sets the profit threshold at 100 USD and the strategy exceeds 100 USD of profit from all trades, then the bot will stop running."
             ),
         ],
     },
     {
         type: 'subtitle',
-        content: [localize('Calculating your risk')],
+        content: [localize('Estimating the lifespan of your trades')],
     },
     {
         type: 'text',
@@ -107,25 +107,54 @@ export const D_ALEMBERT: TDescriptionItem[] = [
         ],
     },
     {
+        type: 'media',
+        src: getImageLocation('dalembert_formula_1.svg'),
+        alt: localize('D’Alembert formula 1'),
+        className: 'dalembert-formula',
+    },
+    {
         type: 'text',
         content: [
-            localize('B = Loss threshold'),
-            localize('s = initial stake'),
-            localize('R = number of rounds'),
-            localize('f = unit increment'),
+            localize('Where:'),
+            localize('R = is the number of rounds a trader can sustain given a specific loss threshold.'),
+            localize('B = is the loss threshold.'),
+            localize('s = is the initial stake.'),
+            localize('f = is the unit increment.'),
         ],
         className: 'no-margin',
     },
     {
         type: 'text',
         content: [
-            localize('B = s*(R+(((R-1)/2)*R*f))'),
             localize(
-                'For instance, if you have a loss threshold (B) of 100 USD, with an initial stake (s) of 1 USD and 2 units of increment (f), the calculation would be as follows:'
+                'For instance, if a trader has a loss threshold (B) of 100 USD, with an initial stake (s) of 1 USD and 2 units of increment (f), the calculation would be as follows:'
             ),
-            localize('100= 1*(10+(((10-1)/2)10*2))'),
+        ],
+        className: 'top-margin',
+    },
+    {
+        type: 'media',
+        src: getImageLocation('dalembert_formula_2.svg'),
+        alt: localize('D’Alembert formula 2'),
+        className: 'dalembert-formula',
+    },
+    {
+        type: 'text',
+        content: [localize('Number of rounds (R) = 10')],
+    },
+    {
+        type: 'text',
+        content: [
             localize(
-                'This means after 10 rounds of consecutive losses, the trader will lose 100 USD. This reaches the loss threshold of 100 USD, stopping the bot.'
+                'This means after 10 rounds of consecutive losses, this trader will lose 100 USD. This reaches the loss threshold of 100 USD, stopping the bot.'
+            ),
+        ],
+    },
+    {
+        type: 'text',
+        content: [
+            localize(
+                'This formula helps you plan your trades by considering the amount of money you have and your comfort level with risk. It involves determining your loss threshold and the initial stake you want to trade with. Then, you use this formula to calculate the number of rounds you can trade. This process provides insight into stake sizing and expectations.'
             ),
         ],
     },
@@ -137,7 +166,7 @@ export const D_ALEMBERT: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                "The D'Alembert system offers more balanced trading through controlled stake progression. With prudent risk management like stake limits, it can be effectively automated in Deriv Bot. However, traders should thoroughly assess their risk appetite, test strategies on a demo account  to align with their trading style before trading with real money. This allows optimising the approach and striking a balance between potential gains and losses whilst managing risk."
+                "The D'Alembert system offers more balanced trading through controlled stake progression. With prudent risk management like stake limits, it can be effectively automated in Deriv Bot. However, traders should thoroughly assess their risk appetite, test strategies on a demo account to align with their trading style before trading with real money. This allows optimising the approach and striking a balance between potential gains and losses whilst managing risk."
             ),
         ],
     },

@@ -13,7 +13,7 @@ import { TConfigItem, TStrategies, TValidationItem } from './types';
 
 export const FORM_TABS = [
     {
-        label: localize('Trade Parameters'),
+        label: localize('Trade parameters'),
         value: 'TRADE_PARAMETERS',
     },
     {
@@ -42,7 +42,7 @@ const SYMBOL: TConfigItem = {
 
 const LABEL_TRADETYPE: TConfigItem = {
     type: 'label',
-    label: localize('Trade Type'),
+    label: localize('Trade type'),
     description: localize('Your bot will use this trade type for every run'),
 };
 
@@ -54,7 +54,7 @@ const TRADETYPE: TConfigItem = {
 
 const LABEL_PURCHASE_TYPE: TConfigItem = {
     type: 'label',
-    label: localize('Purchase Condition'),
+    label: localize('Purchase condition'),
     description: localize('Your bot uses a single trade type for each run.'),
 };
 
@@ -66,7 +66,7 @@ const PURCHASE_TYPE: TConfigItem = {
 
 const LABEL_STAKE: TConfigItem = {
     type: 'label',
-    label: localize('Initial Stake'),
+    label: localize('Initial stake'),
     description: localize('The amount that you pay to enter a trade.'),
 };
 
@@ -98,7 +98,7 @@ const DURATION: TConfigItem = {
 
 const LABEL_PROFIT: TConfigItem = {
     type: 'label',
-    label: localize('Profit Threshold'),
+    label: localize('Profit threshold'),
     description: localize('The bot will stop trading if your total profit exceeds this amount.'),
 };
 
@@ -110,7 +110,7 @@ const PROFIT: TConfigItem = {
 
 const LABEL_LOSS: TConfigItem = {
     type: 'label',
-    label: localize('Loss Threshold'),
+    label: localize('Loss threshold'),
     description: localize('The bot will stop trading if your total loss exceeds this amount.'),
 };
 

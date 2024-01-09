@@ -1,6 +1,7 @@
 export * from './AccountsList';
 export * from './AppCard';
 export * from './Base';
+export * from './DatePicker';
 export * from './DerivAppsSection';
 export * from './DesktopWalletsList';
 export * from './Dropzone';

@@ -1,7 +1,7 @@
 import React, { ComponentProps, useState } from 'react';
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
-import { ModalStepWrapper } from '../../../../components';
+import { Modal } from '../../../../components';
 import { MT5AccountType } from '../../screens';
 
 type TMarketTypes = ComponentProps<typeof MT5AccountType>['selectedMarketType'];
@@ -11,8 +11,12 @@ const MT5AccountTypeModal = () => {
     const { setCfdState } = Provider.useCFDContext();
 
     return (
-        <ModalStepWrapper
-            renderFooter={() => (
+        <Modal>
+            <Modal.Header title='Select Deriv MT5’s account type' />
+            <Modal.Content>
+                <MT5AccountType onMarketTypeSelect={setSelectedMarketType} selectedMarketType={selectedMarketType} />
+            </Modal.Content>
+            <Modal.Footer>
                 <Button
                     colorStyle='coral'
                     disabled={!selectedMarketType}
@@ -24,11 +28,8 @@ const MT5AccountTypeModal = () => {
                 >
                     Next
                 </Button>
-            )}
-            title='Select Deriv MT5’s account type'
-        >
-            <MT5AccountType onMarketTypeSelect={setSelectedMarketType} selectedMarketType={selectedMarketType} />
-        </ModalStepWrapper>
+            </Modal.Footer>
+        </Modal>
     );
 };
 

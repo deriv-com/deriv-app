@@ -6,7 +6,6 @@ import type { TInitialTransferFormValues } from '../types';
 
 type TReceipt = {
     feeAmount?: string;
-    feePercentage?: number;
     fromAccount: TInitialTransferFormValues['fromAccount'];
     fromAmount: TInitialTransferFormValues['fromAmount'];
     toAccount: TInitialTransferFormValues['toAccount'];
@@ -103,7 +102,6 @@ const TransferProvider: React.FC<React.PropsWithChildren<TProps>> = ({ accounts:
 
                 setReceipt({
                     feeAmount,
-                    feePercentage,
                     fromAccount,
                     fromAmount,
                     toAccount,

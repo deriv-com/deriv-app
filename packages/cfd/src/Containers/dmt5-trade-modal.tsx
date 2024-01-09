@@ -49,7 +49,7 @@ const DMT5TradeModal = observer(
         const {
             account_status: { authentication },
         } = client;
-
+        const [webTraderURL, setWebTraderURL] = React.useState<string | undefined>('');
         const getCompanyShortcode = () => {
             if (
                 (mt5_trade_account.account_type === CATEGORY.DEMO &&
@@ -107,26 +107,34 @@ const DMT5TradeModal = observer(
             (mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment
         }&login=${(mt5_trade_account as TTradingPlatformAccounts)?.display_login}}`;
 
-        const mobileWebtraderURL = async (): Promise<string | undefined> => {
+        const mobileWebtraderURL = React.useCallback(async (): Promise<string | undefined> => {
             try {
                 const response = await fetch(deepLink);
 
                 if (response.ok) {
+                    // Deep link is recognized, navigate to it
                     return deepLink;
                 }
-                throw new Error('Fetch failed');
+                // Deep link is not recognized, redirect to Play Store
+                return platformUrl();
             } catch (error) {
+                // Fetch failed, redirect to Play Store
                 return platformUrl();
             }
-        };
-        (async () => {
-            try {
-                await mobileWebtraderURL();
-                return deepLink;
-            } catch (error) {
-                return platformUrl();
-            }
-        })();
+        }, [deepLink]);
+
+        React.useEffect(() => {
+            const fetchWebTraderURL = async () => {
+                try {
+                    await mobileWebtraderURL();
+                    setWebTraderURL(deepLink);
+                } catch (error) {
+                    setWebTraderURL(platformUrl());
+                }
+            };
+
+            fetchWebTraderURL();
+        }, [deepLink, mobileWebtraderURL]);
 
         // Check if the deep link opens successfully (app is installed)
 
@@ -231,9 +239,7 @@ const DMT5TradeModal = observer(
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
                             href={
-                                !is_mobile
-                                    ? (mt5_trade_account.webtrader_url as unknown as string)
-                                    : (mobileWebtraderURL() as unknown as string) ?? ''
+                                !is_mobile ? (mt5_trade_account.webtrader_url as unknown as string) : webTraderURL ?? ''
                             }
                             target='_blank'
                             rel='noopener noreferrer'

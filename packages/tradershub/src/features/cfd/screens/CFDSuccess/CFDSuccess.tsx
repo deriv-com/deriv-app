@@ -25,12 +25,12 @@ type TCFDSuccess = {
       }
 );
 
-type PlatformDetails = {
-    all?: { icon: ReactNode };
-    financial?: { icon: ReactNode };
-    icon?: ReactNode;
-    synthetic?: { icon: ReactNode };
-};
+type PlatformDetails = Partial<{
+    all: { icon: ReactNode };
+    financial: { icon: ReactNode };
+    icon: ReactNode;
+    synthetic: { icon: ReactNode };
+}>;
 
 const marketTypeToDetailsMapper: Record<TPlatforms.All, PlatformDetails> = {
     ctrader: {

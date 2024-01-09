@@ -11,7 +11,7 @@ import {
 } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, useBreakpoint } from '@deriv/quill-design';
-import { ActionScreen, ButtonGroup, Dialog, ModalStepWrapper, SentEmailContent } from '../../../../components';
+import { ActionScreen, ButtonGroup, Dialog, Modal, SentEmailContent } from '../../../../components';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
@@ -72,7 +72,7 @@ const MT5PasswordModal = ({ marketType, platform }: TMT5PasswordModalProps) => {
             });
         }
 
-        const categoryAccountType = activeTrading?.is_virtual ? 'demo' : accountType;
+        const categoryAccountType = activeTrading?.is_virtual ? Category.DEMO : accountType;
 
         mutate({
             payload: {
@@ -84,15 +84,17 @@ const MT5PasswordModal = ({ marketType, platform }: TMT5PasswordModalProps) => {
                 email: settings?.email ?? '',
                 leverage: availableMT5Accounts?.find(acc => acc.market_type === marketType)?.leverage ?? 500,
                 mainPassword: password,
-                ...(marketType === MarketType.FINANCIAL && { mt5_account_type: 'financial' }),
+                ...(marketType === MarketType.FINANCIAL && { mt5_account_type: MarketType.FINANCIAL }),
                 ...(selectedJurisdiction &&
                     (selectedJurisdiction !== Jurisdiction.LABUAN
                         ? {
                               account_type: categoryAccountType,
-                              ...(selectedJurisdiction === 'financial' && { mt5_account_type: 'financial' }),
+                              ...(selectedJurisdiction === MarketType.FINANCIAL && {
+                                  mt5_account_type: MarketType.FINANCIAL,
+                              }),
                           }
                         : {
-                              account_type: 'financial',
+                              account_type: MarketType.FINANCIAL,
                               mt5_account_type: 'financial_stp',
                           })),
                 ...(marketType === MarketType.ALL && { sub_account_category: 'swap_free' }),
@@ -165,9 +167,12 @@ const MT5PasswordModal = ({ marketType, platform }: TMT5PasswordModalProps) => {
                         fullWidth
                         onClick={() => {
                             show(
-                                <ModalStepWrapper title="We've sent you an email">
-                                    <SentEmailContent platform={platform} />
-                                </ModalStepWrapper>
+                                <Modal>
+                                    <Modal.Header title="We've sent you an email" />
+                                    <Modal.Content>
+                                        <SentEmailContent platform={platform} />
+                                    </Modal.Content>
+                                </Modal>
                             );
                         }}
                         size='lg'
@@ -232,7 +237,7 @@ const MT5PasswordModal = ({ marketType, platform }: TMT5PasswordModalProps) => {
                     marketType={marketType}
                     platform='mt5'
                     renderButtons={renderSuccessButton}
-                    title={`Your ${marketTypeTitle} ${isDemo ? ' demo' : landingCompanyName} account is ready`}
+                    title={`Your ${marketTypeTitle} ${isDemo ? Category.DEMO : landingCompanyName} account is ready`}
                 />
             );
         }
@@ -292,10 +297,14 @@ const MT5PasswordModal = ({ marketType, platform }: TMT5PasswordModalProps) => {
 
     if (isMobile) {
         return (
-            <ModalStepWrapper renderFooter={renderFooter} title={renderTitle()}>
-                {successComponent}
-                {passwordComponent}
-            </ModalStepWrapper>
+            <Modal>
+                <Modal.Header title={renderTitle()} />
+                <Modal.Content>
+                    {successComponent}
+                    {passwordComponent}
+                </Modal.Content>
+                <Modal.Footer>{renderFooter()}</Modal.Footer>
+            </Modal>
         );
     }
 

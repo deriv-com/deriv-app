@@ -7,7 +7,6 @@ export * from './DemoRealSwitcher';
 export * from './Dialog';
 export * from './GetADerivAccountBanner';
 export * from './Modal';
-export * from './ModalStepWrapper';
 export * from './OptionsAndMultipliersSection';
 export * from './SentEmailContent';
 export * from './StaticLink';

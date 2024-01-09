@@ -3,7 +3,7 @@ import { useActiveTradingAccount, useAuthorize, useDxtradeAccountsList, useInval
 import { Text } from '@deriv/quill-design';
 import { THooks } from '../../../../types';
 import { AddedDxtradeAccountsList, AvailableDxtradeAccountsList } from '../../flows/OtherCFDs/Dxtrade';
-import { TradingAppCardLoader } from '../TradingAppCardLoader';
+import { TradingAppCardLoader } from '../../../../components/Loaders/TradingAppCardLoader';
 
 const OtherCFDPlatformsList = () => {
     const { isFetching } = useAuthorize();

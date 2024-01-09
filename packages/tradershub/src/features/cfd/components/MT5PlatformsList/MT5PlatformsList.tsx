@@ -1,15 +1,15 @@
-import React, { FC, Fragment, useEffect, useMemo } from 'react';
+import React, { Fragment, useEffect, useMemo } from 'react';
 import { useActiveTradingAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
+import { Text } from '@deriv/quill-design';
 import { THooks } from '../../../../types';
 import { AddedMT5AccountsList, AvailableMT5AccountsList } from '../../flows/MT5';
 import { GetMoreMT5Accounts } from '../../screens';
-import { Text } from '@deriv/quill-design';
 
-type TProps = {
+type TMT5PlatformsListProps = {
     onMT5PlatformListLoaded?: (value: boolean) => void;
 };
 
-const MT5PlatformsList: FC<TProps> = ({ onMT5PlatformListLoaded }) => {
+const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) => {
     const { isFetching } = useAuthorize();
     const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts();
     const { data: activeTradingAccount } = useActiveTradingAccount();
@@ -32,10 +32,8 @@ const MT5PlatformsList: FC<TProps> = ({ onMT5PlatformListLoaded }) => {
 
     return (
         <Fragment>
-            <section>
-                <Text bold>Deriv MT5</Text>
-            </section>
-            <div className='grid gap-x-2400 gap-y-800 grid-cols-3 pb-6'>
+            <Text bold>Deriv MT5</Text>
+            <div className='grid grid-cols-3 pb-6 gap-x-2400 gap-y-800'>
                 {isFetchedAfterMount &&
                     data?.map((account, index) => {
                         if (account.is_added)

@@ -8,6 +8,7 @@ import {
     TotalAssets,
 } from '../../components';
 import { CTraderList } from '../../features/cfd/components/CTraderList';
+import { MT5PlatformsList } from '../../features/cfd/components/MT5PlatformsList';
 import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
 
 const TradersHubRoute = () => {
@@ -59,7 +60,7 @@ const TradersHubRoute = () => {
                     </Text>
                 </div>
                 <div className='flex flex-col gap-y-1200'>
-                    <div>
+                    {/* <div>
                         <Text bold className='pb-800' size='md'>
                             Deriv MT5
                         </Text>
@@ -68,7 +69,8 @@ const TradersHubRoute = () => {
                             <div className='h-4000 rounded-300 bg-solid-slate-100' />
                             <div className='h-4000 rounded-300 bg-solid-slate-100' />
                         </div>
-                    </div>
+                    </div> */}
+                    <MT5PlatformsList />
                     <div className='grid grid-cols-1 sm:grid-cols-3 gap-1200'>
                         <CTraderList />
                     </div>

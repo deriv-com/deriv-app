@@ -33,7 +33,7 @@ const useAdvertiserStats = (advertiserId?: string) => {
             sellOrdersCount: Number(data?.sell_orders_count) || 0,
 
             /** The total number of orders completed within the past 30 days*/
-            totalOrders: Number(data?.buy_orders_count) + Number(data?.sell_orders_count),
+            totalOrders: Number(data?.buy_orders_count) + Number(data?.sell_orders_count) || 0,
 
             /** The total number of orders completed since registration */
             totalOrdersLifetime: Number(data?.total_orders_count) || 0,
@@ -42,7 +42,7 @@ const useAdvertiserStats = (advertiserId?: string) => {
             tradePartners: Number(data?.partner_count) || 0,
 
             /** The total trade volume within the past 30 days */
-            tradeVolume: Number(data?.buy_orders_amount) + Number(data?.sell_orders_amount),
+            tradeVolume: Number(data?.buy_orders_amount) + Number(data?.sell_orders_amount) || 0,
 
             /** The total trade volume since registration */
             tradeVolumeLifetime: Number(data?.total_turnover) || 0,

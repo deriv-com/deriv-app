@@ -1,36 +1,28 @@
 import React from 'react';
 import { usePrevious } from '@deriv/components';
 import { getDurationPeriod, getDurationUnitText, getEndTime, getPlatformRedirect, isDesktop } from '@deriv/shared';
-import ChartMarker from 'Modules/SmartChart/Components/Markers/marker';
-import DelayedAccuBarriersMarker from 'Modules/SmartChart/Components/Markers/delayed-accu-barriers-marker';
-import allMarkers from 'Modules/SmartChart/Components/all-markers.jsx';
-import ChartMarkerBeta from 'Modules/SmartChartBeta/Components/Markers/marker.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { ChartBottomWidgets, ChartTopWidgets } from './contract-replay-widget';
-import SmartChartSwitcher from '../../Trading/Containers/smart-chart-switcher';
+import ResetContractChartElements from 'Modules/SmartChart/Components/Markers/reset-contract-chart-elements';
+import { SmartChart } from 'Modules/SmartChart';
+import ChartMarker from 'Modules/SmartChart/Components/Markers/marker';
 
 const ReplayChart = observer(
     ({
         is_dark_theme_prop,
         is_accumulator_contract,
+        is_reset_contract,
     }: {
         is_dark_theme_prop?: boolean;
         is_accumulator_contract?: boolean;
+        is_reset_contract?: boolean;
     }) => {
         const trade = useTraderStore();
-        const { contract_replay, client, common, ui } = useStore();
+        const { contract_replay, common, ui } = useStore();
         const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
-        const {
-            accumulator_previous_spot_time,
-            contract_config,
-            marker: accumulators_barriers_marker,
-            is_digit_contract,
-            barriers_array,
-            getContractsArray,
-            markers_array,
-            contract_info,
-        } = contract_store;
+        const { contract_config, is_digit_contract, barriers_array, getContractsArray, markers_array, contract_info } =
+            contract_store;
         const { underlying: symbol, audit_details } = contract_info;
         const allow_scroll_to_epoch = chart_state === 'READY' || chart_state === 'SCROLL_TO_LEFT';
         const { app_routing_history, current_language, is_socket_opened } = common;
@@ -57,11 +49,7 @@ const ReplayChart = observer(
         const scroll_to_epoch = allow_scroll_to_epoch && contract_config ? contract_config.scroll_to_epoch : undefined;
         const all_ticks = audit_details ? audit_details.all_ticks : [];
         const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
-        const { is_beta_chart } = client;
 
-        const accu_barriers_marker_component = is_beta_chart
-            ? undefined
-            : allMarkers[accumulators_barriers_marker?.type as keyof typeof allMarkers];
         const isBottomWidgetVisible = () => {
             return isDesktop() && is_digit_contract;
         };
@@ -73,10 +61,8 @@ const ReplayChart = observer(
             };
 
             if (is_mobile) {
-                if (is_beta_chart) {
-                    chart_margin.top = 48;
-                }
                 chart_margin.bottom = 48;
+                chart_margin.top = 48;
             }
 
             return chart_margin;
@@ -86,9 +72,8 @@ const ReplayChart = observer(
         const has_ended = !!getEndTime(contract_info);
 
         return (
-            <SmartChartSwitcher
+            <SmartChart
                 id='replay'
-                is_beta={is_beta_chart}
                 barriers={barriers_array}
                 bottomWidgets={isBottomWidgetVisible() ? ChartBottomWidgets : undefined}
                 chartControlsWidgets={null}
@@ -131,39 +116,13 @@ const ReplayChart = observer(
                 isLive={!has_ended}
                 startWithDataFitMode={true}
             >
-                {is_beta_chart &&
-                    markers_array.map(({ content_config, marker_config, react_key }) => (
-                        <ChartMarkerBeta
-                            key={react_key}
-                            marker_config={marker_config}
-                            marker_content_props={content_config}
-                            is_bottom_widget_visible={isBottomWidgetVisible()}
-                        />
-                    ))}
-                {!is_beta_chart &&
-                    markers_array.map(({ content_config, marker_config, react_key }) => (
-                        <ChartMarker
-                            key={react_key}
-                            marker_config={marker_config}
-                            marker_content_props={content_config}
-                            is_bottom_widget_visible={isBottomWidgetVisible()}
-                        />
-                    ))}
-                {!is_beta_chart && is_accumulator_contract && !!markers_array && (
-                    <DelayedAccuBarriersMarker
-                        marker_component={
-                            accu_barriers_marker_component as React.ComponentProps<
-                                typeof DelayedAccuBarriersMarker
-                            >['marker_component']
-                        }
-                        is_dark_theme={is_dark_theme}
-                        granularity={granularity}
-                        is_in_contract_details
-                        previous_spot_time={accumulator_previous_spot_time}
-                        {...accumulators_barriers_marker}
-                    />
+                {markers_array.map(({ content_config, marker_config, react_key }) => (
+                    <ChartMarker key={react_key} marker_config={marker_config} marker_content_props={content_config} />
+                ))}
+                {is_reset_contract && contract_info?.reset_time && (
+                    <ResetContractChartElements contract_info={contract_info} />
                 )}
-            </SmartChartSwitcher>
+            </SmartChart>
         );
     }
 );

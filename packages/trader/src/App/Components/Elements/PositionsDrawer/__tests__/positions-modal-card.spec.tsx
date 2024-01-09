@@ -3,29 +3,38 @@ import moment from 'moment';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
 import { TCoreStores } from '@deriv/stores/types';
-import { mockContractInfo, TRADE_TYPES } from '@deriv/shared';
+import { getCardLabels, mockContractInfo, TRADE_TYPES } from '@deriv/shared';
 import { ActiveSymbols } from '@deriv/api-types';
 import PositionsModalCard from '../positions-modal-card';
 import TraderProviders from '../../../../../trader-providers';
 
+const closed_label = 'Closed';
+const currency_badge = 'CurrencyBadge';
+const positions_card_loader = 'Positions Card Loader';
+const progress_slider_mobile = 'ProgressSliderMobile';
+const symbol_display_name = 'Symbol Display Name';
+const underlying = 'test_underlying';
+const usd = 'USD';
+
 const default_mock_props: React.ComponentProps<typeof PositionsModalCard> = {
     className: 'test_className',
     contract_info: mockContractInfo({
-        contract_type: TRADE_TYPES.VANILLA.CALL,
-        underlying: '',
-        contract_id: 123386875,
-        currency: 'USD',
-        buy_price: 2671,
-        bid_price: 2517,
-        entry_spot: 2666.0,
         barrier: '2650.0',
-        is_sold: 0,
+        bid_price: 10,
+        buy_price: 7,
+        contract_id: 123386875,
+        contract_type: TRADE_TYPES.VANILLA.CALL,
+        currency: usd,
         date_start: 123532989,
         date_expiry: 626512765,
-        tick_count: 15,
+        entry_spot: 2666.0,
+        entry_spot_display_value: '2666.0',
+        is_sold: 0,
+        profit: 3,
+        underlying: '',
     }),
     contract_update: {},
-    currency: 'USD',
+    currency: usd,
     current_tick: 6,
     id: 123386875,
     indicative: 23.45,
@@ -33,7 +42,7 @@ const default_mock_props: React.ComponentProps<typeof PositionsModalCard> = {
     is_sell_requested: false,
     is_unsupported: true,
     onClickSell: jest.fn(),
-    profit_loss: 35.6786,
+    profit_loss: 3,
     onClickCancel: jest.fn(),
     togglePositions: jest.fn(),
     toggleUnsupportedContractModal: jest.fn(),
@@ -61,8 +70,6 @@ const default_mock_store = {
         getContractById: jest.fn(),
     },
 };
-const positions_card_loader = 'Positions Card Loader';
-const symbol_display_name = 'Symbol Display Name';
 
 jest.mock('App/Components/Elements/ContentLoader', () => ({
     ...jest.requireActual('App/Components/Elements/ContentLoader'),
@@ -70,8 +77,6 @@ jest.mock('App/Components/Elements/ContentLoader', () => ({
 }));
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
-    getEndTime: jest.fn(() => false),
-    getTotalProfit: jest.fn(() => 35.6786),
     getSymbolDisplayName: jest.fn(() => symbol_display_name),
 }));
 jest.mock('App/Components/Routes', () => ({
@@ -80,11 +85,23 @@ jest.mock('App/Components/Routes', () => ({
 }));
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    CurrencyBadge: jest.fn(() => <div>CurrencyBadge</div>),
-    ProgressSliderMobile: jest.fn(() => <div>ProgressSliderMobile</div>),
+    CurrencyBadge: jest.fn(() => <div>{currency_badge}</div>),
+    ProgressSliderMobile: jest.fn(() => <div>{progress_slider_mobile}</div>),
 }));
 
 describe('<PositionsModalCard />', () => {
+    const {
+        BUY_PRICE,
+        CONTRACT_VALUE,
+        ENTRY_SPOT,
+        INDICATIVE_PRICE,
+        POTENTIAL_PAYOUT: PAYOUT_LIMIT,
+        POTENTIAL_PROFIT_LOSS,
+        STRIKE,
+        TAKE_PROFIT,
+        TOTAL_PROFIT_LOSS,
+    } = getCardLabels();
+
     const mockPositionsModalCard = (
         mocked_store: TCoreStores,
         mocked_params: React.ComponentProps<typeof PositionsModalCard>
@@ -102,90 +119,158 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(positions_card_loader)).toBeInTheDocument();
     });
     it('should render loader if underlying in contract_info is falsy and contract is supported', () => {
-        default_mock_props.is_unsupported = false;
-        render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
+        render(mockPositionsModalCard(mockStore(default_mock_store), { ...default_mock_props, is_unsupported: false }));
 
         expect(screen.getByText(positions_card_loader)).toBeInTheDocument();
     });
     it('should render specific contract card for Vanillas', () => {
-        default_mock_props.contract_info.underlying = 'test_underlying';
-        render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
+        render(
+            mockPositionsModalCard(mockStore(default_mock_store), {
+                ...default_mock_props,
+                contract_info: { ...default_mock_props.contract_info, underlying },
+            })
+        );
 
         expect(screen.queryByText(positions_card_loader)).not.toBeInTheDocument();
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
-        expect(screen.getByText('CurrencyBadge')).toBeInTheDocument();
-        expect(screen.getByText(/Buy price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,671.00/i)).toBeInTheDocument();
-        expect(screen.getByText(/Contract value:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,517.00/i)).toBeInTheDocument();
-        expect(screen.getByText(/Entry spot:/i)).toBeInTheDocument();
+        expect(screen.getByText(currency_badge)).toBeInTheDocument();
+        expect(screen.getByText(BUY_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(/7.00/i)).toBeInTheDocument();
+        expect(screen.getByText(CONTRACT_VALUE)).toBeInTheDocument();
+        expect(screen.getByText(/10.00/i)).toBeInTheDocument();
+        expect(screen.getByText(ENTRY_SPOT)).toBeInTheDocument();
         expect(screen.getByText(/2,666/i)).toBeInTheDocument();
-        expect(screen.getByText(/Strike:/i)).toBeInTheDocument();
+        expect(screen.getByText(STRIKE)).toBeInTheDocument();
         expect(screen.getByText(/2,650.0/i)).toBeInTheDocument();
-        expect(screen.getByText('ProgressSliderMobile')).toBeInTheDocument();
-        expect(screen.getByText(/Total profit\/loss:/i)).toBeInTheDocument();
-        expect(screen.getByText(/35.68/i)).toBeInTheDocument();
+        expect(screen.queryByText(closed_label)).not.toBeInTheDocument();
+        expect(screen.getByText(progress_slider_mobile)).toBeInTheDocument();
+        expect(screen.getByText(TOTAL_PROFIT_LOSS)).toBeInTheDocument();
+        expect(screen.getByText(/3.00/i)).toBeInTheDocument();
+    });
+    it('should render a specific closed contract card for Vanillas', () => {
+        render(
+            mockPositionsModalCard(mockStore(default_mock_store), {
+                ...default_mock_props,
+                contract_info: {
+                    ...default_mock_props.contract_info,
+                    bid_price: 10,
+                    buy_price: 7,
+                    is_sold: 1,
+                    profit: 2,
+                    sell_price: 8,
+                    underlying,
+                },
+            })
+        );
+
+        expect(screen.queryByText(positions_card_loader)).not.toBeInTheDocument();
+        expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
+        expect(screen.getByText(currency_badge)).toBeInTheDocument();
+        expect(screen.getByText(BUY_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(/7.00/i)).toBeInTheDocument();
+        expect(screen.getByText(CONTRACT_VALUE)).toBeInTheDocument();
+        expect(screen.getByText(/8.00/i)).toBeInTheDocument();
+        expect(screen.getByText(ENTRY_SPOT)).toBeInTheDocument();
+        expect(screen.getByText(/2,666/i)).toBeInTheDocument();
+        expect(screen.getByText(STRIKE)).toBeInTheDocument();
+        expect(screen.getByText(/2,650.0/i)).toBeInTheDocument();
+        expect(screen.queryByText(progress_slider_mobile)).not.toBeInTheDocument();
+        expect(screen.getByText(closed_label)).toBeInTheDocument();
+        expect(screen.getByText(TOTAL_PROFIT_LOSS)).toBeInTheDocument();
+        expect(screen.getByText(/2.00/i)).toBeInTheDocument();
     });
     it('should render specific contract card for Turbos', () => {
-        default_mock_props.contract_info.contract_type = TRADE_TYPES.TURBOS.LONG;
-        render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
+        render(
+            mockPositionsModalCard(mockStore(default_mock_store), {
+                ...default_mock_props,
+                contract_info: {
+                    ...default_mock_props.contract_info,
+                    contract_type: TRADE_TYPES.TURBOS.LONG,
+                    underlying,
+                },
+            })
+        );
 
         expect(screen.queryByText(positions_card_loader)).not.toBeInTheDocument();
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
         expect(screen.getByText('Long')).toBeInTheDocument();
-        expect(screen.getByText(/USD/i)).toBeInTheDocument();
-        expect(screen.getByText(/Buy price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,671.00/i)).toBeInTheDocument();
-        expect(screen.getByText(/Contract value:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,517.00/i)).toBeInTheDocument();
-        expect(screen.getByText(/Entry spot:/i)).toBeInTheDocument();
-        expect(screen.getByText(/Take profit:/i)).toBeInTheDocument();
-        expect(screen.getByText('0')).toBeInTheDocument();
+        expect(screen.getByText(usd)).toBeInTheDocument();
+        expect(screen.getByText(BUY_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(/10.00/i)).toBeInTheDocument();
+        expect(screen.getByText(CONTRACT_VALUE)).toBeInTheDocument();
+        expect(screen.getByText(/7.00/i)).toBeInTheDocument();
+        expect(screen.getByText(ENTRY_SPOT)).toBeInTheDocument();
+        expect(screen.getByText(TAKE_PROFIT)).toBeInTheDocument();
+        expect(screen.getByText('-')).toBeInTheDocument();
         expect(screen.getByText(/Barrier:/i)).toBeInTheDocument();
         expect(screen.getByText(/2,650.0/i)).toBeInTheDocument();
     });
     it('should render contract card for Rise/Fall', () => {
-        default_mock_props.contract_info.contract_type = TRADE_TYPES.RISE_FALL;
-        render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
+        render(
+            mockPositionsModalCard(mockStore(default_mock_store), {
+                ...default_mock_props,
+                contract_info: {
+                    ...default_mock_props.contract_info,
+                    contract_type: TRADE_TYPES.RISE_FALL,
+                    underlying,
+                },
+            })
+        );
 
         expect(screen.queryByText(positions_card_loader)).not.toBeInTheDocument();
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
-        expect(screen.getByText(/USD/i)).toBeInTheDocument();
-        expect(screen.getByText(/Potential profit\/loss:/i)).toBeInTheDocument();
-        expect(screen.getByText(/Indicative price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,517.00/i)).toBeInTheDocument();
-        expect(screen.getByText(/Buy price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,671.00/i)).toBeInTheDocument();
-        expect(screen.getByText(/Payout limit:/i)).toBeInTheDocument();
+        expect(screen.getByText(usd)).toBeInTheDocument();
+        expect(screen.getByText(POTENTIAL_PROFIT_LOSS)).toBeInTheDocument();
+        expect(screen.getByText(INDICATIVE_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(/7.00/i)).toBeInTheDocument();
+        expect(screen.getByText(BUY_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(/10.00/i)).toBeInTheDocument();
+        expect(screen.getByText(PAYOUT_LIMIT)).toBeInTheDocument();
     });
     it('should render the same contract card for Touch/No Touch as for Rise/Fall', () => {
-        default_mock_props.contract_info.contract_type = TRADE_TYPES.TOUCH;
-        render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
+        render(
+            mockPositionsModalCard(mockStore(default_mock_store), {
+                ...default_mock_props,
+                contract_info: {
+                    ...default_mock_props.contract_info,
+                    contract_type: TRADE_TYPES.TOUCH,
+                    underlying,
+                },
+            })
+        );
 
         expect(screen.queryByText(positions_card_loader)).not.toBeInTheDocument();
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
-        expect(screen.getByText(/USD/i)).toBeInTheDocument();
-        expect(screen.getByText(/Potential profit\/loss:/i)).toBeInTheDocument();
-        expect(screen.getByText(/Indicative price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,517.00/i)).toBeInTheDocument();
-        expect(screen.getByText(/Buy price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,671.00/i)).toBeInTheDocument();
-        expect(screen.getByText(/Payout limit:/i)).toBeInTheDocument();
+        expect(screen.getByText(usd)).toBeInTheDocument();
+        expect(screen.getByText(POTENTIAL_PROFIT_LOSS)).toBeInTheDocument();
+        expect(screen.getByText(INDICATIVE_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(/7.00/i)).toBeInTheDocument();
+        expect(screen.getByText(BUY_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(/10.00/i)).toBeInTheDocument();
+        expect(screen.getByText(PAYOUT_LIMIT)).toBeInTheDocument();
     });
     it('should render the contract card for Multipliers', () => {
-        default_mock_props.contract_info.contract_type = TRADE_TYPES.MULTIPLIER;
-        render(mockPositionsModalCard(mockStore(default_mock_store), default_mock_props));
+        render(
+            mockPositionsModalCard(mockStore(default_mock_store), {
+                ...default_mock_props,
+                contract_info: {
+                    ...default_mock_props.contract_info,
+                    contract_type: TRADE_TYPES.MULTIPLIER,
+                    underlying,
+                },
+            })
+        );
 
         expect(screen.queryByText(positions_card_loader)).not.toBeInTheDocument();
         expect(screen.getByText(symbol_display_name)).toBeInTheDocument();
-        expect(screen.getByText(/USD/i)).toBeInTheDocument();
+        expect(screen.getByText(usd)).toBeInTheDocument();
         expect(screen.getByText('Stake:')).toBeInTheDocument();
         expect(screen.getByText(/Current stake:/i)).toBeInTheDocument();
-        expect(screen.getByText(/2,517.00/i)).toBeInTheDocument();
+        expect(screen.getByText(/10.00/i)).toBeInTheDocument();
         expect(screen.getByText(/Deal cancel. fee:/i)).toBeInTheDocument();
-        expect(screen.getByText(/Buy price:/i)).toBeInTheDocument();
-        expect(screen.getByText(/Take profit:/i)).toBeInTheDocument();
+        expect(screen.getByText(BUY_PRICE)).toBeInTheDocument();
+        expect(screen.getByText(TAKE_PROFIT)).toBeInTheDocument();
         expect(screen.getByText(/Stop loss:/i)).toBeInTheDocument();
-        expect(screen.getByText(/Total profit\/loss:/i)).toBeInTheDocument();
+        expect(screen.getByText(TOTAL_PROFIT_LOSS)).toBeInTheDocument();
     });
 });

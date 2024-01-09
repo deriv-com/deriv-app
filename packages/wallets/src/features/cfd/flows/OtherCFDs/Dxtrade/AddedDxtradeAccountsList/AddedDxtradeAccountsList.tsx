@@ -32,11 +32,11 @@ const AddedDxtradeAccountsList: React.FC = () => {
         </div>
     );
 
-    const trailingComponent = () => (
+    const trailingComponent = (loginid?: string) => (
         <div className='wallets-available-derivx__actions'>
             <WalletButton
                 onClick={() => {
-                    history.push('/wallets/cashier/transfer');
+                    history.push(`/wallets/cashier/transfer?to-account=${loginid}`);
                 }}
                 variant='outlined'
             >
@@ -49,10 +49,14 @@ const AddedDxtradeAccountsList: React.FC = () => {
     );
 
     return (
-        <TradingAccountCard leading={leadingComponent} trailing={trailingComponent}>
-            <div className='wallets-available-derivx__details'>
-                {data?.map(account => (
-                    <React.Fragment key={account?.account_id}>
+        <React.Fragment>
+            {data?.map(account => (
+                <TradingAccountCard
+                    key={account?.account_id}
+                    leading={leadingComponent}
+                    trailing={() => trailingComponent(account.account_id)}
+                >
+                    <div className='wallets-available-derivx__details'>
                         <WalletText size='sm'>{PlatformDetails.dxtrade.title}</WalletText>
                         <WalletText size='sm' weight='bold'>
                             {account?.display_balance}
@@ -60,10 +64,10 @@ const AddedDxtradeAccountsList: React.FC = () => {
                         <WalletText color='primary' size='xs' weight='bold'>
                             {account?.login}
                         </WalletText>
-                    </React.Fragment>
-                ))}
-            </div>
-        </TradingAccountCard>
+                    </div>
+                </TradingAccountCard>
+            ))}
+        </React.Fragment>
     );
 };
 

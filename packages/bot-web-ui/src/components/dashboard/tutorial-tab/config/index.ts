@@ -478,4 +478,25 @@ export const quick_strategy_content: TQuickStrategyContent[] = [
             localize('An example of Oscar’s Grind strategy'),
         ],
     },
+    {
+        qs_name: 'REVERSE_MARTINGALE',
+        type: localize('About Reverse Martingale'),
+        content: [
+            localize('Exploring the Reverse Martingale strategy in Deriv Bot'),
+            localize('An example of Reverse Martingale strategy'),
+        ],
+    },
+    {
+        qs_name: 'REVERSE_D_ALEMBERT',
+        type: localize('About Reverse D’Alembert'),
+        content: [
+            localize('Exploring the Reverse D’Alembert strategy in Deriv Bot'),
+            localize('An example of Reverse D’Alembert strategy'),
+        ],
+    },
+    {
+        qs_name: '1_3_2_6',
+        type: localize('About 1-3-2-6'),
+        content: [localize('Exploring the 1-3-2-6 strategy in Deriv Bot'), localize('An example of 1-3-2-6 strategy')],
+    },
 ];

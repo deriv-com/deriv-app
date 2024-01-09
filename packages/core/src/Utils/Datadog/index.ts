@@ -69,6 +69,4 @@ if (isProduction || isStaging) {
             }
         },
     });
-
-    datadogRum.startSessionReplayRecording();
 }

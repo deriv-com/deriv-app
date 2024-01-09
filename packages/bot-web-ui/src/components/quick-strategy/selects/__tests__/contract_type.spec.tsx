@@ -15,6 +15,22 @@ jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/hooks/block_svg', () => jest.fn());
 
+jest.mock('formik', () => ({
+    ...jest.requireActual('formik'),
+    Field: jest.fn(({ children }) =>
+        children({
+            field: {
+                value: 'CALL',
+            },
+        })
+    ),
+    useFormikContext: jest.fn(() => ({
+        setFieldValue: jest.fn(),
+        validateForm: jest.fn(),
+        values: { symbol: '1HZ100V', tradetype: 'callput', type: 'CALL' },
+    })),
+}));
+
 jest.mock('@deriv/bot-skeleton', () => ({
     ...jest.requireActual('@deriv/bot-skeleton'),
     ApiHelpers: {

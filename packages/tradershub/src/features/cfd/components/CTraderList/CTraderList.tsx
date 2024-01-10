@@ -14,7 +14,7 @@ const CTraderList = () => {
     );
 
     return (
-        <div className='pb-1200 sm:'>
+        <div className='pb-1200'>
             <Text bold>{PlatformDetails.ctrader.title}</Text>
             {hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />}
         </div>

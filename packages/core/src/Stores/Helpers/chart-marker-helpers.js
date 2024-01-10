@@ -76,11 +76,7 @@ export const createMarkerSpotEntry = contract_info => {
     let component_props = {};
 
     if (spot_has_label) {
-        if (is_ticks_contract) {
-            marker_type = MARKER_TYPES_CONFIG.SPOT_MIDDLE_2.type;
-        } else {
-            marker_type = MARKER_TYPES_CONFIG.SPOT_MIDDLE.type;
-        }
+        marker_type = MARKER_TYPES_CONFIG.SPOT_MIDDLE.type;
         component_props = {
             spot_value: `${entry_tick}`,
             spot_epoch: `${contract_info.entry_tick_time}`,

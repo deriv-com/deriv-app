@@ -29,7 +29,7 @@ const JurisdictionTncSection: FC<TProps> = ({ isCheckBoxChecked, selectedJurisdi
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (
-        <div className='sticky flex flex-col justify-center mt-1500 gap-600 lg:h-2500 bottom-50 bg-system-light-primary-background pt-[15px] px-1000 pb-500 w-screen'>
+        <div className='flex flex-col justify-center mt-1500 gap-600 sticky bottom-50 bg-system-light-primary-background px-1000 pt-[15px] pb-500 w-screen sm:w-auto sm:bg-inherit sm:static sm:p-50 lg:h-2500'>
             {selectedJurisdiction && (
                 <JurisdictionFootNoteTitle marketType={marketType} selectedJurisdiction={selectedJurisdiction} />
             )}
@@ -48,7 +48,7 @@ const JurisdictionTncSection: FC<TProps> = ({ isCheckBoxChecked, selectedJurisdi
                         <Text size={isMobile ? 'sm' : 'md'}>
                             I confirm and accept {selectedCompany.name}&lsquo;s{' '}
                             <Link
-                                className='cursor-pointer text-solid-coral-700'
+                                className='cursor-pointer text-solid-coral-700 text-75 pl-50 sm:text-100'
                                 href={getStaticUrl(selectedCompany.tncUrl)}
                                 target='_blank'
                             >

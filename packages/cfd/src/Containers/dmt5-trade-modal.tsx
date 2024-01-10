@@ -21,6 +21,7 @@ import { TTradingPlatformAccounts } from '../Components/props.types';
 
 import { TCFDPasswordReset } from './props.types';
 import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
+import { set } from 'mobx';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid & {
@@ -127,10 +128,11 @@ const DMT5TradeModal = observer(
             const fetchWebTraderURL = async () => {
                 const result = await mobileWebtraderURL();
                 if (result && mobileOSDetect() === 'iOS') {
-                    window.location.replace(deepLink);
+                    const iosValue = window.location.replace(deepLink);
                     setTimeout(function () {
                         window.location.replace(platformUrl() as unknown as string);
                     }, 2000);
+                    setWebTraderURL(iosValue as unknown as string);
                 } else {
                     setWebTraderURL(result ? deepLink : platformUrl());
                 }

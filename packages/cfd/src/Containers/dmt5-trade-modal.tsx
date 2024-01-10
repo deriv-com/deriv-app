@@ -125,11 +125,14 @@ const DMT5TradeModal = observer(
 
         React.useEffect(() => {
             const fetchWebTraderURL = async () => {
-                try {
-                    const result = await mobileWebtraderURL();
+                const result = await mobileWebtraderURL();
+                if (result && mobileOSDetect() === 'iOS') {
+                    window.location.replace(deepLink);
+                    setTimeout(function () {
+                        window.location.replace(platformUrl() as unknown as string);
+                    }, 2000);
+                } else {
                     setWebTraderURL(result ? deepLink : platformUrl());
-                } catch (error) {
-                    setWebTraderURL(platformUrl());
                 }
             };
 

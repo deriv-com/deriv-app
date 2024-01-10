@@ -63,13 +63,6 @@ Blockly.Css.CONTENT = [
     'z-index: 99999;' /* big value for bootstrap3 compatibility */,
     '}',
 
-    '.injectionDiv {',
-    'height: calc(100vh - 20rem);',
-    'position: relative;',
-    'overflow: hidden;' /* So blocks in drag surface disappear at edges */,
-    'touch-action: none;',
-    '}',
-
     '.blocklyNonSelectable {',
     'user-select: none;',
     '-moz-user-select: none;',

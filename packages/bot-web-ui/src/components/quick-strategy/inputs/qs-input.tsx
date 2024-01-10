@@ -113,7 +113,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         leading_icon={
                                             is_number ? (
                                                 <button
-                                                    disabled={!!min && field.value <= min}
+                                                    disabled={disabled || (!!min && field.value <= min)}
                                                     data-testid='qs-input-decrease'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) - 1;
@@ -130,7 +130,7 @@ const QSInput: React.FC<TQSInput> = observer(
                                         trailing_icon={
                                             is_number ? (
                                                 <button
-                                                    disabled={!!max && field.value >= max}
+                                                    disabled={disabled || (!!max && field.value >= max)}
                                                     data-testid='qs-input-increase'
                                                     onClick={(e: MouseEvent<HTMLButtonElement>) => {
                                                         const value = Number(field.value) + 1;

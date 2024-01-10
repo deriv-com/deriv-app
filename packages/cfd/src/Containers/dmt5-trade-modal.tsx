@@ -203,7 +203,10 @@ const DMT5TradeModal = observer(
                     </div>
                 </div>
                 <div className='cfd-trade-modal__download-center-app'>
-                    <div className='cfd-trade-modal__download-center-app--option' onClick={mobileURLSet}>
+                    <div
+                        className='cfd-trade-modal__download-center-app--option'
+                        onClick={is_mobile ? mobileURLSet : undefined}
+                    >
                         <Icon icon='IcRebrandingMt5Logo' size={32} />
                         <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                             {localize('MetaTrader 5 web')}

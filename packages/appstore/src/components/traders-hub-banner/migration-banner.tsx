@@ -10,14 +10,14 @@ import {
     getCFDPlatformNames,
     CFD_PLATFORMS,
 } from '@deriv/shared';
-import MigrateCard from 'Assets/svgs/banner/migrate-card.svg';
+import MigrationBannerImage from './migration-banner-image';
 
 const MigrationBanner = observer(() => {
     const {
         ui,
         modules: { cfd },
     } = useStore();
-    const { toggleMT5MigrationModal } = ui;
+    const { is_dark_mode_on, toggleMT5MigrationModal } = ui;
     const { setMT5MigrationError } = cfd;
 
     const { has_derived_mt5_to_migrate, has_derived_and_financial_mt5 } = useMT5SVGEligibleToMigrate();
@@ -67,7 +67,7 @@ const MigrationBanner = observer(() => {
                     <Localize i18n_default_text='Upgrade' />
                 </Button>
             </div>
-            <MigrateCard className='traders-hub-banner__migrate-banner__image' data-testid='dt_migrate_card' />
+            <MigrationBannerImage image={is_dark_mode_on ? 'migrate_card_dark' : 'migrate_card'} />
         </div>
     );
 });

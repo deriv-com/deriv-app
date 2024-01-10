@@ -2,7 +2,7 @@
     position: relative;
     margin-bottom: 2.4rem;
     overflow: hidden;
-    background-color: $color-grey-4;
+    background-color: var(--general-hover);
     border: 1px solid var(--traders-hub-banner-border-color);
     border-radius: $BORDER_RADIUS * 4;
 

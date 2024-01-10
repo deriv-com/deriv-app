@@ -16,7 +16,7 @@ const TransactionsCompletedRow: React.FC<TProps> = ({ accounts, transaction, wal
     const dxtradeOrCtraderToFrom = useMemo(() => {
         if (transaction?.action_type !== 'transfer' || !transaction.longcode) return null;
         const longcodeMessageTokens = transaction.longcode.split(' ');
-        const direction = longcodeMessageTokens[4] !== 'cTrader' && longcodeMessageTokens[1] === 'from' ? 'from' : 'to';
+        const direction = longcodeMessageTokens[4] === 'cTrader' ? 'to' : longcodeMessageTokens[1];
         const dxtradeOrCtraderLoginid = longcodeMessageTokens.find(
             token => token.startsWith('DX') || token.startsWith('CT')
         );

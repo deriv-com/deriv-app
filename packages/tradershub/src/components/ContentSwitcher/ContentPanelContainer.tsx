@@ -1,4 +1,4 @@
-import React, { Children, PropsWithChildren } from 'react';
+import React, { Children, isValidElement, PropsWithChildren, useEffect } from 'react';
 import { useContentSwitch } from './ContentSwitcher';
 
 /**
@@ -8,14 +8,26 @@ import { useContentSwitch } from './ContentSwitcher';
  * @returns {JSX.Element} The rendered component.
  */
 const ContentPanelContainer = ({ children }: PropsWithChildren) => {
-    const { activeTabIndex } = useContentSwitch();
+    const { activeTabLabel, setActiveTabLabel } = useContentSwitch();
+
+    useEffect(() => {
+        // If no active tab is set, set the first tab as active
+        if (!activeTabLabel && Children.count(children) > 0) {
+            const firstChild = Children.toArray(children)[0];
+            if (isValidElement(firstChild)) {
+                setActiveTabLabel(firstChild.props.label);
+            }
+        }
+    }, [activeTabLabel, children, setActiveTabLabel]);
 
     return (
         <div>
-            {Children.map(children, (child, index) => {
-                if (index !== activeTabIndex) return undefined;
-
-                return child;
+            {Children.map(children, child => {
+                // Check if the label matches the activeTabLabel
+                if (isValidElement(child) && child.props.label === activeTabLabel) {
+                    return child;
+                }
+                return null;
             })}
         </div>
     );

@@ -1,12 +1,14 @@
 import React, { useMemo } from 'react';
-import { useActiveTradingAccount } from '@deriv/api';
+import { useActiveTradingAccount, useIsDIELEnabled } from '@deriv/api';
 import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
+import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
 import {
     ContentSwitcher,
     DemoRealSwitcher,
     OptionsAndMultipliersSection,
     StaticLink,
     TotalAssets,
+    useContentSwitch,
 } from '../../components';
 import { CTraderList } from '../../features/cfd/components/CTraderList';
 import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
@@ -14,22 +16,23 @@ import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPla
 const TradersHubRoute = () => {
     const { isMobile } = useBreakpoint();
     const { data: activeTrading } = useActiveTradingAccount();
+    const { data: isDIEL } = useIsDIELEnabled();
+    const { activeTabLabel } = useContentSwitch();
 
     const showRegulationSwitcher = useMemo(() => {
-        if (!activeTrading?.is_virtual) {
+        if (!activeTrading?.is_virtual && isDIEL) {
             return (
                 <div className='flex items-center gap-400'>
                     <Text size='sm'>Regulation:</Text>
-                    <ContentSwitcher>
-                        <ContentSwitcher.HeaderList className='w-[200px] h-2000' list={['Non-EU', 'EU']} />
-                        <ContentSwitcher.PanelContainer />
-                    </ContentSwitcher>
+                    <LabelPairedCircleInfoMdRegularIcon className='cursor-pointer' />
+                    <ContentSwitcher.HeaderList className='w-[200px] h-2000' list={['Non-EU', 'EU']} />
+                    <ContentSwitcher.PanelContainer />
                 </div>
             );
         }
 
         return null;
-    }, [activeTrading?.is_virtual]);
+    }, [activeTrading?.is_virtual, isDIEL]);
 
     if (isMobile)
         return (
@@ -41,12 +44,12 @@ const TradersHubRoute = () => {
                 <div className='grid place-content-center pb-1200'>
                     <TotalAssets />
                 </div>
-                <ContentSwitcher>
-                    <ContentSwitcher.HeaderList list={['Options & Multiplier', 'CFDs']} size='lg' />
-                    <ContentSwitcher.PanelContainer>
+                <ContentSwitcher.HeaderList list={['Options & Multiplier', 'CFDs']} size='lg' />
+                <ContentSwitcher.PanelContainer>
+                    <ContentSwitcher.Panel label='Options & Multiplier'>
                         <OptionsAndMultipliersSection />
-                    </ContentSwitcher.PanelContainer>
-                </ContentSwitcher>
+                    </ContentSwitcher.Panel>
+                </ContentSwitcher.PanelContainer>
             </div>
         );
 

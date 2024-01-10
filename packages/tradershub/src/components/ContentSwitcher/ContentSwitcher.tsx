@@ -4,8 +4,8 @@ import ContentPanelContainer from './ContentPanelContainer';
 import ContentTabPanel from './ContentTabPanel';
 
 type TContentContext = {
-    activeTabIndex: number;
-    setActiveTabIndex: Dispatch<SetStateAction<number>>;
+    activeTabLabel?: string;
+    setActiveTabLabel: Dispatch<SetStateAction<string>>;
 };
 
 type TContentSwitcher = {
@@ -57,8 +57,15 @@ export const useContentSwitch = () => {
  * ```
  */
 const ContentSwitcher = ({ children, className }: TContentSwitcher) => {
-    const [activeTabIndex, setActiveTabIndex] = useState(0);
-    const value = useMemo(() => ({ activeTabIndex, setActiveTabIndex }), [activeTabIndex]);
+    const [activeTabLabel, setActiveTabLabel] = useState('');
+
+    const value = useMemo(
+        () => ({
+            activeTabLabel,
+            setActiveTabLabel,
+        }),
+        [activeTabLabel]
+    );
 
     return (
         <TabsContext.Provider value={value}>

@@ -14,20 +14,22 @@ type TContentHeaderList = {
  * @returns {JSX.Element} The rendered component.
  */
 const ContentHeaderList: FC<TContentHeaderList> = memo(({ className, list, size }) => {
-    const { activeTabIndex, setActiveTabIndex } = useContentSwitch();
+    const { activeTabLabel, setActiveTabLabel } = useContentSwitch();
 
     return (
         <div
             className={qtMerge('flex bg-system-light-secondary-background rounded-400 p-200 gap-200', className)}
             data-list-count={list.length}
         >
-            {list.map((tabLabel, index) => (
+            {list.map(tabLabel => (
                 <Button
-                    className={qtJoin('rounded-200', index !== activeTabIndex && 'bg-transparent font-regular')}
+                    className={qtJoin('rounded-200', tabLabel !== activeTabLabel && 'bg-transparent font-regular')}
                     colorStyle='white'
                     fullWidth
                     key={`tradershub-tab-${tabLabel}`}
-                    onClick={() => setActiveTabIndex(index)}
+                    onClick={() => {
+                        setActiveTabLabel(tabLabel);
+                    }}
                     size={size}
                 >
                     {tabLabel}

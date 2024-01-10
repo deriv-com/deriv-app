@@ -9,6 +9,7 @@ import {
     TotalAssets,
 } from '../../components';
 import { CTraderList } from '../../features/cfd/components/CTraderList';
+import { MT5PlatformsList } from '../../features/cfd/components/MT5PlatformsList';
 import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
 
 const TradersHubRoute = () => {
@@ -31,7 +32,14 @@ const TradersHubRoute = () => {
                 <ContentSwitcher>
                     <ContentSwitcher.HeaderList list={['Options & Multipliers', 'CFDs']} />
                     <ContentSwitcher.PanelContainer>
-                        <OptionsAndMultipliersSection />
+                        <ContentSwitcher.Panel>
+                            <OptionsAndMultipliersSection />
+                        </ContentSwitcher.Panel>
+                        <ContentSwitcher.Panel>
+                            <MT5PlatformsList />
+                            <CTraderList />
+                            <OtherCFDPlatformsList />
+                        </ContentSwitcher.Panel>
                     </ContentSwitcher.PanelContainer>
                 </ContentSwitcher>
             </div>
@@ -64,16 +72,7 @@ const TradersHubRoute = () => {
                     </Text>
                 </div>
                 <div className='space-y-1200'>
-                    <div>
-                        <Text bold className='pb-800' size='md'>
-                            Deriv MT5
-                        </Text>
-                        <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                        </div>
-                    </div>
+                    <MT5PlatformsList />
                     <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
                         <CTraderList />
                     </div>

@@ -23,6 +23,8 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
             trailing={() => (
                 <div className='flex flex-col gap-y-200'>
                     <Button
+                        className='border-opacity-black-400 rounded-200 px-800'
+                        colorStyle='black'
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => {
                             history.push('/wallets/cashier/transfer');
@@ -32,6 +34,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
                         Transfer
                     </Button>
                     <Button
+                        className='rounded-200 px-800'
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         // onClick show MT5TradeModal
                     >
@@ -45,7 +48,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
                     <Text size='sm'>{title}</Text>
                     {!activeWallet?.is_virtual && (
                         <div className='flex items-center rounded-md h-1200 py-50 px-200 gap-200 bg-system-light-secondary-background'>
-                            <Text bold size='sm'>
+                            <Text bold size='xs'>
                                 {account.landing_company_short?.toUpperCase()}
                             </Text>
                         </div>
@@ -56,9 +59,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
                         {account.display_balance}
                     </Text>
                 )}
-                <Text bold size='sm'>
-                    {account.display_login}
-                </Text>
+                <Text size='sm'>{account.display_login}</Text>
             </div>
         </TradingAccountCard>
     );

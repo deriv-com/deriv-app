@@ -4,13 +4,13 @@ import { isCryptocurrency, getLimitOrderAmount, isValidToSell } from '@deriv/sha
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import ContractCardItem from './contract-card-item';
 import ToggleCardDialog from './toggle-card-dialog';
-import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
 import { ContractUpdate } from '@deriv/api-types';
 import { TToastConfig } from '../../types/contract.types';
 import { TGetCardLables } from '../../types/common.types';
+import ArrowIndicator from '../../arrow-indicator';
 
 type TAccumulatorCardBody = {
     addToast: (toast_config: TToastConfig) => void;
@@ -27,7 +27,6 @@ type TAccumulatorCardBody = {
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (value: string) => void;
-    status?: string;
     is_positions?: boolean;
 };
 
@@ -46,7 +45,6 @@ const AccumulatorCardBody = ({
     onMouseLeave,
     removeToast,
     setCurrentFocus,
-    status,
     is_positions,
 }: TAccumulatorCardBody) => {
     const { buy_price, profit, limit_order, sell_price } = contract_info;
@@ -74,14 +72,10 @@ const AccumulatorCardBody = ({
                     >
                         <Money amount={sell_price || indicative} currency={currency} />
                     </div>
-                    <div
-                        className={classNames('dc-contract-card__indicative--movement', {
-                            'dc-contract-card__indicative--movement-complete': is_sold,
-                        })}
-                    >
-                        {status === 'profit' && <Icon icon='IcProfit' />}
-                        {status === 'loss' && <Icon icon='IcLoss' />}
-                    </div>
+                    <ArrowIndicator
+                        className='dc-contract-card__indicative--movement'
+                        value={sell_price || indicative}
+                    />
                 </ContractCardItem>
                 <ContractCardItem
                     header={TOTAL_PROFIT_LOSS}
@@ -90,14 +84,7 @@ const AccumulatorCardBody = ({
                     is_won={is_won}
                 >
                     <Money amount={profit} currency={currency} />
-                    <div
-                        className={classNames('dc-contract-card__indicative--movement', {
-                            'dc-contract-card__indicative--movement-complete': is_sold,
-                        })}
-                    >
-                        {status === 'profit' && <Icon icon='IcProfit' />}
-                        {status === 'loss' && <Icon icon='IcLoss' />}
-                    </div>
+                    <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
                 </ContractCardItem>
                 <ContractCardItem header={TAKE_PROFIT} className='dc-contract-card__take-profit'>
                     {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
@@ -114,7 +101,6 @@ const AccumulatorCardBody = ({
                             onMouseLeave={onMouseLeave}
                             removeToast={removeToast}
                             setCurrentFocus={setCurrentFocus}
-                            status={status}
                         />
                     )}
                 </ContractCardItem>

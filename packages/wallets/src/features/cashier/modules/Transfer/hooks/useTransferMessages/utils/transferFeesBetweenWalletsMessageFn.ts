@@ -6,8 +6,15 @@ const transferFeesBetweenWalletsMessageFn = ({
     sourceAccount,
     sourceAmount,
     targetAccount,
+    targetAmount,
 }: TMessageFnProps) => {
-    if (!sourceAccount.currency || !sourceAccount.currencyConfig || !sourceAmount || !targetAccount?.currency)
+    if (
+        !sourceAccount.currency ||
+        !sourceAccount.currencyConfig ||
+        !sourceAmount ||
+        !targetAmount ||
+        !targetAccount?.currency
+    )
         return null;
 
     const isTransferBetweenCryptoWallets =

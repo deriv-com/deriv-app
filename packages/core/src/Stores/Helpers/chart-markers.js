@@ -142,9 +142,7 @@ export const createTickMarkers = (contract_info, is_delayed_markers_update) => {
             }
         }
         if (is_selected_tick) {
-            marker_config.content_config.spot_className = `${spot_className} ${
-                +contract_info.profit > 0 ? 'chart-spot__spot--won' : 'chart-spot__spot--lost'
-            }`;
+            marker_config.content_config.spot_className = `${spot_className} chart-spot__spot--${contract_info.status}`;
         }
         if (is_accumulator) {
             if ((is_accu_current_last_spot || is_exit_spot) && !is_accu_contract_closed) return;

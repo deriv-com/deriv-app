@@ -408,14 +408,6 @@ export const getUnsupportedContracts = () =>
             name: localize('Reset Put'),
             position: 'bottom',
         },
-        TICKHIGH: {
-            name: localize('High Tick'),
-            position: 'top',
-        },
-        TICKLOW: {
-            name: localize('Low Tick'),
-            position: 'bottom',
-        },
         LBFLOATCALL: {
             name: localize('Close-to-Low'),
             position: 'top',

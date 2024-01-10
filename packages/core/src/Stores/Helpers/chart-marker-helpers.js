@@ -78,21 +78,14 @@ export const createMarkerSpotEntry = contract_info => {
     if (!contract_info.entry_tick_time) return false;
 
     const entry_tick = contract_info.entry_tick_display_value;
-    const is_ticks_contract = isTicksContract(contract_info.contract_type);
-    const spot_has_label = isDigitContract(contract_info.contract_type);
-    let marker_type = MARKER_TYPES_CONFIG.SPOT_ENTRY.type;
+    const spot_has_label = isDigitContract(contract_info.contract_type) || isTicksContract(contract_info.contract_type);
+    const marker_type = MARKER_TYPES_CONFIG.SPOT_ENTRY.type;
     let component_props = {};
 
     if (spot_has_label) {
-        marker_type = MARKER_TYPES_CONFIG.SPOT_MIDDLE.type;
         component_props = {
             spot_value: `${entry_tick}`,
             spot_epoch: `${contract_info.entry_tick_time}`,
-            spot_count: 1,
-        };
-    } else if (is_ticks_contract) {
-        marker_type = MARKER_TYPES_CONFIG.SPOT_ENTRY.type;
-        component_props = {
             spot_count: 1,
         };
     }
@@ -153,9 +146,9 @@ export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
         spot_value: `${spot}`,
         spot_epoch,
         align_label: tick.align_label,
-        is_value_hidden: is_accumulator,
+        is_value_hidden: is_accumulator || (is_ticks_contract && idx + 1 !== contract_info.selected_tick),
         spot_count,
-        status: `${contract_info.profit >= 0 ? 'won' : 'lost'}`,
+        status: `${contract_info.status}`,
     });
     marker_config.type = `${marker_config.type}_${idx}`;
 

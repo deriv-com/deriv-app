@@ -241,14 +241,14 @@ const DMT5TradeModal = observer(
                                 e.preventDefault();
                                 setWebTraderURL(true); // Set webTraderURL to true
                                 // Navigate to the URL manually
-                                setTimeout(() => {
-                                    if (!is_mobile) {
-                                        window.open(mt5_trade_account.webtrader_url as unknown as string, '_blank');
-                                    } else {
-                                        // Handle mobile behavior or open in the same window
-                                        window.open(mobileWebtraderURL2 as unknown as string);
-                                    }
-                                }, 1000);
+                                if (!is_mobile) {
+                                    window.open(mt5_trade_account.webtrader_url as unknown as string, '_blank');
+                                } else {
+                                    // Handle mobile behavior or open in the same window
+                                    setTimeout(() => {
+                                        window.location.href = mobileWebtraderURL2 as unknown as string;
+                                    }, 1000);
+                                }
                             }}
                             target={is_mobile ? '' : '_blank'}
                             rel='noopener noreferrer'

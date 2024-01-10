@@ -214,7 +214,7 @@ const DMT5TradeModal = observer(
                         <a
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
-                            href={is_mobile ? url : mt5_trade_account.webtrader_url}
+                            href={!is_mobile ? mt5_trade_account.webtrader_url : url}
                             target={!is_mobile ? '_blank' : ''}
                             rel={!is_mobile ? 'noopener noreferrer' : ''}
                         >

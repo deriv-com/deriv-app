@@ -255,6 +255,11 @@ describe('<CFDPersonalDetailsForm />', () => {
         const income_earning = within(screen.getByRole('list')).getByText('Income Earning');
         fireEvent.click(income_earning);
 
+        const crs_confirmation_checkbox = screen.getByRole('checkbox', {
+            name: /i confirm that my tax information is accurate and complete/i,
+        });
+        fireEvent.click(crs_confirmation_checkbox);
+
         await waitFor(() => {
             expect(screen.queryByText(citizenship_required_error)).not.toBeInTheDocument();
             expect(screen.queryByText(tax_residence_required_error)).not.toBeInTheDocument();

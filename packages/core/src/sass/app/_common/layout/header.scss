@@ -163,6 +163,12 @@
             align-items: center;
             overflow: hidden;
         }
+
+        &-logo {
+            align-self: center;
+            margin: 0 1.2rem;
+            cursor: pointer;
+        }
     }
     &__menu-right {
         justify-content: flex-end;

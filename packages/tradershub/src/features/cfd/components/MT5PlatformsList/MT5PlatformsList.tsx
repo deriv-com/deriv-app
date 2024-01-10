@@ -35,19 +35,14 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
             <Text bold>Deriv MT5</Text>
             <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
                 {isFetchedAfterMount &&
-                    data?.map((account, index) => {
+                    data?.map(account => {
                         if (account.is_added)
-                            return (
-                                <AddedMT5AccountsList
-                                    account={account}
-                                    key={`added-mt5-list${account.loginid}-${index}`}
-                                />
-                            );
+                            return <AddedMT5AccountsList account={account} key={`added-mt5-list-${account.loginid}`} />;
 
                         return (
                             <AvailableMT5AccountsList
                                 account={account as unknown as THooks.MT5AccountsList}
-                                key={`available-mt5-list${account.name}-${index}`}
+                                key={`available-mt5-list-${account.market_type}-${account.shortcode}`}
                             />
                         );
                     })}

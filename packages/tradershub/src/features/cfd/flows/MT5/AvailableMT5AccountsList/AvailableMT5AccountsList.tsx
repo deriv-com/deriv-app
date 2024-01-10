@@ -25,9 +25,7 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
                 <Text bold className='leading-[20px]' size='md'>
                     {title}
                 </Text>
-                <Text className='leading-[14px]' size='sm'>
-                    {description}
-                </Text>
+                <Text className='leading-[14px] text-[12px]'>{description}</Text>
             </div>
         </TradingAccountCard>
     );

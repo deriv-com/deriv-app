@@ -9,7 +9,7 @@ import {
     TRowItem,
 } from 'Constants/regulators-modal-content';
 
-const Row = ({ attribute, content }: TRegulatorsContentProps) => {
+const Row = ({ attribute, content, id }: TRegulatorsContentProps) => {
     return (
         <Table.Row className='regulators-compare-table__table-row'>
             <Table.Cell fixed>
@@ -22,7 +22,7 @@ const Row = ({ attribute, content }: TRegulatorsContentProps) => {
                     {Array.isArray(content[rowKey]) ? (
                         (content[rowKey] as TRowItem[])?.map(item => (
                             <Text
-                                key={rowKey}
+                                key={`${id}_${rowKey}_${item?.text}`}
                                 as='p'
                                 color={item?.options?.color ?? 'prominent'}
                                 weight={item?.options?.weight ?? 'normal'}

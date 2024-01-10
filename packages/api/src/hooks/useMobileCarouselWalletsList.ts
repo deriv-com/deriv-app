@@ -11,7 +11,7 @@ const useMobileCarouselWalletsList = () => {
     const [staleIsLoading, setStaleIsLoading] = useState(true);
 
     useEffect(() => {
-        if (!isLoading && !isCurrencyConfigLoading && walletAccountsList && !staleWalletAccountsList) {
+        if (!isLoading && !isCurrencyConfigLoading) {
             setStaleIsLoading(false);
             setStaleWalletAccountslist(walletAccountsList);
         }
@@ -25,6 +25,7 @@ const useMobileCarouselWalletsList = () => {
             staleWalletAccountsList?.length !== walletAccountsList?.length &&
             walletAccountsList?.length > staleWalletAccountsList?.length
         ) {
+            setStaleIsLoading(false);
             setStaleWalletAccountslist(walletAccountsList);
         }
     }, [isLoading, isCurrencyConfigLoading, walletAccountsList]);

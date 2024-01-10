@@ -6,6 +6,7 @@ import useDevice from '../../../../hooks/useDevice';
 import FilterIcon from '../../../../public/images/filter.svg';
 import { TransactionsCompleted, TransactionsCompletedDemoResetBalance, TransactionsPending } from './components';
 import './Transactions.scss';
+import { useLocation } from 'react-router-dom';
 
 type TTransactionsPendingFilter = React.ComponentProps<typeof TransactionsPending>['filter'];
 type TTransactionCompletedFilter = React.ComponentProps<typeof TransactionsCompleted>['filter'];
@@ -29,7 +30,9 @@ const filtersMapper: Record<string, Record<string, TFilterValue>> = {
 const Transactions = () => {
     const { data: wallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
-    const [isPendingActive, setIsPendingActive] = useState(false);
+    const location = useLocation();
+
+    const [isPendingActive, setIsPendingActive] = useState(!!location.state?.showPending);
     const [filterValue, setFilterValue] = useState('all');
 
     const filterOptionsList = useMemo(

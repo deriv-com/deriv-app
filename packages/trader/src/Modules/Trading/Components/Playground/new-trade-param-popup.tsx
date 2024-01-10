@@ -7,7 +7,7 @@ const NewTradeParamPopup = ({ onClick, show_details }: { onClick: () => void; sh
 
     const onClickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        setShouldExpand(true);
+        // setShouldExpand(true);
     };
 
     return (

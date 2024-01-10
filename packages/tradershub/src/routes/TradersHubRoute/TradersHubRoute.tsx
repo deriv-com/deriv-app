@@ -25,7 +25,7 @@ const TradersHubRoute = () => {
                     <TotalAssets />
                 </div>
                 <ContentSwitcher>
-                    <ContentSwitcher.HeaderList list={['Options & Multiplier', 'CFDs']} />
+                    <ContentSwitcher.HeaderList list={['Options & Multipliers', 'CFDs']} />
                     <ContentSwitcher.PanelContainer>
                         <ContentSwitcher.Panel>
                             <OptionsAndMultipliersSection />

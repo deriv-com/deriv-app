@@ -86,7 +86,6 @@ const PurchaseButton = ({
         if (!should_fade && is_loading) return '';
         return is_high_low ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
     };
-    const { has_increased } = info;
     const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
 
     let button_value;
@@ -171,7 +170,6 @@ const PurchaseButton = ({
                             basis={basis}
                             currency={currency}
                             growth_rate={growth_rate}
-                            has_increased={has_increased}
                             is_accumulator={is_accumulator}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}

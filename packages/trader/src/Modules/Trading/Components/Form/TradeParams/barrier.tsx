@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal, Text, usePrevious } from '@deriv/components';
+import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal, Text } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset';
 import ValueMovement from '../Purchase/value-movement';
 import { observer, useStore } from '@deriv/stores';
@@ -29,12 +29,10 @@ const Barrier = observer(({ is_minimized, is_absolute_only }: TBarrier) => {
     } = useTraderStore();
     const [show_modal, setShowModal] = React.useState(false);
     const type_with_current_spot = Object.keys(trade_types).find(type => proposal_info?.[type]?.spot);
-    let contract_info, has_spot_increased;
+    let contract_info;
     if (type_with_current_spot) contract_info = proposal_info?.[type_with_current_spot];
     const current_spot = contract_info?.spot || '';
     const current_barrier_price = contract_info?.barrier || '';
-    const previous_spot = usePrevious(current_spot);
-    if (previous_spot) has_spot_increased = Number(current_spot) > previous_spot;
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
     const has_error_or_not_loaded = contract_info?.has_error || !contract_info?.id;
 
@@ -139,7 +137,6 @@ const Barrier = observer(({ is_minimized, is_absolute_only }: TBarrier) => {
                             <ValueMovement
                                 has_error_or_not_loaded={has_error_or_not_loaded}
                                 value={current_spot}
-                                has_increased={has_spot_increased}
                                 show_currency={false}
                             />
                         )}

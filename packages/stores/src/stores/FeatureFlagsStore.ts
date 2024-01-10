@@ -5,6 +5,7 @@ const FLAGS = {
     next_wallet: false,
     sharkfin: false,
     p2p_v2: false,
+    next_cashier: false,
     next_tradershub: false,
     next_account: false,
 } satisfies Record<string, boolean>;

@@ -87,4 +87,7 @@ export const routes = {
 
     // Account V2
     account_v2: '/account-v2',
+
+    // Cashier V2
+    cashier_v2: '/cashier-v2',
 };

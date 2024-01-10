@@ -7,6 +7,6 @@
             "@deriv/*": ["../*/src"],
         }
     },
-    "include": ["src", "./declarations.d.ts", "../../utils.d.ts"],
+    "include": ["src", "../../utils.d.ts"],
     "exclude": ["../shared/**/*"]
 }

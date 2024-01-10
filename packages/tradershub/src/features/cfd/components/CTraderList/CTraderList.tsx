@@ -16,10 +16,7 @@ const CTraderList = () => {
     return (
         <div className='pb-1200'>
             <Text bold>{PlatformDetails.ctrader.title}</Text>
-
-            <div className='grid grid-cols-3 gap-x-800 gap-y-2400 lg:grid-cols-1 lg:grid-rows-1'>
-                {hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />}
-            </div>
+            {hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />}
         </div>
     );
 };

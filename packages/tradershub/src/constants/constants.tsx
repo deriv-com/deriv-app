@@ -24,9 +24,9 @@ type IconToCurrencyMapperType = {
     };
 };
 
-export const optionsAndMultipliersContent = [
+export const optionsAndMultipliersContent = (isEU: boolean) => [
     {
-        description: 'Options and multipliers trading platform.',
+        description: isEU ? 'Multipliers trading platform.' : 'Options and multipliers trading platform.',
         icon: <IcAppstoreDerivTrader />,
         redirect: '/',
         smallIcon: <IcAppstoreDerivTrader height='3.2rem' width='3.2rem' />,

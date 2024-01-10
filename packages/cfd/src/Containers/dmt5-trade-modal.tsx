@@ -205,6 +205,8 @@ const DMT5TradeModal = observer(
                 <div className='cfd-trade-modal__download-center-app'>
                     <div
                         className='cfd-trade-modal__download-center-app--option'
+                        role='button'
+                        tabIndex={0}
                         onClick={is_mobile ? mobileURLSet : undefined}
                     >
                         <Icon icon='IcRebrandingMt5Logo' size={32} />

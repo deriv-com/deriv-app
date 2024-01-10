@@ -164,7 +164,7 @@ export const isSmartTraderContract = (contract_type = '') =>
 export const isAsiansContract = (contract_type = '') => /ASIAN/i.test(contract_type);
 
 export const isTicksContract = (contract_type = '') => /TICK/i.test(contract_type);
-  
+
 export const isResetContract = (contract_type = '') => /RESET/i.test(contract_type);
 
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');

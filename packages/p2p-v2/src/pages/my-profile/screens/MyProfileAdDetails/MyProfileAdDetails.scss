@@ -2,4 +2,32 @@
     display: flex;
     flex-direction: column;
     gap: 2.4rem;
+    width: 67vw;
+
+    & button {
+        margin-left: auto;
+        min-width: 6.4rem;
+        width: fit-content;
+        padding: 1rem 1.6rem;
+        background-color: #ff444f;
+        color: #ffffff;
+        border: none;
+        font-weight: 800;
+        border-radius: 0.4rem;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #eb3e48;
+        }
+    }
+
+    &--disabled {
+        opacity: 0.32;
+        pointer-events: none;
+    }
+
+    &__border {
+        border-top: 2px solid #f2f3f4;
+    }
 }

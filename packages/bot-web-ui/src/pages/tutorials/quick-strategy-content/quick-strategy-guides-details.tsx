@@ -2,8 +2,8 @@ import React, { KeyboardEvent } from 'react';
 import { Icon, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { STRATEGIES } from 'Components/quick-strategy/config';
-import StrategyTabContent from 'Components/quick-strategy/form-wrappers/strategy-tab-content';
+import { STRATEGIES } from '../../bot-builder/quick-strategy/config';
+import StrategyTabContent from '../../bot-builder/quick-strategy/form-wrappers/strategy-tab-content';
 
 type Tcontent = {
     qs_name: string;

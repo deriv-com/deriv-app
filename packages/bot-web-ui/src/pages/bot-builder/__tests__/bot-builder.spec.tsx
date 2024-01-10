@@ -3,6 +3,7 @@ import { unmountComponentAtNode } from 'react-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen, waitFor } from '@testing-library/react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
@@ -11,8 +12,8 @@ import BotBuilder from '../bot-builder';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
 jest.mock('../workspace-wrapper', () => jest.fn(() => <div>WorkspaceWrapper</div>));
-jest.mock('../../../quick-strategy', () => jest.fn(() => <div>QuickStrategy</div>));
-jest.mock('../../dbot-tours/bot-builder-tour', () => jest.fn(() => <div>BotBuilderTourHandler</div>));
+jest.mock('../quick-strategy', () => jest.fn(() => <div>QuickStrategy</div>));
+jest.mock('../../tutorials/dbot-tours/bot-builder-tour', () => jest.fn(() => <div>BotBuilderTourHandler</div>));
 
 jest.mock('@deriv/bot-skeleton', () => ({
     ...jest.requireActual('@deriv/bot-skeleton'),

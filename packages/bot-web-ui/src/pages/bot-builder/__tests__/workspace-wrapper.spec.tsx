@@ -1,14 +1,14 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { render, screen, act } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import WorkspaceWrapper from '../workspace-wrapper';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => jest.fn());
-jest.mock('../../dashboard-component/load-bot-preview/stop-bot-modal', () => jest.fn(() => <div>StopBotModal</div>));
+jest.mock('../../dashboard/load-bot-preview/stop-bot-modal', () => jest.fn(() => <div>StopBotModal</div>));
 
 const mockTextToDom = jest.fn(() => {
     const xml_element = document.createElement('xml');

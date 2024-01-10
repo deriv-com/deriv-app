@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { quick_strategy_content } from '../config';
+import { quick_strategy_content } from '../constants';
 import QuickStrategyGuidesDetail from './quick-strategy-guides-details';
 import './index.scss';
 

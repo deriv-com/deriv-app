@@ -9,8 +9,8 @@ import { observer, useStore } from '@deriv/stores';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { waitForDomElement } from 'Utils/dom-observer';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { useComponentVisibility } from '../../../components/app-wrapper/hooks/useComponentVisibility';
-import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from './constants';
+import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from '../../../constants/dashboard';
+import { useComponentVisibility } from '../../../hooks';
 import './index.scss';
 
 type TRecentWorkspace = {

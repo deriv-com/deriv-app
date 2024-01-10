@@ -5,11 +5,11 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import BotSnackbar from 'Components/bot-snackbar';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import { useDBotStore } from '../../stores/useDBotStore';
 import LoadModal from '../../components/load-modal';
-import QuickStrategy1 from '../../components/quick-strategy';
+import { useDBotStore } from '../../stores/useDBotStore';
 import SaveModal from '../dashboard/load-bot-preview/save-modal';
-import BotBuilderTourHandler from '../../components/app-wrapper/dbot-tours/bot-builder-tour';
+import BotBuilderTourHandler from '../tutorials/dbot-tours/bot-builder-tour';
+import QuickStrategy1 from './quick-strategy';
 import WorkspaceWrapper from './workspace-wrapper';
 
 const BotBuilder = observer(() => {

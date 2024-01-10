@@ -4,7 +4,7 @@ import { Icon, Tabs } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import SearchInput from './common/search-input';
-import { TContent } from './config';
+import { TContent } from './constants';
 
 type TTutorialsTabDesktop = {
     tutorial_tabs: TContent;

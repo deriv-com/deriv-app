@@ -5,7 +5,7 @@ import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import OnboardTourHandler from '../../components/app-wrapper/dbot-tours/onboarding-tour';
+import OnboardTourHandler from '../tutorials/dbot-tours/onboarding-tour';
 import Local from './load-bot-preview/local';
 import Cards from './cards';
 import InfoPanel from './info-panel';

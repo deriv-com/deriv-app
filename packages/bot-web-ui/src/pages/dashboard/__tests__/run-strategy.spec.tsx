@@ -1,8 +1,9 @@
 import React from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
 import RunStrategy from '../run-strategy';
 
-jest.mock('../../../trade-animation/trade-animation', () => jest.fn(() => <div>TradeAnimation</div>));
+jest.mock('Components/trade-animation', () => jest.fn(() => <div>TradeAnimation</div>));
 
 describe('RunStrategy', () => {
     beforeEach(() => {

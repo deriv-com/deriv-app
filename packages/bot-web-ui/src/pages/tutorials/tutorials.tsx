@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import NoSearchResult from './common/no-search-result-found';
 import QuickStrategyGuides from './quick-strategy-content/quick-strategy-guides';
-import { quick_strategy_content } from './config';
+import { quick_strategy_content } from './constants';
 import FAQContent from './faq-content';
 import GuideContent from './guide-content';
 import TutorialsTabDesktop from './tutorials-tab-desktop';

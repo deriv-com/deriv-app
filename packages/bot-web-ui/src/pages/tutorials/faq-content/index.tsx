@@ -3,7 +3,7 @@ import { Accordion, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { TDescription } from '../config';
+import { TDescription } from '../constants';
 
 type TFAQContent = {
     faq_list: TFAQList[];

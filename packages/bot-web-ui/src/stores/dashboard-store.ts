@@ -2,15 +2,9 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { setColors } from '@deriv/bot-skeleton';
 import { TStores } from '@deriv/stores/types';
 import { clearInjectionDiv } from 'Constants/load-modal';
-import { setTourSettings, tour_type, TTourType } from '../components/app-wrapper/dbot-tours/utils';
-import {
-    faq_content,
-    guide_content,
-    TFaqContent,
-    TGuideContent,
-    TUserGuideContent,
-    user_guide_content,
-} from '../pages/tutorials/config';
+import { faq_content, guide_content, user_guide_content } from '../pages/tutorials/constants';
+import { setTourSettings, tour_type, TTourType } from '../pages/tutorials/dbot-tours/utils';
+import { TFaqContent, TGuideContent, TUserGuideContent } from '../pages/tutorials/tutorials.types';
 import RootStore from './root-store';
 
 export interface IDashboardStore {

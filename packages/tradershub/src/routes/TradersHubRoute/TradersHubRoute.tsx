@@ -3,6 +3,7 @@ import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
 import {
     ContentSwitcher,
     DemoRealSwitcher,
+    EUSwitcher,
     OptionsAndMultipliersSection,
     StaticLink,
     TotalAssets,
@@ -16,10 +17,14 @@ const TradersHubRoute = () => {
     if (isMobile)
         return (
             <div className='p-800'>
-                <div className='pb-1200'>
-                    <Heading.H3 className='pb-200'>Trader&apos;s Hub</Heading.H3>
-                    <DemoRealSwitcher />
+                <div className='flex items-end justify-between pb-1200'>
+                    <div>
+                        <Heading.H3 className='pb-200'>Trader&apos;s Hub</Heading.H3>
+                        <DemoRealSwitcher />
+                    </div>
+                    <EUSwitcher />
                 </div>
+                <div />
                 <div className='grid place-content-center pb-1200'>
                     <TotalAssets />
                 </div>

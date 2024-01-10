@@ -125,7 +125,7 @@ const DMT5TradeModal = observer(
                 mobileWebtraderURL();
             }
 
-            () => {
+            return () => {
                 setWebTraderURL(false);
             };
         }, [webTraderURL, mobileWebtraderURL]);

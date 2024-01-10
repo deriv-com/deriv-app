@@ -107,7 +107,7 @@ const DMT5TradeModal = observer(
             (mt5_trade_account as TTradingPlatformAccounts)?.display_login
         }&server=${(mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment}`;
 
-        const mobileWebtraderURL = React.useCallback(async (): Promise<string | boolean | undefined> => {
+        const mobileWebtraderURL = React.useCallback(() => {
             const testURL = deepLink; // Change "example" to a valid identifier in your custom scheme
 
             // Save the current URL before attempting navigation
@@ -117,27 +117,14 @@ const DMT5TradeModal = observer(
             window.location.href = testURL;
 
             // Wait for a short delay
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the delay as needed
+            // await new Promise(resolve => setTimeout(resolve)); // Adjust the delay as needed
 
             // Check if the URL has changed
-            return window.location.href !== currentURL;
+            if (window.location.href !== currentURL) {
+                return deepLink;
+            }
+            return platformUrl();
         }, [deepLink]);
-
-        React.useEffect(() => {
-            const fetchWebTraderURL = async () => {
-                const result = await mobileWebtraderURL();
-                if (result && mobileOSDetect() === 'iOS') {
-                    window.location.replace(deepLink);
-                    setTimeout(function () {
-                        window.location.replace(platformUrl() as unknown as string);
-                    }, 2000);
-                } else {
-                    setWebTraderURL(result ? deepLink : platformUrl());
-                }
-            };
-
-            fetchWebTraderURL();
-        }, [mobileWebtraderURL, deepLink]);
 
         return (
             <div className='cfd-trade-modal-container'>
@@ -240,7 +227,9 @@ const DMT5TradeModal = observer(
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
                             href={
-                                !is_mobile ? (mt5_trade_account.webtrader_url as unknown as string) : webTraderURL ?? ''
+                                !is_mobile
+                                    ? (mt5_trade_account.webtrader_url as unknown as string)
+                                    : mobileWebtraderURL() ?? ''
                             }
                             // target='_blank'
                             rel='noopener noreferrer'

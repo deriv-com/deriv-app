@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
+import { ArrowIndicator, ContractCard, CurrencyBadge, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
     addComma,
     getContractPath,
@@ -39,7 +39,6 @@ type TPositionsModalCard = TPickPortfolioStore &
         current_tick?: React.ComponentProps<typeof ProgressSliderMobile>['current_tick'];
         is_loading?: boolean;
         result?: React.ComponentProps<typeof PositionsResultMobile>['result'];
-        status?: string;
         togglePositions: TUiStore['togglePositionsDrawer'];
         toggleUnsupportedContractModal: TUiStore['toggleUnsupportedContractModal'];
     };
@@ -59,7 +58,6 @@ const PositionsModalCard = observer(
         profit_loss,
         onClickCancel,
         result,
-        status,
         togglePositions,
         toggleUnsupportedContractModal,
     }: TPositionsModalCard) => {
@@ -186,14 +184,7 @@ const PositionsModalCard = observer(
                         })}
                     >
                         <Money amount={profit} currency={currency} />
-                        <div
-                            className={classNames('dc-contract-card__indicative--movement', {
-                                'dc-contract-card__indicative--movement-complete': !!is_sold,
-                            })}
-                        >
-                            {status === 'profit' && <Icon icon='IcProfit' />}
-                            {status === 'loss' && <Icon icon='IcLoss' />}
-                        </div>
+                        <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
                     </div>
                 </div>
                 <ContractCard.Footer
@@ -242,7 +233,6 @@ const PositionsModalCard = observer(
                 server_time={server_time as moment.Moment}
                 setCurrentFocus={setCurrentFocus}
                 should_show_cancellation_warning={should_show_cancellation_warning}
-                status={status}
                 toggleCancellationWarning={toggleCancellationWarning}
             />
         );

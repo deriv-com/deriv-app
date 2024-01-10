@@ -1,14 +1,13 @@
-import classNames from 'classnames';
 import React from 'react';
 import { addComma, getDisplayStatus, isCryptocurrency } from '@deriv/shared';
 import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
 import ContractCardItem from './contract-card-item';
-import Icon from '../../icon';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
 import { TGetCardLables } from '../../types';
+import ArrowIndicator from '../../arrow-indicator';
 
 export type TVanillaOptionsCardBodyProps = {
     contract_info: TContractInfo;
@@ -16,7 +15,6 @@ export type TVanillaOptionsCardBodyProps = {
     getCardLabels: TGetCardLables;
     is_sold: boolean;
     progress_slider: React.ReactNode;
-    status?: string;
 };
 
 const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
@@ -25,7 +23,6 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
     getCardLabels,
     is_sold,
     progress_slider,
-    status,
 }) => {
     const { buy_price, bid_price, entry_spot_display_value, barrier, sell_price, profit }: TContractInfo =
         contract_info;
@@ -58,15 +55,7 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
                     is_won={Number(profit) > 0}
                 >
                     <Money amount={profit} currency={currency} />
-                    <div
-                        className={classNames('dc-contract-card__indicative--movement', {
-                            'dc-contract-card__indicative--movement-complete': is_sold,
-                        })}
-                        data-testid='dc-contract-card__indicative--movement'
-                    >
-                        {status === 'profit' && <Icon icon='IcProfit' />}
-                        {status === 'loss' && <Icon icon='IcLoss' />}
-                    </div>
+                    <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
                 </ContractCardItem>
             </DesktopWrapper>
             <MobileWrapper>
@@ -105,15 +94,7 @@ const VanillaOptionsCardBody: React.FC<TVanillaOptionsCardBodyProps> = ({
                         is_won={Number(profit) > 0}
                     >
                         <Money amount={profit} currency={currency} />
-                        <div
-                            className={classNames('dc-contract-card__indicative--movement', {
-                                'dc-contract-card__indicative--movement-complete': is_sold,
-                            })}
-                            data-testid='dc-contract-card__indicative--movement-mobile'
-                        >
-                            {status === 'profit' && <Icon icon='IcProfit' />}
-                            {status === 'loss' && <Icon icon='IcLoss' />}
-                        </div>
+                        <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
                     </ContractCardItem>
                 </div>
             </MobileWrapper>

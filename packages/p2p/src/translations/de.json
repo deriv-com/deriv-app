@@ -314,7 +314,7 @@
     "-1862812590": "Grenzwerte {{ min_order }}—{{ max_order }} {{ currency }}",
     "-375836822": "Kaufe {{account_currency}}",
     "-1035421133": "Verkaufe {{account_currency}}",
-    "-1876891031": "Currency",
+    "-1876891031": "Währung",
     "-1503997652": "Keine Werbung für diese Währung.",
     "-1048001140": "Keine Ergebnisse für \"{{value}}“.",
     "-254484597": "Sie haben keine Anzeigen 😞.",

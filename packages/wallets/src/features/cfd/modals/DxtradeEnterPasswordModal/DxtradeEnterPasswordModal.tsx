@@ -49,15 +49,11 @@ const DxtradeEnterPasswordModal = () => {
         if (isSuccess) {
             if (accountType === 'demo') {
                 return (
-                    <WalletButton
-                        isFullWidth
-                        onClick={() => {
-                            hide();
-                        }}
-                        size='lg'
-                    >
-                        OK
-                    </WalletButton>
+                    <div className='wallets-success-btn'>
+                        <WalletButton isFullWidth onClick={hide} size='lg'>
+                            OK
+                        </WalletButton>
+                    </div>
                 );
             }
             return (

@@ -27,7 +27,6 @@ describe('<AccumulatorCardBody />', () => {
         getContractById: jest.fn(),
         is_sold: true,
         setCurrentFocus: jest.fn(),
-        status: 'profit',
         currency: 'USD',
         removeToast: jest.fn(),
     };

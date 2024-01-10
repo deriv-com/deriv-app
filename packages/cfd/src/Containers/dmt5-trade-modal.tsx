@@ -66,13 +66,16 @@ const DMT5TradeModal = observer(
 
         const mobileURLSet = () => {
             setURL(window.location.replace(deepLink) as unknown as string) as unknown as string;
-            setTimeout(() => {
+            const timeout = setTimeout(() => {
                 if (mobileOSDetect() === 'iOS') {
                     setURL(window.location.replace(getPlatformMt5DownloadLink('ios')) as unknown as string);
                 } else {
                     setURL(window.location.replace(getPlatformMt5DownloadLink('android')) as unknown as string);
                 }
-            }, 2000);
+            }, 3000);
+            window.onblur = () => {
+                clearTimeout(timeout);
+            };
         };
 
         const getHeadingTitle = () =>

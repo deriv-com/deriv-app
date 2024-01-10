@@ -1,10 +1,9 @@
 import React from 'react';
-import { ProgressBarTracker } from '@deriv/components';
+import { ProgressBarTracker, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { getSetting } from 'Utils/settings';
 import { useDBotStore } from 'Stores/useDBotStore';
-import Accordion from '../common/accordion';
 import TourButton from '../common/tour-button';
 import TourStartDialog from '../common/tour-start-dialog';
 import { BOT_BUILDER_MOBILE } from '../tour-content';
@@ -44,6 +43,7 @@ const BotBuilderTourMobile = observer(() => {
             }
             setShowMobileTourDialog(true);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tour_step, show_mobile_tour_dialog]);
 
     const tour_button_text = tour_step === 3 ? localize('Finish') : localize('Next');
@@ -53,7 +53,16 @@ const BotBuilderTourMobile = observer(() => {
             {show_mobile_tour_dialog && <TourStartDialog />}
             {active_tour && !show_mobile_tour_dialog && (
                 <div data-testid='botbuilder-tour-mobile' className='dbot-slider dbot-slider__bot-builder-tour'>
-                    {content_data && <Accordion data-testid='bot-builder-acc' content_data={content_data} expanded />}
+                    <div className='dbot-slider__label'>
+                        <Text as='span' size='xs' weight='bold'>
+                            {content_data?.header}
+                        </Text>
+                    </div>
+                    <div className='dbot-slider__content'>
+                        <Text as='span' line_height='s' size='xxs'>
+                            {content_data?.content}
+                        </Text>
+                    </div>
                     <div className='dbot-slider__status'>
                         <div className='dbot-slider__progress-bar'>
                             {

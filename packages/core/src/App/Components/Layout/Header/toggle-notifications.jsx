@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Counter, DesktopWrapper, Icon, MobileWrapper, Popover } from '@deriv/components';
+import { useP2PCompletedOrdersNotification } from '@deriv/hooks';
 import NotificationsDialog from 'App/Containers/NotificationsDialog';
 import 'Sass/app/modules/notifications-dialog.scss';
 
@@ -11,6 +12,8 @@ const ToggleNotificationsDrawer = ({
     tooltip_message,
     should_disable_pointer_events = false,
 }) => {
+    useP2PCompletedOrdersNotification();
+
     const notifications_toggler_el = (
         <div
             className={classNames('notifications-toggle__icon-wrapper', {

@@ -1027,6 +1027,7 @@
     &__value {
         position: relative;
         bottom: 0.2rem;
+        display: flex;
         .trade-container__price-info-movement {
             top: 0.3rem;
         }

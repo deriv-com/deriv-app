@@ -10,8 +10,8 @@ import { StaticLink } from '../../StaticLink';
 const OptionsAndMultipliersHeading = () => {
     const { isMobile } = useBreakpoint();
     return (
-        <div className='flex items-start self-stretch gap-2400'>
-            <div className='flex flex-col'>
+        <div className='flex flex-col lg:flex-row items-start gap-800 lg:gap-2400'>
+            <div className='lg:flex lg:flex-col'>
                 {!isMobile && <Heading.H4>Options & multipliers</Heading.H4>}
                 <Text className='space-y-50' size='sm'>
                     Earn a range of payouts by correctly predicting market price movements with

@@ -400,14 +400,6 @@ export const getMarketNamesMap = () =>
 
 export const getUnsupportedContracts = () =>
     ({
-        RESETCALL: {
-            name: localize('Reset Call'),
-            position: 'top',
-        },
-        RESETPUT: {
-            name: localize('Reset Put'),
-            position: 'bottom',
-        },
         LBFLOATCALL: {
             name: localize('Close-to-Low'),
             position: 'top',

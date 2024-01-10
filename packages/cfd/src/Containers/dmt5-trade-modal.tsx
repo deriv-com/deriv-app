@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { Text, Icon, Money, StatusBadge } from '@deriv/components';
@@ -50,7 +50,7 @@ const DMT5TradeModal = observer(
             account_status: { authentication },
         } = client;
 
-        const [url, setURL] = React.useState('');
+        const [url, setURL] = React.useState<string>('');
 
         const getCompanyShortcode = () => {
             if (
@@ -62,6 +62,17 @@ const DMT5TradeModal = observer(
                 return mt5_trade_account.landing_company_short;
             }
             return undefined;
+        };
+
+        const mobileURLSet = () => {
+            setURL(window.location.replace(deepLink) as unknown as string) as unknown as string;
+            setTimeout(() => {
+                if (mobileOSDetect() === 'iOS') {
+                    setURL(window.location.replace(getPlatformMt5DownloadLink('ios')) as unknown as string);
+                } else {
+                    setURL(window.location.replace(getPlatformMt5DownloadLink('android')) as unknown as string);
+                }
+            }, 2000);
         };
 
         const getHeadingTitle = () =>
@@ -192,25 +203,7 @@ const DMT5TradeModal = observer(
                     </div>
                 </div>
                 <div className='cfd-trade-modal__download-center-app'>
-                    <div
-                        className='cfd-trade-modal__download-center-app--option'
-                        onClick={() => {
-                            setURL(window.location.replace(deepLink) as unknown as string) as unknown as string;
-                            setTimeout(function () {
-                                if (mobileOSDetect() === 'iOS') {
-                                    setURL(
-                                        window.location.replace(getPlatformMt5DownloadLink('ios')) as unknown as string
-                                    );
-                                } else {
-                                    setURL(
-                                        window.location.replace(
-                                            getPlatformMt5DownloadLink('android')
-                                        ) as unknown as string
-                                    );
-                                }
-                            }, 2000);
-                        }}
-                    >
+                    <div className='cfd-trade-modal__download-center-app--option' onClick={mobileURLSet}>
                         <Icon icon='IcRebrandingMt5Logo' size={32} />
                         <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                             {localize('MetaTrader 5 web')}
@@ -219,9 +212,8 @@ const DMT5TradeModal = observer(
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
                             href={is_mobile ? url : mt5_trade_account.webtrader_url}
-                            // href={!is_mobile ? mt5_trade_account.webtrader_url : value2}
-                            // target='_blank'
-                            // rel='noopener noreferrer'
+                            target={!is_mobile ? '_blank' : ''}
+                            rel={!is_mobile ? 'noopener noreferrer' : ''}
                         >
                             <Text size='xxs' weight='bold' color='prominent'>
                                 {localize('Open')}

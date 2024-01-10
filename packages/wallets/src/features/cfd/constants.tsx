@@ -70,3 +70,11 @@ export const MARKET_TYPE = {
     FINANCIAL: 'financial',
     SYNTHETIC: 'synthetic',
 } as const;
+
+export const JURISDICTION = {
+    BVI: 'bvi',
+    LABUAN: 'labuan',
+    MALTA_INVEST: 'maltainvest',
+    SVG: 'svg',
+    VANUATU: 'vanuatu',
+} as const;

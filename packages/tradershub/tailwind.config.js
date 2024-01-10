@@ -1,9 +1,26 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin');
+
 module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
+    plugins: [
+        plugin(({ addUtilities }) => {
+            addUtilities({
+                '.backface-hidden': {
+                    'backface-visibility': 'hidden',
+                },
+                '.backface-visible': {
+                    'backface-visibility': 'visible',
+                },
+            });
+        }),
+    ],
     presets: [require('@deriv/quill-design/quill-tailwind/tailwind.config.cjs')],
     theme: {
         extend: {
+            backfaceVisibility: {
+                hidden: 'hidden',
+            },
             button: {
                 primary: {
                     default: '#ff444f',
@@ -20,9 +37,24 @@ module.exports = {
             colors: {
                 brand: {
                     blue: '#85acb0',
+                    brown: {
+                        dark: '#664407',
+                    },
                     coral: '#ff444f',
                     night: '#2a3052',
                     orange: '#ff6444',
+                    red: {
+                        dark: '#b33037',
+                        darker: '#661b20',
+                        light: '#ff444f',
+                    },
+                    voilet: {
+                        dark: '#4a3871',
+                    },
+                    yellow: {
+                        dark: '#b3760d',
+                        light: '#ffa912',
+                    },
                 },
                 random: {
                     blue: '#3f6fe5',
@@ -52,7 +84,8 @@ module.exports = {
                         'disabled-text': '#3e3e3e',
                         'general-text': '#c2c2c2',
                         'hover-background': '#242828',
-                        'less prominent-text': '#6e6e6e',
+                        'less-prominent': '#6e6e6e',
+                        'less-prominent-text': '#6e6e6e',
                         'primary-background': '#0e0e0e',
                         'prominent-text': '#ffffff',
                         'secondary-background': '#151717',
@@ -62,6 +95,7 @@ module.exports = {
                         'disabled-text': '#d6d6d6',
                         'general-text': '#333333',
                         'hover-background': '#e6e9e9',
+                        'less-prominent': '#999999',
                         'less-prominent-text': '#999999',
                         'primary-background': '#ffffff',
                         'prominent-text': '#333333',

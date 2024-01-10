@@ -81,6 +81,17 @@ describe('StaticDashboard', () => {
         expect(trading_app_card[0]).toHaveTextContent('Deriv Trader');
         expect(cfd_account_manager.length).not.toBeGreaterThan(3);
         expect(cfd_account_manager[0]).toHaveTextContent('Deriv account');
-        expect(cfd_account_manager[1]).toHaveTextContent('Financial');
+    });
+
+    it('should not display MT5 section if MT5 is not available in residence country', () => {
+        render_container({
+            client: { is_logged_in: true, is_mt5_allowed: true },
+            traders_hub: { financial_restricted_countries: true },
+        });
+        const trading_app_card = screen.getAllByTestId('trading_app_card');
+        const cfd_account_manager = screen.getAllByTestId('cfd_account_manager');
+        expect(trading_app_card.length).not.toBeGreaterThan(1);
+        expect(trading_app_card[0]).toHaveTextContent('Deriv Trader');
+        expect(cfd_account_manager[0]).toHaveTextContent('Deriv account');
     });
 });

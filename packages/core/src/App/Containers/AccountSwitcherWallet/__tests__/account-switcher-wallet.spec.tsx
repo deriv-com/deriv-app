@@ -11,8 +11,8 @@ jest.mock('react-router', () => ({
     }),
 }));
 
-jest.mock('../account-switcher-wallet-item', () => ({
-    AccountSwitcherWalletItem: () => <div>AccountSwitcherWalletItem</div>,
+jest.mock('../account-switcher-wallet-list', () => ({
+    AccountSwitcherWalletList: () => <div>AccountSwitcherWalletList</div>,
 }));
 
 const props: React.ComponentProps<typeof AccountSwitcherWallet> = {
@@ -43,7 +43,7 @@ describe('AccountSwitcherWalletComponent', () => {
 
         render(<AccountSwitcherWallet {...props} />, { wrapper: wrapper(mock) });
         expect(screen.getByText('Deriv Apps accounts')).toBeInTheDocument();
-        expect(screen.getByText('AccountSwitcherWalletItem')).toBeInTheDocument();
+        expect(screen.getByText('AccountSwitcherWalletList')).toBeInTheDocument();
         expect(screen.getByText('Looking for CFDs? Go to Trader’s hub')).toBeInTheDocument();
     });
 
@@ -71,7 +71,7 @@ describe('AccountSwitcherWalletComponent', () => {
         });
 
         render(<AccountSwitcherWallet {...props} />, { wrapper: wrapper(mock) });
-        expect(screen.getAllByText('AccountSwitcherWalletItem')).toHaveLength(3);
+        expect(screen.getByText('AccountSwitcherWalletList')).toBeInTheDocument();
     });
 
     it('should toggle the switcher on button click', () => {

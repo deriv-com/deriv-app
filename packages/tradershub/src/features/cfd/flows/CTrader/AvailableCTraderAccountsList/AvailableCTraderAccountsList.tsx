@@ -6,7 +6,7 @@ import { getStaticUrl } from '../../../../../helpers/urls';
 import CTrader from '../../../../../public/images/cfd/ctrader.svg';
 import { PlatformDetails } from '../../../constants';
 
-const AvailableCTraderAccountsList: React.FC = () => {
+const AvailableCTraderAccountsList = () => {
     const { mutate } = useCreateOtherCFDAccount();
     const { data: activeTradingAccount } = useActiveTradingAccount();
 
@@ -40,12 +40,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
     );
 
     const trailingButton = () => (
-        <Button
-            onClick={() => {
-                onSubmit();
-            }}
-            variant='primary'
-        >
+        <Button className='rounded-200' colorStyle='coral' onClick={onSubmit} variant='primary'>
             Get
         </Button>
     );
@@ -57,7 +52,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
                     <Text bold size='sm'>
                         {PlatformDetails.ctrader.title}
                     </Text>
-                    <Text size='sm'>This account offers CFDs on a feature-rich trading platform.</Text>
+                    <Text className='text-[12px]'>This account offers CFDs on a feature-rich trading platform.</Text>
                 </div>
             </TradingAccountCard>
         </div>

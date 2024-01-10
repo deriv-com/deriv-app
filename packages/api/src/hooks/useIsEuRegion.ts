@@ -35,9 +35,21 @@ const useIsEuRegion = () => {
         return is_financial_maltainvest || is_eu_based_on_shortcodes || is_eu_based_on_residence;
     }, [landing_company]);
 
+    // New method to test, if this works will remove the legacy method above
+    const isEU = useMemo(() => {
+        if (!landing_company) return;
+
+        const { gaming_company, financial_company } = landing_company;
+
+        const isEuRegion = !gaming_company && financial_company?.shortcode === 'maltainvest';
+
+        return isEuRegion;
+    }, [landing_company]);
+
     return {
         /** A boolean flag indicating if the region is within the EU */
         data: isEuRegion,
+        isEU,
         /** Additional properties inherited from the useLandingCompany hook */
         ...rest,
     };

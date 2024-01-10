@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import { Analytics } from '@deriv/analytics';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { MobileWrapper, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
@@ -9,9 +9,26 @@ import DeleteDialog from './delete-dialog';
 import RecentWorkspace from './recent-workspace';
 import SaveModal from './save-modal';
 import './index.scss';
-import { Analytics } from '@deriv/analytics';
 
-const HEADERS = [localize('Bot name'), localize('Last modified'), localize('Status')];
+type THeader = {
+    label: string;
+    className: string;
+};
+
+const HEADERS: THeader[] = [
+    {
+        label: localize('Bot name'),
+        className: 'bot-list__header__label',
+    },
+    {
+        label: localize('Last modified'),
+        className: 'bot-list__header__time-stamp',
+    },
+    {
+        label: localize('Status'),
+        className: 'bot-list__header__load-type',
+    },
+];
 
 const RecentComponent = observer(() => {
     const { load_modal, dashboard } = useDBotStore();
@@ -38,6 +55,7 @@ const RecentComponent = observer(() => {
         };
         getStrategies();
         //this dependency is used when we use the save modal popup
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [strategy_save_type]);
 
     React.useEffect(() => {
@@ -52,6 +70,7 @@ const RecentComponent = observer(() => {
             getStratagiesForRudderStack();
             get_first_strategy_info.current = true;
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (!dashboard_strategies?.length) return null;
@@ -64,20 +83,18 @@ const RecentComponent = observer(() => {
                             <Localize i18n_default_text='Your bots:' />
                         </Text>
                     </div>
-                    <div
-                        className={classNames('load-strategy__recent-item load-strategy__recent-item__loaded', {
-                            'load-strategy__recent-item__loaded--first-child': !is_mobile,
-                        })}
-                    >
-                        {HEADERS.map(tab_name => {
+                    <div className='bot-list__header'>
+                        {HEADERS.map(({ label, className }) => {
                             return (
-                                <Text size='xs' weight='bold' key={tab_name}>
-                                    {tab_name}
-                                </Text>
+                                <div className={className} key={label}>
+                                    <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
+                                        {label}
+                                    </Text>
+                                </div>
                             );
                         })}
                     </div>
-                    <div className='load-strategy__recent__files__list'>
+                    <div className='bot-list__wrapper'>
                         {dashboard_strategies.map((workspace, index) => {
                             return <RecentWorkspace key={workspace.id} workspace={workspace} index={index} />;
                         })}

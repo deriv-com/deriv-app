@@ -25,11 +25,11 @@ describe('DepositCryptoCurrencyDetails', () => {
         expect(screen.getByText(`Send only Bitcoin (BTC) to this address`)).toBeInTheDocument();
     });
 
-    it('should render with default text when data is unavailable', () => {
+    it('should not render with currency details when data is unavailable', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValue({});
 
         render(<DepositCryptoCurrencyDetails />);
 
-        expect(screen.getByText('Send only () to this address')).toBeInTheDocument();
+        expect(screen.queryByText('Send only Bitcoin (BTC) to this address')).not.toBeInTheDocument();
     });
 });

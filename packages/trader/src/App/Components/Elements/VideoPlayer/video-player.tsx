@@ -87,8 +87,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
             100;
         if (new_width >= 100) new_width = 100;
         if (new_width <= 0) new_width = 0;
-
-        return new_width;
+        return parseFloat(new_width.toFixed(2));
     };
 
     const dragStartHandler = (e: React.MouseEvent<HTMLSpanElement> | React.TouchEvent<HTMLSpanElement>) => {
@@ -123,8 +122,6 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
         const new_width = calculateNewWidth(e);
         progress_bar_filled_ref.current.style.setProperty('width', `${new_width}%`);
         video_ref.current.currentTime = (Number(video_ref.current.duration) * new_width) / 100;
-
-        setIsPlaying(!video_ref.current.paused);
     };
 
     const dragEndHandler = (e: MouseEvent | TouchEvent) => {
@@ -133,12 +130,11 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
 
         if (!is_dragging.current) return;
 
+        is_dragging.current = false;
         video_ref?.current?.play();
         setIsPlaying(true);
         setIsAnimated(true);
         setIsEnded(false);
-
-        is_dragging.current = false;
 
         if (is_mobile) setHasEnlargedDot(false);
     };
@@ -146,6 +142,8 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     const onRewind = (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
+
+        if (is_dragging.current) return;
 
         if (e.type === 'keydown') return;
         if ((e.target as HTMLElement).className === 'player__progress-dot') return;
@@ -175,8 +173,9 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
     };
 
     const onEnded = () => {
-        setIsPlaying(false);
         setIsEnded(true);
+        setCurrentTime(video_duration);
+        setIsPlaying(false);
         setIsAnimated(false);
     };
 

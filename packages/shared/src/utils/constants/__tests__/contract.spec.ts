@@ -70,7 +70,7 @@ describe('getSupportedContracts', () => {
         expect(getSupportedContracts(false).CALL).toEqual(supported_non_high_low_contract);
     });
 
-    it('should return TICKHIGH as a part of unsupported contracts', () => {
+    it('should return TICKHIGH as a part of supported contracts', () => {
         expect(Object.keys(getSupportedContracts(false))).toContain('TICKHIGH');
     });
 });

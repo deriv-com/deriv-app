@@ -1,24 +1,8 @@
 import React from 'react';
-import { Button, Icon, Text } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import FormFooter from '../../../Components/form-footer';
 import { getPasskeysDescriptions, getPasskeysTips } from './passkeys-content';
 import PasskeysStatus from './passkeys-status';
-
-type TNoPasskeysDescription = { onClick: (is_expanded: boolean) => void };
-
-const NoPasskeysDescription = ({ onClick }: TNoPasskeysDescription) => (
-    <PasskeysStatus
-        icon='IcAddPasskey'
-        title={<Localize i18n_default_text='No passkey set' />}
-        description={
-            <Localize
-                i18n_default_text="You haven't set a passkey yet. To enhance your security, tap 'Create Passkey' below. Uncertain about passkeys? <0>Learn more</0>."
-                components={[<Text key={0} color='loss-danger' size='xs' onClick={() => onClick(true)} />]}
-            />
-        }
-    />
-);
 
 const TipsBlock = () => {
     const tips = getPasskeysTips();
@@ -44,14 +28,10 @@ const TipsBlock = () => {
     );
 };
 
-const ExpandedPasskeysDescription = () => {
+const DescriptionContainer = () => {
     const passkeys_descriptions = getPasskeysDescriptions();
     return (
-        <PasskeysStatus
-            className='passkeys-status__wrapper--expanded'
-            icon='IcInfoPasskey'
-            title={<Localize i18n_default_text='Passwordless login with passkeys' />}
-        >
+        <React.Fragment>
             <div className='passkeys-status__description-container'>
                 {passkeys_descriptions.map(({ id, question, description }) => (
                     <div key={`description-${id}`} className='passkeys-status__description-card'>
@@ -62,23 +42,47 @@ const ExpandedPasskeysDescription = () => {
                     </div>
                 ))}
             </div>
-            <TipsBlock />
-        </PasskeysStatus>
+        </React.Fragment>
     );
 };
 
-const NoPasskeysSet = () => {
+const getPasskeysNotSetContent = (is_expanded: boolean, onLearnMoreClick: () => void) => ({
+    class_name: is_expanded ? 'passkeys-status__wrapper--expanded' : '',
+    icon: is_expanded ? 'IcInfoPasskey' : 'IcAddPasskey',
+    title: is_expanded ? (
+        <Localize i18n_default_text='Passwordless login with passkeys' />
+    ) : (
+        <Localize i18n_default_text='No passkey set' />
+    ),
+    description: is_expanded ? undefined : (
+        <Localize
+            i18n_default_text="You haven't set a passkey yet. To enhance your security, tap 'Create passkey' below. Uncertain about passkeys? <0>Learn more</0>."
+            components={[<Text key={0} color='loss-danger' size='xs' onClick={onLearnMoreClick} />]}
+        />
+    ),
+});
+
+const NoPasskeysSet = ({ onButtonClick }: { onButtonClick: () => void }) => {
     const [is_expanded, setIsExpanded] = React.useState(false);
+    const onLearnMoreClick = () => setIsExpanded(true);
+    const status_content = getPasskeysNotSetContent(is_expanded, onLearnMoreClick);
 
     return (
-        <React.Fragment>
-            {is_expanded ? <ExpandedPasskeysDescription /> : <NoPasskeysDescription onClick={setIsExpanded} />}
-            <FormFooter>
-                <Button type='button' has_effect primary>
-                    <Localize i18n_default_text='Create passkey' />
-                </Button>
-            </FormFooter>
-        </React.Fragment>
+        <PasskeysStatus
+            className={status_content.class_name}
+            icon={status_content.icon}
+            title={status_content.title}
+            button_text={<Localize i18n_default_text='Create passkey' />}
+            onButtonClick={onButtonClick}
+            description={status_content.description}
+        >
+            {is_expanded && (
+                <React.Fragment>
+                    <DescriptionContainer />
+                    <TipsBlock />
+                </React.Fragment>
+            )}
+        </PasskeysStatus>
     );
 };
 

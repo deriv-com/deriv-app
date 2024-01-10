@@ -1,5 +1,6 @@
 .passkeys {
-    display: flex;
+    width: 100%;
+    margin-inline: auto;
     &-status {
         &__wrapper {
             height: 100%;
@@ -11,8 +12,13 @@
 
             &--expanded {
                 display: block;
+
+                .dc-icon {
+                    display: block;
+                    margin-inline: auto;
+                }
+
                 .passkeys-status__title {
-                    text-align: left;
                     margin-bottom: 0;
                 }
             }
@@ -55,5 +61,17 @@
 
     .dc-btn {
         height: 4rem;
+    }
+
+    &-card {
+        &__wrapper {
+            display: flex;
+            gap: 0.8rem;
+            margin-block: 1.6rem;
+
+            & > .dc-icon:last-child {
+                margin-left: auto;
+            }
+        }
     }
 }

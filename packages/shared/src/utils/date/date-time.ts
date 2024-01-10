@@ -1,4 +1,4 @@
-import { localize } from '@deriv/translations';
+import { getLanguage, localize } from '@deriv/translations';
 import moment from 'moment';
 import 'moment/min/locales';
 
@@ -46,6 +46,14 @@ export const toMoment = (value?: moment.MomentInput): moment.Moment => {
 };
 
 export const toLocalFormat = (time: moment.MomentInput) => moment.utc(time).local().format('YYYY-MM-DD HH:mm:ss Z');
+export const getLongDate = (time: number): string => {
+    if (time === undefined || time === null) {
+        return 'Invalid Date';
+    }
+    moment.locale(getLanguage().toLowerCase());
+    return moment.unix(time).format('MMMM Do, YYYY');
+};
+
 /**
  * Set specified time on moment object
  * @param  {moment} moment_obj  the moment to set the time on

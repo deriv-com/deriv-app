@@ -1867,7 +1867,7 @@ type TPrivateSocketEndpoints = {
     };
 };
 
-//TODO remove custom passkeys types after implementing them inside api-types
+//TODO remove these mock passkeys types after implementing them inside api-types
 type PasskeysListRequest = {
     passkeys_list: 1;
     req_id?: number;
@@ -1880,6 +1880,75 @@ type PasskeysListResponse = {
         created_at: number;
         stored_on?: unknown;
     }[];
+    echo_req: {
+        [k: string]: unknown;
+    };
+    msg_type: 'passkeys_list';
+    req_id?: number;
+    [k: string]: unknown;
+};
+type PasskeysRegisterOptionsRequest = {
+    passkeys_register_options: 1;
+    req_id?: number;
+};
+type PasskeysRegisterOptionsResponse = {
+    passkeys_register_options?: {
+        publicKey: {
+            challenge: string;
+            rp: {
+                name: string;
+                id: string;
+            };
+            user: {
+                id: string;
+                name: string;
+                displayName: string;
+            };
+            pubKeyCredParams: PublicKeyCredentialParameters[];
+            timeout: number;
+            attestation: AttestationConveyancePreference;
+            excludeCredentials: [];
+            authenticatorSelection: {
+                residentKey: ResidentKeyRequirement;
+                userVerification: UserVerificationRequirement;
+                authenticatorAttachment?: AuthenticatorAttachment;
+                requireResidentKey?: boolean;
+            };
+            extensions: Record<string, unknown>;
+        };
+    };
+    echo_req: {
+        [k: string]: unknown;
+    };
+    msg_type: 'passkeys_list';
+    req_id?: number;
+    [k: string]: unknown;
+};
+type PasskeyRegisterRequest = {
+    passkey_register: 1;
+    name?: string;
+    publicKeyCredential: {
+        type: string;
+        id: string;
+        rawId: string;
+        authenticatorAttachment?: string;
+        response: {
+            attestationObject: string;
+            clientDataJSON: string;
+            transports?: string[];
+            authenticatorData?: string;
+        };
+        clientExtensionResults: Record<string, unknown>;
+    };
+    req_id?: number;
+};
+type PasskeyRegisterResponse = {
+    passkey_register: {
+        id: number;
+        name: string;
+        last_used: number;
+        created_at: number;
+    };
     echo_req: {
         [k: string]: unknown;
     };
@@ -2184,6 +2253,14 @@ type TSocketEndpoints = {
     passkeys_list: {
         request: PasskeysListRequest;
         response: PasskeysListResponse;
+    };
+    passkeys_register_options: {
+        request: PasskeysRegisterOptionsRequest;
+        response: PasskeysRegisterOptionsResponse;
+    };
+    passkey_register: {
+        request: PasskeyRegisterRequest;
+        response: PasskeyRegisterResponse;
     };
     payment_methods: {
         request: PaymentMethodsRequest;

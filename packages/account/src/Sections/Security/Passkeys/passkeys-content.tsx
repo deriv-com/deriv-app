@@ -23,7 +23,7 @@ export const getPasskeysDescriptions = () =>
             id: 1,
             question: <Localize i18n_default_text='What are Passkeys?' />,
             description: (
-                <Localize i18n_default_text='Passkey are encrypted digital keys you create using your fingerprints, face or screen lock. ' />
+                <Localize i18n_default_text='Passkeys are encrypted digital keys you create using your fingerprints, face or screen lock. ' />
             ),
         },
         {
@@ -44,7 +44,7 @@ export const getPasskeysDescriptions = () =>
             id: 4,
             question: <Localize i18n_default_text='How to create Passkeys?' />,
             description: (
-                <Localize i18n_default_text='Simply go to "Account Settings" and follow the instructions in the "Passkey" section. Note that Android allows only one passkey per device, while iOS users can save multiple passkeys for different devices.' />
+                <Localize i18n_default_text='Simply go to "Account Settings" and follow the instructions in the "Passkeys" section. Note that Android allows only one passkey per device, while iOS users can save multiple passkeys for different devices.' />
             ),
         },
         {

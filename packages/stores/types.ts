@@ -1120,7 +1120,6 @@ type TContractReplay = {
     error_code?: string;
     error_message?: string;
     has_error: boolean;
-    indicative_status?: string;
     is_chart_loading: boolean;
     is_forward_starting: boolean;
     is_market_closed: boolean;

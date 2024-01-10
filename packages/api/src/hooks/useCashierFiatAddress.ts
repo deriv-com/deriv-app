@@ -13,7 +13,7 @@ type TParams = Omit<
 /** A custom hook to get the deposit and withdrawal fiat address. */
 const useCashierFiatAddress = () => {
     const { data, mutate: _mutate, ...rest } = useMutation('cashier');
-    const iframe_url = typeof data?.cashier === 'string' ? data?.cashier : undefined;
+    const iframe_url = typeof data?.cashier === 'string' ? `${data?.cashier}&DarkMode=off` : undefined;
 
     const mutate = useCallback(
         (cashier: TCashierParam, payload?: TParams) =>

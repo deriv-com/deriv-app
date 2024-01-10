@@ -2,10 +2,10 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { Icon, Text, ThemedScrollbars, useOnClickOutside } from '@deriv/components';
 import { routes } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useStoreWalletAccountsList } from '@deriv/hooks';
-import { AccountSwitcherWalletItem } from './account-switcher-wallet-item';
-import { observer } from '@deriv/stores';
+import { AccountSwitcherWalletList } from './account-switcher-wallet-list';
 import './account-switcher-wallet.scss';
 
 type TAccountSwitcherWalletProps = {
@@ -43,20 +43,7 @@ export const AccountSwitcherWallet = observer(({ is_visible, toggle }: TAccountS
                 </Text>
             </div>
             <ThemedScrollbars height={450}>
-                <div className='account-switcher-wallet__list'>
-                    {dtrade_account_wallets?.map(account => {
-                        const show_badge = account?.is_malta_wallet || account?.is_virtual;
-
-                        return (
-                            <AccountSwitcherWalletItem
-                                key={account.dtrade_loginid}
-                                account={account}
-                                closeAccountsDialog={closeAccountsDialog}
-                                show_badge={show_badge}
-                            />
-                        );
-                    })}
-                </div>
+                <AccountSwitcherWalletList wallets={dtrade_account_wallets} closeAccountsDialog={closeAccountsDialog} />
             </ThemedScrollbars>
             <div className='account-switcher-wallet__looking-for-cfds'>
                 <Text size='xs' line_height='xl'>

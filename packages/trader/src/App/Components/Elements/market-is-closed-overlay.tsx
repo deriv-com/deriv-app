@@ -4,7 +4,7 @@ import { Button, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import MarketCountdownTimer from './market-countdown-timer';
 import { useStore } from '@deriv/stores';
-import { useTraderStore } from 'Stores/useTraderStores.js';
+import { useTraderStore } from '../../../Stores/useTraderStores';
 
 type TMarketIsClosedOverlay = {
     is_eu: ReturnType<typeof useStore>['client']['is_eu'];

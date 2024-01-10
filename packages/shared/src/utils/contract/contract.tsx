@@ -164,6 +164,8 @@ export const isSmartTraderContract = (contract_type = '') =>
 export const isAsiansContract = (contract_type = '') => /ASIAN/i.test(contract_type);
 
 export const isTicksContract = (contract_type = '') => /TICK/i.test(contract_type);
+  
+export const isResetContract = (contract_type = '') => /RESET/i.test(contract_type);
 
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');
 
@@ -332,4 +334,14 @@ export const clickAndKeyEventHandler = (
     } else {
         callback();
     }
+};
+
+export const getSortedTradeTypes = (array: string[] = []) => {
+    if (array.includes(TRADE_TYPES.TURBOS.LONG)) {
+        return [TRADE_TYPES.TURBOS.LONG, ...array.filter(type => type !== TRADE_TYPES.TURBOS.LONG)];
+    }
+    if (array.includes(TRADE_TYPES.MULTIPLIER)) {
+        return [TRADE_TYPES.MULTIPLIER, ...array.filter(type => type !== TRADE_TYPES.MULTIPLIER)];
+    }
+    return array;
 };

@@ -1,80 +1,84 @@
 import React from 'react';
-import { Button, Heading, Text } from '@deriv/quill-design';
+import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
+import {
+    ContentSwitcher,
+    DemoRealSwitcher,
+    OptionsAndMultipliersSection,
+    StaticLink,
+    TotalAssets,
+} from '../../components';
+import { CTraderList } from '../../features/cfd/components/CTraderList';
+import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
 
-const TradersHubRoute: React.FC = () => (
-    <div className='flex flex-col gap-1200'>
-        {/* Header */}
-        <div className='flex align-start items-center justify-between gap-100'>
-            <Heading.H3>Trader&apos;s Hub</Heading.H3>
-            <div className='flex flex-col items-end justify-end'>
-                <Text size='sm'>Total assets</Text>
-                <Heading.H3 className='text-status-light-information'>10,000.00 USD</Heading.H3>
-            </div>
-        </div>
-        {/* Deriv Apps */}
-        <div className='p-1200 rounded-1200 border-xs border-solid border-opacity-black-100'>
-            <div className='pb-1200 lg:w-4/6'>
-                <Heading.H4>Options & multipliers</Heading.H4>
-                <Text size='sm'>
-                    Earn a range of payouts by correctly predicting market price movements with{' '}
-                    <a className='text-solid-coral-700 underline underline-offset-2 cursor-pointer'>options</a> or get
-                    the upside of CFDs without risking more than your initial stake with{' '}
-                    <a className='text-solid-coral-700 underline underline-offset-2 cursor-pointer'>multipliers</a>.
-                </Text>
-            </div>
-            <div className='grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-x-1200 lg:gap-y-200'>
-                <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                <div className='h-4000 rounded-300 bg-solid-slate-100' />
-            </div>
-        </div>
-        {/* CFD Apps */}
-        <div className='p-1200 rounded-1200 border-xs border-solid border-opacity-black-100'>
-            <div className='pb-1200'>
-                <div className='flex items-center gap-200'>
-                    <Heading.H4>CFDs</Heading.H4>
-                    <Button className='no-underline' colorStyle='coral' size='sm' variant='tertiary'>
-                        Compare Accounts
-                    </Button>
+const TradersHubRoute = () => {
+    const { isMobile } = useBreakpoint();
+
+    if (isMobile)
+        return (
+            <div className='p-800'>
+                <div className='pb-1200'>
+                    <Heading.H3 className='pb-200'>Trader&apos;s Hub</Heading.H3>
+                    <DemoRealSwitcher />
                 </div>
-                <Text size='sm'>
-                    Trade with leverage and tight spreads for better returns on trades.{' '}
-                    <a className='text-solid-coral-700 underline underline-offset-2 cursor-pointer'>Learn more</a>
-                </Text>
+                <div className='grid place-content-center pb-1200'>
+                    <TotalAssets />
+                </div>
+                <ContentSwitcher>
+                    <ContentSwitcher.HeaderList list={['Options & Multipliers', 'CFDs']} />
+                    <ContentSwitcher.PanelContainer>
+                        <OptionsAndMultipliersSection />
+                    </ContentSwitcher.PanelContainer>
+                </ContentSwitcher>
             </div>
-            <div className='flex flex-col gap-y-1200'>
-                <div>
-                    <Text bold className='pb-800' size='md'>
-                        Deriv MT5
-                    </Text>
-                    <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
-                        <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                        <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                        <div className='h-4000 rounded-300 bg-solid-slate-100' />
+        );
+
+    return (
+        <div className='flex flex-col gap-1200'>
+            <div className='flex items-center justify-between align-start gap-100'>
+                <div className='flex flex-row gap-600'>
+                    <Heading.H3 className='font-sans'>Trader&apos;s Hub</Heading.H3>
+                    <DemoRealSwitcher />
+                </div>
+                <TotalAssets />
+            </div>
+            <OptionsAndMultipliersSection />
+
+            <div className='border-solid p-1200 rounded-1200 border-xs border-opacity-black-100'>
+                <div className='pb-1200'>
+                    <div className='flex items-center gap-200'>
+                        <Heading.H4 className='font-sans'>CFDs</Heading.H4>
+                        <Button className='no-underline' colorStyle='coral' size='sm' variant='tertiary'>
+                            Compare Accounts
+                        </Button>
                     </div>
-                </div>
-                <div>
-                    <Text bold className='pb-800' size='md'>
-                        Deriv cTrader
+                    <Text size='sm'>
+                        Trade with leverage and tight spreads for better returns on trades.
+                        <StaticLink size='md' staticUrl='/trade-types/cfds/'>
+                            Learn more
+                        </StaticLink>
                     </Text>
-                    <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
-                        <div className='h-4000 rounded-300 bg-solid-slate-100' />
+                </div>
+                <div className='space-y-1200'>
+                    <div>
+                        <Text bold className='pb-800' size='md'>
+                            Deriv MT5
+                        </Text>
+                        <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
+                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
+                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
+                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <Text bold className='pb-800' size='md'>
-                        Other CFDs
-                    </Text>
                     <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
-                        <div className='h-4000 rounded-300 bg-solid-slate-100' />
+                        <CTraderList />
+                    </div>
+                    <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
+                        <OtherCFDPlatformsList />
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-);
+    );
+};
 
 export default TradersHubRoute;

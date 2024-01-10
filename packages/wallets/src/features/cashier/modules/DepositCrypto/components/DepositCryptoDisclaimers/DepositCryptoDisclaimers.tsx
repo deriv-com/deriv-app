@@ -17,6 +17,21 @@ const cryptoCurrencyToNetworkMapper: Record<string, string> = {
 const DepositCryptoDisclaimers = () => {
     const { data } = useActiveWalletAccount();
     const { currency } = data || {};
+    const formattedMinimumDepositValue = data?.currency_config?.minimum_deposit?.toFixed(
+        data?.currency_config?.fractional_digits
+    );
+
+    const minimumDepositDisclaimer = data?.currency_config?.is_tUSDT ? (
+        <li>
+            A minimum deposit value of <strong>{formattedMinimumDepositValue}</strong> {currency} is required.
+            Otherwise, a fee is applied.
+        </li>
+    ) : (
+        <li>
+            A minimum deposit value of <strong>{formattedMinimumDepositValue}</strong> {currency} is required.
+            Otherwise, the funds will be lost and cannot be recovered.
+        </li>
+    );
 
     return (
         <div className='wallets-deposit-crypto-disclaimers'>
@@ -26,14 +41,7 @@ const DepositCryptoDisclaimers = () => {
                         To avoid loss of funds:
                     </WalletText>
                     <ul className='wallets-deposit-crypto-disclaimers__points'>
-                        {data?.currency_config?.minimum_deposit && (
-                            <>
-                                <li>
-                                    A minimum deposit value of {data?.currency_config?.minimum_deposit} {currency} is
-                                    required. Otherwise, the funds will be lost and cannot be recovered.
-                                </li>
-                            </>
-                        )}
+                        {data?.currency_config?.minimum_deposit && minimumDepositDisclaimer}
                         <li>Do not send other cryptocurrencies to this address.</li>
                         <li>Make sure to copy your Deriv account address correctly into your crypto wallet.</li>
                         <li>
@@ -49,7 +57,7 @@ const DepositCryptoDisclaimers = () => {
                     Note:
                 </WalletText>
                 <WalletText size='xs'>
-                    &nbsp;You’ll receive an email when your deposit start being processed.
+                    &nbsp;You’ll receive an email when your deposit starts being processed.
                 </WalletText>
             </div>
         </div>

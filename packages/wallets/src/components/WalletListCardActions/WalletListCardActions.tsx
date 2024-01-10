@@ -10,7 +10,7 @@ import { THooks } from '../../types';
 import { IconButton, WalletButton, WalletText } from '../Base';
 import './WalletListCardActions.scss';
 
-const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
+const getWalletHeaderButtons = (isDemo: boolean) => {
     const buttons = [
         {
             icon: <IcCashierAdd />,
@@ -43,10 +43,7 @@ const getWalletHeaderButtons = (isDemo: boolean, handleAction?: () => void) => {
         ? [...filteredButtons].sort((a, b) => orderForDemo.indexOf(a.name) - orderForDemo.indexOf(b.name))
         : filteredButtons;
 
-    return sortedButtons.map(button => ({
-        ...button,
-        action: () => handleAction?.(),
-    }));
+    return sortedButtons;
 };
 
 type TProps = {
@@ -68,6 +65,7 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
                     {getWalletHeaderButtons(isDemo).map(button => (
                         <div className='wallets-mobile-actions-content' key={button.name}>
                             <IconButton
+                                aria-label={button.name}
                                 className='wallets-mobile-actions-content-icon'
                                 color='transparent'
                                 icon={button.icon}
@@ -91,6 +89,7 @@ const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) 
         <div className='wallets-header__actions'>
             {getWalletHeaderButtons(isDemo).map(button => (
                 <WalletButton
+                    ariaLabel={button.name}
                     icon={button.icon}
                     key={button.name}
                     onClick={() => {

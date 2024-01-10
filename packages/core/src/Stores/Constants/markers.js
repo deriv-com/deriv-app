@@ -3,30 +3,39 @@ import MarkerLine from '../../Components/markers/marker-line.jsx';
 import MarkerSpotLabel from '../../Components/markers/marker-spot-label.jsx';
 import MarkerSpot from '../../Components/markers/marker-spot.jsx';
 
+const default_marker_config = {
+    ContentComponent: MarkerLine,
+    className: 'chart-marker-line',
+};
+
 export const MARKER_TYPES_CONFIG = {
     LINE_END: {
         type: 'LINE_END',
         marker_config: {
-            ContentComponent: MarkerLine,
-            className: 'chart-marker-line',
+            ...default_marker_config,
         },
         content_config: { line_style: 'dash', label: localize('End Time') },
     },
     LINE_PURCHASE: {
         type: 'LINE_PURCHASE',
         marker_config: {
-            ContentComponent: MarkerLine,
-            className: 'chart-marker-line',
+            ...default_marker_config,
         },
         content_config: { line_style: 'solid', label: localize('Purchase Time') },
     },
     LINE_START: {
         type: 'LINE_START',
         marker_config: {
-            ContentComponent: MarkerLine,
-            className: 'chart-marker-line',
+            ...default_marker_config,
         },
         content_config: { line_style: 'solid', label: localize('Start Time') },
+    },
+    LINE_RESET: {
+        type: 'LINE_RESET',
+        marker_config: {
+            ...default_marker_config,
+        },
+        content_config: { line_style: 'dash', label: localize('Reset Time') },
     },
     SPOT_ENTRY: {
         type: 'SPOT_ENTRY',

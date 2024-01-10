@@ -1,14 +1,14 @@
 import classNames from 'classnames';
 import React from 'react';
-import { ContractCard, CurrencyBadge, Icon, Money, ProgressSliderMobile, Text } from '@deriv/components';
+import { ArrowIndicator, ContractCard, CurrencyBadge, Money, ProgressSliderMobile, Text } from '@deriv/components';
 import {
     addComma,
     getContractPath,
     getContractTypeDisplay,
     getCardLabels,
+    getMarketInformation,
     getSymbolDisplayName,
     getEndTime,
-    getTotalProfit,
     isAccumulatorContract,
     isCryptoContract,
     isMultiplierContract,
@@ -16,10 +16,8 @@ import {
     isCryptocurrency,
     isVanillaContract,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
-import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import PositionsResultMobile from './positions-result-mobile';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -41,7 +39,6 @@ type TPositionsModalCard = TPickPortfolioStore &
         current_tick?: React.ComponentProps<typeof ProgressSliderMobile>['current_tick'];
         is_loading?: boolean;
         result?: React.ComponentProps<typeof PositionsResultMobile>['result'];
-        status?: string;
         togglePositions: TUiStore['togglePositionsDrawer'];
         toggleUnsupportedContractModal: TUiStore['toggleUnsupportedContractModal'];
     };
@@ -61,7 +58,6 @@ const PositionsModalCard = observer(
         profit_loss,
         onClickCancel,
         result,
-        status,
         togglePositions,
         toggleUnsupportedContractModal,
     }: TPositionsModalCard) => {
@@ -83,20 +79,32 @@ const PositionsModalCard = observer(
                 <PositionsCardLoader speed={2} />
             </div>
         );
-        const is_multiplier = isMultiplierContract(contract_info.contract_type);
-        const is_accumulator = isAccumulatorContract(contract_info.contract_type);
-        const is_turbos = isTurbosContract(contract_info.contract_type);
-        const is_vanilla = isVanillaContract(contract_info.contract_type);
-        const is_crypto = isCryptoContract(contract_info.underlying);
+        const {
+            barrier,
+            bid_price,
+            buy_price,
+            contract_type,
+            date_expiry,
+            date_start,
+            entry_spot_display_value,
+            is_sold,
+            profit,
+            sell_price,
+            shortcode,
+            tick_count,
+            underlying,
+        } = contract_info;
+        const { BUY_PRICE, CONTRACT_VALUE, ENTRY_SPOT, STRIKE, TOTAL_PROFIT_LOSS } = getCardLabels();
+        const is_multiplier = isMultiplierContract(contract_type);
+        const is_accumulator = isAccumulatorContract(contract_type);
+        const is_turbos = isTurbosContract(contract_type);
+        const is_vanilla = isVanillaContract(contract_type);
+        const is_crypto = isCryptoContract(underlying);
         const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
         const has_ended = !!getEndTime(contract_info);
         const fallback_result = profit_loss >= 0 ? 'won' : 'lost';
-        const total_profit = getTotalProfit(contract_info);
 
-        const display_name = getSymbolDisplayName(
-            active_symbols,
-            getMarketInformation(contract_info.shortcode || '').underlying
-        );
+        const display_name = getSymbolDisplayName(active_symbols, getMarketInformation(shortcode || '').underlying);
 
         const contract_vanilla_el = (
             <React.Fragment>
@@ -116,18 +124,18 @@ const PositionsModalCard = observer(
                     <div className={classNames('positions-modal-card__grid-profit-payout')}>
                         <div className='positions-modal-card__purchase-price'>
                             <Text size='xxxs' className='positions-modal-card__purchase-label'>
-                                {localize('Buy price:')}
+                                {BUY_PRICE}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__purchase-value'>
-                                <Money amount={contract_info.buy_price} currency={currency} />
+                                <Money amount={buy_price} currency={currency} />
                             </Text>
                         </div>
                         <div className='positions-modal-card__payout-price'>
                             <Text size='xxxs' className='positions-modal-card__payout-label'>
-                                {localize('Contract value:')}
+                                {CONTRACT_VALUE}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__payout-value'>
-                                <Money amount={contract_info.bid_price} currency={currency} />
+                                <Money amount={is_sold ? sell_price : bid_price} currency={currency} />
                             </Text>
                         </div>
                     </div>
@@ -135,58 +143,48 @@ const PositionsModalCard = observer(
                     <div className={classNames('positions-modal-card__grid-price-payout')}>
                         <div className='positions-modal-card__purchase-price'>
                             <Text size='xxxs' className='positions-modal-card__purchase-label'>
-                                {localize('Entry spot:')}
+                                {ENTRY_SPOT}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__purchase-value'>
-                                {addComma(contract_info.entry_spot)}
+                                {addComma(entry_spot_display_value)}
                             </Text>
                         </div>
                         <div className='positions-modal-card__payout-price'>
                             <Text size='xxxs' className='positions-modal-card__payout-label'>
-                                {localize('Strike:')}
+                                {STRIKE}
                             </Text>
                             <Text weight='bold' size='xxs' className='positions-modal-card__payout-value'>
-                                {addComma(contract_info.barrier)}
+                                {addComma(barrier)}
                             </Text>
                         </div>
                     </div>
 
-                    {result || !!contract_info.is_sold ? (
-                        <PositionsResultMobile
-                            is_visible={!!contract_info.is_sold}
-                            result={result || fallback_result}
-                        />
+                    {result || !!is_sold ? (
+                        <PositionsResultMobile is_visible={!!is_sold} result={result || fallback_result} />
                     ) : (
                         <ProgressSliderMobile
                             className='positions-modal-card__progress'
                             current_tick={current_tick}
                             getCardLabels={getCardLabels}
                             is_loading={is_loading}
-                            start_time={contract_info.date_start}
-                            expiry_time={contract_info.date_expiry}
+                            start_time={date_start}
+                            expiry_time={date_expiry}
                             server_time={server_time as moment.Moment}
-                            ticks_count={contract_info.tick_count}
+                            ticks_count={tick_count}
                         />
                     )}
                 </div>
                 <div className={classNames('positions-modal-card__item', className)}>
-                    <div className='dc-contract-card-item__header'>{getCardLabels().TOTAL_PROFIT_LOSS}</div>
+                    <div className='dc-contract-card-item__header'>{TOTAL_PROFIT_LOSS}</div>
                     <div
                         className={classNames('dc-contract-card-item__body', {
                             'dc-contract-card-item__body--crypto': isCryptocurrency(currency),
-                            'dc-contract-card-item__body--loss': +total_profit < 0,
-                            'dc-contract-card-item__body--profit': +total_profit > 0,
+                            'dc-contract-card-item__body--loss': Number(profit) < 0,
+                            'dc-contract-card-item__body--profit': Number(profit) > 0,
                         })}
                     >
-                        <Money amount={total_profit} currency={currency} />
-                        <div
-                            className={classNames('dc-contract-card__indicative--movement', {
-                                'dc-contract-card__indicative--movement-complete': !!contract_info.is_sold,
-                            })}
-                        >
-                            {status === 'profit' && <Icon icon='IcProfit' />}
-                            {status === 'loss' && <Icon icon='IcLoss' />}
-                        </div>
+                        <Money amount={profit} currency={currency} />
+                        <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
                     </div>
                 </div>
                 <ContractCard.Footer
@@ -201,7 +199,7 @@ const PositionsModalCard = observer(
             </React.Fragment>
         );
 
-        const custom_card_header = (
+        const common_card_header = (
             <ContractCard.Header
                 contract_info={contract_info}
                 display_name={display_name}
@@ -215,7 +213,7 @@ const PositionsModalCard = observer(
             />
         );
 
-        const custom_card_body = (
+        const common_card_body = (
             <ContractCard.Body
                 addToast={addToast}
                 contract_info={contract_info}
@@ -228,19 +226,18 @@ const PositionsModalCard = observer(
                 is_mobile={is_mobile}
                 is_multiplier={is_multiplier}
                 is_positions
-                is_sold={!!contract_info.is_sold}
+                is_sold={!!is_sold}
                 is_turbos={is_turbos}
                 has_progress_slider={is_mobile && has_progress_slider && !has_ended}
                 removeToast={removeToast}
                 server_time={server_time as moment.Moment}
                 setCurrentFocus={setCurrentFocus}
                 should_show_cancellation_warning={should_show_cancellation_warning}
-                status={status}
                 toggleCancellationWarning={toggleCancellationWarning}
             />
         );
 
-        const custom_card_footer = (
+        const common_card_footer = (
             <ContractCard.Footer
                 contract_info={contract_info}
                 getCardLabels={getCardLabels}
@@ -261,9 +258,9 @@ const PositionsModalCard = observer(
                     profit_loss={profit_loss}
                     should_show_result_overlay={false}
                 >
-                    {custom_card_header}
-                    {custom_card_body}
-                    {custom_card_footer}
+                    {common_card_header}
+                    {common_card_body}
+                    {common_card_footer}
                 </ContractCard>
             </React.Fragment>
         );
@@ -277,7 +274,7 @@ const PositionsModalCard = observer(
                         className={classNames('positions-modal-card')}
                         onClick={() => toggleUnsupportedContractModal(true)}
                     >
-                        {contract_info.underlying ? contract_el : loader_el}
+                        {underlying ? contract_el : loader_el}
                     </div>
                 ) : (
                     <React.Fragment>
@@ -290,7 +287,7 @@ const PositionsModalCard = observer(
                             })}
                             to={getContractPath(id)}
                         >
-                            {contract_info.underlying ? contract_el : loader_el}
+                            {underlying ? contract_el : loader_el}
                         </BinaryLink>
                     </React.Fragment>
                 )}

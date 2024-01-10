@@ -408,6 +408,14 @@ export const getUnsupportedContracts = () =>
             name: localize('Reset Put'),
             position: 'bottom',
         },
+        TICKHIGH: {
+            name: localize('High Tick'),
+            position: 'top',
+        },
+        TICKLOW: {
+            name: localize('Low Tick'),
+            position: 'bottom',
+        },
         LBFLOATCALL: {
             name: localize('Close-to-Low'),
             position: 'top',
@@ -555,6 +563,14 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
         },
         [CONTRACT_TYPES.TICK_HIGH_LOW.LOW]: {
             name: localize('Low Tick'),
+            position: 'bottom',
+        },
+        RESETCALL: {
+            name: localize('Reset Call'),
+            position: 'top',
+        },
+        RESETPUT: {
+            name: localize('Reset Put'),
             position: 'bottom',
         },
         // To add a feature flag for a new trade_type, please add 'feature_flag' to its config here:

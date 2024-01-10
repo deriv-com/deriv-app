@@ -3,8 +3,8 @@ import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
 import {
     ContentSwitcher,
     DemoRealSwitcher,
-    EUSwitcher,
     OptionsAndMultipliersSection,
+    RegulationSwitcherMobile,
     StaticLink,
     TotalAssets,
 } from '../../components';
@@ -22,7 +22,7 @@ const TradersHubRoute = () => {
                         <Heading.H3 className='pb-200'>Trader&apos;s Hub</Heading.H3>
                         <DemoRealSwitcher />
                     </div>
-                    <EUSwitcher />
+                    <RegulationSwitcherMobile />
                 </div>
                 <div />
                 <div className='grid place-content-center pb-1200'>

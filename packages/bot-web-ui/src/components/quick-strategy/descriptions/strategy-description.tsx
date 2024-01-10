@@ -1,9 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { TStrategyDescription } from '../types';
 
-const StrategyDescription = ({ item, font_size }: TStrategyDescription) => {
+const StrategyDescription = observer(({ item, font_size }: TStrategyDescription) => {
+    const { ui } = useStore();
+    const { is_dark_mode_on } = ui;
     const class_name = item?.className ?? '';
     switch (item.type) {
         case 'text': {
@@ -36,7 +39,11 @@ const StrategyDescription = ({ item, font_size }: TStrategyDescription) => {
                 <>
                     {
                         <div>
-                            <img className={class_names} src={item.src} alt={item.alt} />
+                            <img
+                                className={class_names}
+                                src={is_dark_mode_on ? item.dark_src ?? item.src : item.src}
+                                alt={item.alt}
+                            />
                         </div>
                     }
                 </>
@@ -45,6 +52,6 @@ const StrategyDescription = ({ item, font_size }: TStrategyDescription) => {
         default:
             return null;
     }
-};
+});
 
 export default StrategyDescription;

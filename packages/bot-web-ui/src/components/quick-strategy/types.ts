@@ -54,6 +54,7 @@ export type TDescriptionItem = Partial<{
     no_collapsible: boolean;
     font_size: string;
     id: number;
+    dark_src?: string;
 }>;
 export type TDescription = TDescriptionItem[] | TDescriptionItem[][];
 

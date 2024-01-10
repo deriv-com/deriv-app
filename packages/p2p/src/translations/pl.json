@@ -314,6 +314,7 @@
     "-1862812590": "Limity {{ min_order }}–{{ max_order }} {{ currency }}",
     "-375836822": "Kup {{account_currency}}",
     "-1035421133": "Sprzedaj {{account_currency}}",
+    "-1876891031": "Waluta",
     "-1503997652": "Brak reklam dla tej waluty.",
     "-1048001140": "Brak wyników dla \"{{value}}\".",
     "-254484597": "Nie masz żadnych ogłoszeń 😞",

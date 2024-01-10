@@ -314,6 +314,7 @@
     "-1862812590": "Limitler {{ min_order }}–{{ max_order }} {{ currency }}",
     "-375836822": "Satın al {{account_currency}}",
     "-1035421133": "Sat {{account_currency}}",
+    "-1876891031": "Para birimi",
     "-1503997652": "Bu para birimi için ilan yok.",
     "-1048001140": "\"{{value}}\" için sonuç yok.",
     "-254484597": "İlanınız yok 😞",

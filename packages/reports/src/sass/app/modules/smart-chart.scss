@@ -34,11 +34,15 @@
         }
     }
     &__entry {
-        left: -12px;
-        top: -12px;
-        position: relative;
-        border: 6px solid var(--brand-red-coral);
+        align-items: center;
         background-color: var(--general-main-2);
+        border: 5px solid var(--brand-red-coral);
+        display: flex;
+        justify-content: center;
+        left: -12px;
+        position: relative;
+        top: -12px;
+        color: var(--text-general);
 
         @include mobile {
             border-width: 3px;

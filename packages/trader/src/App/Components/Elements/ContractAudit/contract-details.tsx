@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
@@ -9,17 +10,18 @@ import {
     getLocalizedBasis,
     hasTwoBarriers,
     isAccumulatorContract,
+    isAsiansContract,
     isEndedBeforeCancellationExpired,
     isMobile,
     isMultiplierContract,
     isSmartTraderContract,
-    isAsiansContract,
+    isTicksContract,
     isTurbosContract,
     isUserCancelled,
     isUserSold,
     isVanillaFxContract,
-    toGMTFormat,
     TContractInfo,
+    toGMTFormat,
 } from '@deriv/shared';
 import { Analytics } from '@deriv/analytics';
 import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/Elements/PositionsDrawer/helpers';
@@ -44,6 +46,7 @@ const ContractDetails = ({
     is_vanilla,
 }: TContractDetails) => {
     const {
+        barrier,
         commission,
         contract_type,
         currency,
@@ -55,6 +58,8 @@ const ContractDetails = ({
         high_barrier,
         low_barrier,
         profit,
+        selected_tick,
+        status,
         tick_count,
         tick_passed,
         transaction_ids: { buy, sell } = {},
@@ -181,6 +186,25 @@ const ContractDetails = ({
                             />
                         )}
                     </React.Fragment>
+                )}
+                {isTicksContract(contract_type) && (
+                    <ContractAuditItem
+                        id='dt_entry_spot_label'
+                        icon={
+                            <div className='contract-audit__selected-tick'>
+                                <div
+                                    className={classNames(
+                                        'contract-audit__selected-tick--marker',
+                                        `contract-audit__selected-tick--marker--${status}`
+                                    )}
+                                >
+                                    {selected_tick}
+                                </div>
+                            </div>
+                        }
+                        label={localize('Selected tick')}
+                        value={barrier}
+                    />
                 )}
                 <ContractAuditItem
                     id='dt_start_time_label'

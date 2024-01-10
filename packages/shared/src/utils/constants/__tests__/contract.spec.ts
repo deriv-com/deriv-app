@@ -56,6 +56,9 @@ describe('getUnsupportedContracts', () => {
     it('should return an object with unsupported contracts, e.g. such as Spread Up', () => {
         expect(getUnsupportedContracts().CALLSPREAD).toEqual(unsupported_contract);
     });
+    it('should not return TICKHIGH as a part of unsupported contracts', () => {
+        expect(Object.keys(getUnsupportedContracts())).not.toContain('TICKHIGH');
+    });
 });
 
 describe('getSupportedContracts', () => {
@@ -65,6 +68,10 @@ describe('getSupportedContracts', () => {
 
     it('should return an object with specific supported contracts if is_high_low === false', () => {
         expect(getSupportedContracts(false).CALL).toEqual(supported_non_high_low_contract);
+    });
+
+    it('should return TICKHIGH as a part of unsupported contracts', () => {
+        expect(Object.keys(getSupportedContracts(false))).toContain('TICKHIGH');
     });
 });
 

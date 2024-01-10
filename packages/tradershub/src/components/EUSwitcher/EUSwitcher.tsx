@@ -1,3 +1,4 @@
+// TODO: Add logic to switch between EU and non-EU
 import React from 'react';
 import { Tab } from '@deriv/quill-design';
 import InfoIcon from '../../public/images/ic-info-outline.svg';

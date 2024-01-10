@@ -40,7 +40,7 @@ const CreateAdForm = () => {
 
     const { buy_sell_store, general_store, my_ads_store, my_profile_store } = useStores();
     const {
-        p2p_settings: { float_rate_offset_limit_string, rate_type },
+        p2p_settings: { adverts_archive_period, float_rate_offset_limit_string, rate_type },
     } = useP2PSettings();
 
     const should_not_show_auto_archive_message_again = React.useRef(false);
@@ -111,19 +111,6 @@ const CreateAdForm = () => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    React.useEffect(() => {
-        const ad_website_status = setInterval(() => {
-            if (my_ads_store.is_ad_created_modal_visible) {
-                my_ads_store.getWebsiteStatus();
-            }
-        }, 10000);
-
-        return () => {
-            clearInterval(ad_website_status);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [my_ads_store.is_ad_created_modal_visible]);
 
     return (
         <React.Fragment>
@@ -466,7 +453,7 @@ const CreateAdForm = () => {
                     <Text as='p' size='xs' color='prominent'>
                         <Localize
                             i18n_default_text="If the ad doesn't receive an order for {{adverts_archive_period}} days, it will be deactivated."
-                            values={{ adverts_archive_period: my_ads_store.adverts_archive_period }}
+                            values={{ adverts_archive_period }}
                         />
                     </Text>
                     <br />

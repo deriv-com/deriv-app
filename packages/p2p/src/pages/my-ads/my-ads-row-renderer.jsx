@@ -118,7 +118,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
 
     React.useEffect(() => {
         setShowWarningIcon(enable_action_point || should_show_tooltip_icon || !general_store.is_listed);
-    }, [enable_action_point, general_store.is_listed, should_show_tooltip_icon]);
+    }, [enable_action_point, general_store.is_listed, should_show_tooltip_icon, p2p_settings.rate_type]);
 
     const onClickTooltipIcon = () => {
         showModal({

@@ -13,7 +13,6 @@ import { api_error_codes } from '../constants/api-error-codes';
 export default class MyAdsStore extends BaseStore {
     advert_details = null;
     adverts = [];
-    adverts_archive_period = null;
     api_error = '';
     api_error_message = '';
     current_method = { key: null, is_deleted: false };
@@ -44,7 +43,6 @@ export default class MyAdsStore extends BaseStore {
         makeObservable(this, {
             advert_details: observable,
             adverts: observable,
-            adverts_archive_period: observable,
             api_error: observable,
             api_error_message: observable,
             current_method: observable,
@@ -67,7 +65,6 @@ export default class MyAdsStore extends BaseStore {
             selected_ad_type: computed,
             getAccountStatus: action.bound,
             getAdvertInfo: action.bound,
-            getWebsiteStatus: action.bound,
             handleSubmit: action.bound,
             hideQuickAddModal: action.bound,
             onClickActivateDeactivate: action.bound,
@@ -82,7 +79,6 @@ export default class MyAdsStore extends BaseStore {
             showQuickAddModal: action.bound,
             setAdvertDetails: action.bound,
             setAdverts: action.bound,
-            setAdvertsArchivePeriod: action.bound,
             setApiError: action.bound,
             setApiErrorMessage: action.bound,
             setApiErrorCode: action.bound,
@@ -159,19 +155,6 @@ export default class MyAdsStore extends BaseStore {
             .finally(() => this.setIsFormLoading(false));
     }
 
-    getWebsiteStatus(createAd = () => {}, setSubmitting) {
-        requestWS({ website_status: 1 }).then(response => {
-            if (response.error) {
-                this.setApiErrorMessage(response.error.message);
-                setSubmitting(false);
-            } else {
-                const { p2p_config } = response.website_status;
-                this.setAdvertsArchivePeriod(p2p_config.adverts_archive_period);
-                createAd();
-            }
-        });
-    }
-
     handleSubmit(values, { setSubmitting }) {
         this.setApiErrorMessage('');
 
@@ -202,45 +185,37 @@ export default class MyAdsStore extends BaseStore {
             create_advert.description = values.default_advert_description;
         }
 
-        const createAd = () => {
-            requestWS(create_advert).then(response => {
-                // If we get an error we should let the user submit the form again else we just go back to the list of ads
-                if (response) {
-                    if (response.error) {
-                        this.setApiErrorCode(response.error.code);
-                        this.setApiErrorMessage(response.error.message);
-                        setSubmitting(false);
-                    } else if (should_not_show_auto_archive_message !== 'true' && this.adverts_archive_period) {
+        requestWS(create_advert).then(response => {
+            // If we get an error we should let the user submit the form again else we just go back to the list of ads
+            if (response) {
+                if (response.error) {
+                    this.setApiErrorCode(response.error.code);
+                    this.setApiErrorMessage(response.error.message);
+                    setSubmitting(false);
+                } else if (should_not_show_auto_archive_message !== 'true') {
+                    this.setAdvertDetails(response.p2p_advert_create);
+                    this.setIsAdCreatedModalVisible(true);
+                } else if (!this.is_ad_created_modal_visible) {
+                    if (!response.p2p_advert_create.is_visible) {
                         this.setAdvertDetails(response.p2p_advert_create);
-                        this.setIsAdCreatedModalVisible(true);
-                    } else if (!this.is_ad_created_modal_visible) {
-                        if (!response.p2p_advert_create.is_visible) {
-                            this.setAdvertDetails(response.p2p_advert_create);
-                        }
-                        if (this.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_BALANCE)) {
-                            this.root_store.general_store.showModal({
-                                key: 'AdVisibilityErrorModal',
-                                props: { error_code: api_error_codes.AD_EXCEEDS_BALANCE },
-                            });
-                        } else if (
-                            this.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_DAILY_LIMIT)
-                        ) {
-                            this.root_store.general_store.showModal({
-                                key: 'AdVisibilityErrorModal',
-                                props: { error_code: api_error_codes.AD_EXCEEDS_DAILY_LIMIT },
-                            });
-                        }
-                        this.setShowAdForm(false);
                     }
+                    if (this.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_BALANCE)) {
+                        this.root_store.general_store.showModal({
+                            key: 'AdVisibilityErrorModal',
+                            props: { error_code: api_error_codes.AD_EXCEEDS_BALANCE },
+                        });
+                    } else if (
+                        this.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_DAILY_LIMIT)
+                    ) {
+                        this.root_store.general_store.showModal({
+                            key: 'AdVisibilityErrorModal',
+                            props: { error_code: api_error_codes.AD_EXCEEDS_DAILY_LIMIT },
+                        });
+                    }
+                    this.setShowAdForm(false);
                 }
-            });
-        };
-
-        if (should_not_show_auto_archive_message !== 'true') {
-            this.getWebsiteStatus(createAd, setSubmitting);
-        } else {
-            createAd();
-        }
+            }
+        });
     }
 
     hideQuickAddModal() {
@@ -453,10 +428,6 @@ export default class MyAdsStore extends BaseStore {
 
     setAdverts(adverts) {
         this.adverts = adverts;
-    }
-
-    setAdvertsArchivePeriod(adverts_archive_period) {
-        this.adverts_archive_period = adverts_archive_period;
     }
 
     setApiError(api_error) {

@@ -37,7 +37,6 @@ export default class OrderStore {
             confirmOrderRequest: action.bound,
             confirmOrder: action.bound,
             getP2POrderList: action.bound,
-            getWebsiteStatus: action.bound,
             handleDateChange: action.bound,
             handleRating: action.bound,
             hideDetails: action.bound,
@@ -228,22 +227,6 @@ export default class OrderStore {
                     }
                 }
             }
-        });
-    }
-
-    getWebsiteStatus(should_show_cancel_modal) {
-        requestWS({ website_status: 1 }).then(response => {
-            if (response.error) {
-                this.setErrorMessage(response.error.message);
-            } else {
-                const { p2p_config } = response.website_status;
-                this.setCancellationBlockDuration(p2p_config.cancellation_block_duration);
-                this.setCancellationCountPeriod(p2p_config.cancellation_count_period);
-                this.setCancellationLimit(p2p_config.cancellation_limit);
-            }
-
-            if (should_show_cancel_modal)
-                this.root_store.general_store.showModal({ key: 'OrderDetailsCancelModal', props: {} });
         });
     }
 

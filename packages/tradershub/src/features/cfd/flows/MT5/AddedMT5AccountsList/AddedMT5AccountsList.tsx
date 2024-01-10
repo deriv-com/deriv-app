@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveAccount, useJurisdictionStatus } from '@deriv/api';
+import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
@@ -10,7 +10,7 @@ import { TradeModal } from '../../../modals/TradeModal';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
-    const { data: activeAccount } = useActiveAccount();
+    const { data: activeAccount } = useActiveTradingAccount();
     const { show } = Provider.useModal();
     const history = useHistory();
     const { getVerificationStatus } = useJurisdictionStatus();

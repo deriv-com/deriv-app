@@ -1,5 +1,5 @@
 import React, { Fragment, useMemo } from 'react';
-import { useActiveAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Text, useBreakpoint } from '@deriv/quill-design';
 import ImportantIcon from '../../../../public/images/ic-important.svg';
@@ -25,7 +25,7 @@ const MT5TradeScreen = ({ account }: MT5TradeScreenProps) => {
     const { getCFDState } = Provider.useCFDContext();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
-    const { data: activeAccount } = useActiveAccount();
+    const { data: activeAccount } = useActiveTradingAccount();
 
     const mt5Platform = PlatformDetails.mt5.platform;
     const dxtradePlatform = PlatformDetails.dxtrade.platform;

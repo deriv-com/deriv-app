@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { KeyboardEvent } from 'react';
 import { Accordion, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
@@ -14,7 +14,7 @@ type TFAQList = {
     description: TDescription[];
 };
 
-const FAQ = ({ type, content, src, imageclass, is_mobile }: TDescription) => {
+const FAQ = ({ type, content = '', src, imageclass, is_mobile }: TDescription) => {
     if (type === 'image') return <img src={src} className={imageclass} />;
 
     return (

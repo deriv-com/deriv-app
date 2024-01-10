@@ -24,12 +24,10 @@ export type TToggleCardDialogProps = Pick<
     | 'onMouseLeave'
     | 'removeToast'
     | 'setCurrentFocus'
-    | 'status'
 > & {
     contract_id?: number;
     is_valid_to_cancel?: boolean;
     should_show_cancellation_warning?: boolean;
-    status?: string;
     toggleCancellationWarning?: () => void;
     is_accumulator?: boolean;
     is_turbos?: boolean;
@@ -50,7 +48,6 @@ const ToggleCardDialog = ({
     removeToast,
     setCurrentFocus,
     should_show_cancellation_warning,
-    status,
     toggleCancellationWarning,
 }: TToggleCardDialogProps) => {
     const [is_visible, setIsVisible] = React.useState(false);
@@ -180,7 +177,6 @@ const ToggleCardDialog = ({
                                 onMouseLeave={onMouseLeave}
                                 removeToast={removeToast}
                                 setCurrentFocus={setCurrentFocus}
-                                status={status}
                                 toggleDialog={toggleDialogWrapper}
                             />
                         </Div100vhContainer>
@@ -209,7 +205,6 @@ const ToggleCardDialog = ({
                             onMouseLeave={onMouseLeave}
                             removeToast={removeToast}
                             setCurrentFocus={setCurrentFocus}
-                            status={status}
                             toggleDialog={toggleDialogWrapper}
                         />
                     )}

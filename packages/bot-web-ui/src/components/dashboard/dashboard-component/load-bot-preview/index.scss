@@ -116,7 +116,7 @@
         padding: 1.5rem;
         border-radius: $BORDER_RADIUS;
         border: solid 1px var(--border-normal);
-        height: calc(100vh - 32.4rem);
+        height: calc(100vh - 30.4rem);
         position: relative;
         overflow: hidden;
         margin: 0 1.6rem 1.6rem 0;
@@ -137,301 +137,6 @@
         &-icon {
             margin: 0.5rem;
             cursor: pointer;
-        }
-    }
-
-    &__recent {
-        display: flex;
-        gap: 1.6rem;
-
-        &-preview-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-general);
-        }
-
-        &__files {
-            flex-basis: 100%;
-
-            &__list {
-                overflow: auto;
-                width: 100%;
-                height: calc(100vh - 56rem);
-                @include mobile {
-                    height: calc(100vh - 46rem);
-                    padding-bottom: 15rem;
-                }
-            }
-        }
-
-        &__preview {
-            flex-basis: 65%;
-            display: flex;
-            flex-direction: column;
-
-            &__title {
-                margin-left: 0;
-            }
-        }
-
-        &-empty {
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-
-            &-icon {
-                margin-bottom: 1.6rem;
-            }
-
-            &-title {
-                margin-bottom: 0.8rem;
-                font-size: var(--text-size-s);
-                font-weight: bold;
-                line-height: 2.4rem;
-            }
-
-            &-description {
-                margin-bottom: 1.6rem;
-                font-size: var(--text-size-xs);
-                line-height: 2rem;
-            }
-
-            &-expand {
-                margin-bottom: 0.8rem;
-                color: var(--brand-red-coral);
-                font-size: var(--text-size-xs);
-                font-weight: bold;
-                cursor: pointer;
-
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
-
-            &-explanation {
-                font-size: var(--text-size-xxs);
-                text-align: left;
-                opacity: 0;
-
-                &-list {
-                    margin-top: 0.8rem;
-                }
-
-                &--show {
-                    opacity: 1;
-                    width: fit-content;
-                }
-            }
-        }
-
-        &__empty {
-            text-align: center;
-        }
-
-        &-item {
-            position: relative;
-            display: grid;
-
-            &:nth-last-child(-n + 5) {
-                .load-strategy__recent-item__mobile {
-                    top: -15rem;
-                    &--min {
-                        top: 1rem;
-                        right: 6rem;
-                    }
-                }
-            }
-
-            @include tablet {
-                grid-template-columns: 4fr 4fr 4fr 1fr;
-            }
-
-            @include mobile {
-                grid-template-columns: 4fr 4fr 4fr 1fr;
-            }
-
-            @include desktop {
-                grid-template-columns: repeat(3, 1fr) 1.5fr;
-            }
-
-            grid-template-areas: ('text location');
-            padding: 0.8rem;
-            align-items: center;
-            text-align: center;
-
-            @include mobile {
-                //TODO: without it doesn't work as expected, improve later
-                grid-template-columns: 1fr 0.8fr 0.6fr 0.3fr;
-            }
-
-            & .dc-text {
-                &:hover {
-                    cursor: pointer;
-                }
-
-                @include mobile {
-                    width: unset;
-                    font-size: var(--text-size-xxs);
-                }
-            }
-
-            &--minimized {
-                grid-template-columns: 1fr 0.8fr 0.6fr 0.3fr;
-
-                .load-strategy__recent-item--minimized > div:last-child {
-                    //iphone 14 specific
-                    @media (min-height: 450px) and (max-height: 750px) {
-                        padding-bottom: 10rem;
-                    }
-                }
-            }
-
-            &__mobile {
-                background: var(--general-main-1);
-                min-width: 15rem;
-                box-shadow: 0 0 2rem rgba(0, 0, 0, 0.05), 0 1.6rem 2rem rgba(0, 0, 0, 0.05);
-                position: absolute;
-                right: 3rem;
-                top: 4rem;
-                z-index: 100;
-                display: none;
-
-                &--active {
-                    display: block;
-                }
-            }
-
-            &__group {
-                display: flex;
-                align-items: center;
-                height: 4rem;
-                padding: 0.8rem 1.1rem;
-
-                &:last-child {
-                    box-shadow: inset 0 0.1rem 0 $color-grey-2;
-                }
-
-                &__label {
-                    margin-left: 0.8rem;
-                }
-            }
-
-            &.load-dialog {
-                padding: 1.6rem;
-            }
-
-            &__loaded {
-                text-align: left;
-                padding: 1rem 2.4rem;
-
-                @include tablet {
-                    padding: 1rem 0.6rem;
-                }
-
-                @include mobile {
-                    padding: 1rem 0.4rem;
-                }
-
-                .load-strategy__recent-item-text {
-                    height: unset;
-                }
-            }
-
-            &__loaded--first-child {
-                border: none;
-
-                &:hover {
-                    background: none;
-                    background-color: none;
-                    cursor: default;
-                }
-            }
-
-            &:not(:last-child) {
-                border-bottom: solid 1px var(--border-normal);
-            }
-
-            &--selected {
-                background-color: var(--state-active);
-            }
-
-            &-text {
-                display: flex;
-                justify-content: center;
-                width: 100%;
-                word-break: break-word;
-                margin-right: 1.6rem;
-                height: unset;
-
-                &.load-dialog {
-                    display: flex;
-                    text-align: left;
-                    padding: 1.2rem 0;
-                }
-            }
-
-            &-title {
-                font-size: var(--text-size-xs);
-                color: var(--text-general);
-                width: 100%;
-                word-break: break-word;
-                margin-right: 1.6rem;
-                line-height: 1.25;
-            }
-
-            &-time {
-                font-size: var(--text-size-xxs);
-                color: var(--text-general);
-                width: 100%;
-                word-break: break-word;
-                margin-right: 1.6rem;
-            }
-
-            &-location {
-                display: flex;
-                align-items: center;
-                width: 100%;
-                word-break: break-word;
-                color: var(--text-general);
-
-                &.load-dialog {
-                    justify-content: center;
-                }
-            }
-
-            &-saved {
-                margin-left: 1rem;
-                font-size: var(--text-size-xs);
-                line-height: 1.43;
-                word-break: break-word;
-            }
-
-            &__button {
-                display: flex;
-                margin-right: 2rem;
-                padding: 0.2rem;
-
-                &:last-child {
-                    margin-right: 0;
-                }
-
-                align-items: center;
-                justify-content: flex-end;
-
-                .dc-icon {
-                    &:hover {
-                        cursor: pointer;
-                    }
-                }
-            }
-
-            span {
-                padding-right: 1.6rem;
-                word-break: break-word;
-            }
         }
     }
 
@@ -654,5 +359,160 @@
 .toolbar {
     &__dialog {
         transition: none;
+    }
+}
+
+.flex-align-center {
+    display: flex;
+    align-items: center;
+}
+
+.bot-list {
+    &__wrapper {
+        height: calc(100vh - 54.8rem);
+        overflow: auto;
+    }
+    &__header {
+        @extend .flex-align-center;
+        padding: 0 0.8rem;
+        border-bottom: 1px solid var(--border-divider);
+
+        @include mobile {
+            padding: 0;
+        }
+
+        &__label {
+            padding: 0.8rem;
+            width: 35%;
+            @include mobile {
+                width: 40%;
+                padding-left: 0;
+            }
+        }
+        &__time-stamp {
+            width: 20%;
+            padding: 0.8rem;
+            @include mobile {
+                width: 25%;
+                padding-right: 0;
+            }
+        }
+        &__load-type {
+            width: 25%;
+            padding: 0.8rem;
+        }
+    }
+    &__item {
+        @extend .flex-align-center;
+        padding: 0 0.8rem;
+        border-bottom: 1px solid var(--border-divider);
+        user-select: none;
+        position: relative;
+        &:hover {
+            cursor: pointer;
+        }
+
+        &__label {
+            padding: 0.8rem;
+            width: 35%;
+            .text-wrapper {
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                display: -webkit-box;
+                max-width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-all;
+            }
+
+            @include mobile {
+                width: 40%;
+                padding-left: 0;
+            }
+        }
+
+        &__time-stamp {
+            width: 20%;
+            padding: 0.8rem;
+            @include mobile {
+                width: 25%;
+            }
+        }
+
+        &__load-type {
+            @extend .flex-align-center;
+            width: 25%;
+            padding: 0.8rem;
+
+            .dc-icon {
+                margin-right: 0.8rem;
+            }
+        }
+
+        &__actions {
+            @extend .flex-align-center;
+            width: 20%;
+            padding: 0.8rem;
+            justify-content: flex-end;
+            &__action-item {
+                margin-right: 1.6rem;
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+
+            @include mobile {
+                width: 10%;
+            }
+
+            button {
+                background: transparent;
+                border: none;
+                width: unset;
+                padding: 0;
+            }
+        }
+
+        &__responsive {
+            background: var(--general-main-1);
+            box-shadow: 0 0 2rem rgba(0, 0, 0, 0.05), 0 1.6rem 2rem rgba(0, 0, 0, 0.05);
+            display: none;
+            min-width: 15rem;
+            position: absolute;
+            right: 3rem;
+            top: 4rem;
+            z-index: 100;
+            &--active {
+                display: block;
+            }
+
+            &__menu {
+                align-items: center;
+                display: flex;
+                height: 4rem;
+                padding: 0.8rem 1.1rem;
+                .dc-icon {
+                    margin-right: 0.8rem;
+                }
+
+                &:last-child {
+                    box-shadow: inset 0 0.1rem 0 var(--border-divider);
+                }
+            }
+        }
+
+        &:nth-last-child(-n + 4) {
+            .bot-list__item__responsive {
+                top: -15rem;
+                &--min {
+                    top: 1rem;
+                    right: 6rem;
+                }
+            }
+        }
+
+        &--selected {
+            background-color: var(--general-section-1);
+        }
     }
 }

@@ -128,11 +128,10 @@ const DMT5TradeModal = observer(
             const fetchWebTraderURL = async () => {
                 const result = await mobileWebtraderURL();
                 if (result && mobileOSDetect() === 'iOS') {
-                    const iosValue = window.location.replace(deepLink);
+                    window.location.replace(deepLink);
                     setTimeout(function () {
                         window.location.replace(platformUrl() as unknown as string);
                     }, 2000);
-                    setWebTraderURL(iosValue as unknown as string);
                 } else {
                     setWebTraderURL(result ? deepLink : platformUrl());
                 }

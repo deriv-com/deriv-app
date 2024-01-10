@@ -35,7 +35,7 @@ const TradersHubRoute = () => {
     return (
         <div className='flex flex-col gap-1200'>
             <div className='flex items-center justify-between align-start gap-100'>
-                <div className='flex flex-row gap-600'>
+                <div className='flex items-center gap-600'>
                     <Heading.H3 className='font-sans'>Trader&apos;s Hub</Heading.H3>
                     <DemoRealSwitcher />
                 </div>

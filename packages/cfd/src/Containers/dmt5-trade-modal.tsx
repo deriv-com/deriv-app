@@ -21,7 +21,6 @@ import { TTradingPlatformAccounts } from '../Components/props.types';
 
 import { TCFDPasswordReset } from './props.types';
 import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
-import { set } from 'mobx';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid & {

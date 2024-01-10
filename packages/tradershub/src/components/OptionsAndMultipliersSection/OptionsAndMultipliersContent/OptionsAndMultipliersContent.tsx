@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
 import { Button, Text, useBreakpoint } from '@deriv/quill-design';
@@ -20,7 +20,7 @@ type TShowButtonProps = Pick<OptionsAndMultipliersContentItem, 'isExternal' | 'r
 
 type TLinkTitleProps = Pick<OptionsAndMultipliersContentItem, 'icon' | 'title'>;
 
-const LinkTitle: FC<TLinkTitleProps> = ({ icon, title }) => {
+const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
     const handleClick = (
         event:
             | React.KeyboardEvent<HTMLButtonElement>

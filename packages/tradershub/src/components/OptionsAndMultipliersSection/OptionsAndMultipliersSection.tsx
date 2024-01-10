@@ -1,6 +1,6 @@
 import React from 'react';
-import { OptionsAndMultipliersHeading } from './OptionsAndMultiplersHeading';
 import { OptionsAndMultipliersContent } from './OptionsAndMultipliersContent';
+import { OptionsAndMultipliersHeading } from './OptionsAndMultipliersHeading';
 
 /**
  * `OptionsAndMultipliersSection` is a component that renders the deriv platforms and currency switcher.

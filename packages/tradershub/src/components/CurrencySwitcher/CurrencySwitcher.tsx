@@ -50,19 +50,6 @@ const CurrencySwitcher = () => {
 
     const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency ?? 'virtual';
 
-    const renderButton = () => {
-        return (
-            <Button
-                className='py-900 rounded-200 border-sm border-system-light-less-prominent-text'
-                colorStyle='black'
-                fullWidth
-                variant='secondary'
-            >
-                Add or manage account
-            </Button>
-        );
-    };
-
     if (!isSuccess) return <CurrencySwitcherLoader />;
 
     return (
@@ -89,11 +76,20 @@ const CurrencySwitcher = () => {
                     onClick={() => {
                         show(
                             <Modal>
-                                <Modal.Header title='Select account' titleClassName='text-typography-default' />
-                                <Modal.Content className='overflow-y-scroll'>
+                                <Modal.Header title='Select account' titleClassName='text-[14px] sm:text-[16px]' />
+                                <Modal.Content>
                                     <TradingAccountsList />
                                 </Modal.Content>
-                                <Modal.Footer>{renderButton()}</Modal.Footer>
+                                <Modal.Footer className='grid-cols-1'>
+                                    <Button
+                                        className='py-900 rounded-200 border-sm border-system-light-less-prominent-text'
+                                        colorStyle='black'
+                                        fullWidth
+                                        variant='secondary'
+                                    >
+                                        Add or manage account
+                                    </Button>
+                                </Modal.Footer>
                             </Modal>
                         );
                     }}

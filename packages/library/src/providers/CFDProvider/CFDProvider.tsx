@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useMemo, useState, ReactNode } from 'react';
+import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 import { TMarketTypes, TPlatforms, THooks } from '../../types';
 
 type TCFDState = {
@@ -25,7 +25,7 @@ export const useCFDContext = () => {
     return context;
 };
 
-export const CFDProvider = ({ children }: { children: ReactNode }) => {
+export const CFDProvider = ({ children }: PropsWithChildren) => {
     const [cfdState, setCfdState] = useState<TCFDState>({});
 
     const getCFDState = useCallback(

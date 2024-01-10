@@ -49,7 +49,7 @@ const DMT5TradeModal = observer(
         const {
             account_status: { authentication },
         } = client;
-        const [webTraderURL, setWebTraderURL] = React.useState<string | undefined>('');
+        const [webTraderURL, setWebTraderURL] = React.useState<boolean | undefined>(false);
         const getCompanyShortcode = () => {
             if (
                 (mt5_trade_account.account_type === CATEGORY.DEMO &&
@@ -103,6 +103,7 @@ const DMT5TradeModal = observer(
                 return getPlatformMt5DownloadLink('huawei');
             }
         };
+
         const deepLink = `metatrader5://account?login=${
             (mt5_trade_account as TTradingPlatformAccounts)?.display_login
         }&server=${(mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment}`;
@@ -116,15 +117,20 @@ const DMT5TradeModal = observer(
             // Attempt to navigate to the test URL
             window.location.href = testURL;
 
-            // Wait for a short delay
-            // await new Promise(resolve => setTimeout(resolve)); // Adjust the delay as needed
-
-            // Check if the URL has changed
-            if (window.location.href !== currentURL) {
-                return deepLink;
-            }
-            return platformUrl();
+            setWebTraderURL(window.location.href !== currentURL);
         }, [deepLink]);
+
+        React.useEffect(() => {
+            if (webTraderURL) {
+                mobileWebtraderURL();
+            }
+
+            () => {
+                setWebTraderURL(false);
+            };
+        }, [webTraderURL, mobileWebtraderURL]);
+
+        const mobileWebtraderURL2 = webTraderURL ? deepLink : platformUrl();
 
         return (
             <div className='cfd-trade-modal-container'>
@@ -229,7 +235,7 @@ const DMT5TradeModal = observer(
                             href={
                                 !is_mobile
                                     ? (mt5_trade_account.webtrader_url as unknown as string)
-                                    : mobileWebtraderURL() ?? ''
+                                    : mobileWebtraderURL2
                             }
                             // target='_blank'
                             rel='noopener noreferrer'

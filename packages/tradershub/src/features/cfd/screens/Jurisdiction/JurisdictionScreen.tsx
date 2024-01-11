@@ -47,7 +47,7 @@ const JurisdictionScreen = ({
     return (
         <div
             className={qtMerge(
-                'flex flex-col h-auto w-[85vw] items-center justify-center my-auto mx-1500 h-[75vh] transition-all ease-in duration-[0.6s]',
+                'flex flex-col h-auto w-[85vw] items-center justify-center my-auto mx-1500 sm:h-[75vh] transition-all ease-in duration-[0.6s]',
                 isDynamicLeverageVisible && '[transform:rotateY(-180deg)] h-[700px] opacity-50'
             )}
         >

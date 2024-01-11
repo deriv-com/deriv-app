@@ -1,19 +1,22 @@
 import React from 'react';
-import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
+import { useActiveTradingAccount, useIsDIELEnabled } from '@deriv/api';
+import { Heading, useBreakpoint } from '@deriv/quill-design';
 import {
+    CFDSection,
     ContentSwitcher,
     DemoRealSwitcher,
     OptionsAndMultipliersSection,
+    RegulationSwitcherDesktop,
     RegulationSwitcherMobile,
-    StaticLink,
     TotalAssets,
 } from '../../components';
-import { CTraderList } from '../../features/cfd/components/CTraderList';
-import { MT5PlatformsList } from '../../features/cfd/components/MT5PlatformsList';
-import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
 
 const TradersHubRoute = () => {
     const { isMobile } = useBreakpoint();
+    const { data: isDIEL } = useIsDIELEnabled();
+    const { data: activeTradingAccount } = useActiveTradingAccount();
+
+    const isSwitcherVisible = isDIEL && !activeTradingAccount?.is_virtual;
 
     if (isMobile)
         return (
@@ -23,7 +26,7 @@ const TradersHubRoute = () => {
                         <Heading.H3 className='pb-200'>Trader&apos;s Hub</Heading.H3>
                         <DemoRealSwitcher />
                     </div>
-                    <RegulationSwitcherMobile />
+                    {isSwitcherVisible && <RegulationSwitcherMobile />}
                 </div>
                 <div />
                 <div className='grid place-content-center pb-1200'>
@@ -36,9 +39,7 @@ const TradersHubRoute = () => {
                             <OptionsAndMultipliersSection />
                         </ContentSwitcher.Panel>
                         <ContentSwitcher.Panel>
-                            <MT5PlatformsList />
-                            <CTraderList />
-                            <OtherCFDPlatformsList />
+                            <CFDSection />
                         </ContentSwitcher.Panel>
                     </ContentSwitcher.PanelContainer>
                 </ContentSwitcher>
@@ -52,35 +53,11 @@ const TradersHubRoute = () => {
                     <Heading.H3 className='font-sans'>Trader&apos;s Hub</Heading.H3>
                     <DemoRealSwitcher />
                 </div>
+                {isSwitcherVisible && <RegulationSwitcherDesktop />}
                 <TotalAssets />
             </div>
             <OptionsAndMultipliersSection />
-
-            <div className='border-solid p-1200 rounded-1200 border-xs border-opacity-black-100'>
-                <div className='pb-1200'>
-                    <div className='flex items-center gap-200'>
-                        <Heading.H4 className='font-sans'>CFDs</Heading.H4>
-                        <Button className='no-underline' colorStyle='coral' size='sm' variant='tertiary'>
-                            Compare Accounts
-                        </Button>
-                    </div>
-                    <Text size='sm'>
-                        Trade with leverage and tight spreads for better returns on trades.
-                        <StaticLink size='md' staticUrl='/trade-types/cfds/'>
-                            Learn more
-                        </StaticLink>
-                    </Text>
-                </div>
-                <div className='space-y-1200'>
-                    <MT5PlatformsList />
-                    <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
-                        <CTraderList />
-                    </div>
-                    <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
-                        <OtherCFDPlatformsList />
-                    </div>
-                </div>
-            </div>
+            <CFDSection />
         </div>
     );
 };

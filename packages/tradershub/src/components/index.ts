@@ -1,5 +1,6 @@
 export * from './ActionScreen';
 export * from './ButtonGroup';
+export * from './CFDSection';
 export * from './Clipboard';
 export * from './ContentSwitcher';
 export * from './CurrencySwitcher';

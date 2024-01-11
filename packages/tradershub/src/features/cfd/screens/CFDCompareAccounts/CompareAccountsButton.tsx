@@ -95,10 +95,11 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
     const onClickAdd = () => {
         if (platform === CFDPlatforms.MT5) {
             if (isAccountStatusVerified) {
-                // MT5PasswordModal to be implemented
+                // MT5 Password Modal to be implemented
+                alert('password modal will be added');
+            } else {
+                // Verifaication Component to be implemented
                 show(<DummyComponent />);
-                // else condition is removed due to sonar cloud issue
-                // else condition will have the Verification flow(Accounts)
             }
         } else if (platform === CFDPlatforms.DXTRADE) {
             show(<DxtradePasswordModal />);

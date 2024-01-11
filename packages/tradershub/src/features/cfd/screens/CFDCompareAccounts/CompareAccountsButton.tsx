@@ -10,7 +10,7 @@ import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
 import { THooks, TPlatforms } from '../../../../types';
 import { DummyComponent } from '../../components/DummyComponent';
-import { CFDPlatforms, MarketType } from '../../constants';
+import { Category, CFDPlatforms, MarketType } from '../../constants';
 import { DxtradePasswordModal } from '../../modals';
 import { CTraderSuccessModal } from '../../modals/CTraderSuccessModal';
 import {
@@ -108,7 +108,7 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
         } else {
             createAccount({
                 payload: {
-                    account_type: isDemo ? 'demo' : 'real',
+                    account_type: isDemo ? Category.DEMO : Category.REAL,
                     market_type: MarketType.ALL,
                     platform: CFDPlatforms.CTRADER,
                 },

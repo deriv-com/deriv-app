@@ -569,7 +569,7 @@ const FinancialAssessment = observer(() => {
                                                     name='occupation'
                                                     label={localize('Occupation')}
                                                     list_items={getFormattedOccupationList(
-                                                        values.employment_status ?? ''
+                                                        (values.employment_status || employment_status) ?? ''
                                                     )}
                                                     value={getFormattedOccupationValues(values)}
                                                     error={touched.occupation ? errors.occupation : undefined}

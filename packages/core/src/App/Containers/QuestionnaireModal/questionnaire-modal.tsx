@@ -29,13 +29,19 @@ const QuestionnaireModal = ({ ab_questionnaire, handleSignup }: TQuestionnaireMo
     }, [ab_questionnaire]);
 
     const onClickAnswer = (answer_code: string, answer_index: number) => {
-        Analytics.trackEvent('ce_questionnaire_form', {
-            action: 'choose_answer',
-            question: ab_questionnaire[0].question,
-            answer_content: ab_questionnaire[0].answers.filter(({ code }) => code === answer_code)[0].text,
-            answer_code,
-            answer_index,
-        });
+        window.dataLayer = [
+            ...window.dataLayer,
+            {
+                event: 'ce_questionnaire_form',
+                analyticsData: {
+                    action: 'choose_answer',
+                    question: ab_questionnaire[0].question,
+                    answer_content: ab_questionnaire[0].answers.filter(({ code }) => code === answer_code)[0].text,
+                    answer_code,
+                    answer_index,
+                },
+            },
+        ];
         handleSignup();
     };
 

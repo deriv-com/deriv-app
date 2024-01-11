@@ -1570,7 +1570,7 @@ export default class ClientStore extends BaseStore {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
-                Analytics?.identifyEvent();
+                Analytics.identifyEvent();
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -2297,8 +2297,8 @@ export default class ClientStore extends BaseStore {
 
     onSignup({ citizenship, password, residence }, cb) {
         if (!this.verification_code.signup || !password || !residence || !citizenship) return;
-        WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams()).then(
-            async response => {
+        WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams())
+            .then(async response => {
                 if (response.error) {
                     cb(response.error.message);
                 } else {
@@ -2312,8 +2312,13 @@ export default class ClientStore extends BaseStore {
                         event: 'virtual_signup',
                     });
                 }
-            }
-        );
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    const { event, analyticsData } = window.dataLayer.find(el => el.event === 'ce_questionnaire_form');
+                    Analytics.trackEvent(event, analyticsData);
+                }, 10000);
+            });
     }
 
     async switchToNewlyCreatedAccount(client_id, oauth_token, currency) {

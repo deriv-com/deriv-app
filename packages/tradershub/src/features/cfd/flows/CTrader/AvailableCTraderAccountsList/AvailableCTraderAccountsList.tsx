@@ -22,7 +22,7 @@ const AvailableCTraderAccountsList = () => {
         });
     };
 
-    const leadingIcon = () => (
+    const LeadingIcon = () => (
         <div
             className='cursor-pointer'
             onClick={() => {
@@ -39,7 +39,7 @@ const AvailableCTraderAccountsList = () => {
         </div>
     );
 
-    const trailingButton = () => (
+    const TrailingButton = () => (
         <Button className='rounded-200' colorStyle='coral' onClick={onSubmit} variant='primary'>
             Get
         </Button>
@@ -47,12 +47,14 @@ const AvailableCTraderAccountsList = () => {
 
     return (
         <div>
-            <TradingAccountCard leading={leadingIcon} trailing={trailingButton}>
-                <div className='flex flex-col flex-grow'>
-                    <Text bold size='sm'>
+            <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
+                <div className='grow user-select-none'>
+                    <Text bold className='leading-200' size='sm'>
                         {PlatformDetails.ctrader.title}
                     </Text>
-                    <Text className='text-[12px]'>This account offers CFDs on a feature-rich trading platform.</Text>
+                    <Text className='text-[12px] leading-100 w-5/6 lg:w-full'>
+                        This account offers CFDs on a feature-rich trading platform.
+                    </Text>
                 </div>
             </TradingAccountCard>
         </div>

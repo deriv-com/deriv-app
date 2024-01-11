@@ -106,7 +106,7 @@ export const IconToCurrencyMapper: IconToCurrencyMapperType = {
         icon: <CurrencyUsdcIcon />,
         text: 'USD Coin',
     },
-    USDT: {
+    UST: {
         icon: <CurrencyUsdtIcon />,
         text: 'Tether',
     },

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Provider } from '@deriv/library';
 import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
 import {
     ContentSwitcher,
@@ -11,9 +12,11 @@ import {
 import { CTraderList } from '../../features/cfd/components/CTraderList';
 import { MT5PlatformsList } from '../../features/cfd/components/MT5PlatformsList';
 import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
+import CompareAccountsButton from '../../features/cfd/screens/CFDCompareAccounts/CompareAccountsButton';
 
 const TradersHubRoute = () => {
     const { isMobile } = useBreakpoint();
+    const { show } = Provider.useModal();
 
     if (isMobile)
         return (
@@ -60,7 +63,16 @@ const TradersHubRoute = () => {
                 <div className='pb-1200'>
                     <div className='flex items-center gap-200'>
                         <Heading.H4 className='font-sans'>CFDs</Heading.H4>
-                        <Button className='no-underline' colorStyle='coral' size='sm' variant='tertiary'>
+                        <Button
+                            className='no-underline'
+                            colorStyle='coral'
+                            onClick={() => {
+                                // console.log('clicked');
+                                show(<CompareAccountsButton isAccountAdded={false} platform='mt5' shortCode='svg' />);
+                            }}
+                            size='sm'
+                            variant='tertiary'
+                        >
                             Compare Accounts
                         </Button>
                     </div>

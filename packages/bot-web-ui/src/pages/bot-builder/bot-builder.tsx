@@ -21,45 +21,31 @@ const BotBuilder = observer(() => {
     const is_blockly_listener_registered = React.useRef(false);
     const [show_snackbar, setShowSnackbar] = React.useState(false);
     const { is_mobile } = ui;
+    const { onMount, onUnmount } = app;
+    const el_ref = React.useRef<HTMLInputElement | null>(null);
 
     React.useEffect(() => {
-        if (active_tab === DBOT_TABS.BOT_BUILDER) {
+        const is_bot_builder = active_tab === DBOT_TABS.BOT_BUILDER;
+        if (is_bot_builder) {
             Analytics.trackEvent('ce_bot_builder_form', {
                 action: 'open',
                 form_source: 'ce_bot_builder_form',
             });
-            return () => {
+        }
+        return () => {
+            if (is_bot_builder) {
                 Analytics.trackEvent('ce_bot_builder_form', {
                     action: 'close',
                     form_source: 'ce_bot_builder_form',
                 });
-            };
-        }
+            }
+        };
     }, [active_tab]);
-
-    const { onMount, onUnmount } = app;
-    const el_ref = React.useRef<HTMLInputElement | null>(null);
 
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
     }, [onMount, onUnmount]);
-
-    const handleBlockChangeOnBotRun = (e: Event) => {
-        const { is_reset_button_clicked, setResetButtonState } = toolbar;
-        if (e.type !== 'ui' && !is_reset_button_clicked) {
-            setShowSnackbar(true);
-            removeBlockChangeListener();
-        } else if (is_reset_button_clicked) {
-            setResetButtonState(false);
-            removeBlockChangeListener();
-        }
-    };
-
-    const removeBlockChangeListener = () => {
-        is_blockly_listener_registered.current = false;
-        window.Blockly?.derivWorkspace?.removeChangeListener(handleBlockChangeOnBotRun);
-    };
 
     React.useEffect(() => {
         const workspace = window.Blockly?.derivWorkspace;
@@ -78,6 +64,22 @@ const BotBuilder = observer(() => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_running]);
+
+    const handleBlockChangeOnBotRun = (e: Event) => {
+        const { is_reset_button_clicked, setResetButtonState } = toolbar;
+        if (e.type !== 'ui' && !is_reset_button_clicked) {
+            setShowSnackbar(true);
+            removeBlockChangeListener();
+        } else if (is_reset_button_clicked) {
+            setResetButtonState(false);
+            removeBlockChangeListener();
+        }
+    };
+
+    const removeBlockChangeListener = () => {
+        is_blockly_listener_registered.current = false;
+        window.Blockly?.derivWorkspace?.removeChangeListener(handleBlockChangeOnBotRun);
+    };
 
     return (
         <>

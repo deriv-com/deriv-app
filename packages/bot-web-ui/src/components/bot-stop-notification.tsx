@@ -24,10 +24,10 @@ const BotStopNotification = observer(() => {
     return (
         <div
             className='bot-stop-notification'
-            onMouseOver={e => {
+            onMouseOver={() => {
                 clearTimeout(notificationTimer);
             }}
-            onMouseLeave={e => {
+            onMouseLeave={() => {
                 resetTimer();
             }}
             data-testid='bot-stop-notification'
@@ -47,12 +47,18 @@ const BotStopNotification = observer(() => {
                         ]}
                     />
                 </div>
-                <Icon
-                    icon='IcCross'
-                    className={'notification-close'}
-                    data_testid={'notification-close'}
+                <span
+                    tabIndex={0}
                     onClick={() => setShowBotStopMessage(false)}
-                />
+                    onKeyDown={(e: React.KeyboardEvent) => {
+                        if (e.key === 'Enter') {
+                            setShowBotStopMessage(false);
+                        }
+                    }}
+                    className='bot-stop-notification__action-wrapper'
+                >
+                    <Icon icon='IcCross' data_testid='notification-close' />
+                </span>
             </Toast>
         </div>
     );

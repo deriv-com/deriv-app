@@ -1,6 +1,5 @@
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { localize } from '@deriv/translations';
-// import { _1_3_2_6 } from './descriptions/1_3_2_6';
 import {
     D_ALEMBERT,
     MARTINGALE,

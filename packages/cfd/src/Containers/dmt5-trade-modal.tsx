@@ -62,7 +62,7 @@ const DMT5TradeModal = observer(
             return undefined;
         };
 
-        const getURL = () => {
+        const getMobileAppInstallerURL = () => {
             if (mobileOSDetect() === 'iOS') {
                 return getPlatformMt5DownloadLink('ios');
             } else if (/huawei/i.test(navigator.userAgent)) {
@@ -75,7 +75,7 @@ const DMT5TradeModal = observer(
         const mobileURLSet = () => {
             mobile_url = window.location.replace(deepLink);
             const timeout = setTimeout(() => {
-                mobile_url = window.location.replace(getURL());
+                mobile_url = window.location.replace(getMobileAppInstallerURL());
             }, 3000);
             window.onblur = () => {
                 clearTimeout(timeout);

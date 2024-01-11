@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button, useBreakpoint } from '@deriv/quill-design';
+import { Button, Heading, useBreakpoint } from '@deriv/quill-design';
 import { Modal } from '../../../../components/Modal';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
-import { MarketTypeDetails } from '../../constants';
+import { Jurisdiction, MarketType, MarketTypeDetails } from '../../constants';
 import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
 
@@ -19,7 +19,7 @@ const JurisdictionModal = () => {
     const { isLoading } = useAvailableMT5Accounts();
     const { isMobile } = useBreakpoint();
 
-    const marketType = getCFDState('marketType') ?? 'all';
+    const marketType = getCFDState('marketType') ?? MarketType.ALL;
 
     const { title } = MarketTypeDetails[marketType];
 
@@ -30,7 +30,7 @@ const JurisdictionModal = () => {
     const jurisdictionTitle = `Choose a jurisdiction for your Deriv MT5 ${title} account`;
 
     const JurisdictionFlow = () => {
-        if (selectedJurisdiction === 'svg') {
+        if (selectedJurisdiction === Jurisdiction.SVG) {
             return null; // MT5PasswordModal
         }
 
@@ -42,7 +42,7 @@ const JurisdictionModal = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedJurisdiction]);
 
-    if (isLoading) return <h1>Loading...</h1>;
+    if (isLoading) return <Heading.H1>Loading...</Heading.H1>;
 
     return (
         <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
@@ -64,7 +64,10 @@ const JurisdictionModal = () => {
                     <Modal.Footer>
                         <Button
                             className='rounded-200'
-                            disabled={!selectedJurisdiction || (selectedJurisdiction !== 'svg' && !isCheckBoxChecked)}
+                            disabled={
+                                !selectedJurisdiction ||
+                                (selectedJurisdiction !== Jurisdiction.SVG && !isCheckBoxChecked)
+                            }
                             fullWidth={isMobile}
                             onClick={() => show(<JurisdictionFlow />)}
                         >

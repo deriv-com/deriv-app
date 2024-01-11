@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import { StaticLink } from '@deriv/library/src/base';
 import { Button, Heading, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
+import { StaticLink } from '../../StaticLink';
 
 const CompareAccountButton = ({ className }: { className?: string }) => (
     <Button className={qtMerge('no-underline', className)} colorStyle='coral' size='sm' variant='tertiary'>

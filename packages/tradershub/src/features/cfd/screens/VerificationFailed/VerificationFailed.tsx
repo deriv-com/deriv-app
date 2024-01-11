@@ -1,8 +1,15 @@
 import React from 'react';
+import { usePOA, usePOI } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
 
-const reasons = ['Proof of identity', 'Proof of address'];
+const getDocumentTitle = (isPOIFailed?: boolean, isPOAFailed?: boolean) => {
+    if (isPOIFailed && isPOAFailed) return 'proof of identity and proof of address';
+    if (isPOIFailed) return 'proof of identity';
+    return 'proof of address';
+};
+
+const reasons = ['Document details do not match profile details', 'Expired documents', 'Poor image quality'];
 
 /**
  * @description This component is used to display the verification failed modal in case of POI and POA
@@ -10,11 +17,21 @@ const reasons = ['Proof of identity', 'Proof of address'];
 
 const VerificationFailed = () => {
     const { hide } = Provider.useModal();
+    const { data: poiStatus } = usePOI();
+    const { data: poaStatus } = usePOA();
+
+    const isPOIFailed = poiStatus?.is_rejected || poiStatus?.is_expired || poiStatus?.is_suspected;
+    const isPOAFailed = poaStatus?.is_rejected || poaStatus?.is_expired || poaStatus?.is_suspected;
 
     return (
         <div className='flex flex-col w-[320px] p-800 gap-800 h-auto bg-system-light-primary-background rounded-400 lg:p-1200 lg:gap-1200 lg:w-[440px]'>
-            <Text bold>Why did my verification fail?</Text>
-            <Text size='sm'>The following documents you submitted did not pass our checks:</Text>
+            <Text bold size='sm'>
+                Why did my verification fail?
+            </Text>
+            <Text size='sm'>
+                Your {getDocumentTitle(isPOIFailed, isPOAFailed)} did not pass our verification checks. This could be
+                due to reasons such as:
+            </Text>
             <ul>
                 {reasons.map(reason => (
                     <li className='relative list-disc  left-500' key={reason}>
@@ -22,17 +39,14 @@ const VerificationFailed = () => {
                     </li>
                 ))}
             </ul>
-            <Text size='sm'>If you’d like to get the MT5 CFDs account, resubmit these documents.</Text>
+            <Text size='sm'>
+                Click <strong>Resubmit documents</strong> to find out more and submit your documents again.
+            </Text>
             <div className='flex justify-end gap-400'>
-                <Button
-                    className='border-opacity-black-400 rounded-200 px-800'
-                    colorStyle='black'
-                    onClick={() => hide()}
-                    variant='secondary'
-                >
+                <Button colorStyle='black' onClick={() => hide()} variant='secondary'>
                     Maybe later
                 </Button>
-                <Button className='rounded-200 px-800'>Resubmit documents</Button>
+                <Button>Resubmit documents</Button>
             </div>
         </div>
     );

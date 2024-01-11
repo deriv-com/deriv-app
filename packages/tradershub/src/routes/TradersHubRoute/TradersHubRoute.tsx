@@ -11,7 +11,6 @@ import {
 import { CTraderList } from '../../features/cfd/components/CTraderList';
 import { MT5PlatformsList } from '../../features/cfd/components/MT5PlatformsList';
 import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
-import CompareAccountsButton from '../../features/cfd/screens/CFDCompareAccounts/CompareAccountsButton';
 
 const TradersHubRoute = () => {
     const { isMobile } = useBreakpoint();

@@ -5,6 +5,7 @@ import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
 import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
+import { Jurisdiction, MarketType } from '../../../constants';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardItems, TJurisdictionCardSection } from '../jurisdiction-contents/props.types';
 import {
@@ -53,7 +54,7 @@ const verificationDocumentsMapper: TVerificationDocumentsMapper = {
 const JurisdictionCard = ({
     isAdded = false,
     isSelected = false,
-    jurisdiction = 'svg',
+    jurisdiction = Jurisdiction.SVG,
     onSelect,
 }: TJurisdictionCardProps) => {
     const [isFlipped, setIsFlipped] = useState(false);
@@ -73,7 +74,7 @@ const JurisdictionCard = ({
         () => getJurisdictionContents()[jurisdiction],
         [jurisdiction]
     );
-    const marketType = getCFDState('marketType') || 'all';
+    const marketType = getCFDState('marketType') || MarketType.ALL;
     const rows = contents[marketType] || [];
 
     const parseDescription = (row: TJurisdictionCardSection) => {
@@ -121,7 +122,7 @@ const JurisdictionCard = ({
                 }
             }}
         >
-            <div className='flex flex-col justify-center w-full h-full transition-transform duration-300 px-800 pt-1000 pb-1800 backface-hidden transform-gpu'>
+            <div className='flex flex-col justify-center w-full h-full transition-transform duration-300 backface-hidden px-800 pt-1000 pb-1800 transform-gpu'>
                 {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
                 <div className='mt-[25px] mb-[15px] text-center'>
                     <Text bold size='lg'>
@@ -132,7 +133,7 @@ const JurisdictionCard = ({
                     {rows.map(row => (
                         <JurisdictionCardRow
                             description={parseDescription(row)}
-                            key={`wallets-jurisdiction-card--${row?.title}`}
+                            key={`jurisdiction-card--${row?.title}`}
                             renderTag={() => {
                                 if (!row?.titleIndicators) return;
 

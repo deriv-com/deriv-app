@@ -2,17 +2,23 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { ExcludeAllNull } from '@deriv/quill-design';
 
 export const JurisdictionCardClass = cva(
-    'items-center rounded-800 border-sm border-solid border-system-light-secondary-background cursor-pointer flex flex-col justify-center w-full lg:w-1/4 relative h-full transition-shadow duration-300 transform-gpu',
+    'items-center rounded-800 border-sm border-solid cursor-pointer flex flex-col justify-center w-full lg:w-1/4 relative h-full transition-shadow transition-transform duration-300 [transform-style:preserve-3d] transform-gpu',
     {
+        compoundVariants: [
+            {
+                class: 'border-system-light-secondary-background',
+                isSelected: false,
+            },
+        ],
         variants: {
             isAdded: {
                 true: 'cursor-not-allowed select-none',
             },
             isFlipped: {
-                true: '[transform:rotateX(-180deg)]',
+                true: '[transform:rotateY(-180deg)]',
             },
             isSelected: {
-                true: 'border-[#85acb0] shadow-[0_24px_48px_0_rgba(14,_14,_14,_0.18)]',
+                true: 'border-brand-blue shadow-[0_24px_48px_0_rgba(14,_14,_14,_0.18)]',
             },
         },
     }

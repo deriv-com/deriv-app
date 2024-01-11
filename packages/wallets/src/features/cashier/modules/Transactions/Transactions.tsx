@@ -57,7 +57,7 @@ const Transactions = () => {
         if (!isLoading && !wallet?.currency_config?.is_crypto && isPendingActive) {
             setIsPendingActive(false);
         }
-    }, [wallet?.currency_config?.is_crypto, isPendingActive]);
+    }, [isLoading, wallet?.currency_config?.is_crypto, isPendingActive]);
 
     useEffect(() => {
         if (isPendingActive && !Object.keys(filtersMapper.pending).includes(filterValue)) {

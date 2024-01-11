@@ -51,7 +51,6 @@ const QuestionnaireModal = ({ ab_questionnaire, handleSignup }: TQuestionnaireMo
                 {ab_questionnaire[1].question}
             </Text>
             <ul
-                data-testid='questionnaire-modal-variant'
                 className={classNames({
                     'questionnaire-modal__answers': a_variant,
                     'questionnaire-modal__options': !a_variant,
@@ -59,17 +58,17 @@ const QuestionnaireModal = ({ ab_questionnaire, handleSignup }: TQuestionnaireMo
             >
                 {ab_questionnaire[1]?.answers.map(({ code, text, header }, index) => {
                     return (
-                        <Button
+                        <li
                             key={`${code}_questionnaire`}
-                            data-testid={`${code}_questionnaire`}
-                            onClick={() => onClickAnswer(code, index + 1)}
-                            transparent
+                            className={classNames({
+                                'questionnaire-modal__answers_content': a_variant,
+                                'questionnaire-modal__options_card': !a_variant,
+                            })}
                         >
-                            <li
-                                className={classNames({
-                                    'questionnaire-modal__answers_content': a_variant,
-                                    'questionnaire-modal__options_card': !a_variant,
-                                })}
+                            <Button
+                                data-testid={`dt_questionnaire_${code}`}
+                                onClick={() => onClickAnswer(code, index + 1)}
+                                transparent
                             >
                                 {header && (
                                     <Text as='p' size='xs' weight='bold'>
@@ -79,8 +78,8 @@ const QuestionnaireModal = ({ ab_questionnaire, handleSignup }: TQuestionnaireMo
                                 <Text as='p' size='xs'>
                                     {text}
                                 </Text>
-                            </li>
-                        </Button>
+                            </Button>
+                        </li>
                     );
                 })}
             </ul>

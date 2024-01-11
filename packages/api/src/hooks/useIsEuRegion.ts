@@ -1,10 +1,12 @@
 import { useMemo } from 'react';
 import useLandingCompany from './useLandingCompany';
+import useActiveTradingAccount from './useActiveTradingAccount';
 
 /** * A hook to determine if region is Eu using the useLandingCompany hook */
 const useIsEuRegion = () => {
     /** Retrieve landing company data*/
     const { data: landing_company, ...rest } = useLandingCompany();
+    const { data: activeTradingAccount } = useActiveTradingAccount();
 
     const isEuRegion = useMemo(() => {
         if (!landing_company) return false;
@@ -41,10 +43,12 @@ const useIsEuRegion = () => {
 
         const { gaming_company, financial_company } = landing_company;
 
-        const isEuRegion = !gaming_company && financial_company?.shortcode === 'maltainvest';
+        const isMF = activeTradingAccount?.is_mf;
+
+        const isEuRegion = (!gaming_company && financial_company?.shortcode === 'maltainvest') || isMF;
 
         return isEuRegion;
-    }, [landing_company]);
+    }, [activeTradingAccount?.is_mf, landing_company]);
 
     return {
         /** A boolean flag indicating if the region is within the EU */

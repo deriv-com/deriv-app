@@ -52,6 +52,17 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transac
                 <React.Fragment>
                     <WalletText size='sm'>No recent transactions.</WalletText>
                     <Divider color='#d6dadb' /> {/* --color-grey-5 */}
+                    <WalletButton
+                        isFullWidth
+                        onClick={() => {
+                            // should navigate to transactions page with "Pending transactions" toggle on and filter set to `transactionType`
+                            history.push('/wallets/cashier/transactions?showPending=true');
+                        }}
+                        size='sm'
+                        variant='outlined'
+                    >
+                        View more
+                    </WalletButton>
                 </React.Fragment>
             )}
         </React.Fragment>

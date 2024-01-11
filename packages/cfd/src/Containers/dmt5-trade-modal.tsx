@@ -50,8 +50,6 @@ const DMT5TradeModal = observer(
             account_status: { authentication },
         } = client;
 
-        const [url, setURL] = React.useState<string>('');
-
         const getCompanyShortcode = () => {
             if (
                 (mt5_trade_account.account_type === CATEGORY.DEMO &&
@@ -64,14 +62,17 @@ const DMT5TradeModal = observer(
             return undefined;
         };
 
+        let mobile_url;
         const mobileURLSet = () => {
             // a better type needs to be found for the next line, temporary typing is done due to the urgency of the task
-            setURL(window.location.replace(deepLink) as unknown as string);
+            mobile_url = window.location.replace(deepLink);
             const timeout = setTimeout(() => {
                 if (mobileOSDetect() === 'iOS') {
-                    setURL(window.location.replace(getPlatformMt5DownloadLink('ios')) as unknown as string);
+                    mobile_url = window.location.replace(getPlatformMt5DownloadLink('ios'));
+                } else if (/huawei/i.test(navigator.userAgent)) {
+                    mobile_url = window.location.replace(getPlatformMt5DownloadLink('huawei'));
                 } else {
-                    setURL(window.location.replace(getPlatformMt5DownloadLink('android')) as unknown as string);
+                    mobile_url = window.location.replace(getPlatformMt5DownloadLink('android'));
                 }
             }, 3000);
             window.onblur = () => {
@@ -216,7 +217,7 @@ const DMT5TradeModal = observer(
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
                             onClick={!is_mobile ? undefined : mobileURLSet}
-                            href={!is_mobile ? mt5_trade_account.webtrader_url : url}
+                            href={!is_mobile ? mt5_trade_account.webtrader_url : mobile_url}
                             target={!is_mobile ? '_blank' : ''}
                             rel={!is_mobile ? 'noopener noreferrer' : ''}
                         >

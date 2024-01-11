@@ -14,7 +14,7 @@ const useAuthorize = () => {
 
     const { data, ...rest } = useQuery('authorize', {
         payload: { authorize: current_token || '' },
-        options: { enabled: Boolean(current_token) },
+        options: { enabled: Boolean(current_token), staleTime: 1000 * 60 },
     });
 
     // Add additional information to the authorize response.

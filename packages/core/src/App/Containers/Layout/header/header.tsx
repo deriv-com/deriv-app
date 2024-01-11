@@ -33,8 +33,16 @@ const Header = observer(() => {
 
     const client_accounts = useReadLocalStorage('client.accounts');
     const { is_next_wallet_enabled } = useFeatureFlags();
-    const { has_wallet } = useStoreWalletAccountsList();
+    const { has_wallet, data: wallets } = useStoreWalletAccountsList();
     const should_show_wallets = is_next_wallet_enabled && has_wallet;
+    const active_loginid_from_local_storage = localStorage.getItem('active_loginid') ?? '';
+    const is_current_account_wallet = active_loginid_from_local_storage?.match(/^(CRW|VRW)/);
+    const linked_trading_account = React.useMemo(() => {
+        if (is_current_account_wallet) {
+            return wallets?.find(wallet => wallet.loginid === active_loginid_from_local_storage);
+        }
+        return null;
+    }, [active_loginid_from_local_storage, is_current_account_wallet, wallets]);
 
     React.useEffect(() => {
         if (should_show_wallets && is_logged_in) {
@@ -42,13 +50,33 @@ const Header = observer(() => {
             const client_accounts_keys = Object.keys(client_accounts ?? {});
             if (client_accounts_keys.length > accounts_keys.length) {
                 setAccounts(
+                    // @ts-expect-error TODO: fix types
                     client_accounts as Record<string, ReturnType<typeof useStore>['client']['accounts'][number]>
                 );
-                const active_loginig_from_local_storage = localStorage.getItem('active_loginid') ?? '';
-                if (loginid !== active_loginig_from_local_storage) switchAccount(active_loginig_from_local_storage);
             }
         }
-    }, [accounts, client_accounts, is_logged_in, loginid, setAccounts, should_show_wallets, switchAccount]);
+    }, [accounts, client_accounts, is_logged_in, setAccounts, should_show_wallets]);
+
+    React.useEffect(() => {
+        if (
+            is_logged_in &&
+            is_current_account_wallet &&
+            linked_trading_account &&
+            active_loginid_from_local_storage &&
+            should_show_wallets &&
+            loginid !== active_loginid_from_local_storage
+        ) {
+            switchAccount(linked_trading_account.loginid);
+        }
+    }, [
+        active_loginid_from_local_storage,
+        is_current_account_wallet,
+        is_logged_in,
+        linked_trading_account,
+        loginid,
+        should_show_wallets,
+        switchAccount,
+    ]);
 
     if (is_logged_in) {
         let result;

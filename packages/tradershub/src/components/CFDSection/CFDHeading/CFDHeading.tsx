@@ -19,7 +19,7 @@ const CFDHeading = () => {
                     <CompareAccountButton />
                 </div>
             )}
-            <Text size='sm'>
+            <Text className='leading-100' size='sm'>
                 Trade with leverage and tight spreads for better returns on trades.
                 <StaticLink size='md' staticUrl='/trade-types/cfds/'>
                     Learn more

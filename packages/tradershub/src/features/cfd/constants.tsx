@@ -158,3 +158,11 @@ export const PlatformUrls: TPlatformUrls = {
         live: 'https://dx.deriv.com',
     },
 };
+
+export const Jurisdiction = {
+    BVI: 'bvi',
+    LABUAN: 'labuan',
+    MALTAINVEST: 'maltainvest',
+    SVG: 'svg',
+    VANUATU: 'vanuatu',
+} as const;

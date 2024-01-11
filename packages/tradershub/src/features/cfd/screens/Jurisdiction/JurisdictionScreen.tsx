@@ -1,25 +1,26 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { Dispatch, useEffect, useMemo } from 'react';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { qtMerge, Text } from '@deriv/quill-design';
 import { THooks } from '../../../../types';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
+import { Jurisdiction } from '../../constants';
 import { JurisdictionCard } from './JurisdictionCard';
 import { JurisdictionTncSection } from './JurisdictionTncSection';
 
 type TJurisdictionScreenProps = {
     isCheckBoxChecked: boolean;
     selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
-    setIsCheckBoxChecked: React.Dispatch<React.SetStateAction<boolean>>;
-    setSelectedJurisdiction: React.Dispatch<React.SetStateAction<string>>;
+    setIsCheckBoxChecked: Dispatch<React.SetStateAction<boolean>>;
+    setSelectedJurisdiction: Dispatch<React.SetStateAction<string>>;
 };
 
-const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({
+const JurisdictionScreen = ({
     isCheckBoxChecked,
     selectedJurisdiction,
     setIsCheckBoxChecked,
     setSelectedJurisdiction,
-}) => {
+}: TJurisdictionScreenProps) => {
     const { getCFDState } = Provider.useCFDContext();
     const { data, isLoading } = useAvailableMT5Accounts();
     const { data: mt5AccountsList } = useMT5AccountsList();
@@ -55,7 +56,7 @@ const JurisdictionScreen: FC<TJurisdictionScreenProps> = ({
                     <JurisdictionCard
                         isAdded={addedJurisdictions.includes(jurisdiction as typeof addedJurisdictions[number])}
                         isSelected={selectedJurisdiction === jurisdiction}
-                        jurisdiction={jurisdiction || 'bvi'}
+                        jurisdiction={jurisdiction || Jurisdiction.BVI}
                         key={jurisdiction}
                         onSelect={clickedJurisdiction => {
                             if (clickedJurisdiction === selectedJurisdiction) {

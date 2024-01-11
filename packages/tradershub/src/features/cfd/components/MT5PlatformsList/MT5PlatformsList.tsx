@@ -1,9 +1,11 @@
 import React, { useEffect, useMemo } from 'react';
 import { useActiveTradingAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
-import { Text } from '@deriv/quill-design';
+import { TradingAppCardLoader } from '../../../../components/Loaders/TradingAppCardLoader';
 import { THooks } from '../../../../types';
+import { PlatformDetails } from '../../constants';
 import { AddedMT5AccountsList, AvailableMT5AccountsList } from '../../flows/MT5';
 import { GetMoreMT5Accounts } from '../../screens';
+import { CFDPlatformLayout } from '../CFDPlatformLayout';
 
 type TMT5PlatformsListProps = {
     onMT5PlatformListLoaded?: (value: boolean) => void;
@@ -31,24 +33,22 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
     }, [isFetchedAfterMount, onMT5PlatformListLoaded]);
 
     return (
-        <div className='border-solid border-b-xs border-b-system-light-hover-background pb-400 lg:border-none'>
-            <Text bold>Deriv MT5</Text>
-            <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
-                {isFetchedAfterMount &&
-                    data?.map(account => {
-                        if (account.is_added)
-                            return <AddedMT5AccountsList account={account} key={`added-mt5-list-${account.loginid}`} />;
+        <CFDPlatformLayout title={PlatformDetails.mt5.title}>
+            {!isFetchedAfterMount && <TradingAppCardLoader />}
+            {isFetchedAfterMount &&
+                data?.map(account => {
+                    if (account.is_added)
+                        return <AddedMT5AccountsList account={account} key={`added-mt5-list-${account.loginid}`} />;
 
-                        return (
-                            <AvailableMT5AccountsList
-                                account={account as unknown as THooks.MT5AccountsList}
-                                key={`available-mt5-list-${account.market_type}-${account.shortcode}`}
-                            />
-                        );
-                    })}
-                {hasMT5Account && !activeTradingAccount?.is_virtual && !areAllAccountsCreated && <GetMoreMT5Accounts />}
-            </div>
-        </div>
+                    return (
+                        <AvailableMT5AccountsList
+                            account={account as unknown as THooks.MT5AccountsList}
+                            key={`available-mt5-list-${account.market_type}-${account.shortcode}`}
+                        />
+                    );
+                })}
+            {hasMT5Account && !activeTradingAccount?.is_virtual && !areAllAccountsCreated && <GetMoreMT5Accounts />}
+        </CFDPlatformLayout>
     );
 };
 

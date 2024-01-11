@@ -1,5 +1,6 @@
 .p2p-v2-textarea {
     text-align: right;
+    width: 100%;
 
     & textarea {
         resize: none;
@@ -13,11 +14,6 @@
 
         &::placeholder {
             color: #999999;
-        }
-
-        @include mobile {
-            margin: 0 1vw;
-            width: 96vw;
         }
     }
 

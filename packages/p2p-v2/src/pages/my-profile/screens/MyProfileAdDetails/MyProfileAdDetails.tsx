@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import clsx from 'clsx';
 import { useAdvertiserInfo, useAdvertiserUpdate } from '@deriv/api';
-import { TextArea } from '../../../../components';
+import { Button, FullPageMobileWrapper, TextArea } from '../../../../components';
+import { useDevice } from '../../../../hooks';
 import './MyProfileAdDetails.scss';
 
 const MyProfileAdDetails = () => {
@@ -9,6 +9,7 @@ const MyProfileAdDetails = () => {
     const { mutate: updateAdvertiser } = useAdvertiserUpdate();
     const [contactInfo, setContactInfo] = useState('');
     const [advertDescription, setAdvertDescription] = useState('');
+    const { isMobile } = useDevice();
 
     const hasUpdated = useMemo(() => {
         return (
@@ -31,6 +32,32 @@ const MyProfileAdDetails = () => {
 
     if (isLoading) return <h1>Loading...</h1>;
 
+    if (isMobile) {
+        return (
+            <FullPageMobileWrapper
+                renderFooter={() => (
+                    <Button disabled={!hasUpdated} isFullWidth onClick={submitAdDetails}>
+                        Save
+                    </Button>
+                )}
+                renderHeader={() => <h1 className='p2p-v2-my-profile-ad-details__header'>Ad Details</h1>}
+            >
+                <div className='p2p-v2-my-profile-ad-details'>
+                    <TextArea
+                        onChange={e => setContactInfo(e.target.value)}
+                        placeholder='My contact details'
+                        value={advertiserInfo?.contact_info || ''}
+                    />
+                    <TextArea
+                        label='This information will be visible to everyone.'
+                        onChange={e => setAdvertDescription(e.target.value)}
+                        placeholder='Instructions'
+                        value={advertiserInfo?.default_advert_description || ''}
+                    />
+                </div>
+            </FullPageMobileWrapper>
+        );
+    }
     return (
         <div className='p2p-v2-my-profile-ad-details'>
             <TextArea
@@ -45,10 +72,9 @@ const MyProfileAdDetails = () => {
                 value={advertiserInfo?.default_advert_description || ''}
             />
             <div className='p2p-v2-my-profile-ad-details__border' />
-            {/* TODO: Once Button component is transitioned from @deriv/ui, check button should have Success loading animation when submitted */}
-            <button className={clsx(!hasUpdated && 'p2p-v2-my-profile-ad-details--disabled')} onClick={submitAdDetails}>
+            <Button disabled={!hasUpdated} onClick={submitAdDetails}>
                 Save
-            </button>
+            </Button>
         </div>
     );
 };

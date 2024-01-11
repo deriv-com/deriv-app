@@ -5,7 +5,7 @@ import { Text, useBreakpoint } from '@deriv/quill-design';
 import { Modal } from '../../../../components/Modal';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '../../constants';
-import { MT5TradeScreen } from '../../screens/MT5TradeScreen';
+import { TradeScreen } from '../../screens/TradeScreen';
 
 type TTradeModalProps = {
     account?: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
@@ -30,7 +30,7 @@ const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
         <Modal>
             <Modal.Header title='Trade' />
             <Modal.Content>
-                <MT5TradeScreen account={account} />
+                <TradeScreen account={account} />
             </Modal.Content>
             <Modal.Footer>
                 <div className='pt-50 min-h-[190px] flex justify-center items-center flex-col h-fit w-full gap-800'>

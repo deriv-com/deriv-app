@@ -15,16 +15,10 @@ import { ActionScreen, ButtonGroup, Dialog, Modal, SentEmailContent } from '../.
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
-import {
-    Category,
-    companyNamesAndUrls,
-    MarketType,
-    MarketTypeDetails,
-    PlatformDetails,
-    QueryStatus,
-} from '../../constants';
-import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
+import { Category, MarketType, PlatformDetails, QueryStatus } from '../../constants';
+import { CreatePassword, EnterPassword } from '../../screens';
 import { Jurisdiction } from '../../screens/CFDCompareAccounts/constants';
+import SuccessComponent from './SuccessComponent';
 
 type TMT5PasswordModalProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -50,15 +44,7 @@ const MT5PasswordModal = ({ marketType, platform }: TMT5PasswordModalProps) => {
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeTrading?.is_virtual;
-    const marketTypeTitle =
-        marketType === MarketType.ALL && Object.keys(PlatformDetails).includes(platform)
-            ? PlatformDetails[platform].title
-            : MarketTypeDetails[marketType].title;
     const selectedJurisdiction = getCFDState('selectedJurisdiction');
-
-    const landingCompanyName = `(${
-        companyNamesAndUrls?.[selectedJurisdiction as keyof typeof companyNamesAndUrls]?.shortcode
-    })`;
 
     const onSubmit = useCallback(async () => {
         const accountType = marketType === MarketType.SYNTHETIC ? 'gaming' : marketType;
@@ -219,41 +205,6 @@ const MT5PasswordModal = ({ marketType, platform }: TMT5PasswordModalProps) => {
         tradingPlatformPasswordChangeLoading,
     ]);
 
-    const successComponent = useMemo(() => {
-        const renderSuccessDescription = () => {
-            return isDemo
-                ? `Let's practise trading with ${activeTrading?.display_balance} virtual funds.`
-                : `Transfer funds from your ${activeTrading?.currency} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
-        };
-
-        if (isSuccess) {
-            return (
-                <CFDSuccess
-                    description={renderSuccessDescription()}
-                    displayBalance={
-                        mt5Accounts?.find(account => account.market_type === marketType)?.display_balance ?? '0.00'
-                    }
-                    landingCompany={selectedJurisdiction}
-                    marketType={marketType}
-                    platform='mt5'
-                    renderButtons={renderSuccessButton}
-                    title={`Your ${marketTypeTitle} ${isDemo ? Category.DEMO : landingCompanyName} account is ready`}
-                />
-            );
-        }
-    }, [
-        isSuccess,
-        isDemo,
-        activeTrading?.currency,
-        activeTrading?.display_balance,
-        marketTypeTitle,
-        landingCompanyName,
-        mt5Accounts,
-        selectedJurisdiction,
-        marketType,
-        renderSuccessButton,
-    ]);
-
     const passwordComponent = useMemo(() => {
         if (!isSuccess) {
             return isMT5PasswordNotSet ? (
@@ -300,8 +251,20 @@ const MT5PasswordModal = ({ marketType, platform }: TMT5PasswordModalProps) => {
             <Modal>
                 <Modal.Header title={renderTitle()} />
                 <Modal.Content>
-                    {successComponent}
-                    {passwordComponent}
+                    {isSuccess ? (
+                        <SuccessComponent
+                            activeTrading
+                            isDemo
+                            landingCompanyName
+                            marketType
+                            marketTypeTitle
+                            mt5Accounts
+                            renderSuccessButton
+                            selectedJurisdiction
+                        />
+                    ) : (
+                        passwordComponent
+                    )}
                 </Modal.Content>
                 <Modal.Footer>{renderFooter()}</Modal.Footer>
             </Modal>
@@ -312,8 +275,20 @@ const MT5PasswordModal = ({ marketType, platform }: TMT5PasswordModalProps) => {
         <Dialog>
             <Dialog.Header />
             <Dialog.Content>
-                {successComponent}
-                {passwordComponent}
+                {isSuccess ? (
+                    <SuccessComponent
+                        activeTrading
+                        isDemo
+                        landingCompanyName
+                        marketType
+                        marketTypeTitle
+                        mt5Accounts
+                        renderSuccessButton
+                        selectedJurisdiction
+                    />
+                ) : (
+                    passwordComponent
+                )}
             </Dialog.Content>
         </Dialog>
     );

@@ -1,6 +1,6 @@
 module.exports = {
     env: { es6: true },
-    extends: ['../../.eslintrc.js', 'eslint:recommended', 'plugin:react/recommended'],
+    extends: ['../../.eslintrc.js', 'eslint:recommended', 'plugin:react/recommended', 'plugin:sonarjs/recommended'],
     overrides: [
         {
             files: ['*.ts', '*.mts', '*.cts', '*.tsx'],
@@ -10,7 +10,13 @@ module.exports = {
         },
     ],
     parserOptions: { sourceType: 'module' },
-    plugins: ['eslint-plugin-local-rules', 'simple-import-sort', 'sort-destructure-keys', 'typescript-sort-keys'],
+    plugins: [
+        'eslint-plugin-local-rules',
+        'sonarjs',
+        'simple-import-sort',
+        'sort-destructure-keys',
+        'typescript-sort-keys',
+    ],
     root: true,
     rules: {
         '@typescript-eslint/array-type': 'error',

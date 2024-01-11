@@ -4,6 +4,7 @@ import { Loader } from '../../../../components';
 import { WithdrawalCryptoModule, WithdrawalFiatModule, WithdrawalVerificationModule } from '../../modules';
 
 const WalletWithdrawal = () => {
+    // return <WithdrawalCryptoModule />;
     const { getConfig, isSuccess: isCurrencyConfigSuccess } = useCurrencyConfig();
     const { data: activeWallet } = useActiveWalletAccount();
     const [verificationCode, setVerificationCode] = useState('');

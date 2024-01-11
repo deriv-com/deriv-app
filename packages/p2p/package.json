@@ -45,6 +45,7 @@
         "crc-32": "^1.2.0",
         "formik": "^2.1.4",
         "glob": "^7.1.5",
+        "history": "^5.0.0",
         "html2canvas": "^1.4.1",
         "i18next": "^22.4.6",
         "lodash.debounce": "^4.0.8",

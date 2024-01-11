@@ -24,3 +24,9 @@ export const getPersonalDetailsFields = () => ({
 });
 
 export const getSignupFormFields = () => ({ ...getPersonalDetailsFields(), ...getAddressDetailsFields() });
+
+export const EMPLOYMENT_VALUES = Object.freeze({
+    EMPLOYED: 'Employed',
+    UNEMPLOYED: 'Unemployed',
+    SELF_EMPLOYED: 'Self-Employed',
+});

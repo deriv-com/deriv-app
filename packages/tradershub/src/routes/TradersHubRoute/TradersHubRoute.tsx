@@ -4,10 +4,12 @@ import {
     ContentSwitcher,
     DemoRealSwitcher,
     OptionsAndMultipliersSection,
+    RegulationSwitcherMobile,
     StaticLink,
     TotalAssets,
 } from '../../components';
 import { CTraderList } from '../../features/cfd/components/CTraderList';
+import { MT5PlatformsList } from '../../features/cfd/components/MT5PlatformsList';
 import { OtherCFDPlatformsList } from '../../features/cfd/components/OtherCFDPlatformsList';
 
 const TradersHubRoute = () => {
@@ -16,17 +18,28 @@ const TradersHubRoute = () => {
     if (isMobile)
         return (
             <div className='p-800'>
-                <div className='pb-1200'>
-                    <Heading.H3 className='pb-200'>Trader&apos;s Hub</Heading.H3>
-                    <DemoRealSwitcher />
+                <div className='flex items-end justify-between pb-1200'>
+                    <div>
+                        <Heading.H3 className='pb-200'>Trader&apos;s Hub</Heading.H3>
+                        <DemoRealSwitcher />
+                    </div>
+                    <RegulationSwitcherMobile />
                 </div>
+                <div />
                 <div className='grid place-content-center pb-1200'>
                     <TotalAssets />
                 </div>
                 <ContentSwitcher>
                     <ContentSwitcher.HeaderList list={['Options & Multipliers', 'CFDs']} />
                     <ContentSwitcher.PanelContainer>
-                        <OptionsAndMultipliersSection />
+                        <ContentSwitcher.Panel>
+                            <OptionsAndMultipliersSection />
+                        </ContentSwitcher.Panel>
+                        <ContentSwitcher.Panel>
+                            <MT5PlatformsList />
+                            <CTraderList />
+                            <OtherCFDPlatformsList />
+                        </ContentSwitcher.Panel>
                     </ContentSwitcher.PanelContainer>
                 </ContentSwitcher>
             </div>
@@ -59,16 +72,7 @@ const TradersHubRoute = () => {
                     </Text>
                 </div>
                 <div className='space-y-1200'>
-                    <div>
-                        <Text bold className='pb-800' size='md'>
-                            Deriv MT5
-                        </Text>
-                        <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                            <div className='h-4000 rounded-300 bg-solid-slate-100' />
-                        </div>
-                    </div>
+                    <MT5PlatformsList />
                     <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
                         <CTraderList />
                     </div>

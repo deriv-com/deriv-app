@@ -1938,7 +1938,7 @@ type PasskeyRegisterRequest = {
             transports?: string[];
             authenticatorData?: string;
         };
-        clientExtensionResults: Record<string, unknown>;
+        clientExtensionResults: AuthenticationExtensionsClientOutputs;
     };
     req_id?: number;
 };

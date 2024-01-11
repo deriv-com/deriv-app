@@ -97,9 +97,8 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
             if (isAccountStatusVerified) {
                 // MT5PasswordModal to be implemented
                 show(<DummyComponent />);
-            } else {
-                // Verification(Accounts) Flow to be implemented
-                show(<DummyComponent />);
+                // else condition is removed due to sonar cloud issue
+                // else condition will have the Verification flow(Accounts)
             }
         } else if (platform === CFDPlatforms.DXTRADE) {
             show(<DxtradePasswordModal />);

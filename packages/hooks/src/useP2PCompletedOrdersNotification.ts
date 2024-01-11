@@ -4,7 +4,7 @@ import useIsP2PEnabled from './useIsP2PEnabled';
 import useP2POrderList from './useP2POrderList';
 
 const useP2PCompletedOrdersNotification = () => {
-    const { data: is_p2p_enabled } = useIsP2PEnabled();
+    const { is_p2p_enabled } = useIsP2PEnabled();
     const { subscribe, data, unsubscribe } = useP2POrderList();
     const { client, notifications } = useStore();
     const { is_authorize } = client;

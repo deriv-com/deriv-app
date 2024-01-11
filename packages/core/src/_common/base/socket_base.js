@@ -166,6 +166,8 @@ const BinarySocketBase = (() => {
 
     const subscribeBalanceActiveAccount = (cb, account) => subscribe({ balance: 1, account }, cb);
 
+    const subscribeP2PSettings = cb => subscribe({ p2p_settings: 1 }, cb);
+
     const subscribeProposal = (req, cb) => subscribe({ proposal: 1, ...req }, cb);
 
     const subscribeProposalOpenContract = (contract_id = null, cb) =>
@@ -470,6 +472,7 @@ const BinarySocketBase = (() => {
         setAvailability,
         subscribeBalanceAll,
         subscribeBalanceActiveAccount,
+        subscribeP2PSettings,
         subscribeProposal,
         subscribeProposalOpenContract,
         subscribeTicks,

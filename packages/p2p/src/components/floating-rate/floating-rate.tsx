@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
 import { InputField, Text } from '@deriv/components';
-import { useP2PConfig, useP2PExchangeRate } from '@deriv/hooks';
+import { useP2PExchangeRate, useP2PSettings } from '@deriv/hooks';
 import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from 'Components/i18next';
@@ -37,8 +37,8 @@ const FloatingRate = ({
     } = useStore();
     const exchange_rate = useP2PExchangeRate(local_currency);
 
-    const { data: p2p_config } = useP2PConfig();
-    const override_exchange_rate = p2p_config?.override_exchange_rate;
+    const { p2p_settings } = useP2PSettings();
+    const override_exchange_rate = p2p_settings?.override_exchange_rate;
     const market_rate = override_exchange_rate ? Number(override_exchange_rate) : exchange_rate;
     const os = mobileOSDetect();
     const market_feed = value ? percentOf(market_rate, value) : market_rate;

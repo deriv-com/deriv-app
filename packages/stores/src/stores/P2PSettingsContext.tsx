@@ -24,7 +24,7 @@ type TP2PSettings =
 type TP2PSettingsContext = {
     p2p_settings: TP2PSettings;
     subscribe: (...props: TSocketAcceptableProps<'p2p_settings'>) => void;
-    rest: Omit<typeof useSubscription, 'data'>;
+    rest: ReturnType<typeof useSubscription>;
 };
 
 const P2PSettingsContext = createContext<TP2PSettingsContext | null>(null);

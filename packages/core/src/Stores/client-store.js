@@ -70,6 +70,7 @@ export default class ClientStore extends BaseStore {
     is_populating_account_list = false;
     is_populating_mt5_account_list = true;
     is_populating_dxtrade_account_list = true;
+    p2p_settings = {};
     website_status = {};
     account_settings = {};
     account_status = {};
@@ -178,6 +179,7 @@ export default class ClientStore extends BaseStore {
             is_populating_account_list: observable,
             is_populating_mt5_account_list: observable,
             is_populating_dxtrade_account_list: observable,
+            p2p_settings: observable,
             website_status: observable,
             account_settings: observable,
             account_status: observable,
@@ -310,6 +312,7 @@ export default class ClientStore extends BaseStore {
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
             responseAuthorize: action.bound,
+            setP2PSettings: action.bound,
             setWebsiteStatus: action.bound,
             accountRealReaction: action.bound,
             setLoginInformation: action.bound,
@@ -2631,6 +2634,10 @@ export default class ClientStore extends BaseStore {
         this.is_already_attempted = status;
     }
 
+    setP2PSettings(p2p_settings) {
+        this.p2p_settings = p2p_settings;
+    }
+
     /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.
      *
      * This method is being used in `NotificationStore`, Once we get rid of the usage we can remove this method.
@@ -2641,7 +2648,7 @@ export default class ClientStore extends BaseStore {
         const is_low_risk_cr_eu_real = this.root_store?.traders_hub?.is_low_risk_cr_eu_real;
 
         const is_p2p_supported_currency = Boolean(
-            this.website_status?.p2p_config?.supported_currencies.includes(this.currency.toLocaleLowerCase())
+            this.p2p_settings?.supported_currencies?.includes(this.currency.toLocaleLowerCase())
         );
 
         const is_p2p_visible = is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;

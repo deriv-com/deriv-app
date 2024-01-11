@@ -28,7 +28,6 @@ const App = () => {
 
     const { buy_sell_store, general_store, order_store } = useStores();
     const {
-        subscribe,
         p2p_settings,
         rest: { isSubscribed },
     } = useP2PSettings();
@@ -44,7 +43,6 @@ const App = () => {
 
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
-        subscribe();
 
         setP2PRedirectTo({
             routeToMyProfile: () => {

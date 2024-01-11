@@ -1,0 +1,30 @@
+.p2p-v2-my-profile-name {
+    &__details {
+        & h1 {
+            font-size: 1.6rem;
+            line-height: 2.4rem;
+            font-weight: 700;
+        }
+
+        &-stats {
+            display: flex;
+
+            & h2 {
+                font-size: 1.4rem;
+                line-height: 2rem;
+                color: #999999;
+            }
+        }
+    }
+
+    &__toggle {
+        & h1 {
+            font-size: 1.4rem;
+        }
+
+        & h3 {
+            font-size: 1rem;
+            color: #999999;
+        }
+    }
+}

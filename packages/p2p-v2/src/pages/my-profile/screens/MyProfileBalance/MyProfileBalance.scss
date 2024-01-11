@@ -1,0 +1,59 @@
+.p2p-v2-my-profile-balance {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 2.4rem;
+
+    &__amount {
+        display: flex;
+        flex-direction: column;
+
+        & h1 {
+            font-size: 1.4rem;
+            color: #999999;
+            line-height: 2rem;
+        }
+
+        & span {
+            font-size: 2.4rem;
+            font-weight: 700;
+            line-height: 3.6rem;
+        }
+    }
+
+    &__item {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+
+        & h1 {
+            font-size: 1.4rem;
+            line-height: 2rem;
+        }
+
+        &-limits {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            & div {
+                border-left: 1px solid #f2f3f7;
+                padding-left: 3rem;
+
+                &:first-child {
+                    border-left: none;
+                    padding-left: 0;
+                }
+            }
+
+            & h1 {
+                font-size: 1.4rem;
+                color: #999999;
+            }
+
+            & span {
+                font-size: 1.4rem;
+                color: #333333;
+                font-weight: 800;
+            }
+        }
+    }
+}

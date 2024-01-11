@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { Button, Heading, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
 import { StaticLink } from '../../StaticLink';
 
-const CompareAccountButton = ({ className }: { className?: string }) => (
+const CompareAccountsButton = ({ className }: { className?: string }) => (
     <Button className={qtMerge('no-underline', className)} colorStyle='coral' size='sm' variant='tertiary'>
         Compare Accounts
     </Button>
@@ -16,7 +16,7 @@ const CFDHeading = () => {
             {!isMobile && (
                 <div className='flex items-center gap-x-200'>
                     <Heading.H4 className='font-sans'>CFDs</Heading.H4>
-                    <CompareAccountButton />
+                    <CompareAccountsButton />
                 </div>
             )}
             <Text className='leading-100' size='sm'>
@@ -25,7 +25,7 @@ const CFDHeading = () => {
                     Learn more
                 </StaticLink>
             </Text>
-            {isMobile && <CompareAccountButton className='mt-800' />}
+            {isMobile && <CompareAccountsButton className='mt-800' />}
         </Fragment>
     );
 };

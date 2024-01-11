@@ -1,16 +1,22 @@
 import React from 'react';
+import { useActiveTradingAccount, useIsDIELEnabled } from '@deriv/api';
 import { Heading, useBreakpoint } from '@deriv/quill-design';
 import {
     CFDSection,
     ContentSwitcher,
     DemoRealSwitcher,
     OptionsAndMultipliersSection,
+    RegulationSwitcherDesktop,
     RegulationSwitcherMobile,
     TotalAssets,
 } from '../../components';
 
 const TradersHubRoute = () => {
     const { isMobile } = useBreakpoint();
+    const { data: isDIEL } = useIsDIELEnabled();
+    const { data: activeTradingAccount } = useActiveTradingAccount();
+
+    const isSwitcherVisible = isDIEL && !activeTradingAccount?.is_virtual;
 
     if (isMobile)
         return (
@@ -20,7 +26,7 @@ const TradersHubRoute = () => {
                         <Heading.H3 className='pb-200'>Trader&apos;s Hub</Heading.H3>
                         <DemoRealSwitcher />
                     </div>
-                    <RegulationSwitcherMobile />
+                    {isSwitcherVisible && <RegulationSwitcherMobile />}
                 </div>
                 <div />
                 <div className='grid place-content-center pb-1200'>
@@ -47,6 +53,7 @@ const TradersHubRoute = () => {
                     <Heading.H3 className='font-sans'>Trader&apos;s Hub</Heading.H3>
                     <DemoRealSwitcher />
                 </div>
+                {isSwitcherVisible && <RegulationSwitcherDesktop />}
                 <TotalAssets />
             </div>
             <OptionsAndMultipliersSection />

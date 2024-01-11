@@ -13,9 +13,12 @@ type TPasskeyCard = {
 };
 
 const PasskeyCard = ({ name, last_used_at, created_at, stored_on, icon }: TPasskeyCard) => {
+    //TODO need to find popover menu
+    const [is_menu_open, setIsMenuOpen] = React.useState(false);
+
     return (
         <div className='passkeys-card__wrapper'>
-            <Icon icon={icon} size={24} />
+            <Icon icon='IcPasskey' size={24} />
             <div>
                 <Text as='p' color='general' weight='bold'>
                     {name}
@@ -32,7 +35,7 @@ const PasskeyCard = ({ name, last_used_at, created_at, stored_on, icon }: TPassk
                         <Localize i18n_default_text='Last used: ' /> {getLongDate(last_used_at)}
                     </Text>
                 </div>
-                <Icon icon='IcFingerprint' size={24} />
+                <Icon icon={icon} size={24} />
             </div>
             <Icon icon='IcContextMenu' size={24} />
         </div>

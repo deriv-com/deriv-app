@@ -14,7 +14,7 @@ type TPasskeysList = {
 const PasskeysList = ({ passkeys_list, onButtonClick, is_creation_available }: TPasskeysList) => {
     return (
         <React.Fragment>
-            <FormBody scroll_offset='18rem'>
+            <FormBody scroll_offset='16rem'>
                 {passkeys_list.map(passkey => (
                     <PasskeyCard {...passkey} key={passkey.id} />
                 ))}

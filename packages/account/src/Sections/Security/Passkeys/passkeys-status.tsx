@@ -25,7 +25,7 @@ const PasskeysStatus = ({
     return (
         <React.Fragment>
             <FormBody
-                scroll_offset='18rem'
+                scroll_offset='22rem'
                 className={classNames('passkeys-status__wrapper', {
                     [`${className}`]: className,
                 })}

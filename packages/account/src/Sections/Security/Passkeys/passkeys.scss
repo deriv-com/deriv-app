@@ -27,6 +27,9 @@
             margin: 2.4rem auto 0.8rem;
         }
         &__description {
+            &-back-button {
+                margin: 0.8rem 1.6rem;
+            }
             &-card {
                 display: flex;
                 flex-direction: column;
@@ -68,9 +71,15 @@
             display: flex;
             gap: 0.8rem;
             margin-block: 1.6rem;
+            padding-bottom: 1.6rem;
+            border-bottom: 1px solid var(--general-hover);
 
             & > .dc-icon:last-child {
                 margin-left: auto;
+            }
+
+            &:last-child {
+                border-bottom: none;
             }
         }
     }

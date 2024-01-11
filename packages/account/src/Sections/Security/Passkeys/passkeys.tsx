@@ -94,7 +94,7 @@ const Passkeys = observer(() => {
 
     return (
         <div className='passkeys'>
-            {!passkeys_list?.length ? (
+            {!mock_passkeys_list?.length ? (
                 <NoPasskeysSet onButtonClick={createPasskey} />
             ) : (
                 <PasskeysList

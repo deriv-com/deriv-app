@@ -64,25 +64,34 @@ const getPasskeysNotSetContent = (is_expanded: boolean, onLearnMoreClick: () => 
 
 const NoPasskeysSet = ({ onButtonClick }: { onButtonClick: () => void }) => {
     const [is_expanded, setIsExpanded] = React.useState(false);
-    const onLearnMoreClick = () => setIsExpanded(true);
+    const onLearnMoreClick = () => setIsExpanded(!is_expanded);
     const status_content = getPasskeysNotSetContent(is_expanded, onLearnMoreClick);
 
     return (
-        <PasskeysStatus
-            className={status_content.class_name}
-            icon={status_content.icon}
-            title={status_content.title}
-            button_text={<Localize i18n_default_text='Create passkey' />}
-            onButtonClick={onButtonClick}
-            description={status_content.description}
-        >
+        <React.Fragment>
             {is_expanded && (
-                <React.Fragment>
-                    <DescriptionContainer />
-                    <TipsBlock />
-                </React.Fragment>
+                <Icon
+                    icon='IcBackButton'
+                    onClick={onLearnMoreClick}
+                    className='passkeys-status__description-back-button'
+                />
             )}
-        </PasskeysStatus>
+            <PasskeysStatus
+                className={status_content.class_name}
+                icon={status_content.icon}
+                title={status_content.title}
+                button_text={<Localize i18n_default_text='Create passkey' />}
+                onButtonClick={onButtonClick}
+                description={status_content.description}
+            >
+                {is_expanded && (
+                    <React.Fragment>
+                        <DescriptionContainer />
+                        <TipsBlock />
+                    </React.Fragment>
+                )}
+            </PasskeysStatus>
+        </React.Fragment>
     );
 };
 

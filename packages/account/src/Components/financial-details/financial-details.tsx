@@ -1,6 +1,6 @@
+import React from 'react';
 import classNames from 'classnames';
 import { Formik } from 'formik';
-import React from 'react';
 import {
     AutoHeightWrapper,
     Div100vhContainer,
@@ -9,42 +9,31 @@ import {
     Text,
     ThemedScrollbars,
 } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isMobile, EMPLOYMENT_VALUES, shouldHideOccupationField } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { TFinancialInformationForm } from 'Types';
 import { observer, useStore } from '@deriv/stores';
-import { EMPLOYMENT_VALUES } from '../../Constants/financial-details';
 import FinancialInformation from './financial-details-partials';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import ScrollToFieldWithError from '../forms/scroll-to-field-with-error';
 import InlineNoteWithIcon from '../inline-note-with-icon';
 
-type TFinancialDetailsFormValues = {
-    income_source: string;
-    employment_industry: string;
-    occupation: string;
-    source_of_wealth: string;
-    education_level: string;
-    net_income: string;
-    estimated_worth: string;
-    account_turnover: string;
-};
-
 type TFinancialDetails = {
     goToPreviousStep: () => void;
     goToNextStep: () => void;
     getCurrentStep: () => number;
-    onSave: (current_step: number, values: TFinancialDetailsFormValues) => void;
+    onSave: (current_step: number, values: TFinancialInformationForm) => void;
     onSubmit: (
         current_step: number,
-        values: TFinancialDetailsFormValues,
+        values: TFinancialInformationForm,
         actions: (isSubmitting: boolean) => void,
         props: () => void
     ) => void;
     onCancel: (current_step: number, props: () => void) => void;
-    validate: (values: TFinancialDetailsFormValues) => object;
-    is_eu_user: boolean;
-    value: TFinancialDetailsFormValues;
+    validate: (values: TFinancialInformationForm) => object;
+    value: TFinancialInformationForm;
     employment_status: string;
+    is_eu_user: boolean;
 };
 
 /**
@@ -54,7 +43,7 @@ type TFinancialDetails = {
  * @returns {React.ReactNode} React component that renders FinancialDetails form.
  */
 const FinancialDetails = observer((props: TFinancialDetails) => {
-    const handleCancel = (values: TFinancialDetailsFormValues) => {
+    const handleCancel = (values: TFinancialInformationForm) => {
         const current_step = props.getCurrentStep() - 1;
         props.onSave(current_step, values);
         props.onCancel(current_step, props.goToPreviousStep);
@@ -64,8 +53,11 @@ const FinancialDetails = observer((props: TFinancialDetails) => {
         traders_hub: { is_eu_user },
     } = useStore();
 
-    const handleValidate = (values: TFinancialDetailsFormValues) => {
+    const handleValidate = (values: TFinancialInformationForm) => {
         const { errors } = splitValidationResultTypes(props.validate(values));
+        if (shouldHideOccupationField(props.employment_status)) {
+            delete errors?.occupation;
+        }
         return errors;
     };
 

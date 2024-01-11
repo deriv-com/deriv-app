@@ -206,7 +206,12 @@ const DMT5TradeModal = observer(
                     </div>
                 </div>
                 <div className='cfd-trade-modal__download-center-app'>
-                    <div className='cfd-trade-modal__download-center-app--option' role='button'>
+                    <div
+                        className='cfd-trade-modal__download-center-app--option'
+                        role='button'
+                        tabIndex={0}
+                        onClick={is_mobile ? mobileURLSet : undefined}
+                    >
                         <Icon icon='IcRebrandingMt5Logo' size={32} />
                         <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                             {localize('MetaTrader 5 web')}
@@ -214,7 +219,6 @@ const DMT5TradeModal = observer(
                         <a
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
-                            onClick={is_mobile ? mobileURLSet : undefined}
                             href={!is_mobile ? mt5_trade_account.webtrader_url : url}
                             target={!is_mobile ? '_blank' : ''}
                             rel={!is_mobile ? 'noopener noreferrer' : ''}

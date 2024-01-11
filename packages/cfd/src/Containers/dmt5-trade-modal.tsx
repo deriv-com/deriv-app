@@ -62,18 +62,20 @@ const DMT5TradeModal = observer(
             return undefined;
         };
 
+        const getURL = () => {
+            if (mobileOSDetect() === 'iOS') {
+                return getPlatformMt5DownloadLink('ios');
+            } else if (/huawei/i.test(navigator.userAgent)) {
+                return getPlatformMt5DownloadLink('huawei');
+            }
+            return getPlatformMt5DownloadLink('android');
+        };
+
         let mobile_url;
         const mobileURLSet = () => {
-            // a better type needs to be found for the next line, temporary typing is done due to the urgency of the task
             mobile_url = window.location.replace(deepLink);
             const timeout = setTimeout(() => {
-                if (mobileOSDetect() === 'iOS') {
-                    mobile_url = window.location.replace(getPlatformMt5DownloadLink('ios'));
-                } else if (/huawei/i.test(navigator.userAgent)) {
-                    mobile_url = window.location.replace(getPlatformMt5DownloadLink('huawei'));
-                } else {
-                    mobile_url = window.location.replace(getPlatformMt5DownloadLink('android'));
-                }
+                mobile_url = window.location.replace(getURL());
             }, 3000);
             window.onblur = () => {
                 clearTimeout(timeout);

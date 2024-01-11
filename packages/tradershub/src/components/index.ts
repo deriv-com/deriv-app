@@ -8,6 +8,7 @@ export * from './Dialog';
 export * from './GetADerivAccountBanner';
 export * from './Modal';
 export * from './OptionsAndMultipliersSection';
+export * from './RegulationSwitcher';
 export * from './SentEmailContent';
 export * from './StaticLink';
 export * from './Tooltip';

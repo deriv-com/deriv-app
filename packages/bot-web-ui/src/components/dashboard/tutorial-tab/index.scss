@@ -75,7 +75,7 @@
             display: flex;
             text-align: center;
             flex-direction: column;
-            margin-right: 2.4rem;
+            margin-inline-end: 2.4rem;
             @include mobile {
                 flex-direction: row;
                 width: auto;
@@ -98,7 +98,7 @@
         @include align-center;
         background: var(--checkbox-disabled-grey);
         margin-bottom: 0.8rem;
-        margin-right: 2.4rem;
+        margin-inline-end: 2.4rem;
         height: 16rem;
         width: 28rem;
         background-size: 100% 100%;
@@ -113,13 +113,13 @@
             height: 8.7rem;
             width: 14.8rem;
             margin: 0;
-            margin-right: 0.8rem;
+            margin-inline-end: 0.8rem;
         }
         &__tours {
             height: 13.5rem;
             background-size: contain;
             margin-bottom: 0.8rem;
-            margin-right: 0.8rem;
+            margin-inline-end: 0.8rem;
             width: 21.5rem;
             cursor: pointer;
             @include mobile {
@@ -250,7 +250,7 @@
             button {
                 &:first-child {
                     margin-bottom: unset;
-                    margin-right: 0.8rem;
+                    margin-inline-end: 0.8rem;
                 }
             }
         }
@@ -276,7 +276,7 @@
                 .search-icon {
                     cursor: pointer;
                     position: absolute;
-                    left: 1.5rem;
+                    inset-inline-start: 1.5rem;
                     z-index: 1;
                 }
                 .close-icon {
@@ -298,14 +298,14 @@
                     color: var(--text-general);
 
                     ::placeholder {
-                        margin-left: 3.2rem;
+                        margin-inline-start: 3.2rem;
                     }
                     @include mobile {
                         width: 100%;
-                        margin-left: 17px;
+                        margin-inline-start: 17px;
                         height: 4rem;
-                        padding-left: 13px;
-                        margin-right: 0;
+                        padding-inline-start: 13px;
+                        margin-inline-end: 0;
                     }
                 }
             }
@@ -434,7 +434,7 @@
                     display: block;
                     cursor: pointer;
                     position: absolute;
-                    right: 2.5rem;
+                    inset-inline-end: 2.5rem;
                     z-index: 1;
                 }
                 .dc-select-native__display,

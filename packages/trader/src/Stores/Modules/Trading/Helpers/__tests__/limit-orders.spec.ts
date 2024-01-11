@@ -78,7 +78,6 @@ describe('setLimitOrderBarriers', () => {
             has_error: false,
             has_error_details: false,
             commission: 1,
-            has_increased: false,
             id: '',
             message: '',
             obj_contract_basis: {

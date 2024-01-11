@@ -56,6 +56,7 @@ const ReceiptCard: React.FC<TReceiptCardProps> = ({ account, activeWallet, balan
 
 const TransferReceipt = () => {
     const { activeWallet, receipt, resetTransfer } = useTransfer();
+    const { isMobile } = useDevice();
 
     if (!receipt) return null;
 
@@ -110,7 +111,11 @@ const TransferReceipt = () => {
                 </WalletText>
             </div>
             <div className='wallets-transfer-receipt__button'>
-                <WalletButton onClick={() => resetTransfer()} size='lg'>
+                <WalletButton
+                    onClick={() => resetTransfer()}
+                    size={isMobile ? 'md' : 'lg'}
+                    textSize={isMobile ? 'md' : 'sm'}
+                >
                     Make a new transfer
                 </WalletButton>
             </div>

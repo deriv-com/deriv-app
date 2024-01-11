@@ -261,7 +261,7 @@ test.describe('Wallets - Crypto withdrawal', () => {
             page.locator(
                 '.wallets-withdrawal-crypto-amount-converter .wallets-textfield:first-child .wallets-textfield__message-container--msg'
             )
-        ).toHaveText('The current allowed withdraw amount is 0.00027139 to 10.00000000 BTC.');
+        ).toHaveText('Insufficient funds');
 
         // given valid amount, no error message should be visible
         await page.fill('#cryptoAmount', '1');

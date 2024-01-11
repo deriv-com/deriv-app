@@ -1,5 +1,4 @@
 import React from 'react';
-import { Provider } from '@deriv/library';
 import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
 import {
     ContentSwitcher,
@@ -16,7 +15,6 @@ import CompareAccountsButton from '../../features/cfd/screens/CFDCompareAccounts
 
 const TradersHubRoute = () => {
     const { isMobile } = useBreakpoint();
-    const { show } = Provider.useModal();
 
     if (isMobile)
         return (
@@ -63,16 +61,7 @@ const TradersHubRoute = () => {
                 <div className='pb-1200'>
                     <div className='flex items-center gap-200'>
                         <Heading.H4 className='font-sans'>CFDs</Heading.H4>
-                        <Button
-                            className='no-underline'
-                            colorStyle='coral'
-                            onClick={() => {
-                                // console.log('clicked');
-                                show(<CompareAccountsButton isAccountAdded={false} platform='mt5' shortCode='svg' />);
-                            }}
-                            size='sm'
-                            variant='tertiary'
-                        >
+                        <Button className='no-underline' colorStyle='coral' size='sm' variant='tertiary'>
                             Compare Accounts
                         </Button>
                     </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
 import {
+    CFDSection,
     ContentSwitcher,
     DemoRealSwitcher,
     OptionsAndMultipliersSection,
@@ -36,9 +37,10 @@ const TradersHubRoute = () => {
                             <OptionsAndMultipliersSection />
                         </ContentSwitcher.Panel>
                         <ContentSwitcher.Panel>
-                            <MT5PlatformsList />
+                            <CFDSection />
+                            {/* <MT5PlatformsList />
                             <CTraderList />
-                            <OtherCFDPlatformsList />
+                            <OtherCFDPlatformsList /> */}
                         </ContentSwitcher.Panel>
                     </ContentSwitcher.PanelContainer>
                 </ContentSwitcher>
@@ -55,8 +57,9 @@ const TradersHubRoute = () => {
                 <TotalAssets />
             </div>
             <OptionsAndMultipliersSection />
+            <CFDSection />
 
-            <div className='border-solid p-1200 rounded-1200 border-xs border-opacity-black-100'>
+            {/* <div className='border-solid p-1200 rounded-1200 border-xs border-opacity-black-100'>
                 <div className='pb-1200'>
                     <div className='flex items-center gap-200'>
                         <Heading.H4 className='font-sans'>CFDs</Heading.H4>
@@ -80,7 +83,7 @@ const TradersHubRoute = () => {
                         <OtherCFDPlatformsList />
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

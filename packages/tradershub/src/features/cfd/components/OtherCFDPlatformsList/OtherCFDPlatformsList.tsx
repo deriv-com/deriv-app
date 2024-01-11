@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useActiveTradingAccount, useAuthorize, useDxtradeAccountsList, useInvalidateQuery } from '@deriv/api';
 import { Text } from '@deriv/quill-design';
+import { TradingAppCardLoader } from '../../../../components/Loaders/TradingAppCardLoader';
 import { THooks } from '../../../../types';
 import { AddedDxtradeAccountsList, AvailableDxtradeAccountsList } from '../../flows/OtherCFDs/Dxtrade';
-import { TradingAppCardLoader } from '../../../../components/Loaders/TradingAppCardLoader';
 
 const OtherCFDPlatformsList = () => {
     const { isFetching } = useAuthorize();
@@ -22,9 +22,11 @@ const OtherCFDPlatformsList = () => {
     }, [invalidate, isFetching]);
 
     return (
-        <div className='pb-1200'>
-            <Text bold>Other CFD Platforms</Text>
-            <div className='grid grid-cols-3 gap-x-800 gap-y-2400 lg:grid-cols-1 lg:grid-rows-1'>
+        <div className='border-solid border-b-xs border-b-system-light-hover-background pb-400 lg:border-none'>
+            <Text bold className='pb-800'>
+                Other CFD Platforms
+            </Text>
+            <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
                 {!isFetchedAfterMount && <TradingAppCardLoader />}
                 {isFetchedAfterMount &&
                     (hasDxtradeAccount ? <AddedDxtradeAccountsList /> : <AvailableDxtradeAccountsList />)}

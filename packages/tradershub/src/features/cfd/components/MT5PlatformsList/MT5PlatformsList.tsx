@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useActiveTradingAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
 import { Text } from '@deriv/quill-design';
 import { THooks } from '../../../../types';
@@ -31,7 +31,7 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
     }, [isFetchedAfterMount, onMT5PlatformListLoaded]);
 
     return (
-        <Fragment>
+        <div className='border-solid border-b-xs border-b-system-light-hover-background pb-400 lg:border-none'>
             <Text bold>Deriv MT5</Text>
             <div className='grid grid-cols-1 lg:grid-cols-3 gap-1200'>
                 {isFetchedAfterMount &&
@@ -48,7 +48,7 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
                     })}
                 {hasMT5Account && !activeTradingAccount?.is_virtual && !areAllAccountsCreated && <GetMoreMT5Accounts />}
             </div>
-        </Fragment>
+        </div>
     );
 };
 

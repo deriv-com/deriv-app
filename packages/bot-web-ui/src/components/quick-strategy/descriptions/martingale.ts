@@ -6,6 +6,8 @@ export const MARTINGALE: TDescriptionItem[] = [
     {
         type: 'subtitle',
         content: [localize('Exploring the Martingale strategy in Deriv Bot')],
+        expanded: true,
+        no_collapsible: false,
     },
     {
         type: 'text',
@@ -78,13 +80,13 @@ export const MARTINGALE: TDescriptionItem[] = [
     {
         type: 'text',
         content: [
-            localize('1. Start with the initial stake. Let’s say $1.'),
+            localize('1. Start with the initial stake. Let’s say 1 USD.'),
             localize('2. Select your Martingale multiplier. In this example, it is 2.'),
             localize(
-                '3. If the first trade ends in a loss, Deriv Bot will automatically double your stake for the next trade to $2. Deriv Bot will continue to double the stake after every losing trade.'
+                '3. If the first trade ends in a loss, Deriv Bot will automatically double your stake for the next trade to 2 USD. Deriv Bot will continue to double the stake after every losing trade.'
             ),
             localize(
-                '4. If a trade ends in a profit, the stake for the following trade will be reset to the initial stake amount of $1.'
+                '4. If a trade ends in a profit, the stake for the following trade will be reset to the initial stake amount of 1 USD.'
             ),
         ],
     },
@@ -92,7 +94,7 @@ export const MARTINGALE: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                "The idea is that successful trades may recoup previous losses. However, it is crucial to exercise caution as the risk can quickly increase with this strategy. With Deriv Bot, you can minimise your risk by setting a maximum stake. This is an optional risk management feature. Let’s say a maximum stake of $3. If your stake for the next trade is set to exceed $3, your stake will reset to the initial stake of $1. If you didn't set a maximum stake, it would have increased beyond $3."
+                "The idea is that successful trades may recoup previous losses. However, it is crucial to exercise caution as the risk can quickly increase with this strategy. With Deriv Bot, you can minimise your risk by setting a maximum stake. This is an optional risk management feature. Let’s say a maximum stake of 3 USD. If your stake for the next trade is set to exceed 3 USD, your stake will reset to the initial stake of 1 USD. If you didn't set a maximum stake, it would have increased beyond 3 USD."
             ),
         ],
     },
@@ -104,7 +106,7 @@ export const MARTINGALE: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                'Deriv Bot allows setting profit and loss thresholds to manage risk. A profit threshold will automatically stop trading after reaching a preset amount to lock your profits. A loss threshold will stop trading after accumulating a preset loss amount. These thresholds secure profits and limit losses as part of your risk management. For example, with a $10 profit threshold, the bot will stop after exceeding $10 in total profit.'
+                "With Deriv Bot, traders can set the profit and loss thresholds to secure potential profits and limit potential losses. This means that the trading bot will automatically stop when either the profit or loss thresholds are reached. It's a form of risk management that can potentially enhance returns. For example, if a trader sets the profit threshold at 100 USD and the strategy exceeds 100 USD of profit from all trades, then the bot will stop running."
             ),
         ],
     },
@@ -139,12 +141,12 @@ export const MARTINGALE: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                'For instance, if a trader sets the loss threshold (B) is $1000, initial stake (s) is $1, and the Martingale multiplier (m) is 2, the calculation would be as follows:'
+                'For instance, if a trader sets the loss threshold (B) is 1000 USD, initial stake (s) is 1 USD, and the Martingale multiplier (m) is 2, the calculation would be as follows:'
             ),
             localize('R = log(1000/1) / log(2)'),
             localize('R ≈ 9.965'),
             localize(
-                'This means that after 10 rounds of consecutive losses, this trader will lose $1023 which exceeds the loss threshold of $1000, stopping the bot.'
+                'This means that after 10 rounds of consecutive losses, this trader will lose 1023 USD which exceeds the loss threshold of 1000 USD, stopping the bot.'
             ),
             localize(
                 'This formula allows you to work backwards based on your available capital and risk tolerance. Determine the Loss Threshold and Initial Stake, which will automatically calculate the number of rounds you can trade. This will give you an insight on stake sizing and expectations.'
@@ -164,26 +166,22 @@ export const MARTINGALE: TDescriptionItem[] = [
         ],
     },
     {
-        type: 'subtitle',
-        content: [localize('IMPORTANT:')],
-    },
-    {
-        type: 'text',
-        content: [
-            localize(
-                'Please be aware that while we may use rounded figures for illustration, a stake of a specific amount does not guarantee an exact amount in successful trades. For example, a $1 stake does not necessarily equate to a $1 profit in successful trades. Trading inherently involves risks, and actual profits can fluctuate due to various factors, including market volatility and other unforeseen variables. As such, exercise caution and conduct thorough research before engaging in any trading activities.'
-            ),
-        ],
-    },
-    {
-        type: 'subtitle_italic',
-        content: [localize('<i>Disclaimer:</i>')],
+        type: 'text_italic',
+        content: [localize('<strong>Disclaimer:</strong>')],
     },
     {
         type: 'text_italic',
         content: [
             localize(
-                'The information contained in this blog article is for educational purposes only and is not intended as financial or investment advice.'
+                'Please be aware that while we may use rounded figures for illustration, a stake of a specific amount does not guarantee an exact amount in successful trades. For example, a 1 USD stake does not necessarily equate to a 1 USD profit in successful trades.'
+            ),
+        ],
+    },
+    {
+        type: 'text_italic',
+        content: [
+            localize(
+                'Trading inherently involves risks, and actual profits can fluctuate due to various factors, including market volatility and other unforeseen variables. As such, exercise caution and conduct thorough research before engaging in any trading activities.'
             ),
         ],
     },

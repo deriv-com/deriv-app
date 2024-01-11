@@ -26,9 +26,10 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
         is_virtual,
         is_logged_in,
         is_logging_in,
-        is_pending_proof_of_ownership,
+        is_proof_of_ownership_enabled,
         landing_company_shortcode,
         should_allow_authentication,
+        should_allow_poinc_authentication,
     } = client;
     const { toggleAccountSettings, is_account_settings_visible } = ui;
     // subroutes of a route is structured as an array of arrays
@@ -55,7 +56,11 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
                 }
 
                 if (route.path === shared_routes.proof_of_ownership) {
-                    route.is_disabled = is_virtual || !is_pending_proof_of_ownership;
+                    route.is_disabled = is_virtual || !is_proof_of_ownership_enabled;
+                }
+
+                if (route.path === shared_routes.proof_of_income) {
+                    route.is_disabled = !should_allow_poinc_authentication;
                 }
             });
         }

@@ -3,6 +3,7 @@ import { PlatformContext } from '@deriv/shared';
 
 const DERIV_APPSTORE_KEY = 'is_appstore';
 
+// TODO: remove 'is_appstore' as it is deprecated
 const PlatformContainer = props => {
     // TODO: set is_appstore based on a flag from BE.
     const is_appstore_storage = window.localStorage.getItem(DERIV_APPSTORE_KEY) === 'true';

@@ -47,7 +47,7 @@ describe('RecentWorkspace', () => {
 
     it('should show strategy saved time in proper format', () => {
         render(<RecentWorkspace workspace={mock_workspace} />, { wrapper });
-        expect(screen.getByText('18 Oct2023')).toBeInTheDocument();
+        expect(screen.getByText('18 Oct 2023')).toBeInTheDocument();
     });
 
     it('should update selected strategy ID on clicking the strategy', () => {

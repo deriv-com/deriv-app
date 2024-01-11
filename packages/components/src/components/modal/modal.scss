@@ -189,6 +189,11 @@
         line-height: 1.43;
         color: var(--text-prominent);
 
+        &__expiration {
+            min-height: 12rem;
+            padding: 1.6rem;
+        }
+
         @include mobile {
             font-size: 1.2rem;
             padding: 0.8rem 2.4rem;

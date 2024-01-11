@@ -57,3 +57,24 @@ export const companyNamesAndUrls = {
     svg: { name: 'Deriv (SVG) LLC', shortcode: 'SVG', tncUrl: 'tnc/deriv-(svg)-llc.pdf' },
     vanuatu: { name: 'Deriv (V) Ltd', shortcode: 'Vanuatu', tncUrl: 'tnc/general-terms.pdf' },
 } as const;
+
+export const CFD_PLATFORMS = {
+    CFDS: 'CFDs',
+    CTRADER: 'ctrader',
+    DXTRADE: 'dxtrade',
+    MT5: 'mt5',
+} as const;
+
+export const MARKET_TYPE = {
+    ALL: 'all',
+    FINANCIAL: 'financial',
+    SYNTHETIC: 'synthetic',
+} as const;
+
+export const JURISDICTION = {
+    BVI: 'bvi',
+    LABUAN: 'labuan',
+    MALTA_INVEST: 'maltainvest',
+    SVG: 'svg',
+    VANUATU: 'vanuatu',
+} as const;

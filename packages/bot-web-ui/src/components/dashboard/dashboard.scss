@@ -215,7 +215,7 @@
 
     &__toolbox {
         position: absolute;
-        top: -4rem;
+        top: 0;
         left: 0;
         width: 23.6rem;
         padding: 0.8rem;
@@ -307,8 +307,6 @@
     height: var(--tab-content-height);
 
     .injectionDiv {
-        height: calc(100vh - 20rem);
-
         .blocklyTrash {
             transition: all 0.4s;
 
@@ -500,6 +498,10 @@
         margin-bottom: 0.8rem;
     }
 
+    &__label {
+        margin-bottom: 0.8rem;
+    }
+
     &__content {
         text-align: center;
         padding: 0 1.6rem;
@@ -569,37 +571,11 @@
     }
 
     &__bot-builder-tour {
-        height: 17rem;
+        height: 16rem;
         background: var(--general-section-1);
 
         .dbot-slider {
             width: 100%;
-
-            &__accordion {
-                width: 100%;
-
-                .dc-accordion {
-                    &__item {
-                        border: none;
-                        border-bottom: 0.1rem solid;
-
-                        &-header {
-                            color: var(--text-prominent);
-                            text-align: center;
-                            font-weight: 700;
-                            font-size: 1.4rem;
-
-                            &-icon {
-                                filter: invert(1);
-                            }
-                        }
-
-                        &-content {
-                            color: var(--text-prominent);
-                        }
-                    }
-                }
-            }
 
             &__status {
                 display: flex;
@@ -632,55 +608,6 @@
                     }
                 }
             }
-        }
-    }
-}
-
-.dbot-accordion {
-    width: 100%;
-
-    &__navbar {
-        display: flex;
-        width: 100%;
-        padding: 0.6rem 1.6rem;
-        cursor: pointer;
-    }
-
-    &__header {
-        width: 90%;
-        text-align: center;
-
-        span {
-            color: var(--text-prominent);
-        }
-    }
-
-    &__icon {
-        width: 10%;
-        color: $color-white;
-        text-align: end;
-
-        svg {
-            filter: invert(1);
-        }
-    }
-
-    &__content {
-        background-color: var(--general-section-1);
-        overflow: hidden;
-        transition: all 0.4s ease-in-out;
-        max-height: 0;
-        opacity: 0;
-        color: var(--text-prominent);
-        padding: 1rem 0;
-
-        &--open {
-            opacity: 1;
-            max-height: 50rem;
-        }
-
-        .joyride-content {
-            line-height: 1.8rem;
         }
     }
 }

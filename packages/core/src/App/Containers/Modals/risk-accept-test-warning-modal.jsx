@@ -1,17 +1,18 @@
 import { TestWarningModal } from '@deriv/account';
 import { Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-
 import { routes } from '@deriv/shared';
 import React from 'react';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 
-const RiskAcceptTestWarningModal = ({
-    should_show_risk_accept_modal,
-    setShouldShowWarningModal,
-    setShouldShowAssessmentCompleteModal,
-    setIsTradingAssessmentForNewUserEnabled,
-}) => {
+const RiskAcceptTestWarningModal = observer(() => {
+    const { ui } = useStore();
+    const {
+        should_show_risk_accept_modal,
+        setShouldShowWarningModal,
+        setShouldShowAssessmentCompleteModal,
+        setIsTradingAssessmentForNewUserEnabled,
+    } = ui;
     const handleAcceptAppropriatenessTestWarning = () => {
         setShouldShowWarningModal(false);
         if (window.location.href.includes(routes.trading_assessment)) {
@@ -49,11 +50,6 @@ const RiskAcceptTestWarningModal = ({
             }
         />
     );
-};
+});
 
-export default connect(({ ui }) => ({
-    should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
-    setShouldShowWarningModal: ui.setShouldShowWarningModal,
-    setShouldShowAssessmentCompleteModal: ui.setShouldShowAssessmentCompleteModal,
-    setIsTradingAssessmentForNewUserEnabled: ui.setIsTradingAssessmentForNewUserEnabled,
-}))(RiskAcceptTestWarningModal);
+export default RiskAcceptTestWarningModal;

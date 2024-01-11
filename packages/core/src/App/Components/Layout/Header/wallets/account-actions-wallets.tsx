@@ -43,6 +43,15 @@ const AccountActionsWallets = observer(() => {
                         tooltip_message={undefined}
                     />
                 </div>
+                <AccountInfoWallets is_dialog_on={is_accounts_switcher_on} toggleDialog={toggleAccountsDialog} />
+                <div className='acc-info__wallets-notification-icon'>
+                    <ToggleNotifications
+                        count={notifications_count}
+                        is_visible={is_notifications_visible}
+                        toggleDialog={toggleNotificationsModal}
+                        tooltip_message={undefined}
+                    />
+                </div>
             </React.Fragment>
         );
     }

@@ -1,69 +1,76 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv/components';
+import { Button, Modal, Text, HintBox } from '@deriv/components';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
-import { getFormattedJurisdictionCode, Jurisdiction, JURISDICTION_MARKET_TYPES } from '@deriv/shared';
+import { CFD_PLATFORMS, Jurisdiction, getCFDPlatformNames } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import MT5MigrationAccountIcons from './mt5-migration-account-icons';
-import { useMT5MigrationModalContext } from './mt5-migration-modal-context';
+import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import Icon from '@deriv/components/src/components/icon/icon';
 
 const MT5MigrationFrontSideContent = observer(() => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
-    const content_size = is_mobile ? 'xs' : 's';
-    const {
-        eligible_account_to_migrate_label,
-        eligible_svg_to_bvi_derived_accounts,
-        eligible_svg_to_bvi_financial_accounts,
-        eligible_svg_to_vanuatu_derived_accounts,
-        eligible_svg_to_vanuatu_financial_accounts,
-    } = useMT5SVGEligibleToMigrate();
-    const { setShowModalFrontSide } = useMT5MigrationModalContext();
+    const { ui, common } = useStore();
+    const { is_mobile, setMT5MigrationModalEnabled, toggleMT5MigrationModal } = ui;
+    const { setAppstorePlatform } = common;
+    const { enableCFDPasswordModal, mt5_migration_error, setJurisdictionSelectedShortcode } = useCfdStore();
+    const content_size = is_mobile ? 'xxs' : 'xs';
+    const { getEligibleAccountToMigrate } = useMT5SVGEligibleToMigrate();
+
+    const onConfirmMigration = () => {
+        setAppstorePlatform(CFD_PLATFORMS.MT5);
+        setJurisdictionSelectedShortcode(getEligibleAccountToMigrate());
+        setMT5MigrationModalEnabled(true);
+        toggleMT5MigrationModal();
+        enableCFDPasswordModal();
+    };
 
     return (
         <React.Fragment>
+            {!!mt5_migration_error && (
+                <div className='mt5-migration-modal__error'>
+                    <div className='mt5-migration-modal__error-header'>
+                        <Icon icon='IcAlertDanger' />
+                        <Text align='center' size='xs'>
+                            <Localize i18n_default_text={mt5_migration_error} value={{ mt5_migration_error }} />
+                        </Text>
+                    </div>
+                </div>
+            )}
             <div className='mt5-migration-modal__description'>
                 <Text as='p' size={content_size} align='center'>
                     <Localize
-                        i18n_default_text='We’re upgrading your {{from_account}} account(s) by moving them to the {{to_account}} jurisdiction.'
+                        i18n_default_text='We are giving you a new {{platform}} account(s) to enhance your trading experience'
                         values={{
-                            from_account: getFormattedJurisdictionCode(Jurisdiction.SVG),
-                            to_account: eligible_account_to_migrate_label,
+                            platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                         }}
                     />
                 </Text>
             </div>
             <div className='mt5-migration-modal__migration_content'>
                 <div className='mt5-migration-modal__migration_content-items'>
-                    {eligible_svg_to_bvi_derived_accounts && (
-                        <MT5MigrationAccountIcons to={Jurisdiction.BVI} type={JURISDICTION_MARKET_TYPES.DERIVED} />
-                    )}
-                    {eligible_svg_to_bvi_financial_accounts && (
-                        <MT5MigrationAccountIcons to={Jurisdiction.BVI} type={JURISDICTION_MARKET_TYPES.FINANCIAL} />
-                    )}
-                </div>
-                <div className='mt5-migration-modal__migration_content-items'>
-                    {eligible_svg_to_vanuatu_derived_accounts && (
-                        <MT5MigrationAccountIcons to={Jurisdiction.VANUATU} type={JURISDICTION_MARKET_TYPES.DERIVED} />
-                    )}
-                    {eligible_svg_to_vanuatu_financial_accounts && (
-                        <MT5MigrationAccountIcons
-                            to={Jurisdiction.VANUATU}
-                            type={JURISDICTION_MARKET_TYPES.FINANCIAL}
-                        />
-                    )}
+                    <MT5MigrationAccountIcons />
                 </div>
             </div>
-            <div>
-                <Text as='p' size={content_size} align='center'>
-                    <Localize
-                        i18n_default_text='Click <0>Next</0> to start your transition.'
-                        components={[<strong key={0} />]}
-                    />
-                </Text>
+            <div className='mt5-migration-modal__migration_infobox'>
+                <HintBox
+                    icon='IcInfoBlue'
+                    message={
+                        <Text as='p' size='xxxs'>
+                            <Localize
+                                i18n_default_text='Your existing <0>{{platform}} {{account}}</0> account(s) will remain accessible.'
+                                components={[<strong key={0} />]}
+                                values={{
+                                    account: Jurisdiction.SVG.toUpperCase(),
+                                    platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
+                                }}
+                            />
+                        </Text>
+                    }
+                    is_info
+                />
             </div>
             <Modal.Footer has_separator>
-                <Button type='button' has_effect large primary onClick={() => setShowModalFrontSide(false)}>
+                <Button type='button' has_effect large primary onClick={onConfirmMigration}>
                     <Localize i18n_default_text='Next' />
                 </Button>
             </Modal.Footer>

@@ -1,5 +1,5 @@
 import { Button, Icon, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import React from 'react';
 import IconMessageContent from '../../../icon-message-content';
 
@@ -10,7 +10,7 @@ type TExpired = {
 export const Expired = ({ onClick }: TExpired) => (
     <div className='account-management__container'>
         <IconMessageContent
-            message={localize('New proof of address is needed')}
+            message={<Localize i18n_default_text='New proof of address is needed' />}
             text={
                 <Localize
                     i18n_default_text='Your document for proof of address is expired. <0/>Please submit again.'
@@ -21,7 +21,7 @@ export const Expired = ({ onClick }: TExpired) => (
         >
             <Button onClick={onClick} has_effect primary>
                 <Text className='dc-btn__text' size='xs' weight='bold' as='p'>
-                    {localize('Resubmit')}
+                    <Localize i18n_default_text='Resubmit' />
                 </Text>
             </Button>
         </IconMessageContent>

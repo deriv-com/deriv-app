@@ -361,6 +361,12 @@
                         padding: 0 0.8rem;
                         height: 100vh;
 
+                        li {
+                            white-space: unset;
+                            text-align: left;
+                            line-height: normal;
+                        }
+
                         &:first-child {
                             margin-top: -7.2rem;
                         }

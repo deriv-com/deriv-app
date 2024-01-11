@@ -4,12 +4,13 @@ import { Loading } from '@deriv/components';
 import { useGetPasskeysList, useIsPasskeySupported, useRegisterPasskey } from '@deriv/hooks';
 import { PlatformContext, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import NoPasskeysSet from './no-passkeys-set';
-import './passkeys.scss';
-import PasskeysStatus from 'Sections/Security/Passkeys/passkeys-status';
 import { Localize } from '@deriv/translations';
-import PasskeysList from 'Sections/Security/Passkeys/passkeys-list';
+import NoPasskeysSet from './no-passkeys-set';
+import PasskeysList from './passkeys-list';
+import PasskeysStatus from './passkeys-status';
+import './passkeys.scss';
 
+//TODO need to investigate how to add info about type of key (icon)
 const mock_passkeys_list = [
     {
         id: 1,
@@ -17,6 +18,7 @@ const mock_passkeys_list = [
         last_used_at: 1702365923,
         created_at: 1702365923,
         stored_on: 'no info',
+        icon: 'IcFingerprint',
     },
     {
         id: 2,
@@ -24,13 +26,23 @@ const mock_passkeys_list = [
         last_used_at: 1702365923,
         created_at: 1702365923,
         stored_on: 'no info',
+        icon: 'IcPattern',
     },
     {
         id: 3,
-        name: 'Passkey Name 2',
+        name: 'Passkey Name 3',
         last_used_at: 1702365923,
         created_at: 1702365923,
         stored_on: 'no info',
+        icon: 'IcPasscode',
+    },
+    {
+        id: 4,
+        name: 'Passkey Name 3',
+        last_used_at: 1702365923,
+        created_at: 1702365923,
+        stored_on: 'no info',
+        icon: 'IcFaceid',
     },
 ];
 

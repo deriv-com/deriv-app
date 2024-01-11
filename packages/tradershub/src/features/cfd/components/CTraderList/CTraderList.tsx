@@ -1,12 +1,13 @@
 import React from 'react';
 import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
-import { Text } from '@deriv/quill-design';
+import { TradingAppCardLoader } from '../../../../components/Loaders/TradingAppCardLoader';
 import { THooks } from '../../../../types';
 import { PlatformDetails } from '../../constants';
 import { AddedCTraderAccountsList, AvailableCTraderAccountsList } from '../../flows/CTrader';
+import { CFDPlatformLayout } from '../CFDPlatformLayout';
 
 const CTraderList = () => {
-    const { data: cTraderAccounts } = useCtraderAccountsList();
+    const { data: cTraderAccounts, isFetchedAfterMount } = useCtraderAccountsList();
     const { data: activeTradingAccount } = useActiveTradingAccount();
 
     const hasCTraderAccount = cTraderAccounts?.some(
@@ -14,10 +15,11 @@ const CTraderList = () => {
     );
 
     return (
-        <div className='pb-1200'>
-            <Text bold>{PlatformDetails.ctrader.title}</Text>
-            {hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />}
-        </div>
+        <CFDPlatformLayout title={PlatformDetails.ctrader.title}>
+            {!isFetchedAfterMount && <TradingAppCardLoader />}
+            {isFetchedAfterMount &&
+                (hasCTraderAccount ? <AddedCTraderAccountsList /> : <AvailableCTraderAccountsList />)}
+        </CFDPlatformLayout>
     );
 };
 

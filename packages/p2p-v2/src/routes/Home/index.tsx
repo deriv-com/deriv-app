@@ -2,7 +2,6 @@ import React from 'react';
 import { useActiveAccount } from '@deriv/api';
 import { MobileCloseHeader } from '../../components';
 import { useDevice } from '../../hooks';
-import { MyProfileAdDetails } from '../../pages/my-profile/screens';
 import './index.scss';
 
 const Home: React.FC<{ path: string }> = ({ path }) => {
@@ -19,8 +18,7 @@ const Home: React.FC<{ path: string }> = ({ path }) => {
         <>
             {isMobile && <MobileCloseHeader />}
             <div className='p2p-v2-home-style'>
-                {/* <div> Welcome to P2P Version 2 from {path} Page ;) </div> */}
-                <MyProfileAdDetails />
+                <div> Welcome to P2P Version 2 from {path} Page ;) </div>
             </div>
         </>
     );

@@ -28,6 +28,8 @@
     &__header {
         padding: 2rem;
         border-bottom: 2px solid #f2f3f4;
+        display: flex;
+        gap: 2rem;
     }
 
     &__footer {

@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
+import LeftArrowIcon from '../../public/ic-arrow-left.svg';
 import './FullPageMobileWrapper.scss';
 
 type TFullPageMobileWrapperProps = {
@@ -20,7 +21,12 @@ const FullPageMobileWrapper = ({
                 'p2p-v2-mobile-wrapper--fixed-footer': shouldFixedFooter,
             })}
         >
-            {renderHeader && <div className='p2p-v2-mobile-wrapper__header'>{renderHeader?.()}</div>}
+            {renderHeader && (
+                <div className='p2p-v2-mobile-wrapper__header'>
+                    <LeftArrowIcon />
+                    {renderHeader?.()}
+                </div>
+            )}
             <div className='p2p-v2-mobile-wrapper__body'>{children}</div>
             {renderFooter && <div className={clsx('p2p-v2-mobile-wrapper__footer')}>{renderFooter?.()}</div>}
         </div>

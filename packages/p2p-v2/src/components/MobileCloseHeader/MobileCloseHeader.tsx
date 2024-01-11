@@ -1,13 +1,12 @@
 import React from 'react';
+import CrossIcon from '../../public/ic-cross.svg';
 import './MobileCloseHeader.scss';
 
 const MobileCloseHeader = () => {
     return (
         <div className='p2p-v2-mobile-close-header'>
             Deriv P2P
-            <button className='p2p-v2-mobile-close-header--icon' onClick={() => window.history.back()}>
-                X
-            </button>
+            <CrossIcon className='p2p-v2-mobile-close-header--icon' onClick={() => window.history.back()} />
         </div>
     );
 };

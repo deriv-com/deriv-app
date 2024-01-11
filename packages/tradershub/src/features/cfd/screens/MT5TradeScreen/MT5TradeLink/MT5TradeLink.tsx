@@ -7,6 +7,7 @@ import { AppToContentMapper, PlatformDetails, PlatformToLabelIconMapper, Platfor
 
 type TMT5TradeLinkProps = {
     app?: keyof typeof AppToContentMapper;
+    isDemo?: boolean;
     platform?: TPlatforms.All;
     webtraderUrl?: THooks.MT5AccountsList['webtrader_url'];
 };
@@ -40,7 +41,7 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', platform, webtrad
     };
 
     return (
-        <div className='flex items-center justify-between border-t border-system-light-secondary-background px-800 py-1200'>
+        <div className='flex items-center justify-between border-t-100 border-system-light-secondary-background px-800 py-1200'>
             <div className='flex items-center gap-800'>
                 {(platform === mt5Platform || app === ctraderPlatform) && (
                     <Fragment>
@@ -54,9 +55,11 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', platform, webtrad
             </div>
             {(platform === mt5Platform || app === ctraderPlatform) && (
                 <Button
+                    className='border-opacity-black-400 rounded-200 px-800'
+                    colorStyle='black'
                     onClick={() => window.open(app === 'web' ? webtraderUrl : content.link)}
                     size='sm'
-                    variant='outlined'
+                    variant='secondary'
                 >
                     {content.text}
                 </Button>
@@ -64,14 +67,16 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', platform, webtrad
             {platform !== mt5Platform && app !== ctraderPlatform && (
                 <Button
                     className='flex justify-center items-center border-none rounded-md cursor-pointer bg-system-dark-primary-background p-400 gap-400'
-                    colorStyle='black'
+                    colorStyle='white'
                     onClick={onClickWebTerminal}
                     variant='secondary'
                 >
-                    {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}
-                    <Text bold colorStyle='white' size='sm'>
-                        Web terminal
-                    </Text>
+                    <span className='flex justify-center items-center gap-400'>
+                        {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}
+                        <Text bold className='text-system-light-primary-background' size='sm'>
+                            Web terminal
+                        </Text>
+                    </span>
                 </Button>
             )}
         </div>

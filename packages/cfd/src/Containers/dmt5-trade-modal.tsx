@@ -65,6 +65,7 @@ const DMT5TradeModal = observer(
         };
 
         const mobileURLSet = () => {
+            // a better type needs to be found for the next line, temporary typing is done due to the urgency of the task
             setURL(window.location.replace(deepLink) as unknown as string);
             const timeout = setTimeout(() => {
                 if (mobileOSDetect() === 'iOS') {

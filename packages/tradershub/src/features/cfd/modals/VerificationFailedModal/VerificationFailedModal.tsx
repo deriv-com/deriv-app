@@ -1,8 +1,8 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Modal } from '../../../../components';
 import { VerificationFailed } from '../../screens';
 
-const VerificationFailedModal: FC = () => {
+const VerificationFailedModal = () => {
     return (
         <Modal>
             <Modal.Content>

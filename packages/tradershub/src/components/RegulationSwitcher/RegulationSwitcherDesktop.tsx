@@ -5,16 +5,16 @@ import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
 
 const RegulationSwitcherDesktop = () => {
     const { switchAccount } = useAuthorize();
-    const { data: tradingAccountList } = useTradingAccountsList();
+    const { data: tradingAccountsList } = useTradingAccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
 
-    const realCRAccount = tradingAccountList?.find(account => account.loginid.startsWith('CR'))?.loginid ?? '';
+    const realCRAccount = tradingAccountsList?.find(account => account.loginid.startsWith('CR'))?.loginid ?? '';
 
-    const RealMFAccount = tradingAccountList?.find(account => account.loginid.startsWith('MF'))?.loginid ?? '';
+    const realMFAccount = tradingAccountsList?.find(account => account.loginid.startsWith('MF'))?.loginid ?? '';
 
     const buttons = [
         { label: 'Non-EU', loginid: realCRAccount },
-        { label: 'EU', loginid: RealMFAccount },
+        { label: 'EU', loginid: realMFAccount },
     ];
 
     const handleButtonClick = (loginid: string) => {

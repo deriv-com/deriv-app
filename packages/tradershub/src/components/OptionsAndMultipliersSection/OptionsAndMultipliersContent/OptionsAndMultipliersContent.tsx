@@ -1,11 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
-import { Button, Text, useBreakpoint } from '@deriv/quill-design';
+import { Button, useBreakpoint } from '@deriv/quill-design';
 import { optionsAndMultipliersContent } from '../../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
 import { TradingAppCardLoader } from '../../Loaders';
-import { TradingAccountCard } from '../../TradingAccountCard';
+import { TradingAccountCard, TradingAccountCardContent } from '../../TradingAccountCard';
 
 type OptionsAndMultipliersContentItem = {
     description: string;
@@ -112,28 +112,22 @@ const OptionsAndMultipliersContent = () => {
     return (
         <div className='grid w-full grid-cols-1 gap-200 lg:grid-cols-3 lg:gap-x-1200 lg:gap-y-200'>
             {filteredContent.map(account => {
-                const trailingComponent = () => (
-                    <ShowOpenButton isExternal={account.isExternal} redirect={account.redirect} />
-                );
+                const { description, icon, isExternal, redirect, smallIcon, title } = account;
+
+                const trailingComponent = () => <ShowOpenButton isExternal={isExternal} redirect={redirect} />;
 
                 const leadingComponent = () => (
-                    <LinkTitle icon={data?.loginid || !isMobile ? account.icon : account.smallIcon} title={title} />
+                    <LinkTitle icon={data?.loginid || !isMobile ? icon : smallIcon} title={title} />
                 );
 
-                const title = account.title;
                 return (
                     <TradingAccountCard
                         {...account}
-                        key={`trading-account-card-${account.title}`}
+                        key={`trading-account-card-${title}`}
                         leading={leadingComponent}
                         trailing={trailingComponent}
                     >
-                        <div className='flex flex-col flex-grow'>
-                            <Text bold size='sm'>
-                                {account.title}
-                            </Text>
-                            <Text className='text-[12px]'>{account.description}</Text>
-                        </div>
+                        <TradingAccountCardContent title={title}>{description}</TradingAccountCardContent>
                     </TradingAccountCard>
                 );
             })}

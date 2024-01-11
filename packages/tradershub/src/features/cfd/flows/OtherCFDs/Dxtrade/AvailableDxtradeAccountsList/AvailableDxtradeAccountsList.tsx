@@ -1,8 +1,12 @@
 import React from 'react';
-import { Button, Text } from '@deriv/quill-design';
-import { TradingAccountCard } from '../../../../../../components';
+import {
+    TradingAccountCard,
+    TradingAccountCardContent,
+    TradingAccountCardLightButton,
+} from '../../../../../../components/TradingAccountCard';
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/cfd/derivx.svg';
+import { PlatformDetails } from '../../../../constants';
 
 const LeadingIcon = () => (
     <div
@@ -21,22 +25,13 @@ const LeadingIcon = () => (
     </div>
 );
 
-const TrailingButton = () => (
-    <Button className='rounded-200' colorStyle='coral' variant='primary'>
-        Get
-    </Button>
-);
+const TrailingButton = () => <TradingAccountCardLightButton />;
 
 const AvailableDxtradeAccountsList = () => (
     <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
-        <div className='grow user-select-none'>
-            <Text bold className='leading-200' size='sm'>
-                Deriv X
-            </Text>
-            <Text className='text-[12px] leading-100 w-5/6 lg:w-full'>
-                This account offers CFDs on a highly customisable CFD trading platform.
-            </Text>
-        </div>
+        <TradingAccountCardContent title={PlatformDetails.dxtrade.title}>
+            This account offers CFDs on a highly customisable CFD trading platform.
+        </TradingAccountCardContent>
     </TradingAccountCard>
 );
 

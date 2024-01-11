@@ -232,7 +232,7 @@ const VideoPlayer = ({ src, is_mobile, data_testid }: TVideoPlayerProps) => {
             data-testid={data_testid}
         >
             <Stream
-                autoplay
+                autoplay={should_autoplay}
                 height={is_mobile ? '184.5px' : '270px'}
                 letterboxColor='transparent'
                 muted={is_muted}

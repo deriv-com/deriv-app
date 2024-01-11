@@ -230,11 +230,40 @@
                 width: 100%;
             }
         }
+        &__header {
+            padding: 1.6rem;
+            margin-top: 4.8rem;
+            &--listed {
+                margin-top: 0.6rem;
+            }
+            @include mobile {
+                height: auto;
+                margin-top: 0;
+            }
+            .title {
+                text-align: center;
+                height: 7.2;
+                @include mobile {
+                    height: auto;
+                }
+            }
+            .subtitle {
+                text-align: center;
+                margin-top: 1.6rem;
+                &__has-list {
+                    margin-top: 0;
+                    text-align: left;
+                    @include mobile {
+                        width: 85%;
+                    }
+                }
+            }
+        }
 
         &__content {
-            min-width: 70%;
             display: flex;
-            justify-content: center;
+            align-items: flex-start;
+
             height: var(--tab-content-height);
             flex-grow: 1;
             background: var(--general-main-1);
@@ -242,13 +271,25 @@
             position: relative;
 
             @include desktop {
-                align-items: center;
-                padding: 2.2rem 0;
+                padding: 1.6rem 0 0;
             }
 
             @include mobile {
                 height: calc(100vh - 19rem);
                 align-items: flex-start;
+            }
+            .quick-panel {
+                flex: 1 1 44%;
+            }
+            .preview-panel {
+                display: none;
+                flex: 1 1 56%;
+                &--active {
+                    display: block;
+                    @include mobile {
+                        display: none;
+                    }
+                }
             }
         }
 
@@ -268,7 +309,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 50%;
 
             @include tablet {
                 width: 100%;
@@ -281,7 +321,8 @@
 
             &--not-listed {
                 @include desktop {
-                    width: 50%;
+                    width: 100%;
+                    margin-top: 4.8rem;
                 }
             }
 
@@ -294,7 +335,6 @@
         }
 
         &__preview {
-            width: 50%;
             height: calc(100% + 2rem);
 
             @include mobile {
@@ -465,6 +505,10 @@
                     width: 9.1rem;
                     word-wrap: break-word;
                     text-align: center;
+                    height: 4.2rem;
+                    @include mobile {
+                        height: auto;
+                    }
                 }
 
                 &--minimized {
@@ -474,6 +518,9 @@
                         width: 8rem;
                         text-align: center;
                     }
+                }
+                &:nth-last-child(2) {
+                    padding-right: 0;
                 }
             }
 
@@ -491,17 +538,45 @@
                     }
                 }
             }
-
-            .load-strategy {
-                &__recent-item-time {
-                    font-size: var(--text-size-xs);
-                }
-
-                &__recent-item-text,
-                &__recent-item-saved {
-                    @include recent-list-properties;
-                }
-            }
         }
+    }
+}
+
+.user-guide {
+    position: absolute;
+    right: 1.6rem;
+    top: 1.8rem;
+    z-index: 1;
+    &__button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.8rem 1.4rem;
+        border: none;
+        outline: none;
+        border-radius: 2.4rem;
+        background-color: var(--general-section-1);
+
+        @include mobile {
+            height: 3.2rem;
+            width: 3.2rem;
+            line-height: 3.6rem;
+            text-align: center;
+            padding: 0;
+        }
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    &__icon {
+        height: 24px;
+        width: 24px;
+        @include mobile {
+            height: 16px;
+            width: 16px;
+        }
+    }
+    &__label {
+        margin-left: 0.4rem;
     }
 }

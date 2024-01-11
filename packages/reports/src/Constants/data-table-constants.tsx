@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Icon, Label, Money, ContractCard, ContractCardSell, Popover } from '@deriv/components';
+import { ArrowIndicator, Label, Money, ContractCard, ContractCardSell, Popover } from '@deriv/components';
 import {
     isMobile,
     getCurrencyDisplayCode,
@@ -240,9 +240,7 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
                     })}
                 >
                     <Money amount={Math.abs(profit)} currency={currency} />
-                    <div className='open-positions__profit-loss--movement'>
-                        {profit > 0 ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />}
-                    </div>
+                    <ArrowIndicator className='open-positions__profit-loss--movement' value={profit} />
                 </div>
             );
         },
@@ -405,9 +403,7 @@ export const getMultiplierOpenPositionsColumnsTemplate = ({
                     })}
                 >
                     <Money amount={Math.abs(total_profit)} currency={currency} />
-                    <div className='open-positions__profit-loss--movement'>
-                        {total_profit > 0 ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />}
-                    </div>
+                    <ArrowIndicator className='open-positions__profit-loss--movement' value={total_profit} />
                 </div>
             );
         },
@@ -536,9 +532,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
                     })}
                 >
                     <Money amount={Math.abs(total_profit)} currency={currency} />
-                    <div className='open-positions__profit-loss--movement'>
-                        {total_profit > 0 ? <Icon icon='IcProfit' /> : <Icon icon='IcLoss' />}
-                    </div>
+                    <ArrowIndicator className='open-positions__profit-loss--movement' value={total_profit} />
                 </div>
             );
         },

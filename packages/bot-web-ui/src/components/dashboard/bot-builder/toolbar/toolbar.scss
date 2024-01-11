@@ -5,15 +5,16 @@
     align-items: center;
     padding: 0.5rem 0.6rem;
     position: absolute;
-    top: -4rem;
+    top: 0;
     inset-inline-start: 23.2rem;
     background-color: var(--general-main-1);
+
     @include mobile {
-        inset-inline-start: 1.4rem;
+        inset-inline-start: 0;
         overflow-x: auto;
         overflow-y: hidden;
         width: 100%;
-
+        padding: 0.8rem;
         &::-webkit-scrollbar {
             display: none;
         }

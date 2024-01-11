@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { useAdvertiserInfo, useAdvertiserUpdate } from '@deriv/api';
-import { MyProfileAdDetailsTextarea } from './MyProfileAdDetailsTextarea';
+import { TextArea } from '../../../../components';
 import './MyProfileAdDetails.scss';
 
 const MyProfileAdDetails = () => {
@@ -33,18 +33,19 @@ const MyProfileAdDetails = () => {
 
     return (
         <div className='p2p-v2-my-profile-ad-details'>
-            <MyProfileAdDetailsTextarea
+            <TextArea
                 onChange={e => setContactInfo(e.target.value)}
                 placeholder='My contact details'
                 value={advertiserInfo?.contact_info || ''}
             />
-            <MyProfileAdDetailsTextarea
+            <TextArea
                 label='This information will be visible to everyone.'
                 onChange={e => setAdvertDescription(e.target.value)}
                 placeholder='Instructions'
                 value={advertiserInfo?.default_advert_description || ''}
             />
             <div className='p2p-v2-my-profile-ad-details__border' />
+            {/* TODO: Once Button component is transitioned from @deriv/ui, check button should have Success loading animation when submitted */}
             <button className={clsx(!hasUpdated && 'p2p-v2-my-profile-ad-details--disabled')} onClick={submitAdDetails}>
                 Save
             </button>

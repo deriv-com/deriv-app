@@ -108,7 +108,7 @@ const OptionsAndMultipliersContent = () => {
                             <Text bold size='sm'>
                                 {account.title}
                             </Text>
-                            <Text size='xs'>{account.description}</Text>
+                            <Text className='text-[12px]'>{account.description}</Text>
                         </div>
                     </TradingAccountCard>
                 );

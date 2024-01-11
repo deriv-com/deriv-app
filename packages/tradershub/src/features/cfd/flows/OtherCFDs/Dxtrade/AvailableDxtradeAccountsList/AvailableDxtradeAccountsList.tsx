@@ -38,7 +38,9 @@ const AvailableDxtradeAccountsList = () => {
                 <Text bold size='sm'>
                     Deriv X
                 </Text>
-                <Text size='sm'>This account offers CFDs on a highly customisable CFD trading platform.</Text>
+                <Text className='text-[12px]'>
+                    This account offers CFDs on a highly customisable CFD trading platform.
+                </Text>
             </div>
         </TradingAccountCard>
     );

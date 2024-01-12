@@ -24,7 +24,6 @@ import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';
-import { order_completion_time_list } from 'Constants/order-list';
 import OrderTimeSelection from './order-time-selection';
 import './create-ad-form.scss';
 
@@ -135,7 +134,7 @@ const CreateAdForm = () => {
                     max_transaction: '',
                     min_transaction: '',
                     offer_amount: '',
-                    order_completion_time: order_completion_time_list[0].value,
+                    order_completion_time: general_store.order_payment_period,
                     payment_info: my_ads_store.payment_info,
                     rate_type: floating_rate_store.rate_type === ad_type.FLOAT ? '-0.01' : '',
                     type: buy_sell_store.create_sell_ad_from_no_ads ? buy_sell.SELL : buy_sell.BUY,

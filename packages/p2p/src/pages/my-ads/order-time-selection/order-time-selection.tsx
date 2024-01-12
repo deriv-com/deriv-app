@@ -27,7 +27,11 @@ const OrderTimeSelection = ({ ...field }: FormikValues) => {
                 <Text color='prominent' size='xs' line_height='xl'>
                     <Localize i18n_default_text='Orders must be completed in' />
                 </Text>
-                <Popover alignment='top' message={order_time_info_message}>
+                <Popover
+                    alignment='top'
+                    classNameBubble='order-time-selection__popover'
+                    message={order_time_info_message}
+                >
                     <Icon
                         data_testid='dt_order_time_selection_info_icon'
                         icon='IcInfoOutline'

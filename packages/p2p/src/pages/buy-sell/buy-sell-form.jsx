@@ -272,7 +272,7 @@ const BuySellForm = props => {
                     <div className='buy-sell-form__field-wrapper'>
                         <div className='buy-sell-form-field'>
                             <Text as='p' color='less-prominent' size='xxs'>
-                                <Localize i18n_default_text='Order Completion time' />
+                                <Localize i18n_default_text='Orders must be completed in' />
                             </Text>
                             <Text as='p' color='general' size='xs'>
                                 {formatTime(order_completion_time)}

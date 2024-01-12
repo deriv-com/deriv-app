@@ -1878,7 +1878,7 @@ type PasskeysListResponse = {
         name: string;
         last_used_at: number;
         created_at: number;
-        stored_on?: unknown;
+        stored_on?: string;
     }[];
     echo_req: {
         [k: string]: unknown;

@@ -9,18 +9,19 @@ type TPasskeyCard = {
     last_used_at: number;
     created_at: number;
     stored_on?: string;
-    icon: string;
+    //TODO investigate how to detect type of passkey
+    icon?: string;
 };
 
 const PasskeyCard = ({ name, last_used_at, created_at, stored_on, icon }: TPasskeyCard) => {
-    //TODO need to find popover menu
-    const [is_menu_open, setIsMenuOpen] = React.useState(false);
+    //TODO: add revoke and rename flow as the next step
+    // const [is_menu_open, setIsMenuOpen] = React.useState(false);
 
     return (
         <div className='passkeys-card__wrapper'>
             <Icon icon='IcPasskey' size={24} />
             <div>
-                <Text as='p' color='general' weight='bold'>
+                <Text as='p' color='general' weight='bold' line_height='l'>
                     {name}
                 </Text>
                 {stored_on && (
@@ -35,9 +36,10 @@ const PasskeyCard = ({ name, last_used_at, created_at, stored_on, icon }: TPassk
                         <Localize i18n_default_text='Last used: ' /> {getLongDate(last_used_at)}
                     </Text>
                 </div>
-                <Icon icon={icon} size={24} />
+                {icon && <Icon icon={icon} size={24} className='passkeys-card__passkey-type-icon' />}
             </div>
-            <Icon icon='IcContextMenu' size={24} />
+            {/*revoke and rename flow will be implemented in the next step*/}
+            {/*<Icon icon='IcContextMenu' size={24} />*/}
         </div>
     );
 };

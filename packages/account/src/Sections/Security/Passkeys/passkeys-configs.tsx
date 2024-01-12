@@ -1,6 +1,16 @@
 import React from 'react';
 import { Localize } from '@deriv/translations';
 
+export const PASSKEY_STATUS_CODES = {
+    NONE: '',
+    REGISTERED: 'registered',
+    RENAMING: 'renaming',
+    REVOKED: 'revoked',
+    REVOKE_VERIFY: 'revoke_verify',
+} as const;
+
+export type TPasskeysStatus = typeof PASSKEY_STATUS_CODES[keyof typeof PASSKEY_STATUS_CODES];
+
 export const getPasskeysTips = () =>
     [
         {
@@ -55,3 +65,46 @@ export const getPasskeysDescriptions = () =>
             ),
         },
     ] as const;
+
+export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
+    const titles: Record<Exclude<TPasskeysStatus, ''>, React.ReactElement> = {
+        registered: <Localize i18n_default_text='Passkey registered successfully!' />,
+        renaming: <Localize i18n_default_text='Rename passkey' />,
+        revoked: <Localize i18n_default_text='Passkey revoked successfully!' />,
+        revoke_verify: <Localize i18n_default_text='Please help us verify your revoke  passkey request.' />,
+    };
+
+    const icons: Record<Exclude<TPasskeysStatus, ''>, string> = {
+        registered: 'IcSuccessPasskey',
+        renaming: 'IcRenamePasskey',
+        revoked: 'IcSuccessPasskey',
+        revoke_verify: 'IcRevokePasskey',
+    };
+
+    const descriptions: Record<Exclude<TPasskeysStatus, ''>, React.ReactElement> = {
+        registered: (
+            <Localize i18n_default_text='Your account is now set up with a passkey,allowing you to easily log in and manage it in your account settings.' />
+        ),
+        renaming: <Localize i18n_default_text='Update your passkey name for customization.' />,
+        revoked: (
+            <Localize i18n_default_text='Your passkey is successfully revoked. To avoid sign-in prompts, remove them from your google password manager.' />
+        ),
+        revoke_verify: (
+            <Localize i18n_default_text='Hit the button below and we’ll send you an email with a link. Tap that link to verify your revoke request. This is to protect your account from unauthorised passkeys.' />
+        ),
+    };
+
+    const button_texts: Record<Exclude<TPasskeysStatus, ''>, React.ReactElement> = {
+        registered: <Localize i18n_default_text='Continue' />,
+        renaming: <Localize i18n_default_text=' ' />,
+        revoked: <Localize i18n_default_text=' ' />,
+        revoke_verify: <Localize i18n_default_text=' ' />,
+    };
+
+    return {
+        title: titles[status],
+        description: descriptions[status],
+        icon: icons[status],
+        button_text: button_texts[status],
+    };
+};

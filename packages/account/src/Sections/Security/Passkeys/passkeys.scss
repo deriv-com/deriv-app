@@ -1,6 +1,7 @@
 .passkeys {
     width: 100%;
     margin-inline: auto;
+
     &-status {
         &__wrapper {
             height: 100%;
@@ -23,13 +24,16 @@
                 }
             }
         }
+
         &__title {
             margin: 2.4rem auto 0.8rem;
         }
+
         &__description {
             &-back-button {
                 margin: 0.8rem 1.6rem;
             }
+
             &-card {
                 display: flex;
                 flex-direction: column;
@@ -37,10 +41,12 @@
                 border-bottom: 1px solid var(--general-hover);
                 padding: 1.6rem 0;
             }
+
             &-container {
                 display: flex;
                 flex-direction: column;
             }
+
             &-tips {
                 &-wrapper {
                     display: flex;
@@ -54,6 +60,7 @@
                         flex-shrink: 0;
                     }
                 }
+
                 &-container {
                     display: flex;
                     flex-direction: column;
@@ -81,6 +88,9 @@
             &:last-child {
                 border-bottom: none;
             }
+        }
+        &__passkey-type-icon {
+            margin-top: 0.4rem;
         }
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { getPasskeysDescriptions, getPasskeysTips } from './passkeys-content';
+import { getPasskeysDescriptions, getPasskeysTips } from './passkeys-configs';
 import PasskeysStatus from './passkeys-status';
 
 const TipsBlock = () => {

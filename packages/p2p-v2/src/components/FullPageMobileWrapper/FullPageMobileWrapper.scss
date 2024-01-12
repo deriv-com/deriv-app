@@ -2,15 +2,10 @@
     @include mobile {
         height: calc(100vh - 4rem);
         width: 100vw;
-        margin: 0;
-        margin-top: 12rem;
+        margin: 12rem 0 0;
         border-radius: 0;
         display: grid;
         grid-template-rows: 6rem auto;
-
-        &--hide-deriv-app-header {
-            height: calc(100vh * 100);
-        }
 
         &--fixed-footer {
             grid-template-rows: 6rem auto 12rem;

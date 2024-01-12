@@ -24,11 +24,11 @@ const FullPageMobileWrapper = ({
             {renderHeader && (
                 <div className='p2p-v2-mobile-wrapper__header'>
                     <LeftArrowIcon />
-                    {renderHeader?.()}
+                    {renderHeader()}
                 </div>
             )}
             <div className='p2p-v2-mobile-wrapper__body'>{children}</div>
-            {renderFooter && <div className={clsx('p2p-v2-mobile-wrapper__footer')}>{renderFooter?.()}</div>}
+            {renderFooter && <div className={clsx('p2p-v2-mobile-wrapper__footer')}>{renderFooter()}</div>}
         </div>
     );
 };

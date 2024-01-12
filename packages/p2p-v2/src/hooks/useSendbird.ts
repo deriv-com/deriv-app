@@ -3,15 +3,7 @@ import { useAdvertiserInfo, useChatCreate, useOrderInfo, useSendbirdServiceToken
 import SendbirdChat, { BaseChannel, User } from '@sendbird/chat';
 import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
 import { BaseMessage, MessageType, MessageTypeFilter } from '@sendbird/chat/message';
-
-export const renameFile = (file: File) => {
-    const newFile = new Blob([file], { type: file.type });
-    newFile.name = file.name
-        .split('')
-        .filter(char => char.charCodeAt(0) >= 32 && char.charCodeAt(0) <= 126)
-        .join('');
-    return newFile;
-};
+import { renameFile } from '../utils';
 
 const ChatMessageStatus = {
     ERRORED: 'ERRORED',

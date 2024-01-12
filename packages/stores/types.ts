@@ -583,7 +583,7 @@ type TClientStore = {
     setLoginId: (loginid: string) => void;
     resetLocalStorageValues: (loginid: string) => void;
     setFinancialAndTradingAssessment: (
-        payload: SetFinancialAssessmentRequest
+        payload: Omit<SetFinancialAssessmentRequest, 'set_financial_assessment'>
     ) => Promise<SetFinancialAssessmentResponse>;
     setIsAlreadyAttempted: (value: boolean) => void;
     is_already_attempted: boolean;
@@ -1120,7 +1120,6 @@ type TContractReplay = {
     error_code?: string;
     error_message?: string;
     has_error: boolean;
-    indicative_status?: string;
     is_chart_loading: boolean;
     is_forward_starting: boolean;
     is_market_closed: boolean;

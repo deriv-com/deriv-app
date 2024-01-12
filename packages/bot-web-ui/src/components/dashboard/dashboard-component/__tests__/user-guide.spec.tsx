@@ -1,5 +1,7 @@
 import React from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import UserGuide from '../user-guide';
 
@@ -14,7 +16,6 @@ const mocked_props = {
     },
     Blockly: jest.fn(),
     faq_search_value: '',
-    guide_list: [],
     is_dialog_open: true,
     onOkButtonClick: jest.fn(),
     setActiveTab: jest.fn(() => 3),
@@ -40,8 +41,9 @@ jest.mock('@deriv/components', () => {
     };
 });
 describe('<UserGuide />', () => {
+    const handleChange = jest.fn();
     it('renders user guide button', () => {
-        render(<UserGuide {...mocked_props} />);
+        render(<UserGuide {...mocked_props} handleTabChange={handleChange} />);
         const use_guide_button = screen.getByTestId('btn-user-guide');
         userEvent.click(use_guide_button);
         expect(screen.getByTestId('btn-user-guide')).toBeInTheDocument();

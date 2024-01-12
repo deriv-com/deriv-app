@@ -174,7 +174,7 @@ const MobileRowRenderer = ({
     }
 
     const { contract_info, contract_update, type, is_sell_requested } = row as TPortfolioStore['active_positions'][0];
-    const { currency, status, date_expiry, date_start, tick_count, purchase_time } = contract_info;
+    const { currency, date_expiry, date_start, tick_count, purchase_time } = contract_info;
     const current_tick = tick_count ? getCurrentTick(contract_info) : null;
     const turbos_duration_unit = tick_count ? 'ticks' : getDurationUnitText(getDurationPeriod(contract_info), true);
     const duration_type = getContractDurationType(
@@ -193,7 +193,6 @@ const MobileRowRenderer = ({
                 onClickCancel={onClickCancel}
                 onClickSell={onClickSell}
                 server_time={server_time}
-                status={status ?? ''}
                 {...props}
             />
         );

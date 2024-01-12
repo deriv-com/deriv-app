@@ -2,7 +2,11 @@
     position: relative;
     width: calc(100vw - 3.2rem);
     height: var(--bot-content-height);
-    top: 4rem;
+    top: 0;
+
+    @include mobile {
+        width: 100%;
+    }
 }
 
 .blocklyTextRootBlockHeader {
@@ -17,4 +21,11 @@
 
 .blocklyMainWorkspaceScrollbar {
     display: none;
+}
+
+.injectionDiv {
+    height: calc(100vh - 16.4rem);
+    position: relative;
+    touch-action: none;
+    overflow: hidden;
 }

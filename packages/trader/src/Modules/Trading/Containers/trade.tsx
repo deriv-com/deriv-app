@@ -76,7 +76,7 @@ const Trade = observer(() => {
     const [category, setCategory] = React.useState<string>();
     const [subcategory, setSubcategory] = React.useState<string>();
     const [swipe_index, setSwipeIndex] = React.useState<number | undefined>(0);
-    const [open_launch_modal, setOpenLaunchModal] = React.useState<boolean>(true);
+    const [open_launch_modal, setOpenLaunchModal] = React.useState(false);
 
     const open_market = React.useMemo(() => {
         if (try_synthetic_indices) {
@@ -156,7 +156,7 @@ const Trade = observer(() => {
     return (
         <React.Fragment>
             {open_launch_modal && is_logged_in && !is_already_shown && (
-                <LaunchModal is_dark_mode={is_dark_theme} handleChange={handleLaunchModal} open={open_launch_modal} />
+                <LaunchModal handleChange={handleLaunchModal} open={open_launch_modal} />
             )}
             <div
                 className={classNames('trade-container', {

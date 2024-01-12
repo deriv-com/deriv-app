@@ -1,6 +1,6 @@
 import React from 'react';
-import useInfiniteQuery from '../../useInfiniteQuery';
-import useAuthorize from '../useAuthorize';
+import useInfiniteQuery from '../../../../../useInfiniteQuery';
+import useAuthorize from '../../../../useAuthorize';
 
 /** This custom hook returns a list of orders under the current client. */
 const useOrderList = (

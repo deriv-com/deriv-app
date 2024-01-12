@@ -1,5 +1,6 @@
 export * from './ActionScreen';
 export * from './ButtonGroup';
+export * from './CFDSection';
 export * from './Clipboard';
 export * from './ContentSwitcher';
 export * from './CurrencySwitcher';
@@ -13,5 +14,6 @@ export * from './SentEmailContent';
 export * from './StaticLink';
 export * from './Tooltip';
 export * from './TotalAssets';
+export * from './TradersHubContent';
 export * from './TradingAccountCard';
 export * from './TradingAccountsList';

@@ -601,6 +601,8 @@
                 font-style: italic;
 
                 span {
+                    font-size: 1.2rem;
+
                     @include mobile {
                         font-size: 1.2rem;
                     }

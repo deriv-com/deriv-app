@@ -434,6 +434,7 @@ export const quick_strategy_content: TQuickStrategyContent[] = [
             localize('Exploring the Martingale strategy in Deriv Bot'),
             localize('An example of Martingale strategy'),
         ],
+        search_id: 'qs-0',
     },
     {
         qs_name: 'D_ALEMBERT',
@@ -442,6 +443,7 @@ export const quick_strategy_content: TQuickStrategyContent[] = [
             localize('Exploring the D’Alembert strategy in Deriv Bot'),
             localize('An example of D’Alembert strategy'),
         ],
+        search_id: 'qs-1',
     },
     {
         qs_name: 'OSCARS_GRIND',
@@ -450,6 +452,7 @@ export const quick_strategy_content: TQuickStrategyContent[] = [
             localize('Exploring the Oscar’s Grind strategy in Deriv Bot'),
             localize('An example of Oscar’s Grind strategy'),
         ],
+        search_id: 'qs-2',
     },
     {
         qs_name: 'REVERSE_MARTINGALE',
@@ -458,6 +461,7 @@ export const quick_strategy_content: TQuickStrategyContent[] = [
             localize('Exploring the Reverse Martingale strategy in Deriv Bot'),
             localize('An example of Reverse Martingale strategy'),
         ],
+        search_id: 'qs-3',
     },
     {
         qs_name: 'REVERSE_D_ALEMBERT',
@@ -466,10 +470,12 @@ export const quick_strategy_content: TQuickStrategyContent[] = [
             localize('Exploring the Reverse D’Alembert strategy in Deriv Bot'),
             localize('An example of Reverse D’Alembert strategy'),
         ],
+        search_id: 'qs-4',
     },
     {
-        qs_name: '1_3_2_6',
+        qs_name: 'STRATEGY_1_3_2_6',
         type: localize('About 1-3-2-6'),
         content: [localize('Exploring the 1-3-2-6 strategy in Deriv Bot'), localize('An example of 1-3-2-6 strategy')],
+        search_id: 'qs-5',
     },
 ];

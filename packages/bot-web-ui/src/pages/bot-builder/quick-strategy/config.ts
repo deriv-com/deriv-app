@@ -304,8 +304,8 @@ export const STRATEGIES: TStrategies = {
             [LABEL_PROFIT, PROFIT, LABEL_LOSS, LOSS, LABEL_DALEMBERT_UNIT, UNIT, CHECKBOX_MAX_STAKE, MAX_STAKE],
         ],
     },
-    '1_3_2_6': {
-        name: '1_3_2_6',
+    STRATEGY_1_3_2_6: {
+        name: 'STRATEGY_1_3_2_6',
         label: localize('1-3-2-6'),
         description: STRATEGY_1_3_2_6,
         fields: [

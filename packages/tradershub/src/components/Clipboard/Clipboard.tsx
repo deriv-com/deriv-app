@@ -50,7 +50,7 @@ const Clipboard = ({ textCopy, tooltip }: TClipboardProps) => {
             isVisible={isHovered && !isMobile}
             message={isCopied ? 'Copied!' : 'Copy'}
         >
-            <Button colorStyle='white' onClick={onClick} ref={hoverRef} size='sm'>
+            <Button colorStyle='white' onClick={onClick} ref={hoverRef} size='sm' variant='tertiary'>
                 {isCopied ? <CheckmarkCircle /> : <ClipboardIcon />}
             </Button>
         </Tooltip>

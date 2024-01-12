@@ -4,6 +4,34 @@ import { Button, FullPageMobileWrapper, TextArea } from '../../../../components'
 import { useDevice } from '../../../../hooks';
 import './MyProfileAdDetails.scss';
 
+type TMYProfileAdDetailsTextAreaProps = {
+    advertiserInfo: NonNullable<ReturnType<typeof useAdvertiserInfo>>['data'];
+    setAdvertDescription: React.Dispatch<React.SetStateAction<string>>;
+    setContactInfo: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const MyProfileAdDetailsTextArea = ({
+    advertiserInfo,
+    setAdvertDescription,
+    setContactInfo,
+}: TMYProfileAdDetailsTextAreaProps) => {
+    return (
+        <>
+            <TextArea
+                onChange={e => setContactInfo(e.target.value)}
+                placeholder='My contact details'
+                value={advertiserInfo?.contact_info || ''}
+            />
+            <TextArea
+                label='This information will be visible to everyone.'
+                onChange={e => setAdvertDescription(e.target.value)}
+                placeholder='Instructions'
+                value={advertiserInfo?.default_advert_description || ''}
+            />
+        </>
+    );
+};
+
 const MyProfileAdDetails = () => {
     const { data: advertiserInfo, isLoading } = useAdvertiserInfo();
     const { mutate: updateAdvertiser } = useAdvertiserUpdate();
@@ -43,16 +71,10 @@ const MyProfileAdDetails = () => {
                 renderHeader={() => <h1 className='p2p-v2-my-profile-ad-details__header'>Ad Details</h1>}
             >
                 <div className='p2p-v2-my-profile-ad-details'>
-                    <TextArea
-                        onChange={e => setContactInfo(e.target.value)}
-                        placeholder='My contact details'
-                        value={advertiserInfo?.contact_info || ''}
-                    />
-                    <TextArea
-                        label='This information will be visible to everyone.'
-                        onChange={e => setAdvertDescription(e.target.value)}
-                        placeholder='Instructions'
-                        value={advertiserInfo?.default_advert_description || ''}
+                    <MyProfileAdDetailsTextArea
+                        advertiserInfo={advertiserInfo}
+                        setAdvertDescription={setAdvertDescription}
+                        setContactInfo={setContactInfo}
                     />
                 </div>
             </FullPageMobileWrapper>
@@ -60,16 +82,10 @@ const MyProfileAdDetails = () => {
     }
     return (
         <div className='p2p-v2-my-profile-ad-details'>
-            <TextArea
-                onChange={e => setContactInfo(e.target.value)}
-                placeholder='My contact details'
-                value={advertiserInfo?.contact_info || ''}
-            />
-            <TextArea
-                label='This information will be visible to everyone.'
-                onChange={e => setAdvertDescription(e.target.value)}
-                placeholder='Instructions'
-                value={advertiserInfo?.default_advert_description || ''}
+            <MyProfileAdDetailsTextArea
+                advertiserInfo={advertiserInfo}
+                setAdvertDescription={setAdvertDescription}
+                setContactInfo={setContactInfo}
             />
             <div className='p2p-v2-my-profile-ad-details__border' />
             <Button disabled={!hasUpdated} onClick={submitAdDetails}>

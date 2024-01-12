@@ -4,8 +4,12 @@ import useAuthorize from './useAuthorize';
 
 /** A custom hook that gets the balance for all the user accounts. */
 const useBalance = () => {
-    const { isSuccess } = useAuthorize();
-    const { data: balance_data, ...rest } = useQuery('balance', {
+    const { isSuccess, isLoading: isAuthorizeLoading } = useAuthorize();
+    const {
+        data: balance_data,
+        isLoading: isBalanceLoading,
+        ...rest
+    } = useQuery('balance', {
         payload: { account: 'all' },
         options: {
             enabled: isSuccess,
@@ -19,6 +23,7 @@ const useBalance = () => {
     return {
         /** The balance response. */
         data: modified_balance,
+        isLoading: isAuthorizeLoading || isBalanceLoading,
         ...rest,
     };
 };

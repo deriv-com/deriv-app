@@ -12,7 +12,7 @@ const useAuthorize = () => {
     const invalidate = useInvalidateQuery();
     const { switchEnvironment } = useAPIContext();
 
-    const { data, ...rest } = useQuery('authorize', {
+    const { data, isLoading, ...rest } = useQuery('authorize', {
         payload: { authorize: current_token || '' },
         options: { enabled: Boolean(current_token) },
     });
@@ -37,6 +37,7 @@ const useAuthorize = () => {
         data: modified_authorize,
         /** Function to switch to another account */
         switchAccount,
+        isLoading,
         ...rest,
     };
 };

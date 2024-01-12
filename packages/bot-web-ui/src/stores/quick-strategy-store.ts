@@ -157,14 +157,16 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
                 el_block.innerHTML = value;
             });
         };
-        const { unit, action, ...rest_data } = data;
+        const { unit, action, type, ...rest_data } = data;
         const fields_to_update = {
             market,
             submarket,
             tradetypecat: trade_type_cat,
             dalembert_unit: unit,
             oscar_unit: unit,
+            type: 'both',
             ...rest_data,
+            purchase: type,
         };
 
         Object.keys(fields_to_update).forEach(key => {

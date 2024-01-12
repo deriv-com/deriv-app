@@ -13,7 +13,7 @@ import {
     UILoader,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getAuthenticationStatusInfo, isMobile, WS } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isMobile, WS, isPOARequiredForMT5 } from '@deriv/shared';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
@@ -58,31 +58,25 @@ const CFDDbviOnboarding = observer(() => {
     const getAccountStatusFromAPI = () => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             const { get_account_status } = response;
-
             if (get_account_status?.authentication) {
-                const {
-                    poi_acknowledged_for_maltainvest,
-                    poi_acknowledged_for_bvi_labuan_vanuatu,
-                    poa_acknowledged,
-                    poa_resubmit_for_labuan,
-                    need_poa_submission,
-                } = getAuthenticationStatusInfo(get_account_status);
+                const { poi_acknowledged_for_maltainvest, poi_acknowledged_for_bvi_labuan_vanuatu, poa_acknowledged } =
+                    getAuthenticationStatusInfo(get_account_status);
                 if (jurisdiction_selected_shortcode === JURISDICTION.MALTA_INVEST) {
                     setShowSubmittedModal(poi_acknowledged_for_maltainvest && poa_acknowledged);
-                } else if (jurisdiction_selected_shortcode === JURISDICTION.LABUAN) {
-                    /* When verified with IDV+ Photo ID, POA is auto verified */
-                    const is_poa_submitted = poa_resubmit_for_labuan ? false : !need_poa_submission;
+                } else {
+                    /**
+                     * Need to retrigger POA when user has not explicitly submitted Address proof docs
+                     */
+                    const is_poa_required_for_mt5 = isPOARequiredForMT5(
+                        account_status,
+                        jurisdiction_selected_shortcode
+                    );
                     setShowSubmittedModal(
                         poi_acknowledged_for_bvi_labuan_vanuatu &&
                             has_submitted_cfd_personal_details &&
-                            is_poa_submitted
+                            !is_poa_required_for_mt5
                     );
-                } else
-                    setShowSubmittedModal(
-                        poi_acknowledged_for_bvi_labuan_vanuatu &&
-                            poa_acknowledged &&
-                            has_submitted_cfd_personal_details
-                    );
+                }
             }
 
             setIsLoading(false);

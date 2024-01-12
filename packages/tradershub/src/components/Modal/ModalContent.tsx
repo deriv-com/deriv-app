@@ -10,7 +10,7 @@ import { TModalComponents } from './Modal';
  * @returns {JSX.Element} The ModalContent component.
  */
 const ModalContent = ({ children, className }: TModalComponents) => (
-    <div className={qtMerge('flex-grow p-400 lg:flex-none', className)}>{children}</div>
+    <div className={qtMerge('flex-grow overflow-y-auto p-400 lg:flex-none', className)}>{children}</div>
 );
 
 export default ModalContent;

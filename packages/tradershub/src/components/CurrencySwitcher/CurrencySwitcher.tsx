@@ -5,8 +5,9 @@ import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
-import { Modal } from '../Modal';
 import { THooks } from '../../types';
+import { CurrencySwitcherLoader } from '../Loaders';
+import { Modal } from '../Modal';
 import { TradingAccountsList } from '../TradingAccountsList';
 
 type AccountActionButtonProps = {
@@ -43,32 +44,18 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 };
 
 const CurrencySwitcher = () => {
-    const { data: activeAccount } = useActiveTradingAccount();
+    const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
     const { show } = Provider.useModal();
 
     const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency ?? 'virtual';
 
-    const renderButton = () => {
-        return (
-            <Button
-                className='py-900 rounded-200 border-sm border-system-light-less-prominent-text'
-                colorStyle='black'
-                fullWidth
-                variant='secondary'
-            >
-                Add or manage account
-            </Button>
-        );
-    };
+    if (!isSuccess) return <CurrencySwitcherLoader />;
 
     return (
-        <div className='flex items-center justify-between border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background w-full sm:w-auto sm:shrink-0 gap-800'>
+        <div className='flex items-center justify-between w-full border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background lg:w-auto lg:shrink-0 gap-800'>
             <div className='flex-none '>{IconToCurrencyMapper[iconCurrency].icon}</div>
-            <div className='grow text-left'>
-                <Text bold={!isDemo} className={!isDemo ? 'text-status-light-success' : undefined} size='sm'>
-                    {isDemo ? 'Demo' : activeAccount?.display_balance}
-                </Text>
+            <div className='grow'>
                 <Text
                     bold={isDemo}
                     className={isDemo ? 'text-status-light-information' : 'text-system-light-less-prominent-text'}
@@ -76,21 +63,33 @@ const CurrencySwitcher = () => {
                 >
                     {isDemo ? activeAccount.display_balance : IconToCurrencyMapper[iconCurrency].text}
                 </Text>
+                <Text bold={!isDemo} className={!isDemo ? 'text-status-light-success' : undefined} size='sm'>
+                    {isDemo ? 'Demo' : activeAccount?.display_balance}
+                </Text>
             </div>
             <div className='flex-none'>
                 <AccountActionButton balance={activeAccount?.balance ?? 0} isDemo={isDemo ?? false} />
             </div>
             {!isDemo && (
                 <StandaloneChevronDownBoldIcon
-                    className='cursor-pointer flex-none'
+                    className='flex-none cursor-pointer'
                     onClick={() => {
                         show(
                             <Modal>
-                               <Modal.Header title='Select account' titleClassName='text-typography-default' />
-                                   <Modal.Content className='overflow-y-scroll'>
-                                       <TradingAccountsList />
-                                   </Modal.Content>
-                                   <Modal.Footer>{renderButton()}</Modal.Footer>
+                                <Modal.Header title='Select account' titleClassName='text-[14px] lg:text-[16px]' />
+                                <Modal.Content>
+                                    <TradingAccountsList />
+                                </Modal.Content>
+                                <Modal.Footer className='grid-cols-1'>
+                                    <Button
+                                        className='py-900 rounded-200 border-sm border-system-light-less-prominent-text'
+                                        colorStyle='black'
+                                        fullWidth
+                                        variant='secondary'
+                                    >
+                                        Add or manage account
+                                    </Button>
+                                </Modal.Footer>
                             </Modal>
                         );
                     }}

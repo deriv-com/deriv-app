@@ -2,17 +2,24 @@ import React, { useEffect } from 'react';
 import ReactModal from 'react-modal';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { useSignupWizardContext } from '../../context/SignupWizardContext';
-import Actions from './Actions';
+import CurrencySelector from '../../pages/CurrencySelector';
 import { CUSTOM_STYLES } from './helpers';
 import './index.scss';
 
+const WizardScreens = () => {
+    const { currentStep } = useSignupWizardContext();
+
+    // eslint-disable-next-line sonarjs/no-small-switch
+    switch (currentStep) {
+        case 1:
+            return <CurrencySelector />;
+        default:
+            return null;
+    }
+};
+
 const SignupWizard: React.FC = () => {
-    const {
-        currentStep,
-        helpers: { goToNextStep },
-        isWizardOpen,
-        setIsWizardOpen,
-    } = useSignupWizardContext();
+    const { isWizardOpen, setIsWizardOpen } = useSignupWizardContext();
     useEffect(() => {
         ReactModal.setAppElement('#v2_modal_root');
     }, []);
@@ -28,11 +35,10 @@ const SignupWizard: React.FC = () => {
                 <div className='flex flex-col p-800 w-[100%] justify-between'>
                     <StandaloneXmarkBoldIcon
                         className='cursor-pointer absolute right-1200 top-1200'
-                        fill='#000000'
                         onClick={() => setIsWizardOpen(false)}
                     />
-                    Current step: {currentStep}
-                    <Actions onSubmit={goToNextStep} />
+
+                    <WizardScreens />
                 </div>
             </div>
         </ReactModal>

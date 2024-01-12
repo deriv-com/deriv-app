@@ -7,6 +7,7 @@ import LaunchModal from '../launch-modal';
 
 const mocked_default_props = {
     handleChange: jest.fn(() => LocalStore.set('launchModalShown', JSON.stringify(true))),
+    setShowDescription: jest.fn(),
     open: true,
 };
 

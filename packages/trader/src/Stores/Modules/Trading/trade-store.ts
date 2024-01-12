@@ -184,6 +184,7 @@ export default class TradeStore extends BaseStore {
     is_trade_enabled = false;
     is_equal = 0;
     has_equals_only = false;
+    show_description = false;
 
     // Underlying
     symbol = '';
@@ -409,6 +410,7 @@ export default class TradeStore extends BaseStore {
             sessions: observable,
             setDefaultGrowthRate: action.bound,
             short_barriers: observable,
+            show_description: observable,
             should_show_active_symbols_loading: observable,
             should_skip_prepost_lifecycle: observable,
             stake_boundary: observable,
@@ -474,6 +476,7 @@ export default class TradeStore extends BaseStore {
             setIsDigitsWidgetActive: action.bound,
             setMarketStatus: action.bound,
             setMobileDigitView: action.bound,
+            setShowDescription: action.bound,
             setPreviousSymbol: action.bound,
             setSkipPrePostLifecycle: action.bound,
             setStakeBoundary: action.bound,
@@ -600,6 +603,10 @@ export default class TradeStore extends BaseStore {
     setTradeStatus(status: boolean) {
         this.is_trade_enabled = status;
     }
+
+    setShowDescription = (status: boolean) => {
+        this.show_description = status;
+    };
 
     refresh() {
         this.forgetAllProposal();

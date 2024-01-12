@@ -7,9 +7,10 @@ import './launch-modal.scss';
 type LaunchModalProps = {
     handleChange: () => void;
     open: boolean;
+    setShowDescription: (status: boolean) => void;
 };
 
-const LaunchModal = ({ handleChange, open }: LaunchModalProps) => (
+const LaunchModal = ({ handleChange, open, setShowDescription }: LaunchModalProps) => (
     <React.Suspense fallback={<UILoader />}>
         <DesktopWrapper>
             <Modal
@@ -21,19 +22,16 @@ const LaunchModal = ({ handleChange, open }: LaunchModalProps) => (
                 should_close_on_click_outside
                 portalId='launch_modal_root'
             >
-                <button onClick={handleChange} className='dc-modal-header__close'>
-                    <Icon icon='IcCross' data_testid='dt_modal_close_icon' />
-                </button>
                 <Modal.Body>
                     <LaunchModalInfo />
                 </Modal.Body>
-                <LaunchModalButton handleOpen={handleChange} />
+                <LaunchModalButton handleOpen={handleChange} setShowDescription={setShowDescription} />
             </Modal>
         </DesktopWrapper>
         <MobileWrapper>
             <div className='launch-page-mobile'>
-                <LaunchModalInfo />
-                <LaunchModalButton handleOpen={handleChange} />
+                <LaunchModalInfo is_mobile />
+                <LaunchModalButton handleOpen={handleChange} setShowDescription={setShowDescription} />
             </div>
         </MobileWrapper>
     </React.Suspense>

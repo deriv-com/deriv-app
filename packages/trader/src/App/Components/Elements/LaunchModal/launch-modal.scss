@@ -2,26 +2,24 @@
 .dc-modal__container_launch-modal-root {
     text-align: center;
 
-    .dc-modal-header {
-        justify-content: flex-end;
-
-        &__close {
-            margin: 0;
-            padding: 1rem 1rem 0 0;
-            align-self: flex-end;
-            border: none;
-            font: inherit;
-            background-color: transparent;
-        }
-    }
-
     .dc-modal-body {
         justify-content: center;
         display: flex;
         height: 100%;
 
-        .modal-image {
-            margin-bottom: 2.4rem;
+        .modal {
+            &_image {
+                margin: 2.4rem 0rem;
+                width: 21.6rem;
+                height: 12.8rem;
+                border-radius: 0.6rem;
+            }
+        }
+    }
+
+    .dc-modal-footer {
+        .launch-button {
+            min-width: 5.1rem;
         }
     }
 }
@@ -33,22 +31,25 @@
     flex-direction: column;
     height: 100%;
 
-    .modal-content {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 1rem;
+    .modal {
+        &_content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
 
-        .modal-image {
+        &_image {
             margin-bottom: 2.4rem;
+            border-radius: 0.6rem;
         }
     }
 
     .dc-modal-footer {
         border-top: 0.2rem solid var(--general-section-5);
-        padding: 1.6rem 2.4rem;
+        padding: 1.6rem;
 
         .launch-button {
             height: 4rem;

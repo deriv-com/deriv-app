@@ -4,7 +4,7 @@ import LaunchModalButton from '../launch-modal-button';
 
 describe('<LaunchModalButton />', () => {
     it('should render LaunchModalButton ', () => {
-        render(<LaunchModalButton handleOpen={jest.fn()} />);
+        render(<LaunchModalButton handleOpen={jest.fn()} setShowDescription={jest.fn()} />);
 
         expect(screen.getByText('Try Turbos')).toBeInTheDocument();
     });

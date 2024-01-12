@@ -16,7 +16,6 @@ const mocked_props = {
     },
     Blockly: jest.fn(),
     faq_search_value: '',
-    guide_list: [],
     is_dialog_open: true,
     onOkButtonClick: jest.fn(),
     setActiveTab: jest.fn(() => 3),

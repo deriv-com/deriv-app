@@ -9,6 +9,11 @@
         cursor: pointer;
         border-radius: $BORDER_RADIUS;
         padding-inline-end: 0.8rem;
+        @include rtl {
+            svg {
+                transform: rotate(180deg);
+            }
+        }
         @include mobile {
             padding-inline-end: 1rem;
         }

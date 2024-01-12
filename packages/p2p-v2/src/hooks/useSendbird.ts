@@ -3,7 +3,7 @@ import { useAdvertiserInfo, useChatCreate, useOrderInfo, useSendbirdServiceToken
 import SendbirdChat, { BaseChannel, User } from '@sendbird/chat';
 import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
 import { BaseMessage, MessageType, MessageTypeFilter } from '@sendbird/chat/message';
-import { renameFile } from '../utils';
+import { renameFile } from '@deriv/utils';
 
 const ChatMessageStatus = {
     ERRORED: 'ERRORED',

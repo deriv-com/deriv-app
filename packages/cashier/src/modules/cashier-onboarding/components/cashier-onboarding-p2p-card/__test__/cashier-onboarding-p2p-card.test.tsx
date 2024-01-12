@@ -1,6 +1,12 @@
 import React from 'react';
 import { mockStore } from '@deriv/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
+import {
+    useCurrentCurrencyConfig,
+    useHasFiatCurrency,
+    useHasP2PSupportedCurrencies,
+    useIsP2PEnabled,
+} from '@deriv/hooks';
 import CashierProviders from '../../../../../cashier-providers';
 import CashierOnboardingP2PCard from '../cashier-onboarding-p2p-card';
 
@@ -19,11 +25,19 @@ jest.mock('@deriv/api', () => ({
                     AUD: { type: 'fiat', name: 'Australian Dollar' },
                     BTC: { type: 'crypto', name: 'Bitcoin' },
                 },
-                p2p_config: { supported_currencies: ['usd'] },
             },
         },
     })),
 }));
+
+jest.mock('@deriv/hooks');
+
+const MockUseCurrentCurrencyConfig = useCurrentCurrencyConfig as jest.MockedFunction<typeof useCurrentCurrencyConfig>;
+const MockUseHasFiatCurrency = useHasFiatCurrency as jest.MockedFunction<typeof useHasFiatCurrency>;
+const MockUseHasP2PSupportedCurrencies = useHasP2PSupportedCurrencies as jest.MockedFunction<
+    typeof useHasP2PSupportedCurrencies
+>;
+const MockUseIsP2PEnabled = useIsP2PEnabled as jest.MockedFunction<typeof useIsP2PEnabled>;
 
 describe('CashierOnboardingP2PCard', () => {
     test('should call the onClick callback when clicked', () => {
@@ -41,6 +55,16 @@ describe('CashierOnboardingP2PCard', () => {
             ui: {
                 openRealAccountSignup: jest.fn(),
             },
+        });
+
+        // @ts-expect-error need to come up with a way to mock the return type
+        MockUseIsP2PEnabled.mockReturnValue({
+            is_p2p_enabled: true,
+        });
+
+        // @ts-expect-error ne  ed to come up with a way to mock the return type
+        MockUseHasP2PSupportedCurrencies.mockReturnValue({
+            data: true,
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -74,6 +98,23 @@ describe('CashierOnboardingP2PCard', () => {
             },
         });
 
+        // @ts-expect-error need to come up with a way to mock the return type
+        MockUseIsP2PEnabled.mockReturnValue({
+            is_p2p_enabled: false,
+        });
+
+        // @ts-expect-error need to come up with a way to mock the return type
+        MockUseHasP2PSupportedCurrencies.mockReturnValue({
+            data: true,
+        });
+
+        // @ts-expect-error need to come up with a way to mock the return type
+        MockUseCurrentCurrencyConfig.mockReturnValue({
+            is_crypto: true,
+        });
+
+        MockUseHasFiatCurrency.mockReturnValue(false);
+
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <CashierProviders store={mock}>{children}</CashierProviders>
         );
@@ -103,6 +144,16 @@ describe('CashierOnboardingP2PCard', () => {
             },
         });
 
+        // @ts-expect-error need to come up with a way to mock the return type
+        MockUseIsP2PEnabled.mockReturnValue({
+            is_p2p_enabled: true,
+        });
+
+        // @ts-expect-error need to come up with a way to mock the return type
+        MockUseHasP2PSupportedCurrencies.mockReturnValue({
+            data: true,
+        });
+
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <CashierProviders store={mock}>{children}</CashierProviders>
         );
@@ -130,6 +181,16 @@ describe('CashierOnboardingP2PCard', () => {
                     },
                 },
             },
+        });
+
+        // @ts-expect-error need to come up with a way to mock the return type
+        MockUseIsP2PEnabled.mockReturnValue({
+            is_p2p_enabled: false,
+        });
+
+        // @ts-expect-error need to come up with a way to mock the return type
+        MockUseHasP2PSupportedCurrencies.mockReturnValue({
+            data: false,
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

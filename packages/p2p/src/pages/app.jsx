@@ -30,6 +30,7 @@ const App = () => {
     const {
         p2p_settings,
         rest: { isSubscribed },
+        subscribe,
     } = useP2PSettings();
 
     const lang = getLanguage();
@@ -43,6 +44,7 @@ const App = () => {
 
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
+        subscribe();
 
         setP2PRedirectTo({
             routeToMyProfile: () => {

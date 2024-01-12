@@ -1,6 +1,8 @@
 import React from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
+import { APIProvider } from '@deriv/api';
+import { P2PSettingsProvider } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 import CurrenySelectorModal from '../currency-selector-modal';
@@ -15,6 +17,24 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
         ],
     },
 };
+
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+    <APIProvider>
+        <P2PSettingsProvider>{children}</P2PSettingsProvider>
+    </APIProvider>
+);
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useP2PSettings: jest.fn().mockReturnValue({
+        p2p_settings: {
+            local_currencies: [
+                { display_name: 'Indonesian Rupiah', text: 'IDR', value: 'IDR', is_default: true },
+                { display_name: 'New Zealand Dollar', text: 'NZD', value: 'NZD', has_adverts: true },
+            ],
+        },
+    }),
+}));
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -45,12 +65,12 @@ describe('<CurrenySelectorModal/>', () => {
         document.body.removeChild(modal_root_el);
     });
     it('should render the CurrenySelectorModal', () => {
-        render(<CurrenySelectorModal />);
+        render(<CurrenySelectorModal />, { wrapper });
 
         expect(screen.getByText('Preferred currency')).toBeInTheDocument();
     });
     it('should handle currency selection', () => {
-        render(<CurrenySelectorModal />);
+        render(<CurrenySelectorModal />, { wrapper });
 
         userEvent.click(screen.getByText('NZD'));
 

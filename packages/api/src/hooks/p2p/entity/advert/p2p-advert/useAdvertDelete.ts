@@ -1,20 +1,20 @@
 import { useCallback, useMemo } from 'react';
-import useMutation from '../../useMutation';
-import useInvalidateQuery from '../../useInvalidateQuery';
+import useMutation from '../../../../../useMutation';
+import useInvalidateQuery from '../../../../../useInvalidateQuery';
 
 type TPayload = Parameters<ReturnType<typeof useMutation<'p2p_advert_update'>>['mutate']>[0]['payload'];
 
-/** A custom hook that updates a P2P advert. This can only be used by an approved P2P advertiser.
+/** A custom hook that deletes a P2P advert. This can only be used by an approved P2P advertiser.
  * 
- * To update an advert, specify the payload arguments that should be updated, for instance:
+ * To delete an advert, specify the advert ID to delete, for instance:
  * @example
  *  mutate({
-        "id": 1234, // required
-        "is_active": 0 // optional
+        "id": 1234
     });
- * 
+ *
+ * Once this is mutated, the advert with ID of 1234 will be deleted.
 */
-const useAdvertUpdate = () => {
+const useAdvertDelete = () => {
     const invalidate = useInvalidateQuery();
     const {
         data,
@@ -26,10 +26,20 @@ const useAdvertUpdate = () => {
         },
     });
 
-    const mutate = useCallback((payload: TPayload) => _mutate({ payload }), [_mutate]);
+    const mutate = useCallback(
+        (payload: Omit<TPayload, 'delete'>) =>
+            _mutate({
+                payload: {
+                    ...payload,
+                    delete: 1,
+                },
+            }),
+        [_mutate]
+    );
 
     const modified_data = useMemo(() => {
         const p2p_advert_update = data?.p2p_advert_update;
+
         if (!p2p_advert_update) return undefined;
 
         return {
@@ -52,4 +62,4 @@ const useAdvertUpdate = () => {
     };
 };
 
-export default useAdvertUpdate;
+export default useAdvertDelete;

@@ -61,6 +61,11 @@ export const MarketType = {
     SYNTHETIC: 'synthetic',
 } as const;
 
+export const Category = {
+    DEMO: 'demo',
+    REAL: 'real',
+} as const;
+
 export const MarketTypeDetails: TMarketTypeDetails = {
     all: {
         description:

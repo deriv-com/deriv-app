@@ -11,12 +11,12 @@ import {
     getTotalProfit,
 } from '@deriv/shared';
 import Button from '../../button';
-import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 import { TGetCardLables, TToastConfig } from '../../types';
+import ArrowIndicator from '../../arrow-indicator';
 
 export type TGeneralContractCardBodyProps = {
     addToast: (toast_config: TToastConfig) => void;
@@ -35,7 +35,6 @@ export type TGeneralContractCardBodyProps = {
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (name: string) => void;
-    status?: string;
     toggleCancellationWarning: (state_change?: boolean) => void;
     progress_slider?: React.ReactNode;
     is_positions?: boolean;
@@ -49,7 +48,6 @@ export type TContractUpdateFormProps = Pick<
     | 'onMouseLeave'
     | 'removeToast'
     | 'setCurrentFocus'
-    | 'status'
 > & {
     contract: TContractStore;
     error_message_alignment?: string;
@@ -57,7 +55,6 @@ export type TContractUpdateFormProps = Pick<
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (name: string | null) => void;
-    status: string;
     toggleDialog: (e: React.MouseEvent<HTMLButtonElement>) => void;
     getContractById: (contract_id: number) => TContractStore;
     is_accumulator?: boolean;
@@ -76,7 +73,6 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         onMouseLeave,
         removeToast,
         setCurrentFocus,
-        status,
         toggleDialog,
     } = props;
 
@@ -99,7 +95,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         contract_update_stop_loss,
     });
 
-    const { buy_price, currency = '', is_valid_to_cancel, is_sold } = contract_info;
+    const { buy_price, currency = '', is_valid_to_cancel } = contract_info;
     const { stop_loss, take_profit } = getLimitOrderAmount(contract_info.limit_order);
     const { contract_update_stop_loss: stop_loss_error, contract_update_take_profit: take_profit_error } =
         validation_errors;
@@ -221,14 +217,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
                         )}
                     >
                         <Money amount={total_profit} currency={currency} />
-                        <div
-                            className={classNames('dc-contract-card__indicative--movement', {
-                                'dc-contract-card__indicative--movement-complete': is_sold,
-                            })}
-                        >
-                            {status === 'profit' && <Icon icon='IcProfit' />}
-                            {status === 'loss' && <Icon icon='IcLoss' />}
-                        </div>
+                        <ArrowIndicator className='dc-contract-card__indicative--movement' value={total_profit} />
                     </div>
                 </div>
             </MobileWrapper>

@@ -45,7 +45,6 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
         onClickSell,
         onMount,
         onUnmount,
-        indicative_status,
         is_chart_loading,
         is_forward_starting,
     } = contract_replay;
@@ -121,7 +120,6 @@ const ContractReplay = observer(({ contract_id }: { contract_id: number }) => {
             is_smarttrader_contract={is_smarttrader_contract}
             onClickCancel={onClickCancel}
             onClickSell={onClickSell}
-            status={indicative_status}
             toggleHistoryTab={toggleHistoryTab}
         />
     );

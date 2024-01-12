@@ -9,6 +9,7 @@ import {
     GetAccountStatus,
     DetailsOfEachMT5Loginid,
     GetFinancialAssessment,
+    SetFinancialAssessmentRequest,
     IdentityVerificationAddDocumentResponse,
 } from '@deriv/api-types';
 import { AUTH_STATUS_CODES, CFD_PLATFORMS, MT5_ACCOUNT_STATUS, Platforms } from '@deriv/shared';
@@ -97,20 +98,6 @@ export type TUpgradeInfo = {
     can_upgrade: boolean;
     can_upgrade_to: string;
     can_open_multi: boolean;
-};
-
-type TIdentity = {
-    services: {
-        idv: {
-            documents_supported: { [key: string]: { display_name: string } } | Record<string, never>;
-            has_visual_sample: 0 | 1;
-            is_country_supported: 0 | 1;
-        };
-        onfido: {
-            documents_supported: { [key: string]: { display_name: string } };
-            is_country_supported: 0 | 1;
-        };
-    };
 };
 
 export type TPOIStatus = {
@@ -260,6 +247,8 @@ export type TProofOfOwnershipErrors = Record<
     TPaymentMethod,
     Array<{ payment_method_identifier?: string; files?: Array<string> }>
 >;
+
+export type TFinancialInformationForm = Omit<SetFinancialAssessmentRequest, 'set_financial_assessment'>;
 
 export type TAuthStatusCodes = typeof AUTH_STATUS_CODES[keyof typeof AUTH_STATUS_CODES];
 

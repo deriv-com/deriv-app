@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAdvertiserInfo, useChatCreate, useOrderInfo, useSendbirdServiceToken, useServerTime } from '@deriv/api';
 import SendbirdChat, { BaseChannel, User } from '@sendbird/chat';
+import { renameFile } from '@deriv/utils';
 import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
 import { BaseMessage, MessageType, MessageTypeFilter } from '@sendbird/chat/message';
-import { renameFile } from '@derv/utils';
 
 const ChatMessageStatus = {
     ERRORED: 'ERRORED',

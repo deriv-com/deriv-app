@@ -1,0 +1,53 @@
+.traders-hub-banner__migrate-banner {
+    position: relative;
+    margin-bottom: 2.4rem;
+    overflow: hidden;
+    background-color: var(--general-hover);
+    border: 1px solid var(--traders-hub-banner-border-color);
+    border-radius: $BORDER_RADIUS * 4;
+
+    @include mobile {
+        padding: 1.4rem 1.6rem;
+        border: none;
+    }
+    &-description {
+        position: relative;
+        z-index: 2;
+        max-width: 57.5rem;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: auto 1.6rem;
+        padding-left: 1.4rem;
+
+        @include mobile {
+            margin: unset;
+            padding-left: 0;
+            &__text {
+                width: 90%;
+            }
+        }
+    }
+
+    &-button {
+        margin-top: 0.8rem;
+        padding-inline: 6.7rem;
+
+        @include mobile {
+            padding-inline: 1.6rem;
+        }
+    }
+    &__image {
+        position: absolute;
+        z-index: 0;
+        left: 0;
+        top: 0;
+
+        @include mobile {
+            right: -0.1rem;
+            bottom: -0.1rem;
+            border-radius: $BORDER_RADIUS * 2;
+        }
+    }
+}

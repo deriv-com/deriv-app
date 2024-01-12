@@ -1,5 +1,7 @@
 import React from 'react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import userEvent from '@testing-library/user-event';
 import UserGuide from '../user-guide';
 
@@ -40,8 +42,9 @@ jest.mock('@deriv/components', () => {
     };
 });
 describe('<UserGuide />', () => {
+    const handleChange = jest.fn();
     it('renders user guide button', () => {
-        render(<UserGuide {...mocked_props} />);
+        render(<UserGuide {...mocked_props} handleTabChange={handleChange} />);
         const use_guide_button = screen.getByTestId('btn-user-guide');
         userEvent.click(use_guide_button);
         expect(screen.getByTestId('btn-user-guide')).toBeInTheDocument();

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useAdvertiserInfo } from '@deriv/api';
+import { daysSince } from '../utils';
 
 /**
  * Hook to calculate an advertiser's stats based on their information.
@@ -33,6 +34,9 @@ const useAdvertiserStats = (advertiserId?: string) => {
 
             /** The daily available balance sell limit for P2P transactions in the past 24 hours. */
             dailyAvailableSellLimit: Number(data?.daily_sell_limit) - Number(data?.daily_sell) || 0,
+
+            /** The number of days since the user has became an advertiser */
+            daysSinceJoined: daysSince(data?.created_time ? data.created_time.toISOString().split('T')[0] : ''),
 
             /** The percentage of completed orders out of total orders as a seller within the past 30 days. */
             sellCompletionRate: data?.sell_completion_rate || 0,

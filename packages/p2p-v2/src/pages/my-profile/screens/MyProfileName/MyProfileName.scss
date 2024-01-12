@@ -1,5 +1,12 @@
 .p2p-v2-my-profile-name {
+    display: flex;
+    gap: 1.6rem;
+
     &__details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+
         & h1 {
             font-size: 1.6rem;
             line-height: 2.4rem;
@@ -8,12 +15,27 @@
 
         &-stats {
             display: flex;
+            align-items: center;
 
             & h2 {
                 font-size: 1.4rem;
                 line-height: 2rem;
                 color: #999999;
+                padding: 0 0.8rem;
+                border-left: 1px solid #f2f3f4;
+
+                &:first-child {
+                    padding-left: 0;
+                    padding-right: 0.8rem;
+                    border-left: none;
+                }
             }
+        }
+
+        &-badges {
+            display: flex;
+            gap: 0.4rem;
+            padding: 0.4rem 0;
         }
     }
 

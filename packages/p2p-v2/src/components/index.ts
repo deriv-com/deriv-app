@@ -1,1 +1,2 @@
-export {};
+export * from './Avatar';
+export * from './Badge';

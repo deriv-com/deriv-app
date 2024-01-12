@@ -7,12 +7,14 @@ import { useAdvertiserInfo } from '@deriv/api';
  * @param advertiserId - ID of the advertiser stats to reveal. If not provided, by default it will return the user's own stats.
  */
 const useAdvertiserStats = (advertiserId?: string) => {
-    const { data, isSuccess } = useAdvertiserInfo(advertiserId);
+    const { data, isSuccess, ...rest } = useAdvertiserInfo(advertiserId);
 
     const transformedData = useMemo(() => {
         if (!isSuccess) return;
 
         return {
+            ...data,
+
             /** The average buy time in minutes */
             averagePayTime: data?.buy_time_avg && data.buy_time_avg > 60 ? Math.round(data.buy_time_avg / 60) : 1,
 
@@ -25,6 +27,12 @@ const useAdvertiserStats = (advertiserId?: string) => {
 
             /** The number of buy order completed within the past 30 days. */
             buyOrdersCount: Number(data?.buy_orders_count) || 0,
+
+            /** The daily available balance buy limit for P2P transactions in the past 24 hours. */
+            dailyAvailableBuyLimit: Number(data?.daily_buy_limit) - Number(data?.daily_buy) || 0,
+
+            /** The daily available balance sell limit for P2P transactions in the past 24 hours. */
+            dailyAvailableSellLimit: Number(data?.daily_sell_limit) - Number(data?.daily_sell) || 0,
 
             /** The percentage of completed orders out of total orders as a seller within the past 30 days. */
             sellCompletionRate: data?.sell_completion_rate || 0,
@@ -51,6 +59,8 @@ const useAdvertiserStats = (advertiserId?: string) => {
 
     return {
         data: transformedData,
+        isSuccess,
+        ...rest,
     };
 };
 

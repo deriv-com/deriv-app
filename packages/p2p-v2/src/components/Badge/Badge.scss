@@ -1,0 +1,23 @@
+.p2p-v2-badge {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2rem;
+    background-image: linear-gradient(#00a8af, #04cfd8);
+    width: fit-content;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3.4rem;
+    color: #ffffff;
+
+    &__label {
+        font-size: 1rem;
+        line-height: 1.4rem;
+        font-weight: 700;
+    }
+
+    &__status {
+        font-size: 1rem;
+        line-height: 1.4rem;
+        font-weight: 400;
+    }
+}

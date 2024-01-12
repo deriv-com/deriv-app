@@ -1,2 +1,2 @@
-export * from './MyProfileBalance';
+export * from './MyProfileContent';
 export * from './MyProfileStats';

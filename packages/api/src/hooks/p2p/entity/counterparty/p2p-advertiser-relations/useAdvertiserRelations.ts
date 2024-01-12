@@ -1,7 +1,7 @@
-import useInvalidateQuery from '../../useInvalidateQuery';
-import useMutation from '../../useMutation';
-import useQuery from '../../useQuery';
-import useAuthorize from '../useAuthorize';
+import useInvalidateQuery from '../../../../../useInvalidateQuery';
+import useMutation from '../../../../../useMutation';
+import useQuery from '../../../../../useQuery';
+import useAuthorize from '../../../../useAuthorize';
 
 /** This hook returns favourite and blocked advertisers and the mutation function to update the block list of the current user. */
 const useAdvertiserRelations = () => {

@@ -10,6 +10,7 @@ const SignupWizard: React.FC = () => {
     const {
         currentStep,
         helpers: { goToNextStep },
+        isWizardOpen,
         setIsWizardOpen,
     } = useSignupWizardContext();
     useEffect(() => {
@@ -17,7 +18,7 @@ const SignupWizard: React.FC = () => {
     }, []);
     return (
         <ReactModal
-            isOpen
+            isOpen={isWizardOpen}
             onRequestClose={() => setIsWizardOpen(false)}
             shouldCloseOnOverlayClick
             style={CUSTOM_STYLES}

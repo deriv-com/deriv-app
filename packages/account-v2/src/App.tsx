@@ -1,8 +1,10 @@
 import React from 'react';
 import { APIProvider } from '@deriv/api';
 import { BreakpointProvider } from '@deriv/quill-design';
+import { FormProgress } from './components/form-progress';
 import SignupWizard from './components/SignupWizard';
 import { SignupWizardProvider, useSignupWizardContext } from './context/SignupWizardContext';
+import { stepProgress } from './mocks/form-progress.mock';
 import './index.scss';
 
 const TriggerSignupWizardModal: React.FC = () => {
@@ -19,6 +21,8 @@ const App: React.FC = () => {
                 <SignupWizardProvider>
                     <SignupWizard />
                     <TriggerSignupWizardModal />
+                    {/* [TODO]:Mock - Remove hardcoded initial value once isActive comes from Modal */}
+                    <FormProgress activeStep={1} steps={stepProgress} />
                 </SignupWizardProvider>
             </BreakpointProvider>
         </APIProvider>

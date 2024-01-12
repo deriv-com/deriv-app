@@ -94,14 +94,7 @@ const BotBuilder = observer(() => {
                 })}
             >
                 {is_preview_on_popup ? null : (
-                    <div
-                        id='scratch_div'
-                        ref={el_ref}
-                        style={{
-                            width: 'calc(100vw - 3.2rem)',
-                            height: 'var(--bot-content-height)',
-                        }}
-                    >
+                    <div id='scratch_div' ref={el_ref}>
                         <WorkspaceWrapper />
                     </div>
                 )}

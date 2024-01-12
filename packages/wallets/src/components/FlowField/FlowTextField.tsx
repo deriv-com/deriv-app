@@ -48,7 +48,7 @@ const FlowTextField = forwardRef(
                             {...rest}
                             defaultValue={defaultValue}
                             disabled={disabled}
-                            errorMessage={form.errors[name] || errorMessage}
+                            errorMessage={hasTouched && (form.errors[name] || errorMessage)}
                             isInvalid={(hasTouched && isInvalid) || (hasTouched && Boolean(form.errors[name]))}
                             name={field.name}
                             onChange={field.onChange}

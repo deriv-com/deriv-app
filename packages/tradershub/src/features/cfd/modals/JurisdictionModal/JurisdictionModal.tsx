@@ -3,6 +3,7 @@ import { useAvailableMT5Accounts } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Heading, useBreakpoint } from '@deriv/quill-design';
 import { Modal } from '../../../../components/Modal';
+import { DummyComponent } from '../../components/DummyComponent';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
 import { Jurisdiction, MarketType, MarketTypeDetails } from '../../constants';
 import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
@@ -31,10 +32,10 @@ const JurisdictionModal = () => {
 
     const JurisdictionFlow = () => {
         if (selectedJurisdiction === Jurisdiction.SVG) {
-            return null; // MT5PasswordModal
+            return <DummyComponent />; // MT5PasswordModal
         }
 
-        return null; // Verification flow
+        return <DummyComponent />; // Verification flow
     };
 
     useEffect(() => {

@@ -76,7 +76,7 @@ const Trade = observer(() => {
     const [category, setCategory] = React.useState<string>();
     const [subcategory, setSubcategory] = React.useState<string>();
     const [swipe_index, setSwipeIndex] = React.useState<number | undefined>(0);
-    const [open_launch_modal, setOpenLaunchModal] = React.useState<boolean>(true);
+    const [open_launch_modal, setOpenLaunchModal] = React.useState(false);
 
     const open_market = React.useMemo(() => {
         if (try_synthetic_indices) {

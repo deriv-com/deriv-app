@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
-import { WS, getLocation, toMoment, formatIDVFormValues } from '@deriv/shared';
+import { WS, getLocation, toMoment, formatIDVFormValues, shouldHideOccupationField } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import AcceptRiskForm from './accept-risk-form.jsx';
@@ -266,6 +266,9 @@ const AccountWizard = observer(props => {
                 return { ...accumulator };
             }, {});
         }
+        if (shouldHideOccupationField(data?.employment_status)) {
+            delete data?.occupation;
+        }
         return data;
     };
 
@@ -275,6 +278,7 @@ const AccountWizard = observer(props => {
         delete clone?.agreed_tnc;
         delete clone?.agreed_tos;
         delete clone?.confirmation_checkbox;
+        delete clone?.crs_confirmation;
 
         // BE does not accept empty strings for TIN
         // so we remove it from the payload if it is empty in case of optional TIN field

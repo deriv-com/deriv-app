@@ -6,9 +6,11 @@ import { displayMoney } from '../utils';
 
 /** A custom hook that returns the list of accounts for the current user. */
 const useDerivAccountsList = () => {
-    const { data: authorize_data, ...rest } = useAuthorize();
-    const { data: balance_data } = useBalance();
-    const { getConfig } = useCurrencyConfig();
+    const { data: authorize_data, isLoading: isAuthorizeLoading, ...rest } = useAuthorize();
+    const { data: balance_data, isLoading: isBalanceLoading } = useBalance();
+    const { data: currency_data, getConfig, isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
+
+    const isLoading = isAuthorizeLoading || isBalanceLoading || isCurrencyConfigLoading;
 
     // Add additional information to the authorize response.
     const modified_accounts = useMemo(() => {
@@ -39,7 +41,7 @@ const useDerivAccountsList = () => {
                 is_mf: account.loginid?.startsWith('MF'),
             } as const;
         });
-    }, [authorize_data.account_list, authorize_data.loginid, getConfig]);
+    }, [authorize_data.account_list, authorize_data.loginid, currency_data]);
 
     // Add balance to each account
     const modified_accounts_with_balance = useMemo(
@@ -64,6 +66,7 @@ const useDerivAccountsList = () => {
     return {
         /** The list of accounts for the current user. */
         data: modified_accounts_with_balance,
+        isLoading,
         ...rest,
     };
 };

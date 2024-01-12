@@ -48,53 +48,50 @@ describe('MigrationBanner', () => {
     });
 
     it('should render MigrationBanner with both MT5 Derived SVG and MT5 Financial SVG text', () => {
-        response.eligible_svg_to_bvi_derived_accounts = true;
-        response.eligible_svg_to_bvi_financial_accounts = true;
         renderComponent();
-        const texts = [/We’re upgrading your/i, /MT5 Derived SVG/i, /MT5 Financial SVG/i, /and/i, /accounts./i];
+        const texts = [/Upgrade your/i, /Derived/i, /and/i, /Financial MT5/i, /account\(s\)/i];
         texts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();
         });
-        expect(screen.getByRole('button', { name: /upgrade now/i })).toBeInTheDocument();
-        expect(screen.getByTestId('dt_migrate_desktop')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /upgrade/i })).toBeInTheDocument();
+        expect(screen.getByTestId('dt_migrate_card')).toBeInTheDocument();
     });
 
     it('should render MigrationBanner with MT5 Derived SVG', () => {
-        response.eligible_svg_to_vanuatu_derived_accounts = true;
+        response.has_derived_and_financial_mt5 = false;
         renderComponent();
-        const texts = [/We’re upgrading your/i, /MT5 Derived SVG/i, /account./i];
+        const texts = [/Upgrade your/i, /Derived MT5/i, /account\(s\)/i];
         texts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();
         });
-        expect(screen.getByRole('button', { name: /upgrade now/i })).toBeInTheDocument();
-        expect(screen.getByTestId('dt_migrate_desktop')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: /upgrade/i })).toBeInTheDocument();
+        expect(screen.getByTestId('dt_migrate_card')).toBeInTheDocument();
     });
 
     it('should render MigrationBanner with MT5 Financial SVG', () => {
-        response.eligible_svg_to_vanuatu_financial_accounts = true;
+        response.has_derived_and_financial_mt5 = false;
+        response.has_derived_mt5_to_migrate = false;
         renderComponent();
-        const texts = [/We’re upgrading your/i, /MT5 Financial SVG/i, /account./i];
+        const texts = [/Upgrade your/i, /Financial MT5/i, /account\(s\)/i];
         texts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();
         });
-        expect(screen.getByRole('button', { name: /upgrade now/i })).toBeInTheDocument();
-        expect(screen.getByTestId('dt_migrate_desktop')).toBeInTheDocument();
     });
 
     it('should call upgrade button tracking event on clicking upgrade now button ', () => {
         renderComponent();
-        expect(screen.getByTestId('dt_migrate_desktop')).toBeInTheDocument();
-        const upgrade_now_button = screen.getByRole('button', { name: /upgrade now/i });
-        expect(upgrade_now_button).toBeInTheDocument();
-        userEvent.click(upgrade_now_button);
+        expect(screen.getByTestId('dt_migrate_card')).toBeInTheDocument();
+        const upgrade_button = screen.getByRole('button', { name: /upgrade/i });
+        expect(upgrade_button).toBeInTheDocument();
+        userEvent.click(upgrade_button);
         expect(Analytics.trackEvent).toHaveBeenCalledWith('ce_upgrade_mt5_banner', {
             action: 'push_cta_upgrade',
         });
     });
 
-    it('should render MigrationBanner with migration mobile image', () => {
-        mock_store.ui.is_mobile = true;
+    it('should render MigrationBanner with migration in dark mode', () => {
+        mock_store.ui.is_dark_mode_on = true;
         renderComponent();
-        expect(screen.getByTestId('dt_migrate_mobile')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_migrate_card_dark')).toBeInTheDocument();
     });
 });

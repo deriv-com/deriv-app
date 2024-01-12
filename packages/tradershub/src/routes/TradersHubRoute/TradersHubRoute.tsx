@@ -9,6 +9,7 @@ import {
     RegulationSwitcherDesktop,
     RegulationSwitcherMobile,
     TotalAssets,
+    TradersHubContent,
 } from '../../components';
 
 const TradersHubRoute = () => {
@@ -56,8 +57,7 @@ const TradersHubRoute = () => {
                 {isSwitcherVisible && <RegulationSwitcherDesktop />}
                 <TotalAssets />
             </div>
-            <OptionsAndMultipliersSection />
-            <CFDSection />
+            <TradersHubContent />
         </div>
     );
 };

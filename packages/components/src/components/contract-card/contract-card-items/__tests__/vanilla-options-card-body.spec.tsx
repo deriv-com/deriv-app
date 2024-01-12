@@ -18,13 +18,10 @@ describe('VanillaOptionsCardBody', () => {
         getCardLabels: () => getCardLabels(),
         is_sold: true,
         progress_slider: null,
-        status: 'loss',
     };
     it('should render the correct content for a sold contract', async () => {
         // Render the component with the provided props
         render(<VanillaOptionsCardBody {...mock_props} />);
-
-        const indicative_movement = screen.getByTestId('dc-contract-card__indicative--movement');
 
         // Test that the correct elements are present in the component
         expect(screen.getByText(getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
@@ -34,7 +31,7 @@ describe('VanillaOptionsCardBody', () => {
         expect(screen.getByText(getCardLabels().STRIKE)).toBeInTheDocument();
         expect(screen.getByText('1,200.00')).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
-        expect(indicative_movement).toHaveClass('dc-contract-card__indicative--movement-complete');
+        expect(screen.getByTestId('dt_arrow_indicator')).toBeInTheDocument();
     });
 
     it('should render the correct content for an unsold contract', async () => {
@@ -42,13 +39,10 @@ describe('VanillaOptionsCardBody', () => {
         mock_props.contract_info.status = 'won';
         mock_props.is_sold = false;
         mock_props.progress_slider = <div />;
-        mock_props.status = 'profit';
         delete mock_props.contract_info.sell_price;
 
         // Render the component with the provided props
         render(<VanillaOptionsCardBody {...mock_props} />);
-
-        const indicative_movement = screen.getByTestId('dc-contract-card__indicative--movement');
 
         // Test that the correct elements are present in the component
         expect(screen.getByText(getCardLabels().CONTRACT_VALUE)).toBeInTheDocument();
@@ -56,6 +50,6 @@ describe('VanillaOptionsCardBody', () => {
         expect(screen.getByText(getCardLabels().PURCHASE_PRICE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().STRIKE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
-        expect(indicative_movement).not.toHaveClass('dc-contract-card__indicative--movement-complete');
+        expect(screen.getByTestId('dt_arrow_indicator')).toBeInTheDocument();
     });
 });

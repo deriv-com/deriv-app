@@ -1,0 +1,170 @@
+/* eslint-disable camelcase */
+import React from 'react';
+import { Formik } from 'formik';
+import { APIProvider } from '@deriv/api';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { TransferProvider } from '../../../provider';
+import { TAccount, TInitialTransferFormValues } from '../../../types';
+import TransferFormAmountInput from '../TransferFormAmountInput';
+
+const RATES = {
+    BTC: {
+        USD: 44000,
+    },
+    USD: {
+        BTC: 0.000023,
+    },
+};
+
+const ACCOUNTS: NonNullable<TAccount>[] = [
+    {
+        account_category: 'wallet',
+        account_type: 'doughflow',
+        balance: '1000',
+        currency: 'USD',
+        currencyConfig: {
+            fractional_digits: 2,
+        },
+    },
+    {
+        account_category: 'wallet',
+        account_type: 'crypto',
+        balance: '0.1',
+        currency: 'BTC',
+        currencyConfig: {
+            fractional_digits: 8,
+        },
+    },
+] as NonNullable<TAccount>[];
+
+const FORM_VALUES: TInitialTransferFormValues = {
+    activeAmountFieldName: 'fromAmount',
+    fromAccount: ACCOUNTS[0],
+    fromAmount: 0,
+    toAccount: ACCOUNTS[1],
+    toAmount: 0,
+};
+
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useGetExchangeRate: jest.fn(({ base_currency }: { base_currency: string }) => ({
+        data: {
+            base_currency,
+            rates: RATES[base_currency as keyof typeof RATES],
+        },
+        refetch: () => ({
+            data: {
+                base_currency,
+                rates: RATES[base_currency as keyof typeof RATES],
+            },
+        }),
+    })),
+    useTransferBetweenAccounts: jest.fn(() => ({
+        data: { accounts: ACCOUNTS },
+    })),
+}));
+
+describe('TransferFormAmountInput', () => {
+    it('renders two fields', () => {
+        render(
+            <APIProvider>
+                <TransferProvider accounts={ACCOUNTS}>
+                    {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+                    <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
+                        {({ handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <TransferFormAmountInput fieldName='fromAmount' />
+                            </form>
+                        )}
+                    </Formik>
+                </TransferProvider>
+            </APIProvider>
+        );
+
+        const fields = screen.getAllByRole('textbox');
+        expect(fields).toHaveLength(2);
+    });
+
+    it('has 2 decimal places in case of USD', () => {
+        render(
+            <APIProvider>
+                <TransferProvider accounts={ACCOUNTS}>
+                    {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+                    <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
+                        {({ handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <TransferFormAmountInput fieldName='fromAmount' />
+                            </form>
+                        )}
+                    </Formik>
+                </TransferProvider>
+            </APIProvider>
+        );
+
+        const field = screen.getByDisplayValue(/^\d+\.\d+$/u);
+        expect(field).toHaveValue('0.00');
+    });
+
+    it('has 8 decimal places in case of BTC', () => {
+        render(
+            <APIProvider>
+                <TransferProvider accounts={ACCOUNTS}>
+                    {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+                    <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
+                        {({ handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <TransferFormAmountInput fieldName='toAmount' />
+                            </form>
+                        )}
+                    </Formik>
+                </TransferProvider>
+            </APIProvider>
+        );
+
+        const field = screen.getByDisplayValue(/^\d+\.\d+$/u);
+        expect(field).toHaveValue('0.00000000');
+    });
+
+    it('has 8 max digits restriction in case of USD', () => {
+        render(
+            <APIProvider>
+                <TransferProvider accounts={ACCOUNTS}>
+                    {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+                    <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
+                        {({ handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <TransferFormAmountInput fieldName='fromAmount' />
+                            </form>
+                        )}
+                    </Formik>
+                </TransferProvider>
+            </APIProvider>
+        );
+
+        const field = screen.getByDisplayValue(/^\d+\.\d+$/u);
+        userEvent.type(field, '9999999999999999999999999999');
+        expect(field).toHaveValue('999,999.99');
+    });
+
+    it('has 9 max digits restriction in case of BTC', () => {
+        render(
+            <APIProvider>
+                <TransferProvider accounts={ACCOUNTS}>
+                    {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
+                    <Formik initialValues={FORM_VALUES} onSubmit={() => {}}>
+                        {({ handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <TransferFormAmountInput fieldName='toAmount' />
+                            </form>
+                        )}
+                    </Formik>
+                </TransferProvider>
+            </APIProvider>
+        );
+
+        const field = screen.getByDisplayValue(/^\d+\.\d+$/u);
+        userEvent.type(field, '9999999999999999999999999999');
+        expect(field).toHaveValue('9.99999999');
+    });
+});

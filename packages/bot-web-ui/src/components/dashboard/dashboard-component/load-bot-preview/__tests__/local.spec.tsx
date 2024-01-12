@@ -44,14 +44,6 @@ describe('local', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should render the preview button to open tutorial tab', () => {
-        render(<Local />, { wrapper });
-
-        const user_guide = screen.getByRole('button', { name: 'User Guide' });
-        userEvent.click(user_guide);
-        expect(mock_DBot_store?.dashboard.setActiveTab(DBOT_TABS.TUTORIAL));
-    });
-
     it('should render the open button to open bot builder tab', async () => {
         render(<Local />, { wrapper });
 

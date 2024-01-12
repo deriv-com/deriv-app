@@ -43,7 +43,7 @@ const WalletAlertMessage: React.FC<TProps> = ({ children, message, type }) => {
                     {message}
                 </WalletText>
             </div>
-            {children && <div className='wallets-alert-message__button-container'>{children}</div>}
+            {children && <>{children}</>}
         </div>
     );
 };

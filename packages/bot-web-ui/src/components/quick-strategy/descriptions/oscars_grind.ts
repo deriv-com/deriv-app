@@ -59,8 +59,10 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
         alt: localize('An example of Oscar’s Grind strategy'),
     },
     {
-        type: 'subtitle',
-        content: [localize('Principle 1: Strategy aims to potentially make one unit of profit per session')],
+        type: 'text',
+        content: [
+            localize('<strong>Principle 1: Strategy aims to potentially make one unit of profit per session</strong>'),
+        ],
     },
     {
         type: 'text',
@@ -71,9 +73,11 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
         ],
     },
     {
-        type: 'subtitle',
+        type: 'text',
         content: [
-            localize('Principle 2: The stake only increases when a loss trade is followed by a successful trade'),
+            localize(
+                '<strong>Principle 2: The stake only increases when a loss trade is followed by a successful trade</strong>'
+            ),
         ],
     },
     {
@@ -85,10 +89,10 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
         ],
     },
     {
-        type: 'subtitle',
+        type: 'text',
         content: [
             localize(
-                'Principle 3: The stake adjusts to the gap size between current loss and the target profit for the session.'
+                '<strong>Principle 3: The stake adjusts to the gap size between current loss and the target profit for the session</strong>'
             ),
         ],
     },

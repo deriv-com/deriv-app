@@ -599,10 +599,6 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 
     .account-management {
-        &__container {
-            margin: 0 auto;
-        }
-
         &__list {
             &-container {
                 margin-top: 1.6rem;
@@ -651,10 +647,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin: 0 16px;
                 align-items: center;
                 flex-direction: column;
-
-                @include mobile {
-                    justify-content: center;
-                }
 
                 .dc-btn {
                     height: 4rem;

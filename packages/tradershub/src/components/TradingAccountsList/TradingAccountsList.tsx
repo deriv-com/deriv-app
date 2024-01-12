@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useAuthorize, useIsEuRegion, useTradingAccountsList } from '@deriv/api';
 import { qtMerge, Text } from '@deriv/quill-design';
 import { IconToCurrencyMapper } from '../../constants/constants';
 
@@ -7,12 +7,15 @@ const TradingAccountsList = () => {
     const { data: tradingAccountsList } = useTradingAccountsList();
     const { data: activeAccount } = useActiveTradingAccount();
     const { switchAccount } = useAuthorize();
+    const { isEU } = useIsEuRegion();
 
     return (
         <div className='lg:w-[500px] lg:h-[350px] rounded-400'>
             <div className='flex flex-col items-start self-stretch p-400 gap-200'>
                 {tradingAccountsList
-                    ?.filter(account => !account.is_virtual)
+                    ?.filter(
+                        account => !account.is_virtual && (isEU ? account.broker === 'MF' : account.broker === 'CR')
+                    )
                     .map(account => {
                         const iconCurrency = account.currency ?? 'USD';
                         return (

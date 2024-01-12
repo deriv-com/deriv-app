@@ -1,5 +1,6 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
@@ -36,30 +37,6 @@ export const mock_guide_content = [
         url: 'https://www.youtube.com/embed/QdI5zCkO4Gk',
         src: 'video_dbot.webp',
         search_id: 'gc-0',
-    },
-];
-
-const guide_list = [
-    {
-        id: 1,
-        content: 'Guide 1',
-        type: 'Tour',
-        subtype: 'OnBoard',
-        src: 'tour_image_url_1',
-    },
-    {
-        id: 2,
-        content: 'Guide 2',
-        type: 'Tour',
-        subtype: 'Other',
-        src: 'tour_image_url_2',
-    },
-    {
-        id: 3,
-        content: 'Video 1',
-        type: 'Video',
-        url: 'video_url_1',
-        src: 'video_image_url_1',
     },
 ];
 

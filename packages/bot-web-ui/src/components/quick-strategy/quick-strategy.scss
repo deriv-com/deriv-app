@@ -599,6 +599,12 @@
 
             &.italic {
                 font-style: italic;
+
+                span {
+                    @include mobile {
+                        font-size: 1.2rem;
+                    }
+                }
             }
 
             &.no-margin {

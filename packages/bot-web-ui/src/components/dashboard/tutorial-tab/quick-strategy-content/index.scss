@@ -103,5 +103,15 @@
                 }
             }
         }
+
+        &__description__content.italic {
+            span {
+                font-size: 1.4rem;
+
+                @include mobile {
+                    font-size: 1.2rem;
+                }
+            }
+        }
     }
 }

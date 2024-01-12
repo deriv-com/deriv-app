@@ -411,7 +411,7 @@
             }
             &__effect-detail {
                 &--arrow {
-                    left: 12rem;
+                    inset-inline-start: 12rem;
                 }
             }
             @include mobile {

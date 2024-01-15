@@ -8,5 +8,7 @@
 
     @include mobile {
         border: none;
+        width: 100vw;
+        border-bottom: 0.1rem solid #e6e9e9;
     }
 }

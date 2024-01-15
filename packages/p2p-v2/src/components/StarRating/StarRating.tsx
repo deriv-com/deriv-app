@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Rating } from 'react-simple-star-rating';
 import EmptyStarIcon from '../../public/ic-empty-star.svg';
 import FullStarIcon from '../../public/ic-full-star.svg';

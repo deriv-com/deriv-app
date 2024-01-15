@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useAdvertiserUpdate } from '@deriv/api';
 import { Avatar, Badge, ToggleSwitch } from '../../../../components';
 import { useAdvertiserStats, useDevice } from '../../../../hooks';
-import BlockedUserOutlineIcon from '../../../../public/ic-user-blocked-outline.svg';
 import ThumbUpIcon from '../../../../public/ic-thumb-up.svg';
-import './MyProfileName.scss';
+import BlockedUserOutlineIcon from '../../../../public/ic-user-blocked-outline.svg';
 import { MyProfileRating } from '../MyProfileRating';
+import './MyProfileName.scss';
 
 type TAdvertiserStatsData = ReturnType<typeof useAdvertiserStats>['data'];
 
@@ -47,6 +47,7 @@ const MyProfileNameStats = memo(
         );
     }
 );
+MyProfileNameStats.displayName = 'MyProfileNameStats';
 
 type TMyProfileNameBadgesProps = {
     isAddressVerified: NonNullable<TAdvertiserStatsData>['isAddressVerified'];
@@ -64,13 +65,14 @@ const MyProfileNameBadges = memo(
         );
     }
 );
+MyProfileNameBadges.displayName = 'MyProfileNameBadges';
 
 type TMyProfileNameToggleProps = {
     fullName: NonNullable<TAdvertiserStatsData>['fullName'];
     onToggleShowRealName: () => void;
     shouldShowRealName: boolean;
 };
-const MyProfileNameToggle = memo(
+export const MyProfileNameToggle = memo(
     ({ fullName, onToggleShowRealName, shouldShowRealName }: TMyProfileNameToggleProps) => {
         return (
             <div className='p2p-v2-my-profile-name__toggle'>
@@ -83,12 +85,13 @@ const MyProfileNameToggle = memo(
         );
     }
 );
+MyProfileNameToggle.displayName = 'MyProfileNameToggle';
 
 const MyProfileName = () => {
     const { data: advertiserInfo, isLoading } = useAdvertiserStats();
     const [shouldShowRealName, setShouldShowRealName] = useState(false);
     const { mutate: advertiserUpdate } = useAdvertiserUpdate();
-    const { isDesktop, isMobile } = useDevice();
+    const { isDesktop } = useDevice();
 
     useEffect(() => {
         setShouldShowRealName(advertiserInfo?.show_name || false);
@@ -121,11 +124,13 @@ const MyProfileName = () => {
                     totalOrders={advertiserInfo.totalOrders}
                 />
             </div>
-            <MyProfileNameToggle
-                fullName={advertiserInfo.fullName}
-                onToggleShowRealName={onToggleShowRealName}
-                shouldShowRealName={shouldShowRealName}
-            />
+            {isDesktop && (
+                <MyProfileNameToggle
+                    fullName={advertiserInfo.fullName}
+                    onToggleShowRealName={onToggleShowRealName}
+                    shouldShowRealName={shouldShowRealName}
+                />
+            )}
         </div>
     );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
+import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
@@ -45,7 +45,7 @@ const EnterPassword: React.FC<TProps> = ({
                     <WalletText size='sm'>
                         Enter your {title} password to add a {title} {marketTypeTitle} account.
                     </WalletText>
-                    <WalletPasswordField
+                    <WalletPasswordFieldLazy
                         label={`${title} password`}
                         onChange={onPasswordChange}
                         password={password}
@@ -53,6 +53,12 @@ const EnterPassword: React.FC<TProps> = ({
                         shouldDisablePasswordMeter
                         showMessage={false}
                     />
+                    {passwordError && (
+                        <WalletText size='sm'>
+                            Hint: You may have entered your Deriv password, which is different from your {title}{' '}
+                            password.
+                        </WalletText>
+                    )}
                 </div>
             </div>
             {isDesktop && (
@@ -61,7 +67,7 @@ const EnterPassword: React.FC<TProps> = ({
                         Forgot password?
                     </WalletButton>
                     <WalletButton
-                        disabled={!password || isLoading || !validPassword(password) || passwordError}
+                        disabled={!password || isLoading || !validPassword(password)}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
                         size='lg'

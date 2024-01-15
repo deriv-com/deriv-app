@@ -28,6 +28,7 @@ const TradersHub = observer(() => {
         is_switching,
         is_logging_in,
         is_account_setting_loaded,
+        is_mt5_allowed,
         has_active_real_account,
     } = client;
     const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
@@ -110,6 +111,20 @@ const TradersHub = observer(() => {
         );
     };
 
+    const getOrderedPlatformSections = (isDesktop = false) => {
+        if (is_mt5_allowed) {
+            return isDesktop ? (
+                <OrderedPlatformSections />
+            ) : (
+                <OrderedPlatformSections
+                    is_cfd_visible={selected_platform_type === 'cfd'}
+                    is_options_and_multipliers_visible={selected_platform_type === 'options'}
+                />
+            );
+        }
+        return <OrderedPlatformSections is_cfd_visible={false} is_options_and_multipliers_visible={true} />;
+    };
+
     return (
         <>
             <Div100vhContainer
@@ -122,27 +137,30 @@ const TradersHub = observer(() => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
-                    <DesktopWrapper>
-                        <OrderedPlatformSections />
-                    </DesktopWrapper>
+                    <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>
                     <MobileWrapper>
-                        {is_landing_company_loaded ? (
-                            <ButtonToggle
-                                buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
-                                className='traders-hub__button-toggle'
-                                has_rounded_button
-                                is_traders_hub={window.location.pathname === routes.traders_hub}
-                                name='platforn_type'
-                                onChange={platformTypeChange}
-                                value={selected_platform_type}
-                            />
-                        ) : (
-                            <ButtonToggleLoader />
+                        {is_mt5_allowed &&
+                            (is_landing_company_loaded ? (
+                                <ButtonToggle
+                                    buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
+                                    className='traders-hub__button-toggle'
+                                    has_rounded_button
+                                    is_traders_hub={window.location.pathname === routes.traders_hub}
+                                    name='platforn_type'
+                                    onChange={platformTypeChange}
+                                    value={selected_platform_type}
+                                />
+                            ) : (
+                                <ButtonToggleLoader />
+                            ))}
+                        {!is_mt5_allowed && (
+                            <div className='traders-hub--mt5-not-allowed'>
+                                <Text size='s' weight='bold' color='prominent'>
+                                    <Localize i18n_default_text='Multipliers' />
+                                </Text>
+                            </div>
                         )}
-                        <OrderedPlatformSections
-                            is_cfd_visible={selected_platform_type === 'cfd'}
-                            is_options_and_multipliers_visible={selected_platform_type === 'options'}
-                        />
+                        {getOrderedPlatformSections()}
                     </MobileWrapper>
                     <ModalManager />
                     {scrolled && <TourGuide />}
@@ -152,7 +170,7 @@ const TradersHub = observer(() => {
                 <div data-testid='dt_traders_hub_disclaimer' className='disclaimer'>
                     <Text align='left' className='disclaimer-text' size={is_mobile ? 'xxxs' : 'xs'}>
                         <Localize
-                            i18n_default_text='<0>EU statutory disclaimer</0>: CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. <0>71% of retail investor accounts lose money when trading CFDs with this provider</0>. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.'
+                            i18n_default_text='<0>EU statutory disclaimer</0>: CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. <0>70.1% of retail investor accounts lose money when trading CFDs with this provider</0>. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.'
                             components={[<strong key={0} />]}
                         />
                     </Text>

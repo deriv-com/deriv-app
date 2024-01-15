@@ -1,18 +1,21 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useFeatureFlags, useStoreWalletAccountsList } from '@deriv/hooks';
 import DefaultHeader from './default-header';
+import DefaultHeaderWallets from './defaut-header-wallets';
 import DTraderHeader from './dtrader-header';
 import TradersHubHeader from './traders-hub-header';
 import DTraderHeaderWallets from './dtrader-header-wallets';
+import TradersHubHeaderWallets from './traders-hub-header-wallets';
 import { useReadLocalStorage } from 'usehooks-ts';
 
 const Header = observer(() => {
     const { client } = useStore();
     const { accounts, is_logged_in, setAccounts, loginid, switchAccount } = client;
     const { pathname } = useLocation();
+
     const is_wallets_cashier_route = pathname.includes(routes.wallets_cashier);
 
     const traders_hub_routes =
@@ -50,7 +53,7 @@ const Header = observer(() => {
     if (is_logged_in) {
         let result;
         if (traders_hub_routes) {
-            result = <TradersHubHeader />;
+            result = should_show_wallets ? <TradersHubHeaderWallets /> : <TradersHubHeader />;
         } else if (pathname === routes.onboarding) {
             result = null;
         } else {
@@ -60,7 +63,7 @@ const Header = observer(() => {
     } else if (pathname === routes.onboarding) {
         return null;
     }
-    return <DefaultHeader />;
+    return is_next_wallet_enabled ? <DefaultHeaderWallets /> : <DefaultHeader />;
 });
 
 export default Header;

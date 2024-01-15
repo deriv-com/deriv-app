@@ -46,7 +46,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
     };
 
     React.useEffect(() => {
-        if (tradetype && symbol) {
+        if (tradetype && symbol && selected !== '') {
             const getContractTypes = async () => {
                 const { contracts_for } = ApiHelpers.instance;
                 const categories = await contracts_for.getContractTypes(tradetype);
@@ -61,7 +61,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
             getContractTypes();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [symbol, tradetype]);
+    }, [symbol, tradetype, selected]);
 
     const handleChange = (value: string) => {
         setFieldValue?.(name, value);
@@ -74,11 +74,11 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
         <div className='qs__form__field qs__form__field__input no-top-spacing'>
             <Field name={name} key={key} id={key}>
                 {({ field }: FieldProps) => {
-                    const selected_item = list?.find(item => item.value === field.value);
+                    const selected_item = list?.find((item: TContractTypesItem) => item.value === field.value);
                     if (is_mobile) {
                         return (
                             <ul className='qs__form__field__list' data-testid='dt-qs-contract-types'>
-                                {list.map(item => {
+                                {list.map((item: TContractTypesItem) => {
                                     const is_active = selected_item?.value === item.value;
                                     return (
                                         <li
@@ -103,6 +103,7 @@ const ContractTypes: React.FC<TContractTypes> = observer(({ name }) => {
                     return (
                         <Autocomplete
                             {...field}
+                            readOnly
                             inputMode='none'
                             data-testid='qs_autocomplete_contract_type'
                             autoComplete='off'

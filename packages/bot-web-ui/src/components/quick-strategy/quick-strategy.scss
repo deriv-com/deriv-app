@@ -626,6 +626,10 @@
             width: 100%;
             margin-bottom: 2rem;
 
+            @include mobile {
+                height: 38rem;
+            }
+
             img {
                 height: 100%;
                 width: auto;

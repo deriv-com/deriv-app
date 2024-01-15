@@ -10,7 +10,7 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('IDVDocumentUploadDetails', () => {
-    const mockSetIsCheckBoxChecked = jest.fn();
+    const mockSetIsDetailsVerified = jest.fn();
 
     beforeEach(() => {
         (useSettings as jest.Mock).mockReturnValue({
@@ -36,7 +36,7 @@ describe('IDVDocumentUploadDetails', () => {
                     return (
                         <IDVDocumentUploadDetails
                             isDetailsVerified={false}
-                            setIsDetailsVerified={mockSetIsCheckBoxChecked}
+                            setIsDetailsVerified={mockSetIsDetailsVerified}
                         />
                     );
                 }}
@@ -73,7 +73,7 @@ describe('IDVDocumentUploadDetails', () => {
                     return (
                         <IDVDocumentUploadDetails
                             isDetailsVerified={false}
-                            setIsDetailsVerified={mockSetIsCheckBoxChecked}
+                            setIsDetailsVerified={mockSetIsDetailsVerified}
                         />
                     );
                 }}
@@ -104,7 +104,7 @@ describe('IDVDocumentUploadDetails', () => {
                     return (
                         <IDVDocumentUploadDetails
                             isDetailsVerified={false}
-                            setIsDetailsVerified={mockSetIsCheckBoxChecked}
+                            setIsDetailsVerified={mockSetIsDetailsVerified}
                         />
                     );
                 }}
@@ -115,7 +115,7 @@ describe('IDVDocumentUploadDetails', () => {
             screen.getByLabelText(/I confirm that the name and date of birth above match my chosen identity document/)
         );
 
-        expect(mockSetIsCheckBoxChecked).toHaveBeenCalledWith(true);
+        expect(mockSetIsDetailsVerified).toHaveBeenCalledWith(true);
     });
 
     test('should render component with fields disabled when checkbox is checked', () => {
@@ -132,7 +132,7 @@ describe('IDVDocumentUploadDetails', () => {
                     return (
                         <IDVDocumentUploadDetails
                             isDetailsVerified={true}
-                            setIsDetailsVerified={mockSetIsCheckBoxChecked}
+                            setIsDetailsVerified={mockSetIsDetailsVerified}
                         />
                     );
                 }}

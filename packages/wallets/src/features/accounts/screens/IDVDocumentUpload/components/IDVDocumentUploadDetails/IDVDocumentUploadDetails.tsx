@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
+import classNames from 'classnames';
+import { useFormikContext } from 'formik';
 import moment from 'moment';
 import { useSettings } from '@deriv/api';
 import { DatePicker, FlowTextField, InlineMessage, useFlow, WalletText } from '../../../../../../components';
@@ -7,9 +9,18 @@ import unixToDateString from '../../../../../../utils/utils';
 import { dateOfBirthValidator, firstNameValidator, lastNameValidator } from '../../../../validations';
 import './IDVDocumentUploadDetails.scss';
 
-const IDVDocumentUploadDetails = () => {
+type TIdvDocumentUploadDetailsProps = {
+    isDetailsVerified: boolean;
+    setIsDetailsVerified: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const IDVDocumentUploadDetails: React.FC<TIdvDocumentUploadDetailsProps> = ({
+    isDetailsVerified,
+    setIsDetailsVerified,
+}) => {
     const { data: getSettings } = useSettings();
-    const { setFormValues } = useFlow();
+    const { errors, formValues, setFormValues } = useFlow();
+    const { validateForm } = useFormikContext();
 
     const handleDateChange = (formattedDate: string | null) => {
         setFormValues('dateOfBirth', formattedDate);
@@ -17,6 +28,27 @@ const IDVDocumentUploadDetails = () => {
 
     const dateOfBirth = getSettings?.date_of_birth || 0;
     const formattedDateOfBirth = new Date(dateOfBirth * 1000);
+    const firstName = getSettings?.first_name;
+    const lastName = getSettings?.last_name;
+
+    useEffect(() => {
+        setFormValues('firstName', getSettings?.first_name);
+        setFormValues('lastName', getSettings?.last_name);
+        validateForm();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [getSettings?.first_name, getSettings?.last_name]);
+
+    const isValid = useMemo(() => {
+        return (
+            formValues.firstName &&
+            formValues.lastName &&
+            formValues.dateOfBirth &&
+            !errors.firstName &&
+            !errors.lastName &&
+            !errors.dateOfBirth
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [getSettings?.first_name, getSettings?.last_name, formValues]);
 
     return (
         <div className='wallets-idv-document-details'>
@@ -29,7 +61,8 @@ const IDVDocumentUploadDetails = () => {
             <div className='wallets-idv-document-details__body'>
                 <div className='wallets-idv-document-details__content'>
                     <FlowTextField
-                        defaultValue={getSettings?.first_name}
+                        defaultValue={firstName}
+                        disabled={isDetailsVerified}
                         label='First name*'
                         message='Your first name as in your identity document'
                         name='firstName'
@@ -38,7 +71,8 @@ const IDVDocumentUploadDetails = () => {
                     />
 
                     <FlowTextField
-                        defaultValue={getSettings?.last_name}
+                        defaultValue={lastName}
+                        disabled={isDetailsVerified}
                         label='Last name*'
                         message='Your last name as in your identity document'
                         name='lastName'
@@ -47,6 +81,7 @@ const IDVDocumentUploadDetails = () => {
                     />
                     <DatePicker
                         defaultValue={unixToDateString(formattedDateOfBirth)}
+                        disabled={isDetailsVerified}
                         label='Date of birth*'
                         maxDate={moment().subtract(18, 'years').toDate()}
                         message='Your date of birth as in your identity document'
@@ -64,6 +99,26 @@ const IDVDocumentUploadDetails = () => {
                     </WalletText>
                     <SideNote />
                 </div>
+            </div>
+            <div
+                className={classNames('wallets-idv-document-details__checkbox', {
+                    'wallets-idv-document-details__checkbox--disabled': !isValid,
+                })}
+            >
+                <input
+                    checked={isDetailsVerified}
+                    disabled={!isValid}
+                    id='idv-checkbox'
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                        setIsDetailsVerified(event.target.checked)
+                    }
+                    type='checkbox'
+                />
+                <label htmlFor='idv-checkbox'>
+                    <WalletText lineHeight='2xs' size='sm'>
+                        I confirm that the name and date of birth above match my chosen identity document
+                    </WalletText>
+                </label>
             </div>
         </div>
     );

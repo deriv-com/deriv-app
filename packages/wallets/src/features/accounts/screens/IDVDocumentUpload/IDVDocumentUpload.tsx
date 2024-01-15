@@ -12,6 +12,11 @@ import './IDVDocumentUpload.scss';
 
 type TErrorMessageProps = Exclude<THooks.POI['current']['status'], undefined>;
 
+type TIdvDocumentUploadProps = {
+    isDetailsVerified: boolean;
+    setIsDetailsVerified: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
 const statusMessage: Partial<Record<TErrorMessageProps, string>> = {
     expired: 'Your identity document has expired.',
     rejected: 'We were unable to verify the identity document with the details provided.',
@@ -43,7 +48,7 @@ const ErrorMessage: React.FC<{ status: TErrorMessageProps }> = ({ status }) => {
     );
 };
 
-const IDVDocumentUpload = () => {
+const IDVDocumentUpload: React.FC<TIdvDocumentUploadProps> = ({ isDetailsVerified, setIsDetailsVerified }) => {
     const { data: poiStatus } = usePOI();
     const { formValues, setFormValues } = useFlow();
     const { data: residenceList, isSuccess: isResidenceListSuccess } = useResidenceList();
@@ -145,7 +150,10 @@ const IDVDocumentUpload = () => {
                 <div className='wallets-idv-document-upload__title'>
                     <WalletText weight='bold'>Details</WalletText>
                 </div>
-                <IDVDocumentUploadDetails />
+                <IDVDocumentUploadDetails
+                    isDetailsVerified={isDetailsVerified}
+                    setIsDetailsVerified={setIsDetailsVerified}
+                />
             </div>
         </div>
     );

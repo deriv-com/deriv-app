@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useDocumentUpload, useIdentityDocumentVerificationAdd, usePOA, usePOI, useSettings } from '@deriv/api';
 import { ModalStepWrapper, WalletButton, WalletButtonGroup } from '../../../../components/Base';
 import { FlowProvider, TFlowProviderContext } from '../../../../components/FlowProvider';
@@ -26,14 +26,14 @@ const Loading = () => {
     );
 };
 
-const screens = {
-    idvScreen: <IDVDocumentUpload />,
-    loadingScreen: <Loading />,
-    manualScreen: <ManualDocumentUpload />,
-    onfidoScreen: <Onfido />,
-    personalDetailsScreen: <PersonalDetails />,
-    poaScreen: <PoaScreen />,
-    selfieScreen: <SelfieDocumentUpload />,
+type ScreensType = {
+    idvScreen: React.ReactNode;
+    loadingScreen: React.ReactNode;
+    manualScreen: React.ReactNode;
+    onfidoScreen: React.ReactNode;
+    personalDetailsScreen: React.ReactNode;
+    poaScreen: React.ReactNode;
+    selfieScreen: React.ReactNode;
 };
 
 type TVerificationProps = {
@@ -41,7 +41,7 @@ type TVerificationProps = {
 };
 
 type TManualVerificationFooter = {
-    context: TFlowProviderContext<typeof screens>;
+    context: TFlowProviderContext<ScreensType>;
     isNextDisabled: boolean;
     isNextLoading: boolean;
     nextFlowHandler: () => void;
@@ -82,7 +82,20 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
     const { data: settings, update: updateSettings } = useSettings();
     const { submitIDVDocuments } = useIdentityDocumentVerificationAdd();
     const { getModalState, hide, show } = useModal();
+    const [isDetailsVerified, setIsDetailsVerified] = useState(false);
     const { isMobile } = useDevice();
+
+    const screens: ScreensType = {
+        idvScreen: (
+            <IDVDocumentUpload isDetailsVerified={isDetailsVerified} setIsDetailsVerified={setIsDetailsVerified} />
+        ),
+        loadingScreen: <Loading />,
+        manualScreen: <ManualDocumentUpload />,
+        onfidoScreen: <Onfido />,
+        personalDetailsScreen: <PersonalDetails />,
+        poaScreen: <PoaScreen />,
+        selfieScreen: <SelfieDocumentUpload />,
+    };
 
     const selectedMarketType = getModalState('marketType') ?? 'all';
     const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
@@ -281,7 +294,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                                   })
                                 : () => (
                                       <WalletButton
-                                          disabled={isNextDisabled(context)}
+                                          disabled={isNextDisabled(context) || !isDetailsVerified}
                                           isFullWidth={isMobile}
                                           isLoading={isNextLoading(context)}
                                           onClick={() => nextFlowHandler(context)}

@@ -68,7 +68,7 @@ describe('<WalletsAppLinkedWithWalletIcon/>', () => {
             />
         );
 
-        const gradientElement = screen.getByTestId('wallet-gradient-background');
+        const gradientElement = screen.getByTestId('dt_wallet_gradient_background');
 
         expect(gradientElement).toBeInTheDocument();
         expect(gradientElement).toHaveClass('wallets-gradient--LTC-desktop-card-light');

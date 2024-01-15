@@ -377,27 +377,6 @@ $MIN_HEIGHT_FLOATING: calc(
         }
 
         &__personal-details {
-            &--dashboard {
-                & .account-form__fieldset {
-                    margin-bottom: 3.2rem;
-
-                    @include mobile {
-                        margin-bottom: 3.2rem;
-                    }
-                }
-
-                & .dc-field--error {
-                    color: var(--text-loss-danger);
-                }
-
-                & .account-form__footer-note {
-                    width: unset;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                }
-            }
-
             @include desktop {
                 .account__scrollbars_container {
                     padding-top: 2.4rem;
@@ -620,10 +599,6 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 
     .account-management {
-        &__container {
-            margin: 0 auto;
-        }
-
         &__list {
             &-container {
                 margin-top: 1.6rem;
@@ -672,10 +647,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin: 0 16px;
                 align-items: center;
                 flex-direction: column;
-
-                @include mobile {
-                    justify-content: center;
-                }
 
                 .dc-btn {
                     height: 4rem;
@@ -865,18 +836,6 @@ $MIN_HEIGHT_FLOATING: calc(
             display: flex;
             width: 100%;
             height: 100%;
-
-            &-dashboard {
-                width: calc(100vw - 33rem);
-
-                & .dc-timeline__title {
-                    max-width: unset;
-                }
-
-                @include mobile {
-                    width: 100%;
-                }
-            }
 
             &--enabled {
                 display: flex;
@@ -1560,6 +1519,34 @@ $MIN_HEIGHT_FLOATING: calc(
     }
 }
 /* stylelint-enable */
+
+.proof-of-income {
+    width: 100%;
+
+    &,
+    .account-form__footer {
+        max-width: 68rem;
+    }
+
+    .account__scrollbars_container {
+        padding: 0;
+    }
+
+    &__form {
+        &-field {
+            margin-bottom: 3.2rem;
+
+            @include mobile {
+                margin-bottom: 2.4rem;
+            }
+
+            .account-form__header {
+                margin-bottom: 2.4rem;
+            }
+        }
+    }
+}
+
 /** @define closing-account; weak */
 .closing-account {
     max-width: 67.2rem;
@@ -1630,10 +1617,6 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: -8px;
                 margin-right: 10px;
                 float: right;
-
-                &--dashboard {
-                    width: 100%;
-                }
             }
         }
 
@@ -1644,10 +1627,6 @@ $MIN_HEIGHT_FLOATING: calc(
             @include mobile {
                 float: none;
                 margin: 2.4rem auto 3.2rem;
-
-                &--dashboard {
-                    width: 100%;
-                }
             }
         }
     }
@@ -1657,27 +1636,6 @@ $MIN_HEIGHT_FLOATING: calc(
         font-size: var(--text-size-xs);
         line-height: 1.43;
         font-weight: bold;
-
-        &--dashboard {
-            & .dc-form-submit-button {
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                flex: 1;
-
-                & .dc-btn__large {
-                    width: 100%;
-                }
-            }
-
-            & .closing-account-reasons__title {
-                margin: 1.6rem 0 0.8rem;
-            }
-
-            & form {
-                width: 100%;
-            }
-        }
 
         &__title {
             margin-bottom: 18px;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
+import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
@@ -28,15 +28,17 @@ const CreatePassword: React.FC<TProps> = ({
     const title = PlatformDetails[platform].title;
     return (
         <div className='wallets-create-password'>
-            {!isMobile && icon}
-            <WalletText lineHeight='xl' weight='bold'>
-                Create a {title} password
-            </WalletText>
-            <WalletText align='center' size='sm'>
-                You can use this password for all your {title} accounts.
-            </WalletText>
+            {icon}
+            <div className='wallets-create-password__text'>
+                <WalletText align='center' lineHeight='xl' weight='bold'>
+                    Create a {title} password
+                </WalletText>
+                <WalletText align='center' size='sm'>
+                    You can use this password for all your {title} accounts.
+                </WalletText>
+            </div>
 
-            <WalletPasswordField label={`${title} password`} onChange={onPasswordChange} password={password} />
+            <WalletPasswordFieldLazy label={`${title} password`} onChange={onPasswordChange} password={password} />
             {!isMobile && (
                 <WalletButton
                     disabled={!password || isLoading || !validPassword(password)}

@@ -17,7 +17,7 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ acco
     const mt5Account = accounts.mt5?.find(
         account => account.login?.replace(/^\D+/g, '') === loginid.replace(/^\D+/g, '')
     );
-    const ctraderAccount = accounts.ctrader?.find(account => account.login === loginid);
+    const ctraderAccount = accounts.ctrader?.find(account => account.account_id === loginid);
 
     const transferAccount = [wallet, dtradeAccount, dxtradeAccount, mt5Account, ctraderAccount].find(Boolean);
 
@@ -38,7 +38,7 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ acco
                 accountType={accountType ?? ''}
                 actionType='transfer'
                 currency={transferAccount.currency ?? 'USD'}
-                displayAccountName={displayAccountName}
+                displayAccountName={displayAccountName ?? ''}
                 displayActionType={`Transfer ${direction}`}
                 isDemo={Boolean(transferAccount.is_virtual)}
                 isInterWallet={transferAccount === wallet}

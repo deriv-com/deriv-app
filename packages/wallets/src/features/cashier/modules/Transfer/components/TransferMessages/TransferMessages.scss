@@ -1,0 +1,20 @@
+.wallets-transfer-messages {
+    min-height: 2rem;
+    padding-inline: 0.8rem;
+
+    @include mobile {
+        padding-inline: 0;
+    }
+
+    &__link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    &__action-button {
+        display: flex;
+        align-items: center;
+        padding-block: 0.8rem;
+        margin-left: 0.8rem;
+    }
+}

@@ -1,15 +1,16 @@
 import React from 'react';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop } from '@deriv/shared';
 import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from './v1';
 
 type TToolbarWidgetsProps = {
     updateChartType: (chart_type: string) => void;
     updateGranularity: (updateGranularity: number) => void;
+    position?: string | null;
 };
 
-const ToolbarWidgets = ({ updateChartType, updateGranularity }: TToolbarWidgetsProps) => {
+const ToolbarWidgets = ({ updateChartType, updateGranularity, position }: TToolbarWidgetsProps) => {
     return (
-        <ToolbarWidget position={isMobile() ? 'bottom' : null}>
+        <ToolbarWidget position={position}>
             <ChartMode portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
             {isDesktop() && (
                 <>

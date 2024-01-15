@@ -1,27 +1,44 @@
 import React from 'react';
+import { Analytics } from '@deriv/analytics';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 
 type TUserGuide = {
-    setActiveTab: (param: number) => void;
-    setActiveTabTutorial: (active_tab_tutorials: number) => void;
+    is_mobile?: boolean;
+    handleTabChange: (item: number) => void;
+    setActiveTabTutorial: (active_tab: number) => void;
 };
 
-const UserGuide = ({ setActiveTab, setActiveTabTutorial }: TUserGuide) => {
+const UserGuide: React.FC<TUserGuide> = ({ is_mobile, handleTabChange, setActiveTabTutorial }) => {
+    const sendToRudderStackForUserGuide = () => {
+        Analytics.trackEvent('ce_bot_dashboard_form', {
+            action: 'push_user_guide',
+            form_source: 'ce_bot_dashboard_form',
+        });
+        Analytics.trackEvent('ce_bot_tutorial_form', {
+            action: 'push_user_guide',
+            form_source: 'bot_dashboard_form',
+        });
+    };
+
     return (
-        <div className='tab__dashboard__home__retrigger'>
+        <div className='user-guide'>
             <button
-                data-testid='btn-user-guide'
+                className='user-guide__button'
                 onClick={() => {
-                    setActiveTab(DBOT_TABS.TUTORIAL);
+                    sendToRudderStackForUserGuide();
+                    handleTabChange(DBOT_TABS.TUTORIAL);
                     setActiveTabTutorial(0);
                 }}
+                data-testid='btn-user-guide'
             >
-                <Icon className='tab__dashboard__home__retrigger__icon' icon={'IcDbotUserGuide'} />
-                <Text size='xs' line_height='s' className={'tab__dashboard__home__retrigger__text'}>
-                    {localize('User Guide')}
-                </Text>
+                <Icon className='user-guide__icon' icon={'IcDbotUserGuide'} />
+                {!is_mobile && (
+                    <Text size='xs' line_height='s' className='user-guide__label'>
+                        {localize('User Guide')}
+                    </Text>
+                )}
             </button>
         </div>
     );

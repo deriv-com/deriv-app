@@ -6,7 +6,7 @@ import { useP2PPaymentMethods } from '@deriv/hooks';
 
 type TPaymentMethodIconProps = {
     className?: string;
-    display_name: string;
+    display_name?: string;
     size?: number;
 };
 

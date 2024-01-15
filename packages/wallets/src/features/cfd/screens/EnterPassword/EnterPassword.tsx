@@ -53,6 +53,12 @@ const EnterPassword: React.FC<TProps> = ({
                         shouldDisablePasswordMeter
                         showMessage={false}
                     />
+                    {passwordError && (
+                        <WalletText size='sm'>
+                            Hint: You may have entered your Deriv password, which is different from your {title}{' '}
+                            password.
+                        </WalletText>
+                    )}
                 </div>
             </div>
             {isDesktop && (

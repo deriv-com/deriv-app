@@ -77,7 +77,7 @@ const MarketCountdownTimer = observer(
             if (!is_main_page || (is_main_page && isMarketClosed(active_symbols, symbol))) {
                 setLoading(true);
                 // eslint-disable-next-line consistent-return
-                // @ts-expect-error there is no explict return type because of if statements
+                // @ts-expect-error there is no explicit return type because of if statements
                 const whenMarketOpens = async (days_offset: number, target_symbol: string) => {
                     // days_offset is 0 for today, 1 for tomorrow, etc.
                     if (days_offset > days_to_check_before_exit) return {};

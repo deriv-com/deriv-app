@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import { getActiveAuthTokenIDFromLocalStorage, getActiveLoginIDFromLocalStorage } from '@deriv/utils';
-import useInvalidateQuery from '../useInvalidateQuery';
 import useQuery from '../useQuery';
 import { useAPIContext } from '../APIProvider';
+import useInvalidateQuery from '../useInvalidateQuery';
 
 /** A custom hook that authorize the user with the given token. If no token is given,
  * it will use the current token from localStorage.
@@ -11,10 +11,9 @@ const useAuthorize = () => {
     const current_token = getActiveAuthTokenIDFromLocalStorage();
     const invalidate = useInvalidateQuery();
     const { switchEnvironment } = useAPIContext();
-
     const { data, ...rest } = useQuery('authorize', {
         payload: { authorize: current_token || '' },
-        options: { enabled: Boolean(current_token) },
+        options: { enabled: Boolean(current_token), staleTime: 1000 * 60 },
     });
 
     // Add additional information to the authorize response.

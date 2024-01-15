@@ -11,6 +11,7 @@ const useAvailableWallets = () => {
         },
         options: {
             enabled: isSuccess,
+            staleTime: Infinity,
         },
     });
 

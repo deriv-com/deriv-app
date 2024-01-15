@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { useActiveWalletAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useSortedMT5Accounts } from '@deriv/api';
 import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
 import { AddedMT5AccountsList, AvailableMT5AccountsList } from '../../flows/MT5';
 import { GetMoreMT5Accounts } from '../../screens';
@@ -10,20 +10,19 @@ type TProps = {
 };
 
 const MT5PlatformsList: React.FC<TProps> = ({ onMT5PlatformListLoaded }) => {
-    const { isFetching } = useAuthorize();
-    const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts();
+    const { fetchStatus } = useAuthorize();
+    const { areAllAccountsCreated, data, isFetchedAfterMount, refetch } = useSortedMT5Accounts();
     const { data: activeWallet } = useActiveWalletAccount();
-    const invalidate = useInvalidateQuery();
 
     const hasMT5Account = useMemo(() => {
         return data?.some(account => account.is_added);
     }, [data]);
 
     useEffect(() => {
-        if (!isFetching) {
-            invalidate('mt5_login_list');
+        if (fetchStatus === 'idle') {
+            refetch();
         }
-    }, [invalidate, isFetching]);
+    }, [fetchStatus, refetch]);
 
     useEffect(() => {
         onMT5PlatformListLoaded?.(isFetchedAfterMount);

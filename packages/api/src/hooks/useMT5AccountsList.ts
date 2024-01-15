@@ -14,7 +14,7 @@ const useMT5AccountsList = () => {
     const { getExchangeRate } = useExchangeRates();
 
     const { data: mt5_accounts, ...mt5_accounts_rest } = useQuery('mt5_login_list', {
-        options: { enabled: isSuccess },
+        options: { enabled: isSuccess, staleTime: 1000 * 60 },
     });
 
     /**

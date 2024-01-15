@@ -11,7 +11,7 @@ const useDxtradeAccountsList = () => {
     const { data: authorize_data, isSuccess } = useAuthorize();
     const { data: dxtrade_accounts, ...rest } = useQuery('trading_platform_accounts', {
         payload: { platform: 'dxtrade' },
-        options: { enabled: isSuccess },
+        options: { enabled: isSuccess, staleTime: 1000 * 60 },
     });
     const { getConfig } = useCurrencyConfig();
     const { getExchangeRate } = useExchangeRates();

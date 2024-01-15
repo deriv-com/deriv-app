@@ -6,8 +6,7 @@ import { CashierScrollContext } from './context';
 import './WalletCashier.scss';
 
 const WalletCashier = () => {
-    const { isFetchedAfterMount, isLoading } = useActiveWalletAccount();
-
+    const { isFetchedAfterMount, isLoading, isStale } = useActiveWalletAccount();
     const [onCashierScroll, setOnCashierScroll] = useState<React.UIEventHandler<HTMLDivElement> | null>(null);
 
     const [isContentScrolled, setIsContentScrolled] = useState(false);
@@ -21,7 +20,7 @@ const WalletCashier = () => {
         [onCashierScroll]
     );
 
-    if (isLoading || !isFetchedAfterMount) return <Loader />;
+    if (isLoading || (!isFetchedAfterMount && isStale)) return <Loader />;
 
     return (
         <div className='wallets-cashier'>

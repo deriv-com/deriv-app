@@ -1,20 +1,19 @@
 import React, { useEffect } from 'react';
-import { useAuthorize, useDxtradeAccountsList, useInvalidateQuery } from '@deriv/api';
+import { useAuthorize, useDxtradeAccountsList } from '@deriv/api';
 import { TradingAppCardLoader } from '../../../../components/SkeletonLoader';
 import { AddedDxtradeAccountsList, AvailableDxtradeAccountsList } from '../../flows/OtherCFDs/Dxtrade';
 import './OtherCFDPlatformsList.scss';
 
 const OtherCFDPlatformsList: React.FC = () => {
-    const { isFetching } = useAuthorize();
-    const { data, isFetchedAfterMount } = useDxtradeAccountsList();
-    const invalidate = useInvalidateQuery();
+    const { fetchStatus } = useAuthorize();
+    const { data, isFetchedAfterMount, refetch } = useDxtradeAccountsList();
     const hasDxtradeAccount = !!data?.length;
 
     useEffect(() => {
-        if (!isFetching) {
-            invalidate('trading_platform_accounts');
+        if (fetchStatus === 'idle') {
+            refetch();
         }
-    }, [invalidate, isFetching]);
+    }, [fetchStatus, refetch]);
 
     return (
         <div className='wallets-other-cfd'>

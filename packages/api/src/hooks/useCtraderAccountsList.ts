@@ -10,7 +10,7 @@ const useCtraderAccountsList = () => {
     const { isSuccess } = useAuthorize();
     const { data: ctrader_accounts, ...rest } = useQuery('trading_platform_accounts', {
         payload: { platform: 'ctrader' },
-        options: { enabled: isSuccess },
+        options: { enabled: isSuccess, staleTime: 1000 * 60 },
     });
     const { getConfig } = useCurrencyConfig();
     const { fiat_account } = useTradingAccountsList();

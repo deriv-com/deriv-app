@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Button } from '@deriv/quill-design';
 import { useSignupWizardContext } from '../../../context/SignupWizardContext';
 
@@ -21,25 +21,33 @@ type TActions = {
 
 const Actions: React.FC<TActions> = ({ onSubmit }) => {
     const {
-        helpers: { canGoToPrevStep, goToPrevStep },
+        helpers: { canGoToPrevStep, goToNextStep, goToPrevStep },
     } = useSignupWizardContext();
 
+    const handleSubmit = useCallback(() => {
+        onSubmit?.();
+        goToNextStep();
+    }, [goToNextStep, onSubmit]);
+
     return (
-        <div className='flex justify-end divide-y-75'>
-            {canGoToPrevStep && (
-                <Button
-                    className='btn btn--primary btn--medium mr-8 rounded-200 mr-400'
-                    colorStyle='black'
-                    onClick={goToPrevStep}
-                    size='md'
-                    variant='secondary'
-                >
-                    Previous
+        <div>
+            <hr className='opacity-100' />
+            <div className='flex justify-end divide-y-75 p-1200'>
+                {canGoToPrevStep && (
+                    <Button
+                        className='mr-8 rounded-200 mr-400'
+                        colorStyle='black'
+                        onClick={goToPrevStep}
+                        size='md'
+                        variant='secondary'
+                    >
+                        Previous
+                    </Button>
+                )}
+                <Button className='mr-8 rounded-200' onClick={handleSubmit} size='md' type='submit'>
+                    Next
                 </Button>
-            )}
-            <Button className='btn btn--primary btn--medium mr-8 rounded-200' onClick={onSubmit} size='md'>
-                Next
-            </Button>
+            </div>
         </div>
     );
 };

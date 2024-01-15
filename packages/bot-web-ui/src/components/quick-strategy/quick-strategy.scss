@@ -630,13 +630,8 @@
                 padding-left: 1rem;
             }
 
-            &.martingale-formula {
-                width: 30%;
-                margin: 1rem 0.5rem;
-            }
-
-            &.dalembert-formula {
-                width: 50%;
+            &.formula {
+                width: unset;
                 margin: 1rem 0.5rem;
             }
         }

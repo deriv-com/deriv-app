@@ -111,7 +111,8 @@ export const D_ALEMBERT: TDescriptionItem[] = [
         src: getImageLocation('dalembert_formula_1.svg'),
         dark_src: getImageLocation('dalembert_formula_dark_1.svg'),
         alt: localize('D’Alembert formula 1'),
-        className: 'dalembert-formula',
+        className: 'formula',
+        styles: { height: '6rem' },
     },
     {
         type: 'text',
@@ -138,7 +139,8 @@ export const D_ALEMBERT: TDescriptionItem[] = [
         src: getImageLocation('dalembert_formula_2.svg'),
         dark_src: getImageLocation('dalembert_formula_dark_2.svg'),
         alt: localize('D’Alembert formula 2'),
-        className: 'dalembert-formula',
+        className: 'formula',
+        styles: { height: '6rem' },
     },
     {
         type: 'text',

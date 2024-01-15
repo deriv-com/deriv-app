@@ -55,6 +55,7 @@ export type TDescriptionItem = Partial<{
     font_size: string;
     id: number;
     dark_src?: string;
+    styles?: { [key: string]: string };
 }>;
 export type TDescription = TDescriptionItem[] | TDescriptionItem[][];
 

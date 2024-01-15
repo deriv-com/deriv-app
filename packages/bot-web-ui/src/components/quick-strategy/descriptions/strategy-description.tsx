@@ -43,6 +43,7 @@ const StrategyDescription = observer(({ item, font_size }: TStrategyDescription)
                                 className={class_names}
                                 src={is_dark_mode_on ? item.dark_src ?? item.src : item.src}
                                 alt={item.alt}
+                                style={item?.styles}
                             />
                         </div>
                     }

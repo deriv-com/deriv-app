@@ -85,22 +85,9 @@
                 margin-bottom: 2rem;
             }
 
-            &.martingale-formula {
-                width: 13%;
+            &.formula {
+                width: unset;
                 margin: 1rem 0.5rem;
-
-                @include mobile {
-                    width: 28%;
-                }
-            }
-
-            &.dalembert-formula {
-                width: 20%;
-                margin: 1rem 0.5rem;
-
-                @include mobile {
-                    width: 48%;
-                }
             }
         }
 

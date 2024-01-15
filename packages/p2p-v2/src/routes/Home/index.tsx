@@ -1,10 +1,13 @@
 import React from 'react';
 import { useActiveAccount } from '@deriv/api';
 import { MyProfileContent } from '../../pages/my-profile/screens';
+import { MobileCloseHeader } from '../../components';
+import { useDevice } from '../../hooks';
 import './index.scss';
 
 const Home: React.FC<{ path: string }> = ({ path }) => {
     const { data: activeAccountData, isLoading } = useActiveAccount();
+    const { isMobile } = useDevice();
 
     // NOTE: Replace this with Loading component
     if (isLoading || !activeAccountData) return <h1>Loading...</h1>;
@@ -13,10 +16,13 @@ const Home: React.FC<{ path: string }> = ({ path }) => {
     if (activeAccountData?.currency !== 'USD') return <h1>P2P is only available for USD accounts.</h1>;
 
     return (
-        <div className='p2p-v2-home-style'>
-            {/* <div> Welcome to P2P Version 2 from {path} Page ;) </div> */}
-            <MyProfileContent />
-        </div>
+        <>
+            {isMobile && <MobileCloseHeader />}
+            <div className='p2p-v2-home-style'>
+                {/* <div> Welcome to P2P Version 2 from {path} Page ;) </div> */}
+                <MyProfileContent />
+            </div>
+        </>
     );
 };
 

@@ -16,6 +16,7 @@
         "@deriv/integration": "^1.0.0",
         "@deriv/react-joyride": "^2.6.2",
         "@deriv/utils": "^1.0.0",
+        "@deriv-com/ui": "^0.0.1-beta.3",
         "@sendbird/chat": "^4.9.7",
         "clsx": "^2.0.0",
         "i18next": "^22.4.6",
@@ -24,7 +25,8 @@
         "react-dom": "^17.0.2",
         "react-i18next": "^11.11.0",
         "react-router-dom": "^5.2.0",
-        "usehooks-ts": "^2.7.0"
+        "usehooks-ts": "^2.7.0",
+        "react-hook-form": "7.49.3"
     },
     "devDependencies": {
         "@testing-library/react": "^12.0.0",

@@ -85,9 +85,11 @@ class APIBase {
     }
 
     async subscribe() {
-        await doUntilDone(() => this.api.send({ balance: 1, subscribe: 1 }));
-        await doUntilDone(() => this.api.send({ transaction: 1, subscribe: 1 }));
-        await doUntilDone(() => this.api.send({ proposal_open_contract: 1, subscribe: 1 }));
+        await Promise.all([
+            doUntilDone(() => this.api.send({ balance: 1, subscribe: 1 })),
+            doUntilDone(() => this.api.send({ transaction: 1, subscribe: 1 })),
+            doUntilDone(() => this.api.send({ proposal_open_contract: 1, subscribe: 1 })),
+        ]);
     }
 
     getActiveSymbols = async () => {

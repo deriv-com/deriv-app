@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useAvailableMT5Accounts } from '@deriv/api';
+import { useAvailableMT5Accounts, useIsEuRegion } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Heading, useBreakpoint } from '@deriv/quill-design';
 import { Modal } from '../../../../components/Modal';
@@ -15,6 +15,7 @@ const JurisdictionModal = () => {
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
 
     const { show } = Provider.useModal();
+    const { isEU } = useIsEuRegion();
     const { getCFDState, setCfdState } = Provider.useCFDContext();
 
     const { isLoading } = useAvailableMT5Accounts();
@@ -22,7 +23,7 @@ const JurisdictionModal = () => {
 
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
 
-    const { title } = MarketTypeDetails[marketType];
+    const { title } = MarketTypeDetails(isEU)[marketType];
 
     const toggleDynamicLeverage = useCallback(() => {
         setIsDynamicLeverageVisible(!isDynamicLeverageVisible);
@@ -43,12 +44,13 @@ const JurisdictionModal = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedJurisdiction]);
 
+    // TODO: Add Loading Placeholder
     if (isLoading) return <Heading.H1>Loading...</Heading.H1>;
 
     return (
         <DynamicLeverageContext.Provider value={{ isDynamicLeverageVisible, toggleDynamicLeverage }}>
             <Modal className='bg-background-primary-container'>
-                {!isDynamicLeverageVisible ? <Modal.Header title={jurisdictionTitle} /> : undefined}
+                {!isDynamicLeverageVisible ? <Modal.Header title={jurisdictionTitle} /> : null}
                 <Modal.Content>
                     {isDynamicLeverageVisible && <DynamicLeverageTitle />}
                     <div className='relative [perspective:200rem]'>
@@ -75,7 +77,7 @@ const JurisdictionModal = () => {
                             Next
                         </Button>
                     </Modal.Footer>
-                ) : undefined}
+                ) : null}
             </Modal>
         </DynamicLeverageContext.Provider>
     );

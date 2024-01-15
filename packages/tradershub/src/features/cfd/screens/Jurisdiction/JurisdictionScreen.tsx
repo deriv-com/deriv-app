@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
 import { THooks } from '../../../../types';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
 import { Jurisdiction } from '../../constants';
@@ -22,7 +22,7 @@ const JurisdictionScreen = ({
     setSelectedJurisdiction,
 }: TJurisdictionScreenProps) => {
     const { getCFDState } = Provider.useCFDContext();
-    const { data: availableMT5Accounts, isLoading } = useAvailableMT5Accounts();
+    const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: mt5AccountsList } = useMT5AccountsList();
     const marketType = getCFDState('marketType');
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
@@ -44,8 +44,6 @@ const JurisdictionScreen = ({
     useEffect(() => {
         setIsCheckBoxChecked(false);
     }, [selectedJurisdiction, setIsCheckBoxChecked]);
-
-    if (isLoading) return <Text>Loading...</Text>;
 
     return (
         <div

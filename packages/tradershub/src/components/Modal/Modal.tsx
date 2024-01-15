@@ -15,7 +15,7 @@ type TModalChildren =
     | ReactElement<typeof ModalContent>
     | ReactElement<typeof ModalFooter>
     | ReactElement<typeof ModalHeader>
-    | undefined;
+    | null;
 
 /**
  * Type for the Modal component props

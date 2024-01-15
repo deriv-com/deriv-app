@@ -11,8 +11,14 @@
     flex-direction: column;
     margin-top: 2.4rem;
 
+    @include mobile {
+        width: 100%;
+    }
+
     & span {
         font-size: 14px;
+        line-height: 20px;
+        max-width: 80%;
     }
 
     &__item {

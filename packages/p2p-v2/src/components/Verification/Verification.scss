@@ -5,8 +5,14 @@
     padding-top: 6.8rem;
     width: 100%;
 
+    @include mobile {
+        padding: 2.4rem;
+    }
+
     &__text {
+        text-align: center;
         font-size: 16px;
+        line-height: 24px;
 
         &:nth-child(2) {
             margin-bottom: 1.6rem;

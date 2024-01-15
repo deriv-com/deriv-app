@@ -1,4 +1,5 @@
 import React from 'react';
+import { documentStatusCodes, identityStatusCodes } from '../../constants';
 import { usePoiPoaStatus } from '../../hooks';
 import SendEmailIcon from '../../public/ic-send-email.svg';
 import { Checklist } from '../Checklist';
@@ -31,7 +32,7 @@ const getPoaAction = (status: string | undefined) => {
 };
 
 const Verification = () => {
-    const { data } = usePoiPoaStatus();
+    const { data, isLoading } = usePoiPoaStatus();
     const { isP2PPoaRequired, poaStatus, poiStatus } = data || {};
 
     const redirectToVerification = (route: string) => {
@@ -49,26 +50,29 @@ const Verification = () => {
 
     const checklistItems = [
         {
-            is_disabled: poiStatus === 'pending',
+            isDisabled: poiStatus === identityStatusCodes.PENDING,
             onClick: () => {
-                if (poiStatus !== 'verified') redirectToVerification('/account/proof-of-identity');
+                if (poiStatus !== identityStatusCodes.VERIFIED) redirectToVerification('/account/proof-of-identity');
             },
-            status: poiStatus === 'verified' ? 'done' : 'action',
+            status: poiStatus === identityStatusCodes.VERIFIED ? 'done' : 'action',
             text: getPoiAction(poiStatus),
         },
         ...(isP2PPoaRequired
             ? [
                   {
-                      is_disabled: poaStatus === 'pending',
+                      isDisabled: poaStatus === documentStatusCodes.PENDING,
                       onClick: () => {
-                          if (poaStatus !== 'verified') redirectToVerification('/account/proof-of-address');
+                          if (poaStatus !== documentStatusCodes.VERIFIED)
+                              redirectToVerification('/account/proof-of-address');
                       },
-                      status: poiStatus === 'verified' ? 'done' : 'action',
+                      status: poiStatus === documentStatusCodes.VERIFIED ? 'done' : 'action',
                       text: getPoaAction(poaStatus),
                   },
               ]
             : []),
     ];
+
+    if (isLoading) <h1>Loading...</h1>;
 
     return (
         <div className='p2p-v2-verification'>

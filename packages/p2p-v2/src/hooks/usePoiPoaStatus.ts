@@ -1,11 +1,12 @@
 import { useMemo } from 'react';
 import { useGetAccountStatus } from '@deriv/api';
 
+/** A custom hook that returns the POA, POI status and if POA is required for P2P */
 const usePoiPoaStatus = () => {
     const { data, ...rest } = useGetAccountStatus();
 
-    // Add additional information to the account status response.
-    const modified_account_status = useMemo(() => {
+    // create new response for poi/poa statuses
+    const modifiedAccountStatus = useMemo(() => {
         if (!data?.authentication || !data?.p2p_poa_required) return;
 
         return {
@@ -16,8 +17,8 @@ const usePoiPoaStatus = () => {
     }, [data]);
 
     return {
-        /** The account status response. */
-        data: modified_account_status,
+        /** The POI & POA status. */
+        data: modifiedAccountStatus,
         ...rest,
     };
 };

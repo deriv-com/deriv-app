@@ -561,10 +561,12 @@ export const ContractType = (() => {
             }
 
             // For contracts with a duration of more that 24 hours must set the expiry_time to the market's close time on the expiry date.
-            if (!start_date && ServerTime.get().isBefore(buildMoment(expiry_date), 'day')) {
+            if (!start_date && ServerTime.get()?.isBefore(buildMoment(expiry_date), 'day')) {
                 end_time = market_close_time;
             } else {
-                const start_moment = start_date ? buildMoment(start_date, start_time) : ServerTime.get();
+                const start_moment = start_date
+                    ? buildMoment(start_date, start_time)
+                    : (ServerTime.get() as moment.Moment);
                 const end_moment = buildMoment(expiry_date, expiry_time);
 
                 end_time = end_moment.format('HH:mm');

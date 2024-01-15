@@ -3,6 +3,7 @@ import BaseStore from './BaseStore';
 const FLAGS = {
     wallet: false,
     next_wallet: false,
+    new_bot: false,
     sharkfin: false,
     p2p_v2: false,
     next_tradershub: false,

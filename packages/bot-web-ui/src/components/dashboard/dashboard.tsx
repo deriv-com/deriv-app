@@ -17,6 +17,7 @@ import { tour_list } from './dbot-tours/utils';
 import { ChartModal, DashboardComponent } from './dashboard-component';
 import StrategyNotification from './strategy-notification';
 import Tutorial from './tutorial-tab';
+import NewBot from './new-bot/new-bot';
 
 const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
@@ -39,7 +40,7 @@ const Dashboard = observer(() => {
     const init_render = React.useRef(true);
     const { ui } = useStore();
     const { url_hashed_values, is_mobile } = ui;
-    const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial'];
+    const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial', 'new_bot'];
 
     let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
@@ -170,6 +171,13 @@ const Dashboard = observer(() => {
                             <div className='tutorials-wrapper'>
                                 <Tutorial />
                             </div>
+                        </div>
+                        <div
+                            icon='IcDashboardComponentTab'
+                            label={<Localize i18n_default_text='New Bot' />}
+                            id='id-new-bot'
+                        >
+                            <NewBot />
                         </div>
                     </Tabs>
                 </div>

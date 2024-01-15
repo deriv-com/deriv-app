@@ -6,12 +6,11 @@ import { TContractType } from './types';
 
 type TItem = {
     contract_types: TContractType[];
-    handleInfoClick?: (clicked_item: TContractType) => void;
     handleSelect?: (clicked_item: TContractType, e: React.MouseEvent<HTMLDivElement>) => void;
     value?: string;
 };
 
-const Item = ({ contract_types, handleInfoClick, handleSelect, value }: TItem) => (
+const Item = ({ contract_types, handleSelect, value }: TItem) => (
     <React.Fragment>
         {contract_types.map(type => (
             <div
@@ -27,9 +26,6 @@ const Item = ({ contract_types, handleInfoClick, handleSelect, value }: TItem) =
                 <Text size='xs' className='contract-type-item__title'>
                     {type.text}
                 </Text>
-                <div id='info-icon' className='contract-type-item__icon' onClick={() => handleInfoClick?.(type)}>
-                    <Icon icon='IcInfoOutline' />
-                </div>
             </div>
         ))}
     </React.Fragment>

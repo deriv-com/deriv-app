@@ -307,7 +307,6 @@ const ContractTypeWidget = observer(
                         />
                     ) : (
                         <ContractType.List
-                            handleInfoClick={handleInfoClick}
                             handleSelect={handleSelect}
                             list={selected_category_contracts() as TContractCategory[]}
                             should_show_info_banner={should_show_info_banner}

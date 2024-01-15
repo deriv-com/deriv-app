@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
-import useMutation from '../../useMutation';
-import useInvalidateQuery from '../../useInvalidateQuery';
+import useMutation from '../../../../../useMutation';
+import useInvalidateQuery from '../../../../../useInvalidateQuery';
 
 type TPayload = Parameters<ReturnType<typeof useMutation<'p2p_advert_create'>>['mutate']>[0]['payload'];
 
@@ -19,7 +19,7 @@ type TPayload = Parameters<ReturnType<typeof useMutation<'p2p_advert_create'>>['
     });
  * 
 */
-const useP2PAdvertCreate = () => {
+const useAdvertCreate = () => {
     const invalidate = useInvalidateQuery();
     const {
         data,
@@ -58,4 +58,4 @@ const useP2PAdvertCreate = () => {
     };
 };
 
-export default useP2PAdvertCreate;
+export default useAdvertCreate;

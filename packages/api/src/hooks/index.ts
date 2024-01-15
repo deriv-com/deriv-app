@@ -23,7 +23,6 @@ export { default as useCashierFiatAddress } from './useCashierFiatAddress';
 export { default as useChatCreate } from './p2p/useChatCreate';
 export { default as useAdvertiserInfo } from './p2p/useAdvertiserInfo';
 export { default as useAdvertiserUpdate } from './p2p/useAdvertiserUpdate';
-export { default as useOrderInfo } from './p2p/useOrderInfo';
 
 export { default as useCountryConfig } from './useCountryConfig';
 export { default as useCreateNewRealAccount } from './useCreateNewRealAccount';

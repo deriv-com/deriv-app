@@ -1,5 +1,5 @@
 import React from 'react';
-import { InlineMessage } from '@deriv/components';
+import { InlineMessage, Text, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { Analytics } from '@deriv/analytics';
@@ -286,6 +286,17 @@ const ContractTypeWidget = observer(
                                 }
                             />
                         )
+                    }
+                    learn_more_banner={
+                        <button
+                            onClick={() => handleInfoClick(item || { value })}
+                            className='contract-type__learn-more'
+                        >
+                            <Text size={is_mobile ? 'xxs' : 'xs'} line_height={is_mobile ? 'l' : 'xl'}>
+                                <Localize i18n_default_text='Learn more about trade types' />
+                            </Text>
+                            <Icon icon='IcChevronRight' size={16} />
+                        </button>
                     }
                 >
                     {is_info_dialog_open ? (

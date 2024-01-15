@@ -8,6 +8,7 @@ type TContractTypeDialog = {
     is_info_dialog_open: boolean;
     onClose: React.ComponentProps<typeof MobileDialog>['onClose'];
     is_open: boolean;
+    learn_more_banner: React.ReactNode;
 };
 
 type TContractTypeDialogProps = Pick<
@@ -38,12 +39,14 @@ const ContractTypeDialog = ({
     onClose,
     onSearchBlur,
     show_loading,
+    learn_more_banner,
 }: React.PropsWithChildren<TContractTypeDialogProps>) => {
     const current_mobile_title = is_info_dialog_open ? (
-        <Header title={item?.text || ''} onClickGoBack={onBackButtonClick} text_size='xs' />
+        <Header title={localize('Tutorial')} onClickGoBack={onBackButtonClick} text_size='xs' />
     ) : (
         localize('Trade types')
     );
+
     return (
         <React.Fragment>
             <MobileWrapper>
@@ -57,6 +60,7 @@ const ContractTypeDialog = ({
                     visible={is_open}
                     onClose={onClose}
                     has_content_scroll={!is_info_dialog_open}
+                    learn_more_banner={is_info_dialog_open ? '' : learn_more_banner}
                 >
                     {children}
                 </MobileDialog>
@@ -74,6 +78,7 @@ const ContractTypeDialog = ({
                     onChangeInput={onChangeInput}
                     onCategoryClick={onCategoryClick}
                     show_loading={show_loading}
+                    learn_more_banner={learn_more_banner}
                 >
                     {children}
                 </ContractTypeMenu>

@@ -7,9 +7,10 @@
     margin: 0 auto;
 
     @include mobile {
-        height: calc(100% - 7.4rem);
+        height: calc(100% - 12.4rem);
+
         &--has-toggle-buttons {
-            height: calc(100% - 14.85rem);
+            height: calc(100% - 19.85rem);
         }
     }
 
@@ -17,6 +18,10 @@
         margin: 1.6rem 1.6rem 0;
         width: 52.8rem;
         height: 4rem;
+
+        @include mobile {
+            width: 32.8rem;
+        }
 
         .dc-dropdown__display {
             justify-content: flex-start;

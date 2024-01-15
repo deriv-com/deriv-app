@@ -22,6 +22,7 @@ type TDialog = {
     onChangeInput?: (e: string) => void;
     onSearchBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | null>;
     show_loading?: boolean;
+    learn_more_banner: React.ReactNode;
 };
 
 const Dialog = ({
@@ -37,6 +38,7 @@ const Dialog = ({
     onSearchBlur,
     selected,
     show_loading,
+    learn_more_banner,
 }: React.PropsWithChildren<TDialog>) => {
     const input_ref = React.useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(null);
     const [input_value, setInputValue] = React.useState('');
@@ -113,6 +115,7 @@ const Dialog = ({
                                         <div className='dc-vertical-tab__content-container'>
                                             {selected_category_contract && <NoResultsMessage text={input_value} />}
                                             {info_banner}
+                                            {learn_more_banner}
                                             {renderChildren()}
                                         </div>
                                     </div>

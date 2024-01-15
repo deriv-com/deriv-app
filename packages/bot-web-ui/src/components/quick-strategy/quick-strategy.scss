@@ -626,6 +626,13 @@
             width: 100%;
             margin-bottom: 2rem;
 
+            img {
+                height: 100%;
+                width: auto;
+                max-width: 100%;
+                object-fit: contain;
+            }
+
             @include desktop {
                 padding-left: 1rem;
             }

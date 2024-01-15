@@ -88,6 +88,12 @@
             &.formula {
                 width: unset;
                 margin: 1rem 0.5rem;
+                img {
+                    height: 100%;
+                    width: auto;
+                    max-width: 100%;
+                    object-fit: contain;
+                }
             }
         }
 

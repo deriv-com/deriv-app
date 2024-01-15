@@ -36,18 +36,9 @@ const StrategyDescription = observer(({ item, font_size }: TStrategyDescription)
         case 'media': {
             const class_names = classNames(`qs__description__image ${class_name}`);
             return (
-                <>
-                    {
-                        <div>
-                            <img
-                                className={class_names}
-                                src={is_dark_mode_on ? item.dark_src ?? item.src : item.src}
-                                alt={item.alt}
-                                style={item?.styles}
-                            />
-                        </div>
-                    }
-                </>
+                <div className={class_names} style={item?.styles}>
+                    <img src={is_dark_mode_on ? item.dark_src ?? item.src : item.src} alt={item.alt} />
+                </div>
             );
         }
         default:

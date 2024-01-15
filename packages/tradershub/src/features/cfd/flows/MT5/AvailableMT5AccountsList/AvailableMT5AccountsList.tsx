@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAuthorize } from '@deriv/api';
+import { useAuthorize, useIsEuRegion } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import {
     TradingAccountCard,
@@ -7,12 +7,14 @@ import {
     TradingAccountCardLightButton,
 } from '../../../../../components';
 import { THooks } from '../../../../../types';
-import { MarketTypeDetails } from '../../../constants';
+import { MarketType, MarketTypeDetails } from '../../../constants';
 import { JurisdictionModal } from '../../../modals/JurisdictionModal';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
-    const { description, title } = MarketTypeDetails[account.market_type || 'all'];
+    const { isEU } = useIsEuRegion();
+    const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
+    const description = marketTypeDetails?.description ?? '';
     const { data: activeAccount } = useAuthorize();
     const { setCfdState } = Provider.useCFDContext();
     const { show } = Provider.useModal();
@@ -22,12 +24,13 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
         !activeAccount?.is_virtual && show(<JurisdictionModal />); /* show MT5PasswordModal for demo */
     };
 
-    const LeadingIcon = () => <MT5AccountIcon account={account} />;
-
-    const TrailingButton = () => <TradingAccountCardLightButton onSubmit={trailingButtonClick} />;
+    const title = marketTypeDetails?.title ?? '';
 
     return (
-        <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
+        <TradingAccountCard
+            leading={() => <MT5AccountIcon account={account} />}
+            trailing={() => <TradingAccountCardLightButton onSubmit={trailingButtonClick} />}
+        >
             <TradingAccountCardContent title={title}>{description}</TradingAccountCardContent>
         </TradingAccountCard>
     );

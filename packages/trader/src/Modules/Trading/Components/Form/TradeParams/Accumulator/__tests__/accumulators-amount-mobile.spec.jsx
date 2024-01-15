@@ -4,10 +4,6 @@ import AccumulatorsAmountMobile from '../accumulators-amount-mobile';
 import { mockStore } from '@deriv/stores';
 import TraderProviders from '../../../../../../../trader-providers';
 
-const default_mocked_props = {
-    is_nativepicker: false,
-};
-
 const default_mock_store = {
     modules: {
         trade: {
@@ -25,16 +21,16 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<AccumulatorsAmountMobile />', () => {
-    const mockAccumulatorsAmountMobile = (mocked_store, mocked_props) => {
+    const mockAccumulatorsAmountMobile = mocked_store => {
         return (
             <TraderProviders store={mocked_store}>
-                <AccumulatorsAmountMobile {...mocked_props} />
+                <AccumulatorsAmountMobile />
             </TraderProviders>
         );
     };
     it('should render child <LabeledQuantityInputMobile /> component', () => {
         const mock_root_store = mockStore(default_mock_store);
-        render(mockAccumulatorsAmountMobile(mock_root_store, default_mocked_props));
+        render(mockAccumulatorsAmountMobile(mock_root_store));
 
         expect(screen.getByText(/Stake/i)).toBeInTheDocument();
     });
@@ -42,7 +38,7 @@ describe('<AccumulatorsAmountMobile />', () => {
         const new_mock_store = { ...default_mock_store };
         new_mock_store.client = { is_single_currency: true };
         const mock_root_store = mockStore(new_mock_store);
-        render(mockAccumulatorsAmountMobile(mock_root_store, default_mocked_props));
+        render(mockAccumulatorsAmountMobile(mock_root_store));
 
         expect(screen.getByText(/Stake/i)).toBeInTheDocument();
         expect(screen.getByText(/USD/i)).toBeInTheDocument();

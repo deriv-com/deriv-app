@@ -50,6 +50,31 @@ export const buildLoaders = (options: TBuildOptions): RuleSetRule[] => {
         test: (input: string) => options.isRelease && /\.js$/.test(input),
     };
 
+    const svgLoaders = [
+        {
+            loader: 'babel-loader',
+            options: {
+                cacheDirectory: true,
+                rootMode: 'upward',
+            },
+        },
+        {
+            loader: 'react-svg-loader',
+            options: {
+                jsx: true,
+                svgo: {
+                    floatPrecision: 3,
+                    plugins: [
+                        { removeTitle: false },
+                        { removeUselessStrokeAndFill: false },
+                        { removeUnknownsAndDefaults: false },
+                        { removeViewBox: false },
+                    ],
+                },
+            },
+        },
+    ];
+
     return [
         {
             // https://github.com/webpack/webpack/issues/11467
@@ -62,5 +87,22 @@ export const buildLoaders = (options: TBuildOptions): RuleSetRule[] => {
         babelLoader,
         sourceMapLoader,
         styleLoader,
+        {
+            exclude: /node_modules/,
+            generator: {
+                filename: 'cashier-v2/assets/[name].[contenthash][ext]',
+            },
+            include: /assets\//,
+            issuer: /\/packages\/cashier-v2\/.*(\/)?.*.scss/,
+            test: /\.svg$/,
+            type: 'asset/resource',
+        },
+        {
+            exclude: /node_modules/,
+            include: /assets\//,
+            issuer: /\/packages\/cashier-v2\/.*(\/)?.*.tsx/,
+            test: /\.svg$/,
+            use: svgLoaders,
+        },
     ];
 };

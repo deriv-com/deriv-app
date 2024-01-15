@@ -1,0 +1,27 @@
+.ReactModal__Overlay {
+    background-color: rgba(0, 0, 0, 0.72);
+    z-index: 9999;
+}
+
+.ReactModal__Content {
+    opacity: 0;
+    transition: all 350ms ease-in-out;
+
+    &--after-open {
+        opacity: 1;
+        bottom: auto;
+        left: 50%;
+        right: auto;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 0;
+        border: none;
+        padding: 0;
+        margin: 0;
+        background: none;
+    }
+
+    &--before-close {
+        opacity: 0;
+    }
+}

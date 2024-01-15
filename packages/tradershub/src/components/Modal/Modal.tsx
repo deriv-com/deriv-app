@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { PropsWithChildren, ReactElement } from 'react';
 import { qtMerge } from '@deriv/quill-design';
 import ModalContent from './ModalContent';
 import ModalFooter from './ModalFooter';
@@ -33,10 +33,9 @@ type TModal = {
  * @property {ReactNode} children - Children nodes
  * @property {string} [className] - Optional CSS class name
  */
-export type TModalComponents = {
-    children?: ReactNode;
+export type TModalComponents = PropsWithChildren<{
     className?: string;
-};
+}>;
 
 /**
  * Modal component

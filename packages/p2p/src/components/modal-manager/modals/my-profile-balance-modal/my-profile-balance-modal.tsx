@@ -15,11 +15,9 @@ const MyProfileBalanceModal = () => {
             title={localize('Available Deriv P2P Balance')}
         >
             <Modal.Body className='my-profile-balance-modal__body'>
-                <div className='my-profile-balance-modal__body-text'>
-                    <Text size='xs'>
-                        <Localize i18n_default_text='Your Deriv P2P balance only includes deposits that can’t be reversed.' />
-                    </Text>
-                </div>
+                <Text as='div' className='my-profile-balance-modal__body-text' size='xs'>
+                    <Localize i18n_default_text='Your Deriv P2P balance only includes deposits that can’t be reversed.' />
+                </Text>
                 <Text size='xs'>
                     <Localize i18n_default_text='Deposits via cards and the following payment methods aren’t included: Maestro, Diners Club, ZingPay, Skrill, Neteller, Ozow, and UPI QR.' />
                 </Text>

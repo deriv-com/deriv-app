@@ -5,10 +5,10 @@ import { Text, useBreakpoint } from '@deriv/quill-design';
 import ImportantIcon from '../../../../public/images/ic-important.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { AppToContentMapper, MarketTypeDetails, PlatformDetails } from '../../constants';
-import { MT5TradeDetailsItem } from './MT5TradeDetailsItem';
-import { MT5TradeLink } from './MT5TradeLink';
+import { TradeDetailsItem } from './TradeDetailsItem';
+import { TradeLink } from './TradeLink';
 
-type MT5TradeScreenProps = {
+type TradeScreenProps = {
     account?: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
 };
 
@@ -20,7 +20,7 @@ const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
     mt5: 'Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.',
 };
 
-const MT5TradeScreen = ({ account }: MT5TradeScreenProps) => {
+const TradeScreen = ({ account }: TradeScreenProps) => {
     const { isMobile } = useBreakpoint();
     const { isEU } = useIsEuRegion();
     const { getCFDState } = Provider.useCFDContext();
@@ -88,26 +88,26 @@ const MT5TradeScreen = ({ account }: MT5TradeScreenProps) => {
                 <div className='flex flex-col gap-100'>
                     {platform === mt5Platform && (
                         <Fragment>
-                            <MT5TradeDetailsItem label='Broker' value='Deriv Holdings (Guernsey) Ltd' />
-                            <MT5TradeDetailsItem
+                            <TradeDetailsItem label='Broker' value='Deriv Holdings (Guernsey) Ltd' />
+                            <TradeDetailsItem
                                 label='Server'
                                 value={(details as THooks.MT5AccountsList)?.server_info?.environment ?? 'Deriv-Server'}
                             />
-                            <MT5TradeDetailsItem label='Login ID' value={loginId ?? '12345678'} />
-                            <MT5TradeDetailsItem label='Password' value='********' variant='password' />
+                            <TradeDetailsItem label='Login ID' value={loginId ?? '12345678'} />
+                            <TradeDetailsItem label='Password' value='********' variant='password' />
                         </Fragment>
                     )}
                     {platform === dxtradePlatform && (
                         <Fragment>
-                            <MT5TradeDetailsItem
+                            <TradeDetailsItem
                                 label='Username'
                                 value={(details as THooks.DxtradeAccountsList)?.login ?? '12345678'}
                             />
-                            <MT5TradeDetailsItem label='Password' value='********' variant='password' />
+                            <TradeDetailsItem label='Password' value='********' variant='password' />
                         </Fragment>
                     )}
                     {platform === ctraderPlatform && (
-                        <MT5TradeDetailsItem
+                        <TradeDetailsItem
                             value=' Use your Deriv account email and password to login into the cTrader platform.'
                             variant='info'
                         />
@@ -123,27 +123,27 @@ const MT5TradeScreen = ({ account }: MT5TradeScreenProps) => {
             <div className='w-full'>
                 {platform === mt5Platform && (
                     <Fragment>
-                        <MT5TradeLink
+                        <TradeLink
                             app='web'
                             platform={mt5Platform}
                             webtraderUrl={(details as THooks.MT5AccountsList)?.webtrader_url}
                         />
                         {!isMobile && (
                             <Fragment>
-                                <MT5TradeLink app='windows' platform={mt5Platform} />
-                                <MT5TradeLink app='macos' platform={mt5Platform} />
-                                <MT5TradeLink app='linux' platform={mt5Platform} />
+                                <TradeLink app='windows' platform={mt5Platform} />
+                                <TradeLink app='macos' platform={mt5Platform} />
+                                <TradeLink app='linux' platform={mt5Platform} />
                             </Fragment>
                         )}
                     </Fragment>
                 )}
                 {platform === dxtradePlatform && (
-                    <MT5TradeLink isDemo={activeAccount?.is_virtual} platform={dxtradePlatform} />
+                    <TradeLink isDemo={activeAccount?.is_virtual} platform={dxtradePlatform} />
                 )}
                 {platform === ctraderPlatform && (
                     <Fragment>
-                        <MT5TradeLink platform={ctraderPlatform} />
-                        <MT5TradeLink
+                        <TradeLink platform={ctraderPlatform} />
+                        <TradeLink
                             app={ctraderPlatform as keyof typeof AppToContentMapper}
                             platform={ctraderPlatform}
                         />
@@ -154,4 +154,4 @@ const MT5TradeScreen = ({ account }: MT5TradeScreenProps) => {
     );
 };
 
-export default MT5TradeScreen;
+export default TradeScreen;

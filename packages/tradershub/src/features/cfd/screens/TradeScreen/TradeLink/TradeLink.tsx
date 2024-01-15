@@ -1,18 +1,18 @@
-import React, { FC, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { useActiveTradingAccount, useCtraderServiceToken } from '@deriv/api';
 import { Button, Text } from '@deriv/quill-design';
 import { getPlatformFromUrl } from '../../../../../helpers/urls';
 import { THooks, TPlatforms } from '../../../../../types';
 import { AppToContentMapper, PlatformDetails, PlatformToLabelIconMapper, PlatformUrls } from '../../../constants';
 
-type TMT5TradeLinkProps = {
+type TTradeLinkProps = {
     app?: keyof typeof AppToContentMapper;
     isDemo?: boolean;
     platform?: TPlatforms.All;
     webtraderUrl?: THooks.MT5AccountsList['webtrader_url'];
 };
 
-const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', platform, webtraderUrl = '' }) => {
+const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkProps) => {
     const content = AppToContentMapper[app];
     const { data: ctraderToken } = useCtraderServiceToken();
 
@@ -83,4 +83,4 @@ const MT5TradeLink: FC<TMT5TradeLinkProps> = ({ app = 'linux', platform, webtrad
     );
 };
 
-export default MT5TradeLink;
+export default TradeLink;

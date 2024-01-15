@@ -1,5 +1,5 @@
 import React, { InputHTMLAttributes, memo } from 'react';
-import Text, { TextProps } from '../Text/Text';
+import { Text, TextProps } from '@deriv-com/ui/dist/components/Text';
 
 export type HelperMessageProps = {
     inputValue?: InputHTMLAttributes<HTMLInputElement>['value'];

@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { useCombobox } from 'downshift';
 import { TGenericSizes } from 'types';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import ArrowIcon from '../../public/pointed-down-arrow-icon.svg';
 import reactNodeToString from '../../utils/react-node-to-string';
-import { Text } from '../Text';
 import TextField, { TextFieldProps } from '../TextField/TextField';
 import './dropdown.scss';
 
@@ -93,7 +93,7 @@ const Dropdown: React.FC<TProps> = ({
 
     return (
         <div
-            className={classNames('p2p-v2-dropdown', {
+            className={clsx('p2p-v2-dropdown', {
                 'p2p-v2-dropdown--disabled': disabled,
             })}
             {...getToggleButtonProps()}
@@ -113,7 +113,7 @@ const Dropdown: React.FC<TProps> = ({
                     renderLeftIcon={icon ? () => icon : undefined}
                     renderRightIcon={() => (
                         <button
-                            className={classNames('p2p-v2-dropdown__button', {
+                            className={clsx('p2p-v2-dropdown__button', {
                                 'p2p-v2-dropdown__button--active': isOpen,
                             })}
                         >
@@ -129,7 +129,7 @@ const Dropdown: React.FC<TProps> = ({
                 {isOpen &&
                     items.map((item, index) => (
                         <li
-                            className={classNames('p2p-v2-dropdown__item', {
+                            className={clsx('p2p-v2-dropdown__item', {
                                 'p2p-v2-dropdown__item--active': value === item.value,
                             })}
                             key={item.value}

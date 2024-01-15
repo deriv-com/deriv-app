@@ -1,17 +1,17 @@
-import React, { FC, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useHover } from 'usehooks-ts';
 import { Button, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
 import { Clipboard, Tooltip } from '../../../../../components';
 import EditIcon from '../../../../../public/images/ic-edit.svg';
 
-type TMT5TradeDetailsItemProps = {
+type TTradeDetailsItemProps = {
     className?: string;
     label?: string;
     value: string;
     variant?: 'clipboard' | 'info' | 'password';
 };
 
-const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ className, label, value, variant = 'clipboard' }) => {
+const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TTradeDetailsItemProps) => {
     const { isDesktop } = useBreakpoint();
     const hoverRef = useRef(null);
     const isHovered = useHover(hoverRef);
@@ -44,4 +44,4 @@ const MT5TradeDetailsItem: FC<TMT5TradeDetailsItemProps> = ({ className, label, 
     );
 };
 
-export default MT5TradeDetailsItem;
+export default TradeDetailsItem;

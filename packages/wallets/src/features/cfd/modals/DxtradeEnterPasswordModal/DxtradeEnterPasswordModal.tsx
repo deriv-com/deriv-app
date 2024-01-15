@@ -15,7 +15,7 @@ const DxtradeEnterPasswordModal = () => {
     const { isMobile } = useDevice();
     const [password, setPassword] = useState('');
     const { data: getAccountStatus, isSuccess: accountStatusSuccess } = useAccountStatus();
-    const { error, isLoading, isSuccess, mutate, status } = useCreateOtherCFDAccount();
+    const { error, isLoading, isSuccess, mutateAsync, status } = useCreateOtherCFDAccount();
     const { data: dxtradeAccount, isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { hide, show } = useModal();
@@ -24,16 +24,16 @@ const DxtradeEnterPasswordModal = () => {
 
     const isDxtradePasswordNotSet = getAccountStatus?.is_dxtrade_password_not_set;
 
-    const onSubmit = useCallback(() => {
-        mutate({
+    const onSubmit = useCallback(async () => {
+        await mutateAsync({
             payload: {
                 account_type: accountType,
                 market_type: 'all',
                 password,
                 platform: dxtradePlatform,
             },
-        });
-    }, [mutate, accountType, password, dxtradePlatform]);
+        }).catch(() => setPassword(''));
+    }, [mutateAsync, accountType, password, dxtradePlatform]);
 
     const successDescription = useMemo(() => {
         return accountType === 'demo'
@@ -49,15 +49,11 @@ const DxtradeEnterPasswordModal = () => {
         if (isSuccess) {
             if (accountType === 'demo') {
                 return (
-                    <WalletButton
-                        isFullWidth
-                        onClick={() => {
-                            hide();
-                        }}
-                        size='lg'
-                    >
-                        OK
-                    </WalletButton>
+                    <div className='wallets-success-btn'>
+                        <WalletButton isFullWidth onClick={hide} size='lg'>
+                            OK
+                        </WalletButton>
+                    </div>
                 );
             }
             return (

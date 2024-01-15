@@ -85,5 +85,6 @@ export const priority_toast_messages = [
     'poa_failed',
     'svg_poi_expired',
     'mt5_notification',
+    'p2p_advertiser_nickname_added',
     ...maintenance_notifications,
 ];

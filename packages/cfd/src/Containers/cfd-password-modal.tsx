@@ -16,7 +16,6 @@ import {
 import {
     getAuthenticationStatusInfo,
     getCFDPlatformLabel,
-    getMT5AccountTitle,
     getErrorMessages,
     getLegalEntityName,
     isDesktop,
@@ -30,6 +29,7 @@ import { Localize, localize } from '@deriv/translations';
 
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 import SuccessDialog from '../Components/success-dialog.jsx';
+import MigrationSuccessModal from '../Components/migration-success-modal';
 import {
     getDxCompanies,
     getFormattedJurisdictionCode,
@@ -410,7 +410,7 @@ const CFDPasswordForm = observer(
                 return localize('Try later');
             }
             if (is_mt5_migration_modal_enabled) {
-                return localize('Move account(s)');
+                return localize('Upgrade');
             }
 
             return localize('Add account');
@@ -561,6 +561,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         account_status,
         landing_companies,
         is_logged_in,
+        is_populating_mt5_account_list,
         is_dxtrade_allowed,
         mt5_login_list,
         updateAccountStatus,
@@ -584,7 +585,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         submitMt5Password,
         submitCFDPassword,
         new_account_response,
-        migrated_mt5_accounts,
         setMigratedMT5Accounts,
     } = useCfdStore();
 
@@ -628,6 +628,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
     React.useEffect(() => {
         if (is_logged_in) {
+            updateMT5Status();
             updateAccountStatus();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -733,7 +734,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
     const should_show_success =
         should_show_success_modals && is_cfd_password_modal_enabled && !is_mt5_migration_modal_enabled;
 
-    const should_show_migration_success = should_show_success_modals && is_mt5_migration_modal_enabled;
+    const should_show_migration_success =
+        should_show_success_modals && is_mt5_migration_modal_enabled && !is_populating_mt5_account_list;
 
     const should_show_sent_email_modal = is_sent_email_modal_open && is_password_modal_exited;
 
@@ -855,41 +857,6 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         );
     };
 
-    const getMigrationSubmitText = () => {
-        const list = migrated_mt5_accounts.map(account => {
-            const to_account = account?.to_account ?? {};
-            const [to_account_type] = Object.keys(to_account);
-            const [to_jurisdiction] = Object.values(to_account);
-
-            return getMT5AccountTitle({ account_type: to_account_type, jurisdiction: to_jurisdiction });
-        });
-        const text_size = is_mobile ? 'xxs' : 'xs';
-
-        return (
-            <div className='success-migrated--text-wrapper'>
-                <Text size={text_size} as='p' align='center'>
-                    <Localize
-                        i18n_default_text="We've upgraded your MT5 account(s) by moving them to the {{eligible_account_migrate}} jurisdiction."
-                        values={{
-                            eligible_account_migrate: getFormattedJurisdictionCode(
-                                migrated_mt5_accounts.map(account => Object.values(account?.to_account ?? {})?.[0])?.[0]
-                            ),
-                        }}
-                    />
-                </Text>
-                <Text size={text_size} as='p' align='center'>
-                    <Localize
-                        i18n_default_text='Use your <0>{{migrated_accounts}}</0> new login ID and MT5 password to start trading.'
-                        values={{
-                            migrated_accounts: list.join(localize(' and ')), // [MT5 Derived Vanuatu and MT5 Financial Vanuatu]
-                        }}
-                        components={[<strong key={0} />]}
-                    />
-                </Text>
-            </div>
-        );
-    };
-
     const cfd_password_form = (
         <CFDPasswordForm
             is_bvi={is_bvi}
@@ -986,21 +953,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                 width={is_mobile ? '32.8rem' : 'auto'}
                 is_medium_button={is_mobile}
             />
-            <SuccessDialog
-                is_open={should_show_migration_success}
-                toggleModal={closeModal}
-                onCancel={closeModal}
-                onSubmit={closeModal}
-                classNameMessage='cfd-password-modal__message'
-                message={getMigrationSubmitText()}
-                icon={<Icon icon='IcMt5MigrationSuccess' size={128} />}
-                icon_size='xlarge'
-                text_submit={localize('OK')}
-                has_cancel={false}
-                has_close_icon={false}
-                width={is_mobile ? '32.8rem' : 'auto'}
-                is_medium_button={is_mobile}
-            />
+            <MigrationSuccessModal is_open={should_show_migration_success} closeModal={closeModal} />
             <SentEmailModal
                 is_open={should_show_sent_email_modal}
                 identifier_title='trading_password'

@@ -154,10 +154,6 @@
         overflow: auto;
         padding-bottom: 18px;
 
-        @include mobile {
-            height: calc(var(--vh) - 280px);
-        }
-
         &__nosearch {
             @include position-center;
             width: 100%;
@@ -168,7 +164,6 @@
 
             @include mobile {
                 width: 100%;
-                height: calc(100vh - 16rem);
             }
         }
         .dc-accordion {
@@ -365,7 +360,8 @@
                             margin-top: -7.2rem;
                         }
                         .tutorials-guide:nth-child(1),
-                        .tutorials-faq:nth-child(2) {
+                        .tutorials-faq:nth-child(2),
+                        .tutorials-qs-guide:nth-child(3) {
                             background-color: var(--sidebar-tab);
                             border-radius: 0.4rem 0.4rem 0 0;
                             transition: all 0.6s;
@@ -381,7 +377,7 @@
                         &:first-child {
                             margin-top: 7.5rem;
                         }
-                        &:nth-child(4) {
+                        &:nth-last-child(2) {
                             display: none;
                         }
                     }
@@ -390,9 +386,6 @@
                         display: flex;
                         justify-content: flex-start;
                         padding: 0 1.6rem;
-                        &:nth-child(3) {
-                            display: none;
-                        }
                     }
                 }
 
@@ -464,6 +457,7 @@
 
     &__guide,
     &__faq,
+    &__qs-guide,
     &__search {
         @include mobile {
             height: calc(var(--vh) - 280px);

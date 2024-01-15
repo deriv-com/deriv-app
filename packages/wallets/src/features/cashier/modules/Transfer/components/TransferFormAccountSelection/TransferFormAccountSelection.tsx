@@ -48,9 +48,11 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
     return (
         <div className='wallets-transfer-form-account-selection'>
             <div className='wallets-transfer-form-account-selection__header'>
-                <WalletText size='md' weight='bold'>
-                    {label}
-                </WalletText>
+                <div className='wallets-transfer-form-account-selection__label'>
+                    <WalletText size='md' weight='bold'>
+                        {label}
+                    </WalletText>
+                </div>
                 <button className='wallets-transfer-form-account-selection__close-button' onClick={() => modal.hide()}>
                     <CloseIcon />
                 </button>
@@ -79,21 +81,23 @@ const TransferFormAccountSelection: React.FC<TProps> = ({
                                 </WalletText>
                                 {isMobile && <TitleLine />}
                             </div>
-                            {accounts.map(account => (
-                                <button
-                                    className={classNames('wallets-transfer-form-account-selection__account', {
-                                        'wallets-transfer-form-account-selection__account--selected':
-                                            account?.loginid === selectedAccount?.loginid,
-                                    })}
-                                    key={`account-selection-${account?.loginid}`}
-                                    onClick={() => {
-                                        onSelect(account);
-                                        modal.hide();
-                                    }}
-                                >
-                                    <TransferFormAccountCard account={account} activeWallet={activeWallet} />
-                                </button>
-                            ))}
+                            <div className='wallets-transfer-form-account-selection__grouped-accounts'>
+                                {accounts.map(account => (
+                                    <button
+                                        className={classNames('wallets-transfer-form-account-selection__account', {
+                                            'wallets-transfer-form-account-selection__account--selected':
+                                                account?.loginid === selectedAccount?.loginid,
+                                        })}
+                                        key={`account-selection-${account?.loginid}`}
+                                        onClick={() => {
+                                            onSelect(account);
+                                            modal.hide();
+                                        }}
+                                    >
+                                        <TransferFormAccountCard account={account} activeWallet={activeWallet} />
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                     );
                 })}

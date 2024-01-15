@@ -1,22 +1,23 @@
 import React from 'react';
-
 import { Dialog, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-
 import { DBOT_TABS } from 'Constants/bot-contents';
-
 import { useDBotStore } from '../../../../stores/useDBotStore';
-import { bot_builder_tour_header, onboarding_tour_header, tourDialogAction, tourDialogInfo } from '../config';
+import {
+    getBotBuilderTourHeader,
+    getTourDialogAction,
+    getTourDialogInfo,
+    onboarding_tour_header,
+} from '../tour-content';
 import { setTourSettings, tour_list } from '../utils';
 
 const TourStartDialog = observer(() => {
+    const { ui } = useStore();
     const { dashboard } = useDBotStore();
     const { active_tab, is_tour_dialog_visible, setTourDialogVisibility, setActiveTour, setShowMobileTourDialog } =
         dashboard;
-
-    const is_mobile = isMobile();
+    const { is_mobile } = ui;
     const tour_token = active_tab === 0 ? 'onboard_tour_token' : 'bot_builder_token';
     const toggleTour = () => {
         if (is_mobile) setShowMobileTourDialog(false);
@@ -26,6 +27,8 @@ const TourStartDialog = observer(() => {
     };
 
     const onboard_tour = active_tab === DBOT_TABS.DASHBOARD;
+    const tour_dialog_info = getTourDialogInfo(is_mobile);
+    const tour_dialog_action = getTourDialogAction(is_mobile);
 
     const getTourContent = () => {
         return (
@@ -38,8 +41,8 @@ const TourStartDialog = observer(() => {
                     />
                 ) : (
                     <>
-                        <div className='dc-dialog__content__description__text'>{tourDialogInfo}</div>
-                        <div className='dc-dialog__content__description__text'>{tourDialogAction}</div>
+                        <div className='dc-dialog__content__description__text'>{tour_dialog_info}</div>
+                        <div className='dc-dialog__content__description__text'>{tour_dialog_action}</div>
                         <div className='dc-dialog__content__description__text'>
                             <Localize
                                 key={0}
@@ -62,7 +65,7 @@ const TourStartDialog = observer(() => {
     const header_text_size = is_mobile ? 'xs' : 's';
     const content_text_size = is_mobile ? 'xxs' : 'xs';
 
-    const tour_headers = active_tab === 0 ? onboarding_tour_header : bot_builder_tour_header;
+    const tour_headers = active_tab === 0 ? onboarding_tour_header : getBotBuilderTourHeader(is_mobile);
     return (
         <div>
             <Dialog

@@ -3,11 +3,18 @@
     justify-content: center;
     align-items: center;
     gap: 0.2rem;
-    background-image: linear-gradient(#00a8af, #04cfd8);
     width: fit-content;
     padding: 0.2rem 0.6rem;
     border-radius: 3.4rem;
     color: #ffffff;
+
+    &--success {
+        background-image: linear-gradient(#00a8af, #04cfd8);
+    }
+
+    &--warning {
+        background-image: linear-gradient(#f7931a, #ffc71b);
+    }
 
     &__label {
         font-size: 1rem;

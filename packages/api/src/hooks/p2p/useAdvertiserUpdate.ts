@@ -16,7 +16,7 @@ type TPayload = NonNullable<
     });
  *
 */
-const useUpdateAdvertiser = () => {
+const useAdvertiserUpdate = () => {
     const invalidate = useInvalidateQuery();
     const {
         data,
@@ -63,4 +63,4 @@ const useUpdateAdvertiser = () => {
     };
 };
 
-export default useUpdateAdvertiser;
+export default useAdvertiserUpdate;

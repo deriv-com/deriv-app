@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useAdvertiserInfo } from '@deriv/api';
+import { useAdvertiserInfo, useAuthentication, useSettings } from '@deriv/api';
 import { daysSince } from '../utils';
 
 /**
@@ -9,9 +9,25 @@ import { daysSince } from '../utils';
  */
 const useAdvertiserStats = (advertiserId?: string) => {
     const { data, isSuccess, ...rest } = useAdvertiserInfo(advertiserId);
+    const { data: settings, isSuccess: isSuccessSettings } = useSettings();
+    const { data: authenticationStatus, isSuccess: isSuccessAuthenticationStatus } = useAuthentication();
+
+    // is_poa_verified={
+    //     general_store.is_advertiser
+    //         ? !!full_verification
+    //         : general_store.poa_status === document_status_codes.VERIFIED
+    // }
+    // is_poi_verified={
+    //     general_store.is_advertiser
+    //         ? !!basic_verification
+    //         : general_store.poi_status === identity_status_codes.VERIFIED
+    // }
+    // trade_count={Number(buy_orders_count) + Number(sell_orders_count)}
 
     const transformedData = useMemo(() => {
-        if (!isSuccess) return;
+        if (!isSuccess && !isSuccessSettings && !isSuccessAuthenticationStatus) return;
+
+        const isAdvertiser = data?.is_approved;
 
         return {
             ...data,
@@ -36,7 +52,18 @@ const useAdvertiserStats = (advertiserId?: string) => {
             dailyAvailableSellLimit: Number(data?.daily_sell_limit) - Number(data?.daily_sell) || 0,
 
             /** The number of days since the user has became an advertiser */
-            daysSinceJoined: daysSince(data?.created_time ? data.created_time.toISOString().split('T')[0] : ''),
+            daysSinceJoined: daysSince(
+                data?.created_time ? new Date(data.created_time * 1000).toISOString().split('T')[0] : ''
+            ),
+
+            /** The advertiser's full name */
+            fullName: (settings?.first_name || '') + (settings?.last_name || ''),
+
+            isAddressVerified: isAdvertiser ? data?.full_verification : authenticationStatus?.document?.status,
+
+            isAdvertiser,
+
+            isIdentityVerified: isAdvertiser ? data?.full_verification : authenticationStatus?.identity?.status,
 
             /** The percentage of completed orders out of total orders as a seller within the past 30 days. */
             sellCompletionRate: data?.sell_completion_rate || 0,
@@ -59,7 +86,7 @@ const useAdvertiserStats = (advertiserId?: string) => {
             /** The total trade volume since registration */
             tradeVolumeLifetime: Number(data?.total_turnover) || 0,
         };
-    }, [data, isSuccess]);
+    }, [data, settings, isSuccess, isSuccessSettings, isSuccessAuthenticationStatus]);
 
     return {
         data: transformedData,

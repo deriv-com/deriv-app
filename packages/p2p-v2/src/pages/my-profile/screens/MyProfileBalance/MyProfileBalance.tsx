@@ -12,9 +12,10 @@ const MyProfileBalance = () => {
     return (
         <div className='p2p-v2-my-profile-balance'>
             <div className='p2p-v2-my-profile-balance__amount'>
-                <h1>
-                    Available Deriv P2P Balance <InfoOutlineIcon />
-                </h1>
+                <div>
+                    <h1>Available Deriv P2P Balance</h1>
+                    <InfoOutlineIcon />
+                </div>
                 <span>{numberToCurrencyText(advertiserInfo.balance_available || 0)} USD</span>
             </div>
             <div className='p2p-v2-my-profile-balance__item'>

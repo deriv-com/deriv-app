@@ -9,4 +9,9 @@
     font-size: 2rem;
     color: #ffffff;
     line-height: 3rem;
+
+    @include mobile {
+        width: 3.2rem;
+        height: 3.2rem;
+    }
 }

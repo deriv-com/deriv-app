@@ -3,14 +3,26 @@
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 2.4rem;
 
+    @include mobile {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, 1fr);
+    }
+
     &__amount {
         display: flex;
         flex-direction: column;
+        gap: 1rem;
 
-        & h1 {
-            font-size: 1.4rem;
-            color: #999999;
-            line-height: 2rem;
+        & div {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+
+            & h1 {
+                font-size: 1.4rem;
+                color: #999999;
+                line-height: 2rem;
+            }
         }
 
         & span {

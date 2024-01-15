@@ -69,8 +69,8 @@ class APIBase {
             this.token = token;
             this.account_id = account_id;
             this.api.authorize(this.token);
-            const { authorize } = await this.api.expectResponse('authorize');
             try {
+                const { authorize } = await this.api.expectResponse('authorize');
                 if (this.has_activeSymbols) {
                     this.toggleRunButton(false);
                 } else {

@@ -119,14 +119,14 @@ $HEIGHT: calc(100vh - 34em);
             width: 1.6rem;
 
             &--won {
-                background-color: $color-green-1;
-                border-color: $color-green-1;
+                background-color: var(--text-profit-success);
+                border-color: var(--text-profit-success);
                 color: $color-white;
             }
 
             &--lost {
-                background-color: $color-red-1;
-                border-color: $color-red-1;
+                background-color: var(--text-loss-danger);
+                border-color: var(--text-loss-danger);
                 color: $color-white;
             }
         }

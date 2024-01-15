@@ -26,8 +26,8 @@ const RegulationSwitcherDesktop = () => {
     return (
         <div className='flex items-center gap-400'>
             <div className='flex items-center gap-400'>
-                <Text size='sm'>Regulation</Text>
-                <LabelPairedCircleInfoMdRegularIcon />
+                <Text size='sm'>Regulation:</Text>
+                <LabelPairedCircleInfoMdRegularIcon className='cursor-pointer' />
             </div>
             <div className='flex bg-system-light-secondary-background rounded-400 p-200 gap-200 w-[200px] h-2000'>
                 {buttons.map(button => (

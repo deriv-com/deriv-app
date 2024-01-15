@@ -1,5 +1,11 @@
 import React, { useEffect, useMemo } from 'react';
-import { useActiveTradingAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
+import {
+    useActiveTradingAccount,
+    useAuthorize,
+    useInvalidateQuery,
+    useIsEuRegion,
+    useSortedMT5Accounts,
+} from '@deriv/api';
 import { TradingAppCardLoader } from '../../../../components/Loaders/TradingAppCardLoader';
 import { THooks } from '../../../../types';
 import { PlatformDetails } from '../../constants';
@@ -16,6 +22,7 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
     const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts();
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const invalidate = useInvalidateQuery();
+    const { isEU } = useIsEuRegion();
 
     const hasMT5Account = useMemo(() => {
         return data?.some(account => account.is_added);
@@ -32,6 +39,9 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
         return () => onMT5PlatformListLoaded?.(false);
     }, [isFetchedAfterMount, onMT5PlatformListLoaded]);
 
+    const showGetMoreMT5Accounts =
+        hasMT5Account && !activeTradingAccount?.is_virtual && !areAllAccountsCreated && !isEU && isFetchedAfterMount;
+
     return (
         <CFDPlatformLayout title={PlatformDetails.mt5.title}>
             {!isFetchedAfterMount && <TradingAppCardLoader />}
@@ -47,7 +57,7 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
                         />
                     );
                 })}
-            {hasMT5Account && !activeTradingAccount?.is_virtual && !areAllAccountsCreated && <GetMoreMT5Accounts />}
+            {showGetMoreMT5Accounts && <GetMoreMT5Accounts />}
         </CFDPlatformLayout>
     );
 };

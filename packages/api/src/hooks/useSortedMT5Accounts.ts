@@ -12,9 +12,9 @@ const useSortedMT5Accounts = () => {
     const modified_data = useMemo(() => {
         if (!all_available_mt5_accounts || !mt5_accounts) return;
 
-        const filtered_available_accounts = isEU
-            ? all_available_mt5_accounts.filter(account => account.shortcode === 'maltainvest')
-            : all_available_mt5_accounts;
+        const filtered_available_accounts = all_available_mt5_accounts.filter(account =>
+            isEU ? account.shortcode === 'maltainvest' : account.shortcode !== 'maltainvest'
+        );
 
         return filtered_available_accounts?.map(available_account => {
             const created_account = mt5_accounts?.find(account => {
@@ -43,7 +43,14 @@ const useSortedMT5Accounts = () => {
     const filtered_data = useMemo(() => {
         if (!modified_data) return;
 
-        const added_accounts = modified_data.filter(account => account.is_added);
+        // const added_accounts = modified_data.filter(account => account.is_added);
+        const added_accounts = modified_data.filter(
+            account =>
+                account.is_added &&
+                (isEU
+                    ? account.landing_company_short === 'maltainvest'
+                    : account.landing_company_short !== 'maltainvest')
+        );
         const non_added_accounts = modified_data.filter(account => !account.is_added);
 
         const filtered_non_added_accounts = non_added_accounts.reduce((acc, account) => {
@@ -55,7 +62,7 @@ const useSortedMT5Accounts = () => {
         }, [] as typeof non_added_accounts);
 
         return [...added_accounts, ...filtered_non_added_accounts];
-    }, [modified_data]);
+    }, [isEU, modified_data]);
 
     // Sort the data by market_type to make sure the order is 'synthetic', 'financial', 'all'
     const sorted_data = useMemo(() => {

@@ -49,6 +49,7 @@ module.exports = {
                     orange: '#ff8c00',
                     purple: '#db69e1',
                     teal: '#00a8af',
+                    transparent: 'transparent',
                 },
                 status: {
                     dark: {

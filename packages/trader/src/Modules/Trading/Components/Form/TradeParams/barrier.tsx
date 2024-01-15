@@ -183,7 +183,7 @@ const Barrier = observer(({ is_minimized, is_absolute_only }: TBarrier) => {
                         'barrier__fields-barriers-input',
                         `barrier__fields-barriers-${input_class}-input`
                     )}
-                    format={format}
+                    format={format as React.ComponentProps<typeof LabeledQuantityInputMobile>['format']}
                     onChange={onChange}
                     onClick={onClick}
                     is_float
@@ -207,7 +207,7 @@ const Barrier = observer(({ is_minimized, is_absolute_only }: TBarrier) => {
                             'barrier__fields-barriers-input',
                             `barrier__fields-barriers-${input_class}-input`
                         )}
-                        format={format}
+                        format={format as React.ComponentProps<typeof LabeledQuantityInputMobile>['format']}
                         onChange={onChange}
                         onClick={onClick}
                         is_float

@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api';
+import { useActiveTradingAccount, useIsEuRegion, useJurisdictionStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
@@ -11,6 +11,7 @@ import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
     const { data: activeAccount } = useActiveTradingAccount();
+    const { isEU } = useIsEuRegion();
     const { show } = Provider.useModal();
     const history = useHistory();
     const { getVerificationStatus } = useJurisdictionStatus();
@@ -18,7 +19,10 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
         () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
         [account.landing_company_short, account.status, getVerificationStatus]
     );
-    const { title } = MarketTypeDetails[account.market_type ?? 'all'];
+
+    const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? 'all'];
+
+    const title = marketTypeDetails?.title;
 
     return (
         <TradingAccountCard

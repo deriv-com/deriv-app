@@ -1,5 +1,5 @@
 import React, { Fragment, useMemo } from 'react';
-import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList, useIsEuRegion } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Text, useBreakpoint } from '@deriv/quill-design';
 import ImportantIcon from '../../../../public/images/ic-important.svg';
@@ -22,6 +22,7 @@ const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
 
 const MT5TradeScreen = ({ account }: MT5TradeScreenProps) => {
     const { isMobile } = useBreakpoint();
+    const { isEU } = useIsEuRegion();
     const { getCFDState } = Provider.useCFDContext();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
@@ -54,6 +55,8 @@ const MT5TradeScreen = ({ account }: MT5TradeScreenProps) => {
         return (details as THooks.CtraderAccountsList)?.login;
     }, [details, dxtradePlatform, mt5Platform, platform]);
 
+    const marketTypeDetails = MarketTypeDetails(isEU);
+
     return (
         <div className='lg:w-[45vw] lg:min-w-[512px] lg:max-w-[600px] w-full min-w-full h-auto'>
             <div className='flex flex-col p-1200 gap-800 border-b-100 border-system-light-secondary-background'>
@@ -61,15 +64,14 @@ const MT5TradeScreen = ({ account }: MT5TradeScreenProps) => {
                     <div className='flex items-center'>
                         <div className='mr-400'>
                             {platform === mt5Platform
-                                ? MarketTypeDetails[(marketType ?? 'all') as keyof typeof MarketTypeDetails].icon
+                                ? marketTypeDetails[marketType ?? 'all'].icon
                                 : PlatformDetails[platform as keyof typeof PlatformDetails].icon}
                         </div>
                         <div className='flex flex-col'>
-                            <div className='flex items-center flex-row gap-300'>
+                            <div className='flex flex-row items-center gap-300'>
                                 <Text size='md'>
                                     {platform === mt5Platform
-                                        ? MarketTypeDetails[(marketType ?? 'all') as keyof typeof MarketTypeDetails]
-                                              .title
+                                        ? marketTypeDetails[marketType ?? 'all'].title
                                         : PlatformDetails[platform as keyof typeof PlatformDetails].title}{' '}
                                     {!activeAccount?.is_virtual && details?.landing_company_short?.toUpperCase()}
                                 </Text>

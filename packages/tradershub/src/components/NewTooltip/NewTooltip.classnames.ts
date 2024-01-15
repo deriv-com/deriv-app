@@ -2,17 +2,12 @@ import { cva, VariantProps } from 'class-variance-authority';
 import { ExcludeAllNull } from '@deriv/quill-design';
 
 export const NewTooltipContainerClassnames = cva(
-    'invisible group-hover:visible absolute whitespace-nowrap p-400 text-75 rounded-200',
+    'invisible group-hover:visible absolute whitespace-nowrap p-400 text-75 rounded-200 bg-system-light-hover-background text-system-light-general-text',
     {
         defaultVariants: {
-            color: 'general',
             position: 'top',
         },
         variants: {
-            color: {
-                error: 'bg-status-light-danger text-system-light-active-background',
-                general: 'bg-system-light-hover-background text-system-light-general-text',
-            },
             position: {
                 bottom: 'left-1/2 -translate-x-1/2 top-[calc(100%+5px)]',
                 left: 'top-1/2 -translate-y-1/2 right-[calc(100%+5px)]',

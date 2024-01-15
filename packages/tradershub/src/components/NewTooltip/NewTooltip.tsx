@@ -12,10 +12,10 @@ type TNewTooltip = NewTooltipClassnamesProps &
         content: ReactNode;
     };
 
-const NewTooltip = ({ children, color, content, position }: TNewTooltip) => (
+const NewTooltip = ({ children, content, position }: TNewTooltip) => (
     <div className='relative cursor-pointer group'>
         <div className='m-200'>{children}</div>
-        <span className={NewTooltipContainerClassnames({ color, position })}>{content}</span>
+        <span className={NewTooltipContainerClassnames({ position })}>{content}</span>
         <span className={NewTooltipClassnames({ position })} />
     </div>
 );

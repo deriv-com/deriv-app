@@ -32,7 +32,7 @@ const SignupWizard: React.FC = () => {
         >
             <div className='bg-background-primary-base h-[71.7rem] w-[104rem] rounded-800 flex overflow-hidden'>
                 <div className='min-w-[25.6rem] bg-[#f2f3f4] p-800'>Timeline</div>
-                <div className='flex flex-col p-800 w-[100%] justify-between'>
+                <div className='flex flex-col w-[100%] justify-between'>
                     <StandaloneXmarkBoldIcon
                         className='cursor-pointer absolute right-1200 top-1200'
                         onClick={() => setIsWizardOpen(false)}

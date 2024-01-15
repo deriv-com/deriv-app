@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    CurrencyAudIcon,
     CurrencyBtcIcon,
     CurrencyEthIcon,
     CurrencyEurIcon,
@@ -17,7 +16,7 @@ export const CURRENCY_TYPES = {
 } as const;
 
 export function getCurrencyConfig(type: keyof typeof CURRENCY_TYPES) {
-    if (type === CURRENCY_TYPES.CRYPTO)
+    if (type === CURRENCY_TYPES.FIAT)
         return [
             {
                 icon: () => <CurrencyUsdIcon iconSize='lg' />,
@@ -33,11 +32,6 @@ export function getCurrencyConfig(type: keyof typeof CURRENCY_TYPES) {
                 icon: () => <CurrencyGbpIcon iconSize='lg' />,
                 key: 'GBP',
                 title: 'Pound Sterling',
-            },
-            {
-                icon: () => <CurrencyAudIcon iconSize='lg' />,
-                key: 'AUD',
-                title: 'Australian Dollar',
             },
         ];
 

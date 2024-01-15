@@ -96,6 +96,7 @@ const AppNotificationMessages = observer(
                       'deriv_go',
                       'document_needs_action',
                       'dp2p',
+                      'flutter_chart',
                       'contract_sold',
                       'has_changed_two_fa',
                       'identity',

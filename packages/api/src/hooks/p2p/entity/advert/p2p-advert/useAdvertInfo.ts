@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import useQuery from '../../useQuery';
+import useQuery from '../../../../../useQuery';
 
 /**
  * This custom hook returns the advert information about the given advert ID.

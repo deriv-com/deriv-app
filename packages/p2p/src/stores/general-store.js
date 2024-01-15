@@ -747,7 +747,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     setOrderPaymentPeriod(order_payment_period) {
-        this.order_payment_period = order_payment_period * 60;
+        this.order_payment_period = (order_payment_period * 60).toString();
     }
 
     setP2PSettings(response) {

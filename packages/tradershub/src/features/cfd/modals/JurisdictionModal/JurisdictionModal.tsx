@@ -41,8 +41,7 @@ const JurisdictionModal = () => {
 
     useEffect(() => {
         setCfdState('selectedJurisdiction', selectedJurisdiction);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedJurisdiction]);
+    }, [selectedJurisdiction, setCfdState]);
 
     // TODO: Add Loading Placeholder
     if (isLoading) return <Heading.H1>Loading...</Heading.H1>;

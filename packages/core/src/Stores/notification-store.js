@@ -916,11 +916,6 @@ export default class NotificationStore extends BaseStore {
                 action: {
                     onClick: () => {
                         window.open('https://blog.deriv.com/posts/new-charts-on-the-deriv-trader-app/', '_blank');
-                        // this.removeNotificationByKey({ key: this.client_notifications.trustpilot.key });
-                        // this.removeNotificationMessage({
-                        //     key: this.client_notifications.trustpilot.key,
-                        //     should_show_again: false,
-                        // });
                     },
                     text: localize('Learn more'),
                 },

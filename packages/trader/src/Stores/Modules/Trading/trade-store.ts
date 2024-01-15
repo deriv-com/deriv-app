@@ -1584,7 +1584,10 @@ export default class TradeStore extends BaseStore {
                 this.root_store.contract_trade.updateAccumulatorBarriersData(current_spot_data);
             }
         };
-        if (req.subscribe === 1) {
+        if (this.is_market_closed) {
+            delete req.subscribe;
+            WS.getTicksHistory(req).then(passthrough_callback, passthrough_callback);
+        } else if (req.subscribe === 1) {
             const key = JSON.stringify(req);
             const subscriber = WS.subscribeTicksHistory(req, passthrough_callback);
             g_subscribers_map[key] = subscriber;

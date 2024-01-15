@@ -2,7 +2,7 @@ import React from 'react';
 import { useIsEuRegion } from '@deriv/api';
 import { getStaticUrl } from '../../../../helpers/urls';
 import { THooks } from '../../../../types';
-import { MarketTypeDetails } from '../../constants';
+import { MarketType, MarketTypeDetails } from '../../constants';
 
 export const MT5AccountIcon = ({ account }: { account: THooks.MT5AccountsList }) => {
     const { isEU } = useIsEuRegion();
@@ -16,7 +16,7 @@ export const MT5AccountIcon = ({ account }: { account: THooks.MT5AccountsList })
         }
     };
 
-    const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? 'all'];
+    const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
 
     const icon = marketTypeDetails?.icon ?? null;
 

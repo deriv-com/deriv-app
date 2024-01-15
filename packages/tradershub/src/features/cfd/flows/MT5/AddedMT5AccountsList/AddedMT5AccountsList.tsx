@@ -5,7 +5,7 @@ import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { THooks } from '../../../../../types';
-import { CFDPlatforms, MarketTypeDetails } from '../../../constants';
+import { CFDPlatforms, MarketType, MarketTypeDetails } from '../../../constants';
 import { TradeModal } from '../../../modals/TradeModal';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
@@ -20,7 +20,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
         [account.landing_company_short, account.status, getVerificationStatus]
     );
 
-    const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? 'all'];
+    const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
 
     const title = marketTypeDetails?.title;
 

@@ -4,7 +4,7 @@ import { Provider } from '@deriv/library';
 import { Text, useBreakpoint } from '@deriv/quill-design';
 import ImportantIcon from '../../../../public/images/ic-important.svg';
 import { THooks, TPlatforms } from '../../../../types';
-import { AppToContentMapper, MarketTypeDetails, PlatformDetails } from '../../constants';
+import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '../../constants';
 import { TradeDetailsItem } from './TradeDetailsItem';
 import { TradeLink } from './TradeLink';
 
@@ -64,14 +64,14 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                     <div className='flex items-center'>
                         <div className='mr-400'>
                             {platform === mt5Platform
-                                ? marketTypeDetails[marketType ?? 'all'].icon
+                                ? marketTypeDetails[marketType ?? MarketType.ALL].icon
                                 : PlatformDetails[platform as keyof typeof PlatformDetails].icon}
                         </div>
                         <div className='flex flex-col'>
                             <div className='flex flex-row items-center gap-300'>
                                 <Text size='md'>
                                     {platform === mt5Platform
-                                        ? marketTypeDetails[marketType ?? 'all'].title
+                                        ? marketTypeDetails[marketType ?? MarketType.ALL].title
                                         : PlatformDetails[platform as keyof typeof PlatformDetails].title}{' '}
                                     {!activeAccount?.is_virtual && details?.landing_company_short?.toUpperCase()}
                                 </Text>

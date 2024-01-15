@@ -43,7 +43,6 @@ const useSortedMT5Accounts = () => {
     const filtered_data = useMemo(() => {
         if (!modified_data) return;
 
-        // const added_accounts = modified_data.filter(account => account.is_added);
         const added_accounts = modified_data.filter(
             account =>
                 account.is_added &&

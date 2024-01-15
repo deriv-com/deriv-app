@@ -21,19 +21,6 @@ module.exports = {
             backfaceVisibility: {
                 hidden: 'hidden',
             },
-            button: {
-                primary: {
-                    default: '#ff444f',
-                    hover: {
-                        dark: '#ff525c',
-                        light: '#eb3e48',
-                    },
-                },
-                'primary-light': {
-                    default: '#ff444f29',
-                    hover: '#ff444f3d',
-                },
-            },
             colors: {
                 brand: {
                     blue: '#85acb0',
@@ -105,6 +92,10 @@ module.exports = {
             },
             fontFamily: {
                 sans: ['IBM Plex Sans', 'sans-serif'],
+            },
+            height: {
+                'full-desktop': 'calc(100vh - 85px)',
+                'full-mobile': 'calc(100vh - 40px)',
             },
         },
     },

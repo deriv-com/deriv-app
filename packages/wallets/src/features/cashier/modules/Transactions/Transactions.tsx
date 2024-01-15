@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
 import { ToggleSwitch, WalletDropdown, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import FilterIcon from '../../../../public/images/filter.svg';
@@ -28,8 +28,14 @@ const filtersMapper: Record<string, Record<string, TFilterValue>> = {
 
 const Transactions = () => {
     const { data: wallet } = useActiveWalletAccount();
+
+    const { isLoading } = useCurrencyConfig();
     const { isMobile } = useDevice();
-    const [isPendingActive, setIsPendingActive] = useState(false);
+
+    const queryParams = new URLSearchParams(location.search);
+    const showPending = queryParams.get('showPending');
+
+    const [isPendingActive, setIsPendingActive] = useState(showPending === 'true');
     const [filterValue, setFilterValue] = useState('all');
 
     const filterOptionsList = useMemo(
@@ -48,10 +54,10 @@ const Transactions = () => {
     );
 
     useEffect(() => {
-        if (!wallet?.currency_config?.is_crypto && isPendingActive) {
+        if (!isLoading && !wallet?.currency_config?.is_crypto && isPendingActive) {
             setIsPendingActive(false);
         }
-    }, [wallet?.currency_config?.is_crypto, isPendingActive]);
+    }, [isLoading, wallet?.currency_config?.is_crypto, isPendingActive]);
 
     useEffect(() => {
         if (isPendingActive && !Object.keys(filtersMapper.pending).includes(filterValue)) {

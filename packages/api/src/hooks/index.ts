@@ -22,7 +22,7 @@ export { default as useCashierFiatAddress } from './useCashierFiatAddress';
 // TODO: Export these into P2P entities
 export { default as useChatCreate } from './p2p/useChatCreate';
 export { default as useAdvertiserInfo } from './p2p/useAdvertiserInfo';
-export { default as useOrderInfo } from './p2p/useOrderInfo';
+export { default as useAdvertiserUpdate } from './p2p/useAdvertiserUpdate';
 
 export { default as useCountryConfig } from './useCountryConfig';
 export { default as useCreateNewRealAccount } from './useCreateNewRealAccount';
@@ -58,6 +58,7 @@ export { default as useSendbirdServiceToken } from './useSendbirdServiceToken';
 export { default as useServerTime } from './useServerTime';
 export { default as useSettings } from './useSettings';
 export { default as useSortedMT5Accounts } from './useSortedMT5Accounts';
+export { default as useMobileCarouselWalletsList } from './useMobileCarouselWalletsList';
 export { default as useStatesList } from './useStatesList';
 export { default as useTradingAccountsList } from './useTradingAccountsList';
 export { default as useTradingPlatformInvestorPasswordChange } from './useTradingPlatformInvestorPasswordChange';
@@ -73,3 +74,6 @@ export { default as useWalletAccountsList } from './useWalletAccountsList';
 export { default as useWalletMigration } from './useWalletMigration';
 export { default as useTradingPlatformPasswordReset } from './useTradingPlatformPasswordReset';
 export { default as useResetVirtualBalance } from './useResetVirtualBalance';
+export { default as useTotalAssets } from './useTotalAssets';
+export { default as useExchangeRates } from './useExchangeRates';
+export { default as useIsDIELEnabled } from './useIsDIELEnabled';

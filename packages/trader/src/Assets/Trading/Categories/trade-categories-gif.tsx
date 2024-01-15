@@ -18,7 +18,6 @@ import ImageTouch from 'Assets/SvgComponents/trade_explanations/img-touch.svg';
 import ContractTypeDescriptionVideo from './contract-type-description-video';
 import { TRADE_TYPES } from '@deriv/shared';
 
-// TODO: Replace static image svgs with themed GIFs or animated SVGs
 const TradeCategoriesGIF = ({
     category,
     selected_contract_type,

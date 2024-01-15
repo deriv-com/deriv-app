@@ -6,6 +6,8 @@ export const REVERSE_D_ALEMBERT: TDescriptionItem[] = [
     {
         type: 'subtitle',
         content: [localize('Exploring the Reverse D’Alembert strategy in Deriv Bot')],
+        expanded: true,
+        no_collapsible: false,
     },
     {
         type: 'text',
@@ -13,14 +15,21 @@ export const REVERSE_D_ALEMBERT: TDescriptionItem[] = [
             localize(
                 "The Reverse D'Alembert strategy involves increasing your stake after a successful trade and reducing it after a losing trade by a predetermined number of units."
             ),
-            localize('These are the trade parameters used for the Reverse D’Alembert strategy in Deriv Bot.'),
         ],
+    },
+    {
+        type: 'subtitle',
+        content: [localize('Key Parameters')],
+    },
+    {
+        type: 'text',
+        content: [localize('These are the trade parameters used in Deriv Bot with Reverse D’Alembert strategy.')],
     },
     {
         type: 'text',
         content: [
             localize(
-                '<strong>Initial stake:</strong> The amount that you are willing to place as a stake to enter a trade. In this example, we will use 1 USD.'
+                '<strong>Initial stake:</strong> The amount that you are willing to place as a stake to enter a trade. This is the starting point for any changes in stake depending on the dynamic of the strategy being used.'
             ),
         ],
     },
@@ -78,7 +87,7 @@ export const REVERSE_D_ALEMBERT: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                "At Deriv, traders can set the profit threshold and loss threshold to secure profits and limit potential losses. This means that the trading bot will automatically stop when either the profit or loss thresholds are reached. It's a form of risk management that can potentially enhance returns. For example, if a trader sets the profit threshold at 100 USD and the strategy exceeds 100 USD of profit from all trades, then the bot will stop running."
+                'With Deriv Bot, traders can set the profit and loss thresholds to secure potential profits and limit potential losses. This means that the trading bot will automatically stop when either the profit or loss threshold is reached. This is a form of risk management that can potentially boost successful trades whilst limiting the impact of loss. For example, if a trader sets the profit threshold at 100 USD and the strategy exceeds 100 USD of profit from all trades, then the bot will stop running.'
             ),
         ],
     },
@@ -95,8 +104,8 @@ export const REVERSE_D_ALEMBERT: TDescriptionItem[] = [
         ],
     },
     {
-        type: 'subtitle_italic',
-        content: [localize('Disclaimer')],
+        type: 'text_italic',
+        content: [localize('<strong>Disclaimer:</strong>')],
     },
     {
         type: 'text_italic',

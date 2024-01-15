@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useLocation, withRouter } from 'react-router';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
 import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';

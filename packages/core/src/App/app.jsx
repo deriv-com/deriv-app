@@ -4,7 +4,7 @@ import WS from 'Services/ws-methods';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { BreakpointProvider } from '@deriv/quill-design';
 import { APIProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';

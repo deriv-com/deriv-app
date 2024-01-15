@@ -5,7 +5,7 @@ import { loginUrl, routes, redirectToLogin, SessionStore, PlatformContext } from
 import { observer, useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { WS } from 'Services';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 
 const Redirect = observer(() => {
     const history = useHistory();

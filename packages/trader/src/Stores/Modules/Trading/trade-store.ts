@@ -33,8 +33,8 @@ import {
     isHighLow,
     CONTRACT_TYPES,
 } from '@deriv/shared';
-import { Analytics } from '@deriv/analytics';
-import type { TEvents } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
+import type { TEvents } from '@deriv-com/analytics';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';

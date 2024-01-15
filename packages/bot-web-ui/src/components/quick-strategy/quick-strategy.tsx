@@ -13,7 +13,7 @@ import { STRATEGIES } from './config';
 import Form from './form';
 import { TConfigItem, TFormData } from './types';
 import './quick-strategy.scss';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 
 type TFormikWrapper = {
     children: React.ReactNode;

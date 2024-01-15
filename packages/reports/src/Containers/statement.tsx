@@ -10,7 +10,7 @@ import {
     isForwardStarting,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component';

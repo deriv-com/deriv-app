@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { Button, Text } from '@deriv/components';
 import './questionnaire-modal.scss';
 

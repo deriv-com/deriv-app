@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';

@@ -28,7 +28,7 @@ import {
     toMoment,
     urlForLanguage,
 } from '@deriv/shared';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 
 import { requestLogout, WS } from 'Services';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import { APIProvider } from '@deriv/api';

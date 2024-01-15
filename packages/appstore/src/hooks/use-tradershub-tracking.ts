@@ -1,4 +1,4 @@
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { useStore } from '@deriv/stores';
 import { useCallback, useEffect, useMemo } from 'react';
 

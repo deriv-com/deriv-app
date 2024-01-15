@@ -20,7 +20,7 @@ import { observer, useStore } from '@deriv/stores';
 import { routes, formatMoney, ContentFlag, getStaticUrl, getAppId, LocalStore, isDesktopOs } from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { useHasSetCurrency } from '@deriv/hooks';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { BinaryLink } from 'App/Components/Routes';
 import AccountList from './account-switcher-account-list.jsx';

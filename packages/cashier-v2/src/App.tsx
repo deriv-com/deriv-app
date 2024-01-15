@@ -1,11 +1,15 @@
 import React from 'react';
 import { APIProvider } from '@deriv/api';
-import { Router } from './routes';
+import { BreakpointProvider } from '@deriv/quill-design';
+import AppContent from './AppContent';
+import './index.scss';
 
 const App: React.FC = () => {
     return (
         <APIProvider standalone>
-            <Router />
+            <BreakpointProvider>
+                <AppContent />
+            </BreakpointProvider>
         </APIProvider>
     );
 };

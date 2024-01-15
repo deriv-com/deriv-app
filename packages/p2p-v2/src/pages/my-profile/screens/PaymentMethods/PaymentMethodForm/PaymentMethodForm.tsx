@@ -68,21 +68,22 @@ const PaymentMethodForm = ({
                     {paymentMethodFormConfig.paymentMethod ? (
                         // TODO: Remember to translate this
                         <TextField
-                            // disabled={type === 'EDIT'}
                             className={clsx('p2p-v2-payment-method-form__field')}
                             disabled
                             label='Choose your payment method'
-                            renderRightIcon={() => (
-                                <CloseCircle
-                                    className='p2p-v2-payment-method-form__icon--close'
-                                    fill='#999999'
-                                    height={30}
-                                    onClick={() => {
-                                        onClear?.();
-                                    }}
-                                    width={20}
-                                />
-                            )}
+                            renderRightIcon={() =>
+                                type === 'EDIT' ? null : (
+                                    <CloseCircle
+                                        className='p2p-v2-payment-method-form__icon--close'
+                                        fill='#999999'
+                                        height={30}
+                                        onClick={() => {
+                                            onClear?.();
+                                        }}
+                                        width={20}
+                                    />
+                                )
+                            }
                             value={paymentMethod?.display_name}
                         />
                     ) : (

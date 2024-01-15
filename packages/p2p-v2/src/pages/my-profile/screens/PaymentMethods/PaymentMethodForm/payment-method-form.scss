@@ -60,6 +60,7 @@
         }
     }
     &__field {
+        width: 100%;
         &-control {
             font-size: 1.4rem;
             line-height: 2rem;
@@ -85,9 +86,11 @@
         }
     }
 }
-
+.p2p-v2-textfield__message-container {
+    height: auto;
+}
 .p2p-v2-link {
-    color: #ff444f; // TODO: define color variables
+    color: #ff444f;
     font-weight: bold;
     text-decoration: none;
 
@@ -104,7 +107,4 @@
     &--prominent {
         color: #999999;
     }
-}
-.p2p-v2-textfield__message-container {
-    height: auto;
 }

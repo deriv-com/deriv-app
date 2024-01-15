@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
-import { useActiveWalletAccount, useActiveWalletBalance } from '@deriv/api';
+import { useActiveWalletAccount, useInvalidateQuery } from '@deriv/api';
 import { WalletCardIcon, WalletGradientBackground, WalletText } from '../../../../components';
 import { WalletListCardBadge } from '../../../../components/WalletListCardBadge';
 import useDevice from '../../../../hooks/useDevice';
@@ -65,7 +65,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
-    const { displayBalance } = useActiveWalletBalance();
+    const invalidate = useInvalidateQuery();
 
     const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
 
@@ -74,6 +74,10 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
             activeTabRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'center' });
         }
     }, [location.pathname, isMobile]);
+
+    useEffect(() => {
+        invalidate('balance');
+    }, [activeWallet]);
 
     return (
         <WalletGradientBackground
@@ -105,7 +109,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
                             )}
                         </div>
                         <WalletText color={activeWallet?.is_virtual ? 'white' : 'general'} size='xl' weight='bold'>
-                            {displayBalance}
+                            {activeWallet?.display_balance}
                         </WalletText>
                     </div>
                     <div className='wallets-cashier-header__top-right-info'>

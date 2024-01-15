@@ -120,7 +120,7 @@ const Dialog = ({
                             ) : (
                                 <React.Fragment>
                                     <div className='dc-vertical-tab__action-bar dc-vertical-tab__action-bar--contract-type-info-header'>
-                                        <Header title={item.text || ''} onClickGoBack={onBackButtonClick} />
+                                        <Header title={localize('Tutorial')} onClickGoBack={onBackButtonClick} />
                                     </div>
                                     {renderChildren()}
                                 </React.Fragment>

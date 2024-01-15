@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ThemedScrollbars, ButtonToggle } from '@deriv/components';
+import { Button, ThemedScrollbars, ButtonToggle, Dropdown } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { clickAndKeyEventHandler, TRADE_TYPES } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -38,17 +38,20 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
         },
     } = useStore();
     const [selected_tab, setSelectedTab] = React.useState<TSelectedTab>(TABS.DESCRIPTION);
+    const [selected_contract_type, setSelectedContractType] = React.useState(item);
     const { RISE_FALL_EQUAL, TURBOS, VANILLA } = TRADE_TYPES;
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
         (i: { value: TContractType['value'] }) =>
             i.value !== RISE_FALL_EQUAL && i.value !== TURBOS.SHORT && i.value !== VANILLA.PUT
     );
-    const has_toggle_buttons = /accumulator|turboslong|vanilla|multiplier/i.test(item.value);
-    const should_show_video = /accumulator|turboslong|vanilla/i.test(item.value);
+    const has_toggle_buttons = /accumulator|turboslong|vanilla|multiplier/i.test(selected_contract_type.value);
+    const should_show_video = /accumulator|turboslong|vanilla/i.test(selected_contract_type.value);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = is_mobile ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
+    const button_name = contract_types?.find(item => item.value === selected_contract_type.value)?.text;
+
     const onClickGlossary = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         clickAndKeyEventHandler(() => setSelectedTab(TABS.GLOSSARY), e);
     };
@@ -66,13 +69,13 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
             Analytics.trackEvent('ce_trade_types_form', {
                 action: 'info_switcher',
                 info_switcher_mode: selected_tab,
-                trade_type_name: item?.text,
+                trade_type_name: selected_contract_type?.text,
             });
         }
     }, [selected_tab]);
 
     const cards = contract_types?.map((type: TContractType) => {
-        if (type.value !== item.value) return null;
+        if (type.value !== selected_contract_type.value) return null;
         return (
             <div key={type.value} className='contract-type-info__card'>
                 <ThemedScrollbars
@@ -97,7 +100,10 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
                     >
                         {is_description_tab_selected ? (
                             <React.Fragment>
-                                <TradeCategoriesGIF category={type.value} selected_contract_type={item?.value} />
+                                <TradeCategoriesGIF
+                                    category={type.value}
+                                    selected_contract_type={selected_contract_type.value}
+                                />
                                 <TradeCategories
                                     category={type.value}
                                     onClick={onClickGlossary}
@@ -121,6 +127,17 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
 
     return (
         <React.Fragment>
+            <Dropdown
+                id='dt_contract_type_dropdown'
+                className='contract-type-info__dropdown'
+                is_nativepicker={false}
+                list={contract_types as React.ComponentProps<typeof Dropdown>['list']}
+                name='contract_type_dropdown'
+                value={selected_contract_type.value}
+                should_autohide={false}
+                should_scroll_to_selected
+                onChange={e => setSelectedContractType(e.target)}
+            />
             {has_toggle_buttons && (
                 <div className='contract-type-info__button-wrapper'>
                     <ButtonToggle
@@ -150,11 +167,11 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
             </div>
             <div className='contract-type-info__trade-type-btn-wrapper'>
                 <Button
-                    id={`dt_contract_info_${item?.value}_btn`}
+                    id={`dt_contract_info_${selected_contract_type.value}_btn`}
                     className='contract-type-info__button'
-                    onClick={e => handleSelect(item, e)}
+                    onClick={e => handleSelect(selected_contract_type, e)}
                     text={localize('Choose {{contract_type}}', {
-                        contract_type: item?.text,
+                        contract_type: button_name ?? '',
                         interpolation: { escapeValue: false },
                     })}
                     secondary

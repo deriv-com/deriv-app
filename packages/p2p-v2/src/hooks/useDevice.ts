@@ -1,5 +1,6 @@
 import { useWindowSize } from 'usehooks-ts';
 
+// NOTE: Replace this with useBreakpoint from quill-design
 /** A custom hook to check for the client device and determine the layout to be rendered */
 const useDevice = () => {
     const { width } = useWindowSize();

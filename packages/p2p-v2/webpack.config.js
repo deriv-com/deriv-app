@@ -4,7 +4,6 @@ const path = require('path');
 
 const isRelease =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
-
 const svg_loaders = [
     {
         loader: 'babel-loader',
@@ -32,7 +31,6 @@ const svg_loaders = [
 
 module.exports = function (env) {
     const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
-
     return {
         devtool: isRelease ? 'source-map' : 'eval-cheap-module-source-map',
         entry: {
@@ -185,7 +183,6 @@ module.exports = function (env) {
             path: path.resolve(__dirname, './dist'),
             publicPath: base,
         },
-
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },

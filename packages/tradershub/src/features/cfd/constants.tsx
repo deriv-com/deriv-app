@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import CTraderIcon from '../../public/images/cfd/ctrader.svg';
 import DerivXIcon from '../../public/images/cfd/derivx.svg';
+import FinancialEUMT5Icon from '../../public/images/cfd/eu-mt5-financial.svg';
 import DerivedMT5Icon from '../../public/images/cfd/mt5-derived.svg';
 import FinancialMT5Icon from '../../public/images/cfd/mt5-financial.svg';
 import SwapFreeMT5Icon from '../../public/images/cfd/mt5-swap-free.svg';
@@ -61,7 +62,12 @@ export const MarketType = {
     SYNTHETIC: 'synthetic',
 } as const;
 
-export const MarketTypeDetails: TMarketTypeDetails = {
+export const Category = {
+    DEMO: 'demo',
+    REAL: 'real',
+} as const;
+
+export const MarketTypeDetails = (isEU?: boolean): TMarketTypeDetails => ({
     all: {
         description:
             'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs',
@@ -69,16 +75,18 @@ export const MarketTypeDetails: TMarketTypeDetails = {
         title: 'Swap-Free',
     },
     financial: {
-        description: 'This account offers CFDs on financial instruments.',
-        icon: <FinancialMT5Icon />,
-        title: 'Financial',
+        description: isEU
+            ? 'This MFSA-regulated account offers CFDs on derived and financial instruments'
+            : 'This account offers CFDs on financial instruments.',
+        icon: isEU ? <FinancialEUMT5Icon /> : <FinancialMT5Icon />,
+        title: isEU ? 'CFDs' : 'Financial',
     },
     synthetic: {
         description: 'This account offers CFDs on derived instruments.',
         icon: <DerivedMT5Icon />,
         title: 'Derived',
     },
-};
+});
 
 export const PlatformDetails = {
     ctrader: {

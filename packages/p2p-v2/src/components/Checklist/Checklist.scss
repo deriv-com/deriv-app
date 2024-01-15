@@ -1,0 +1,64 @@
+@mixin icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+}
+
+.p2p-v2-checklist {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2.4rem;
+
+    & span {
+        font-size: 14px;
+    }
+
+    &__item {
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0px -1px 0px 0px #f2f3f4 inset;
+        width: 41rem;
+
+        @include mobile {
+            width: 100%;
+        }
+
+        &-button {
+            @include icon-wrapper;
+
+            background: #ff444f;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+
+            &--disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            &-icon {
+                fill: #fff;
+                transform: scale(1.4);
+            }
+        }
+
+        &-checkmark {
+            @include icon-wrapper;
+
+            &-icon {
+                fill: #4bb4b3;
+                transform: scale(0.7);
+            }
+        }
+    }
+
+    &__text {
+        &--disabled {
+            color: #d6d6d6;
+        }
+    }
+}

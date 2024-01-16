@@ -68,10 +68,10 @@ export const getPasskeysDescriptions = () =>
 
 export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
     const titles: Record<Exclude<TPasskeysStatus, ''>, React.ReactElement> = {
-        registered: <Localize i18n_default_text='Passkey registered successfully!' />,
+        registered: <Localize i18n_default_text='Passkey created successfully!' />,
         renaming: <Localize i18n_default_text='Rename passkey' />,
         revoked: <Localize i18n_default_text='Passkey revoked successfully!' />,
-        revoke_verify: <Localize i18n_default_text='Please help us verify your revoke  passkey request.' />,
+        revoke_verify: <Localize i18n_default_text='Please help us verify your revoke passkey request.' />,
     };
 
     const icons: Record<Exclude<TPasskeysStatus, ''>, string> = {
@@ -83,7 +83,10 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
 
     const descriptions: Record<Exclude<TPasskeysStatus, ''>, React.ReactElement> = {
         registered: (
-            <Localize i18n_default_text='Your account is now set up with a passkey,allowing you to easily log in and manage it in your account settings.' />
+            <Localize
+                i18n_default_text='Your account is now set up with a passkey, <0/>allowing you to easily log in and manage it in your account settings.'
+                components={[<br key={0} />]}
+            />
         ),
         renaming: <Localize i18n_default_text='Update your passkey name for customization.' />,
         revoked: (

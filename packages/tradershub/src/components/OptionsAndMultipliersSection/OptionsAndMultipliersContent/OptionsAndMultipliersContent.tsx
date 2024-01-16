@@ -6,6 +6,7 @@ import { optionsAndMultipliersContent } from '../../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
 import { TradingAppCardLoader } from '../../Loaders';
 import { TradingAccountCard, TradingAccountCardContent } from '../../TradingAccountCard';
+import { useUIContext } from '../../UIProvider';
 
 type OptionsAndMultipliersContentItem = {
     description: string;
@@ -94,11 +95,18 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
 const OptionsAndMultipliersContent = () => {
     const { isMobile } = useBreakpoint();
     const { data } = useActiveTradingAccount();
-    const { isEU, isSuccess } = useIsEuRegion();
+    const { isEUCountry, isSuccess } = useIsEuRegion();
 
-    const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU || false);
+    const { getUIState } = useUIContext();
+    const activeRegion = getUIState('region');
 
-    const filteredContent = isEU
+    const euRegion = activeRegion === 'EU';
+
+    const EU = euRegion || isEUCountry;
+
+    const getoptionsAndMultipliersContent = optionsAndMultipliersContent(EU ?? false);
+
+    const filteredContent = EU
         ? getoptionsAndMultipliersContent.filter(account => account.title === 'Deriv Trader')
         : getoptionsAndMultipliersContent;
 

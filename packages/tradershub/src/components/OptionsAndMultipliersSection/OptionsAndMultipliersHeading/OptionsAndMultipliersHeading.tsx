@@ -4,6 +4,7 @@ import { Heading, Text, useBreakpoint } from '@deriv/quill-design';
 import { CurrencySwitcher } from '../../CurrencySwitcher';
 import { TitleDescriptionLoader } from '../../Loaders';
 import { StaticLink } from '../../StaticLink';
+import { useUIContext } from '../../UIProvider';
 
 /**
  *  `OptionsAndMultipliersHeading` is a component that renders the heading title and currency switcher.
@@ -11,12 +12,18 @@ import { StaticLink } from '../../StaticLink';
  */
 const OptionsAndMultipliersHeading = () => {
     const { isMobile } = useBreakpoint();
-    const { isEU, isSuccess } = useIsEuRegion();
+    const { isEUCountry, isSuccess } = useIsEuRegion();
 
-    const title = isEU ? 'Multipliers' : 'Options & multipliers';
+    const { getUIState } = useUIContext();
+
+    const activeRegion = getUIState('region');
+
+    const euRegion = activeRegion === 'EU' || isEUCountry;
+
+    const title = euRegion ? 'Multipliers' : 'Options & multipliers';
 
     const description = useMemo(() => {
-        if (isEU) {
+        if (euRegion) {
             return (
                 <Text className='space-y-50' size='sm'>
                     Get the upside of CFDs without risking more than your initial stake with
@@ -40,7 +47,7 @@ const OptionsAndMultipliersHeading = () => {
                 .
             </Text>
         );
-    }, [isEU]);
+    }, [euRegion]);
 
     if (!isSuccess) return <TitleDescriptionLoader />;
 

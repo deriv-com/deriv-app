@@ -1,27 +1,46 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
 import { Button, qtJoin, Text } from '@deriv/quill-design';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
+import { useUIContext } from '../UIProvider';
 
 const RegulationSwitcherDesktop = () => {
     const { switchAccount } = useAuthorize();
     const { data: tradingAccountsList } = useTradingAccountsList();
-    const { data: activeTrading } = useActiveTradingAccount();
+    const { getUIState, setUIState } = useUIContext();
 
     const realCRAccount = tradingAccountsList?.find(account => account.loginid.startsWith('CR'))?.loginid ?? '';
 
     const realMFAccount = tradingAccountsList?.find(account => account.loginid.startsWith('MF'))?.loginid ?? '';
 
-    const buttons = [
-        { label: 'Non-EU', loginid: realCRAccount },
-        { label: 'EU', loginid: realMFAccount },
-    ];
+    const { data: activeTrading } = useActiveTradingAccount();
 
-    const handleButtonClick = (loginid: string) => {
-        if (loginid) {
-            switchAccount(loginid);
+    const buttons = [{ label: 'Non-EU' }, { label: 'EU' }];
+
+    const activeRegion = getUIState('region');
+
+    const handleButtonClick = (label: string) => {
+        if (label === 'Non-EU') {
+            setUIState('region', 'Non-EU');
+            if (realCRAccount) {
+                switchAccount(realCRAccount);
+            }
+        } else {
+            setUIState('region', 'EU');
+            if (realMFAccount) {
+                switchAccount(realMFAccount);
+            }
         }
     };
+
+    useEffect(() => {
+        if (activeTrading?.loginid.startsWith('CR')) {
+            setUIState('region', 'Non-EU');
+        } else if (activeTrading?.loginid.startsWith('MF')) {
+            setUIState('region', 'EU');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div className='flex items-center gap-400'>
@@ -33,13 +52,13 @@ const RegulationSwitcherDesktop = () => {
                 {buttons.map(button => (
                     <Button
                         className={qtJoin(
-                            'rounded-200 ',
-                            button.loginid !== activeTrading?.loginid && 'bg-transparent font-regular'
+                            'rounded-200',
+                            activeRegion !== button.label && 'bg-transparent font-regular'
                         )}
                         colorStyle='white'
                         fullWidth
                         key={`tradershub-tab-${button.label}`}
-                        onClick={() => handleButtonClick(button.loginid)}
+                        onClick={() => handleButtonClick(button.label)}
                     >
                         {button.label}
                     </Button>

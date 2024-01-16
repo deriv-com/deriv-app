@@ -1,11 +1,17 @@
 import React from 'react';
 import { useIsEuRegion } from '@deriv/api';
+import { useUIContext } from '../../../../components';
 import { getStaticUrl } from '../../../../helpers/urls';
 import { THooks } from '../../../../types';
 import { MarketType, MarketTypeDetails } from '../../constants';
 
 export const MT5AccountIcon = ({ account }: { account: THooks.MT5AccountsList }) => {
-    const { isEU } = useIsEuRegion();
+    const { isEUCountry } = useIsEuRegion();
+
+    const { getUIState } = useUIContext();
+    const activeRegion = getUIState('region');
+
+    const euRegion = activeRegion === 'EU' || isEUCountry;
     const handleClick = () => {
         window.open(getStaticUrl('/dmt5'));
     };
@@ -16,7 +22,7 @@ export const MT5AccountIcon = ({ account }: { account: THooks.MT5AccountsList })
         }
     };
 
-    const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
+    const marketTypeDetails = MarketTypeDetails(euRegion)[account.market_type ?? MarketType.ALL];
 
     const icon = marketTypeDetails?.icon ?? null;
 

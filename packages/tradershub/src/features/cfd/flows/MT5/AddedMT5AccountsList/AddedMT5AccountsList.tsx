@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useIsEuRegion, useJurisdictionStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
+import { useUIContext } from '../../../../../components';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { THooks } from '../../../../../types';
 import { CFDPlatforms, MarketType, MarketTypeDetails } from '../../../constants';
@@ -11,7 +12,12 @@ import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
     const { data: activeAccount } = useActiveTradingAccount();
-    const { isEU } = useIsEuRegion();
+    const { isEUCountry } = useIsEuRegion();
+
+    const { getUIState } = useUIContext();
+    const activeRegion = getUIState('region');
+
+    const euRegion = activeRegion === 'EU' || isEUCountry;
     const { show } = Provider.useModal();
     const history = useHistory();
     const { getVerificationStatus } = useJurisdictionStatus();
@@ -20,7 +26,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
         [account.landing_company_short, account.status, getVerificationStatus]
     );
 
-    const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
+    const marketTypeDetails = MarketTypeDetails(euRegion)[account.market_type ?? MarketType.ALL];
 
     const title = marketTypeDetails?.title;
 

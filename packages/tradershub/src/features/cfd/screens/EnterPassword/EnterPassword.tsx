@@ -1,6 +1,7 @@
 import React from 'react';
 import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
 import { Button, Text, TextField, useBreakpoint } from '@deriv/quill-design';
+import { useUIContext } from '../../../../components';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
 import { MarketTypeDetails, PlatformDetails } from '../../constants';
@@ -41,10 +42,14 @@ const EnterPassword: React.FC<TProps> = ({
 }) => {
     const { isDesktop } = useBreakpoint();
     const title = PlatformDetails[platform].title;
-    const { isEU } = useIsEuRegion();
+    const { isEUCountry } = useIsEuRegion();
+    const { getUIState } = useUIContext();
+    const activeRegion = getUIState('region');
+
+    const euRegion = activeRegion === 'EU' || isEUCountry;
     const { data } = useActiveTradingAccount();
     const accountType = data?.is_virtual ? 'Demo' : 'Real';
-    const marketTypeDetails = MarketTypeDetails(isEU);
+    const marketTypeDetails = MarketTypeDetails(euRegion);
 
     const marketTypeTitle =
         platform === PlatformDetails.dxtrade.platform ? accountType : marketTypeDetails[marketType]?.title;

@@ -11,15 +11,15 @@ import { Dialog } from '../Dialog';
 const GetADerivAccountDialog = () => {
     return (
         <Dialog className='lg:w-[440px]'>
-            <Dialog.Header heading='h6' hideCloseButton title="You'll need a Deriv account" />
+            <Dialog.Header heading='h5' hideCloseButton title="You'll need a Deriv account" />
             <Dialog.Content>
                 <Text size='sm'>A Deriv account will allow you to fund (and withdraw from) your MT5 account(s). </Text>
             </Dialog.Content>
             <Dialog.Action align='right'>
-                <Button className='rounded-200 py-800 px-500' colorStyle='black' size='md' variant='secondary'>
+                <Button className='rounded-200 h-2000 px-500' colorStyle='black' size='md' variant='secondary'>
                     Cancel
                 </Button>
-                <Button className='rounded-200 py-800 px-500' colorStyle='coral' size='md' variant='primary'>
+                <Button className='rounded-200 h-2000 px-500' colorStyle='coral' size='md' variant='primary'>
                     Add a Deriv account
                 </Button>
             </Dialog.Action>

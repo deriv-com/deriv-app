@@ -1925,7 +1925,7 @@ type PasskeysRegisterOptionsResponse = {
     [k: string]: unknown;
 };
 type PasskeyRegisterRequest = {
-    passkey_register: 1;
+    passkeys_register: 1;
     name?: string;
     publicKeyCredential: {
         type: string;
@@ -1943,7 +1943,7 @@ type PasskeyRegisterRequest = {
     req_id?: number;
 };
 type PasskeyRegisterResponse = {
-    passkey_register: {
+    passkeys_register: {
         id: number;
         name: string;
         last_used: number;
@@ -2258,7 +2258,7 @@ type TSocketEndpoints = {
         request: PasskeysRegisterOptionsRequest;
         response: PasskeysRegisterOptionsResponse;
     };
-    passkey_register: {
+    passkeys_register: {
         request: PasskeyRegisterRequest;
         response: PasskeyRegisterResponse;
     };

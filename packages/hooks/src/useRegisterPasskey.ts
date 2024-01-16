@@ -25,7 +25,7 @@ const useRegisterPasskey = () => {
         mutate,
         error: passkey_register_error,
         isLoading: isMutationLoading,
-    } = useMutation('passkey_register', {
+    } = useMutation('passkeys_register', {
         onSuccess: () => {
             invalidate('passkeys_list');
             setIsPasskeyRegistered(true);

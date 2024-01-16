@@ -1,49 +1,50 @@
-import React, { FC, ReactNode } from 'react';
-import { qtMerge, Text } from '@deriv/quill-design';
-import { TooltipClass, TooltipPointerClass } from './Tooltip.classnames';
+import React, { ReactNode } from 'react';
+import { qtMerge } from '@deriv/quill-design';
+import {
+    NewTooltipClassnames,
+    NewTooltipClassnamesProps,
+    NewTooltipContainerClassnames,
+    NewTooltipContainerProps,
+} from './Tooltip.classnames';
+
+type TNewTooltip = NewTooltipClassnamesProps &
+    NewTooltipContainerProps & {
+        children: ReactNode;
+        className?: string;
+        message: string;
+    };
 
 /**
- * Props for the Tooltip component.
- * @typedef {Object} TProps
- * @property {'bottom' | 'left' | 'right' | 'top'} [alignment='left'] - The alignment of the tooltip.
- * @property {ReactNode} children - The content that triggers the tooltip.
- * @property {string} [className] - Additional CSS class for styling.
- * @property {string} message - The message to be displayed in the tooltip.
- */
-type TProps = {
-    alignment: 'bottom' | 'left' | 'right' | 'top';
-    children: ReactNode;
-    className?: string;
-    isVisible: boolean;
-    message: string;
-};
-
-/**
- * Tooltip component for displaying additional information.
- * @param {TProps} props - The properties that define the Tooltip component.
- * @returns {JSX.Element}
+ * `Tooltip` is a reusable component that displays a tooltip message when the user hovers over the children.
+ * The tooltip's position and variant can be customized.
  *
+ * @component
  * @example
- * ```jsx
- * <Tooltip alignment='right' message='This is a tooltip message'>
- *   <button>Hover me</button>
+ * // Example usage of Tooltip
+ * <Tooltip position="top" variant="general" message="This is a tooltip">
+ *   Hover over me
  * </Tooltip>
- * ```
+ *
+ * @param {ReactNode} children - The content over which the tooltip will be shown.
+ * @param {string} [className] - Additional CSS classes to apply to the tooltip.
+ * @param {string} message - The message to display in the tooltip.
+ * @param {string} position - The position of the tooltip relative to the children. Can be 'top', 'bottom', 'left', or 'right'.
+ * @param {string} variant - The variant of the tooltip. Can be 'general' or 'error'.
+ *
+ * @typedef {object} TNewTooltip
+ * @property {ReactNode} children - The content over which the tooltip will be shown.
+ * @property {string} [className] - Additional CSS classes to apply to the tooltip.
+ * @property {string} message - The message to display in the tooltip.
+ * @property {string} position - The position of the tooltip relative to the children.
+ * @property {string} variant - The variant of the tooltip.
  */
-const Tooltip: FC<TProps> = ({ alignment = 'bottom', children, className, message }) => {
-    return (
-        <div className='relative w-max h-max group z-1'>
-            <div className='border rounded-md border-neutral-600'>{children}</div>
 
-            <div className={qtMerge(TooltipClass({ alignment }), className)}>
-                <div className={qtMerge(TooltipPointerClass({ alignment }), className)} />
-
-                <span className='rounded-md bg-system-light-active-background p-200 '>
-                    <Text size='sm'>{message}</Text>
-                </span>
-            </div>
-        </div>
-    );
-};
+const Tooltip = ({ children, className, message, position, variant }: TNewTooltip) => (
+    <div className='relative cursor-pointer group'>
+        <div className='m-200'>{children}</div>
+        <span className={qtMerge(NewTooltipContainerClassnames({ position, variant }), className)}>{message}</span>
+        <span className={NewTooltipClassnames({ position, variant })} />
+    </div>
+);
 
 export default Tooltip;

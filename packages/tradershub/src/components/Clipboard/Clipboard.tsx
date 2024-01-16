@@ -1,13 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useCopyToClipboard, useHover } from 'usehooks-ts';
-import { Button, useBreakpoint } from '@deriv/quill-design';
+import React, { useEffect, useState } from 'react';
+import { useCopyToClipboard } from 'usehooks-ts';
+import { Button } from '@deriv/quill-design';
 import ClipboardIcon from '../../public/images/clipboard.svg';
 import CheckmarkCircle from '../../public/images/ic-checkmark-circle.svg';
 import { Tooltip } from '../Tooltip';
 
 type TClipboardProps = {
     textCopy: string;
-    tooltip?: 'bottom' | 'left' | 'right' | 'top';
+    tooltipPosition?: 'bottom' | 'left' | 'right' | 'top';
 };
 
 /**
@@ -19,12 +19,9 @@ type TClipboardProps = {
  * <Clipboard textCopy="Text to be copied" />
  * ```
  */
-const Clipboard = ({ textCopy, tooltip }: TClipboardProps) => {
+const Clipboard = ({ textCopy, tooltipPosition }: TClipboardProps) => {
     const [, copy] = useCopyToClipboard();
-    const { isMobile } = useBreakpoint();
     const [isCopied, setIsCopied] = useState(false);
-    const hoverRef = useRef(null);
-    const isHovered = useHover(hoverRef);
     let timeoutClipboard: ReturnType<typeof setTimeout>;
 
     /**
@@ -45,12 +42,8 @@ const Clipboard = ({ textCopy, tooltip }: TClipboardProps) => {
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
-        <Tooltip
-            alignment={tooltip ?? 'bottom'}
-            isVisible={isHovered && !isMobile}
-            message={isCopied ? 'Copied!' : 'Copy'}
-        >
-            <Button colorStyle='white' onClick={onClick} ref={hoverRef} size='sm' variant='tertiary'>
+        <Tooltip className='text-center' message={isCopied ? 'Copied!' : 'Copy'} position={tooltipPosition ?? 'bottom'}>
+            <Button colorStyle='white' onClick={onClick} size='sm' variant='tertiary'>
                 {isCopied ? <CheckmarkCircle /> : <ClipboardIcon />}
             </Button>
         </Tooltip>

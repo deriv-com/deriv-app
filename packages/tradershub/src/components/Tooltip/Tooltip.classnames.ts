@@ -1,26 +1,46 @@
 import { cva, VariantProps } from 'class-variance-authority';
 import { ExcludeAllNull } from '@deriv/quill-design';
 
-export const TooltipClass = cva('z-1 absolute invisible flex flex-col group-hover:visible', {
+export const NewTooltipContainerClassnames = cva(
+    'z-10 invisible group-hover:visible absolute p-400 text-75 rounded-200',
+    {
+        defaultVariants: {
+            position: 'top',
+            variant: 'general',
+        },
+        variants: {
+            position: {
+                bottom: 'left-1/2 -translate-x-1/2 top-[calc(100%+5px)]',
+                left: 'top-1/2 -translate-y-1/2 right-[calc(100%+5px)]',
+                right: 'top-1/2 -translate-y-1/2 left-[calc(100%+5px)]',
+                top: 'left-1/2 -translate-x-1/2 bottom-[calc(100%+5px)]',
+            },
+            variant: {
+                error: 'bg-status-light-danger text-random-white',
+                general: 'bg-system-light-hover-background text-system-light-general-text',
+            },
+        },
+    }
+);
+
+export const NewTooltipClassnames = cva('z-10 invisible group-hover:visible absolute border-solid border-300', {
+    defaultVariants: {
+        position: 'top',
+        variant: 'general',
+    },
     variants: {
-        alignment: {
-            bottom: 'top-1500 right-75',
-            left: 'top-75 right-2000',
-            right: 'top-75 left-2000',
-            top: 'bottom-1500 right-75',
+        position: {
+            bottom: `left-1/2 -translate-x-1/2 top-full border-l-random-transparent border-r-random-transparent border-t-50 border-b-300`,
+            left: 'top-1/2 -translate-y-1/2 right-full border-t-random-transparent border-b-random-transparent border-r-50 border-l-300',
+            right: 'top-1/2 -translate-y-1/2 left-full border-t-random-transparent border-b-random-transparent border-l-50 border-r-300',
+            top: 'left-1/2 -translate-x-1/2 bottom-full border-l-random-transparent border-r-random-transparent border-b-50 border-t-300',
+        },
+        variant: {
+            error: 'border-status-light-danger',
+            general: 'border-system-light-hover-background',
         },
     },
 });
 
-export const TooltipPointerClass = cva('absolute transform rotate-45 h-400 w-400 bg-system-light-active-background', {
-    variants: {
-        alignment: {
-            bottom: '-mb-75 bottom-1400 right-1/2',
-            left: '-mb-75 top-600 -right-200',
-            right: '-mb-75 top-600 -left-200',
-            top: '-mb-75 top-1400 right-1/2',
-        },
-    },
-});
-
-export type TooltipProps = ExcludeAllNull<VariantProps<typeof TooltipClass>>;
+export type NewTooltipContainerProps = ExcludeAllNull<VariantProps<typeof NewTooltipContainerClassnames>>;
+export type NewTooltipClassnamesProps = ExcludeAllNull<VariantProps<typeof NewTooltipClassnames>>;

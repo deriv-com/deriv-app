@@ -9,7 +9,6 @@ export * from './Dialog';
 export * from './EUDisclaimerMessage';
 export * from './GetADerivAccountBanner';
 export * from './Modal';
-export * from './NewTooltip';
 export * from './OptionsAndMultipliersSection';
 export * from './RegulationSwitcher';
 export * from './SentEmailContent';

@@ -19,6 +19,7 @@ type TProps = {
 };
 
 const WalletTransferFormAccountCard: React.FC<TProps> = ({ account, activeWallet, type = 'modal' }) => {
+
     const { isMobile } = useDevice();
     const isInput = type === 'input';
     const isModal = type === 'modal';

@@ -76,7 +76,7 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     }, [location.pathname, isMobile]);
 
     useEffect(() => {
-        invalidate('balance');
+    invalidate('balance');
     }, [activeWallet]);
 
     return (

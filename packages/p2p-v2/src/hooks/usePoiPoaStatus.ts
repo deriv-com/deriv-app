@@ -7,12 +7,19 @@ const usePoiPoaStatus = () => {
 
     // create new response for poi/poa statuses
     const modifiedAccountStatus = useMemo(() => {
-        if (!data?.authentication || !data?.p2p_poa_required) return;
+        if (!data) return undefined;
+
+        const documentStatus = data?.authentication?.document?.status;
+        const identityStatus = data?.authentication?.identity?.status;
 
         return {
             isP2PPoaRequired: data?.p2p_poa_required,
-            poaStatus: data?.authentication?.document?.status,
-            poiStatus: data?.authentication?.identity?.status,
+            isPoaPending: documentStatus === 'pending',
+            isPoaVerified: documentStatus === 'verified',
+            isPoiPending: identityStatus === 'pending',
+            isPoiVerified: identityStatus === 'verified',
+            poaStatus: documentStatus,
+            poiStatus: identityStatus,
         };
     }, [data]);
 

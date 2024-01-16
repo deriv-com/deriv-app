@@ -1,5 +1,4 @@
 import React from 'react';
-import { documentStatusCodes, identityStatusCodes } from '../../constants';
 import { usePoiPoaStatus } from '../../hooks';
 import SendEmailIcon from '../../public/ic-send-email.svg';
 import { Checklist } from '../Checklist';
@@ -33,7 +32,8 @@ const getPoaAction = (status: string | undefined) => {
 
 const Verification = () => {
     const { data, isLoading } = usePoiPoaStatus();
-    const { isP2PPoaRequired, poaStatus, poiStatus } = data || {};
+    const { isP2PPoaRequired, isPoaPending, isPoaVerified, isPoiPending, isPoiVerified, poaStatus, poiStatus } =
+        data || {};
 
     const redirectToVerification = (route: string) => {
         const search = window.location.search;
@@ -50,22 +50,21 @@ const Verification = () => {
 
     const checklistItems = [
         {
-            isDisabled: poiStatus === identityStatusCodes.PENDING,
+            isDisabled: isPoiPending,
             onClick: () => {
-                if (poiStatus !== identityStatusCodes.VERIFIED) redirectToVerification('/account/proof-of-identity');
+                if (!isPoaVerified) redirectToVerification('/account/proof-of-identity');
             },
-            status: poiStatus === identityStatusCodes.VERIFIED ? 'done' : 'action',
+            status: isPoaVerified ? 'done' : 'action',
             text: getPoiAction(poiStatus),
         },
         ...(isP2PPoaRequired
             ? [
                   {
-                      isDisabled: poaStatus === documentStatusCodes.PENDING,
+                      isDisabled: isPoaPending,
                       onClick: () => {
-                          if (poaStatus !== documentStatusCodes.VERIFIED)
-                              redirectToVerification('/account/proof-of-address');
+                          if (!isPoiVerified) redirectToVerification('/account/proof-of-address');
                       },
-                      status: poiStatus === documentStatusCodes.VERIFIED ? 'done' : 'action',
+                      status: isPoiVerified ? 'done' : 'action',
                       text: getPoaAction(poaStatus),
                   },
               ]

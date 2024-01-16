@@ -50,6 +50,7 @@ module.exports = {
                     purple: '#db69e1',
                     teal: '#00a8af',
                     transparent: 'transparent',
+                    white: '#ffffff',
                 },
                 status: {
                     dark: {

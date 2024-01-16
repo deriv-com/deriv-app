@@ -599,6 +599,14 @@
 
             &.italic {
                 font-style: italic;
+
+                span {
+                    font-size: 1.2rem;
+
+                    @include mobile {
+                        font-size: 1.2rem;
+                    }
+                }
             }
 
             &.no-margin {
@@ -608,14 +616,34 @@
                     margin-bottom: 0.8rem;
                 }
             }
+
+            &.top-margin {
+                margin-top: 1rem;
+            }
         }
 
         &__image {
             width: 100%;
             margin-bottom: 2rem;
 
+            @include mobile {
+                height: 36rem;
+            }
+
+            img {
+                height: 100%;
+                width: auto;
+                max-width: 100%;
+                object-fit: contain;
+            }
+
             @include desktop {
                 padding-left: 1rem;
+            }
+
+            &.formula {
+                width: unset;
+                margin: 1rem 0.5rem;
             }
         }
     }

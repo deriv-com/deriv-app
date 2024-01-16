@@ -1,0 +1,11 @@
+.p2p-v2-payment-method-card {
+    &__icon {
+        border-radius: 2px;
+    }
+    &__header {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+    }
+}

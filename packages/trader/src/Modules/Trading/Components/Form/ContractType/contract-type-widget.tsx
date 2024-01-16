@@ -36,6 +36,7 @@ const ContractTypeWidget = observer(
         const wrapper_ref = React.useRef<HTMLDivElement | null>(null);
         const [is_dialog_open, setDialogVisibility] = React.useState<boolean | null>();
         const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
+        const [hide_back_button, setHideBackButton] = React.useState(false);
         const [selected_category, setSelectedCategory] = React.useState<TList['key']>('All');
         const [search_query, setSearchQuery] = React.useState('');
         const [item, setItem] = React.useState<TContractType | null>(null);
@@ -47,6 +48,7 @@ const ContractTypeWidget = observer(
                     setDialogVisibility(false);
                     setInfoDialogVisibility(false);
                     setItem({ ...item, value });
+                    setHideBackButton(false);
                 }
             },
             [item, value, is_dialog_open, is_mobile]
@@ -136,6 +138,7 @@ const ContractTypeWidget = observer(
 
         const onWidgetClick = () => {
             setDialogVisibility(!is_dialog_open);
+            setHideBackButton(false);
             setInfoDialogVisibility(false);
             setItem({ ...item, value });
         };
@@ -146,6 +149,17 @@ const ContractTypeWidget = observer(
         };
 
         const onChangeInput = (searchQueryItem: string) => setSearchQuery(searchQueryItem);
+
+        const handleLearnMore = () => {
+            handleVisibility();
+            handleInfoClick(item || { value });
+            setHideBackButton(true);
+        };
+
+        const onDescriptionClose = () => {
+            onWidgetClick();
+            setHideBackButton(false);
+        };
 
         const list_with_category = () => {
             const ordered_list = list && getCategoriesSortedByKey(list);
@@ -246,75 +260,89 @@ const ContractTypeWidget = observer(
         const should_show_info_banner = !!selected_category_contracts()?.some(i => i.is_unavailable);
 
         return (
-            <div
-                data-testid='dt_contract_widget'
-                id='dt_contract_dropdown'
-                className={`contract-type-widget contract-type-widget--${value} dropdown--left`}
-                ref={wrapper_ref}
-                tabIndex={0}
-            >
-                <ContractType.Display
-                    is_open={is_dialog_open || is_info_dialog_open}
-                    list={list}
-                    name={name ?? ''}
-                    onClick={onWidgetClick}
-                    value={value}
-                />
-                <ContractType.Dialog
-                    is_info_dialog_open={is_info_dialog_open}
-                    is_open={!!is_dialog_open}
-                    item={item || { value }}
-                    categories={list_with_category()}
-                    selected={selected_category || list_with_category()[0]?.key}
-                    onBackButtonClick={onBackButtonClick}
-                    onSearchBlur={onSearchBlur}
-                    onClose={handleVisibility}
-                    onChangeInput={onChangeInput}
-                    onCategoryClick={handleCategoryClick}
-                    show_loading={languageChanged}
-                    info_banner={
-                        should_show_info_banner && (
-                            <InlineMessage
-                                size={is_mobile ? 'sm' : 'xs'}
-                                type='information'
-                                message={
-                                    <Localize
-                                        i18n_default_text='Some trade types are unavailable for {{symbol}}.'
-                                        values={{ symbol: active_symbols.find(s => s.symbol === symbol)?.display_name }}
-                                        shouldUnescape
-                                    />
-                                }
-                            />
-                        )
-                    }
-                    learn_more_banner={
-                        <button
-                            onClick={() => handleInfoClick(item || { value })}
-                            className='contract-type__learn-more'
-                        >
-                            <Text size={is_mobile ? 'xxs' : 'xs'} line_height={is_mobile ? 'l' : 'xl'}>
-                                <Localize i18n_default_text='Learn more about trade types' />
-                            </Text>
-                            <Icon icon='IcChevronRight' size={16} />
-                        </button>
-                    }
+            <React.Fragment>
+                <Text
+                    as='button'
+                    line_height='s'
+                    size='xxxs'
+                    className='contract-type-widget__learn-more'
+                    onClick={handleLearnMore}
                 >
-                    {is_info_dialog_open ? (
-                        <ContractType.Info
-                            handleSelect={handleSelect}
-                            item={item || { value }}
-                            list={list_with_category()}
-                        />
-                    ) : (
-                        <ContractType.List
-                            handleSelect={handleSelect}
-                            list={selected_category_contracts() as TContractCategory[]}
-                            should_show_info_banner={should_show_info_banner}
-                            value={value}
-                        />
-                    )}
-                </ContractType.Dialog>
-            </div>
+                    <Localize i18n_default_text='Learn about this trade type' />
+                </Text>
+                <div
+                    data-testid='dt_contract_widget'
+                    id='dt_contract_dropdown'
+                    className={`contract-type-widget contract-type-widget--${value} dropdown--left`}
+                    ref={wrapper_ref}
+                    tabIndex={0}
+                >
+                    <ContractType.Display
+                        is_open={is_dialog_open || is_info_dialog_open}
+                        list={list}
+                        name={name ?? ''}
+                        onClick={onWidgetClick}
+                        value={value}
+                    />
+                    <ContractType.Dialog
+                        is_info_dialog_open={is_info_dialog_open}
+                        is_open={!!is_dialog_open}
+                        item={item || { value }}
+                        categories={list_with_category()}
+                        selected={selected_category || list_with_category()[0]?.key}
+                        onBackButtonClick={onBackButtonClick}
+                        onSearchBlur={onSearchBlur}
+                        onDescriptionClose={onDescriptionClose}
+                        onChangeInput={onChangeInput}
+                        onCategoryClick={handleCategoryClick}
+                        show_loading={languageChanged}
+                        hide_back_button={hide_back_button}
+                        info_banner={
+                            should_show_info_banner && (
+                                <InlineMessage
+                                    size={is_mobile ? 'sm' : 'xs'}
+                                    type='information'
+                                    message={
+                                        <Localize
+                                            i18n_default_text='Some trade types are unavailable for {{symbol}}.'
+                                            values={{
+                                                symbol: active_symbols.find(s => s.symbol === symbol)?.display_name,
+                                            }}
+                                            shouldUnescape
+                                        />
+                                    }
+                                />
+                            )
+                        }
+                        learn_more_banner={
+                            <button
+                                onClick={() => handleInfoClick(item || { value })}
+                                className='contract-type__learn-more'
+                            >
+                                <Text size={is_mobile ? 'xxs' : 'xs'} line_height={is_mobile ? 'l' : 'xl'}>
+                                    <Localize i18n_default_text='Learn more about trade types' />
+                                </Text>
+                                <Icon icon='IcChevronRight' size={16} />
+                            </button>
+                        }
+                    >
+                        {is_info_dialog_open ? (
+                            <ContractType.Info
+                                handleSelect={handleSelect}
+                                item={item || { value }}
+                                list={list_with_category()}
+                            />
+                        ) : (
+                            <ContractType.List
+                                handleSelect={handleSelect}
+                                list={selected_category_contracts() as TContractCategory[]}
+                                should_show_info_banner={should_show_info_banner}
+                                value={value}
+                            />
+                        )}
+                    </ContractType.Dialog>
+                </div>
+            </React.Fragment>
         );
     }
 );

@@ -6,9 +6,10 @@ import ContractTypeMenu from './ContractTypeMenu';
 
 type TContractTypeDialog = {
     is_info_dialog_open: boolean;
-    onClose: React.ComponentProps<typeof MobileDialog>['onClose'];
+    onDescriptionClose: () => void;
     is_open: boolean;
-    learn_more_banner: React.ReactNode;
+    learn_more_banner?: React.ReactNode;
+    hide_back_button?: boolean;
 };
 
 type TContractTypeDialogProps = Pick<
@@ -36,13 +37,19 @@ const ContractTypeDialog = ({
     onBackButtonClick,
     onCategoryClick,
     onChangeInput,
-    onClose,
+    onDescriptionClose,
     onSearchBlur,
     show_loading,
     learn_more_banner,
+    hide_back_button,
 }: React.PropsWithChildren<TContractTypeDialogProps>) => {
     const current_mobile_title = is_info_dialog_open ? (
-        <Header title={localize('Tutorial')} onClickGoBack={onBackButtonClick} text_size='xs' />
+        <Header
+            title={localize('Tutorial')}
+            onClickGoBack={onBackButtonClick}
+            text_size='xs'
+            should_render_arrow={!hide_back_button}
+        />
     ) : (
         localize('Trade types')
     );
@@ -58,7 +65,7 @@ const ContractTypeDialog = ({
                     header_classname='contract-type-widget__header'
                     wrapper_classname={is_info_dialog_open ? 'contracts-modal-info' : 'contracts-modal-list'}
                     visible={is_open}
-                    onClose={onClose}
+                    onClose={onDescriptionClose}
                     has_content_scroll={!is_info_dialog_open}
                     learn_more_banner={is_info_dialog_open ? '' : learn_more_banner}
                 >
@@ -74,11 +81,13 @@ const ContractTypeDialog = ({
                     selected={selected}
                     categories={categories}
                     onSearchBlur={onSearchBlur}
+                    onClose={onDescriptionClose}
                     onBackButtonClick={onBackButtonClick}
                     onChangeInput={onChangeInput}
                     onCategoryClick={onCategoryClick}
                     show_loading={show_loading}
                     learn_more_banner={learn_more_banner}
+                    hide_back_button={hide_back_button}
                 >
                     {children}
                 </ContractTypeMenu>

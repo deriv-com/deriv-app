@@ -21,8 +21,10 @@ type TDialog = {
     onCategoryClick?: (e: React.ComponentProps<typeof VerticalTab.Headers>['selected']) => void;
     onChangeInput?: (e: string) => void;
     onSearchBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement | null>;
+    onClose?: () => void;
     show_loading?: boolean;
-    learn_more_banner: React.ReactNode;
+    learn_more_banner?: React.ReactNode;
+    hide_back_button?: boolean;
 };
 
 const Dialog = ({
@@ -36,9 +38,11 @@ const Dialog = ({
     onCategoryClick,
     onChangeInput,
     onSearchBlur,
+    onClose,
     selected,
     show_loading,
     learn_more_banner,
+    hide_back_button,
 }: React.PropsWithChildren<TDialog>) => {
     const input_ref = React.useRef<(HTMLInputElement & HTMLTextAreaElement) | null>(null);
     const [input_value, setInputValue] = React.useState('');
@@ -123,7 +127,13 @@ const Dialog = ({
                             ) : (
                                 <React.Fragment>
                                     <div className='dc-vertical-tab__action-bar dc-vertical-tab__action-bar--contract-type-info-header'>
-                                        <Header title={localize('Tutorial')} onClickGoBack={onBackButtonClick} />
+                                        <Header
+                                            title={localize('Tutorial')}
+                                            onClickGoBack={onBackButtonClick}
+                                            onClickCross={onClose}
+                                            should_render_arrow={!hide_back_button}
+                                            should_render_cross={hide_back_button}
+                                        />
                                     </div>
                                     {renderChildren()}
                                 </React.Fragment>

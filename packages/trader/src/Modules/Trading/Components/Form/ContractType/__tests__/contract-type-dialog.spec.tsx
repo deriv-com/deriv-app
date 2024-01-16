@@ -13,8 +13,8 @@ const MockContractTypeDialog = () => (
     <ContractTypeDialog
         is_open
         categories={[]}
-        onClose={jest.fn()}
         is_info_dialog_open={false}
+        onDescriptionClose={jest.fn()}
         item={{
             text: 'test',
             value: 'test',

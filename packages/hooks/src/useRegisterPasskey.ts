@@ -37,7 +37,12 @@ const useRegisterPasskey = () => {
             try {
                 if (public_key) {
                     const attResp = await startRegistration(public_key);
-                    mutate({ payload: { publicKeyCredential: attResp } });
+                    mutate({
+                        payload: {
+                            name: 'New Passkey',
+                            publicKeyCredential: attResp,
+                        },
+                    });
                 }
             } catch (e) {
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment

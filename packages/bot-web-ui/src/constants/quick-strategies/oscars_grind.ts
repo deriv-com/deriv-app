@@ -19,7 +19,7 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
     },
     {
         type: 'subtitle',
-        content: [localize('Key Parameters')],
+        content: [localize('Key parameters')],
     },
     {
         type: 'text',
@@ -27,7 +27,11 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
     },
     {
         type: 'text',
-        content: [localize('<strong>Initial stake:</strong> The amount you pay to enter a trade.')],
+        content: [
+            localize(
+                '<strong>Initial stake:</strong> The amount that you are willing to place as a stake to enter a trade. This is the starting point for any changes in stake depending on the dynamic of the strategy being used.'
+            ),
+        ],
     },
     {
         type: 'text',
@@ -55,8 +59,10 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
         alt: localize('An example of Oscar’s Grind strategy'),
     },
     {
-        type: 'subtitle',
-        content: [localize('Principle 1: Strategy aims to potentially make one unit of profit per session')],
+        type: 'text',
+        content: [
+            localize('<strong>Principle 1: Strategy aims to potentially make one unit of profit per session</strong>'),
+        ],
     },
     {
         type: 'text',
@@ -67,24 +73,26 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
         ],
     },
     {
-        type: 'subtitle',
+        type: 'text',
         content: [
-            localize('Principle 2: The stake only increases when a loss trade is followed by a successful trade'),
+            localize(
+                '<strong>Principle 2: The stake only increases when a loss trade is followed by a successful trade</strong>'
+            ),
         ],
     },
     {
         type: 'text',
         content: [
             localize(
-                'The table illustrates this principle in the second session. After a trade resulting in loss in round 4 followed by a successful trade in round 5, the stake will increase to 2 USD for round 6. This is in line with the strategy’s rule of raising the stake only after a loss is followed by a successful trade.'
+                "The table illustrates this principle in the second session. After a trade resulting in loss in round 4 followed by a successful trade in round 5, the stake will increase to 2 USD for round 6. This is in line with the strategy's rule of raising the stake only after a loss is followed by a successful trade."
             ),
         ],
     },
     {
-        type: 'subtitle',
+        type: 'text',
         content: [
             localize(
-                'Principle 3: The stake adjusts to the gap size between current loss and the target profit for the session'
+                '<strong>Principle 3: The stake adjusts to the gap size between current loss and the target profit for the session</strong>'
             ),
         ],
     },
@@ -112,7 +120,7 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
     },
     {
         type: 'subtitle',
-        content: [localize('Profit and Loss Thresholds')],
+        content: [localize('Profit and loss thresholds')],
     },
     {
         type: 'text',
@@ -130,7 +138,7 @@ export const OSCARS_GRIND: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                'The Oscar’s Grind strategy provides a disciplined approach for incremental gains through systematic stake progression. When integrated into Deriv Bot with proper risk management like profit or loss thresholds, it offers traders a potentially powerful automated trading technique. However, traders should first thoroughly assess their risk tolerance and first try trading on a demo account in order to familiarise with the strategy before trading with real funds.'
+                "The Oscar's Grind strategy provides a disciplined approach for incremental gains through systematic stake progression. When integrated into Deriv Bot with proper risk management like profit or loss thresholds, it offers traders a potentially powerful automated trading technique. However, traders should first thoroughly assess their risk tolerance and first try trading on a demo account in order to familiarise with the strategy before trading with real funds."
             ),
         ],
     },

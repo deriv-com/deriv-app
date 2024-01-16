@@ -9,12 +9,12 @@ import { BaseMessage, MessageType, MessageTypeFilter } from '@sendbird/chat/mess
  * @returns {Blob}
  */
 export const renameFile = (file: File) => {
-    const new_file = new Blob([file], { type: file.type });
-    new_file.name = file.name
+    const newFile = new Blob([file], { type: file.type });
+    newFile.name = file.name
         .split('')
         .filter(char => char.charCodeAt(0) >= 32 && char.charCodeAt(0) <= 126)
         .join('');
-    return new_file;
+    return newFile;
 };
 
 const ChatMessageStatus = {

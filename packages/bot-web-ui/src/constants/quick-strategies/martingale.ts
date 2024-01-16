@@ -22,7 +22,7 @@ export const MARTINGALE: TDescriptionItem[] = [
     },
     {
         type: 'subtitle',
-        content: [localize('Key Parameters')],
+        content: [localize('Key parameters')],
     },
     {
         type: 'text',
@@ -32,7 +32,7 @@ export const MARTINGALE: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                '<strong>Initial stake:</strong> The amount you pay to enter a trade. This is the starting point for any changes in stake depending on the dynamic of the strategy being used.'
+                '<strong>Initial stake:</strong> The amount that you are willing to place as a stake to enter a trade. This is the starting point for any changes in stake depending on the dynamic of the strategy being used.'
             ),
         ],
     },
@@ -100,7 +100,7 @@ export const MARTINGALE: TDescriptionItem[] = [
     },
     {
         type: 'subtitle',
-        content: [localize('Profit and Loss Thresholds')],
+        content: [localize('Profit and loss thresholds')],
     },
     {
         type: 'text',
@@ -112,7 +112,7 @@ export const MARTINGALE: TDescriptionItem[] = [
     },
     {
         type: 'subtitle',
-        content: [localize('The Martingale Formula')],
+        content: [localize('Estimating the lifespan of your trades')],
     },
     {
         type: 'text',
@@ -123,14 +123,18 @@ export const MARTINGALE: TDescriptionItem[] = [
         ],
     },
     {
-        type: 'text',
-        content: [localize('R = log(B/s) / log(m)')],
+        type: 'media',
+        src: getImageLocation('martingale_formula_1.svg'),
+        dark_src: getImageLocation('martingale_formula_dark_1.svg'),
+        alt: localize('Martingale formula 1'),
+        className: 'formula',
+        styles: { height: '7.5rem' },
     },
     {
         type: 'text',
         content: [
             localize('Where:'),
-            localize('R represents the number of rounds a trader can sustain given a specific loss threshold.'),
+            localize('R is the number of rounds a trader can sustain given a specific loss threshold.'),
             localize('B is the loss threshold.'),
             localize('s is the initial stake.'),
             localize('m is the Martingale multiplier.'),
@@ -141,15 +145,28 @@ export const MARTINGALE: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                'For instance, if a trader sets the loss threshold (B) is 1000 USD, initial stake (s) is 1 USD, and the Martingale multiplier (m) is 2, the calculation would be as follows:'
+                'For instance, if a trader has a loss threshold (B) is 1000 USD, with an initial stake (s) is 1 USD, and the Martingale multiplier (m) is 2, the calculation would be as follows:'
             ),
-            localize('R = log(1000/1) / log(2)'),
-            localize('R ≈ 9.965'),
+        ],
+        className: 'top-margin',
+    },
+    {
+        type: 'media',
+        src: getImageLocation('martingale_formula_2.svg'),
+        dark_src: getImageLocation('martingale_formula_dark_2.svg'),
+        alt: localize('Martingale formula 2'),
+        className: 'formula',
+        styles: { height: '7.5rem' },
+    },
+    {
+        type: 'text',
+        content: [
+            localize('Number of rounds, R ≈ 9.965'),
             localize(
                 'This means that after 10 rounds of consecutive losses, this trader will lose 1023 USD which exceeds the loss threshold of 1000 USD, stopping the bot.'
             ),
             localize(
-                'This formula allows you to work backwards based on your available capital and risk tolerance. Determine the Loss Threshold and Initial Stake, which will automatically calculate the number of rounds you can trade. This will give you an insight on stake sizing and expectations.'
+                'This formula helps you plan your trades by considering the amount of money you have and your comfort level with risk. It involves determining your loss threshold and the initial stake you want to trade with. Then, you use this formula to calculate the number of rounds you can trade. This process provides insight into stake sizing and expectations.'
             ),
         ],
     },

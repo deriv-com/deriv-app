@@ -1,11 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { useCombobox } from 'downshift';
-import ArrowIcon from '../../../public/images/pointed-down-arrow-icon.svg';
-import { TGenericSizes } from '../../../types';
-import reactNodeToString from '../../../utils/react-node-to-string';
-import { WalletText } from '../components/WalletText';
-import WalletTextField, { WalletTextFieldProps } from '../components/WalletTextField/WalletTextField';
+import { StandaloneChevronDownRegularIcon } from '@deriv/quill-icons';
+import { TGenericSizes } from '../types';
+import { reactNodeToString } from '../utils';
+import { WalletText } from '../WalletText';
+import { WalletTextField } from '../WalletTextField';
+import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
 import './WalletDropdown.scss';
 
 type TProps = {
@@ -117,7 +118,8 @@ const WalletDropdown: React.FC<TProps> = ({
                                 'wallets-dropdown__button--active': isOpen,
                             })}
                         >
-                            <ArrowIcon />
+                            {/* <ArrowIcon /> */}
+                            <StandaloneChevronDownRegularIcon iconSize='md' />
                         </button>
                     )}
                     type='text'

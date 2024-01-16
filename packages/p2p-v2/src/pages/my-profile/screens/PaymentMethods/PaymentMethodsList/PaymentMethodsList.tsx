@@ -64,7 +64,6 @@ const PaymentMethodsList = ({
     );
 
     const paymentMethodsListContent = (
-        // <div className='p2p-v2-payment-methodslist-wrapper'>
         <div className='p2p-v2-payment-methods-list'>
             {isMobile ? null : addNewButton}
             {Object.keys(groupedPaymentMethods)
@@ -95,7 +94,6 @@ const PaymentMethodsList = ({
                     );
                 })}
         </div>
-        // </div>
     );
 
     if (isMobile) {

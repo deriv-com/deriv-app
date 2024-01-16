@@ -182,6 +182,7 @@ module.exports = function (env) {
                 '@deriv/cashier': true,
                 '@deriv/cfd': true,
                 '@deriv/analytics': true,
+                '@growthbook/growthbook-react': '@growthbook/growthbook-react',
             },
         ],
         //TODO: Uncomment this line when type script migrations on all packages done

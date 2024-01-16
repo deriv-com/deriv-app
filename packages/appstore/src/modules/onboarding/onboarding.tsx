@@ -9,6 +9,7 @@ import { getTradingHubContents } from 'Constants/trading-hub-content';
 import EmptyOnboarding from './empty-onboarding';
 import { useStore, observer } from '@deriv/stores';
 import { useTradersHubTracking } from 'Hooks/index';
+import { useFeatureIsOn } from '@growthbook/growthbook-react';
 
 type TOnboardingProps = {
     contents: Record<
@@ -43,6 +44,8 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const [step, setStep] = React.useState<number>(1);
     const has_active_real_account = useHasActiveRealAccount();
     const steps_list = Object.keys(contents).filter(key => is_mt5_allowed || key !== 'step3');
+
+    const skip_onboarding_flow = useFeatureIsOn('skip-onboarding-flow');
 
     const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose, trackDotNavigation } =
         useTradersHubTracking();
@@ -129,7 +132,7 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
         return <EmptyOnboarding />;
     }
 
-    if (is_logged_in && is_from_signup_account && is_eu_user) {
+    if ((is_logged_in && is_from_signup_account && is_eu_user) || skip_onboarding_flow) {
         history.push(routes.traders_hub);
     }
 

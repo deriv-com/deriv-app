@@ -33,6 +33,7 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store.modules.attachModule('cashier', new CashierStore(root_store, WS));
         root_store.modules.cashier.general_store.init();
     };
+
     // TODO: investigate the order of cashier store initialization
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(initCashierStore, []);

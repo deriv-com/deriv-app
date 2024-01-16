@@ -94,6 +94,7 @@
     "dependencies": {
         "@babel/preset-typescript": "^7.16.5",
         "@deriv/analytics": "^1.4.8",
+        "@growthbook/growthbook-react": "^0.22.0",
         "@sendbird/chat": "^4.9.7",
         "@types/react-transition-group": "^4.4.4",
         "babel-jest": "^27.3.1",

@@ -81,8 +81,30 @@
             margin-bottom: 4rem;
 
             @include mobile {
+                height: 36rem;
                 width: 100%;
                 margin-bottom: 2rem;
+            }
+
+            &.formula {
+                width: unset;
+                margin: 1rem 0.5rem;
+                img {
+                    height: 100%;
+                    width: auto;
+                    max-width: 100%;
+                    object-fit: contain;
+                }
+            }
+        }
+
+        &__description__content.italic {
+            span {
+                font-size: 1.4rem;
+
+                @include mobile {
+                    font-size: 1.2rem;
+                }
             }
         }
     }

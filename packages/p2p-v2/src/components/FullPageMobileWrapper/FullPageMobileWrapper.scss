@@ -13,9 +13,11 @@
 
         &--no-header {
             grid-template-rows: auto;
+            margin: 4rem 0 0;
         }
 
-        &--no-header--fixed-footer {
+        &--no-header-fixed-footer {
+            margin: 4rem 0 0;
             grid-template-rows: auto 7rem;
         }
     }
@@ -25,6 +27,10 @@
         border-bottom: 2px solid #f2f3f4;
         display: flex;
         gap: 2rem;
+    }
+
+    &__body {
+        overflow: scroll;
     }
 
     &__footer {

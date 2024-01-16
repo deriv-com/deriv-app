@@ -8,6 +8,10 @@
     border-radius: 3.4rem;
     color: #ffffff;
 
+    @include mobile {
+        padding: 0.2rem 0.8rem;
+    }
+
     &--success {
         background-image: linear-gradient(#00a8af, #04cfd8);
     }

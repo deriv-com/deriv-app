@@ -23,7 +23,7 @@
                 flex-direction: column;
                 align-items: flex-start;
                 justify-content: center;
-                gap: 2rem;
+                gap: 0.9rem;
             }
 
             & div {
@@ -49,6 +49,10 @@
                     line-height: 1.4rem;
                     color: #999999;
 
+                    @include mobile {
+                        padding: 0.5rem 0;
+                    }
+
                     & svg {
                         vertical-align: middle;
                     }
@@ -66,6 +70,10 @@
     &__toggle {
         display: flex;
         gap: 0.8rem;
+
+        @include mobile {
+            justify-content: space-between;
+        }
 
         &-switch {
             & h1 {

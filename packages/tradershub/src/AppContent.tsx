@@ -1,14 +1,12 @@
 import React from 'react';
-import { useIsEuRegion } from '@deriv/api';
+import useRegionFlags from './hooks/useRegionFlags';
 import { EUDisclaimerMessage, useUIContext } from './components';
 import { Router } from './routes';
 
 const AppContent = () => {
-    const { isEUCountry } = useIsEuRegion();
     const { getUIState } = useUIContext();
     const activeRegion = getUIState('region');
-
-    const euRegion = activeRegion === 'EU';
+    const { isEU } = useRegionFlags(activeRegion);
 
     return (
         <div className='h-full-mobile lg:h-full-desktop'>
@@ -16,7 +14,7 @@ const AppContent = () => {
                 <div className='z-10' id='v2_modal_show_header_root' />
                 <Router />
             </div>
-            {(isEUCountry || euRegion) && <EUDisclaimerMessage />}
+            {isEU && <EUDisclaimerMessage />}
         </div>
     );
 };

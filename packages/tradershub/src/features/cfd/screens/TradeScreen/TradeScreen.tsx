@@ -1,8 +1,9 @@
 import React, { Fragment, useMemo } from 'react';
-import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList, useIsEuRegion } from '@deriv/api';
+import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Text, useBreakpoint } from '@deriv/quill-design';
 import { useUIContext } from '../../../../components';
+import useRegionFlags from '../../../../hooks/useRegionFlags';
 import ImportantIcon from '../../../../public/images/ic-important.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '../../constants';
@@ -23,12 +24,10 @@ const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
 
 const TradeScreen = ({ account }: TradeScreenProps) => {
     const { isMobile } = useBreakpoint();
-    const { isEUCountry } = useIsEuRegion();
-
     const { getUIState } = useUIContext();
     const activeRegion = getUIState('region');
+    const { isEU } = useRegionFlags(activeRegion);
 
-    const euRegion = activeRegion === 'EU' || isEUCountry;
     const { getCFDState } = Provider.useCFDContext();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: ctraderAccountsList } = useCtraderAccountsList();
@@ -61,7 +60,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
         return (details as THooks.CtraderAccountsList)?.login;
     }, [details, dxtradePlatform, mt5Platform, platform]);
 
-    const marketTypeDetails = MarketTypeDetails(euRegion);
+    const marketTypeDetails = MarketTypeDetails(isEU);
 
     return (
         <div className='lg:w-[45vw] lg:min-w-[512px] lg:max-w-[600px] w-full min-w-full h-auto'>

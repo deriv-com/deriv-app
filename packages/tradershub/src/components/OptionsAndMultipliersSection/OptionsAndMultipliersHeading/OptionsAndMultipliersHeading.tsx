@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useIsEuRegion } from '@deriv/api';
 import { Heading, Text, useBreakpoint } from '@deriv/quill-design';
+import useRegionFlags from '../../../hooks/useRegionFlags';
 import { CurrencySwitcher } from '../../CurrencySwitcher';
 import { TitleDescriptionLoader } from '../../Loaders';
 import { StaticLink } from '../../StaticLink';
@@ -12,18 +13,15 @@ import { useUIContext } from '../../UIProvider';
  */
 const OptionsAndMultipliersHeading = () => {
     const { isMobile } = useBreakpoint();
-    const { isEUCountry, isSuccess } = useIsEuRegion();
-
+    const { isSuccess } = useIsEuRegion();
     const { getUIState } = useUIContext();
-
     const activeRegion = getUIState('region');
+    const { isEU } = useRegionFlags(activeRegion);
 
-    const euRegion = activeRegion === 'EU' || isEUCountry;
-
-    const title = euRegion ? 'Multipliers' : 'Options & multipliers';
+    const title = isEU ? 'Multipliers' : 'Options & multipliers';
 
     const description = useMemo(() => {
-        if (euRegion) {
+        if (isEU) {
             return (
                 <Text className='space-y-50' size='sm'>
                     Get the upside of CFDs without risking more than your initial stake with
@@ -47,7 +45,7 @@ const OptionsAndMultipliersHeading = () => {
                 .
             </Text>
         );
-    }, [euRegion]);
+    }, [isEU]);
 
     if (!isSuccess) return <TitleDescriptionLoader />;
 

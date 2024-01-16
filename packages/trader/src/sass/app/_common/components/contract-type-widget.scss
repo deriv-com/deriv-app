@@ -17,7 +17,7 @@
 
         @include mobile {
             position: absolute;
-            top: 1rem;
+            top: 1.5rem;
             background-color: transparent;
         }
     }
@@ -73,6 +73,12 @@
         transform-origin: 45% 45;
         color: var(--text-prominent);
         @extend %inline-icon;
+
+        &--right {
+            position: absolute;
+            right: 0;
+            margin-right: 0.2rem;
+        }
     }
     &__icon-wrapper {
         display: inline-flex;

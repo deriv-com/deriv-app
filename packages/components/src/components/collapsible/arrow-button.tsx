@@ -14,6 +14,7 @@ type TArrowButton = {
     onClick: () => void;
     title?: string;
     position?: 'top' | 'bottom';
+    flat_button?: boolean;
 };
 
 const IconArrow = ({ className }: { className?: string }) => (
@@ -29,7 +30,7 @@ const IconArrowWithTitle = ({ title, ...props }: TIconArrowWithTitle) => (
     </React.Fragment>
 );
 
-const ArrowButton = ({ is_collapsed = false, position, onClick, title }: TArrowButton) => {
+const ArrowButton = ({ is_collapsed = false, position, onClick, title, flat_button = false }: TArrowButton) => {
     const [is_open, expand] = React.useState(!is_collapsed);
 
     const toggleExpand = () => {
@@ -82,8 +83,15 @@ const ArrowButton = ({ is_collapsed = false, position, onClick, title }: TArrowB
             );
     }
 
+    if (flat_button) icon_arrow = <div className='dc-collapsible__icon__flat' />;
+
     return (
-        <div className='dc-collapsible__button' onClick={toggleExpand}>
+        <div
+            className={classNames('dc-collapsible__button', {
+                'dc-collapsible__button--wide': flat_button,
+            })}
+            onClick={toggleExpand}
+        >
             {icon_arrow}
         </div>
     );

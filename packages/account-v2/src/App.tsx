@@ -3,28 +3,37 @@ import React from 'react';
 import { Formik } from 'formik';
 import { APIProvider } from '@deriv/api';
 import { BreakpointProvider } from '@deriv/quill-design';
-import { BrandDerivLogoCoralIcon } from '@deriv/quill-icons';
 import { FormProgress } from './components/form-progress';
+import SignupWizard from './components/SignupWizard';
+import { SignupWizardProvider, useSignupWizardContext } from './context/SignupWizardContext';
 import { stepProgress } from './mocks/form-progress.mock';
 import { INITIAL_VALUES, SELECTED_COUNTRY } from './mocks/idv-form.mock';
 import { IDVForm } from './modules/IDVForm';
 import './index.scss';
 
-const App: React.FC = () => (
-    <APIProvider standalone>
-        <BreakpointProvider>
-            <div className='text-heading-h1 text-solid-slate-500'>Account V2</div>
-            <div className='p-300'>
-                <BrandDerivLogoCoralIcon height='120px' width='120px' />
-            </div>
-            {/* [TODO]:Mock - Remove hardcoded initial value once isActive comes from Modal */}
-            <FormProgress activeStep={1} steps={stepProgress} />
-            {/* [TODO]:Mock - Remove The formik handler when the form is ready */}
-            <Formik initialValues={INITIAL_VALUES} onSubmit={() => {}}>
-                <IDVForm selectedCountry={SELECTED_COUNTRY} />
-            </Formik>
-        </BreakpointProvider>
-    </APIProvider>
-);
+const TriggerSignupWizardModal: React.FC = () => {
+    const { setIsWizardOpen } = useSignupWizardContext();
+
+    return <button onClick={() => setIsWizardOpen(true)}>Show SignupWizardModal</button>;
+};
+
+const App: React.FC = () => {
+    return (
+        <APIProvider standalone>
+            <BreakpointProvider>
+                <div className=' text-solid-slate-500 text-heading-h1'>Account V2</div>
+                <SignupWizardProvider>
+                    <SignupWizard />
+                    <TriggerSignupWizardModal />
+                    {/* [TODO]:Mock - Remove hardcoded initial value once isActive comes from Modal */}
+                    <FormProgress activeStep={1} steps={stepProgress} />
+                </SignupWizardProvider>
+                <Formik initialValues={INITIAL_VALUES} onSubmit={() => {}}>
+                    <IDVForm selectedCountry={SELECTED_COUNTRY} />
+                </Formik>
+            </BreakpointProvider>
+        </APIProvider>
+    );
+};
 
 export default App;

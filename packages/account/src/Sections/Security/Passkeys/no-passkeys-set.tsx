@@ -14,7 +14,7 @@ const TipsBlock = () => {
                     <Localize i18n_default_text='Tips:' />
                 </Text>
                 <Text size='xxs' line_height='l'>
-                    <Localize i18n_default_text='Before using passkey, please make sure your device:' />
+                    <Localize i18n_default_text='Before using passkey:' />
                 </Text>
                 {tips.map(({ id, description }) => (
                     <li key={`tip-${id}`}>
@@ -52,11 +52,11 @@ const getPasskeysNotSetContent = (is_expanded: boolean, onLearnMoreClick: () => 
     title: is_expanded ? (
         <Localize i18n_default_text='Passwordless login with passkeys' />
     ) : (
-        <Localize i18n_default_text='No passkey set' />
+        <Localize i18n_default_text='No passkey found' />
     ),
     description: is_expanded ? undefined : (
         <Localize
-            i18n_default_text="You haven't set a passkey yet. To enhance your security, tap 'Create passkey' below. Uncertain about passkeys? <0>Learn more</0>."
+            i18n_default_text="To enhance your security, tap 'Create passkey' below. <0>Learn more</0> about passkeys here."
             components={[<Text key={0} color='loss-danger' size='xs' onClick={onLearnMoreClick} />]}
         />
     ),

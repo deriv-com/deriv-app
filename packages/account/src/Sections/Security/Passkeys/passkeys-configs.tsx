@@ -15,15 +15,15 @@ export const getPasskeysTips = () =>
     [
         {
             id: 1,
-            description: <Localize i18n_default_text='Has screen lock set up.' />,
+            description: <Localize i18n_default_text='Enable screen lock on your device.' />,
         },
         {
             id: 2,
-            description: <Localize i18n_default_text='Signed in to Google account for Android, and iCloud for iOS.' />,
+            description: <Localize i18n_default_text='Sign in to your Google or iCloud account.' />,
         },
         {
             id: 3,
-            description: <Localize i18n_default_text='Has bluetooth turned on if you want to use on another device.' />,
+            description: <Localize i18n_default_text='Enable Bluetooth.' />,
         },
     ] as const;
 
@@ -33,35 +33,35 @@ export const getPasskeysDescriptions = () =>
             id: 1,
             question: <Localize i18n_default_text='What are Passkeys?' />,
             description: (
-                <Localize i18n_default_text='Passkeys are encrypted digital keys you create using your fingerprints, face or screen lock. ' />
+                <Localize i18n_default_text='Passkeys are a security measure that lets you log in the same way you unlock your device: with a fingerprint, a face scan, or a screen lock PIN. ' />
             ),
         },
         {
             id: 2,
-            question: <Localize i18n_default_text='Where are Passkeys saved?' />,
+            question: <Localize i18n_default_text='Why passkeys?' />,
             description: (
-                <Localize i18n_default_text='Passkey are saved to your password manager, so you can sign in on other devices.' />
+                <Localize i18n_default_text='Passkeys are an added layer of security that protects your account against unauthorised access and phishing attacks.' />
             ),
         },
         {
             id: 3,
-            question: <Localize i18n_default_text='Why do you need a Passkeys?' />,
+            question: <Localize i18n_default_text='How to create a passkey?' />,
             description: (
-                <Localize i18n_default_text='A passkey is crucial for security, granting authorized access while keeping unauthorized users out, enhancing data protection.' />
+                <Localize i18n_default_text="Go to 'Account Settings' on Deriv GO to set up your passkey. Each device can only save one passkey; however, iOS users may still see the 'Create passkey' button due to iOS’s ability to save passkeys on other devices." />
             ),
         },
         {
             id: 4,
-            question: <Localize i18n_default_text='How to create Passkeys?' />,
+            question: <Localize i18n_default_text='Where are Passkeys saved?' />,
             description: (
-                <Localize i18n_default_text='Simply go to "Account Settings" and follow the instructions in the "Passkeys" section. Note that Android allows only one passkey per device, while iOS users can save multiple passkeys for different devices.' />
+                <Localize i18n_default_text='Passkeys are saved in your password manager to help you sign in on other devices.' />
             ),
         },
         {
             id: 5,
             question: <Localize i18n_default_text='What if I change my Deriv account email?' />,
             description: (
-                <Localize i18n_default_text='If you update your Deriv account email, your passkey remains unaffected, and you can continue using it to log in.' />
+                <Localize i18n_default_text='Even if you change your email address, you can still continue to log in to Deriv.com with the same passkey.' />
             ),
         },
     ] as const;

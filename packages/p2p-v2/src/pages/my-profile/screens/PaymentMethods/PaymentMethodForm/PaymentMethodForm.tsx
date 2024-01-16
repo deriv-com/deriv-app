@@ -129,7 +129,13 @@ const PaymentMethodForm = ({
                                     defaultValue={paymentMethodField?.value || ''}
                                     name={field}
                                     render={({ field: { onChange, value } }) => {
-                                        return <TextArea onChange={onChange} value={value} />;
+                                        return (
+                                            <TextArea
+                                                label={paymentMethodField?.display_name}
+                                                onChange={onChange}
+                                                value={value}
+                                            />
+                                        );
                                     }}
                                     rules={{
                                         pattern: {

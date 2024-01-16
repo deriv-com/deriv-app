@@ -18,6 +18,7 @@ import ResidenceForm from '../SetResidenceModal/set-residence-form.jsx';
 import validateSignupFields from './validate-signup-fields.jsx';
 
 import 'Sass/app/modules/account-signup.scss';
+import { useFeatureValue } from '@growthbook/growthbook-react';
 
 const AccountSignup = ({
     enableApp,
@@ -36,10 +37,30 @@ const AccountSignup = ({
     const [pw_input, setPWInput] = React.useState('');
     const [is_password_modal, setIsPasswordModal] = React.useState(false);
     const [is_disclaimer_accepted, setIsDisclaimerAccepted] = React.useState(false);
-    const [is_questionnaire, setIsQuestionnaire] = React.useState(false);
-    const [ab_questionnaire, setABQuestionnaire] = React.useState();
     const [modded_state, setModdedState] = React.useState({});
     const language = getLanguage();
+
+    const ab_value = useFeatureValue('questionnaire-config', 'inactive');
+
+    const ab_questionnaire = React.useMemo(() => {
+        const default_ab_value = ab_value;
+
+        let questionnaire_value = ab_value?.[language] ?? ab_value?.EN ?? ab_value;
+
+        if (ab_value?.show_answers_in_random_order) {
+            questionnaire_value = [
+                { ...default_ab_value.default },
+                {
+                    ...ab_value,
+                    answers: shuffleArray(ab_value.answers),
+                },
+            ];
+        } else if (ab_value !== 'inactive')
+            questionnaire_value = [{ ...default_ab_value.default }, { ...questionnaire_value }];
+        return questionnaire_value;
+    }, [ab_value, language]);
+
+    const is_questionnaire = React.useMemo(() => ab_questionnaire !== 'inactive', [ab_questionnaire]);
 
     const checkResidenceIsBrazil = selected_country =>
         selected_country && residence_list[indexOfSelection(selected_country)]?.value?.toLowerCase() === 'br';
@@ -63,24 +84,6 @@ const AccountSignup = ({
             }
             setIsLoading(false);
         });
-        // need to modify data from ab testing platform to reach translation and tracking needs
-        const fetchQuestionnarieData = () => {
-            let ab_value = Analytics.getFeatureValue('questionnaire-config', 'inactive');
-            const default_ab_value = ab_value;
-            ab_value = ab_value?.[language] ?? ab_value?.EN ?? ab_value;
-            if (ab_value?.show_answers_in_random_order) {
-                ab_value = [
-                    { ...default_ab_value.default },
-                    {
-                        ...ab_value,
-                        answers: shuffleArray(ab_value.answers),
-                    },
-                ];
-            } else if (ab_value !== 'inactive') ab_value = [{ ...default_ab_value.default }, { ...ab_value }];
-            return ab_value;
-        };
-        setABQuestionnaire(fetchQuestionnarieData());
-
         Analytics.trackEvent('ce_virtual_signup_form', {
             action: 'signup_confirmed',
             form_name: is_mobile ? 'virtual_signup_web_mobile_default' : 'virtual_signup_web_desktop_default',
@@ -111,9 +114,7 @@ const AccountSignup = ({
         setModdedState(modded_values);
 
         // a/b test
-        ab_questionnaire === 'inactive'
-            ? onSignup(modded_values, onSignupComplete)
-            : setIsQuestionnaire(!!ab_questionnaire);
+        !is_questionnaire && onSignup(modded_values, onSignupComplete);
     };
 
     const onSignupComplete = error => {
@@ -217,7 +218,7 @@ const AccountSignup = ({
                                 </div>
                             ) : (
                                 <React.Fragment>
-                                    {is_questionnaire ? (
+                                    {!is_questionnaire ? (
                                         <QuestionnaireModal
                                             ab_questionnaire={ab_questionnaire}
                                             handleSignup={handleSignup}

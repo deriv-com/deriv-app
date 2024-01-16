@@ -45,7 +45,8 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const has_active_real_account = useHasActiveRealAccount();
     const steps_list = Object.keys(contents).filter(key => is_mt5_allowed || key !== 'step3');
 
-    const skip_onboarding_flow = useFeatureIsOn('skip-onboarding-flow');
+    // growthbook experiment .....
+    const growthbook_experiment_skip_onboarding_flow = useFeatureIsOn('skip-onboarding-flow');
 
     const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose, trackDotNavigation } =
         useTradersHubTracking();
@@ -132,7 +133,7 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
         return <EmptyOnboarding />;
     }
 
-    if ((is_logged_in && is_from_signup_account && is_eu_user) || skip_onboarding_flow) {
+    if ((is_logged_in && is_from_signup_account && is_eu_user) || growthbook_experiment_skip_onboarding_flow) {
         history.push(routes.traders_hub);
     }
 

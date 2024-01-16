@@ -63,7 +63,7 @@ export const ChartTopWidgets = observer(({ open_market, open }: TChartTopWidgets
             open={open}
             is_mobile={is_mobile}
             is_digits_widget_active={is_digits_widget_active}
-            onSymbolChange={symbolChange(onSymbolChange)}
+            onSymbolChange={symbolChange(onSymbolChange) as ReturnType<typeof useTraderStore>['onChange']}
             theme={theme}
         />
     );

@@ -5,7 +5,7 @@ import { p2p } from '@deriv/api';
 import { TextArea } from '../../../../../components';
 import { ClickableText } from '../../../../../components/ClickableText';
 import { Dropdown } from '../../../../../components/Dropdown';
-import TextField from '../../../../../components/TextField/TextField';
+import { TextField } from '../../../../../components/TextField';
 import { VALID_SYMBOLS_PATTERN } from '../../../../../constants';
 import CloseCircle from '../../../../../public/ic-close-circle.svg';
 import { PaymentMethodsHeader } from '../PaymentMethodsHeader';

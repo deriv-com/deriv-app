@@ -1,7 +1,10 @@
 import React from 'react';
 
-const TabPanel = ({ children }: React.PropsWithChildren<unknown>) => {
-    return <div>{children}</div>;
+type TTabPanelProps = {
+    className?: string;
+};
+const TabPanel = ({ children, className }: React.PropsWithChildren<TTabPanelProps>) => {
+    return <div className={className}>{children}</div>;
 };
 
 export default TabPanel;

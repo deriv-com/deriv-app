@@ -5,4 +5,9 @@
     display: flex;
     flex-direction: column;
     gap: 2rem;
+
+    &__payment-methods {
+        overflow: scroll;
+        height: 45vh;
+    }
 }

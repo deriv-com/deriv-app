@@ -19,7 +19,7 @@ const MyProfile = () => {
                     <TabPanel>
                         <MyProfileAdDetails />
                     </TabPanel>
-                    <TabPanel>
+                    <TabPanel className='p2p-v2-my-profile__payment-methods'>
                         <PaymentMethods />
                     </TabPanel>
                 </TabPanels>

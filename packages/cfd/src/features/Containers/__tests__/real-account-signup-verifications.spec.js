@@ -139,6 +139,12 @@ describe('<RealAccountSignupVerifications />', () => {
                 authentication: {
                     document: {
                         authenticated_with_idv,
+                        status: 'none',
+                    },
+                    attempts: {
+                        latest: {
+                            service: 'idv',
+                        },
                     },
                 },
             },
@@ -266,6 +272,12 @@ describe('<RealAccountSignupVerifications />', () => {
                     authentication: {
                         document: {
                             authenticated_with_idv,
+                            status: 'none',
+                        },
+                        attempts: {
+                            latest: {
+                                service: 'idv',
+                            },
                         },
                     },
                 },

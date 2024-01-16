@@ -17,7 +17,7 @@ const MT5ChangePasswordScreens = () => {
     return showSentEmailContentWithoutTabs ? (
         <Fragment>
             <div
-                className='wallets-change-password__back-arrow'
+                className='flex content-center gap-400 self-start cursor-pointer'
                 onClick={() => {
                     setShowSentEmailContentWithoutTabs(false);
                     setTabNumber(1);
@@ -35,7 +35,7 @@ const MT5ChangePasswordScreens = () => {
                 </Text>
             </div>
 
-            <div className='wallets-change-investor-password-screens__sent-email-wrapper'>
+            <div className='mt-1600 w-full'>
                 <SentEmailContent
                     description='Please click on the link in the email to reset your password.'
                     isInvestorPassword

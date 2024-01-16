@@ -48,7 +48,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
                 </Text>
             ),
             button: (
-                <div className='wallets-change-password__btn'>
+                <div className='flex gap-400'>
                     <Text onClick={() => hide()} size='lg' variant='outlined'>
                         Cancel
                     </Text>
@@ -78,13 +78,13 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
 
     if (activeScreen === 'emailVerification')
         return (
-            <div className='wallets-change-password__sent-email-wrapper'>
+            <div className='w-full mt-1600 lg:mt-2000'>
                 <SentEmailContent platform={platform} />
             </div>
         );
 
     return (
-        <div className='wallets-change-password__content'>
+        <div className='mt-1600 lg:mt-2000'>
             <ActionScreen
                 description={ChangePasswordScreens[activeScreen].bodyText}
                 descriptionSize='sm'

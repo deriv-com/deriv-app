@@ -65,9 +65,10 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                 <Formik initialValues={initialValues} onSubmit={onChangeButtonClickHandler}>
                     {({ handleChange, handleSubmit, values }) => (
                         <form className='flex flex-col content-center gap-1200' onSubmit={handleSubmit}>
-                            <div className='flex flex-col content-center gap-800 w-[3.28rem]'>
+                            <div className='flex flex-col content-center gap-800 w-[328px]'>
                                 <TextField
                                     autoComplete='current-password'
+                                    className='border-solid rounded-200 border-xs border-system-light-active-background text-75 h-2000'
                                     label='Current investor password'
                                     name='currentPassword'
                                     onChange={handleChange}
@@ -75,6 +76,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                 />
                                 <TextField
                                     autoComplete='new-password'
+                                    className='border-solid rounded-200 border-xs border-system-light-active-background text-75 h-2000'
                                     label='New investor password'
                                     name='newPassword'
                                     onChange={handleChange}
@@ -92,7 +94,12 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                 >
                                     Change investor password
                                 </Button>
-                                <Button onClick={sendEmail} size={isMobile ? 'lg' : 'md'} variant='ghost'>
+                                <Button
+                                    colorStyle='red'
+                                    onClick={sendEmail}
+                                    size={isMobile ? 'lg' : 'md'}
+                                    variant='ghost'
+                                >
                                     Create or reset investor password
                                 </Button>
                             </div>

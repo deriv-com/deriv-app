@@ -6,14 +6,14 @@ import { TradingAppCardLoader } from '../../Loaders';
 import { useUIContext } from '../../UIProvider';
 
 const CFDContent = () => {
-    const { isSuccess } = useIsEuRegion();
+    const { isSuccess: isEURegionAccessible } = useIsEuRegion();
     const { getUIState } = useUIContext();
 
     const activeRegion = getUIState('region');
 
     const { isEU } = useRegionFlags(activeRegion);
 
-    if (!isSuccess)
+    if (!isEURegionAccessible)
         return (
             <div className='pt-800 lg:pt-1200'>
                 <TradingAppCardLoader />

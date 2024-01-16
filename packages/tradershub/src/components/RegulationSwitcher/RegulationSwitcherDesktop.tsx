@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
 import { Button, qtJoin, Text } from '@deriv/quill-design';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
+import { Region } from '../../constants/constants';
 import { useUIContext } from '../UIProvider';
 
 const RegulationSwitcherDesktop = () => {
@@ -15,18 +16,18 @@ const RegulationSwitcherDesktop = () => {
 
     const { data: activeTrading } = useActiveTradingAccount();
 
-    const buttons = [{ label: 'Non-EU' }, { label: 'EU' }];
+    const buttons = [{ label: Region.NonEU }, { label: Region.EU }];
 
     const activeRegion = getUIState('region');
 
     const handleButtonClick = (label: string) => {
-        if (label === 'Non-EU') {
-            setUIState('region', 'Non-EU');
+        if (label === Region.NonEU) {
+            setUIState('region', Region.NonEU);
             if (realCRAccount) {
                 switchAccount(realCRAccount);
             }
         } else {
-            setUIState('region', 'EU');
+            setUIState('region', Region.EU);
             if (realMFAccount) {
                 switchAccount(realMFAccount);
             }
@@ -35,9 +36,9 @@ const RegulationSwitcherDesktop = () => {
 
     useEffect(() => {
         if (activeTrading?.loginid.startsWith('CR')) {
-            setUIState('region', 'Non-EU');
+            setUIState('region', Region.NonEU);
         } else if (activeTrading?.loginid.startsWith('MF')) {
-            setUIState('region', 'EU');
+            setUIState('region', Region.EU);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

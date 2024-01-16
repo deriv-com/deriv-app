@@ -96,7 +96,7 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
 const OptionsAndMultipliersContent = () => {
     const { isMobile } = useBreakpoint();
     const { data } = useActiveTradingAccount();
-    const { isSuccess } = useIsEuRegion();
+    const { isSuccess: isEURegionAccessible } = useIsEuRegion();
 
     const { getUIState } = useUIContext();
     const activeRegion = getUIState('region');
@@ -109,7 +109,7 @@ const OptionsAndMultipliersContent = () => {
         ? getoptionsAndMultipliersContent.filter(account => account.title === 'Deriv Trader')
         : getoptionsAndMultipliersContent;
 
-    if (!isSuccess)
+    if (!isEURegionAccessible)
         return (
             <div className='pt-2000'>
                 <TradingAppCardLoader />

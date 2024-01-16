@@ -13,7 +13,7 @@ import { useUIContext } from '../../UIProvider';
  */
 const OptionsAndMultipliersHeading = () => {
     const { isMobile } = useBreakpoint();
-    const { isSuccess } = useIsEuRegion();
+    const { isSuccess: isEURegionAccessible } = useIsEuRegion();
     const { getUIState } = useUIContext();
     const activeRegion = getUIState('region');
     const { isEU } = useRegionFlags(activeRegion);
@@ -47,7 +47,7 @@ const OptionsAndMultipliersHeading = () => {
         );
     }, [isEU]);
 
-    if (!isSuccess) return <TitleDescriptionLoader />;
+    if (!isEURegionAccessible) return <TitleDescriptionLoader />;
 
     return (
         <div className='flex flex-col items-start justify-between lg:flex-row gap-800 lg:gap-2400'>

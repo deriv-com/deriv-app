@@ -1,4 +1,5 @@
 import { useActiveTradingAccount, useIsEuRegion, useTradingAccountsList } from '@deriv/api';
+import { Region } from '../constants/constants';
 
 /**
  * @description A custom hook that returns region flags based on the region passed in
@@ -10,8 +11,8 @@ const useRegionFlags = (region?: string) => {
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { data: tradingAccountsList } = useTradingAccountsList();
 
-    const isEURegion = region === 'EU';
-    const isNonEURegion = region === 'Non-EU';
+    const isEURegion = region === Region.EU;
+    const isNonEURegion = region === Region.NonEU;
 
     const isEU = isEUCountry || isEURegion;
     const isNonEU = !isEUCountry || isNonEURegion;

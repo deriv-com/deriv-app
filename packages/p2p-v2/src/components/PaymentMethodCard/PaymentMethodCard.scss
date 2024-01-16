@@ -7,31 +7,20 @@
     border-radius: 8px;
     margin: 1.6rem 0;
     overflow-wrap: break-word;
+    min-height: 12.8rem;
+    padding: 1.6rem;
+    width: 20.8rem;
+    margin-right: 1.6rem;
+    @include mobile {
+        margin-right: 0;
+    }
+    .p2p-v2-payment-method-card__header {
+        margin-bottom: 1.1rem;
+    }
 
     @include mobile {
-        min-width: 15.4rem;
-        padding: 1.6rem;
-        margin: 1.6rem;
-    }
-
-    &--large {
-        min-height: 12.8rem;
-        padding: 1.6rem;
-        width: 20.8rem;
-        .p2p-v2-payment-method-card__header {
-            margin-bottom: 1.1rem;
-        }
-    }
-
-    &--medium {
-        min-height: 9.4rem;
-        padding: 1rem;
-        width: 14.4rem;
-    }
-
-    &--small {
         min-height: 8.8rem;
         padding: 0.9rem 1rem;
-        width: 13.6rem;
+        width: 15.4rem;
     }
 }

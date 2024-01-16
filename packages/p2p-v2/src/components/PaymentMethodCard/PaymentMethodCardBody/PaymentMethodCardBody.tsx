@@ -1,16 +1,14 @@
 import React from 'react';
 import { TAdvertiserPaymentMethods } from 'types';
-import { ClickableText } from '../../ClickableText';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import './PaymentMethodCardBody.scss';
 
 type TPaymentMethodCardBodyProps = {
-    large?: boolean;
     paymentMethod: NonNullable<TAdvertiserPaymentMethods>[number];
     shouldShowPaymentMethodDisplayName?: boolean;
 };
 
 const PaymentMethodCardBody = ({
-    large = false,
     paymentMethod,
     shouldShowPaymentMethodDisplayName = true,
 }: TPaymentMethodCardBodyProps) => {
@@ -19,13 +17,9 @@ const PaymentMethodCardBody = ({
     const isBankOrOther = modifiedDisplayName && ['BankTransfer', 'Other'].includes(modifiedDisplayName);
     return (
         <div className='p2p-v2-payment-method-card__body'>
-            <ClickableText size={large ? 'xs' : '2xs'}>
-                {isBankOrOther && !shouldShowPaymentMethodDisplayName ? '' : displayName}
-            </ClickableText>
-            <ClickableText size={large ? 'xs' : '2xs'}>
-                {paymentMethod.fields?.bank_name?.value ?? paymentMethod.fields?.name?.value}
-            </ClickableText>
-            <ClickableText size={large ? 'xs' : '2xs'}>{paymentMethod.fields?.account?.value}</ClickableText>
+            <Text size='xs'>{isBankOrOther && !shouldShowPaymentMethodDisplayName ? '' : displayName}</Text>
+            <Text size='xs'>{paymentMethod.fields?.bank_name?.value ?? paymentMethod.fields?.name?.value}</Text>
+            <Text size='xs'>{paymentMethod.fields?.account?.value}</Text>
         </div>
     );
 };

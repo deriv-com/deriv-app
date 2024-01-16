@@ -2,30 +2,13 @@
     max-width: 100%;
     min-width: 67.2rem;
     padding: 0 2.4rem;
+
     @include mobile {
         width: 100%;
         min-width: 36rem;
         padding: 1.6rem;
     }
 
-    &__header {
-        display: flex;
-    }
-    &__title {
-        font-size: 1.4rem;
-        line-height: 2rem;
-        font-family: 'IBM Plex Sans', sans-serif;
-        font-weight: 700;
-        color: #333333;
-        vertical-align: baseline;
-    }
-    &__back-button {
-        margin-right: 0.8rem;
-        line-height: 2rem;
-        & > * {
-            vertical-align: middle;
-        }
-    }
     &__form {
         padding: 1.4rem 0;
         display: flex;
@@ -36,81 +19,25 @@
         display: flex;
         flex-direction: row;
         justify-content: end;
-    }
-    &__button {
-        border-radius: 4px;
-        padding: 1rem 1.6rem;
-        font-size: 1.4rem;
-        line-height: 2rem;
-        font-family: 'IBM Plex Sans', sans-serif;
-        font-weight: 700;
-        &--cancel {
-            background-color: #ffffff;
-            color: #333333;
-            border: 2px solid #999999;
-        }
-        &--save {
-            background-color: #ff444f;
-            color: #ffffff;
-            border: none;
-            margin-left: 0.8rem;
+        & :first-child {
+            margin-right: 1.6rem;
         }
     }
-    &__icon {
+    &__icon--close {
         cursor: pointer;
-        z-index: 9999;
-        &--close {
-            color: #ffffff;
-            font-size: large;
-        }
+        color: #ffffff;
+        font-size: large;
     }
+
     &__field {
-        width: 100%;
-        font-size: 1.4rem;
-        &-control {
-            font-size: 1.4rem;
-            line-height: 2rem;
-            font-family: 'IBM Plex Sans', sans-serif;
-            font-weight: 400;
-            width: 100%;
-            border: 1px solid #d6dadb;
-            border-radius: 0.4rem;
-            padding: 1rem 1.6rem;
-            &:focus {
-                outline: none;
-            }
-        }
+        color: #333333;
         &-wrapper {
             width: 100%;
-            input {
-                height: auto;
-            }
-            textarea {
-                height: 12.8rem;
-            }
             padding: 1rem 0;
         }
     }
 }
 .p2p-v2-textfield__message-container {
+    /* This is to hide the message container if it's empty */
     height: auto;
-}
-.p2p-v2-link {
-    color: #ff444f;
-    font-weight: bold;
-    text-decoration: none;
-
-    &:hover {
-        text-decoration: underline;
-        cursor: pointer;
-    }
-    &--white {
-        color: $color-white;
-    }
-    &--right {
-        float: right;
-    }
-    &--prominent {
-        color: #999999;
-    }
 }

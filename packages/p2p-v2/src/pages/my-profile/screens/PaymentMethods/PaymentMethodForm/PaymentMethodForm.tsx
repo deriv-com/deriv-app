@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TPaymentMethodFormConfig, TPaymentMethodFotmValues, TSelectedPaymentMethod } from 'types';
 import { p2p } from '@deriv/api';
+import { TextArea } from '../../../../../components';
 import { ClickableText } from '../../../../../components/ClickableText';
 import { Dropdown } from '../../../../../components/Dropdown';
 import TextField from '../../../../../components/TextField/TextField';
@@ -99,7 +100,6 @@ const PaymentMethodForm = ({
                                 {/* TODO: Remember to translate these */}
                                 Don’t see your payment method?{' '}
                                 <ClickableText
-                                    // className='p2p-v2-link'
                                     color='red'
                                     onClick={() => {
                                         const paymentMethod = availablePaymentMethods?.find(p => p.id === 'other');
@@ -129,13 +129,7 @@ const PaymentMethodForm = ({
                                     defaultValue={paymentMethodField?.value || ''}
                                     name={field}
                                     render={({ field: { onChange, value } }) => {
-                                        return (
-                                            <textarea
-                                                className='p2p-v2-payment-method-form__field-control'
-                                                onChange={onChange}
-                                                value={value}
-                                            />
-                                        );
+                                        return <TextArea onChange={onChange} value={value} />;
                                     }}
                                     rules={{
                                         pattern: {

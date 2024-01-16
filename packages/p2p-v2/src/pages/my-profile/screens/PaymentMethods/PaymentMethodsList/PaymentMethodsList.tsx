@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { TAdvertiserPaymentMethods } from 'types';
 import { p2p } from '@deriv/api';
+import { Button } from '@deriv-com/ui/dist/components/Button';
 import { FullPageMobileWrapper } from '../../../../../components';
 import { PaymentMethodCard } from '../../../../../components/PaymentMethodCard';
 import { PAYMENT_METHOD_CATEGORIES } from '../../../../../constants';
@@ -8,7 +9,6 @@ import { useDevice } from '../../../../../hooks';
 import { PaymentMethodsEmpty } from '../PaymentMethodsEmpty';
 import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
 import './PaymentMethodsList.scss';
-import { Button } from '@deriv-com/ui/dist/components/Button';
 
 type TPaymentMethodsGroup = Record<
     string,
@@ -79,8 +79,8 @@ const PaymentMethodsList = ({
                                 {groupedPaymentMethods[key].paymentMethods?.map(advertiserPaymentMethod => {
                                     return (
                                         <PaymentMethodCard
+                                            isEditable
                                             key={advertiserPaymentMethod.id}
-                                            large
                                             onDeletePaymentMethod={() =>
                                                 onDeletePaymentMethod(Number(advertiserPaymentMethod.id))
                                             }
@@ -101,9 +101,6 @@ const PaymentMethodsList = ({
     if (isMobile) {
         return (
             <FullPageMobileWrapper
-                onGoBack={() => {
-                    // TODO: Redirect user to tabs page
-                }}
                 renderFooter={() => addNewButton}
                 // TODO: Remember to translate the title
                 renderHeader={() => <PaymentMethodsHeader title='Payment methods' />}

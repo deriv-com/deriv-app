@@ -11,45 +11,27 @@ type TPaymentMethodFormFooter = {
     type: TPaymentMethodFormConfig['type'];
 };
 
-const FooterButtons = ({ isValid, onGoBack, paymentMethod, type }: TPaymentMethodFormFooter) => {
-    return !paymentMethod ? null : (
+const PaymentMethodFormFooter = ({ isValid, onGoBack, paymentMethod, type }: TPaymentMethodFormFooter) => {
+    const { isMobile } = useDevice();
+
+    const footerButtons = !paymentMethod ? null : (
         <div className='p2p-v2-payment-method-form__buttons'>
             {/* TODO: Remember to wire up the modal */}
-            <Button
-                className='p2p-v2-payment-method-form__button p2p-v2-payment-method-form__button--cancle'
-                color='secondary'
-                onClick={onGoBack}
-                size='lg'
-                variant='outlined'
-            >
+            <Button onClick={onGoBack} size='lg' variant='outlined'>
                 Cancel
             </Button>
             {/* TODO: Remember to translate these */}
-            <Button
-                className='p2p-v2-payment-method-form__button p2p-v2-payment-method-form__button--save'
-                disabled={!isValid}
-                size='lg'
-            >
+            <Button disabled={!isValid} size='lg'>
                 {type === 'ADD' ? 'Add' : 'Save changes'}
             </Button>
         </div>
     );
-};
-
-const PaymentMethodFormFooter = ({ isValid, onGoBack, paymentMethod, type }: TPaymentMethodFormFooter) => {
-    const { isMobile } = useDevice();
 
     if (isMobile) {
-        return (
-            <FullPageMobileWrapper
-                renderFooter={() => (
-                    <FooterButtons isValid={isValid} onGoBack={onGoBack} paymentMethod={paymentMethod} type={type} />
-                )}
-            />
-        );
+        return <FullPageMobileWrapper renderFooter={() => footerButtons} />;
     }
 
-    return <FooterButtons isValid={isValid} onGoBack={onGoBack} paymentMethod={paymentMethod} type={type} />;
+    return footerButtons;
 };
 
 export default PaymentMethodFormFooter;

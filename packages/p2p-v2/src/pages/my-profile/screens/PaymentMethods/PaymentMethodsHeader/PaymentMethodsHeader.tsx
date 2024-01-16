@@ -1,5 +1,6 @@
 import React from 'react';
 import ArrowLeftBold from '../../../../../public/ic-arrow-left-bold.svg';
+import './PaymentMethodsHeader.scss';
 
 type TPaymentMethodsHeaderProps = {
     onGoBack?: () => void;

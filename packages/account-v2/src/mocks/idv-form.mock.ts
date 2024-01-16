@@ -1,3 +1,5 @@
+import { ResidenceList } from '@deriv/api-types';
+
 export const DOCUMENT_LIST = [
     {
         id: 'aadhaar',
@@ -41,7 +43,7 @@ export const DOCUMENT_LIST = [
     },
 ];
 
-export const SELECTED_COUNTRY = {
+export const SELECTED_COUNTRY: ResidenceList[0] = {
     identity: {
         services: {
             idv: {

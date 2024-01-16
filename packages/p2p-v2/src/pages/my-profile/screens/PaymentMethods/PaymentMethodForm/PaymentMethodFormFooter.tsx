@@ -27,9 +27,9 @@ const PaymentMethodFormFooter = ({ isValid, onGoBack, paymentMethod, type }: TPa
         </div>
     );
 
-    if (isMobile) {
-        return <FullPageMobileWrapper renderFooter={() => footerButtons} />;
-    }
+    // if (isMobile) {
+    //     return <FullPageMobileWrapper renderFooter={() => footerButtons} />;
+    // }
 
     return footerButtons;
 };

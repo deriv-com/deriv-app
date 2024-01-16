@@ -13,9 +13,9 @@ const MyProfile = () => {
 
     if (isMobile) {
         return (
-            <FullPageMobileWrapper>
-                <PaymentMethods />
-            </FullPageMobileWrapper>
+            // <FullPageMobileWrapper>
+            <PaymentMethods />
+            // </FullPageMobileWrapper>
         );
     }
     return (

@@ -13,6 +13,7 @@ const Button = ({ children, disabled, isFullWidth = false, onClick }: PropsWithC
         <button
             className={clsx('p2p-v2-button', {
                 'p2p-v2-button--full-width': isFullWidth,
+                'p2p-v2-button--disabled': disabled,
             })}
             disabled={disabled}
             onClick={onClick}

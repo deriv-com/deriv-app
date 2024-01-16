@@ -1,6 +1,7 @@
 export * from './Avatar';
 export * from './Badge';
 export * from './Button';
+export * from './Dropdown';
 export * from './FullPageMobileWrapper';
 export * from './MobileCloseHeader';
 export * from './StarRating';

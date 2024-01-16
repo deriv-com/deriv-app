@@ -3,10 +3,11 @@ import clsx from 'clsx';
 import { useCombobox } from 'downshift';
 import { TGenericSizes } from 'types';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import ArrowIcon from '../../public/pointed-down-arrow-icon.svg';
+import SearchIcon from '../../public/ic-cashier-search.svg';
+import ChevronUp from '../../public/ic-chevron-up.svg';
 import reactNodeToString from '../../utils/react-node-to-string';
 import TextField, { TextFieldProps } from '../TextField/TextField';
-import './dropdown.scss';
+import './Dropdown.scss';
 
 type TProps = {
     disabled?: boolean;
@@ -112,12 +113,8 @@ const Dropdown: React.FC<TProps> = ({
                     readOnly={variant !== 'comboBox'}
                     renderLeftIcon={icon ? () => icon : undefined}
                     renderRightIcon={() => (
-                        <button
-                            className={clsx('p2p-v2-dropdown__button', {
-                                'p2p-v2-dropdown__button--active': isOpen,
-                            })}
-                        >
-                            <ArrowIcon />
+                        <button className={clsx('p2p-v2-dropdown__button')}>
+                            {isOpen ? <ChevronUp /> : <SearchIcon height={16} width={16} />}
                         </button>
                     )}
                     type='text'

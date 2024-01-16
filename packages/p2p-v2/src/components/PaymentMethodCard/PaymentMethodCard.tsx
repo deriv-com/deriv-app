@@ -3,9 +3,11 @@ import clsx from 'clsx';
 import { TAdvertiserPaymentMethods } from 'types';
 import { PaymentMethodCardBody } from './PaymentMethodCardBody';
 import { PaymentMethodCardHeader } from './PaymentMethodCardHeader';
-import './payment-method-card.scss';
+import './PaymentMethodCard.scss';
 
 type TPaymentMethodCardProps = HTMLAttributes<HTMLDivElement> & {
+    isEditable?: boolean;
+    isSelectable?: boolean;
     large?: boolean;
     medium?: boolean;
     onDeletePaymentMethod: () => void;
@@ -16,6 +18,8 @@ type TPaymentMethodCardProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 const PaymentMethodCard = ({
+    isEditable = false,
+    isSelectable = false,
     large = false,
     medium = false,
     onDeletePaymentMethod,
@@ -35,6 +39,8 @@ const PaymentMethodCard = ({
             })}
         >
             <PaymentMethodCardHeader
+                isEditable={isEditable}
+                isSelectable={isSelectable}
                 onDeletePaymentMethod={onDeletePaymentMethod}
                 onEditPaymentMethod={onEditPaymentMethod}
                 type={type}

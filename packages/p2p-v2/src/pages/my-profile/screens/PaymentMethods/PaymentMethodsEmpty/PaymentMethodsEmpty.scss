@@ -2,6 +2,7 @@
     align-items: center;
     display: flex;
     flex-direction: column;
+    width: 100%;
 
     &__button {
         margin-top: 2.4rem;
@@ -15,7 +16,11 @@
         }
     }
 
-    &__text {
+    &__heading {
+        margin: 3.9rem 0 0.8rem;
+    }
+
+    &__sub-heading {
         margin: 3.9rem 0 0.8rem;
     }
 }

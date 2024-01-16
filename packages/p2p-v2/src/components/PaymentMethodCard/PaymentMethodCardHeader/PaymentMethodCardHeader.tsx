@@ -6,9 +6,11 @@ import IcCashierOther from '../../../public/ic-cashier-other.svg';
 import IcCashierVerticalEllipsis from '../../../public/ic-cashier-vertical-ellipsis.svg';
 import { ClickableText } from '../../ClickableText';
 import { FlyOut } from '../../FlyOut';
-import './payment-method-card-header.scss';
+import './PaymentMethodCardHeader.scss';
 
 type TPaymentMethodCardHeaderProps = {
+    isEditable?: boolean;
+    isSelectable?: boolean;
     medium?: boolean;
     onDeletePaymentMethod: () => void;
     onEditPaymentMethod: () => void;
@@ -17,6 +19,8 @@ type TPaymentMethodCardHeaderProps = {
 };
 
 const PaymentMethodCardHeader = ({
+    isEditable = false,
+    isSelectable = false,
     medium = false,
     onDeletePaymentMethod,
     onEditPaymentMethod,
@@ -46,8 +50,13 @@ const PaymentMethodCardHeader = ({
                 height={medium || small ? 16 : 24}
                 width={medium || small ? 16 : 24}
             />
-            <FlyOut listItems={flyOutItems} renderIcon={() => <IcCashierVerticalEllipsis height={16} width={16} />} />
-            {/* TODO: Add checkbox display logic here when working on the sell modal under the sell tab */}
+            {isEditable ? (
+                <FlyOut
+                    listItems={flyOutItems}
+                    renderIcon={() => <IcCashierVerticalEllipsis height={16} width={16} />}
+                />
+            ) : null}
+            {isSelectable ? <input type='checkbox' /> : null}
         </div>
     );
 };

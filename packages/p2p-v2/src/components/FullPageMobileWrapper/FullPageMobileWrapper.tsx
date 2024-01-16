@@ -4,6 +4,7 @@ import LeftArrowIcon from '../../public/ic-arrow-left.svg';
 import './FullPageMobileWrapper.scss';
 
 type TFullPageMobileWrapperProps = {
+    onGoBack?: () => void;
     renderFooter?: () => React.ReactNode;
     renderHeader?: () => React.ReactNode;
     shouldFixedFooter?: boolean;
@@ -11,6 +12,7 @@ type TFullPageMobileWrapperProps = {
 
 const FullPageMobileWrapper = ({
     children,
+    onGoBack,
     renderFooter,
     renderHeader,
     shouldFixedFooter = true,
@@ -23,12 +25,12 @@ const FullPageMobileWrapper = ({
         >
             {renderHeader && (
                 <div className='p2p-v2-mobile-wrapper__header'>
-                    <LeftArrowIcon />
+                    <LeftArrowIcon onClick={() => onGoBack?.()} />
                     {renderHeader()}
                 </div>
             )}
             <div className='p2p-v2-mobile-wrapper__body'>{children}</div>
-            {renderFooter && <div className={clsx('p2p-v2-mobile-wrapper__footer')}>{renderFooter()}</div>}
+            {renderFooter && <div className={clsx('p2p-v2-mobile-wrapper__footer')}>{renderFooter()} </div>}
         </div>
     );
 };

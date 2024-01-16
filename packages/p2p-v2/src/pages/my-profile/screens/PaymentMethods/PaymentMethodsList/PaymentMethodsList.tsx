@@ -1,10 +1,14 @@
 import React, { useMemo } from 'react';
 import { TAdvertiserPaymentMethods } from 'types';
 import { p2p } from '@deriv/api';
+import { FullPageMobileWrapper } from '../../../../../components';
 import { PaymentMethodCard } from '../../../../../components/PaymentMethodCard';
 import { PAYMENT_METHOD_CATEGORIES } from '../../../../../constants';
+import { useDevice } from '../../../../../hooks';
 import { PaymentMethodsEmpty } from '../PaymentMethodsEmpty';
-import './payment-methods-list.scss';
+import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
+import './PaymentMethodsList.scss';
+import { Button } from '@deriv-com/ui/dist/components/Button';
 
 type TPaymentMethodsGroup = Record<
     string,
@@ -18,7 +22,6 @@ type TPaymentMethodsListProps = {
     onAddPaymentMethod: () => void;
     onDeletePaymentMethod: (paymentMethodId: number) => void;
     onEditPaymentMethod: (paymentMethod: NonNullable<TAdvertiserPaymentMethods>[number]) => void;
-    onGoBack?: () => void;
 };
 
 const PaymentMethodsList = ({
@@ -26,6 +29,8 @@ const PaymentMethodsList = ({
     onDeletePaymentMethod,
     onEditPaymentMethod,
 }: TPaymentMethodsListProps) => {
+    const { isMobile } = useDevice();
+
     const { data: p2pAdvertiserPaymentMethods, isLoading, isRefetching } = p2p.advertiserPaymentMethods.useGet();
 
     const groupedPaymentMethods = useMemo(() => {
@@ -43,6 +48,7 @@ const PaymentMethodsList = ({
         return groups;
     }, [p2pAdvertiserPaymentMethods]);
 
+    // TODO: Add loader when available
     if (isLoading) {
         return <>Show Loader....</>;
     }
@@ -51,43 +57,63 @@ const PaymentMethodsList = ({
         return <PaymentMethodsEmpty onAddPaymentMethod={onAddPaymentMethod} />;
     }
 
-    return p2pAdvertiserPaymentMethods?.length === 0 ? null : (
-        <div className='p2p-v2-payment-methodslist-wrapper'>
-            <div className='p2p-v2-payment-methods-list'>
-                <button className='p2p-v2-payment-methods-list__button' onClick={onAddPaymentMethod}>
-                    Add new {/*  TODO Remember to translate this*/}
-                </button>
-
-                {Object.keys(groupedPaymentMethods)
-                    ?.sort()
-                    ?.map(key => {
-                        return (
-                            <div className='p2p-v2-payment-methods-list__group' key={key}>
-                                <div className='p2p-v2-payment-methods-list__group-header'>
-                                    {groupedPaymentMethods[key].title}
-                                </div>
-                                <div className='p2p-v2-payment-methods-list__group-body'>
-                                    {groupedPaymentMethods[key].paymentMethods?.map(advertiserPaymentMethod => {
-                                        return (
-                                            <PaymentMethodCard
-                                                key={advertiserPaymentMethod.id}
-                                                large
-                                                onDeletePaymentMethod={() =>
-                                                    onDeletePaymentMethod(Number(advertiserPaymentMethod.id))
-                                                }
-                                                onEditPaymentMethod={() => onEditPaymentMethod(advertiserPaymentMethod)}
-                                                paymentMethod={advertiserPaymentMethod}
-                                                shouldShowPaymentMethodDisplayName={false}
-                                            />
-                                        );
-                                    })}
-                                </div>
-                            </div>
-                        );
-                    })}
-            </div>
-        </div>
+    const addNewButton = (
+        <Button isFullWidth={isMobile} onClick={onAddPaymentMethod} size='lg'>
+            Add new {/*  TODO Remember to translate this*/}
+        </Button>
     );
+
+    const paymentMethodsListContent = (
+        // <div className='p2p-v2-payment-methodslist-wrapper'>
+        <div className='p2p-v2-payment-methods-list'>
+            {isMobile ? null : addNewButton}
+            {Object.keys(groupedPaymentMethods)
+                ?.sort()
+                ?.map(key => {
+                    return (
+                        <div className='p2p-v2-payment-methods-list__group' key={key}>
+                            <div className='p2p-v2-payment-methods-list__group-header'>
+                                {groupedPaymentMethods[key].title}
+                            </div>
+                            <div className='p2p-v2-payment-methods-list__group-body'>
+                                {groupedPaymentMethods[key].paymentMethods?.map(advertiserPaymentMethod => {
+                                    return (
+                                        <PaymentMethodCard
+                                            key={advertiserPaymentMethod.id}
+                                            large
+                                            onDeletePaymentMethod={() =>
+                                                onDeletePaymentMethod(Number(advertiserPaymentMethod.id))
+                                            }
+                                            onEditPaymentMethod={() => onEditPaymentMethod(advertiserPaymentMethod)}
+                                            paymentMethod={advertiserPaymentMethod}
+                                            shouldShowPaymentMethodDisplayName={false}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    );
+                })}
+        </div>
+        // </div>
+    );
+
+    if (isMobile) {
+        return (
+            <FullPageMobileWrapper
+                onGoBack={() => {
+                    // TODO: Redirect user to tabs page
+                }}
+                renderFooter={() => addNewButton}
+                // TODO: Remember to translate the title
+                renderHeader={() => <PaymentMethodsHeader title='Payment methods' />}
+            >
+                {paymentMethodsListContent}
+            </FullPageMobileWrapper>
+        );
+    }
+
+    return p2pAdvertiserPaymentMethods?.length === 0 ? null : paymentMethodsListContent;
 };
 
 export default PaymentMethodsList;

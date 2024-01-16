@@ -2,7 +2,7 @@ import React, { HTMLAttributes, ReactNode, useRef, useState } from 'react';
 import { useOnClickOutside } from 'usehooks-ts';
 import FlyOutList from './FlyOutList';
 import FlyOutToggle from './FlyOutToggle';
-import './flyout.scss';
+import './Flyout.scss';
 
 type TFlyOutProps = HTMLAttributes<HTMLDivElement> & {
     listItems?: ReactNode[];

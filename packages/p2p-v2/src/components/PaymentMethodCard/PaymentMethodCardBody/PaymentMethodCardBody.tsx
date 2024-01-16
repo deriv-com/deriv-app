@@ -1,7 +1,7 @@
 import React from 'react';
 import { TAdvertiserPaymentMethods } from 'types';
 import { ClickableText } from '../../ClickableText';
-import './payment-method-card-body.scss';
+import './PaymentMethodCardBody.scss';
 
 type TPaymentMethodCardBodyProps = {
     large?: boolean;

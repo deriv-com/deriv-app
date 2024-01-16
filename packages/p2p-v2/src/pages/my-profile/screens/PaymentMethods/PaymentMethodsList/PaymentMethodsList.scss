@@ -1,20 +1,10 @@
 .p2p-v2-payment-methods {
-    &-wrapper {
-        max-width: 67.2rem;
-    }
     &-list {
-        &__button {
-            height: 4rem;
-            background-color: #ff444f;
-            border-radius: 4px;
-            padding: 1rem 1.6rem;
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 1.4rem;
-            line-height: 2rem;
-            font-family: 'IBM Plex Sans', sans-serif;
-            text-align: center;
-            border: none;
+        width: 100%;
+        min-width: 67.2rem;
+        @include mobile {
+            min-width: 36rem;
+            padding: 1.6rem;
         }
         &__group {
             margin-top: 2.4rem;
@@ -25,6 +15,9 @@
                 line-height: 2rem;
                 font-family: 'IBM Plex Sans', sans-serif;
                 color: #333333;
+                @include mobile {
+                    margin-left: 1.6rem;
+                }
             }
             &-body {
                 display: flex;

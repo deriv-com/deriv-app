@@ -2,7 +2,7 @@ import React, { ChangeEvent, ComponentProps, forwardRef, Ref, useState } from 'r
 import classNames from 'classnames';
 import { FormikErrors } from 'formik';
 import HelperMessage, { HelperMessageProps } from './HelperMessage';
-import './text-field.scss';
+import './TextField.scss';
 
 export interface TextFieldProps extends ComponentProps<'input'>, HelperMessageProps {
     defaultValue?: string;

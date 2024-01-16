@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import clsx from 'clsx';
 import { Controller, useForm } from 'react-hook-form';
 import { TPaymentMethodFormConfig, TPaymentMethodFotmValues, TSelectedPaymentMethod } from 'types';
 import { p2p } from '@deriv/api';
@@ -7,11 +6,12 @@ import { ClickableText } from '../../../../../components/ClickableText';
 import { Dropdown } from '../../../../../components/Dropdown';
 import TextField from '../../../../../components/TextField/TextField';
 import { VALID_SYMBOLS_PATTERN } from '../../../../../constants';
-import ArrowLeftBold from '../../../../../public/ic-arrow-left-bold.svg';
 import CloseCircle from '../../../../../public/ic-close-circle.svg';
-import './payment-method-form.scss';
+import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
+import PaymentMethodFormFooter from './PaymentMethodFormFooter';
+import './PaymentMethodForm.scss';
 
-type TPaymentMethodForm = {
+type TPaymentMethodFormProps = {
     onClear?: () => void;
     onFormSubmit: (data: TPaymentMethodFotmValues) => void;
     onGoBack?: () => void;
@@ -25,7 +25,7 @@ const PaymentMethodForm = ({
     onGoBack,
     onSelectPaymentMethod,
     paymentMethodFormConfig,
-}: TPaymentMethodForm) => {
+}: TPaymentMethodFormProps) => {
     const {
         control,
         formState: { isValid },
@@ -43,17 +43,7 @@ const PaymentMethodForm = ({
 
     return (
         <div className='p2p-v2-payment-method-form'>
-            <div className='p2p-v2-payment-method-form__header'>
-                <div className='p2p-v2-payment-method-form__back-button'>
-                    <ArrowLeftBold
-                        onClick={() => {
-                            onGoBack?.();
-                        }}
-                    />
-                </div>
-                {/* TODO: Remember to translate this */}
-                <div className='p2p-v2-payment-method-form__title'>{title}</div>
-            </div>
+            <PaymentMethodsHeader onGoBack={onGoBack} title={title} />
             <form
                 className='p2p-v2-payment-method-form__form'
                 onSubmit={handleSubmit(data => {
@@ -68,7 +58,6 @@ const PaymentMethodForm = ({
                     {paymentMethodFormConfig.paymentMethod ? (
                         // TODO: Remember to translate this
                         <TextField
-                            className={clsx('p2p-v2-payment-method-form__field')}
                             disabled
                             label='Choose your payment method'
                             renderRightIcon={() =>
@@ -110,7 +99,8 @@ const PaymentMethodForm = ({
                                 {/* TODO: Remember to translate these */}
                                 Don’t see your payment method?{' '}
                                 <ClickableText
-                                    className='p2p-v2-link'
+                                    // className='p2p-v2-link'
+                                    color='red'
                                     onClick={() => {
                                         const paymentMethod = availablePaymentMethods?.find(p => p.id === 'other');
                                         if (paymentMethod) {
@@ -184,24 +174,12 @@ const PaymentMethodForm = ({
                         </div>
                     );
                 })}
-                {!paymentMethod ? null : (
-                    <div className='p2p-v2-payment-method-form__buttons'>
-                        {/* TODO: Remember to wire up the modal */}
-                        <button
-                            className='p2p-v2-payment-method-form__button p2p-v2-payment-method-form__button--cancle'
-                            onClick={onGoBack}
-                        >
-                            Cancel
-                        </button>
-                        {/* TODO: Remember to translate these */}
-                        <button
-                            className='p2p-v2-payment-method-form__button p2p-v2-payment-method-form__button--save'
-                            disabled={!isValid}
-                        >
-                            {type === 'ADD' ? 'Add' : 'Save changes'}
-                        </button>
-                    </div>
-                )}
+                <PaymentMethodFormFooter
+                    isValid={isValid}
+                    onGoBack={onGoBack}
+                    paymentMethod={paymentMethod}
+                    type={type}
+                />
             </form>
         </div>
     );

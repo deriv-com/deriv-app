@@ -85,20 +85,21 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                             </div>
                             <div className='flex flex-col content-center gap-800'>
                                 <Button
-                                    disabled={
-                                        !validPassword(values.currentPassword) || !validPassword(values.newPassword)
-                                    }
+                                    // quill component issue, needs to bring these back once we have the proper component
+                                    // disabled={
+                                    //     !validPassword(values.currentPassword) || !validPassword(values.newPassword)
+                                    // }
                                     isLoading={changeInvestorPasswordStatus === 'loading'}
                                     size={isMobile ? 'lg' : 'md'}
-                                    type='submit'
+                                    // type='submit'
                                 >
                                     Change investor password
                                 </Button>
                                 <Button
-                                    colorStyle='red'
+                                    colorStyle='coral'
                                     onClick={sendEmail}
                                     size={isMobile ? 'lg' : 'md'}
-                                    variant='ghost'
+                                    variant='tertiary'
                                 >
                                     Create or reset investor password
                                 </Button>

@@ -15,7 +15,7 @@ const Checklist = ({ items }: { items: TChecklistItem[] }) => {
     return (
         <div className='p2p-v2-checklist'>
             {items.map((item, key) => (
-                <div className='p2p-v2-checklist__item' key={key}>
+                <div className='p2p-v2-checklist__item' key={`${key}_${item.text}`}>
                     <span className={clsx({ 'p2p-v2-checklist__text--disabled': item.isDisabled })}>{item.text}</span>
                     {item.status === 'done' ? (
                         <div className='p2p-v2-checklist__item-checkmark'>

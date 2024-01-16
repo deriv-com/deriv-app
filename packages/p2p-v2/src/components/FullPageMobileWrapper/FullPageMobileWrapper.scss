@@ -1,9 +1,8 @@
 .p2p-v2-mobile-wrapper {
-    position: relative;
     @include mobile {
-        height: auto;
+        height: calc(100vh - 4rem);
         width: 100vw;
-        margin: 4rem 0 0;
+        margin: 12rem 0 0;
         border-radius: 0;
         display: grid;
         grid-template-rows: 6rem auto;
@@ -29,10 +28,6 @@
     }
 
     &__footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
         padding: 2rem;
         border-top: 2px solid #f2f3f4;
     }

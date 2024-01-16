@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useStep } from 'usehooks-ts';
 
 type Helpers = ReturnType<typeof useStep>[1];
@@ -50,6 +50,12 @@ export const useSignupWizardContext = () => {
 export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
     const [isWizardOpen, setIsWizardOpen] = useState(false);
     const [currentStep, helpers] = useStep(5);
+
+    useEffect(() => {
+        if (!isWizardOpen) {
+            helpers.setStep(1);
+        }
+    }, [helpers, isWizardOpen]);
 
     const contextState = useMemo(
         () => ({

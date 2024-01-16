@@ -1,5 +1,5 @@
 import React from 'react';
-import { DesktopWrapper, MobileWrapper, Modal, UILoader, Icon } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, Modal, UILoader } from '@deriv/components';
 import LaunchModalInfo from './launch-modal-info';
 import LaunchModalButton from './launch-modal-button';
 import './launch-modal.scss';

@@ -40,4 +40,5 @@ export type TMessageFnProps = {
     sourceAccount: NonNullable<TAccount>;
     sourceAmount: number;
     targetAccount: TAccount;
+    targetAmount: number;
 };

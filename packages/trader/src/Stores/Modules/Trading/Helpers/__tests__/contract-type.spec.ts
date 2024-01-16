@@ -398,7 +398,7 @@ describe('ContractType.getExpiryTime', () => {
     });
     it('end_time should be first item in market_close_times array return null if its not undefined', () => {
         market_close_times = ['21:00:00'];
-        server_time_get_spy.mockImplementation(
+        (server_time_get_spy as jest.Mock).mockImplementation(
             jest.fn(() => ({
                 isBefore: jest.fn(() => true),
             }))
@@ -416,7 +416,7 @@ describe('ContractType.getExpiryTime', () => {
         expect(result).toEqual({ expiry_time: '21:00:00' });
     });
     it('should return expiry_time to be 23:55', () => {
-        server_time_get_spy.mockImplementation(
+        (server_time_get_spy as jest.Mock).mockImplementation(
             jest.fn(() => ({
                 isBefore: jest.fn(() => false),
                 clone: jest.fn(() => ({

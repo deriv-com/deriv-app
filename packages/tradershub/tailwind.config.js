@@ -1,24 +1,25 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin');
+
 module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
+    plugins: [
+        plugin(({ addUtilities }) => {
+            addUtilities({
+                '.backface-hidden': {
+                    'backface-visibility': 'hidden',
+                },
+                '.backface-visible': {
+                    'backface-visibility': 'visible',
+                },
+            });
+        }),
+    ],
     presets: [require('@deriv/quill-design/quill-tailwind/tailwind.config.cjs')],
     theme: {
         extend: {
             backfaceVisibility: {
                 hidden: 'hidden',
-            },
-            button: {
-                primary: {
-                    default: '#ff444f',
-                    hover: {
-                        dark: '#ff525c',
-                        light: '#eb3e48',
-                    },
-                },
-                'primary-light': {
-                    default: '#ff444f29',
-                    hover: '#ff444f3d',
-                },
             },
             colors: {
                 brand: {
@@ -70,7 +71,8 @@ module.exports = {
                         'disabled-text': '#3e3e3e',
                         'general-text': '#c2c2c2',
                         'hover-background': '#242828',
-                        'less prominent-text': '#6e6e6e',
+                        'less-prominent': '#6e6e6e',
+                        'less-prominent-text': '#6e6e6e',
                         'primary-background': '#0e0e0e',
                         'prominent-text': '#ffffff',
                         'secondary-background': '#151717',
@@ -80,6 +82,7 @@ module.exports = {
                         'disabled-text': '#d6d6d6',
                         'general-text': '#333333',
                         'hover-background': '#e6e9e9',
+                        'less-prominent': '#999999',
                         'less-prominent-text': '#999999',
                         'primary-background': '#ffffff',
                         'prominent-text': '#333333',
@@ -89,6 +92,10 @@ module.exports = {
             },
             fontFamily: {
                 sans: ['IBM Plex Sans', 'sans-serif'],
+            },
+            height: {
+                'full-desktop': 'calc(100vh - 85px)',
+                'full-mobile': 'calc(100vh - 40px)',
             },
         },
     },

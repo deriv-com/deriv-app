@@ -30,7 +30,7 @@ const getFormattedConfirmations = (transaction: TModifiedTransaction) => {
         case 'ERROR':
             return 'NA';
         default:
-            return transaction.confirmations || 'Pending';
+            return transaction.confirmations ?? 'Pending';
     }
 };
 

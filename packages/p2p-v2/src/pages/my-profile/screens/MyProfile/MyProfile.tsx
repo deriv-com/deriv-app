@@ -5,8 +5,19 @@ import './MyProfile.scss';
 import { MyProfileAdDetails } from '../MyProfileAdDetails';
 import { MyProfileStats } from '../MyProfileStats';
 import { PaymentMethods } from '../PaymentMethods';
+import { useDevice } from '../../../../hooks';
+import { FullPageMobileWrapper } from '../../../../components';
 
 const MyProfile = () => {
+    const { isMobile } = useDevice();
+
+    if (isMobile) {
+        return (
+            <FullPageMobileWrapper>
+                <PaymentMethods />
+            </FullPageMobileWrapper>
+        );
+    }
     return (
         <div className='p2p-v2-my-profile'>
             <MyProfileContent />

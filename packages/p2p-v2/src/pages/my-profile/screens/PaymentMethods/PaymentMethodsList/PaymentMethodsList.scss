@@ -20,7 +20,8 @@
             flex-wrap: wrap;
             margin-bottom: 5rem;
             @include mobile {
-                justify-content: space-between;
+                justify-content: flex-start;
+                gap: 1.6rem;
             }
         }
     }

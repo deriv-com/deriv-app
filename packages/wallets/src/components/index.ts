@@ -28,7 +28,6 @@ export * from './WalletListCardBalance';
 export * from './WalletListCardDetails';
 export * from './WalletListCardTitle';
 export * from './WalletNoWalletFoundState';
-export * from './WalletsAccordion';
 export * from './WalletsActionScreen';
 export * from './WalletsAddMoreCarousel';
 export * from './WalletsAppLinkedWithWalletIcon';

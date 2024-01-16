@@ -3,7 +3,6 @@ import { useAuthorize, useCurrencyConfig, useWalletAccountsList } from '@deriv/a
 import { AccountsList } from '../AccountsList';
 import { WalletsAccordionLoader } from '../SkeletonLoader';
 import { WalletListCard } from '../WalletListCard';
-import { WalletsAccordion } from '../WalletsAccordion';
 import './DesktopWalletsList.scss';
 import AccountSwitcher from './AccountSwitcher/AccountSwitcher';
 
@@ -22,13 +21,8 @@ const DesktopWalletsList: React.FC = () => {
 
     return (
         <div className='wallets-desktop-wallets-list'>
-
-            <div
-            className={`wallets-accordion wallets-accordion ${
-                activeAccount.is_virtual ? 'wallets-accordion wallets-accordion--virtual' : ''
-            }`}
-            >
                 <AccountSwitcher 
+                    //@ts-ignore
                     accountsList={wallets}
                     activeWallet={activeAccount}
                     label={`Wallet ${activeAccount?.currency}`}
@@ -37,10 +31,16 @@ const DesktopWalletsList: React.FC = () => {
                     }}
                     selectedAccount={activeAccount}
                 />
+            <div
+            className={`wallets-desktop-wallets-list__content ${
+                activeAccount.is_virtual ? 'wallets-desktop-wallets-list__content--virtual' : ''
+            }`}
+            >
+               
 
                 <div
-                    className={`wallets-accordion__header wallets-accordion__header ${
-                        activeAccount.is_active ? 'wallets-accordion__header wallets-accordion__header--virtual' : ''
+                    className={`wallets-desktop-wallets-list__content__header wallets-desktop-wallets-list__content__header ${
+                        activeAccount.is_active ? 'wallets-desktop-wallets-list__content__header wallets-desktop-wallets-list__content__header--virtual' : ''
                     }`}
                 >
                     <WalletListCard
@@ -54,7 +54,7 @@ const DesktopWalletsList: React.FC = () => {
                                 
                 </div>
 
-                <div className={`wallets-accordion__content ${'wallets-accordion__content--visible'}`}>
+                <div className={`wallets-desktop-wallets-list__content__content ${'wallets-desktop-wallets-list__content__content--visible'}`}>
                     <AccountsList />
                 </div>
             </div>

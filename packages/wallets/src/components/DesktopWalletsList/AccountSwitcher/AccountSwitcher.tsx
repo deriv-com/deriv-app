@@ -1,11 +1,8 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { WalletText } from './../../../components';
 import useDevice from './../../../hooks/useDevice';
 import { useModal } from './../../../components/ModalProvider';
-import {TransferFormAccountCard} from './../../../features/cashier/modules/Transfer/components/TransferFormAccountCard';
-import {WalletCurrencyCard} from './../../../components';
-import {WalletListCardBadge} from './../../../components';
 import {WalletCardIcon} from './../../../components';
 
 import './AccountSwitcher.scss';
@@ -31,19 +28,18 @@ const AccountSwitcher: React.FC<TProps> = ({
     const { isMobile } = useDevice();
     const modal = useModal();
 
-    console.log('>> accountsList: ', accountsList);
     return (
         <div className='wallets-transfer-form-account-selection'>
-            <div className='wallets-transfer-form-account-selection__header'>
-                <div className='wallets-transfer-form-account-selection__label'>
+            {/* <div className='wallets-transfer-form-account-selection__header'> */}
+                {/* <div className='wallets-transfer-form-account-selection__label'>
                     <WalletText size='md' weight='bold'>
                         {label}
                     </WalletText>
                 </div>
                 <button className='wallets-transfer-form-account-selection__close-button' onClick={() => modal.hide()}>
                    X
-                </button>
-            </div>
+                </button> */}
+            {/* </div> */}
             <div className='wallets-transfer-form-account-selection__accounts'>
                 {accountsList.map((account, index) => {
                     return (

@@ -6,6 +6,7 @@ export * from './ContentSwitcher';
 export * from './CurrencySwitcher';
 export * from './DemoRealSwitcher';
 export * from './Dialog';
+export * from './EUDisclaimerMessage';
 export * from './GetADerivAccountBanner';
 export * from './Modal';
 export * from './OptionsAndMultipliersSection';

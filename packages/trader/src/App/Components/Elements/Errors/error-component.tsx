@@ -30,7 +30,7 @@ const ErrorComponent: React.FC<Partial<TErrorComponent>> = ({
                 confirm_button_text={redirect_label || localize('Ok')}
                 onConfirm={redirectOnClick || (() => location.reload())}
             >
-                {message || localize('Sorry, an error occured while processing your request.')}
+                {message || localize('Sorry, an error occurred while processing your request.')}
             </Dialog>
         );
     }

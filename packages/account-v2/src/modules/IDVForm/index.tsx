@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, FormikProps, useFormikContext } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { WalletDropdown } from '../../components/base/WalletDropdown';
@@ -85,69 +85,75 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
     }, [documents_supported]);
 
     return (
-        <section>
-            <Field name='document_type'>
-                {({ field }: FieldProps) => (
-                    <ResponsiveWrapper>
-                        {{
-                            desktop: (
-                                <WalletDropdown
-                                    {...field}
-                                    errorMessage='Document type is required'
-                                    isRequired
-                                    label='Choose the document type'
-                                    list={documentList}
-                                    onChange={handleChange}
-                                    onSelect={handleSelect}
-                                    variant='comboBox'
-                                />
-                            ),
-                            mobile: (
-                                <WalletDropdown
-                                    {...field}
-                                    errorMessage='Document type is required'
-                                    isRequired
-                                    label='Choose the document type'
-                                    list={documentList}
-                                    onChange={handleChange}
-                                    onSelect={handleSelect}
-                                    variant='prompt'
-                                />
-                            ),
-                        }}
-                    </ResponsiveWrapper>
+        <Fragment>
+            <section>
+                <Field name='document_type'>
+                    {({ field }: FieldProps) => (
+                        <ResponsiveWrapper>
+                            {{
+                                desktop: (
+                                    <WalletDropdown
+                                        {...field}
+                                        errorMessage='Document type is required'
+                                        isRequired
+                                        label='Choose the document type'
+                                        list={documentList}
+                                        onChange={handleChange}
+                                        onSelect={handleSelect}
+                                        variant='comboBox'
+                                    />
+                                ),
+                                mobile: (
+                                    <WalletDropdown
+                                        {...field}
+                                        errorMessage='Document type is required'
+                                        isRequired
+                                        label='Choose the document type'
+                                        list={documentList}
+                                        onChange={handleChange}
+                                        onSelect={handleSelect}
+                                        variant='prompt'
+                                    />
+                                ),
+                            }}
+                        </ResponsiveWrapper>
+                    )}
+                </Field>
+                {values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.value && (
+                    <Field name='document_number'>
+                        {({ field, meta }: FieldProps) => (
+                            <WalletTextField
+                                {...field}
+                                disabled={!values.document_type.id}
+                                errorMessage={errors.document_number}
+                                isInvalid={Boolean(values.document_type.id) && meta.touched && Boolean(meta.error)}
+                                label='Enter your document number'
+                                onChange={handleChange}
+                            />
+                        )}
+                    </Field>
                 )}
-            </Field>
-            {values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.value && (
-                <Field name='document_number'>
-                    {({ field, meta }: FieldProps) => (
-                        <WalletTextField
-                            {...field}
-                            disabled={!values.document_type.id}
-                            errorMessage={errors.document_number}
-                            isInvalid={Boolean(values.document_type.id) && meta.touched && Boolean(meta.error)}
-                            label='Enter your document number'
-                            name='document_number'
-                            onChange={handleChange}
-                        />
-                    )}
-                </Field>
-            )}
-            {values.document_type.additional?.display_name && (
-                <Field name='document_additional'>
-                    {({ field, meta }: FieldProps) => (
-                        <WalletTextField
-                            {...field}
-                            disabled={!values.document_type.additional}
-                            errorMessage={errors.document_additional}
-                            isInvalid={Boolean(meta.value) && meta.touched && Boolean(meta.error)}
-                            label='Enter additional document number'
-                            name='document_number'
-                            onChange={handleChange}
-                        />
-                    )}
-                </Field>
-            )}
-        </section>
+                {values.document_type.additional?.display_name && (
+                    <Field name='document_additional'>
+                        {({ field, meta }: FieldProps) => (
+                            <WalletTextField
+                                {...field}
+                                disabled={!values.document_type.additional}
+                                errorMessage={errors.document_additional}
+                                isInvalid={Boolean(meta.value) && meta.touched && Boolean(meta.error)}
+                                label='Enter additional document number'
+                                onChange={handleChange}
+                            />
+                        )}
+                    </Field>
+                )}
+            </section>
+            {/* [TODO]:Mock - Remove Display for form values */}
+            <section>
+                <p>Document Type: {values.document_type.text}</p>
+                <p>Document Number: {values.document_number}</p>
+                <p>Additional Document number: {values.document_additional ?? '--'} </p>
+            </section>
+        </Fragment>
     );
 };

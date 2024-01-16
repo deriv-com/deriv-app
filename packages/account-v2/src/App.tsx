@@ -28,6 +28,7 @@ const App: React.FC = () => {
                     {/* [TODO]:Mock - Remove hardcoded initial value once isActive comes from Modal */}
                     <FormProgress activeStep={1} steps={stepProgress} />
                 </SignupWizardProvider>
+                {/* [TODO]:Mock - Remove Mock values */}
                 <Formik initialValues={INITIAL_VALUES} onSubmit={() => {}}>
                     <IDVForm selectedCountry={SELECTED_COUNTRY} />
                 </Formik>

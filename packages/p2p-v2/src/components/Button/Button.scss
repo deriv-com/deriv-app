@@ -1,0 +1,26 @@
+.p2p-v2-button {
+    margin-left: auto;
+    min-width: 6.4rem;
+    width: fit-content;
+    padding: 1rem 1.6rem;
+    background-color: #ff444f;
+    color: #ffffff;
+    border: none;
+    font-weight: 800;
+    border-radius: 0.4rem;
+    text-decoration: none;
+    cursor: pointer;
+
+    &--full-width {
+        width: 100%;
+    }
+
+    &:hover {
+        background-color: #eb3e48;
+    }
+
+    &--disabled {
+        opacity: 0.32;
+        pointer-events: none;
+    }
+}

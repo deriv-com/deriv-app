@@ -12,7 +12,7 @@ import AccountInfoWrapper from '../account-info-wrapper';
 import WalletBadge from './wallet-badge';
 
 type TAccountInfoWallets = {
-    toggleDialog: () => void;
+    toggleDialog: (value?: boolean) => void;
     is_dialog_on: boolean;
 };
 
@@ -151,9 +151,23 @@ const AccountInfoWallets = observer(({ is_dialog_on, toggleDialog }: TAccountInf
                         'acc-info--show': is_dialog_on,
                         'acc-info--is-disabled': active_account?.is_disabled,
                     })}
-                    onClick={active_account?.is_disabled ? undefined : () => toggleDialog()}
+                    onClick={
+                        active_account?.is_disabled
+                            ? undefined
+                            : () => {
+                                  toggleDialog();
+                              }
+                    }
                     // SonarLint offers to add handler for onKeyDown event if we have onClick event handler
-                    onKeyDown={active_account?.is_disabled ? undefined : () => toggleDialog()}
+                    onKeyDown={
+                        active_account?.is_disabled
+                            ? undefined
+                            : event => {
+                                  if (event.key === 'Enter') {
+                                      toggleDialog();
+                                  }
+                              }
+                    }
                 >
                     {is_mobile ? (
                         <MobileInfoIcon wallet_account={linked_wallet} />

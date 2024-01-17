@@ -1,0 +1,45 @@
+.p2p-v2-advertiser-name-stats {
+    display: flex;
+    align-items: center;
+
+    @include mobile {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    & div {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0 0.8rem;
+        border-left: 1px solid #f2f3f4;
+
+        @include mobile {
+            border-left: none;
+            padding: 0;
+        }
+
+        &:first-child {
+            padding-left: 0;
+            padding-right: 0.8rem;
+            border-left: none;
+        }
+
+        & h2 {
+            font-size: 1.4rem;
+            line-height: 1.4rem;
+            color: #999999;
+
+            & svg {
+                vertical-align: middle;
+            }
+        }
+    }
+
+    &__rating {
+        display: flex;
+        gap: 0.5rem;
+    }
+}

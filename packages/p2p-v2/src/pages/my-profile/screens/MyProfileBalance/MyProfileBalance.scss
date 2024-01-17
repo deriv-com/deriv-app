@@ -1,11 +1,11 @@
 .p2p-v2-my-profile-balance {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1.5fr 3fr;
     grid-gap: 2.4rem;
 
     @include mobile {
         grid-template-columns: 1fr;
-        grid-template-rows: repeat(2, 1fr);
+        grid-auto-flow: row;
     }
 
     &__amount {
@@ -32,10 +32,27 @@
         }
     }
 
+    &__items {
+        display: grid;
+        grid-auto-flow: column;
+
+        @include mobile {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
     &__item {
         display: flex;
         flex-direction: column;
         gap: 1.6rem;
+
+        @include mobile {
+            border-right: 1px solid #f2f3f7;
+            &:last-child {
+                border-right: none;
+                padding: 0 1.6rem;
+            }
+        }
 
         & h1 {
             font-size: 1.4rem;
@@ -46,6 +63,11 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
 
+            @include mobile {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr 1fr;
+            }
+
             & div {
                 border-left: 1px solid #f2f3f7;
                 padding: 0 3rem;
@@ -53,6 +75,11 @@
                 &:first-child {
                     border-left: none;
                     padding-left: 0;
+                }
+
+                @include mobile {
+                    border-left: none;
+                    padding: 0;
                 }
             }
 

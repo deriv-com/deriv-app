@@ -12,18 +12,6 @@ const useAdvertiserStats = (advertiserId?: string) => {
     const { data: settings, isSuccess: isSuccessSettings } = useSettings();
     const { data: authenticationStatus, isSuccess: isSuccessAuthenticationStatus } = useAuthentication();
 
-    // is_poa_verified={
-    //     general_store.is_advertiser
-    //         ? !!full_verification
-    //         : general_store.poa_status === document_status_codes.VERIFIED
-    // }
-    // is_poi_verified={
-    //     general_store.is_advertiser
-    //         ? !!basic_verification
-    //         : general_store.poi_status === identity_status_codes.VERIFIED
-    // }
-    // trade_count={Number(buy_orders_count) + Number(sell_orders_count)}
-
     const transformedData = useMemo(() => {
         if (!isSuccess && !isSuccessSettings && !isSuccessAuthenticationStatus) return;
 

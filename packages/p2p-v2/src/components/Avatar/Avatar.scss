@@ -11,7 +11,9 @@
     line-height: 3rem;
 
     @include mobile {
-        width: 3.2rem;
-        height: 3.2rem;
+        width: 4.2rem;
+        height: 4.2rem;
+        font-size: 1.6rem;
+        line-height: 1.8rem;
     }
 }

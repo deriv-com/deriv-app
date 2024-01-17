@@ -447,6 +447,7 @@ export default class LoadModalStore implements ILoadModalStore {
     toggleLoadModal = (): void => {
         this.is_load_modal_open = !this.is_load_modal_open;
         if (this.selected_strategy_id) this.previewRecentStrategy(this.selected_strategy_id);
+        this.setLoadedLocalFile(null);
     };
 
     toggleTourLoadModal = (toggle = !this.is_load_modal_open) => {

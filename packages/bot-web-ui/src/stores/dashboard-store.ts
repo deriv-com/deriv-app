@@ -1,20 +1,24 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { setColors } from '@deriv/bot-skeleton';
 import { TStores } from '@deriv/stores/types';
+import { clearInjectionDiv } from 'Constants/load-modal';
+import * as strategy_description from '../constants/quick-strategies';
+import { TDescriptionItem } from '../pages/bot-builder/quick-strategy/types';
 import {
     faq_content,
     guide_content,
     quick_strategy_content,
+    USER_GUIDE,
+    user_guide_content,
+    VIDEOS,
+} from '../pages/tutorials/constants';
+import { setTourSettings, tour_type, TTourType } from '../pages/tutorials/dbot-tours/utils';
+import {
     TFaqContent,
     TGuideContent,
     TQuickStrategyContent,
     TUserGuideContent,
-    user_guide_content,
-} from 'Components/dashboard/tutorial-tab/config';
-import * as strategy_description from 'Components/quick-strategy/descriptions';
-import { TDescriptionItem } from 'Components/quick-strategy/types';
-import { clearInjectionDiv } from 'Constants/load-modal';
-import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
+} from '../pages/tutorials/tutorials.types';
 import RootStore from './root-store';
 
 export interface IDashboardStore {
@@ -237,10 +241,10 @@ export default class DashboardStore implements IDashboardStore {
         const filtered_tutorial_content = foundItems.map(item => {
             const identifier = item.split('#')[0];
             const index: string = identifier.split('-')[1];
-            if (identifier.includes('ugc')) {
+            if (identifier.includes(USER_GUIDE)) {
                 filtered_user_guide.push(user_guide_content[Number(index)]);
                 return user_guide_content[Number(index)];
-            } else if (identifier.includes('gc')) {
+            } else if (identifier.includes(VIDEOS)) {
                 filter_video_guide.push(guide_content[Number(index)]);
                 return guide_content[Number(index)];
             } else if (identifier.includes('faq')) {

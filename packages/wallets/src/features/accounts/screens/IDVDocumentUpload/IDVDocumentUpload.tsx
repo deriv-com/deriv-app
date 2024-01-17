@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import * as Yup from 'yup';
 import { usePOI, useResidenceList, useSettings } from '@deriv/api';
 import { FlowTextField, useFlow, WalletDropdown, WalletText } from '../../../../components';
@@ -48,7 +48,6 @@ const IDVDocumentUpload = () => {
     const { formValues, setFormValues } = useFlow();
     const { data: residenceList, isSuccess: isResidenceListSuccess } = useResidenceList();
     const { data: settings } = useSettings();
-    const [isDetailsVerified, setIsDetailsVerified] = useState(false);
 
     const [documentsDropdownList, documentsMapper, textToValueMapper] = useMemo(() => {
         const documents: Record<string, TDocumentTypeItem> = {};
@@ -146,10 +145,7 @@ const IDVDocumentUpload = () => {
                 <div className='wallets-idv-document-upload__title'>
                     <WalletText weight='bold'>Details</WalletText>
                 </div>
-                <IDVDocumentUploadDetails
-                    isDetailsVerified={isDetailsVerified}
-                    setIsDetailsVerified={setIsDetailsVerified}
-                />
+                <IDVDocumentUploadDetails />
             </div>
         </div>
     );

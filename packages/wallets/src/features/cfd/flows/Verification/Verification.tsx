@@ -126,6 +126,7 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.firstName ||
                     !formValues.lastName ||
                     !formValues.dateOfBirth ||
+                    !formValues.verifiedIdvDetails ||
                     !!errors.documentNumber ||
                     !!errors.firstName ||
                     !!errors.lastName ||

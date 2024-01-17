@@ -21,8 +21,8 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
     const invalidate = useInvalidateQuery();
 
     const hasMT5Account = useMemo(() => {
-        return data?.some(account => account.is_added);
-    }, [data]);
+        return data?.some(account => account.is_added && account.is_virtual === activeTradingAccount?.is_virtual);
+    }, [activeTradingAccount?.is_virtual, data]);
 
     useEffect(() => {
         if (!isFetching) {

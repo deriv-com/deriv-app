@@ -24,13 +24,13 @@ export const useUIContext = () => {
 };
 
 export const UIProvider = ({ children }: { children: React.ReactNode }) => {
-    const [UIState, setUIState] = useState<TUIState>({});
+    const [uiState, setUIState] = useState<TUIState>({});
 
     const getUIState = useCallback(
         <T extends keyof TUIState>(key: T): TUIState[T] => {
-            return UIState[key];
+            return uiState[key];
         },
-        [UIState]
+        [uiState]
     );
 
     const updateUIState = <T extends keyof TUIState>(key: T, value: TUIState[T]) => {

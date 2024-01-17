@@ -5,7 +5,7 @@ const useIsRtl = () => {
     const { i18n } = useTranslation();
 
     const check_rtl = React.useCallback(() => {
-        return i18n.dir(i18n.language.toLowerCase()) === 'rtl';
+        return i18n.dir(i18n.language?.toLowerCase()) === 'rtl';
     }, [i18n]);
 
     const [is_rtl, setIsRtl] = React.useState<boolean>(() => {

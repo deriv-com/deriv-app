@@ -11,11 +11,11 @@ const useRegulationFlags = (region?: string) => {
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { data: tradingAccountsList } = useTradingAccountsList();
 
-    const isEURegion = region === Region.EU;
-    const isNonEURegion = region === Region.NonEU;
+    const isEURegulation = region === Region.EU;
+    const isNonEURegulation = region === Region.NonEU;
 
-    const isEU = isEUCountry || isEURegion;
-    const isNonEU = !isEUCountry || isNonEURegion;
+    const isEU = isEUCountry || isEURegulation;
+    const isNonEU = !isEUCountry || isNonEURegulation;
     const isDemo = activeTradingAccount?.is_virtual ?? false;
 
     const isEUReal = isEU && !isDemo;

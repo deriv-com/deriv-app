@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import * as Yup from 'yup';
 import { usePOI, useResidenceList, useSettings } from '@deriv/api';
 import { FlowTextField, useFlow, WalletDropdown, WalletText } from '../../../../components';
@@ -11,11 +11,6 @@ import { IDVDocumentUploadDetails } from './components';
 import './IDVDocumentUpload.scss';
 
 type TErrorMessageProps = Exclude<THooks.POI['current']['status'], undefined>;
-
-type TIdvDocumentUploadProps = {
-    isDetailsVerified: boolean;
-    setIsDetailsVerified: React.Dispatch<React.SetStateAction<boolean>>;
-};
 
 const statusMessage: Partial<Record<TErrorMessageProps, string>> = {
     expired: 'Your identity document has expired.',
@@ -48,11 +43,12 @@ const ErrorMessage: React.FC<{ status: TErrorMessageProps }> = ({ status }) => {
     );
 };
 
-const IDVDocumentUpload: React.FC<TIdvDocumentUploadProps> = ({ isDetailsVerified, setIsDetailsVerified }) => {
+const IDVDocumentUpload = () => {
     const { data: poiStatus } = usePOI();
     const { formValues, setFormValues } = useFlow();
     const { data: residenceList, isSuccess: isResidenceListSuccess } = useResidenceList();
     const { data: settings } = useSettings();
+    const [isDetailsVerified, setIsDetailsVerified] = useState(false);
 
     const [documentsDropdownList, documentsMapper, textToValueMapper] = useMemo(() => {
         const documents: Record<string, TDocumentTypeItem> = {};

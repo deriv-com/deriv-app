@@ -304,7 +304,7 @@ const getModules = () => {
             path: routes.cashier_v2,
             component: Cashier_V2,
             is_authenticated: true,
-            getTitle: () => localize('Cashier V2'),
+            getTitle: () => localize('Cashier'),
         },
         {
             path: routes.onboarding,

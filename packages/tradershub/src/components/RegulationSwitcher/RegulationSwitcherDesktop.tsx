@@ -1,7 +1,8 @@
 import React from 'react';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { Button, qtJoin, Text } from '@deriv/quill-design';
+import { Button, qtJoin } from '@deriv/quill-design';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 
 const RegulationSwitcherDesktop = () => {
     const { switchAccount } = useAuthorize();

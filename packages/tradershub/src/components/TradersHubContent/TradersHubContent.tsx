@@ -4,9 +4,9 @@ import { CFDSection, OptionsAndMultipliersSection, useUIContext } from '..';
 
 const TradersHubContent = () => {
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('regulation');
+    const activeRegulation = getUIState('regulation');
 
-    const { isEU } = useRegulationFlags(activeRegion);
+    const { isEU } = useRegulationFlags(activeRegulation);
 
     if (isEU) {
         return (

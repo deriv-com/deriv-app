@@ -44,9 +44,9 @@ const EnterPassword: React.FC<TProps> = ({
     const { isDesktop } = useBreakpoint();
     const title = PlatformDetails[platform].title;
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('regulation');
+    const activeRegulation = getUIState('regulation');
 
-    const { isEU } = useRegulationFlags(activeRegion);
+    const { isEU } = useRegulationFlags(activeRegulation);
 
     const { data } = useActiveTradingAccount();
     const accountType = data?.is_virtual ? 'Demo' : 'Real';

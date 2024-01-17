@@ -25,8 +25,8 @@ const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
 const TradeScreen = ({ account }: TradeScreenProps) => {
     const { isMobile } = useBreakpoint();
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('regulation');
-    const { isEU } = useRegulationFlags(activeRegion);
+    const activeRegulation = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegulation);
 
     const { getCFDState } = Provider.useCFDContext();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();

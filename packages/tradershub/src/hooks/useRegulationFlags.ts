@@ -1,18 +1,18 @@
 import { useActiveTradingAccount, useIsEuRegion, useTradingAccountsList } from '@deriv/api';
-import { Region } from '../constants/constants';
+import { Regulation } from '../constants/constants';
 
 /**
- * @description A custom hook that returns region flags based on the region passed in
- * @param region 'EU' | 'Non-EU'
+ * @description A custom hook that returns regulation flags based on the regulation passed in
+ * @param regulation 'EU' | 'Non-EU'
  * @returns  { isDemo: boolean, isEU: boolean, isEUReal: boolean, isNonEU: boolean, isNonEUReal: boolean }
  */
-const useRegulationFlags = (region?: string) => {
+const useRegulationFlags = (regulation?: string) => {
     const { isEUCountry } = useIsEuRegion();
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { data: tradingAccountsList } = useTradingAccountsList();
 
-    const isEURegulation = region === Region.EU;
-    const isNonEURegulation = region === Region.NonEU;
+    const isEURegulation = regulation === Regulation.EU;
+    const isNonEURegulation = regulation === Regulation.NonEU;
 
     const isEU = isEUCountry || isEURegulation;
     const isNonEU = !isEUCountry || isNonEURegulation;

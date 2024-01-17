@@ -15,8 +15,8 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
     const { data: activeAccount } = useActiveTradingAccount();
 
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('regulation');
-    const { isEU } = useRegulationFlags(activeRegion);
+    const activeRegulation = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegulation);
 
     const { show } = Provider.useModal();
     const history = useHistory();

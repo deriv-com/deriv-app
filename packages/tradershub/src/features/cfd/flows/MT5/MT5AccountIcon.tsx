@@ -7,9 +7,9 @@ import { MarketType, MarketTypeDetails } from '../../constants';
 
 export const MT5AccountIcon = ({ account }: { account: THooks.MT5AccountsList }) => {
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('regulation');
+    const activeRegulation = getUIState('regulation');
 
-    const { isEU } = useRegulationFlags(activeRegion);
+    const { isEU } = useRegulationFlags(activeRegulation);
 
     const handleClick = () => {
         window.open(getStaticUrl('/dmt5'));

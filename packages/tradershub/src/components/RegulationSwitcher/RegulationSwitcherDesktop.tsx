@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
 import { Button, qtJoin, Text } from '@deriv/quill-design';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
-import { Region } from '../../constants/constants';
+import { Regulation } from '../../constants/constants';
 import { useUIContext } from '../UIProvider';
 
 const RegulationSwitcherDesktop = () => {
@@ -16,18 +16,18 @@ const RegulationSwitcherDesktop = () => {
 
     const { data: activeTrading } = useActiveTradingAccount();
 
-    const buttons = [{ label: Region.NonEU }, { label: Region.EU }];
+    const buttons = [{ label: Regulation.NonEU }, { label: Regulation.EU }];
 
-    const activeRegion = getUIState('regulation');
+    const activeRegulation = getUIState('regulation');
 
     const handleButtonClick = (label: string) => {
-        if (label === Region.NonEU) {
-            setUIState('regulation', Region.NonEU);
+        if (label === Regulation.NonEU) {
+            setUIState('regulation', Regulation.NonEU);
             if (realCRAccount) {
                 switchAccount(realCRAccount);
             }
         } else {
-            setUIState('regulation', Region.EU);
+            setUIState('regulation', Regulation.EU);
             if (realMFAccount) {
                 switchAccount(realMFAccount);
             }
@@ -36,9 +36,9 @@ const RegulationSwitcherDesktop = () => {
 
     useEffect(() => {
         if (activeTrading?.loginid.startsWith('CR')) {
-            setUIState('regulation', Region.NonEU);
+            setUIState('regulation', Regulation.NonEU);
         } else if (activeTrading?.loginid.startsWith('MF')) {
-            setUIState('regulation', Region.EU);
+            setUIState('regulation', Regulation.EU);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -46,7 +46,7 @@ const RegulationSwitcherDesktop = () => {
     return (
         <div className='flex items-center gap-400'>
             <div className='flex items-center gap-400'>
-                <Text size='sm'>Regulation</Text>
+                <Text size='sm'>Regulation:</Text>
                 <LabelPairedCircleInfoMdRegularIcon />
             </div>
             <div className='flex bg-system-light-secondary-background rounded-400 p-200 gap-200 w-[200px] h-2000'>
@@ -54,7 +54,7 @@ const RegulationSwitcherDesktop = () => {
                     <Button
                         className={qtJoin(
                             'rounded-200',
-                            activeRegion !== button.label && 'bg-transparent font-regular'
+                            activeRegulation !== button.label && 'bg-transparent font-regular'
                         )}
                         colorStyle='white'
                         fullWidth

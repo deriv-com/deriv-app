@@ -209,36 +209,36 @@ export const AppToIconMapper: Record<string, React.ComponentType<React.SVGAttrib
 
 export const getDxCompanies = () => {
     const allConfig = {
-        account_type: '',
+        accountType: '',
         leverage: 500,
         shortTitle: 'CFDs',
     };
     const syntheticConfig = {
-        account_type: '',
+        accountType: '',
         leverage: 500,
         shortTitle: 'Derived',
     };
     const financialConfig = {
-        account_type: 'financial',
+        accountType: 'financial',
         leverage: 1000,
         shortTitle: 'Financial',
     };
     return {
         demo: {
             all: {
-                dxtrade_account_type: allConfig.account_type,
+                dxtradeAccountType: allConfig.accountType,
                 leverage: allConfig.leverage,
                 shortTitle: allConfig.shortTitle,
                 title: 'Demo',
             },
             financial: {
-                dxtrade_account_type: financialConfig.account_type,
+                dxtradeAccountType: financialConfig.accountType,
                 leverage: financialConfig.leverage,
                 shortTitle: financialConfig.shortTitle,
                 title: 'Demo Financial',
             },
             synthetic: {
-                dxtrade_account_type: syntheticConfig.account_type,
+                dxtradeAccountType: syntheticConfig.accountType,
                 leverage: syntheticConfig.leverage,
                 shortTitle: syntheticConfig.shortTitle,
                 title: 'Demo Derived',
@@ -246,25 +246,25 @@ export const getDxCompanies = () => {
         },
         real: {
             all: {
-                dxtrade_account_type: allConfig.account_type,
+                dxtradeAccountType: allConfig.accountType,
                 leverage: allConfig.leverage,
                 shortTitle: allConfig.shortTitle,
                 title: 'Real',
             },
             dxtrade: {
                 leverage: allConfig.leverage,
-                mt5AccountType: allConfig.account_type,
+                mt5AccountType: allConfig.accountType,
                 shortTitle: allConfig.shortTitle,
                 title: 'Real',
             },
             financial: {
-                dxtrade_account_type: financialConfig.account_type,
+                dxtradeAccountType: financialConfig.accountType,
                 leverage: financialConfig.leverage,
                 shortTitle: financialConfig.shortTitle,
                 title: 'Financial',
             },
             synthetic: {
-                dxtrade_account_type: syntheticConfig.account_type,
+                dxtradeAccountType: syntheticConfig.accountType,
                 leverage: syntheticConfig.leverage,
                 shortTitle: syntheticConfig.shortTitle,
                 title: 'Derived',
@@ -275,14 +275,14 @@ export const getDxCompanies = () => {
 
 export const getCTraderCompanies = () => {
     const allConfig = {
-        account_type: '',
+        accountType: '',
         leverage: 500,
         shortTitle: 'All',
     };
     return {
         demo: {
             all: {
-                ctrader_account_type: allConfig.account_type,
+                ctraderAccountType: allConfig.accountType,
                 leverage: allConfig.leverage,
                 shortTitle: allConfig.shortTitle,
                 title: 'Demo',
@@ -290,7 +290,7 @@ export const getCTraderCompanies = () => {
         },
         real: {
             all: {
-                dxtrade_account_type: allConfig.account_type,
+                dxtradeAccountType: allConfig.accountType,
                 leverage: allConfig.leverage,
                 shortTitle: allConfig.shortTitle,
                 title: 'All',
@@ -299,24 +299,24 @@ export const getCTraderCompanies = () => {
     };
 };
 
-export const getMtCompanies = (isEu: boolean) => {
+export const getMT5Companies = (isEu: boolean) => {
     const allConfig = {
-        account_type: '',
+        accountType: '',
         leverage: 100,
         shortTitle: 'Swap-Free',
     };
     const syntheticConfig = {
-        account_type: '',
+        accountType: '',
         leverage: 500,
         shortTitle: 'Derived',
     };
     const financialConfig = {
-        account_type: 'financial',
+        accountType: 'financial',
         leverage: 1000,
         shortTitle: isEu ? 'CFDs' : 'Financial',
     };
     const financialStpConfig = {
-        account_type: 'financial_stp',
+        accountType: 'financial_stp',
         leverage: 100,
         shortTitle: 'Financial STP',
     };
@@ -324,55 +324,55 @@ export const getMtCompanies = (isEu: boolean) => {
         demo: {
             all: {
                 leverage: allConfig.leverage,
-                mt5AccountType: allConfig.account_type,
+                mt5AccountType: allConfig.accountType,
                 shortTitle: allConfig.shortTitle,
                 title: 'Demo Swap-Free',
             },
             all_svg: {
                 leverage: allConfig.leverage,
-                mt5AccountType: allConfig.account_type,
+                mt5AccountType: allConfig.accountType,
                 shortTitle: 'Swap-Free SVG',
                 title: 'Demo Swap-Free SVG',
             },
             ctrader: {
                 leverage: '500',
-                mt5AccountType: allConfig.account_type,
+                mt5AccountType: allConfig.accountType,
                 shortTitle: 'cTrader',
                 title: 'Demo',
             },
             financial: {
                 leverage: financialConfig.leverage,
-                mt5AccountType: financialConfig.account_type,
+                mt5AccountType: financialConfig.accountType,
                 shortTitle: financialConfig.shortTitle,
                 title: isEu ? 'Demo CFDs' : 'Demo Financial',
             },
             financialDemo: {
                 leverage: financialConfig.leverage,
-                mt5AccountType: financialConfig.account_type,
+                mt5AccountType: financialConfig.accountType,
                 shortTitle: financialConfig.shortTitle,
                 title: isEu ? 'Demo CFDs' : 'Demo Financial',
             },
             financialStp: {
                 leverage: financialStpConfig.leverage,
-                mt5AccountType: financialStpConfig.account_type,
+                mt5AccountType: financialStpConfig.accountType,
                 shortTitle: financialStpConfig.shortTitle,
                 title: 'Demo Financial STP',
             },
             financialSvg: {
                 leverage: financialConfig.leverage,
-                mt5AccountType: financialConfig.account_type,
+                mt5AccountType: financialConfig.accountType,
                 shortTitle: isEu ? 'CFDs' : 'Financial SVG',
                 title: isEu ? 'Demo CFDs' : 'Demo Financial SVG',
             },
             synthetic: {
                 leverage: syntheticConfig.leverage,
-                mt5AccountType: syntheticConfig.account_type,
+                mt5AccountType: syntheticConfig.accountType,
                 shortTitle: syntheticConfig.shortTitle,
                 title: 'Demo Derived',
             },
             syntheticSvg: {
                 leverage: syntheticConfig.leverage,
-                mt5AccountType: syntheticConfig.account_type,
+                mt5AccountType: syntheticConfig.accountType,
                 shortTitle: syntheticConfig.shortTitle,
                 title: 'Demo Derived SVG',
             },
@@ -380,85 +380,85 @@ export const getMtCompanies = (isEu: boolean) => {
         real: {
             all: {
                 leverage: allConfig.leverage,
-                mt5AccountType: allConfig.account_type,
+                mt5AccountType: allConfig.accountType,
                 shortTitle: allConfig.shortTitle,
                 title: 'Swap-Free',
             },
             allSvg: {
                 leverage: allConfig.leverage,
-                mt5AccountType: allConfig.account_type,
+                mt5AccountType: allConfig.accountType,
                 shortTitle: allConfig.shortTitle,
                 title: 'Swap-Free SVG',
             },
             ctrader: {
                 leverage: '500',
-                mt5AccountType: allConfig.account_type,
+                mt5AccountType: allConfig.accountType,
                 shortTitle: 'cTrader',
                 title: 'Real',
             },
             dxtrade: {
                 leverage: allConfig.leverage,
-                mt5AccountType: allConfig.account_type,
+                mt5AccountType: allConfig.accountType,
                 shortTitle: allConfig.shortTitle,
                 title: 'Real',
             },
             financial: {
                 leverage: financialConfig.leverage,
-                mt5AccountType: financialConfig.account_type,
+                mt5AccountType: financialConfig.accountType,
                 shortTitle: financialConfig.shortTitle,
                 title: isEu ? 'CFDs' : 'Financial',
             },
             financialBvi: {
                 leverage: financialConfig.leverage,
-                mt5AccountType: financialConfig.account_type,
+                mt5AccountType: financialConfig.accountType,
                 shortTitle: financialConfig.shortTitle,
                 title: isEu ? 'CFDs' : 'Financial BVI',
             },
             financialFx: {
                 leverage: financialConfig.leverage,
-                mt5AccountType: financialConfig.account_type,
+                mt5AccountType: financialConfig.accountType,
                 shortTitle: financialConfig.shortTitle,
                 title: isEu ? 'CFDs' : 'Financial Labuan',
             },
             financialStp: {
                 leverage: financialStpConfig.leverage,
-                mt5AccountType: financialStpConfig.account_type,
+                mt5AccountType: financialStpConfig.accountType,
                 shortTitle: financialStpConfig.shortTitle,
                 title: 'Financial STP',
             },
             financialSvg: {
                 leverage: financialConfig.leverage,
-                mt5AccountType: financialConfig.account_type,
+                mt5AccountType: financialConfig.accountType,
                 shortTitle: financialConfig.shortTitle,
                 title: isEu ? 'CFDs' : 'Financial SVG',
             },
             financialV: {
                 leverage: financialConfig.leverage,
-                mt5AccountType: financialConfig.account_type,
+                mt5AccountType: financialConfig.accountType,
                 shortTitle: financialConfig.shortTitle,
                 title: isEu ? 'CFDs' : 'Financial Vanuatu',
             },
             synthetic: {
                 leverage: syntheticConfig.leverage,
-                mt5AccountType: syntheticConfig.account_type,
+                mt5AccountType: syntheticConfig.accountType,
                 shortTitle: syntheticConfig.shortTitle,
                 title: 'Derived',
             },
             syntheticBvi: {
                 leverage: syntheticConfig.leverage,
-                mt5AccountType: syntheticConfig.account_type,
+                mt5AccountType: syntheticConfig.accountType,
                 shortTitle: syntheticConfig.shortTitle,
                 title: 'Derived BVI',
             },
             syntheticSvg: {
                 leverage: syntheticConfig.leverage,
-                mt5AccountType: syntheticConfig.account_type,
+                mt5AccountType: syntheticConfig.accountType,
                 shortTitle: syntheticConfig.shortTitle,
                 title: 'Derived SVG',
             },
             syntheticV: {
                 leverage: syntheticConfig.leverage,
-                mt5AccountType: syntheticConfig.account_type,
+                mt5AccountType: syntheticConfig.accountType,
                 shortTitle: syntheticConfig.shortTitle,
                 title: 'Derived Vanuatu',
             },

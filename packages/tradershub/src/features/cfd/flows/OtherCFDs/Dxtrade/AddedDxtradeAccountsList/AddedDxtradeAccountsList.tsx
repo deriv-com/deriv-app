@@ -6,7 +6,7 @@ import { TradingAccountCard } from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/cfd/derivx.svg';
 import { CFDPlatforms, PlatformDetails } from '../../../../constants';
-import { TradeModal } from '../../../../modals/TradeModal';
+import { TopUpModal, TradeModal } from '../../../../modals';
 
 const AddedDxtradeAccountsList = () => {
     const { data: dxTradeAccounts } = useDxtradeAccountsList();
@@ -40,7 +40,7 @@ const AddedDxtradeAccountsList = () => {
                 className='border-opacity-black-400 rounded-200 px-800'
                 colorStyle='black'
                 onClick={() => {
-                    // if (isVirtual) topUpModal;
+                    if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.DXTRADE} />);
                     // else transferModal;
                 }}
                 variant='secondary'

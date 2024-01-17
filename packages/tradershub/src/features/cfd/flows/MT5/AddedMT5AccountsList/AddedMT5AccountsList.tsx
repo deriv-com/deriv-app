@@ -8,7 +8,7 @@ import { TradingAccountCard } from '../../../../../components/TradingAccountCard
 import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
 import { THooks } from '../../../../../types';
 import { CFDPlatforms, MarketType, MarketTypeDetails } from '../../../constants';
-import { TradeModal } from '../../../modals/TradeModal';
+import { TopUpModal, TradeModal } from '../../../modals';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
@@ -41,7 +41,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
                         colorStyle='black'
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => {
-                            if (isVirtual) history.push('/cashier/transfer');
+                            if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.MT5} />);
                             else history.push('/cashier/transfer');
                         }}
                         variant='secondary'

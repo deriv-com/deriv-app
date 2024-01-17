@@ -6,7 +6,7 @@ import { TradingAccountCard } from '../../../../../components';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import CTrader from '../../../../../public/images/cfd/ctrader.svg';
 import { CFDPlatforms, PlatformDetails } from '../../../constants';
-import { TradeModal } from '../../../modals/TradeModal';
+import { TopUpModal, TradeModal } from '../../../modals';
 
 const AddedCTraderAccountsList = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
@@ -39,7 +39,7 @@ const AddedCTraderAccountsList = () => {
                 className='border-opacity-black-400 rounded-200 px-800'
                 colorStyle='black'
                 onClick={() => {
-                    // if (isVirtual) topUpModal;
+                    if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.CTRADER} />);
                     // else transferModal;
                 }}
                 variant='secondary'

@@ -27,6 +27,7 @@ const DesktopWalletsList: React.FC = () => {
                     activeWallet={activeAccount}
                     label={`Wallet ${activeAccount?.currency}`}
                     onSelect={(account) => {
+                        console.log('>> account switcher, switch to: ', account.loginid);
                         switchAccount(account.loginid);
                     }}
                     selectedAccount={activeAccount}
@@ -40,15 +41,18 @@ const DesktopWalletsList: React.FC = () => {
 
                 <div
                     className={`wallets-desktop-wallets-list__content__header wallets-desktop-wallets-list__content__header ${
-                        activeAccount.is_active ? 'wallets-desktop-wallets-list__content__header wallets-desktop-wallets-list__content__header--virtual' : ''
+                        activeAccount.is_virtual ? 'wallets-desktop-wallets-list__content__header wallets-desktop-wallets-list__content__header--virtual' : ''
                     }`}
                 >
                     <WalletListCard
                         badge={activeAccount.landing_company_name}
+                        //@ts-ignore
                         balance={activeAccount.display_balance}
+                        //@ts-ignore
                         currency={activeAccount.wallet_currency_type || 'USD'}
                         isActive={true}
                         isDemo={!!activeAccount.is_virtual}
+                        //@ts-ignore
                         loginid={activeAccount.loginid}
                         title={activeAccount.currency || 'USD'}></WalletListCard>
                                 

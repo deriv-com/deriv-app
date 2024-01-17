@@ -66,7 +66,7 @@ const WalletTourGuide = () => {
         if (needToStart) {
             switchToFiatWallet();
         }
-    }, [activeWalletLoginId, fiatWalletLoginId, switchAccount, walletsOnboarding]);
+    }, [activeWalletLoginId, fiatWalletLoginId, walletsOnboarding]);
 
     useEffect(() => {
         if (!addMoreWalletRef.current) {

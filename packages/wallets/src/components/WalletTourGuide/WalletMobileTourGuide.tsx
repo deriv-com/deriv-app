@@ -92,7 +92,7 @@ const WalletMobileTourGuide = ({
         if (needToStart) {
             switchToFiatWallet();
         }
-    }, [activeWalletLoginId, fiatWalletLoginId, switchAccount, walletsOnboarding]);
+    }, [activeWalletLoginId, fiatWalletLoginId, walletsOnboarding]);
 
     // for isMT5PlatformListLoaded
     useEffect(() => {

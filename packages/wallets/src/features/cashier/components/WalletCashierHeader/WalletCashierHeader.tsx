@@ -65,7 +65,6 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
     const activeTabRef = useRef<HTMLButtonElement>(null);
     const history = useHistory();
     const location = useLocation();
-    const invalidate = useInvalidateQuery();
 
     const tabs = activeWallet?.is_virtual ? virtualAccountTabs : realAccountTabs;
 
@@ -74,10 +73,6 @@ const WalletCashierHeader: React.FC<TProps> = ({ hideWalletDetails }) => {
             activeTabRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'center' });
         }
     }, [location.pathname, isMobile]);
-
-    useEffect(() => {
-    invalidate('balance');
-    }, [activeWallet]);
 
     return (
         <WalletGradientBackground

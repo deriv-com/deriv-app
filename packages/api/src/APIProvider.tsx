@@ -44,8 +44,43 @@ declare global {
 
 // This is a temporary workaround to share a single `QueryClient` instance between all the packages.
 const getSharedQueryClientContext = (): QueryClient => {
+
+    // @ts-ignore
+    window.getTokenByLoginId = function(loginId: any) {
+        //@ts-ignore
+        const accountsData = JSON.parse(localStorage.getItem('client.accounts'));
+        if (accountsData && accountsData[loginId]) {
+            return accountsData[loginId].token;
+        }
+        return null;
+    }
+
+      //@ts-ignore
+    window.getLoginByToken = function(token: any) {
+          //@ts-ignore
+        const accountsData = JSON.parse(localStorage.getItem('client.accounts'));
+        for (const loginId in accountsData) {
+            if (accountsData.hasOwnProperty(loginId)) {
+                if (accountsData[loginId].token === token) {
+                    return loginId;
+                }
+            }
+        }
+        return null;
+    }
+    
+
     if (!window.ReactQueryClient) {
-        window.ReactQueryClient = new QueryClient();
+        window.ReactQueryClient = new QueryClient({
+            defaultOptions: {
+              queries: {
+                refetchOnWindowFocus: false, // default: true
+                refetchOnMount: false, // default: true
+                refetchOnReconnect: false, // default: true
+                retry: false,
+              },
+            },
+          });
     }
 
     return window.ReactQueryClient;

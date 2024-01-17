@@ -16,9 +16,26 @@ const useQuery = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcce
     const options = prop && 'options' in prop ? (prop.options as TSocketRequestQueryOptions<T>) : undefined;
     const { send } = useAPI();
 
+    // if (name == 'authorize') {
+    //     console.log('<< useQuery, getQueryKeys(name, payload), options', getQueryKeys(name, payload), options);
+    //     console.trace();
+    // }
+
+    // if (name == 'authorize') {
+    //     console.log('>> useQuery, getQueryKeys(name, payload), options', getQueryKeys(name, payload), options);
+    //     console.trace();
+    // }
+
     return _useQuery<TSocketResponseData<T>, TSocketError<T>>(
         getQueryKeys(name, payload),
-        () => send(name, payload),
+        () => {
+          
+            if (name == 'authorize') {
+                console.log('>> sending authorise: ', name, payload);
+                console.trace();
+            }
+            return send(name, payload);
+        },
         options
     );
 };

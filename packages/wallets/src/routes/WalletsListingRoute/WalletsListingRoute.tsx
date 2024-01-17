@@ -16,7 +16,7 @@ const WalletsListingRoute: React.FC = () => {
         if (!activeWallet && firstLoginid) {
             switchAccount(firstLoginid);
         }
-    }, [activeWallet, firstLoginid, switchAccount]);
+    }, [activeWallet, firstLoginid]);
 
     return (
         <div className='wallets-listing-route'>

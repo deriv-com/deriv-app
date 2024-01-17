@@ -2,7 +2,6 @@ import React from 'react';
 import classNames from 'classnames';
 import { WalletText } from './../../../components';
 import useDevice from './../../../hooks/useDevice';
-import { useModal } from './../../../components/ModalProvider';
 import {WalletCardIcon} from './../../../components';
 
 import './AccountSwitcher.scss';
@@ -26,7 +25,6 @@ const AccountSwitcher: React.FC<TProps> = ({
     selectedAccount,
 }) => {
     const { isMobile } = useDevice();
-    const modal = useModal();
 
     return (
         <div className='wallets-transfer-form-account-selection'>
@@ -58,7 +56,6 @@ const AccountSwitcher: React.FC<TProps> = ({
                                         key={`account-selection-${account?.loginid}`}
                                         onClick={() => {
                                             onSelect(account);
-                                            modal.hide();
                                         }}
                                     >
                                         {/* start */}

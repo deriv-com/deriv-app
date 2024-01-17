@@ -45,7 +45,7 @@ const WalletsAddMoreCardBanner: React.FC<TProps> = ({
             addWalletAccountToLocalStorage(data);
             switchAccount(data?.client_id);
         }
-    }, [addWalletAccountToLocalStorage, data, isMutateSuccess, switchAccount]);
+    }, [addWalletAccountToLocalStorage, data, isMutateSuccess]);
 
     useEffect(
         () => {

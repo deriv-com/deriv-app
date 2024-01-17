@@ -12,6 +12,7 @@
         "start": "rimraf dist && npm run test && npm run serve"
     },
     "dependencies": {
+        "@deriv-com/ui": "^0.0.1-beta.3",
         "@deriv/api": "^1.0.0",
         "@deriv/integration": "^1.0.0",
         "@deriv/react-joyride": "^2.6.2",
@@ -23,12 +24,14 @@
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-i18next": "^11.11.0",
+        "react-modal": "^3.16.1",
         "react-router-dom": "^5.2.0",
         "usehooks-ts": "^2.7.0"
     },
     "devDependencies": {
         "@testing-library/react": "^12.0.0",
         "@types/react-dom": "^18.0.0",
+        "@types/react-modal": "^3.16.3",
         "@typescript-eslint/eslint-plugin": "5.45.0",
         "@typescript-eslint/parser": "5.45.0",
         "eslint-plugin-local-rules": "2.0.0",

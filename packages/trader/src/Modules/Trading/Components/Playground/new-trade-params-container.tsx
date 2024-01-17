@@ -25,11 +25,11 @@ const NewTradeParamsContainer = ({ onClick }: { onClick: () => void }) => {
             </div>
             <div className='trade-param_container' onClick={onClick} onKeyDown={onClick}>
                 <div className='trade-param_name'>Duration</div>
-                <div style={{ fontSize: '16px', lineHeight: '24px' }}>1 minute</div>
+                <div style={{ fontSize: '16px', lineHeight: '24px' }}>End at 19:45 GMT</div>
             </div>
             <div className='trade-param_container'>
                 <div className='trade-param_name'>Barrier</div>
-                <div style={{ fontSize: '16px', lineHeight: '24px' }}>333440.0000</div>
+                <div style={{ fontSize: '16px', lineHeight: '24px' }}>+1.00</div>
             </div>
             <div className='trade-param_container'>
                 <div className='trade-param_name'>Stake</div>

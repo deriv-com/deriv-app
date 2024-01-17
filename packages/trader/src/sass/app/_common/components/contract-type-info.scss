@@ -181,10 +181,6 @@
 
         .dc-button-menu__button {
             background-color: var(--general-section-1) !important;
-
-            .dc-btn__text {
-                color: var(--text-less-prominent) !important;
-            }
             &--active {
                 background-color: var(--button-toggle-alternate) !important;
 

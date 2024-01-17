@@ -8,7 +8,7 @@ const Card = ({ children, width }: React.PropsWithChildren<TCard>) => (
     <div
         className='dc-carousel__card'
         style={{
-            width: `${width}px`,
+            width: `calc(100vw - 1.6rem)`,
         }}
     >
         {children}

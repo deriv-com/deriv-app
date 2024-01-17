@@ -825,31 +825,29 @@ $FLOATING_HEADER_HEIGHT: 41px;
 .footer-new {
     position: fixed;
     -webkit-transform: translate3d(0, 0, 0);
-    height: 17.9rem;
     width: 100%;
     bottom: 0;
     transition: opacity 0.3s;
     background-color: var(--general-main-1);
     border-top: 1px solid var(--general-section-1);
-    border-top-right-radius: 1.4rem;
-    border-top-left-radius: 1.4rem;
+    border-bottom: 1px solid var(--general-section-1);
     box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.04), 0px -1px 4px 0px rgba(0, 0, 0, 0.08);
 
     &_bottom-sheet {
-        height: 12.2rem;
+        height: 9.6rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        padding: 0.8rem 1.6rem 1.6rem;
+        padding: 0.8rem 1.6rem;
 
-        &_separator {
-            width: 4.8rem;
-            height: 0.4rem;
-            border-radius: 0.4rem;
-            background-color: var(--general-section-1);
-            align-self: center;
-        }
+        // &_separator {
+        //     width: 4.8rem;
+        //     height: 0.4rem;
+        //     border-radius: 0.4rem;
+        //     background-color: var(--general-section-1);
+        //     align-self: center;
+        // }
 
         &_payout {
             display: flex;
@@ -860,6 +858,12 @@ $FLOATING_HEADER_HEIGHT: 41px;
             font-size: 1.4rem;
             line-height: 2.2rem;
             color: var(--core-color-opacity-black-600, rgba(0, 0, 0, 0.72));
+
+            &_arrow {
+                margin-left: 0.8rem;
+                position: relative;
+                top: 0.4rem;
+            }
         }
 
         &_button {
@@ -906,17 +910,42 @@ $FLOATING_HEADER_HEIGHT: 41px;
 .content {
     &_container {
         height: 100%;
-        overflow-y: scroll;
+        background-color: var(--general-section-1);
+        padding: 0.8rem;
+        // overflow-y: scroll;
 
-        &::-webkit-scrollbar {
-            display: none;
+        // &::-webkit-scrollbar {
+        //     display: none;
+        // }
+
+        .dc-carousel__nav-list {
+            width: 7.2rem;
+            height: 1.6rem;
+            background-color: var(--general-main-1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0.8rem;
+
+            .dc-carousel__nav-item:not(.dc-carousel__nav-item--active) {
+                background-color: var(--general-section-1) !important;
+            }
+
+            .dc-carousel__nav-item--active {
+                top: 4px;
+            }
+        }
+
+        .dc-carousel__nav--lower {
+            position: fixed;
+            bottom: 16rem;
+            height: 2.6rem;
+            background-color: var(--general-section-1);
         }
 
         .trade-type {
             &_section {
-                background-color: var(--general-section-1);
-                padding: 0.8rem;
-                height: 7.6rem;
+                margin-bottom: 0.8rem;
                 width: 100%;
                 display: flex;
                 justify-content: center;
@@ -925,8 +954,8 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
             &_container {
                 background-color: var(--general-main-1);
-                padding: 0.8rem 1.6rem;
-                height: 6rem;
+                padding: 0.8rem;
+                height: 4rem;
                 width: 100%;
                 display: flex;
                 justify-content: space-between;
@@ -935,7 +964,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
                 &_left,
                 &_right {
-                    height: 4.4rem;
+                    height: 2.2rem;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
@@ -949,6 +978,17 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 line-height: 2.2rem;
             }
 
+            &_dot {
+                display: inline-block;
+                position: relative;
+                bottom: 0.3rem;
+                background-color: var(--core-color-opacity-black-700, rgba(0, 0, 0, 0.8));
+                width: 4px;
+                height: 4px;
+                border-radius: 50%;
+                margin: 0 0.4rem;
+            }
+
             &_price {
                 text-align: right;
                 font-size: 1.4rem;
@@ -956,25 +996,20 @@ $FLOATING_HEADER_HEIGHT: 41px;
             }
         }
 
-        .chart {
-            &_section {
-                min-height: 5.6rem;
-                padding: 1.6rem;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                font-size: 1.6rem;
-                font-weight: 700;
-                line-height: 2.4rem;
-            }
-        }
-
         .trade-param {
             &_section {
-                padding: 0.8rem 1.6rem;
+                background-color: var(--general-main-1);
+                height: 37.9rem;
+                border-radius: 0.8rem;
+                padding: 1.6rem;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
+                overflow-y: scroll;
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
 
                 &_title {
                     height: 4.4rem;
@@ -1015,15 +1050,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
                         font-size: 14px;
                         font-weight: 400;
                         line-height: 22px;
+                    }
 
-                        &:before {
-                            content: '';
-                            width: 1.3rem;
-                            height: 1.3rem;
-                            border: 1px dashed var(--core-color-solid-slate-1400, #000);
-                            border-radius: 0.2rem;
-                            margin-right: 0.4rem;
-                        }
+                    &--active .dc-btn__text {
+                        color: var(--core-color-solid-emerald-700, #00c390) !important;
+                        font-weight: 700;
                     }
                 }
             }
@@ -1038,6 +1069,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
             }
 
             &_name {
+                color: var(--core-color-opacity-black-400, rgba(0, 0, 0, 0.48));
                 font-size: 12px;
                 line-height: 18px;
             }

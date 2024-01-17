@@ -123,12 +123,16 @@ const Carousel = ({
                             'dc-carousel__box--mt5': is_mt5 && sliced_list_length > 1,
                         })}
                         style={{
-                            width: `${computed_item_per_window * width}px`,
+                            width: `calc(100vw - 1.6rem)`,
                         }}
                     >
                         <div
                             className={classNames('dc-carousel__wrapper', { 'dc-carousel__wrapper--mt5': is_mt5 })}
-                            style={{ transform: `translate3d(-${width * active_index}px, 0, 0)` }}
+                            style={{
+                                transform: `translate3d(calc(-${100 * active_index}vw + ${
+                                    1.6 * active_index
+                                }rem), 0, 0)`,
+                            }}
                         >
                             {list.map((type, idx) => (
                                 <Card key={idx} width={width}>

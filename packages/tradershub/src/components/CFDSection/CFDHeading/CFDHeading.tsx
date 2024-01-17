@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react';
+import { useIsEuRegion } from '@deriv/api';
 import { Button, Heading, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
+import { TitleDescriptionLoader } from '../../Loaders';
 import { StaticLink } from '../../StaticLink';
 
 const CompareAccountsButton = ({ className }: { className?: string }) => (
@@ -10,6 +12,9 @@ const CompareAccountsButton = ({ className }: { className?: string }) => (
 
 const CFDHeading = () => {
     const { isMobile } = useBreakpoint();
+    const { isSuccess } = useIsEuRegion();
+
+    if (!isSuccess) return <TitleDescriptionLoader />;
 
     return (
         <Fragment>

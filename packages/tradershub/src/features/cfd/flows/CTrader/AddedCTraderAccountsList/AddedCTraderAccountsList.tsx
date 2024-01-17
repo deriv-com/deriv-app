@@ -1,14 +1,18 @@
 import React, { Fragment } from 'react';
 import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
+import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
 import { TradingAccountCard } from '../../../../../components';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import CTrader from '../../../../../public/images/cfd/ctrader.svg';
-import { PlatformDetails } from '../../../constants';
+import { CFDPlatforms, PlatformDetails } from '../../../constants';
+import { TradeModal } from '../../../modals/TradeModal';
 
 const AddedCTraderAccountsList = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
+    const { show } = Provider.useModal();
+    const account = cTraderAccounts?.find(account => account.is_virtual === activeTrading?.is_virtual);
 
     const leading = () => (
         <div
@@ -37,7 +41,21 @@ const AddedCTraderAccountsList = () => {
             >
                 Transfer
             </Button>
-            <Button className='rounded-200 px-800'>Open</Button>
+            <Button
+                className='rounded-200 px-800'
+                onClick={() =>
+                    account &&
+                    show(
+                        <TradeModal
+                            account={account}
+                            marketType={account?.market_type}
+                            platform={CFDPlatforms.CTRADER}
+                        />
+                    )
+                }
+            >
+                Open
+            </Button>
         </div>
     );
 

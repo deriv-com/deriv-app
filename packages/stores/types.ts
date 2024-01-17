@@ -426,6 +426,9 @@ type TClientStore = {
     currencies_list: { text: string; value: string; has_tool_tip?: boolean }[];
     current_currency_type?: string;
     current_fiat_currency?: string;
+    current_landing_company: {
+        support_professional_client?: string;
+    };
     email_address: string;
     has_any_real_account: boolean;
     getLimits: () => Promise<{ get_limits?: GetLimits }>;
@@ -583,7 +586,7 @@ type TClientStore = {
     setLoginId: (loginid: string) => void;
     resetLocalStorageValues: (loginid: string) => void;
     setFinancialAndTradingAssessment: (
-        payload: SetFinancialAssessmentRequest
+        payload: Omit<SetFinancialAssessmentRequest, 'set_financial_assessment'>
     ) => Promise<SetFinancialAssessmentResponse>;
     setIsAlreadyAttempted: (value: boolean) => void;
     is_already_attempted: boolean;
@@ -725,7 +728,7 @@ type TUiStore = {
     ) => void;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
-    toggleAccountsDialog: () => void;
+    toggleAccountsDialog: (value?: boolean) => void;
     toggleAccountSettings: (props?: boolean) => void;
     toggleCashier: () => void;
     toggleHistoryTab: (state_change?: boolean) => void;
@@ -948,6 +951,8 @@ type TNotificationStore = {
     removeNotificationMessageByKey: ({ key }: { key: string }) => void;
     removeTradeNotifications: (id?: string) => void;
     setP2POrderProps: () => void;
+    showPOAAddressMismatchSuccessNotification: () => void;
+    showPOAAddressMismatchFailureNotification: () => void;
     setP2PRedirectTo: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setShouldShowPopups: (should_show_popups: boolean) => void;
@@ -1120,7 +1125,6 @@ type TContractReplay = {
     error_code?: string;
     error_message?: string;
     has_error: boolean;
-    indicative_status?: string;
     is_chart_loading: boolean;
     is_forward_starting: boolean;
     is_market_closed: boolean;

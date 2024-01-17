@@ -50,34 +50,21 @@ const CurrencySwitcher = () => {
 
     const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency ?? 'virtual';
 
-    const renderButton = () => {
-        return (
-            <Button
-                className='py-900 rounded-200 border-sm border-system-light-less-prominent-text'
-                colorStyle='black'
-                fullWidth
-                variant='secondary'
-            >
-                Add or manage account
-            </Button>
-        );
-    };
-
     if (!isSuccess) return <CurrencySwitcherLoader />;
 
     return (
-        <div className='flex items-center justify-between w-full border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background sm:w-auto sm:shrink-0 gap-800'>
+        <div className='flex items-center justify-between w-full border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background lg:w-auto lg:shrink-0 gap-800'>
             <div className='flex-none '>{IconToCurrencyMapper[iconCurrency].icon}</div>
-            <div className='text-left grow'>
-                <Text bold={!isDemo} className={!isDemo ? 'text-status-light-success' : undefined} size='sm'>
-                    {isDemo ? 'Demo' : activeAccount?.display_balance}
-                </Text>
+            <div className='grow'>
                 <Text
                     bold={isDemo}
                     className={isDemo ? 'text-status-light-information' : 'text-system-light-less-prominent-text'}
                     size='sm'
                 >
                     {isDemo ? activeAccount.display_balance : IconToCurrencyMapper[iconCurrency].text}
+                </Text>
+                <Text bold={!isDemo} className={!isDemo ? 'text-status-light-success' : undefined} size='sm'>
+                    {isDemo ? 'Demo' : activeAccount?.display_balance}
                 </Text>
             </div>
             <div className='flex-none'>
@@ -89,11 +76,20 @@ const CurrencySwitcher = () => {
                     onClick={() => {
                         show(
                             <Modal>
-                                <Modal.Header title='Select account' titleClassName='text-typography-default' />
-                                <Modal.Content className='overflow-y-scroll'>
+                                <Modal.Header title='Select account' titleClassName='text-[14px] lg:text-[16px]' />
+                                <Modal.Content>
                                     <TradingAccountsList />
                                 </Modal.Content>
-                                <Modal.Footer>{renderButton()}</Modal.Footer>
+                                <Modal.Footer className='grid-cols-1'>
+                                    <Button
+                                        className='py-900 rounded-200 border-sm border-system-light-less-prominent-text'
+                                        colorStyle='black'
+                                        fullWidth
+                                        variant='secondary'
+                                    >
+                                        Add or manage account
+                                    </Button>
+                                </Modal.Footer>
                             </Modal>
                         );
                     }}

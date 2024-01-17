@@ -1,22 +1,31 @@
 import { useMemo } from 'react';
 import useMT5AccountsList from './useMT5AccountsList';
 import useAvailableMT5Accounts from './useAvailableMT5Accounts';
+import useIsEuRegion from './useIsEuRegion';
 
 /** A custom hook to get the sorted added and non-added MT5 accounts. */
-const useSortedMT5Accounts = () => {
+const useSortedMT5Accounts = (regulation?: string) => {
     const { data: all_available_mt5_accounts } = useAvailableMT5Accounts();
+    const { isEUCountry } = useIsEuRegion();
     const { data: mt5_accounts, ...rest } = useMT5AccountsList();
+
+    const isEU = regulation === 'EU' || isEUCountry;
 
     const modified_data = useMemo(() => {
         if (!all_available_mt5_accounts || !mt5_accounts) return;
 
-        return all_available_mt5_accounts?.map(available_account => {
+        const filtered_available_accounts = isEU
+            ? all_available_mt5_accounts.filter(account => account.shortcode === 'maltainvest')
+            : all_available_mt5_accounts;
+
+        return filtered_available_accounts?.map(available_account => {
             const created_account = mt5_accounts?.find(account => {
                 return (
                     available_account.market_type === account.market_type &&
                     available_account.shortcode === account.landing_company_short
                 );
             });
+
             if (created_account)
                 return {
                     ...created_account,
@@ -30,7 +39,7 @@ const useSortedMT5Accounts = () => {
                 is_added: false,
             } as const;
         });
-    }, [all_available_mt5_accounts, mt5_accounts]);
+    }, [all_available_mt5_accounts, isEU, mt5_accounts]);
 
     // // Reduce out the added and non added accounts to make sure only one of each market_type is shown for not added
     const filtered_data = useMemo(() => {

@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
 import { useIsEuRegion } from '@deriv/api';
 import { Heading, Text, useBreakpoint } from '@deriv/quill-design';
+import useRegulationFlags from '../../../hooks/useRegulationFlags';
 import { CurrencySwitcher } from '../../CurrencySwitcher';
 import { TitleDescriptionLoader } from '../../Loaders';
 import { StaticLink } from '../../StaticLink';
+import { useUIContext } from '../../UIProvider';
 
 /**
  *  `OptionsAndMultipliersHeading` is a component that renders the heading title and currency switcher.
@@ -11,7 +13,10 @@ import { StaticLink } from '../../StaticLink';
  */
 const OptionsAndMultipliersHeading = () => {
     const { isMobile } = useBreakpoint();
-    const { isEU, isSuccess } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
+    const { getUIState } = useUIContext();
+    const activeRegulation = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegulation);
 
     const title = isEU ? 'Multipliers' : 'Options & multipliers';
 
@@ -42,7 +47,7 @@ const OptionsAndMultipliersHeading = () => {
         );
     }, [isEU]);
 
-    if (!isSuccess) return <TitleDescriptionLoader />;
+    if (!isRegulationAccessible) return <TitleDescriptionLoader />;
 
     return (
         <div className='flex flex-col items-start justify-between lg:flex-row gap-800 lg:gap-2400'>

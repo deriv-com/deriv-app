@@ -177,6 +177,14 @@ export const PlatformUrls: TPlatformUrls = {
     },
 };
 
+export const Jurisdiction = {
+    BVI: 'bvi',
+    LABUAN: 'labuan',
+    MALTAINVEST: 'maltainvest',
+    SVG: 'svg',
+    VANUATU: 'vanuatu',
+} as const;
+
 export type TAppLinks = {
     android: string;
     huawei?: string;

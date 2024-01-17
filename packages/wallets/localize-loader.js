@@ -7,10 +7,15 @@ import generateKey from './src/utils/generate-keys';
 const messages = new Map();
 const values = new Set();
 let defaultMessages;
-if (fs.existsSync('./src/translations/en.json')) {
-    const entries = Object.entries(JSON.parse(fs.readFileSync('./src/translations/en.json', 'utf-8')));
-    defaultMessages = new Map(entries);
-} else {
+
+try {
+    if (fs.existsSync('./src/translations/en.json')) {
+        const entries = Object.entries(JSON.parse(fs.readFileSync('./src/translations/en.json', 'utf-8')));
+        defaultMessages = new Map(entries);
+    } else {
+        defaultMessages = new Map();
+    }
+} catch (err) {
     defaultMessages = new Map();
 }
 

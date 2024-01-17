@@ -29,6 +29,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
     const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
 
     const title = marketTypeDetails?.title;
+    const isVirtual = account.is_virtual;
 
     return (
         <TradingAccountCard
@@ -40,11 +41,12 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
                         colorStyle='black'
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => {
-                            history.push('/cashier/transfer');
+                            if (isVirtual) history.push('/cashier/transfer');
+                            else history.push('/cashier/transfer');
                         }}
                         variant='secondary'
                     >
-                        Transfer
+                        {isVirtual ? 'Top up' : 'Transfer'}
                     </Button>
                     <Button
                         className='rounded-200 px-800'

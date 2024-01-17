@@ -1,32 +1,30 @@
 import React from 'react';
-import { Button, Text } from '@deriv/quill-design';
-import { TradingAccountCard } from '../../../../../components';
+import {
+    TradingAccountCard,
+    TradingAccountCardContent,
+    TradingAccountCardLightButton,
+    useUIContext,
+} from '../../../../../components';
+import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
 import { THooks } from '../../../../../types';
-import { MarketTypeDetails } from '../../../constants';
+import { MarketType, MarketTypeDetails } from '../../../constants';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
-    const { description, title } = MarketTypeDetails[account.market_type || 'all'];
+    const { getUIState } = useUIContext();
+    const activeRegulation = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegulation);
+    const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
+    const description = marketTypeDetails?.description ?? '';
+
+    const title = marketTypeDetails?.title ?? '';
 
     return (
         <TradingAccountCard
             leading={() => <MT5AccountIcon account={account} />}
-            trailing={() => (
-                <Button
-                    className='rounded-200'
-                    colorStyle='coral'
-                    variant='primary' /* onClick show MT5PasswordModal : JurisdictionModal */
-                >
-                    Get
-                </Button>
-            )}
+            trailing={() => <TradingAccountCardLightButton />}
         >
-            <div className='flex-grow user-select-none'>
-                <Text bold className='leading-[20px]' size='md'>
-                    {title}
-                </Text>
-                <Text className='leading-[14px] text-[12px]'>{description}</Text>
-            </div>
+            <TradingAccountCardContent title={title}>{description}</TradingAccountCardContent>
         </TradingAccountCard>
     );
 };

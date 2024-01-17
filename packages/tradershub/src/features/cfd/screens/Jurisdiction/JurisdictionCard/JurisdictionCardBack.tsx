@@ -1,4 +1,4 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Text } from '@deriv/quill-design';
 import BackArrowIcon from '../../../../../public/images/ic-back-arrow.svg';
 import { verificationIconsMapper, verificationStatusIconsMapper } from '../constants';
@@ -13,11 +13,11 @@ type TJurisdictionCardBackProps = {
     verificationDocs?: TJurisdictionCardItemVerification;
 };
 
-const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, verificationDocs }) => {
+const JurisdictionCardBack = ({ setIsFlipped, verificationDocs }: TJurisdictionCardBackProps) => {
     const verificationContents = jurisdictionVerificationContents();
-    if (!verificationDocs) return <></>;
+    if (!verificationDocs) return null;
     return (
-        <div className='absolute flex flex-col h-full transform backface-hidden rotate-y-180 gap-800 pt-[15px] px-800 pb-12000'>
+        <div className='absolute flex flex-col h-full transform backface-hidden [transform:rotateY(180deg)] gap-800 pt-[15px] px-800 pb-12000'>
             <BackArrowIcon
                 className='cursor-pointer'
                 onClick={e => {
@@ -28,19 +28,19 @@ const JurisdictionCardBack: FC<TJurisdictionCardBackProps> = ({ setIsFlipped, ve
             <Text size='sm'>{verificationContents.shortDescription}</Text>
             {verificationDocs.map((verificationDocument: TJurisdictionCardItemVerificationItem) => {
                 return (
-                    <div className='grid grid-flow-col gap-500' key={verificationDocument}>
-                        {verificationIconsMapper[verificationDocument]}
+                    <div className='grid justify-start grid-flow-col gap-500' key={verificationDocument}>
+                        <div className='mt-200'>{verificationIconsMapper[verificationDocument]}</div>
                         <Text size='sm'>
                             {verificationContents.requiredVerificationDocs[verificationDocument]?.text}
                         </Text>
                     </div>
                 );
             })}
-            <div className='border-t border-solid border-[2px] border-system-light-secondary-background' />
+            <div className='border-t border-solid border-75 my-800 border-system-light-secondary-background' />
             {verificationContents.statusReferences.map(statusReference => {
                 return (
-                    <div className='grid grid-flow-col gap-500' key={statusReference?.color}>
-                        {verificationStatusIconsMapper[statusReference.icon]}
+                    <div className='grid justify-start grid-flow-col gap-500' key={statusReference?.color}>
+                        <div className='mt-200'>{verificationStatusIconsMapper[statusReference.icon]}</div>
                         <Text size='sm'>{statusReference.text}</Text>
                     </div>
                 );

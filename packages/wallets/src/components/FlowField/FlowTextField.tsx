@@ -35,9 +35,14 @@ const FlowTextField = forwardRef(
         };
 
         useEffect(() => {
-            if (defaultValue) {
-                setFormValues(name, defaultValue, true).then(() => setFieldTouched(name, true, true));
-            }
+            const setFormValuesAndTouch = async () => {
+                if (defaultValue) {
+                    await setFormValues(name, defaultValue, true);
+                    setFieldTouched(name, true, true);
+                }
+            };
+
+            setFormValuesAndTouch();
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 

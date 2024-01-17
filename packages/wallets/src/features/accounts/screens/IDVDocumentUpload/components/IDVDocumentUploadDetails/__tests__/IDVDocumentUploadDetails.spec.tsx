@@ -10,8 +10,6 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('IDVDocumentUploadDetails', () => {
-    const mockSetIsDetailsVerified = jest.fn();
-
     beforeEach(() => {
         (useSettings as jest.Mock).mockReturnValue({
             data: {
@@ -33,12 +31,7 @@ describe('IDVDocumentUploadDetails', () => {
                 }}
             >
                 {() => {
-                    return (
-                        <IDVDocumentUploadDetails
-                            isDetailsVerified={false}
-                            setIsDetailsVerified={mockSetIsDetailsVerified}
-                        />
-                    );
+                    return <IDVDocumentUploadDetails />;
                 }}
             </FlowProvider>
         );
@@ -70,12 +63,7 @@ describe('IDVDocumentUploadDetails', () => {
                 }}
             >
                 {() => {
-                    return (
-                        <IDVDocumentUploadDetails
-                            isDetailsVerified={false}
-                            setIsDetailsVerified={mockSetIsDetailsVerified}
-                        />
-                    );
+                    return <IDVDocumentUploadDetails />;
                 }}
             </FlowProvider>
         );
@@ -90,7 +78,7 @@ describe('IDVDocumentUploadDetails', () => {
         ).toBeInTheDocument();
     });
 
-    test('should handle checkbox change correctly', () => {
+    test('should handle checkbox and fields change correctly when checkbox is checked', () => {
         render(
             <FlowProvider
                 initialValues={{
@@ -101,12 +89,7 @@ describe('IDVDocumentUploadDetails', () => {
                 }}
             >
                 {() => {
-                    return (
-                        <IDVDocumentUploadDetails
-                            isDetailsVerified={false}
-                            setIsDetailsVerified={mockSetIsDetailsVerified}
-                        />
-                    );
+                    return <IDVDocumentUploadDetails />;
                 }}
             </FlowProvider>
         );
@@ -115,32 +98,16 @@ describe('IDVDocumentUploadDetails', () => {
             screen.getByLabelText(/I confirm that the name and date of birth above match my chosen identity document/)
         );
 
-        expect(mockSetIsDetailsVerified).toHaveBeenCalledWith(true);
-    });
-
-    test('should render component with fields disabled when checkbox is checked', () => {
-        render(
-            <FlowProvider
-                initialValues={{
-                    test: 'default',
-                }}
-                screens={{
-                    test: <FlowTextField name='test' />,
-                }}
-            >
-                {() => {
-                    return (
-                        <IDVDocumentUploadDetails
-                            isDetailsVerified={true}
-                            setIsDetailsVerified={mockSetIsDetailsVerified}
-                        />
-                    );
-                }}
-            </FlowProvider>
-        );
-
         expect(screen.getByLabelText('First name*')).toBeDisabled();
         expect(screen.getByLabelText('Last name*')).toBeDisabled();
         expect(screen.getByLabelText('Date of birth*')).toBeDisabled();
+
+        fireEvent.click(
+            screen.getByLabelText(/I confirm that the name and date of birth above match my chosen identity document/)
+        );
+
+        expect(screen.getByLabelText('First name*')).toBeEnabled();
+        expect(screen.getByLabelText('Last name*')).toBeEnabled();
+        expect(screen.getByLabelText('Date of birth*')).toBeEnabled();
     });
 });

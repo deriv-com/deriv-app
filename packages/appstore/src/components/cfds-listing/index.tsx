@@ -11,7 +11,8 @@ import CompareAccount from 'Components/compare-account';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { getHasDivider } from 'Constants/utils';
 import './cfds-listing.scss';
-import { useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
+import { useCFDCanGetMoreMT5Accounts, useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import MigrationBanner from 'Components/migration-banner';
 
 const CFDsListing = observer(() => {
     const {
@@ -67,6 +68,7 @@ const CFDsListing = observer(() => {
         is_idv_revoked,
     } = getAuthenticationStatusInfo(account_status);
 
+    const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
     const getMT5AccountAuthStatus = (current_acc_status?: string | null, jurisdiction?: string) => {
@@ -176,15 +178,13 @@ const CFDsListing = observer(() => {
             }
         >
             {isMobile() && <CompareAccount accounts_sub_text={accounts_sub_text} />}
-
             <AddDerivAccount />
-
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text line_height='m' weight='bold' color='prominent'>
                     {localize('Deriv MT5')}
                 </Text>
             </div>
-
+            {has_svg_accounts_to_migrate && <MigrationBanner />}
             {is_landing_company_loaded && !is_populating_mt5_account_list ? (
                 <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
@@ -265,19 +265,16 @@ const CFDsListing = observer(() => {
             ) : (
                 <PlatformLoader />
             )}
-
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <div className='cfd-full-row'>
                     <hr className='divider' />
                 </div>
             )}
-
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                     <Text weight='bold'>{localize('Deriv cTrader')}</Text>
                 </div>
             )}
-
             {is_landing_company_loaded
                 ? available_ctrader_accounts.map(account => {
                       const existing_accounts = getExistingAccounts(account.platform, account.market_type);
@@ -339,7 +336,6 @@ const CFDsListing = observer(() => {
                       );
                   })
                 : !is_real && <PlatformLoader />}
-
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <React.Fragment>
                     <div className='cfd-full-row'>

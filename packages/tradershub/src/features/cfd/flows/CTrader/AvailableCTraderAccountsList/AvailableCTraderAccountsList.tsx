@@ -1,7 +1,10 @@
 import React from 'react';
 import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
-import { Button, Text } from '@deriv/quill-design';
-import { TradingAccountCard } from '../../../../../components';
+import {
+    TradingAccountCard,
+    TradingAccountCardContent,
+    TradingAccountCardLightButton,
+} from '../../../../../components/TradingAccountCard';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import CTrader from '../../../../../public/images/cfd/ctrader.svg';
 import { PlatformDetails } from '../../../constants';
@@ -22,7 +25,7 @@ const AvailableCTraderAccountsList = () => {
         });
     };
 
-    const leadingIcon = () => (
+    const LeadingIcon = () => (
         <div
             className='cursor-pointer'
             onClick={() => {
@@ -39,21 +42,14 @@ const AvailableCTraderAccountsList = () => {
         </div>
     );
 
-    const trailingButton = () => (
-        <Button className='rounded-200' colorStyle='coral' onClick={onSubmit} variant='primary'>
-            Get
-        </Button>
-    );
+    const TrailingButton = () => <TradingAccountCardLightButton onSubmit={onSubmit} />;
 
     return (
         <div>
-            <TradingAccountCard leading={leadingIcon} trailing={trailingButton}>
-                <div className='flex flex-col flex-grow'>
-                    <Text bold size='sm'>
-                        {PlatformDetails.ctrader.title}
-                    </Text>
-                    <Text className='text-[12px]'>This account offers CFDs on a feature-rich trading platform.</Text>
-                </div>
+            <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
+                <TradingAccountCardContent title={PlatformDetails.ctrader.title}>
+                    This account offers CFDs on a feature-rich trading platform.
+                </TradingAccountCardContent>
             </TradingAccountCard>
         </div>
     );

@@ -20,7 +20,6 @@ const NewTrade = () => {
                     list={[
                         <NewTradeParamsContainer onClick={() => setShowDetails(!show_details)} key={1} />,
                         <div key={2}>Hello, I&apos;m not ready</div>,
-                        <div key={3}>Hello, I&apos;m not ready</div>,
                     ]}
                     nav_position='bottom'
                     bullet_position='bottom'

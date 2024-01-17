@@ -860,7 +860,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
             color: var(--core-color-opacity-black-600, rgba(0, 0, 0, 0.72));
 
             &_arrow {
-                margin-left: 0.8rem;
+                margin-left: 1.6rem;
                 position: relative;
                 top: 0.4rem;
             }
@@ -919,7 +919,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         // }
 
         .dc-carousel__nav-list {
-            width: 7.2rem;
+            width: 5rem;
             height: 1.6rem;
             background-color: var(--general-main-1);
             display: flex;
@@ -938,7 +938,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
         .dc-carousel__nav--lower {
             position: fixed;
-            bottom: 16rem;
+            bottom: 15.5rem;
             height: 2.6rem;
             background-color: var(--general-section-1);
         }
@@ -999,12 +999,12 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .trade-param {
             &_section {
                 background-color: var(--general-main-1);
-                height: 37.9rem;
+                // height: 37.9rem;
+                height: calc(100vh - 29.5rem);
                 border-radius: 0.8rem;
                 padding: 1.6rem;
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between;
                 overflow-y: scroll;
 
                 &::-webkit-scrollbar {
@@ -1024,8 +1024,16 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
                     .bold {
                         font-weight: 700;
-                        font-size: 14px;
-                        line-height: 22px;
+                        font-size: 16px;
+                        line-height: 24px;
+                    }
+
+                    &_top,
+                    &_bottom {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        width: 100%;
                     }
                 }
             }

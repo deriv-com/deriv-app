@@ -7,10 +7,11 @@ const NewTradeTypeWidget = () => (
     <div className='trade-type_section'>
         <div className='trade-type_container'>
             <div className='trade-type_container_left'>
-                <Icon icon='IcTradetypeTurboslong' size={20} color='brand' />
-                <Icon icon='IcUnderlying1HZ75V' size={24} />
+                <Icon icon='IcTradetypeMultup' size={17} color='brand' />
+                <Icon icon='IcUnderlying1HZ75V' size={20} />
                 <div className='trade-type_name'>
-                    Turbos <span className='trade-type_dot' />
+                    Multipliers
+                    <span className='trade-type_dot' />
                     <span style={{ color: 'var(--core-color-opacity-black-400, rgba(0, 0, 0, 0.48))' }}>
                         Volatility 75 (1s) Index
                     </span>

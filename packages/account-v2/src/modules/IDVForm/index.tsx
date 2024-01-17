@@ -5,22 +5,11 @@ import { WalletDropdown } from '../../components/base/WalletDropdown';
 import { WalletTextField } from '../../components/base/WalletTextField';
 import { ResponsiveWrapper } from '../../components/responsive-wrapper';
 import { getIDVNotApplicableOption } from '../../utils/default-options';
-import { getSelectedDocumentConfigData } from './utils';
+import { getSelectedDocumentConfigData, TDocument } from './utils';
 
 type TIDVFormProps = {
     allowIDVSkip?: boolean;
     selectedCountry: ResidenceList[0];
-};
-
-type TDocument = {
-    additional?: {
-        display_name?: string;
-        example_format?: string;
-    };
-    example_format?: string;
-    id: string;
-    text: string;
-    value?: string;
 };
 
 type TIDVFormValues = {

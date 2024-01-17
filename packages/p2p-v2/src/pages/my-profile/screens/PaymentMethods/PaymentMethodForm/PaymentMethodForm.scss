@@ -17,10 +17,16 @@
     }
     &__buttons {
         display: flex;
-        flex-direction: row;
         justify-content: end;
-        & :first-child {
-            margin-right: 1.6rem;
+        gap: 1.6rem;
+
+        &--cancel {
+            background: transparent;
+            border: 2px solid #999999;
+
+            &:active:not([disabled]) {
+                border: 1px solid #999999;
+            }
         }
     }
     &__icon--close {

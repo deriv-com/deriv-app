@@ -13,7 +13,12 @@ const PaymentMethodFormFooter = ({ isValid, onGoBack, paymentMethod, type }: TPa
     return !paymentMethod ? null : (
         <div className='p2p-v2-payment-method-form__buttons'>
             {/* TODO: Remember to wire up the modal */}
-            <Button onClick={onGoBack} size='lg' variant='outlined'>
+            <Button
+                className='p2p-v2-payment-method-form__buttons--cancel'
+                onClick={onGoBack}
+                size='lg'
+                variant='outlined'
+            >
                 Cancel
             </Button>
             {/* TODO: Remember to translate these */}

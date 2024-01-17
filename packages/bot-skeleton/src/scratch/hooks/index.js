@@ -1,3 +1,4 @@
+import './css';
 import './block';
 import './block_render_svg_vertical';
 import './block_svg';
@@ -5,7 +6,6 @@ import './colours';
 import './connection';
 import './constant';
 import './contextmenu';
-import './css';
 import './data_category';
 import './field_dropdown';
 import './field';

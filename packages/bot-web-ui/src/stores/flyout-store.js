@@ -8,7 +8,6 @@ export default class FlyoutStore {
     block_workspaces = [];
     flyout_min_width = 440;
     options = {
-        css: false,
         media: `${__webpack_public_path__}media/`,
         move: { scrollbars: false, drag: true, wheel: false },
         zoom: { startScale: config.workspaces.flyoutWorkspacesStartScale },

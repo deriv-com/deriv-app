@@ -42,7 +42,7 @@ const validateDocumentNumber = (
         return context.createError({ message: `Please enter your ${documentName}. ${exampleFormat}` });
     } else if (isNotSameAsExample) {
         return context.createError({ message: 'Please enter a valid ID number' });
-    } else if (!new RegExp(documentConfig?.value as string).test(documentNumber)) {
+    } else if (documentConfig && !new RegExp(documentConfig.value).test(documentNumber)) {
         return context.createError({ message: `Please enter the correct format. ${exampleFormat}` });
     }
     return true;
@@ -50,7 +50,7 @@ const validateDocumentNumber = (
 
 const validateAdditionalDocumentNumber = (
     documentConfig: TDocument | undefined,
-    additionalDocNumber: string,
+    additionalDocNumber: string | undefined,
     context: Yup.TestContext<AnyObject>
 ) => {
     if (!additionalDocNumber) {
@@ -73,7 +73,7 @@ export const getIDVFormValidationSchema = () => {
             name: 'test-additional-document-number',
             test: (value, context) => {
                 const documentConfig = getSelectedDocumentConfigData(context.parent.document_type);
-                return validateAdditionalDocumentNumber(documentConfig, value as string, context);
+                return validateAdditionalDocumentNumber(documentConfig, value, context);
             },
         }),
         document_number: Yup.string().test({

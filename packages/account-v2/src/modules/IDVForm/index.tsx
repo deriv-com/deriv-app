@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, FormikProps, useFormikContext } from 'formik';
-import { ResidenceList } from '@deriv/api-types';
+import { useResidenceList } from '@deriv/api';
 import { WalletDropdown } from '../../components/base/WalletDropdown';
 import { WalletTextField } from '../../components/base/WalletTextField';
 import { ResponsiveWrapper } from '../../components/responsive-wrapper';
@@ -9,7 +9,10 @@ import { getSelectedDocumentConfigData, TDocument } from './utils';
 
 type TIDVFormProps = {
     allowIDVSkip?: boolean;
-    selectedCountry: ResidenceList[0];
+    selectedCountry: Exclude<
+        DeepRequired<ReturnType<typeof useResidenceList>['data'][0]['identity']>,
+        undefined
+    >['services']['idv'];
 };
 
 type TIDVFormValues = {
@@ -34,7 +37,7 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
     };
     const [selectedDocument, setSelectedDocument] = useState<TDocument | undefined>();
 
-    const { documents_supported } = selectedCountry?.identity?.services?.idv ?? {};
+    const { documents_supported } = selectedCountry;
 
     const IDV_NOT_APPLICABLE_OPTION = useMemo(() => getIDVNotApplicableOption(allowIDVSkip), [allowIDVSkip]);
 
@@ -56,15 +59,13 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
     };
 
     useEffect(() => {
-        if (Object.keys(documents_supported as Exclude<typeof documents_supported, undefined>)?.length) {
-            const docList = Object.keys(documents_supported as Exclude<typeof documents_supported, undefined>).map(
-                (key: string) => {
-                    return {
-                        text: (documents_supported as Exclude<typeof documents_supported, undefined>)[key].display_name,
-                        value: key,
-                    };
-                }
-            );
+        if (Object.keys(documents_supported)?.length) {
+            const docList = Object.keys(documents_supported).map((key: string) => {
+                return {
+                    text: documents_supported[key].display_name,
+                    value: key,
+                };
+            });
             setDocumentList(docList as TDropDownList[]);
         }
     }, [documents_supported]);

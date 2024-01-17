@@ -1,4 +1,4 @@
-import { ResidenceList } from '@deriv/api-types';
+import { useResidenceList } from '@deriv/api';
 
 export const DOCUMENT_LIST = [
     {
@@ -43,69 +43,42 @@ export const DOCUMENT_LIST = [
     },
 ];
 
-export const SELECTED_COUNTRY: ResidenceList[0] = {
-    identity: {
-        services: {
-            idv: {
-                documents_supported: {
-                    aadhaar: {
-                        additional: {
-                            display_name: 'PAN Card',
-                            format: '^[a-zA-Z]{5}\\d{4}[a-zA-Z]{1}$',
-                        },
-                        display_name: 'Aadhaar Card',
-                        format: '^[0-9]{12}$',
-                    },
-                    drivers_license: {
-                        display_name: 'Drivers License',
-                        format: '^[a-zA-Z0-9]{10,17}$',
-                    },
-                    epic: {
-                        display_name: 'Voter ID',
-                        format: '^[a-zA-Z]{3}[0-9]{7}$',
-                    },
-                    pan: {
-                        display_name: 'PAN Card',
-                        format: '^[a-zA-Z]{5}\\d{4}[a-zA-Z]{1}$',
-                    },
-                    passport: {
-                        additional: {
-                            display_name: 'File Number',
-                            format: '^.{15}$',
-                        },
-                        display_name: 'Passport',
-                        format: '^.{8}$',
-                    },
-                },
-                has_visual_sample: 0,
-                is_country_supported: 1,
+export const SELECTED_COUNTRY: Exclude<
+    DeepRequired<ReturnType<typeof useResidenceList>['data'][0]['identity']>,
+    undefined
+>['services']['idv'] = {
+    documents_supported: {
+        aadhaar: {
+            additional: {
+                display_name: 'PAN Card',
+                format: '^[a-zA-Z]{5}\\d{4}[a-zA-Z]{1}$',
             },
-            onfido: {
-                documents_supported: {
-                    driving_licence: {
-                        display_name: 'Driving Licence',
-                    },
-                    national_identity_card: {
-                        display_name: 'National Identity Card',
-                    },
-                    passport: {
-                        display_name: 'Passport',
-                    },
-                    visa: {
-                        display_name: 'Visa',
-                    },
-                    voter_id: {
-                        display_name: 'Voter Id',
-                    },
-                },
-                is_country_supported: 1,
+            display_name: 'Aadhaar Card',
+            format: '^[0-9]{12}$',
+        },
+        drivers_license: {
+            display_name: 'Drivers License',
+            format: '^[a-zA-Z0-9]{10,17}$',
+        },
+        epic: {
+            display_name: 'Voter ID',
+            format: '^[a-zA-Z]{3}[0-9]{7}$',
+        },
+        pan: {
+            display_name: 'PAN Card',
+            format: '^[a-zA-Z]{5}\\d{4}[a-zA-Z]{1}$',
+        },
+        passport: {
+            additional: {
+                display_name: 'File Number',
+                format: '^.{15}$',
             },
+            display_name: 'Passport',
+            format: '^.{8}$',
         },
     },
-    phone_idd: '91',
-    text: 'India',
-    tin_format: ['^[A-Za-z]{3}P[A-Za-z]\\d{4}[A-Za-z]$'],
-    value: 'in',
+    has_visual_sample: 0,
+    is_country_supported: 1,
 };
 
 export const INITIAL_VALUES = {

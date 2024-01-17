@@ -215,6 +215,10 @@ export type TLoginHistoryItems = {
     status: string;
 };
 
+export type TAutoComplete = {
+    value: boolean;
+    text: string;
+};
 export type TPaymentMethodIdentifier = typeof IDENTIFIER_TYPES[keyof typeof IDENTIFIER_TYPES];
 
 export type TPaymentMethodInfo = {

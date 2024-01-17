@@ -1,9 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useCreateMT5Account, useMT5AccountsList } from '@deriv/api';
-import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
-import { ButtonGroup } from '../../../../components';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import {
@@ -15,37 +11,7 @@ import {
     TTM5FilterLandingCompany,
 } from '../../constants';
 import { CFDSuccess } from '../../screens';
-
-const SuccessButton = () => {
-    const { hide } = Provider.useModal();
-    const { data: activeTrading } = useActiveTradingAccount();
-    const isDemo = activeTrading?.is_virtual;
-    const history = useHistory();
-
-    if (isDemo) {
-        return (
-            <Button onClick={hide} size='lg'>
-                OK
-            </Button>
-        );
-    }
-    return (
-        <ButtonGroup className='justify-center w-full'>
-            <Button onClick={hide} size='lg' variant='secondary'>
-                Maybe later
-            </Button>
-            <Button
-                onClick={() => {
-                    hide();
-                    history.push('/cashier/transfer');
-                }}
-                size='lg'
-            >
-                Transfer funds
-            </Button>
-        </ButtonGroup>
-    );
-};
+import SuccessButtonGroup from './SuccessButtonGroup';
 
 type TSuccessComponentProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
@@ -55,11 +21,10 @@ type TSuccessComponentProps = {
 
 const SuccessComponent = ({ marketType, platform, selectedJurisdiction }: TSuccessComponentProps) => {
     const { isEU } = useRegulationFlags();
-
     const { isSuccess } = useCreateMT5Account();
+    const { data: mt5Accounts } = useMT5AccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
     const isDemo = activeTrading?.is_virtual;
-    const { data: mt5Accounts } = useMT5AccountsList();
 
     const marketTypeTitle =
         marketType === MarketType.ALL && Object.keys(PlatformDetails).includes(platform)
@@ -83,7 +48,7 @@ const SuccessComponent = ({ marketType, platform, selectedJurisdiction }: TSucce
                 landingCompany={selectedJurisdiction}
                 marketType={marketType}
                 platform='mt5'
-                renderButtons={SuccessButton}
+                renderButtons={SuccessButtonGroup}
                 title={`Your ${marketTypeTitle} ${isDemo ? Category.DEMO : landingCompanyName} account is ready`}
             />
         );

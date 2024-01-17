@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useAvailableMT5Accounts, useIsEuRegion } from '@deriv/api';
+import { useAvailableMT5Accounts } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Heading, useBreakpoint } from '@deriv/quill-design';
+import { useUIContext } from '../../../../components';
 import { Modal } from '../../../../components/Modal';
+import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import { DummyComponent } from '../../components/DummyComponent';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
 import { Jurisdiction, MarketType, MarketTypeDetails } from '../../constants';
@@ -15,7 +17,9 @@ const JurisdictionModal = () => {
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
 
     const { show } = Provider.useModal();
-    const { isEU } = useIsEuRegion();
+    const { getUIState } = useUIContext();
+    const activeRegulation = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegulation);
     const { getCFDState, setCfdState } = Provider.useCFDContext();
 
     const { isLoading } = useAvailableMT5Accounts();

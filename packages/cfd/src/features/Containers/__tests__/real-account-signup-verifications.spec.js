@@ -84,6 +84,15 @@ describe('<RealAccountSignupVerifications />', () => {
         jest.clearAllMocks();
     });
 
+    const authenticated_with_idv = {
+        bvi: 1,
+        labuan: 1,
+        maltainvest: 0,
+        svg: 1,
+        vanuatu: 0,
+        virtual: 0,
+    };
+
     let mockRootStore = {
         notifications: {
             addNotificationByKey: jest.fn(),
@@ -125,6 +134,19 @@ describe('<RealAccountSignupVerifications />', () => {
                 tax_identification_number: null,
                 tax_residence: null,
                 user_hash: '823341c18bfccb391b6bb5d77ab7e6a83991f82669c1ba4e5b01dbd2fd71c7fe',
+            },
+            account_status: {
+                authentication: {
+                    document: {
+                        authenticated_with_idv,
+                        status: 'none',
+                    },
+                    attempts: {
+                        latest: {
+                            service: 'idv',
+                        },
+                    },
+                },
             },
             authentication_status: {
                 document_status: 'none',
@@ -234,8 +256,32 @@ describe('<RealAccountSignupVerifications />', () => {
     });
 
     it('should check for POA status when Jurisdiction is Labuan and resubmit status is set to true', () => {
+        const authenticated_with_idv = {
+            bvi: 1,
+            labuan: 0,
+            maltainvest: 0,
+            svg: 1,
+            vanuatu: 0,
+            virtual: 0,
+        };
         const new_mock_store = {
             ...mockRootStore,
+            client: {
+                ...mockRootStore.client,
+                account_status: {
+                    authentication: {
+                        document: {
+                            authenticated_with_idv,
+                            status: 'none',
+                        },
+                        attempts: {
+                            latest: {
+                                service: 'idv',
+                            },
+                        },
+                    },
+                },
+            },
             modules: {
                 ...mockRootStore.modules,
                 cfd: {
@@ -244,7 +290,6 @@ describe('<RealAccountSignupVerifications />', () => {
                 },
             },
         };
-
         getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_maltainvest: true });
 
         render(<RealAccountSignupVerifications />, {

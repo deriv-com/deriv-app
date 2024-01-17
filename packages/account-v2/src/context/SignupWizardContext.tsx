@@ -47,12 +47,18 @@ export const useSignupWizardContext = () => {
     return context;
 };
 
+/**
+ * @name SignupWizardProvider
+ * @description The SignupWizardProvider component is used to wrap the components that need access to the SignupWizardContext.
+ * @param {React.ReactNode} children - The content to be wrapped.
+ */
 export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
     const [isWizardOpen, setIsWizardOpen] = useState(false);
     const [currentStep, helpers] = useStep(5);
 
     useEffect(() => {
         if (!isWizardOpen) {
+            // Reset the step when the modal is closed to ensure that the first step is always shown when the modal is opened.
             helpers.setStep(1);
         }
     }, [helpers, isWizardOpen]);

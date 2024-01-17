@@ -131,6 +131,10 @@ export const createTickMarkers = (contract_info, is_delayed_markers_update) => {
             marker_config = createMarkerSpotExit(contract_info, tick, idx);
         }
 
+        if (is_selected_tick && is_smarttrader_contract) {
+            marker_config = createMarkerSpotMiddle(contract_info, tick, idx);
+        }
+
         const spot_className = marker_config && marker_config.content_config.spot_className;
 
         if (is_smarttrader_contract && is_middle_spot && !is_selected_tick) {

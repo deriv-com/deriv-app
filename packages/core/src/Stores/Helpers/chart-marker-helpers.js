@@ -148,7 +148,7 @@ export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
         align_label: tick.align_label,
         is_value_hidden: is_accumulator || (is_ticks_contract && idx + 1 !== contract_info.selected_tick),
         spot_count,
-        status: `${contract_info.status}`,
+        status: `${is_ticks_contract ? contract_info.status : ''}`,
     });
     marker_config.type = `${marker_config.type}_${idx}`;
 

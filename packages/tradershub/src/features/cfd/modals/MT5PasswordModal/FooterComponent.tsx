@@ -2,9 +2,9 @@ import React from 'react';
 import { useCreateMT5Account, useMT5AccountsList } from '@deriv/api';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { TTM5FilterLandingCompany } from '../../constants';
-import AddAccountButtonsGroup from './AddAccountButtonsGroup';
-import CreateAccountButton from './CreateAccountButton';
-import TransferFundsButtonsGroup from './TransferFundsButtonsGroup';
+import AddAccountButtonsGroup from './ButtonGroups/AddAccountButtonsGroup';
+import CreateAccountButton from './ButtonGroups/CreateAccountButton';
+import TransferFundsButtonsGroup from './ButtonGroups/TransferFundsButtonsGroup';
 
 type TFooterComponentProps = {
     marketType: TMarketTypes.SortedMT5Accounts;

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useCreateMT5Account, useTradingPlatformPasswordChange } from '@deriv/api';
 import { Button } from '@deriv/quill-design';
-import { TMarketTypes } from '../../../../types';
-import { validPassword } from '../../../../utils/password';
-import { TTM5FilterLandingCompany } from '../../constants';
-import { useSubmitHandler } from './useSubmitHandler';
+import { TMarketTypes } from '../../../../../types';
+import { validPassword } from '../../../../../utils/password';
+import { TTM5FilterLandingCompany } from '../../../constants';
+import { useSubmitHandler } from '../useSubmitHandler';
 
 type TCreateAccountButtonProps = {
     marketType: TMarketTypes.SortedMT5Accounts;

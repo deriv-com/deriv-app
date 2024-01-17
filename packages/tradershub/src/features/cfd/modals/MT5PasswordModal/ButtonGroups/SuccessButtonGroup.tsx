@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
-import { ButtonGroup } from '../../../../components';
+import { ButtonGroup } from '../../../../../components';
 
 const SuccessButtonGroup = () => {
     const { hide } = Provider.useModal();

@@ -11,7 +11,7 @@ import {
     TTM5FilterLandingCompany,
 } from '../../constants';
 import { CFDSuccess } from '../../screens';
-import SuccessButtonGroup from './SuccessButtonGroup';
+import SuccessButtonGroup from './ButtonGroups/SuccessButtonGroup';
 
 type TSuccessComponentProps = {
     marketType: TMarketTypes.SortedMT5Accounts;

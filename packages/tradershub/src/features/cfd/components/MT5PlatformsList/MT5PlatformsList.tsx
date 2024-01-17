@@ -40,13 +40,13 @@ const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) =
             {!isFetchedAfterMount && <TradingAppCardLoader />}
             {isFetchedAfterMount &&
                 data?.map(account => {
-                    if (account.is_added)
+                    if (account.is_added && account.is_virtual === activeTradingAccount?.is_virtual)
                         return <AddedMT5AccountsList account={account} key={`added-mt5-list-${account.loginid}`} />;
 
                     return (
                         <AvailableMT5AccountsList
                             account={account as unknown as THooks.MT5AccountsList}
-                            key={`available-mt5-list-${account.market_type}-${account.shortcode}`}
+                            key={`available-mt5-list-${account.market_type}-${account.sub_account_type}`}
                         />
                     );
                 })}

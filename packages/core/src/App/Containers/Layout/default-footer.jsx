@@ -13,7 +13,7 @@ import NetworkStatus, {
     ToggleLanguageSettings,
 } from 'App/Components/Layout/Footer';
 import LiveChat from 'App/Components/Elements/LiveChat';
-import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
+// import WhatsApp from 'App/Components/Elements/WhatsApp/index.ts';
 import ServerTime from '../server-time.jsx';
 import { observer, useStore } from '@deriv/stores';
 
@@ -70,7 +70,7 @@ const Footer = observer(() => {
             <ServerTime />
             <div className='footer__links'>
                 {footer_extensions_right.map(FooterExtensionRenderer)}
-                <WhatsApp />
+                {/* <WhatsApp /> */}
                 <LiveChat />
                 <FooterIconSeparator />
                 <GoToDeriv />

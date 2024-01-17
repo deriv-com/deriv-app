@@ -9,9 +9,9 @@ const CFDContent = () => {
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
     const { getUIState } = useUIContext();
 
-    const activeRegion = getUIState('regulation');
+    const activeRegulation = getUIState('regulation');
 
-    const { isEU } = useRegulationFlags(activeRegion);
+    const { isEU } = useRegulationFlags(activeRegulation);
 
     if (!isRegulationAccessible)
         return (

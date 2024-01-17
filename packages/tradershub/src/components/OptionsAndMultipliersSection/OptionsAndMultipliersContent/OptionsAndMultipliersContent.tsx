@@ -99,9 +99,9 @@ const OptionsAndMultipliersContent = () => {
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
 
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('regulation');
+    const activeRegulation = getUIState('regulation');
 
-    const { isEU } = useRegulationFlags(activeRegion);
+    const { isEU } = useRegulationFlags(activeRegulation);
 
     const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU ?? false);
 

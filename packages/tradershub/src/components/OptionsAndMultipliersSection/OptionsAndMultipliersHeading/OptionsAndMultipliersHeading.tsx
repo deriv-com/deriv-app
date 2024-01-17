@@ -13,10 +13,10 @@ import { useUIContext } from '../../UIProvider';
  */
 const OptionsAndMultipliersHeading = () => {
     const { isMobile } = useBreakpoint();
-    const { isSuccess: isEURegionAccessible } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('regulation');
-    const { isEU } = useRegulationFlags(activeRegion);
+    const activeRegulation = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegulation);
 
     const title = isEU ? 'Multipliers' : 'Options & multipliers';
 
@@ -47,7 +47,7 @@ const OptionsAndMultipliersHeading = () => {
         );
     }, [isEU]);
 
-    if (!isEURegionAccessible) return <TitleDescriptionLoader />;
+    if (!isRegulationAccessible) return <TitleDescriptionLoader />;
 
     return (
         <div className='flex flex-col items-start justify-between lg:flex-row gap-800 lg:gap-2400'>

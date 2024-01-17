@@ -5,8 +5,8 @@ import { Router } from './routes';
 
 const AppContent = () => {
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('regulation');
-    const { isEU } = useRegulationFlags(activeRegion);
+    const activeRegulation = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegulation);
 
     return (
         <div className='h-full-mobile lg:h-full-desktop'>

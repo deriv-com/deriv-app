@@ -1,18 +1,22 @@
 import React from 'react';
-import { useAuthorize, useIsEuRegion } from '@deriv/api';
+import { useAuthorize } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import {
     TradingAccountCard,
     TradingAccountCardContent,
     TradingAccountCardLightButton,
+    useUIContext,
 } from '../../../../../components';
+import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
 import { THooks } from '../../../../../types';
 import { MarketType, MarketTypeDetails } from '../../../constants';
 import { JurisdictionModal } from '../../../modals/JurisdictionModal';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
-    const { isEU } = useIsEuRegion();
+    const { getUIState } = useUIContext();
+    const activeRegulation = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegulation);
     const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
     const description = marketTypeDetails?.description ?? '';
     const { data: activeAccount } = useAuthorize();

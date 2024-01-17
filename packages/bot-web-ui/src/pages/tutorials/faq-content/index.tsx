@@ -96,7 +96,13 @@ const FAQContent = ({ faq_list }: TFAQContent) => {
                 <div className='faq__wrapper' ref={faq_wrapper_element}>
                     {faq_list?.length > 0 && (
                         <>
-                            <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
+                            <Text
+                                as='p'
+                                line_height='xl'
+                                className='faq__wrapper__header'
+                                weight='bold'
+                                size={is_mobile ? 'xs' : 's'}
+                            >
                                 <Localize i18n_default_text='FAQ' />
                             </Text>
                             <div

@@ -6,86 +6,84 @@ import { mockStore } from '@deriv/stores';
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     WS: {
-        storage: {
-            contractsFor: jest.fn(() =>
-                Promise.resolve({
-                    contracts_for: {
-                        available: [
-                            {
-                                barrier_category: 'euro_atm',
-                                barriers: 0,
-                                contract_category: 'callput',
-                                contract_category_display: 'Up/Down',
-                                contract_display: 'Higher',
-                                contract_type: 'CALL',
-                                exchange_name: 'FOREX',
-                                expiry_type: 'daily',
-                                market: 'forex',
-                                max_contract_duration: '365d',
-                                min_contract_duration: '1d',
-                                sentiment: 'up',
-                                start_type: 'spot',
-                                submarket: 'major_pairs',
-                                underlying_symbol: 'frxAUDJPY',
-                            },
-                            {
-                                barrier_category: 'euro_non_atm',
-                                barriers: 2,
-                                contract_category: 'endsinout',
-                                contract_category_display: 'Ends Between/Ends Outside',
-                                contract_display: 'Ends Outside',
-                                contract_type: 'EXPIRYMISS',
-                                exchange_name: 'FOREX',
-                                expiry_type: 'daily',
-                                forward_starting_options: [
-                                    {
-                                        close: '1701302399',
-                                        date: '1701216000',
-                                        open: '1701216000',
-                                    },
-                                    {
-                                        close: '1701388799',
-                                        date: '1701302400',
-                                        open: '1701302400',
-                                    },
-                                    {
-                                        close: '1701475199',
-                                        date: '1701388800',
-                                        open: '1701388800',
-                                    },
-                                ],
-                                high_barrier: '98.745',
-                                low_barrier: '97.672',
-                                market: 'forex',
-                                max_contract_duration: '365d',
-                                min_contract_duration: '1d',
-                                sentiment: 'high_vol',
-                                start_type: 'spot',
-                                submarket: 'major_pairs',
-                                underlying_symbol: 'frxAUDJPY',
-                            },
-                        ],
-                        close: 1701215999,
-                        feed_license: 'realtime',
-                        hit_count: 22,
-                        non_available: [
-                            {
-                                contract_category: 'accumulator',
-                                contract_display_name: 'Accumulator Up',
-                                contract_type: 'ACCU',
-                            },
-                            {
-                                contract_category: 'asian',
-                                contract_display_name: 'Asian Down',
-                                contract_type: 'ASIAND',
-                            },
-                        ],
-                        open: 1701129600,
-                        spot: 98.076,
-                    },
-                })
-            ),
-        },
+        contractsFor: jest.fn(() =>
+            Promise.resolve({
+                contracts_for: {
+                    available: [
+                        {
+                            barrier_category: 'euro_atm',
+                            barriers: 0,
+                            contract_category: 'callput',
+                            contract_category_display: 'Up/Down',
+                            contract_display: 'Higher',
+                            contract_type: 'CALL',
+                            exchange_name: 'FOREX',
+                            expiry_type: 'daily',
+                            market: 'forex',
+                            max_contract_duration: '365d',
+                            min_contract_duration: '1d',
+                            sentiment: 'up',
+                            start_type: 'spot',
+                            submarket: 'major_pairs',
+                            underlying_symbol: 'frxAUDJPY',
+                        },
+                        {
+                            barrier_category: 'euro_non_atm',
+                            barriers: 2,
+                            contract_category: 'endsinout',
+                            contract_category_display: 'Ends Between/Ends Outside',
+                            contract_display: 'Ends Outside',
+                            contract_type: 'EXPIRYMISS',
+                            exchange_name: 'FOREX',
+                            expiry_type: 'daily',
+                            forward_starting_options: [
+                                {
+                                    close: '1701302399',
+                                    date: '1701216000',
+                                    open: '1701216000',
+                                },
+                                {
+                                    close: '1701388799',
+                                    date: '1701302400',
+                                    open: '1701302400',
+                                },
+                                {
+                                    close: '1701475199',
+                                    date: '1701388800',
+                                    open: '1701388800',
+                                },
+                            ],
+                            high_barrier: '98.745',
+                            low_barrier: '97.672',
+                            market: 'forex',
+                            max_contract_duration: '365d',
+                            min_contract_duration: '1d',
+                            sentiment: 'high_vol',
+                            start_type: 'spot',
+                            submarket: 'major_pairs',
+                            underlying_symbol: 'frxAUDJPY',
+                        },
+                    ],
+                    close: 1701215999,
+                    feed_license: 'realtime',
+                    hit_count: 22,
+                    non_available: [
+                        {
+                            contract_category: 'accumulator',
+                            contract_display_name: 'Accumulator Up',
+                            contract_type: 'ACCU',
+                        },
+                        {
+                            contract_category: 'asian',
+                            contract_display_name: 'Asian Down',
+                            contract_type: 'ASIAND',
+                        },
+                    ],
+                    open: 1701129600,
+                    spot: 98.076,
+                },
+            })
+        ),
         tradingTimes: jest.fn(() =>
             Promise.resolve({
                 trading_times: {

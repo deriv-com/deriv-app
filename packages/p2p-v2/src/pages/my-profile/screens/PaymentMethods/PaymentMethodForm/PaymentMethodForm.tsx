@@ -128,10 +128,13 @@ const PaymentMethodForm = ({
                                     control={control}
                                     defaultValue={paymentMethodField?.value || ''}
                                     name={field}
-                                    render={({ field: { onChange, value } }) => {
+                                    render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => {
                                         return (
                                             <TextArea
+                                                hint={error?.message}
+                                                isInvalid={!!error?.message}
                                                 label={paymentMethodField?.display_name}
+                                                onBlur={onBlur}
                                                 onChange={onChange}
                                                 value={value}
                                             />

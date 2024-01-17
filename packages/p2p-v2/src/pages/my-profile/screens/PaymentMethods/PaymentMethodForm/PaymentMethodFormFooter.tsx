@@ -1,8 +1,6 @@
 import React from 'react';
 import { TPaymentMethodFormConfig } from 'types';
 import { Button } from '@deriv-com/ui/dist/components/Button';
-import { FullPageMobileWrapper } from '../../../../../components';
-import { useDevice } from '../../../../../hooks';
 
 type TPaymentMethodFormFooter = {
     isValid: boolean;
@@ -12,9 +10,7 @@ type TPaymentMethodFormFooter = {
 };
 
 const PaymentMethodFormFooter = ({ isValid, onGoBack, paymentMethod, type }: TPaymentMethodFormFooter) => {
-    const { isMobile } = useDevice();
-
-    const footerButtons = !paymentMethod ? null : (
+    return !paymentMethod ? null : (
         <div className='p2p-v2-payment-method-form__buttons'>
             {/* TODO: Remember to wire up the modal */}
             <Button onClick={onGoBack} size='lg' variant='outlined'>
@@ -26,12 +22,6 @@ const PaymentMethodFormFooter = ({ isValid, onGoBack, paymentMethod, type }: TPa
             </Button>
         </div>
     );
-
-    if (isMobile) {
-        return <FullPageMobileWrapper renderFooter={() => footerButtons} />;
-    }
-
-    return footerButtons;
 };
 
 export default PaymentMethodFormFooter;

@@ -77,9 +77,11 @@ const DMT5TradeModal = observer(
             const timeout = setTimeout(() => {
                 mobile_url = window.location.replace(getMobileAppInstallerURL());
             }, 3000);
-            window.onblur = () => {
-                clearTimeout(timeout);
-            };
+            if (!/safari/i.test(navigator.userAgent)) {
+                window.onblur = () => {
+                    clearTimeout(timeout);
+                };
+            }
         };
 
         const getHeadingTitle = () =>

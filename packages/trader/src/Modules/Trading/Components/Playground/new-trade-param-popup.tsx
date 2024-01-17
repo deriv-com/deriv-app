@@ -74,6 +74,48 @@ const NewTradeParamPopup = ({ onClick, show_details }: { onClick: () => void; sh
                         />
                         <div className='trade-param_popup_input_text'>Value higher than 0.10 USD</div>
                     </div>
+                    <div>
+                        {/* <input
+                            type='number'
+                            min='0'
+                            inputMode='numeric'
+                            // pattern='[0-9]*'
+                            title='Non-negative integral number'
+                            className='trade-param_popup_input'
+                            defaultValue='1.00'
+                        /> */}
+                        {/* <div>Take profit</div> */}
+                        <InputField
+                            // className={className}
+                            // classNameInlinePrefix={classNameInlinePrefix}
+                            // classNameInput={classNameInput}
+                            currency='USD'
+                            current_focus={null}
+                            // error_messages={error_messages}
+                            // error_message_alignment={error_message_alignment}
+                            // is_error_tooltip_hidden={isMobile()}
+                            // is_disabled={!!is_disabled}
+                            fractional_digits={getDecimalPlaces('USD')}
+                            id={`dc_take_profit_input`}
+                            // inline_prefix={is_single_currency ? currency : undefined}
+                            is_autocomplete_disabled
+                            is_float={getDecimalPlaces('USD') > 0}
+                            is_hj_whitelisted
+                            is_incrementable
+                            is_negative_disabled={true}
+                            max_length={10}
+                            // max_value={max_value}
+                            name={'take_profit'}
+                            // onChange={onChange}
+                            // onClickInputWrapper={is_disabled ? undefined : enableInputOnClick}
+                            type='number'
+                            ariaLabel=''
+                            inputmode='decimal'
+                            value={value}
+                            // setCurrentFocus={setCurrentFocus}
+                        />
+                        <div className='trade-param_popup_input_text'>Value higher than 0.10 USD</div>
+                    </div>
                 </div>
                 <div className='trade-param_popup_bottom'>
                     <button className='footer-new_bottom-sheet_button'>Save</button>

@@ -6,7 +6,7 @@ import { Region } from '../constants/constants';
  * @param region 'EU' | 'Non-EU'
  * @returns  { isDemo: boolean, isEU: boolean, isEUReal: boolean, isNonEU: boolean, isNonEUReal: boolean }
  */
-const useRegionFlags = (region?: string) => {
+const useRegulationFlags = (region?: string) => {
     const { isEUCountry } = useIsEuRegion();
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { data: tradingAccountsList } = useTradingAccountsList();
@@ -34,4 +34,4 @@ const useRegionFlags = (region?: string) => {
     };
 };
 
-export default useRegionFlags;
+export default useRegulationFlags;

@@ -2,7 +2,7 @@ import React from 'react';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
 import { qtMerge, Text } from '@deriv/quill-design';
 import { IconToCurrencyMapper } from '../../constants/constants';
-import useRegionFlags from '../../hooks/useRegionFlags';
+import useRegulationFlags from '../../hooks/useRegulationFlags';
 import { useUIContext } from '../UIProvider';
 
 const TradingAccountsList = () => {
@@ -11,9 +11,9 @@ const TradingAccountsList = () => {
     const { switchAccount } = useAuthorize();
 
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('region');
+    const activeRegion = getUIState('regulation');
 
-    const { isEU } = useRegionFlags(activeRegion);
+    const { isEU } = useRegulationFlags(activeRegion);
 
     return (
         <div className='lg:w-[500px] lg:h-[350px] rounded-400'>

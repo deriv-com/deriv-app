@@ -1,15 +1,15 @@
 import React from 'react';
 import { useUIContext } from '../../../../components';
 import { getStaticUrl } from '../../../../helpers/urls';
-import useRegionFlags from '../../../../hooks/useRegionFlags';
+import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import { THooks } from '../../../../types';
 import { MarketType, MarketTypeDetails } from '../../constants';
 
 export const MT5AccountIcon = ({ account }: { account: THooks.MT5AccountsList }) => {
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('region');
+    const activeRegion = getUIState('regulation');
 
-    const { isEU } = useRegionFlags(activeRegion);
+    const { isEU } = useRegulationFlags(activeRegion);
 
     const handleClick = () => {
         window.open(getStaticUrl('/dmt5'));

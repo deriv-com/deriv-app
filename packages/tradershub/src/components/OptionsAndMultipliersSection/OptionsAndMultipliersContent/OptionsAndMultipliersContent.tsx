@@ -4,7 +4,7 @@ import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
 import { Button, useBreakpoint } from '@deriv/quill-design';
 import { optionsAndMultipliersContent } from '../../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
-import useRegionFlags from '../../../hooks/useRegionFlags';
+import useRegulationFlags from '../../../hooks/useRegulationFlags';
 import { TradingAppCardLoader } from '../../Loaders';
 import { TradingAccountCard, TradingAccountCardContent } from '../../TradingAccountCard';
 import { useUIContext } from '../../UIProvider';
@@ -96,12 +96,12 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
 const OptionsAndMultipliersContent = () => {
     const { isMobile } = useBreakpoint();
     const { data } = useActiveTradingAccount();
-    const { isSuccess: isEURegionAccessible } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
 
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('region');
+    const activeRegion = getUIState('regulation');
 
-    const { isEU } = useRegionFlags(activeRegion);
+    const { isEU } = useRegulationFlags(activeRegion);
 
     const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU ?? false);
 
@@ -109,7 +109,7 @@ const OptionsAndMultipliersContent = () => {
         ? getoptionsAndMultipliersContent.filter(account => account.title === 'Deriv Trader')
         : getoptionsAndMultipliersContent;
 
-    if (!isEURegionAccessible)
+    if (!isRegulationAccessible)
         return (
             <div className='pt-2000'>
                 <TradingAppCardLoader />

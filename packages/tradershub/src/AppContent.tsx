@@ -1,12 +1,12 @@
 import React from 'react';
-import useRegionFlags from './hooks/useRegionFlags';
+import useRegulationFlags from './hooks/useRegulationFlags';
 import { EUDisclaimerMessage, useUIContext } from './components';
 import { Router } from './routes';
 
 const AppContent = () => {
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('region');
-    const { isEU } = useRegionFlags(activeRegion);
+    const activeRegion = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegion);
 
     return (
         <div className='h-full-mobile lg:h-full-desktop'>

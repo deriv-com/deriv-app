@@ -3,7 +3,7 @@ import React, { createContext, useCallback, useContext, useMemo, useState } from
 type TUIState = {
     // Add other UI states here
     accountType?: string;
-    region?: string;
+    regulation?: string;
 };
 
 type TUIContext = {
@@ -24,13 +24,13 @@ export const useUIContext = () => {
 };
 
 export const UIProvider = ({ children }: { children: React.ReactNode }) => {
-    const [uiState, setUIState] = useState<TUIState>({});
+    const [UIState, setUIState] = useState<TUIState>({});
 
     const getUIState = useCallback(
         <T extends keyof TUIState>(key: T): TUIState[T] => {
-            return uiState[key];
+            return UIState[key];
         },
-        [uiState]
+        [UIState]
     );
 
     const updateUIState = <T extends keyof TUIState>(key: T, value: TUIState[T]) => {

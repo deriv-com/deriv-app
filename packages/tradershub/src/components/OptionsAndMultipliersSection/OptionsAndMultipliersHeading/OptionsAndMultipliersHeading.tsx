@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useIsEuRegion } from '@deriv/api';
 import { Heading, Text, useBreakpoint } from '@deriv/quill-design';
-import useRegionFlags from '../../../hooks/useRegionFlags';
+import useRegulationFlags from '../../../hooks/useRegulationFlags';
 import { CurrencySwitcher } from '../../CurrencySwitcher';
 import { TitleDescriptionLoader } from '../../Loaders';
 import { StaticLink } from '../../StaticLink';
@@ -15,8 +15,8 @@ const OptionsAndMultipliersHeading = () => {
     const { isMobile } = useBreakpoint();
     const { isSuccess: isEURegionAccessible } = useIsEuRegion();
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('region');
-    const { isEU } = useRegionFlags(activeRegion);
+    const activeRegion = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegion);
 
     const title = isEU ? 'Multipliers' : 'Options & multipliers';
 

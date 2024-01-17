@@ -18,16 +18,16 @@ const RegulationSwitcherDesktop = () => {
 
     const buttons = [{ label: Region.NonEU }, { label: Region.EU }];
 
-    const activeRegion = getUIState('region');
+    const activeRegion = getUIState('regulation');
 
     const handleButtonClick = (label: string) => {
         if (label === Region.NonEU) {
-            setUIState('region', Region.NonEU);
+            setUIState('regulation', Region.NonEU);
             if (realCRAccount) {
                 switchAccount(realCRAccount);
             }
         } else {
-            setUIState('region', Region.EU);
+            setUIState('regulation', Region.EU);
             if (realMFAccount) {
                 switchAccount(realMFAccount);
             }
@@ -36,9 +36,9 @@ const RegulationSwitcherDesktop = () => {
 
     useEffect(() => {
         if (activeTrading?.loginid.startsWith('CR')) {
-            setUIState('region', Region.NonEU);
+            setUIState('regulation', Region.NonEU);
         } else if (activeTrading?.loginid.startsWith('MF')) {
-            setUIState('region', Region.EU);
+            setUIState('regulation', Region.EU);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

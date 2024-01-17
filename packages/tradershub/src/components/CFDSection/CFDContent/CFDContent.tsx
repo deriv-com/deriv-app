@@ -1,19 +1,19 @@
 import React from 'react';
 import { useIsEuRegion } from '@deriv/api';
 import { CTraderList, MT5PlatformsList, OtherCFDPlatformsList } from '../../../features/cfd/components';
-import useRegionFlags from '../../../hooks/useRegionFlags';
+import useRegulationFlags from '../../../hooks/useRegulationFlags';
 import { TradingAppCardLoader } from '../../Loaders';
 import { useUIContext } from '../../UIProvider';
 
 const CFDContent = () => {
-    const { isSuccess: isEURegionAccessible } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
     const { getUIState } = useUIContext();
 
-    const activeRegion = getUIState('region');
+    const activeRegion = getUIState('regulation');
 
-    const { isEU } = useRegionFlags(activeRegion);
+    const { isEU } = useRegulationFlags(activeRegion);
 
-    if (!isEURegionAccessible)
+    if (!isRegulationAccessible)
         return (
             <div className='pt-800 lg:pt-1200'>
                 <TradingAppCardLoader />

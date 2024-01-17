@@ -5,7 +5,7 @@ import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
 import { useUIContext } from '../../../../../components';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
-import useRegionFlags from '../../../../../hooks/useRegionFlags';
+import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
 import { THooks } from '../../../../../types';
 import { CFDPlatforms, MarketType, MarketTypeDetails } from '../../../constants';
 import { TradeModal } from '../../../modals/TradeModal';
@@ -15,8 +15,8 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
     const { data: activeAccount } = useActiveTradingAccount();
 
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('region');
-    const { isEU } = useRegionFlags(activeRegion);
+    const activeRegion = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegion);
 
     const { show } = Provider.useModal();
     const history = useHistory();

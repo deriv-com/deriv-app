@@ -15,7 +15,7 @@ type TMT5PlatformsListProps = {
 const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) => {
     const { isFetching } = useAuthorize();
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('region');
+    const activeRegion = getUIState('regulation');
     const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts(activeRegion ?? '');
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const invalidate = useInvalidateQuery();

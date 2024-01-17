@@ -3,7 +3,7 @@ import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList
 import { Provider } from '@deriv/library';
 import { Text, useBreakpoint } from '@deriv/quill-design';
 import { useUIContext } from '../../../../components';
-import useRegionFlags from '../../../../hooks/useRegionFlags';
+import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import ImportantIcon from '../../../../public/images/ic-important.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '../../constants';
@@ -25,8 +25,8 @@ const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
 const TradeScreen = ({ account }: TradeScreenProps) => {
     const { isMobile } = useBreakpoint();
     const { getUIState } = useUIContext();
-    const activeRegion = getUIState('region');
-    const { isEU } = useRegionFlags(activeRegion);
+    const activeRegion = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegion);
 
     const { getCFDState } = Provider.useCFDContext();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();

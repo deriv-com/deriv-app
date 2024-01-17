@@ -18,7 +18,7 @@ const NewTrade = () => {
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
                     onItemSelect={() => {}}
                     list={[
-                        <NewTradeParamsContainer onClick={() => setShowDetails(!show_details)} key={1} />,
+                        <NewTradeParamsContainer onClick={() => setShowDetails(true)} key={1} />,
                         <div key={2}>Hello, I&apos;m not ready</div>,
                     ]}
                     nav_position='bottom'
@@ -30,7 +30,7 @@ const NewTrade = () => {
             {show_details && (
                 <NewTradeParamPopup
                     onClick={() => {
-                        setShowDetails(!show_details);
+                        setShowDetails(false);
                     }}
                     // show_details={show_details}
                 />

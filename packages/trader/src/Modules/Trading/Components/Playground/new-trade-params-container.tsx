@@ -31,7 +31,6 @@ const NewTradeParamsContainer = ({ onClick }: { onClick: () => void }) => {
                     value='Up'
                 />
             </div>
-            {/* <div className='trade-param_container' onClick={onClick} onKeyDown={onClick}> */}
             <div className='trade-param_container'>
                 <div className='trade-param_name'>Multiplier</div>
                 <div style={{ fontSize: '16px', lineHeight: '24px' }}>x15</div>
@@ -44,7 +43,7 @@ const NewTradeParamsContainer = ({ onClick }: { onClick: () => void }) => {
                 <div className='trade-param_name'>Stake</div>
                 <div style={{ fontSize: '16px', lineHeight: '24px' }}>10.00 USD</div>
             </div>
-            <div className='trade-param_container'>
+            <div className='trade-param_container' onClick={onClick} onKeyDown={onClick}>
                 <div className='trade-param_name'>Risk management</div>
                 <div style={{ fontSize: '16px', lineHeight: '24px' }}>Take profit: 1.00 USD</div>
             </div>

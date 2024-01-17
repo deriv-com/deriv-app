@@ -10,6 +10,7 @@ import { SignupWizardProvider, useSignupWizardContext } from './context/SignupWi
 import { stepProgress } from './mocks/form-progress.mock';
 import { INITIAL_VALUES, SELECTED_COUNTRY } from './mocks/idv-form.mock';
 import { IDVForm } from './modules/IDVForm';
+import { getIDVFormValidationSchema } from './modules/IDVForm/utils';
 import './index.scss';
 
 const TriggerSignupWizardModal: React.FC = () => {
@@ -30,7 +31,11 @@ const App: React.FC = () => {
                     <FormProgress activeStep={1} steps={stepProgress} />
                 </SignupWizardProvider>
                 {/* [TODO]:Mock - Remove Mock values */}
-                <Formik initialValues={INITIAL_VALUES} onSubmit={() => {}}>
+                <Formik
+                    initialValues={INITIAL_VALUES}
+                    onSubmit={() => {}}
+                    validationSchema={getIDVFormValidationSchema}
+                >
                     <IDVForm selectedCountry={SELECTED_COUNTRY} />
                 </Formik>
             </BreakpointProvider>

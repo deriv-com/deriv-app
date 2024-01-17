@@ -1,11 +1,11 @@
-import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import { Field, FieldProps, FormikProps, useFormikContext } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { WalletDropdown } from '../../components/base/WalletDropdown';
 import { WalletTextField } from '../../components/base/WalletTextField';
 import { ResponsiveWrapper } from '../../components/responsive-wrapper';
-import { DOCUMENT_LIST } from '../../mocks/idv-form.mock';
 import { getIDVNotApplicableOption } from '../../utils/default-options';
+import { getSelectedDocumentConfigData } from './utils';
 
 type TIDVFormProps = {
     allowIDVSkip?: boolean;
@@ -26,8 +26,7 @@ type TDocument = {
 type TIDVFormValues = {
     document_additional?: string;
     document_number: string;
-    document_type: TDocument;
-    error_message?: string;
+    document_type: string;
 };
 
 type TDropDownList = {
@@ -36,22 +35,23 @@ type TDropDownList = {
 };
 
 export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
-    const { errors, handleChange, setFieldValue, values }: FormikProps<TIDVFormValues> = useFormikContext();
+    const { setFieldValue, values }: FormikProps<TIDVFormValues> = useFormikContext();
     const [documentList, setDocumentList] = useState<TDropDownList[]>([]);
-
     const defaultDocument = {
         example_format: '',
         id: '',
         text: '',
         value: '',
     };
+    const [selectedDocument, setSelectedDocument] = useState<TDocument | undefined>();
 
     const { documents_supported } = selectedCountry?.identity?.services?.idv ?? {};
 
     const IDV_NOT_APPLICABLE_OPTION = useMemo(() => getIDVNotApplicableOption(allowIDVSkip), [allowIDVSkip]);
 
     const bindDocumentData = (item: string) => {
-        setFieldValue('document_type', getSelectedDocumentConfigData(item), true);
+        setFieldValue('document_type', item, true);
+        setSelectedDocument(getSelectedDocumentConfigData(item));
         if (item === IDV_NOT_APPLICABLE_OPTION.value) {
             setFieldValue('document_number', '', true);
             setFieldValue('document_additional', '', true);
@@ -65,10 +65,6 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
             bindDocumentData(item);
         }
     };
-
-    const getSelectedDocumentConfigData = useCallback((item: string) => {
-        return DOCUMENT_LIST.find(doc => doc.id === item);
-    }, []);
 
     useEffect(() => {
         if (Object.keys(documents_supported as Exclude<typeof documents_supported, undefined>)?.length) {
@@ -86,19 +82,18 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
 
     return (
         <Fragment>
-            <section>
+            <section className='flex flex-col gap-75'>
                 <Field name='document_type'>
-                    {({ field }: FieldProps) => (
+                    {({ field, meta }: FieldProps) => (
                         <ResponsiveWrapper>
                             {{
                                 desktop: (
                                     <WalletDropdown
                                         {...field}
-                                        errorMessage='Document type is required'
+                                        errorMessage={meta.touched && meta.error}
                                         isRequired
                                         label='Choose the document type'
                                         list={documentList}
-                                        onChange={handleChange}
                                         onSelect={handleSelect}
                                         variant='comboBox'
                                     />
@@ -106,11 +101,10 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
                                 mobile: (
                                     <WalletDropdown
                                         {...field}
-                                        errorMessage='Document type is required'
+                                        errorMessage={meta.touched && meta.error}
                                         isRequired
                                         label='Choose the document type'
                                         list={documentList}
-                                        onChange={handleChange}
                                         onSelect={handleSelect}
                                         variant='prompt'
                                     />
@@ -119,30 +113,28 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
                         </ResponsiveWrapper>
                     )}
                 </Field>
-                {values?.document_type?.id !== IDV_NOT_APPLICABLE_OPTION.value && (
+                {values?.document_type !== IDV_NOT_APPLICABLE_OPTION.value && (
                     <Field name='document_number'>
                         {({ field, meta }: FieldProps) => (
                             <WalletTextField
                                 {...field}
-                                disabled={!values.document_type.id}
-                                errorMessage={errors.document_number}
-                                isInvalid={Boolean(values.document_type.id) && meta.touched && Boolean(meta.error)}
+                                disabled={!values.document_type}
+                                errorMessage={meta.error}
+                                isInvalid={meta.touched && Boolean(meta.error)}
                                 label='Enter your document number'
-                                onChange={handleChange}
                             />
                         )}
                     </Field>
                 )}
-                {values.document_type.additional?.display_name && (
+                {selectedDocument?.additional?.display_name && (
                     <Field name='document_additional'>
                         {({ field, meta }: FieldProps) => (
                             <WalletTextField
                                 {...field}
-                                disabled={!values.document_type.additional}
-                                errorMessage={errors.document_additional}
-                                isInvalid={Boolean(meta.value) && meta.touched && Boolean(meta.error)}
+                                disabled={!selectedDocument?.additional}
+                                errorMessage={meta.error}
+                                isInvalid={meta.touched && Boolean(meta.error)}
                                 label='Enter additional document number'
-                                onChange={handleChange}
                             />
                         )}
                     </Field>
@@ -150,7 +142,7 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
             </section>
             {/* [TODO]:Mock - Remove Display for form values */}
             <section>
-                <p>Document Type: {values.document_type.text}</p>
+                <p>Document Type: {values?.document_type}</p>
                 <p>Document Number: {values.document_number}</p>
                 <p>Additional Document number: {values.document_additional ?? '--'} </p>
             </section>

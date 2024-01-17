@@ -109,16 +109,7 @@ export const SELECTED_COUNTRY: ResidenceList[0] = {
 };
 
 export const INITIAL_VALUES = {
-    document_type: {
-        id: '',
-        text: '',
-        value: '',
-        example_format: '',
-    },
+    document_type: '',
     document_number: '',
     document_additional: '',
-    date_of_birth: '1990-01-01',
-    first_name: 'QA script',
-    last_name: 'demoGDOta',
-    confirmation_checkbox: false,
 };

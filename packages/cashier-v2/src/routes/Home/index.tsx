@@ -4,11 +4,11 @@ const Home: React.FC<{ path: string }> = ({ path }) => {
     return (
         <div
             style={{
-                display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center',
+                display: 'flex',
                 fontSize: '3rem',
                 height: '100%',
+                justifyContent: 'center',
             }}
         >
             Welcome to Cashier Version 2 from {path} Page 💰

@@ -11,7 +11,7 @@ type TTextAreaProps = HtmlHTMLAttributes<HTMLTextAreaElement> & {
     shouldShowCounter?: boolean;
     value?: string;
 };
-const TextArea = ({ hint, isInvalid = false, label, onChange, shouldShowCounter = true, value }: TTextAreaProps) => {
+const TextArea = ({ hint, isInvalid = false, label, onChange, shouldShowCounter = false, value }: TTextAreaProps) => {
     const [currentValue, setCurrentValue] = useState(value);
 
     return (

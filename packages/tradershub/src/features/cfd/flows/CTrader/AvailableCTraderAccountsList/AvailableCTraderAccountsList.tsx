@@ -1,5 +1,6 @@
 import React from 'react';
 import { useActiveTradingAccount, useCreateOtherCFDAccount } from '@deriv/api';
+import { PartnersProductDerivCtraderBrandLightLogoHorizontalIcon } from '@deriv/quill-icons';
 import {
     TradingAccountCard,
     TradingAccountCardContent,
@@ -46,7 +47,10 @@ const AvailableCTraderAccountsList = () => {
 
     return (
         <div>
-            <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
+            <TradingAccountCard
+                leading={() => <PartnersProductDerivCtraderBrandLightLogoHorizontalIcon height='60px' width='60px' />}
+                trailing={TrailingButton}
+            >
                 <TradingAccountCardContent title={PlatformDetails.ctrader.title}>
                     This account offers CFDs on a feature-rich trading platform.
                 </TradingAccountCardContent>

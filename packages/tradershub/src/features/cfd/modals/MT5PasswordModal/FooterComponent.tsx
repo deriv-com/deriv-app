@@ -11,13 +11,14 @@ import { Button } from '@deriv/quill-design';
 import { ButtonGroup, Modal, SentEmailContent } from '../../../../components';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
+import { TTM5FilterLandingCompany } from '../../constants';
 import { useSubmitHandler } from './useSubmitHandler';
 
 type TAddAccountButtonsGroupProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
     password: string;
     platform: TPlatforms.All;
-    selectedJurisdiction?: string;
+    selectedJurisdiction: TTM5FilterLandingCompany;
 };
 
 const AddAccountButtonsGroup = ({
@@ -96,7 +97,7 @@ const TransferFundsButtonsGroup = () => {
 type TCreateAccountButtonProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
     password: string;
-    selectedJurisdiction?: string;
+    selectedJurisdiction: TTM5FilterLandingCompany;
 };
 
 const CreateAccountButton = ({ marketType, password, selectedJurisdiction }: TCreateAccountButtonProps) => {
@@ -123,7 +124,7 @@ type TFooterComponentProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
     password: string;
     platform: TPlatforms.All;
-    selectedJurisdiction?: string;
+    selectedJurisdiction: TTM5FilterLandingCompany;
 };
 
 const FooterComponent = ({ marketType, password, platform, selectedJurisdiction }: TFooterComponentProps) => {

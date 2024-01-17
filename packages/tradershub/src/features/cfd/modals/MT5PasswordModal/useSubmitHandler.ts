@@ -13,7 +13,7 @@ import { Jurisdiction } from '../../screens/CFDCompareAccounts/constants';
 type TSubmitHandlerProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
     password: string;
-    selectedJurisdiction?: string;
+    selectedJurisdiction: string;
 };
 
 export const useSubmitHandler = async ({ marketType, password, selectedJurisdiction }: TSubmitHandlerProps) => {

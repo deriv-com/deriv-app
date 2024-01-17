@@ -4,8 +4,16 @@ import { useActiveTradingAccount, useCreateMT5Account, useMT5AccountsList } from
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
 import { ButtonGroup } from '../../../../components';
+import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { Category, companyNamesAndUrls, MarketType, MarketTypeDetails, PlatformDetails } from '../../constants';
+import {
+    Category,
+    companyNamesAndUrls,
+    MarketType,
+    MarketTypeDetails,
+    PlatformDetails,
+    TTM5FilterLandingCompany,
+} from '../../constants';
 import { CFDSuccess } from '../../screens';
 
 const SuccessButton = () => {
@@ -42,10 +50,12 @@ const SuccessButton = () => {
 type TSuccessComponentProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
     platform: TPlatforms.All;
-    selectedJurisdiction?: string;
+    selectedJurisdiction: TTM5FilterLandingCompany;
 };
 
 const SuccessComponent = ({ marketType, platform, selectedJurisdiction }: TSuccessComponentProps) => {
+    const { isEU } = useRegulationFlags();
+
     const { isSuccess } = useCreateMT5Account();
     const { data: activeTrading } = useActiveTradingAccount();
     const isDemo = activeTrading?.is_virtual;
@@ -54,7 +64,7 @@ const SuccessComponent = ({ marketType, platform, selectedJurisdiction }: TSucce
     const marketTypeTitle =
         marketType === MarketType.ALL && Object.keys(PlatformDetails).includes(platform)
             ? PlatformDetails[platform].title
-            : MarketTypeDetails[marketType].title;
+            : MarketTypeDetails(isEU)[marketType].title;
 
     const landingCompanyName = `(${companyNamesAndUrls?.[selectedJurisdiction]?.shortcode})`;
 

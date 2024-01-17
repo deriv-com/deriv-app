@@ -24,7 +24,7 @@ const MT5PasswordModal = ({ marketType, platform }: TMT5PasswordModalProps) => {
 
     const hasMT5Account = mt5Accounts?.find(account => account.login);
     const isDemo = activeTrading?.is_virtual;
-    const selectedJurisdiction = getCFDState('selectedJurisdiction');
+    const selectedJurisdiction = getCFDState('selectedJurisdiction') ?? '';
 
     const ModalHeaderTitle = () => {
         if (isSuccess) {

@@ -26,7 +26,7 @@ type TAppContent = {
 
 type TPlatform = 'ctrader' | 'linux' | 'macos' | 'web' | 'windows';
 
-type TTM5FilterLandingCompany = Exclude<TMT5LandingCompanyName, 'malta' | 'seychelles' | undefined>;
+export type TTM5FilterLandingCompany = Exclude<TMT5LandingCompanyName, 'malta' | 'seychelles' | undefined>;
 type TLandingCompanyDetails = { name: string; shortcode: string; tncUrl: string };
 
 type TMarketTypeDetails = {

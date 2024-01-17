@@ -4,7 +4,7 @@ import { Provider } from '@deriv/library';
 import { SentEmailContent } from '../../../../components';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { PlatformDetails } from '../../constants';
+import { PlatformDetails, TTM5FilterLandingCompany } from '../../constants';
 import { CreatePassword, EnterPassword } from '../../screens';
 import { useSubmitHandler } from './useSubmitHandler';
 
@@ -12,7 +12,7 @@ type TPasswordComponentProps = {
     marketType: TMarketTypes.SortedMT5Accounts;
     password: string;
     platform: TPlatforms.All;
-    selectedJurisdiction?: string;
+    selectedJurisdiction: TTM5FilterLandingCompany;
     setPassword: (password: string) => void;
 };
 

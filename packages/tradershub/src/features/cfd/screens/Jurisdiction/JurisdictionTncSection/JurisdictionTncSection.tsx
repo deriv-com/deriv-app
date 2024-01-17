@@ -1,9 +1,9 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Provider } from '@deriv/library';
 import { Link, Text, useBreakpoint } from '@deriv/quill-design';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
-import { companyNamesAndUrls } from '../../../constants';
+import { companyNamesAndUrls, Jurisdiction, MarketType } from '../../../constants';
 import { JurisdictionFootNoteTitle } from '../JurisdictionFootNoteTitle';
 
 type TProps = {
@@ -22,19 +22,19 @@ type TProps = {
  * @returns
  */
 
-const JurisdictionTncSection: FC<TProps> = ({ isCheckBoxChecked, selectedJurisdiction, setIsCheckBoxChecked }) => {
+const JurisdictionTncSection = ({ isCheckBoxChecked, selectedJurisdiction, setIsCheckBoxChecked }: TProps) => {
     const { isMobile } = useBreakpoint();
     const { getCFDState } = Provider.useCFDContext();
-    const marketType = getCFDState('marketType') || 'all';
+    const marketType = getCFDState('marketType') || MarketType.ALL;
     const selectedCompany = companyNamesAndUrls[selectedJurisdiction as keyof typeof companyNamesAndUrls];
 
     return (
-        <div className='sticky flex flex-col justify-center mt-1500 gap-600 lg:h-2500 bottom-50 bg-system-light-primary-background pt-[15px] px-1000 pb-500 w-screen'>
+        <div className='text-center space-y-600 mt-1500 sticky bottom-50 bg-system-light-primary-background px-1000 pt-[15px] pb-500 w-screen sm:w-auto sm:bg-inherit sm:static sm:p-50 lg:h-2500'>
             {selectedJurisdiction && (
                 <JurisdictionFootNoteTitle marketType={marketType} selectedJurisdiction={selectedJurisdiction} />
             )}
-            {selectedJurisdiction && selectedJurisdiction !== 'svg' && (
-                <div className='flex items-center justify-center gap-400'>
+            {selectedJurisdiction && selectedJurisdiction !== Jurisdiction.SVG && (
+                <div className='flex justify-center space-x-400'>
                     <input
                         checked={isCheckBoxChecked}
                         className='cursor-pointer'
@@ -48,7 +48,7 @@ const JurisdictionTncSection: FC<TProps> = ({ isCheckBoxChecked, selectedJurisdi
                         <Text size={isMobile ? 'sm' : 'md'}>
                             I confirm and accept {selectedCompany.name}&lsquo;s{' '}
                             <Link
-                                className='cursor-pointer text-solid-coral-700'
+                                className='cursor-pointer text-solid-coral-700 text-75 pl-50 sm:text-100'
                                 href={getStaticUrl(selectedCompany.tncUrl)}
                                 target='_blank'
                             >

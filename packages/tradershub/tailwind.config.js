@@ -35,7 +35,7 @@ module.exports = {
                         darker: '#661b20',
                         light: '#ff444f',
                     },
-                    voilet: {
+                    violet: {
                         dark: '#4a3871',
                     },
                     yellow: {

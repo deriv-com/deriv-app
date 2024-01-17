@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import MyProfileStatsLimitModal from './MyProfileStatsLimitModal';
@@ -23,7 +23,7 @@ const MyProfileStatsLimitNotification = ({ buyLimit, currency, sellLimit }: TMyP
                     </span>{' '}
                     (buy) and{' '}
                     <span className='p2p-v2-my-profile-stats-limit-notification--bold'>
-                        {buyLimit} {sellLimit}{' '}
+                        {sellLimit} {currency}{' '}
                     </span>{' '}
                     (sell)?
                 </Text>

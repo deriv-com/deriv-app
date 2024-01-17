@@ -27,8 +27,7 @@ const customStyles: TCustomStyles = {
 
 const MyProfileStatsLimitModal = ({ currency, isModalOpen, onRequestClose }: TMyProfileStatsLimitModalProps) => {
     const { data, error, isLoading, isSuccess, mutate } = useAdvertiserUpdate();
-    const { upgradable_daily_limits } = data ?? {};
-    const { max_daily_buy, max_daily_sell } = upgradable_daily_limits ?? {};
+    const { daily_buy_limit, daily_sell_limit } = data ?? {};
     useEffect(() => {
         Modal.setAppElement('#v2_modal_root');
     }, []);
@@ -45,7 +44,7 @@ const MyProfileStatsLimitModal = ({ currency, isModalOpen, onRequestClose }: TMy
                         Success!
                     </Text>
                     <Text as='p' className='p2p-v2-my-profile-stats-limit-modal__text' color='prominent' size='sm'>
-                        {`Your daily limits have been increased to ${max_daily_buy} ${currency} (buy) and ${max_daily_sell} ${currency} (sell).`}
+                        {`Your daily limits have been increased to ${daily_buy_limit} ${currency} (buy) and ${daily_sell_limit} ${currency} (sell).`}
                     </Text>
                     <div className='p2p-v2-my-profile-stats-limit-modal__footer'>
                         <Button onClick={onRequestClose} size='lg' textSize='sm'>

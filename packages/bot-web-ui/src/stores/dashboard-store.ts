@@ -1,20 +1,17 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { setColors } from '@deriv/bot-skeleton';
 import { TStores } from '@deriv/stores/types';
+import { clearInjectionDiv } from 'Constants/load-modal';
+import * as strategy_description from '../constants/quick-strategies';
+import { TDescriptionItem } from '../pages/bot-builder/quick-strategy/types';
+import { faq_content, guide_content, quick_strategy_content, user_guide_content } from '../pages/tutorials/constants';
+import { setTourSettings, tour_type, TTourType } from '../pages/tutorials/dbot-tours/utils';
 import {
-    faq_content,
-    guide_content,
-    quick_strategy_content,
     TFaqContent,
     TGuideContent,
     TQuickStrategyContent,
     TUserGuideContent,
-    user_guide_content,
-} from 'Components/dashboard/tutorial-tab/config';
-import * as strategy_description from 'Components/quick-strategy/descriptions';
-import { TDescriptionItem } from 'Components/quick-strategy/types';
-import { clearInjectionDiv } from 'Constants/load-modal';
-import { setTourSettings, tour_type, TTourType } from '../components/dashboard/dbot-tours/utils';
+} from '../pages/tutorials/tutorials.types';
 import RootStore from './root-store';
 
 export interface IDashboardStore {

@@ -223,14 +223,16 @@
         width: 100%;
 
         &__message {
+            position: relative;
             background: var(--text-prominent);
             color: var(--general-main-1);
-            padding: 1rem 1.6rem;
+            padding: 1.6rem 3.2rem 1.6rem 1.6rem;
+            @include mobile {
+                padding: 0.8rem 3.2rem 0.8rem 0.8rem;
+            }
         }
 
         &__message-content {
-            display: flex;
-
             @include mobile {
                 align-items: center;
             }
@@ -243,13 +245,22 @@
         right: 0;
         bottom: 10.5rem;
     }
+    &__action-wrapper {
+        margin-left: 0.8rem;
+        position: absolute;
+        right: 0.8rem;
+        top: 1.6rem;
+        @include mobile {
+            top: 1rem;
+        }
 
-    .notification-close {
-        cursor: pointer;
-        transform: translateZ(0);
-        -webkit-filter: invert(1);
-        filter: invert(1);
-        margin-left: 1rem;
-        margin-top: 0.1rem;
+        &:hover {
+            cursor: pointer;
+        }
+        .dc-icon {
+            transform: translateZ(0);
+            -webkit-filter: invert(1);
+            filter: invert(1);
+        }
     }
 }

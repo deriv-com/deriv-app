@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { Button, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import BotStopNotification from 'Components/bot-stop-notification';
 import ContractResultOverlay from 'Components/contract-result-overlay';
-import BotStopNotification from 'Components/dashboard/bot-stop-notification';
 import { contract_stages } from 'Constants/contract-stage';
 import { useDBotStore } from 'Stores/useDBotStore';
 

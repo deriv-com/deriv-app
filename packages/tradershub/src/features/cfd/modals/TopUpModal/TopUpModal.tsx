@@ -20,6 +20,10 @@ const TopUpModal = ({ account, platform }: TTradeModalProps) => {
     const title = platform === CFDPlatforms.MT5 ? `${platformTitle} ${marketTypeTitle}` : platformTitle;
 
     const HeadingTag = isDesktop ? Heading.H3 : Heading.H2;
+    const balance =
+        platform === CFDPlatforms.CTRADER
+            ? (account as THooks.CtraderAccountsList)?.formatted_balance
+            : account?.display_balance;
 
     return (
         <Modal className='max-w-[330px] md:max-w-[440px]'>
@@ -30,7 +34,7 @@ const TopUpModal = ({ account, platform }: TTradeModalProps) => {
                     <Text bold size='sm'>
                         Balance
                     </Text>
-                    <HeadingTag className='text-status-light-success'>{account?.display_balance}</HeadingTag>
+                    <HeadingTag className='text-status-light-success'>{balance}</HeadingTag>
                 </div>
                 <Text className='text-center' size='sm'>
                     You can top up your demo account with an additional 10,000.00 USD if you balance is 1,000.00 USD or

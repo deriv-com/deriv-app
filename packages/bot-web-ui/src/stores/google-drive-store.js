@@ -51,9 +51,13 @@ export default class GoogleDriveStore {
             client_id: this.client_id,
             scope: this.scope,
             callback: response => {
-                this.access_token = response.access_token;
-                this.updateSigninStatus(true);
-                localStorage.setItem('google_access_token', response.access_token);
+                // eslint-disable-next-line no-console
+                console.log('test google_access_token response', response);
+                if (response?.access_token && !response?.error) {
+                    this.access_token = response.access_token;
+                    this.updateSigninStatus(true);
+                    localStorage.setItem('google_access_token', response.access_token);
+                }
             },
         });
     };

@@ -17,7 +17,7 @@ const JurisdictionCardBack = ({ setIsFlipped, verificationDocs }: TJurisdictionC
     const verificationContents = jurisdictionVerificationContents();
     if (!verificationDocs) return null;
     return (
-        <div className='absolute flex flex-col h-full transform backface-hidden [transform:rotateY(180deg)] gap-800 pt-[15px] px-800 pb-12000'>
+        <div className='absolute flex flex-col h-full backface-hidden [transform:rotateY(180deg)] gap-800 pt-[15px] px-800 pb-12000'>
             <BackArrowIcon
                 className='cursor-pointer'
                 onClick={e => {

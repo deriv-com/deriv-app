@@ -5,9 +5,13 @@ import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
 import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
-import { Jurisdiction, MarketType } from '../../../constants';
+import { MarketType } from '../../../constants';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
-import { TJurisdictionCardItems, TJurisdictionCardSection } from '../jurisdiction-contents/props.types';
+import {
+    TClickableDescription,
+    TJurisdictionCardItems,
+    TJurisdictionCardSection,
+} from '../jurisdiction-contents/props.types';
 import {
     JurisdictionCardClass,
     JurisdictionCardClassProps,
@@ -51,17 +55,12 @@ const verificationDocumentsMapper: TVerificationDocumentsMapper = {
     },
 };
 
-const JurisdictionCard = ({
-    isAdded = false,
-    isSelected = false,
-    jurisdiction = Jurisdiction.SVG,
-    onSelect,
-}: TJurisdictionCardProps) => {
+const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, onSelect }: TJurisdictionCardProps) => {
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
     const { getCFDState } = Provider.useCFDContext();
 
-    const descriptionClickHandler = (tag?: string) => (event: MouseEvent) => {
+    const descriptionClickHandler = (tag?: TClickableDescription['tag']) => (event: MouseEvent) => {
         event.stopPropagation();
         if (tag === 'dynamicLeverage') {
             toggleDynamicLeverage();

@@ -1,28 +1,25 @@
-import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
 import classNames from 'classnames';
-
+import React from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import {
-    useAccountTransferVisible,
-    useFeatureFlags,
-    useIsP2PEnabled,
     useOnrampVisible,
+    useAccountTransferVisible,
+    useIsP2PEnabled,
     usePaymentAgentTransferVisible,
+    useFeatureFlags,
 } from '@deriv/hooks';
-import { getStaticUrl, PlatformContext, routes } from '@deriv/shared';
+import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-
-import LiveChat from 'App/Components/Elements/LiveChat';
-// import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import NetworkStatus from 'App/Components/Layout/Footer';
-import getRoutesConfig from 'App/Constants/routes-config';
 import ServerTime from 'App/Containers/server-time.jsx';
-
-import { MenuTitle, MobileLanguageMenu } from './Components/ToggleMenu';
-import MenuLink from './menu-link';
+import getRoutesConfig from 'App/Constants/routes-config';
+import LiveChat from 'App/Components/Elements/LiveChat';
+import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
+import MenuLink from './menu-link';
+import { MobileLanguageMenu, MenuTitle } from './Components/ToggleMenu';
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
@@ -40,7 +37,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_logged_in,
         is_logging_in,
         is_virtual,
-        // loginid,
+        loginid,
         logout: logoutClient,
         should_allow_authentication,
         should_allow_poinc_authentication,
@@ -58,7 +55,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { data: is_p2p_enabled } = useIsP2PEnabled();
 
-    // const liveChat = useLiveChat(false, loginid);
+    const liveChat = useLiveChat(false, loginid);
     const [is_open, setIsOpen] = React.useState(false);
     const [transitionExit, setTransitionExit] = React.useState(false);
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
@@ -379,7 +376,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         </MobileDrawer.Item>
                                     </React.Fragment>
                                 )}
-                                {/* {liveChat.isReady && (
+                                {liveChat.isReady && (
                                     <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
                                         <Icon icon='IcWhatsApp' className='drawer-icon' />
                                         <a
@@ -392,7 +389,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             {localize('WhatsApp')}
                                         </a>
                                     </MobileDrawer.Item>
-                                )} */}
+                                )}
                                 <MobileDrawer.Item className='header__menu-mobile-livechat'>
                                     <LiveChat />
                                 </MobileDrawer.Item>

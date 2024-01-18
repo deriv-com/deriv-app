@@ -54,7 +54,9 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                     <WalletText color='general' size='xs' weight='bold'>
                         {displayAccountName}
                     </WalletText>
-                    {!isDemo && <WalletListCardBadge isDemo={isDemo} label={mt5LandingCompanyName} />}
+                    {!isDemo && (
+                        <WalletListCardBadge isDemo={isDemo} label={mt5LandingCompanyName ?? landingCompanyName} />
+                    )}
                 </div>
             </div>
         </div>

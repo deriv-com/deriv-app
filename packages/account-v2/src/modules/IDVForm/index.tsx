@@ -3,9 +3,9 @@ import { Field, FieldProps, FormikProps, useFormikContext } from 'formik';
 import { useResidenceList } from '@deriv/api';
 import { WalletDropdown } from '../../components/base/WalletDropdown';
 import { WalletTextField } from '../../components/base/WalletTextField';
-import { ResponsiveWrapper } from '../../components/responsive-wrapper';
 import { getIDVNotApplicableOption } from '../../utils/default-options';
 import { getSelectedDocumentConfigData, TDocument } from './utils';
+import { useBreakpoint } from '@deriv/quill-design';
 
 type TIDVFormProps = {
     allowIDVSkip?: boolean;
@@ -29,17 +29,21 @@ type TDropDownList = {
 export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
     const { setFieldValue, values }: FormikProps<TIDVFormValues> = useFormikContext();
     const [documentList, setDocumentList] = useState<TDropDownList[]>([]);
+
+    const [selectedDocument, setSelectedDocument] = useState<TDocument | undefined>();
+
+    const { isMobile } = useBreakpoint();
+
+    const { documents_supported } = selectedCountry;
+
+    const IDV_NOT_APPLICABLE_OPTION = useMemo(() => getIDVNotApplicableOption(allowIDVSkip), [allowIDVSkip]);
+
     const defaultDocument = {
         example_format: '',
         id: '',
         text: '',
         value: '',
     };
-    const [selectedDocument, setSelectedDocument] = useState<TDocument | undefined>();
-
-    const { documents_supported } = selectedCountry;
-
-    const IDV_NOT_APPLICABLE_OPTION = useMemo(() => getIDVNotApplicableOption(allowIDVSkip), [allowIDVSkip]);
 
     const bindDocumentData = (item: string) => {
         setFieldValue('document_type', item, true);
@@ -75,32 +79,15 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
             <section className='flex flex-col gap-75'>
                 <Field name='document_type'>
                     {({ field, meta }: FieldProps) => (
-                        <ResponsiveWrapper>
-                            {{
-                                desktop: (
-                                    <WalletDropdown
-                                        {...field}
-                                        errorMessage={meta.touched && meta.error}
-                                        isRequired
-                                        label='Choose the document type'
-                                        list={documentList}
-                                        onSelect={handleSelect}
-                                        variant='comboBox'
-                                    />
-                                ),
-                                mobile: (
-                                    <WalletDropdown
-                                        {...field}
-                                        errorMessage={meta.touched && meta.error}
-                                        isRequired
-                                        label='Choose the document type'
-                                        list={documentList}
-                                        onSelect={handleSelect}
-                                        variant='prompt'
-                                    />
-                                ),
-                            }}
-                        </ResponsiveWrapper>
+                        <WalletDropdown
+                            {...field}
+                            errorMessage={meta.touched && meta.error}
+                            isRequired
+                            label='Choose the document type'
+                            list={documentList}
+                            onSelect={handleSelect}
+                            variant={isMobile ? 'prompt' : 'comboBox'}
+                        />
                     )}
                 </Field>
                 {values?.document_type !== IDV_NOT_APPLICABLE_OPTION.value && (

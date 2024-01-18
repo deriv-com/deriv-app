@@ -1,5 +1,5 @@
 import React, { forwardRef, Ref, useEffect, useState } from 'react';
-import { Field, FieldProps } from 'formik';
+import { Field, FieldProps, useFormikContext } from 'formik';
 import * as Yup from 'yup';
 import WalletTextField, { WalletTextFieldProps } from '../Base/WalletTextField/WalletTextField';
 import { useFlow } from '../FlowProvider';
@@ -22,6 +22,7 @@ const FlowTextField = forwardRef(
     ) => {
         const [hasTouched, setHasTouched] = useState(false);
         const { setFormValues } = useFlow();
+        const { setFieldTouched } = useFormikContext();
 
         const validateField = (value: unknown) => {
             try {
@@ -34,9 +35,14 @@ const FlowTextField = forwardRef(
         };
 
         useEffect(() => {
-            if (defaultValue) {
-                setFormValues(name, defaultValue);
-            }
+            const setFormValuesAndTouch = async () => {
+                if (defaultValue) {
+                    await setFormValues(name, defaultValue, true);
+                    setFieldTouched(name, true, true);
+                }
+            };
+
+            setFormValuesAndTouch();
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, []);
 

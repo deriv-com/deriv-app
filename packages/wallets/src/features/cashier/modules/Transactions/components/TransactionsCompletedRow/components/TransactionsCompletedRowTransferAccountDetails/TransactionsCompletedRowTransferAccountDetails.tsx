@@ -1,7 +1,7 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
 import { THooks, TWalletLandingCompanyName } from '../../../../../../../../types';
-import { getAccountName, getLandingCompanyNameOfMT5Account } from '../../../../../../helpers';
+import { getAccountName } from '../../../../../../helpers';
 import { TransactionsCompletedRowAccountDetails } from '../TransactionsCompletedRowAccountDetails';
 
 type TProps = {
@@ -27,8 +27,7 @@ const TransactionsCompletedRowTransferAccountDetails: React.FC<TProps> = ({ acco
     if (transferAccount) {
         const derivAccountType = transferAccount === wallet ? 'wallet' : 'standard';
         const accountType = transferAccount?.platform !== 'deriv' ? transferAccount.platform : derivAccountType;
-        const mt5LandingCompanyName =
-            transferAccount === mt5Account ? getLandingCompanyNameOfMT5Account(mt5Account.group) : undefined;
+        const mt5LandingCompanyName = transferAccount === mt5Account ? mt5Account.landing_company_name : undefined;
         const displayAccountName = getAccountName({
             accountCategory: transferAccount === wallet ? 'wallet' : 'trading',
             //@ts-expect-error this needs backend typing

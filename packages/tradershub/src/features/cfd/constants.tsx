@@ -52,14 +52,14 @@ type TPlatformUrls = {
 export const Category = {
     DEMO: 'demo',
     REAL: 'real',
-};
+} as const;
 
 export const CFDPlatforms = {
     CFDS: 'CFDs',
     CTRADER: 'ctrader',
     DXTRADE: 'dxtrade',
     MT5: 'mt5',
-};
+} as const;
 
 export const MarketType = {
     ALL: 'all',

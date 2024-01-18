@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
     TAdvertiserPaymentMethods,
     TPaymentMethodFormConfig,
-    TPaymentMethodFotmValues,
+    TPaymentMethodFormValues,
     TSelectedPaymentMethod,
 } from 'types';
 import { p2p } from '@deriv/api';
@@ -76,7 +76,7 @@ const PaymentMethods = () => {
             });
         }
     };
-    const handleFormSubmit = ({ paymentMethodId, type, values }: TPaymentMethodFotmValues) => {
+    const handleFormSubmit = ({ paymentMethodId, type, values }: TPaymentMethodFormValues) => {
         if (type === 'ADD') {
             create(values);
         } else if (type === 'EDIT') {

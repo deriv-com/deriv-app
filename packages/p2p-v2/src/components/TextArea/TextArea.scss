@@ -1,4 +1,5 @@
 .p2p-v2-textarea {
+    position: relative;
     text-align: right;
     width: 100%;
 
@@ -8,12 +9,53 @@
         height: 9.6rem;
         border-radius: 0.4rem;
         border: 1px solid #d6dadb;
-        outline-color: #85acb0;
+        outline: none;
         padding: 1rem 1.6rem;
         font-size: 1.4rem;
+        font-family: 'IBM Plex Sans', sans-serif;
+
+        &:focus {
+            border: 1px solid #85acb0;
+        }
 
         &::placeholder {
             color: #999999;
+        }
+        &:focus + label {
+            color: #85acb0;
+        }
+        &:focus + label,
+        &:not(:placeholder-shown) + label {
+            transform: translate(0, -1.4rem) scale(0.75);
+            font-family: 'IBM Plex Sans', sans-serif;
+            font-size: 1.4rem;
+            background-color: #ffffff;
+        }
+    }
+
+    & label {
+        color: #999999;
+        display: block;
+        position: absolute;
+        left: 1.6rem;
+        top: 1rem;
+        transition: all 0.2s ease;
+        transform-origin: left top;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: 1.4rem;
+        font-family: 'IBM Plex Sans', sans-serif;
+    }
+
+    &--error {
+        & textarea,
+        & textarea:focus {
+            border: 1px solid #ec3f3f;
+        }
+        & textarea,
+        & textarea:focus + label,
+        & label {
+            color: #ec3f3f;
         }
     }
 
@@ -25,10 +67,6 @@
 
         & span {
             margin-left: auto;
-        }
-
-        & label {
-            margin-right: auto;
         }
     }
 }

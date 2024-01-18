@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TPaymentMethodFormConfig, TPaymentMethodFotmValues, TSelectedPaymentMethod } from 'types';
+import { TPaymentMethodFormConfig, TPaymentMethodFormValues, TSelectedPaymentMethod } from 'types';
 import { p2p } from '@deriv/api';
 import { TextArea } from '../../../../../components';
 import { ClickableText } from '../../../../../components/ClickableText';
@@ -14,7 +14,7 @@ import './PaymentMethodForm.scss';
 
 type TPaymentMethodFormProps = {
     onClear?: () => void;
-    onFormSubmit: (data: TPaymentMethodFotmValues) => void;
+    onFormSubmit: (data: TPaymentMethodFormValues) => void;
     onGoBack?: () => void;
     onSelectPaymentMethod?: (paymentMethod: TSelectedPaymentMethod) => void;
     paymentMethodFormConfig: TPaymentMethodFormConfig;
@@ -128,8 +128,17 @@ const PaymentMethodForm = ({
                                     control={control}
                                     defaultValue={paymentMethodField?.value || ''}
                                     name={field}
-                                    render={({ field: { onChange, value } }) => {
-                                        return <TextArea onChange={onChange} value={value} />;
+                                    render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => {
+                                        return (
+                                            <TextArea
+                                                hint={error?.message}
+                                                isInvalid={!!error?.message}
+                                                label={paymentMethodField?.display_name}
+                                                onBlur={onBlur}
+                                                onChange={onChange}
+                                                value={value}
+                                            />
+                                        );
                                     }}
                                     rules={{
                                         pattern: {

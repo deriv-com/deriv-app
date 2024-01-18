@@ -1,31 +1,41 @@
-import React, { useState } from 'react';
+import React, { HtmlHTMLAttributes, useState } from 'react';
+import clsx from 'clsx';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import './TextArea.scss';
 
-type TTextAreaProps = {
+type TTextAreaProps = HtmlHTMLAttributes<HTMLTextAreaElement> & {
+    hint?: string;
+    isInvalid?: boolean;
     label?: string;
     onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
-    placeholder: string;
     shouldShowCounter?: boolean;
     value?: string;
 };
-const TextArea = ({ label, onChange, placeholder, shouldShowCounter = true, value }: TTextAreaProps) => {
+const TextArea = ({ hint, isInvalid = false, label, onChange, shouldShowCounter = false, value }: TTextAreaProps) => {
     const [currentValue, setCurrentValue] = useState(value);
 
     return (
-        <div className='p2p-v2-textarea'>
+        <div
+            className={clsx('p2p-v2-textarea', {
+                'p2p-v2-textarea--error': isInvalid,
+            })}
+        >
             <textarea
                 onChange={event => {
                     setCurrentValue(event.target.value);
                     onChange?.(event);
                 }}
-                placeholder={placeholder}
-            >
-                {value}
-            </textarea>
-
+                placeholder=''
+                value={value}
+            />
+            {label && <label>{label}</label>}
             <div className='p2p-v2-textarea__footer'>
-                {label && <label>This information will be visible to everyone.</label>}
-                {shouldShowCounter && <span>{currentValue?.length || 0}/300</span>}
+                {hint && (
+                    <Text as='p' color={isInvalid ? 'error' : 'less-prominent'} size='xs'>
+                        {hint}
+                    </Text>
+                )}
+                {shouldShowCounter && <Text size='xs'>{currentValue?.length || 0}/300</Text>}
             </div>
         </div>
     );

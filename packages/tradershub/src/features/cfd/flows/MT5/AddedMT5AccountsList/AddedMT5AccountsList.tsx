@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveTradingAccount, useIsEuRegion, useJurisdictionStatus } from '@deriv/api';
+import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
+import { useUIContext } from '../../../../../components';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
+import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
 import { THooks } from '../../../../../types';
 import { CFDPlatforms, MarketType, MarketTypeDetails } from '../../../constants';
 import { TradeModal } from '../../../modals/TradeModal';
@@ -11,7 +13,11 @@ import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
     const { data: activeAccount } = useActiveTradingAccount();
-    const { isEU } = useIsEuRegion();
+
+    const { getUIState } = useUIContext();
+    const activeRegulation = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegulation);
+
     const { show } = Provider.useModal();
     const history = useHistory();
     const { getVerificationStatus } = useJurisdictionStatus();

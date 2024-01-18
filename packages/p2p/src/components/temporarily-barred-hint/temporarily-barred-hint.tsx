@@ -1,8 +1,9 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { HintBox, Text } from '@deriv/components';
+import { InlineMessage } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { useStores } from 'Stores';
-import { Localize } from '../i18next';
+import { localize } from 'Components/i18next';
+import { getInlineTextSize } from 'Utils/responsive';
 
 const TemporarilyBarredHint = () => {
     const { general_store } = useStores();
@@ -10,17 +11,12 @@ const TemporarilyBarredHint = () => {
     if (general_store.is_barred) {
         return (
             <div className='temporarily-barred-hint' data-testid='dt_temporarily_barred_hint'>
-                <HintBox
-                    icon='IcAlertWarning'
-                    message={
-                        <Text size='xxxs' color='prominent' line_height='xs'>
-                            <Localize
-                                i18n_default_text="You've been temporarily barred from using our services due to multiple cancellation attempts. Try again after {{date_time}} GMT."
-                                values={{ date_time: general_store.blocked_until_date_time }}
-                            />
-                        </Text>
-                    }
-                    is_warn
+                <InlineMessage
+                    message={localize(
+                        "You've been temporarily barred from using our services due to multiple cancellation attempts. Try again after {{date_time}} GMT.",
+                        { date_time: general_store.blocked_until_date_time }
+                    )}
+                    size={getInlineTextSize('sm', 'xs')}
                 />
             </div>
         );

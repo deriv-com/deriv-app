@@ -13,6 +13,7 @@ export * from './WalletButton';
 export * from './WalletButtonGroup';
 export * from './WalletClipboard';
 export * from './WalletDropdown';
+export * from './WalletLink';
 export * from './WalletPasswordFieldLazy';
 export * from './WalletText';
 export * from './WalletTextField';

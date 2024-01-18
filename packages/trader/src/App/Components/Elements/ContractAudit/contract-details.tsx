@@ -244,7 +244,7 @@ const ContractDetails = ({
                             </div>
                         }
                         label={localize('Selected tick')}
-                        value={barrier}
+                        value={barrier || '----'}
                     />
                 )}
                 <ContractAuditItem
@@ -260,6 +260,10 @@ const ContractDetails = ({
                         label={localize('Entry spot')}
                         value={entry_spot_display_value ? addComma(entry_spot_display_value) : ' - '}
                         value2={toGMTFormat(epochToMoment(Number(entry_tick_time))) || ' - '}
+                        additional_info={
+                            isTicksContract(contract_type) &&
+                            localize('The entry spot is the first tick for High/Low Ticks.')
+                        }
                     />
                 )}
                 {!isNaN(Number(exit_spot)) && (

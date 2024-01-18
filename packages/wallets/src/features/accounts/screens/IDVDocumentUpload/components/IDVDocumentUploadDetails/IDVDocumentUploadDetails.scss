@@ -1,6 +1,7 @@
 .wallets-idv-document-details {
     border-radius: 0.8rem;
     border: 0.1rem solid var(--system-light-5-active-background, #d6dadb);
+    margin-bottom: 2.4rem;
     padding: 1.6rem;
 
     &__body {
@@ -10,6 +11,42 @@
 
         @include mobile {
             flex-direction: column-reverse;
+        }
+    }
+
+    &__checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.8rem 0 0 0.8rem;
+
+        & > * {
+            cursor: pointer;
+        }
+
+        input {
+            height: 1.6rem;
+            width: 1.6rem;
+            transition: 0.3s ease-in-out;
+            accent-color: #ff444f;
+        }
+
+        @include mobile {
+            padding-top: 1.6rem;
+        }
+
+        &--disabled {
+            input {
+                cursor: not-allowed;
+                accent-color: #999;
+            }
+
+            label {
+                span {
+                    cursor: not-allowed;
+                    color: #999;
+                }
+            }
         }
     }
 

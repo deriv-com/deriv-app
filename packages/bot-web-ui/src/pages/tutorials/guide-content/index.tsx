@@ -69,7 +69,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                                     weight='bold'
                                     color='prominent'
                                     line_height='s'
-                                    size={is_mobile ? 'xxs' : 's'}
+                                    size={is_mobile ? 'xs' : 's'}
                                 >
                                     <Localize i18n_default_text='Step-by-step guides' />
                                 </Text>
@@ -96,7 +96,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                                                 align='center'
                                                 color='prominent'
                                                 line_height='s'
-                                                size={is_mobile ? 'xxs' : 's'}
+                                                size={is_mobile ? 'xs' : 's'}
                                             >
                                                 {content}
                                             </Text>
@@ -115,7 +115,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                                     weight='bold'
                                     color='prominent'
                                     line_height='s'
-                                    size={is_mobile ? 'xxs' : 's'}
+                                    size={is_mobile ? 'xs' : 's'}
                                 >
                                     <Localize i18n_default_text='Videos on Deriv Bot' />
                                 </Text>
@@ -153,7 +153,7 @@ const GuideContent = ({ guide_tab_content, video_tab_content, is_dialog_open }: 
                                                     align='left'
                                                     color='prominent'
                                                     line_height='s'
-                                                    size={is_mobile ? 'xxs' : 's'}
+                                                    size={is_mobile ? 'xs' : 's'}
                                                 >
                                                     {content}
                                                 </Text>

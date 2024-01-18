@@ -1,5 +1,7 @@
 import React from 'react';
-import clsx from 'clsx';
+import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Text } from '@deriv-com/ui/dist/components/Text';
+import { useDevice } from '../../hooks';
 import ArrowRightIcon from '../../public/ic-arrow-right.svg';
 import CheckmarkIcon from '../../public/ic-checkmark.svg';
 import './Checklist.scss';
@@ -12,25 +14,27 @@ type TChecklistItem = {
 };
 
 const Checklist = ({ items }: { items: TChecklistItem[] }) => {
+    const { isMobile } = useDevice();
     return (
         <div className='p2p-v2-checklist'>
             {items.map(item => (
                 <div className='p2p-v2-checklist__item' key={item.text}>
-                    <span className={clsx({ 'p2p-v2-checklist__text--disabled': item.isDisabled })}>{item.text}</span>
+                    <Text color={item.isDisabled ? 'less-prominent' : 'general'} size={isMobile ? 'md' : 'sm'}>
+                        {item.text}
+                    </Text>
                     {item.status === 'done' ? (
                         <div className='p2p-v2-checklist__item-checkmark'>
                             <CheckmarkIcon className='p2p-v2-checklist__item-checkmark-icon' />
                         </div>
                     ) : (
-                        <button
-                            className={clsx('p2p-v2-checklist__item-button', {
-                                'p2p-v2-checklist__item-button--disabled': item.isDisabled,
-                            })}
-                            disabled={item.isDisabled}
-                            onClick={item.onClick}
-                        >
-                            <ArrowRightIcon className='p2p-v2-checklist__item-button-icon' />
-                        </button>
+                        <>
+                            <Button
+                                className='p2p-v2-checklist__item-button'
+                                disabled={item.isDisabled}
+                                icon={<ArrowRightIcon className='p2p-v2-checklist__item-button-icon' />}
+                                onClick={item.onClick}
+                            />
+                        </>
                     )}
                 </div>
             ))}

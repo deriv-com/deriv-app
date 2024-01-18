@@ -1,5 +1,7 @@
 import React from 'react';
-import { usePoiPoaStatus } from '../../hooks';
+import { Loader } from '@deriv-com/ui/dist/components/Loader';
+import { Text } from '@deriv-com/ui/dist/components/Text';
+import { useDevice, usePoiPoaStatus } from '../../hooks';
 import SendEmailIcon from '../../public/ic-send-email.svg';
 import { Checklist } from '../Checklist';
 import './Verification.scss';
@@ -31,6 +33,7 @@ const getPoaAction = (status: string | undefined) => {
 };
 
 const Verification = () => {
+    const { isMobile } = useDevice();
     const { data, isLoading } = usePoiPoaStatus();
     const { isP2PPoaRequired, isPoaPending, isPoaVerified, isPoiPending, isPoiVerified, poaStatus, poiStatus } =
         data || {};
@@ -71,15 +74,17 @@ const Verification = () => {
             : []),
     ];
 
-    if (isLoading) return <h1>Loading...</h1>;
+    if (isLoading) return <Loader />;
 
     return (
         <div className='p2p-v2-verification'>
             <SendEmailIcon className='p2p-v2-verification__icon' />
-            <span className='p2p-v2-verification__text'>
-                <strong>Verify your P2P account</strong>
-            </span>
-            <span className='p2p-v2-verification__text'>Verify your identity and address to use Deriv P2P.</span>
+            <Text className='p2p-v2-verification__text' size={isMobile ? 'lg' : 'md'} weight='bold'>
+                Verify your P2P account
+            </Text>
+            <Text className='p2p-v2-verification__text' size={isMobile ? 'lg' : 'md'}>
+                Verify your identity and address to use Deriv P2P.
+            </Text>
             <Checklist items={checklistItems} />
         </div>
     );

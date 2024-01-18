@@ -16,8 +16,6 @@
     }
 
     & span {
-        font-size: 14px;
-        line-height: 20px;
         max-width: 80%;
     }
 
@@ -36,10 +34,7 @@
         &-button {
             @include icon-wrapper;
 
-            background: #ff444f;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            padding: 0;
 
             &--disabled {
                 opacity: 0.5;
@@ -59,12 +54,6 @@
                 fill: #4bb4b3;
                 transform: scale(0.7);
             }
-        }
-    }
-
-    &__text {
-        &--disabled {
-            color: #d6d6d6;
         }
     }
 }

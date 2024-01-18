@@ -13,7 +13,7 @@ const ResetMT5PasswordHandler = () => {
     const platformMapping: Record<string, Exclude<TPlatforms.All, 'ctrader'>> = {
         trading_platform_dxtrade_password_reset: CFD_PLATFORMS?.DXTRADE,
         trading_platform_investor_password_reset: CFD_PLATFORMS?.MT5,
-        trading_platform_mt5_password_reset: CFD_PLATFORMS.MT5,
+        trading_platform_mt5_password_reset: CFD_PLATFORMS?.MT5,
     };
 
     useEffect(() => {

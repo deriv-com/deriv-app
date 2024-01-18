@@ -44,20 +44,16 @@ const AccountSignup = ({
     const ab_value = useFeatureValue('questionnaire-config', 'inactive');
 
     const ab_questionnaire = React.useMemo(() => {
-        const default_ab_value = ab_value;
-
         let questionnaire_value = ab_value?.[language] ?? ab_value?.EN ?? ab_value;
 
-        if (ab_value?.show_answers_in_random_order) {
+        if (questionnaire_value?.show_answers_in_random_order) {
             questionnaire_value = [
-                { ...default_ab_value.default },
                 {
-                    ...ab_value,
-                    answers: shuffleArray(ab_value.answers),
+                    ...questionnaire_value,
+                    answers: shuffleArray(questionnaire_value.answers),
                 },
             ];
-        } else if (ab_value !== 'inactive')
-            questionnaire_value = [{ ...default_ab_value.default }, { ...questionnaire_value }];
+        } else if (questionnaire_value !== 'inactive') questionnaire_value = [{ ...questionnaire_value }];
         return questionnaire_value;
     }, [ab_value, language]);
 

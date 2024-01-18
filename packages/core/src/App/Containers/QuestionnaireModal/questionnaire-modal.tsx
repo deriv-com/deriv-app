@@ -21,7 +21,7 @@ export type TQuestionnaireModal = {
 };
 
 const QuestionnaireModal = ({ ab_questionnaire, handleSignup }: TQuestionnaireModal) => {
-    const a_variant = !!ab_questionnaire[1].answers?.[0]?.header;
+    const a_variant = !!ab_questionnaire[1]?.answers?.[0]?.header;
     React.useEffect(() => {
         Analytics.trackEvent('ce_questionnaire_form', {
             action: 'open',
@@ -42,7 +42,7 @@ const QuestionnaireModal = ({ ab_questionnaire, handleSignup }: TQuestionnaireMo
     return (
         <div className='questionnaire-modal'>
             <Text as='h2' size='xs' weight='bold' align='center'>
-                {ab_questionnaire[1].question}
+                {ab_questionnaire[0].question}
             </Text>
             <ul
                 data-testid='questionnaire-modal-variant'
@@ -51,7 +51,7 @@ const QuestionnaireModal = ({ ab_questionnaire, handleSignup }: TQuestionnaireMo
                     'questionnaire-modal__options': !a_variant,
                 })}
             >
-                {ab_questionnaire[1]?.answers.map(({ code, text, header }, index) => {
+                {ab_questionnaire[0]?.answers.map(({ code, text, header }, index) => {
                     return (
                         <Button
                             key={`${code}_questionnaire`}

@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { ComponentProps, useEffect } from 'react';
 import { Trans } from 'react-i18next';
 import { useTradingPlatformInvestorPasswordReset, useTradingPlatformPasswordReset } from '@deriv/api';
 import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
 import { validPassword } from '../../utils/password';
-import { ModalStepWrapper, WalletButton, WalletButtonGroup, WalletPasswordField, WalletText } from '../Base';
-import { WalletPasswordFieldProps } from '../Base/WalletPasswordField/WalletPasswordField';
+import { ModalStepWrapper, WalletButton, WalletButtonGroup, WalletText } from '../Base';
+import { WalletPasswordFieldLazy } from '../Base/WalletPasswordFieldLazy';
 import { useModal } from '../ModalProvider';
 import WalletSuccessResetMT5Password from './WalletSuccessResetMT5Password';
 import './WalletsResetMT5Password.scss';
@@ -14,8 +14,8 @@ import './WalletsResetMT5Password.scss';
 type WalletsResetMT5PasswordProps = {
     actionParams: string;
     isInvestorPassword?: boolean;
-    onChange: WalletPasswordFieldProps['onChange'];
-    password: WalletPasswordFieldProps['password'];
+    onChange: ComponentProps<typeof WalletPasswordFieldLazy>['onChange'];
+    password: ComponentProps<typeof WalletPasswordFieldLazy>['password'];
     platform: Exclude<TPlatforms.All, 'ctrader'>;
     verificationCode: string;
 };
@@ -111,7 +111,7 @@ const WalletsResetMT5Password = ({
                 <WalletText weight='bold'>
                     Create a new {title} {isInvestorPassword && 'investor'} Password
                 </WalletText>
-                <WalletPasswordField
+                <WalletPasswordFieldLazy
                     label={isInvestorPassword ? 'New investor password' : `${title} password`}
                     onChange={onChange}
                     password={password}

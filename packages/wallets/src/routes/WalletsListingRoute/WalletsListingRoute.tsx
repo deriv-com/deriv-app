@@ -11,8 +11,9 @@ import { useModal } from '../../components/ModalProvider';
 import { CFD_PLATFORMS } from '../../features/cfd/constants';
 import { getActionFromUrl } from '../../helpers/urls';
 import useDevice from '../../hooks/useDevice';
-import { TPlatforms } from '../../types';
+import ResetMT5PasswordHandler from '../../features/cfd/ResetMT5PasswordHandler';
 import './WalletsListingRoute.scss';
+import { TPlatforms } from '../../types';
 
 const WalletsListingRoute: React.FC = () => {
     const { isMobile } = useDevice();
@@ -41,6 +42,7 @@ const WalletsListingRoute: React.FC = () => {
             if (verificationCode) {
                 show(
                     <WalletsResetMT5Password
+                        actionParams={resetTradingPlatformActionParams ?? ''}
                         onChange={e => setPassword(e.target.value)}
                         password={password}
                         platform={platformKey}
@@ -63,6 +65,7 @@ const WalletsListingRoute: React.FC = () => {
             {isMobile ? <WalletsCarousel /> : <DesktopWalletsList />}
             <WalletsAddMoreCarousel />
             {!isMobile && <WalletTourGuide />}
+            <ResetMT5PasswordHandler />
         </div>
     );
 };

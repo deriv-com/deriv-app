@@ -11,9 +11,7 @@ type TFormikContext = {
     values: FormikValues;
 };
 
-const order_time_info_message = (
-    <Localize i18n_default_text='Orders will expire if they aren’t completed within this time.' />
-);
+const order_time_info_message = 'Orders will expire if they aren’t completed within this time.';
 
 const OrderTimeSelection = ({ ...field }: FormikValues) => {
     const { values, handleChange }: TFormikContext = useFormikContext<TFormikContext>();

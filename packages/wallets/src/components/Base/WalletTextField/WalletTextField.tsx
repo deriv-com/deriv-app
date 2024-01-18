@@ -82,26 +82,22 @@ const WalletTextField = forwardRef(
                     )}
                 </div>
                 <div className='wallets-textfield__message-container'>
-                    {!disabled && (
-                        <>
-                            {showMessage && !isInvalid && (
-                                <HelperMessage
-                                    inputValue={value}
-                                    maxLength={maxLength}
-                                    message={message}
-                                    messageVariant={messageVariant}
-                                />
-                            )}
-                            {errorMessage && (isInvalid || (!isInvalid && shouldShowWarningMessage)) && (
-                                <HelperMessage
-                                    inputValue={value}
-                                    isError={isInvalid}
-                                    maxLength={maxLength}
-                                    message={errorMessage as string}
-                                    messageVariant={isInvalid ? 'error' : 'warning'}
-                                />
-                            )}
-                        </>
+                    {showMessage && !isInvalid && (
+                        <HelperMessage
+                            inputValue={value}
+                            maxLength={maxLength}
+                            message={message}
+                            messageVariant={messageVariant}
+                        />
+                    )}
+                    {errorMessage && (isInvalid || (!isInvalid && shouldShowWarningMessage)) && (
+                        <HelperMessage
+                            inputValue={value}
+                            isError={isInvalid}
+                            maxLength={maxLength}
+                            message={errorMessage as string}
+                            messageVariant={isInvalid ? 'error' : 'warning'}
+                        />
                     )}
                 </div>
             </div>

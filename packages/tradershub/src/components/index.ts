@@ -18,3 +18,4 @@ export * from './TotalAssets';
 export * from './TradersHubContent';
 export * from './TradingAccountCard';
 export * from './TradingAccountsList';
+export * from './UIProvider';

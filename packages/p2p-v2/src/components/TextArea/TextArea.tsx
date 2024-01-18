@@ -26,7 +26,7 @@ const TextArea = ({ hint, isInvalid = false, label, onChange, shouldShowCounter 
                     onChange?.(event);
                 }}
                 placeholder=''
-                value={value}
+                value={currentValue}
             />
             {label && <label>{label}</label>}
             <div className='p2p-v2-textarea__footer'>

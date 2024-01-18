@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import { useAdvertiserUpdate } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
+import { useDevice } from '../../../hooks';
 import { customStyles } from '../helpers';
 import './DailyLimitModal.scss';
 
@@ -15,19 +16,20 @@ type TDailyLimitModalProps = {
 const DailyLimitModal = ({ currency, isModalOpen, onRequestClose }: TDailyLimitModalProps) => {
     const { data, error, isLoading, isSuccess, mutate } = useAdvertiserUpdate();
     const { daily_buy_limit, daily_sell_limit } = data ?? {};
+    const { isMobile } = useDevice();
     useEffect(() => {
         Modal.setAppElement('#v2_modal_root');
     }, []);
 
     const getModalContent = () => {
-        //TODO: modal header title to be moved out if needed according to implementation
+        //TODO: modal header title to be moved out if needed according to implementation, can be moved to a separate getheader, getcontent, getfooter functions
         if (isLoading) {
             //TODO: replace with @deriv/ui loading component
             return <div className='p2p-v2-daily-limit-modal__loader'>loading</div>;
         } else if (isSuccess) {
             return (
                 <>
-                    <Text className='p2p-v2-daily-limit-modal__title' color='prominent' weight='bold'>
+                    <Text color='prominent' size='md' weight='bold'>
                         Success!
                     </Text>
                     <Text as='p' className='p2p-v2-daily-limit-modal__text' color='prominent' size='sm'>
@@ -43,7 +45,7 @@ const DailyLimitModal = ({ currency, isModalOpen, onRequestClose }: TDailyLimitM
         } else if (error) {
             return (
                 <>
-                    <Text className='p2p-v2-daily-limit-modal__title' color='prominent' weight='bold'>
+                    <Text color='prominent' size='md' weight='bold'>
                         An internal error occured
                     </Text>
                     <Text as='p' className='p2p-v2-daily-limit-modal__text' color='prominent' size='sm'>
@@ -59,10 +61,10 @@ const DailyLimitModal = ({ currency, isModalOpen, onRequestClose }: TDailyLimitM
         }
         return (
             <>
-                <Text className='p2p-v2-daily-limit-modal__title' color='prominent' weight='bold'>
+                <Text color='prominent' size='md' weight='bold'>
                     Are you sure?
                 </Text>
-                <Text as='p' className='p2p-v2-daily-limit-modal__text' color='prominent' size='sm'>
+                <Text as='p' className='p2p-v2-daily-limit-modal__text' color='prominent' size={isMobile ? 'md' : 'sm'}>
                     You won’t be able to change your buy and sell limits again after this. Do you want to continue?
                 </Text>
                 <div className='p2p-v2-daily-limit-modal__footer'>

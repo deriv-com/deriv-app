@@ -3,12 +3,9 @@
     flex-direction: row;
     align-items: center;
     gap: 1.4rem;
-    &--bold {
-        font-weight: 700;
-    }
 
     & span {
         flex: 1;
-        font-size: 1.2rem;
+        // font-size: 1.2rem;
     }
 }

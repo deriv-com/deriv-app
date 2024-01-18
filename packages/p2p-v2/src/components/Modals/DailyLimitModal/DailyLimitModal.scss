@@ -19,17 +19,10 @@
 
     &__text {
         margin: 2.4rem 0;
-        font-size: 1.4rem;
-        line-height: 2rem;
 
         @include mobile {
             margin: 1.6rem 0;
         }
-    }
-
-    &__title {
-        font-size: 1.6rem;
-        line-height: 2.4rem;
     }
 
     &__footer {

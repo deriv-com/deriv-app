@@ -66,9 +66,13 @@ const Passkeys = observer(() => {
     const { createPasskey, is_registration_in_progress, is_passkey_registered, registration_error } =
         useRegisterPasskey();
 
+    // eslint-disable-next-line no-console
+    console.log('is_passkey_registered', is_passkey_registered);
     React.useEffect(() => {
         if (is_passkey_registered) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.REGISTERED);
+        } else {
+            setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
         }
     }, [is_passkey_registered]);
 
@@ -134,7 +138,7 @@ const Passkeys = observer(() => {
                     passkeys_list={passkeys_list}
                     onButtonClick={createPasskey}
                     //TODO: need to check the cases to remove button for creation new passkey (device support)
-                    is_creation_available={true}
+                    is_creation_available
                 />
             )}
         </div>

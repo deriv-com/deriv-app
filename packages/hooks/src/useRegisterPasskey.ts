@@ -32,14 +32,17 @@ const useRegisterPasskey = () => {
         },
     });
 
+    // eslint-disable-next-line no-console
+    console.log('public_key', public_key);
     React.useEffect(() => {
         const startPasskeyRegistration = async () => {
             try {
                 if (public_key) {
                     const attResp = await startRegistration(public_key);
+                    // eslint-disable-next-line no-console
+                    console.log('mutate call');
                     mutate({
                         payload: {
-                            name: 'New Passkey',
                             publicKeyCredential: attResp,
                         },
                     });

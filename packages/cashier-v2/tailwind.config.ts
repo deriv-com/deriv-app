@@ -6,5 +6,6 @@ export default {
     corePlugins: {
         preflight: false,
     },
+    important: '#cashier_v2',
     presets: [QuillTailwindConfig],
 } satisfies Config;

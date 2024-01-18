@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useActiveTradingAccount, useAuthorize, useInvalidateQuery, useSortedMT5Accounts } from '@deriv/api';
+import { useUIContext } from '../../../../components';
 import { TradingAppCardLoader } from '../../../../components/Loaders/TradingAppCardLoader';
 import { THooks } from '../../../../types';
 import { PlatformDetails } from '../../constants';
@@ -13,7 +14,9 @@ type TMT5PlatformsListProps = {
 
 const MT5PlatformsList = ({ onMT5PlatformListLoaded }: TMT5PlatformsListProps) => {
     const { isFetching } = useAuthorize();
-    const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts();
+    const { getUIState } = useUIContext();
+    const activeRegulation = getUIState('regulation');
+    const { areAllAccountsCreated, data, isFetchedAfterMount } = useSortedMT5Accounts(activeRegulation ?? '');
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const invalidate = useInvalidateQuery();
 

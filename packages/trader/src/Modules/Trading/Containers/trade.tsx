@@ -160,7 +160,7 @@ const Trade = observer(() => {
 
     return (
         <React.Fragment>
-            {open_launch_modal && is_logged_in && !is_already_shown && (
+            {!is_eu && open_launch_modal && is_logged_in && !is_already_shown && (
                 <LaunchModal
                     handleChange={handleLaunchModal}
                     open={open_launch_modal}

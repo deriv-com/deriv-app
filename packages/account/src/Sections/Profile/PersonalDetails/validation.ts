@@ -44,9 +44,12 @@ const BaseSchema = Yup.object().shape({
         .required(localize('Town/City is required.'))
         .max(70, localize('Should be less than 70.'))
         .matches(
-            /^[A-Za-z]+(?:[.' -]*[A-Za-z]+){0,70}$/,
+            /^[A-Za-z]+(?:[.' -]*[A-Za-z]+){1,70}$/,
             localize('Only letters, space, hyphen, period, and apostrophe are allowed.')
         ),
+    address_postcode: Yup.string()
+        .max(20, localize('Please enter a Postal/ZIP code under 20 chatacters.'))
+        .matches(/^[A-Za-z0-9][A-Za-z0-9\s-]*$/, localize('Only letters, numbers, space, and hyphen are allowed.')),
 });
 
 export const getPersonalDetailsInitialValues = (

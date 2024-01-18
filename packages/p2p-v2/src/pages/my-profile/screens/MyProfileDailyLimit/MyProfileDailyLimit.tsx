@@ -1,30 +1,30 @@
 import React, { useState } from 'react';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import MyProfileStatsLimitModal from './MyProfileStatsLimitModal';
-import './MyProfileStatsLimitNotification.scss';
+import DailyLimitModal from '../../../../components/Modals/DailyLimitModal/DailyLimitModal';
+import './MyProfileDailyLimit.scss';
 
-type TMyProfileStatsLimitNotificationProps = {
+type TMyProfileDailyLimitProps = {
     buyLimit: number;
     currency: string;
     sellLimit: number;
 };
 
-const MyProfileStatsLimitNotification = ({ buyLimit, currency, sellLimit }: TMyProfileStatsLimitNotificationProps) => {
+const MyProfileDailyLimit = ({ buyLimit, currency, sellLimit }: TMyProfileDailyLimitProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
         <>
-            <div className='p2p-v2-my-profile-stats-limit-notification'>
+            <div className='p2p-v2-my-profile-daily-limit'>
                 <Text color='less-prominent' lineHeight='sm' size='xs'>
                     Want to increase your daily limits to{' '}
-                    <span className='p2p-v2-my-profile-stats-limit-notification--bold'>
+                    <Text className='p2p-v2-my-profile-daily-limit--bold'>
                         {buyLimit} {currency}{' '}
-                    </span>{' '}
+                    </Text>{' '}
                     (buy) and{' '}
-                    <span className='p2p-v2-my-profile-stats-limit-notification--bold'>
+                    <Text className='p2p-v2-my-profile-daily-limit--bold'>
                         {sellLimit} {currency}{' '}
-                    </span>{' '}
+                    </Text>{' '}
                     (sell)?
                 </Text>
                 <Button onClick={() => setIsModalOpen(true)} size='xs' textSize='xs' variant='ghost'>
@@ -32,7 +32,7 @@ const MyProfileStatsLimitNotification = ({ buyLimit, currency, sellLimit }: TMyP
                 </Button>
             </div>
             {/* TODO: to move the below to parent */}
-            <MyProfileStatsLimitModal
+            <DailyLimitModal
                 currency={currency}
                 isModalOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
@@ -41,4 +41,4 @@ const MyProfileStatsLimitNotification = ({ buyLimit, currency, sellLimit }: TMyP
     );
 };
 
-export default MyProfileStatsLimitNotification;
+export default MyProfileDailyLimit;

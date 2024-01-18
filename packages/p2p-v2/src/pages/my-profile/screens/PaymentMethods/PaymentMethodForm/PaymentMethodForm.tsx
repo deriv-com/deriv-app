@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TPaymentMethodFormConfig, TPaymentMethodFotmValues, TSelectedPaymentMethod } from 'types';
+import { TPaymentMethodFormConfig, TPaymentMethodFormValues, TSelectedPaymentMethod } from 'types';
 import { p2p } from '@deriv/api';
 import { TextArea } from '../../../../../components';
 import { ClickableText } from '../../../../../components/ClickableText';
@@ -14,7 +14,7 @@ import './PaymentMethodForm.scss';
 
 type TPaymentMethodFormProps = {
     onClear?: () => void;
-    onFormSubmit: (data: TPaymentMethodFotmValues) => void;
+    onFormSubmit: (data: TPaymentMethodFormValues) => void;
     onGoBack?: () => void;
     onSelectPaymentMethod?: (paymentMethod: TSelectedPaymentMethod) => void;
     paymentMethodFormConfig: TPaymentMethodFormConfig;

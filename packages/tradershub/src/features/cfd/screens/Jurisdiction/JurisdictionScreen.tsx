@@ -1,7 +1,7 @@
-import React, { Dispatch, useEffect, useMemo } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import { useAvailableMT5Accounts, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
 import { THooks } from '../../../../types';
 import { useDynamicLeverageModalState } from '../../components/DynamicLeverageContext';
 import { Jurisdiction } from '../../constants';
@@ -11,8 +11,8 @@ import { JurisdictionTncSection } from './JurisdictionTncSection';
 type TJurisdictionScreenProps = {
     isCheckBoxChecked: boolean;
     selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
-    setIsCheckBoxChecked: Dispatch<React.SetStateAction<boolean>>;
-    setSelectedJurisdiction: Dispatch<React.SetStateAction<string>>;
+    setIsCheckBoxChecked: Dispatch<SetStateAction<boolean>>;
+    setSelectedJurisdiction: Dispatch<SetStateAction<string>>;
 };
 
 const JurisdictionScreen = ({
@@ -22,13 +22,16 @@ const JurisdictionScreen = ({
     setSelectedJurisdiction,
 }: TJurisdictionScreenProps) => {
     const { getCFDState } = Provider.useCFDContext();
-    const { data, isLoading } = useAvailableMT5Accounts();
+    const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const { data: mt5AccountsList } = useMT5AccountsList();
     const marketType = getCFDState('marketType');
     const { isDynamicLeverageVisible } = useDynamicLeverageModalState();
     const jurisdictions = useMemo(
-        () => data?.filter(account => account.market_type === marketType).map(account => account.shortcode) || [],
-        [data, marketType]
+        () =>
+            availableMT5Accounts
+                ?.filter(account => account.market_type === marketType)
+                .map(account => account.shortcode) || [],
+        [availableMT5Accounts, marketType]
     );
     const addedJurisdictions = useMemo(
         () =>
@@ -42,12 +45,10 @@ const JurisdictionScreen = ({
         setIsCheckBoxChecked(false);
     }, [selectedJurisdiction, setIsCheckBoxChecked]);
 
-    if (isLoading) return <Text>Loading...</Text>;
-
     return (
         <div
             className={qtMerge(
-                'flex flex-col h-auto w-[85vw] items-center justify-center my-auto mx-1500 h-[75vh] transition-all ease-in duration-[0.6s]',
+                'flex flex-col h-auto w-[85vw] items-center justify-center my-auto mx-1500 sm:h-[75vh] transition-all ease-in duration-[0.6s]',
                 isDynamicLeverageVisible && '[transform:rotateY(-180deg)] h-[700px] opacity-50'
             )}
         >

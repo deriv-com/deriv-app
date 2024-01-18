@@ -45,6 +45,7 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                     {!!transaction.is_valid_to_cancel && (
                         <button
                             className='wallets-crypto-transaction__cancel-button'
+                            data-testid='dt-wallets-crypto-transactions-cancel-button'
                             onClick={() =>
                                 show(
                                     <WalletActionModal

@@ -15,6 +15,10 @@ abbr[title] {
     &__button {
         all: unset;
         cursor: pointer;
+
+        &:disabled {
+            filter: invert(92%) sepia(0%) saturate(112%) hue-rotate(253deg) brightness(106%) contrast(89%);
+        }
     }
 
     &__container {

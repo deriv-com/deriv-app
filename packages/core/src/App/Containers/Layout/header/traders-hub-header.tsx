@@ -2,7 +2,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Icon, Popover, StaticUrl } from '@deriv/components';
-import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { useIsRealAccountNeededForCashier, useFeatureFlags } from '@deriv/hooks';
 import { routes, platforms, formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
@@ -57,6 +57,7 @@ const TradersHubHeader = observer(() => {
     const cashier_routes = pathname.startsWith(routes.cashier);
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
     const account_balance = formatMoney(currency, balance ?? '', true);
+    const { is_next_wallet_enabled } = useFeatureFlags();
 
     const filterPlatformsForClients = (payload: TPlatformConfig) =>
         payload.filter(config => {
@@ -118,9 +119,11 @@ const TradersHubHeader = observer(() => {
                     <div className='traders-hub-header__menu-right'>
                         <div className='traders-hub-header__divider' />
                         <div className='traders-hub-header__menu-right--items'>
-                            <div className='traders-hub-header__menu-right--items--onboarding'>
-                                <TradersHubOnboarding />
-                            </div>
+                            {is_next_wallet_enabled ? (
+                                <div className='traders-hub-header__menu-right--items--onboarding'>
+                                    <TradersHubOnboarding />
+                                </div>
+                            ) : null}
                             <div className='traders-hub-header__menu-right--items--notifications'>
                                 <ShowNotifications />
                             </div>

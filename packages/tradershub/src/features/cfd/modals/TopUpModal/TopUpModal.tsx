@@ -1,18 +1,33 @@
 import React from 'react';
-import { useIsEuRegion } from '@deriv/api';
+import { useIsEuRegion, useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
 import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
 import { Modal } from '../../../../components/Modal';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFDPlatforms, MarketType, MarketTypeDetails, PlatformDetails } from '../../constants';
 
-type TTradeModalProps = {
+type TTopUpModalProps = {
     account: THooks.CtraderAccountsList | THooks.DxtradeAccountsList | THooks.MT5AccountsList;
     platform: TPlatforms.All;
 };
 
-const TopUpModal = ({ account, platform }: TTradeModalProps) => {
+const TopUpModal = ({ account, platform }: TTopUpModalProps) => {
     const { isDesktop } = useBreakpoint();
     const { data: isEuRegion } = useIsEuRegion();
+    const { mutateAsync: MT5Deposit } = useMT5Deposit();
+    const { mutateAsync: OtherCFDPlatformsDeposit } = useOtherCFDPlatformsDeposit();
+
+    const topUpVirtual = async () => {
+        if (platform === CFDPlatforms.MT5) {
+            await MT5Deposit({
+                to_mt5: account?.login ?? '',
+            });
+        } else {
+            await OtherCFDPlatformsDeposit({
+                platform,
+                to_account: (account as THooks.CtraderAccountsList | THooks.DxtradeAccountsList).account_id ?? '',
+            });
+        }
+    };
 
     const platformTitle = PlatformDetails[platform].title;
     const marketTypeDetails = MarketTypeDetails(isEuRegion)[account.market_type ?? MarketType.ALL];
@@ -28,7 +43,7 @@ const TopUpModal = ({ account, platform }: TTradeModalProps) => {
     return (
         <Modal className='max-w-[330px] md:max-w-[440px]'>
             <Modal.Header title='Fund top up' />
-            <Modal.Content className='flex flex-col items-center justify-center space-y-1200 p-1200'>
+            <Modal.Content className='flex flex-col items-center justify-center space-y-1200 p-1200 sm:p-1200'>
                 <Text bold>{title} Demo account</Text>
                 <div className='text-center'>
                     <Text bold size='sm'>
@@ -41,7 +56,11 @@ const TopUpModal = ({ account, platform }: TTradeModalProps) => {
                     less.
                 </Text>
                 <div>
-                    <Button className='rounded-200 px-800' disabled={Number(account?.balance) > 1000}>
+                    <Button
+                        className='rounded-200 px-800'
+                        disabled={Number(account?.balance) > 1000}
+                        onClick={topUpVirtual}
+                    >
                         Top up 10,000 USD
                     </Button>
                 </div>

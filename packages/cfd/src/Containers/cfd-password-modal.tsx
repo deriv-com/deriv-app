@@ -410,7 +410,7 @@ const CFDPasswordForm = observer(
                 return localize('Try later');
             }
             if (is_mt5_migration_modal_enabled) {
-                return localize('Move account(s)');
+                return localize('Upgrade');
             }
 
             return localize('Add account');

@@ -51,17 +51,20 @@ const useTransferMessages = ({
     const fiatAccount = walletAccounts?.find(account => account.account_type === 'doughflow');
 
     const sourceAmount = formData.fromAmount;
+    const targetAmount = formData.toAmount;
 
     const messageFns: ((props: TMessageFnProps) => TTransferMessage | null)[] = [];
     const messages: TTransferMessage[] = [];
 
     messageFns.push(insufficientBalanceMessageFn);
 
+    if (!isAccountVerified && isTransferBetweenWallets) {
+        messageFns.push(lifetimeAccountLimitsBetweenWalletsMessageFn);
+    }
     if (isAccountVerified || (!isAccountVerified && !isTransferBetweenWallets)) {
         messageFns.push(cumulativeAccountLimitsMessageFn);
     }
-    if (!isAccountVerified && isTransferBetweenWallets) {
-        messageFns.push(lifetimeAccountLimitsBetweenWalletsMessageFn);
+    if (isTransferBetweenWallets) {
         messageFns.push(transferFeesBetweenWalletsMessageFn);
     }
 
@@ -75,6 +78,7 @@ const useTransferMessages = ({
             sourceAccount: fromAccount,
             sourceAmount,
             targetAccount: toAccount,
+            targetAmount,
             USDExchangeRates,
         });
         if (message) messages.push(message);

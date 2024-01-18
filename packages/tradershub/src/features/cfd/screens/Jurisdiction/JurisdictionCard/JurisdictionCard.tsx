@@ -1,13 +1,17 @@
 import React, { MouseEvent, useMemo, useState } from 'react';
-import { qtMerge, Text } from '@deriv/quill-design';
-import { useModal } from '../../../../../components/ModalProvider';
-import { StaticLink } from '../../../../../components/StaticLink';
+import { Provider } from '@deriv/library';
+import { Link, qtMerge, Text } from '@deriv/quill-design';
 import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
 import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
+import { MarketType } from '../../../constants';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
-import { TJurisdictionCardItems, TJurisdictionCardSection } from '../jurisdiction-contents/props.types';
+import {
+    TClickableDescription,
+    TJurisdictionCardItems,
+    TJurisdictionCardSection,
+} from '../jurisdiction-contents/props.types';
 import {
     JurisdictionCardClass,
     JurisdictionCardClassProps,
@@ -22,7 +26,6 @@ import JurisdictionCardVerificationTag from './JurisdictionCardVerificationTag';
 type TJurisdictionCardProps = JurisdictionCardClassProps & {
     jurisdiction: string;
     onSelect: (clickedJurisdiction: string) => void;
-    tag?: string;
 };
 
 type TDisplayTextSkinColor = JurisdictionCardTagProps['displayTextSkinColor'];
@@ -52,17 +55,12 @@ const verificationDocumentsMapper: TVerificationDocumentsMapper = {
     },
 };
 
-const JurisdictionCard = ({
-    isAdded = false,
-    isSelected = false,
-    jurisdiction = 'svg',
-    onSelect,
-}: TJurisdictionCardProps) => {
+const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, onSelect }: TJurisdictionCardProps) => {
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
-    const { getModalState } = useModal();
+    const { getCFDState } = Provider.useCFDContext();
 
-    const descriptionClickHandler = (tag?: TJurisdictionCardProps['tag']) => (event: MouseEvent) => {
+    const descriptionClickHandler = (tag?: TClickableDescription['tag']) => (event: MouseEvent) => {
         event.stopPropagation();
         if (tag === 'dynamicLeverage') {
             toggleDynamicLeverage();
@@ -75,7 +73,7 @@ const JurisdictionCard = ({
         () => getJurisdictionContents()[jurisdiction],
         [jurisdiction]
     );
-    const marketType = getModalState('marketType') || 'all';
+    const marketType = getCFDState('marketType') || MarketType.ALL;
     const rows = contents[marketType] || [];
 
     const parseDescription = (row: TJurisdictionCardSection) => {
@@ -83,14 +81,13 @@ const JurisdictionCard = ({
             return row.clickableDescription.map(description => {
                 if (description.type === 'link') {
                     return (
-                        <StaticLink
-                            className='text-brand-red-light '
+                        <Link
+                            className='text-brand-red-light text-50 py-50 pl-50 hover:no-underline'
                             key={`jurisdiction-card-description-${description.text}`}
                             onClick={descriptionClickHandler(description.tag)}
-                            size='md'
                         >
                             {description.text}
-                        </StaticLink>
+                        </Link>
                     );
                 }
                 return description.text;
@@ -106,7 +103,7 @@ const JurisdictionCard = ({
                         ?.displayTextSkinColor as unknown as TDisplayTextSkinColor,
                 })}
             >
-                <Text bold className='leading-[1] text-system-light-primary-background' size='sm'>
+                <Text bold className='leading-[1] text-system-light-primary-background text-50'>
                     {row?.titleIndicators.displayText}
                 </Text>
             </div>
@@ -124,18 +121,18 @@ const JurisdictionCard = ({
                 }
             }}
         >
-            <div className='flex flex-col justify-center w-full h-full transition-transform duration-300 px-800 pt-1000 pb-1800 backface-hidden transform-gpu'>
+            <div className='flex flex-col justify-center w-full h-full transition-transform duration-300 backface-hidden px-800 pt-1000 pb-1800 transform-gpu'>
                 {isOverHeaderAvailable && <JurisdictionCardTag tag={overHeader || ''} />}
                 <div className='mt-[25px] mb-[15px] text-center'>
-                    <Text bold className='text-system-light-primary-background' size='lg'>
+                    <Text bold size='lg'>
                         {header}
                     </Text>
                 </div>
-                <div className='border-sm border-system-light-secondary-background'>
+                <div>
                     {rows.map(row => (
                         <JurisdictionCardRow
                             description={parseDescription(row)}
-                            key={`wallets-jurisdiction-card--${row?.title}`}
+                            key={`jurisdiction-card--${row?.title}`}
                             renderTag={() => {
                                 if (!row?.titleIndicators) return;
 
@@ -168,7 +165,7 @@ const JurisdictionCard = ({
                     ))}
                 </div>
                 {isAdded && (
-                    <div className='absolute w-full text-center rounded-b-[13px] rounded-t-50 bottom-50 left-50 p-400 bg-random-blue'>
+                    <div className='absolute w-full text-center rounded-b-[13px] rounded-t-50 bottom-50 left-50 p-400 bg-brand-blue'>
                         <Text bold className='text-system-light-primary-background' size='sm'>
                             Added
                         </Text>

@@ -1,7 +1,7 @@
 import React from 'react';
+import { Provider } from '@deriv/library';
 import { Heading, qtMerge } from '@deriv/quill-design';
 import CloseIcon from '../../public/images/ic-close-dark.svg';
-import { useModal } from '../ModalProvider';
 import { TModalComponents } from './Modal';
 
 /**
@@ -12,15 +12,15 @@ import { TModalComponents } from './Modal';
  * @property {string} [title] - Optional title for the header
  * @extends TModalComponents
  */
-type TModalHeader = TModalComponents & { hideCloseButton?: boolean; title?: string };
+type TModalHeader = TModalComponents & { hideCloseButton?: boolean; title?: string; titleClassName?: string };
 
 /**
  * ModalHeader component
  * @param {TModalHeader} props - The properties that define the ModalHeader component.
  * @returns {JSX.Element} The ModalHeader component.
  */
-const ModalHeader = ({ className, hideCloseButton = false, title }: TModalHeader) => {
-    const { hide } = useModal();
+const ModalHeader = ({ className, hideCloseButton = false, title, titleClassName }: TModalHeader) => {
+    const { hide } = Provider.useModal();
 
     return (
         <div
@@ -30,7 +30,7 @@ const ModalHeader = ({ className, hideCloseButton = false, title }: TModalHeader
                 className
             )}
         >
-            {title && <Heading.H3 className='flex-1'>{title}</Heading.H3>}
+            {title && <Heading.H5 className={qtMerge('flex-1', titleClassName)}>{title}</Heading.H5>}
             {!hideCloseButton && <CloseIcon className='cursor-pointer' onClick={hide} />}
         </div>
     );

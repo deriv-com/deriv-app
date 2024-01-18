@@ -4,7 +4,7 @@ import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../c
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
-import { MarketTypeDetails, PlatformDetails } from '../../constants';
+import { CFD_PLATFORMS, MarketTypeDetails, PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
 type TProps = {
@@ -29,9 +29,9 @@ const EnterPassword: React.FC<TProps> = ({
     platform,
 }) => {
     const { isDesktop } = useDevice();
-    const title = PlatformDetails[platform].title;
     const { data } = useActiveWalletAccount();
     const accountType = data?.is_virtual ? 'Demo' : 'Real';
+    const title = PlatformDetails[platform].title;
     const marketTypeTitle =
         platform === PlatformDetails.dxtrade.platform ? accountType : MarketTypeDetails[marketType].title;
 
@@ -43,7 +43,11 @@ const EnterPassword: React.FC<TProps> = ({
                 </WalletText>
                 <div className='wallets-enter-password__content'>
                     <WalletText size='sm'>
-                        Enter your {title} password to add a {title} {marketTypeTitle} account.
+                        Enter your {title} password to add a{' '}
+                        {platform === CFD_PLATFORMS.MT5 && accountType === 'Demo'
+                            ? `${accountType.toLocaleLowerCase()} ${CFD_PLATFORMS.MT5.toLocaleUpperCase()}`
+                            : title}{' '}
+                        {marketTypeTitle} account.
                     </WalletText>
                     <WalletPasswordFieldLazy
                         label={`${title} password`}
@@ -53,6 +57,12 @@ const EnterPassword: React.FC<TProps> = ({
                         shouldDisablePasswordMeter
                         showMessage={false}
                     />
+                    {passwordError && (
+                        <WalletText size='sm'>
+                            Hint: You may have entered your Deriv password, which is different from your {title}{' '}
+                            password.
+                        </WalletText>
+                    )}
                 </div>
             </div>
             {isDesktop && (

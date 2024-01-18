@@ -3,6 +3,7 @@ import { WalletsResetMT5Password } from '../../components';
 import { useModal } from '../../components/ModalProvider';
 import { getActionFromUrl } from '../../helpers/urls';
 import { TPlatforms } from '../../types';
+import { CFD_PLATFORMS } from './constants';
 
 const ResetMT5PasswordHandler = () => {
     const { show } = useModal();
@@ -10,9 +11,9 @@ const ResetMT5PasswordHandler = () => {
     const resetTradingPlatformActionParams = getActionFromUrl();
 
     const platformMapping: Record<string, Exclude<TPlatforms.All, 'ctrader'>> = {
-        trading_platform_dxtrade_password_reset: 'dxtrade',
-        trading_platform_investor_password_reset: 'mt5',
-        trading_platform_mt5_password_reset: 'mt5',
+        trading_platform_dxtrade_password_reset: CFD_PLATFORMS?.DXTRADE,
+        trading_platform_investor_password_reset: CFD_PLATFORMS?.MT5,
+        trading_platform_mt5_password_reset: CFD_PLATFORMS.MT5,
     };
 
     useEffect(() => {

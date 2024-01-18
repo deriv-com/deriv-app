@@ -1093,7 +1093,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
     &_container {
         position: absolute;
-        height: 43.7rem;
         width: 100%;
         bottom: 0;
         background-color: var(--general-main-1);
@@ -1123,6 +1122,13 @@ $FLOATING_HEADER_HEIGHT: 41px;
             transition: transform 0.3s linear;
         }
 
+        &--risk {
+            height: 43.7rem;
+        }
+
+        &--stake {
+            height: 32rem;
+        }
         .contract-type-info__button-wrapper {
             margin: 0.8rem 0 1.6rem;
         }
@@ -1154,10 +1160,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
         font-weight: 700;
         position: relative;
 
-        span {
+        .info-icon {
             position: absolute;
             top: calc(50% - 0.8rem);
-            left: calc(100% - 1.6rem);
+            left: calc(100% - 2.5rem);
             border: 1px solid var(--core-color-solid-slate-1400, #000);
             border-radius: 50%;
             width: 1.6rem;

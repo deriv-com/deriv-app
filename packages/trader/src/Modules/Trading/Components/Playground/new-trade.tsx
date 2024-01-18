@@ -2,11 +2,22 @@ import React from 'react';
 import { Icon, Carousel } from '@deriv/components';
 import NewTradeTypeWidget from './new-trade-type-widget';
 import NewTradeParamsContainer from './new-trade-params-container';
-import NewTradeParamPopup from './new-trade-param-popup';
+import NewTradeParamPopupWrapper from './new-trade-param-popup-wrapper';
 
 const NewTrade = () => {
     const [show_details, setShowDetails] = React.useState(false);
+    const [is_risk_management, setIsRiskManagement] = React.useState(false);
+    const [is_stake, setIsStake] = React.useState(false);
 
+    const ClickHandler = (trade_param: string) => {
+        setIsRiskManagement(false);
+        setIsStake(false);
+
+        if (trade_param === 'risk_management') setIsRiskManagement(true);
+        if (trade_param === 'stake') setIsStake(true);
+
+        setShowDetails(true);
+    };
     return (
         <React.Fragment>
             <div className='content_container'>
@@ -17,7 +28,7 @@ const NewTrade = () => {
                     // eslint-disable-next-line @typescript-eslint/no-empty-function
                     onItemSelect={() => {}}
                     list={[
-                        <NewTradeParamsContainer onClick={() => setShowDetails(true)} key={1} />,
+                        <NewTradeParamsContainer onClick={ClickHandler} key={1} />,
                         <div key={2}>Hello, I&apos;m not ready. Let&apos;s pretend there&apos;s a chart here.</div>,
                     ]}
                     nav_position='bottom'
@@ -26,11 +37,13 @@ const NewTrade = () => {
                     width={100}
                 />
             </div>
-            <NewTradeParamPopup
+            <NewTradeParamPopupWrapper
                 onClick={() => {
                     setShowDetails(false);
                 }}
                 show_details={show_details}
+                is_risk_management={is_risk_management}
+                is_stake={is_stake}
             />
             <div className='footer-new'>
                 <div className='footer-new_bottom-sheet'>

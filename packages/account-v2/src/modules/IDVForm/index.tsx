@@ -10,9 +10,9 @@ import { getSelectedDocumentConfigData, TDocument } from './utils';
 type TIDVFormProps = {
     allowIDVSkip?: boolean;
     selectedCountry: Exclude<
-        DeepRequired<ReturnType<typeof useResidenceList>['data'][0]['identity']>,
+        NonNullable<NonNullable<ReturnType<typeof useResidenceList>['data'][0]['identity']>['services']>['idv'],
         undefined
-    >['services']['idv'];
+    >;
 };
 
 type TIDVFormValues = {
@@ -59,7 +59,7 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
     };
 
     useEffect(() => {
-        if (Object.keys(documents_supported)?.length) {
+        if (documents_supported && Object.keys(documents_supported)?.length) {
             const docList = Object.keys(documents_supported).map((key: string) => {
                 return {
                     text: documents_supported[key].display_name,

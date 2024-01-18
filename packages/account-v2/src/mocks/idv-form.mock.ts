@@ -44,9 +44,9 @@ export const DOCUMENT_LIST = [
 ];
 
 export const SELECTED_COUNTRY: Exclude<
-    DeepRequired<ReturnType<typeof useResidenceList>['data'][0]['identity']>,
+    NonNullable<NonNullable<ReturnType<typeof useResidenceList>['data'][0]['identity']>['services']>['idv'],
     undefined
->['services']['idv'] = {
+> = {
     documents_supported: {
         aadhaar: {
             additional: {

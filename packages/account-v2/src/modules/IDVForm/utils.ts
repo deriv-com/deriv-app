@@ -59,7 +59,10 @@ const validateAdditionalDocumentNumber = (
                 documentConfig?.additional?.display_name?.toLowerCase() ?? 'document number'
             }.`,
         });
-    } else if (!new RegExp(documentConfig?.additional?.example_format as string).test(additionalDocNumber)) {
+    } else if (
+        documentConfig?.additional?.example_format &&
+        !new RegExp(documentConfig?.additional?.example_format).test(additionalDocNumber)
+    ) {
         return context.createError({
             message: 'Please enter the correct format',
         });

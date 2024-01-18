@@ -16,6 +16,14 @@ type TDialogHeader = {
     hideCloseButton?: boolean;
     title?: string;
 };
+const Headings = {
+    h1: Heading.H1,
+    h2: Heading.H2,
+    h3: Heading.H3,
+    h4: Heading.H4,
+    h5: Heading.H5,
+    h6: Heading.H6,
+};
 
 /**
  * DialogHeader component
@@ -23,22 +31,13 @@ type TDialogHeader = {
  * @returns {JSX.Element} The DialogHeader component.
  */
 const DialogHeader = ({ className, heading = 'h3', hideCloseButton = false, title }: TDialogHeader) => {
-    const headingSizes = {
-        h1: Heading.H1,
-        h2: Heading.H2,
-        h3: Heading.H3,
-        h4: Heading.H4,
-        h5: Heading.H5,
-        h6: Heading.H6,
-    };
-
-    const HeadingSize = headingSizes[heading];
+    const Heading = Headings[heading];
 
     const { hide } = Provider.useModal();
 
     return (
         <div className={qtMerge('flex items-start', title ? 'justify-between' : 'justify-end', className)}>
-            {title && <HeadingSize className='flex-1'>{title}</HeadingSize>}
+            {title && <Heading className='flex-1'>{title}</Heading>}
             {!hideCloseButton && <CloseIcon className='hover:cursor-pointer' onClick={hide} />}
         </div>
     );

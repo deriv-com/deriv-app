@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import useQuery from '../../useQuery';
-import useAuthorize from '../useAuthorize';
+import useQuery from '../../../../../useQuery';
+import useAuthorize from '../../../../useAuthorize';
 
 /** This custom hook returns information about the given advertiser ID */
 const useAdvertiserInfo = (id?: string) => {

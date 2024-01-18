@@ -21,7 +21,7 @@ const QuickStrategyGuides = () => {
                     weight='bold'
                     color='prominent'
                     line_height='s'
-                    size={is_mobile ? 'xxs' : 's'}
+                    size={is_mobile ? 'xs' : 's'}
                     as='div'
                 >
                     {localize('Quick strategy guides')}

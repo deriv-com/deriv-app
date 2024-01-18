@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Text } from '@deriv/quill-design';
 import { THooks } from '../../../../../types';
 import { MarketTypeDetails } from '../../../constants';
@@ -8,7 +8,7 @@ type TJurisdictionFootNoteTitle = {
     selectedJurisdiction: THooks.AvailableMT5Accounts['shortcode'];
 };
 
-const JurisdictionFootNoteTitle: FC<TJurisdictionFootNoteTitle> = ({ marketType, selectedJurisdiction }) => {
+const JurisdictionFootNoteTitle = ({ marketType, selectedJurisdiction }: TJurisdictionFootNoteTitle) => {
     let footnoteText: string | undefined;
 
     const marketTypeDetails = MarketTypeDetails(false);

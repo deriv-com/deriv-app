@@ -22,7 +22,7 @@ export const STRATEGY_1_3_2_6: TDescriptionItem[] = [
     },
     {
         type: 'subtitle',
-        content: [localize('Key Parameters')],
+        content: [localize('Key parameters')],
     },
     {
         type: 'text',
@@ -86,31 +86,19 @@ export const STRATEGY_1_3_2_6: TDescriptionItem[] = [
         type: 'text',
         content: [
             localize(
-                'The idea behind this strategy is to capitalise on consecutive successful trades while minimising losses during losing streaks.  However, it is crucial to exercise caution as the risk can quickly increase with this strategy.'
+                'The 1-3-2-6 strategy is designed to capitalise on consecutive successful trades while minimising losses during losing streaks. The rationale behind this strategy lies in statistical probabilities, with adjustments to stake sizes based on the perceived likelihood of success. There is a higher likelihood of success in the second trade after one successful trade. Hence the stake adjusts to 3 in the second trade. In the third trade, the stake adjusts to 2 units due to a lower probability of a successful trade. If the third trade is also successful, the strategy then allocates all the previous gains (a total of 6 units of initial stake) into the fourth trade with the aim of doubling the potential profits. If the fourth trade results in a positive outcome, the strategy helps achieve a total gain of 12 units. However, it is crucial to exercise caution, as the risk can escalate quickly with this strategy, and any loss in the fourth trade forfeits all previous gains.'
             ),
         ],
     },
     {
         type: 'subtitle',
-        content: [localize('Understanding the Rationale behind the 1-3-2-6 Strategy')],
+        content: [localize('Profit and loss thresholds')],
     },
     {
         type: 'text',
         content: [
             localize(
-                'The 1-3-2-6 strategy is based on statistical probabilities. There is a higher likelihood of success in the second trade after one successful trade. Hence the stake adjusts to 3 in the second trade. In the third trade, the stake adjusts to 2 units due to a lower probability of a successful trade. If the third trade is also successful, the strategy then allocates all the previous gains (a total of 6 units of initial stake) into the fourth trade with the aim of doubling the potential profits. If the fourth trade results in a positive outcome, the strategy helps achieve a total gain of 12 units. However, if it results in a loss, all the previous gains are forfeited.'
-            ),
-        ],
-    },
-    {
-        type: 'subtitle',
-        content: [localize('Profit and Loss Thresholds')],
-    },
-    {
-        type: 'text',
-        content: [
-            localize(
-                'Deriv Bot allows setting profit and loss thresholds to manage risk. A profit threshold will automatically stop trading after reaching a preset amount to lock your potential profits. A loss threshold will stop trading after accumulating a preset loss amount. These thresholds secure potential profits and limit potential losses as part of your risk management. For example, with a 100 USD profit threshold, the bot will stop after exceeding 100 USD in total profit.'
+                'With Deriv Bot, traders can set the profit and loss thresholds to secure potential profits and limit potential losses. This means that the trading bot will automatically stop when either the profit or loss threshold is reached. This is a form of risk management that can potentially boost successful trades whilst limiting the impact of loss. For example, if a trader sets the profit threshold at 100 USD and the strategy exceeds 100 USD of profit from all trades, then the bot will stop running.'
             ),
         ],
     },
@@ -134,7 +122,7 @@ export const STRATEGY_1_3_2_6: TDescriptionItem[] = [
         type: 'text_italic',
         content: [
             localize(
-                'Please be aware that while we may use rounded figures for illustration, a stake of a specific amount does not guarantee an exact amount in successful trades. For example, a 1 USD stake does not necessarily equate to a 1 USD profit in successful trades'
+                'Please be aware that while we may use rounded figures for illustration, a stake of a specific amount does not guarantee an exact amount in successful trades. For example, a 1 USD stake does not necessarily equate to a 1 USD profit in successful trades.'
             ),
             localize(
                 'Trading inherently involves risks, and actual profits can fluctuate due to various factors, including market volatility and other unforeseen variables. As such, exercise caution and conduct thorough research before engaging in any trading activities.'

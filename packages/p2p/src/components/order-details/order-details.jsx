@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, Icon, InlineMessage, Text, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile, routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
@@ -18,9 +18,10 @@ import { useStores } from 'Stores';
 import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import SeparatorContainerLine from 'Components/separator-container-line';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
 import { getDateAfterHours } from 'Utils/date-time';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { getInlineTextSize } from 'Utils/responsive';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(() => {
@@ -199,14 +200,11 @@ const OrderDetails = observer(() => {
         <OrderDetailsWrapper page_title={page_title}>
             {should_show_lost_funds_banner && (
                 <div className='order-details--warning'>
-                    <HintBox
-                        icon='IcAlertWarning'
-                        message={
-                            <Text size='xxxs' color='prominent' line_height='xs'>
-                                <Localize i18n_default_text="Don't risk your funds with cash transactions. Use bank transfers or e-wallets instead." />
-                            </Text>
-                        }
-                        is_warn
+                    <InlineMessage
+                        message={localize(
+                            "Don't risk your funds with cash transactions. Use bank transfers or e-wallets instead."
+                        )}
+                        size={getInlineTextSize('sm', 'xs')}
                     />
                 </div>
             )}

@@ -19,6 +19,7 @@ const NewTradeParamPopupWrapper = ({
     const [hide_parent, setHideParent] = React.useState(true);
     const [show_take_profit, setShowTakeProfit] = React.useState(true);
     const [show_stop_loss, setShowStopLoss] = React.useState(false);
+    const input_ref = React.useRef<HTMLInputElement>(null);
 
     const onFocusHandler = (e: React.MouseEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -51,7 +52,10 @@ const NewTradeParamPopupWrapper = ({
                 in={show_details}
                 timeout={300}
                 unmountOnExit
-                onEnter={() => setHideParent(false)}
+                onEnter={() => {
+                    setHideParent(false);
+                    input_ref?.current?.focus();
+                }}
                 onExited={() => setHideParent(true)}
             >
                 <div
@@ -180,7 +184,8 @@ const NewTradeParamPopupWrapper = ({
                                             title='Non-negative integral number'
                                             className='trade-param_popup_input'
                                             defaultValue='10.00'
-                                            // autoFocus
+                                            // autoFocus={should_focus}
+                                            ref={input_ref}
                                         />
                                         <div className='trade-param_popup_input_text'>
                                             Acceptable range: 1.00 - 2,000.00 USD

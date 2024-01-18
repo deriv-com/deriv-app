@@ -9,7 +9,7 @@ import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswor
 
 const MT5ChangePasswordScreens = () => {
     const [showSentEmailContentWithoutTabs, setShowSentEmailContentWithoutTabs] = useState(false);
-    const [_, setTabNumber] = useState(0);
+    const [, setTabNumber] = useState(0);
 
     const platform = PlatformDetails.mt5.platform;
     const { title } = PlatformDetails[platform];

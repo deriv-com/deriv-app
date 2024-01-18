@@ -5,7 +5,6 @@ import { Button, Text, TextField } from '@deriv/quill-design';
 import { ActionScreen } from '../../../../../components';
 import { Provider } from '@deriv/library';
 import useDevice from '../../../hooks/useDevice';
-import { validPassword } from '../../../../../utils/password';
 import { PlatformDetails } from '../../../constants';
 
 type TFormInitialValues = {
@@ -85,13 +84,10 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                             </div>
                             <div className='flex flex-col content-center gap-800'>
                                 <Button
-                                    // quill component issue, need to uncomment these back once we have the proper component
-                                    // disabled={
-                                    //     !validPassword(values.currentPassword) || !validPassword(values.newPassword)
-                                    // }
+                                    // quill component issue, add type submit and disabled once the proper component is ready
+
                                     isLoading={changeInvestorPasswordStatus === 'loading'}
                                     size={isMobile ? 'lg' : 'md'}
-                                    // type='submit'
                                 >
                                     Change investor password
                                 </Button>

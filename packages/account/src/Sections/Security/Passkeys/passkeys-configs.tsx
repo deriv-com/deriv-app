@@ -76,9 +76,9 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
 
     const icons: Record<Exclude<TPasskeysStatus, ''>, string> = {
         registered: 'IcSuccessPasskey',
-        renaming: 'IcRenamePasskey',
+        renaming: 'IcEditPasskey',
         revoked: 'IcSuccessPasskey',
-        revoke_verify: 'IcRevokePasskey',
+        revoke_verify: 'IcVerifyPasskey',
     };
 
     const descriptions: Record<Exclude<TPasskeysStatus, ''>, React.ReactElement> = {

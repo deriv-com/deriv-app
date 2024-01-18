@@ -2,25 +2,29 @@ import React from 'react';
 import DerivedMT5 from '../../../../public/images/mt5-derived.svg';
 import FinancialMT5 from '../../../../public/images/mt5-financial.svg';
 import SwapFreeMT5 from '../../../../public/images/mt5-swap-free.svg';
+import i18n from '../../../../translations/i18n';
 import { MT5AccountTypeCard } from '../MT5AccountTypeCard';
 import './MT5AccountType.scss';
 
 const marketTypeDetailsMapper = {
     all: {
-        description:
-            'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities cryptocurrencies, ETFs and synthetic indices.',
+        description: i18n.t(
+            'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities cryptocurrencies, ETFs and synthetic indices.'
+        ),
         icon: <SwapFreeMT5 />,
-        title: 'Swap-Free',
+        title: i18n.t('Swap-Free'),
     },
     financial: {
-        description: 'Trade CFDs on MT5 with forex, stocks and indices, commodities, cryptocurrencies, and ETFs.',
+        description: i18n.t(
+            'Trade CFDs on MT5 with forex, stocks and indices, commodities, cryptocurrencies, and ETFs.'
+        ),
         icon: <FinancialMT5 />,
-        title: 'Financial',
+        title: i18n.t('Financial'),
     },
     synthetic: {
-        description: 'Trade CFDs on MT5 with derived indices that simulate real-world market movements.',
+        description: i18n.t('Trade CFDs on MT5 with derived indices that simulate real-world market movements.'),
         icon: <DerivedMT5 />,
-        title: 'Derived',
+        title: i18n.t('Derived'),
     },
 };
 

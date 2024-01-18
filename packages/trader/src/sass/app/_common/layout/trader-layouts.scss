@@ -994,7 +994,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
         .trade-param {
             &_section {
                 background-color: var(--general-main-1);
-                // height: 37.9rem;
                 height: calc(100vh - 29.5rem);
                 border-radius: 0.8rem;
                 padding: 1.6rem;
@@ -1002,9 +1001,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 flex-direction: column;
                 overflow-y: scroll;
 
-                &::-webkit-scrollbar {
-                    display: none;
-                }
+                // &::-webkit-scrollbar {
+                //     display: none;
+                // }
 
                 &_title {
                     height: 4.4rem;
@@ -1106,8 +1105,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
         flex-direction: column;
         justify-content: space-between;
         padding: 0.8rem 1.6rem 1.6rem;
-        transform: translateY(0);
-        -webkit-transform: translate3d(0, 0, 0);
 
         transition: transform 0.3s linear;
 
@@ -1115,17 +1112,15 @@ $FLOATING_HEADER_HEIGHT: 41px;
         &-enter {
             transform: translateY(100vh);
 
+            &-active,
             &-done {
                 transform: translateY(0);
             }
         }
 
         &-exit {
-            transform: translateY(0);
-
-            &-done {
-                transform: translateY(100vh);
-            }
+            transform: translateY(100vh);
+            transition: transform 0.3s linear;
         }
 
         .contract-type-info__button-wrapper {
@@ -1205,4 +1200,16 @@ $FLOATING_HEADER_HEIGHT: 41px;
             margin-bottom: 1.6rem;
         }
     }
+}
+
+.info-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    border: 1px solid var(--core-color-solid-slate-1400, #000);
+    margin-left: 0.8rem;
 }

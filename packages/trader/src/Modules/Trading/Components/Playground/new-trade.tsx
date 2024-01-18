@@ -18,7 +18,7 @@ const NewTrade = () => {
                     onItemSelect={() => {}}
                     list={[
                         <NewTradeParamsContainer onClick={() => setShowDetails(true)} key={1} />,
-                        <div key={2}>Hello, I&apos;m not ready</div>,
+                        <div key={2}>Hello, I&apos;m not ready. Let&apos;s pretend there&apos;s a chart here.</div>,
                     ]}
                     nav_position='bottom'
                     bullet_position='bottom'
@@ -26,14 +26,12 @@ const NewTrade = () => {
                     width={100}
                 />
             </div>
-            {show_details && (
-                <NewTradeParamPopup
-                    onClick={() => {
-                        setShowDetails(false);
-                    }}
-                    show_details={show_details}
-                />
-            )}
+            <NewTradeParamPopup
+                onClick={() => {
+                    setShowDetails(false);
+                }}
+                show_details={show_details}
+            />
             <div className='footer-new'>
                 <div className='footer-new_bottom-sheet'>
                     <div className='footer-new_bottom-sheet_payout'>

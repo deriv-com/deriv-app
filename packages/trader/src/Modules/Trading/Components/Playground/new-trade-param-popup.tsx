@@ -6,6 +6,9 @@ import { CSSTransition } from 'react-transition-group';
 
 const NewTradeParamPopup = ({ onClick, show_details }: { onClick: () => void; show_details?: boolean }) => {
     const [value, setValue] = React.useState('1.00');
+    const [hide_parent, setHideParent] = React.useState(true);
+    const [show_take_profit, setShowTakeProfit] = React.useState(true);
+    const [show_stop_loss, setShowStopLoss] = React.useState(false);
 
     const onFocusHandler = (e: React.MouseEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -24,7 +27,7 @@ const NewTradeParamPopup = ({ onClick, show_details }: { onClick: () => void; sh
         <div
             className='trade-param_popup_overlay'
             onClick={onClick}
-            // style={{ display: `${show_details ? 'flex' : 'none'}` }}
+            style={{ opacity: `${hide_parent ? '0' : '1'}`, pointerEvents: `${hide_parent ? 'none' : 'auto'}` }}
         >
             <CSSTransition
                 appear
@@ -34,11 +37,12 @@ const NewTradeParamPopup = ({ onClick, show_details }: { onClick: () => void; sh
                     enter: `trade-param_popup_container-enter`,
                     enterDone: `trade-param_popup_container-enter-done`,
                     exit: `trade-param_popup_container-exit`,
-                    exitDone: `trade-param_popup_container-exit-done`,
                 }}
-                in={true}
+                in={show_details}
                 timeout={300}
                 unmountOnExit
+                onEnter={() => setHideParent(false)}
+                onExited={() => setHideParent(true)}
             >
                 <div className='trade-param_popup_container' {...swipe_handlers} onClick={onClickHandler}>
                     <div className='trade-param_popup_top'>
@@ -60,60 +64,68 @@ const NewTradeParamPopup = ({ onClick, show_details }: { onClick: () => void; sh
                         </div>
                         <div>
                             <div className='trade-param_popup_section'>
-                                <div>Take profit </div>
+                                <div>
+                                    Take profit <span className='info-icon'>i</span>
+                                </div>
                                 <React.Fragment>
                                     <input
                                         className={classNames('dc-toggle-switch')}
-                                        id='123'
+                                        id='take_profit'
                                         type='checkbox'
-                                        // checked={true}
-                                        defaultChecked
-                                        // onChange={handleToggle}
+                                        checked={show_take_profit}
+                                        onChange={() => setShowTakeProfit(!show_take_profit)}
                                     />
-                                    <label className={classNames('dc-toggle-switch__label')} htmlFor='123'>
+                                    <label className={classNames('dc-toggle-switch__label')} htmlFor='take_profit'>
                                         <span className={classNames('dc-toggle-switch__button')} />
                                     </label>
                                 </React.Fragment>
                             </div>
-                            <input
-                                type='number'
-                                min='0'
-                                inputMode='numeric'
-                                // pattern='[0-9]*'
-                                title='Non-negative integral number'
-                                className='trade-param_popup_input'
-                                defaultValue='1.00'
-                                onFocus={onFocusHandler as unknown as React.FocusEventHandler<HTMLInputElement>}
-                            />
-                            <div className='trade-param_popup_input_text'>Value higher than 0.10 USD</div>
+                            {show_take_profit && (
+                                <React.Fragment>
+                                    <input
+                                        type='number'
+                                        min='0'
+                                        inputMode='numeric'
+                                        title='Non-negative integral number'
+                                        className='trade-param_popup_input'
+                                        defaultValue='1.00'
+                                        onFocus={onFocusHandler as unknown as React.FocusEventHandler<HTMLInputElement>}
+                                    />
+                                    <div className='trade-param_popup_input_text'>Value higher than 0.10 USD</div>
+                                </React.Fragment>
+                            )}
                         </div>
                         <div>
                             <div className='trade-param_popup_section'>
-                                <div>Stop loss</div>
+                                <div>
+                                    Stop loss <span className='info-icon'>i</span>
+                                </div>
                                 <React.Fragment>
                                     <input
                                         className={classNames('dc-toggle-switch')}
-                                        id='123'
+                                        id='stop_loss'
                                         type='checkbox'
-                                        // checked={true}
-                                        defaultChecked
-                                        // onChange={handleToggle}
+                                        checked={show_stop_loss}
+                                        onChange={() => setShowStopLoss(!show_stop_loss)}
                                     />
-                                    <label className={classNames('dc-toggle-switch__label')} htmlFor='123'>
+                                    <label className={classNames('dc-toggle-switch__label')} htmlFor='stop_loss'>
                                         <span className={classNames('dc-toggle-switch__button')} />
                                     </label>
                                 </React.Fragment>
                             </div>
-                            <input
-                                type='number'
-                                min='0'
-                                inputMode='numeric'
-                                // pattern='[0-9]*'
-                                title='Non-negative integral number'
-                                className='trade-param_popup_input'
-                                defaultValue='1.00'
-                            />
-                            <div className='trade-param_popup_input_text'>Value higher than 0.10 USD</div>
+                            {show_stop_loss && (
+                                <React.Fragment>
+                                    <input
+                                        type='number'
+                                        min='0'
+                                        inputMode='numeric'
+                                        title='Non-negative integral number'
+                                        className='trade-param_popup_input'
+                                        defaultValue='1.00'
+                                    />
+                                    <div className='trade-param_popup_input_text'>Value higher than 0.10 USD</div>
+                                </React.Fragment>
+                            )}
                         </div>
                     </div>
                     <div className='trade-param_popup_bottom'>

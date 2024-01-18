@@ -37,6 +37,7 @@ const AccountSignup = ({
     const [pw_input, setPWInput] = React.useState('');
     const [is_password_modal, setIsPasswordModal] = React.useState(false);
     const [is_disclaimer_accepted, setIsDisclaimerAccepted] = React.useState(false);
+    const [is_questionnaire, setIsQuestionnaire] = React.useState(false);
     const [modded_state, setModdedState] = React.useState({});
     const language = getLanguage();
 
@@ -59,8 +60,6 @@ const AccountSignup = ({
             questionnaire_value = [{ ...default_ab_value.default }, { ...questionnaire_value }];
         return questionnaire_value;
     }, [ab_value, language]);
-
-    const is_questionnaire = React.useMemo(() => ab_questionnaire !== 'inactive', [ab_questionnaire]);
 
     const checkResidenceIsBrazil = selected_country =>
         selected_country && residence_list[indexOfSelection(selected_country)]?.value?.toLowerCase() === 'br';
@@ -114,7 +113,7 @@ const AccountSignup = ({
         setModdedState(modded_values);
 
         // a/b test
-        !is_questionnaire && onSignup(modded_values, onSignupComplete);
+        ab_questionnaire === 'inactive' ? onSignup(modded_values, onSignupComplete) : setIsQuestionnaire(true);
     };
 
     const onSignupComplete = error => {
@@ -218,7 +217,7 @@ const AccountSignup = ({
                                 </div>
                             ) : (
                                 <React.Fragment>
-                                    {!is_questionnaire ? (
+                                    {is_questionnaire ? (
                                         <QuestionnaireModal
                                             ab_questionnaire={ab_questionnaire}
                                             handleSignup={handleSignup}

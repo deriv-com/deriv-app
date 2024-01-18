@@ -29,7 +29,7 @@ const PaymentMethodForm = ({
 }: TPaymentMethodFormProps) => {
     const {
         control,
-        formState: { isValid },
+        formState: { isDirty, isSubmitting, isValid },
         handleSubmit,
     } = useForm({ mode: 'all' });
     const { paymentMethod, title, type } = paymentMethodFormConfig;
@@ -178,6 +178,8 @@ const PaymentMethodForm = ({
                     );
                 })}
                 <PaymentMethodFormFooter
+                    isDirty={isDirty}
+                    isSubmitting={isSubmitting}
                     isValid={isValid}
                     onGoBack={onGoBack}
                     paymentMethod={paymentMethod}

@@ -511,10 +511,12 @@ export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5Accoun
 export const isPOARequiredForMT5 = (account_status: GetAccountStatus, jurisdiction_shortcode: string) => {
     const { authentication } = account_status;
 
-    if (authentication?.attempts?.latest?.service !== 'idv') {
-        return !['pending', 'verified'].includes(authentication?.document?.status ?? '');
+    if (!['pending', 'verified'].includes(authentication?.document?.status ?? '')) {
+        if (authentication?.attempts?.latest?.service === 'idv') {
+            // @ts-expect-error as the prop authenticated_with_idv is not yet present in GetAccountStatus
+            return !authentication?.document?.authenticated_with_idv[jurisdiction_shortcode];
+        }
+        return true;
     }
-
-    // @ts-expect-error as the prop authenticated_with_idv is not yet present in GetAccountStatus
-    return !authentication?.document?.authenticated_with_idv[jurisdiction_shortcode];
+    return false;
 };

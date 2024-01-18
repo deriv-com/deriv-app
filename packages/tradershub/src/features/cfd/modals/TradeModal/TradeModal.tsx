@@ -21,8 +21,7 @@ const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
         setCfdState('marketType', marketType);
         setCfdState('platform', platform);
         if (platform === CFDPlatforms.MT5) setCfdState('accountId', (account as THooks.MT5AccountsList)?.loginid);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [account, marketType, platform, setCfdState]);
 
     const appOrder = ['ios', 'android', 'huawei'];
 

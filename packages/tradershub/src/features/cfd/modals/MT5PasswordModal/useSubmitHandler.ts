@@ -6,17 +6,15 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
-import { TMarketTypes } from '../../../../types';
-import { Category, MarketType, PlatformDetails } from '../../constants';
+import { Provider } from '@deriv/library';
+import { MarketType, PlatformDetails } from '../../constants';
 import { Jurisdiction } from '../../screens/CFDCompareAccounts/constants';
 
-type TSubmitHandlerProps = {
-    marketType: TMarketTypes.SortedMT5Accounts;
+type TProps = {
     password: string;
-    selectedJurisdiction: string;
 };
 
-export const useSubmitHandler = async ({ marketType, password, selectedJurisdiction }: TSubmitHandlerProps) => {
+export const useSubmitHandler = async ({ password }: TProps) => {
     const { data: accountStatus } = useAccountStatus();
     const { mutate } = useCreateMT5Account();
     const { mutateAsync: tradingPasswordChange } = useTradingPlatformPasswordChange();
@@ -24,8 +22,11 @@ export const useSubmitHandler = async ({ marketType, password, selectedJurisdict
     const { data: settings } = useSettings();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
+    const { getCFDState } = Provider.useCFDContext();
 
-    const accountType = marketType === MarketType.SYNTHETIC ? 'gaming' : marketType;
+    const marketType = getCFDState('marketType') ?? 'all';
+    const selectedJurisdiction = getCFDState('selectedJurisdiction');
+
     // in order to create account, we need to set a password through trading_platform_password_change endpoint first
     // then only mt5_create_account can be called, otherwise it will response an error for password required
     if (isMT5PasswordNotSet) {
@@ -35,8 +36,9 @@ export const useSubmitHandler = async ({ marketType, password, selectedJurisdict
         });
     }
 
-    const categoryAccountType = activeTrading?.is_virtual ? Category.DEMO : accountType;
-    // make a helper function for this
+    const accountType = marketType === MarketType.SYNTHETIC ? 'gaming' : marketType;
+    const categoryAccountType = activeTrading?.is_virtual ? 'demo' : accountType;
+
     mutate({
         payload: {
             account_type: categoryAccountType,
@@ -51,8 +53,7 @@ export const useSubmitHandler = async ({ marketType, password, selectedJurisdict
             ...(selectedJurisdiction &&
                 (selectedJurisdiction !== Jurisdiction.LABUAN
                     ? {
-                          account_type: categoryAccountType,
-                          ...(selectedJurisdiction === MarketType.FINANCIAL && {
+                          ...(marketType === MarketType.FINANCIAL && {
                               mt5_account_type: MarketType.FINANCIAL,
                           }),
                       }

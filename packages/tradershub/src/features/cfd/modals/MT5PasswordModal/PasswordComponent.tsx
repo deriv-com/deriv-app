@@ -3,32 +3,28 @@ import { useAccountStatus, useCreateMT5Account, useTradingPlatformPasswordChange
 import { Provider } from '@deriv/library';
 import { SentEmailContent } from '../../../../components';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { TMarketTypes, TPlatforms } from '../../../../types';
-import { PlatformDetails, TTM5FilterLandingCompany } from '../../constants';
+import { PlatformDetails } from '../../constants';
 import { CreatePassword, EnterPassword } from '../../screens';
 import { useSubmitHandler } from './useSubmitHandler';
 
 type TPasswordComponentProps = {
-    marketType: TMarketTypes.SortedMT5Accounts;
     password: string;
-    platform: TPlatforms.All;
-    selectedJurisdiction: TTM5FilterLandingCompany;
     setPassword: (password: string) => void;
 };
 
-const PasswordComponent = ({
-    marketType,
-    password,
-    platform,
-    selectedJurisdiction,
-    setPassword,
-}: TPasswordComponentProps) => {
+const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) => {
     const { isLoading: tradingPlatformPasswordChangeLoading } = useTradingPlatformPasswordChange();
-    const { data: accountStatus } = useAccountStatus();
-    const { show } = Provider.useModal();
-    const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
     const { error, isLoading: createMT5AccountLoading } = useCreateMT5Account();
-    const submitHandler = useSubmitHandler({ marketType, password, selectedJurisdiction });
+    const { data: accountStatus } = useAccountStatus();
+
+    const { show } = Provider.useModal();
+    const { getCFDState } = Provider.useCFDContext();
+
+    const marketType = getCFDState('marketType') ?? 'all';
+    const platform = getCFDState('platform') ?? 'mt5';
+
+    const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
+    const submitHandler = useSubmitHandler({ password });
 
     return isMT5PasswordNotSet ? (
         <CreatePassword

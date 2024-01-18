@@ -3,27 +3,20 @@ import { useCreateMT5Account, useTradingPlatformPasswordChange } from '@deriv/ap
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
 import { ButtonGroup, Modal, SentEmailContent } from '../../../../../components';
-import { TMarketTypes, TPlatforms } from '../../../../../types';
-import { TTM5FilterLandingCompany } from '../../../constants';
 import { useSubmitHandler } from '../useSubmitHandler';
 
-type TAddAccountButtonsGroupProps = {
-    marketType: TMarketTypes.SortedMT5Accounts;
+type TProps = {
     password: string;
-    platform: TPlatforms.All;
-    selectedJurisdiction: TTM5FilterLandingCompany;
 };
 
-const AddAccountButtonsGroup = ({
-    marketType,
-    password,
-    platform,
-    selectedJurisdiction,
-}: TAddAccountButtonsGroupProps) => {
+const AddAccountButtonsGroup = ({ password }: TProps) => {
     const { show } = Provider.useModal();
     const { isLoading: createMT5AccountLoading } = useCreateMT5Account();
     const { isLoading: tradingPlatformPasswordChangeLoading } = useTradingPlatformPasswordChange();
-    const submitHandler = useSubmitHandler({ marketType, password, selectedJurisdiction });
+    const { getCFDState } = Provider.useCFDContext();
+
+    const platform = getCFDState('platform') ?? 'mt5';
+    const submitHandler = useSubmitHandler({ password });
     return (
         <ButtonGroup className='w-full'>
             <Button

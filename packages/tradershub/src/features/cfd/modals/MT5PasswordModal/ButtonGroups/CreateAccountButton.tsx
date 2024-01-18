@@ -1,19 +1,15 @@
 import React from 'react';
 import { useCreateMT5Account, useTradingPlatformPasswordChange } from '@deriv/api';
 import { Button } from '@deriv/quill-design';
-import { TMarketTypes } from '../../../../../types';
 import { validPassword } from '../../../../../utils/password';
-import { TTM5FilterLandingCompany } from '../../../constants';
 import { useSubmitHandler } from '../useSubmitHandler';
 
-type TCreateAccountButtonProps = {
-    marketType: TMarketTypes.SortedMT5Accounts;
+type TProps = {
     password: string;
-    selectedJurisdiction: TTM5FilterLandingCompany;
 };
 
-const CreateAccountButton = ({ marketType, password, selectedJurisdiction }: TCreateAccountButtonProps) => {
-    const submitHandler = useSubmitHandler({ marketType, password, selectedJurisdiction });
+const CreateAccountButton = ({ password }: TProps) => {
+    const submitHandler = useSubmitHandler({ password });
     const { isLoading: createMT5AccountLoading } = useCreateMT5Account();
     const { isLoading: tradingPlatformPasswordChangeLoading } = useTradingPlatformPasswordChange();
 

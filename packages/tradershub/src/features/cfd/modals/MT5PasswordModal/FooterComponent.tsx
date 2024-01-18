@@ -1,37 +1,23 @@
 import React from 'react';
 import { useCreateMT5Account, useMT5AccountsList } from '@deriv/api';
-import { TMarketTypes, TPlatforms } from '../../../../types';
-import { TTM5FilterLandingCompany } from '../../constants';
 import AddAccountButtonsGroup from './ButtonGroups/AddAccountButtonsGroup';
 import CreateAccountButton from './ButtonGroups/CreateAccountButton';
-import TransferFundsButtonsGroup from './ButtonGroups/TransferFundsButtonsGroup';
+import SuccessButtonGroup from './ButtonGroups/SuccessButtonGroup';
 
-type TFooterComponentProps = {
-    marketType: TMarketTypes.SortedMT5Accounts;
+type TProps = {
     password: string;
-    platform: TPlatforms.All;
-    selectedJurisdiction: TTM5FilterLandingCompany;
 };
 
-const FooterComponent = ({ marketType, password, platform, selectedJurisdiction }: TFooterComponentProps) => {
+const FooterComponent = ({ password }: TProps) => {
     const { data: mt5Accounts } = useMT5AccountsList();
-    const hasMT5Account = mt5Accounts?.find(account => account.login);
     const { isSuccess } = useCreateMT5Account();
 
-    if (isSuccess) return <TransferFundsButtonsGroup />;
+    const hasMT5Account = mt5Accounts?.find(account => account.login);
 
-    if (hasMT5Account)
-        return (
-            <AddAccountButtonsGroup
-                marketType={marketType}
-                password={password}
-                platform={platform}
-                selectedJurisdiction={selectedJurisdiction}
-            />
-        );
+    if (isSuccess) return <SuccessButtonGroup />;
 
-    return (
-        <CreateAccountButton marketType={marketType} password={password} selectedJurisdiction={selectedJurisdiction} />
-    );
+    if (hasMT5Account) return <AddAccountButtonsGroup password={password} />;
+
+    return <CreateAccountButton password={password} />;
 };
 export default FooterComponent;

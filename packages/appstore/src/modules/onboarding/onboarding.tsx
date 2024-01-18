@@ -45,7 +45,7 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const has_active_real_account = useHasActiveRealAccount();
     const steps_list = Object.keys(contents).filter(key => is_mt5_allowed || key !== 'step3');
 
-    // growthbook experiment to skip onboarding for targetd users
+    // growthbook experiment to skip onboarding for targeted users
     const growthbook_experiment_skip_onboarding_flow = useFeatureIsOn('skip-onboarding-flow');
 
     const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose, trackDotNavigation } =

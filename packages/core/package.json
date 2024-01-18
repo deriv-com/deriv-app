@@ -89,7 +89,6 @@
         "@babel/polyfill": "^7.4.4",
         "@datadog/browser-rum": "^4.37.0",
         "@deriv/account": "^1.0.0",
-        "@growthbook/growthbook-react": "^0.22.0",
         "@deriv/analytics": "^1.4.8",
         "@deriv/api": "^1.0.0",
         "@deriv/library": "^1.0.0",

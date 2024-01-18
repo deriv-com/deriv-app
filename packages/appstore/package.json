@@ -26,7 +26,6 @@
     "dependencies": {
         "@deriv/analytics": "^1.4.8",
         "@deriv/api": "^1.0.0",
-        "@growthbook/growthbook-react": "^0.22.0",
         "@deriv/account": "^1.0.0",
         "@deriv/api-types": "^1.0.118",
         "@deriv/cashier": "^1.0.0",
@@ -40,6 +39,7 @@
         "@testing-library/jest-dom": "^5.12.0",
         "@deriv/hooks": "^1.0.0",
         "@deriv/wallets": "^1.0.0",
+        "@growthbook/growthbook-react": "^0.22.0",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
         "lodash.debounce": "^4.0.8",

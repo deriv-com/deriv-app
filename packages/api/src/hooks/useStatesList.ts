@@ -3,7 +3,7 @@ import useQuery from '../useQuery';
 import useSettings from './useSettings';
 
 /** Custom hook to get states list for a particular country. */
-type TStatesList = NonNullable<ReturnType<typeof useSettings>['data']['residence' | 'country']>;
+type TStatesList = Exclude<NonNullable<ReturnType<typeof useSettings>['data']['residence' | 'country']>, undefined>;
 
 const useStatesList = (country: TStatesList) => {
     const { data, ...rest } = useQuery('states_list', {

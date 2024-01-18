@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
-import { useActiveWalletAccount, useAuthorize, usePOI } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, usePOI, useWalletAccountsList } from '@deriv/api';
 import { displayMoney as displayMoney_ } from '@deriv/api/src/utils';
 import { THooks } from '../../../../../../types';
 import { TAccount, TInitialTransferFormValues, TMessageFnProps, TTransferMessage } from '../../types';
 import {
     cumulativeAccountLimitsMessageFn,
+    insufficientBalanceMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
     transferFeesBetweenWalletsMessageFn,
 } from './utils';
@@ -28,6 +29,7 @@ const useTransferMessages = ({
 }: TProps) => {
     const { data: authorizeData } = useAuthorize();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { data: walletAccounts } = useWalletAccountsList();
     const { preferred_language: preferredLanguage } = authorizeData;
     const { data: poi } = usePOI();
 
@@ -44,18 +46,25 @@ const useTransferMessages = ({
         [preferredLanguage]
     );
 
-    if (!activeWallet || !fromAccount || !toAccount) return [];
+    if (!activeWallet || !fromAccount) return [];
+
+    const fiatAccount = walletAccounts?.find(account => account.account_type === 'doughflow');
 
     const sourceAmount = formData.fromAmount;
+    const targetAmount = formData.toAmount;
 
     const messageFns: ((props: TMessageFnProps) => TTransferMessage | null)[] = [];
     const messages: TTransferMessage[] = [];
 
+    messageFns.push(insufficientBalanceMessageFn);
+
+    if (!isAccountVerified && isTransferBetweenWallets) {
+        messageFns.push(lifetimeAccountLimitsBetweenWalletsMessageFn);
+    }
     if (isAccountVerified || (!isAccountVerified && !isTransferBetweenWallets)) {
         messageFns.push(cumulativeAccountLimitsMessageFn);
     }
-    if (!isAccountVerified && isTransferBetweenWallets) {
-        messageFns.push(lifetimeAccountLimitsBetweenWalletsMessageFn);
+    if (isTransferBetweenWallets) {
         messageFns.push(transferFeesBetweenWalletsMessageFn);
     }
 
@@ -64,14 +73,20 @@ const useTransferMessages = ({
             activeWallet,
             activeWalletExchangeRates,
             displayMoney,
+            fiatAccount,
             limits: accountLimits,
             sourceAccount: fromAccount,
             sourceAmount,
             targetAccount: toAccount,
+            targetAmount,
             USDExchangeRates,
         });
         if (message) messages.push(message);
     });
+
+    if (messages.some(message => message.type === 'error')) {
+        return messages.filter(message => message.type === 'error');
+    }
 
     return messages;
 };

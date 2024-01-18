@@ -1,6 +1,7 @@
 import {
     WS,
     getPropertyValue,
+    getSortedTradeTypes,
     cloneObject,
     isTimeValid,
     minDate,
@@ -247,18 +248,17 @@ export const ContractType = (() => {
         };
     };
 
-    const getContractType = (list: TTradeTypesCategories, contract_type: string) => {
-        const arr_list: string[] = Object.keys(list || {})
+    const getContractType = (list: TTradeTypesCategories, contractType: string) => {
+        const filteredList = Object.keys(list || {})
             .reduce<string[]>((k, l) => [...k, ...(list[l].categories as TTextValueStrings[]).map(ct => ct.value)], [])
             .filter(
                 type =>
-                    unsupported_contract_types_list.indexOf(type as typeof unsupported_contract_types_list[number]) ===
-                    -1
-            )
-            .sort((a, b) => (a === TRADE_TYPES.MULTIPLIER || b === TRADE_TYPES.MULTIPLIER ? -1 : 0));
+                    !unsupported_contract_types_list.includes(type as typeof unsupported_contract_types_list[number])
+            );
+        const sortedList = getSortedTradeTypes(filteredList);
 
         return {
-            contract_type: getArrayDefaultValue(arr_list, contract_type),
+            contract_type: getArrayDefaultValue(sortedList, contractType),
         };
     };
 
@@ -561,10 +561,12 @@ export const ContractType = (() => {
             }
 
             // For contracts with a duration of more that 24 hours must set the expiry_time to the market's close time on the expiry date.
-            if (!start_date && ServerTime.get().isBefore(buildMoment(expiry_date), 'day')) {
+            if (!start_date && ServerTime.get()?.isBefore(buildMoment(expiry_date), 'day')) {
                 end_time = market_close_time;
             } else {
-                const start_moment = start_date ? buildMoment(start_date, start_time) : ServerTime.get();
+                const start_moment = start_date
+                    ? buildMoment(start_date, start_time)
+                    : (ServerTime.get() as moment.Moment);
                 const end_moment = buildMoment(expiry_date, expiry_time);
 
                 end_time = end_moment.format('HH:mm');

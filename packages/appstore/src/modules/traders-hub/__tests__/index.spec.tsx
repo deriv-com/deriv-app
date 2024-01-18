@@ -30,10 +30,17 @@ describe('TradersHub', () => {
     });
 
     it('should display both CFDs and Multipliers section', () => {
-        render_container({ client: { is_logged_in: true } });
+        render_container({ client: { is_logged_in: true, is_mt5_allowed: true } });
         const dashboard_sections = screen.getByTestId('dt_traders_hub');
         expect(dashboard_sections?.textContent?.match(/Multipliers/)).not.toBeNull();
         expect(dashboard_sections?.textContent?.match(/CFDs/)).not.toBeNull();
+    });
+
+    it('should display Multipliers section if there is no MT5 accounts availble for country of residence', () => {
+        render_container({ client: { is_logged_in: true, is_mt5_allowed: false } });
+        const dashboard_sections = screen.getByTestId('dt_traders_hub');
+        expect(dashboard_sections?.textContent?.match(/Multipliers/)).not.toBeNull();
+        expect(dashboard_sections?.textContent?.match(/CFDs/)).toBeNull();
     });
 
     it('should display Multipliers and CFDs section in order if the user is non eu', () => {

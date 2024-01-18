@@ -1,7 +1,6 @@
 import React from 'react';
 import { Icon, Carousel } from '@deriv/components';
 import NewTradeTypeWidget from './new-trade-type-widget';
-// import NewChartDropdown from './new-chart-dropdown';
 import NewTradeParamsContainer from './new-trade-params-container';
 import NewTradeParamPopup from './new-trade-param-popup';
 
@@ -32,7 +31,7 @@ const NewTrade = () => {
                     onClick={() => {
                         setShowDetails(false);
                     }}
-                    // show_details={show_details}
+                    show_details={show_details}
                 />
             )}
             <div className='footer-new'>

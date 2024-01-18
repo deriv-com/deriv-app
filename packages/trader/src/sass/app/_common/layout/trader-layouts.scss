@@ -912,11 +912,6 @@ $FLOATING_HEADER_HEIGHT: 41px;
         height: 100%;
         background-color: var(--general-section-1);
         padding: 0.8rem;
-        // overflow-y: scroll;
-
-        // &::-webkit-scrollbar {
-        //     display: none;
-        // }
 
         .dc-carousel__nav-list {
             width: 5rem;
@@ -1099,12 +1094,9 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
     &_container {
         position: absolute;
-        height: 46.4rem;
+        height: 45.2rem;
         width: 100%;
         bottom: 0;
-        // top: 40%;
-        // opacity: 0;
-        transition: opacity 0.3s;
         background-color: var(--general-main-1);
         border-top: 1px solid var(--general-section-1);
         border-top-right-radius: 1.4rem;
@@ -1114,7 +1106,27 @@ $FLOATING_HEADER_HEIGHT: 41px;
         flex-direction: column;
         justify-content: space-between;
         padding: 0.8rem 1.6rem 1.6rem;
+        transform: translateY(0);
         -webkit-transform: translate3d(0, 0, 0);
+
+        transition: transform 0.3s linear;
+
+        &-appear,
+        &-enter {
+            transform: translateY(100vh);
+
+            &-done {
+                transform: translateY(0);
+            }
+        }
+
+        &-exit {
+            transform: translateY(0);
+
+            &-done {
+                transform: translateY(100vh);
+            }
+        }
 
         .contract-type-info__button-wrapper {
             margin: 0.8rem 0 1.6rem;
@@ -1175,7 +1187,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     }
 
     &_input {
-        height: 5.6rem;
+        height: 5rem;
         width: 100%;
         padding: 16px;
         border-radius: 8px;

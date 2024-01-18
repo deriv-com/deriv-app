@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Formik } from 'formik';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
 import { Button, Text, TextField } from '@deriv/quill-design';
@@ -44,7 +44,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
     return (
         <ActionScreen
             description={
-                <>
+                <Fragment>
                     <Text size='sm'>
                         Use this password to grant viewing access to another user. While they may view your trading
                         account, they will not be able to trade or take any other actions.
@@ -58,7 +58,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                             {changeInvestorPasswordError?.error?.message}
                         </Text>
                     )}
-                </>
+                </Fragment>
             }
             descriptionSize='sm'
             renderButtons={() => (
@@ -85,7 +85,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                             </div>
                             <div className='flex flex-col content-center gap-800'>
                                 <Button
-                                    // quill component issue, needs to bring these back once we have the proper component
+                                    // quill component issue, need to uncomment these back once we have the proper component
                                     // disabled={
                                     //     !validPassword(values.currentPassword) || !validPassword(values.newPassword)
                                     // }
@@ -96,10 +96,11 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                     Change investor password
                                 </Button>
                                 <Button
+                                    className='border-none'
                                     colorStyle='coral'
                                     onClick={sendEmail}
                                     size={isMobile ? 'lg' : 'md'}
-                                    variant='tertiary'
+                                    variant='secondary'
                                 >
                                     Create or reset investor password
                                 </Button>

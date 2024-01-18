@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
-import { Trans } from 'react-i18next';
+import { Tabs, Tab } from '@deriv-com/ui/dist/components/Tabs';
 import { SentEmailContent } from '../../../../components';
-import { Text, Tab } from '@deriv/quill-design';
+import { Text } from '@deriv/quill-design';
 import IcBackArrow from '../../../../public/images/ic-back-arrow.svg';
 import { PlatformDetails } from '../../constants';
 import MT5ChangeInvestorPasswordScreens from './InvestorPassword/MT5ChangeInvestorPasswordScreens';
@@ -9,7 +9,7 @@ import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswor
 
 const MT5ChangePasswordScreens = () => {
     const [showSentEmailContentWithoutTabs, setShowSentEmailContentWithoutTabs] = useState(false);
-    const [tabNumber, setTabNumber] = useState(0);
+    const [_, setTabNumber] = useState(0);
 
     const platform = PlatformDetails.mt5.platform;
     const { title } = PlatformDetails[platform];
@@ -30,9 +30,7 @@ const MT5ChangePasswordScreens = () => {
                 }}
             >
                 <IcBackArrow />
-                <Text weight='bold'>
-                    <Trans defaults='Back' />
-                </Text>
+                <Text weight='bold'>Back</Text>
             </div>
 
             <div className='mt-1600 w-full'>
@@ -43,15 +41,14 @@ const MT5ChangePasswordScreens = () => {
             </div>
         </Fragment>
     ) : (
-        // <Tab.List preSelectedTab={tabNumber} wrapperClassName='wallets-change-password__tab'>
-        <Tab.List>
-            <Tab.Content title={`${title} Password`}>
+        <Tabs className='w-[452px] md:w-full' variant='secondary'>
+            <Tab title={`${title} Password`}>
                 <TradingPlatformChangePasswordScreens platform={platform} />
-            </Tab.Content>
-            <Tab.Content title='Investor Password'>
+            </Tab>
+            <Tab title='Investor Password'>
                 <MT5ChangeInvestorPasswordScreens setShowEmailSentScreen={setShowSentEmailContentWithoutTabs} />
-            </Tab.Content>
-        </Tab.List>
+            </Tab>
+        </Tabs>
     );
 };
 

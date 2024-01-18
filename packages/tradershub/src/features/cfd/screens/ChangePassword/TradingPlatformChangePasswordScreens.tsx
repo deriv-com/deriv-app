@@ -49,10 +49,11 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
             ),
             button: (
                 <div className='flex gap-400'>
-                    <Text onClick={() => hide()} size='lg' variant='outlined'>
+                    <Button onClick={() => hide()} size='lg' variant='outlined'>
                         Cancel
-                    </Text>
+                    </Button>
                     <Button
+                        className='rounded-200'
                         onClick={() => {
                             handleSendEmail();
                             handleClick('emailVerification');
@@ -78,7 +79,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
 
     if (activeScreen === 'emailVerification')
         return (
-            <div className='w-full mt-1600 lg:mt-2000'>
+            <div className='w-full mt-1600 md:mt-2000'>
                 <SentEmailContent platform={platform} />
             </div>
         );

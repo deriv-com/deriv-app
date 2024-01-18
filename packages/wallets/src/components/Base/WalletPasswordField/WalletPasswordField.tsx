@@ -71,7 +71,11 @@ const WalletPasswordField: React.FC<WalletPasswordFieldProps> = ({
                 onBlur={handleBlur}
                 onChange={handleChange}
                 renderRightIcon={() => (
-                    <PasswordViewerIcon setViewPassword={setIsPasswordVisible} viewPassword={isPasswordVisible} />
+                    <PasswordViewerIcon
+                        isIconDisabled={!password}
+                        setViewPassword={setIsPasswordVisible}
+                        viewPassword={isPasswordVisible}
+                    />
                 )}
                 shouldShowWarningMessage
                 showMessage={showMessage}

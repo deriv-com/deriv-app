@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik } from 'formik';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
 import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
+import { WalletPasswordFieldLazy, WalletTextField } from '../../../../../components/Base';
+import PasswordViewerIcon from '../../../../../components/Base/WalletPasswordField/PasswordViewerIcon';
 import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
 import { validPassword } from '../../../../../utils/password';
 import { PlatformDetails } from '../../../constants';
-import { WalletPasswordFieldLazy } from '../../../../../components/Base';
 
 type TFormInitialValues = {
     currentPassword: string;
@@ -22,6 +23,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
     const { isMobile } = useDevice();
     const { getModalState } = useModal();
     const mt5AccountId = getModalState('accountId') ?? '';
+    const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
 
     const {
         error: changeInvestorPasswordError,
@@ -66,12 +68,20 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                     {({ handleChange, handleSubmit, values }) => (
                         <form className='wallets-change-investor-password-screens__form' onSubmit={handleSubmit}>
                             <div className='wallets-change-investor-password-screens__form-fields'>
-                                <WalletPasswordFieldLazy
+                                <WalletTextField
                                     autoComplete='current-password'
                                     label='Current investor password'
                                     name='currentPassword'
                                     onChange={handleChange}
-                                    password={values.currentPassword}
+                                    renderRightIcon={() => (
+                                        <PasswordViewerIcon
+                                            isIconDisabled={!values.currentPassword}
+                                            setViewPassword={setIsCurrentPasswordVisible}
+                                            viewPassword={isCurrentPasswordVisible}
+                                        />
+                                    )}
+                                    type={isCurrentPasswordVisible ? 'text' : 'password'}
+                                    value={values.currentPassword}
                                 />
                                 <WalletPasswordFieldLazy
                                     autoComplete='new-password'
@@ -83,9 +93,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                             </div>
                             <div className='wallets-change-investor-password-screens__form-buttons'>
                                 <WalletButton
-                                    disabled={
-                                        !validPassword(values.currentPassword) || !validPassword(values.newPassword)
-                                    }
+                                    disabled={!values.currentPassword || !validPassword(values.newPassword)}
                                     isLoading={changeInvestorPasswordStatus === 'loading'}
                                     size={isMobile ? 'lg' : 'md'}
                                     type='submit'

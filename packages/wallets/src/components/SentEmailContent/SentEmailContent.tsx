@@ -56,7 +56,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPa
                                 setShouldShowResendEmailReasons(true);
                             }}
                             size={emailLinkSize}
-                            variant='ghost'
+                            variant='contained'
                         >
                             <Trans defaults="Didn't receive the email?" />
                         </WalletButton>

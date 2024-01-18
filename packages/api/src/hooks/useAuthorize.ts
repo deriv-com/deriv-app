@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { getActiveAuthTokenIDFromLocalStorage, getActiveLoginIDFromLocalStorage } from '@deriv/utils';
 import useInvalidateQuery from '../useInvalidateQuery';
 import useQuery from '../useQuery';
@@ -10,12 +10,17 @@ import { useAPIContext } from '../APIProvider';
 const useAuthorize = () => {
     const current_token = getActiveAuthTokenIDFromLocalStorage();
     const invalidate = useInvalidateQuery();
+    const tokenRef = useRef();
     const { switchEnvironment } = useAPIContext();
 
     const { data, ...rest } = useQuery('authorize', {
         payload: { authorize: current_token || '' },
-        options: { enabled: Boolean(current_token) },
+        options: { enabled: Boolean(tokenRef.current) },
     });
+
+    useEffect(() => {
+        if (current_token) tokenRef.current = current_token;
+    }, [current_token]);
 
     // Add additional information to the authorize response.
     const modified_authorize = useMemo(() => ({ ...data?.authorize }), [data?.authorize]);

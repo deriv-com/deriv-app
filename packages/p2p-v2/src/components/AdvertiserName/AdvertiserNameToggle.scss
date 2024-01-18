@@ -7,14 +7,11 @@
     }
 
     &__label {
-        & h1 {
-            font-size: 1.4rem;
-            line-height: 2rem;
-        }
+        display: flex;
+        flex-direction: column;
 
-        & h2 {
+        &-real-name {
             font-size: 1rem;
-            color: #999999;
         }
     }
 }

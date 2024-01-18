@@ -3,6 +3,12 @@ import { useAdvertiserStats } from '../../hooks';
 import { Badge } from '../Badge';
 import './AdvertiserNameBadges.scss';
 
+/**
+ * This component is used to show an advertiser's badge, for instance:
+ * +100 Trades, ID verified, Address not verified, etc
+ *
+ * Use cases are usually in My Profile page and Advertiser page used under the advertiser's name
+ */
 const AdvertiserNameBadges = () => {
     const { data: advertiserStats, isLoading } = useAdvertiserStats();
 

@@ -1,11 +1,13 @@
 import React from 'react';
-import { useAdvertiserStats } from '../../../../hooks';
+import { useAdvertiserStats, useDevice } from '../../../../hooks';
 import InfoOutlineIcon from '../../../../public/ic-info-outline.svg';
 import { numberToCurrencyText } from '../../../../utils';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import './MyProfileBalance.scss';
 
 const MyProfileBalance = () => {
     const { data: advertiserInfo, isLoading } = useAdvertiserStats();
+    const { isDesktop } = useDevice();
 
     if (isLoading || !advertiserInfo) return <h1>Loading...</h1>;
 
@@ -13,35 +15,55 @@ const MyProfileBalance = () => {
         <div className='p2p-v2-my-profile-balance'>
             <div className='p2p-v2-my-profile-balance__amount'>
                 <div>
-                    <h1>Available Deriv P2P Balance</h1>
+                    <Text color='less-prominent' size={isDesktop ? 'sm' : 'md'} weight='normal'>
+                        Available Deriv P2P Balance
+                    </Text>
                     <InfoOutlineIcon />
                 </div>
-                <span>{numberToCurrencyText(advertiserInfo.balance_available || 0)} USD</span>
+                <Text size='xl' weight='bold'>
+                    {numberToCurrencyText(advertiserInfo.balance_available || 0)} USD
+                </Text>
             </div>
             <div className='p2p-v2-my-profile-balance__items'>
                 <div className='p2p-v2-my-profile-balance__item'>
-                    <h1>Buy</h1>
+                    <Text size='sm'>Buy</Text>
                     <div className='p2p-v2-my-profile-balance__item-limits'>
                         <div>
-                            <h1>Daily limit</h1>
-                            <span>{advertiserInfo?.daily_buy_limit} USD</span>
+                            <Text color='less-prominent' size='sm'>
+                                Daily limit
+                            </Text>
+                            <Text className='p2p-v2-my-profile-balance__label' size='sm' weight='bold'>
+                                {advertiserInfo?.daily_buy_limit} USD
+                            </Text>
                         </div>
                         <div>
-                            <h1>Available</h1>
-                            <span>{numberToCurrencyText(advertiserInfo.dailyAvailableBuyLimit)} USD</span>
+                            <Text color='less-prominent' size='sm'>
+                                Available
+                            </Text>
+                            <Text className='p2p-v2-my-profile-balance__label' size='sm' weight='bold'>
+                                {numberToCurrencyText(advertiserInfo.dailyAvailableBuyLimit)} USD
+                            </Text>
                         </div>
                     </div>
                 </div>
                 <div className='p2p-v2-my-profile-balance__item'>
-                    <h1>Sell</h1>
+                    <Text size='sm'>Sell</Text>
                     <div className='p2p-v2-my-profile-balance__item-limits'>
                         <div>
-                            <h1>Daily limit</h1>
-                            <span>{advertiserInfo?.daily_sell_limit} USD</span>
+                            <Text color='less-prominent' size='sm'>
+                                Daily limit
+                            </Text>
+                            <Text className='p2p-v2-my-profile-balance__label' size='sm' weight='bold'>
+                                {advertiserInfo?.daily_sell_limit} USD
+                            </Text>
                         </div>
                         <div>
-                            <h1>Available</h1>
-                            <span>{numberToCurrencyText(advertiserInfo.dailyAvailableSellLimit)} USD</span>
+                            <Text color='less-prominent' size='sm'>
+                                Available
+                            </Text>
+                            <Text className='p2p-v2-my-profile-balance__label' size='sm' weight='bold'>
+                                {numberToCurrencyText(advertiserInfo.dailyAvailableSellLimit)} USD
+                            </Text>
                         </div>
                     </div>
                 </div>

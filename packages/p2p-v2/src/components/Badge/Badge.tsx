@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import clsx from 'clsx';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import './Badge.scss';
 
 type TBadgeProps = {
@@ -17,8 +18,12 @@ const Badge = ({ label, status, variant }: TBadgeProps) => {
                 'p2p-v2-badge--general': variant === 'general',
             })}
         >
-            <span className='p2p-v2-badge__label'>{label}</span>
-            <span className='p2p-v2-badge__status'>{status}</span>
+            <Text className='p2p-v2-badge__label' color='white' weight='bold'>
+                {label}
+            </Text>
+            <Text className='p2p-v2-badge__status' color='white'>
+                {status}
+            </Text>
         </div>
     );
 };

@@ -1,12 +1,21 @@
 import React from 'react';
-import { useAdvertiserStats } from '../../hooks';
+import { useAdvertiserStats, useDevice } from '../../hooks';
 import { StarRating } from '../StarRating';
 import ThumbUpIcon from '../../public/ic-thumb-up.svg';
 import BlockedUserOutlineIcon from '../../public/ic-user-blocked-outline.svg';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import './AdvertiserNameStats.scss';
 
+/**
+ * This component is to show an advertiser's stats, in UI its commonly used under an advertiser's name
+ * Example:
+ * Joined 2d | Not rated yet | x x x x x (5 ratings)
+ *
+ * Use cases are to show this in My Profile and Advertiser page
+ */
 const AdvertiserNameStats = () => {
     const { data: advertiserStats, isLoading } = useAdvertiserStats();
+    const { isMobile } = useDevice();
 
     // TODO: Use Skeleton loader here
     if (isLoading || !advertiserStats) return <h1>Loading...</h1>;
@@ -16,30 +25,45 @@ const AdvertiserNameStats = () => {
     return (
         <div className='p2p-v2-advertiser-name-stats'>
             <div>
-                <h2>Joined {daysSinceJoined}d</h2>
+                <Text color='less-prominent' size='sm'>
+                    Joined {daysSinceJoined}d
+                </Text>
             </div>
             {!rating_average && (
                 <div>
-                    <h2>Not rated yet</h2>
+                    <Text color='less-prominent' size='sm'>
+                        Not rated yet
+                    </Text>
                 </div>
             )}
             {rating_average && (
                 <>
                     <div>
                         <div className='p2p-v2-advertiser-name-stats__rating'>
+                            {isMobile && (
+                                <Text color='less-prominent' size='sm'>
+                                    ({rating_average})
+                                </Text>
+                            )}
                             <StarRating ratingValue={rating_average} />
-                            <h2>({rating_count} ratings)</h2>
+                            <Text color='less-prominent' size='sm'>
+                                ({rating_count} ratings)
+                            </Text>
                         </div>
                     </div>
                     <div>
                         <ThumbUpIcon />
-                        <h2>{recommended_average || 0}%</h2>
+                        <Text color='less-prominent' size='sm'>
+                            {recommended_average || 0}%
+                        </Text>
                     </div>
                 </>
             )}
             <div>
                 <BlockedUserOutlineIcon />
-                <h2>{blocked_by_count}</h2>
+                <Text color='less-prominent' size='sm'>
+                    {blocked_by_count}
+                </Text>
             </div>
         </div>
     );

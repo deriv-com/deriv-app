@@ -2,6 +2,7 @@ import React, { useEffect, useState, memo } from 'react';
 import { useAdvertiserStats } from '../../hooks';
 import { ToggleSwitch } from '../ToggleSwitch';
 import { useAdvertiserUpdate } from '@deriv/api';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import './AdvertiserNameToggle.scss';
 
 type TAdvertiserNameToggle = {
@@ -27,8 +28,12 @@ const AdvertiserNameToggle = memo(({ onToggle }: TAdvertiserNameToggle) => {
     return (
         <div className='p2p-v2-advertiser-name-toggle'>
             <div className='p2p-v2-advertiser-name-toggle__label'>
-                <h1>Show my real name</h1>
-                <h2>{advertiserInfo?.fullName}</h2>
+                <Text lineHeight='lg' size='sm'>
+                    Show my real name
+                </Text>
+                <Text className='p2p-v2-advertiser-name-toggle__label-real-name' color='less-prominent' lineHeight='xs'>
+                    {advertiserInfo?.fullName}
+                </Text>
             </div>
             <ToggleSwitch onChange={onToggleShowRealName} value={shouldShowRealName} />
         </div>

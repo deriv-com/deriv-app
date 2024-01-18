@@ -21,6 +21,7 @@ export { default as useCancelCryptoTransaction } from './useCancelCryptoTransact
 export { default as useCashierFiatAddress } from './useCashierFiatAddress';
 // TODO: Export these into P2P entities
 export { default as useChatCreate } from './p2p/useChatCreate';
+export { default as useCreateAdvertiser } from './p2p/useCreateAdvertiser';
 export { default as useAdvertiserInfo } from './p2p/useAdvertiserInfo';
 export { default as useAdvertiserUpdate } from './p2p/useAdvertiserUpdate';
 

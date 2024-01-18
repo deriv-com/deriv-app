@@ -1,0 +1,50 @@
+.p2p-v2-input {
+    margin: 0.5rem 0 3.6rem;
+
+    @include mobile {
+        margin-bottom: 1rem;
+    }
+
+    &__error {
+        padding-top: 0.2rem;
+        position: absolute;
+        margin-left: 1.6rem;
+
+        @include mobile {
+            box-decoration-break: clone;
+            padding-top: 0.4rem;
+            margin-bottom: 0.6rem;
+            position: relative;
+            width: 296px;
+        }
+    }
+
+    &__field {
+        display: flex;
+        width: 360px;
+        height: 40px;
+        padding: 10px 16px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 4px;
+        border: 1px solid #d6dadb;
+
+        @include mobile {
+            width: 296px;
+        }
+
+        &:focus-visible {
+            outline: none;
+            border-color: #85acb0;
+        }
+
+        &::placeholder {
+            color: #999;
+        }
+
+        &--error {
+            // stylelint-disable-next-line declaration-no-important
+            border-color: #ec3f3f !important;
+        }
+    }
+}

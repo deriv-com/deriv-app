@@ -1,51 +1,39 @@
 import React from 'react';
-import { getStatusBadgeConfig } from '@deriv/account';
+import getStatusBadgeConfig from '@deriv/account/src/Configs/get-status-badge-config';
 import { Button, Icon, Modal, Money, StatusBadge, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrencyName } from '@deriv/shared';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { observer, useStore } from '@deriv/stores';
 import CurrencyIcon from './currency';
 import { AccountListDetail } from './types';
 import classNames from 'classnames';
-import { useHasSetCurrency } from '@deriv/hooks';
+import { useHasSetCurrency, useMFAccountStatus } from '@deriv/hooks';
 
 type CurrencySelectionModalProps = {
-    //TODO: Replace the type with a proper one when ts migration cards merged
-    account_list: object[];
-    //TODO: Replace the type with a proper one when ts migration cards merged
-    //TODO: Replace the type with a proper one when ts migration cards merged
-    accounts: any;
-    closeModal: () => void;
     is_visible: boolean;
-    loginid: string;
-    openRealAccountSignup: (account_type: string) => void;
-    openFailedVerificationModal: (from_account: string) => void;
-    selected_region: string;
-    switchAccount: (loginid: string) => void;
-    multipliers_account_status: string | null;
-    toggleSetCurrencyModal: () => void;
-    has_any_real_account: boolean;
 };
 
-const CurrencySelectionModal = ({
-    account_list,
-    accounts,
-    closeModal,
-    is_visible,
-    loginid: current_loginid,
-    openRealAccountSignup,
-    openFailedVerificationModal,
-    selected_region,
-    switchAccount,
-    multipliers_account_status,
-    toggleSetCurrencyModal,
-    has_any_real_account,
-}: CurrencySelectionModalProps) => {
+const CurrencySelectionModal = observer(({ is_visible }: CurrencySelectionModalProps) => {
+    const { client, traders_hub, ui } = useStore();
+    const {
+        account_list,
+        accounts,
+        switchAccount,
+        has_any_real_account,
+        account_status,
+        loginid: current_loginid,
+    } = client;
+    const { closeModal, selected_region, openFailedVerificationModal } = traders_hub;
+    const { openRealAccountSignup, toggleSetCurrencyModal } = ui;
+    const { authentication } = account_status;
+
+    const mf_account_status = useMFAccountStatus();
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
-        multipliers_account_status,
+        mf_account_status,
         openFailedVerificationModal,
-        'multipliers'
+        'multipliers',
+        undefined,
+        { poi_status: authentication?.identity?.status, poa_status: authentication?.document?.status }
     );
 
     const hasSetCurrency = useHasSetCurrency();
@@ -91,9 +79,9 @@ const CurrencySelectionModal = ({
                                     </Text>
                                 </div>
                                 <div className='currency-item-card__balance'>
-                                    {multipliers_account_status ? (
+                                    {mf_account_status ? (
                                         <StatusBadge
-                                            account_status={multipliers_account_status}
+                                            account_status={mf_account_status}
                                             icon={badge_icon}
                                             text={badge_text}
                                         />
@@ -127,18 +115,6 @@ const CurrencySelectionModal = ({
             </div>
         </Modal>
     );
-};
+});
 
-export default connect(({ client, traders_hub, ui }: RootStore) => ({
-    account_list: client.account_list,
-    accounts: client.accounts,
-    closeModal: traders_hub.closeModal,
-    loginid: client.loginid,
-    openRealAccountSignup: ui.openRealAccountSignup,
-    selected_region: traders_hub.selected_region,
-    switchAccount: client.switchAccount,
-    openFailedVerificationModal: traders_hub.openFailedVerificationModal,
-    multipliers_account_status: traders_hub.multipliers_account_status,
-    toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
-    has_any_real_account: client.has_any_real_account,
-}))(CurrencySelectionModal);
+export default CurrencySelectionModal;

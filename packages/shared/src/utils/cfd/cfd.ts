@@ -332,7 +332,6 @@ type TAuthenticationStatusInfo = {
     poi_resubmit_for_maltainvest: boolean;
     poi_resubmit_for_bvi_labuan_vanuatu: boolean;
     poa_pending: boolean;
-    poa_resubmit_for_labuan: boolean;
     is_idv_revoked: boolean;
 };
 
@@ -349,7 +348,6 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         manual: { status: manual_status } = {},
     } = services;
 
-    const is_authenticated_with_idv_photoid = account_status?.status?.includes('authenticated_with_idv_photoid');
     const is_idv_revoked = account_status?.status?.includes('idv_revoked');
 
     const acknowledged_status: string[] = ['pending', 'verified'];
@@ -419,7 +417,6 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         !poi_verified_for_bvi_labuan_vanuatu;
 
     const poi_poa_verified_for_bvi_labuan_vanuatu: boolean = poi_verified_for_bvi_labuan_vanuatu && poa_verified;
-    const poa_resubmit_for_labuan = is_authenticated_with_idv_photoid;
 
     return {
         poa_status,
@@ -450,7 +447,6 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         poi_resubmit_for_maltainvest,
         poi_resubmit_for_bvi_labuan_vanuatu,
         poa_pending,
-        poa_resubmit_for_labuan,
         is_idv_revoked,
     };
 };
@@ -510,4 +506,15 @@ export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5Accoun
     return `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
         account_type
     )} ${getFormattedJurisdictionCode(jurisdiction)}`;
+};
+
+export const isPOARequiredForMT5 = (account_status: GetAccountStatus, jurisdiction_shortcode: string) => {
+    const { authentication } = account_status;
+
+    if (authentication?.attempts?.latest?.service !== 'idv') {
+        return !['pending', 'verified'].includes(authentication?.document?.status ?? '');
+    }
+
+    // @ts-expect-error as the prop authenticated_with_idv is not yet present in GetAccountStatus
+    return !authentication?.document?.authenticated_with_idv[jurisdiction_shortcode];
 };

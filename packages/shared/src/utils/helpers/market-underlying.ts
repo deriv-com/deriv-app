@@ -1,8 +1,28 @@
+import { localize } from '@deriv/translations';
 import { getMarketNamesMap, getContractConfig } from '../constants/contract';
 
 type TTradeConfig = {
+    button_name?: JSX.Element;
     name: JSX.Element;
     position: string;
+};
+
+type TMarketInfo = {
+    category: string;
+    underlying: string;
+};
+
+export const getContractDurationType = (longcode: string, shortcode?: string): string => {
+    if (shortcode && /^(MULTUP|MULTDOWN)/.test(shortcode)) return '';
+
+    const duration_pattern = /ticks|tick|seconds|minutes|minute|hour|hours/;
+    const extracted = duration_pattern.exec(longcode);
+    if (extracted !== null) {
+        const duration_type = extracted[0];
+        const duration_text = duration_type[0].toUpperCase() + duration_type.slice(1);
+        return duration_text.endsWith('s') ? duration_text : `${duration_text}s`;
+    }
+    return localize('Days');
 };
 
 /**
@@ -12,8 +32,8 @@ type TTradeConfig = {
  */
 
 // TODO: Combine with  extractInfoFromShortcode function in shared, both are currently used
-export const getMarketInformation = (shortcode: string) => {
-    const market_info = {
+export const getMarketInformation = (shortcode: string): TMarketInfo => {
+    const market_info: TMarketInfo = {
         category: '',
         underlying: '',
     };
@@ -33,7 +53,10 @@ export const getMarketInformation = (shortcode: string) => {
 export const getMarketName = (underlying: string) =>
     underlying ? getMarketNamesMap()[underlying.toUpperCase() as keyof typeof getMarketNamesMap] : null;
 
-export const getTradeTypeName = (category: string) =>
-    category
-        ? (getContractConfig()[category.toUpperCase() as keyof typeof getContractConfig] as TTradeConfig).name
-        : null;
+export const getTradeTypeName = (category: string, is_high_low = false, show_button_name = false) => {
+    const trade_type =
+        category &&
+        (getContractConfig(is_high_low)[category.toUpperCase() as keyof typeof getContractConfig] as TTradeConfig);
+    if (!trade_type) return null;
+    return (show_button_name && trade_type.button_name) || trade_type.name || null;
+};

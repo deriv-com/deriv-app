@@ -11,7 +11,8 @@ import CompareAccount from 'Components/compare-account';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { getHasDivider } from 'Constants/utils';
 import './cfds-listing.scss';
-import { useCFDCanGetMoreMT5Accounts } from '@deriv/hooks';
+import { useCFDCanGetMoreMT5Accounts, useMT5SVGEligibleToMigrate } from '@deriv/hooks';
+import MigrationBanner from 'Components/migration-banner';
 
 const CFDsListing = observer(() => {
     const {
@@ -47,9 +48,14 @@ const CFDsListing = observer(() => {
     } = traders_hub;
 
     const { setAccountType } = cfd;
-    const { is_landing_company_loaded, real_account_creation_unlock_date, account_status } = client;
+    const {
+        is_landing_company_loaded,
+        real_account_creation_unlock_date,
+        account_status,
+        is_populating_mt5_account_list,
+    } = client;
     const { setAppstorePlatform } = common;
-    const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
+    const { openDerivRealAccountNeededModal, setShouldShowCooldownModal, setIsMT5VerificationFailedModal } = ui;
     const has_no_real_account = !has_any_real_account;
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
@@ -62,6 +68,7 @@ const CFDsListing = observer(() => {
         is_idv_revoked,
     } = getAuthenticationStatusInfo(account_status);
 
+    const { has_svg_accounts_to_migrate } = useMT5SVGEligibleToMigrate();
     const getAuthStatus = (status_list: boolean[]) => status_list.some(status => status);
 
     const getMT5AccountAuthStatus = (current_acc_status?: string | null, jurisdiction?: string) => {
@@ -111,6 +118,8 @@ const CFDsListing = observer(() => {
                         return MT5_ACCOUNT_STATUS.FAILED;
                     } else if (current_acc_status === 'verification_pending') {
                         return MT5_ACCOUNT_STATUS.PENDING;
+                    } else if (current_acc_status === 'needs_verification') {
+                        return MT5_ACCOUNT_STATUS.NEEDS_VERIFICATION;
                     } else if (current_acc_status === 'migrated_with_position') {
                         return MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION;
                     } else if (current_acc_status === 'migrated_without_position') {
@@ -169,23 +178,21 @@ const CFDsListing = observer(() => {
             }
         >
             {isMobile() && <CompareAccount accounts_sub_text={accounts_sub_text} />}
-
             <AddDerivAccount />
-
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text line_height='m' weight='bold' color='prominent'>
                     {localize('Deriv MT5')}
                 </Text>
             </div>
-
-            {is_landing_company_loaded ? (
+            {has_svg_accounts_to_migrate && <MigrationBanner />}
+            {is_landing_company_loaded && !is_populating_mt5_account_list ? (
                 <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
                         const has_mt5_account_status =
-                            existing_account.status || is_idv_revoked
+                            existing_account?.status || is_idv_revoked
                                 ? getMT5AccountAuthStatus(
-                                      existing_account.status,
+                                      existing_account?.status,
                                       existing_account?.landing_company_short
                                   )
                                 : null;
@@ -225,6 +232,11 @@ const CFDsListing = observer(() => {
                                             showTopUpModal(existing_account);
                                             setAppstorePlatform(existing_account.platform);
                                         } else {
+                                            if (has_mt5_account_status === MT5_ACCOUNT_STATUS.FAILED && is_eu_user) {
+                                                setIsMT5VerificationFailedModal(true);
+                                                openFailedVerificationModal(existing_account);
+                                                return;
+                                            }
                                             startTrade(existing_account.platform, existing_account);
                                         }
                                     }
@@ -253,19 +265,16 @@ const CFDsListing = observer(() => {
             ) : (
                 <PlatformLoader />
             )}
-
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <div className='cfd-full-row'>
                     <hr className='divider' />
                 </div>
             )}
-
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                     <Text weight='bold'>{localize('Deriv cTrader')}</Text>
                 </div>
             )}
-
             {is_landing_company_loaded
                 ? available_ctrader_accounts.map(account => {
                       const existing_accounts = getExistingAccounts(account.platform, account.market_type);
@@ -327,7 +336,6 @@ const CFDsListing = observer(() => {
                       );
                   })
                 : !is_real && <PlatformLoader />}
-
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <React.Fragment>
                     <div className='cfd-full-row'>

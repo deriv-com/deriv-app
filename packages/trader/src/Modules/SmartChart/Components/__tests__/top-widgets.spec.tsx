@@ -5,7 +5,6 @@ import TopWidgets from '../top-widgets';
 import { isMobile, isDesktop } from '@deriv/shared';
 
 jest.mock('../recent-trade-info.tsx', () => jest.fn(() => <div>MockedRecentTradeInfo</div>));
-jest.mock('../buy-toast-notification.tsx', () => jest.fn(() => <div>MockedBuyToastNotification</div>));
 jest.mock('Modules/SmartChart', () => ({
     ...jest.requireActual('Modules/SmartChart'),
     ChartTitle: () => <div>MockedChartTitle</div>,
@@ -50,7 +49,6 @@ describe('<TopWidgets />', () => {
         render(<TopWidgets {...mocked_props} />);
         const chart_title = screen.getByText(/mockedcharttitle/i);
         expect(chart_title).toBeInTheDocument();
-        expect(screen.getByText(/mockedbuytoastnotification/i)).toBeInTheDocument();
     });
     it('Should render mocked recent trade info for Mobile when digits widget is not active', () => {
         mocked_props.is_digits_widget_active = false;

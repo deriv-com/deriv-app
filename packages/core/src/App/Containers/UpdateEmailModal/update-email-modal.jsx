@@ -1,19 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'Stores/connect';
 import { Button, Modal, Text, Icon, Loading } from '@deriv/components';
 import { localize, Localize, getLanguage } from '@deriv/translations';
 import { redirectToLogin } from '@deriv/shared';
 import { WS } from 'Services';
+import { observer, useStore } from '@deriv/stores';
 
-const UpdateEmailModal = ({
-    is_visible,
-    toggleUpdateEmailModal,
-    logoutClient,
-    new_email,
-    verification_code,
-    is_logged_in,
-}) => {
+const UpdateEmailModal = observer(() => {
+    const { ui, client } = useStore();
+    const { logout: logoutClient, is_logged_in } = client;
+    const { is_update_email_modal_visible: is_visible, toggleUpdateEmailModal } = ui;
+    const new_email = client.new_email.system_email_change;
+    const verification_code = client.verification_code.system_email_change;
+
     const [is_email_updated, setIsEmailUpdated] = React.useState(false);
     const [update_email_error, setUpdateEmailMessage] = React.useState(null);
 
@@ -90,22 +88,6 @@ const UpdateEmailModal = ({
             )}
         </Modal>
     );
-};
+});
 
-UpdateEmailModal.prototypes = {
-    toggleUpdateEmailModal: PropTypes.func,
-    is_visible: PropTypes.bool,
-    logoutClient: PropTypes.func,
-    new_email: PropTypes.string,
-    verification_code: PropTypes.string,
-    is_logged_in: PropTypes.bool,
-};
-
-export default connect(({ ui, client }) => ({
-    logoutClient: client.logout,
-    is_visible: ui.is_update_email_modal_visible,
-    toggleUpdateEmailModal: ui.toggleUpdateEmailModal,
-    new_email: client.new_email.system_email_change,
-    verification_code: client.verification_code.system_email_change,
-    is_logged_in: client.is_logged_in,
-}))(UpdateEmailModal);
+export default UpdateEmailModal;

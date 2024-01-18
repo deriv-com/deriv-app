@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { getTextSize } from 'Utils/responsive';
 import './rate-change-modal.scss';
 
 const RateChangeModal = ({ currency }) => {
@@ -21,7 +21,7 @@ const RateChangeModal = ({ currency }) => {
                     as='p'
                     align='left'
                     className='rate-change-modal__message'
-                    size={isMobile() ? 'xxs' : 'xs'}
+                    size={getTextSize('xxs', 'xs')}
                     line_height='s'
                 >
                     <Localize

@@ -1,25 +1,28 @@
-import classNames from 'classnames';
 import React from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import classNames from 'classnames';
+
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import {
-    useOnrampVisible,
     useAccountTransferVisible,
-    useIsP2PEnabled,
-    usePaymentAgentTransferVisible,
     useFeatureFlags,
+    useIsP2PEnabled,
+    useOnrampVisible,
+    usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
-import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
+import { getStaticUrl, PlatformContext, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import NetworkStatus from 'App/Components/Layout/Footer';
-import ServerTime from 'App/Containers/server-time.jsx';
-import getRoutesConfig from 'App/Constants/routes-config';
+
 import LiveChat from 'App/Components/Elements/LiveChat';
-import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
-import PlatformSwitcher from './platform-switcher';
+// import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
+import NetworkStatus from 'App/Components/Layout/Footer';
+import getRoutesConfig from 'App/Constants/routes-config';
+import ServerTime from 'App/Containers/server-time.jsx';
+
+import { MenuTitle, MobileLanguageMenu } from './Components/ToggleMenu';
 import MenuLink from './menu-link';
-import { MobileLanguageMenu, MenuTitle } from './Components/ToggleMenu';
+import PlatformSwitcher from './platform-switcher';
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
@@ -37,12 +40,13 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_logged_in,
         is_logging_in,
         is_virtual,
-        loginid,
+        // loginid,
         logout: logoutClient,
         should_allow_authentication,
+        should_allow_poinc_authentication,
         landing_company_shortcode: active_account_landing_company,
         is_landing_company_loaded,
-        is_pending_proof_of_ownership,
+        is_proof_of_ownership_enabled,
         is_eu,
     } = client;
     const { cashier } = modules;
@@ -54,7 +58,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { data: is_p2p_enabled } = useIsP2PEnabled();
 
-    const liveChat = useLiveChat(false, loginid);
+    // const liveChat = useLiveChat(false, loginid);
     const [is_open, setIsOpen] = React.useState(false);
     const [transitionExit, setTransitionExit] = React.useState(false);
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
@@ -95,7 +99,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             processRoutes();
         }
 
-        return () => clearTimeout(timeout);
+        return () => clearTimeout(timeout.current);
     }, [is_appstore, account_status, should_allow_authentication, is_trading_hub_category, is_next_wallet_enabled]);
 
     const toggleDrawer = React.useCallback(() => {
@@ -145,8 +149,10 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 return is_virtual || active_account_landing_company !== 'maltainvest';
             } else if (/proof-of-address/.test(route_path) || /proof-of-identity/.test(route_path)) {
                 return !should_allow_authentication;
+            } else if (/proof-of-income/.test(route_path)) {
+                return !should_allow_poinc_authentication;
             } else if (/proof-of-ownership/.test(route_path)) {
-                return is_virtual || !is_pending_proof_of_ownership;
+                return is_virtual || !is_proof_of_ownership_enabled;
             }
             return false;
         };
@@ -373,7 +379,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         </MobileDrawer.Item>
                                     </React.Fragment>
                                 )}
-                                {liveChat.isReady && (
+                                {/* {liveChat.isReady && (
                                     <MobileDrawer.Item className='header__menu-mobile-whatsapp'>
                                         <Icon icon='IcWhatsApp' className='drawer-icon' />
                                         <a
@@ -386,9 +392,9 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                             {localize('WhatsApp')}
                                         </a>
                                     </MobileDrawer.Item>
-                                )}
+                                )} */}
                                 <MobileDrawer.Item className='header__menu-mobile-livechat'>
-                                    {is_appstore ? null : <LiveChat is_mobile_drawer />}
+                                    <LiveChat />
                                 </MobileDrawer.Item>
                                 {is_logged_in && (
                                     <MobileDrawer.Item

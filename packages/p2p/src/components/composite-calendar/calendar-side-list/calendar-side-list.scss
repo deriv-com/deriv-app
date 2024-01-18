@@ -1,0 +1,22 @@
+.calendar-side-list {
+    padding-top: 50px;
+    @include typeface(--paragraph-center-normal-black);
+    color: var(--text-prominent);
+    background: var(--general-section-1);
+    border-radius: 0.4rem 0 0 0.4rem;
+
+    &--is-active {
+        background-color: var(--state-active);
+    }
+    & li {
+        cursor: pointer;
+        padding: 6px 6px 6px 16px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+
+        &:hover:not(.calendar-side-list--is-active) {
+            background: var(--state-hover);
+        }
+    }
+}

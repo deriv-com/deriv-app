@@ -87,7 +87,3 @@ export const convertFromChannelMessage = (channel_message: UserMessage | FileMes
         url: channel_message.isFileMessage() ? channel_message.url : undefined,
     });
 };
-
-export const admin_message = localize(
-    "Hello! This is where you can chat with the counterparty to confirm the order details.\nNote: In case of a dispute, we'll use this chat as a reference."
-);

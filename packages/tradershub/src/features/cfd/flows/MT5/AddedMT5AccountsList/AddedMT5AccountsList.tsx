@@ -3,14 +3,21 @@ import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
+import { useUIContext } from '../../../../../components';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
+import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
 import { THooks } from '../../../../../types';
-import { CFDPlatforms, MarketTypeDetails } from '../../../constants';
+import { CFDPlatforms, MarketType, MarketTypeDetails } from '../../../constants';
 import { TradeModal } from '../../../modals/TradeModal';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
     const { data: activeAccount } = useActiveTradingAccount();
+
+    const { getUIState } = useUIContext();
+    const activeRegulation = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegulation);
+
     const { show } = Provider.useModal();
     const history = useHistory();
     const { getVerificationStatus } = useJurisdictionStatus();
@@ -18,7 +25,10 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
         () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
         [account.landing_company_short, account.status, getVerificationStatus]
     );
-    const { title } = MarketTypeDetails[account.market_type ?? 'all'];
+
+    const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
+
+    const title = marketTypeDetails?.title;
 
     return (
         <TradingAccountCard

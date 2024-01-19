@@ -33,7 +33,7 @@ const CurrencyDropdown = () => {
                     'currency-dropdown__list--visible': is_list_visible,
                 })}
                 is_align_text_left
-                list={p2p_settings.local_currencies}
+                list={p2p_settings.currency_list}
                 onClick={() => {
                     if (isMobile()) showModal({ key: 'CurrencySelectorModal' });
                     else setIsListVisible(!is_list_visible);
@@ -44,7 +44,7 @@ const CurrencyDropdown = () => {
             {is_list_visible && (
                 <CurrencySelector
                     default_value={buy_sell_store.selected_local_currency}
-                    list={p2p_settings.local_currencies}
+                    list={p2p_settings.currency_list}
                     onSelect={value => {
                         setIsListVisible(false);
                         onLocalCurrencySelect(value);

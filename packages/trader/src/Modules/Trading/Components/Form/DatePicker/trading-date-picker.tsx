@@ -126,8 +126,7 @@ const TradingDatePicker = observer(({ id, is_24_hours_contract, mode, name }: TT
             const new_market_events: TMarketEvent[] = [];
             let new_disabled_days: number[] = [];
             const events = await ContractType.getTradingEvents(e, symbol);
-            // @ts-expect-error TODO: check if TS error is gone after contract-type is converted to TS
-            events.forEach(evt => {
+            events?.forEach(evt => {
                 const dates = evt.dates.split(', '); // convert dates str into array
                 const idx = dates.indexOf('Fridays');
                 if (idx !== -1) {

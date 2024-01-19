@@ -37,7 +37,7 @@ jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useP2PSettings: jest.fn().mockReturnValue({
         p2p_settings: {
-            local_currencies: [
+            currency_list: [
                 {
                     text: 'USD',
                     value: 'USD',

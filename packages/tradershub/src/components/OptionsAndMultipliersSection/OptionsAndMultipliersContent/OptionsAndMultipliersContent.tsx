@@ -1,11 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
-import { Button, Text, useBreakpoint } from '@deriv/quill-design';
+import { Button, useBreakpoint } from '@deriv/quill-design';
 import { optionsAndMultipliersContent } from '../../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
+import useRegulationFlags from '../../../hooks/useRegulationFlags';
 import { TradingAppCardLoader } from '../../Loaders';
-import { TradingAccountCard } from '../../TradingAccountCard';
+import { TradingAccountCard, TradingAccountCardContent } from '../../TradingAccountCard';
+import { useUIContext } from '../../UIProvider';
 
 type OptionsAndMultipliersContentItem = {
     description: string;
@@ -94,15 +96,20 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
 const OptionsAndMultipliersContent = () => {
     const { isMobile } = useBreakpoint();
     const { data } = useActiveTradingAccount();
-    const { isEU, isSuccess } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
 
-    const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU || false);
+    const { getUIState } = useUIContext();
+    const activeRegulation = getUIState('regulation');
+
+    const { isEU } = useRegulationFlags(activeRegulation);
+
+    const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU ?? false);
 
     const filteredContent = isEU
         ? getoptionsAndMultipliersContent.filter(account => account.title === 'Deriv Trader')
         : getoptionsAndMultipliersContent;
 
-    if (!isSuccess)
+    if (!isRegulationAccessible)
         return (
             <div className='pt-2000'>
                 <TradingAppCardLoader />
@@ -112,28 +119,22 @@ const OptionsAndMultipliersContent = () => {
     return (
         <div className='grid w-full grid-cols-1 gap-200 lg:grid-cols-3 lg:gap-x-1200 lg:gap-y-200'>
             {filteredContent.map(account => {
-                const trailingComponent = () => (
-                    <ShowOpenButton isExternal={account.isExternal} redirect={account.redirect} />
-                );
+                const { description, icon, isExternal, redirect, smallIcon, title } = account;
+
+                const trailingComponent = () => <ShowOpenButton isExternal={isExternal} redirect={redirect} />;
 
                 const leadingComponent = () => (
-                    <LinkTitle icon={data?.loginid || !isMobile ? account.icon : account.smallIcon} title={title} />
+                    <LinkTitle icon={data?.loginid || !isMobile ? icon : smallIcon} title={title} />
                 );
 
-                const title = account.title;
                 return (
                     <TradingAccountCard
                         {...account}
-                        key={`trading-account-card-${account.title}`}
+                        key={`trading-account-card-${title}`}
                         leading={leadingComponent}
                         trailing={trailingComponent}
                     >
-                        <div className='flex flex-col flex-grow'>
-                            <Text bold size='sm'>
-                                {account.title}
-                            </Text>
-                            <Text className='text-[12px]'>{account.description}</Text>
-                        </div>
+                        <TradingAccountCardContent title={title}>{description}</TradingAccountCardContent>
                     </TradingAccountCard>
                 );
             })}

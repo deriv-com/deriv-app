@@ -19,7 +19,7 @@ const NoAds = ({ is_ads_page = false }) => {
     const history = useHistory();
     const { p2p_settings } = useP2PSettings();
 
-    const is_default_currency = p2p_settings.local_currencies.filter(
+    const is_default_currency = p2p_settings.currency_list.filter(
         currency => currency.text.toLowerCase() === selected_local_currency?.toLowerCase() && currency.is_default
     ).length;
 

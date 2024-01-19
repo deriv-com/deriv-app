@@ -3,21 +3,23 @@ import { APIProvider } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { BreakpointProvider } from '@deriv/quill-design';
 import AppContent from './AppContent';
-import { ContentSwitcher } from './components';
+import { ContentSwitcher, UIProvider } from './components';
 import './index.scss';
 
 const App = () => (
-    <APIProvider standalone>
-        <BreakpointProvider>
-            <Provider.ModalProvider>
+    <UIProvider>
+        <APIProvider standalone>
+            <BreakpointProvider>
                 <Provider.CFDProvider>
-                    <ContentSwitcher>
-                        <AppContent />
-                    </ContentSwitcher>
+                    <Provider.ModalProvider>
+                        <ContentSwitcher>
+                            <AppContent />
+                        </ContentSwitcher>
+                    </Provider.ModalProvider>
                 </Provider.CFDProvider>
-            </Provider.ModalProvider>
-        </BreakpointProvider>
-    </APIProvider>
+            </BreakpointProvider>
+        </APIProvider>
+    </UIProvider>
 );
 
 export default App;

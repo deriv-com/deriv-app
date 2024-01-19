@@ -12,7 +12,7 @@ import { useStores } from 'Stores';
 import AppContent from 'Components/app-content.jsx';
 import { setLanguage } from 'Components/i18next';
 import { ModalManager, ModalManagerContextProvider } from 'Components/modal-manager';
-import Routes from 'Components/routes/routes.jsx';
+import Routes from 'Components/routes';
 import './app.scss';
 
 const App = () => {
@@ -136,7 +136,7 @@ const App = () => {
 
     React.useEffect(() => {
         if (p2p_settings) {
-            p2p_settings.local_currencies.forEach(currency => {
+            p2p_settings.currency_list.forEach(currency => {
                 const { is_default, value } = currency;
 
                 if (is_default && !buy_sell_store.selected_local_currency) {

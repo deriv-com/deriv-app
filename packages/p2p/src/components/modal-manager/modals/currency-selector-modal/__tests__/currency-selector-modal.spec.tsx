@@ -11,10 +11,6 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     buy_sell_store: {
         onLocalCurrencySelect: jest.fn(),
         selected_local_currency: 'IDR',
-        local_currencies: [
-            { display_name: 'Indonesian Rupiah', text: 'IDR', value: 'IDR', is_default: true },
-            { display_name: 'New Zealand Dollar', text: 'NZD', value: 'NZD', has_adverts: true },
-        ],
     },
 };
 
@@ -28,7 +24,7 @@ jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useP2PSettings: jest.fn().mockReturnValue({
         p2p_settings: {
-            local_currencies: [
+            currency_list: [
                 { display_name: 'Indonesian Rupiah', text: 'IDR', value: 'IDR', is_default: true },
                 { display_name: 'New Zealand Dollar', text: 'NZD', value: 'NZD', has_adverts: true },
             ],

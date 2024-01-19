@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { useSubscription } from '@deriv/api';
-import P2PSettingsContext from '../stores/P2PSettingsContext';
+import P2PSettingsContext, { TP2PSettings } from '../stores/P2PSettingsContext';
 import { useLocalStorage } from 'usehooks-ts';
 
 type TP2PSettingsProvider = {
@@ -9,7 +9,7 @@ type TP2PSettingsProvider = {
 
 const P2PSettingsProvider = ({ children }: TP2PSettingsProvider) => {
     const { data, subscribe, ...rest } = useSubscription('p2p_settings');
-    const [p2p_settings, setP2PSettings] = useLocalStorage('p2p_settings', {});
+    const [p2p_settings, setP2PSettings] = useLocalStorage<TP2PSettings>('p2p_settings', {} as TP2PSettings);
 
     React.useEffect(() => {
         if (data) {
@@ -64,7 +64,7 @@ const P2PSettingsProvider = ({ children }: TP2PSettingsProvider) => {
                         ? (p2p_settings_data?.float_rate_offset_limit - 0.005).toFixed(2)
                         : p2p_settings_data?.float_rate_offset_limit.toFixed(2),
                 reached_target_date: reached_target_date(),
-                local_currencies: currency_list,
+                currency_list,
             });
         }
     }, [data, setP2PSettings]);

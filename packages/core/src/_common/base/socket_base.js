@@ -181,6 +181,8 @@ const BinarySocketBase = (() => {
 
     const subscribeWebsiteStatus = cb => subscribe({ website_status: 1 }, cb);
 
+    const getTicksHistory = request_object => deriv_api.send(request_object);
+
     const buyAndSubscribe = request => {
         return new Promise(resolve => {
             let called = false;
@@ -456,6 +458,7 @@ const BinarySocketBase = (() => {
         profitTable,
         statement,
         verifyEmail,
+        getTicksHistory,
         tradingPlatformPasswordChange,
         tradingPlatformPasswordReset,
         tradingPlatformAvailableAccounts,

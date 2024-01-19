@@ -23,7 +23,7 @@ const CurrencySelectorModal = () => {
         >
             <CurrencySelector
                 default_value={selected_local_currency}
-                list={p2p_settings?.local_currencies}
+                list={p2p_settings?.currency_list}
                 onSelect={value => {
                     onLocalCurrencySelect(value);
                     hideModal();

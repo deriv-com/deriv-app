@@ -2,7 +2,7 @@ import { createContext } from 'react';
 import { useSubscription } from '@deriv/api';
 import { TSocketAcceptableProps, TSocketResponseData } from '@deriv/api/types';
 
-type TP2PSettings =
+export type TP2PSettings =
     | (TSocketResponseData<'p2p_settings'>['p2p_settings'] & {
           is_cross_border_ads_enabled: boolean;
           is_disabled: boolean;
@@ -10,11 +10,10 @@ type TP2PSettings =
           rate_type: 'float' | 'fixed';
           float_rate_offset_limit_string: string;
           reached_target_date: boolean;
-          local_currencies: {
-              component: JSX.Element;
+          currency_list: {
               display_name: string;
-              has_adverts: boolean;
-              is_default: boolean;
+              has_adverts: 0 | 1;
+              is_default: 1 | undefined;
               text: string;
               value: string;
           }[];

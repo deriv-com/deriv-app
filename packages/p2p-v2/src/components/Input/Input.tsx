@@ -1,6 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-import { useFormContext, UseFormReturn } from 'react-hook-form';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { useDevice } from '../../hooks';
 import './Input.scss';
@@ -8,13 +7,14 @@ import './Input.scss';
 type TInputProps = {
     errorMessage?: string;
     hasError?: boolean;
-    name: string;
-    options?: Parameters<UseFormReturn['register']>[1];
+    onBlur?: () => void;
+    onChange?: () => void;
     placeholder?: string;
+    ref?: React.Ref<HTMLInputElement> | React.RefCallback<HTMLInputElement>;
+    value?: string;
 };
 
-const Input = ({ errorMessage, hasError, name, options, placeholder }: TInputProps) => {
-    const { register } = useFormContext();
+const Input = ({ errorMessage, hasError, onBlur, onChange, placeholder, ref, value }: TInputProps) => {
     const { isMobile } = useDevice();
 
     return (
@@ -23,8 +23,11 @@ const Input = ({ errorMessage, hasError, name, options, placeholder }: TInputPro
                 className={clsx('p2p-v2-input__field', {
                     'p2p-v2-input__field--error': hasError,
                 })}
+                onBlur={onBlur}
+                onChange={onChange}
                 placeholder={placeholder}
-                {...register(name, options)}
+                ref={ref}
+                value={value}
             />
             {hasError && (
                 <Text className='p2p-v2-input__error' color='error' size={isMobile ? 'sm' : 'xs'}>

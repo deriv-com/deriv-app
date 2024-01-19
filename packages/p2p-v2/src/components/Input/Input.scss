@@ -14,6 +14,7 @@
         position: absolute;
         margin-left: 1rem;
         bottom: 13.3rem;
+        left: 4.5rem;
 
         @include mobile {
             bottom: 0;
@@ -22,6 +23,7 @@
             margin: 0 0 0.6rem 1.6rem;
             margin-bottom: 0.6rem;
             position: relative;
+            left: 0;
         }
     }
 

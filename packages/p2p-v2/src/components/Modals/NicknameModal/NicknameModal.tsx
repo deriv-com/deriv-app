@@ -1,5 +1,5 @@
 import React, { ComponentType, useEffect } from 'react';
-import { FormProvider, useForm, useWatch } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import Modal from 'react-modal';
 import { p2p } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
@@ -17,7 +17,6 @@ const NicknameModal = () => {
         formState: { errors },
         getValues,
         handleSubmit,
-        register,
     } = useForm({
         defaultValues: {
             nickname: '',
@@ -53,39 +52,34 @@ const NicknameModal = () => {
             shouldCloseOnOverlayClick
             style={customStyles}
         >
-            <FormProvider {...{ control, errors, register }}>
-                <form className='p2p-v2-nickname-modal__form' onSubmit={handleSubmit(onSubmit)}>
-                    <P2PUserIcon />
-                    <Text className='p2p-v2-nickname-modal__form-title' weight='bold'>
-                        Choose your nickname
-                    </Text>
-                    <Text align='center' className='p2p-v2-nickname-modal__form-text' size={isMobile ? 'md' : 'sm'}>
-                        This nickname will be visible to other Deriv P2P users.
-                    </Text>
-                    <Input
-                        errorMessage={errorMessage}
-                        hasError={hasError}
-                        name='nickname'
-                        options={{ pattern: /^[a-zA-Z0-9.@_-]*$/ }}
-                        placeholder='Your nickname'
-                    />
-                    <Text className='p2p-v2-nickname-modal__form-text' size={isMobile ? 'md' : 'sm'}>
-                        Your nickname cannot be changed later.
-                    </Text>
-                    <div className='p2p-v2-nickname-modal__form__button-group'>
-                        <Button
-                            className='p2p-v2-nickname-modal__form__button-group__cancel'
-                            size='lg'
-                            variant='outlined'
-                        >
-                            Cancel
-                        </Button>
-                        <Button disabled={watchNickname === '' || hasError} size='lg'>
-                            Confirm
-                        </Button>
-                    </div>
-                </form>
-            </FormProvider>
+            <form className='p2p-v2-nickname-modal__form' onSubmit={handleSubmit(onSubmit)}>
+                <P2PUserIcon />
+                <Text className='p2p-v2-nickname-modal__form-title' weight='bold'>
+                    Choose your nickname
+                </Text>
+                <Text align='center' className='p2p-v2-nickname-modal__form-text' size={isMobile ? 'md' : 'sm'}>
+                    This nickname will be visible to other Deriv P2P users.
+                </Text>
+                <Controller
+                    control={control}
+                    name='nickname'
+                    render={({ field }) => (
+                        <Input errorMessage={errorMessage} hasError={hasError} placeholder='Your nickname' {...field} />
+                    )}
+                    rules={{ pattern: /^[a-zA-Z0-9.@_-]*$/ }}
+                />
+                <Text className='p2p-v2-nickname-modal__form-text' size={isMobile ? 'md' : 'sm'}>
+                    Your nickname cannot be changed later.
+                </Text>
+                <div className='p2p-v2-nickname-modal__form__button-group'>
+                    <Button className='p2p-v2-nickname-modal__form__button-group__cancel' size='lg' variant='outlined'>
+                        Cancel
+                    </Button>
+                    <Button disabled={watchNickname === '' || hasError} size='lg'>
+                        Confirm
+                    </Button>
+                </div>
+            </form>
         </ReactModal>
     );
 };

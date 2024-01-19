@@ -87,6 +87,7 @@ const ContractTypeWidget = observer(
             clicked_item: TContractType,
             e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
         ) => {
+            setShowDescription(false);
             const categories = list_with_category();
             const { key } = findContractCategory(categories, clicked_item);
             if ('id' in e.target && e.target.id !== 'info-icon' && clicked_item) {

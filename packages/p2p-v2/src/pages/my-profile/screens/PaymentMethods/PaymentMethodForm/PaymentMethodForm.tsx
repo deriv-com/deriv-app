@@ -131,7 +131,7 @@ const PaymentMethodForm = ({ configFormSate }: TPaymentMethodFormProps) => {
                                 value={paymentMethod?.display_name ?? ''}
                                 variant='comboBox'
                             />
-                            <Text color='less-prominent' size='xs' weight='normal'>
+                            <Text color='less-prominent' size='xs'>
                                 {/* TODO: Remember to translate these */}
                                 <span className='p2p-v2-payment-method-form__text'>Don’t see your payment method?</span>
                                 <ClickableText

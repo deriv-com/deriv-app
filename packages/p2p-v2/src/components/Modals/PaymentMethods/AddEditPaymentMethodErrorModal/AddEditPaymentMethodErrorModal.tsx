@@ -24,12 +24,10 @@ const AddEditPaymentMethodErrorModal = ({ errorMessage, isOpen, onComfirm }: TAd
             style={customStyles}
         >
             <div className='p2p-v2-add-edit-payment-methods-modal__wrapper'>
-                <Text color='prominent' size='md' weight='bold'>
+                <Text color='prominent' weight='bold'>
                     {"Something's not right"}
                 </Text>
-                <Text color='prominent' size='sm' weight='normal'>
-                    {errorMessage}
-                </Text>
+                <Text color='prominent'>{errorMessage}</Text>
                 <div className='p2p-v2-add-edit-payment-methods-modal__buttons'>
                     <Button onClick={onComfirm} size='lg'>
                         Ok

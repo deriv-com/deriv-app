@@ -30,7 +30,7 @@ const ConfirmDeletePaymentMethodModal = ({
             style={customStyles}
         >
             <div className='p2p-v2-payment-methods-modal__wrapper'>
-                <Text color='prominent' size='md' weight='bold'>
+                <Text color='prominent' weight='bold'>
                     {`Delete ${paymentMethodName}?`}
                 </Text>
                 <Text color='prominent' size='sm' weight='normal'>

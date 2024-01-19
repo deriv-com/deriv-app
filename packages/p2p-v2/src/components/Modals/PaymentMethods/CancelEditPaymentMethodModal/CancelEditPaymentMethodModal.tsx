@@ -24,10 +24,10 @@ const CancelEditPaymentMethodModal = ({ isOpen, onCancel, onGoBack }: TCancelEdi
             style={customStyles}
         >
             <div className='p2p-v2-payment-methods-modal__wrapper'>
-                <Text color='prominent' size='md' weight='bold'>
+                <Text color='prominent' weight='bold'>
                     Cancel your edits?
                 </Text>
-                <Text color='prominent' size='sm' weight='normal'>
+                <Text color='prominent' size='sm'>
                     If you choose to cancel, the edited details will be lost.
                 </Text>
                 <div className='p2p-v2-payment-methods-modal__buttons'>

@@ -18,9 +18,8 @@ import {
     useOnLoadTranslation,
     LocalStore,
     getAppId,
-    isDesktopOs,
 } from '@deriv/shared';
-import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
+import { StoreProvider, ExchangeRatesProvider, useStore } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import { CFD_TEXT } from '../Constants/cfd-text';
 import { FORM_ERROR_MESSAGES } from '../Constants/form-error-messages';
@@ -29,6 +28,9 @@ import initHotjar from '../Utils/Hotjar';
 import 'Sass/app.scss';
 
 const AppWithoutTranslation = ({ root_store }) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+
     const l = window.location;
     const base = l.pathname.split('/')[1];
     const has_base = /^\/(br_)/.test(l.pathname);
@@ -58,7 +60,7 @@ const AppWithoutTranslation = ({ root_store }) => {
             Analytics.setAttributes({
                 account_type: LocalStore?.get('active_loginid')?.substring(0, 2) ?? 'unlogged',
                 app_id: getAppId(),
-                device_type: isDesktopOs() ? 'desktop' : 'mobile',
+                device_type: is_mobile ? 'mobile' : 'desktop',
                 device_language: navigator?.language || 'en-EN',
                 user_language: getLanguage().toLowerCase(),
                 country: Cookies.get('clients_country') || Cookies.getJSON('website_status'),

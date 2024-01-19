@@ -65,18 +65,18 @@ const AccountSignup = ({
         });
         // need to modify data from ab testing platform to reach translation and tracking needs
         const fetchQuestionnarieData = () => {
-            let ab_value = Analytics.getFeatureValue('questionnaire-config', 'inactive');
+            let ab_value = Analytics.getFeatureValue('questionnaire-config', 'inactive') || 'inactive';
             const default_ab_value = ab_value;
             ab_value = ab_value?.[language] ?? ab_value?.EN ?? ab_value;
             if (ab_value?.show_answers_in_random_order) {
                 ab_value = [
-                    { ...default_ab_value.default },
+                    { ...default_ab_value?.default },
                     {
                         ...ab_value,
                         answers: shuffleArray(ab_value.answers),
                     },
                 ];
-            } else if (ab_value !== 'inactive') ab_value = [{ ...default_ab_value.default }, { ...ab_value }];
+            } else if (ab_value !== 'inactive') ab_value = [{ ...default_ab_value?.default }, { ...ab_value }];
             return ab_value;
         };
         setABQuestionnaire(fetchQuestionnarieData());

@@ -17,7 +17,7 @@ import {
     Loading,
 } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { routes, formatMoney, ContentFlag, getStaticUrl, getAppId, LocalStore, isDesktopOs } from '@deriv/shared';
+import { routes, formatMoney, ContentFlag, getStaticUrl, getAppId, LocalStore } from '@deriv/shared';
 import { getLanguage, localize, Localize } from '@deriv/translations';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { Analytics } from '@deriv-com/analytics';
@@ -126,7 +126,7 @@ const AccountSwitcher = observer(({ history, is_mobile, is_visible }) => {
         Analytics.setAttributes({
             account_type: LocalStore?.get('active_loginid')?.substring(0, 2) ?? 'unlogged',
             app_id: getAppId(),
-            device_type: isDesktopOs() ? 'desktop' : 'mobile',
+            device_type: is_mobile ? 'mobile' : 'desktop',
             device_language: navigator?.language || 'en-EN',
             user_language: getLanguage().toLowerCase(),
             country: Cookies.get('clients_country') || Cookies.getJSON('website_status'),

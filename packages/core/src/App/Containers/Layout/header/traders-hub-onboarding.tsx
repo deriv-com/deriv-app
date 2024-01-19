@@ -1,7 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router';
 import { Icon, Popover } from '@deriv/components';
-import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useFeatureFlags } from '@deriv/hooks';

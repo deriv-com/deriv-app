@@ -1,14 +1,13 @@
 import React, { FC, useCallback } from 'react';
 import classNames from 'classnames';
-import { TGenericSizes } from '../../../types';
-import { WalletText } from '../WalletText';
+import WalletText, { WalletTextProps } from '../WalletText/WalletText';
 
 export type TabTitleProps = {
     icon?: React.ReactNode;
     index: number;
     isActive?: boolean;
     setSelectedTab: (index: number) => void;
-    size?: Exclude<TGenericSizes, '3xs' | '6xl' | '7xl'>;
+    size: WalletTextProps['size'];
     title: string;
 };
 

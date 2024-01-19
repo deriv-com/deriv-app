@@ -1,11 +1,10 @@
 import React, { FC, ReactElement, useState } from 'react';
-import { TGenericSizes } from '../../../types';
 import TabTitle, { TabTitleProps } from './TabTitle';
 import './Tabs.scss';
 
 type TabsProps = {
     children: ReactElement<TabTitleProps>[];
-    fontSize?: Exclude<TGenericSizes, '3xs' | '6xl' | '7xl'>;
+    fontSize?: TabTitleProps['size'];
     preSelectedTab?: number;
     wrapperClassName?: string;
 };

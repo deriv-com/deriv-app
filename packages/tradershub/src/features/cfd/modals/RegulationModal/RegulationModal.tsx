@@ -8,24 +8,23 @@ const RegulationModal = () => (
     <Modal className='w-full md:max-w-[743px]'>
         <Modal.Header title='Non-EU and EU regulations' />
         <Modal.Content className='p-800 md:p-1200'>
-            {/* <table className='regulators-compare-table__table'> */}
-            <table className='table-auto'>
+            <table className='table-auto min-w-[457px] md:min-w-[695px] border-75 border-system-light-active-background border-solid'>
                 <thead>
                     <tr>
-                        <th />
-                        <th className='p-500'>
+                        <th className='sticky bg-system-light-primary-background inset-y-50 start-50 min-h-2000' />
+                        <th className='border-solid p-500 min-h-2000 border-75 border-system-light-active-background'>
                             <Text size='sm' weight='bold'>
                                 Non-EU regulation
                             </Text>
                         </th>
-                        <th className='p-500'>
+                        <th className='border-solid p-500 min-h-2000 border-75 border-system-light-active-background'>
                             <Text size='sm' weight='bold'>
                                 EU regulation
                             </Text>
                         </th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className=''>
                     {getCFDContents().map(row => (
                         <Row key={row.id} {...row} />
                     ))}

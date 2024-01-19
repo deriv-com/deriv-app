@@ -1,6 +1,8 @@
 import React from 'react';
-import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api';
 import { Button, Text, TextField, useBreakpoint } from '@deriv/quill-design';
+import { useUIContext } from '../../../../components';
+import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
 import { MarketTypeDetails, PlatformDetails } from '../../constants';
@@ -41,7 +43,11 @@ const EnterPassword: React.FC<TProps> = ({
 }) => {
     const { isDesktop } = useBreakpoint();
     const title = PlatformDetails[platform].title;
-    const { isEU } = useIsEuRegion();
+    const { getUIState } = useUIContext();
+    const activeRegulation = getUIState('regulation');
+
+    const { isEU } = useRegulationFlags(activeRegulation);
+
     const { data } = useActiveTradingAccount();
     const accountType = data?.is_virtual ? 'Demo' : 'Real';
     const marketTypeDetails = MarketTypeDetails(isEU);

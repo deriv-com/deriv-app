@@ -36,11 +36,14 @@ export const CFDProvider = ({ children }: { children: React.ReactNode }) => {
         [cfdState]
     );
 
-    const updateCFDState = <T extends keyof TCFDState>(key: T, value: TCFDState[T]) => {
-        setCfdState(prevState => ({ ...prevState, [key]: value }));
-    };
+    const updateCFDState = useCallback(
+        <T extends keyof TCFDState>(key: T, value: TCFDState[T]) => {
+            setCfdState(prevState => ({ ...prevState, [key]: value }));
+        },
+        [setCfdState]
+    );
 
-    const providerValue = useMemo(() => ({ getCFDState, setCfdState: updateCFDState }), [getCFDState]);
+    const providerValue = useMemo(() => ({ getCFDState, setCfdState: updateCFDState }), [getCFDState, updateCFDState]);
 
     return <CFDContext.Provider value={providerValue}>{children}</CFDContext.Provider>;
 };

@@ -1,7 +1,7 @@
 import React, { ComponentType, useEffect } from 'react';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import Modal from 'react-modal';
-import { useCreateAdvertiser } from '@deriv/api';
+import { p2p } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { useDevice } from '../../../hooks';
@@ -25,7 +25,7 @@ const NicknameModal = () => {
         mode: 'onChange',
     });
 
-    const { error, isError, mutate, reset } = useCreateAdvertiser();
+    const { error, isError, mutate, reset } = p2p.advertiser.useCreate();
     const { isMobile } = useDevice();
 
     const onSubmit = () => {

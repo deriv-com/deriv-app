@@ -10,6 +10,7 @@ type TContractTypeDialog = {
     is_open: boolean;
     learn_more_banner?: React.ReactNode;
     hide_back_button?: boolean;
+    title?: string;
 };
 
 type TContractTypeDialogProps = Pick<
@@ -34,6 +35,7 @@ const ContractTypeDialog = ({
     is_open,
     item,
     selected,
+    title,
     onBackButtonClick,
     onCategoryClick,
     onChangeInput,
@@ -45,7 +47,7 @@ const ContractTypeDialog = ({
 }: React.PropsWithChildren<TContractTypeDialogProps>) => {
     const current_mobile_title = is_info_dialog_open ? (
         <Header
-            title={localize('Tutorial')}
+            title={localize(title || item?.text || '')}
             onClickGoBack={onBackButtonClick}
             text_size='xs'
             should_render_arrow={!hide_back_button}
@@ -88,6 +90,7 @@ const ContractTypeDialog = ({
                     show_loading={show_loading}
                     learn_more_banner={learn_more_banner}
                     hide_back_button={hide_back_button}
+                    title={title}
                 >
                     {children}
                 </ContractTypeMenu>

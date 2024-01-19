@@ -61,6 +61,8 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
         item => item.is_unavailable && item.contract_types.find(type => type.value === selected_contract_type.value)
     );
 
+    const should_show_drop_down = contract_types && contract_types.length > 1;
+
     React.useEffect(() => {
         return () => {
             Analytics.trackEvent('ce_trade_types_form', {
@@ -132,17 +134,19 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
 
     return (
         <React.Fragment>
-            <Dropdown
-                id='dt_contract_type_dropdown'
-                className='contract-type-info__dropdown'
-                is_nativepicker={false}
-                list={contract_types as React.ComponentProps<typeof Dropdown>['list']}
-                name='contract_type_dropdown'
-                value={selected_contract_type.value}
-                should_autohide={false}
-                should_scroll_to_selected
-                onChange={e => setSelectedContractType(e.target)}
-            />
+            {should_show_drop_down && (
+                <Dropdown
+                    id='dt_contract_type_dropdown'
+                    className='contract-type-info__dropdown'
+                    is_nativepicker={false}
+                    list={contract_types as React.ComponentProps<typeof Dropdown>['list']}
+                    name='contract_type_dropdown'
+                    value={selected_contract_type.value}
+                    should_autohide={false}
+                    should_scroll_to_selected
+                    onChange={e => setSelectedContractType(e.target)}
+                />
+            )}
             {is_unavailable && <div className='contract-type-info__banner-wrapper'>{info_banner}</div>}
             {has_toggle_buttons && (
                 <div className='contract-type-info__button-wrapper'>
@@ -163,9 +167,16 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
             )}
             <div
                 className={classNames('contract-type-info', {
-                    'contract-type-info--has-toggle-buttons': has_toggle_buttons,
-                    'contract-type-info--has-info-banner': is_unavailable,
-                    'contract-type-info--has-both': has_toggle_buttons && is_unavailable,
+                    'contract-type-info--has-only-toggle-buttons':
+                        has_toggle_buttons && !is_unavailable && !should_show_drop_down,
+                    'contract-type-info--has-only-dropdown':
+                        should_show_drop_down && !is_unavailable && !has_toggle_buttons,
+                    'contract-type-info--has-dropdown-and-toggle-buttons':
+                        has_toggle_buttons && should_show_drop_down && !is_unavailable,
+                    'contract-type-info--has-dropdown-and-info':
+                        should_show_drop_down && is_unavailable && !has_toggle_buttons,
+                    'contract-type-info--has-all-containers':
+                        should_show_drop_down && is_unavailable && has_toggle_buttons,
                 })}
                 style={{
                     width: is_mobile ? '328px' : '528px',

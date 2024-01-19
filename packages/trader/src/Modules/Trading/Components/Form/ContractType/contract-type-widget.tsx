@@ -8,6 +8,7 @@ import {
     findContractCategory,
     getContractTypeCategoryIcons,
     getCategoriesSortedByKey,
+    getContractTypes,
 } from '../../../Helpers/contract-type';
 import { TContractCategory, TContractType, TList } from './types';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -259,6 +260,11 @@ const ContractTypeWidget = observer(
         };
         const should_show_info_banner = !!selected_category_contracts()?.some(i => i.is_unavailable);
 
+        const title =
+            list.length > 1
+                ? localize('Tutorial')
+                : getContractTypes(list_with_category(), item || { value })?.find(item => item.value === value)?.text;
+
         const info_banner = (
             <InlineMessage
                 size={is_mobile ? 'sm' : 'xs'}
@@ -312,6 +318,7 @@ const ContractTypeWidget = observer(
                         onChangeInput={onChangeInput}
                         onCategoryClick={handleCategoryClick}
                         show_loading={languageChanged}
+                        title={title}
                         hide_back_button={hide_back_button}
                         info_banner={should_show_info_banner && info_banner}
                         learn_more_banner={

@@ -7,18 +7,26 @@
     margin: 0 auto;
 
     @include mobile {
-        height: calc(100% - 12.4rem);
+        height: calc(100% - 7.4rem);
 
-        &--has-toggle-buttons {
-            height: calc(100% - 19.85rem);
+        &--has-only-toggle-buttons {
+            height: calc(100% - 14rem);
         }
 
-        &--has-info-banner {
-            height: calc(100% - 16.5rem);
+        &--has-dropdown-and-toggle-buttons {
+            height: calc(100% - 19.4rem);
         }
 
-        &--has-both {
-            height: calc(100% - 23.5rem);
+        &--has-only-dropdown {
+            height: calc(100% - 12rem);
+        }
+
+        &--has-dropdown-and-info {
+            height: calc(100% - 16.8rem);
+        }
+
+        &--has-all-containers {
+            height: calc(100% - 23.4rem);
         }
     }
 

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
-import useMutation from '../../useMutation';
-import useInvalidateQuery from '../../useInvalidateQuery';
+import useMutation from '../../../../../useMutation';
+import useInvalidateQuery from '../../../../../useInvalidateQuery';
 
 type TCreateAdvertisePayload = NonNullable<
     Parameters<ReturnType<typeof useMutation<'p2p_advertiser_create'>>['mutate']>
@@ -17,7 +17,7 @@ type TCreateAdvertisePayload = NonNullable<
     });
  *
 */
-const useCreateAdvertiser = () => {
+const useAdvertiserCreate = () => {
     const invalidate = useInvalidateQuery();
     const {
         data,
@@ -67,4 +67,4 @@ const useCreateAdvertiser = () => {
     };
 };
 
-export default useCreateAdvertiser;
+export default useAdvertiserCreate;

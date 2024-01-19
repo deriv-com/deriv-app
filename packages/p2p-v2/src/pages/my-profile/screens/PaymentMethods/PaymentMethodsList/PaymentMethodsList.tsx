@@ -4,14 +4,11 @@ import { p2p } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Loader } from '@deriv-com/ui/dist/components/Loader';
 import { FullPageMobileWrapper } from '../../../../../components';
-import {
-    useAdvertiserPaymentMethodsConfig,
-    useAdvertiserPaymentMethodsConfigDispatch,
-} from '../../../../../components/AdvertiserPaymentMethodsProvider';
 import { ConfirmDeletePaymentMethodModal } from '../../../../../components/Modals';
 import { PaymentMethodCard } from '../../../../../components/PaymentMethodCard';
 import { PAYMENT_METHOD_CATEGORIES } from '../../../../../constants';
 import { useDevice } from '../../../../../hooks';
+import { useAdvertiserPaymentMethodsConfig, useAdvertiserPaymentMethodsConfigDispatch } from '../../../../../providers';
 import { PaymentMethodsEmpty } from '../PaymentMethodsEmpty';
 import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
 import './PaymentMethodsList.scss';

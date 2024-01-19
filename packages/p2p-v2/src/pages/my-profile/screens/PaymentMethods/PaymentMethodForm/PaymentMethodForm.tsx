@@ -2,10 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { p2p } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
-import {
-    useAdvertiserPaymentMethodsConfig,
-    useAdvertiserPaymentMethodsConfigDispatch,
-} from '../../../../../components/AdvertiserPaymentMethodsProvider';
 import { ClickableText } from '../../../../../components/ClickableText';
 import { Dropdown } from '../../../../../components/Dropdown';
 import {
@@ -14,10 +10,12 @@ import {
     CancelEditPaymentMethodModal,
 } from '../../../../../components/Modals';
 import { TextField } from '../../../../../components/TextField';
+import { useAdvertiserPaymentMethodsConfig, useAdvertiserPaymentMethodsConfigDispatch } from '../../../../../providers';
 import CloseCircle from '../../../../../public/ic-close-circle.svg';
 import { PaymentMethodField } from '../PaymentMethodField';
 import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
 import './PaymentMethodForm.scss';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 
 type TPaymentMethodFormProps = {
     configFormSate: ReturnType<typeof useAdvertiserPaymentMethodsConfig>['formState'];
@@ -89,7 +87,8 @@ const PaymentMethodForm = ({ configFormSate }: TPaymentMethodFormProps) => {
                         <TextField
                             disabled
                             label='Choose your payment method'
-                            renderRightIcon={() =>
+                            renderRightIcon={() => {
+                                // TODO: Remember to override this style for disabling pointer events
                                 actionType === 'EDIT' ? null : (
                                     <CloseCircle
                                         className='p2p-v2-payment-method-form__icon--close'
@@ -103,8 +102,8 @@ const PaymentMethodForm = ({ configFormSate }: TPaymentMethodFormProps) => {
                                         }}
                                         width={20}
                                     />
-                                )
-                            }
+                                );
+                            }}
                             value={paymentMethod?.display_name}
                         />
                     ) : (
@@ -132,9 +131,9 @@ const PaymentMethodForm = ({ configFormSate }: TPaymentMethodFormProps) => {
                                 value={paymentMethod?.display_name ?? ''}
                                 variant='comboBox'
                             />
-                            <ClickableText color='less-prominent' size='xs'>
+                            <Text color='less-prominent' size='xs' weight='normal'>
                                 {/* TODO: Remember to translate these */}
-                                Don’t see your payment method?{' '}
+                                <span className='p2p-v2-payment-method-form__text'>Don’t see your payment method?</span>
                                 <ClickableText
                                     color='red'
                                     onClick={() => {
@@ -152,11 +151,10 @@ const PaymentMethodForm = ({ configFormSate }: TPaymentMethodFormProps) => {
                                             });
                                         }
                                     }}
-                                    size='xs'
                                 >
                                     Add new.
                                 </ClickableText>
-                            </ClickableText>
+                            </Text>
                         </>
                     )}
                 </div>

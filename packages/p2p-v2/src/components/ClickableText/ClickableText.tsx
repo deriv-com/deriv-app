@@ -8,9 +8,11 @@ type TClickableTextProps = ComponentProps<typeof Text> & {
 
 const ClickableText = ({ children, onClick, ...props }: PropsWithChildren<TClickableTextProps>) => {
     return (
-        <div className='p2p-v2-clickable-text__wrapper' onClick={onClick}>
-            <Text {...props}>{children}</Text>
-        </div>
+        <span onClick={onClick}>
+            <Text className='p2p-v2-clickable-text__wrapper' {...props}>
+                {children}
+            </Text>
+        </span>
     );
 };
 

@@ -259,6 +259,22 @@ const ContractTypeWidget = observer(
         };
         const should_show_info_banner = !!selected_category_contracts()?.some(i => i.is_unavailable);
 
+        const info_banner = (
+            <InlineMessage
+                size={is_mobile ? 'sm' : 'xs'}
+                type='information'
+                message={
+                    <Localize
+                        i18n_default_text='Some trade types are unavailable for {{symbol}}.'
+                        values={{
+                            symbol: active_symbols.find(s => s.symbol === symbol)?.display_name,
+                        }}
+                        shouldUnescape
+                    />
+                }
+            />
+        );
+
         return (
             <React.Fragment>
                 <Text
@@ -297,23 +313,7 @@ const ContractTypeWidget = observer(
                         onCategoryClick={handleCategoryClick}
                         show_loading={languageChanged}
                         hide_back_button={hide_back_button}
-                        info_banner={
-                            should_show_info_banner && (
-                                <InlineMessage
-                                    size={is_mobile ? 'sm' : 'xs'}
-                                    type='information'
-                                    message={
-                                        <Localize
-                                            i18n_default_text='Some trade types are unavailable for {{symbol}}.'
-                                            values={{
-                                                symbol: active_symbols.find(s => s.symbol === symbol)?.display_name,
-                                            }}
-                                            shouldUnescape
-                                        />
-                                    }
-                                />
-                            )
-                        }
+                        info_banner={should_show_info_banner && info_banner}
                         learn_more_banner={
                             <button
                                 onClick={() => handleInfoClick(item || { value })}
@@ -331,6 +331,7 @@ const ContractTypeWidget = observer(
                                 handleSelect={handleSelect}
                                 item={item || { value }}
                                 list={list_with_category()}
+                                info_banner={info_banner}
                             />
                         ) : (
                             <ContractType.List

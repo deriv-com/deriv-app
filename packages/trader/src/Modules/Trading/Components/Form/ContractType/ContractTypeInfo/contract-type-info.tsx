@@ -19,6 +19,7 @@ type TInfo = {
     ) => void;
     item: TContractType;
     list: TList[];
+    info_banner?: React.ReactNode;
 };
 
 const TABS = {
@@ -28,7 +29,7 @@ const TABS = {
 
 type TSelectedTab = 'description' | 'glossary';
 
-const Info = observer(({ handleSelect, item, list }: TInfo) => {
+const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
     const { cached_multiplier_cancellation_list, symbol } = useTraderStore();
     const {
         active_symbols: { active_symbols },
@@ -55,6 +56,10 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
     const onClickGlossary = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         clickAndKeyEventHandler(() => setSelectedTab(TABS.GLOSSARY), e);
     };
+
+    const is_unavailable = !!list[0].contract_categories?.find(
+        item => item.is_unavailable && item.contract_types.find(type => type.value === selected_contract_type.value)
+    );
 
     React.useEffect(() => {
         return () => {
@@ -138,6 +143,7 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
                 should_scroll_to_selected
                 onChange={e => setSelectedContractType(e.target)}
             />
+            {is_unavailable && <div className='contract-type-info__banner-wrapper'>{info_banner}</div>}
             {has_toggle_buttons && (
                 <div className='contract-type-info__button-wrapper'>
                     <ButtonToggle
@@ -158,6 +164,8 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
             <div
                 className={classNames('contract-type-info', {
                     'contract-type-info--has-toggle-buttons': has_toggle_buttons,
+                    'contract-type-info--has-info-banner': is_unavailable,
+                    'contract-type-info--has-both': has_toggle_buttons && is_unavailable,
                 })}
                 style={{
                     width: is_mobile ? '328px' : '528px',
@@ -175,6 +183,7 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
                         interpolation: { escapeValue: false },
                     })}
                     secondary
+                    is_disabled={is_unavailable}
                 />
             </div>
         </React.Fragment>

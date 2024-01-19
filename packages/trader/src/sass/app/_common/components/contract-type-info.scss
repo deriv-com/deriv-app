@@ -12,6 +12,14 @@
         &--has-toggle-buttons {
             height: calc(100% - 19.85rem);
         }
+
+        &--has-info-banner {
+            height: calc(100% - 16.5rem);
+        }
+
+        &--has-both {
+            height: calc(100% - 23.5rem);
+        }
     }
 
     &__dropdown {
@@ -236,6 +244,14 @@
             padding: 0;
             height: 18.45rem;
             margin-bottom: 1.8rem;
+        }
+    }
+
+    &__banner-wrapper {
+        margin: 0 0.8rem 0.8rem;
+
+        @include mobile {
+            margin: 0.8rem 1.6rem;
         }
     }
 }

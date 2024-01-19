@@ -146,17 +146,15 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                                         <div className='flex gap-300'>
                                             {!(marketType in verificationDocs)
                                                 ? verificationDocumentsMapper.notApplicable.icon
-                                                : verificationDocs[marketType]?.map(doc => {
-                                                      if (doc in verificationDocumentsMapper) {
-                                                          return (
-                                                              <JurisdictionCardVerificationTag
-                                                                  category={verificationDocumentsMapper[doc].category}
-                                                                  icon={verificationDocumentsMapper[doc].icon}
-                                                                  key={`verification-doc-${doc}`}
-                                                              />
-                                                          );
-                                                      }
-                                                  })}
+                                                : verificationDocs[marketType]
+                                                      ?.filter(doc => doc in verificationDocumentsMapper)
+                                                      .map(doc => (
+                                                          <JurisdictionCardVerificationTag
+                                                              category={verificationDocumentsMapper[doc].category}
+                                                              icon={verificationDocumentsMapper[doc].icon}
+                                                              key={`verification-doc-${doc}`}
+                                                          />
+                                                      ))}
                                         </div>
                                     );
                                 }

@@ -3,6 +3,7 @@ import { useOnClickOutside } from 'usehooks-ts';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
 import { Button, qtMerge, Text } from '@deriv/quill-design';
 import { LabelPairedChevronDownSmRegularIcon } from '@deriv/quill-icons';
+import { useUIContext } from '../UIProvider';
 
 type TAccount = {
     label: string;
@@ -21,17 +22,21 @@ const DemoRealSwitcher = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [selected, setSelected] = useState(accountTypes[0]);
     const { label, value } = selected;
+    const { setUIState } = useUIContext();
 
     const ref = useRef(null);
     useOnClickOutside(ref, () => setIsDropdownOpen(false));
 
     useEffect(() => {
         const activeAccountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
+
         const activeAccount = accountTypes.find(account => account.value === activeAccountType);
+
         if (activeAccount) {
             setSelected(activeAccount);
+            setUIState('accountType', activeAccountType);
         }
-    }, [activeTradingAccount]);
+    }, [activeTradingAccount, setUIState]);
 
     useEffect(() => {
         setIsDropdownOpen(false);
@@ -50,7 +55,10 @@ const DemoRealSwitcher = () => {
 
         const loginId = account.value === 'demo' ? demoLoginId : firstRealLoginId;
         if (loginId) {
+            setUIState('accountType', account.value);
             switchAccount(loginId);
+        } else {
+            setUIState('accountType', account.value);
         }
     };
 

@@ -8,6 +8,7 @@ import useAuthorize from '../useAuthorize';
 const useAdvertiserList = (
     payload?: NonNullable<Parameters<typeof useInfiniteQuery<'p2p_advertiser_list'>>[1]>['payload']
 ) => {
+    console.log('payload', payload);
     const { isSuccess } = useAuthorize();
     const { data, fetchNextPage, ...rest } = useInfiniteQuery('p2p_advertiser_list', {
         payload: { ...payload, offset: payload?.offset, limit: payload?.limit },

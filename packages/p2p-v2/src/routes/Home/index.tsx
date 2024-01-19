@@ -3,7 +3,6 @@ import { useActiveAccount } from '@deriv/api';
 import { MobileCloseHeader } from '../../components';
 import { useDevice } from '../../hooks';
 import './index.scss';
-import { NicknameModal } from '../../components/Modals/NicknameModal';
 
 const Home: React.FC<{ path: string }> = ({ path }) => {
     const { data: activeAccountData, isLoading } = useActiveAccount();
@@ -21,7 +20,6 @@ const Home: React.FC<{ path: string }> = ({ path }) => {
             <div className='p2p-v2-home-style'>
                 <div> Welcome to P2P Version 2 from {path} Page ;) </div>
             </div>
-            <NicknameModal />
         </>
     );
 };

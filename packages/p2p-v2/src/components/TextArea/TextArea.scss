@@ -25,7 +25,7 @@
             color: #85acb0;
         }
         &:focus + label,
-        &:not(:placeholder-shown) + label {
+        &[data-has-value='true'] + label {
             transform: translate(0, -1.4rem) scale(0.75);
             font-family: 'IBM Plex Sans', sans-serif;
             font-size: 1.4rem;

@@ -30,6 +30,7 @@ const TextArea = ({
             })}
         >
             <textarea
+                data-has-value={!!currentValue}
                 onChange={event => {
                     setCurrentValue(event.target.value);
                     onChange?.(event);

@@ -21,8 +21,8 @@ const DemoRealSwitcher = () => {
     const { switchAccount } = useAuthorize();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const activeAccountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
-    const activeAccount = accountTypes.find(account => account.value === activeAccountType);
-    const [selected, setSelected] = useState(activeAccount);
+    const activeType = accountTypes.find(account => account.value === activeAccountType);
+    const [selected, setSelected] = useState(activeType);
     const { label, value } = selected || {};
     const { setUIState } = useUIContext();
 
@@ -34,11 +34,11 @@ const DemoRealSwitcher = () => {
     const demoLoginId = tradingAccountsList?.find(acc => acc.is_virtual)?.loginid;
 
     useEffect(() => {
-        if (activeAccount) {
-            setSelected(activeAccount);
+        if (activeType) {
+            setSelected(activeType);
             setUIState('accountType', activeAccountType);
         }
-    }, [activeAccount, activeAccountType, setUIState]);
+    }, [activeAccountType, activeType, setUIState]);
 
     useEffect(() => {
         setIsDropdownOpen(false);

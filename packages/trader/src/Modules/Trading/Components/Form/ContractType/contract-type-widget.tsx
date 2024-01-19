@@ -159,7 +159,6 @@ const ContractTypeWidget = observer(
 
         const onDescriptionClose = () => {
             onWidgetClick();
-            setHideBackButton(false);
         };
 
         const list_with_category = () => {

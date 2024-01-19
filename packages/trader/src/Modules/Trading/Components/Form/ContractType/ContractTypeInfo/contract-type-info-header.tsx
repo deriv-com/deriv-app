@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
+import { clickAndKeyEventHandler } from '@deriv/shared';
 
 type THeader = {
     onClickGoBack?: () => void;
@@ -20,7 +21,11 @@ const Header = ({
 }: THeader) => (
     <div className='contract-type-info__action-bar'>
         {should_render_arrow && (
-            <span className='contract-type-info__icon' id='dt_contract_info_back_nav' onClick={onClickGoBack}>
+            <span
+                className='contract-type-info__icon'
+                id='dt_contract_info_back_nav'
+                onClick={e => clickAndKeyEventHandler(() => onClickGoBack?.(), e)}
+            >
                 <Icon icon='IcArrowLeftBold' />
             </span>
         )}
@@ -28,7 +33,11 @@ const Header = ({
             {title}
         </Text>
         {should_render_cross && (
-            <span className='contract-type-info__icon-cross' id='dt_contract_info_close' onClick={onClickCross}>
+            <span
+                className='contract-type-info__icon-cross'
+                id='dt_contract_info_close'
+                onClick={e => clickAndKeyEventHandler(() => onClickCross?.(), e)}
+            >
                 <Icon icon='IcCross' />
             </span>
         )}

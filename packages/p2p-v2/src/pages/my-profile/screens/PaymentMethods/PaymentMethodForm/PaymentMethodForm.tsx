@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { p2p } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import { ClickableText } from '../../../../../components/ClickableText';
 import { Dropdown } from '../../../../../components/Dropdown';
 import {
@@ -15,7 +16,6 @@ import CloseCircle from '../../../../../public/ic-close-circle.svg';
 import { PaymentMethodField } from '../PaymentMethodField';
 import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
 import './PaymentMethodForm.scss';
-import { Text } from '@deriv-com/ui/dist/components/Text';
 
 type TPaymentMethodFormProps = {
     configFormSate: ReturnType<typeof useAdvertiserPaymentMethodsConfig>['formState'];
@@ -89,7 +89,7 @@ const PaymentMethodForm = ({ configFormSate }: TPaymentMethodFormProps) => {
                             label='Choose your payment method'
                             renderRightIcon={() => {
                                 // TODO: Remember to override this style for disabling pointer events
-                                actionType === 'EDIT' ? null : (
+                                return actionType === 'EDIT' ? null : (
                                     <CloseCircle
                                         className='p2p-v2-payment-method-form__icon--close'
                                         fill='#999999'

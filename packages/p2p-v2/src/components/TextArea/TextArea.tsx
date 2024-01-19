@@ -8,10 +8,19 @@ type TTextAreaProps = HtmlHTMLAttributes<HTMLTextAreaElement> & {
     isInvalid?: boolean;
     label?: string;
     onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+    placeholder?: string;
     shouldShowCounter?: boolean;
     value?: string;
 };
-const TextArea = ({ hint, isInvalid = false, label, onChange, shouldShowCounter = false, value }: TTextAreaProps) => {
+const TextArea = ({
+    hint,
+    isInvalid = false,
+    label,
+    onChange,
+    placeholder,
+    shouldShowCounter = false,
+    value,
+}: TTextAreaProps) => {
     const [currentValue, setCurrentValue] = useState(value);
 
     return (
@@ -25,7 +34,7 @@ const TextArea = ({ hint, isInvalid = false, label, onChange, shouldShowCounter 
                     setCurrentValue(event.target.value);
                     onChange?.(event);
                 }}
-                placeholder=''
+                placeholder={placeholder}
                 value={currentValue}
             />
             {label && <label>{label}</label>}

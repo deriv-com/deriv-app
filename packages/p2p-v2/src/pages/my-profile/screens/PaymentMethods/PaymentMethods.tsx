@@ -5,7 +5,6 @@ import { PaymentMethodsList } from './PaymentMethodsList';
 
 const PaymentMethods = () => {
     const { formState } = useAdvertiserPaymentMethodsConfig();
-
     if (formState?.isVisible) {
         return <PaymentMethodForm configFormSate={formState} />;
     }

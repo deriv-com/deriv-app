@@ -31,6 +31,9 @@
             font-size: 1.4rem;
             background-color: #ffffff;
         }
+        &:has(~ label)::placeholder {
+            color: transparent;
+        }
     }
 
     & label {

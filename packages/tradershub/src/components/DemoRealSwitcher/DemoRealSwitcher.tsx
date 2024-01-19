@@ -20,23 +20,25 @@ const DemoRealSwitcher = () => {
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { switchAccount } = useAuthorize();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [selected, setSelected] = useState(accountTypes[0]);
-    const { label, value } = selected;
+    const activeAccountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
+    const activeAccount = accountTypes.find(account => account.value === activeAccountType);
+    const [selected, setSelected] = useState(activeAccount);
+    const { label, value } = selected || {};
     const { setUIState } = useUIContext();
 
     const ref = useRef(null);
     useOnClickOutside(ref, () => setIsDropdownOpen(false));
 
+    const firstRealLoginId = tradingAccountsList?.find(acc => !acc.is_virtual)?.loginid;
+
+    const demoLoginId = tradingAccountsList?.find(acc => acc.is_virtual)?.loginid;
+
     useEffect(() => {
-        const activeAccountType = activeTradingAccount?.is_virtual ? 'demo' : 'real';
-
-        const activeAccount = accountTypes.find(account => account.value === activeAccountType);
-
         if (activeAccount) {
             setSelected(activeAccount);
             setUIState('accountType', activeAccountType);
         }
-    }, [activeTradingAccount, setUIState]);
+    }, [activeAccount, activeAccountType, setUIState]);
 
     useEffect(() => {
         setIsDropdownOpen(false);
@@ -46,19 +48,13 @@ const DemoRealSwitcher = () => {
         setIsDropdownOpen(prevState => !prevState);
     }, []);
 
-    const firstRealLoginId = tradingAccountsList?.find(acc => !acc.is_virtual)?.loginid;
-
-    const demoLoginId = tradingAccountsList?.find(acc => acc.is_virtual)?.loginid;
-
     const selectAccount = (account: TAccount) => {
         setSelected(account);
+        setUIState('accountType', account.value);
 
         const loginId = account.value === 'demo' ? demoLoginId : firstRealLoginId;
         if (loginId) {
-            setUIState('accountType', account.value);
             switchAccount(loginId);
-        } else {
-            setUIState('accountType', account.value);
         }
     };
 

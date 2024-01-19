@@ -9,9 +9,9 @@ import { Regulation } from '../constants/constants';
  */
 const useRegulationFlags = (regulation?: string, accountType?: string) => {
     const { isEUCountry } = useIsEuRegion();
-    const { data: activeTradingAccount } = useActiveTradingAccount();
-    const { data: tradingAccountsList } = useTradingAccountsList();
-    const { data: landingCompany } = useLandingCompany();
+    const { data: activeTradingAccount, isSuccess: activeTradingAccountSuccess } = useActiveTradingAccount();
+    const { data: tradingAccountsList, isSuccess: tradingAccountListSuccess } = useTradingAccountsList();
+    const { data: landingCompany, isSuccess: landingCompanySuccess } = useLandingCompany();
 
     return useMemo(() => {
         const isHighRisk =
@@ -37,6 +37,8 @@ const useRegulationFlags = (regulation?: string, accountType?: string) => {
 
         const hasActiveDerivAccount = !(noRealCRNonEUAccount || noRealMFEUAccount);
 
+        const isSuccess = activeTradingAccountSuccess && tradingAccountListSuccess && landingCompanySuccess;
+
         return {
             hasActiveDerivAccount,
             isEU,
@@ -44,10 +46,22 @@ const useRegulationFlags = (regulation?: string, accountType?: string) => {
             isHighRisk,
             isNonEU,
             isNonEURealAccount,
+            isSuccess,
             noRealCRNonEUAccount,
             noRealMFEUAccount,
         };
-    }, [isEUCountry, activeTradingAccount, tradingAccountsList, landingCompany, regulation, accountType]);
+    }, [
+        landingCompany?.financial_company?.shortcode,
+        landingCompany?.gaming_company?.shortcode,
+        regulation,
+        isEUCountry,
+        activeTradingAccount?.is_virtual,
+        accountType,
+        tradingAccountsList,
+        activeTradingAccountSuccess,
+        tradingAccountListSuccess,
+        landingCompanySuccess,
+    ]);
 };
 
 export default useRegulationFlags;

@@ -1,6 +1,6 @@
 import React from 'react';
-import useInfiniteQuery from '../../useInfiniteQuery';
-import useAuthorize from '../useAuthorize';
+import useInfiniteQuery from '../../../../../useInfiniteQuery';
+import useAuthorize from '../../../../useAuthorize';
 
 /**
  * This custom hook returns the available advertisers who have had or currently have trades with the current advertiser.

@@ -18,7 +18,7 @@ import { tour_list } from './dbot-tours/utils';
 import { ChartModal, DashboardComponent } from './dashboard-component';
 import StrategyNotification from './strategy-notification';
 import Tutorial from './tutorial-tab';
-import ServerBot from './server-bot/server-bot';
+import ServerBot from './server-bot';
 
 const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
@@ -181,7 +181,10 @@ const Dashboard = observer(() => {
                                 id='id-server-bot'
                             >
                                 <ServerBot />
-                            </div>): <></>}
+                            </div>
+                        ) : (
+                            <></>
+                        )}
                     </Tabs>
                 </div>
             </div>

@@ -12,6 +12,7 @@ import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import classNames from 'classnames';
 import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
+import { Modal } from '@deriv/components';
 
 const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
@@ -135,6 +136,7 @@ const TradersHub = observer(() => {
                 is_disabled={isDesktop()}
             >
                 {can_show_notify && <Notifications />}
+
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
                     <DesktopWrapper>{getOrderedPlatformSections(true)}</DesktopWrapper>

@@ -1,5 +1,4 @@
 import { FileMessage, UserMessage } from '@sendbird/chat/message';
-import { localize } from 'Components/i18next';
 
 type TChatMessageArgs = {
     created_at: number;

@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
@@ -19,7 +18,6 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
     const { isEU } = useRegulationFlags(activeRegulation);
 
     const { show } = Provider.useModal();
-    const history = useHistory();
     const { getVerificationStatus } = useJurisdictionStatus();
     const jurisdictionStatus = useMemo(
         () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
@@ -42,7 +40,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => {
                             if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.MT5} />);
-                            else history.push('/cashier/transfer');
+                            // else transferModal;
                         }}
                         variant='secondary'
                     >

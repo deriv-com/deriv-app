@@ -5,7 +5,7 @@ import IcCashierEwallet from '../../../public/ic-cashier-ewallet.svg';
 import IcCashierOther from '../../../public/ic-cashier-other.svg';
 import IcCashierVerticalEllipsis from '../../../public/ic-cashier-vertical-ellipsis.svg';
 import { ClickableText } from '../../ClickableText';
-import { FlyOut } from '../../FlyOut';
+import { Flyout } from '../../Flyout';
 import './PaymentMethodCardHeader.scss';
 
 type TPaymentMethodCardHeaderProps = {
@@ -51,7 +51,7 @@ const PaymentMethodCardHeader = ({
                 width={medium || small ? 16 : 24}
             />
             {isEditable ? (
-                <FlyOut
+                <Flyout
                     listItems={flyOutItems}
                     renderIcon={() => <IcCashierVerticalEllipsis height={16} width={16} />}
                 />

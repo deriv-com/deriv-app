@@ -1,1 +1,1 @@
-export { default as FlyOut } from './FlyOut';
+export { default as FlyOut } from './Flyout';

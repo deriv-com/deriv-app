@@ -25,6 +25,7 @@ const Header = ({
                 className='contract-type-info__icon'
                 id='dt_contract_info_back_nav'
                 onClick={e => clickAndKeyEventHandler(() => onClickGoBack?.(), e)}
+                onKeyDown={e => clickAndKeyEventHandler(() => onClickGoBack?.(), e)}
             >
                 <Icon icon='IcArrowLeftBold' />
             </span>
@@ -37,6 +38,7 @@ const Header = ({
                 className='contract-type-info__icon-cross'
                 id='dt_contract_info_close'
                 onClick={e => clickAndKeyEventHandler(() => onClickCross?.(), e)}
+                onKeyDown={e => clickAndKeyEventHandler(() => onClickCross?.(), e)}
             >
                 <Icon icon='IcCross' />
             </span>

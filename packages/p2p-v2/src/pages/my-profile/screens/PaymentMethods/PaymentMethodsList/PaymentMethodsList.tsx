@@ -1,8 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { TAdvertiserPaymentMethods } from 'types';
 import { p2p } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Loader } from '@deriv-com/ui/dist/components/Loader';
 import { FullPageMobileWrapper } from '../../../../../components';
+import {
+    useAdvertiserPaymentMethodsConfig,
+    useAdvertiserPaymentMethodsConfigDispatch,
+} from '../../../../../components/AdvertiserPaymentMethodsProvider';
+import { ConfirmDeletePaymentMethodModal } from '../../../../../components/Modals';
 import { PaymentMethodCard } from '../../../../../components/PaymentMethodCard';
 import { PAYMENT_METHOD_CATEGORIES } from '../../../../../constants';
 import { useDevice } from '../../../../../hooks';
@@ -19,19 +25,29 @@ type TPaymentMethodsGroup = Record<
 >;
 
 type TPaymentMethodsListProps = {
-    onAddPaymentMethod: () => void;
-    onDeletePaymentMethod: (paymentMethodId: number) => void;
-    onEditPaymentMethod: (paymentMethod: NonNullable<TAdvertiserPaymentMethods>[number]) => void;
+    configFormSate: ReturnType<typeof useAdvertiserPaymentMethodsConfig>['formState'];
 };
 
-const PaymentMethodsList = ({
-    onAddPaymentMethod,
-    onDeletePaymentMethod,
-    onEditPaymentMethod,
-}: TPaymentMethodsListProps) => {
+const PaymentMethodsList = ({ configFormSate }: TPaymentMethodsListProps) => {
+    const [isOpen, setIsOpen] = useState(false);
     const { isMobile } = useDevice();
-
+    const configDispatch = useAdvertiserPaymentMethodsConfigDispatch();
     const { data: p2pAdvertiserPaymentMethods, isLoading, isRefetching } = p2p.advertiserPaymentMethods.useGet();
+    const {
+        delete: deleteAdvertiserPaymentMethod,
+        error: deleteError,
+        isSuccess: isDeleteSuccessful,
+    } = p2p.advertiserPaymentMethods.useDelete();
+
+    const { actionType, paymentMethod } = configFormSate || {};
+
+    useEffect(() => {
+        if (isDeleteSuccessful) {
+            configDispatch({ type: 'RESET' });
+        } else if (deleteError) {
+            setIsOpen(true);
+        }
+    }, [isDeleteSuccessful, deleteError, configDispatch]);
 
     const groupedPaymentMethods = useMemo(() => {
         const groups: TPaymentMethodsGroup = {};
@@ -48,17 +64,32 @@ const PaymentMethodsList = ({
         return groups;
     }, [p2pAdvertiserPaymentMethods]);
 
-    // TODO: Add loader when available
     if (isLoading) {
-        return <>Show Loader....</>;
+        return <Loader />;
     }
 
     if (!p2pAdvertiserPaymentMethods?.length && !isRefetching) {
-        return <PaymentMethodsEmpty onAddPaymentMethod={onAddPaymentMethod} />;
+        return (
+            <PaymentMethodsEmpty
+                onAddPaymentMethod={() => {
+                    configDispatch({
+                        type: 'ADD',
+                    });
+                }}
+            />
+        );
     }
 
     const addNewButton = (
-        <Button isFullWidth={isMobile} onClick={onAddPaymentMethod} size='lg'>
+        <Button
+            isFullWidth={isMobile}
+            onClick={() => {
+                configDispatch({
+                    type: 'ADD',
+                });
+            }}
+            size='lg'
+        >
             Add new {/*  TODO Remember to translate this*/}
         </Button>
     );
@@ -80,10 +111,26 @@ const PaymentMethodsList = ({
                                         <PaymentMethodCard
                                             isEditable
                                             key={advertiserPaymentMethod.id}
-                                            onDeletePaymentMethod={() =>
-                                                onDeletePaymentMethod(Number(advertiserPaymentMethod.id))
-                                            }
-                                            onEditPaymentMethod={() => onEditPaymentMethod(advertiserPaymentMethod)}
+                                            onDeletePaymentMethod={() => {
+                                                configDispatch({
+                                                    payload: { paymentMethod: advertiserPaymentMethod },
+                                                    type: 'DELETE',
+                                                });
+                                                setIsOpen(true);
+                                            }}
+                                            onEditPaymentMethod={() => {
+                                                configDispatch({
+                                                    payload: {
+                                                        paymentMethod: {
+                                                            displayName: advertiserPaymentMethod.display_name,
+                                                            fields: advertiserPaymentMethod.fields,
+                                                            id: advertiserPaymentMethod.id,
+                                                            method: advertiserPaymentMethod.method,
+                                                        },
+                                                    },
+                                                    type: 'EDIT',
+                                                });
+                                            }}
                                             paymentMethod={advertiserPaymentMethod}
                                             shouldShowPaymentMethodDisplayName={false}
                                         />
@@ -93,6 +140,18 @@ const PaymentMethodsList = ({
                         </div>
                     );
                 })}
+            {actionType === 'DELETE' && (
+                <ConfirmDeletePaymentMethodModal
+                    isOpen={isOpen}
+                    onCancel={() => setIsOpen(false)}
+                    onComfirm={() => deleteAdvertiserPaymentMethod(Number(paymentMethod?.id))}
+                    paymentMethodName={
+                        paymentMethod?.fields?.bank_name?.value ??
+                        paymentMethod?.fields?.name?.value ??
+                        paymentMethod?.display_name
+                    }
+                />
+            )}
         </div>
     );
 

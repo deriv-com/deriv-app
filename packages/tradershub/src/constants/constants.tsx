@@ -115,3 +115,8 @@ export const IconToCurrencyMapper: IconToCurrencyMapperType = {
         text: 'Demo',
     },
 };
+
+export const Regulation = {
+    EU: 'EU',
+    NonEU: 'Non-EU',
+} as const;

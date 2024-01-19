@@ -167,7 +167,12 @@ const MT5PasswordModal: React.FC<TProps> = ({ marketType, platform }) => {
                         Forgot password?
                     </WalletButton>
                     <WalletButton
-                        disabled={!password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading}
+                        disabled={
+                            !password ||
+                            createMT5AccountLoading ||
+                            tradingPlatformPasswordChangeLoading ||
+                            !validPassword(password)
+                        }
                         isFullWidth
                         isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
                         onClick={onSubmit}

@@ -1,36 +1,42 @@
 .p2p-v2-input {
+    display: flex;
+    justify-content: center;
     margin: 0.5rem 0 3.6rem;
+    width: 100%;
 
     @include mobile {
+        flex-direction: column;
         margin-bottom: 1rem;
     }
 
     &__error {
         padding-top: 0.2rem;
         position: absolute;
-        margin-left: 1.6rem;
+        margin-left: 1rem;
+        bottom: 13.3rem;
 
         @include mobile {
+            bottom: 0;
             box-decoration-break: clone;
             padding-top: 0.4rem;
+            margin: 0 0 0.6rem 1.6rem;
             margin-bottom: 0.6rem;
             position: relative;
-            width: 296px;
         }
     }
 
     &__field {
         display: flex;
-        width: 360px;
-        height: 40px;
-        padding: 10px 16px;
+        width: 92%;
+        height: 4rem;
+        padding: 1rem 1.6rem;
         justify-content: center;
         align-items: center;
         border-radius: 4px;
         border: 1px solid #d6dadb;
 
         @include mobile {
-            width: 296px;
+            width: 100%;
         }
 
         &:focus-visible {

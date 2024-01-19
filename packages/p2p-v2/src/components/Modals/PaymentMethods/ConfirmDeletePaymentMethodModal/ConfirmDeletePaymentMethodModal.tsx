@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactModal from 'react-modal';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
@@ -18,6 +18,9 @@ const ConfirmDeletePaymentMethodModal = ({
     onComfirm,
     paymentMethodName,
 }: TConfirmDeletePaymentMethodModalProps) => {
+    useEffect(() => {
+        ReactModal.setAppElement('#v2_modal_root');
+    }, []);
     // TODO: Remember to translate these strings
     return (
         <ReactModal

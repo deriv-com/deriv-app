@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactModal from 'react-modal';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
@@ -12,6 +12,9 @@ type TAddEditPaymentMethodErrorModalProps = {
 };
 
 const AddEditPaymentMethodErrorModal = ({ errorMessage, isOpen, onComfirm }: TAddEditPaymentMethodErrorModalProps) => {
+    useEffect(() => {
+        ReactModal.setAppElement('#v2_modal_root');
+    }, []);
     // TODO: Remember to translate these strings
     return (
         <ReactModal

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Modal from 'react-modal';
 import { p2p } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Loader } from '@deriv-com/ui/dist/components/Loader';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { useDevice } from '../../../hooks';
 import { customStyles } from '../helpers';
@@ -25,7 +26,7 @@ const DailyLimitModal = ({ currency, isModalOpen, onRequestClose }: TDailyLimitM
         //TODO: modal header title to be moved out if needed according to implementation, can be moved to a separate getheader, getcontent, getfooter functions
         if (isLoading) {
             //TODO: replace with @deriv/ui loading component
-            return <div className='p2p-v2-daily-limit-modal__loader'>loading</div>;
+            return <Loader />;
         } else if (isSuccess) {
             return (
                 <>

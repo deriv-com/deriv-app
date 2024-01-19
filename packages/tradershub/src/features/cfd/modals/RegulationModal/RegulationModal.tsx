@@ -8,7 +8,7 @@ const RegulationModal = () => (
     <Modal className='w-full md:max-w-[743px]'>
         <Modal.Header title='Non-EU and EU regulations' />
         <Modal.Content className='p-800 md:p-1200'>
-            <table className='table-auto min-w-[457px] md:min-w-[695px] border-75 border-system-light-active-background border-solid'>
+            <table className='table-auto min-w-[457px] md:min-w-[695px] '>
                 <thead>
                     <tr>
                         <th className='sticky bg-system-light-primary-background inset-y-50 start-50 min-h-2000' />
@@ -25,11 +25,11 @@ const RegulationModal = () => (
                     </tr>
                 </thead>
                 <tbody className=''>
-                    {getCFDContents().map(row => (
-                        <Row key={row.id} {...row} />
+                    {getCFDContents().map((row, idx) => (
+                        <Row key={row.id} {...row} idx={idx} />
                     ))}
-                    {getOptionsContents().map(row => (
-                        <Row key={row.id} {...row} />
+                    {getOptionsContents().map((row, idx) => (
+                        <Row key={row.id} {...row} idx={idx} />
                     ))}
                 </tbody>
             </table>

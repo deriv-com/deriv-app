@@ -16,7 +16,7 @@ const MigrationBannerList = {
 const MigrationBannerImage = ({ image }: TBannerImageProps<TMigrationBannerListProps>) => {
     const Component = MigrationBannerList[image];
 
-    return <Component className='traders-hub-banner__migrate-banner__image' data-testid={`dt_${image}`} />;
+    return <Component className='mt5-migration-banner__image' data-testid={`dt_${image}`} />;
 };
 
 export default MigrationBannerImage;

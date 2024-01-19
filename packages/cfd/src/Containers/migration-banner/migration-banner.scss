@@ -1,16 +1,17 @@
-.traders-hub-banner__migrate-banner {
+.mt5-migration-banner {
     position: relative;
-    margin-bottom: 2.4rem;
+    margin: 2.4rem 0;
     overflow: hidden;
     background-color: var(--general-hover);
     border: 1px solid var(--traders-hub-banner-border-color);
-    border-radius: $BORDER_RADIUS * 4;
+    border-radius: $BORDER_RADIUS * 2;
+    height: 7.2rem;
 
     @include mobile {
         padding: 1.4rem 1.6rem;
         border: none;
     }
-    &-description {
+    &__description {
         position: relative;
         z-index: 2;
         max-width: 57.5rem;
@@ -23,21 +24,13 @@
 
         @include mobile {
             margin: unset;
-            padding-left: 0;
-            &__text {
+            padding-left: 2.4rem;
+            &-text {
                 width: 90%;
             }
         }
     }
 
-    &-button {
-        margin-top: 0.8rem;
-        padding-inline: 6.7rem;
-
-        @include mobile {
-            padding-inline: 1.6rem;
-        }
-    }
     &__image {
         position: absolute;
         z-index: 0;

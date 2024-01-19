@@ -20,6 +20,7 @@ import { TTradingPlatformAccounts } from '../Components/props.types';
 
 import { TCFDPasswordReset } from './props.types';
 import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
+import MigrationBanner from './migration-banner';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid & {
@@ -48,7 +49,7 @@ const DMT5TradeModal = observer(
         const {
             account_status: { authentication },
         } = client;
-
+        const is_eligible_to_migrate = mt5_trade_account.eligible_to_migrate;
         const getCompanyShortcode = () => {
             if (
                 (mt5_trade_account.account_type === CATEGORY.DEMO &&
@@ -183,6 +184,7 @@ const DMT5TradeModal = observer(
                             <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
                         </div>
                     </div>
+                    {is_eligible_to_migrate && <MigrationBanner />}
                 </div>
                 <div className='cfd-trade-modal__download-center-app'>
                     <div className='cfd-trade-modal__download-center-app--option'>

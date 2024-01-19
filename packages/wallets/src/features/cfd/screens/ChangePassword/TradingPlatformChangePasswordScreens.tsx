@@ -67,7 +67,7 @@ const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScre
         introScreen: {
             bodyText: `Use this password to log in to your ${title} accounts on the desktop, web, and mobile apps.`,
             button: (
-                <WalletButton onClick={() => handleClick('confirmationScreen')} size='lg'>
+                <WalletButton onClick={() => handleClick('confirmationScreen')} size='lg' textSize='sm'>
                     Change password
                 </WalletButton>
             ),

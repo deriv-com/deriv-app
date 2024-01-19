@@ -1,5 +1,6 @@
 import React, { FC, useCallback } from 'react';
 import classNames from 'classnames';
+import { TGenericSizes } from '../../../types';
 import { WalletText } from '../WalletText';
 
 export type TabTitleProps = {
@@ -7,10 +8,11 @@ export type TabTitleProps = {
     index: number;
     isActive?: boolean;
     setSelectedTab: (index: number) => void;
+    size?: Exclude<TGenericSizes, '3xs' | '6xl' | '7xl'>;
     title: string;
 };
 
-const TabTitle: FC<TabTitleProps> = ({ icon, index, isActive, setSelectedTab, title }) => {
+const TabTitle: FC<TabTitleProps> = ({ icon, index, isActive, setSelectedTab, size = 'md', title }) => {
     const handleOnClick = useCallback(() => {
         setSelectedTab(index);
     }, [setSelectedTab, index]);
@@ -23,7 +25,9 @@ const TabTitle: FC<TabTitleProps> = ({ icon, index, isActive, setSelectedTab, ti
             onClick={handleOnClick}
         >
             {icon}
-            <WalletText weight={isActive ? 'bold' : 'normal'}>{title}</WalletText>
+            <WalletText size={size} weight={isActive ? 'bold' : 'normal'}>
+                {title}
+            </WalletText>
         </button>
     );
 };

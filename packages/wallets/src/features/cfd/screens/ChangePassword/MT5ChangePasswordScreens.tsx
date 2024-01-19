@@ -43,7 +43,7 @@ const MT5ChangePasswordScreens = () => {
             </div>
         </Fragment>
     ) : (
-        <Tabs preSelectedTab={tabNumber} wrapperClassName='wallets-change-password__tab'>
+        <Tabs fontSize='sm' preSelectedTab={tabNumber} wrapperClassName='wallets-change-password__tab'>
             <Tab title={`${title} Password`}>
                 <TradingPlatformChangePasswordScreens platform={platform} />
             </Tab>

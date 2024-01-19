@@ -85,6 +85,7 @@ export const routes = {
 
     // Traders Hub
     traders_hub_v2: '/traders-hub',
+    compare_accounts: '/traders-hub/compare-accounts',
 
     // Account V2
     account_v2: '/account-v2',

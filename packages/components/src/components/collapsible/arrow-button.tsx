@@ -91,6 +91,7 @@ const ArrowButton = ({ is_collapsed = false, position, onClick, title, flat_butt
                 'dc-collapsible__button--wide': flat_button,
             })}
             onClick={toggleExpand}
+            onKeyDown={toggleExpand}
         >
             {icon_arrow}
         </div>

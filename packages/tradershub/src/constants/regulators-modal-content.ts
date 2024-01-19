@@ -72,11 +72,11 @@ export const getCFDContents = (): TRegulatorsContentProps[] => [
                 { text: 'Commodities' },
                 { text: 'Cryptocurrencies' },
                 {
-                    options: { color: 'loss-danger', weight: 'bold' },
+                    options: { color: 'error', weight: 'bold' },
                     text: '*Boom 300 and Crash 300 Index',
                 },
                 {
-                    options: { color: 'loss-danger', weight: 'bold' },
+                    options: { color: 'error', weight: 'bold' },
                     text: '*Volatility 150 Index and Volatility 250 Index',
                 },
             ],
@@ -139,7 +139,7 @@ export const getOptionsContents = (): TRegulatorsContentProps[] => [
                 { text: 'Forex' },
                 { text: 'Cryptocurrencies' },
                 {
-                    options: { color: 'loss-danger', weight: 'bold' },
+                    options: { color: 'error', weight: 'bold' },
                     text: '*Boom 300 and Crash 300 Index',
                 },
             ],

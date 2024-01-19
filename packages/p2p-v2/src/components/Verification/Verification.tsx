@@ -82,7 +82,7 @@ const Verification = () => {
             <Text className='p2p-v2-verification__text' size={isMobile ? 'lg' : 'md'} weight='bold'>
                 Verify your P2P account
             </Text>
-            <Text className='p2p-v2-verification__text' size={isMobile ? 'lg' : 'md'}>
+            <Text align='center' className='p2p-v2-verification__text' size={isMobile ? 'lg' : 'md'}>
                 Verify your identity and address to use Deriv P2P.
             </Text>
             <Checklist items={checklistItems} />

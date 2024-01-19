@@ -23,12 +23,10 @@ const CancelAddPaymentMethodModal = ({ isOpen, onCancel, onGoBack }: TCancelAddP
             style={customStyles}
         >
             <div className='p2p-v2-payment-methods-modal__wrapper'>
-                <Text color='prominent' size='md' weight='bold'>
+                <Text color='prominent' weight='bold'>
                     Cancel adding this payment method?
                 </Text>
-                <Text color='prominent' size='sm' weight='normal'>
-                    If you choose to cancel, the details you’ve entered will be lost.
-                </Text>
+                <Text color='prominent'>If you choose to cancel, the details you’ve entered will be lost.</Text>
                 <div className='p2p-v2-payment-methods-modal__buttons'>
                     <Button
                         className='p2p-v2-payment-methods-modal__buttons--cancel'

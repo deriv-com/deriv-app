@@ -1,0 +1,39 @@
+.server-bot-container {
+    width: 50rem;
+}
+
+.server-bot {
+    display: flex;
+    flex-direction: row;
+    gap: 5rem;
+
+    .load-strategy__container {
+        width: 50rem;
+    }
+
+    &__title {
+        margin: 2rem;
+        text-align: center;
+
+        & button {
+            position: fixed;
+            right: 3rem;
+            background-color: var(--general-section-1);
+        }
+    }
+
+    &__image {
+        height: 45rem;
+    }
+
+    .dashboard__chart-wrapper {
+        height: 41.5rem;
+        width: calc(100vw - 55rem);
+    }
+}
+
+.server-bot-btn {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}

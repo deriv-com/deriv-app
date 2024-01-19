@@ -8,6 +8,7 @@ import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { useFeatureFlags } from '@deriv/hooks';
 import Chart from 'Components/chart';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -17,7 +18,7 @@ import { tour_list } from './dbot-tours/utils';
 import { ChartModal, DashboardComponent } from './dashboard-component';
 import StrategyNotification from './strategy-notification';
 import Tutorial from './tutorial-tab';
-import NewBot from './new-bot/new-bot';
+import ServerBot from './server-bot/server-bot';
 
 const Dashboard = observer(() => {
     const { dashboard, load_modal, run_panel, quick_strategy, summary_card } = useDBotStore();
@@ -40,7 +41,8 @@ const Dashboard = observer(() => {
     const init_render = React.useRef(true);
     const { ui } = useStore();
     const { url_hashed_values, is_mobile } = ui;
-    const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial', 'new_bot'];
+    const { is_next_server_bot_enabled } = useFeatureFlags();
+    const hash = ['dashboard', 'bot_builder', 'chart', 'tutorial', 'server_bot'];
 
     let tab_value: number | string = active_tab;
     const GetHashedValue = (tab: number) => {
@@ -172,13 +174,14 @@ const Dashboard = observer(() => {
                                 <Tutorial />
                             </div>
                         </div>
-                        <div
-                            icon='IcDashboardComponentTab'
-                            label={<Localize i18n_default_text='New Bot' />}
-                            id='id-new-bot'
-                        >
-                            <NewBot />
-                        </div>
+                        {is_next_server_bot_enabled ? (
+                            <div
+                                icon='IcDashboardComponentTab'
+                                label={<Localize i18n_default_text='Server bot' />}
+                                id='id-server-bot'
+                            >
+                                <ServerBot />
+                            </div>): <></>}
                     </Tabs>
                 </div>
             </div>

@@ -3,51 +3,61 @@ import * as Yup from 'yup';
 import { address_permitted_special_characters_message, getLocation, toMoment } from '@deriv/shared';
 import { GetSettings, ResidenceList, StatesList } from '@deriv/api-types';
 
-const BaseSchema = Yup.object().shape({
-    first_name: Yup.string()
-        .required(localize('First name is required.'))
-        .min(2, localize('You should enter 2-50 characters.'))
-        .max(50, localize('You should enter 2-50 characters.'))
-        .matches(/^(?!.*\s{2,})[\p{L}\s'.-]{2,50}$/u, localize('Letters, spaces, periods, hyphens, apostrophes only.')),
-    last_name: Yup.string()
-        .required(localize('Last name is required.'))
-        .min(2, localize('You should enter 2-50 characters.'))
-        .max(50, localize('You should enter 2-50 characters.'))
-        .matches(/^(?!.*\s{2,})[\p{L}\s'.-]{2,50}$/u, localize('Letters, spaces, periods, hyphens, apostrophes only.')),
-    phone: Yup.string()
-        .required(localize('Phone is required.'))
-        .min(9, localize('You should enter 9-35 numbers.'))
-        .max(35, localize('You should enter 9-35 characters.'))
-        .matches(/^\+?([0-9-]+\s)*[0-9-]+$/, localize('Please enter a valid phone number (e.g. +15417541234).')),
-    address_line_1: Yup.string()
-        .trim()
-        .required(localize('First line of address is required.'))
-        .max(70, localize('Should be less than 70.'))
-        .matches(
-            /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u,
-            localize('Use only the following special characters: {{permitted_characters}}', {
-                permitted_characters: address_permitted_special_characters_message,
-                interpolation: { escapeValue: false },
-            })
-        ),
-    address_line_2: Yup.string()
-        .trim()
-        .max(70, localize('Should be less than 70.'))
-        .matches(
-            /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u,
-            localize('Use only the following special characters: {{permitted_characters}}', {
-                permitted_characters: address_permitted_special_characters_message,
-                interpolation: { escapeValue: false },
-            })
-        ),
-    address_city: Yup.string()
-        .required(localize('Town/City is required.'))
-        .max(70, localize('Should be less than 70.'))
-        .matches(
-            /^[A-Za-z]+(?:[.' -]*[A-Za-z]+){0,70}$/,
-            localize('Only letters, space, hyphen, period, and apostrophe are allowed.')
-        ),
-});
+const getBaseSchema = () =>
+    Yup.object().shape({
+        first_name: Yup.string()
+            .required(localize('First name is required.'))
+            .min(2, localize('You should enter 2-50 characters.'))
+            .max(50, localize('You should enter 2-50 characters.'))
+            .matches(
+                /^(?!.*\s{2,})[\p{L}\s'.-]{2,50}$/u,
+                localize('Letters, spaces, periods, hyphens, apostrophes only.')
+            ),
+        last_name: Yup.string()
+            .required(localize('Last name is required.'))
+            .min(2, localize('You should enter 2-50 characters.'))
+            .max(50, localize('You should enter 2-50 characters.'))
+            .matches(
+                /^(?!.*\s{2,})[\p{L}\s'.-]{2,50}$/u,
+                localize('Letters, spaces, periods, hyphens, apostrophes only.')
+            ),
+        phone: Yup.string()
+            .required(localize('Phone is required.'))
+            .min(9, localize('You should enter 9-35 numbers.'))
+            .max(35, localize('You should enter 9-35 characters.'))
+            .matches(/^\+?([0-9-]+\s)*[0-9-]+$/, localize('Please enter a valid phone number (e.g. +15417541234).')),
+        address_line_1: Yup.string()
+            .trim()
+            .required(localize('First line of address is required.'))
+            .max(70, localize('Should be less than 70.'))
+            .matches(
+                /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u,
+                localize('Use only the following special characters: {{permitted_characters}}', {
+                    permitted_characters: address_permitted_special_characters_message,
+                    interpolation: { escapeValue: false },
+                })
+            ),
+        address_line_2: Yup.string()
+            .trim()
+            .max(70, localize('Should be less than 70.'))
+            .matches(
+                /^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u,
+                localize('Use only the following special characters: {{permitted_characters}}', {
+                    permitted_characters: address_permitted_special_characters_message,
+                    interpolation: { escapeValue: false },
+                })
+            ),
+        address_city: Yup.string()
+            .required(localize('Town/City is required.'))
+            .max(70, localize('Should be less than 70.'))
+            .matches(
+                /^[A-Za-z]+(?:[.' -]*[A-Za-z]+){1,70}$/,
+                localize('Only letters, space, hyphen, period, and apostrophe are allowed.')
+            ),
+        address_postcode: Yup.string()
+            .max(20, localize('Please enter a Postal/ZIP code under 20 chatacters.'))
+            .matches(/^[A-Za-z0-9][A-Za-z0-9\s-]*$/, localize('Only letters, numbers, space, and hyphen are allowed.')),
+    });
 
 export const getPersonalDetailsInitialValues = (
     account_settings: GetSettings,
@@ -148,8 +158,8 @@ export const makeSettingsRequest = (
 };
 
 export const getPersonalDetailsValidationSchema = (is_eu: boolean) => {
-    if (!is_eu) return BaseSchema;
-    return BaseSchema.concat(
+    if (!is_eu) return getBaseSchema();
+    return getBaseSchema().concat(
         Yup.object().shape({
             tax_identification_number: Yup.string()
                 .required(localize('TIN is required.'))

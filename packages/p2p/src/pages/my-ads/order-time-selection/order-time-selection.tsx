@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormikHandlers, FormikValues, useFormikContext } from 'formik';
 import { Dropdown, Icon, Popover, Text } from '@deriv/components';
-import { Localize } from 'Components/i18next';
+import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { order_completion_time_list } from 'Constants/order-list';
 import { useStore } from '@deriv/stores';
@@ -28,7 +28,7 @@ const OrderTimeSelection = ({ ...field }: FormikValues) => {
                 <Popover
                     alignment='top'
                     classNameBubble='order-time-selection__popover'
-                    message={order_time_info_message}
+                    message={localize(order_time_info_message)}
                 >
                     <Icon
                         data_testid='dt_order_time_selection_info_icon'

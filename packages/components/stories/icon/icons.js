@@ -442,6 +442,7 @@ export const icons =
         'IcImage',
         'IcInfoBlue',
         'IcInfoOutline',
+        'IcInfoPasskey',
         'IcInfo',
         'IcInsOuts',
         'IcInstallationApple',

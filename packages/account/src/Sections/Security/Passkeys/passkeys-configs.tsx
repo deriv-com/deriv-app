@@ -1,107 +1,102 @@
 import React from 'react';
+import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
+import { mobileOSDetect } from '@deriv/shared';
+import { DescriptionContainer } from './components/description-container';
+import { TipsBlock } from './components/tips-block';
 
 export const PASSKEY_STATUS_CODES = {
+    CREATED: 'created',
+    LEARN_MORE: 'learn_more',
     NONE: '',
-    REGISTERED: 'registered',
+    NO_PASSKEY: 'no_passkey',
+    REMOVED: 'removed',
     RENAMING: 'renaming',
-    REVOKED: 'revoked',
-    REVOKE_VERIFY: 'revoke_verify',
+    VERIFYING: 'verifying',
 } as const;
 
 export type TPasskeysStatus = typeof PASSKEY_STATUS_CODES[keyof typeof PASSKEY_STATUS_CODES];
 
-export const getPasskeysTips = () =>
-    [
-        {
-            id: 1,
-            description: <Localize i18n_default_text='Enable screen lock on your device.' />,
-        },
-        {
-            id: 2,
-            description: <Localize i18n_default_text='Sign in to your Google or iCloud account.' />,
-        },
-        {
-            id: 3,
-            description: <Localize i18n_default_text='Enable Bluetooth.' />,
-        },
-    ] as const;
+export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>, onTextClick?: () => void) => {
+    const learn_more_button_text = <Localize i18n_default_text='Learn more' />;
+    const create_passkey_button_text = <Localize i18n_default_text='Create passkey' />;
+    const continue_button_text = <Localize i18n_default_text='Continue' />;
 
-export const getPasskeysDescriptions = () =>
-    [
-        {
-            id: 1,
-            question: <Localize i18n_default_text='What are Passkeys?' />,
-            description: (
-                <Localize i18n_default_text='Passkeys are a security measure that lets you log in the same way you unlock your device: with a fingerprint, a face scan, or a screen lock PIN. ' />
-            ),
-        },
-        {
-            id: 2,
-            question: <Localize i18n_default_text='Why passkeys?' />,
-            description: (
-                <Localize i18n_default_text='Passkeys are an added layer of security that protects your account against unauthorised access and phishing attacks.' />
-            ),
-        },
-        {
-            id: 3,
-            question: <Localize i18n_default_text='How to create a passkey?' />,
-            description: (
-                <Localize i18n_default_text="Go to 'Account Settings' on Deriv GO to set up your passkey. Each device can only save one passkey; however, iOS users may still see the 'Create passkey' button due to iOS’s ability to save passkeys on other devices." />
-            ),
-        },
-        {
-            id: 4,
-            question: <Localize i18n_default_text='Where are Passkeys saved?' />,
-            description: (
-                <Localize i18n_default_text='Passkeys are saved in your password manager to help you sign in on other devices.' />
-            ),
-        },
-        {
-            id: 5,
-            question: <Localize i18n_default_text='What if I change my Deriv account email?' />,
-            description: (
-                <Localize i18n_default_text='Even if you change your email address, you can still continue to log in to Deriv.com with the same passkey.' />
-            ),
-        },
-    ] as const;
+    const getPasskeysRemovedDescription = () => {
+        const os_type = mobileOSDetect();
 
-export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
-    const titles: Record<Exclude<TPasskeysStatus, ''>, React.ReactElement> = {
-        registered: <Localize i18n_default_text='Passkey created successfully!' />,
-        renaming: <Localize i18n_default_text='Rename passkey' />,
-        revoked: <Localize i18n_default_text='Passkey revoked successfully!' />,
-        revoke_verify: <Localize i18n_default_text='Please help us verify your revoke passkey request.' />,
+        switch (os_type) {
+            case 'Android':
+                return (
+                    <Localize i18n_default_text='Your passkey is successfully removed. To avoid sign-in prompts, also remove the passkey from your Google password manager. ' />
+                );
+            case 'iOS':
+                return (
+                    <Localize i18n_default_text='Your passkey is successfully removed. To avoid sign-in prompts, also remove the passkey from your iCloud keychain. ' />
+                );
+            default:
+                return (
+                    <Localize i18n_default_text='Your passkey is successfully removed. To avoid sign-in prompts, also remove the passkey from your password manager. ' />
+                );
+        }
     };
 
-    const icons: Record<Exclude<TPasskeysStatus, ''>, string> = {
-        registered: 'IcSuccessPasskey',
-        renaming: 'IcEditPasskey',
-        revoked: 'IcSuccessPasskey',
-        revoke_verify: 'IcVerifyPasskey',
+    const titles = {
+        created: <Localize i18n_default_text='Success!' />,
+        learn_more: <Localize i18n_default_text='Passwordless login with passkeys' />,
+        no_passkey: <Localize i18n_default_text='No passkey found' />,
+        removed: <Localize i18n_default_text='Passkey successfully removed' />,
+        renaming: <Localize i18n_default_text='Edit passkey' />,
+        verifying: <Localize i18n_default_text='Verify your request' />,
     };
-
-    const descriptions: Record<Exclude<TPasskeysStatus, ''>, React.ReactElement> = {
-        registered: (
+    const descriptions = {
+        created: (
             <Localize
-                i18n_default_text='Your account is now set up with a passkey, <0/>allowing you to easily log in and manage it in your account settings.'
+                i18n_default_text='Your account is now secured with a passkey.<0/>Manage your passkey through your Deriv account settings.'
                 components={[<br key={0} />]}
             />
         ),
-        renaming: <Localize i18n_default_text='Update your passkey name for customization.' />,
-        revoked: (
-            <Localize i18n_default_text='Your passkey is successfully revoked. To avoid sign-in prompts, remove them from your google password manager.' />
+        learn_more: (
+            <React.Fragment>
+                <DescriptionContainer />
+                <TipsBlock />
+            </React.Fragment>
         ),
-        revoke_verify: (
-            <Localize i18n_default_text='Hit the button below and we’ll send you an email with a link. Tap that link to verify your revoke request. This is to protect your account from unauthorised passkeys.' />
+        no_passkey: (
+            <Localize
+                i18n_default_text="To enhance your security, tap 'Create passkey' below. Learn more about passkeys <0>here</0>."
+                components={[<Text key={0} color='loss-danger' size='xs' onClick={onTextClick} />]}
+            />
+        ),
+        removed: getPasskeysRemovedDescription(),
+        renaming: '',
+        verifying: (
+            <Localize i18n_default_text="We'll send you a secure link to verify your request. Tap on it to confirm you want to remove the passkey. This protects your account from unauthorised requests." />
         ),
     };
-
-    const button_texts: Record<Exclude<TPasskeysStatus, ''>, React.ReactElement> = {
-        registered: <Localize i18n_default_text='Continue' />,
-        renaming: <Localize i18n_default_text=' ' />,
-        revoked: <Localize i18n_default_text=' ' />,
-        revoke_verify: <Localize i18n_default_text=' ' />,
+    const icons = {
+        created: 'IcSuccessPasskey',
+        learn_more: 'IcInfoPasskey',
+        no_passkey: 'IcAddPasskey',
+        removed: 'IcSuccessPasskey',
+        renaming: 'IcEditPasskey',
+        verifying: 'IcVerifyPasskey',
+    };
+    const button_texts = {
+        created: continue_button_text,
+        learn_more: create_passkey_button_text,
+        no_passkey: create_passkey_button_text,
+        removed: continue_button_text,
+        renaming: <Localize i18n_default_text='Save changes' />,
+        verifying: <Localize i18n_default_text='Send email' />,
+    };
+    const back_button_texts = {
+        created: undefined,
+        learn_more: undefined,
+        no_passkey: learn_more_button_text,
+        removed: undefined,
+        renaming: <Localize i18n_default_text='Back' />,
+        verifying: undefined,
     };
 
     return {
@@ -109,5 +104,6 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>) => {
         description: descriptions[status],
         icon: icons[status],
         button_text: button_texts[status],
+        back_button_text: back_button_texts[status],
     };
 };

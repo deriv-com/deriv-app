@@ -7,9 +7,8 @@ type TPasskeyCard = {
     id: number;
     name: string;
     last_used_at: number;
-    created_at: number;
+    created_at?: number;
     stored_on?: string;
-    //TODO investigate how to detect type of passkey
     icon?: string;
 };
 

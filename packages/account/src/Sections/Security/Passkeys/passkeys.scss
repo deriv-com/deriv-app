@@ -68,7 +68,17 @@
                 &-container {
                     display: flex;
                     flex-direction: column;
+                    align-items: flex-start;
                 }
+            }
+        }
+        &__footer {
+            flex-direction: row;
+            gap: 0.8rem;
+            padding: 1.6rem;
+
+            .dc-btn {
+                flex: 1;
             }
         }
     }

@@ -433,6 +433,7 @@ import './common/ic-identity-document-verification.svg';
 import './common/ic-image.svg';
 import './common/ic-info-blue.svg';
 import './common/ic-info-outline.svg';
+import './common/ic-info-passkey.svg';
 import './common/ic-info.svg';
 import './common/ic-ins-outs.svg';
 import './common/ic-installation-apple.svg';

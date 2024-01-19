@@ -1,18 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Icon, Text } from '@deriv/components';
-import FormBody from '../../../Components/form-body';
-import FormFooter from '../../../Components/form-footer';
+import { Icon, Text } from '@deriv/components';
+import FormBody from '../../../../Components/form-body';
 
 type TPasskeysStatus = {
     title: React.ReactElement;
-    description?: React.ReactElement;
+    description?: React.ReactNode;
     icon: string;
     className?: string;
-    button_text: React.ReactElement;
-    back_button_text?: React.ReactElement;
-    onButtonClick: () => void;
-    onBackButtonClick?: () => void;
 };
 
 const PasskeysStatus = ({
@@ -21,10 +16,6 @@ const PasskeysStatus = ({
     icon,
     children,
     className,
-    button_text,
-    onButtonClick,
-    back_button_text,
-    onBackButtonClick,
 }: React.PropsWithChildren<TPasskeysStatus>) => {
     return (
         <React.Fragment>
@@ -43,19 +34,8 @@ const PasskeysStatus = ({
                         {description}
                     </Text>
                 )}
-                {children}
             </FormBody>
-            <FormFooter>
-                {/*TODO: check styles when two buttons enabled*/}
-                {back_button_text && (
-                    <Button type='button' has_effect secondary onClick={onBackButtonClick}>
-                        {back_button_text}
-                    </Button>
-                )}
-                <Button type='button' has_effect primary onClick={onButtonClick}>
-                    {button_text}
-                </Button>
-            </FormFooter>
+            {children}
         </React.Fragment>
     );
 };

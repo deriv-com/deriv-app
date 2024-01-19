@@ -1,17 +1,16 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Loading } from '@deriv/components';
+import { Icon, Loading } from '@deriv/components';
 import { useGetPasskeysList, useIsPasskeySupported, useRegisterPasskey } from '@deriv/hooks';
 import { PlatformContext, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import NoPasskeysSet from './no-passkeys-set';
+import PasskeysFooterButtons from './components/passkeys-footer-buttons';
+import PasskeysList from './components/passkeys-list';
+import PasskeysStatus from './components/passkeys-status';
 import { getStatusContent, PASSKEY_STATUS_CODES, TPasskeysStatus } from './passkeys-configs';
-import PasskeysList from './passkeys-list';
-import PasskeysStatus from './passkeys-status';
 import './passkeys.scss';
 
-//TODO need to investigate how to add info about type of key (icon)
 //TODO remove mock passkeys
 const mock_passkeys_list = [
     {
@@ -54,6 +53,7 @@ const Passkeys = observer(() => {
     const { is_passkeys_enabled } = React.useContext(PlatformContext);
 
     const [passkey_status, setPasskeyStatus] = React.useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
+    const [is_learn_more_opened, setIsLearnMoreOpened] = React.useState(false);
 
     const { is_passkey_supported, is_loading: is_passkey_support_checked } = useIsPasskeySupported();
     const should_show_passkeys = is_passkeys_enabled && is_passkey_supported && is_mobile;
@@ -70,10 +70,12 @@ const Passkeys = observer(() => {
     console.log('is_passkey_registered', is_passkey_registered);
     React.useEffect(() => {
         if (is_passkey_registered) {
-            setPasskeyStatus(PASSKEY_STATUS_CODES.REGISTERED);
+            setPasskeyStatus(PASSKEY_STATUS_CODES.CREATED);
         } else {
             setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
         }
+
+        // setIsLearnMoreOpened(false)
     }, [is_passkey_registered]);
 
     if (is_passkey_support_checked || is_passkeys_list_loading) {
@@ -84,7 +86,7 @@ const Passkeys = observer(() => {
         return <Redirect to={routes.traders_hub} />;
     }
 
-    // //TODO add error messages and move all content to getStatusContent
+    // TODO add error messages and move all content to getStatusContent
     if (passkeys_list_error || registration_error) {
         return (
             <div className='passkeys'>
@@ -96,51 +98,74 @@ const Passkeys = observer(() => {
                             components={[<br key={0} />]}
                         />
                     }
-                    button_text={<Localize i18n_default_text='Refresh' />}
-                    onButtonClick={() => {
-                        location.reload();
-                    }}
-                />
+                >
+                    <PasskeysFooterButtons
+                        button_text={<Localize i18n_default_text='Refresh' />}
+                        onButtonClick={() => {
+                            location.reload();
+                        }}
+                    />
+                </PasskeysStatus>
             </div>
         );
     }
 
     if (passkey_status) {
-        const content = getStatusContent(passkey_status);
+        const content = getStatusContent(passkey_status, () => setIsLearnMoreOpened(true));
 
         let onButtonClick = () => setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
+        let onBackButtonClick;
 
-        if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
-            onButtonClick = () => setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
-            //TODO: add onclicks for the rest of statuses
+        if (passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE) {
+            onButtonClick = createPasskey;
         }
 
-        //TODO modify the logic to show different statuses
+        if (passkey_status === PASSKEY_STATUS_CODES.NO_PASSKEY) {
+            onButtonClick = createPasskey;
+            onBackButtonClick = () => {
+                setIsLearnMoreOpened(true);
+                setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE);
+            };
+        }
+
+        if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
+            //TODO implement renaming flow
+            onBackButtonClick = () => setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
+        }
+
+        if (passkey_status === PASSKEY_STATUS_CODES.VERIFYING) {
+            //TODO implement verifying flow (send email)
+        }
+
         return (
             <div className='passkeys'>
+                {is_learn_more_opened && (
+                    <Icon
+                        icon='IcBackButton'
+                        onClick={() => setIsLearnMoreOpened(false)}
+                        className='passkeys-status__description-back-button'
+                    />
+                )}
                 <PasskeysStatus
+                    className={is_learn_more_opened ? 'passkeys-status__wrapper--expanded' : ''}
                     icon={content.icon}
                     title={content.title}
-                    button_text={content.button_text}
-                    onButtonClick={onButtonClick}
                     description={content.description}
-                />
+                >
+                    <PasskeysFooterButtons
+                        button_text={content.button_text}
+                        onButtonClick={onButtonClick}
+                        back_button_text={content.back_button_text}
+                        onBackButtonClick={onBackButtonClick}
+                    />
+                </PasskeysStatus>
             </div>
         );
     }
 
     return (
         <div className='passkeys'>
-            {!passkeys_list?.length ? (
-                <NoPasskeysSet onButtonClick={createPasskey} />
-            ) : (
-                <PasskeysList
-                    passkeys_list={passkeys_list}
-                    onButtonClick={createPasskey}
-                    //TODO: need to check the cases to remove button for creation new passkey (device support)
-                    is_creation_available
-                />
-            )}
+            <PasskeysList passkeys_list={passkeys_list || []} onButtonClick={createPasskey} />
         </div>
     );
 });

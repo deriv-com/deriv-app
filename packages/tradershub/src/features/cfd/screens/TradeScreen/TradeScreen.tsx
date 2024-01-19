@@ -1,7 +1,9 @@
 import React, { Fragment, useMemo } from 'react';
-import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList, useIsEuRegion } from '@deriv/api';
+import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Text, useBreakpoint } from '@deriv/quill-design';
+import { useUIContext } from '../../../../components';
+import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import ImportantIcon from '../../../../public/images/ic-important.svg';
 import { THooks, TPlatforms } from '../../../../types';
 import { AppToContentMapper, MarketType, MarketTypeDetails, PlatformDetails } from '../../constants';
@@ -22,7 +24,10 @@ const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
 
 const TradeScreen = ({ account }: TradeScreenProps) => {
     const { isMobile } = useBreakpoint();
-    const { isEU } = useIsEuRegion();
+    const { getUIState } = useUIContext();
+    const activeRegulation = getUIState('regulation');
+    const { isEU } = useRegulationFlags(activeRegulation);
+
     const { getCFDState } = Provider.useCFDContext();
     const { data: dxtradeAccountsList } = useDxtradeAccountsList();
     const { data: ctraderAccountsList } = useCtraderAccountsList();

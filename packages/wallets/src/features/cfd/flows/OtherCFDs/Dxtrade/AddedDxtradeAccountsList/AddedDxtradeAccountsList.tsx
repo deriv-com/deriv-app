@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDxtradeAccountsList } from '@deriv/api';
 import { TradingAccountCard } from '../../../../../../components';
@@ -14,6 +15,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
     const history = useHistory();
     const { data } = useDxtradeAccountsList();
     const { show } = useModal();
+    const { t } = useTranslation();
 
     const leadingComponent = () => (
         <div
@@ -40,10 +42,10 @@ const AddedDxtradeAccountsList: React.FC = () => {
                 }}
                 variant='outlined'
             >
-                Transfer
+                {t('Transfer')}
             </WalletButton>
             <WalletButton onClick={() => show(<MT5TradeModal platform={PlatformDetails.dxtrade.platform} />)}>
-                Open
+                {t('Open')}
             </WalletButton>
         </div>
     );

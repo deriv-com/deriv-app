@@ -14,7 +14,8 @@ import ModalHeader from './ModalHeader';
 type TModalChildren =
     | ReactElement<typeof ModalContent>
     | ReactElement<typeof ModalFooter>
-    | ReactElement<typeof ModalHeader>;
+    | ReactElement<typeof ModalHeader>
+    | null;
 
 /**
  * Type for the Modal component props

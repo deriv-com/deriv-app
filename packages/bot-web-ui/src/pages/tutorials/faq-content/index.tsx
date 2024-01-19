@@ -2,8 +2,7 @@ import React, { KeyboardEvent } from 'react';
 import { Accordion, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import { useDBotStore } from 'Stores/useDBotStore';
-import { TDescription } from '../constants';
+import { TDescription } from '../tutorials.types';
 
 type TFAQContent = {
     faq_list: TFAQList[];
@@ -41,8 +40,6 @@ const scrollToElement = (wrapper_element: HTMLElement, offset: number) => {
 
 const FAQContent = ({ faq_list }: TFAQContent) => {
     const { ui } = useStore();
-    const { dashboard } = useDBotStore();
-    const { active_tab_tutorials } = dashboard;
     const { is_mobile } = ui;
 
     const faq_wrapper_element = React.useRef<HTMLDivElement>(null);
@@ -99,11 +96,15 @@ const FAQContent = ({ faq_list }: TFAQContent) => {
                 <div className='faq__wrapper' ref={faq_wrapper_element}>
                     {faq_list?.length > 0 && (
                         <>
-                            {active_tab_tutorials === 2 && (
-                                <Text as='p' line_height='xl' className='faq__wrapper__header' weight='bold'>
-                                    <Localize i18n_default_text='FAQ' />
-                                </Text>
-                            )}
+                            <Text
+                                as='p'
+                                line_height='xl'
+                                className='faq__wrapper__header'
+                                weight='bold'
+                                size={is_mobile ? 'xs' : 's'}
+                            >
+                                <Localize i18n_default_text='FAQ' />
+                            </Text>
                             <div
                                 data-testid='id-accordion-test'
                                 onClick={handleAccordionClick}

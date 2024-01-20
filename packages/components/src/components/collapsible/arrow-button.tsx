@@ -83,7 +83,7 @@ const ArrowButton = ({ is_collapsed = false, position, onClick, title, flat_butt
             );
     }
 
-    if (flat_button) icon_arrow = <div className='dc-collapsible__icon__flat' />;
+    if (flat_button) icon_arrow = <div className='dc-collapsible__icon__flat' data-testid='icon_flat' />;
 
     return (
         <div

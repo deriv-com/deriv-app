@@ -55,6 +55,9 @@ const ContractTypeWidget = observer(
             [item, value, is_dialog_open, is_mobile]
         );
 
+        const getCategoryName = (clicked_item: TContractType) =>
+            getContractTypes(list_with_category(), clicked_item)?.find(item => item.value === clicked_item.value)?.text;
+
         React.useEffect(() => {
             document.addEventListener('mousedown', handleClickOutside);
             return () => {
@@ -99,14 +102,14 @@ const ContractTypeWidget = observer(
                         action: 'choose_trade_type',
                         subform_name,
                         tab_name: selected_category,
-                        trade_type_name: clicked_item?.text,
+                        trade_type_name: getCategoryName(clicked_item),
                         form_name: 'default',
                     });
                 } else {
                     Analytics.trackEvent('ce_trade_types_form', {
                         action: 'choose_trade_type',
                         subform_name,
-                        trade_type_name: clicked_item?.text,
+                        trade_type_name: getCategoryName(clicked_item),
                         form_name: 'default',
                     });
                 }
@@ -120,7 +123,7 @@ const ContractTypeWidget = observer(
             Analytics.trackEvent('ce_trade_types_form', {
                 action: 'info_open',
                 tab_name: selected_category,
-                trade_type_name: clicked_item?.text,
+                trade_type_name: getCategoryName(clicked_item),
             });
         };
 
@@ -260,9 +263,9 @@ const ContractTypeWidget = observer(
         const should_show_info_banner = !!selected_category_contracts()?.some(i => i.is_unavailable);
 
         const title =
-            list.length > 1
+            Number(list_with_category()[0].contract_categories?.length) > 1
                 ? localize('Tutorial')
-                : getContractTypes(list_with_category(), item || { value })?.find(item => item.value === value)?.text;
+                : getCategoryName(item || { value });
 
         const info_banner = (
             <InlineMessage

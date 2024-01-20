@@ -88,7 +88,7 @@ const ArrowButton = ({ is_collapsed = false, position, onClick, title, flat_butt
     return (
         <div
             className={classNames('dc-collapsible__button', {
-                'dc-collapsible__button--wide': flat_button,
+                'dc-collapsible__button--flat': flat_button,
             })}
             onClick={toggleExpand}
             onKeyDown={toggleExpand}

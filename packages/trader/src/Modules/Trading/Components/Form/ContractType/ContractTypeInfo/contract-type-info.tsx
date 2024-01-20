@@ -76,7 +76,7 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
             Analytics.trackEvent('ce_trade_types_form', {
                 action: 'info_switcher',
                 info_switcher_mode: selected_tab,
-                trade_type_name: selected_contract_type?.text,
+                trade_type_name: contract_types?.find(item => item.value === selected_contract_type?.value)?.text,
             });
         }
     }, [selected_tab]);

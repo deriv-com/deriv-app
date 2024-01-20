@@ -21,19 +21,6 @@ module.exports = {
             backfaceVisibility: {
                 hidden: 'hidden',
             },
-            button: {
-                primary: {
-                    default: '#ff444f',
-                    hover: {
-                        dark: '#ff525c',
-                        light: '#eb3e48',
-                    },
-                },
-                'primary-light': {
-                    default: '#ff444f29',
-                    hover: '#ff444f3d',
-                },
-            },
             colors: {
                 brand: {
                     blue: '#85acb0',
@@ -48,7 +35,7 @@ module.exports = {
                         darker: '#661b20',
                         light: '#ff444f',
                     },
-                    voilet: {
+                    violet: {
                         dark: '#4a3871',
                     },
                     yellow: {
@@ -89,6 +76,7 @@ module.exports = {
                         'primary-background': '#0e0e0e',
                         'prominent-text': '#ffffff',
                         'secondary-background': '#151717',
+                        'text-info-blue-background': '#182130',
                     },
                     light: {
                         'active-background': '#d6dadb',
@@ -100,11 +88,16 @@ module.exports = {
                         'primary-background': '#ffffff',
                         'prominent-text': '#333333',
                         'secondary-background': '#f2f3f4',
+                        'text-info-blue-background': '#dfeaff',
                     },
                 },
             },
             fontFamily: {
                 sans: ['IBM Plex Sans', 'sans-serif'],
+            },
+            height: {
+                'full-desktop': 'calc(100vh - 85px)',
+                'full-mobile': 'calc(100vh - 40px)',
             },
         },
     },

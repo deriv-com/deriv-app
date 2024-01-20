@@ -29,7 +29,7 @@ const JurisdictionModal = () => {
         setIsDynamicLeverageVisible(!isDynamicLeverageVisible);
     }, [isDynamicLeverageVisible, setIsDynamicLeverageVisible]);
 
-    const jurisdictionTitle = `Choose a jurisdiction for your Deriv MT5 ${title} account`;
+    const jurisdictionTitle = `Choose a jurisdiction for your ${PlatformDetails.mt5.title} ${title} account`;
 
     const JurisdictionFlow = () => {
         if (selectedJurisdiction === 'svg') {

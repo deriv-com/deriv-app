@@ -4,10 +4,32 @@ const path = require('path');
 
 const isRelease =
     process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging' || process.env.NODE_ENV === 'test';
-
+const svg_loaders = [
+    {
+        loader: 'babel-loader',
+        options: {
+            cacheDirectory: true,
+            rootMode: 'upward',
+        },
+    },
+    {
+        loader: 'react-svg-loader',
+        options: {
+            jsx: true,
+            svgo: {
+                plugins: [
+                    { removeTitle: false },
+                    { removeUselessStrokeAndFill: false },
+                    { removeUnknownsAndDefaults: false },
+                    { removeViewBox: false },
+                ],
+                floatPrecision: 3,
+            },
+        },
+    },
+];
 module.exports = function (env) {
     const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
-
     return {
         devtool: isRelease ? 'source-map' : 'eval-cheap-module-source-map',
         entry: {
@@ -92,6 +114,23 @@ module.exports = function (env) {
                         },
                     ],
                 },
+                {
+                    test: /\.svg$/,
+                    issuer: /\/packages\/p2p-v2\/.*(\/)?.*.scss/,
+                    exclude: /node_modules/,
+                    include: /public\//,
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'p2p-v2/public/[name].[contenthash][ext]',
+                    },
+                },
+                {
+                    test: /\.svg$/,
+                    issuer: /\/packages\/p2p-v2\/.*(\/)?.*.tsx/,
+                    exclude: /node_modules/,
+                    include: /public\//,
+                    use: svg_loaders,
+                },
             ],
         },
         optimization: {
@@ -143,7 +182,6 @@ module.exports = function (env) {
             path: path.resolve(__dirname, './dist'),
             publicPath: base,
         },
-
         resolve: {
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },

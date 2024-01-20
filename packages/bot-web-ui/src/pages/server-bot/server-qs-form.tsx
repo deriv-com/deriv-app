@@ -1,10 +1,10 @@
 import { Button, Modal, Text, ThemedScrollbars } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import QuickStrategyForm from 'Components/quick-strategy/form';
-import { FormikWrapper, initial_value } from 'Components/quick-strategy/quick-strategy';
+import { FormikWrapper, initial_value } from '../bot-builder/quick-strategy/quick-strategy';
 import { Form, Formik } from 'formik';
 import React from 'react';
+import QuickStrategyForm from '../bot-builder/quick-strategy/form';
 
 const ServerQSForm = ({ add_btn_active, setAddBtnActive }) => {
     const { ui } = useStore();

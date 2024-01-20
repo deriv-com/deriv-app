@@ -2,7 +2,7 @@ import React from 'react';
 import { useStore } from '@deriv/stores';
 import { Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { HEADERS } from '../dashboard-component/load-bot-preview/recent';
+import { HEADERS } from '../../pages/dashboard/load-bot-preview/recent';
 
 const ServerBotList = ({ bot_list }) => {
     const { ui } = useStore();

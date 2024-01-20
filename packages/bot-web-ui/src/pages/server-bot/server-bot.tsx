@@ -6,7 +6,7 @@ import { useStore } from '@deriv/stores';
 import './server-bot.scss';
 import ServerBotList from './server-bot-list';
 import ServerQSForm from './server-qs-form';
-import Chart from 'Components/chart';
+import Chart from '../chart';
 
 const initial_req_schema = {
     bot_create: 1,

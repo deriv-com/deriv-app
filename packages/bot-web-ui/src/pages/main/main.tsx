@@ -9,7 +9,7 @@ import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useFeatureFlags } from '@deriv/hooks';
-import ServerBot from '../../components/dashboard/server-bot';
+import ServerBot from '../server-bot';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../../components/run-panel';

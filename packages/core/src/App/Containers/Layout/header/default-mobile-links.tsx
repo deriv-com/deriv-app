@@ -18,9 +18,11 @@ const DefaultMobileLinks = React.memo(({ handleClickCashier }: TDefaultMobileLin
     const { is_next_wallet_enabled } = useFeatureFlags();
     return (
         <React.Fragment>
-            <div className='traders-hub-header__menu-right--items--onboarding'>
-                <TradersHubOnboarding />
-            </div>
+            {is_next_wallet_enabled ? (
+                <div className='traders-hub-header__menu-right--items--onboarding'>
+                    <TradersHubOnboarding />
+                </div>
+            ) : null}
             <div className='traders-hub-header__menu-right--items--notifications'>
                 <ShowNotifications />
             </div>

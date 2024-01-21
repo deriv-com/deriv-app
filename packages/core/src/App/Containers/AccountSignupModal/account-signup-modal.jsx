@@ -76,7 +76,7 @@ const AccountSignup = ({
                         answers: shuffleArray(ab_value.answers),
                     },
                 ];
-            } else if (ab_value !== 'inactive') ab_value = [{ ...default_ab_value.default }, { ...ab_value }];
+            } else if (ab_value !== 'inactive') ab_value = [{ ...default_ab_value?.default }, { ...ab_value }];
             return ab_value;
         };
         setABQuestionnaire(fetchQuestionnarieData());

@@ -1,16 +1,12 @@
 import React from 'react';
-import { useHistory } from 'react-router';
 import { Icon, Popover } from '@deriv/components';
-import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import { useFeatureFlags } from '@deriv/hooks';
 import { useLocalStorage } from 'usehooks-ts';
 
 const TradersHubOnboarding = observer(() => {
-    const history = useHistory();
-    const { traders_hub, ui } = useStore();
-    const { setIsOnboardingVisited, setIsFirstTimeVisit } = traders_hub;
+    const { ui } = useStore();
     const { is_dark_mode_on, is_mobile } = ui;
     const { is_next_wallet_enabled } = useFeatureFlags();
     const [, setWalletsOnboarding] = useLocalStorage('walletsOnboarding', '');
@@ -19,11 +15,7 @@ const TradersHubOnboarding = observer(() => {
         ? () => {
               setWalletsOnboarding('started');
           }
-        : () => {
-              history.push(routes.onboarding);
-              setIsOnboardingVisited(false);
-              setIsFirstTimeVisit(false);
-          };
+        : () => null;
 
     return (
         <div data-testid='dt_traders_hub_onboarding'>

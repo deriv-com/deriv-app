@@ -71,11 +71,6 @@ describe('TradersHubHeader', () => {
         expect(screen.getByText('MockedRealAccountSignup')).toBeInTheDocument();
     });
 
-    it('should render "View onboarding" option in the header', () => {
-        renderComponent();
-        expect(screen.getByText('View onboarding')).toBeInTheDocument();
-    });
-
     it('should render "Notifications" option in the header', () => {
         renderComponent();
         expect(screen.getByText('MockedShowNotifications')).toBeInTheDocument();

@@ -50,6 +50,7 @@
         /* Making the wrapper stack above the body */
         overscroll-behavior: none;
         z-index: 2;
+        background-color: var(--general-section-1);
 
         .trade-notifications {
             position: absolute;

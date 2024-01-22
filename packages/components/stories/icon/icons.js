@@ -491,6 +491,7 @@ export const icons =
         'IcNewFile',
         'IcNewLearn',
         'IcNewMenu',
+        'IcNewPencil',
         'IcNewTradeMenu',
         'IcNoAd',
         'IcNoData',

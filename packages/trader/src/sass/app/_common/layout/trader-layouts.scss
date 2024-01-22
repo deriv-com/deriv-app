@@ -832,14 +832,56 @@ $FLOATING_HEADER_HEIGHT: 41px;
     border-top: 1px solid var(--general-section-1);
     border-bottom: 1px solid var(--general-section-1);
     box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.04), 0px -1px 4px 0px rgba(0, 0, 0, 0.08);
+    border-top-right-radius: 1.6rem;
+    border-top-left-radius: 1.6rem;
 
     &_bottom-sheet {
-        height: 9.6rem;
+        min-height: 9.6rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
         padding: 0.8rem 1.6rem;
+        border-top-right-radius: 1.6rem;
+        border-top-left-radius: 1.6rem;
+
+        &_purchase {
+            transition: max-height 0.3s linear, opacity 0.7s linear;
+
+            &-appear,
+            &-enter {
+                max-height: 0px;
+                opacity: 0;
+
+                &-active,
+                &-done {
+                    max-height: 208px;
+                    opacity: 1;
+                }
+            }
+
+            &-exit {
+                max-height: 0px;
+                opacity: 0;
+                transition: max-height 0.3s linear, opacity 0.1s linear;
+            }
+        }
+
+        &_params-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            border-top: 2px solid var(--general-section-1);
+            border-bottom: 2px solid var(--general-section-1);
+            margin: 0.8rem 0;
+            padding: 0.8rem 0;
+        }
+
+        &_params-total {
+            width: 100%;
+            margin-bottom: 0.8rem;
+        }
 
         &_separator {
             width: 4.8rem;

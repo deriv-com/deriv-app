@@ -148,7 +148,10 @@ const ReviewMessageForMT5 = ({
 }: TReviewMsgForMT5) => {
     if (is_selected_mt5_verified) {
         return (
-            <Localize i18n_default_text='To start trading, top-up funds from your Deriv account into this account.' />
+            <Localize
+                i18n_default_text='To start trading, <0/>transfer funds from your Deriv account into this account.'
+                components={[<br key={0} />]}
+            />
         );
     } else if (
         jurisdiction_selected_shortcode === JURISDICTION.BVI ||
@@ -822,7 +825,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
             return (
                 <React.Fragment>
                     <Localize
-                        i18n_default_text='Congratulations, you have successfully created your {{category}} <0/>{{platform}} {{type}} {{jurisdiction_selected_shortcode}} account. '
+                        i18n_default_text='Congratulations, you have successfully created your <0/>{{category}} {{platform}} {{type}} {{jurisdiction_selected_shortcode}} account. '
                         values={{
                             type: accountTypes(),
                             platform:
@@ -830,7 +833,7 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                             category: category_label,
                             jurisdiction_selected_shortcode: platform === CFD_PLATFORMS.MT5 ? jurisdiction_label : '',
                         }}
-                        components={[platform === CFD_PLATFORMS.DXTRADE ? <br key={0} /> : '']}
+                        components={[<br key={0} />]}
                     />
                     {platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER ? (
                         <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
@@ -847,12 +850,13 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} {{platform}} {{type}} account. '
+                i18n_default_text='Congratulations, you have successfully created your <0/>{{category}} {{platform}} {{type}} account. '
                 values={{
                     type: accountTypes(),
                     platform: getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
+                components={[<br key={0} />]}
             />
         );
     };

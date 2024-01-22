@@ -41,7 +41,7 @@ describe('<ArrowButton/>', () => {
     it('should render icon_flat with if handle_button === true', () => {
         render(<ArrowButton {...mocked_default_props} handle_button />);
 
-        expect(screen.getByTestId('icon_flat')).toBeInTheDocument();
+        expect(screen.getByTestId('icon_handle')).toBeInTheDocument();
     });
 
     it('should call onClick function if user clicks on icon', () => {

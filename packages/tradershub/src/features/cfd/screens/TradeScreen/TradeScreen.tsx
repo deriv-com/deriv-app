@@ -60,16 +60,17 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
 
     const marketTypeDetails = MarketTypeDetails(isEU);
 
+    const platformIcon =
+        platform === mt5Platform
+            ? marketTypeDetails[marketType ?? MarketType.ALL]?.iconWithWidth?.(24)
+            : PlatformDetails[platform as keyof typeof PlatformDetails].iconWithWidth(24);
+
     return (
         <div className='lg:w-[45vw] lg:min-w-[512px] lg:max-w-[600px] w-full min-w-full h-auto'>
             <div className='flex flex-col p-1200 gap-800 border-b-100 border-system-light-secondary-background'>
                 <div className='flex items-center justify-between w-full'>
                     <div className='flex items-center'>
-                        <div className='mr-400'>
-                            {platform === mt5Platform
-                                ? marketTypeDetails[marketType ?? MarketType.ALL].icon
-                                : PlatformDetails[platform as keyof typeof PlatformDetails].icon}
-                        </div>
+                        <div className='mr-400'>{platformIcon}</div>
                         <div className='flex flex-col'>
                             <div className='flex flex-row items-center gap-300'>
                                 <Text size='md'>

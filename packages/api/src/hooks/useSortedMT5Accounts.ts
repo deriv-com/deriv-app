@@ -20,7 +20,13 @@ const useSortedMT5Accounts = (regulation?: string) => {
             ? all_available_mt5_accounts.filter(account => account.shortcode === 'maltainvest')
             : all_available_mt5_accounts;
 
-        const filtered_mt5_accounts = mt5_accounts.filter(account => account.is_virtual === activeAccount?.is_virtual);
+        const filtered_mt5_accounts = mt5_accounts.filter(
+            account =>
+                account.is_virtual === activeAccount?.is_virtual &&
+                (isEU
+                    ? account.landing_company_short === 'maltainvest'
+                    : account.landing_company_short !== 'maltainvest')
+        );
 
         return filtered_available_accounts?.map(available_account => {
             const created_account = filtered_mt5_accounts?.find(account => {

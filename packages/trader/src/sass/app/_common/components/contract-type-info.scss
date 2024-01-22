@@ -45,14 +45,15 @@
         }
 
         .dc-list {
-            &__item-text {
-                justify-content: flex-start;
-                height: 4rem;
-                padding: 1rem 1.6rem;
-            }
-
-            &__item--selected .dc-list__item-text {
-                border-radius: 0;
+            &__item {
+                &-text {
+                    justify-content: flex-start;
+                    height: 4rem;
+                    padding: 1rem 1.6rem;
+                }
+                &--selected .dc-list__item-text {
+                    border-radius: 0;
+                }
             }
         }
     }

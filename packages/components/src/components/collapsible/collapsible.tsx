@@ -9,7 +9,7 @@ type TCollapsible = {
     position?: 'top' | 'bottom';
     onClick: (state: boolean) => void;
     title?: string;
-    flat_button?: boolean;
+    handle_button?: boolean;
 };
 
 const swipe_config = {
@@ -25,7 +25,7 @@ const Collapsible = ({
     children,
     onClick,
     title,
-    flat_button,
+    handle_button,
 }: React.PropsWithChildren<TCollapsible>) => {
     const [is_open, expand] = React.useState(!is_collapsed);
     const [should_show_collapsible, setShouldShowCollapsible] = React.useState(false);
@@ -65,7 +65,7 @@ const Collapsible = ({
             position={position}
             onClick={toggleExpand}
             title={title}
-            flat_button={flat_button}
+            handle_button={handle_button}
         />
     );
     const CustomTag = as || 'div';

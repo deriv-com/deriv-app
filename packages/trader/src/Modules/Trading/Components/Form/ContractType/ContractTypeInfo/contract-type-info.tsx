@@ -39,29 +39,29 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
         },
     } = useStore();
     const [selected_tab, setSelectedTab] = React.useState<TSelectedTab>(TABS.DESCRIPTION);
-    const [selected_contract_type, setSelectedContractType] = React.useState(item);
+    const [selected_contract_type, setSelectedContractType] = React.useState(item.value);
     const { RISE_FALL_EQUAL, TURBOS, VANILLA } = TRADE_TYPES;
     const contract_types: TContractType[] | undefined = getContractTypes(list, item)?.filter(
         (i: { value: TContractType['value'] }) =>
             i.value !== RISE_FALL_EQUAL && i.value !== TURBOS.SHORT && i.value !== VANILLA.PUT
     );
-    const has_toggle_buttons = /accumulator|turboslong|vanilla|multiplier/i.test(selected_contract_type.value);
-    const should_show_video = /accumulator|turboslong|vanilla/i.test(selected_contract_type.value);
+    const has_toggle_buttons = /accumulator|turboslong|vanilla|multiplier/i.test(selected_contract_type);
+    const should_show_video = /accumulator|turboslong|vanilla/i.test(selected_contract_type);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = is_mobile ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
-    const button_name = contract_types?.find(item => item.value === selected_contract_type.value)?.text;
+    const button_name = contract_types?.find(item => item.value === selected_contract_type)?.text;
 
     const onClickGlossary = (e?: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         clickAndKeyEventHandler(() => setSelectedTab(TABS.GLOSSARY), e);
     };
 
     const is_unavailable = !!list[0].contract_categories?.find(
-        item => item.is_unavailable && item.contract_types.find(type => type.value === selected_contract_type.value)
+        item => item.is_unavailable && item.contract_types.find(type => type.value === selected_contract_type)
     );
 
-    const should_show_drop_down = contract_types && contract_types.length > 1;
+    const should_show_dropdown = Number(contract_types?.length) > 1;
 
     React.useEffect(() => {
         return () => {
@@ -76,13 +76,13 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
             Analytics.trackEvent('ce_trade_types_form', {
                 action: 'info_switcher',
                 info_switcher_mode: selected_tab,
-                trade_type_name: contract_types?.find(item => item.value === selected_contract_type?.value)?.text,
+                trade_type_name: contract_types?.find(item => item.value === selected_contract_type)?.text,
             });
         }
     }, [selected_tab]);
 
     const cards = contract_types?.map((type: TContractType) => {
-        if (type.value !== selected_contract_type.value) return null;
+        if (type.value !== selected_contract_type) return null;
         return (
             <div key={type.value} className='contract-type-info__card'>
                 <ThemedScrollbars
@@ -109,7 +109,7 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
                             <React.Fragment>
                                 <TradeCategoriesGIF
                                     category={type.value}
-                                    selected_contract_type={selected_contract_type.value}
+                                    selected_contract_type={selected_contract_type}
                                 />
                                 <TradeCategories
                                     category={type.value}
@@ -134,17 +134,17 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
 
     return (
         <React.Fragment>
-            {should_show_drop_down && (
+            {should_show_dropdown && (
                 <Dropdown
                     id='dt_contract_type_dropdown'
                     className='contract-type-info__dropdown'
                     is_nativepicker={false}
                     list={contract_types as React.ComponentProps<typeof Dropdown>['list']}
                     name='contract_type_dropdown'
-                    value={selected_contract_type.value}
+                    value={selected_contract_type}
                     should_autohide={false}
                     should_scroll_to_selected
-                    onChange={e => setSelectedContractType(e.target)}
+                    onChange={e => setSelectedContractType(e.target.value)}
                 />
             )}
             {is_unavailable && <div className='contract-type-info__banner-wrapper'>{info_banner}</div>}
@@ -168,15 +168,15 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
             <div
                 className={classNames('contract-type-info', {
                     'contract-type-info--has-only-toggle-buttons':
-                        has_toggle_buttons && !is_unavailable && !should_show_drop_down,
+                        has_toggle_buttons && !is_unavailable && !should_show_dropdown,
                     'contract-type-info--has-only-dropdown':
-                        should_show_drop_down && !is_unavailable && !has_toggle_buttons,
+                        !has_toggle_buttons && !is_unavailable && should_show_dropdown,
                     'contract-type-info--has-dropdown-and-toggle-buttons':
-                        has_toggle_buttons && should_show_drop_down && !is_unavailable,
+                        has_toggle_buttons && !is_unavailable && should_show_dropdown,
                     'contract-type-info--has-dropdown-and-info':
-                        should_show_drop_down && is_unavailable && !has_toggle_buttons,
+                        !has_toggle_buttons && is_unavailable && should_show_dropdown,
                     'contract-type-info--has-all-containers':
-                        should_show_drop_down && is_unavailable && has_toggle_buttons,
+                        has_toggle_buttons && is_unavailable && should_show_dropdown,
                 })}
                 style={{
                     width: is_mobile ? '328px' : '528px',
@@ -186,9 +186,9 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
             </div>
             <div className='contract-type-info__trade-type-btn-wrapper'>
                 <Button
-                    id={`dt_contract_info_${selected_contract_type.value}_btn`}
+                    id={`dt_contract_info_${selected_contract_type}_btn`}
                     className='contract-type-info__button'
-                    onClick={e => handleSelect(selected_contract_type, e)}
+                    onClick={e => handleSelect({ value: selected_contract_type }, e)}
                     text={localize('Choose {{contract_type}}', {
                         contract_type: button_name ?? '',
                         interpolation: { escapeValue: false },

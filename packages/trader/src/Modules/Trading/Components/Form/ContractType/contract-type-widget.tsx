@@ -160,7 +160,7 @@ const ContractTypeWidget = observer(
             setHideBackButton(true);
         };
 
-        const onDescriptionClose = () => {
+        const onClose = () => {
             onWidgetClick();
         };
 
@@ -316,7 +316,7 @@ const ContractTypeWidget = observer(
                         selected={selected_category || list_with_category()[0]?.key}
                         onBackButtonClick={onBackButtonClick}
                         onSearchBlur={onSearchBlur}
-                        onDescriptionClose={onDescriptionClose}
+                        onClose={onClose}
                         onChangeInput={onChangeInput}
                         onCategoryClick={handleCategoryClick}
                         show_loading={languageChanged}

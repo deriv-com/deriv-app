@@ -131,10 +131,10 @@ const Dialog = ({
                                     <div className='dc-vertical-tab__action-bar dc-vertical-tab__action-bar--contract-type-info-header'>
                                         <Header
                                             title={localize(title || item.text || '')}
-                                            onClickGoBack={onBackButtonClick}
-                                            onClickCross={onClose}
+                                            onClickBack={onBackButtonClick}
+                                            onClose={onClose}
                                             should_render_arrow={!hide_back_button}
-                                            should_render_cross={hide_back_button}
+                                            should_render_close={hide_back_button}
                                         />
                                     </div>
                                     {renderChildren()}

@@ -118,7 +118,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
                         <div
                             className={classNames(
                                 'dc-mobile-dialog__header',
-                                (!info_banner || !learn_more_banner) && header_classname
+                                !info_banner && !learn_more_banner && header_classname
                             )}
                         >
                             <Text

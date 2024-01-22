@@ -3,19 +3,19 @@ import { Icon, Text } from '@deriv/components';
 import { clickAndKeyEventHandler } from '@deriv/shared';
 
 type THeader = {
-    onClickGoBack?: () => void;
-    onClickCross?: () => void;
+    onClickBack?: () => void;
+    onClose?: () => void;
     should_render_arrow?: boolean;
-    should_render_cross?: boolean;
+    should_render_close?: boolean;
     text_size?: string;
     title: string;
 };
 
 const Header = ({
-    onClickGoBack,
-    onClickCross,
+    onClickBack,
+    onClose,
     should_render_arrow = true,
-    should_render_cross = false,
+    should_render_close = false,
     text_size = 's',
     title,
 }: THeader) => (
@@ -23,9 +23,8 @@ const Header = ({
         {should_render_arrow && (
             <span
                 className='contract-type-info__icon'
-                id='dt_contract_info_back_nav'
-                onClick={e => clickAndKeyEventHandler(() => onClickGoBack?.(), e)}
-                onKeyDown={e => clickAndKeyEventHandler(() => onClickGoBack?.(), e)}
+                onClick={e => clickAndKeyEventHandler(onClickBack, e)}
+                onKeyDown={e => clickAndKeyEventHandler(onClickBack, e)}
             >
                 <Icon icon='IcArrowLeftBold' />
             </span>
@@ -33,12 +32,11 @@ const Header = ({
         <Text size={text_size} weight='bold' color='prominent' className='contract-type-info__title'>
             {title}
         </Text>
-        {should_render_cross && (
+        {should_render_close && (
             <span
                 className='contract-type-info__icon-cross'
-                id='dt_contract_info_close'
-                onClick={e => clickAndKeyEventHandler(() => onClickCross?.(), e)}
-                onKeyDown={e => clickAndKeyEventHandler(() => onClickCross?.(), e)}
+                onClick={e => clickAndKeyEventHandler(onClose, e)}
+                onKeyDown={e => clickAndKeyEventHandler(onClose, e)}
             >
                 <Icon icon='IcCross' />
             </span>

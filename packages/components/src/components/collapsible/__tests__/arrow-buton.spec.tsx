@@ -10,7 +10,7 @@ const mocked_default_props = {
     position: 'top' as React.ComponentProps<typeof ArrowButton>['position'],
     onClick: jest.fn(),
     title: 'mocked_title',
-    flat_button: false,
+    handle_button: false,
 };
 
 describe('<ArrowButton/>', () => {
@@ -38,13 +38,13 @@ describe('<ArrowButton/>', () => {
         expect(screen.queryByText(mocked_title)).not.toBeInTheDocument();
     });
 
-    it('should render icon_flat with if flat_button === true', () => {
-        render(<ArrowButton {...mocked_default_props} flat_button />);
+    it('should render icon_flat with if handle_button === true', () => {
+        render(<ArrowButton {...mocked_default_props} handle_button />);
 
         expect(screen.getByTestId('icon_flat')).toBeInTheDocument();
     });
 
-    it('should call onClick function if user click on icon', () => {
+    it('should call onClick function if user clicks on icon', () => {
         render(<ArrowButton {...mocked_default_props} />);
         userEvent.click(screen.getByText(mocked_title));
 

@@ -73,7 +73,7 @@ const AccountSignup = ({
                     { ...default_ab_value?.default },
                     {
                         ...ab_value,
-                        answers: shuffleArray(ab_value.answers),
+                        answers: shuffleArray(ab_value?.answers),
                     },
                 ];
             } else if (ab_value !== 'inactive') ab_value = [{ ...default_ab_value?.default }, { ...ab_value }];

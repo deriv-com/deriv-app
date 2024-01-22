@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useAdvertiserInfo, useChatCreate, useOrderInfo, useSendbirdServiceToken, useServerTime } from '@deriv/api';
+import { p2p, useChatCreate, useOrderInfo, useSendbirdServiceToken, useServerTime } from '@deriv/api';
 import SendbirdChat, { BaseChannel, User } from '@sendbird/chat';
 import { GroupChannel, GroupChannelHandler, GroupChannelModule } from '@sendbird/chat/groupChannel';
 import { BaseMessage, MessageType, MessageTypeFilter } from '@sendbird/chat/message';
@@ -86,7 +86,7 @@ const useSendbird = (orderId: string) => {
         isError: isErrorSendbirdServiceToken,
         isSuccess: isSuccessSendbirdServiceToken,
     } = useSendbirdServiceToken();
-    const { data: advertiserInfo, isSuccess: isSuccessAdvertiserInfo } = useAdvertiserInfo();
+    const { data: advertiserInfo, isSuccess: isSuccessAdvertiserInfo } = p2p.advertiser.useGetInfo();
     const { isError: isErrorChatCreate, mutate: createChat } = useChatCreate();
     const { data: orderInfo, isError: isErrorOrderInfo } = useOrderInfo(orderId);
     const { data: serverTime, isError: isErrorServerTime } = useServerTime();

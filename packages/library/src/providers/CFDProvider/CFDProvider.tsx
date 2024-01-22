@@ -43,7 +43,7 @@ export const CFDProvider = ({ children }: { children: React.ReactNode }) => {
         [setCfdState]
     );
 
-    const providerValue = useMemo(() => ({ getCFDState, setCfdState: updateCFDState }), [getCFDState]);
+    const providerValue = useMemo(() => ({ getCFDState, setCfdState: updateCFDState }), [getCFDState, updateCFDState]);
 
     return <CFDContext.Provider value={providerValue}>{children}</CFDContext.Provider>;
 };

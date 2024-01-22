@@ -1,6 +1,8 @@
 import React, { MouseEvent, useMemo, useState } from 'react';
 import { Provider } from '@deriv/library';
 import { Link, qtMerge, Text } from '@deriv/quill-design';
+import { useUIContext } from '../../../../../components';
+import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
 import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
@@ -59,6 +61,9 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
     const { getCFDState } = Provider.useCFDContext();
+    const { getUIState } = useUIContext();
+    const regulation = getUIState('regulation');
+    const { isEU } = useRegulationFlags(regulation);
 
     const descriptionClickHandler = (tag?: TClickableDescription['tag']) => (event: MouseEvent) => {
         event.stopPropagation();
@@ -69,12 +74,19 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
         }
     };
 
-    const { contents, header, isOverHeaderAvailable, overHeader, verificationDocs } = useMemo<TJurisdictionCardItems>(
-        () => getJurisdictionContents()[jurisdiction],
-        [jurisdiction]
+    const jurisdictionContents = useMemo<TJurisdictionCardItems | undefined>(
+        () => getJurisdictionContents(isEU)[jurisdiction],
+        [isEU, jurisdiction]
     );
-    const marketType = getCFDState('marketType') || MarketType.ALL;
-    const rows = contents[marketType] || [];
+
+    if (!jurisdictionContents) {
+        return null;
+    }
+
+    const { contents, header, isOverHeaderAvailable, overHeader, verificationDocs } = jurisdictionContents;
+
+    const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const rows = contents[marketType] ?? [];
 
     const parseDescription = (row: TJurisdictionCardSection) => {
         if (row.clickableDescription)
@@ -146,13 +158,15 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
                                         <div className='flex gap-300'>
                                             {!(marketType in verificationDocs)
                                                 ? verificationDocumentsMapper.notApplicable.icon
-                                                : verificationDocs[marketType]?.map(doc => (
-                                                      <JurisdictionCardVerificationTag
-                                                          category={verificationDocumentsMapper[doc].category}
-                                                          icon={verificationDocumentsMapper[doc].icon}
-                                                          key={`verification-doc-${doc}`}
-                                                      />
-                                                  ))}
+                                                : verificationDocs[marketType]
+                                                      ?.filter(doc => doc in verificationDocumentsMapper)
+                                                      .map(doc => (
+                                                          <JurisdictionCardVerificationTag
+                                                              category={verificationDocumentsMapper[doc].category}
+                                                              icon={verificationDocumentsMapper[doc].icon}
+                                                              key={`verification-doc-${doc}`}
+                                                          />
+                                                      ))}
                                         </div>
                                     );
                                 }

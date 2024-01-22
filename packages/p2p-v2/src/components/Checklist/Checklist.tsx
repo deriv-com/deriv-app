@@ -27,14 +27,12 @@ const Checklist = ({ items }: { items: TChecklistItem[] }) => {
                             <CheckmarkIcon className='p2p-v2-checklist__item-checkmark-icon' />
                         </div>
                     ) : (
-                        <>
-                            <Button
-                                className='p2p-v2-checklist__item-button'
-                                disabled={item.isDisabled}
-                                icon={<ArrowRightIcon className='p2p-v2-checklist__item-button-icon' />}
-                                onClick={item.onClick}
-                            />
-                        </>
+                        <Button
+                            className='p2p-v2-checklist__item-button'
+                            disabled={item.isDisabled}
+                            icon={<ArrowRightIcon className='p2p-v2-checklist__item-button-icon' />}
+                            onClick={item.onClick}
+                        />
                     )}
                 </div>
             ))}

@@ -32,7 +32,7 @@ const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
             <Modal.Content>
                 <TradeScreen account={account} />
             </Modal.Content>
-            <Modal.Footer>
+            <Modal.Footer align='center'>
                 <div className='pt-50 min-h-[190px] flex justify-center items-center flex-col h-fit w-full gap-800'>
                     <Text align='center' size='sm' weight='bold'>
                         Download {PlatformDetails[platform].title} on your phone to trade with the{' '}

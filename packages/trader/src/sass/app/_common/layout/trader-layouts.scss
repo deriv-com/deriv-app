@@ -917,6 +917,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
         background-color: var(--general-section-1);
         padding: 0.8rem;
 
+        .new-chart-icon {
+            width: 100%;
+            height: 100%;
+        }
         .dc-carousel__nav-list {
             width: 5rem;
             height: 1.6rem;
@@ -940,6 +944,11 @@ $FLOATING_HEADER_HEIGHT: 41px;
             bottom: 15.5rem;
             height: 2.6rem;
             background-color: var(--general-section-1);
+        }
+
+        .dc-carousel__card {
+            background-color: var(--general-main-1);
+            border-radius: 0.8rem;
         }
 
         .trade-type {

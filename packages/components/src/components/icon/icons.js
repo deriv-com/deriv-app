@@ -476,6 +476,7 @@ import './common/ic-name-and-address-verification-verified.svg';
 import './common/ic-name-and-address-verification.svg';
 import './common/ic-neteller-dark.svg';
 import './common/ic-neteller-light.svg';
+import './common/ic-new-chart.svg';
 import './common/ic-new-file.svg';
 import './common/ic-no-ad.svg';
 import './common/ic-no-data.svg';

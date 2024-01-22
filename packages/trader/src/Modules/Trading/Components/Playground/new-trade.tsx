@@ -37,7 +37,9 @@ const NewTrade = () => {
                             setSelectedType={setSelectedType}
                             selected_left_type={selected_left_type}
                         />,
-                        <div key={2}>Hello, I&apos;m not ready. Let&apos;s pretend there&apos;s a chart here.</div>,
+                        <div key={2} style={{ marginTop: '-0.5rem' }}>
+                            <Icon icon='IcNewChart' className='new-chart-icon' />
+                        </div>,
                     ]}
                     nav_position='bottom'
                     bullet_position='bottom'

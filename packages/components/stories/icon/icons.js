@@ -485,6 +485,7 @@ export const icons =
         'IcNameAndAddressVerification',
         'IcNetellerDark',
         'IcNetellerLight',
+        'IcNewChart',
         'IcNewFile',
         'IcNoAd',
         'IcNoData',

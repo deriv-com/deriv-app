@@ -12,6 +12,7 @@ import { useAdvertiserPaymentMethodsConfig, useAdvertiserPaymentMethodsConfigDis
 import { PaymentMethodsEmpty } from '../PaymentMethodsEmpty';
 import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
 import './PaymentMethodsList.scss';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 
 type TPaymentMethodsGroup = Record<
     string,
@@ -22,10 +23,10 @@ type TPaymentMethodsGroup = Record<
 >;
 
 type TPaymentMethodsListProps = {
-    configFormSate: ReturnType<typeof useAdvertiserPaymentMethodsConfig>['formState'];
+    configFormState: ReturnType<typeof useAdvertiserPaymentMethodsConfig>['formState'];
 };
 
-const PaymentMethodsList = ({ configFormSate }: TPaymentMethodsListProps) => {
+const PaymentMethodsList = ({ configFormState }: TPaymentMethodsListProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const { isMobile } = useDevice();
     const configDispatch = useAdvertiserPaymentMethodsConfigDispatch();
@@ -36,7 +37,7 @@ const PaymentMethodsList = ({ configFormSate }: TPaymentMethodsListProps) => {
         isSuccess: isDeleteSuccessful,
     } = p2p.advertiserPaymentMethods.useDelete();
 
-    const { actionType, paymentMethod } = configFormSate || {};
+    const { actionType, paymentMethod } = configFormState || {};
 
     useEffect(() => {
         if (isDeleteSuccessful) {
@@ -99,9 +100,9 @@ const PaymentMethodsList = ({ configFormSate }: TPaymentMethodsListProps) => {
                 ?.map(key => {
                     return (
                         <div className='p2p-v2-payment-methods-list__group' key={key}>
-                            <div className='p2p-v2-payment-methods-list__group-header'>
+                            <Text color='black' weight='bold'>
                                 {groupedPaymentMethods[key].title}
-                            </div>
+                            </Text>
                             <div className='p2p-v2-payment-methods-list__group-body'>
                                 {groupedPaymentMethods[key].paymentMethods?.map(advertiserPaymentMethod => {
                                     return (
@@ -141,7 +142,7 @@ const PaymentMethodsList = ({ configFormSate }: TPaymentMethodsListProps) => {
                 <ConfirmDeletePaymentMethodModal
                     isOpen={isOpen}
                     onCancel={() => setIsOpen(false)}
-                    onComfirm={() => deleteAdvertiserPaymentMethod(Number(paymentMethod?.id))}
+                    onConfirm={() => deleteAdvertiserPaymentMethod(Number(paymentMethod?.id))}
                     paymentMethodName={
                         paymentMethod?.fields?.bank_name?.value ??
                         paymentMethod?.fields?.name?.value ??

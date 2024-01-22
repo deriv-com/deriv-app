@@ -18,10 +18,10 @@ import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
 import './PaymentMethodForm.scss';
 
 type TPaymentMethodFormProps = {
-    configFormSate: ReturnType<typeof useAdvertiserPaymentMethodsConfig>['formState'];
+    configFormState: ReturnType<typeof useAdvertiserPaymentMethodsConfig>['formState'];
 };
 
-const PaymentMethodForm = ({ configFormSate }: TPaymentMethodFormProps) => {
+const PaymentMethodForm = ({ configFormState }: TPaymentMethodFormProps) => {
     const {
         control,
         formState: { isDirty, isSubmitting, isValid },
@@ -30,7 +30,7 @@ const PaymentMethodForm = ({ configFormSate }: TPaymentMethodFormProps) => {
     } = useForm({ mode: 'all' });
     const [isOpen, setIsOpen] = useState(false);
     const configDispatch = useAdvertiserPaymentMethodsConfigDispatch();
-    const { actionType, paymentMethod, title } = configFormSate || {};
+    const { actionType, paymentMethod, title } = configFormState || {};
 
     const { data: availablePaymentMethods } = p2p.paymentMethods.useGet();
     const { create, error: createError, isSuccess: isCreateSuccessful } = p2p.advertiserPaymentMethods.useCreate();
@@ -172,7 +172,6 @@ const PaymentMethodForm = ({ configFormSate }: TPaymentMethodFormProps) => {
                     );
                 })}
                 <div className='p2p-v2-payment-method-form__buttons'>
-                    {/* TODO: Remember to wire up the modal */}
                     <Button
                         className='p2p-v2-payment-method-form__buttons--cancel'
                         onClick={e => {
@@ -217,7 +216,7 @@ const PaymentMethodForm = ({ configFormSate }: TPaymentMethodFormProps) => {
                             (updateError && 'message' in updateError && updateError?.message)
                     )}
                     isOpen={true}
-                    onComfirm={() => {
+                    onConfirm={() => {
                         configDispatch({ type: 'RESET' });
                         setIsOpen(false);
                     }}

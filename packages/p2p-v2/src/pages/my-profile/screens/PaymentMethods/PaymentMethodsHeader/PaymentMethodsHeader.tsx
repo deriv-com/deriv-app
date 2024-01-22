@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import ArrowLeftBold from '../../../../../public/ic-arrow-left-bold.svg';
 import './PaymentMethodsHeader.scss';
 
@@ -20,7 +21,9 @@ const PaymentMethodsHeader = ({ onGoBack, title }: TPaymentMethodsHeaderProps) =
                 ) : null}
             </div>
             {/* TODO: Remember to translate this */}
-            <div className='p2p-v2-payment-method-form__title'>{title}</div>
+            <Text size='sm' weight='bold'>
+                {title}
+            </Text>
         </div>
     );
 };

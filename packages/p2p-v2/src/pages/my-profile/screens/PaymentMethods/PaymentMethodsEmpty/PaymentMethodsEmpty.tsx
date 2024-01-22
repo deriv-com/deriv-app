@@ -10,16 +10,14 @@ type TPaymentMethodsEmptyProps = {
 
 const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) => {
     return (
-        <div className='p2p-v2-payment-method-empty'>
+        <div className='p2p-v2-payment-methods-empty'>
             <Wallet />
             {/* TODO: Remember to localise the text below */}
-            <Text className='p2p-v2-payment-method-empty__heading' weight='bold'>
+            <Text className='p2p-v2-payment-methods-empty__heading' weight='bold'>
                 You haven’t added any payment methods yet
             </Text>
-            <Text className='p2p-v2-payment-method-empty__sub-heading'>
-                Hit the button below to add payment methods.
-            </Text>
-            <Button className='p2p-v2-payment-method-empty__button' onClick={onAddPaymentMethod}>
+            <Text>Hit the button below to add payment methods.</Text>
+            <Button className='p2p-v2-payment-methods-empty__button' onClick={onAddPaymentMethod}>
                 Add payment methods
             </Button>
         </div>

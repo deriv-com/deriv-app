@@ -8,10 +8,10 @@ import './AddEditPaymentMethodErrorModal.scss';
 type TAddEditPaymentMethodErrorModalProps = {
     errorMessage: string;
     isOpen: boolean;
-    onComfirm: () => void;
+    onConfirm: () => void;
 };
 
-const AddEditPaymentMethodErrorModal = ({ errorMessage, isOpen, onComfirm }: TAddEditPaymentMethodErrorModalProps) => {
+const AddEditPaymentMethodErrorModal = ({ errorMessage, isOpen, onConfirm }: TAddEditPaymentMethodErrorModalProps) => {
     useEffect(() => {
         ReactModal.setAppElement('#v2_modal_root');
     }, []);
@@ -29,7 +29,7 @@ const AddEditPaymentMethodErrorModal = ({ errorMessage, isOpen, onComfirm }: TAd
                 </Text>
                 <Text color='prominent'>{errorMessage}</Text>
                 <div className='p2p-v2-add-edit-payment-methods-modal__buttons'>
-                    <Button onClick={onComfirm} size='lg'>
+                    <Button onClick={onConfirm} size='lg'>
                         Ok
                     </Button>
                 </div>

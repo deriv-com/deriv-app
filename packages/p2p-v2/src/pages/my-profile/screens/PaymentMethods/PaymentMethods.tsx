@@ -6,10 +6,10 @@ import { PaymentMethodsList } from './PaymentMethodsList';
 const PaymentMethods = () => {
     const { formState } = useAdvertiserPaymentMethodsConfig();
     if (formState?.isVisible) {
-        return <PaymentMethodForm configFormSate={formState} />;
+        return <PaymentMethodForm configFormState={formState} />;
     }
 
-    return <PaymentMethodsList configFormSate={formState} />;
+    return <PaymentMethodsList configFormState={formState} />;
 };
 
 export default PaymentMethods;

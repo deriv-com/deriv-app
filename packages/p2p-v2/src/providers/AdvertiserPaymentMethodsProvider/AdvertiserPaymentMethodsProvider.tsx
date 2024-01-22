@@ -16,15 +16,11 @@ type TAdvertiserPaymentMethodsConfig = {
         paymentMethod?: DeepPartial<NonNullable<TAdvertiserPaymentMethods>[number]>;
         title?: string;
     };
-    modalState?: {
-        isOpen?: boolean;
-    };
 };
 
 type TReducerAction = {
     payload?: {
         formState?: TAdvertiserPaymentMethodsConfig['formState'];
-        modalState?: TAdvertiserPaymentMethodsConfig['modalState'];
         paymentMethod?: DeepPartial<TSelectedPaymentMethod>;
     };
     type?: NonNullable<TAdvertiserPaymentMethodsConfig['formState']>['actionType'];
@@ -48,7 +44,7 @@ export const AdvertiserPaymentMethodsProvider = ({ children }: PropsWithChildren
 export const useAdvertiserPaymentMethodsConfig = () => {
     const context = useContext(AdvertiserPaymentMethodsConfigContext);
     if (!context) {
-        throw new Error('useAdvertiserPaymentMethodsConfig must be used within a AdvertiserPaymentMethodsProvider');
+        throw new Error('useAdvertiserPaymentMethodsConfig must be used within an AdvertiserPaymentMethodsProvider');
     }
     return context;
 };
@@ -56,7 +52,7 @@ export const useAdvertiserPaymentMethodsConfigDispatch = () => {
     const dispatch = useContext(AdvertiserPaymentMethodsConfigDispatchContext);
     if (!dispatch) {
         throw new Error(
-            'useAdvertiserPaymentMethodsConfigDispatch must be used within a AdvertiserPaymentMethodsProvider'
+            'useAdvertiserPaymentMethodsConfigDispatch must be used within an AdvertiserPaymentMethodsProvider'
         );
     }
     return dispatch;
@@ -66,6 +62,7 @@ const advertiserPaymentMethodsReducer = (
     advertiserPaymentMethodsConfig: TAdvertiserPaymentMethodsConfig,
     action: TReducerAction
 ): TAdvertiserPaymentMethodsConfig => {
+    // TODO: Remember to translate the strings in this reducer function
     switch (action.type) {
         case 'ADD': {
             return {

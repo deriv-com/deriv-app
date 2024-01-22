@@ -56,7 +56,8 @@ const PaymentMethodCardHeader = ({
                     renderIcon={() => <IcCashierVerticalEllipsis height={16} width={16} />}
                 />
             ) : null}
-            {isSelectable ? <input type='checkbox' /> : null}
+            {/*TODO: wire up logic for the selectable payment method cards here*/}
+            {isSelectable ? <input type='checkbox' /> : null}{' '}
         </div>
     );
 };

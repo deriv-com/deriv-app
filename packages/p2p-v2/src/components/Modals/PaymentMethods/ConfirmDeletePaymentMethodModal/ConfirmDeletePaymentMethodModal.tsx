@@ -8,14 +8,14 @@ import '../styles.scss';
 type TConfirmDeletePaymentMethodModalProps = {
     isOpen: boolean;
     onCancel: () => void;
-    onComfirm: () => void;
+    onConfirm: () => void;
     paymentMethodName?: string;
 };
 
 const ConfirmDeletePaymentMethodModal = ({
     isOpen,
     onCancel,
-    onComfirm,
+    onConfirm,
     paymentMethodName,
 }: TConfirmDeletePaymentMethodModalProps) => {
     useEffect(() => {
@@ -39,7 +39,10 @@ const ConfirmDeletePaymentMethodModal = ({
                 <div className='p2p-v2-payment-methods-modal__buttons'>
                     <Button
                         className='p2p-v2-payment-methods-modal__buttons--cancel'
-                        onClick={onComfirm}
+                        onClick={e => {
+                            e.currentTarget.setAttribute('disabled', 'disabled');
+                            onConfirm();
+                        }}
                         size='lg'
                         variant='outlined'
                     >

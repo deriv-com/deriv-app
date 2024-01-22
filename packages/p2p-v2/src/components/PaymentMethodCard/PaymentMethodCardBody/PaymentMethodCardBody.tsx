@@ -17,7 +17,7 @@ const PaymentMethodCardBody = ({
     const isBankOrOther = modifiedDisplayName && ['BankTransfer', 'Other'].includes(modifiedDisplayName);
     return (
         <div className='p2p-v2-payment-method-card__body'>
-            <Text size='xs'>{isBankOrOther && !shouldShowPaymentMethodDisplayName ? '' : displayName}</Text>
+            {isBankOrOther && !shouldShowPaymentMethodDisplayName ? null : <Text size='xs'>{displayName}</Text>}
             <Text size='xs'>{paymentMethod.fields?.bank_name?.value ?? paymentMethod.fields?.name?.value}</Text>
             <Text size='xs'>{paymentMethod.fields?.account?.value}</Text>
         </div>

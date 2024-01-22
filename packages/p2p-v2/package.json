@@ -16,7 +16,7 @@
         "@deriv/integration": "^1.0.0",
         "@deriv/react-joyride": "^2.6.2",
         "@deriv/utils": "^1.0.0",
-        "@deriv-com/ui": "^0.0.1-beta.6",
+        "@deriv-com/ui": "^0.0.1-beta.7",
         "@sendbird/chat": "^4.9.7",
         "clsx": "^2.0.0",
         "i18next": "^22.4.6",

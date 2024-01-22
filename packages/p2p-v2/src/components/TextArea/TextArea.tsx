@@ -7,6 +7,7 @@ type TTextAreaProps = HtmlHTMLAttributes<HTMLTextAreaElement> & {
     hint?: string;
     isInvalid?: boolean;
     label?: string;
+    maxLength?: number;
     onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
     placeholder?: string;
     shouldShowCounter?: boolean;
@@ -16,6 +17,7 @@ const TextArea = ({
     hint,
     isInvalid = false,
     label,
+    maxLength,
     onChange,
     placeholder,
     shouldShowCounter = false,
@@ -45,7 +47,11 @@ const TextArea = ({
                         {hint}
                     </Text>
                 )}
-                {shouldShowCounter && <Text size='xs'>{currentValue?.length || 0}/300</Text>}
+                {shouldShowCounter && (
+                    <Text size='xs'>
+                        {currentValue?.length || 0}/{maxLength}
+                    </Text>
+                )}
             </div>
         </div>
     );

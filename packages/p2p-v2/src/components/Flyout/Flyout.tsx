@@ -1,7 +1,7 @@
 import React, { HTMLAttributes, ReactNode, useRef, useState } from 'react';
 import { useOnClickOutside } from 'usehooks-ts';
-import FlyOutList from './FlyoutList';
-import FlyOutToggle from './FlyoutToggle';
+import FlyoutList from './FlyoutList';
+import FlyoutToggle from './FlyoutToggle';
 import './Flyout.scss';
 
 type TFlyoutProps = HTMLAttributes<HTMLDivElement> & {
@@ -15,8 +15,8 @@ const Flyout = ({ listItems, renderIcon, ...props }: TFlyoutProps) => {
     useOnClickOutside(flyOutRef, () => setIsOpen(false));
     return (
         <div ref={flyOutRef} {...props}>
-            <FlyOutToggle onClick={() => setIsOpen(!isOpen)} renderIcon={renderIcon} />
-            <FlyOutList isOpen={isOpen} listItems={listItems} />
+            <FlyoutToggle onClick={() => setIsOpen(!isOpen)} renderIcon={renderIcon} />
+            <FlyoutList isOpen={isOpen} listItems={listItems} />
         </div>
     );
 };

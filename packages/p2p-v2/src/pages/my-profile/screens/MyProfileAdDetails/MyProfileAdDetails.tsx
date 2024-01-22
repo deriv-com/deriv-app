@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useAdvertiserInfo, useAdvertiserUpdate } from '@deriv/api';
+import { p2p } from '@deriv/api';
 import { Button, FullPageMobileWrapper, TextArea } from '../../../../components';
 import { useDevice } from '../../../../hooks';
 import './MyProfileAdDetails.scss';
 
 type TMYProfileAdDetailsTextAreaProps = {
-    advertiserInfo: NonNullable<ReturnType<typeof useAdvertiserInfo>>['data'];
+    advertiserInfo: NonNullable<ReturnType<typeof p2p.advertiser.useGetInfo>>['data'];
     setAdvertDescription: React.Dispatch<React.SetStateAction<string>>;
     setContactInfo: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -33,8 +33,8 @@ const MyProfileAdDetailsTextArea = ({
 };
 
 const MyProfileAdDetails = () => {
-    const { data: advertiserInfo, isLoading } = useAdvertiserInfo();
-    const { mutate: updateAdvertiser } = useAdvertiserUpdate();
+    const { data: advertiserInfo, isLoading } = p2p.advertiser.useGetInfo();
+    const { mutate: updateAdvertiser } = p2p.advertiser.useUpdate();
     const [contactInfo, setContactInfo] = useState('');
     const [advertDescription, setAdvertDescription] = useState('');
     const { isMobile } = useDevice();

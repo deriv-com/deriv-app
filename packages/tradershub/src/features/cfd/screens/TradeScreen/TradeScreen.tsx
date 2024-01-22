@@ -75,8 +75,10 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                                 <Text size='md'>
                                     {platform === mt5Platform
                                         ? marketTypeDetails[marketType ?? MarketType.ALL].title
-                                        : PlatformDetails[platform as keyof typeof PlatformDetails].title}{' '}
-                                    {!activeAccount?.is_virtual && details?.landing_company_short?.toUpperCase()}
+                                        : PlatformDetails[platform as keyof typeof PlatformDetails].title}
+                                    {platform === mt5Platform &&
+                                        !activeAccount?.is_virtual &&
+                                        ` ${details?.landing_company_short?.toUpperCase()}`}
                                 </Text>
                             </div>
                             <Text className='text-system-light-less-prominent-text' size='sm'>

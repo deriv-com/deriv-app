@@ -43,7 +43,7 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
                 })}
             >
                 <div className='mt5-migration-banne__description-text'>
-                    {!has_derived_and_financial_mt5 ? (
+                    {has_derived_and_financial_mt5 ? (
                         <Text size='xs'>
                             <Localize
                                 i18n_default_text='Upgrade your <0>{{account_1}}</0> <1/>and <0>{{account_2}} {{platform}} </0> account(s)'

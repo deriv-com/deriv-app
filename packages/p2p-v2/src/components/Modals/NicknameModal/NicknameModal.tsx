@@ -26,6 +26,7 @@ const NicknameModal = () => {
 
     const { error, isError, mutate, reset } = p2p.advertiser.useCreate();
     const { isMobile } = useDevice();
+    const textSize = isMobile ? 'md' : 'sm';
 
     const onSubmit = () => {
         mutate({ name: getValues('nickname') });
@@ -57,7 +58,7 @@ const NicknameModal = () => {
                 <Text className='p2p-v2-nickname-modal__form-title' weight='bold'>
                     Choose your nickname
                 </Text>
-                <Text align='center' className='p2p-v2-nickname-modal__form-text' size={isMobile ? 'md' : 'sm'}>
+                <Text align='center' className='p2p-v2-nickname-modal__form-text' size={textSize}>
                     This nickname will be visible to other Deriv P2P users.
                 </Text>
                 <Controller
@@ -68,15 +69,19 @@ const NicknameModal = () => {
                     )}
                     rules={{ pattern: /^[a-zA-Z0-9.@_-]*$/ }}
                 />
-                <Text className='p2p-v2-nickname-modal__form-text' size={isMobile ? 'md' : 'sm'}>
+                <Text className='p2p-v2-nickname-modal__form-text' size={textSize}>
                     Your nickname cannot be changed later.
                 </Text>
                 <div className='p2p-v2-nickname-modal__form__button-group'>
                     <Button className='p2p-v2-nickname-modal__form__button-group__cancel' size='lg' variant='outlined'>
-                        Cancel
+                        <Text size={textSize} weight='bold'>
+                            Cancel
+                        </Text>
                     </Button>
                     <Button disabled={watchNickname === '' || hasError} size='lg'>
-                        Confirm
+                        <Text color='white' size={textSize} weight='bold'>
+                            Confirm
+                        </Text>
                     </Button>
                 </div>
             </form>

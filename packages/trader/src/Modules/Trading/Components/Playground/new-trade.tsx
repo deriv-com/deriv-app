@@ -78,11 +78,21 @@ const NewTrade = () => {
                     </button>
                 </div>
                 <div className='footer-new_navigation'>
-                    <div className='footer-new_navigation_icon footer-new_navigation_icon-selected'>Icon 1</div>
-                    <div className='footer-new_navigation_icon'>Icon 2</div>
-                    <div className='footer-new_navigation_icon'>Icon 3</div>
-                    <div className='footer-new_navigation_icon'>Icon 4</div>
-                    <div className='footer-new_navigation_icon'>Icon 5</div>
+                    <div className='footer-new_navigation_icon footer-new_navigation_icon-selected'>
+                        <Icon icon='IcNewTradeMenu' size={24} />
+                    </div>
+                    <div className='footer-new_navigation_icon'>
+                        <Icon icon='IcNewBasket' size={24} />
+                    </div>
+                    <div className='footer-new_navigation_icon'>
+                        <Icon icon='IcNewClock' size={24} />
+                    </div>
+                    <div className='footer-new_navigation_icon'>
+                        <Icon icon='IcNewLearn' size={24} />
+                    </div>
+                    <div className='footer-new_navigation_icon'>
+                        <Icon icon='IcNewMenu' size={24} />
+                    </div>
                 </div>
             </div>
         </React.Fragment>

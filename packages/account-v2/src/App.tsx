@@ -5,6 +5,7 @@ import { FormProgress } from './components/form-progress';
 import SignupWizard from './components/SignupWizard';
 import { SignupWizardProvider, useSignupWizardContext } from './context/SignupWizardContext';
 import { stepProgress } from './mocks/form-progress.mock';
+import RouteLinks from './router/components/route-links/route-links';
 import './index.scss';
 
 const TriggerSignupWizardModal: React.FC = () => {
@@ -24,6 +25,7 @@ const App: React.FC = () => {
                     {/* [TODO]:Mock - Remove hardcoded initial value once isActive comes from Modal */}
                     <FormProgress activeStep={1} steps={stepProgress} />
                 </SignupWizardProvider>
+                <RouteLinks />
             </BreakpointProvider>
         </APIProvider>
     );

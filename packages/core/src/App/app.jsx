@@ -49,11 +49,15 @@ const AppWithoutTranslation = ({ root_store }) => {
 
         initializeTranslations();
         if (process.env.RUDDERSTACK_KEY) {
-            Analytics.initialise({
-                growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,
-                growthbookDecryptionKey: process.env.GROWTHBOOK_DECRYPTION_KEY,
+            const config = {
+                growthbookKey:
+                    process.env.IS_GROWTHBOOK_ENABLED === 'true' ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
+                growthbookDecryptionKey:
+                    process.env.IS_GROWTHBOOK_ENABLED === 'true' ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
-            });
+            };
+
+            Analytics.initialise(config);
         }
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared

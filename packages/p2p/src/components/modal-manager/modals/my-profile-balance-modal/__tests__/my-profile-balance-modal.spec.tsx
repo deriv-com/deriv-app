@@ -29,7 +29,15 @@ describe('<MyProfileBalanceModal />', () => {
     it('should render MyProfileBalanceModal', () => {
         render(<MyProfileBalanceModal />);
 
-        expect(screen.getByText('Deriv P2P Balance')).toBeInTheDocument();
+        expect(screen.getByText('Available Deriv P2P Balance')).toBeInTheDocument();
+        expect(
+            screen.getByText('Your Deriv P2P balance only includes deposits that can’t be reversed.')
+        ).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'Deposits via cards and the following payment methods aren’t included: Maestro, Diners Club, ZingPay, Skrill, Neteller, Ozow, and UPI QR.'
+            )
+        ).toBeInTheDocument();
     });
 
     it('should call hideModal when clicking on the OK button', () => {

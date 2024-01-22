@@ -20,7 +20,7 @@ const validateDocumentNumber = (
     documentNumber: string,
     context: Yup.TestContext<AnyObject>
 ) => {
-    const isNotSameAsExample = documentNumber === documentConfig?.example_format;
+    const isSameAsExample = documentNumber === documentConfig?.example_format;
     const exampleFormat = getExampleFormat(documentConfig?.example_format);
 
     if (!documentNumber && documentConfig?.text) {
@@ -40,7 +40,7 @@ const validateDocumentNumber = (
                 break;
         }
         return context.createError({ message: `Please enter your ${documentName}. ${exampleFormat}` });
-    } else if (isNotSameAsExample) {
+    } else if (isSameAsExample) {
         return context.createError({ message: 'Please enter a valid ID number' });
     } else if (documentConfig && !new RegExp(documentConfig.value).test(documentNumber)) {
         return context.createError({ message: `Please enter the correct format. ${exampleFormat}` });

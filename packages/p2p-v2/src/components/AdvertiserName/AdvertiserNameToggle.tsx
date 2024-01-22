@@ -1,8 +1,8 @@
-import React, { useEffect, useState, memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
+import { p2p } from '@deriv/api';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import { useAdvertiserStats } from '../../hooks';
 import { ToggleSwitch } from '../ToggleSwitch';
-import { useAdvertiserUpdate } from '@deriv/api';
-import { Text } from '@deriv-com/ui/dist/components/Text';
 import './AdvertiserNameToggle.scss';
 
 type TAdvertiserNameToggle = {
@@ -11,7 +11,7 @@ type TAdvertiserNameToggle = {
 const AdvertiserNameToggle = memo(({ onToggle }: TAdvertiserNameToggle) => {
     const { data: advertiserInfo } = useAdvertiserStats();
     const [shouldShowRealName, setShouldShowRealName] = useState(false);
-    const { mutate: advertiserUpdate } = useAdvertiserUpdate();
+    const { mutate: advertiserUpdate } = p2p.advertiser.useUpdate();
 
     useEffect(() => {
         setShouldShowRealName(advertiserInfo?.show_name || false);

@@ -8,17 +8,5 @@
         flex-direction: column;
         justify-content: center;
         gap: 0.4rem;
-
-        & h1 {
-            font-size: 1.6rem;
-            line-height: 2.4rem;
-            font-weight: 700;
-
-            & span {
-                color: #999999;
-                font-size: 1.4rem;
-                font-weight: 400;
-            }
-        }
     }
 }

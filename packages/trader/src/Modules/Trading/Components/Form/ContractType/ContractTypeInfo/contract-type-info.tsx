@@ -138,7 +138,6 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
                 <Dropdown
                     id='dt_contract_type_dropdown'
                     className='contract-type-info__dropdown'
-                    is_nativepicker={false}
                     list={contract_types as React.ComponentProps<typeof Dropdown>['list']}
                     name='contract_type_dropdown'
                     value={selected_contract_type}

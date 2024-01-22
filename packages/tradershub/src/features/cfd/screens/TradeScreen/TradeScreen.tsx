@@ -54,11 +54,9 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
     const loginId = useMemo(() => {
         if (platform === mt5Platform) {
             return (details as THooks.MT5AccountsList)?.display_login;
-        } else if (platform === dxtradePlatform) {
-            return (details as THooks.DxtradeAccountsList)?.account_id;
         }
-        return (details as THooks.CtraderAccountsList)?.login;
-    }, [details, dxtradePlatform, mt5Platform, platform]);
+        return (details as THooks.CtraderAccountsList | THooks.DxtradeAccountsList)?.account_id;
+    }, [details, mt5Platform, platform]);
 
     const marketTypeDetails = MarketTypeDetails(isEU);
 

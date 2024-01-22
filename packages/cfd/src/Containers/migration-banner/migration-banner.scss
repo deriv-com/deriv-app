@@ -1,16 +1,14 @@
 .mt5-migration-banner {
     position: relative;
-    margin: 2.4rem 0;
+    margin-bottom: 2.4rem;
     overflow: hidden;
     background-color: var(--general-hover);
-    border: 1px solid var(--traders-hub-banner-border-color);
     border-radius: $BORDER_RADIUS * 2;
     height: 7.2rem;
-
-    @include mobile {
-        padding: 1.4rem 1.6rem;
-        border: none;
+    &__trade-modal {
+        margin: 2.4rem;
     }
+
     &__description {
         position: relative;
         z-index: 2;
@@ -19,12 +17,13 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin: auto 1.6rem;
-        padding-left: 1.4rem;
-
+        margin: auto 1.6rem auto 3.2rem;
+        &--trade-modal {
+            margin: auto 3.2rem;
+            padding-left: 3.8rem;
+        }
         @include mobile {
-            margin: unset;
-            padding-left: 2.4rem;
+            margin: auto 0.8rem auto 3.2rem;
             &-text {
                 width: 90%;
             }

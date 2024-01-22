@@ -184,8 +184,8 @@ const DMT5TradeModal = observer(
                             <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
                         </div>
                     </div>
-                    {is_eligible_to_migrate && <MigrationBanner />}
                 </div>
+                {is_eligible_to_migrate && <MigrationBanner is_trade_modal />}
                 <div className='cfd-trade-modal__download-center-app'>
                     <div className='cfd-trade-modal__download-center-app--option'>
                         <Icon icon='IcRebrandingMt5Logo' size={32} />

@@ -1,6 +1,6 @@
 import React from 'react';
-import MigrateCard from 'Assets/svgs/banner/migrate-card.svg';
-import MigrateCardDark from 'Assets/svgs/banner/migrate-card-dark.svg';
+import MigrateCard from '../../Assets/banner/migrate-card.svg';
+import MigrateCardDark from '../../Assets/banner/migrate-card-dark.svg';
 
 export type TBannerImageProps<TMigrationBannerListProps> = {
     image: TMigrationBannerListProps;

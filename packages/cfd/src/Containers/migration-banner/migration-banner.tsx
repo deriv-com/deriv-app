@@ -1,5 +1,6 @@
 import React from 'react';
-// import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv/analytics';
+import classNames from 'classnames';
 import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
@@ -13,28 +14,34 @@ import {
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 import MigrationBannerImage from './migration-banner-image';
 
-const MigrationBanner = observer(() => {
-    const {
-        ui,
-        // modules: { cfd },
-    } = useStore();
+type TMigrationBannerProps = {
+    is_trade_modal?: boolean;
+};
+const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerProps) => {
+    const { ui } = useStore();
     const { is_dark_mode_on, toggleMT5MigrationModal, is_mobile } = ui;
     const { setMT5MigrationError, is_mt5_trade_modal_visible, toggleMT5TradeModal } = useCfdStore();
     const { has_derived_mt5_to_migrate, has_derived_and_financial_mt5 } = useMT5SVGEligibleToMigrate();
-
     const openMT5MigrationModal = () => {
-        toggleMT5TradeModal();
+        if (is_mt5_trade_modal_visible) toggleMT5TradeModal();
         setMT5MigrationError('');
-        // Analytics.trackEvent('ce_upgrade_mt5_banner', {
-        //     action: 'push_cta_upgrade',
-        // });
+        Analytics.trackEvent('ce_upgrade_mt5_banner', {
+            action: 'push_cta_upgrade',
+        });
         toggleMT5MigrationModal();
     };
-    const should_break_line = is_mt5_trade_modal_visible && !is_mobile;
-
+    const is_desktop_trade_modal = is_trade_modal && !is_mobile;
     return (
-        <div className='mt5-migration-banner'>
-            <div className='mt5-migration-banner__description'>
+        <div
+            className={classNames('mt5-migration-banner', {
+                'mt5-migration-banner__trade-modal': is_trade_modal,
+            })}
+        >
+            <div
+                className={classNames('mt5-migration-banner__description', {
+                    'mt5-migration-banner__description--trade-modal': is_desktop_trade_modal,
+                })}
+            >
                 <div className='mt5-migration-banne__description-text'>
                     {has_derived_and_financial_mt5 ? (
                         <Text size='xs'>
@@ -45,7 +52,7 @@ const MigrationBanner = observer(() => {
                                     account_2: getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.FINANCIAL),
                                     platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                                 }}
-                                components={[should_break_line ? null : <br key={0} />, <br key={1} />]}
+                                components={[is_desktop_trade_modal ? null : <br key={0} />, <br key={1} />]}
                             />
                         </Text>
                     ) : (
@@ -60,7 +67,7 @@ const MigrationBanner = observer(() => {
                                     ),
                                     platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                                 }}
-                                components={[should_break_line ? null : <br key={0} />, <strong key={1} />]}
+                                components={[is_desktop_trade_modal ? null : <br key={0} />, <strong key={1} />]}
                             />
                         </Text>
                     )}

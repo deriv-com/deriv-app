@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useAdvertiserInfo, useAuthentication, useSettings } from '@deriv/api';
+import { p2p, useAuthentication, useSettings } from '@deriv/api';
 import { daysSince } from '../utils';
 
 /**
@@ -8,7 +8,7 @@ import { daysSince } from '../utils';
  * @param advertiserId - ID of the advertiser stats to reveal. If not provided, by default it will return the user's own stats.
  */
 const useAdvertiserStats = (advertiserId?: string) => {
-    const { data, isSuccess, ...rest } = useAdvertiserInfo(advertiserId);
+    const { data, isSuccess, ...rest } = p2p.advertiser.useGetInfo(advertiserId);
     const { data: settings, isSuccess: isSuccessSettings } = useSettings();
     const { data: authenticationStatus, isSuccess: isSuccessAuthenticationStatus } = useAuthentication();
 
@@ -77,7 +77,7 @@ const useAdvertiserStats = (advertiserId?: string) => {
             /** The total trade volume since registration */
             tradeVolumeLifetime: Number(data?.total_turnover) || 0,
         };
-    }, [data, settings, isSuccess, isSuccessSettings, isSuccessAuthenticationStatus]);
+    }, [data, settings, isSuccess, isSuccessSettings, isSuccessAuthenticationStatus, authenticationStatus]);
 
     return {
         data: transformedData,

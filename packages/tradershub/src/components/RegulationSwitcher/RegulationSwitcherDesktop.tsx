@@ -1,14 +1,20 @@
 import React, { useEffect } from 'react';
-import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { Button, qtJoin, Text } from '@deriv/quill-design';
+import { useActiveTradingAccount, useAuthorize, useIsDIELEnabled, useTradingAccountsList } from '@deriv/api';
+import { Button, qtJoin } from '@deriv/quill-design';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import { Regulation } from '../../constants/constants';
+import useRegulationFlags from '../../hooks/useRegulationFlags';
 import { useUIContext } from '../UIProvider';
 
 const RegulationSwitcherDesktop = () => {
     const { switchAccount } = useAuthorize();
     const { data: tradingAccountsList } = useTradingAccountsList();
     const { getUIState, setUIState } = useUIContext();
+    const { data: isDIEL } = useIsDIELEnabled();
+    const regulation = getUIState('regulation');
+    const accountType = getUIState('accountType');
+    const { isEU, isHighRisk } = useRegulationFlags(regulation, accountType);
 
     const realCRAccount = tradingAccountsList?.find(account => account.loginid.startsWith('CR'))?.loginid ?? '';
 
@@ -35,9 +41,9 @@ const RegulationSwitcherDesktop = () => {
     };
 
     useEffect(() => {
-        if (activeTrading?.loginid.startsWith('CR')) {
+        if (activeTrading?.loginid.startsWith('CR') || isDIEL || isHighRisk) {
             setUIState('regulation', Regulation.NonEU);
-        } else if (activeTrading?.loginid.startsWith('MF')) {
+        } else if (activeTrading?.loginid.startsWith('MF') || isEU) {
             setUIState('regulation', Regulation.EU);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

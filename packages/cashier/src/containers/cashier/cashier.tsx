@@ -243,7 +243,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         ((!is_logged_in || is_mobile) && is_logging_in) ||
         !is_account_setting_loaded ||
         is_payment_agent_checking ||
-        is_p2p_enabled_loading
+        (is_p2p_enabled_loading && !is_p2p_enabled_success)
     ) {
         return <Loading is_fullscreen />;
     }

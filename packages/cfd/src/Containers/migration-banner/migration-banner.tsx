@@ -52,7 +52,7 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
                                     account_2: getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.FINANCIAL),
                                     platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                                 }}
-                                components={[<strong key={0} />, is_desktop_trade_modal && <br key={1} />]}
+                                components={[<strong key={0} />, !is_desktop_trade_modal && <br key={1} />]}
                             />
                         </Text>
                     ) : (
@@ -67,7 +67,7 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
                                     ),
                                     platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                                 }}
-                                components={[is_desktop_trade_modal && <br key={0} />, <strong key={1} />]}
+                                components={[!is_desktop_trade_modal && <br key={0} />, <strong key={1} />]}
                             />
                         </Text>
                     )}

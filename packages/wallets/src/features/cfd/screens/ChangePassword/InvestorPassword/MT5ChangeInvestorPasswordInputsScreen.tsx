@@ -31,7 +31,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
 
     const initialValues: TFormInitialValues = { currentPassword: '', newPassword: '' };
 
-    const onChangeButtonClickHandler = async (values: TFormInitialValues) => {
+    const onFormSubmitHandler = async (values: TFormInitialValues) => {
         await changeInvestorPassword({
             account_id: mt5AccountId,
             new_password: values.newPassword,
@@ -62,7 +62,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
             }
             descriptionSize='sm'
             renderButtons={() => (
-                <Formik initialValues={initialValues} onSubmit={onChangeButtonClickHandler}>
+                <Formik initialValues={initialValues} onSubmit={onFormSubmitHandler}>
                     {({ handleChange, handleSubmit, values }) => (
                         <form className='wallets-change-investor-password-screens__form' onSubmit={handleSubmit}>
                             <div className='wallets-change-investor-password-screens__form-fields'>

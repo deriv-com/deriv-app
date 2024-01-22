@@ -26,6 +26,7 @@ const Header = observer(() => {
             routes.cashier,
             routes.wallets,
             routes.wallets_compare_accounts,
+            routes.compare_accounts,
             routes.compare_cfds,
         ].includes(pathname) ||
         pathname.startsWith(routes.compare_cfds) ||

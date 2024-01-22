@@ -40,7 +40,13 @@ const TextArea = ({
                 placeholder={placeholder}
                 value={currentValue}
             />
-            {label && <label>{label}</label>}
+            {label && (
+                <label>
+                    <Text color={isInvalid ? 'error' : 'less-prominent'} size='sm'>
+                        {label}
+                    </Text>
+                </label>
+            )}
             <div className='p2p-v2-textarea__footer'>
                 {hint && (
                     <Text as='p' color={isInvalid ? 'error' : 'less-prominent'} size='xs'>
@@ -48,7 +54,7 @@ const TextArea = ({
                     </Text>
                 )}
                 {shouldShowCounter && (
-                    <Text size='xs'>
+                    <Text color={isInvalid ? 'error' : 'less-prominent'} size='xs'>
                         {currentValue?.length || 0}/{maxLength}
                     </Text>
                 )}

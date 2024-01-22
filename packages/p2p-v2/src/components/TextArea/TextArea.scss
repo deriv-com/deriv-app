@@ -27,8 +27,6 @@
         &:focus + label,
         &[data-has-value='true'] + label {
             transform: translate(0, -1.4rem) scale(0.75);
-            font-family: 'IBM Plex Sans', sans-serif;
-            font-size: 1.4rem;
             background-color: #ffffff;
         }
         &:has(~ label)::placeholder {
@@ -37,7 +35,6 @@
     }
 
     & label {
-        color: #999999;
         display: block;
         position: absolute;
         left: 1.6rem;
@@ -46,8 +43,6 @@
         transform-origin: left top;
         text-overflow: ellipsis;
         overflow: hidden;
-        font-size: 1.4rem;
-        font-family: 'IBM Plex Sans', sans-serif;
     }
 
     &--error {
@@ -55,17 +50,10 @@
         & textarea:focus {
             border: 1px solid #ec3f3f;
         }
-        & textarea,
-        & textarea:focus + label,
-        & label {
-            color: #ec3f3f;
-        }
     }
 
     &__footer {
         display: flex;
-        font-size: 1.2rem;
-        color: #999999;
         line-height: 1.5;
 
         & span {

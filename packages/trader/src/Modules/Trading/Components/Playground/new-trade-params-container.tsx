@@ -1,8 +1,15 @@
 import React from 'react';
-// import classNames from 'classnames';
 import { ButtonToggle } from '@deriv/components';
 
-const NewTradeParamsContainer = ({ onClick }: { onClick: (trade_param: string) => void }) => {
+const NewTradeParamsContainer = ({
+    onClick,
+    setSelectedType,
+    selected_left_type,
+}: {
+    onClick: (trade_param: string) => void;
+    setSelectedType: (selected_left_type: boolean) => void;
+    selected_left_type: boolean;
+}) => {
     return (
         <div className='trade-param_section'>
             <div className='trade-param_section_title'>
@@ -26,9 +33,8 @@ const NewTradeParamsContainer = ({ onClick }: { onClick: (trade_param: string) =
                     name='description_glossary_filter'
                     is_animated
                     has_rounded_button
-                    // eslint-disable-next-line @typescript-eslint/no-empty-function
-                    onChange={() => {}}
-                    value='Up'
+                    onChange={() => setSelectedType(!selected_left_type)}
+                    value={selected_left_type ? 'Up' : 'Down'}
                 />
             </div>
             <div className='trade-param_container'>

@@ -880,6 +880,10 @@ $FLOATING_HEADER_HEIGHT: 41px;
             font-size: 1.6rem;
             font-weight: 700;
             line-height: 2.4rem;
+
+            &--red {
+                background: var(--core-color-solid-cherry-700, #de0040);
+            }
         }
     }
 
@@ -1041,11 +1045,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
                     background-color: none;
                 }
 
-                .dc-button-menu__button:first-child {
-                    border-radius: 0.4rem;
-                }
-
-                .dc-button-menu__button {
+                #dc_Up_toggle_item.dc-button-menu__button {
                     padding: 0.5rem 0.8rem;
 
                     .dc-btn__text {
@@ -1056,6 +1056,13 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
                     &--active .dc-btn__text {
                         color: var(--core-color-solid-emerald-700, #00c390) !important;
+                        font-weight: 700;
+                    }
+                }
+
+                #dc_Down_toggle_item.dc-button-menu__button {
+                    &--active .dc-btn__text {
+                        color: var(--core-color-solid-cherry-700, #de0040) !important;
                         font-weight: 700;
                     }
                 }

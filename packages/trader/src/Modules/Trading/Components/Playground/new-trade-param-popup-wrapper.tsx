@@ -15,11 +15,15 @@ const NewTradeParamPopupWrapper = ({
     is_risk_management?: boolean;
     is_stake?: boolean;
 }) => {
-    // const [value, setValue] = React.useState('1.00');
     const [hide_parent, setHideParent] = React.useState(true);
     const [show_take_profit, setShowTakeProfit] = React.useState(true);
     const [show_stop_loss, setShowStopLoss] = React.useState(false);
     const input_ref = React.useRef<HTMLInputElement>(null);
+    const focus_timeout = React.useRef<ReturnType<typeof setTimeout>>();
+
+    React.useEffect(() => {
+        return () => clearTimeout(focus_timeout.current);
+    }, []);
 
     const onFocusHandler = (e: React.MouseEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -54,7 +58,7 @@ const NewTradeParamPopupWrapper = ({
                 unmountOnExit
                 onEnter={() => {
                     setHideParent(false);
-                    input_ref?.current?.focus();
+                    focus_timeout.current = setTimeout(() => input_ref?.current?.focus(), 700);
                 }}
                 onExited={() => setHideParent(true)}
             >
@@ -173,7 +177,7 @@ const NewTradeParamPopupWrapper = ({
                         {is_stake && (
                             <React.Fragment>
                                 <div className='trade-param_popup_title' style={{ height: '6.4rem' }}>
-                                    Stake [IN PROGRESS] <span className='info-icon'>i</span>
+                                    Stake <span className='info-icon'>i</span>
                                 </div>
                                 <div style={{ marginTop: '1.6rem' }}>
                                     <React.Fragment>

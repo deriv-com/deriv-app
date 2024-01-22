@@ -8,7 +8,7 @@ import { FormProgress } from './components/form-progress';
 import SignupWizard from './components/SignupWizard';
 import { SignupWizardProvider, useSignupWizardContext } from './context/SignupWizardContext';
 import { stepProgress } from './mocks/form-progress.mock';
-import { INITIAL_VALUES, SELECTED_COUNTRY } from './mocks/idv-form.mock';
+import { DOCUMENT_LIST, INITIAL_VALUES, SELECTED_COUNTRY } from './mocks/idv-form.mock';
 import { IDVForm } from './modules/IDVForm';
 import { getIDVFormValidationSchema } from './modules/IDVForm/utils';
 import './index.scss';
@@ -20,6 +20,9 @@ const TriggerSignupWizardModal: React.FC = () => {
 };
 
 const App: React.FC = () => {
+    // TODO - Remove this once the IDV form is moved out
+    const getValidationSchema = getIDVFormValidationSchema(DOCUMENT_LIST);
+
     return (
         <APIProvider standalone>
             <BreakpointProvider>
@@ -31,11 +34,7 @@ const App: React.FC = () => {
                     <FormProgress activeStep={1} steps={stepProgress} />
                 </SignupWizardProvider>
                 {/* [TODO]:Mock - Remove Mock values */}
-                <Formik
-                    initialValues={INITIAL_VALUES}
-                    onSubmit={() => {}}
-                    validationSchema={getIDVFormValidationSchema}
-                >
+                <Formik initialValues={INITIAL_VALUES} onSubmit={() => {}} validationSchema={getValidationSchema}>
                     <IDVForm selectedCountry={SELECTED_COUNTRY} />
                 </Formik>
             </BreakpointProvider>

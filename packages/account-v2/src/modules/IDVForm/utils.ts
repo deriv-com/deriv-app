@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 import { AnyObject } from 'yup/lib/object';
-import { DOCUMENT_LIST } from '../../mocks/idv-form.mock';
 
 export const getExampleFormat = (example_format?: string) => (example_format ? `Example: ${example_format}` : '');
 
@@ -8,6 +7,7 @@ export type TDocument = {
     additional?: {
         display_name?: string;
         example_format?: string;
+        format?: string;
     };
     example_format?: string;
     id: string;
@@ -60,8 +60,8 @@ const validateAdditionalDocumentNumber = (
             }.`,
         });
     } else if (
-        documentConfig?.additional?.example_format &&
-        !new RegExp(documentConfig?.additional?.example_format).test(additionalDocNumber)
+        documentConfig?.additional?.format &&
+        !new RegExp(documentConfig?.additional?.format).test(additionalDocNumber)
     ) {
         return context.createError({
             message: 'Please enter the correct format',
@@ -70,19 +70,19 @@ const validateAdditionalDocumentNumber = (
     return true;
 };
 
-export const getIDVFormValidationSchema = () => {
+export const getIDVFormValidationSchema = (list: TDocument[]) => {
     return Yup.object().shape({
         document_additional: Yup.string().test({
             name: 'test-additional-document-number',
             test: (value, context) => {
-                const documentConfig = getSelectedDocumentConfigData(context.parent.document_type);
+                const documentConfig = getSelectedDocumentConfigData(context.parent.document_type, list);
                 return validateAdditionalDocumentNumber(documentConfig, value, context);
             },
         }),
         document_number: Yup.string().test({
             name: 'test-document-number',
             test: (value, context) => {
-                const documentConfig = getSelectedDocumentConfigData(context.parent.document_type);
+                const documentConfig = getSelectedDocumentConfigData(context.parent.document_type, list);
                 return validateDocumentNumber(documentConfig, value as string, context);
             },
         }),
@@ -90,6 +90,9 @@ export const getIDVFormValidationSchema = () => {
     });
 };
 
-export const getSelectedDocumentConfigData: (prop: string) => TDocument | undefined = (item: string) => {
-    return DOCUMENT_LIST.find(doc => doc.id === item);
+export const getSelectedDocumentConfigData: (prop: string, list: TDocument[]) => TDocument | undefined = (
+    item: string,
+    list: TDocument[] = []
+) => {
+    return list?.find(doc => doc.id === item);
 };

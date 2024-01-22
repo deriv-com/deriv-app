@@ -4,6 +4,7 @@ import { useResidenceList } from '@deriv/api';
 import { useBreakpoint } from '@deriv/quill-design';
 import { WalletDropdown } from '../../components/base/WalletDropdown';
 import { WalletTextField } from '../../components/base/WalletTextField';
+import { DOCUMENT_LIST } from '../../mocks/idv-form.mock';
 import { getIDVNotApplicableOption } from '../../utils/default-options';
 import { getSelectedDocumentConfigData, TDocument } from './utils';
 
@@ -47,7 +48,7 @@ export const IDVForm = ({ allowIDVSkip, selectedCountry }: TIDVFormProps) => {
 
     const bindDocumentData = (item: string) => {
         setFieldValue('document_type', item, true);
-        setSelectedDocument(getSelectedDocumentConfigData(item));
+        setSelectedDocument(getSelectedDocumentConfigData(item, DOCUMENT_LIST));
         if (item === IDV_NOT_APPLICABLE_OPTION.value) {
             setFieldValue('document_number', '', true);
             setFieldValue('document_additional', '', true);

@@ -58,9 +58,9 @@ const NewTradeParamPopupWrapper = ({
                 unmountOnExit
                 onEnter={() => {
                     setHideParent(false);
-                    // focus_timeout.current = setTimeout(() => input_ref?.current?.focus(), 400);
+                    focus_timeout.current = setTimeout(() => input_ref?.current?.focus(), 100);
                 }}
-                onEntered={() => input_ref?.current?.focus()}
+                // onEntered={() => input_ref?.current?.focus({ focusVisible: true })}
                 onExited={() => setHideParent(true)}
             >
                 <div

@@ -10,7 +10,7 @@ import { useAPIContext } from '../APIProvider';
 const useAuthorize = () => {
     const current_token = getActiveAuthTokenIDFromLocalStorage();
     const invalidate = useInvalidateQuery();
-    const { switchEnvironment } = useAPIContext();
+    const { switchEnvironment, queryClient } = useAPIContext();
 
     const [currentLoginID, setCurrentLoginID] = useState(getActiveLoginIDFromLocalStorage());
 
@@ -18,6 +18,9 @@ const useAuthorize = () => {
         payload: { authorize: current_token || '' },
         options: {
             enabled: Boolean(current_token),
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+            refetchOnMount: false,
         },
     });
 
@@ -30,6 +33,10 @@ const useAuthorize = () => {
             if (active_loginid !== loginid) {
                 localStorage.setItem('active_loginid', loginid);
                 switchEnvironment(active_loginid);
+                // whenever we change the loginid, we need to invalidate all queries
+                // as there might be ongoing queries against previous loginid
+                // and we really do not want data from previous loginid, to be mixed with current loginid
+                queryClient.cancelQueries();
                 setCurrentLoginID(loginid);
             }
         },

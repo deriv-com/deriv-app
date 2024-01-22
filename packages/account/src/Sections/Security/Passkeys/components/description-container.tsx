@@ -8,7 +8,7 @@ const getPasskeysDescriptions = () =>
             id: 1,
             question: <Localize i18n_default_text='What are Passkeys?' />,
             description: (
-                <Localize i18n_default_text='Passkeys are a security measure that lets you log in the same way you unlock your device: with a fingerprint, a face scan, or a screen lock PIN. ' />
+                <Localize i18n_default_text='Passkeys are a security measure that lets you log in the same way you unlock your device: with a fingerprint, a face scan, or a screen lock PIN.' />
             ),
         },
         {

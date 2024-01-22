@@ -3,6 +3,7 @@ import { useQuery, useMutation, useInvalidateQuery } from '@deriv/api';
 import { startRegistration } from '@simplewebauthn/browser';
 
 //TODO check error handling after deployment
+//TODO check the flow, refactor and add test cases when BE is ready
 const useRegisterPasskey = () => {
     const invalidate = useInvalidateQuery();
 

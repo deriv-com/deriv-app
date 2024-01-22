@@ -17,7 +17,6 @@ describe('useIsPasskeySupported', () => {
         expect(result.current.is_loading).toBe(false);
         expect(result.current.is_passkey_supported).toBe(true);
     });
-
     it('sets state correctly when passkey is not supported', async () => {
         (platformAuthenticatorIsAvailable as jest.Mock).mockResolvedValue(false);
 

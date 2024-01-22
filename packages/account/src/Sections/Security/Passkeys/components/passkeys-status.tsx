@@ -30,7 +30,7 @@ const PasskeysStatus = ({
                     {title}
                 </Text>
                 {description && (
-                    <Text as='p' size='xs' align='center'>
+                    <Text as='div' size='xs' align='center'>
                         {description}
                     </Text>
                 )}

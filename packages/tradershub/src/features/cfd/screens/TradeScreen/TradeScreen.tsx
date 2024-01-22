@@ -1,7 +1,8 @@
 import React, { Fragment, useMemo } from 'react';
 import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Text, useBreakpoint } from '@deriv/quill-design';
+import { useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import { useUIContext } from '../../../../components';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import ImportantIcon from '../../../../public/images/ic-important.svg';
@@ -73,7 +74,7 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                         <div className='mr-400'>{platformIcon}</div>
                         <div className='flex flex-col'>
                             <div className='flex flex-row items-center gap-300'>
-                                <Text size='md'>
+                                <Text size='sm'>
                                     {platform === mt5Platform
                                         ? marketTypeDetails[marketType ?? MarketType.ALL].title
                                         : PlatformDetails[platform as keyof typeof PlatformDetails].title}
@@ -82,13 +83,13 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                                         ` ${details?.landing_company_short?.toUpperCase()}`}
                                 </Text>
                             </div>
-                            <Text className='text-system-light-less-prominent-text' size='sm'>
+                            <Text className='text-system-light-less-prominent-text' size='2xs'>
                                 {loginId}
                             </Text>
                         </div>
                     </div>
                     <div className='flex flex-col items-end'>
-                        <Text bold>{details?.display_balance}</Text>
+                        <Text weight='bold'>{details?.display_balance}</Text>
                     </div>
                 </div>
                 <div className='flex flex-col gap-100'>
@@ -119,11 +120,14 @@ const TradeScreen = ({ account }: TradeScreenProps) => {
                         />
                     )}
                 </div>
-                <div className='flex gap-400'>
-                    <div className='w-800 h-800'>
-                        <ImportantIcon />
-                    </div>
-                    <Text size='sm'>{serviceMaintenanceMessages[(platform || mt5Platform) as TPlatforms.All]}</Text>
+                <div className='flex items-center gap-400'>
+                    <ImportantIcon
+                        height={platform === mt5Platform ? 16 : 20}
+                        width={platform === mt5Platform ? 16 : 20}
+                    />
+                    <Text color='less-prominent' size='2xs'>
+                        {serviceMaintenanceMessages[(platform || mt5Platform) as TPlatforms.All]}
+                    </Text>
                 </div>
             </div>
             <div className='w-full'>

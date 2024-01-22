@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { getActiveAuthTokenIDFromLocalStorage, getActiveLoginIDFromLocalStorage } from '@deriv/utils';
 import useInvalidateQuery from '../useInvalidateQuery';
 import useQuery from '../useQuery';
@@ -11,6 +11,8 @@ const useAuthorize = () => {
     const current_token = getActiveAuthTokenIDFromLocalStorage();
     const invalidate = useInvalidateQuery();
     const { switchEnvironment } = useAPIContext();
+
+    const [currentLoginID, setCurrentLoginID] = useState(getActiveLoginIDFromLocalStorage());
 
     const { data, ...rest } = useQuery('authorize', {
         payload: { authorize: current_token || '' },
@@ -26,10 +28,10 @@ const useAuthorize = () => {
             if (active_loginid !== loginid) {
                 localStorage.setItem('active_loginid', loginid);
                 switchEnvironment(active_loginid);
-                invalidate('authorize');
+                setCurrentLoginID(loginid);
             }
         },
-        [invalidate, switchEnvironment]
+        [invalidate, switchEnvironment, currentLoginID]
     );
 
     return {
@@ -37,6 +39,7 @@ const useAuthorize = () => {
         data: modified_authorize,
         /** Function to switch to another account */
         switchAccount,
+        currentLoginID,
         ...rest,
     };
 };

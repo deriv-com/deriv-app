@@ -43,7 +43,7 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
                 })}
             >
                 <div className='mt5-migration-banne__description-text'>
-                    {has_derived_and_financial_mt5 ? (
+                    {!has_derived_and_financial_mt5 ? (
                         <Text size='xs'>
                             <Localize
                                 i18n_default_text='Upgrade your <0>{{account_1}}</0> <1/>and <0>{{account_2}} {{platform}} </0> account(s)'
@@ -52,7 +52,10 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
                                     account_2: getFormattedJurisdictionMarketTypes(JURISDICTION_MARKET_TYPES.FINANCIAL),
                                     platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                                 }}
-                                components={[is_desktop_trade_modal ? null : <br key={0} />, <br key={1} />]}
+                                components={[
+                                    <strong key={0} />,
+                                    is_desktop_trade_modal ? <React.Fragment /> : <br key={1} />,
+                                ]}
                             />
                         </Text>
                     ) : (
@@ -67,7 +70,10 @@ const MigrationBanner = observer(({ is_trade_modal = false }: TMigrationBannerPr
                                     ),
                                     platform: getCFDPlatformNames(CFD_PLATFORMS.MT5),
                                 }}
-                                components={[is_desktop_trade_modal ? null : <br key={0} />, <strong key={1} />]}
+                                components={[
+                                    is_desktop_trade_modal ? <React.Fragment /> : <br key={0} />,
+                                    <strong key={1} />,
+                                ]}
                             />
                         </Text>
                     )}

@@ -803,10 +803,8 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
         const mt5_platform_label = jurisdiction_selected_shortcode !== JURISDICTION.MALTA_INVEST ? 'Deriv MT5' : '';
 
         const accountTypes = () => {
-            if (platform === 'dxtrade' && type_label === 'Derived') {
-                return 'Synthetic';
-            } else if (platform === 'ctrader') {
-                return 'CFDs';
+            if (platform === 'dxtrade' || platform === 'ctrader') {
+                return '';
             }
             return type_label;
         };
@@ -836,7 +834,10 @@ const CFDPasswordModal = observer(({ form_error, platform }: TCFDPasswordModalPr
                         components={[<br key={0} />]}
                     />
                     {platform === CFD_PLATFORMS.DXTRADE || platform === CFD_PLATFORMS.CTRADER ? (
-                        <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
+                        <Localize
+                            i18n_default_text='To start trading, <0/>transfer funds from your Deriv account into this account.'
+                            components={platform === CFD_PLATFORMS.CTRADER ? [<br key={0} />] : ''}
+                        />
                     ) : (
                         <ReviewMessageForMT5
                             is_selected_mt5_verified={is_selected_mt5_verified}

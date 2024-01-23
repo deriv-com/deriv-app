@@ -12,12 +12,12 @@ import CloseIcon from '../../public/images/ic-close-dark.svg';
  */
 type TDialogHeader = {
     className?: string;
-    heading?: keyof typeof Headings;
+    heading?: keyof typeof HeadingVariants;
     hideCloseButton?: boolean;
     title?: string;
 };
 
-const Headings = {
+const HeadingVariants = {
     h1: Heading.H1,
     h2: Heading.H2,
     h3: Heading.H3,
@@ -32,7 +32,7 @@ const Headings = {
  * @returns {JSX.Element} The DialogHeader component.
  */
 const DialogHeader = ({ className, heading = 'h3', hideCloseButton = false, title }: TDialogHeader) => {
-    const Heading = Headings[heading];
+    const Heading = HeadingVariants[heading];
 
     const { hide } = Provider.useModal();
 

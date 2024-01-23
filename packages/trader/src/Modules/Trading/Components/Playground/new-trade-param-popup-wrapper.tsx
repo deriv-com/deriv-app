@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { ButtonToggle } from '@deriv/components';
 import { useSwipeable } from 'react-swipeable';
@@ -9,11 +10,13 @@ const NewTradeParamPopupWrapper = ({
     show_details,
     is_risk_management,
     is_stake,
+    is_portal,
 }: {
     onClick: () => void;
     show_details?: boolean;
     is_risk_management?: boolean;
     is_stake?: boolean;
+    is_portal?: boolean;
 }) => {
     const [hide_parent, setHideParent] = React.useState(true);
     const [show_take_profit, setShowTakeProfit] = React.useState(true);
@@ -38,7 +41,12 @@ const NewTradeParamPopupWrapper = ({
         e.stopPropagation();
     };
 
-    return (
+    React.useEffect(() => {
+        if (show_details) setHideParent(false);
+        if (!show_details) setTimeout(() => setHideParent(true), 300);
+    }, [show_details]);
+
+    const content = (
         <div
             className='trade-param_popup_overlay'
             onClick={onClick}
@@ -56,12 +64,9 @@ const NewTradeParamPopupWrapper = ({
                 in={show_details}
                 timeout={300}
                 unmountOnExit
-                onEnter={() => {
-                    setHideParent(false);
-                    focus_timeout.current = setTimeout(() => input_ref?.current?.focus(), 100);
-                }}
+                onEnter={() => (focus_timeout.current = setTimeout(() => input_ref?.current?.focus(), 100))}
                 // onEntered={() => input_ref?.current?.focus({ focusVisible: true })}
-                onExited={() => setHideParent(true)}
+                // onExited={() => setHideParent(true)}
             >
                 <div
                     className={classNames('trade-param_popup_container', {
@@ -207,6 +212,10 @@ const NewTradeParamPopupWrapper = ({
             </CSSTransition>
         </div>
     );
+    if (is_portal) {
+        return ReactDOM.createPortal(content, document.getElementById('modal_root') as HTMLElement);
+    }
+    return content;
 };
 
 export default NewTradeParamPopupWrapper;

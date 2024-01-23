@@ -846,7 +846,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
         border-top-left-radius: 1.6rem;
 
         &_purchase {
-            transition: max-height 0.3s linear, opacity 0.7s linear;
+            transition: max-height 0.24s linear, opacity 0.3s linear;
 
             &-appear,
             &-enter {
@@ -855,7 +855,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
 
                 &-active,
                 &-done {
-                    max-height: 208px;
+                    max-height: 238px;
                     opacity: 1;
                 }
             }
@@ -864,6 +864,22 @@ $FLOATING_HEADER_HEIGHT: 41px;
                 max-height: 0px;
                 opacity: 0;
                 transition: max-height 0.3s linear, opacity 0.1s linear;
+            }
+        }
+
+        &_edit-button {
+            padding: 0;
+            border: none;
+            font: inherit;
+            color: inherit;
+            background-color: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.8rem;
+
+            span {
+                border-bottom: 1px var(--core-color-opacity-black-600, rgba(0, 0, 0, 0.72)) dashed;
             }
         }
 

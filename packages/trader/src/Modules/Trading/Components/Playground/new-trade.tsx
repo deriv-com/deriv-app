@@ -11,6 +11,7 @@ const NewTrade = () => {
     const [show_details, setShowDetails] = React.useState(false);
     const [is_risk_management, setIsRiskManagement] = React.useState(false);
     const [is_stake, setIsStake] = React.useState(false);
+    const [is_portal, setIsPortal] = React.useState(false);
     const [selected_left_type, setSelectedType] = React.useState(true);
     const [show_purchase_details, setShowPurchaseDetails] = React.useState(false);
 
@@ -60,12 +61,19 @@ const NewTrade = () => {
                 />
             </div>
             <NewTradeParamPopupWrapper
-                onClick={() => setShowDetails(false)}
+                onClick={() => {
+                    setShowDetails(false);
+                    setTimeout(() => setIsPortal(false), 300);
+                }}
                 show_details={show_details}
                 is_risk_management={is_risk_management}
                 is_stake={is_stake}
+                is_portal={is_portal}
             />
-            <div className={show_purchase_details ? 'trade-param_popup_overlay' : ''} onClick={onPurchaseResult}>
+            <div
+                className={show_purchase_details && !show_details ? 'trade-param_popup_overlay' : ''}
+                onClick={onPurchaseResult}
+            >
                 <div className='footer-new' {...swipe_handlers}>
                     <div className='footer-new_bottom-sheet'>
                         <div className='footer-new_bottom-sheet_payout'>
@@ -98,7 +106,6 @@ const NewTrade = () => {
                                 <div className='footer-new_bottom-sheet_params-container'>
                                     <div className='footer-new_bottom-sheet_payout'>
                                         <div style={{ fontWeight: '700' }}>Parameter settings</div>
-                                        <Icon icon='IcNewPencil' size={24} onClick={onPurchaseResult} />
                                     </div>
                                     <div className='footer-new_bottom-sheet_payout'>
                                         <div
@@ -108,7 +115,16 @@ const NewTrade = () => {
                                         >
                                             Contract type
                                         </div>
-                                        <div>Call</div>
+                                        <button
+                                            className='footer-new_bottom-sheet_edit-button'
+                                            onClick={e => {
+                                                setSelectedType(!selected_left_type);
+                                                e.stopPropagation();
+                                            }}
+                                        >
+                                            <span>{selected_left_type ? 'Up' : 'Down'}</span>
+                                            <Icon icon='IcNewPencil' height={22} width={14} />
+                                        </button>
                                     </div>
                                     <div className='footer-new_bottom-sheet_payout'>
                                         <div
@@ -118,7 +134,9 @@ const NewTrade = () => {
                                         >
                                             Multiplier
                                         </div>
-                                        <div>x15 </div>
+                                        <button className='footer-new_bottom-sheet_edit-button'>
+                                            <span>x15 </span> <Icon icon='IcNewPencil' height={22} width={14} />
+                                        </button>
                                     </div>
                                     <div className='footer-new_bottom-sheet_payout'>
                                         <div
@@ -128,7 +146,17 @@ const NewTrade = () => {
                                         >
                                             Stake
                                         </div>
-                                        <div>10.00 USD </div>
+                                        <button
+                                            className='footer-new_bottom-sheet_edit-button'
+                                            onClick={e => {
+                                                setIsPortal(true);
+                                                onTradeParamClickHandler('stake');
+                                                e.stopPropagation();
+                                            }}
+                                        >
+                                            <span>10.00 USD</span>
+                                            <Icon icon='IcNewPencil' height={22} width={14} />
+                                        </button>
                                     </div>
                                     <div className='footer-new_bottom-sheet_payout'>
                                         <div
@@ -138,7 +166,37 @@ const NewTrade = () => {
                                         >
                                             Risk Management
                                         </div>
-                                        <div>Take profit 1.00 USD </div>
+                                        <button
+                                            className='footer-new_bottom-sheet_edit-button'
+                                            onClick={e => {
+                                                setIsPortal(true);
+                                                onTradeParamClickHandler('risk_management');
+                                                e.stopPropagation();
+                                            }}
+                                        >
+                                            <span>Take profit 1.00 USD </span>
+                                            <Icon icon='IcNewPencil' height={22} width={14} />
+                                        </button>
+                                    </div>
+                                    <div className='footer-new_bottom-sheet_payout'>
+                                        <div
+                                            style={{
+                                                color: 'var(--core-color-opacity-black-400, rgba(0, 0, 0, 0.48))',
+                                            }}
+                                        >
+                                            Risk Management
+                                        </div>
+                                        <button
+                                            className='footer-new_bottom-sheet_edit-button'
+                                            onClick={e => {
+                                                setIsPortal(true);
+                                                onTradeParamClickHandler('risk_management');
+                                                e.stopPropagation();
+                                            }}
+                                        >
+                                            <span>Take profit 1.00 USD </span>
+                                            <Icon icon='IcNewPencil' height={22} width={14} />
+                                        </button>
                                     </div>
                                 </div>
                                 <div className='footer-new_bottom-sheet_params-total'>

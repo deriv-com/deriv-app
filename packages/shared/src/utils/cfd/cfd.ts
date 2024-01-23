@@ -454,7 +454,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
 export const mt5_community_url =
     'https://community.deriv.com/t/log-in-using-mt5-pc-or-mobile-app-application-guideline/49622';
 
-export const getFormattedJurisdictionCode = (jurisdiction_code?: typeof Jurisdiction[keyof typeof Jurisdiction]) => {
+export const getFormattedJurisdictionCode = (jurisdiction_code?: (typeof Jurisdiction)[keyof typeof Jurisdiction]) => {
     let formatted_label = '';
 
     switch (jurisdiction_code) {
@@ -480,7 +480,7 @@ export const getFormattedJurisdictionCode = (jurisdiction_code?: typeof Jurisdic
 };
 
 export const getFormattedJurisdictionMarketTypes = (
-    jurisdiction_market_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES] | TMarketType
+    jurisdiction_market_type: (typeof JURISDICTION_MARKET_TYPES)[keyof typeof JURISDICTION_MARKET_TYPES] | TMarketType
 ) => {
     let formatted_market_type = '';
 
@@ -499,8 +499,8 @@ export const getFormattedJurisdictionMarketTypes = (
 };
 
 type TGetMT5AccountTitle = {
-    account_type: typeof JURISDICTION_MARKET_TYPES[keyof typeof JURISDICTION_MARKET_TYPES];
-    jurisdiction: typeof Jurisdiction[keyof typeof Jurisdiction];
+    account_type: (typeof JURISDICTION_MARKET_TYPES)[keyof typeof JURISDICTION_MARKET_TYPES];
+    jurisdiction: (typeof Jurisdiction)[keyof typeof Jurisdiction];
 };
 export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5AccountTitle) => {
     return `${getCFDPlatformNames(CFD_PLATFORMS.MT5)} ${getFormattedJurisdictionMarketTypes(
@@ -511,10 +511,13 @@ export const getMT5AccountTitle = ({ account_type, jurisdiction }: TGetMT5Accoun
 export const isPOARequiredForMT5 = (account_status: GetAccountStatus, jurisdiction_shortcode: string) => {
     const { authentication } = account_status;
 
-    if (authentication?.attempts?.latest?.service !== 'idv') {
-        return !['pending', 'verified'].includes(authentication?.document?.status ?? '');
+    if (authentication?.attempts?.latest?.service === 'idv') {
+        if (authentication?.document?.status === 'pending') {
+            return false;
+        }
+        // @ts-expect-error as the prop authenticated_with_idv is not yet present in GetAccountStatus
+        return !authentication?.document?.authenticated_with_idv[jurisdiction_shortcode];
     }
 
-    // @ts-expect-error as the prop authenticated_with_idv is not yet present in GetAccountStatus
-    return !authentication?.document?.authenticated_with_idv[jurisdiction_shortcode];
+    return !['pending', 'verified'].includes(authentication?.document?.status ?? '');
 };

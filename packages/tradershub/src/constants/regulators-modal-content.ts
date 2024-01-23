@@ -9,7 +9,6 @@ export type TRegulatorsContentProps = {
     attribute: string;
     content: TRegulatorContent;
     id: string;
-    idx?: number;
 };
 
 export const getCFDContents: TRegulatorsContentProps[] = [

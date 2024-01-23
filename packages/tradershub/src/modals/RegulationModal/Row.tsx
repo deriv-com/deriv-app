@@ -3,7 +3,11 @@ import { qtMerge } from '@deriv/quill-design';
 import { Text, TextProps } from '@deriv-com/ui/dist/components/Text';
 import { TRegulatorsContentProps, TRowItem } from '../../constants/regulators-modal-content';
 
-const Row = ({ attribute, content, id, idx }: TRegulatorsContentProps) => (
+type TProps = TRegulatorsContentProps & {
+    idx?: number;
+};
+
+const Row = ({ attribute, content, id, idx }: TProps) => (
     <tr className={qtMerge('min-h-2000', idx === 0 && 'bg-brand-pink-light')} key={id}>
         <td
             className={`sticky z-10 align-middle border-solid start-50 py-500 px-400 border-system-light-active-background border-x-75 border-b-75 ${

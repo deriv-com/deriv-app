@@ -5,10 +5,10 @@ import useP2POrderList from './useP2POrderList';
 const useP2PCompletedOrdersNotification = () => {
     const { subscribe, data, unsubscribe, isSubscribed } = useP2POrderList();
     const { client, notifications } = useStore();
-    const { is_logged_in, is_p2p_enabled } = client;
+    const { is_authorize, is_p2p_enabled } = client;
 
     React.useEffect(() => {
-        if (is_logged_in && is_p2p_enabled) {
+        if (is_authorize && is_p2p_enabled) {
             subscribe({
                 payload: {
                     active: 0,
@@ -18,7 +18,7 @@ const useP2PCompletedOrdersNotification = () => {
         return () => {
             isSubscribed && unsubscribe();
         };
-    }, [isSubscribed, is_logged_in, is_p2p_enabled, subscribe, unsubscribe]);
+    }, [isSubscribed, is_authorize, is_p2p_enabled, subscribe, unsubscribe]);
 
     React.useEffect(() => {
         if (data?.p2p_order_list?.list.length && data?.p2p_order_list?.list !== notifications.p2p_completed_orders) {

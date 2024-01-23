@@ -15,7 +15,7 @@ describe('useP2PCompletedOrdersNotification', () => {
     test('should not subscribe to p2p_order_list if user is not logged in', () => {
         const mock = mockStore({
             client: {
-                is_logged_in: false,
+                is_authorize: false,
                 is_p2p_enabled: true,
                 currency: 'USD',
             },
@@ -43,7 +43,7 @@ describe('useP2PCompletedOrdersNotification', () => {
     test('should not subscribe to p2p_order_list if user p2p is disabled', () => {
         const mock = mockStore({
             client: {
-                is_logged_in: true,
+                is_authorize: true,
                 is_p2p_enabled: false,
                 currency: 'EUR',
             },
@@ -72,7 +72,7 @@ describe('useP2PCompletedOrdersNotification', () => {
     test('should not call unsubscribe from p2p_order_list if user is logged in and p2p is enabled but list is not subscribed', () => {
         const mock = mockStore({
             client: {
-                is_logged_in: true,
+                is_authorize: true,
                 is_p2p_enabled: true,
                 currency: 'USD',
             },
@@ -102,7 +102,7 @@ describe('useP2PCompletedOrdersNotification', () => {
     test('should unsubscribe from p2p_order_list if user is logged in and p2p is enabled and list is subscribed', () => {
         const mock = mockStore({
             client: {
-                is_logged_in: true,
+                is_authorize: true,
                 is_p2p_enabled: true,
                 currency: 'USD',
             },
@@ -132,7 +132,7 @@ describe('useP2PCompletedOrdersNotification', () => {
     test('should subscribe to completed p2p_order_list', () => {
         const mock = mockStore({
             client: {
-                is_logged_in: true,
+                is_authorize: true,
                 is_p2p_enabled: true,
                 currency: 'USD',
             },

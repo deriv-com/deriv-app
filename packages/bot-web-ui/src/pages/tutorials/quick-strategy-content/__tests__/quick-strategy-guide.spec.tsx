@@ -47,13 +47,13 @@ describe('<QuickStrategyGuides />', () => {
         expect(description).toHaveStyle('--text-size: var(--text-size-s);');
     });
 
-    it('should render the component with xxs font when on mobile', () => {
+    it('should render the component with xs font when on mobile', () => {
         mock_store.ui.is_mobile = true;
         render(<QuickStrategyGuides />, {
             wrapper,
         });
 
         const title = screen.getByText('Quick strategy guides');
-        expect(title).toHaveStyle('--text-size: var(--text-size-xxs);');
+        expect(title).toHaveStyle('--text-size: var(--text-size-xs);');
     });
 });

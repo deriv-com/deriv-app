@@ -116,7 +116,7 @@ const Passkeys = observer(() => {
     }
     return (
         <div className='passkeys'>
-            <PasskeysList passkeys_list={mock_passkeys_list || []} onButtonClick={createPasskey} />
+            <PasskeysList passkeys_list={passkeys_list || []} onButtonClick={createPasskey} />
         </div>
     );
 });

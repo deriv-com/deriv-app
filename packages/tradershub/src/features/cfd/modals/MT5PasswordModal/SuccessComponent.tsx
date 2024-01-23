@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveTradingAccount, useCreateMT5Account, useMT5AccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import {
@@ -15,12 +15,12 @@ import SuccessButtonGroup from './ButtonGroups/SuccessButtonGroup';
 
 const SuccessComponent = () => {
     const { isEU } = useRegulationFlags();
-    const { isSuccess } = useCreateMT5Account();
+    const { getCFDState } = Provider.useCFDContext();
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
     const isDemo = activeTrading?.is_virtual;
-    const { getCFDState } = Provider.useCFDContext();
 
+    const isSuccess = getCFDState('isSuccess');
     const marketType = getCFDState('marketType') ?? 'all';
     const platform = getCFDState('platform') ?? 'mt5';
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;

@@ -4,6 +4,7 @@ import { TMarketTypes, TPlatforms, THooks } from '../../types';
 type TCFDState = {
     // Add your CFD states here
     accountId?: string;
+    isSuccess?: boolean;
     marketType?: TMarketTypes.All;
     platform?: TPlatforms.All;
     selectedJurisdiction?: THooks.AvailableMT5Accounts['shortcode'];

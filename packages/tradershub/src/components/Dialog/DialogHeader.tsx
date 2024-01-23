@@ -12,10 +12,11 @@ import CloseIcon from '../../public/images/ic-close-dark.svg';
  */
 type TDialogHeader = {
     className?: string;
-    heading?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+    heading?: keyof typeof Headings;
     hideCloseButton?: boolean;
     title?: string;
 };
+
 const Headings = {
     h1: Heading.H1,
     h2: Heading.H2,

@@ -31,7 +31,6 @@ describe('VanillaOptionsCardBody', () => {
         expect(screen.getByText(getCardLabels().STRIKE)).toBeInTheDocument();
         expect(screen.getByText('1,200.00')).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
-        expect(screen.getByTestId('dt_arrow_indicator')).toBeInTheDocument();
     });
 
     it('should render the correct content for an unsold contract', async () => {
@@ -50,6 +49,17 @@ describe('VanillaOptionsCardBody', () => {
         expect(screen.getByText(getCardLabels().PURCHASE_PRICE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().STRIKE)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
-        expect(screen.getByTestId('dt_arrow_indicator')).toBeInTheDocument();
+    });
+
+    it('should render arrow indicator if the contract is not sold (is_sold === false)', () => {
+        render(<VanillaOptionsCardBody {...mock_props} />);
+
+        expect(screen.getAllByTestId('dt_arrow_indicator')).not.toHaveLength(0);
+    });
+
+    it('should not render arrow indicator if the contract was sold (is_sold === true)', () => {
+        render(<VanillaOptionsCardBody {...mock_props} is_sold />);
+
+        expect(screen.queryByTestId('dt_arrow_indicator')).not.toBeInTheDocument();
     });
 });

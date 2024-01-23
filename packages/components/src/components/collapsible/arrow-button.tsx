@@ -83,7 +83,7 @@ const ArrowButton = ({ is_collapsed = false, position, onClick, title, handle_bu
             );
     }
 
-    if (handle_button) icon_arrow = <div className='dc-collapsible__icon__handle' data-testid='icon_handle' />;
+    if (handle_button) icon_arrow = <div className='dc-collapsible__icon--handle' data-testid='icon_handle' />;
 
     return (
         <div

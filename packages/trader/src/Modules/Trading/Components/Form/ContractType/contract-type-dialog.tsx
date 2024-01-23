@@ -47,7 +47,7 @@ const ContractTypeDialog = ({
 }: React.PropsWithChildren<TContractTypeDialogProps>) => {
     const current_mobile_title = is_info_dialog_open ? (
         <Header
-            title={localize(title || item?.text || '')}
+            title={title || item?.text || ''}
             onClickBack={onBackButtonClick}
             text_size='xs'
             should_render_arrow={!hide_back_button}

@@ -263,7 +263,7 @@ const ContractTypeWidget = observer(
         const should_show_info_banner = !!selected_category_contracts()?.some(i => i.is_unavailable);
 
         const title =
-            Number(list_with_category()[0].contract_categories?.length) > 1
+            Number(list_with_category()[0]?.contract_categories?.length) > 1
                 ? localize('Tutorial')
                 : getCategoryName(item || { value });
 

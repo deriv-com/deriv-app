@@ -1,4 +1,5 @@
 import React from 'react';
+import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { clickAndKeyEventHandler } from '@deriv/shared';
 
@@ -29,9 +30,13 @@ const Header = ({
                 <Icon icon='IcArrowLeftBold' />
             </span>
         )}
-        <Text size={text_size} weight='bold' color='prominent' className='contract-type-info__title'>
-            {title}
-        </Text>
+        <Localize
+            i18n_default_text='<0>{{title}}</0>'
+            components={[
+                <Text key={0} size={text_size} weight='bold' color='prominent' className='contract-type-info__title' />,
+            ]}
+            values={{ title }}
+        />
         {should_render_close && (
             <span
                 className='contract-type-info__icon-cross'

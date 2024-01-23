@@ -130,7 +130,7 @@ const Dialog = ({
                                 <React.Fragment>
                                     <div className='dc-vertical-tab__action-bar dc-vertical-tab__action-bar--contract-type-info-header'>
                                         <Header
-                                            title={localize(title || item.text || '')}
+                                            title={title || item.text || ''}
                                             onClickBack={onBackButtonClick}
                                             onClose={onClose}
                                             should_render_arrow={!hide_back_button}

@@ -8,21 +8,6 @@
     background: var(--fill-normal);
     border: 1px solid var(--fill-normal);
 
-    &__learn-more {
-        margin-bottom: 0.8rem;
-        border: none;
-        border-bottom: 1px dotted var(--text-general);
-        padding: 0;
-        cursor: pointer;
-
-        @include mobile {
-            position: absolute;
-            top: 1.5rem;
-            background-color: transparent;
-            margin: unset;
-        }
-    }
-
     &__display {
         cursor: pointer;
         display: flex;
@@ -138,5 +123,20 @@
         &--vanillalongput {
             margin-right: 0.4rem;
         }
+    }
+}
+
+.learn-more_title {
+    margin-bottom: 0.8rem;
+    border: none;
+    border-bottom: 1px dotted var(--text-general);
+    padding: 0;
+    cursor: pointer;
+
+    @include mobile {
+        position: absolute;
+        top: 1.5rem;
+        background-color: transparent;
+        margin: unset;
     }
 }

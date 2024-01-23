@@ -285,13 +285,7 @@ const ContractTypeWidget = observer(
 
         return (
             <React.Fragment>
-                <Text
-                    as='button'
-                    line_height='s'
-                    size='xxxs'
-                    className='contract-type-widget__learn-more'
-                    onClick={handleLearnMore}
-                >
+                <Text as='button' line_height='s' size='xxxs' className='learn-more_title' onClick={handleLearnMore}>
                     <Localize i18n_default_text='Learn about this trade type' />
                 </Text>
                 <div
@@ -324,10 +318,7 @@ const ContractTypeWidget = observer(
                         hide_back_button={hide_back_button}
                         info_banner={should_show_info_banner && info_banner}
                         learn_more_banner={
-                            <button
-                                onClick={() => handleInfoClick(item || { value })}
-                                className='contract-type__learn-more'
-                            >
+                            <button onClick={() => handleInfoClick(item || { value })} className='learn-more'>
                                 <Text size={is_mobile ? 'xxs' : 'xs'} line_height={is_mobile ? 'l' : 'xl'}>
                                     <Localize i18n_default_text='Learn more about trade types' />
                                 </Text>

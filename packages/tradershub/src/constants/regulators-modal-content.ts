@@ -1,8 +1,16 @@
 /* eslint-disable sort-keys */
+import { TextProps } from '@deriv-com/ui/dist/components/Text';
+
 export type TRowItem = {
-    options?: Record<string, boolean | string>;
+    options?: {
+        align?: TextProps['align'];
+        color?: TextProps['color'];
+        shouldShowAsterickAtEnd?: boolean;
+        weight?: TextProps['weight'];
+    };
     text: string;
 };
+
 type TRegulatorContent = Record<string, TRowItem | TRowItem[]>;
 
 export type TRegulatorsContentProps = {
@@ -76,7 +84,7 @@ export const getCFDContents: TRegulatorsContentProps[] = [
                 { text: 'Cryptocurrencies' },
             ],
             euRegulator: [
-                { options: { should_show_asterick_at_end: true }, text: 'Synthetics' },
+                { options: { shouldShowAsterickAtEnd: true }, text: 'Synthetics' },
                 { text: 'Forex' },
                 { text: 'Stocks' },
                 { text: 'Stock indices' },
@@ -143,7 +151,7 @@ export const getOptionsContents: TRegulatorsContentProps[] = [
             ],
             euRegulator: [
                 {
-                    options: { should_show_asterick_at_end: true },
+                    options: { shouldShowAsterickAtEnd: true },
                     text: 'Synthetics',
                 },
                 { text: 'Forex' },

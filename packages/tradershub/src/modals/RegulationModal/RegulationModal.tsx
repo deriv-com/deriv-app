@@ -25,7 +25,7 @@ const RegulationModal = () => (
                             </th>
                         </tr>
                     </thead>
-                    <tbody className=''>
+                    <tbody>
                         {getCFDContents.map((row, idx) => (
                             <Row key={row.id} {...row} idx={idx} />
                         ))}

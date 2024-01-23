@@ -1,6 +1,6 @@
 import React from 'react';
 import { qtMerge } from '@deriv/quill-design';
-import { Text, TextProps } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import { TRegulatorsContentProps, TRowItem } from '../../constants/regulators-modal-content';
 
 type TProps = TRegulatorsContentProps & {
@@ -26,24 +26,24 @@ const Row = ({ attribute, content, id, idx }: TProps) => (
                 {Array.isArray(content[rowKey]) ? (
                     (content[rowKey] as TRowItem[])?.map(item => (
                         <Text
-                            align={(item?.options?.align as TextProps['align']) ?? 'center'}
+                            align={item?.options?.align ?? 'center'}
                             as='p'
-                            color={(item?.options?.color as TextProps['color']) ?? 'prominent'}
+                            color={item?.options?.color ?? 'prominent'}
                             key={`${id}_${rowKey}_${item?.text}`}
                             size='2xs'
-                            weight={item?.options?.weight as TextProps['weight']}
+                            weight={item?.options?.weight}
                         >
                             {item?.text}
-                            {item?.options?.should_show_asterick_at_end && <Text color='error'>*</Text>}
+                            {item?.options?.shouldShowAsterickAtEnd && <Text color='error'>*</Text>}
                         </Text>
                     ))
                 ) : (
                     <Text
-                        align={((content[rowKey] as TRowItem)?.options?.align as TextProps['align']) ?? 'center'}
+                        align={(content[rowKey] as TRowItem)?.options?.align ?? 'center'}
                         as='p'
-                        color={((content[rowKey] as TRowItem)?.options?.color as TextProps['color']) ?? 'prominent'}
+                        color={(content[rowKey] as TRowItem)?.options?.color ?? 'prominent'}
                         size='2xs'
-                        weight={(content[rowKey] as TRowItem)?.options?.weight as TextProps['weight']}
+                        weight={(content[rowKey] as TRowItem)?.options?.weight}
                     >
                         {(content[rowKey] as TRowItem)?.text}
                     </Text>

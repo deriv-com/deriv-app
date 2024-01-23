@@ -20,7 +20,7 @@
         &::placeholder {
             color: #999999;
         }
-        &:focus + label {
+        &:focus + label span {
             color: #85acb0;
         }
         &:focus + label,
@@ -48,6 +48,9 @@
         & textarea,
         & textarea:focus {
             border: 1px solid #ec3f3f;
+            & + label span {
+                color: #ec3f3f;
+            }
         }
     }
 

@@ -7,7 +7,7 @@ import { useAdvertiserPaymentMethodsConfig, useAdvertiserPaymentMethodsConfigDis
 import { PaymentMethodsEmpty } from '../PaymentMethodsEmpty';
 import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
 import AddNewButton from './AddNewButton';
-import PaymentMethodsListContent from './PaymentMethodsContent';
+import PaymentMethodsListContent from './PaymentMethodsListContent';
 import './PaymentMethodsList.scss';
 
 type TPaymentMethodsListProps = {

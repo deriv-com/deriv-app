@@ -21,7 +21,7 @@ const QuickStrategyGuidesDetail = observer(
     ({ quick_strategy_tab_content, tutorial_selected_strategy, setTutorialSelectedStrategy }: TQuickStrategyGuides) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
-        const text_size = is_mobile ? 'xxs' : 's';
+        const text_size = is_mobile ? 'xs' : 's';
 
         return (
             <>

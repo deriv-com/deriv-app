@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useBreakpoint } from '@deriv/quill-design';
 import StepConnector from './step-connector';
 import Stepper, { TStep } from './stepper';
@@ -17,7 +17,7 @@ export const FormProgress = ({ activeStep, steps = [] }: TFormProgressProps) => 
     const { isMobile } = useBreakpoint();
 
     return (
-        <React.Fragment>
+        <Fragment>
             {isMobile ? (
                 <div className='grid grid-flow-col gap-gap-2xs'>
                     {steps.map((step, index) => (
@@ -25,12 +25,12 @@ export const FormProgress = ({ activeStep, steps = [] }: TFormProgressProps) => 
                     ))}
                 </div>
             ) : (
-                <React.Fragment>
+                <Fragment>
                     {steps.map((step, index) => (
                         <Stepper isActive={index + 1 <= activeStep} key={step.title} step={step} stepCount={index} />
                     ))}
-                </React.Fragment>
+                </Fragment>
             )}
-        </React.Fragment>
+        </Fragment>
     );
 };

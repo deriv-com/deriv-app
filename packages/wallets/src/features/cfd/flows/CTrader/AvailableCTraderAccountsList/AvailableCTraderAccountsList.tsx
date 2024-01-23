@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useActiveWalletAccount, useCreateOtherCFDAccount } from '@deriv/api';
 import { TradingAccountCard, WalletError } from '../../../../../components';
 import { WalletButton, WalletText } from '../../../../../components/Base';
@@ -13,6 +14,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
     const { hide, show } = useModal();
     const { error, mutate, status } = useCreateOtherCFDAccount();
     const { data: activeWallet } = useActiveWalletAccount();
+    const { t } = useTranslation();
 
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
 
@@ -50,7 +52,7 @@ const AvailableCTraderAccountsList: React.FC = () => {
                 onSubmit();
             }}
         >
-            Get
+            {t('Get')}
         </WalletButton>
     );
 
@@ -81,7 +83,9 @@ const AvailableCTraderAccountsList: React.FC = () => {
                     <WalletText size='sm' weight='bold'>
                         {PlatformDetails.ctrader.title}
                     </WalletText>
-                    <WalletText size='xs'>This account offers CFDs on a feature-rich trading platform.</WalletText>
+                    <WalletText size='xs'>
+                        {t('This account offers CFDs on a feature-rich trading platform.')}
+                    </WalletText>
                 </div>
             </TradingAccountCard>
         </div>

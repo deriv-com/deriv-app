@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useCtraderAccountsList } from '@deriv/api';
 import { TradingAccountCard } from '../../../../../components';
@@ -14,6 +15,7 @@ const AddedCTraderAccountsList: React.FC = () => {
     const history = useHistory();
     const { data: cTraderAccounts } = useCtraderAccountsList();
     const { show } = useModal();
+    const { t } = useTranslation();
 
     const leading = () => (
         <div
@@ -43,7 +45,7 @@ const AddedCTraderAccountsList: React.FC = () => {
                 Transfer
             </WalletButton>
             <WalletButton onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}>
-                Open
+                {t('Open')}
             </WalletButton>
         </div>
     );

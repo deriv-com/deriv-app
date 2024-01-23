@@ -33,30 +33,31 @@ const useRegisterPasskey = () => {
         },
     });
 
-    // eslint-disable-next-line no-console
-    console.log('public_key', public_key);
-    React.useEffect(() => {
-        const startPasskeyRegistration = async () => {
-            try {
-                if (public_key) {
-                    const attResp = await startRegistration(public_key);
-                    // eslint-disable-next-line no-console
-                    console.log('mutate call');
-                    mutate({
-                        payload: {
-                            publicKeyCredential: attResp,
-                        },
-                    });
+    React.useEffect(
+        () => {
+            const startPasskeyRegistration = async () => {
+                try {
+                    if (public_key) {
+                        const attResp = await startRegistration(public_key);
+                        mutate({
+                            payload: {
+                                publicKeyCredential: attResp,
+                            },
+                        });
+                    }
+                } catch (e) {
+                    //TODO check error handling after deployment
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    setRegistrationError(e);
                 }
-            } catch (e) {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                setRegistrationError(e);
-            }
-        };
+            };
 
-        startPasskeyRegistration();
-    }, [public_key, mutate]);
+            startPasskeyRegistration();
+        },
+        // adding refetch to trigger startPasskeyRegistration for the case when user clicks on the button to register passkey again
+        [public_key, refetch, mutate]
+    );
 
     return {
         createPasskey: () => {

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useCtraderAccountsList } from '@deriv/api';
 import { TradingAccountCard } from '../../../../../components';
@@ -14,6 +15,7 @@ const AddedCTraderAccountsList: React.FC = () => {
     const history = useHistory();
     const { data: cTraderAccounts } = useCtraderAccountsList();
     const { show } = useModal();
+    const { t } = useTranslation();
 
     const leading = () => (
         <div
@@ -32,39 +34,41 @@ const AddedCTraderAccountsList: React.FC = () => {
         </div>
     );
 
-    const trailing = () => (
+    const trailing = (loginid?: string) => (
         <div className='wallets-added-ctrader__actions'>
             <WalletButton
                 onClick={() => {
-                    history.push('/wallets/cashier/transfer');
+                    history.push(`/wallets/cashier/transfer?to-account=${loginid}`);
                 }}
                 variant='outlined'
             >
                 Transfer
             </WalletButton>
             <WalletButton onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}>
-                Open
+                {t('Open')}
             </WalletButton>
         </div>
     );
 
     return (
         <div className='wallets-added-ctrader'>
-            <TradingAccountCard leading={leading} trailing={trailing}>
-                <div className='wallets-added-ctrader__details'>
-                    {cTraderAccounts?.map(account => (
-                        <React.Fragment key={`added-ctrader-${account.login}`}>
-                            <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
-                            <WalletText size='sm' weight='bold'>
-                                {account?.formatted_balance}
-                            </WalletText>
-                            <WalletText color='primary' size='sm' weight='bold'>
-                                {account.login}
-                            </WalletText>
-                        </React.Fragment>
-                    ))}
-                </div>
-            </TradingAccountCard>
+            {cTraderAccounts?.map(account => (
+                <TradingAccountCard
+                    key={`added-ctrader-${account.login}`}
+                    leading={leading}
+                    trailing={() => trailing(account.id)}
+                >
+                    <div className='wallets-added-ctrader__details'>
+                        <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>
+                        <WalletText size='sm' weight='bold'>
+                            {account?.formatted_balance}
+                        </WalletText>
+                        <WalletText color='primary' size='sm' weight='bold'>
+                            {account.login}
+                        </WalletText>
+                    </div>
+                </TradingAccountCard>
+            ))}
         </div>
     );
 };

@@ -1,9 +1,11 @@
 import { Button, Icon, Modal, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import React from 'react';
+import { observer, useStore } from '@deriv/stores';
 
-const CompletedAssessmentModal = ({ should_show_assessment_complete_modal, setShouldShowAssessmentCompleteModal }) => {
+const CompletedAssessmentModal = observer(() => {
+    const { ui } = useStore();
+    const { should_show_assessment_complete_modal, setShouldShowAssessmentCompleteModal } = ui;
     const handleOnClick = () => {
         setShouldShowAssessmentCompleteModal(false);
     };
@@ -32,9 +34,6 @@ const CompletedAssessmentModal = ({ should_show_assessment_complete_modal, setSh
             </Modal.Footer>
         </Modal>
     );
-};
+});
 
-export default connect(({ ui }) => ({
-    should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
-    setShouldShowAssessmentCompleteModal: ui.setShouldShowAssessmentCompleteModal,
-}))(CompletedAssessmentModal);
+export default CompletedAssessmentModal;

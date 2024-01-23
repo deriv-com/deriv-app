@@ -13,7 +13,6 @@ import {
 import { StoreProvider, ExchangeRatesProvider } from '@deriv/stores';
 import { getLanguage, initializeTranslations } from '@deriv/translations';
 import WS from 'Services/ws-methods';
-import { MobxContentProvider } from 'Stores/connect';
 import PropTypes from 'prop-types';
 import { withTranslation } from 'react-i18next';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -23,6 +22,7 @@ import AppContent from './AppContent';
 import 'Sass/app.scss';
 import { Analytics } from '@deriv/analytics';
 import initHotjar from '../Utils/Hotjar';
+import { BreakpointProvider } from '@deriv/quill-design';
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
@@ -49,11 +49,15 @@ const AppWithoutTranslation = ({ root_store }) => {
 
         initializeTranslations();
         if (process.env.RUDDERSTACK_KEY) {
-            Analytics.initialise({
-                growthbookKey: process.env.GROWTHBOOK_CLIENT_KEY,
-                growthbookDecryptionKey: process.env.GROWTHBOOK_DECRYPTION_KEY,
+            const config = {
+                growthbookKey:
+                    process.env.IS_GROWTHBOOK_ENABLED === 'true' ? process.env.GROWTHBOOK_CLIENT_KEY : undefined,
+                growthbookDecryptionKey:
+                    process.env.IS_GROWTHBOOK_ENABLED === 'true' ? process.env.GROWTHBOOK_DECRYPTION_KEY : undefined,
                 rudderstackKey: process.env.RUDDERSTACK_KEY,
-            });
+            };
+
+            Analytics.initialise(config);
         }
 
         // TODO: [translation-to-shared]: add translation implemnentation in shared
@@ -86,17 +90,19 @@ const AppWithoutTranslation = ({ root_store }) => {
         <>
             {is_translation_loaded ? (
                 <Router basename={has_base ? `/${base}` : null}>
-                    <MobxContentProvider store={root_store}>
-                        <APIProvider>
-                            <POIProvider>
-                                <StoreProvider store={root_store}>
-                                    <ExchangeRatesProvider>
-                                        <AppContent passthrough={platform_passthrough} />
-                                    </ExchangeRatesProvider>
-                                </StoreProvider>
-                            </POIProvider>
-                        </APIProvider>
-                    </MobxContentProvider>
+                    <StoreProvider store={root_store}>
+                        <BreakpointProvider>
+                            <APIProvider>
+                                <POIProvider>
+                                    <StoreProvider store={root_store}>
+                                        <ExchangeRatesProvider>
+                                            <AppContent passthrough={platform_passthrough} />
+                                        </ExchangeRatesProvider>
+                                    </StoreProvider>
+                                </POIProvider>
+                            </APIProvider>
+                        </BreakpointProvider>
+                    </StoreProvider>
                 </Router>
             ) : (
                 <></>

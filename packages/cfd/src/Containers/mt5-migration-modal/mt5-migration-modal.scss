@@ -16,6 +16,9 @@
         margin: 1.6rem;
         text-align: unset;
     }
+    &__message {
+        padding: 0 3.2rem 3.2rem;
+    }
     &__description {
         margin: 3.2rem 2.4rem 0;
         @include mobile {
@@ -39,11 +42,25 @@
             }
             &__list {
                 display: flex;
+                flex-direction: column;
                 align-items: center;
-                gap: 3.6rem;
+                gap: 1.6rem;
                 @include mobile {
                     flex-direction: column;
                     gap: 1.6rem;
+                }
+                &--container {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    padding: 1.6rem 0;
+                    background-color: $color-grey-2;
+                    border-radius: $BORDER-RADIUS * 2;
+                    min-width: 18.6rem;
+
+                    &__icons {
+                        display: flex;
+                    }
                 }
             }
         }
@@ -52,6 +69,11 @@
             justify-content: center;
             align-items: center;
         }
+    }
+    &__migration_infobox {
+        display: flex;
+        justify-content: center;
+        padding-bottom: 2rem;
     }
     &__existing-accounts {
         margin: 3.2rem 2.4rem;

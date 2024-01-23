@@ -16,7 +16,6 @@
         height: 100%;
         border-radius: 0;
         box-shadow: none;
-        z-index: 100;
     }
 
     &__loader {
@@ -30,10 +29,11 @@
         overflow-y: auto;
 
         @include mobile {
-            margin-top: 6rem;
             padding: 0 1.6rem 1.6rem;
             gap: 1.6rem;
             overflow-y: unset;
+            //prevent content bouncing on scroll on iPhone devices
+            overscroll-behavior: none;
         }
     }
 
@@ -51,6 +51,11 @@
             padding: 0;
             gap: 0.4rem;
         }
+    }
+
+    &__grouped-accounts {
+        display: flex;
+        flex-direction: column;
     }
 
     &__account {
@@ -83,14 +88,21 @@
         border-bottom: 2px solid var(--system-light-7-secondary-background, #f2f3f4);
 
         @include mobile {
-            position: fixed;
+            position: sticky;
+            top: -2.4rem;
             left: 0;
             right: 0;
             border: none;
             background: var(--system-dark-1-prominent-text, #fff);
-            padding: 2.4rem 2.4rem 1.6rem;
+            padding: 2.4rem 1.6rem 1.6rem;
             height: auto;
             z-index: 10;
+        }
+    }
+
+    &__label {
+        @include mobile {
+            padding-left: 0.8rem;
         }
     }
 
@@ -101,6 +113,7 @@
 
         @include mobile {
             padding: 0;
+            padding-right: 0.8rem;
         }
     }
 

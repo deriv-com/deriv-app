@@ -14,7 +14,11 @@ import './advertiser-page-row.scss';
 const AdvertiserPageRow = ({ row: advert }) => {
     const { advertiser_page_store, buy_sell_store, general_store } = useStores();
     const {
+        counterparty_advertiser_info: { id: counterparty_details_id },
+    } = advertiser_page_store;
+    const {
         client: { currency },
+        ui: { is_desktop },
     } = useStore();
     const {
         effective_rate,
@@ -26,10 +30,11 @@ const AdvertiserPageRow = ({ row: advert }) => {
         rate_type,
         rate,
     } = advert;
+
     const { showModal } = useModalManagerContext();
 
     const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
-    const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
+    const is_my_advert = counterparty_details_id === general_store.advertiser_id;
     const exchange_rate = useP2PExchangeRate(local_currency);
 
     const { display_effective_rate } = generateEffectiveRate({
@@ -41,11 +46,25 @@ const AdvertiserPageRow = ({ row: advert }) => {
         market_rate: effective_rate,
     });
 
-    const showAdForm = () => {
+    const showBuySellForm = () => {
         buy_sell_store.setSelectedAdState(advert);
         showModal({
             key: 'BuySellModal',
         });
+    };
+
+    const onBuySellButtonClick = () => {
+        if (general_store.is_advertiser) {
+            showBuySellForm();
+        } else {
+            showModal({
+                key: 'NicknameModal',
+                props: {
+                    onConfirm: showBuySellForm,
+                    should_hide_close_btn: is_desktop,
+                },
+            });
+        }
     };
 
     if (isMobile()) {
@@ -93,7 +112,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
                     <Table.Cell />
                 ) : (
                     <Table.Cell className='advertiser-page-adverts__button'>
-                        <Button primary large onClick={showAdForm} is_disabled={general_store.is_barred}>
+                        <Button primary large onClick={onBuySellButtonClick} is_disabled={general_store.is_barred}>
                             {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
                         </Button>
                     </Table.Cell>
@@ -129,7 +148,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
                 <Table.Cell />
             ) : (
                 <Table.Cell className='advertiser-page-adverts__button'>
-                    <Button is_disabled={general_store.is_barred} onClick={showAdForm} primary small>
+                    <Button is_disabled={general_store.is_barred} onClick={onBuySellButtonClick} primary small>
                         {is_buy_advert ? localize('Buy') : localize('Sell')} {currency}
                     </Button>
                 </Table.Cell>

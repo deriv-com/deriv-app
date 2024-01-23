@@ -1,7 +1,7 @@
 import React from 'react';
 import { DesktopWrapper } from '@deriv/components';
 import { useFeatureFlags } from '@deriv/hooks';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import ErrorBoundary from './Components/Elements/Errors/error-boundary.jsx';
@@ -16,11 +16,12 @@ import Devtools from './Devtools';
 
 const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }) => {
     const { is_next_wallet_enabled } = useFeatureFlags();
+    const store = useStore();
 
     return (
         <PlatformContainer>
             <Header />
-            <ErrorBoundary>
+            <ErrorBoundary root_store={store}>
                 <AppContents>
                     {/* TODO: [trader-remove-client-base] */}
                     <Routes passthrough={passthrough} />
@@ -29,7 +30,7 @@ const AppContent: React.FC<{ passthrough: unknown }> = observer(({ passthrough }
             <DesktopWrapper>
                 <Footer />
             </DesktopWrapper>
-            <ErrorBoundary>
+            <ErrorBoundary root_store={store}>
                 <AppModals />
             </ErrorBoundary>
             <SmartTraderIFrame />

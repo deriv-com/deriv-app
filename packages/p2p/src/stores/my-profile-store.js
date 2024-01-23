@@ -87,7 +87,6 @@ export default class MyProfileStore extends BaseStore {
             initial_values: computed,
             payment_method_info: computed,
             payment_methods_list_items: computed,
-            payment_methods_list_values: computed,
             rendered_trade_partners_list: computed,
             trade_partner_dropdown_list: computed,
             getAdvertiserPaymentMethods: action.bound,
@@ -243,14 +242,6 @@ export default class MyProfileStore extends BaseStore {
         return list_items;
     }
 
-    get payment_methods_list_values() {
-        const list = [];
-
-        Object.entries(this.available_payment_methods).forEach(key => list.push(key[0]));
-
-        return list;
-    }
-
     /**
      * Evaluates a new trade_partners_list based on if the user has searched an advertiser
      * By default it returns the trade_partners_list when there are no searches
@@ -301,7 +292,6 @@ export default class MyProfileStore extends BaseStore {
                             error_message: response.error.message,
                             error_modal_title: 'Unable to block advertiser',
                             has_close_icon: false,
-                            width: isMobile() ? '90rem' : '40rem',
                         },
                     });
                 }
@@ -453,6 +443,8 @@ export default class MyProfileStore extends BaseStore {
     }
 
     handleSubmit(values) {
+        const { general_store } = this.root_store;
+
         requestWS({
             p2p_advertiser_update: 1,
             contact_info: values.contact_info,
@@ -460,9 +452,13 @@ export default class MyProfileStore extends BaseStore {
             default_advert_description: values.default_advert_description,
         }).then(response => {
             if (!response.error) {
+                const { contact_info, default_advert_description } = response.p2p_advertiser_update;
+
                 this.setIsSubmitSuccess(true);
+                general_store.setContactInfo(contact_info);
+                general_store.setDefaultAdvertDescription(default_advert_description);
             } else {
-                this.setFormError(response.error);
+                this.setFormError(response.error.message);
             }
             setTimeout(() => {
                 this.setIsSubmitSuccess(false);
@@ -477,7 +473,13 @@ export default class MyProfileStore extends BaseStore {
             show_name: this.root_store?.general_store?.should_show_real_name ? 1 : 0,
         }).then(response => {
             if (response?.error) {
-                this.setFormError(response.error.message);
+                this.root_store.general_store.showModal({
+                    key: 'ErrorModal',
+                    props: {
+                        error_message: response.error.message,
+                        has_close_icon: false,
+                    },
+                });
                 this.root_store.general_store.setShouldShowRealName(
                     !this.root_store?.general_store?.should_show_real_name
                 );

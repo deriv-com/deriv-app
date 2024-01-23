@@ -4,7 +4,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { tabs_title } from 'Constants/load-modal';
 import { useDBotStore } from 'Stores/useDBotStore';
-import GoogleDrive from '../dashboard/dashboard-component/load-bot-preview/google-drive';
+import GoogleDrive from '../../pages/dashboard/load-bot-preview/google-drive';
 import Local from './local';
 import LocalFooter from './local-footer';
 import Recent from './recent';

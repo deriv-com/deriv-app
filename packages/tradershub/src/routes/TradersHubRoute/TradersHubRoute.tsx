@@ -1,5 +1,5 @@
 import React from 'react';
-import { useActiveTradingAccount, useIsDIELEnabled } from '@deriv/api';
+import { useIsDIELEnabled } from '@deriv/api';
 import { Heading, useBreakpoint } from '@deriv/quill-design';
 import {
     CFDSection,
@@ -10,14 +10,21 @@ import {
     RegulationSwitcherMobile,
     TotalAssets,
     TradersHubContent,
+    useUIContext,
 } from '../../components';
+import useRegulationFlags from '../../hooks/useRegulationFlags';
 
 const TradersHubRoute = () => {
     const { isMobile } = useBreakpoint();
     const { data: isDIEL } = useIsDIELEnabled();
-    const { data: activeTradingAccount } = useActiveTradingAccount();
+    const { getUIState } = useUIContext();
+    const accountType = getUIState('accountType');
+    const regulation = getUIState('regulation');
+    const isReal = accountType === 'real';
+    const isDemo = accountType === 'demo';
+    const { hasActiveDerivAccount } = useRegulationFlags(regulation, accountType);
 
-    const isSwitcherVisible = isDIEL && !activeTradingAccount?.is_virtual;
+    const isSwitcherVisible = isDIEL && isReal;
 
     if (isMobile)
         return (
@@ -48,14 +55,14 @@ const TradersHubRoute = () => {
         );
 
     return (
-        <div className='flex flex-col gap-1200'>
-            <div className='flex items-center justify-between align-start gap-100'>
+        <div className='space-y-1200'>
+            <div className='grid justify-between grid-cols-3 align-start gap-100'>
                 <div className='flex items-center gap-600'>
                     <Heading.H3 className='font-sans'>Trader&apos;s Hub</Heading.H3>
                     <DemoRealSwitcher />
                 </div>
-                {isSwitcherVisible && <RegulationSwitcherDesktop />}
-                <TotalAssets />
+                <div>{isSwitcherVisible && <RegulationSwitcherDesktop />}</div>
+                {(hasActiveDerivAccount || isDemo) && <TotalAssets />}
             </div>
             <TradersHubContent />
         </div>

@@ -32,6 +32,7 @@ export const getAllowedLanguages = () => {
         DE: 'Deutsch',
         KO: '한국어',
         PT: 'Português',
+        PL: 'Polish',
         RU: 'Русский',
         FR: 'Français',
         IT: 'Italiano',

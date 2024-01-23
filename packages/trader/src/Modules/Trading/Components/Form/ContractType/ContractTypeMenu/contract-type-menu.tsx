@@ -4,7 +4,7 @@ import { Loading, ThemedScrollbars, VerticalTab } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import SearchInput from './search-input';
 import NoResultsMessage from './no-results-message';
-import { Header } from '../ContractTypeInfo/index.js';
+import { Header } from '../ContractTypeInfo/index';
 import { getContractCategoryKey } from '../../../../Helpers/contract-type';
 import { TList } from '../types';
 import ContractType from '../contract-type';

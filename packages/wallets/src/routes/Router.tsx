@@ -19,7 +19,7 @@ type TRoutes = `${typeof prefix}${
     | '/compare-account'}`;
 
 declare module 'react-router-dom' {
-    export function useHistory(): { push: (path: TRoutes | string) => void };
+    export function useHistory(): { goBack: () => void; push: (path: TRoutes | string) => void };
 
     export function useRouteMatch(path: TRoutes): boolean;
 }

@@ -16,7 +16,6 @@ const LaunchModal = ({ handleChange, open, setShowDescription }: LaunchModalProp
             <Modal
                 is_open={open}
                 className='launch-modal-root'
-                height='440px'
                 width='440px'
                 toggleModal={handleChange}
                 should_close_on_click_outside

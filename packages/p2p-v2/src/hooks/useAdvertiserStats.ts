@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useAdvertiserInfo } from '@deriv/api';
+import { p2p } from '@deriv/api';
 
 /**
  * Hook to calculate an advertiser's stats based on their information.
@@ -7,7 +7,7 @@ import { useAdvertiserInfo } from '@deriv/api';
  * @param advertiserId - ID of the advertiser stats to reveal. If not provided, by default it will return the user's own stats.
  */
 const useAdvertiserStats = (advertiserId?: string) => {
-    const { data, isSuccess } = useAdvertiserInfo(advertiserId);
+    const { data, isSuccess } = p2p.advertiser.useGetInfo(advertiserId);
 
     const transformedData = useMemo(() => {
         if (!isSuccess) return;

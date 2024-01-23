@@ -44,17 +44,15 @@ const getPasskeysDescriptions = () =>
 export const DescriptionContainer = () => {
     const passkeys_descriptions = getPasskeysDescriptions();
     return (
-        <React.Fragment>
-            <div className='passkeys-status__description-container'>
-                {passkeys_descriptions.map(({ id, question, description }) => (
-                    <div key={`description-${id}`} className='passkeys-status__description-card'>
-                        <Text weight='bold' size='xs'>
-                            {question}
-                        </Text>
-                        <Text size='xs'>{description}</Text>
-                    </div>
-                ))}
-            </div>
-        </React.Fragment>
+        <div className='passkeys-status__description-container'>
+            {passkeys_descriptions.map(({ id, question, description }) => (
+                <div key={`description-${id}`} className='passkeys-status__description-card'>
+                    <Text weight='bold' size='xs'>
+                        {question}
+                    </Text>
+                    <Text size='xs'>{description}</Text>
+                </div>
+            ))}
+        </div>
     );
 };

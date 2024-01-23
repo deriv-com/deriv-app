@@ -184,7 +184,6 @@ export default class ContractStore extends BaseStore {
             low_barrier,
             status,
             current_spot_time,
-            underlying,
             tick_stream: ticks = [],
         } = contract_info || {};
         const main_barrier = this.barriers_array?.[0];
@@ -252,7 +251,7 @@ export default class ContractStore extends BaseStore {
                             });
                         }
                     }),
-                isOpen(contract_info) ? getAccuBarriersDefaultTimeout(underlying) : 0
+                isOpen(contract_info) ? getAccuBarriersDefaultTimeout() : 0
             );
             this.cached_barriers_data = {
                 current_spot_high_barrier,

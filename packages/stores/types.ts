@@ -909,8 +909,7 @@ type TContractTradeStore = {
         current_spot,
         current_spot_time,
         should_update_contract_barriers,
-        underlying,
-    }: Partial<TAccumulatorContractBarriersData & { underlying: string }>) => void;
+    }: Partial<TAccumulatorContractBarriersData>) => void;
     updateChartType: (type: string) => void;
     updateGranularity: (granularity: number | null) => void;
     updateProposal: (response: ProposalOpenContract) => void;

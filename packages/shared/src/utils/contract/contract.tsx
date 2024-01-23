@@ -9,7 +9,6 @@ type TGetAccuBarriersDTraderTimeout = (params: {
     barriers_update_timestamp: number;
     has_default_timeout: boolean;
     tick_update_timestamp: number | null;
-    underlying: string;
 }) => number;
 
 // Trade types that are considered as vanilla financials
@@ -25,9 +24,7 @@ export const VANILLA_FX_SYMBOLS = [
 
 // animation correction time is an interval in ms between ticks receival from API and their actual visual update on the chart
 export const ANIMATION_CORRECTION_TIME = 200;
-export const DELAY_TIME_1S_SYMBOL = 500;
-// generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
-export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
+export const ACCU_ANIMATION_DELAY_TIME = 500;
 
 export const CONTRACT_TYPES = {
     ACCUMULATOR: 'ACCU',
@@ -167,19 +164,15 @@ export const isResetContract = (contract_type = '') => /RESET/i.test(contract_ty
 
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');
 
-export const getAccuBarriersDefaultTimeout = (symbol: string) => {
-    return symbols_2s.includes(symbol) ? DELAY_TIME_1S_SYMBOL * 2 : DELAY_TIME_1S_SYMBOL;
-};
+export const getAccuBarriersDefaultTimeout = () => ACCU_ANIMATION_DELAY_TIME;
 
 export const getAccuBarriersDTraderTimeout: TGetAccuBarriersDTraderTimeout = ({
     barriers_update_timestamp,
     has_default_timeout,
     tick_update_timestamp,
-    underlying,
 }) => {
-    if (has_default_timeout || !tick_update_timestamp) return getAccuBarriersDefaultTimeout(underlying);
-    const target_update_time =
-        tick_update_timestamp + getAccuBarriersDefaultTimeout(underlying) + ANIMATION_CORRECTION_TIME;
+    if (has_default_timeout || !tick_update_timestamp) return ACCU_ANIMATION_DELAY_TIME;
+    const target_update_time = tick_update_timestamp + ACCU_ANIMATION_DELAY_TIME + ANIMATION_CORRECTION_TIME;
     const difference = target_update_time - barriers_update_timestamp;
     return difference < 0 ? 0 : difference;
 };

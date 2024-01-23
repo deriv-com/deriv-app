@@ -1294,7 +1294,6 @@ export default class TradeStore extends BaseStore {
                     accumulators_low_barrier: low_barrier,
                     barrier_spot_distance,
                     current_spot_time: spot_time,
-                    underlying: this.symbol,
                 });
             }
         }

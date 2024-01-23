@@ -396,13 +396,8 @@ describe('isOpen', () => {
 });
 
 describe('getAccuBarriersDefaultTimeout', () => {
-    it('should return DELAY_TIME_1S_SYMBOL * 2 if symbols_2s array includes current symbol', () => {
-        expect(ContractUtils.getAccuBarriersDefaultTimeout(ContractUtils.symbols_2s[0])).toEqual(
-            ContractUtils.DELAY_TIME_1S_SYMBOL * 2
-        );
-    });
-    it('should return DELAY_TIME_1S_SYMBOL if symbols_2s array does NOT include current symbol', () => {
-        expect(ContractUtils.getAccuBarriersDefaultTimeout('1HZ10V')).toEqual(ContractUtils.DELAY_TIME_1S_SYMBOL);
+    it('should return ACCU_ANIMATION_DELAY_TIME', () => {
+        expect(ContractUtils.getAccuBarriersDefaultTimeout()).toEqual(ContractUtils.ACCU_ANIMATION_DELAY_TIME);
     });
 });
 
@@ -412,54 +407,31 @@ describe('getAccuBarriersDTraderTimeout', () => {
     const has_default_timeout = false;
     const tick_update_timestamp = 1234567890800;
     const barriers_update_timestamp = tick_update_timestamp + interval;
-    const symbol_1_sec = '1HZ10V';
-    const symbol_2_sec = 'R_100';
 
-    const getTargetTime = (underlying: string) => {
+    const getTargetTime = () => {
         return (
             tick_update_timestamp +
-            ContractUtils.getAccuBarriersDefaultTimeout(underlying) +
+            ContractUtils.getAccuBarriersDefaultTimeout() +
             ContractUtils.ANIMATION_CORRECTION_TIME
         );
     };
 
-    it('should return a timeout equal to difference between target time and current barriers receival time for 2-second symbol', () => {
+    it('should return a timeout equal to difference between target time and current barriers receival time', () => {
         const sooner_barriers_receival_timestamp = tick_update_timestamp + shorter_interval;
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp,
                 has_default_timeout,
                 tick_update_timestamp,
-                underlying: symbol_2_sec,
             })
-        ).toEqual(getTargetTime(symbol_2_sec) - barriers_update_timestamp);
+        ).toEqual(getTargetTime() - barriers_update_timestamp);
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp: sooner_barriers_receival_timestamp,
                 has_default_timeout,
                 tick_update_timestamp,
-                underlying: symbol_2_sec,
             })
-        ).toEqual(getTargetTime(symbol_2_sec) - sooner_barriers_receival_timestamp);
-    });
-    it('should return a timeout equal to difference between target time and current barriers receival time for 1-second symbol', () => {
-        const sooner_barriers_receival_timestamp = tick_update_timestamp + shorter_interval;
-        expect(
-            ContractUtils.getAccuBarriersDTraderTimeout({
-                barriers_update_timestamp,
-                has_default_timeout,
-                tick_update_timestamp,
-                underlying: symbol_1_sec,
-            })
-        ).toEqual(getTargetTime(symbol_1_sec) - barriers_update_timestamp);
-        expect(
-            ContractUtils.getAccuBarriersDTraderTimeout({
-                barriers_update_timestamp: sooner_barriers_receival_timestamp,
-                has_default_timeout,
-                tick_update_timestamp,
-                underlying: symbol_1_sec,
-            })
-        ).toEqual(getTargetTime(symbol_1_sec) - sooner_barriers_receival_timestamp);
+        ).toEqual(getTargetTime() - sooner_barriers_receival_timestamp);
     });
     it('should return a default timeout when has_default_timeout is true, or when tick_update_timestamp is null', () => {
         expect(
@@ -467,33 +439,29 @@ describe('getAccuBarriersDTraderTimeout', () => {
                 barriers_update_timestamp,
                 has_default_timeout: true,
                 tick_update_timestamp,
-                underlying: symbol_2_sec,
             })
-        ).toEqual(ContractUtils.getAccuBarriersDefaultTimeout(symbol_2_sec));
+        ).toEqual(ContractUtils.getAccuBarriersDefaultTimeout());
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp,
                 has_default_timeout,
                 tick_update_timestamp: null,
-                underlying: symbol_2_sec,
             })
-        ).toEqual(ContractUtils.getAccuBarriersDefaultTimeout(symbol_2_sec));
+        ).toEqual(ContractUtils.getAccuBarriersDefaultTimeout());
     });
     it('should return 0 timeout when current barriers receival happens too late (after/at target time) and timeout is no longer applicable', () => {
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
-                barriers_update_timestamp: getTargetTime(symbol_1_sec) + 100,
+                barriers_update_timestamp: getTargetTime() + 100,
                 has_default_timeout,
                 tick_update_timestamp,
-                underlying: symbol_1_sec,
             })
         ).toEqual(0);
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
-                barriers_update_timestamp: getTargetTime(symbol_1_sec),
+                barriers_update_timestamp: getTargetTime(),
                 has_default_timeout,
                 tick_update_timestamp,
-                underlying: symbol_1_sec,
             })
         ).toEqual(0);
     });

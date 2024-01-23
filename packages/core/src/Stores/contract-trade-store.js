@@ -87,7 +87,6 @@ export default class ContractTradeStore extends BaseStore {
                     current_spot_high_barrier,
                     current_spot_low_barrier,
                     is_sold,
-                    underlying,
                 } = this.last_contract.contract_info || {};
                 if (current_spot && current_spot_high_barrier && !is_sold) {
                     this.updateAccumulatorBarriersData({
@@ -96,7 +95,6 @@ export default class ContractTradeStore extends BaseStore {
                         accumulators_high_barrier: current_spot_high_barrier,
                         accumulators_low_barrier: current_spot_low_barrier,
                         should_update_contract_barriers: true,
-                        underlying,
                     });
                 } else if (!isAccumulatorContractOpen(this.last_contract.contract_info)) {
                     this.clearAccumulatorBarriersData(true, false);
@@ -139,7 +137,6 @@ export default class ContractTradeStore extends BaseStore {
         current_spot_time,
         prev_spot_time,
         should_update_contract_barriers,
-        underlying,
     }) {
         if (current_spot) {
             const ticks_history_prev_spot_time = prev_spot_time ?? this.accumulator_barriers_data.current_spot_time;
@@ -194,7 +191,6 @@ export default class ContractTradeStore extends BaseStore {
                 barriers_update_timestamp: Date.now(),
                 has_default_timeout: this.accumulator_barriers_data.current_spot_time !== current_spot_time,
                 tick_update_timestamp,
-                underlying,
             })
         );
     }

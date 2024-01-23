@@ -2,7 +2,7 @@
 import React from 'react';
 import { Provider } from '@deriv/library';
 import { Tab } from '@deriv/quill-design';
-import { RegulationModal } from '../../features/cfd/modals';
+import { RegulationModal } from '../../modals';
 import InfoIcon from '../../public/images/ic-info-outline.svg';
 
 const RegulationSwitcherMobile = () => {

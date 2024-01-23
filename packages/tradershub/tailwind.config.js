@@ -30,6 +30,11 @@ module.exports = {
                     coral: '#ff444f',
                     night: '#2a3052',
                     orange: '#ff6444',
+                    pink: {
+                        dark: '#3c2020',
+                        default: '#ffc0cb',
+                        light: '#ffe3e3',
+                    },
                     red: {
                         dark: '#b33037',
                         darker: '#661b20',
@@ -75,7 +80,6 @@ module.exports = {
                         'less-prominent-text': '#6e6e6e',
                         'primary-background': '#0e0e0e',
                         'prominent-text': '#ffffff',
-                        'red-light-background': '#3c2020',
                         'secondary-background': '#151717',
                         'text-info-blue-background': '#182130',
                     },
@@ -88,7 +92,6 @@ module.exports = {
                         'less-prominent-text': '#999999',
                         'primary-background': '#ffffff',
                         'prominent-text': '#333333',
-                        'red-light-background': '#ffe3e3',
                         'secondary-background': '#f2f3f4',
                         'text-info-blue-background': '#dfeaff',
                     },

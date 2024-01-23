@@ -3,7 +3,7 @@ export type TRowItem = {
     options?: Record<string, boolean | string>;
     text: string;
 };
-type TRegulatorContent = Record<string, TRowItem | TRowItem[] | undefined>;
+type TRegulatorContent = Record<string, TRowItem | TRowItem[]>;
 
 export type TRegulatorsContentProps = {
     attribute: string;
@@ -12,7 +12,7 @@ export type TRegulatorsContentProps = {
     idx?: number;
 };
 
-export const getCFDContents = (): TRegulatorsContentProps[] => [
+export const getCFDContents: TRegulatorsContentProps[] = [
     {
         attribute: 'CFDs',
         content: {
@@ -105,7 +105,7 @@ export const getCFDContents = (): TRegulatorsContentProps[] => [
     },
 ];
 
-export const getOptionsContents = (): TRegulatorsContentProps[] => [
+export const getOptionsContents: TRegulatorsContentProps[] = [
     {
         attribute: 'Options & Multipliers',
         content: {

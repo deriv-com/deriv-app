@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import { Modal } from '../../../../components/Modal';
-import { getCFDContents, getOptionsContents } from '../../../../constants/regulators-modal-content';
+import { Modal } from '../../components/Modal';
+import { getCFDContents, getOptionsContents } from '../../constants/regulators-modal-content';
 import Row from './Row';
 
 const RegulationModal = () => (
@@ -26,10 +26,10 @@ const RegulationModal = () => (
                         </tr>
                     </thead>
                     <tbody className=''>
-                        {getCFDContents().map((row, idx) => (
+                        {getCFDContents.map((row, idx) => (
                             <Row key={row.id} {...row} idx={idx} />
                         ))}
-                        {getOptionsContents().map((row, idx) => (
+                        {getOptionsContents.map((row, idx) => (
                             <Row key={row.id} {...row} idx={idx} />
                         ))}
                     </tbody>

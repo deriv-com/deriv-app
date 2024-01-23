@@ -5,8 +5,8 @@ import { Button, qtJoin } from '@deriv/quill-design';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { Regulation } from '../../constants/constants';
-import { RegulationModal } from '../../features/cfd/modals';
 import useRegulationFlags from '../../hooks/useRegulationFlags';
+import { RegulationModal } from '../../modals';
 import { useUIContext } from '../UIProvider';
 
 const RegulationSwitcherDesktop = () => {

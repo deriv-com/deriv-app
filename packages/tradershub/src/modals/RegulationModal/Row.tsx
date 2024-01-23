@@ -1,15 +1,14 @@
 import React from 'react';
 import { qtMerge } from '@deriv/quill-design';
 import { Text, TextProps } from '@deriv-com/ui/dist/components/Text';
-import { TRegulatorsContentProps, TRowItem } from '../../../../constants/regulators-modal-content';
+import { TRegulatorsContentProps, TRowItem } from '../../constants/regulators-modal-content';
 
 const Row = ({ attribute, content, id, idx }: TRegulatorsContentProps) => (
-    <tr className={qtMerge('min-h-2000', idx === 0 && 'bg-system-light-red-light-background')} key={id}>
+    <tr className={qtMerge('min-h-2000', idx === 0 && 'bg-brand-pink-light')} key={id}>
         <td
             className={`sticky z-10 align-middle border-solid start-50 py-500 px-400 border-system-light-active-background border-x-75 border-b-75 ${
-                idx === 0 ? 'bg-system-light-red-light-background' : 'bg-system-light-primary-background'
-            }
-            `}
+                idx === 0 ? 'bg-brand-pink-light' : 'bg-system-light-primary-background'
+            }`}
         >
             <Text align='left' as='p' color='general' size='xs' weight='bold'>
                 {attribute}

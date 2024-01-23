@@ -25,7 +25,6 @@ const DailyLimitModal = ({ currency, isModalOpen, onRequestClose }: TDailyLimitM
     const getModalContent = () => {
         //TODO: modal header title to be moved out if needed according to implementation, can be moved to a separate getheader, getcontent, getfooter functions
         if (isLoading) {
-            //TODO: replace with @deriv/ui loading component
             return <Loader />;
         } else if (isSuccess) {
             return (

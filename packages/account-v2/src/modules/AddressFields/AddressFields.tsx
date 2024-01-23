@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuthorize, useSettings, useStatesList } from '@deriv/api';
 import FormDropDownField from '../../components/FormFields/FormDropDownField';
 import FormInputField from '../../components/FormFields/FormInputField';
+import { LANDING_COMPANY } from '../../constants/constants';
 import { addressDetailValidations } from './validations';
 
 export const AddressFields = () => {
@@ -11,7 +12,8 @@ export const AddressFields = () => {
     const { landing_company_name: landingCompanyName, upgradeable_landing_companies: upgradableLandingCompanies } =
         activeAccount;
 
-    const isSvg = landingCompanyName === 'svg' || !!upgradableLandingCompanies?.includes('svg');
+    const isSvg =
+        landingCompanyName === LANDING_COMPANY.SVG || !!upgradableLandingCompanies?.includes(LANDING_COMPANY.SVG);
     const { data: statesList, isFetched: statesListFetched } = useStatesList(settings.country_code || '', {
         enabled: !!settings.country_code,
     });
@@ -22,7 +24,7 @@ export const AddressFields = () => {
         addressLine2: addressLine2Schema,
         addressPostcode: addressPostcodeSchema,
         addressState: addressStateSchema,
-    } = addressDetailValidations(settings.country_code || '', isSvg);
+    } = addressDetailValidations(settings.country_code ?? '', isSvg);
 
     return (
         <div className='space-y-600'>

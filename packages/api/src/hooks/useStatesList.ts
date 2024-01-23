@@ -14,7 +14,7 @@ const useStatesList = (country: TStatesList, options?: TSocketRequestQueryOption
         options,
     });
 
-    const modified_states_list = useMemo(() => [...(data?.states_list || [])], [data?.states_list]);
+    const modified_states_list = useMemo(() => [...(data?.states_list ?? [])], [data?.states_list]);
 
     return {
         /** The states list for the given country. */

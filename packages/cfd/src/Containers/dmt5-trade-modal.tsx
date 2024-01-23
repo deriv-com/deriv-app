@@ -9,6 +9,7 @@ import {
     getPlatformSettings,
     getUrlBase,
     MT5_ACCOUNT_STATUS,
+    mobileOSDetect,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -61,6 +62,28 @@ const DMT5TradeModal = observer(
             return undefined;
         };
 
+        const getMobileAppInstallerURL = () => {
+            if (mobileOSDetect() === 'iOS') {
+                return getPlatformMt5DownloadLink('ios');
+            } else if (/huawei/i.test(navigator.userAgent)) {
+                return getPlatformMt5DownloadLink('huawei');
+            }
+            return getPlatformMt5DownloadLink('android');
+        };
+
+        let mobile_url;
+        const mobileURLSet = () => {
+            mobile_url = window.location.replace(deepLink);
+            const timeout = setTimeout(() => {
+                mobile_url = window.location.replace(getMobileAppInstallerURL());
+            }, 3000);
+            if (!/safari/i.test(navigator.userAgent)) {
+                window.onblur = () => {
+                    clearTimeout(timeout);
+                };
+            }
+        };
+
         const getHeadingTitle = () =>
             getCFDAccountDisplay({
                 market_type: mt5_trade_account.market_type,
@@ -92,6 +115,10 @@ const DMT5TradeModal = observer(
             MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION,
             MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION,
         ].includes(mt5_trade_account?.status);
+
+        const deepLink = `metatrader5://account?login=${
+            (mt5_trade_account as TTradingPlatformAccounts)?.display_login
+        }&server=${(mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment}`;
 
         return (
             <div className='cfd-trade-modal-container'>
@@ -193,9 +220,10 @@ const DMT5TradeModal = observer(
                         <a
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
-                            href={mt5_trade_account.webtrader_url}
-                            target='_blank'
-                            rel='noopener noreferrer'
+                            onClick={is_mobile ? mobileURLSet : undefined}
+                            href={is_mobile ? mobile_url : mt5_trade_account.webtrader_url}
+                            target={is_mobile ? '' : '_blank'}
+                            rel={is_mobile ? '' : 'noopener noreferrer'}
                         >
                             <Text size='xxs' weight='bold' color='prominent'>
                                 {localize('Open')}

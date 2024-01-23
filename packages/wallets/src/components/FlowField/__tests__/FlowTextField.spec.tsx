@@ -38,7 +38,7 @@ describe('FlowTextField', () => {
             </FlowProvider>
         );
         expect(screen.getByDisplayValue('default')).toBeInTheDocument();
-        expect(mockUseFlow.setFormValues).toHaveBeenCalledWith('test', 'default');
+        expect(mockUseFlow.setFormValues).toHaveBeenCalledWith('test', 'default', true);
     });
 
     it('should set hasTouched value when user is on focus', () => {

@@ -5,10 +5,12 @@ import { Provider } from '@deriv/library';
 import { Button, Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
+import useRegulationFlags from '../../hooks/useRegulationFlags';
 import { THooks } from '../../types';
 import { CurrencySwitcherLoader } from '../Loaders';
 import { Modal } from '../Modal';
 import { TradingAccountsList } from '../TradingAccountsList';
+import { useUIContext } from '../UIProvider';
 
 type AccountActionButtonProps = {
     balance: THooks.ActiveTradingAccount['balance'];
@@ -47,8 +49,17 @@ const CurrencySwitcher = () => {
     const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
     const { show } = Provider.useModal();
+    const { getUIState } = useUIContext();
+
+    const accountType = getUIState('accountType');
+
+    const regulation = getUIState('regulation');
+
+    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
 
     const iconCurrency = isDemo ? 'virtual' : activeAccount?.currency ?? 'virtual';
+
+    if (noRealCRNonEUAccount || noRealMFEUAccount) return null;
 
     if (!isSuccess) return <CurrencySwitcherLoader />;
 

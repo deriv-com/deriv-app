@@ -10,6 +10,7 @@ export type TQuickStrategyContent = {
     qs_name: string;
     type: string;
     content: string[];
+    search_id: string;
 };
 
 export type TContent = {

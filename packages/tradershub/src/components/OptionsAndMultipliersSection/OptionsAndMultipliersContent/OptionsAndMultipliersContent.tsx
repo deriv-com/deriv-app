@@ -4,8 +4,10 @@ import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
 import { Button, useBreakpoint } from '@deriv/quill-design';
 import { optionsAndMultipliersContent } from '../../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
+import useRegulationFlags from '../../../hooks/useRegulationFlags';
 import { TradingAppCardLoader } from '../../Loaders';
 import { TradingAccountCard, TradingAccountCardContent } from '../../TradingAccountCard';
+import { useUIContext } from '../../UIProvider';
 
 type OptionsAndMultipliersContentItem = {
     description: string;
@@ -94,15 +96,20 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
 const OptionsAndMultipliersContent = () => {
     const { isMobile } = useBreakpoint();
     const { data } = useActiveTradingAccount();
-    const { isEU, isSuccess } = useIsEuRegion();
+    const { isSuccess: isRegulationAccessible } = useIsEuRegion();
 
-    const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU || false);
+    const { getUIState } = useUIContext();
+    const activeRegulation = getUIState('regulation');
+
+    const { isEU } = useRegulationFlags(activeRegulation);
+
+    const getoptionsAndMultipliersContent = optionsAndMultipliersContent(isEU ?? false);
 
     const filteredContent = isEU
         ? getoptionsAndMultipliersContent.filter(account => account.title === 'Deriv Trader')
         : getoptionsAndMultipliersContent;
 
-    if (!isSuccess)
+    if (!isRegulationAccessible)
         return (
             <div className='pt-2000'>
                 <TradingAppCardLoader />

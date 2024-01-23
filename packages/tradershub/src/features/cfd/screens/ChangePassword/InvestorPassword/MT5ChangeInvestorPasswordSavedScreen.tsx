@@ -3,11 +3,11 @@ import { Text, Button } from '@deriv/quill-design';
 import { ActionScreen } from '../../../../../components';
 import MT5PasswordUpdatedIcon from '../../../../../public/images/ic-mt5-password-updated.svg';
 
-type TProps = {
+type TMT5ChangeInvestorPasswordSavedScreen = {
     setNextScreen?: VoidFunction;
 };
 
-const MT5ChangeInvestorPasswordSavedScreen: React.FC<TProps> = ({ setNextScreen }) => {
+const MT5ChangeInvestorPasswordSavedScreen = ({ setNextScreen }: TMT5ChangeInvestorPasswordSavedScreen) => {
     return (
         <ActionScreen
             description={

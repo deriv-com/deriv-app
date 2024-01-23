@@ -5,11 +5,11 @@ import MT5ChangeInvestorPasswordSavedScreen from './MT5ChangeInvestorPasswordSav
 
 type TChangeInvestorPasswordScreenIndex = 'introScreen' | 'savedScreen';
 
-type TProps = {
+type TMT5ChangeInvestorPasswordScreens = {
     setShowEmailSentScreen?: (value: boolean) => void;
 };
 
-const MT5ChangeInvestorPasswordScreens: FC<TProps> = ({ setShowEmailSentScreen }) => {
+const MT5ChangeInvestorPasswordScreens = ({ setShowEmailSentScreen }: TMT5ChangeInvestorPasswordScreens) => {
     const [activeScreen, setActiveScreen] = useState<TChangeInvestorPasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangeInvestorPasswordScreenIndex) => setActiveScreen(nextScreen);
     const { hide } = Provider.useModal();

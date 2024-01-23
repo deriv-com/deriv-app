@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react';
 import { Formik } from 'formik';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
-import { Button, Text, TextField } from '@deriv/quill-design';
+import { Button, Text, TextField, useBreakpoint } from '@deriv/quill-design';
 import { ActionScreen } from '../../../../../components';
 import { Provider } from '@deriv/library';
-import useDevice from '../../../hooks/useDevice';
 import { PlatformDetails } from '../../../constants';
 
 type TFormInitialValues = {
@@ -12,13 +11,16 @@ type TFormInitialValues = {
     newPassword: string;
 };
 
-type TProps = {
+type TMT5ChangeInvestorPasswordInputsScreen = {
     sendEmail?: VoidFunction;
     setNextScreen?: VoidFunction;
 };
 
-const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, setNextScreen }) => {
-    const { isMobile } = useDevice();
+const MT5ChangeInvestorPasswordInputsScreen = ({
+    sendEmail,
+    setNextScreen,
+}: TMT5ChangeInvestorPasswordInputsScreen) => {
+    const { isMobile } = useBreakpoint();
     const { getCFDState } = Provider.useCFDContext();
     const mt5AccountId = getCFDState('accountId') ?? '';
 

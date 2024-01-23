@@ -14,7 +14,7 @@ type TradingPlatformChangePasswordScreensProps = {
     platform: TPlatforms.All;
 };
 
-const TradingPlatformChangePasswordScreens: FC<TradingPlatformChangePasswordScreensProps> = ({ platform }) => {
+const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChangePasswordScreensProps) => {
     type TChangePasswordScreenIndex = 'confirmationScreen' | 'emailVerification' | 'introScreen';
     const [activeScreen, setActiveScreen] = useState<TChangePasswordScreenIndex>('introScreen');
     const handleClick = (nextScreen: TChangePasswordScreenIndex) => setActiveScreen(nextScreen);

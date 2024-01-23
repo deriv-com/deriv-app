@@ -173,6 +173,7 @@ const ToggleCardDialog = ({
                                 getCardLabels={getCardLabels}
                                 getContractById={getContractById}
                                 is_accumulator={is_accumulator}
+                                is_mobile
                                 is_turbos={is_turbos}
                                 onMouseLeave={onMouseLeave}
                                 removeToast={removeToast}

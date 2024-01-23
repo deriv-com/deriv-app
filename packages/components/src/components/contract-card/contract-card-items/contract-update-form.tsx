@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { Localize } from '@deriv/translations';
 import {
     getCancellationPrice,
     getContractUpdateConfig,
@@ -17,6 +18,7 @@ import InputWithCheckbox from '../../input-wth-checkbox';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 import { TGetCardLables, TToastConfig } from '../../types';
 import ArrowIndicator from '../../arrow-indicator';
+import Text from '../../text';
 
 export type TGeneralContractCardBodyProps = {
     addToast: (toast_config: TToastConfig) => void;
@@ -58,6 +60,7 @@ export type TContractUpdateFormProps = Pick<
     toggleDialog: (e: React.MouseEvent<HTMLButtonElement>) => void;
     getContractById: (contract_id: number) => TContractStore;
     is_accumulator?: boolean;
+    is_mobile?: boolean;
     is_turbos?: boolean;
 };
 
@@ -68,6 +71,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         current_focus,
         error_message_alignment,
         getCardLabels,
+        is_mobile,
         is_turbos,
         is_accumulator,
         onMouseLeave,
@@ -173,6 +177,10 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             value={contract_profit_or_loss.contract_update_take_profit}
             is_disabled={is_multiplier && !!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
+            tooltip_alignment={is_mobile ? 'left' : 'right'}
+            tooltip_label={
+                <Localize i18n_default_text='When your profit reaches or exceeds this amount, your trade will be closed automatically.' />
+            }
         />
     );
 
@@ -196,6 +204,10 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             value={contract_profit_or_loss.contract_update_stop_loss}
             is_disabled={!!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
+            tooltip_alignment={is_mobile ? 'left' : 'right'}
+            tooltip_label={
+                <Localize i18n_default_text='When your loss reaches or exceeds this amount, your trade will be closed automatically.' />
+            }
         />
     );
 
@@ -205,7 +217,9 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         <React.Fragment>
             <MobileWrapper>
                 <div className='dc-contract-card-dialog__total-profit'>
-                    <span>{getCardLabels().TOTAL_PROFIT_LOSS}</span>
+                    <Text color='less-prominent' size='xs' weight='bold'>
+                        {getCardLabels().TOTAL_PROFIT_LOSS}
+                    </Text>
                     <div
                         className={classNames(
                             'dc-contract-card__profit-loss dc-contract-card-item__total-profit-loss-value',
@@ -216,7 +230,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
                             }
                         )}
                     >
-                        <Money amount={total_profit} currency={currency} />
+                        <Money amount={total_profit} currency={currency} show_currency />
                         {!is_sold && (
                             <ArrowIndicator className='dc-contract-card__indicative--movement' value={total_profit} />
                         )}

@@ -33,11 +33,14 @@ export const UIProvider = ({ children }: { children: React.ReactNode }) => {
         [uiState]
     );
 
-    const updateUIState = <T extends keyof TUIState>(key: T, value: TUIState[T]) => {
-        setUIState(prevState => ({ ...prevState, [key]: value }));
-    };
+    const updateUIState = useCallback(
+        <T extends keyof TUIState>(key: T, value: TUIState[T]) => {
+            setUIState(prevState => ({ ...prevState, [key]: value }));
+        },
+        [setUIState]
+    );
 
-    const providerValue = useMemo(() => ({ getUIState, setUIState: updateUIState }), [getUIState]);
+    const providerValue = useMemo(() => ({ getUIState, setUIState: updateUIState }), [getUIState, updateUIState]);
 
     return <UIContext.Provider value={providerValue}>{children}</UIContext.Provider>;
 };

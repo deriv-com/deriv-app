@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Analytics, BotTActions } from '@deriv/analytics';
+import { Analytics, TEvents } from '@deriv/analytics';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
@@ -46,11 +46,9 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const { setDropdownVisibility, is_dropdown_visible } = visible;
     const is_desktop = isDesktop();
 
-    const sendToRudderStack = (action: BotTActions) => {
-        Analytics.trackEvent('ce_bot_builder_form', {
-            action,
-            form_source: 'ce_bot_dashboard_form',
-            bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
+    const sendRsDashboardAction = (action: TEvents['ce_bot_dashboard_form']) => {
+        Analytics.trackEvent('ce_bot_dashboard_form', {
+            ...action,
         });
     };
 
@@ -117,7 +115,6 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
         });
         updateBotName(workspace?.name);
         toggleSaveModal();
-        sendToRudderStack('save_your_bot');
     };
 
     const viewRecentStrategy = async (type: string) => {
@@ -127,28 +124,52 @@ const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
             case STRATEGY.INIT:
                 // Fires for desktop preview
                 handleInit();
-                sendToRudderStack('choose_your_bot');
+                sendRsDashboardAction({
+                    action: 'choose_your_bot',
+                    form_name: 'ce_bot_dashboard_form',
+                    bot_name: workspace?.name,
+                    bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
+                });
                 break;
 
             case STRATEGY.PREVIEW_LIST:
                 // Fires for mobile preview
                 handlePreviewList();
-                sendToRudderStack('choose_your_bot');
+                sendRsDashboardAction({
+                    action: 'choose_your_bot',
+                    form_name: 'ce_bot_dashboard_form',
+                    bot_name: workspace?.name,
+                    bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
+                });
                 break;
 
             case STRATEGY.EDIT:
                 await handleEdit();
-                sendToRudderStack('edit_your_bot');
+                sendRsDashboardAction({
+                    action: 'edit_your_bot',
+                    form_name: 'ce_bot_dashboard_form',
+                    bot_name: workspace?.name,
+                });
                 break;
 
             case STRATEGY.SAVE:
                 handleSave();
-                sendToRudderStack('save_your_bot');
+                sendRsDashboardAction({
+                    action: 'save_your_bot',
+                    form_name: 'ce_bot_dashboard_form',
+                    bot_name: workspace?.name,
+                    bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
+                    bot_status: dashboard_strategies?.[0]?.save_type,
+                });
                 break;
 
             case STRATEGY.DELETE:
                 onToggleDeleteDialog(true);
-                sendToRudderStack('delete_your_bot');
+                sendRsDashboardAction({
+                    action: 'delete_your_bot',
+                    bot_name: workspace?.name,
+                    delete_popup_respond: 'yes',
+                });
                 break;
 
             default:

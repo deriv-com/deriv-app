@@ -1,6 +1,7 @@
 //kept sometihings commented beacuse of mobx to integrate popup functionality here
 import React from 'react';
 import classNames from 'classnames';
+import { Analytics } from '@deriv/analytics';
 import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -8,7 +9,6 @@ import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import GoogleDrive from './load-bot-preview/google-drive';
 import Recent from './load-bot-preview/recent';
-import { Analytics } from '@deriv/analytics';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;
@@ -56,9 +56,10 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
 
     //this is to check which icon is clicked on dashboard
     const sentToRudderStack = (type: string) => {
-        Analytics.trackEvent('ce_bot_builder_form', {
-            shortcut_name: type,
+        Analytics.trackEvent('ce_bot_dashboard_form', {
             action: 'choose_shortcut',
+            shortcut_name: type,
+            form_name: 'ce_bot_dashboard_form',
             form_source: 'ce_bot_dashboard_form',
         });
     };

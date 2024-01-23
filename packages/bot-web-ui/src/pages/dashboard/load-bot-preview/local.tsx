@@ -22,6 +22,7 @@ const LocalComponent = observer(() => {
     const sendToRudderStackForOpenButton = () => {
         Analytics.trackEvent('ce_bot_dashboard_form', {
             action: 'push_open_button',
+            form_name: 'ce_bot_dashboard_form',
             form_source: 'ce_bot_dashboard_form',
         });
 

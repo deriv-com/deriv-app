@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Analytics } from '@deriv/analytics';
+import { Analytics, TEvents } from '@deriv/analytics';
 import { Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -24,21 +24,26 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
     const { is_mobile } = ui;
     const get_first_strategy_info = React.useRef(false);
 
+    const commonRudderStackProps = (action: TEvents['ce_bot_dashboard_form']['action']) => {
+        Analytics.trackEvent('ce_bot_dashboard_form', {
+            action,
+            form_source: 'ce_bot_dashboard_form',
+            form_name: 'ce_bot_dashboard_form',
+            bot_name: dashboard_strategies?.[0]?.name,
+            preview_mode: dashboard_strategies.length ? 'yes' : 'no',
+            bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
+        });
+    };
+
     React.useEffect(() => {
         if (!get_first_strategy_info.current) {
             //on dashbord umount fire close event for rudderstack
             get_first_strategy_info.current = true;
-            Analytics.trackEvent('ce_bot_dashboard_form', {
-                action: 'open',
-                form_source: 'ce_bot_dashboard_form',
-            });
-            return () => {
-                Analytics.trackEvent('ce_bot_dashboard_form', {
-                    action: 'close',
-                    form_source: 'ce_bot_dashboard_form',
-                });
-            };
+            commonRudderStackProps('open');
         }
+        return () => {
+            commonRudderStackProps('close');
+        };
     }, []);
 
     return (

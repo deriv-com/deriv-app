@@ -14,6 +14,7 @@ const UserGuide: React.FC<TUserGuide> = ({ is_mobile, handleTabChange, setActive
     const sendToRudderStackForUserGuide = () => {
         Analytics.trackEvent('ce_bot_dashboard_form', {
             action: 'push_user_guide',
+            form_name: 'ce_bot_dashboard_form',
             form_source: 'ce_bot_dashboard_form',
         });
         Analytics.trackEvent('ce_bot_tutorial_form', {

@@ -13,7 +13,7 @@ import React from 'react';
  */
 
 const WizardScreenWrapper = ({ children }: { children: React.ReactNode }) => {
-    return <div className='h-full flex flex-col justify-between'>{children}</div>;
+    return <div className='flex flex-col justify-between h-full'>{children}</div>;
 };
 
 export default WizardScreenWrapper;

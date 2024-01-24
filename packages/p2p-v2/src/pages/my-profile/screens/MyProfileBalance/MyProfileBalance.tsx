@@ -15,7 +15,7 @@ const MyProfileBalance = () => {
         <div className='p2p-v2-my-profile-balance'>
             <div className='p2p-v2-my-profile-balance__amount'>
                 <div>
-                    <Text color='less-prominent' size={isDesktop ? 'sm' : 'md'} weight='normal'>
+                    <Text color='less-prominent' size={isDesktop ? 'sm' : 'md'}>
                         Available Deriv P2P Balance
                     </Text>
                     <InfoOutlineIcon />

@@ -1,5 +1,6 @@
 .p2p-v2-my-profile-counterparties-header {
-    display: flex;
+    display: grid;
     gap: 1.6rem;
     margin: 2.4rem 0;
+    grid-template-columns: repeat(3, 1fr);
 }

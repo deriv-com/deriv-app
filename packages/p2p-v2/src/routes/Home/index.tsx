@@ -7,6 +7,7 @@ import { MyProfileCounterparties } from '../../pages/my-profile/screens';
 
 const Home: React.FC<{ path: string }> = ({ path }) => {
     const { data: activeAccountData, isLoading } = useActiveAccount();
+
     const { isMobile } = useDevice();
 
     // NOTE: Replace this with Loading component
@@ -20,6 +21,7 @@ const Home: React.FC<{ path: string }> = ({ path }) => {
             {isMobile && <MobileCloseHeader />}
             <div className='p2p-v2-home-style' style={{ display: 'flex', flexDirection: 'column' }}>
                 {/* <div> Welcome to P2P Version 2 from {path} Page ;) </div> */}
+                <div style={{ height: '50%' }} />
                 <MyProfileCounterparties />
             </div>
         </>

@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import clsx from 'clsx';
-import { useFormContext, UseFormReturn } from 'react-hook-form';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { useDevice } from '../../hooks';
 import './Input.scss';
@@ -8,30 +7,26 @@ import './Input.scss';
 type TInputProps = {
     errorMessage?: string;
     hasError?: boolean;
+    leadingIcon?: ReactElement;
     name: string;
-    options?: Parameters<UseFormReturn['register']>[1];
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     placeholder?: string;
-    leadingIcon?: ReactElement
+    value?: string;
 };
 
-const Input = ({ errorMessage, hasError, name, leadingIcon, options, placeholder }: TInputProps) => {
-    const { register } = useFormContext();
+const Input = ({ errorMessage, hasError, leadingIcon, name, placeholder, ...props }: TInputProps) => {
     const { isMobile } = useDevice();
 
     return (
         <div className='p2p-v2-input'>
-                {leadingIcon && (
-                    <div className='p2p-v2-input__leading-icon'>
-                        {leadingIcon}
-                        </div>
-                )}
-                <input
-                    className={clsx('p2p-v2-input__field', {
-                        'p2p-v2-input__field--error': hasError,
-                    })}
-                    placeholder={placeholder}
-                    {...register(name, options)}
-                />
+            {leadingIcon && <div className='p2p-v2-input__leading-icon'>{leadingIcon}</div>}
+            <input
+                className={clsx('p2p-v2-input__field', {
+                    'p2p-v2-input__field--error': hasError,
+                })}
+                placeholder={placeholder}
+                {...props}
+            />
             {hasError && (
                 <Text className='p2p-v2-input__error' color='error' size={isMobile ? 'sm' : 'xs'}>
                     {errorMessage}

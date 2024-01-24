@@ -1,30 +1,53 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import './MyProfileCounterparties.scss';
+import { p2p } from '@deriv/api';
 import MyProfileCounterpartiesEmpty from './MyProfileCounterpartiesEmpty';
 import MyProfileCounterpartiesHeader from './MyProfileCounterpartiesHeader';
 import MyProfileCounterpartiesTable from './MyProfileCounterpartiesTable';
-import { useAdvertiserList } from '@deriv/api';
+import MyProfileCounterpartiesTableRow from './MyProfileCounterpartiesTableRow';
+import './MyProfileCounterparties.scss';
 
 const MyProfileCounterparties = () => {
-    const [searchValue, setSearchValue] = React.useState('');
-    const [dropdownValue, setDropdownValue] = React.useState('all');
+    const [searchValue, setSearchValue] = useState('');
+    const [dropdownValue, setDropdownValue] = useState('all');
 
-    console.log('dropdownvalue', dropdownValue);
-
-    const { data } = useAdvertiserList({ trade_partners: 1, advertiser_name: searchValue, is_blocked: dropdownValue === 'blocked' ? 1: 0  });
-    
-    if (false) {
-        return <MyProfileCounterpartiesEmpty />
+    const {
+        data = [],
+        hasNextPage,
+        isFetching,
+        isLoading,
+        loadMoreAdvertisers,
+    } = p2p.advertiser.useGetList({
+        trade_partners: 1,
+        is_blocked: dropdownValue === 'blocked' ? 1 : 0,
+        advertiser_name: searchValue,
+    });
+    if (!isFetching && data.length === 0 && searchValue === '') {
+        return <MyProfileCounterpartiesEmpty />;
     }
-    return <>
-        <Text as='p' >
-            {`When you block someone, you won’t see their ads and they won’t be able to place orders on your ads`}
-        </Text>
-        <MyProfileCounterpartiesEmpty />
-        <MyProfileCounterpartiesHeader dropdownValue={dropdownValue} setDropdownValue={setDropdownValue} searchValue={searchValue} />
-        <MyProfileCounterpartiesTable />
-        </>
+
+    return (
+        <div className='p2p-v2-my-profile-counterparties'>
+            <Text as='p'>
+                {`When you block someone, you won’t see their ads and they won’t be able to place orders on your ads`}
+            </Text>
+            <MyProfileCounterpartiesHeader
+                dropdownValue={dropdownValue}
+                setDropdownValue={setDropdownValue}
+                setSearchValue={setSearchValue}
+            />
+            <MyProfileCounterpartiesTable
+                columns={[]}
+                data={data}
+                isFetching={isFetching}
+                isLoading={isLoading}
+                loadMoreAdvertisers={loadMoreAdvertisers}
+                rowRender={item => (
+                    <MyProfileCounterpartiesTableRow id={item.id!} isBlocked={item.is_blocked} nickname={item.name!} />
+                )}
+            />
+        </div>
+    );
 };
 
 export default MyProfileCounterparties;

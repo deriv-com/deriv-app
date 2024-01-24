@@ -4,4 +4,8 @@
     align-items: center;
     font-size: 25px;
     height: calc(100vh - 48px - 36px);
+
+    @include mobile {
+        width: 100vw;
+    }
 }

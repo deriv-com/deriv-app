@@ -3,6 +3,7 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Analytics } from '@deriv-com/analytics';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { CFDStoreProvider } from '../../../Stores/Modules/CFD/Helpers/useCfdStores';
 import { useMT5SVGEligibleToMigrate } from '@deriv/hooks';
 import { APIProvider } from '@deriv/api';
 import MigrationBanner from '../migration-banner';
@@ -17,6 +18,7 @@ const mock_store = mockStore({});
 const mockUseMT5SVGEligibleToMigrate = useMT5SVGEligibleToMigrate as jest.MockedFunction<
     typeof useMT5SVGEligibleToMigrate
 >;
+jest.mock('../migration-banner-image', () => jest.fn(() => <div>MigrationBannerImage</div>));
 
 describe('MigrationBanner', () => {
     let response: ReturnType<typeof useMT5SVGEligibleToMigrate>;
@@ -24,7 +26,9 @@ describe('MigrationBanner', () => {
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
-                <StoreProvider store={mock_store}>{children}</StoreProvider>
+                <StoreProvider store={mock_store}>
+                    <CFDStoreProvider>{children} </CFDStoreProvider>
+                </StoreProvider>
             </APIProvider>
         );
         mockUseMT5SVGEligibleToMigrate.mockReturnValue(response);
@@ -49,12 +53,12 @@ describe('MigrationBanner', () => {
 
     it('should render MigrationBanner with both MT5 Derived SVG and MT5 Financial SVG text', () => {
         renderComponent();
+
         const texts = [/Upgrade your/i, /Derived/i, /and/i, /Financial MT5/i, /account\(s\)/i];
         texts.forEach(text => {
             expect(screen.getByText(text)).toBeInTheDocument();
         });
         expect(screen.getByRole('button', { name: /upgrade/i })).toBeInTheDocument();
-        expect(screen.getByTestId('dt_migrate_card')).toBeInTheDocument();
     });
 
     it('should render MigrationBanner with MT5 Derived SVG', () => {
@@ -65,7 +69,6 @@ describe('MigrationBanner', () => {
             expect(screen.getByText(text)).toBeInTheDocument();
         });
         expect(screen.getByRole('button', { name: /upgrade/i })).toBeInTheDocument();
-        expect(screen.getByTestId('dt_migrate_card')).toBeInTheDocument();
     });
 
     it('should render MigrationBanner with MT5 Financial SVG', () => {
@@ -80,18 +83,11 @@ describe('MigrationBanner', () => {
 
     it('should call upgrade button tracking event on clicking upgrade now button ', () => {
         renderComponent();
-        expect(screen.getByTestId('dt_migrate_card')).toBeInTheDocument();
         const upgrade_button = screen.getByRole('button', { name: /upgrade/i });
         expect(upgrade_button).toBeInTheDocument();
         userEvent.click(upgrade_button);
         expect(Analytics.trackEvent).toHaveBeenCalledWith('ce_upgrade_mt5_banner', {
             action: 'push_cta_upgrade',
         });
-    });
-
-    it('should render MigrationBanner with migration in dark mode', () => {
-        mock_store.ui.is_dark_mode_on = true;
-        renderComponent();
-        expect(screen.getByTestId('dt_migrate_card_dark')).toBeInTheDocument();
     });
 });

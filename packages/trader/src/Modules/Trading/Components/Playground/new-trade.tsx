@@ -6,6 +6,7 @@ import { Icon, Carousel } from '@deriv/components';
 import NewTradeTypeWidget from './new-trade-type-widget';
 import NewTradeParamsContainer from './new-trade-params-container';
 import NewTradeParamPopupWrapper from './new-trade-param-popup-wrapper';
+import NewFooterNavigation from './new-footer-navigation';
 
 const NewTrade = () => {
     const [show_details, setShowDetails] = React.useState(false);
@@ -215,23 +216,7 @@ const NewTrade = () => {
                             Buy 10.00 USD
                         </button>
                     </div>
-                    <div className='footer-new_navigation'>
-                        <div className='footer-new_navigation_icon footer-new_navigation_icon-selected'>
-                            <Icon icon='IcNewTradeMenu' size={24} />
-                        </div>
-                        <div className='footer-new_navigation_icon'>
-                            <Icon icon='IcNewBasket' size={24} />
-                        </div>
-                        <div className='footer-new_navigation_icon'>
-                            <Icon icon='IcNewClock' size={24} />
-                        </div>
-                        <div className='footer-new_navigation_icon'>
-                            <Icon icon='IcNewLearn' size={24} />
-                        </div>
-                        <div className='footer-new_navigation_icon'>
-                            <Icon icon='IcNewMenu' size={24} />
-                        </div>
-                    </div>
+                    <NewFooterNavigation />
                 </div>
             </div>
         </React.Fragment>

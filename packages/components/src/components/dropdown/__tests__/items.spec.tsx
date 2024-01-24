@@ -3,10 +3,10 @@ import { render, screen } from '@testing-library/react';
 import Items from '../items';
 
 describe('<Items />', () => {
-    let mocked_default_props: React.ComponentProps<typeof Items>;
+    let mockedDefaultProps: React.ComponentProps<typeof Items>;
 
     beforeEach(() => {
-        mocked_default_props = {
+        mockedDefaultProps = {
             handleSelect: jest.fn(),
             onKeyPressed: jest.fn(),
             value: 'multiplier',
@@ -20,21 +20,21 @@ describe('<Items />', () => {
     });
 
     it('should render list of passed items', () => {
-        render(<Items {...mocked_default_props} />);
+        render(<Items {...mockedDefaultProps} />);
 
         expect(screen.getByText('Multipliers')).toBeInTheDocument();
         expect(screen.getByText('Accumulators')).toBeInTheDocument();
     });
 
     it('should call setScrollHeight function if value === item.value', () => {
-        render(<Items {...mocked_default_props} />);
+        render(<Items {...mockedDefaultProps} />);
 
-        expect(mocked_default_props.setScrollHeight).toBeCalled();
+        expect(mockedDefaultProps.setScrollHeight).toBeCalled();
     });
     it('should not call setScrollHeight function if value !== item.value', () => {
-        mocked_default_props.value = 'vanilla';
-        render(<Items {...mocked_default_props} />);
+        mockedDefaultProps.value = 'vanilla';
+        render(<Items {...mockedDefaultProps} />);
 
-        expect(mocked_default_props.setScrollHeight).not.toBeCalled();
+        expect(mockedDefaultProps.setScrollHeight).not.toBeCalled();
     });
 });

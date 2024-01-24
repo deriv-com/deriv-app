@@ -1,0 +1,17 @@
+.p2p-v2-advertiser-name-toggle {
+    display: flex;
+    gap: 0.8rem;
+
+    @include mobile {
+        justify-content: space-between;
+    }
+
+    &__label {
+        display: flex;
+        flex-direction: column;
+
+        &-real-name {
+            font-size: 1rem;
+        }
+    }
+}

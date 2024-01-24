@@ -29,7 +29,7 @@ const DailyLimitModal = ({ currency, isModalOpen, onRequestClose }: TDailyLimitM
         } else if (isSuccess) {
             return (
                 <>
-                    <Text color='prominent' size='md' weight='bold'>
+                    <Text color='prominent' weight='bold'>
                         Success!
                     </Text>
                     <Text as='p' className='p2p-v2-daily-limit-modal__text' color='prominent' size='sm'>
@@ -45,7 +45,7 @@ const DailyLimitModal = ({ currency, isModalOpen, onRequestClose }: TDailyLimitM
         } else if (error) {
             return (
                 <>
-                    <Text color='prominent' size='md' weight='bold'>
+                    <Text color='prominent' weight='bold'>
                         An internal error occured
                     </Text>
                     <Text as='p' className='p2p-v2-daily-limit-modal__text' color='prominent' size='sm'>
@@ -61,7 +61,7 @@ const DailyLimitModal = ({ currency, isModalOpen, onRequestClose }: TDailyLimitM
         }
         return (
             <>
-                <Text color='prominent' size='md' weight='bold'>
+                <Text color='prominent' weight='bold'>
                     Are you sure?
                 </Text>
                 <Text as='p' className='p2p-v2-daily-limit-modal__text' color='prominent' size={isMobile ? 'md' : 'sm'}>

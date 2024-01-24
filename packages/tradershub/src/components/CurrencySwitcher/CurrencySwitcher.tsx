@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
 import { Provider } from '@deriv/library';
@@ -63,20 +63,33 @@ const CurrencySwitcher = () => {
 
     if (!isSuccess) return <CurrencySwitcherLoader />;
 
+    const DemoCurrencySwitcherAccountInfo = () => (
+        <Fragment>
+            <Text bold className='font-light text-system-light-less-prominent-text' size='sm'>
+                Demo
+            </Text>
+            <Text bold className='text-status-light-information' size='sm'>
+                {activeAccount?.display_balance}
+            </Text>
+        </Fragment>
+    );
+
+    const RealCurrencySwitcherAccountInfo = () => (
+        <Fragment>
+            <Text bold className='text-status-light-success' size='sm'>
+                {activeAccount?.display_balance}
+            </Text>
+            <Text className='text-system-light-less-prominent-text' size='sm'>
+                {IconToCurrencyMapper[iconCurrency].text}
+            </Text>
+        </Fragment>
+    );
+
     return (
         <div className='flex items-center justify-between w-full border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background lg:w-auto lg:shrink-0 gap-800'>
             <div className='flex-none '>{IconToCurrencyMapper[iconCurrency].icon}</div>
             <div className='grow'>
-                <Text
-                    bold={isDemo}
-                    className={isDemo ? 'text-status-light-information' : 'text-system-light-less-prominent-text'}
-                    size='sm'
-                >
-                    {isDemo ? activeAccount.display_balance : IconToCurrencyMapper[iconCurrency].text}
-                </Text>
-                <Text bold={!isDemo} className={!isDemo ? 'text-status-light-success' : undefined} size='sm'>
-                    {isDemo ? 'Demo' : activeAccount?.display_balance}
-                </Text>
+                {isDemo ? <DemoCurrencySwitcherAccountInfo /> : <RealCurrencySwitcherAccountInfo />}
             </div>
             <div className='flex-none'>
                 <AccountActionButton balance={activeAccount?.balance ?? 0} isDemo={isDemo ?? false} />

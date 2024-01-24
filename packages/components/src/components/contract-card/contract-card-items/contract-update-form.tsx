@@ -24,7 +24,6 @@ export type TGeneralContractCardBodyProps = {
     addToast: (toast_config: TToastConfig) => void;
     contract_info: TContractInfo;
     contract_update: TContractInfo['contract_update'];
-    connectWithContractUpdate?: (contract_update_form: React.ElementType) => React.ElementType;
     currency: string;
     current_focus?: string | null;
     error_message_alignment?: string;
@@ -36,7 +35,7 @@ export type TGeneralContractCardBodyProps = {
     is_sold: boolean;
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
-    setCurrentFocus: (name: string) => void;
+    setCurrentFocus: (name: string | null) => void;
     toggleCancellationWarning: (state_change?: boolean) => void;
     progress_slider?: React.ReactNode;
     is_positions?: boolean;

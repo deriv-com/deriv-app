@@ -14,7 +14,6 @@ import ArrowIndicator from '../../arrow-indicator';
 
 type TAccumulatorCardBody = {
     addToast: (toast_config: TToastConfig) => void;
-    connectWithContractUpdate?: React.ComponentProps<typeof ToggleCardDialog>['connectWithContractUpdate'];
     contract_info: TContractInfo;
     contract_update?: ContractUpdate;
     currency: Required<TContractInfo>['currency'];
@@ -26,13 +25,12 @@ type TAccumulatorCardBody = {
     is_sold: boolean;
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
-    setCurrentFocus: (value: string) => void;
+    setCurrentFocus: (value: string | null) => void;
     is_positions?: boolean;
 };
 
 const AccumulatorCardBody = ({
     addToast,
-    connectWithContractUpdate,
     contract_info,
     contract_update,
     currency,
@@ -93,7 +91,6 @@ const AccumulatorCardBody = ({
                     {is_valid_to_sell && (
                         <ToggleCardDialog
                             addToast={addToast}
-                            connectWithContractUpdate={connectWithContractUpdate}
                             contract_id={contract_info.contract_id}
                             current_focus={current_focus}
                             error_message_alignment={error_message_alignment}

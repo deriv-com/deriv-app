@@ -25,7 +25,6 @@ export type TContractCardBodyProps = {
 
 const ContractCardBody = ({
     addToast,
-    connectWithContractUpdate,
     contract_info,
     contract_update,
     currency,
@@ -68,7 +67,6 @@ const ContractCardBody = ({
 
     const toggle_card_dialog_props = {
         addToast,
-        connectWithContractUpdate,
         current_focus,
         error_message_alignment,
         getContractById,

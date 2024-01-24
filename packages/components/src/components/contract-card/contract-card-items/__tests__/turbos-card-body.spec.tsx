@@ -17,7 +17,6 @@ const contract_info = mockContractInfo({
 describe('TurbosCardBody', () => {
     const mock_props = {
         addToast: jest.fn(),
-        connectWithContractUpdate: jest.fn(),
         contract_info,
         contract_update: {
             take_profit: {

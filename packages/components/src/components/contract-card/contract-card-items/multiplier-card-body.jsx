@@ -19,7 +19,6 @@ const MultiplierCardBody = ({
     addToast,
     contract_info,
     contract_update,
-    connectWithContractUpdate,
     currency,
     current_focus,
     error_message_alignment,
@@ -106,7 +105,6 @@ const MultiplierCardBody = ({
                     {(is_valid_to_sell || is_valid_to_cancel) && (
                         <ToggleCardDialog
                             addToast={addToast}
-                            connectWithContractUpdate={connectWithContractUpdate}
                             contract_id={contract_info.contract_id}
                             current_focus={current_focus}
                             error_message_alignment={error_message_alignment}
@@ -138,7 +136,6 @@ const MultiplierCardBody = ({
 
 MultiplierCardBody.propTypes = {
     addToast: PropTypes.func,
-    connectWithContractUpdate: PropTypes.func,
     contract_info: PropTypes.object,
     contract_update: PropTypes.object,
     currency: PropTypes.string,

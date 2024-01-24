@@ -12,7 +12,6 @@ import ArrowIndicator from '../../arrow-indicator';
 type TTurbosCardBody = Pick<
     TGeneralContractCardBodyProps,
     | 'addToast'
-    | 'connectWithContractUpdate'
     | 'contract_info'
     | 'contract_update'
     | 'currency'

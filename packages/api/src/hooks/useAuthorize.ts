@@ -18,6 +18,11 @@ const useAuthorize = () => {
         payload: { authorize: current_token || '' },
         options: {
             enabled: Boolean(current_token),
+            // for authorise request - we cannot affort any race hazards due to it being randomly triggered
+            // e.g. during the process of swithcing account or smth
+            refetchOnWindowFocus: false,
+            refetchOnReconnect: false,
+            refetchOnMount: false,
         },
     });
 

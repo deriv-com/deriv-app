@@ -121,9 +121,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         : !!(is_take_profit_valid || is_stop_loss_valid);
     const is_valid_contract_update = is_multiplier ? is_valid_multiplier_contract_update : !!is_take_profit_valid;
 
-    const getStateToCompare = (
-        _state: Partial<ReturnType<typeof getContractUpdateConfig> & TContractUpdateFormProps>
-    ) => {
+    const getStateToCompare = (_state: Partial<TContractStore>) => {
         const props_to_pick = [
             'has_contract_update_take_profit',
             'has_contract_update_stop_loss',
@@ -135,7 +133,10 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
     };
 
     const isStateUnchanged = () => {
-        return isDeepEqual(getStateToCompare(getContractUpdateConfig(contract_info)), getStateToCompare(props));
+        return isDeepEqual(
+            getStateToCompare(getContractUpdateConfig(contract_info)),
+            getStateToCompare(props.contract)
+        );
     };
 
     const onChange = (
@@ -167,8 +168,9 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             classNameInlinePrefix='dc-contract-card-dialog__input--currency'
             currency={currency}
             error_messages={error_messages.take_profit}
-            is_single_currency={true}
-            is_negative_disabled={true}
+            is_input_hidden={is_mobile && !has_contract_update_take_profit}
+            is_single_currency
+            is_negative_disabled
             defaultChecked={has_contract_update_take_profit}
             label={getCardLabels().TAKE_PROFIT}
             name='contract_update_take_profit'
@@ -194,8 +196,9 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             currency={currency}
             defaultChecked={has_contract_update_stop_loss}
             error_messages={error_messages.stop_loss}
-            is_single_currency={true}
-            is_negative_disabled={true}
+            is_input_hidden={is_mobile && !has_contract_update_stop_loss}
+            is_single_currency
+            is_negative_disabled
             label={getCardLabels().STOP_LOSS}
             max_value={Number(buy_price) - cancellation_price}
             name='contract_update_stop_loss'

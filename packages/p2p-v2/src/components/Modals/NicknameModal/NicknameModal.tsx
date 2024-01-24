@@ -1,4 +1,5 @@
 import React, { ComponentType, useEffect } from 'react';
+import { debounce } from 'lodash';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import Modal from 'react-modal';
 import { p2p } from '@deriv/api';
@@ -27,12 +28,11 @@ const NicknameModal = () => {
     const { error, isError, mutate, reset } = p2p.advertiser.useCreate();
     const { isMobile } = useDevice();
     const textSize = isMobile ? 'md' : 'sm';
+    const debouncedReset = debounce(reset, 3000);
 
     const onSubmit = () => {
         mutate({ name: getValues('nickname') });
-        setTimeout(() => {
-            reset();
-        }, 3000);
+        debouncedReset();
     };
 
     const errorMessage = error?.error?.message || 'Can only contain letters, numbers, and special characters .-_@.';

@@ -28,7 +28,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
             id,
             label,
             label_font_size = 'xs',
-            label_line_height = '1.5rem',
+            label_line_height = 'unset',
             defaultChecked,
             onChange, // This needs to be here so it's not included in `otherProps`
             value = false,

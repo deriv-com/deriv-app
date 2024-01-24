@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { MyProfile } from '../pages';
 import Home from './Home';
 
 const prefix = '/cashier/p2p-v2';
@@ -17,6 +18,7 @@ const Router: React.FC = () => {
         <Switch>
             <Route component={() => <Home path='Inner' />} exact path={`${prefix}/inner`} />
             <Route component={() => <Home path='Root' />} exact path={`${prefix}/`} />
+            <Route component={() => <MyProfile />} exact path={`${prefix}/my-profile`} />
         </Switch>
     );
 };

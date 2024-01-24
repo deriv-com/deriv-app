@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import React, { forwardRef, ReactElement } from 'react';
-=======
-import React, { forwardRef } from 'react';
->>>>>>> master
 import clsx from 'clsx';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { useDevice } from '../../hooks';
@@ -25,7 +21,7 @@ const Input = forwardRef<HTMLInputElement, TInputProps>(
 
         return (
             <div className='p2p-v2-input'>
-                 {leadingIcon && <div className='p2p-v2-input__leading-icon'>{leadingIcon}</div>}
+                {leadingIcon && <div className='p2p-v2-input__leading-icon'>{leadingIcon}</div>}
                 <input
                     className={clsx('p2p-v2-input__field', {
                         'p2p-v2-input__field--error': hasError,

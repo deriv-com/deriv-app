@@ -1,18 +1,18 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, HTMLAttributes, PropsWithChildren, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import './RadioGroup.scss';
 
-type TItem = React.HTMLAttributes<HTMLDivElement> & {
+type TItem = HTMLAttributes<HTMLDivElement> & {
     id?: string;
     value: string;
     label: string;
     disabled?: boolean;
     hidden?: boolean;
-    has_error?: boolean;
+    hasError?: boolean;
 };
 type TItemWrapper = {
-    should_wrap_items?: boolean;
+    shouldWrapItems?: boolean;
 };
 type TRadioGroup = {
     className?: string;
@@ -22,12 +22,12 @@ type TRadioGroup = {
     selected: string;
 } & TItemWrapper;
 
-const ItemWrapper = ({ children, should_wrap_items }: React.PropsWithChildren<TItemWrapper>) => {
-    if (should_wrap_items) {
+const ItemWrapper = ({ children, shouldWrapItems }: PropsWithChildren<TItemWrapper>) => {
+    if (shouldWrapItems) {
         return <div className='p2p-v2-radio-group__item-wrapper'>{children}</div>;
     }
 
-    return <React.Fragment>{children}</React.Fragment>;
+    return <>{children}</>;
 };
 
 const RadioGroup = ({
@@ -36,12 +36,12 @@ const RadioGroup = ({
     onToggle,
     required,
     selected,
-    should_wrap_items,
+    shouldWrapItems,
     children,
-}: React.PropsWithChildren<TRadioGroup>) => {
-    const [selected_option, setSelectedOption] = React.useState(selected);
+}: PropsWithChildren<TRadioGroup>) => {
+    const [selectedOption, setSelectedOption] = useState(selected);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setSelectedOption(selected);
     }, [selected]);
 
@@ -56,10 +56,10 @@ const RadioGroup = ({
                 children
                     .filter(item => !item.props.hidden)
                     .map(item => (
-                        <ItemWrapper key={item.props.value} should_wrap_items={should_wrap_items}>
+                        <ItemWrapper key={item.props.value} shouldWrapItems={shouldWrapItems}>
                             <label
                                 className={clsx('p2p-v2-radio-group__item', className, {
-                                    'p2p-v2-radio-group__item--selected': selected_option === item.props.value,
+                                    'p2p-v2-radio-group__item--selected': selectedOption === item.props.value,
                                 })}
                             >
                                 <input
@@ -68,23 +68,23 @@ const RadioGroup = ({
                                     className='p2p-v2-radio-group__input'
                                     type='radio'
                                     value={item.props.value}
-                                    checked={selected_option === item.props.value}
+                                    checked={selectedOption === item.props.value}
                                     onChange={onChange}
                                     disabled={item.props.disabled}
                                     required={required}
                                 />
                                 <span
                                     className={clsx('p2p-v2-radio-group__circle', {
-                                        'p2p-v2-radio-group__circle--selected': selected_option === item.props.value,
+                                        'p2p-v2-radio-group__circle--selected': selectedOption === item.props.value,
                                         'p2p-v2-radio-group__circle--disabled': item.props.disabled,
-                                        'p2p-v2-radio-group__circle--error': item.props.has_error,
+                                        'p2p-v2-radio-group__circle--error': item.props.hasError,
                                     })}
                                 />
                                 <Text
                                     size='lg'
                                     className={clsx('p2p-v2-radio-group__label', {
                                         'p2p-v2-radio-group__label--disabled': item.props.disabled,
-                                        'p2p-v2-radio-group__label--error': item.props.has_error,
+                                        'p2p-v2-radio-group__label--error': item.props.hasError,
                                     })}
                                 >
                                     {item.props.label}
@@ -96,7 +96,7 @@ const RadioGroup = ({
     );
 };
 
-const Item = ({ children, hidden = false, ...props }: React.PropsWithChildren<TItem>) => (
+const Item = ({ children, hidden = false, ...props }: PropsWithChildren<TItem>) => (
     <div hidden={hidden} {...props}>
         {children}
     </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent, PropsWithChildren, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import './RadioGroup.scss';
@@ -8,7 +8,7 @@ type TRadio = {
     classNameLabel?: string;
     defaultChecked: boolean;
     id: string;
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 const Radio = ({
@@ -19,19 +19,19 @@ const Radio = ({
     id,
     onChange, // This needs to be here so it's not included in `otherProps`
     ...otherProps
-}: React.PropsWithChildren<TRadio>) => {
-    const [checked, setChecked] = React.useState(defaultChecked);
+}: PropsWithChildren<TRadio>) => {
+    const [checked, setChecked] = useState(defaultChecked);
 
     /*
      * We use useEffect here to tell the Radio component to update itself
      * when it's no longer selected
      * This is because we're handling the state of what's selected in RadioGroup with the defaultChecked prop
      */
-    React.useEffect(() => {
+    useEffect(() => {
         setChecked(defaultChecked);
     }, [defaultChecked]);
 
-    const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setChecked(e.target.checked);
         onChange(e);
     };

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { getShortNickname } from '../../utils/string';
@@ -28,4 +28,5 @@ const UserAvatar = memo(({ className, nickname, size, textSize }: TUserAvatarPro
     );
 });
 
+UserAvatar.displayName = 'UserAvatar';
 export default UserAvatar;

@@ -1,23 +1,26 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon } from '@deriv/components';
+import { TRADE_TYPES } from '@deriv/shared';
+import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories';
 import NewFooterNavigation from './new-footer-navigation';
+import NewHorizontalCarousel from './new-horizontal-carousel';
 
 const NewTradeTypeMenu = ({ onGoBackClick }: { onGoBackClick: () => void }) => {
     const [show_trade_type, setShowTradeType] = React.useState(true);
     const [show_trading_asset, setShowTradingAsset] = React.useState(false);
 
     const trade_types = [
-        'Accumulators',
-        'Vanillas',
-        'Turbos',
-        'Multipliers',
-        'Rise/Fall',
-        'Higher/Lower',
-        'Touch/No Touch',
-        'Matches/Differs',
-        'Even/Odd',
-        'Over/Under',
+        { text: 'Accumulators', value: TRADE_TYPES.ACCUMULATOR },
+        { text: 'Vanillas', value: TRADE_TYPES.VANILLA.CALL },
+        { text: 'Turbos', value: TRADE_TYPES.TURBOS.LONG },
+        { text: 'Multipliers', value: TRADE_TYPES.MULTIPLIER },
+        { text: 'Rise/Fall', value: TRADE_TYPES.RISE_FALL },
+        { text: 'Higher/Lower', value: TRADE_TYPES.HIGH_LOW },
+        { text: 'Touch/No Touch', value: TRADE_TYPES.TOUCH },
+        { text: 'Matches/Differs', value: TRADE_TYPES.MATCH_DIFF },
+        { text: 'Even/Odd', value: TRADE_TYPES.EVEN_ODD },
+        { text: 'Over/Under', value: TRADE_TYPES.OVER_UNDER },
     ];
 
     return (
@@ -34,18 +37,27 @@ const NewTradeTypeMenu = ({ onGoBackClick }: { onGoBackClick: () => void }) => {
                         <Icon icon={show_trade_type ? 'IcChevronUpBold' : 'IcChevronDownBold'} width={16} height={24} />
                     </div>
                     <div className='trade-type_menu_section_sort'>
-                        {show_trade_type ? 'All Digital Accumulator Vanilla' : 'Multipliers'}
+                        {show_trade_type ? (
+                            <NewHorizontalCarousel />
+                        ) : (
+                            <div className='trade-type_menu_section_selected'>
+                                <IconTradeCategory category={TRADE_TYPES.MULTIPLIER} />
+                                <div className='trade-type_menu_section_selected_text'>Multipliers</div>
+                            </div>
+                        )}
                     </div>
                     {show_trade_type && (
                         <div className='trade-type_menu_section_menu-container'>
-                            {trade_types.map((contract, index) => (
+                            {trade_types.map(({ text, value }, index) => (
                                 <div
                                     key={index}
                                     className={classNames('contract-card', {
-                                        'contract-card--selected': contract === 'Multipliers',
+                                        'contract-card--selected': text === 'Multipliers',
                                     })}
+                                    onClick={() => setShowTradeType(!show_trade_type)}
                                 >
-                                    {contract}
+                                    <IconTradeCategory category={value} />
+                                    <div className='contract-card_text'>{text}</div>
                                 </div>
                             ))}
                         </div>

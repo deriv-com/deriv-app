@@ -20,8 +20,8 @@ const Home: React.FC<{ path: string }> = ({ path }) => {
         <>
             {isMobile && <MobileCloseHeader />}
             <div className='p2p-v2-home-style' style={{ display: 'flex', flexDirection: 'column' }}>
-                {/* <div> Welcome to P2P Version 2 from {path} Page ;) </div> */}
-                <div style={{ height: '50%' }} />
+                <div> Welcome to P2P Version 2 from {path} Page ;) </div>
+                {/* <div style={{ height: '50%' }} /> */}
                 <MyProfileCounterparties />
             </div>
         </>

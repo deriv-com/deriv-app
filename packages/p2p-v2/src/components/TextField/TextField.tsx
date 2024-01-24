@@ -26,7 +26,7 @@ const TextField = forwardRef(
             maxLength,
             message,
             messageVariant = 'general',
-            name = 'walletTextField',
+            name = 'textField',
             onChange,
             renderLeftIcon,
             renderRightIcon,
@@ -50,13 +50,10 @@ const TextField = forwardRef(
                     'p2p-v2-textfield--disabled': disabled,
                     'p2p-v2-textfield--error': isInvalid,
                 })}
-                data-testid='dt_wallets_textfield'
             >
-                <div className='p2p-v2-textfield__box' data-testid='dt_wallets_textfield_box'>
+                <div className='p2p-v2-textfield__box'>
                     {typeof renderLeftIcon === 'function' && (
-                        <div className='p2p-v2-textfield__icon-left' data-testid='dt_wallets_textfield_icon_left'>
-                            {renderLeftIcon()}
-                        </div>
+                        <div className='p2p-v2-textfield__icon-left'>{renderLeftIcon()}</div>
                     )}
                     <input
                         className='p2p-v2-textfield__field'
@@ -75,9 +72,7 @@ const TextField = forwardRef(
                         </label>
                     )}
                     {typeof renderRightIcon === 'function' && (
-                        <div className='p2p-v2-textfield__icon-right' data-testid='dt_wallets_textfield_icon_right'>
-                            {renderRightIcon()}
-                        </div>
+                        <div className='p2p-v2-textfield__icon-right'>{renderRightIcon()}</div>
                     )}
                 </div>
                 <div className='p2p-v2-textfield__message-container'>

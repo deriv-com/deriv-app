@@ -184,7 +184,9 @@ const PositionsModalCard = observer(
                         })}
                     >
                         <Money amount={profit} currency={currency} />
-                        <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
+                        {!is_sold && (
+                            <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
+                        )}
                     </div>
                 </div>
                 <ContractCard.Footer

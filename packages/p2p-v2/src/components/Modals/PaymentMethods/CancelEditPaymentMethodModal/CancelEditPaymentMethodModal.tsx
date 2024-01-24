@@ -18,6 +18,7 @@ const CancelEditPaymentMethodModal = ({ isOpen, onCancel, onGoBack }: TCancelEdi
     // TODO: Remember to translate these strings
     return (
         <ReactModal
+            className='p2p-v2-payment-methods-modal__modal'
             contentLabel='Cancel your edits?'
             isOpen={isOpen}
             shouldCloseOnOverlayClick={false}

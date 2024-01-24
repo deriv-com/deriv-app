@@ -18,6 +18,7 @@ const AddEditPaymentMethodErrorModal = ({ errorMessage, isOpen, onConfirm }: TAd
     // TODO: Remember to translate these strings
     return (
         <ReactModal
+            className='p2p-v2-payment-methods-modal__modal'
             contentLabel="Something's not right"
             isOpen={isOpen}
             shouldCloseOnOverlayClick={false}

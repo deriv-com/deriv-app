@@ -17,6 +17,7 @@ const CancelAddPaymentMethodModal = ({ isOpen, onCancel, onGoBack }: TCancelAddP
     // TODO: Remember to translate these strings
     return (
         <ReactModal
+            className='p2p-v2-payment-methods-modal__modal'
             contentLabel='Cancel adding this payment method?'
             isOpen={isOpen}
             shouldCloseOnOverlayClick={false}

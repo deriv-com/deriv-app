@@ -24,6 +24,7 @@ const ConfirmDeletePaymentMethodModal = ({
     // TODO: Remember to translate these strings
     return (
         <ReactModal
+            className='p2p-v2-payment-methods-modal__modal'
             contentLabel={`Delete ${paymentMethodName}?`}
             isOpen={isOpen}
             shouldCloseOnOverlayClick={false}

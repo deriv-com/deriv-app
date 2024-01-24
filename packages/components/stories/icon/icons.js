@@ -707,6 +707,7 @@ export const icons =
         'IcDxtradeSyntheticPlatform',
     ],
     'flag': [
+        'IcFlagBn',
         'IcFlagDe',
         'IcFlagEn',
         'IcFlagEs',

@@ -6,6 +6,7 @@ import withI18n from './component';
 import ach from 'Translations/ach.json';
 import en from 'Translations/en.json';
 import es from 'Translations/es.json';
+import bn from 'Translations/bn.json';
 import de from 'Translations/de.json';
 import fr from 'Translations/fr.json';
 import id from 'Translations/id.json';
@@ -37,6 +38,7 @@ const i18n_config = {
         ACH: { translations: { ...ach } },
         EN: { translations: { ...en } },
         ES: { translations: { ...es } },
+        BN: { translations: { ...bn } },
         DE: { translations: { ...de } },
         FR: { translations: { ...fr } },
         ID: { translations: { ...id } },

@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useCombobox } from 'downshift';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import ArrowDown from '../../public/ic-chevron-down.svg';
 import reactNodeToString from '../../utils/react-node-to-string';
-import { Text } from '@deriv-com/ui/dist/components/Text';
 import TextField, { TextFieldProps } from '../TextField/TextField';
 import './Dropdown.scss';
 

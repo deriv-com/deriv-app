@@ -6,10 +6,12 @@ import MyProfileCounterpartiesHeader from './MyProfileCounterpartiesHeader';
 import MyProfileCounterpartiesTable from './MyProfileCounterpartiesTable';
 import MyProfileCounterpartiesTableRow from './MyProfileCounterpartiesTableRow';
 import './MyProfileCounterparties.scss';
+import { BlockUnblockUserFilterModal } from '../../../../components/Modals/BlockUnblockUserFilterModal';
 
 const MyProfileCounterparties = () => {
     const [searchValue, setSearchValue] = useState('');
     const [dropdownValue, setDropdownValue] = useState('all');
+    const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
     const {
         data = [],
@@ -25,6 +27,15 @@ const MyProfileCounterparties = () => {
         return <MyProfileCounterpartiesEmpty />;
     }
 
+    const onClickFilter = () => {
+        setIsFilterModalOpen(true);
+    };
+
+    const onToggle = (value: string) => {
+        setDropdownValue(value);
+        setIsFilterModalOpen(false);
+    }
+
     return (
         <div className='p2p-v2-my-profile-counterparties'>
             <Text as='p'>
@@ -34,17 +45,21 @@ const MyProfileCounterparties = () => {
                 dropdownValue={dropdownValue}
                 setDropdownValue={setDropdownValue}
                 setSearchValue={setSearchValue}
+                onClickFilter={onClickFilter}
             />
-            <MyProfileCounterpartiesTable
-                columns={[]}
-                data={data}
-                isFetching={isFetching}
-                isLoading={isLoading}
-                loadMoreAdvertisers={loadMoreAdvertisers}
-                rowRender={item => (
-                    <MyProfileCounterpartiesTableRow id={item.id!} isBlocked={item.is_blocked} nickname={item.name!} />
-                )}
-            />
+            <div className='p2p-v2-my-profile-counterparties__content'>
+                <MyProfileCounterpartiesTable
+                    columns={[]}
+                    data={data}
+                    isFetching={isFetching}
+                    isLoading={isLoading}
+                    loadMoreAdvertisers={loadMoreAdvertisers}
+                    rowRender={item => (
+                        <MyProfileCounterpartiesTableRow id={item.id!} isBlocked={item.is_blocked} nickname={item.name!} />
+                    )}
+                />
+            </div>
+            <BlockUnblockUserFilterModal isModalOpen={isFilterModalOpen} onRequestClose={() => setIsFilterModalOpen(false)} selected={dropdownValue}  onToggle={onToggle}/>
         </div>
     );
 };

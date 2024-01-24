@@ -16,7 +16,7 @@ type TInputProps = {
 };
 
 const Input = forwardRef<HTMLInputElement, TInputProps>(
-    ({ errorMessage, hasError, leadingIcon, name, onBlur, onChange, placeholder, value }, ref) => {
+    ({ errorMessage, hasError, leadingIcon, name, onBlur, onChange, placeholder, value, ...props }, ref) => {
         const { isMobile } = useDevice();
 
         return (
@@ -31,6 +31,7 @@ const Input = forwardRef<HTMLInputElement, TInputProps>(
                     placeholder={placeholder}
                     ref={ref}
                     value={value}
+                    {...props}
                 />
                 {hasError && (
                     <Text className='p2p-v2-input__error' color='error' size={isMobile ? 'sm' : 'xs'}>

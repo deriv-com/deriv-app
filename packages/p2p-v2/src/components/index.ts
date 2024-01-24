@@ -8,3 +8,4 @@ export * from './StarRating';
 export * from './TextArea';
 export * from './UserAvatar';
 export * from './ToggleSwitch';
+export * from './RadioGroup';

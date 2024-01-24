@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import SearchIcon from '../../public/ic-search.svg';
 import { Input } from '../Input';
 import './Search.scss';
@@ -7,8 +7,6 @@ type TSearchProps = {
     name: string;
     onSearch: (value: string) => void;
     placeholder: string;
-    setSearchValue?: (value: string) => void;
-    value?: string;
 };
 
 //TODO: replace the component with deriv shared component

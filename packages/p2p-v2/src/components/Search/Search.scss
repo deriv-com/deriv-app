@@ -4,7 +4,18 @@
     font-size: 1.4rem;
     line-height: 2rem;
 
-    .p2p-v2-input__field {
-        padding-left: 4.8rem;
+    .p2p-v2-input {
+        margin: 0;
+        justify-content: flex-start;
+        position: relative;
+        align-items: center;
+        &__field {
+            padding-left: 4.8rem;
+        }
+
+        @include mobile {
+            justify-content: center;
+            align-items: unset;
+        }
     }
 }

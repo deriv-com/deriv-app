@@ -15,6 +15,7 @@ const AdvertiserName = () => {
 
     return (
         <div className='p2p-v2-advertiser-name'>
+            {/* TODO: To be replaced with useravatar component */}
             <Avatar name={advertiserStats.name || ''} />
             <div className='p2p-v2-advertiser-name__details'>
                 <Text size='md' weight='bold'>

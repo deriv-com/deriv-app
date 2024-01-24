@@ -3,4 +3,22 @@
     gap: 1.6rem;
     margin: 2.4rem 0;
     grid-template-columns: repeat(3, 1fr);
+
+    @include mobile {
+        display: flex;
+        
+        .p2p-v2-search {
+            max-width: 28rem;
+        }
+    }
+
+    &__sort-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border: 1px solid #D6DADB;
+        border-radius: 4px;
+        padding: 0 1rem;
+    }
 }

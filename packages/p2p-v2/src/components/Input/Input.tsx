@@ -1,4 +1,8 @@
-import React, { ReactElement } from 'react';
+<<<<<<< HEAD
+import React, { forwardRef, ReactElement } from 'react';
+=======
+import React, { forwardRef } from 'react';
+>>>>>>> master
 import clsx from 'clsx';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { useDevice } from '../../hooks';
@@ -9,31 +13,39 @@ type TInputProps = {
     hasError?: boolean;
     leadingIcon?: ReactElement;
     name: string;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: () => void;
+    onChange?: () => void;
     placeholder?: string;
     value?: string;
 };
 
-const Input = ({ errorMessage, hasError, leadingIcon, name, placeholder, ...props }: TInputProps) => {
-    const { isMobile } = useDevice();
+const Input = forwardRef<HTMLInputElement, TInputProps>(
+    ({ errorMessage, hasError, leadingIcon, name, onBlur, onChange, placeholder, value }, ref) => {
+        const { isMobile } = useDevice();
 
-    return (
-        <div className='p2p-v2-input'>
-            {leadingIcon && <div className='p2p-v2-input__leading-icon'>{leadingIcon}</div>}
-            <input
-                className={clsx('p2p-v2-input__field', {
-                    'p2p-v2-input__field--error': hasError,
-                })}
-                placeholder={placeholder}
-                {...props}
-            />
-            {hasError && (
-                <Text className='p2p-v2-input__error' color='error' size={isMobile ? 'sm' : 'xs'}>
-                    {errorMessage}
-                </Text>
-            )}
-        </div>
-    );
-};
+        return (
+            <div className='p2p-v2-input'>
+                 {leadingIcon && <div className='p2p-v2-input__leading-icon'>{leadingIcon}</div>}
+                <input
+                    className={clsx('p2p-v2-input__field', {
+                        'p2p-v2-input__field--error': hasError,
+                    })}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    placeholder={placeholder}
+                    ref={ref}
+                    value={value}
+                />
+                {hasError && (
+                    <Text className='p2p-v2-input__error' color='error' size={isMobile ? 'sm' : 'xs'}>
+                        {errorMessage}
+                    </Text>
+                )}
+            </div>
+        );
+    }
+);
+
+Input.displayName = 'Input';
 
 export default Input;

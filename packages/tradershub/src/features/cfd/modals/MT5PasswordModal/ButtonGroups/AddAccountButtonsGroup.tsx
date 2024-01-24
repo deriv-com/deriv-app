@@ -1,5 +1,4 @@
 import React from 'react';
-import { useCreateMT5Account, useTradingPlatformPasswordChange } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
 import { ButtonGroup, Modal, SentEmailContent } from '../../../../../components';
@@ -11,9 +10,9 @@ type TProps = {
 
 const AddAccountButtonsGroup = ({ password }: TProps) => {
     const { show } = Provider.useModal();
-    const { isLoading: createMT5AccountLoading } = useCreateMT5Account();
-    const { isLoading: tradingPlatformPasswordChangeLoading } = useTradingPlatformPasswordChange();
     const { getCFDState } = Provider.useCFDContext();
+    const createMT5AccountLoading = getCFDState('createMT5AccountLoading');
+    const tradingPlatformPasswordChangeLoading = getCFDState('tradingPlatformPasswordChangeLoading');
 
     const platform = getCFDState('platform') ?? 'mt5';
     const submitHandler = useSubmitHandler({ password });

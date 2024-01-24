@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
     useAccountStatus,
     useActiveTradingAccount,
@@ -16,16 +17,17 @@ type TProps = {
 
 export const useSubmitHandler = async ({ password }: TProps) => {
     const { data: accountStatus } = useAccountStatus();
-    const { mutate } = useCreateMT5Account();
+    const { mutate: createMT5Account } = useCreateMT5Account();
     const { mutateAsync: tradingPasswordChange } = useTradingPlatformPasswordChange();
     const { data: activeTrading } = useActiveTradingAccount();
     const { data: settings } = useSettings();
     const { data: availableMT5Accounts } = useAvailableMT5Accounts();
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
-    const { getCFDState } = Provider.useCFDContext();
+    const { getCFDState, setCfdState } = Provider.useCFDContext();
 
     const marketType = getCFDState('marketType') ?? 'all';
     const selectedJurisdiction = getCFDState('selectedJurisdiction');
+    const { error, isLoading, isSuccess } = useTradingPlatformPasswordChange();
 
     // in order to create account, we need to set a password through trading_platform_password_change endpoint first
     // then only mt5_create_account can be called, otherwise it will response an error for password required
@@ -36,10 +38,14 @@ export const useSubmitHandler = async ({ password }: TProps) => {
         });
     }
 
+    useEffect(() => {
+        setCfdState;
+    }, [error, isSuccess, isLoading, setCfdState]);
+
     const accountType = marketType === MarketType.SYNTHETIC ? 'gaming' : marketType;
     const categoryAccountType = activeTrading?.is_virtual ? 'demo' : accountType;
 
-    mutate({
+    createMT5Account({
         payload: {
             account_type: categoryAccountType,
             address: settings?.address_line_1 ?? '',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAccountStatus, useCreateMT5Account, useTradingPlatformPasswordChange } from '@deriv/api';
+import { useAccountStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { SentEmailContent } from '../../../../components';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
@@ -13,12 +13,13 @@ type TPasswordComponentProps = {
 };
 
 const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) => {
-    const { isLoading: tradingPlatformPasswordChangeLoading } = useTradingPlatformPasswordChange();
-    const { error, isLoading: createMT5AccountLoading } = useCreateMT5Account();
     const { data: accountStatus } = useAccountStatus();
-
     const { show } = Provider.useModal();
+
     const { getCFDState } = Provider.useCFDContext();
+    const error = getCFDState('error');
+    const createMT5AccountLoading = getCFDState('createMT5AccountLoading');
+    const tradingPlatformPasswordChangeLoading = getCFDState('tradingPlatformPasswordChangeLoading');
 
     const marketType = getCFDState('marketType') ?? 'all';
     const platform = getCFDState('platform') ?? 'mt5';

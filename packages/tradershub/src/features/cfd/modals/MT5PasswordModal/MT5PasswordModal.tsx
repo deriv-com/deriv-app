@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useActiveTradingAccount, useCreateMT5Account, useMT5AccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { useBreakpoint } from '@deriv/quill-design';
 import { ActionScreen, Dialog, Modal } from '../../../../components';
@@ -10,11 +10,13 @@ import SuccessComponent from './SuccessComponent';
 
 const MT5PasswordModal = () => {
     const [password, setPassword] = useState('');
-    const { error, status } = useCreateMT5Account();
     const { data: activeTrading } = useActiveTradingAccount();
     const { data: mt5Accounts } = useMT5AccountsList();
+
     const { getCFDState } = Provider.useCFDContext();
+    const error = getCFDState('error');
     const isSuccess = getCFDState('isSuccess');
+    const status = getCFDState('status');
 
     const { isMobile } = useBreakpoint();
 

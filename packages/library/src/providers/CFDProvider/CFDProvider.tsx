@@ -1,10 +1,16 @@
 import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 import { TMarketTypes, TPlatforms, THooks } from '../../types';
+import { useCreateMT5Account, useTradingPlatformPasswordChange } from '@deriv/api';
+import { TSocketError } from '@deriv/api/types';
 
 type TCFDState = {
     // Add your CFD states here
     accountId?: string;
-    isSuccess?: boolean;
+    error: TSocketError<'mt5_new_account'> | null;
+    status: string;
+    isSuccess: boolean;
+    createMT5AccountLoading: boolean;
+    tradingPlatformPasswordChangeLoading: boolean;
     marketType?: TMarketTypes.All;
     platform?: TPlatforms.All;
     selectedJurisdiction?: THooks.AvailableMT5Accounts['shortcode'];
@@ -28,7 +34,16 @@ export const useCFDContext = () => {
 };
 
 export const CFDProvider = ({ children }: PropsWithChildren) => {
-    const [cfdState, setCfdState] = useState<TCFDState>({});
+    const { isSuccess, error, status, isLoading: createMT5AccountLoading } = useCreateMT5Account();
+    const { isLoading: tradingPlatformPasswordChangeLoading } = useTradingPlatformPasswordChange();
+
+    const [cfdState, setCfdState] = useState<TCFDState>({
+        error,
+        isSuccess,
+        status,
+        createMT5AccountLoading,
+        tradingPlatformPasswordChangeLoading,
+    });
 
     const getCFDState = useCallback(
         <T extends keyof TCFDState>(key: T): TCFDState[T] => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCreateMT5Account, useTradingPlatformPasswordChange } from '@deriv/api';
+import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
 import { validPassword } from '../../../../../utils/password';
 import { useSubmitHandler } from '../useSubmitHandler';
@@ -10,8 +10,9 @@ type TProps = {
 
 const CreateAccountButton = ({ password }: TProps) => {
     const submitHandler = useSubmitHandler({ password });
-    const { isLoading: createMT5AccountLoading } = useCreateMT5Account();
-    const { isLoading: tradingPlatformPasswordChangeLoading } = useTradingPlatformPasswordChange();
+    const { getCFDState } = Provider.useCFDContext();
+    const createMT5AccountLoading = getCFDState('createMT5AccountLoading');
+    const tradingPlatformPasswordChangeLoading = getCFDState('tradingPlatformPasswordChangeLoading');
 
     return (
         <Button

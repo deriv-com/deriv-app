@@ -589,7 +589,11 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
             }
-            if (client && this.root_store.client.mt5_login_list.length > 0) {
+            if (
+                client &&
+                this.root_store.client.mt5_login_list.length > 0 &&
+                (this.root_store.client.mt5_login_list.find(login => login)?.white_label?.notification ?? true)
+            ) {
                 this.addNotificationMessage(this.client_notifications.mt5_notification);
             }
         }

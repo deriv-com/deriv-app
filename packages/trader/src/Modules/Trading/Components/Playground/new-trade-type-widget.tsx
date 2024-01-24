@@ -4,7 +4,7 @@ import { Icon } from '@deriv/components';
 import NewTradeTypeMenu from './new-trade-type-menu';
 
 const NewTradeTypeWidget = () => {
-    const [show_trade_type_menu, setShowTradeTypeMenu] = React.useState(true);
+    const [show_trade_type_menu, setShowTradeTypeMenu] = React.useState(false);
     if (show_trade_type_menu)
         return ReactDOM.createPortal(
             <NewTradeTypeMenu onGoBackClick={() => setShowTradeTypeMenu(!show_trade_type_menu)} />,

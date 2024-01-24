@@ -1,12 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 
-const NewHorizontalCarousel = () => {
-    const filters = ['All', 'Digital', 'Accumulators', 'Vanillas', 'Turbos', 'Multipliers', 'Ups&Downs', 'Highs&Lows'];
-
+const NewHorizontalCarousel = ({ list }: { list: string[] }) => {
     return (
         <React.Fragment>
-            {filters.map((filter, index) => (
+            {list.map((filter, index) => (
                 <span
                     key={index}
                     className={classNames('filter_item', {

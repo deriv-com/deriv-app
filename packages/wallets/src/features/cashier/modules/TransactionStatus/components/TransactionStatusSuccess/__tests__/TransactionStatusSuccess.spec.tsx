@@ -103,7 +103,7 @@ describe('TransactionStatusSuccess', () => {
         jest.clearAllMocks();
     });
 
-    it('should render correct elements for withdrawal transactions', () => {
+    it('should render winthdrawal info for withdrawal transactions', () => {
         render(
             <APIProvider>
                 <ModalProvider>
@@ -116,13 +116,13 @@ describe('TransactionStatusSuccess', () => {
             </APIProvider>
         );
 
-        expect(screen.queryByText('No recent transactions.')).not.toBeInTheDocument();
         expect(screen.getByText('Withdrawal')).toBeInTheDocument();
         expect(screen.getByText('0.0001')).toBeInTheDocument();
+        expect(screen.queryByText('No recent transactions.')).not.toBeInTheDocument();
         expect(screen.queryByText('View more')).not.toBeInTheDocument();
     });
 
-    it('should render correct elements for deposit transactions', () => {
+    it('should render deposit info for deposit transactions', () => {
         const mockDeposit = [
             {
                 address_hash: '',
@@ -157,9 +157,9 @@ describe('TransactionStatusSuccess', () => {
             </APIProvider>
         );
 
-        expect(screen.queryByText('No recent transactions.')).not.toBeInTheDocument();
         expect(screen.getByText('Deposit')).toBeInTheDocument();
         expect(screen.getByText('0.0001')).toBeInTheDocument();
+        expect(screen.queryByText('No recent transactions.')).not.toBeInTheDocument();
         expect(screen.queryByText('View more')).not.toBeInTheDocument();
     });
 

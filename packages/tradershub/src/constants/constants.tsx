@@ -17,7 +17,7 @@ import IcAppstoreDerivGo from '../public/images/ic-appstore-deriv-go.svg';
 import IcAppstoreDerivTrader from '../public/images/ic-appstore-deriv-trader.svg';
 import IcAppstoreSmartTrader from '../public/images/ic-appstore-smart-trader.svg';
 
-type IconToCurrencyMapperType = {
+export type IconToCurrencyMapperType = {
     [key: string]: {
         icon: React.ReactNode;
         text: string;

@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button, Text } from '@deriv/quill-design';
+import { Button } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
 import { IconToCurrencyMapper } from '../../constants/constants';
 import useRegulationFlags from '../../hooks/useRegulationFlags';
@@ -11,6 +11,7 @@ import { CurrencySwitcherLoader } from '../Loaders';
 import { Modal } from '../Modal';
 import { TradingAccountsList } from '../TradingAccountsList';
 import { useUIContext } from '../UIProvider';
+import { DemoCurrencySwitcherAccountInfo, RealCurrencySwitcherAccountInfo } from './CurrencySwitcherAccountInfo';
 
 type AccountActionButtonProps = {
     balance: THooks.ActiveTradingAccount['balance'];
@@ -63,33 +64,20 @@ const CurrencySwitcher = () => {
 
     if (!isSuccess) return <CurrencySwitcherLoader />;
 
-    const DemoCurrencySwitcherAccountInfo = () => (
-        <Fragment>
-            <Text bold className='font-light text-system-light-less-prominent-text' size='sm'>
-                Demo
-            </Text>
-            <Text bold className='text-status-light-information' size='sm'>
-                {activeAccount?.display_balance}
-            </Text>
-        </Fragment>
-    );
-
-    const RealCurrencySwitcherAccountInfo = () => (
-        <Fragment>
-            <Text bold className='text-status-light-success' size='sm'>
-                {activeAccount?.display_balance}
-            </Text>
-            <Text className='text-system-light-less-prominent-text' size='sm'>
-                {IconToCurrencyMapper[iconCurrency].text}
-            </Text>
-        </Fragment>
-    );
+    const { icon, text } = IconToCurrencyMapper[iconCurrency];
 
     return (
         <div className='flex items-center justify-between w-full border-solid h-3600 p-800 rounded-400 border-75 border-system-light-active-background lg:w-auto lg:shrink-0 gap-800'>
-            <div className='flex-none '>{IconToCurrencyMapper[iconCurrency].icon}</div>
+            <div className='flex-none '>{icon}</div>
             <div className='grow'>
-                {isDemo ? <DemoCurrencySwitcherAccountInfo /> : <RealCurrencySwitcherAccountInfo />}
+                {isDemo ? (
+                    <DemoCurrencySwitcherAccountInfo displayBalance={activeAccount?.display_balance} />
+                ) : (
+                    <RealCurrencySwitcherAccountInfo
+                        currencyText={text}
+                        displayBalance={activeAccount?.display_balance}
+                    />
+                )}
             </div>
             <div className='flex-none'>
                 <AccountActionButton balance={activeAccount?.balance ?? 0} isDemo={isDemo ?? false} />

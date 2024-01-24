@@ -25,6 +25,7 @@ type TTurbosCardBody = Pick<
     | 'setCurrentFocus'
 > & {
     progress_slider_mobile_el: React.ReactNode;
+    totalProfit: number;
 };
 
 const TurbosCardBody = ({

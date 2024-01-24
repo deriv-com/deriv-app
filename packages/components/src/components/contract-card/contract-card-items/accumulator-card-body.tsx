@@ -26,24 +26,19 @@ type TAccumulatorCardBody = {
     onMouseLeave?: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (value: string | null) => void;
+    totalProfit: number;
     is_positions?: boolean;
 };
 
 const AccumulatorCardBody = ({
-    addToast,
     contract_info,
     contract_update,
     currency,
-    current_focus,
-    error_message_alignment,
     getCardLabels,
-    getContractById,
     indicative,
     is_sold,
-    onMouseLeave,
-    removeToast,
-    setCurrentFocus,
     is_positions,
+    ...toggle_card_dialog_props
 }: TAccumulatorCardBody) => {
     const { buy_price, profit, limit_order, sell_price } = contract_info;
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
@@ -90,16 +85,10 @@ const AccumulatorCardBody = ({
                     {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
                     {is_valid_to_sell && (
                         <ToggleCardDialog
-                            addToast={addToast}
                             contract_id={contract_info.contract_id}
-                            current_focus={current_focus}
-                            error_message_alignment={error_message_alignment}
                             getCardLabels={getCardLabels}
-                            getContractById={getContractById}
                             is_accumulator
-                            onMouseLeave={onMouseLeave}
-                            removeToast={removeToast}
-                            setCurrentFocus={setCurrentFocus}
+                            {...toggle_card_dialog_props}
                         />
                     )}
                 </ContractCardItem>

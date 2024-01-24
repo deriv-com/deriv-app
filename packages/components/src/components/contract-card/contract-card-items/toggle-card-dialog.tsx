@@ -28,6 +28,7 @@ export type TToggleCardDialogProps = Pick<
     toggleCancellationWarning?: () => void;
     is_accumulator?: boolean;
     is_turbos?: boolean;
+    totalProfit: number;
 };
 
 const ToggleCardDialog = ({
@@ -45,6 +46,7 @@ const ToggleCardDialog = ({
     setCurrentFocus,
     should_show_cancellation_warning,
     toggleCancellationWarning,
+    totalProfit,
 }: TToggleCardDialogProps) => {
     const [is_visible, setIsVisible] = React.useState(false);
     const [top, setTop] = React.useState(0);
@@ -170,6 +172,7 @@ const ToggleCardDialog = ({
                             removeToast={removeToast}
                             setCurrentFocus={setCurrentFocus}
                             toggleDialog={toggleDialogWrapper}
+                            totalProfit={totalProfit}
                         />
                     </Div100vhContainer>
                 </MobileDialog>
@@ -183,22 +186,21 @@ const ToggleCardDialog = ({
                     toggle_ref={toggle_ref}
                     toggleDialog={toggleDialogWrapper}
                 >
-                    {ContractUpdateForm && (
-                        <ContractUpdateForm
-                            addToast={addToast}
-                            contract={contract}
-                            current_focus={current_focus}
-                            error_message_alignment={error_message_alignment}
-                            getCardLabels={getCardLabels}
-                            getContractById={getContractById}
-                            is_accumulator={is_accumulator}
-                            is_turbos={is_turbos}
-                            onMouseLeave={onMouseLeave}
-                            removeToast={removeToast}
-                            setCurrentFocus={setCurrentFocus}
-                            toggleDialog={toggleDialogWrapper}
-                        />
-                    )}
+                    <ContractUpdateForm
+                        addToast={addToast}
+                        contract={contract}
+                        current_focus={current_focus}
+                        error_message_alignment={error_message_alignment}
+                        getCardLabels={getCardLabels}
+                        getContractById={getContractById}
+                        is_accumulator={is_accumulator}
+                        is_turbos={is_turbos}
+                        onMouseLeave={onMouseLeave}
+                        removeToast={removeToast}
+                        setCurrentFocus={setCurrentFocus}
+                        toggleDialog={toggleDialogWrapper}
+                        totalProfit={totalProfit}
+                    />
                 </ContractCardDialog>
             </DesktopWrapper>
         </div>

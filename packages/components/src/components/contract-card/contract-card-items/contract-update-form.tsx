@@ -9,7 +9,6 @@ import {
     isDeepEqual,
     isMultiplierContract,
     pick,
-    getTotalProfit,
 } from '@deriv/shared';
 import Button from '../../button';
 import MobileWrapper from '../../mobile-wrapper';
@@ -61,6 +60,7 @@ export type TContractUpdateFormProps = Pick<
     is_accumulator?: boolean;
     is_mobile?: boolean;
     is_turbos?: boolean;
+    totalProfit: number;
 };
 
 const ContractUpdateForm = (props: TContractUpdateFormProps) => {
@@ -77,6 +77,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         removeToast,
         setCurrentFocus,
         toggleDialog,
+        totalProfit,
     } = props;
 
     React.useEffect(() => {
@@ -213,8 +214,6 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         />
     );
 
-    const total_profit = getTotalProfit(contract_info);
-
     return (
         <React.Fragment>
             <MobileWrapper>
@@ -227,14 +226,14 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
                             'dc-contract-card__profit-loss dc-contract-card-item__total-profit-loss-value',
                             {
                                 'dc-contract-card__profit-loss--is-crypto': isCryptocurrency(currency),
-                                'dc-contract-card__profit-loss--negative': total_profit < 0,
-                                'dc-contract-card__profit-loss--positive': total_profit > 0,
+                                'dc-contract-card__profit-loss--negative': totalProfit < 0,
+                                'dc-contract-card__profit-loss--positive': totalProfit > 0,
                             }
                         )}
                     >
-                        <Money amount={total_profit} currency={currency} show_currency />
+                        <Money amount={totalProfit} currency={currency} show_currency />
                         {!is_sold && (
-                            <ArrowIndicator className='dc-contract-card__indicative--movement' value={total_profit} />
+                            <ArrowIndicator className='dc-contract-card__indicative--movement' value={totalProfit} />
                         )}
                     </div>
                 </div>

@@ -8,6 +8,12 @@ type TPaymentMethodsEmptyProps = {
     onAddPaymentMethod: () => void;
 };
 
+/**
+ * @component This component is used to display the empty state of the PaymentMethods screen
+ * @param {Function} onAddPaymentMethod - Callback to open the form to add a new payment method
+ * @returns {JSX.Element}
+ * @example <PaymentMethodsEmpty onAddPaymentMethod={onAddPaymentMethod} />
+ * **/
 const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) => {
     return (
         <div className='p2p-v2-payment-methods-empty'>

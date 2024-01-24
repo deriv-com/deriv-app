@@ -14,6 +14,12 @@ type TPaymentMethodsListProps = {
     configFormState: ReturnType<typeof useAdvertiserPaymentMethodsConfig>['formState'];
 };
 
+/**
+ * @component This component is used to display the list of payment methods if they exist, otherwise it will display the empty state
+ * @param configFormState - The form state of the payment method form
+ * @returns {JSX.Element}
+ * @example <PaymentMethodsList configFormState={configFormState} />
+ * **/
 const PaymentMethodsList = ({ configFormState }: TPaymentMethodsListProps) => {
     const { isMobile } = useDevice();
     const configDispatch = useAdvertiserPaymentMethodsConfigDispatch();

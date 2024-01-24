@@ -22,6 +22,14 @@ type TPaymentMethodsListContentProps = {
     p2pAdvertiserPaymentMethods: TAdvertiserPaymentMethods;
 };
 
+/**
+ * @component This component is used to display a list of payment methods. It's the content of the PaymentMethodsList component, when the list is not empty
+ * @param configFormState - The current state of the form
+ * @param isMobile - Whether the current device is mobile or not
+ * @param p2pAdvertiserPaymentMethods - The list of payment methods
+ * @returns {JSX.Element}
+ * @example <PaymentMethodsListContent configFormState={configFormState} isMobile={isMobile} p2pAdvertiserPaymentMethods={p2pAdvertiserPaymentMethods} />
+ * **/
 const PaymentMethodsListContent = ({
     configFormState,
     isMobile,

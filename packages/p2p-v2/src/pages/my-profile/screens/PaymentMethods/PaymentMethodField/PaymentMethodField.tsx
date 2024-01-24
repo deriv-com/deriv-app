@@ -12,6 +12,17 @@ type TPaymentMethodField = {
     required?: boolean;
 };
 
+/**
+ * @component This component is used to display a field in the PaymentMethodForm component
+ * @param {Object} props
+ * @param {Object} props.control - The control object from react-hook-form
+ * @param {string} props.defaultValue - The default value of the field
+ * @param {string} props.displayName - The display name of the field
+ * @param {string} props.field - The name of the field
+ * @param {boolean} props.required - Whether the field is required or not
+ * @returns {JSX.Element}
+ * @example <PaymentMethodField control={control} defaultValue={defaultValue} displayName={displayName} field={field} required={required} />
+ * **/
 const PaymentMethodField = ({ control, defaultValue, displayName, field, required }: TPaymentMethodField) => {
     return (
         <div className='p2p-v2-payment-method-form__field-wrapper'>

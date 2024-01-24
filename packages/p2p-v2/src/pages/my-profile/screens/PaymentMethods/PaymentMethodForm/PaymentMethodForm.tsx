@@ -21,6 +21,12 @@ type TPaymentMethodFormProps = {
     configFormState: ReturnType<typeof useAdvertiserPaymentMethodsConfig>['formState'];
 };
 
+/**
+ * @component This component is used to display the form to add or edit a payment method
+ * @param configFormState - The current state of the form
+ * @returns {JSX.Element}
+ * @example <PaymentMethodForm configFormState={configFormState} />
+ * **/
 const PaymentMethodForm = ({ configFormState }: TPaymentMethodFormProps) => {
     const {
         control,

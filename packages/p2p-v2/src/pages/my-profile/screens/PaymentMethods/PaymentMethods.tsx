@@ -3,6 +3,11 @@ import { useAdvertiserPaymentMethodsConfig } from '../../../../providers';
 import { PaymentMethodForm } from './PaymentMethodForm';
 import { PaymentMethodsList } from './PaymentMethodsList';
 
+/**
+ * @component This component is the main component of the PaymentMethods screen. It's used to conditionally display the list of payment methods and the form to add a new payment method
+ * @returns {JSX.Element}
+ * @example <PaymentMethods />
+ * **/
 const PaymentMethods = () => {
     const { formState } = useAdvertiserPaymentMethodsConfig();
     if (formState?.isVisible) {

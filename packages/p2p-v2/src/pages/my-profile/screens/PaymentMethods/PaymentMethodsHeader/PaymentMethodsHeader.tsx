@@ -8,6 +8,13 @@ type TPaymentMethodsHeaderProps = {
     title?: string;
 };
 
+/**
+ * @component This component is used to display the header of the PaymentMethods screen
+ * @param onGoBack - The function to be called when the back button is clicked
+ * @param title - The title of the header
+ * @returns {JSX.Element}
+ * @example <PaymentMethodsHeader onGoBack={onGoBack} title={title} />
+ * **/
 const PaymentMethodsHeader = ({ onGoBack, title }: TPaymentMethodsHeaderProps) => {
     return (
         <div className='p2p-v2-payment-method-form__header'>

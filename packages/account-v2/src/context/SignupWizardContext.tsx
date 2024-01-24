@@ -13,7 +13,7 @@ type TSignupWizardContext = {
 };
 
 type TState = {
-    currency: string;
+    currency?: string;
     firstName?: string;
     lastName?: string;
 };
@@ -23,6 +23,7 @@ type TSignupWizardProvider = {
 };
 
 export const ACTION_TYPES = {
+    RESET: 'RESET',
     SET_CURRENCY: 'SET_CURRENCY',
     SET_PERSONAL_DETAILS: 'SET_PERSONAL_DETAILS',
 } as const;
@@ -85,6 +86,10 @@ function valuesReducer(state: TState, action: TActions) {
                 firstName: payload.firstName,
                 lastName: payload.lastName,
             };
+        case ACTION_TYPES.RESET:
+            return {
+                currency: '',
+            };
         default:
             return state;
     }
@@ -101,13 +106,6 @@ export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
     const [state, dispatch] = useReducer(valuesReducer, {
         currency: '',
     });
-
-    useEffect(() => {
-        if (!isWizardOpen) {
-            // Reset the step when the modal is closed to ensure that the first step is always shown when the modal is opened.
-            helpers.setStep(1);
-        }
-    }, [helpers, isWizardOpen]);
 
     const contextState = useMemo(
         () => ({

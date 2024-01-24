@@ -13,7 +13,7 @@ import Currencies from './Currencies';
  * @returns {React.ReactNode}
  */
 const CurrencySelector = () => {
-    const { dispatch } = useSignupWizardContext();
+    const { dispatch, state } = useSignupWizardContext();
 
     const handleSubmit = (values: FormikValues) => {
         dispatch({ payload: { currency: values.currency }, type: ACTION_TYPES.SET_CURRENCY });
@@ -23,7 +23,7 @@ const CurrencySelector = () => {
             <Heading.H5 className='mb-1200 pt-2400 pl-800'>Select your preferred currency</Heading.H5>
             <Formik
                 initialValues={{
-                    currency: '',
+                    currency: state.currency ?? '',
                 }}
                 onSubmit={handleSubmit}
             >

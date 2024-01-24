@@ -14,7 +14,6 @@ import './index.scss';
 
 const TriggerSignupWizardModal: React.FC = () => {
     const { setIsWizardOpen } = useSignupWizardContext();
-
     return <button onClick={() => setIsWizardOpen(true)}>Show SignupWizardModal</button>;
 };
 

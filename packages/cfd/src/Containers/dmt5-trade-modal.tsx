@@ -77,7 +77,7 @@ const DMT5TradeModal = observer(
             const timeout = setTimeout(() => {
                 mobile_url = window.location.replace(getMobileAppInstallerURL());
             }, 3000);
-            if (!/safari/i.test(navigator.userAgent)) {
+            if (!/Apple Computer, Inc./i.test(navigator.vendor)) {
                 window.onblur = () => {
                     clearTimeout(timeout);
                 };

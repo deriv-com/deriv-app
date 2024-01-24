@@ -153,6 +153,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_logging_in: false,
             is_mt5_password_not_set: false,
             is_mt5_account_list_updated: false,
+            is_p2p_enabled: false,
             is_proof_of_ownership_enabled: false,
             is_poa_expired: false,
             is_populating_dxtrade_account_list: false,

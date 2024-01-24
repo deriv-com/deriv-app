@@ -62,6 +62,12 @@ const DMT5TradeModal = observer(
             return undefined;
         };
 
+        function isSafari() {
+            return (
+                /^((?!chrome|android).)*AppleWebKit/i.test(navigator.userAgent) && typeof window.safari !== 'undefined'
+            );
+        }
+
         const getMobileAppInstallerURL = () => {
             if (mobileOSDetect() === 'iOS') {
                 return getPlatformMt5DownloadLink('ios');
@@ -77,7 +83,7 @@ const DMT5TradeModal = observer(
             const timeout = setTimeout(() => {
                 mobile_url = window.location.replace(getMobileAppInstallerURL());
             }, 3000);
-            if (!/Apple Computer, Inc./i.test(navigator.vendor)) {
+            if (!isSafari()) {
                 window.onblur = () => {
                     clearTimeout(timeout);
                 };

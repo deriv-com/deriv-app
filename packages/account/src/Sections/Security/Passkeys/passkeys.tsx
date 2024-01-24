@@ -96,8 +96,8 @@ const Passkeys = observer(() => {
                     }
                 >
                     <PasskeysFooterButtons
-                        button_text={<Localize i18n_default_text='Refresh' />}
-                        onButtonClick={() => {
+                        primary_button_text={<Localize i18n_default_text='Refresh' />}
+                        onPrimaryButtonClick={() => {
                             location.reload();
                         }}
                     />
@@ -116,7 +116,11 @@ const Passkeys = observer(() => {
     }
     return (
         <div className='passkeys'>
-            <PasskeysList passkeys_list={passkeys_list || []} onButtonClick={createPasskey} />
+            <PasskeysList
+                passkeys_list={passkeys_list || []}
+                onSecondaryButtonClick={() => setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE)}
+                onPrimaryButtonClick={createPasskey}
+            />
         </div>
     );
 });

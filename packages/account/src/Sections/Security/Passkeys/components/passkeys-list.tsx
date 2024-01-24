@@ -1,16 +1,16 @@
 import React from 'react';
-import { Button } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import FormBody from '../../../../Components/form-body';
-import FormFooter from '../../../../Components/form-footer';
 import PasskeyCard from './passkey-card';
+import PasskeysFooterButtons from 'Sections/Security/Passkeys/components/passkeys-footer-buttons';
 
 type TPasskeysList = {
     passkeys_list: React.ComponentProps<typeof PasskeyCard>[];
-    onButtonClick: () => void;
+    onPrimaryButtonClick: () => void;
+    onSecondaryButtonClick: () => void;
 };
 
-const PasskeysList = ({ passkeys_list, onButtonClick }: TPasskeysList) => {
+const PasskeysList = ({ passkeys_list, onPrimaryButtonClick, onSecondaryButtonClick }: TPasskeysList) => {
     return (
         <React.Fragment>
             <FormBody scroll_offset='16rem'>
@@ -18,11 +18,12 @@ const PasskeysList = ({ passkeys_list, onButtonClick }: TPasskeysList) => {
                     <PasskeyCard {...passkey} key={passkey.id} />
                 ))}
             </FormBody>
-            <FormFooter>
-                <Button type='button' has_effect primary onClick={onButtonClick}>
-                    {<Localize i18n_default_text='Create passkey' />}
-                </Button>
-            </FormFooter>
+            <PasskeysFooterButtons
+                onSecondaryButtonClick={onSecondaryButtonClick}
+                onPrimaryButtonClick={onPrimaryButtonClick}
+                primary_button_text={<Localize i18n_default_text='Create passkey' />}
+                secondary_button_text={<Localize i18n_default_text='Learn more' />}
+            />
         </React.Fragment>
     );
 };

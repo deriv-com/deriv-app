@@ -11,41 +11,48 @@ type TPasskeysStatusContainer = {
 };
 
 const PasskeysStatusContainer = ({ createPasskey, passkey_status, setPasskeyStatus }: TPasskeysStatusContainer) => {
-    const [is_learn_more_opened, setIsLearnMoreOpened] = React.useState(false);
+    // eslint-disable-next-line no-console
+    console.log('passkey_status in PasskeysStatusContainer', passkey_status);
+    const prev_passkey_status = React.useRef<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
+    // eslint-disable-next-line no-console
+    console.log('prev_passkey_status in PasskeysStatusContainer', prev_passkey_status.current);
 
     if (passkey_status === PASSKEY_STATUS_CODES.NONE) return null;
 
-    const content = getStatusContent(passkey_status, () => setIsLearnMoreOpened(true));
+    let onPrimaryButtonClick = createPasskey;
+    let onSecondaryButtonClick = () => {
+        prev_passkey_status.current = passkey_status;
+        setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE);
+    };
 
-    let onButtonClick = () => setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
-    let onBackButtonClick;
+    const content = getStatusContent(passkey_status, onSecondaryButtonClick);
 
     if (passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE) {
-        onButtonClick = createPasskey;
+        onSecondaryButtonClick = () => setPasskeyStatus(prev_passkey_status.current);
     }
 
-    if (passkey_status === PASSKEY_STATUS_CODES.NO_PASSKEY) {
-        onButtonClick = createPasskey;
-        onBackButtonClick = () => {
-            setIsLearnMoreOpened(true);
-            setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE);
-        };
+    if (passkey_status === PASSKEY_STATUS_CODES.CREATED || passkey_status === PASSKEY_STATUS_CODES.REMOVED) {
+        // set status to 'NONE'  means 'continue' button is clicked
+        onPrimaryButtonClick = () => setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
     }
 
     if (passkey_status === PASSKEY_STATUS_CODES.RENAMING) {
         //TODO implement renaming flow
-        onBackButtonClick = () => setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
+        //TODO add 'Save changes' action for onPrimaryButtonClick
+        onSecondaryButtonClick = () => setPasskeyStatus(PASSKEY_STATUS_CODES.NONE);
     }
 
     if (passkey_status === PASSKEY_STATUS_CODES.VERIFYING) {
-        //TODO implement verifying flow (send email)
+        //TODO implement verifying flow and onPrimaryButtonClick action (send email)
     }
+
+    const is_learn_more_opened = passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE;
     return (
         <div className='passkeys'>
             {is_learn_more_opened && (
                 <Icon
                     icon='IcBackButton'
-                    onClick={() => setIsLearnMoreOpened(false)}
+                    onClick={onSecondaryButtonClick}
                     className='passkeys-status__description-back-button'
                 />
             )}
@@ -56,10 +63,10 @@ const PasskeysStatusContainer = ({ createPasskey, passkey_status, setPasskeyStat
                 description={content.description}
             >
                 <PasskeysFooterButtons
-                    button_text={content.button_text}
-                    onButtonClick={onButtonClick}
-                    back_button_text={content.back_button_text}
-                    onBackButtonClick={onBackButtonClick}
+                    primary_button_text={content.primary_button_text}
+                    onPrimaryButtonClick={onPrimaryButtonClick}
+                    secondary_button_text={content.secondary_button_text}
+                    onSecondaryButtonClick={onSecondaryButtonClick}
                 />
             </PasskeysStatus>
         </div>

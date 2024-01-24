@@ -103,7 +103,7 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>, onTextCli
         title: titles[status],
         description: descriptions[status],
         icon: icons[status],
-        button_text: button_texts[status],
-        back_button_text: back_button_texts[status],
+        primary_button_text: button_texts[status],
+        secondary_button_text: back_button_texts[status],
     };
 };

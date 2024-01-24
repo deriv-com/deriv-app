@@ -26,29 +26,31 @@ describe('PasskeysStatusContainer', () => {
 
                 const content = getStatusContent(status);
                 expect(screen.getByText(content.title.props.i18n_default_text)).toBeInTheDocument();
-                expect(screen.getByText(content.button_text.props.i18n_default_text)).toBeInTheDocument();
+                expect(screen.getByText(content.primary_button_text.props.i18n_default_text)).toBeInTheDocument();
 
-                if (content.back_button_text) {
+                if (content.secondary_button_text) {
                     expect(
-                        screen.getByRole('button', { name: content.back_button_text.props.i18n_default_text })
+                        screen.getByRole('button', { name: content.secondary_button_text.props.i18n_default_text })
                     ).toBeInTheDocument();
                 }
 
                 if (status === PASSKEY_STATUS_CODES.LEARN_MORE || status === PASSKEY_STATUS_CODES.NO_PASSKEY) {
-                    userEvent.click(screen.getByRole('button', { name: content.button_text.props.i18n_default_text }));
+                    userEvent.click(
+                        screen.getByRole('button', { name: content.primary_button_text.props.i18n_default_text })
+                    );
                     expect(createPasskeyMock).toHaveBeenCalled();
                 }
 
                 if (status === PASSKEY_STATUS_CODES.NO_PASSKEY) {
                     userEvent.click(
-                        screen.getByRole('button', { name: content.back_button_text?.props.i18n_default_text })
+                        screen.getByRole('button', { name: content.secondary_button_text?.props.i18n_default_text })
                     );
                     expect(setPasskeyStatusMock).toHaveBeenCalledWith(PASSKEY_STATUS_CODES.LEARN_MORE);
                 }
 
                 if (status === PASSKEY_STATUS_CODES.RENAMING) {
                     userEvent.click(
-                        screen.getByRole('button', { name: content.back_button_text?.props.i18n_default_text })
+                        screen.getByRole('button', { name: content.secondary_button_text?.props.i18n_default_text })
                     );
                     expect(setPasskeyStatusMock).toHaveBeenCalledWith(PASSKEY_STATUS_CODES.NONE);
                 }

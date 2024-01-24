@@ -13,10 +13,10 @@ describe('PasskeysFooterButtons', () => {
 
         render(
             <PasskeysFooterButtons
-                button_text={<span>{next}</span>}
-                onButtonClick={mockOnButtonClick}
-                back_button_text={<span>{back}</span>}
-                onBackButtonClick={mockOnBackButtonClick}
+                primary_button_text={<span>{next}</span>}
+                onPrimaryButtonClick={mockOnButtonClick}
+                secondary_button_text={<span>{back}</span>}
+                onSecondaryButtonClick={mockOnBackButtonClick}
             />
         );
 
@@ -30,7 +30,9 @@ describe('PasskeysFooterButtons', () => {
     it('does not render the back button if back_button_text is not provided', () => {
         const mockOnButtonClick = jest.fn();
 
-        render(<PasskeysFooterButtons button_text={<span>{next}</span>} onButtonClick={mockOnButtonClick} />);
+        render(
+            <PasskeysFooterButtons primary_button_text={<span>{next}</span>} onPrimaryButtonClick={mockOnButtonClick} />
+        );
 
         expect(screen.queryByText(back)).not.toBeInTheDocument();
     });

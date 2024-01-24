@@ -5,7 +5,8 @@ import PasskeysList from '../passkeys-list';
 
 describe('PasskeysList', () => {
     it('renders the passkeys and calls the correct function when the button is clicked', () => {
-        const mockOnButtonClick = jest.fn();
+        const mockOnPrimaryButtonClick = jest.fn();
+        const mockOnSecondaryButtonClick = jest.fn();
         const mock_passkeys_list: React.ComponentProps<typeof PasskeysList>['passkeys_list'] = [
             {
                 id: 1,
@@ -25,13 +26,21 @@ describe('PasskeysList', () => {
             },
         ];
 
-        render(<PasskeysList passkeys_list={mock_passkeys_list} onButtonClick={mockOnButtonClick} />);
+        render(
+            <PasskeysList
+                passkeys_list={mock_passkeys_list}
+                onPrimaryButtonClick={mockOnPrimaryButtonClick}
+                onSecondaryButtonClick={mockOnSecondaryButtonClick}
+            />
+        );
 
         mock_passkeys_list.forEach(passkey => {
             expect(screen.getByText(passkey.name)).toBeInTheDocument();
         });
 
         userEvent.click(screen.getByRole('button', { name: /create passkey/i }));
-        expect(mockOnButtonClick).toHaveBeenCalled();
+        userEvent.click(screen.getByRole('button', { name: /learn more/i }));
+        expect(mockOnPrimaryButtonClick).toHaveBeenCalled();
+        expect(mockOnSecondaryButtonClick).toHaveBeenCalled();
     });
 });

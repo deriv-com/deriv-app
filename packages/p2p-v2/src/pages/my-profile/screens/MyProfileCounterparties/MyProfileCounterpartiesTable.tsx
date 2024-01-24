@@ -1,6 +1,5 @@
-import React, { forwardRef, memo, useCallback, useEffect, useRef, useState } from 'react';
-import { ColumnDef, getCoreRowModel, getGroupedRowModel, GroupingState, useReactTable } from '@tanstack/react-table';
-import { useVirtualizer } from '@tanstack/react-virtual';
+import React, { useCallback, useEffect, useRef } from 'react';
+import { ColumnDef, getCoreRowModel, getGroupedRowModel, useReactTable } from '@tanstack/react-table';
 import { Loader } from '@deriv-com/ui/dist/components/Loader';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import './MyProfileCounterpartiesTable.scss';
@@ -76,4 +75,4 @@ const MyProfileCounterpartiesTable = <T,>({
     );
 };
 
-export default memo(MyProfileCounterpartiesTable);
+export default MyProfileCounterpartiesTable;

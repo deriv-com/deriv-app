@@ -80,7 +80,7 @@ const TextField = forwardRef(
                         </div>
                     )}
                 </div>
-                {/* <div className='p2p-v2-textfield__message-container'>
+                <div className='p2p-v2-textfield__message-container'>
                     {showMessage && !isInvalid && (
                         <HelperMessage
                             inputValue={value}
@@ -98,7 +98,7 @@ const TextField = forwardRef(
                             messageVariant={isInvalid ? 'error' : 'warning'}
                         />
                     )}
-                </div> */}
+                </div>
             </div>
         );
     }

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { p2p } from '@deriv/api';
 import MyProfileCounterpartiesEmpty from './MyProfileCounterpartiesEmpty';
@@ -13,7 +13,6 @@ const MyProfileCounterparties = () => {
 
     const {
         data = [],
-        hasNextPage,
         isFetching,
         isLoading,
         loadMoreAdvertisers,

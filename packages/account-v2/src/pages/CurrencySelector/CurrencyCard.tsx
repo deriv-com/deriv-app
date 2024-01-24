@@ -19,22 +19,25 @@ type TCurrencyCard = ReturnType<typeof getCurrencyConfig>[number];
  */
 const CurrencyCard = ({ icon: Icon, id, info, title }: TCurrencyCard) => {
     const { setFieldValue, values } = useFormikContext<{ currency: string }>();
+    const isSelected = values.currency === id;
     return (
         <div className='relative flex justify-center w-1/4 my-400'>
             <div
                 className={qtMerge(
                     `w-10/12 rounded-400 py-1100 hover:cursor-pointer hover:outline outline-1 ${
-                        values.currency === id ? 'outline outline-2' : ''
+                        isSelected ? 'outline outline-2' : ''
                     }`
                 )}
                 onClick={() => setFieldValue('currency', id)}
             >
                 <Icon />
                 {info && <CircleInfoIcon className='absolute top-50 opacity-300' />}
-                <Text className='my-200' size='sm'>
+                <Text bold={isSelected} className='my-200 bold' size='sm'>
                     {title}
                 </Text>
-                <Text size='sm'>({id})</Text>
+                <Text bold={isSelected} size='sm'>
+                    ({id})
+                </Text>
             </div>
         </div>
     );

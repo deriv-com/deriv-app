@@ -12,7 +12,7 @@ type TPasskeyCard = {
     icon?: string;
 };
 
-const PasskeyCard = ({ name, last_used_at, created_at, stored_on, icon }: TPasskeyCard) => {
+const PasskeyCard = ({ name, last_used_at, stored_on, icon }: TPasskeyCard) => {
     //TODO: add revoke and rename flow as the next step
     // const [is_menu_open, setIsMenuOpen] = React.useState(false);
 

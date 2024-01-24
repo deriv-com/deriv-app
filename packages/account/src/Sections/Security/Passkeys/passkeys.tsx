@@ -17,32 +17,32 @@ const mock_passkeys_list = [
     {
         id: 1,
         name: 'New Passkey 1',
-        last_used_at: 1702365923,
-        created_at: 1702365923,
+        last_used_at: 1702365923000,
+        created_at: 1702365923000,
         stored_on: '',
         icon: 'IcFingerprint',
     },
     {
         id: 2,
         name: 'New Passkey 2',
-        last_used_at: 1702365923,
-        created_at: 1702365923,
+        last_used_at: 1702365923000,
+        created_at: 1702365923000,
         stored_on: '',
         icon: 'IcPattern',
     },
     {
         id: 3,
         name: 'New Passkey 3',
-        last_used_at: 1702365923,
-        created_at: 1702365923,
+        last_used_at: 1702365923000,
+        created_at: 1702365923000,
         stored_on: '',
         icon: 'IcPasscode',
     },
     {
         id: 4,
         name: 'New Passkey 4',
-        last_used_at: 1702365923,
-        created_at: 1702365923,
+        last_used_at: 1702365923000,
+        created_at: 1702365923000,
         stored_on: '',
         icon: 'IcFaceid',
     },
@@ -60,12 +60,10 @@ const Passkeys = observer(() => {
         isLoading: is_passkeys_list_loading,
         error: passkeys_list_error,
     } = useGetPasskeysList();
-    const { createPasskey, is_registration_in_progress, is_passkey_registered, registration_error } =
-        useRegisterPasskey();
+    const { createPasskey, is_passkey_registered, registration_error } = useRegisterPasskey();
 
     const should_show_passkeys = is_passkeys_enabled && is_passkey_supported && is_mobile;
-    //eslint-disable-next-line no-console
-    console.log('is_passkey_registered', is_passkey_registered);
+
     React.useEffect(() => {
         if (!passkeys_list?.length && !is_passkey_registered) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.NO_PASSKEY);

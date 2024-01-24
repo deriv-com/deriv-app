@@ -11,11 +11,7 @@ type TPasskeysStatusContainer = {
 };
 
 const PasskeysStatusContainer = ({ createPasskey, passkey_status, setPasskeyStatus }: TPasskeysStatusContainer) => {
-    // eslint-disable-next-line no-console
-    console.log('passkey_status in PasskeysStatusContainer', passkey_status);
     const prev_passkey_status = React.useRef<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
-    // eslint-disable-next-line no-console
-    console.log('prev_passkey_status in PasskeysStatusContainer', prev_passkey_status.current);
 
     if (passkey_status === PASSKEY_STATUS_CODES.NONE) return null;
 

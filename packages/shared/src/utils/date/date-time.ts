@@ -51,7 +51,8 @@ export const getLongDate = (time: number): string => {
         return 'Invalid Date';
     }
     moment.locale(getLanguage().toLowerCase());
-    return moment.unix(time).format('MMMM Do, YYYY');
+    //need to divide to 1000 as timestamp coming from BE is in ms
+    return moment.unix(time / 1000).format('MMMM Do, YYYY');
 };
 
 /**

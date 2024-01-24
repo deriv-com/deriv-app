@@ -165,6 +165,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             addToast={addToast}
             removeToast={removeToast}
             current_focus={current_focus}
+            classNameBubble='dc-popover__trade-params'
             classNameInlinePrefix='dc-contract-card-dialog__input--currency'
             currency={currency}
             error_messages={error_messages.take_profit}
@@ -192,6 +193,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             addToast={addToast}
             removeToast={removeToast}
             current_focus={current_focus}
+            classNameBubble='dc-popover__trade-params'
             classNameInlinePrefix='dc-contract-card-dialog__input--currency'
             currency={currency}
             defaultChecked={has_contract_update_stop_loss}

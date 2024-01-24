@@ -58,7 +58,6 @@ describe('MultiplierCardBody', () => {
         expect(screen.getByText(getCardLabels().STOP_LOSS)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().TAKE_PROFIT)).toBeInTheDocument();
         expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
-        expect(screen.getByTestId('dt_arrow_indicator')).toBeInTheDocument();
     };
 
     it('should render the correct content for a Cancelled contract with Deal cancel.fee and negative Total profit/loss', () => {
@@ -96,5 +95,17 @@ describe('MultiplierCardBody', () => {
 
         expect(screen.getByText(mock_props.getCardLabels().NOT_AVAILABLE)).toBeInTheDocument();
         expect(screen.getByText(progress_slider)).toBeInTheDocument();
+    });
+
+    it('should not render arrow indicator if the contract was sold (is_sold === true)', () => {
+        render(<MultiplierCardBody {...mock_props} />);
+
+        expect(screen.queryByTestId('dt_arrow_indicator')).not.toBeInTheDocument();
+    });
+
+    it('should render arrow indicator if the contract is not sold (is_sold === false)', () => {
+        render(<MultiplierCardBody {...mock_props} is_sold={false} />);
+
+        expect(screen.getAllByTestId('dt_arrow_indicator')).not.toHaveLength(0);
     });
 });

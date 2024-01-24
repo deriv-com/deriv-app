@@ -3,16 +3,18 @@ import { Icon, Text } from '@deriv/components';
 import { getLongDate } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
+//TODO need to check api types and grab from there after BE implementation
 type TPasskeyCard = {
-    id: number;
+    id?: number;
     name: string;
-    last_used_at: number;
+    last_used: number;
     created_at?: number;
     stored_on?: string;
+    passkey_id?: string;
     icon?: string;
 };
 
-const PasskeyCard = ({ name, last_used_at, stored_on, icon }: TPasskeyCard) => {
+const PasskeyCard = ({ name, last_used, stored_on, icon }: TPasskeyCard) => {
     //TODO: add revoke and rename flow as the next step
     // const [is_menu_open, setIsMenuOpen] = React.useState(false);
 
@@ -32,7 +34,7 @@ const PasskeyCard = ({ name, last_used_at, stored_on, icon }: TPasskeyCard) => {
                 )}
                 <div>
                     <Text as='p' size='xs'>
-                        <Localize i18n_default_text='Last used: ' /> {getLongDate(last_used_at)}
+                        <Localize i18n_default_text='Last used: ' /> {getLongDate(last_used)}
                     </Text>
                 </div>
                 {icon && <Icon icon={icon} size={24} className='passkeys-card__passkey-type-icon' />}

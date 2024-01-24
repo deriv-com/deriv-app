@@ -15,7 +15,7 @@ const PasskeysList = ({ passkeys_list, onPrimaryButtonClick, onSecondaryButtonCl
         <React.Fragment>
             <FormBody scroll_offset='16rem'>
                 {passkeys_list.map(passkey => (
-                    <PasskeyCard {...passkey} key={passkey.id} />
+                    <PasskeyCard {...passkey} key={passkey.passkey_id} />
                 ))}
             </FormBody>
             <PasskeysFooterButtons

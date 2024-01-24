@@ -15,18 +15,20 @@ const mock_passkeys_list = [
     {
         id: 1,
         name: passkey_name_1,
-        last_used_at: 1633024800000,
+        last_used: 1633024800000,
         created_at: 1633024800000,
         stored_on: '',
         icon: 'Test Icon 1',
+        passkey_id: 'mock-id-1',
     },
     {
         id: 2,
         name: passkey_name_2,
-        last_used_at: 1633024800000,
+        last_used: 1633024800000,
         created_at: 1633024800000,
         stored_on: '',
         icon: 'Test Icon 2',
+        passkey_id: 'mock-id-2',
     },
 ];
 

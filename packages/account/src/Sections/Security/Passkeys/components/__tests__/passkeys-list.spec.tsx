@@ -11,18 +11,20 @@ describe('PasskeysList', () => {
             {
                 id: 1,
                 name: 'Test Passkey 1',
-                last_used_at: 1633024800000,
+                last_used: 1633024800000,
                 created_at: 1633024800000,
                 stored_on: 'Device',
                 icon: 'IcPasskey',
+                passkey_id: 'mock-id-1',
             },
             {
                 id: 2,
                 name: 'Test Passkey 2',
-                last_used_at: 1633024800000,
+                last_used: 1633024800000,
                 created_at: 1633024800000,
                 stored_on: 'Device',
                 icon: 'IcPasskey',
+                passkey_id: 'mock-id-2',
             },
         ];
 

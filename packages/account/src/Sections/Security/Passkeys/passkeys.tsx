@@ -17,7 +17,7 @@ const mock_passkeys_list = [
     {
         id: 1,
         name: 'New Passkey 1',
-        last_used_at: 1702365923000,
+        last_used: 1702365923000,
         created_at: 1702365923000,
         stored_on: '',
         icon: 'IcFingerprint',
@@ -25,7 +25,7 @@ const mock_passkeys_list = [
     {
         id: 2,
         name: 'New Passkey 2',
-        last_used_at: 1702365923000,
+        last_used: 1702365923000,
         created_at: 1702365923000,
         stored_on: '',
         icon: 'IcPattern',
@@ -33,7 +33,7 @@ const mock_passkeys_list = [
     {
         id: 3,
         name: 'New Passkey 3',
-        last_used_at: 1702365923000,
+        last_used: 1702365923000,
         created_at: 1702365923000,
         stored_on: '',
         icon: 'IcPasscode',
@@ -41,7 +41,7 @@ const mock_passkeys_list = [
     {
         id: 4,
         name: 'New Passkey 4',
-        last_used_at: 1702365923000,
+        last_used: 1702365923000,
         created_at: 1702365923000,
         stored_on: '',
         icon: 'IcFaceid',

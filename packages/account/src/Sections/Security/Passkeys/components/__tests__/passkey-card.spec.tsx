@@ -7,10 +7,11 @@ describe('PasskeyCard', () => {
         const mock_card = {
             id: 1,
             name: 'Test Passkey',
-            last_used_at: 1633024800,
+            last_used: 1633024800,
             created_at: 1633024800,
             stored_on: 'Device',
             icon: 'IcPasskey',
+            passkey_id: 'mock-id',
         };
 
         render(<PasskeyCard {...mock_card} />);

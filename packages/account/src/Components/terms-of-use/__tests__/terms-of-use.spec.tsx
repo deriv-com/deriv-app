@@ -88,7 +88,7 @@ describe('<TermsOfUse/>', () => {
         expect(add_btn).toBeInTheDocument();
     });
 
-    it('should render TermsOfUse component with spain residence confirmation checkbox if residence is indonesia', () => {
+    it('should not display spain residence confirmation checkbox if residence is indonesia', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
 
@@ -118,6 +118,7 @@ describe('<TermsOfUse/>', () => {
             )
         ).toBeInTheDocument();
     });
+
     it('should enable add account button only if spain residence confirmation checkbox is checked for spain clients', () => {
         mock_props.residence = 'es';
 

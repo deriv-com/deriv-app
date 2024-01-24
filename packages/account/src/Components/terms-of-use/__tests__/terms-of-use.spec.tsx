@@ -31,6 +31,7 @@ describe('<TermsOfUse/>', () => {
         onSubmit: jest.fn(),
         real_account_signup_target: 'svg',
         value: { agreed_tos: false, agreed_tnc: false },
+        residence: 'id',
     };
 
     const commonFieldsCheck = () => {
@@ -84,5 +85,36 @@ describe('<TermsOfUse/>', () => {
 
         const add_btn = screen.getByRole('button', { name: /add account/i });
         expect(add_btn).toBeInTheDocument();
+    });
+
+    it('should render TermsOfUse component with spain residence confirmation checkbox if residence is indonesia', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+
+        render(<TermsOfUse {...mock_props} />);
+
+        commonFieldsCheck();
+        expect(
+            screen.queryByText(
+                'I hereby confirm that my request for opening an account with Deriv Investments (Europe) Ltd is made on my own initiative.'
+            )
+        ).not.toBeInTheDocument();
+    });
+
+    it('should render TermsOfUse component with spain residence confirmation checkbox if residence is spain', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValue(false);
+
+        mock_props.real_account_signup_target = 'maltainvest';
+        mock_props.residence = 'es';
+
+        render(<TermsOfUse {...mock_props} />);
+
+        commonFieldsCheck();
+        expect(
+            screen.getByText(
+                'I hereby confirm that my request for opening an account with Deriv Investments (Europe) Ltd is made on my own initiative.'
+            )
+        ).toBeInTheDocument();
     });
 });

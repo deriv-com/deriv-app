@@ -11,10 +11,14 @@ const terms_of_use_config: TSchema = {
         supported_in: ['svg', 'maltainvest'],
         default_value: false,
     },
+    spain_residence_confirmation: {
+        supported_in: ['maltainvest'],
+        default_value: false,
+    },
 };
 
 const termsOfUseConfig = (
-    { real_account_signup_target }: { real_account_signup_target: string },
+    { real_account_signup_target, residence }: { real_account_signup_target: string; residence: string },
     TermsOfUse: React.Component
 ) => {
     const active_title = localize('Terms of use');
@@ -27,6 +31,7 @@ const termsOfUseConfig = (
         form_value: getDefaultFields(real_account_signup_target, terms_of_use_config),
         props: {
             real_account_signup_target,
+            residence,
         },
         icon: 'IcDashboardTermsOfUse',
     };

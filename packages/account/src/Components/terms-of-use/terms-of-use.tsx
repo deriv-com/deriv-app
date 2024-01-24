@@ -18,6 +18,7 @@ import './terms-of-use.scss';
 type TTermsOfUseFormProps = {
     agreed_tos: boolean;
     agreed_tnc: boolean;
+    spain_residence_confirmation?: boolean;
 };
 
 type TTermsOfUseProps = {
@@ -34,6 +35,7 @@ type TTermsOfUseProps = {
     value: TTermsOfUseFormProps;
     real_account_signup_target: TBrokerCodes;
     form_error?: string;
+    residence: string;
 };
 
 /**
@@ -58,9 +60,12 @@ const TermsOfUse = ({
     onSubmit,
     value,
     real_account_signup_target,
+    residence,
     ...props
 }: TTermsOfUseProps) => {
     const { is_appstore } = React.useContext(PlatformContext);
+
+    const is_spain_residence = residence === 'es';
 
     const handleCancel = () => {
         const current_step = getCurrentStep() - 1;
@@ -123,12 +128,30 @@ const TermsOfUse = ({
                                                 />
                                             }
                                         />
+                                        <Hr />
+                                        {is_spain_residence && (
+                                            <Field
+                                                component={CheckboxField}
+                                                className='terms-of-use__checkbox'
+                                                name='spain_residence_confirmation'
+                                                id='spain_residence_confirmation'
+                                                label={
+                                                    <Localize i18n_default_text='I hereby confirm that my request for opening an account with Deriv Investments (Europe) Ltd is made on my own initiative.' />
+                                                }
+                                                label_line_height='s'
+                                            />
+                                        )}
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>
                             <Modal.Footer has_separator is_bypassed={isMobile()}>
                                 <FormSubmitButton
-                                    is_disabled={isSubmitting || !values.agreed_tos || !values.agreed_tnc}
+                                    is_disabled={
+                                        isSubmitting ||
+                                        !values.agreed_tos ||
+                                        !values.agreed_tnc ||
+                                        !(is_spain_residence ? values.spain_residence_confirmation : true)
+                                    }
                                     label={getSubmitButtonLabel()}
                                     has_cancel
                                     is_absolute={isMobile()}

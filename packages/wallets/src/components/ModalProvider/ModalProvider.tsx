@@ -59,11 +59,11 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
 
     const show = (ModalContent: React.ReactNode, options?: TModalOptions) => {
         setContent(ModalContent);
-        setModalOptions({
-            ...modalOptions,
+        setModalOptions(prevModalOptions => ({
+            ...prevModalOptions,
             ...options,
-        });
-        history.push('?modal-open');
+        }));
+        history.push('?modal-open=true');
     };
 
     useEffect(() => {
@@ -74,7 +74,14 @@ const ModalProvider = ({ children }: React.PropsWithChildren<unknown>) => {
 
     const hide = () => {
         setContent(null);
-        history.goBack();
+        const url = new URL(window.location.href);
+        url.searchParams.delete('modal-open');
+        window.history.replaceState({}, document.title, url.toString());
+        // Remove rootref to change back to default root
+        setModalOptions(prevModalOptions => ({
+            ...prevModalOptions,
+            rootRef: undefined,
+        }));
     };
 
     useOnClickOutside(modalRef, isDesktop ? hide : () => undefined);

@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import TermsOfUse from '../terms-of-use';
+import userEvent from '@testing-library/user-event';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -116,5 +117,36 @@ describe('<TermsOfUse/>', () => {
                 'I hereby confirm that my request for opening an account with Deriv Investments (Europe) Ltd is made on my own initiative.'
             )
         ).toBeInTheDocument();
+    });
+    it('should enable add account button only if spain residence confirmation checkbox is checked for spain clients', () => {
+        mock_props.residence = 'es';
+
+        render(<TermsOfUse {...mock_props} />);
+        const pep_checkbox = screen.getByRole('checkbox', {
+            name: 'I am not a PEP, and I have not been a PEP in the last 12 months.',
+        });
+        const terms_and_condition_checkbox = screen.getByRole('checkbox', {
+            name: 'I agree to the terms and conditions .',
+        });
+        const spain_checkbox = screen.getByRole('checkbox', {
+            name: 'I hereby confirm that my request for opening an account with Deriv Investments (Europe) Ltd is made on my own initiative.',
+        });
+        const add_btn = screen.getByRole('button', { name: /add account/i });
+
+        commonFieldsCheck();
+        expect(add_btn).toBeDisabled();
+
+        userEvent.click(pep_checkbox);
+        userEvent.click(terms_and_condition_checkbox);
+
+        expect(
+            screen.getByText(
+                'I hereby confirm that my request for opening an account with Deriv Investments (Europe) Ltd is made on my own initiative.'
+            )
+        ).toBeInTheDocument();
+        expect(spain_checkbox).toBeInTheDocument();
+        userEvent.click(spain_checkbox);
+        expect(spain_checkbox).toBeChecked();
+        expect(add_btn).toBeEnabled();
     });
 });

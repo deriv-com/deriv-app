@@ -139,7 +139,7 @@ MultiplierCardBody.propTypes = {
     setCurrentFocus: PropTypes.func,
     should_show_cancellation_warning: PropTypes.bool,
     toggleCancellationWarning: PropTypes.func,
-    totalProfit: PropTypes.number,
+    totalProfit: PropTypes.number.isRequired,
     has_progress_slider: PropTypes.bool,
 };
 

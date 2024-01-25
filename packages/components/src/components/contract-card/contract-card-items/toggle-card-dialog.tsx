@@ -34,19 +34,12 @@ export type TToggleCardDialogProps = Pick<
 const ToggleCardDialog = ({
     addToast,
     contract_id,
-    current_focus,
-    error_message_alignment,
     getCardLabels,
     getContractById,
-    is_accumulator,
-    is_turbos,
     is_valid_to_cancel,
-    onMouseLeave,
-    removeToast,
-    setCurrentFocus,
     should_show_cancellation_warning,
     toggleCancellationWarning,
-    totalProfit,
+    ...passthrough_props
 }: TToggleCardDialogProps) => {
     const [is_visible, setIsVisible] = React.useState(false);
     const [top, setTop] = React.useState(0);
@@ -161,18 +154,11 @@ const ToggleCardDialog = ({
                         <ContractUpdateForm
                             addToast={addToast}
                             contract={contract}
-                            current_focus={current_focus}
-                            error_message_alignment={error_message_alignment}
                             getCardLabels={getCardLabels}
                             getContractById={getContractById}
-                            is_accumulator={is_accumulator}
-                            is_mobile
-                            is_turbos={is_turbos}
-                            onMouseLeave={onMouseLeave}
-                            removeToast={removeToast}
-                            setCurrentFocus={setCurrentFocus}
+                            isMobile
                             toggleDialog={toggleDialogWrapper}
-                            totalProfit={totalProfit}
+                            {...passthrough_props}
                         />
                     </Div100vhContainer>
                 </MobileDialog>
@@ -189,17 +175,10 @@ const ToggleCardDialog = ({
                     <ContractUpdateForm
                         addToast={addToast}
                         contract={contract}
-                        current_focus={current_focus}
-                        error_message_alignment={error_message_alignment}
                         getCardLabels={getCardLabels}
                         getContractById={getContractById}
-                        is_accumulator={is_accumulator}
-                        is_turbos={is_turbos}
-                        onMouseLeave={onMouseLeave}
-                        removeToast={removeToast}
-                        setCurrentFocus={setCurrentFocus}
                         toggleDialog={toggleDialogWrapper}
-                        totalProfit={totalProfit}
+                        {...passthrough_props}
                     />
                 </ContractCardDialog>
             </DesktopWrapper>

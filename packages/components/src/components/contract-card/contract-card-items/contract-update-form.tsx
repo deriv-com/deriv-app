@@ -58,7 +58,7 @@ export type TContractUpdateFormProps = Pick<
     toggleDialog: (e: React.MouseEvent<HTMLButtonElement>) => void;
     getContractById: (contract_id: number) => TContractStore;
     is_accumulator?: boolean;
-    is_mobile?: boolean;
+    isMobile?: boolean;
     is_turbos?: boolean;
     totalProfit: number;
 };
@@ -70,7 +70,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         current_focus,
         error_message_alignment,
         getCardLabels,
-        is_mobile,
+        isMobile,
         is_turbos,
         is_accumulator,
         onMouseLeave,
@@ -169,7 +169,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             classNameInlinePrefix='dc-contract-card-dialog__input--currency'
             currency={currency}
             error_messages={error_messages.take_profit}
-            is_input_hidden={is_mobile && !has_contract_update_take_profit}
+            is_input_hidden={isMobile && !has_contract_update_take_profit}
             is_single_currency
             is_negative_disabled
             defaultChecked={has_contract_update_take_profit}
@@ -180,7 +180,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             value={contract_profit_or_loss.contract_update_take_profit}
             is_disabled={is_multiplier && !!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
-            tooltip_alignment={is_mobile ? 'left' : 'right'}
+            tooltip_alignment={isMobile ? 'left' : 'right'}
             tooltip_label={
                 <Localize i18n_default_text='When your profit reaches or exceeds this amount, your trade will be closed automatically.' />
             }
@@ -198,7 +198,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             currency={currency}
             defaultChecked={has_contract_update_stop_loss}
             error_messages={error_messages.stop_loss}
-            is_input_hidden={is_mobile && !has_contract_update_stop_loss}
+            is_input_hidden={isMobile && !has_contract_update_stop_loss}
             is_single_currency
             is_negative_disabled
             label={getCardLabels().STOP_LOSS}
@@ -209,7 +209,7 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
             value={contract_profit_or_loss.contract_update_stop_loss}
             is_disabled={!!is_valid_to_cancel}
             setCurrentFocus={setCurrentFocus}
-            tooltip_alignment={is_mobile ? 'left' : 'right'}
+            tooltip_alignment={isMobile ? 'left' : 'right'}
             tooltip_label={
                 <Localize i18n_default_text='When your loss reaches or exceeds this amount, your trade will be closed automatically.' />
             }

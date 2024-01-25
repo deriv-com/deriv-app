@@ -36,6 +36,7 @@ describe('TurbosCardBody', () => {
         setCurrentFocus: jest.fn(),
         status: 'profit',
         progress_slider_mobile_el: false,
+        totalProfit: 50,
     };
     beforeAll(() => {
         (ReactDOM.createPortal as jest.Mock) = jest.fn(component => {

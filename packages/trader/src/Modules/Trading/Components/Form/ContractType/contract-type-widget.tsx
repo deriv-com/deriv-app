@@ -289,11 +289,7 @@ const ContractTypeWidget = observer(
                     }
                 >
                     {is_info_dialog_open ? (
-                        <ContractType.Info
-                            handleSelect={handleSelect}
-                            item={item || { value }}
-                            list={list_with_category()}
-                        />
+                        <ContractType.Info item={item || { value }} list={list_with_category()} />
                     ) : (
                         <ContractType.List
                             handleInfoClick={handleInfoClick}

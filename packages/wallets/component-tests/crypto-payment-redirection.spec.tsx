@@ -22,9 +22,13 @@ test.describe('Wallets - Crypto withdrawal', () => {
             page,
             state: {
                 accounts: DEFAULT_WALLET_ACCOUNTS,
-                currentToken: 'a1-x0000000000000000000000000004',
+                currentToken: 'a1-x0000000000000000000000000001',
             },
         });
+
+        await page.goto(`${baseURL}/wallets`);
+
+        await page.click('.wallets-accordion:nth-child(2) .wallets-accordion__dropdown');
     });
 
     test('render withdrawal form with all elements', async ({ baseURL, page }) => {

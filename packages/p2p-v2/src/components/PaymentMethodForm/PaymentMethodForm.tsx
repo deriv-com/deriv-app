@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { TFormState } from 'src/reducers/types';
+import { TSelectedPaymentMethod } from 'types';
 import { p2p } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import { useAdvertiserPaymentMethodsConfig, useAdvertiserPaymentMethodsConfigDispatch } from '../../providers';
 import CloseCircle from '../../public/ic-close-circle.svg';
 import { ClickableText } from '../ClickableText';
 import { Dropdown } from '../Dropdown';
@@ -14,16 +15,18 @@ import { TextField } from '../TextField';
 import './PaymentMethodForm.scss';
 
 type TPaymentMethodFormProps = {
-    configFormState: ReturnType<typeof useAdvertiserPaymentMethodsConfig>['formState'];
+    formState: TFormState;
+    onAdd: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
+    onRestFormState: () => void;
 };
 
 /**
  * @component This component is used to display the form to add or edit a payment method
- * @param configFormState - The current state of the form
+ * @param formState - The current state of the form
  * @returns {JSX.Element}
- * @example <PaymentMethodForm configFormState={configFormState} />
+ * @example <PaymentMethodForm formState={formState} />
  * **/
-const PaymentMethodForm = ({ configFormState }: TPaymentMethodFormProps) => {
+const PaymentMethodForm = ({ onAdd, onRestFormState, ...rest }: TPaymentMethodFormProps) => {
     const {
         control,
         formState: { isDirty, isSubmitting, isValid },
@@ -31,8 +34,7 @@ const PaymentMethodForm = ({ configFormState }: TPaymentMethodFormProps) => {
         reset,
     } = useForm({ mode: 'all' });
     const [isOpen, setIsOpen] = useState(false);
-    const configDispatch = useAdvertiserPaymentMethodsConfigDispatch();
-    const { actionType, paymentMethod, title } = configFormState || {};
+    const { actionType, selectedPaymentMethod, title } = rest.formState || {};
 
     const { data: availablePaymentMethods } = p2p.paymentMethods.useGet();
     const { create, error: createError, isSuccess: isCreateSuccessful } = p2p.advertiserPaymentMethods.useCreate();
@@ -40,19 +42,19 @@ const PaymentMethodForm = ({ configFormState }: TPaymentMethodFormProps) => {
 
     useEffect(() => {
         if (isCreateSuccessful) {
-            configDispatch({ type: 'RESET' });
+            onRestFormState();
         } else if (createError) {
             setIsOpen(true);
         }
-    }, [isCreateSuccessful, createError, configDispatch]);
+    }, [isCreateSuccessful, createError, onRestFormState]);
 
     useEffect(() => {
         if (isUpdateSuccessful) {
-            configDispatch({ type: 'RESET' });
+            onRestFormState();
         } else if (updateError) {
             setIsOpen(true);
         }
-    }, [configDispatch, isUpdateSuccessful, updateError]);
+    }, [isUpdateSuccessful, onRestFormState, updateError]);
 
     const availablePaymentMethodsList = useMemo(() => {
         const listItems = availablePaymentMethods?.map(availablePaymentMethod => ({
@@ -66,7 +68,7 @@ const PaymentMethodForm = ({ configFormState }: TPaymentMethodFormProps) => {
         if (isDirty) {
             setIsOpen(true);
         } else {
-            configDispatch({ type: 'RESET' });
+            onRestFormState();
         }
     };
 
@@ -77,14 +79,17 @@ const PaymentMethodForm = ({ configFormState }: TPaymentMethodFormProps) => {
                 className='p2p-v2-payment-method-form__form'
                 onSubmit={handleSubmit(data => {
                     if (actionType === 'ADD') {
-                        create({ ...data, method: String(paymentMethod?.method) });
+                        create({ ...data, method: String(selectedPaymentMethod?.method) });
                     } else if (actionType === 'EDIT') {
-                        update(String(paymentMethod?.id), { ...data, method: String(paymentMethod?.method) });
+                        update(String(selectedPaymentMethod?.id), {
+                            ...data,
+                            method: String(selectedPaymentMethod?.method),
+                        });
                     }
                 })}
             >
                 <div className='p2p-v2-payment-method-form__field-wrapper'>
-                    {paymentMethod ? (
+                    {selectedPaymentMethod ? (
                         // TODO: Remember to translate this
                         <TextField
                             disabled
@@ -97,16 +102,14 @@ const PaymentMethodForm = ({ configFormState }: TPaymentMethodFormProps) => {
                                         fill='#999999'
                                         height={30}
                                         onClick={() => {
-                                            configDispatch({
-                                                type: 'ADD',
-                                            });
+                                            onAdd();
                                             reset();
                                         }}
                                         width={20}
                                     />
                                 );
                             }}
-                            value={paymentMethod?.display_name}
+                            value={selectedPaymentMethod?.display_name}
                         />
                     ) : (
                         <>
@@ -117,20 +120,15 @@ const PaymentMethodForm = ({ configFormState }: TPaymentMethodFormProps) => {
                                 onSelect={(value: string) => {
                                     const selectedPaymentMethod = availablePaymentMethods?.find(p => p.id === value);
                                     if (selectedPaymentMethod) {
-                                        configDispatch?.({
-                                            payload: {
-                                                paymentMethod: {
-                                                    displayName: selectedPaymentMethod?.display_name,
-                                                    fields: selectedPaymentMethod?.fields,
-                                                    method: value,
-                                                },
-                                            },
-                                            type: actionType,
+                                        onAdd({
+                                            displayName: selectedPaymentMethod?.display_name,
+                                            fields: selectedPaymentMethod?.fields,
+                                            method: value,
                                         });
                                     }
                                 }}
                                 // TODO: Remember to translate this
-                                value={paymentMethod?.display_name ?? ''}
+                                value={selectedPaymentMethod?.display_name ?? ''}
                                 variant='comboBox'
                             />
                             <Text color='less-prominent' size='xs'>
@@ -141,15 +139,10 @@ const PaymentMethodForm = ({ configFormState }: TPaymentMethodFormProps) => {
                                     onClick={() => {
                                         const paymentMethod = availablePaymentMethods?.find(p => p.id === 'other');
                                         if (paymentMethod) {
-                                            configDispatch?.({
-                                                payload: {
-                                                    paymentMethod: {
-                                                        displayName: paymentMethod?.display_name,
-                                                        fields: paymentMethod?.fields,
-                                                        method: 'other',
-                                                    },
-                                                },
-                                                type: actionType,
+                                            onAdd({
+                                                displayName: paymentMethod?.display_name,
+                                                fields: paymentMethod?.fields,
+                                                method: 'other',
                                             });
                                         }
                                     }}
@@ -160,8 +153,8 @@ const PaymentMethodForm = ({ configFormState }: TPaymentMethodFormProps) => {
                         </>
                     )}
                 </div>
-                {Object.keys(paymentMethod?.fields || {})?.map(field => {
-                    const paymentMethodField = paymentMethod?.fields?.[field];
+                {Object.keys(selectedPaymentMethod?.fields || {})?.map(field => {
+                    const paymentMethodField = selectedPaymentMethod?.fields?.[field];
                     return (
                         <PaymentMethodField
                             control={control}
@@ -193,25 +186,25 @@ const PaymentMethodForm = ({ configFormState }: TPaymentMethodFormProps) => {
                     </Button>
                 </div>
             </form>
-            {actionType === 'EDIT' && (!isUpdateSuccessful || !updateError) ? (
+            {actionType === 'EDIT' && (!isUpdateSuccessful || !updateError) && (
                 <CancelEditPaymentMethodModal
                     isOpen={isOpen}
                     onCancel={() => {
-                        configDispatch({ type: 'RESET' });
+                        onRestFormState();
                     }}
                     onGoBack={() => {
                         setIsOpen(false);
                     }}
                 />
-            ) : null}
-            {actionType === 'ADD' && (!isCreateSuccessful || !createError) ? (
+            )}
+            {actionType === 'ADD' && (!isCreateSuccessful || !createError) && (
                 <CancelAddPaymentMethodModal
                     isOpen={isOpen}
-                    onCancel={() => configDispatch({ type: 'RESET' })}
+                    onCancel={() => onRestFormState()}
                     onGoBack={() => setIsOpen(false)}
                 />
-            ) : null}
-            {createError || updateError ? (
+            )}
+            {(createError || updateError) && (
                 <AddEditPaymentMethodErrorModal
                     errorMessage={String(
                         (createError && 'message' in createError && createError?.message) ||
@@ -219,11 +212,11 @@ const PaymentMethodForm = ({ configFormState }: TPaymentMethodFormProps) => {
                     )}
                     isOpen={true}
                     onConfirm={() => {
-                        configDispatch({ type: 'RESET' });
+                        onRestFormState();
                         setIsOpen(false);
                     }}
                 />
-            ) : null}
+            )}
         </div>
     );
 };

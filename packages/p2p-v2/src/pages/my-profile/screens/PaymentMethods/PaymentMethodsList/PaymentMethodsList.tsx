@@ -1,65 +1,52 @@
 import React from 'react';
-import { p2p } from '@deriv/api';
-import { Loader } from '@deriv-com/ui/dist/components/Loader';
+import { TAdvertiserPaymentMethods, TSelectedPaymentMethod } from 'types';
 import { FullPageMobileWrapper } from '../../../../../components';
 import { PaymentMethodsHeader } from '../../../../../components/PaymentMethodsHeader';
 import { useDevice } from '../../../../../hooks';
-import { useAdvertiserPaymentMethodsConfig, useAdvertiserPaymentMethodsConfigDispatch } from '../../../../../providers';
-import { PaymentMethodsEmpty } from '../PaymentMethodsEmpty';
+import { TFormState } from '../../../../../reducers/types';
 import AddNewButton from './AddNewButton';
 import PaymentMethodsListContent from './PaymentMethodsListContent';
 import './PaymentMethodsList.scss';
 
 type TPaymentMethodsListProps = {
-    configFormState: ReturnType<typeof useAdvertiserPaymentMethodsConfig>['formState'];
+    formState: TFormState;
+    onAdd: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
+    onDelete: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
+    onEdit: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
+    onRestFormState: () => void;
+    p2pAdvertiserPaymentMethods: TAdvertiserPaymentMethods;
 };
 
 /**
  * @component This component is used to display the list of payment methods if they exist, otherwise it will display the empty state
- * @param configFormState - The form state of the payment method form
+ * @param formState - The form state of the payment method form
  * @returns {JSX.Element}
- * @example <PaymentMethodsList configFormState={configFormState} />
+ * @example <PaymentMethodsList formState={formState} />
  * **/
-const PaymentMethodsList = ({ configFormState }: TPaymentMethodsListProps) => {
+const PaymentMethodsList = ({
+    formState,
+    onAdd,
+    onDelete,
+    onEdit,
+    onRestFormState,
+    p2pAdvertiserPaymentMethods,
+}: TPaymentMethodsListProps) => {
     const { isMobile } = useDevice();
-    const configDispatch = useAdvertiserPaymentMethodsConfigDispatch();
-    const { data: p2pAdvertiserPaymentMethods, isLoading, isRefetching } = p2p.advertiserPaymentMethods.useGet();
-
-    if (isLoading) {
-        return <Loader />;
-    }
-
-    if (!p2pAdvertiserPaymentMethods?.length && !isRefetching) {
-        return (
-            <PaymentMethodsEmpty
-                onAddPaymentMethod={() => {
-                    configDispatch({
-                        type: 'ADD',
-                    });
-                }}
-            />
-        );
-    }
 
     if (isMobile) {
         return (
             <FullPageMobileWrapper
-                renderFooter={() => (
-                    <AddNewButton
-                        isMobile={isMobile}
-                        onAdd={() => {
-                            configDispatch({
-                                type: 'ADD',
-                            });
-                        }}
-                    />
-                )}
+                renderFooter={() => <AddNewButton isMobile={isMobile} onAdd={onAdd} />}
                 // TODO: Remember to translate the title
                 renderHeader={() => <PaymentMethodsHeader title='Payment methods' />}
             >
                 <PaymentMethodsListContent
-                    configFormState={configFormState}
+                    formState={formState}
                     isMobile={isMobile}
+                    onAdd={onAdd}
+                    onDelete={onDelete}
+                    onEdit={onEdit}
+                    onRestFormState={onRestFormState}
                     p2pAdvertiserPaymentMethods={p2pAdvertiserPaymentMethods}
                 />
             </FullPageMobileWrapper>
@@ -68,8 +55,12 @@ const PaymentMethodsList = ({ configFormState }: TPaymentMethodsListProps) => {
 
     return p2pAdvertiserPaymentMethods?.length === 0 ? null : (
         <PaymentMethodsListContent
-            configFormState={configFormState}
+            formState={formState}
             isMobile={isMobile}
+            onAdd={onAdd}
+            onDelete={onDelete}
+            onEdit={onEdit}
+            onRestFormState={onRestFormState}
             p2pAdvertiserPaymentMethods={p2pAdvertiserPaymentMethods}
         />
     );

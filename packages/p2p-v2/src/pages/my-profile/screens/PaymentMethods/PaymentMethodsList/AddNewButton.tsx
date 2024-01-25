@@ -15,7 +15,7 @@ type TAddNewButtonProps = {
  * **/
 const AddNewButton = ({ isMobile, onAdd }: TAddNewButtonProps) => {
     return (
-        <Button isFullWidth={isMobile} onClick={onAdd} size='lg'>
+        <Button isFullWidth={isMobile} onClick={() => onAdd()} size='lg'>
             Add new {/*  TODO Remember to translate this*/}
         </Button>
     );

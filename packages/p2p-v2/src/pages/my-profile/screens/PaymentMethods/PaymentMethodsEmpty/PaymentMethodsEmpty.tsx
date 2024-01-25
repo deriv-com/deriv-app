@@ -23,7 +23,7 @@ const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) 
                 You haven’t added any payment methods yet
             </Text>
             <Text>Hit the button below to add payment methods.</Text>
-            <Button className='p2p-v2-payment-methods-empty__button' onClick={onAddPaymentMethod}>
+            <Button className='p2p-v2-payment-methods-empty__button' onClick={() => onAddPaymentMethod()}>
                 Add payment methods
             </Button>
         </div>

@@ -22,7 +22,6 @@ const useAdvertiserInfo = (id?: string) => {
             is_listed,
             is_online,
             show_name,
-            created_time,
         } = advertiser_info;
 
         return {
@@ -43,8 +42,6 @@ const useAdvertiserInfo = (id?: string) => {
             is_online: Boolean(is_online),
             /** When true, the advertiser's real name will be displayed on to other users on adverts and orders. */
             show_name: Boolean(show_name),
-            /** The epoch time that the client became an advertiser. */
-            created_time: new Date(created_time),
         };
     }, [data?.p2p_advertiser_info]);
 

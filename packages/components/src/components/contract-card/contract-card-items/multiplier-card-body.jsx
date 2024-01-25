@@ -130,7 +130,7 @@ const MultiplierCardBody = ({
                 is_won={total_profit > 0}
             >
                 <Money amount={Math.abs(total_profit)} currency={currency} />
-                <ArrowIndicator className='dc-contract-card__indicative--movement' value={total_profit} />
+                {!is_sold && <ArrowIndicator className='dc-contract-card__indicative--movement' value={total_profit} />}
             </ContractCardItem>
         </React.Fragment>
     );

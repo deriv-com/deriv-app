@@ -11,7 +11,7 @@ import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-over
 import { ChartTopWidgets, DigitsWidget } from './chart-widgets';
 import FormLayout from '../Components/Form/form-layout';
 import TradeChart from './trade-chart';
-import LaunchModal from 'Modules/SmartChartBeta/Components/LaunchModal/launch-modal';
+import LaunchModal from 'App/Components/Elements/LaunchModal';
 
 export type TBottomWidgetsParams = {
     digits: number[];
@@ -56,6 +56,7 @@ const Trade = observer(() => {
         prepareTradeStore,
         setIsDigitsWidgetActive,
         setMobileDigitView,
+        setShowDescription,
         should_show_active_symbols_loading,
         show_digits_stats,
         symbol,
@@ -114,6 +115,10 @@ const Trade = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [symbol, setDigits, setTrySyntheticIndices, is_synthetics_available]);
 
+    React.useEffect(() => {
+        setOpenLaunchModal(is_turbos);
+    }, [is_turbos]);
+
     const bottomWidgets = React.useCallback(({ digits: d, tick: t }: TBottomWidgetsParams) => {
         return <BottomWidgetsMobile digits={d} tick={t} setTick={setTick} setDigits={setDigits} />;
     }, []);
@@ -124,7 +129,7 @@ const Trade = observer(() => {
         setSwipeIndex(index);
     };
 
-    const is_already_shown = LocalStore.get('launchModalShown') || false;
+    const is_already_shown = LocalStore.get('launchTurbosModalShown') || false;
 
     const onTryOtherMarkets = async () => {
         if (!is_synthetics_available) {
@@ -150,13 +155,17 @@ const Trade = observer(() => {
 
     const handleLaunchModal = () => {
         setOpenLaunchModal(!open_launch_modal);
-        LocalStore.set('launchModalShown', true);
+        LocalStore.set('launchTurbosModalShown', true);
     };
 
     return (
         <React.Fragment>
-            {open_launch_modal && is_logged_in && !is_already_shown && (
-                <LaunchModal handleChange={handleLaunchModal} open={open_launch_modal} />
+            {!is_eu && open_launch_modal && is_logged_in && !is_already_shown && (
+                <LaunchModal
+                    handleChange={handleLaunchModal}
+                    open={open_launch_modal}
+                    setShowDescription={setShowDescription}
+                />
             )}
             <div
                 className={classNames('trade-container', {

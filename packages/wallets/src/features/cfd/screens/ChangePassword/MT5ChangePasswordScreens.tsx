@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { Trans } from 'react-i18next';
 import { SentEmailContent } from '../../../../components';
 import { Tab, Tabs, WalletText } from '../../../../components/Base';
+import useDevice from '../../../../hooks/useDevice';
 import IcBackArrow from '../../../../public/images/ic-back-arrow.svg';
 import { PlatformDetails } from '../../constants';
 import MT5ChangeInvestorPasswordScreens from './InvestorPassword/MT5ChangeInvestorPasswordScreens';
@@ -10,6 +11,7 @@ import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswor
 const MT5ChangePasswordScreens = () => {
     const [showSentEmailContentWithoutTabs, setShowSentEmailContentWithoutTabs] = useState(false);
     const [tabNumber, setTabNumber] = useState(0);
+    const { isMobile } = useDevice();
 
     const platform = PlatformDetails.mt5.platform;
     const { title } = PlatformDetails[platform];
@@ -43,7 +45,11 @@ const MT5ChangePasswordScreens = () => {
             </div>
         </Fragment>
     ) : (
-        <Tabs preSelectedTab={tabNumber} wrapperClassName='wallets-change-password__tab'>
+        <Tabs
+            fontSize={isMobile ? 'md' : 'sm'}
+            preSelectedTab={tabNumber}
+            wrapperClassName='wallets-change-password__tab'
+        >
             <Tab title={`${title} Password`}>
                 <TradingPlatformChangePasswordScreens platform={platform} />
             </Tab>

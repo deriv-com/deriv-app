@@ -13,6 +13,34 @@
         }
     }
 
+    &__dropdown {
+        margin: 1.6rem 1.6rem 0;
+        width: 52.8rem;
+        height: 5.6rem;
+
+        @include mobile {
+            width: 32.8rem;
+        }
+
+        .dc-dropdown__display {
+            justify-content: flex-start;
+            height: 5.6rem;
+        }
+
+        .dc-list {
+            &__item {
+                &-text {
+                    justify-content: flex-start;
+                    height: 4rem;
+                    padding: 1rem 1.6rem;
+                }
+                &--selected .dc-list__item-text {
+                    border-radius: 0;
+                }
+            }
+        }
+    }
+
     &__card {
         display: flex;
         flex-direction: column;

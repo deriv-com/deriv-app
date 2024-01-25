@@ -18,7 +18,10 @@ const Home: React.FC<{ path: string }> = ({ path }) => {
         <>
             {isMobile && <MobileCloseHeader />}
             <div className='p2p-v2-home-style'>
-                <div> Welcome to P2P Version 2 from {path} Page ;) </div>
+                <div className='flex justify-center px-10 text-red-500 font-bold'>
+                    {' '}
+                    Welcome to P2P Version 2 from {path} Page ;){' '}
+                </div>
             </div>
         </>
     );

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { getActiveAuthTokenIDFromLocalStorage, getActiveLoginIDFromLocalStorage } from '@deriv/utils';
 import useInvalidateQuery from '../useInvalidateQuery';
 import useQuery from '../useQuery';
@@ -10,7 +10,9 @@ import { useAPIContext } from '../APIProvider';
 const useAuthorize = () => {
     const current_token = getActiveAuthTokenIDFromLocalStorage();
     const invalidate = useInvalidateQuery();
-    const { switchEnvironment } = useAPIContext();
+    const { switchEnvironment, queryClient } = useAPIContext();
+
+    const [currentLoginID, setCurrentLoginID] = useState(getActiveLoginIDFromLocalStorage());
 
     const { data, ...rest } = useQuery('authorize', {
         payload: { authorize: current_token || '' },
@@ -33,10 +35,14 @@ const useAuthorize = () => {
             if (active_loginid !== loginid) {
                 localStorage.setItem('active_loginid', loginid);
                 switchEnvironment(active_loginid);
-                invalidate('authorize');
+                // whenever we change the loginid, we need to invalidate all queries
+                // as there might be ongoing queries against previous loginid
+                // and we really do not want data from previous loginid, to be mixed with current loginid
+                queryClient.cancelQueries();
+                setCurrentLoginID(loginid);
             }
         },
-        [invalidate, switchEnvironment]
+        [invalidate, switchEnvironment, currentLoginID]
     );
 
     return {
@@ -44,6 +50,7 @@ const useAuthorize = () => {
         data: modified_authorize,
         /** Function to switch to another account */
         switchAccount,
+        currentLoginID,
         ...rest,
     };
 };

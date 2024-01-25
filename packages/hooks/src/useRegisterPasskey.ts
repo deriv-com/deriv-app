@@ -7,7 +7,7 @@ import { startRegistration } from '@simplewebauthn/browser';
 const useRegisterPasskey = () => {
     const invalidate = useInvalidateQuery();
 
-    const [registration_error, setRegistrationError] = React.useState('');
+    const [device_registration_error, setRegistrationError] = React.useState('');
     const [is_passkey_registered, setIsPasskeyRegistered] = React.useState(false);
 
     const {
@@ -59,6 +59,12 @@ const useRegisterPasskey = () => {
         [public_key, refetch, mutate]
     );
 
+    // eslint-disable-next-line no-console
+    console.log('request_for_registration_error', request_for_registration_error);
+    // eslint-disable-next-line no-console
+    console.log('device_registration_error', device_registration_error);
+    // eslint-disable-next-line no-console
+    console.log('passkey_register_error', passkey_register_error);
     return {
         createPasskey: () => {
             setIsPasskeyRegistered(false);
@@ -66,7 +72,7 @@ const useRegisterPasskey = () => {
         },
         is_passkey_registered,
         is_registration_in_progress: isFetching || isMutationLoading,
-        registration_error: request_for_registration_error || registration_error || passkey_register_error,
+        registration_error: request_for_registration_error || device_registration_error || passkey_register_error,
     };
 };
 

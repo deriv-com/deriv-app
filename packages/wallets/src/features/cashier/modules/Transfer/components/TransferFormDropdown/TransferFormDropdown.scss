@@ -33,9 +33,7 @@
 
     &__select-account-cta {
         @include mobile {
-            display: flex;
-            align-items: center;
-            min-height: 5.4rem;
+            padding: 0.5rem 0;
         }
     }
 

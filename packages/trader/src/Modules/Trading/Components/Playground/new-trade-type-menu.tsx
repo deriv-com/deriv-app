@@ -23,16 +23,18 @@ const NewTradeTypeMenu = ({ onGoBackClick }: { onGoBackClick: () => void }) => {
         { text: 'Over/Under', value: TRADE_TYPES.OVER_UNDER },
     ];
     const assets_types = [
-        { text: 'Volatility 75 (1s) Index', value: TRADE_TYPES.ACCUMULATOR },
-        { text: 'Volatility 75 (1s) Index', value: TRADE_TYPES.VANILLA.CALL },
-        { text: 'Volatility 75 (1s) Index', value: TRADE_TYPES.TURBOS.LONG },
-        { text: 'Volatility 75 (1s) Index', value: TRADE_TYPES.MULTIPLIER },
-        { text: 'Volatility 75 (1s) Index', value: TRADE_TYPES.RISE_FALL },
-        { text: 'Volatility 75 (1s) Index', value: TRADE_TYPES.HIGH_LOW },
-        { text: 'Volatility 75 (1s) Index', value: TRADE_TYPES.TOUCH },
-        { text: 'Volatility 75 (1s) Index', value: TRADE_TYPES.MATCH_DIFF },
-        { text: 'Volatility 75 (1s) Index', value: TRADE_TYPES.EVEN_ODD },
-        { text: 'Volatility 75 (1s) Index', value: TRADE_TYPES.OVER_UNDER },
+        { text: 'Volatility 10 Index', value: 'IcUnderlyingR_10' },
+        { text: 'Volatility 10 (1s) Index', value: 'IcUnderlying1HZ10V' },
+        { text: 'Volatility 75 Index', value: 'IcUnderlyingR_75' },
+        { text: 'Volatility 75 (1s) Index', value: 'IcUnderlying1HZ75V' },
+        { text: 'Volatility 100 Index', value: 'IcUnderlyingR_100' },
+        { text: 'Volatility 100 (1s) Index', value: 'IcUnderlying1HZ100V' },
+        { text: 'Volatility 250 (1s) Index', value: 'IcUnderlying1HZ250V' },
+        { text: 'Boom 1000 Index', value: 'IcUnderlyingBOOM1000' },
+        { text: 'Crash 1000 Index', value: 'IcUnderlyingCRASH1000' },
+        { text: 'AUD/JPY', value: 'IcUnderlyingFRXAUDJPY' },
+        { text: 'AUD/USD', value: 'IcUnderlyingFRXAUDUSD' },
+        { text: 'EUR/AUD', value: 'IcUnderlyingFRXEURAUD' },
     ];
 
     const filters = ['All', 'Digital', 'Accumulators', 'Vanillas', 'Turbos', 'Multipliers', 'Ups&Downs', 'Highs&Lows'];
@@ -102,15 +104,18 @@ const NewTradeTypeMenu = ({ onGoBackClick }: { onGoBackClick: () => void }) => {
                             {assets_types.map(({ text, value }, index) => (
                                 <div
                                     key={index}
-                                    // className={classNames('contract-card', {
-                                    //     'contract-card--selected': text === 'Multipliers',
-                                    // })}
-                                    // onClick={() => setShowTradeType(!show_trade_type)}
+                                    className={classNames('asset-wrapper', {
+                                        'asset-wrapper--selected': text === 'Volatility 75 (1s) Index',
+                                    })}
                                 >
-                                    {/* <IconTradeCategory category={value} /> */}
-                                    <div className='contract-card_text' onClick={onGoBackClick}>
-                                        {text}
+                                    <div onClick={onGoBackClick} style={{ flex: '1', display: 'flex' }}>
+                                        <Icon icon={value} size={24} />
+                                        <span className='asset-text'>{text}</span>
                                     </div>
+                                    <Icon
+                                        icon={text === 'Volatility 75 (1s) Index' ? 'IcNewStarLight' : 'IcNewStartDark'}
+                                        size={24}
+                                    />
                                 </div>
                             ))}
                         </div>

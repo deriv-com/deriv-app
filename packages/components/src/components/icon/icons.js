@@ -483,6 +483,8 @@ import './common/ic-new-file.svg';
 import './common/ic-new-learn.svg';
 import './common/ic-new-menu.svg';
 import './common/ic-new-pencil.svg';
+import './common/ic-new-star-light.svg';
+import './common/ic-new-start-dark.svg';
 import './common/ic-new-trade-menu.svg';
 import './common/ic-no-ad.svg';
 import './common/ic-no-data.svg';

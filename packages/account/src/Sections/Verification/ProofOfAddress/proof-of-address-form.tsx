@@ -288,7 +288,7 @@ const ProofOfAddressForm = observer(
                                                 is_danger
                                             />
                                         )}
-                                        {is_resubmit && (
+                                        {!status?.msg && is_resubmit && (
                                             <Text size={is_mobile ? 'xxs' : 'xs'} align='left' color='loss-danger'>
                                                 <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
                                             </Text>

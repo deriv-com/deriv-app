@@ -9,7 +9,6 @@ import {
     getPlatformSettings,
     getUrlBase,
     MT5_ACCOUNT_STATUS,
-    mobileOSDetect,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -21,6 +20,7 @@ import { TTradingPlatformAccounts } from '../Components/props.types';
 
 import { TCFDPasswordReset } from './props.types';
 import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
+import MigrationBanner from './migration-banner';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid & {
@@ -49,7 +49,7 @@ const DMT5TradeModal = observer(
         const {
             account_status: { authentication },
         } = client;
-
+        const is_eligible_to_migrate = mt5_trade_account.eligible_to_migrate;
         const getCompanyShortcode = () => {
             if (
                 (mt5_trade_account.account_type === CATEGORY.DEMO &&
@@ -60,28 +60,6 @@ const DMT5TradeModal = observer(
                 return mt5_trade_account.landing_company_short;
             }
             return undefined;
-        };
-
-        const getMobileAppInstallerURL = () => {
-            if (mobileOSDetect() === 'iOS') {
-                return getPlatformMt5DownloadLink('ios');
-            } else if (/huawei/i.test(navigator.userAgent)) {
-                return getPlatformMt5DownloadLink('huawei');
-            }
-            return getPlatformMt5DownloadLink('android');
-        };
-
-        let mobile_url;
-        const mobileURLSet = () => {
-            mobile_url = window.location.replace(deepLink);
-            const timeout = setTimeout(() => {
-                mobile_url = window.location.replace(getMobileAppInstallerURL());
-            }, 3000);
-            if (!/safari/i.test(navigator.userAgent)) {
-                window.onblur = () => {
-                    clearTimeout(timeout);
-                };
-            }
         };
 
         const getHeadingTitle = () =>
@@ -115,10 +93,6 @@ const DMT5TradeModal = observer(
             MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION,
             MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION,
         ].includes(mt5_trade_account?.status);
-
-        const deepLink = `metatrader5://account?login=${
-            (mt5_trade_account as TTradingPlatformAccounts)?.display_login
-        }&server=${(mt5_trade_account as DetailsOfEachMT5Loginid)?.server_info?.environment}`;
 
         return (
             <div className='cfd-trade-modal-container'>
@@ -211,6 +185,7 @@ const DMT5TradeModal = observer(
                         </div>
                     </div>
                 </div>
+                {is_eligible_to_migrate && <MigrationBanner is_trade_modal />}
                 <div className='cfd-trade-modal__download-center-app'>
                     <div className='cfd-trade-modal__download-center-app--option'>
                         <Icon icon='IcRebrandingMt5Logo' size={32} />
@@ -220,10 +195,9 @@ const DMT5TradeModal = observer(
                         <a
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
-                            onClick={is_mobile ? mobileURLSet : undefined}
-                            href={is_mobile ? mobile_url : mt5_trade_account.webtrader_url}
-                            target={is_mobile ? '' : '_blank'}
-                            rel={is_mobile ? '' : 'noopener noreferrer'}
+                            href={mt5_trade_account.webtrader_url}
+                            target='_blank'
+                            rel='noopener noreferrer'
                         >
                             <Text size='xxs' weight='bold' color='prominent'>
                                 {localize('Open')}

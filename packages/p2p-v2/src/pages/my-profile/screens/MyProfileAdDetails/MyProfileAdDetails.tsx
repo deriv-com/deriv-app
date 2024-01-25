@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { p2p } from '@deriv/api';
-import { Button, FullPageMobileWrapper, TextArea } from '../../../../components';
+import { FullPageMobileWrapper, TextArea } from '../../../../components';
 import { useDevice } from '../../../../hooks';
+import { Button } from '@deriv-com/ui/dist/components/Button';
 import './MyProfileAdDetails.scss';
 
 type TMYProfileAdDetailsTextAreaProps = {
@@ -88,7 +89,7 @@ const MyProfileAdDetails = () => {
                 setContactInfo={setContactInfo}
             />
             <div className='p2p-v2-my-profile-ad-details__border' />
-            <Button disabled={!hasUpdated} onClick={submitAdDetails}>
+            <Button disabled={!hasUpdated} onClick={submitAdDetails} size='lg'>
                 Save
             </Button>
         </div>

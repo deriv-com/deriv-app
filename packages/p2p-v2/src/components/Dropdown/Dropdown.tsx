@@ -36,7 +36,9 @@ const Dropdown: React.FC<TProps> = ({
     list,
     listHeight = 'md',
     name,
-    onChange = () => {},
+    onChange = () => {
+        // do nothing
+    },
     onSelect,
     value,
     variant = 'prompt',
@@ -134,7 +136,8 @@ const Dropdown: React.FC<TProps> = ({
                                 'p2p-v2-dropdown__item--active': value === item.value,
                             })}
                             key={item.value}
-                            onClick={() => clearFilter()}
+                            onClick={clearFilter}
+                            onKeyDown={clearFilter}
                             {...getItemProps({ index, item })}
                         >
                             <Text size='sm' weight={value === item.value ? 'bold' : 'normal'}>

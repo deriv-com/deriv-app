@@ -5,7 +5,8 @@ import { Text } from '@deriv-com/ui/dist/components/Text';
 import './MyProfileCounterpartiesTable.scss';
 
 type TProps<T> = {
-    columns: ColumnDef<T>[];
+    //below prop not used here, add if header is needed for table
+    columns?: ColumnDef<T>[];
     data: T[];
     isFetching: boolean;
     isLoading: boolean;
@@ -15,7 +16,6 @@ type TProps<T> = {
 
 //TODO: rewrite the implementation in accordance with @deriv-com/ui table component
 const MyProfileCounterpartiesTable = <T,>({
-    columns,
     data,
     isFetching,
     isLoading,
@@ -23,7 +23,7 @@ const MyProfileCounterpartiesTable = <T,>({
     rowRender,
 }: TProps<T>) => {
     const table = useReactTable({
-        columns,
+        columns: [], // set to empty array since no header is needed for table
         data,
         getCoreRowModel: getCoreRowModel<T>(),
         getGroupedRowModel: getGroupedRowModel<T>(),

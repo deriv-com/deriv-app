@@ -36,8 +36,8 @@ const BlockUnblockUserFilterModal = ({
                 required
                 selected={selected}
             >
-                {DROPDOWN_LIST.map((list_item, key) => {
-                    return <RadioGroup.Item key={key} label={list_item.text} value={list_item.value} />;
+                {DROPDOWN_LIST.map(list_item => {
+                    return <RadioGroup.Item key={list_item.value} label={list_item.text} value={list_item.value} />;
                 })}
             </RadioGroup>
         </Modal>

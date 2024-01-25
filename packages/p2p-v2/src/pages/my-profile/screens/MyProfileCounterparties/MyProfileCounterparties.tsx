@@ -10,6 +10,12 @@ import MyProfileCounterpartiesTable from './MyProfileCounterpartiesTable';
 import MyProfileCounterpartiesTableRow from './MyProfileCounterpartiesTableRow';
 import './MyProfileCounterparties.scss';
 
+type TMyProfileCounterpartiesTableRowRendererProps = {
+    id?: string | undefined;
+    is_blocked: boolean;
+    name?: string | undefined;
+};
+
 const MyProfileCounterpartiesDisplayWrapper = ({ children }: PropsWithChildren<unknown>) => {
     const { isMobile } = useDevice();
     if (isMobile) {
@@ -28,6 +34,14 @@ const MyProfileCounterpartiesDisplayWrapper = ({ children }: PropsWithChildren<u
     }
     return children;
 };
+
+const MyProfileCounterpartiesTableRowRenderer = ({
+    id,
+    is_blocked,
+    name,
+}: TMyProfileCounterpartiesTableRowRendererProps) => (
+    <MyProfileCounterpartiesTableRow id={id!} isBlocked={is_blocked} nickname={name!} />
+);
 
 const MyProfileCounterparties = () => {
     const [searchValue, setSearchValue] = useState('');
@@ -73,18 +87,11 @@ const MyProfileCounterparties = () => {
                 ) : (
                     <div className='p2p-v2-my-profile-counterparties__content'>
                         <MyProfileCounterpartiesTable
-                            columns={[]}
                             data={data}
                             isFetching={isFetching}
                             isLoading={isLoading}
                             loadMoreAdvertisers={loadMoreAdvertisers}
-                            rowRender={item => (
-                                <MyProfileCounterpartiesTableRow
-                                    id={item.id!}
-                                    isBlocked={item.is_blocked}
-                                    nickname={item.name!}
-                                />
-                            )}
+                            rowRender={MyProfileCounterpartiesTableRowRenderer}
                         />
                     </div>
                 )}

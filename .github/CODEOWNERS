@@ -66,7 +66,7 @@
 # (in case no pattern matches a path in a PR - this should be treated as a bug and result in adding the path to CODEOWNERS)
 # ==============================================================
 
-*                                                               @balakrishna-deriv @yashim-deriv
+*                                                               @balakrishna-deriv @yashim-deriv @markwylde-deriv
 
 
 # ==============================================================
@@ -159,7 +159,7 @@
 #  deriv-app/wallets
 # ==============================================================
 
-/packages/wallets/**/*                                          @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv @aizad-deriv @heorhi-deriv
+/packages/wallets/**/*                                          @adrienne-deriv @thisyahlen-deriv @farhan-nurzi-deriv @wojciech-deriv @aizad-deriv @heorhi-deriv @aum-deriv @nijil-deriv @rostislav-deriv
 
 
 # ==============================================================

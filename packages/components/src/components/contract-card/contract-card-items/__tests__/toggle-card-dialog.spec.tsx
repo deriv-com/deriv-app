@@ -8,7 +8,7 @@ import ToggleCardDialog from '../toggle-card-dialog';
 const contractUpdateForm = 'ContractUpdateForm';
 
 jest.mock('../contract-update-form', () => jest.fn(() => <div>ContractUpdateForm</div>));
-jest.mock('../../../Icon', () => jest.fn((props: { icon: string }) => <div>{props.icon}</div>));
+jest.mock('../../../icon', () => jest.fn((props: { icon: string }) => <div>{props.icon}</div>));
 
 describe('ToggleCardDialog', () => {
     const mockProps = {

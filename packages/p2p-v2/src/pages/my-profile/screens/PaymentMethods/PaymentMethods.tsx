@@ -1,6 +1,6 @@
 import React from 'react';
+import { PaymentMethodForm } from '../../../../components/PaymentMethodForm';
 import { useAdvertiserPaymentMethodsConfig } from '../../../../providers';
-import { PaymentMethodForm } from './PaymentMethodForm';
 import { PaymentMethodsList } from './PaymentMethodsList';
 
 /**

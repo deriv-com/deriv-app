@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import ArrowLeftBold from '../../../../../public/ic-arrow-left-bold.svg';
+import ArrowLeftBold from '../../public/ic-arrow-left-bold.svg';
 import './PaymentMethodsHeader.scss';
 
 type TPaymentMethodsHeaderProps = {

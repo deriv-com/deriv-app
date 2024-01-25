@@ -3,18 +3,14 @@ import { useForm } from 'react-hook-form';
 import { p2p } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import { ClickableText } from '../../../../../components/ClickableText';
-import { Dropdown } from '../../../../../components/Dropdown';
-import {
-    AddEditPaymentMethodErrorModal,
-    CancelAddPaymentMethodModal,
-    CancelEditPaymentMethodModal,
-} from '../../../../../components/Modals';
-import { TextField } from '../../../../../components/TextField';
-import { useAdvertiserPaymentMethodsConfig, useAdvertiserPaymentMethodsConfigDispatch } from '../../../../../providers';
-import CloseCircle from '../../../../../public/ic-close-circle.svg';
+import { useAdvertiserPaymentMethodsConfig, useAdvertiserPaymentMethodsConfigDispatch } from '../../providers';
+import CloseCircle from '../../public/ic-close-circle.svg';
+import { ClickableText } from '../ClickableText';
+import { Dropdown } from '../Dropdown';
+import { AddEditPaymentMethodErrorModal, CancelAddPaymentMethodModal, CancelEditPaymentMethodModal } from '../Modals';
 import { PaymentMethodField } from '../PaymentMethodField';
 import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
+import { TextField } from '../TextField';
 import './PaymentMethodForm.scss';
 
 type TPaymentMethodFormProps = {

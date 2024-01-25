@@ -1,8 +1,8 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TextArea } from '../../../../../components';
-import { TextField } from '../../../../../components/TextField';
-import { VALID_SYMBOLS_PATTERN } from '../../../../../constants';
+import { VALID_SYMBOLS_PATTERN } from '../../constants';
+import { TextField } from '../TextField';
+import { TextArea } from '..';
 
 type TPaymentMethodField = {
     control: ReturnType<typeof useForm>['control'];

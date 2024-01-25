@@ -53,6 +53,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             setCaret(newCaretPosition);
             setCaretNeedsRepositioning(true);
 
+            // drop the changes if the number of digits is not decreasing and it has exceeded maxDigits
             const inputDigitsCount = input.value.replace(separatorRegex, '').replace(/^0+/, '').length;
             const changeDigitsCount = e.target?.value?.replace(separatorRegex, '').replace(/^0+/, '').length ?? 0;
             if (maxDigits && changeDigitsCount >= inputDigitsCount && inputDigitsCount > maxDigits) return;

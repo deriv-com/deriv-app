@@ -280,6 +280,8 @@ const AccountWizard = observer(props => {
         delete clone?.confirmation_checkbox;
         delete clone?.crs_confirmation;
 
+        if (clone?.spain_residence_confirmation) delete clone.spain_residence_confirmation;
+
         // BE does not accept empty strings for TIN
         // so we remove it from the payload if it is empty in case of optional TIN field
         // as the value will be available from the form_values

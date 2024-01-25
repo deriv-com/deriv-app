@@ -7,7 +7,7 @@ type TFlyoutListProps = {
 
 const FlyoutList = ({ isOpen = false, listItems }: TFlyoutListProps) => {
     return isOpen ? (
-        <ul className='p2p-v2-flyout__list'>
+        <ul className='p2p-v2-flyout-menu__list'>
             {listItems?.map(listItem => {
                 return <li key={isValidElement(listItem) ? listItem.key : listItem?.toString()}>{listItem}</li>;
             })}

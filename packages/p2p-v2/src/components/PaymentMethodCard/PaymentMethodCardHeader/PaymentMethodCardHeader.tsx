@@ -5,7 +5,7 @@ import IcCashierEwallet from '../../../public/ic-cashier-ewallet.svg';
 import IcCashierOther from '../../../public/ic-cashier-other.svg';
 import IcCashierVerticalEllipsis from '../../../public/ic-cashier-vertical-ellipsis.svg';
 import { ClickableText } from '../../ClickableText';
-import { Flyout } from '../../Flyout';
+import { FlyoutMenu } from '../../FlyoutMenu';
 import './PaymentMethodCardHeader.scss';
 
 type TPaymentMethodCardHeaderProps = {
@@ -34,7 +34,7 @@ const PaymentMethodCardHeader = ({
         Icon = IcCashierEwallet;
     }
     // TODO: Remember to translate these
-    const flyOutItems = [
+    const flyoutMenuItems = [
         <ClickableText key={0} onClick={onEditPaymentMethod} size='sm'>
             Edit
         </ClickableText>,
@@ -50,14 +50,14 @@ const PaymentMethodCardHeader = ({
                 height={medium || small ? 16 : 24}
                 width={medium || small ? 16 : 24}
             />
-            {isEditable ? (
-                <Flyout
-                    listItems={flyOutItems}
+            {isEditable && (
+                <FlyoutMenu
+                    listItems={flyoutMenuItems}
                     renderIcon={() => <IcCashierVerticalEllipsis height={16} width={16} />}
                 />
-            ) : null}
+            )}
             {/*TODO: wire up logic for the selectable payment method cards here*/}
-            {isSelectable ? <input type='checkbox' /> : null}{' '}
+            {isSelectable && <input type='checkbox' />}
         </div>
     );
 };

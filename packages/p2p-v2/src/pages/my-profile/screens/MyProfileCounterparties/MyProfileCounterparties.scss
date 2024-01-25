@@ -3,7 +3,11 @@
     padding: 2.4rem;
     flex-direction: column;
     height: 100%;
-    
+
+    @include mobile {
+        padding: 1.6rem;
+    }
+
     &__content {
         display: flex;
         align-items: center;

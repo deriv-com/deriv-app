@@ -2,13 +2,17 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 1.6rem;
+    padding: 2rem 1.6rem;
+
+    @include mobile {
+        padding: 2rem 0;
+    }
+
     &:hover {
         background: var(--general-hover);
     }
 
     &__nickname-wrapper {
-        padding: 2rem 0;
         display: flex;
         align-items: center;
         gap: 0.8rem;

@@ -15,6 +15,7 @@ const MyProfileCounterpartiesDisplayWrapper = ({ children }: PropsWithChildren<u
     if (isMobile) {
         return (
             <FullPageMobileWrapper
+                noFooter
                 renderHeader={() => (
                     <Text className='p2p-v2-my-profile-counterparties__header' size='md' weight='bold'>
                         My counterparties
@@ -43,9 +44,6 @@ const MyProfileCounterparties = () => {
         is_blocked: dropdownValue === 'blocked' ? 1 : 0,
         advertiser_name: searchValue,
     });
-    if (!isFetching && data.length === 0 && searchValue === '') {
-        return <MyProfileCounterpartiesEmpty />;
-    }
 
     const onClickFilter = () => {
         setIsFilterModalOpen(true);
@@ -59,31 +57,37 @@ const MyProfileCounterparties = () => {
     return (
         <MyProfileCounterpartiesDisplayWrapper>
             <div className='p2p-v2-my-profile-counterparties'>
-                <Text as='p' size='sm'>
-                    {`When you block someone, you won’t see their ads, and they can’t see yours. Your ads will be hidden from their search results, too.`}
-                </Text>
-                <MyProfileCounterpartiesHeader
-                    dropdownValue={dropdownValue}
-                    onClickFilter={onClickFilter}
-                    setDropdownValue={setDropdownValue}
-                    setSearchValue={setSearchValue}
-                />
-                <div className='p2p-v2-my-profile-counterparties__content'>
-                    <MyProfileCounterpartiesTable
-                        columns={[]}
-                        data={data}
-                        isFetching={isFetching}
-                        isLoading={isLoading}
-                        loadMoreAdvertisers={loadMoreAdvertisers}
-                        rowRender={item => (
-                            <MyProfileCounterpartiesTableRow
-                                id={item.id!}
-                                isBlocked={item.is_blocked}
-                                nickname={item.name!}
-                            />
-                        )}
+                <div>
+                    <Text as='p' size='sm'>
+                        {`When you block someone, you won’t see their ads, and they can’t see yours. Your ads will be hidden from their search results, too.`}
+                    </Text>
+                    <MyProfileCounterpartiesHeader
+                        dropdownValue={dropdownValue}
+                        onClickFilter={onClickFilter}
+                        setDropdownValue={setDropdownValue}
+                        setSearchValue={setSearchValue}
                     />
                 </div>
+                {!isFetching && data.length === 0 && searchValue === '' ? (
+                    <MyProfileCounterpartiesEmpty />
+                ) : (
+                    <div className='p2p-v2-my-profile-counterparties__content'>
+                        <MyProfileCounterpartiesTable
+                            columns={[]}
+                            data={data}
+                            isFetching={isFetching}
+                            isLoading={isLoading}
+                            loadMoreAdvertisers={loadMoreAdvertisers}
+                            rowRender={item => (
+                                <MyProfileCounterpartiesTableRow
+                                    id={item.id!}
+                                    isBlocked={item.is_blocked}
+                                    nickname={item.name!}
+                                />
+                            )}
+                        />
+                    </div>
+                )}
                 <BlockUnblockUserFilterModal
                     isModalOpen={isFilterModalOpen}
                     onRequestClose={() => setIsFilterModalOpen(false)}

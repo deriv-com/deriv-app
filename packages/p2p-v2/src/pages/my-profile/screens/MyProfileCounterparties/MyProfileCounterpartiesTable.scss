@@ -5,6 +5,7 @@
     gap: 0.8rem;
     flex-direction: column;
     width: 100%;
+    position: absolute;
 
     @include mobile {
         height: 100%;

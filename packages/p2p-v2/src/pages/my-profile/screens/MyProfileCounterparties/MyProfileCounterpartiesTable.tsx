@@ -59,16 +59,17 @@ const MyProfileCounterpartiesTable = <T,>({
     }
 
     return (
-            <div
-                className='p2p-v2-my-profile-counterparties-table'
-                onScroll={e => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
-            >
-                {table.getRowModel().rows.map((row) => (
-                    <div className='p2p-v2-my-profile-counterparties-table__row' key={row.id}>
-                        {rowRender(row.original)}
-                    </div>
-                ))}
-            </div>
+        <div
+            className='p2p-v2-my-profile-counterparties-table'
+            onScroll={e => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
+            ref={tableContainerRef}
+        >
+            {table.getRowModel().rows.map(row => (
+                <div className='p2p-v2-my-profile-counterparties-table__row' key={row.id}>
+                    {rowRender(row.original)}
+                </div>
+            ))}
+        </div>
     );
 };
 

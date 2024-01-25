@@ -63,12 +63,9 @@ const MyProfileCounterpartiesTable = <T,>({
                 className='p2p-v2-my-profile-counterparties-table'
                 onScroll={e => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
             >
-                {table.getRowModel().rows.map((row, index) => (
+                {table.getRowModel().rows.map((row) => (
                     <div className='p2p-v2-my-profile-counterparties-table__row' key={row.id}>
                         {rowRender(row.original)}
-                        {index === table.getRowModel().rows.length - 1 && isFetching && (
-                            <Loader className='p2p-v2-my-profile-counterparties-table__row-loader' />
-                        )}
                     </div>
                 ))}
             </div>

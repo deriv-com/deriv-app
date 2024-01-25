@@ -7,6 +7,10 @@
     flex-direction: column;
     width: 100%;
 
+    @include mobile {
+        height: 100%;
+    }
+
     &::-webkit-scrollbar {
         width: 5px;
         height: 5px;

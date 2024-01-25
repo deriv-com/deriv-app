@@ -3,13 +3,15 @@
     padding: 2.4rem;
     flex-direction: column;
     height: 100%;
-    //TODO: remove after integration with my counterparties tab in my profile page;
-    border: 1px solid;
-
+    
     &__content {
         display: flex;
         align-items: center;
         width: 100%;
         flex-direction: column;
+    }
+
+    &__header {
+        align-self: center;
     }
 }

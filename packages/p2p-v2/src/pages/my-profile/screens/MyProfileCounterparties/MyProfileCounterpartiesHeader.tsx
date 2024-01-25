@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Search } from '../../../../components/Search';
 import { Dropdown } from '../../../../components/Dropdown';
 import { useDevice } from '../../../../hooks';
@@ -7,9 +8,9 @@ import './MyProfileCounterpartiesHeader.scss';
 
 type MyProfileCounterpartiesHeaderProps = {
     dropdownValue: string;
+    onClickFilter: () => void;
     setDropdownValue: (value: string) => void;
     setSearchValue: (value: string) => void;
-    onClickFilter: () => void;
 };
 
 const DROPDOWN_LIST = [
@@ -19,9 +20,9 @@ const DROPDOWN_LIST = [
 
 const MyProfileCounterpartiesHeader = ({
     dropdownValue,
+    onClickFilter,
     setDropdownValue,
     setSearchValue,
-    onClickFilter
 }: MyProfileCounterpartiesHeaderProps) => {
     const { isMobile } = useDevice();
     return (
@@ -29,11 +30,11 @@ const MyProfileCounterpartiesHeader = ({
             {/* TODO: to be replaced by deriv-com/ui search component */}
             <Search name='counterparties-search' onSearch={setSearchValue} placeholder='Search by nickname' />
             {/* TODO: to be replaced by deriv-com/ui dropdown component */}
-            {isMobile ?
-                <button className='p2p-v2-my-profile-counterparties-header__sort-icon' onClick={onClickFilter} >
+            {isMobile ? (
+                <Button className='p2p-v2-my-profile-counterparties-header__sort-icon' onClick={onClickFilter}>
                     <SortIcon />
-                </button>
-                :
+                </Button>
+            ) : (
                 <Dropdown
                     label='Filter by'
                     list={DROPDOWN_LIST}
@@ -42,8 +43,8 @@ const MyProfileCounterpartiesHeader = ({
                     onSelect={setDropdownValue}
                     value={dropdownValue}
                 />
-            }
+            )}
         </div>
     );
-}
+};
 export default MyProfileCounterpartiesHeader;

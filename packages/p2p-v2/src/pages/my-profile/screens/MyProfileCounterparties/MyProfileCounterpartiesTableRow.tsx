@@ -20,7 +20,7 @@ const MyProfileCounterpartiesTableRow = ({ id, isBlocked, nickname }: TMyProfile
         <>
             <div className='p2p-v2-my-profile-counterparties-table-row'>
                 <div className='p2p-v2-my-profile-counterparties-table-row__nickname-wrapper'>
-                    <UserAvatar nickname={nickname} size={32} textSize='md' />
+                    <UserAvatar nickname={nickname} />
                     <Text size={isMobile ? 'md' : 'sm'}>{nickname}</Text>
                 </div>
                 {/* TODO: variant to be replaced after available in @deriv-com/ui */}

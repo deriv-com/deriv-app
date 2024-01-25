@@ -38,18 +38,24 @@ const Radio = ({
 
     return (
         <label
-            htmlFor={id}
             className={clsx('p2p-v2-radio-group__item', className, {
                 'p2p-v2-radio-group__item--active': checked,
             })}
+            htmlFor={id}
         >
-            <input className='p2p-v2-radio-group__input' type='radio' id={id} onChange={onInputChange} {...otherProps} />
+            <input
+                className='p2p-v2-radio-group__input'
+                id={id}
+                onChange={onInputChange}
+                type='radio'
+                {...otherProps}
+            />
             <span
                 className={clsx('p2p-v2-radio-group__circle', {
                     'p2p-v2-radio-group__circle--selected': checked,
                 })}
             />
-            <Text size='xs' className={clsx('p2p-v2-radio-group__label', classNameLabel)}>
+            <Text className={clsx('p2p-v2-radio-group__label', classNameLabel)} size='xs'>
                 {children}
             </Text>
         </label>

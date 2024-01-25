@@ -6,7 +6,7 @@
 
     @include mobile {
         display: flex;
-        
+
         .p2p-v2-search {
             max-width: 28rem;
         }
@@ -17,8 +17,10 @@
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        border: 1px solid #D6DADB;
+        border: 1px solid #d6dadb;
         border-radius: 4px;
         padding: 0 1rem;
+        height: 4rem;
+        background-color: #fff;
     }
 }

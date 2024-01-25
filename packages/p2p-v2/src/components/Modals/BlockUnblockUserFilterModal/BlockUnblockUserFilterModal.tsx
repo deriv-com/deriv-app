@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import { customStyles } from '../helpers';
-import { RadioGroup } from '../../../components/RadioGroup';
+import { RadioGroup } from '../../RadioGroup';
 import './BlockUnblockUserFilterModal.scss';
 
 type TBlockUnblockUserFilterModalProps = {
@@ -16,8 +16,12 @@ const DROPDOWN_LIST = [
     { value: 'blocked', text: 'Blocked' },
 ];
 
-const BlockUnblockUserFilterModal = ({ isModalOpen, onRequestClose, onToggle, selected }: TBlockUnblockUserFilterModalProps) => {
-
+const BlockUnblockUserFilterModal = ({
+    isModalOpen,
+    onRequestClose,
+    onToggle,
+    selected,
+}: TBlockUnblockUserFilterModalProps) => {
     return (
         <Modal
             className='p2p-v2-block-unblock-user-filter-modal'
@@ -28,18 +32,12 @@ const BlockUnblockUserFilterModal = ({ isModalOpen, onRequestClose, onToggle, se
             <RadioGroup
                 className='p2p-v2-sort-radiogroup'
                 name='block-user-filter-modal'
-                onToggle={(event) => onToggle(event.target.value)}
-                selected={selected}
+                onToggle={event => onToggle(event.target.value)}
                 required
+                selected={selected}
             >
                 {DROPDOWN_LIST.map((list_item, key) => {
-                    return (
-                        <RadioGroup.Item
-                            key={key}
-                            value={list_item.value}
-                            label={list_item.text}
-                        />
-                    );
+                    return <RadioGroup.Item key={key} label={list_item.text} value={list_item.value} />;
                 })}
             </RadioGroup>
         </Modal>

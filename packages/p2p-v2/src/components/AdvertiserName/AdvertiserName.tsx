@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar } from '../Avatar';
+import { UserAvatar } from '../UserAvatar';
 import { useAdvertiserStats, useDevice } from '../../hooks';
 import AdvertiserNameStats from './AdvertiserNameStats';
 import AdvertiserNameBadges from './AdvertiserNameBadges';
@@ -15,8 +15,7 @@ const AdvertiserName = () => {
 
     return (
         <div className='p2p-v2-advertiser-name'>
-            {/* TODO: To be replaced with useravatar component */}
-            <Avatar name={advertiserStats.name || ''} />
+            <UserAvatar nickname={advertiserStats.name!} size={isDesktop ? 64 : 42} textSize='lg' />
             <div className='p2p-v2-advertiser-name__details'>
                 <Text size='md' weight='bold'>
                     {advertiserStats.name}{' '}

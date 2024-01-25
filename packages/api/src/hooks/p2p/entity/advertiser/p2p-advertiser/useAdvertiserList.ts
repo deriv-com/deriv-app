@@ -16,7 +16,7 @@ const useAdvertiserList = (
         delete payload?.advertiser_name;
     }
     const { data, fetchNextPage, ...rest } = useInfiniteQuery('p2p_advertiser_list', {
-        payload: { ...payload, offset: payload?.offset, limit: 5 },
+        payload: { ...payload, offset: payload?.offset, limit: payload?.limit },
         options: {
             getNextPageParam: (lastPage, pages) => {
                 if (!lastPage?.p2p_advertiser_list?.list?.length) return;

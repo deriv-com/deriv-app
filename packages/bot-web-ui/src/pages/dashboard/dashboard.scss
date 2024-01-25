@@ -59,161 +59,47 @@
     }
 }
 
-.dashboard {
-    &__main {
-        display: flex;
-        overflow: hidden;
+.db {
+    &-sidebar {
+        position: relative;
+        background-color: var(--general-main-1);
+        padding: 2.4rem;
+        height: 100%;
+
+        &--block {
+            display: block;
+        }
+
+        display: none;
+
+        &__images {
+            background: var(--general-section-6);
+        }
     }
+    &-info-panel {
+        &__close-action {
+            position: absolute;
+            right: 1.4rem;
+            top: 1.4rem;
+            height: 2rem;
+            width: 2rem;
+            line-height: 2.3rem;
+            text-align: center;
+            border-radius: 1rem;
 
-    &__container {
-        border: none;
-        max-width: 100%;
-        width: 100%;
-
-        .dc-tabs {
-            &__active-line {
-                background-color: var(--general-main-1);
-                transition: none;
-            }
-
-            &__active {
-                background: var(--general-main-1);
-            }
-
-            &__list {
+            &:hover {
+                cursor: pointer;
                 background: var(--general-section-1);
-                justify-content: start;
-
-                @include mobile {
-                    overflow-x: auto;
-
-                    &::-webkit-scrollbar {
-                        display: none;
-                    }
-
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
-                }
-
-                &--header {
-                    &--dashboard {
-                        &__tabs {
-                            @include mobile {
-                                width: 100%;
-                                overflow-x: auto;
-                            }
-                        }
-                    }
-                }
-            }
-
-            &__content {
-                @include mobile {
-                    width: 100%;
-                    overflow-x: auto;
-
-                    &--no-result {
-                        @include align-center;
-                        flex-direction: column;
-                        justify-content: flex-start;
-                        height: 100vh;
-                        margin-top: 5rem;
-
-                        svg {
-                            margin-bottom: 2.4rem;
-                        }
-                        h1 {
-                            margin-bottom: 0.8rem;
-                        }
-                        span {
-                            word-break: break-word;
-                            text-align: center;
-                        }
-                    }
-                }
-
-                &--dashboard {
-                    &__tabs {
-                        display: flex;
-                        justify-content: space-between;
-
-                        @include mobile {
-                            flex-direction: column;
-                            background-color: var(--general-section-1);
-                        }
-                    }
-                }
-            }
-
-            &__item {
-                border-top-left-radius: 1rem;
-                border-top-right-radius: 1rem;
-                height: 4.8rem;
-                @include align-center;
-
-                &__loaded {
-                    text-align: left;
-                    padding-left: 1.5rem;
-                }
-
-                svg {
-                    width: 1.6rem;
-                    height: 1.6rem;
-                    padding-right: 0;
-                    margin-right: 0.8rem;
-                }
             }
         }
-    }
-}
 
-.w-100 {
-    width: 100%;
-}
-
-.nm-48 {
-    margin-top: -4.8rem;
-}
-
-.db-sidebar {
-    position: relative;
-    background-color: var(--general-main-1);
-    padding: 2.4rem;
-    height: 100%;
-
-    &--block {
-        display: block;
-    }
-
-    display: none;
-
-    &__images {
-        background: var(--general-section-6);
-    }
-}
-
-.db-info-panel {
-    &__close-action {
-        position: absolute;
-        right: 1.4rem;
-        top: 1.4rem;
-        height: 2rem;
-        width: 2rem;
-        line-height: 2.3rem;
-        text-align: center;
-        border-radius: 1rem;
-
-        &:hover {
+        &__content {
             cursor: pointer;
-            background: var(--general-section-1);
-        }
-    }
 
-    &__content {
-        cursor: pointer;
-
-        &:hover {
-            text-decoration: underline;
+            &:hover {
+                text-decoration: underline;
+                color: var(--button-primary-default);
+            }
         }
     }
 }

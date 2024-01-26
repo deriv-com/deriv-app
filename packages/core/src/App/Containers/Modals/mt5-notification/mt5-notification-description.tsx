@@ -10,13 +10,13 @@ const MT5NotificationDescription = ({ setMT5NotificationModal }: TMT5Notificatio
     return (
         <div className={'mt5-notification-modal-description'}>
             <Text as='p' size='xs'>
-                <Localize i18n_default_text='We’ve updated the login procedure for your Deriv MT5 account. Please note the following changes:' />
+                <Localize i18n_default_text='We’ve updated the login procedure for your Deriv MT5 account. Here is what you need to do when you want to log in via your MT5 mobile app:' />
             </Text>
             <ol className='mt5-notification-list-container'>
                 <li className='mt5-notification-list'>
                     <Text as='p' size='xs'>
                         <Localize
-                            i18n_default_text='You’ll now need to choose the correct Deriv company and server name during login as you displayed on Trader’s Hub. '
+                            i18n_default_text='Please choose the correct Deriv company and server name when logging in, as shown on Trader’s Hub.  '
                             components={[
                                 <a
                                     className='mt5-notification-list__link'
@@ -35,7 +35,7 @@ const MT5NotificationDescription = ({ setMT5NotificationModal }: TMT5Notificatio
                 <li className='mt5-notification-list'>
                     <Text as='p' size='xs'>
                         <Localize
-                            i18n_default_text='If you encounter any difficulties logging into your Deriv MT5 account, please follow the provided <0>step-by-step guide</0>.'
+                            i18n_default_text='If you have trouble logging into your Deriv MT5 account, please follow this <0>guide</0>.'
                             components={[
                                 <a
                                     className='mt5-notification-list__link'

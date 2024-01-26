@@ -33,7 +33,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
         handleSubmit,
         reset,
     } = useForm({ mode: 'all' });
-    const [isOpen, setIsOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const { actionType, selectedPaymentMethod, title } = rest.formState || {};
 
     const { data: availablePaymentMethods } = p2p.paymentMethods.useGet();
@@ -44,7 +44,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
         if (isCreateSuccessful) {
             onResetFormState();
         } else if (createError) {
-            setIsOpen(true);
+            setIsModalOpen(true);
         }
     }, [isCreateSuccessful, createError, onResetFormState]);
 
@@ -52,7 +52,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
         if (isUpdateSuccessful) {
             onResetFormState();
         } else if (updateError) {
-            setIsOpen(true);
+            setIsModalOpen(true);
         }
     }, [isUpdateSuccessful, onResetFormState, updateError]);
 
@@ -66,7 +66,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
 
     const handleGoBack = () => {
         if (isDirty) {
-            setIsOpen(true);
+            setIsModalOpen(true);
         } else {
             onResetFormState();
         }
@@ -190,12 +190,12 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                 // TODO: Remember to translate these strings
                 <PaymentMethodModal
                     description='If you choose to cancel, the edited details will be lost.'
-                    isOpen={isOpen}
+                    isModalOpen={isModalOpen}
                     onConfirm={() => {
                         onResetFormState();
                     }}
                     onReject={() => {
-                        setIsOpen(false);
+                        setIsModalOpen(false);
                     }}
                     primaryButtonLabel="Don't cancel"
                     secondaryButtonLabel='Cancel'
@@ -206,12 +206,12 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                 // TODO: Remember to translate these strings
                 <PaymentMethodModal
                     description='If you choose to cancel, the details you’ve entered will be lost.'
-                    isOpen={isOpen}
+                    isModalOpen={isModalOpen}
                     onConfirm={() => {
                         onResetFormState();
                     }}
                     onReject={() => {
-                        setIsOpen(false);
+                        setIsModalOpen(false);
                     }}
                     primaryButtonLabel='Go back'
                     secondaryButtonLabel='Cancel'
@@ -224,10 +224,10 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                         (createError && 'message' in createError && createError?.message) ||
                             (updateError && 'message' in updateError && updateError?.message)
                     )}
-                    isOpen={true}
+                    isModalOpen={true}
                     onConfirm={() => {
                         onResetFormState();
-                        setIsOpen(false);
+                        setIsModalOpen(false);
                     }}
                 />
             )}

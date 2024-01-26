@@ -26,57 +26,39 @@ type TPaymentMethodField = {
 const PaymentMethodField = ({ control, defaultValue, displayName, field, required }: TPaymentMethodField) => {
     return (
         <div className='p2p-v2-payment-method-form__field-wrapper'>
-            {field === 'instructions' ? (
-                <Controller
-                    control={control}
-                    defaultValue={defaultValue}
-                    name={field}
-                    render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => {
-                        return (
-                            <TextArea
-                                hint={error?.message}
-                                isInvalid={!!error?.message}
-                                label={displayName}
-                                onBlur={onBlur}
-                                onChange={onChange}
-                                value={value}
-                            />
-                        );
-                    }}
-                    rules={{
-                        pattern: {
-                            message: `${displayName} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;`, // TODO: Remember to translate this
-                            value: VALID_SYMBOLS_PATTERN,
-                        },
-                        required: required ? 'This field is required.' : false,
-                    }}
-                />
-            ) : (
-                <Controller
-                    control={control}
-                    defaultValue={defaultValue}
-                    name={field}
-                    render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => {
-                        return (
-                            <TextField
-                                errorMessage={error?.message}
-                                isInvalid={!!error?.message}
-                                label={displayName}
-                                onBlur={onBlur}
-                                onChange={onChange}
-                                value={value}
-                            />
-                        );
-                    }}
-                    rules={{
-                        pattern: {
-                            message: `${displayName} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;`, // TODO: Remember to translate this
-                            value: VALID_SYMBOLS_PATTERN,
-                        },
-                        required: required ? 'This field is required.' : false,
-                    }}
-                />
-            )}
+            <Controller
+                control={control}
+                defaultValue={defaultValue}
+                name={field}
+                render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => {
+                    return field === 'instructions' ? (
+                        <TextArea
+                            hint={error?.message}
+                            isInvalid={!!error?.message}
+                            label={displayName}
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            value={value}
+                        />
+                    ) : (
+                        <TextField
+                            errorMessage={error?.message}
+                            isInvalid={!!error?.message}
+                            label={displayName}
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            value={value}
+                        />
+                    );
+                }}
+                rules={{
+                    pattern: {
+                        message: `${displayName} can only include letters, numbers, spaces, and any of these symbols: -+.,'#@():;`, // TODO: Remember to translate this
+                        value: VALID_SYMBOLS_PATTERN,
+                    },
+                    required: required ? 'This field is required.' : false,
+                }}
+            />
         </div>
     );
 };

@@ -5,12 +5,11 @@
     max-width: 67.2rem;
     border: 1px solid #d6dadb;
     border-radius: 8px;
-    margin: 1.6rem 0;
+    margin: 1.6rem 1.6rem 1.6rem 0;
     overflow-wrap: break-word;
     min-height: 12.8rem;
     padding: 1.6rem;
     width: 20.8rem;
-    margin-right: 1.6rem;
     @include mobile {
         margin-right: 0;
     }

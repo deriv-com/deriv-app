@@ -19,13 +19,7 @@ const PaymentMethodsHeader = ({ onGoBack, title }: TPaymentMethodsHeaderProps) =
     return (
         <div className='p2p-v2-payment-method-form__header'>
             <div className='p2p-v2-payment-method-form__back-button'>
-                {onGoBack ? (
-                    <ArrowLeftBold
-                        onClick={() => {
-                            onGoBack?.();
-                        }}
-                    />
-                ) : null}
+                {onGoBack && <ArrowLeftBold onClick={onGoBack} />}
             </div>
             {/* TODO: Remember to translate this */}
             <Text size='sm' weight='bold'>

@@ -6,7 +6,7 @@ import { customStyles } from '../../helpers';
 
 type TPaymentMethodModalProps = {
     description?: string;
-    isOpen: boolean;
+    isModalOpen: boolean;
     onConfirm: () => void;
     onReject: () => void;
     primaryButtonLabel: string;
@@ -16,7 +16,7 @@ type TPaymentMethodModalProps = {
 
 const PaymentMethodModal = ({
     description,
-    isOpen,
+    isModalOpen,
     onConfirm,
     onReject,
     primaryButtonLabel,
@@ -31,7 +31,7 @@ const PaymentMethodModal = ({
         <ReactModal
             className='p2p-v2-payment-methods-modal__modal'
             contentLabel={title}
-            isOpen={isOpen}
+            isOpen={isModalOpen}
             shouldCloseOnOverlayClick={false}
             style={customStyles}
         >

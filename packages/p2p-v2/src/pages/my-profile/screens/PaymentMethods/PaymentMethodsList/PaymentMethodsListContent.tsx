@@ -43,7 +43,7 @@ const PaymentMethodsListContent = ({
     onResetFormState,
     p2pAdvertiserPaymentMethods,
 }: TPaymentMethodsListContentProps) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const {
         delete: deleteAdvertiserPaymentMethod,
         error: deleteError,
@@ -68,13 +68,13 @@ const PaymentMethodsListContent = ({
 
     useEffect(() => {
         if (deleteError) {
-            setIsOpen(true);
+            setIsModalOpen(true);
         }
     }, [isDeleteSuccessful, deleteError]);
 
     return (
         <div className='p2p-v2-payment-methods-list'>
-            {isMobile ? null : <AddNewButton isMobile={isMobile} onAdd={onAdd} />}
+            {!isMobile && <AddNewButton isMobile={isMobile} onAdd={onAdd} />}
             {Object.keys(groupedPaymentMethods)
                 ?.sort()
                 ?.map(key => {
@@ -91,7 +91,7 @@ const PaymentMethodsListContent = ({
                                             key={advertiserPaymentMethod.id}
                                             onDeletePaymentMethod={() => {
                                                 onDelete(advertiserPaymentMethod);
-                                                setIsOpen(true);
+                                                setIsModalOpen(true);
                                             }}
                                             onEditPaymentMethod={() => {
                                                 onEdit({
@@ -113,13 +113,13 @@ const PaymentMethodsListContent = ({
             {actionType === 'DELETE' && (
                 <PaymentMethodModal
                     description='Are you sure you want to remove this payment method?'
-                    isOpen={isOpen}
+                    isModalOpen={isModalOpen}
                     onConfirm={() => {
                         deleteAdvertiserPaymentMethod(Number(selectedPaymentMethod?.id));
                         onResetFormState();
                     }}
                     onReject={() => {
-                        setIsOpen(false);
+                        setIsModalOpen(false);
                     }}
                     primaryButtonLabel='No'
                     secondaryButtonLabel='Yes, remove'

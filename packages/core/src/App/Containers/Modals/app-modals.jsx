@@ -68,6 +68,7 @@ const InformationSubmittedModal = React.lazy(() =>
 const AppModals = observer(() => {
     const { client, ui, traders_hub } = useStore();
     const {
+        is_authorize,
         is_logged_in,
         fetchFinancialAssessment,
         setCFDScore,
@@ -102,12 +103,12 @@ const AppModals = observer(() => {
     const is_eu_user = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag);
 
     React.useEffect(() => {
-        if (is_logged_in) {
+        if (is_logged_in && is_authorize) {
             fetchFinancialAssessment().then(response => {
                 setCFDScore(response?.cfd_score ?? 0);
             });
         }
-    }, [is_logged_in]);
+    }, [is_logged_in, is_authorize]);
     if (temp_session_signup_params && window.location.href.includes(routes.onboarding)) {
         toggleAccountSignupModal(true);
     } else {

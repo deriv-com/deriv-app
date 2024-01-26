@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useReducer, useState } from 'react';
+import React, { createContext, useContext, useMemo, useReducer, useState } from 'react';
 import { useStep } from 'usehooks-ts';
 
 type Helpers = ReturnType<typeof useStep>[1];

@@ -8,7 +8,6 @@ import {
     useIsP2PEnabled,
     usePaymentAgentTransferVisible,
     useFeatureFlags,
-    useP2PSettings,
 } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
@@ -35,7 +34,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     } = ui;
     const {
         account_status,
-        is_authorize,
         is_logged_in,
         is_logging_in,
         is_virtual,
@@ -55,10 +53,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
-    const {
-        subscribe,
-        rest: { isSubscribed },
-    } = useP2PSettings();
     const { is_p2p_enabled } = useIsP2PEnabled();
 
     const liveChat = useLiveChat(false, loginid);
@@ -111,12 +105,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_next_wallet_enabled,
         is_p2p_enabled,
     ]);
-
-    React.useEffect(() => {
-        if (is_authorize && !isSubscribed) {
-            subscribe();
-        }
-    }, [is_authorize, isSubscribed, subscribe]);
 
     const toggleDrawer = React.useCallback(() => {
         if (is_mobile_language_menu_open) setMobileLanguageMenuOpen(false);

@@ -597,6 +597,7 @@ type TClientStore = {
     setAccounts: () => (accounts: Record<string, TActiveAccount>) => void;
     should_show_eu_error: boolean;
     is_options_blocked: boolean;
+    setIsP2PEnabled: (is_p2p_enabled: boolean) => void;
 };
 
 type TCommonStoreError = {

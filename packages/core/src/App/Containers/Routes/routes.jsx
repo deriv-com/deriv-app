@@ -3,7 +3,7 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
-import { useP2PCompletedOrdersNotification } from '@deriv/hooks';
+import { useP2PCompletedOrdersNotification, useP2PSettings } from '@deriv/hooks';
 import { urlForLanguage } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinaryRoutes from 'App/Components/Routes';
@@ -20,10 +20,20 @@ const Error = Loadable({
 
 const Routes = observer(({ history, location, passthrough }) => {
     const { client, common } = useStore();
-    const { is_logged_in, is_logging_in } = client;
+    const { is_authorize, is_logged_in, is_logging_in } = client;
     const { error, has_error, setAppRouterHistory, addRouteHistoryItem, setInitialRouteHistoryItem } = common;
     const initial_route = React.useRef(null);
     const unlisten_to_change = React.useRef(null);
+    const {
+        subscribe,
+        rest: { isSubscribed },
+    } = useP2PSettings();
+
+    React.useEffect(() => {
+        if (is_authorize && !isSubscribed) {
+            subscribe();
+        }
+    }, [is_authorize, isSubscribed, subscribe]);
 
     useP2PCompletedOrdersNotification();
 

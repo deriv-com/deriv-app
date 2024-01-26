@@ -150,6 +150,7 @@ export default class ClientStore extends BaseStore {
     prev_account_type = 'demo';
     external_url_params = {};
     is_already_attempted = false;
+    is_p2p_enabled = false;
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -216,6 +217,7 @@ export default class ClientStore extends BaseStore {
             p2p_advertiser_info: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
+            is_p2p_enabled: observable,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -389,6 +391,7 @@ export default class ClientStore extends BaseStore {
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
+            setIsP2PEnabled: action.bound,
         });
 
         reaction(
@@ -2629,5 +2632,9 @@ export default class ClientStore extends BaseStore {
 
     setIsAlreadyAttempted(status) {
         this.is_already_attempted = status;
+    }
+
+    setIsP2PEnabled(is_p2p_enabled) {
+        this.is_p2p_enabled = is_p2p_enabled;
     }
 }

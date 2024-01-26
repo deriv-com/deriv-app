@@ -11,7 +11,7 @@ const useIsP2PEnabled = () => {
     } = useP2PSettings();
     const { client, traders_hub } = useStore();
     // Todo: to replace it with useAuthorize hook
-    const { currency, email, is_virtual, loginid } = client;
+    const { currency, email, is_virtual, loginid, setIsP2PEnabled } = client;
     const { is_low_risk_cr_eu_real } = traders_hub;
 
     const is_p2p_supported_currency = Boolean(
@@ -23,6 +23,8 @@ const useIsP2PEnabled = () => {
     // const is_p2p_enabled = data?.disabled === 0;
 
     React.useEffect(() => {
+        setIsP2PEnabled(is_p2p_enabled);
+
         if (email && loginid) {
             const domain = /deriv\.(com|me)/.test(window.location.hostname)
                 ? deriv_urls.DERIV_HOST_NAME
@@ -30,7 +32,7 @@ const useIsP2PEnabled = () => {
 
             Cookies.set('is_p2p_disabled', (!is_p2p_enabled).toString(), { domain, secure: true, sameSite: 'none' });
         }
-    }, [email, is_p2p_enabled, loginid]);
+    }, [email, is_p2p_enabled, loginid, setIsP2PEnabled]);
 
     return {
         is_p2p_enabled,

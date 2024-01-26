@@ -22,7 +22,7 @@ type TBaseRoute =
 export type TRoute = '/endpoint' | `${typeof prefix}${TBaseRoute}`;
 
 interface BaseRouteState {
-    '/cashier/transactions': { showPending: boolean; transactionType: 'deposit' | 'withdrawal' };
+    '/cashier/transactions': { showPending?: boolean; transactionType?: 'deposit' | 'withdrawal' };
     '/cashier/transfer': { toAccountLoginId: string };
 }
 

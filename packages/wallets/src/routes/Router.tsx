@@ -6,9 +6,9 @@ import { CashierModalRoute } from './CashierModalRoute';
 import { CompareAccountsRoute } from './CompareAccountsRoute';
 import { WalletsListingRoute } from './WalletsListingRoute';
 
-const prefix = '/wallets';
+const walletsPrefix = '/wallets';
 
-type TBaseRoute =
+type TWalletsRoute =
     | ''
     | '/cashier'
     | '/cashier/deposit'
@@ -19,23 +19,26 @@ type TBaseRoute =
     | '/cashier/withdraw'
     | '/compare-accounts';
 
-export type TRoute = '/endpoint' | `${typeof prefix}${TBaseRoute}`;
+export type TRoute = '/endpoint' | `${typeof walletsPrefix}${TWalletsRoute}`;
 
-interface BaseRouteState {
+// wallets routes which have their states
+interface WalletsRouteState {
     '/cashier/transactions': { showPending?: boolean; transactionType?: 'deposit' | 'withdrawal' };
     '/cashier/transfer': { toAccountLoginId: string };
 }
 
 type TRouteState = {
-    [K in TBaseRoute as `${typeof prefix}${K}`]: K extends keyof BaseRouteState ? BaseRouteState[K] : never;
+    [K in TWalletsRoute as `${typeof walletsPrefix}${K}`]: K extends keyof WalletsRouteState
+        ? WalletsRouteState[K]
+        : never;
 };
 
 type TLocationInfo = {
-    [K in keyof BaseRouteState]: {
-        pathname: `${typeof prefix}${K}`;
-        state?: BaseRouteState[K];
+    [K in keyof WalletsRouteState]: {
+        pathname: `${typeof walletsPrefix}${K}`;
+        state?: WalletsRouteState[K];
     };
-}[keyof BaseRouteState];
+}[keyof WalletsRouteState];
 
 declare module 'react-router-dom' {
     export function useHistory(): {
@@ -45,7 +48,7 @@ declare module 'react-router-dom' {
         };
         push: <T extends TRoute>(
             path: T,
-            state?: T extends `${typeof prefix}${TBaseRoute}` ? TRouteState[T] : never
+            state?: T extends `${typeof walletsPrefix}${TWalletsRoute}` ? TRouteState[T] : never
         ) => void;
     };
 
@@ -56,13 +59,13 @@ const Router: React.FC = () => {
     const { data: walletAccounts, isLoading } = useWalletAccountsList();
 
     if ((!walletAccounts || !walletAccounts.length) && !isLoading)
-        return <Route component={WalletNoWalletFoundState} path={prefix} />;
+        return <Route component={WalletNoWalletFoundState} path={walletsPrefix} />;
 
     return (
         <Switch>
-            <Route component={CompareAccountsRoute} path={`${prefix}/compare-accounts`} />
-            <Route component={CashierModalRoute} path={`${prefix}/cashier`} />
-            <Route component={WalletsListingRoute} path={prefix} />
+            <Route component={CompareAccountsRoute} path={`${walletsPrefix}/compare-accounts`} />
+            <Route component={CashierModalRoute} path={`${walletsPrefix}/cashier`} />
+            <Route component={WalletsListingRoute} path={walletsPrefix} />
         </Switch>
     );
 };

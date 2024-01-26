@@ -48,7 +48,7 @@ const BinarySocketGeneral = (() => {
                     .expectResponse('authorize')
                     .then(() => {
                         WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
-                        WS.subscribeP2PSettings(ResponseHandlers.p2pSettings);
+                        // WS.subscribeP2PSettings(ResponseHandlers.p2pSettings);
                     });
             } else {
                 WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);

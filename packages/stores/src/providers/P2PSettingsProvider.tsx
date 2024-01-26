@@ -28,16 +28,10 @@ const P2PSettingsProvider = ({ children }: TP2PSettingsProvider) => {
                 return current_date > cutoff_date;
             };
 
-            const currency_list = p2p_settings_data?.local_currencies.map(currency => {
+            const currency_list = p2p_settings_data.local_currencies.map(currency => {
                 const { display_name, has_adverts, is_default, symbol } = currency;
 
                 return {
-                    // component: (
-                    //     <div className='currency-dropdown__list-item'>
-                    //         <div className='currency-dropdown__list-item-symbol'>{symbol}</div>
-                    //         <div className='currency-dropdown__list-item-name'>{display_name}</div>
-                    //     </div>
-                    // ),
                     display_name,
                     has_adverts,
                     is_default,
@@ -48,6 +42,13 @@ const P2PSettingsProvider = ({ children }: TP2PSettingsProvider) => {
 
             setP2PSettings({
                 ...p2p_settings_data,
+                /** Modified list of local_currencies */
+                currency_list,
+                /** Indicates the maximum rate offset for floating rate adverts. */
+                float_rate_offset_limit_string:
+                    p2p_settings_data?.float_rate_offset_limit?.toString().split('.')?.[1]?.length > 2
+                        ? (p2p_settings_data?.float_rate_offset_limit - 0.005).toFixed(2)
+                        : p2p_settings_data?.float_rate_offset_limit.toFixed(2),
                 /** Indicates if the cross border ads feature is enabled. */
                 is_cross_border_ads_enabled: Boolean(p2p_settings_data?.cross_border_ads_enabled),
                 /** Indicates if the P2P service is unavailable. */
@@ -58,13 +59,8 @@ const P2PSettingsProvider = ({ children }: TP2PSettingsProvider) => {
                 rate_type: (p2p_settings_data?.float_rate_adverts === 'enabled' ? 'float' : 'fixed') as
                     | 'float'
                     | 'fixed',
-                /** Indicates the maximum rate offset for floating rate adverts. */
-                float_rate_offset_limit_string:
-                    p2p_settings_data?.float_rate_offset_limit?.toString().split('.')?.[1]?.length > 2
-                        ? (p2p_settings_data?.float_rate_offset_limit - 0.005).toFixed(2)
-                        : p2p_settings_data?.float_rate_offset_limit.toFixed(2),
+                /** Indicates if the fixed rate adverts end date has been reached. */
                 reached_target_date: reached_target_date(),
-                currency_list,
             });
         }
     }, [data, setP2PSettings]);

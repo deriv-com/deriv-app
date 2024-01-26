@@ -16,7 +16,19 @@ const CurrencyDropdown = () => {
     const { buy_sell_store } = useStores();
     const { onLocalCurrencySelect } = buy_sell_store;
     const { showModal } = useModalManagerContext();
-    const { p2p_settings } = useP2PSettings();
+    const {
+        p2p_settings: { currency_list },
+    } = useP2PSettings();
+
+    const local_currencies_list = currency_list.map(currency => ({
+        ...currency,
+        component: (
+            <div className='currency-dropdown__list-item'>
+                <div className='currency-dropdown__list-item-symbol'>{currency.value}</div>
+                <div className='currency-dropdown__list-item-name'>{currency.display_name}</div>
+            </div>
+        ),
+    }));
 
     useOnClickOutside(
         currency_selector_ref,
@@ -33,7 +45,7 @@ const CurrencyDropdown = () => {
                     'currency-dropdown__list--visible': is_list_visible,
                 })}
                 is_align_text_left
-                list={p2p_settings.currency_list}
+                list={local_currencies_list}
                 onClick={() => {
                     if (isMobile()) showModal({ key: 'CurrencySelectorModal' });
                     else setIsListVisible(!is_list_visible);
@@ -44,7 +56,7 @@ const CurrencyDropdown = () => {
             {is_list_visible && (
                 <CurrencySelector
                     default_value={buy_sell_store.selected_local_currency}
-                    list={p2p_settings.currency_list}
+                    list={local_currencies_list}
                     onSelect={value => {
                         setIsListVisible(false);
                         onLocalCurrencySelect(value);

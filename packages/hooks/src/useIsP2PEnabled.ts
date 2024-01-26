@@ -1,5 +1,8 @@
+import React from 'react';
 import { useStore } from '@deriv/stores';
 import useP2PSettings from './useP2PSettings';
+import Cookies from 'js-cookie';
+import { deriv_urls } from '@deriv/shared';
 
 const useIsP2PEnabled = () => {
     const {
@@ -8,7 +11,7 @@ const useIsP2PEnabled = () => {
     } = useP2PSettings();
     const { client, traders_hub } = useStore();
     // Todo: to replace it with useAuthorize hook
-    const { currency, is_virtual } = client;
+    const { currency, email, is_virtual, loginid } = client;
     const { is_low_risk_cr_eu_real } = traders_hub;
 
     const is_p2p_supported_currency = Boolean(
@@ -18,6 +21,15 @@ const useIsP2PEnabled = () => {
 
     // Todo: should replace with the next line instead once BE is fixed.
     // const is_p2p_enabled = data?.disabled === 0;
+
+    React.useEffect(() => {
+        if (email && loginid) {
+            const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+
+            Cookies.set('is_p2p_disabled', !is_p2p_enabled, { domain, secure: true, sameSite: 'none' });
+            // console.log('hi', Cookies.get(), domain);
+        }
+    }, [email, is_p2p_enabled, loginid]);
 
     return {
         is_p2p_enabled,

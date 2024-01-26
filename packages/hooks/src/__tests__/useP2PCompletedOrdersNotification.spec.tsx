@@ -3,6 +3,11 @@ import { useSubscription } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useP2PCompletedOrdersNotification from '../useP2PCompletedOrdersNotification';
+import useIsP2PEnabled from '../useIsP2PEnabled';
+
+// let mock_is_p2p_enabled = true;
+
+jest.mock('../useIsP2PEnabled');
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -15,8 +20,7 @@ describe('useP2PCompletedOrdersNotification', () => {
     test('should not subscribe to p2p_order_list if user is not logged in', () => {
         const mock = mockStore({
             client: {
-                is_logged_in: false,
-                is_p2p_enabled: true,
+                is_authorize: false,
                 currency: 'USD',
             },
             notifications: {
@@ -43,13 +47,20 @@ describe('useP2PCompletedOrdersNotification', () => {
     test('should not subscribe to p2p_order_list if user p2p is disabled', () => {
         const mock = mockStore({
             client: {
-                is_logged_in: true,
-                is_p2p_enabled: false,
+                is_authorize: true,
                 currency: 'EUR',
             },
             notifications: {
                 p2p_completed_orders: [],
             },
+        });
+
+        (useIsP2PEnabled as jest.Mock).mockImplementation(() => {
+            return {
+                is_p2p_enabled: false,
+                is_p2p_enabled_loading: false,
+                is_p2p_enabled_success: false,
+            };
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useSubscription
@@ -72,13 +83,20 @@ describe('useP2PCompletedOrdersNotification', () => {
     test('should not call unsubscribe from p2p_order_list if user is logged in and p2p is enabled but list is not subscribed', () => {
         const mock = mockStore({
             client: {
-                is_logged_in: true,
-                is_p2p_enabled: true,
+                is_authorize: true,
                 currency: 'USD',
             },
             notifications: {
                 p2p_completed_orders: [],
             },
+        });
+
+        (useIsP2PEnabled as jest.Mock).mockImplementation(() => {
+            return {
+                is_p2p_enabled: true,
+                is_p2p_enabled_loading: false,
+                is_p2p_enabled_success: false,
+            };
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useSubscription
@@ -102,13 +120,20 @@ describe('useP2PCompletedOrdersNotification', () => {
     test('should unsubscribe from p2p_order_list if user is logged in and p2p is enabled and list is subscribed', () => {
         const mock = mockStore({
             client: {
-                is_logged_in: true,
-                is_p2p_enabled: true,
+                is_authorize: true,
                 currency: 'USD',
             },
             notifications: {
                 p2p_completed_orders: [],
             },
+        });
+
+        (useIsP2PEnabled as jest.Mock).mockImplementation(() => {
+            return {
+                is_p2p_enabled: true,
+                is_p2p_enabled_loading: false,
+                is_p2p_enabled_success: false,
+            };
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useSubscription
@@ -132,8 +157,7 @@ describe('useP2PCompletedOrdersNotification', () => {
     test('should subscribe to completed p2p_order_list', () => {
         const mock = mockStore({
             client: {
-                is_logged_in: true,
-                is_p2p_enabled: true,
+                is_authorize: true,
                 currency: 'USD',
             },
             notifications: {
@@ -204,6 +228,14 @@ describe('useP2PCompletedOrdersNotification', () => {
             },
             subscribe: jest.fn(),
             unsubscribe: jest.fn(),
+        });
+
+        (useIsP2PEnabled as jest.Mock).mockImplementation(() => {
+            return {
+                is_p2p_enabled: true,
+                is_p2p_enabled_loading: false,
+                is_p2p_enabled_success: false,
+            };
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

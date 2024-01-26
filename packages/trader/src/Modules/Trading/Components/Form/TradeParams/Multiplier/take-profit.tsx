@@ -23,7 +23,7 @@ const TakeProfit = observer((props: TTakeProfitProps) => {
 
     const { addToast, removeToast, current_focus, setCurrentFocus } = ui;
     const { is_single_currency } = client;
-    const { is_accumulator, is_multiplier, currency, has_open_accu_contract } = trade;
+    const { is_accumulator, currency, has_open_accu_contract } = trade;
 
     const validation_errors = props.validation_errors ?? trade.validation_errors;
     const take_profit = props.take_profit ?? trade.take_profit;

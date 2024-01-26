@@ -20,17 +20,17 @@ export function getCurrencyConfig(type: keyof typeof CURRENCY_TYPES) {
         return [
             {
                 icon: () => <CurrencyUsdIcon iconSize='lg' />,
-                key: 'USD',
+                id: 'USD',
                 title: 'US Dollar',
             },
             {
                 icon: () => <CurrencyEurIcon iconSize='lg' />,
-                key: 'EUR',
+                id: 'EUR',
                 title: 'Euro',
             },
             {
                 icon: () => <CurrencyGbpIcon iconSize='lg' />,
-                key: 'GBP',
+                id: 'GBP',
                 title: 'Pound Sterling',
             },
         ];
@@ -38,32 +38,34 @@ export function getCurrencyConfig(type: keyof typeof CURRENCY_TYPES) {
     return [
         {
             icon: () => <CurrencyUsdtIcon iconSize='lg' />,
-            key: 'USDT',
+            id: 'USDT',
+            info: true,
             title: 'Tether',
         },
         {
             icon: () => <CurrencyBtcIcon iconSize='lg' />,
-            key: 'BTC',
+            id: 'BTC',
             title: 'Bitcoin',
         },
         {
             icon: () => <CurrencyEthIcon iconSize='lg' />,
-            key: 'ETH',
+            id: 'ETH',
             title: 'Ethereum',
         },
         {
             icon: () => <CurrencyLtcIcon iconSize='lg' />,
-            key: 'LTC',
+            id: 'LTC',
             title: 'Litecoin',
         },
         {
             icon: () => <CurrencyUsdtIcon iconSize='lg' />,
-            key: 'eUSDT',
+            id: 'eUSDT',
+            info: true,
             title: 'Tether ERC20',
         },
         {
             icon: () => <CurrencyUsdcIcon iconSize='lg' />,
-            key: 'USDC',
+            id: 'USDC',
             title: 'USD Coin',
         },
     ];

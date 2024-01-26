@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import debounce from 'lodash.debounce';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { observer } from '@deriv/stores';
 
 type TSearchIcon = {

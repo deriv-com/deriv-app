@@ -8,7 +8,7 @@ import { Text } from '@deriv-com/ui/dist/components/Text';
 import CloseCircle from '../../public/ic-close-circle.svg';
 import { ClickableText } from '../ClickableText';
 import { Dropdown } from '../Dropdown';
-import { AddEditPaymentMethodErrorModal, PaymentMethodModal } from '../Modals';
+import { PaymentMethodErrorModal, PaymentMethodModal } from '../Modals';
 import { PaymentMethodField } from '../PaymentMethodField';
 import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
 import { TextField } from '../TextField';
@@ -218,8 +218,9 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                     title='Cancel adding this payment method?'
                 />
             )}
+            {/* TODO: Remember to translate these strings */}
             {(createError || updateError) && (
-                <AddEditPaymentMethodErrorModal
+                <PaymentMethodErrorModal
                     errorMessage={String(
                         (createError && 'message' in createError && createError?.message) ||
                             (updateError && 'message' in updateError && updateError?.message)
@@ -229,6 +230,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                         onResetFormState();
                         setIsModalOpen(false);
                     }}
+                    title='Something’s not right'
                 />
             )}
         </div>

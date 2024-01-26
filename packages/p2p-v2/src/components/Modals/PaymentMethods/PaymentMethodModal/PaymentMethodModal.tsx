@@ -30,20 +30,20 @@ const PaymentMethodModal = ({
     // TODO: Remember to translate these strings
     return (
         <ReactModal
-            className='p2p-v2-payment-methods-modal__modal'
+            className='p2p-v2-payment-method-modal__modal'
             contentLabel={title}
             isOpen={isModalOpen}
             shouldCloseOnOverlayClick={false}
             style={customStyles}
         >
-            <div className='p2p-v2-payment-methods-modal__wrapper'>
+            <div className='p2p-v2-payment-method-modal__wrapper'>
                 <Text color='prominent' weight='bold'>
                     {title}
                 </Text>
                 <Text color='prominent'>{description}</Text>
-                <div className='p2p-v2-payment-methods-modal__buttons'>
+                <div className='p2p-v2-payment-method-modal__buttons'>
                     <Button
-                        className='p2p-v2-payment-methods-modal__buttons--cancel'
+                        className='p2p-v2-payment-method-modal__buttons--cancel'
                         onClick={e => {
                             e.currentTarget.setAttribute('disabled', 'disabled');
                             onConfirm();

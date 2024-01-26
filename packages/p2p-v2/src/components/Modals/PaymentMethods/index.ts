@@ -1,2 +1,2 @@
-export * from './AddEditPaymentMethodErrorModal';
-export * from './PaymentMethodsModal';
+export * from './PaymentMethodErrorModal';
+export * from './PaymentMethodModal';

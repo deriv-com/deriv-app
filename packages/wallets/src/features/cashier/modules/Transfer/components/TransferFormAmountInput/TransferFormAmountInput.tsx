@@ -123,15 +123,22 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const onTimerCompleteHandler = useCallback(() => {
         refetchExchangeRatesAndLimits().then(res => {
             const newRates = res.data?.exchange_rates;
-            if (!newRates?.rates || !toAccount?.currency) return;
+            if (!newRates?.rates || !fromAccount?.currency || !toAccount?.currency) return;
+
+            const fromRate = newRates.rates[fromAccount.currency];
             const toRate = newRates.rates[toAccount.currency];
+
             const convertedToAmount = Number(
-                (fromAmount * toRate).toFixed(toAccount?.currencyConfig?.fractional_digits)
+                (toRate ? fromAmount * toRate : fromAmount / fromRate).toFixed(
+                    toAccount?.currencyConfig?.fractional_digits
+                )
             );
+
             setFieldValue('toAmount', convertedToAmount);
         });
     }, [
         fromAmount,
+        fromAccount?.currency,
         refetchExchangeRatesAndLimits,
         setFieldValue,
         toAccount?.currency,

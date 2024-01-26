@@ -77,13 +77,13 @@ export const QueryStatus = {
 export const MarketTypeDetails = (isEU?: boolean): TMarketTypeDetails => ({
     all: {
         description:
-            'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs',
+            'Trade swap-free CFDs on MT5 with forex, stocks, stock indices, commodities, cryptocurrencies, ETFs and synthetic indices.',
         icon: <SwapFreeMT5Icon />,
         title: 'Swap-Free',
     },
     financial: {
         description: isEU
-            ? 'This MFSA-regulated account offers CFDs on derived and financial instruments'
+            ? 'This MFSA-regulated account offers CFDs on derived and financial instruments.'
             : 'This account offers CFDs on financial instruments.',
         icon: isEU ? <FinancialEUMT5Icon /> : <FinancialMT5Icon />,
         title: isEU ? 'CFDs' : 'Financial',

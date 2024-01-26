@@ -70,7 +70,6 @@ export default class ClientStore extends BaseStore {
     is_populating_account_list = false;
     is_populating_mt5_account_list = true;
     is_populating_dxtrade_account_list = true;
-    p2p_settings = {};
     website_status = {};
     account_settings = {};
     account_status = {};
@@ -179,7 +178,6 @@ export default class ClientStore extends BaseStore {
             is_populating_account_list: observable,
             is_populating_mt5_account_list: observable,
             is_populating_dxtrade_account_list: observable,
-            p2p_settings: observable,
             website_status: observable,
             account_settings: observable,
             account_status: observable,
@@ -312,7 +310,6 @@ export default class ClientStore extends BaseStore {
             updateSelfExclusion: action.bound,
             responsePayoutCurrencies: action.bound,
             responseAuthorize: action.bound,
-            setP2PSettings: action.bound,
             setWebsiteStatus: action.bound,
             accountRealReaction: action.bound,
             setLoginInformation: action.bound,
@@ -1119,7 +1116,9 @@ export default class ClientStore extends BaseStore {
     };
 
     setCookieAccount() {
-        const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+        const domain = /deriv\.(com|me)/.test(window.location.hostname)
+            ? deriv_urls.DERIV_HOST_NAME
+            : window.location.hostname;
 
         // eslint-disable-next-line max-len
         const {
@@ -1149,8 +1148,6 @@ export default class ClientStore extends BaseStore {
             };
             Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
             Cookies.set('client_information', client_information, { domain });
-            // need to find other way to get the boolean value and set this cookie since `this.is_p2p_enabled` is deprecated and we can't use hooks here
-            // Cookies.set('is_p2p_disabled', !this.is_p2p_enabled, { domain });
 
             this.has_cookie_account = true;
         } else {
@@ -2632,27 +2629,5 @@ export default class ClientStore extends BaseStore {
 
     setIsAlreadyAttempted(status) {
         this.is_already_attempted = status;
-    }
-
-    setP2PSettings(p2p_settings) {
-        this.p2p_settings = p2p_settings;
-    }
-
-    /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.
-     *
-     * This method is being used in `NotificationStore`, Once we get rid of the usage we can remove this method.
-     *
-     * Please `DO NOT` add the type for this method in `TCoreStores` as it is deprecated and shouldn't be used.
-     * */
-    get is_p2p_enabled() {
-        const is_low_risk_cr_eu_real = this.root_store?.traders_hub?.is_low_risk_cr_eu_real;
-
-        const is_p2p_supported_currency = Boolean(
-            this.p2p_settings?.supported_currencies?.includes(this.currency.toLocaleLowerCase())
-        );
-
-        const is_p2p_visible = is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
-
-        return is_p2p_visible;
     }
 }

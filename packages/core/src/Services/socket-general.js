@@ -48,7 +48,6 @@ const BinarySocketGeneral = (() => {
                     .expectResponse('authorize')
                     .then(() => {
                         WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
-                        // WS.subscribeP2PSettings(ResponseHandlers.p2pSettings);
                     });
             } else {
                 WS.subscribeWebsiteStatus(ResponseHandlers.websiteStatus);
@@ -340,16 +339,9 @@ const ResponseHandlers = (() => {
         }
     };
 
-    const p2pSettings = response => {
-        if (response.p2p_settings) {
-            client_store.setP2PSettings(response.p2p_settings);
-        }
-    };
-
     return {
         websiteStatus,
         balanceActiveAccount,
         balanceOtherAccounts,
-        p2pSettings,
     };
 })();

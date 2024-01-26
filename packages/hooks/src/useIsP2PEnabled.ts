@@ -1,8 +1,8 @@
 import React from 'react';
-import { useStore } from '@deriv/stores';
-import useP2PSettings from './useP2PSettings';
 import Cookies from 'js-cookie';
 import { deriv_urls } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
+import useP2PSettings from './useP2PSettings';
 
 const useIsP2PEnabled = () => {
     const {
@@ -24,10 +24,11 @@ const useIsP2PEnabled = () => {
 
     React.useEffect(() => {
         if (email && loginid) {
-            const domain = /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+            const domain = /deriv\.(com|me)/.test(window.location.hostname)
+                ? deriv_urls.DERIV_HOST_NAME
+                : window.location.hostname;
 
             Cookies.set('is_p2p_disabled', !is_p2p_enabled, { domain, secure: true, sameSite: 'none' });
-            // console.log('hi', Cookies.get(), domain);
         }
     }, [email, is_p2p_enabled, loginid]);
 

@@ -30,7 +30,8 @@ const CompareAccountsPlatformLabel = ({ platform }: TCompareAccountsPlatformLabe
                 className={qtMerge(
                     CompareAccountsPlatformLabelTextColorClass({
                         label: platformType,
-                    } as unknown as TCompareAccountsPlatformLabelTextClassProps)
+                    } as unknown as TCompareAccountsPlatformLabelTextClassProps),
+                    'text-center'
                 )}
                 size='sm'
             >

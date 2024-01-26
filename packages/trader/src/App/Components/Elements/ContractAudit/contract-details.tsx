@@ -1,5 +1,5 @@
 import React from 'react';
-import { Money, Icon, ThemedScrollbars } from '@deriv/components';
+import { Money, Icon, ThemedScrollbars, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import {
     addComma,
@@ -7,7 +7,6 @@ import {
     getCancellationPrice,
     getCurrencyDisplayCode,
     getLocalizedBasis,
-    getLookBacksMarkerIcons,
     formatResetDuration,
     hasTwoBarriers,
     isAccumulatorContract,
@@ -24,6 +23,7 @@ import {
     isVanillaFxContract,
     toGMTFormat,
     TContractInfo,
+    CONTRACT_TYPES,
 } from '@deriv/shared';
 import { Analytics } from '@deriv/analytics';
 import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/Elements/PositionsDrawer/helpers';
@@ -91,6 +91,33 @@ const ContractDetails = ({
     ) : (
         ''
     );
+
+    const createLookBacksMarker = (abbreviation?: string) => {
+        let label: string;
+
+        switch (abbreviation) {
+            case 'H':
+                label = localize('Indicative high spot');
+                break;
+            case 'L':
+                label = localize('Indicative low spot');
+                break;
+            default:
+                label = localize('Indicative high spot');
+                break;
+        }
+
+        return {
+            label,
+            icon: (
+                <div className='lookbacks-marker__wrapper'>
+                    <Text color='disabled-1' size='xxxs' className='lookbacks-marker__asset'>
+                        {abbreviation}
+                    </Text>
+                </div>
+            ),
+        };
+    };
 
     const vanilla_payout_text = isVanillaFxContract(contract_type, underlying)
         ? getLocalizedBasis().payout_per_pip
@@ -232,12 +259,28 @@ const ContractDetails = ({
                     value={toGMTFormat(epochToMoment(Number(date_start))) || ' - '}
                 />
                 {isLookBacksContract(contract_type) && (
-                    <ContractAuditItem
-                        id='dt_indicative_high_spot'
-                        icon={getLookBacksMarkerIcons().high_spot_marker}
-                        label={localize('Indicative high spot')}
-                        value={contract_info?.barrier}
-                    />
+                    <React.Fragment>
+                        {contract_type === CONTRACT_TYPES.LB_HIGH_LOW ? (
+                            <React.Fragment>
+                                {[high_barrier, low_barrier].map((barrier, index) => (
+                                    <ContractAuditItem
+                                        id={`dt_bt_label_${index + 1}`}
+                                        icon={createLookBacksMarker(index === 0 ? 'H' : 'L').icon}
+                                        key={barrier}
+                                        label={createLookBacksMarker(index === 0 ? 'H' : 'L').label}
+                                        value={barrier}
+                                    />
+                                ))}
+                            </React.Fragment>
+                        ) : (
+                            <ContractAuditItem
+                                id='dt_indicative_high_spot'
+                                icon={createLookBacksMarker(contract_type === CONTRACT_TYPES.LB_PUT ? 'H' : 'L').icon}
+                                label={createLookBacksMarker(contract_type === CONTRACT_TYPES.LB_PUT ? 'H' : 'L').label}
+                                value={contract_info?.barrier}
+                            />
+                        )}
+                    </React.Fragment>
                 )}
                 {!isDigitType(contract_type) && (
                     <ContractAuditItem

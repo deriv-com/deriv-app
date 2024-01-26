@@ -65,11 +65,4 @@ export const MARKER_TYPES_CONFIG = {
         },
         content_config: { spot_className: 'chart-spot__spot' },
     },
-    SPOT_HIGH: {
-        type: 'SPOT_HIGH',
-        marker_config: {
-            ContentComponent: MarkerSpotLabel,
-        },
-        content_config: { spot_className: 'chart-spot__spot' },
-    },
 };

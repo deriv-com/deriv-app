@@ -145,22 +145,3 @@ export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
     if (isMobile() && spot_count > 1) return null;
     return marker_config;
 };
-
-export const createMarkerSpotHigh = contract_info => {
-    // const is_accumulator = isAccumulatorContract(contract_info.contract_type);
-    // const spot_count = getSpotCount(contract_info, idx);
-    // const spot = tick.tick_display_value;
-    // const spot_epoch = is_accumulator ? '' : `${tick.epoch}`;
-    const epoch = new Date().getTime() / 1000;
-    const marker_config = createMarkerConfig(MARKER_TYPES_CONFIG.SPOT_HIGH.type, +epoch, +contract_info.barrier, {
-        spot_value: contract_info.barrier,
-        epoch,
-        align_label: 'middle',
-        is_value_hidden: false,
-        // spot_count,
-    });
-    marker_config.type = `${marker_config.type}`;
-
-    // if (isMobile() && spot_count > 1) return null;
-    return marker_config;
-};

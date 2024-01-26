@@ -345,37 +345,3 @@ export const getSortedTradeTypes = (array: string[] = []) => {
     }
     return array;
 };
-
-export const getLookBacksMarkerIcons = () => {
-    const high_spot_marker = (
-        <div
-            style={{
-                height: '24px',
-                width: '24px',
-                borderRadius: '4px',
-                backgroundColor: 'var(--general-section-1)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-            }}
-        >
-            <div
-                style={{
-                    height: '16px',
-                    width: '16px',
-                    borderRadius: '50%',
-                    backgroundColor: 'var(--text-less-prominent)',
-                    fontSize: '1rem',
-                    lineHeight: '1.4rem',
-                    color: 'var(--general-section-1)',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                H
-            </div>
-        </div>
-    );
-    return { high_spot_marker };
-};

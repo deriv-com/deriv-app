@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
-import { getDisplayStatus, getCardLabels, isCryptocurrency } from '@deriv/shared';
+import { getDisplayStatus, getCardLabels, isCryptocurrency, CONTRACT_TYPES } from '@deriv/shared';
 import ContractCardItem from './contract-card-item';
-import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import Text from '../../text';
+import ArrowIndicator from '../../arrow-indicator';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
 import { TGeneralContractCardBodyProps } from './contract-update-form';
 
@@ -29,13 +29,13 @@ const LookBacksCardBody = ({
     const getPayoutLimit = (contract_type?: string, multiplier?: number) => {
         let base: string;
         switch (contract_type) {
-            case 'LBFLOATPUT':
+            case CONTRACT_TYPES.LB_PUT:
                 base = 'Hight - Close';
                 break;
-            case 'LBFLOATCALL':
+            case CONTRACT_TYPES.LB_CALL:
                 base = 'Close - Low';
                 break;
-            case 'LBHIGHLOW':
+            case CONTRACT_TYPES.LB_HIGH_LOW:
                 base = 'High - Low';
                 break;
             default:
@@ -58,8 +58,9 @@ const LookBacksCardBody = ({
                             'dc-contract-card__indicative--movement-complete': is_sold,
                         })}
                     >
-                        {/* {status === 'profit' && <Icon icon='IcProfit' />}
-                        {status === 'loss' && <Icon icon='IcLoss' />} */}
+                        {!is_sold && (
+                            <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
+                        )}
                     </div>
                 </ContractCardItem>
                 <ContractCardItem header={is_sold ? PAYOUT : INDICATIVE_PRICE}>
@@ -69,8 +70,12 @@ const LookBacksCardBody = ({
                             'dc-contract-card__indicative--movement-complete': is_sold,
                         })}
                     >
-                        {/* {status === 'profit' && <Icon icon='IcProfit' />}
-                        {status === 'loss' && <Icon icon='IcLoss' />} */}
+                        {!is_sold && (
+                            <ArrowIndicator
+                                className='dc-contract-card__indicative--movement'
+                                value={Number(sell_price || indicative)}
+                            />
+                        )}
                     </div>
                 </ContractCardItem>
                 <ContractCardItem header={PURCHASE_PRICE}>

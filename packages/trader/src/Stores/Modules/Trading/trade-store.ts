@@ -1594,6 +1594,10 @@ export default class TradeStore extends BaseStore {
                 }
                 this.root_store.contract_trade.updateAccumulatorBarriersData(current_spot_data);
             }
+            // if ('history' in args[0]) {
+            //     console.log('test args[0].history', args[0].history);
+            // }
+            // console.log('test args[0].tick', args[0].tick);
         };
         if (this.is_market_closed) {
             delete req.subscribe;

@@ -7,6 +7,7 @@ import {
     getCancellationPrice,
     getCurrencyDisplayCode,
     getLocalizedBasis,
+    getLookBacksMarkerIcons,
     formatResetDuration,
     hasTwoBarriers,
     isAccumulatorContract,
@@ -15,6 +16,7 @@ import {
     isMultiplierContract,
     isSmartTraderContract,
     isAsiansContract,
+    isLookBacksContract,
     isResetContract,
     isTurbosContract,
     isUserCancelled,
@@ -229,6 +231,14 @@ const ContractDetails = ({
                     label={localize('Start time')}
                     value={toGMTFormat(epochToMoment(Number(date_start))) || ' - '}
                 />
+                {isLookBacksContract(contract_type) && (
+                    <ContractAuditItem
+                        id='dt_indicative_high_spot'
+                        icon={getLookBacksMarkerIcons().high_spot_marker}
+                        label={localize('Indicative high spot')}
+                        value={contract_info?.barrier}
+                    />
+                )}
                 {!isDigitType(contract_type) && (
                     <ContractAuditItem
                         id='dt_entry_spot_label'

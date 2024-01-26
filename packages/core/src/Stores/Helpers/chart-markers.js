@@ -7,6 +7,7 @@ import {
     createMarkerSpotMiddle,
     createMarkerResetTime,
     getSpotCount,
+    createMarkerSpotHigh,
 } from './chart-marker-helpers';
 import {
     getDecimalPlaces,
@@ -55,13 +56,14 @@ export const createChartMarkers = (contract_info, is_delayed_markers_update) => 
         const contract_id = contract_info.contract_id;
         marker.react_key = `${contract_id}-${marker.type}`;
     });
-
+    // console.log('test markers', markers);
     return markers;
 };
 
 const marker_spots = {
     [MARKER_TYPES_CONFIG.SPOT_ENTRY.type]: createMarkerSpotEntry,
     [MARKER_TYPES_CONFIG.SPOT_EXIT.type]: createMarkerSpotExit,
+    [MARKER_TYPES_CONFIG.SPOT_HIGH]: createMarkerSpotHigh,
 };
 
 const marker_lines = {

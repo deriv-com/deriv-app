@@ -12,6 +12,7 @@ import AccumulatorCardBody from './accumulator-card-body';
 import MultiplierCardBody from './multiplier-card-body';
 import TurbosCardBody from './turbos-card-body';
 import VanillaOptionsCardBody from './vanilla-options-card-body';
+import LookBacksCardBody from './lookbacks-card-body';
 import { TGeneralContractCardBodyProps } from './contract-update-form';
 import ArrowIndicator from '../../arrow-indicator';
 
@@ -21,6 +22,7 @@ export type TContractCardBodyProps = {
     server_time: moment.Moment;
     is_turbos?: boolean;
     is_vanilla?: boolean;
+    is_lookbacks?: boolean;
 } & TGeneralContractCardBodyProps;
 
 const ContractCardBody = ({
@@ -41,6 +43,7 @@ const ContractCardBody = ({
     is_sold,
     is_turbos,
     is_vanilla,
+    is_lookbacks,
     onMouseLeave,
     removeToast,
     server_time,
@@ -130,6 +133,16 @@ const ContractCardBody = ({
                 progress_slider={progress_slider_mobile_el}
             />
         );
+    } else if (is_lookbacks) {
+        card_body = (
+            <LookBacksCardBody
+                contract_info={contract_info}
+                currency={currency}
+                is_sold={is_sold}
+                indicative={indicative}
+                progress_slider_mobile_el={progress_slider_mobile_el}
+            />
+        );
     } else {
         card_body = (
             <React.Fragment>
@@ -184,7 +197,7 @@ const ContractCardBody = ({
             <MobileWrapper>
                 <div
                     className={classNames('dc-contract-card__separatorclass', {
-                        'dc-contract-card__body-wrapper': !is_multiplier && !is_turbos,
+                        'dc-contract-card__body-wrapper': !is_multiplier && !is_turbos && !is_lookbacks,
                     })}
                 >
                     {card_body}

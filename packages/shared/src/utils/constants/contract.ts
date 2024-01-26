@@ -287,6 +287,7 @@ export const getCardLabels = () =>
         INDICATIVE_PRICE: localize('Indicative price:'),
         INITIAL_STAKE: localize('Initial stake:'),
         LOST: localize('Lost'),
+        MULTIPLIER: localize('Multiplier:'),
         PAYOUT: localize('Sell price:'),
         PURCHASE_PRICE: localize('Buy price:'),
         POTENTIAL_PAYOUT: localize('Payout limit:'),
@@ -407,18 +408,6 @@ export const getUnsupportedContracts = () =>
         TICKLOW: {
             name: localize('Low Tick'),
             position: 'bottom',
-        },
-        LBFLOATCALL: {
-            name: localize('Close-to-Low'),
-            position: 'top',
-        },
-        LBFLOATPUT: {
-            name: localize('High-to-Close'),
-            position: 'top',
-        },
-        LBHIGHLOW: {
-            name: localize('High-to-Low'),
-            position: 'top',
         },
         CALLSPREAD: {
             name: localize('Spread Up'),
@@ -549,13 +538,25 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
             name: localize('Asian Down'),
             position: 'bottom',
         },
-        RESETCALL: {
+        [CONTRACT_TYPES.RESET.CALL]: {
             name: localize('Reset Call'),
             position: 'top',
         },
-        RESETPUT: {
+        [CONTRACT_TYPES.RESET.PUT]: {
             name: localize('Reset Put'),
             position: 'bottom',
+        },
+        [CONTRACT_TYPES.LB_CALL]: {
+            name: localize('Close-Low'),
+            position: 'top',
+        },
+        [CONTRACT_TYPES.LB_PUT]: {
+            name: localize('High-Close'),
+            position: 'top',
+        },
+        [CONTRACT_TYPES.LB_HIGH_LOW]: {
+            name: localize('High-Low'),
+            position: 'top',
         },
         // To add a feature flag for a new trade_type, please add 'feature_flag' to its config here:
         // SHARKFIN: {

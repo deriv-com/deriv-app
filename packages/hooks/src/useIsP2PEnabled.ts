@@ -28,7 +28,7 @@ const useIsP2PEnabled = () => {
                 ? deriv_urls.DERIV_HOST_NAME
                 : window.location.hostname;
 
-            Cookies.set('is_p2p_disabled', !is_p2p_enabled, { domain, secure: true, sameSite: 'none' });
+            Cookies.set('is_p2p_disabled', (!is_p2p_enabled).toString(), { domain, secure: true, sameSite: 'none' });
         }
     }, [email, is_p2p_enabled, loginid]);
 

@@ -33,12 +33,12 @@ type TRouteState = {
 type TLocationInfo = {
     [K in keyof BaseRouteState]: {
         pathname: `${typeof prefix}${K}`;
-        state: BaseRouteState[K];
+        state?: BaseRouteState[K];
     };
 }[keyof BaseRouteState];
 
 declare module 'react-router-dom' {
-    export function useHistory<T extends TRoute>(): {
+    export function useHistory(): {
         location: TLocationInfo & {
             hash: string;
             search: string;

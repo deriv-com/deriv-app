@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAdvertiserStats } from '../../../../hooks';
+import { useAdvertiserStats, useDevice } from '../../../../hooks';
 import { numberToCurrencyText } from '../../../../utils';
 import MyProfileStatsItem from './MyProfileStatsItem';
 import './MyProfileStats.scss';

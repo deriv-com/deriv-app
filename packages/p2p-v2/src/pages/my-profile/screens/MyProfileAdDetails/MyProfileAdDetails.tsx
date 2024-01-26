@@ -33,7 +33,10 @@ const MyProfileAdDetailsTextArea = ({
     );
 };
 
-const MyProfileAdDetails = () => {
+type TMyProfileAdDetails = {
+    onBack?: () => void;
+};
+const MyProfileAdDetails = ({ onBack }: TMyProfileAdDetails) => {
     const { data: advertiserInfo, isLoading } = p2p.advertiser.useGetInfo();
     const { mutate: updateAdvertiser } = p2p.advertiser.useUpdate();
     const [contactInfo, setContactInfo] = useState('');
@@ -64,8 +67,9 @@ const MyProfileAdDetails = () => {
     if (isMobile) {
         return (
             <FullPageMobileWrapper
+                onBack={onBack}
                 renderFooter={() => (
-                    <Button disabled={!hasUpdated} isFullWidth onClick={submitAdDetails}>
+                    <Button disabled={!hasUpdated} isFullWidth onClick={submitAdDetails} size='lg'>
                         Save
                     </Button>
                 )}

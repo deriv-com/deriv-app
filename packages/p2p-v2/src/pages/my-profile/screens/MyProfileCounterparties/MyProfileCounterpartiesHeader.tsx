@@ -4,7 +4,7 @@ import { Text } from '@deriv-com/ui/dist/components/Text';
 import { Search } from '../../../../components/Search';
 import { Dropdown } from '../../../../components/Dropdown';
 import { useDevice } from '../../../../hooks';
-import { DROPDOWN_LIST } from '../../../../utils/constants';
+import { COUNTERPARTIES_DROPDOWN_LIST } from '../../../../utils/constants';
 import SortIcon from '../../../../public/ic-cashier-sort.svg';
 import './MyProfileCounterpartiesHeader.scss';
 
@@ -38,7 +38,7 @@ const MyProfileCounterpartiesHeader = ({
                 ) : (
                     <Dropdown
                         label='Filter by'
-                        list={DROPDOWN_LIST}
+                        list={COUNTERPARTIES_DROPDOWN_LIST}
                         listHeight='sm'
                         name='counterparty-filter'
                         onSelect={setDropdownValue}

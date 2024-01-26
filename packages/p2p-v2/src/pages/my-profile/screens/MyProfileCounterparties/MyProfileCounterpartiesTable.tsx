@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { Loader } from '@deriv-com/ui/dist/components/Loader';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { p2p } from '@deriv/api';
-import MyProfileCounterpartiesTableRow from './MyProfileCounterpartiesTableRow';
 import { Table } from '../../../../components';
-import './MyProfileCounterpartiesTable.scss';
 import MyProfileCounterpartiesEmpty from './MyProfileCounterpartiesEmpty';
+import MyProfileCounterpartiesTableRow from './MyProfileCounterpartiesTableRow';
+import './MyProfileCounterpartiesTable.scss';
 
 type TMyProfileCounterpartiesTableProps = {
     dropdownValue: string;
@@ -14,9 +14,9 @@ type TMyProfileCounterpartiesTableProps = {
 };
 
 type TMyProfileCounterpartiesTableRowRendererProps = {
-    id?: string | undefined;
+    id?: string;
     is_blocked: boolean;
-    name?: string | undefined;
+    name?: string;
 };
 
 const MyProfileCounterpartiesTableRowRenderer = ({

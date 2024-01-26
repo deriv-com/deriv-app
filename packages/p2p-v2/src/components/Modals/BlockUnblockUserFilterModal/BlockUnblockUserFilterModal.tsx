@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { customStyles } from '../helpers';
 import { RadioGroup } from '../../RadioGroup';
-import { DROPDOWN_LIST } from '../../../utils/constants';
+import { COUNTERPARTIES_DROPDOWN_LIST } from '../../../utils/constants';
 import './BlockUnblockUserFilterModal.scss';
 
 type TBlockUnblockUserFilterModalProps = {
@@ -32,7 +32,7 @@ const BlockUnblockUserFilterModal = ({
                 required
                 selected={selected}
             >
-                {DROPDOWN_LIST.map(list_item => {
+                {COUNTERPARTIES_DROPDOWN_LIST.map(list_item => {
                     return <RadioGroup.Item key={list_item.value} label={list_item.text} value={list_item.value} />;
                 })}
             </RadioGroup>

@@ -7,12 +7,6 @@ import MyProfileCounterpartiesHeader from './MyProfileCounterpartiesHeader';
 import MyProfileCounterpartiesTable from './MyProfileCounterpartiesTable';
 import './MyProfileCounterparties.scss';
 
-type TMyProfileCounterpartiesTableRowRendererProps = {
-    id?: string | undefined;
-    is_blocked: boolean;
-    name?: string | undefined;
-};
-
 const MyProfileCounterpartiesDisplayWrapper = ({ children }: PropsWithChildren<unknown>) => {
     const { isMobile } = useDevice();
     if (isMobile) {

@@ -294,6 +294,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             updateMt5LoginList: jest.fn(),
             should_show_eu_error: false,
             is_options_blocked: false,
+            setIsP2PEnabled: jest.fn(),
         },
         common: {
             error: common_store_error,

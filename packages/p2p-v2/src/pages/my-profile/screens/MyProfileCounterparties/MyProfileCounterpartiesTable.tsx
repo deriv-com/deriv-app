@@ -1,56 +1,57 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import { ColumnDef, getCoreRowModel, getGroupedRowModel, useReactTable } from '@tanstack/react-table';
+import React, { useEffect } from 'react';
 import { Loader } from '@deriv-com/ui/dist/components/Loader';
 import { Text } from '@deriv-com/ui/dist/components/Text';
+import { p2p } from '@deriv/api';
+import MyProfileCounterpartiesTableRow from './MyProfileCounterpartiesTableRow';
+import { Table } from '../../../../components';
 import './MyProfileCounterpartiesTable.scss';
+import MyProfileCounterpartiesEmpty from './MyProfileCounterpartiesEmpty';
 
-type TProps<T> = {
-    //below prop not used here, add if header is needed for table
-    columns?: ColumnDef<T>[];
-    data: T[];
-    isFetching: boolean;
-    isLoading: boolean;
-    loadMoreAdvertisers: () => void;
-    rowRender: (data: T) => JSX.Element;
+type TMyProfileCounterpartiesTableProps = {
+    dropdownValue: string;
+    searchValue: string;
+    setShowHeader: (show: boolean) => void;
 };
 
+type TMyProfileCounterpartiesTableRowRendererProps = {
+    id?: string | undefined;
+    is_blocked: boolean;
+    name?: string | undefined;
+};
+
+const MyProfileCounterpartiesTableRowRenderer = ({
+    id,
+    is_blocked,
+    name,
+}: TMyProfileCounterpartiesTableRowRendererProps) => (
+    <MyProfileCounterpartiesTableRow id={id!} isBlocked={is_blocked} nickname={name!} />
+);
+
 //TODO: rewrite the implementation in accordance with @deriv-com/ui table component
-const MyProfileCounterpartiesTable = <T,>({
-    data,
-    isFetching,
-    isLoading,
-    loadMoreAdvertisers,
-    rowRender,
-}: TProps<T>) => {
-    const table = useReactTable({
-        columns: [], // set to empty array since no header is needed for table
-        data,
-        getCoreRowModel: getCoreRowModel<T>(),
-        getGroupedRowModel: getGroupedRowModel<T>(),
+const MyProfileCounterpartiesTable = ({
+    dropdownValue,
+    searchValue,
+    setShowHeader,
+}: TMyProfileCounterpartiesTableProps) => {
+    const {
+        data = [],
+        isFetching,
+        isLoading,
+        loadMoreAdvertisers,
+    } = p2p.advertiser.useGetList({
+        trade_partners: 1,
+        is_blocked: dropdownValue === 'blocked' ? 1 : 0,
+        advertiser_name: searchValue,
     });
 
-    const tableContainerRef = useRef<HTMLDivElement>(null);
-
-    //called on scroll and possibly on mount to fetch more data as the user scrolls and reaches bottom of table
-    const fetchMoreOnBottomReached = useCallback(
-        (containerRefElement?: HTMLDivElement | null) => {
-            if (containerRefElement) {
-                const { clientHeight, scrollHeight, scrollTop } = containerRefElement;
-                //once the user has scrolled within 200px of the bottom of the table, fetch more data if we can
-                if (scrollHeight - scrollTop - clientHeight < 200 && !isFetching) {
-                    loadMoreAdvertisers();
-                }
-            }
-        },
-        [loadMoreAdvertisers, isFetching]
-    );
-
-    //a check on mount and after a fetch to see if the table is already scrolled to the bottom and immediately needs to fetch more data
     useEffect(() => {
-        fetchMoreOnBottomReached(tableContainerRef.current);
-    }, [fetchMoreOnBottomReached]);
+        if (data.length > 0) {
+            setShowHeader(true);
+        }
+    }, [data]);
 
     if (!isFetching && data.length === 0) {
+        if (searchValue === '') return <MyProfileCounterpartiesEmpty />;
         return <Text weight='bold'>There are no matching name</Text>;
     }
 
@@ -59,17 +60,18 @@ const MyProfileCounterpartiesTable = <T,>({
     }
 
     return (
-        <div
-            className='p2p-v2-my-profile-counterparties-table'
-            onScroll={e => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
-            ref={tableContainerRef}
-        >
-            {table.getRowModel().rows.map(row => (
-                <div className='p2p-v2-my-profile-counterparties-table__row' key={row.id}>
-                    {rowRender(row.original)}
-                </div>
-            ))}
-        </div>
+        <Table
+            data={data}
+            isFetching={isFetching}
+            loadMoreFunction={loadMoreAdvertisers}
+            rowClassname='p2p-v2-my-profile-counterparties-table__row'
+            rowRender={(rowData: unknown) => (
+                <MyProfileCounterpartiesTableRowRenderer
+                    {...(rowData as TMyProfileCounterpartiesTableRowRendererProps)}
+                />
+            )}
+            tableClassname='p2p-v2-my-profile-counterparties-table'
+        />
     );
 };
 

@@ -1,13 +1,10 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import { p2p } from '@deriv/api';
 import { useDevice } from '../../../../hooks';
 import { BlockUnblockUserFilterModal } from '../../../../components/Modals/BlockUnblockUserFilterModal';
 import { FullPageMobileWrapper } from '../../../../components';
-import MyProfileCounterpartiesEmpty from './MyProfileCounterpartiesEmpty';
 import MyProfileCounterpartiesHeader from './MyProfileCounterpartiesHeader';
 import MyProfileCounterpartiesTable from './MyProfileCounterpartiesTable';
-import MyProfileCounterpartiesTableRow from './MyProfileCounterpartiesTableRow';
 import './MyProfileCounterparties.scss';
 
 type TMyProfileCounterpartiesTableRowRendererProps = {
@@ -21,7 +18,6 @@ const MyProfileCounterpartiesDisplayWrapper = ({ children }: PropsWithChildren<u
     if (isMobile) {
         return (
             <FullPageMobileWrapper
-                noFooter
                 renderHeader={() => (
                     <Text className='p2p-v2-my-profile-counterparties__header' size='md' weight='bold'>
                         My counterparties
@@ -35,29 +31,11 @@ const MyProfileCounterpartiesDisplayWrapper = ({ children }: PropsWithChildren<u
     return children;
 };
 
-const MyProfileCounterpartiesTableRowRenderer = ({
-    id,
-    is_blocked,
-    name,
-}: TMyProfileCounterpartiesTableRowRendererProps) => (
-    <MyProfileCounterpartiesTableRow id={id!} isBlocked={is_blocked} nickname={name!} />
-);
-
 const MyProfileCounterparties = () => {
     const [searchValue, setSearchValue] = useState('');
     const [dropdownValue, setDropdownValue] = useState('all');
     const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-
-    const {
-        data = [],
-        isFetching,
-        isLoading,
-        loadMoreAdvertisers,
-    } = p2p.advertiser.useGetList({
-        trade_partners: 1,
-        is_blocked: dropdownValue === 'blocked' ? 1 : 0,
-        advertiser_name: searchValue,
-    });
+    const [showHeader, setShowHeader] = useState(false);
 
     const onClickFilter = () => {
         setIsFilterModalOpen(true);
@@ -71,30 +49,21 @@ const MyProfileCounterparties = () => {
     return (
         <MyProfileCounterpartiesDisplayWrapper>
             <div className='p2p-v2-my-profile-counterparties'>
-                <div>
-                    <Text as='p' size='sm'>
-                        {`When you block someone, you won’t see their ads, and they can’t see yours. Your ads will be hidden from their search results, too.`}
-                    </Text>
+                {showHeader && (
                     <MyProfileCounterpartiesHeader
                         dropdownValue={dropdownValue}
                         onClickFilter={onClickFilter}
                         setDropdownValue={setDropdownValue}
                         setSearchValue={setSearchValue}
                     />
-                </div>
-                {!isFetching && data.length === 0 && searchValue === '' ? (
-                    <MyProfileCounterpartiesEmpty />
-                ) : (
-                    <div className='p2p-v2-my-profile-counterparties__content'>
-                        <MyProfileCounterpartiesTable
-                            data={data}
-                            isFetching={isFetching}
-                            isLoading={isLoading}
-                            loadMoreAdvertisers={loadMoreAdvertisers}
-                            rowRender={MyProfileCounterpartiesTableRowRenderer}
-                        />
-                    </div>
                 )}
+                <div className='p2p-v2-my-profile-counterparties__content'>
+                    <MyProfileCounterpartiesTable
+                        dropdownValue={dropdownValue}
+                        searchValue={searchValue}
+                        setShowHeader={setShowHeader}
+                    />
+                </div>
                 <BlockUnblockUserFilterModal
                     isModalOpen={isFilterModalOpen}
                     onRequestClose={() => setIsFilterModalOpen(false)}

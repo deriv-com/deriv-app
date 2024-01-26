@@ -2,6 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { customStyles } from '../helpers';
 import { RadioGroup } from '../../RadioGroup';
+import { DROPDOWN_LIST } from '../../../utils/constants';
 import './BlockUnblockUserFilterModal.scss';
 
 type TBlockUnblockUserFilterModalProps = {
@@ -10,11 +11,6 @@ type TBlockUnblockUserFilterModalProps = {
     onToggle: (value: string) => void;
     selected: string;
 };
-
-const DROPDOWN_LIST = [
-    { value: 'all', text: 'All' },
-    { value: 'blocked', text: 'Blocked' },
-];
 
 const BlockUnblockUserFilterModal = ({
     isModalOpen,

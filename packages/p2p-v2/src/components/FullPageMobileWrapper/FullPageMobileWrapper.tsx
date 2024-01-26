@@ -4,7 +4,6 @@ import LeftArrowIcon from '../../public/ic-arrow-left.svg';
 import './FullPageMobileWrapper.scss';
 
 type TFullPageMobileWrapperProps = {
-    noFooter?: boolean;
     renderFooter?: () => React.ReactNode;
     renderHeader?: () => React.ReactNode;
     shouldFixedFooter?: boolean;
@@ -12,7 +11,6 @@ type TFullPageMobileWrapperProps = {
 
 const FullPageMobileWrapper = ({
     children,
-    noFooter = false,
     renderFooter,
     renderHeader,
     shouldFixedFooter = true,
@@ -21,7 +19,7 @@ const FullPageMobileWrapper = ({
         <div
             className={clsx('p2p-v2-mobile-wrapper', {
                 'p2p-v2-mobile-wrapper--fixed-footer': shouldFixedFooter,
-                'p2p-v2-mobile-wrapper--no-footer': noFooter,
+                'p2p-v2-mobile-wrapper--no-footer': !renderFooter,
             })}
         >
             {renderHeader && (

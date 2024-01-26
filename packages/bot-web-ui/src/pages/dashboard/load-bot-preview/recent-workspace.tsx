@@ -1,11 +1,11 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Analytics } from '@deriv/analytics';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { Analytics } from '@deriv-com/analytics';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { waitForDomElement } from 'Utils/dom-observer';
 import { useDBotStore } from 'Stores/useDBotStore';

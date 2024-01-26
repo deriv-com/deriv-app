@@ -63,7 +63,10 @@ const CryptoTransaction: React.FC<TCryptoTransaction> = ({ currencyDisplayCode: 
                                         description='Are you sure you want to cancel this transaction?'
                                         hideCloseButton={true}
                                         title='Cancel transaction'
-                                    />
+                                    />,
+                                    {
+                                        defaultRootId: 'wallets_modal_root',
+                                    }
                                 )
                             }
                         >

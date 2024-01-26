@@ -1,4 +1,4 @@
-import { Analytics, TEvents } from '@deriv/analytics';
+import { Analytics, TEvents } from '@deriv-com/analytics';
 
 const form_name = 'ce_bot_dashboard_form';
 const form_source = 'ce_bot_dashboard_form';
@@ -79,11 +79,14 @@ export const rudderstackDashboardSaveYourBot = ({
     });
 };
 
-export const rudderstackDashboardDeleteYourBot = ({ bot_name }: TEvents['ce_bot_dashboard_form']) => {
+export const rudderstackDashboardDeleteYourBot = ({
+    bot_name,
+    delete_popup_respond,
+}: TEvents['ce_bot_dashboard_form']) => {
     Analytics.trackEvent('ce_bot_dashboard_form', {
         action: ACTION.DELETE_YOUR_BOT,
         bot_name,
-        delete_popup_respond: 'yes',
+        delete_popup_respond,
     });
 };
 

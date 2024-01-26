@@ -5,6 +5,8 @@ import QuestionnaireModal from '../questionnaire-modal';
 import userEvent from '@testing-library/user-event';
 import crypto from 'crypto';
 
+window.dataLayer = [];
+
 describe('QuestionnaireModal', () => {
     const mock_props = {
         ab_questionnaire: [
@@ -63,7 +65,7 @@ describe('QuestionnaireModal', () => {
                 <QuestionnaireModal {...mock_props} />
             </Formik>
         );
-        const option_a = screen.getByTestId('a_questionnaire');
+        const option_a = screen.getByTestId('dt_questionnaire_a');
         userEvent.click(option_a);
         expect(mock_props.handleSignup).toHaveBeenCalledTimes(1);
     });

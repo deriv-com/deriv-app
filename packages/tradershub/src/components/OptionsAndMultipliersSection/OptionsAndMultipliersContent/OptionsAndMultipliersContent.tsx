@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
-import { Button, useBreakpoint } from '@deriv/quill-design';
+import { useBreakpoint } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui/dist/components/Button';
 import { optionsAndMultipliersContent } from '../../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
 import useRegulationFlags from '../../../hooks/useRegulationFlags';
@@ -81,7 +82,6 @@ const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
 
     return (
         <Button
-            className='rounded-200'
             onClick={() => {
                 if (isExternal) {
                     window.open(redirect, '_blank');

@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Analytics } from '@deriv/analytics';
 import { Dialog, MobileWrapper } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderstackDashboardOpenButton } from '../analytics/rudderstack-dashboard';

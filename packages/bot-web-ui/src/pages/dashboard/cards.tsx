@@ -1,10 +1,10 @@
 //kept sometihings commented beacuse of mobx to integrate popup functionality here
 import React from 'react';
 import classNames from 'classnames';
-import { Analytics } from '@deriv/analytics';
 import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { rudderstackDashboardChooseShortcut } from './analytics/rudderstack-dashboard';

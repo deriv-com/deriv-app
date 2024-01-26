@@ -17,7 +17,7 @@ import './PaymentMethodForm.scss';
 type TPaymentMethodFormProps = {
     formState: TFormState;
     onAdd: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
-    onRestFormState: () => void;
+    onResetFormState: () => void;
 };
 
 /**
@@ -26,7 +26,7 @@ type TPaymentMethodFormProps = {
  * @returns {JSX.Element}
  * @example <PaymentMethodForm formState={formState} />
  * **/
-const PaymentMethodForm = ({ onAdd, onRestFormState, ...rest }: TPaymentMethodFormProps) => {
+const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodFormProps) => {
     const {
         control,
         formState: { isDirty, isSubmitting, isValid },
@@ -42,19 +42,19 @@ const PaymentMethodForm = ({ onAdd, onRestFormState, ...rest }: TPaymentMethodFo
 
     useEffect(() => {
         if (isCreateSuccessful) {
-            onRestFormState();
+            onResetFormState();
         } else if (createError) {
             setIsOpen(true);
         }
-    }, [isCreateSuccessful, createError, onRestFormState]);
+    }, [isCreateSuccessful, createError, onResetFormState]);
 
     useEffect(() => {
         if (isUpdateSuccessful) {
-            onRestFormState();
+            onResetFormState();
         } else if (updateError) {
             setIsOpen(true);
         }
-    }, [isUpdateSuccessful, onRestFormState, updateError]);
+    }, [isUpdateSuccessful, onResetFormState, updateError]);
 
     const availablePaymentMethodsList = useMemo(() => {
         const listItems = availablePaymentMethods?.map(availablePaymentMethod => ({
@@ -68,7 +68,7 @@ const PaymentMethodForm = ({ onAdd, onRestFormState, ...rest }: TPaymentMethodFo
         if (isDirty) {
             setIsOpen(true);
         } else {
-            onRestFormState();
+            onResetFormState();
         }
     };
 
@@ -190,7 +190,7 @@ const PaymentMethodForm = ({ onAdd, onRestFormState, ...rest }: TPaymentMethodFo
                 <CancelEditPaymentMethodModal
                     isOpen={isOpen}
                     onCancel={() => {
-                        onRestFormState();
+                        onResetFormState();
                     }}
                     onGoBack={() => {
                         setIsOpen(false);
@@ -200,7 +200,7 @@ const PaymentMethodForm = ({ onAdd, onRestFormState, ...rest }: TPaymentMethodFo
             {actionType === 'ADD' && (!isCreateSuccessful || !createError) && (
                 <CancelAddPaymentMethodModal
                     isOpen={isOpen}
-                    onCancel={() => onRestFormState()}
+                    onCancel={() => onResetFormState()}
                     onGoBack={() => setIsOpen(false)}
                 />
             )}
@@ -212,7 +212,7 @@ const PaymentMethodForm = ({ onAdd, onRestFormState, ...rest }: TPaymentMethodFo
                     )}
                     isOpen={true}
                     onConfirm={() => {
-                        onRestFormState();
+                        onResetFormState();
                         setIsOpen(false);
                     }}
                 />

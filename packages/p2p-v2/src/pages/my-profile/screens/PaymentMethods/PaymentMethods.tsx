@@ -3,12 +3,12 @@ import { TSelectedPaymentMethod } from 'types';
 import { p2p } from '@deriv/api';
 import { Loader } from '@deriv-com/ui/dist/components/Loader';
 import { PaymentMethodForm } from '../../../../components/PaymentMethodForm';
-import advertiserPaymentMethodsReducer from '../../../../reducers/AdvertiserPaymentMethodsProvider/advertiserPaymentMethodsReducer';
+import { advertiserPaymentMethodsReducer } from '../../../../reducers';
 import { PaymentMethodsEmpty } from './PaymentMethodsEmpty';
 import { PaymentMethodsList } from './PaymentMethodsList';
 
 /**
- * @component This component is the main component of the PaymentMethods screen. It's used to conditionally display the list of payment methods and the form to add a new payment method
+ * @component This component is the main component of the PaymentMethods screen. It's used to conditionally display the list of payment methods if it exists otherwise, it will display the empty state and the form to add a new payment method
  * @returns {JSX.Element}
  * @example <PaymentMethods />
  * **/
@@ -58,7 +58,7 @@ const PaymentMethods = () => {
             <PaymentMethodForm
                 formState={formState}
                 onAdd={handleAddPaymentMethod}
-                onRestFormState={handleResetFormState}
+                onResetFormState={handleResetFormState}
             />
         );
     }
@@ -73,7 +73,7 @@ const PaymentMethods = () => {
             onAdd={handleAddPaymentMethod}
             onDelete={handleDeletePaymentMethod}
             onEdit={handleEditPaymentMethod}
-            onRestFormState={handleResetFormState}
+            onResetFormState={handleResetFormState}
             p2pAdvertiserPaymentMethods={p2pAdvertiserPaymentMethods}
         />
     );

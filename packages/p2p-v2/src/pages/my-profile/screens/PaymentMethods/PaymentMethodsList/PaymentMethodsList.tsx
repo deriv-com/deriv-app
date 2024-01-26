@@ -13,12 +13,12 @@ type TPaymentMethodsListProps = {
     onAdd: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
     onDelete: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
     onEdit: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
-    onRestFormState: () => void;
+    onResetFormState: () => void;
     p2pAdvertiserPaymentMethods: TAdvertiserPaymentMethods;
 };
 
 /**
- * @component This component is used to display the list of payment methods if they exist, otherwise it will display the empty state
+ * @component This component is used to display the list of advertiser payment methods
  * @param formState - The form state of the payment method form
  * @returns {JSX.Element}
  * @example <PaymentMethodsList formState={formState} />
@@ -28,7 +28,7 @@ const PaymentMethodsList = ({
     onAdd,
     onDelete,
     onEdit,
-    onRestFormState,
+    onResetFormState,
     p2pAdvertiserPaymentMethods,
 }: TPaymentMethodsListProps) => {
     const { isMobile } = useDevice();
@@ -46,7 +46,7 @@ const PaymentMethodsList = ({
                     onAdd={onAdd}
                     onDelete={onDelete}
                     onEdit={onEdit}
-                    onRestFormState={onRestFormState}
+                    onResetFormState={onResetFormState}
                     p2pAdvertiserPaymentMethods={p2pAdvertiserPaymentMethods}
                 />
             </FullPageMobileWrapper>
@@ -60,7 +60,7 @@ const PaymentMethodsList = ({
             onAdd={onAdd}
             onDelete={onDelete}
             onEdit={onEdit}
-            onRestFormState={onRestFormState}
+            onResetFormState={onResetFormState}
             p2pAdvertiserPaymentMethods={p2pAdvertiserPaymentMethods}
         />
     );

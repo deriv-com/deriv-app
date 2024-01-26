@@ -22,7 +22,7 @@ type TPaymentMethodsListContentProps = {
     onAdd: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
     onDelete: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
     onEdit: (selectedPaymentMethod?: TSelectedPaymentMethod) => void;
-    onRestFormState: () => void;
+    onResetFormState: () => void;
     p2pAdvertiserPaymentMethods: TAdvertiserPaymentMethods;
 };
 
@@ -40,7 +40,7 @@ const PaymentMethodsListContent = ({
     onAdd,
     onDelete,
     onEdit,
-    onRestFormState,
+    onResetFormState,
     p2pAdvertiserPaymentMethods,
 }: TPaymentMethodsListContentProps) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -116,7 +116,7 @@ const PaymentMethodsListContent = ({
                     onCancel={() => setIsOpen(false)}
                     onConfirm={() => {
                         deleteAdvertiserPaymentMethod(Number(selectedPaymentMethod?.id));
-                        onRestFormState();
+                        onResetFormState();
                     }}
                     paymentMethodName={
                         selectedPaymentMethod?.fields?.bank_name?.value ??

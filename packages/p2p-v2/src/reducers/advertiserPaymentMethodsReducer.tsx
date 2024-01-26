@@ -1,5 +1,13 @@
-import { TFormState, TReducerAction } from '../types';
+import { TFormState, TReducerAction } from './types';
 
+/**
+ * @name advertiserPaymentMethodsReducer
+ *
+ * Reducer function for managing advertiser payment methods form state.
+ * @param currentState - The current state of the form.
+ * @param action - The action dispatched to the reducer.
+ * @returns The new state after applying the action.
+ */
 const advertiserPaymentMethodsReducer = (currentState: TFormState, action: TReducerAction) => {
     // TODO: Remember to translate the strings in this reducer function
     switch (action.type) {

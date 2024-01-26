@@ -121,6 +121,7 @@ const CompareAccountsButton = ({ isAccountAdded, platform, shortCode }: TCompare
                 className='text-system-light-primary-background'
                 data-testid='dt_compare_cfd_account_button'
                 disabled={isAccountAdded}
+                fullWidth
                 onClick={onClickAdd}
             >
                 {isAccountAdded ? 'Added' : 'Add'}

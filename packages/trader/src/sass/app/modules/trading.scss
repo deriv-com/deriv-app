@@ -178,6 +178,7 @@
         }
         &.accumulator {
             .number-selector__row {
+                display: flex;
                 margin-bottom: 0;
             }
         }

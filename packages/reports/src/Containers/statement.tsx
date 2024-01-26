@@ -2,6 +2,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard, usePrevious } from '@deriv/components';
 import {
+    capitalizeFirstLetter,
     extractInfoFromShortcode,
     formatDate,
     getContractPath,
@@ -57,10 +58,7 @@ const DetailsComponent = ({ message = '', action_type = '' }: TDetailsComponent)
     if (address_hash || blockchain_hash) {
         const lines = message.split(/,\s/);
         messages = lines.map((text, index) => {
-            if (index !== lines.length - 1) {
-                return `${text}, `;
-            }
-            return text;
+            return capitalizeFirstLetter(index !== lines.length - 1 ? `${text}, ` : text);
         });
     }
 

@@ -36,15 +36,19 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transac
                     ))}
                     {filteredTransactions.length > 3 && (
                         <WalletButton
-                            isFullWidth={true}
+                            isFullWidth
                             onClick={() => {
                                 // should navigate to transactions page with "Pending transactions" toggle on and filter set to `transactionType`
-                                history.push('wallets/cashier/transactions');
+                                history.push('/wallets/cashier/transactions', {
+                                    showPending: true,
+                                    transactionType: 'withdrawal',
+                                });
                             }}
                             size='sm'
-                            text='View more'
                             variant='outlined'
-                        />
+                        >
+                            View more
+                        </WalletButton>
                     )}
                 </React.Fragment>
             ) : (

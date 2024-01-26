@@ -4,7 +4,7 @@ import { ModalStepWrapper, WalletButton } from '../../../../components/Base';
 import { useModal } from '../../../../components/ModalProvider';
 import useDevice from '../../../../hooks/useDevice';
 import { DynamicLeverageContext } from '../../components/DynamicLeverageContext';
-import { MarketTypeDetails } from '../../constants';
+import { MarketTypeDetails, PlatformDetails } from '../../constants';
 import { Verification } from '../../flows/Verification';
 import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
@@ -20,8 +20,8 @@ const JurisdictionModal = () => {
     const { isLoading } = useAvailableMT5Accounts();
     const { isMobile } = useDevice();
 
-    const marketType = getModalState('marketType') || 'all';
-    const platform = getModalState('platform') || 'mt5';
+    const marketType = getModalState('marketType') ?? 'all';
+    const platform = getModalState('platform') ?? PlatformDetails.mt5.platform;
 
     const { title } = MarketTypeDetails[marketType];
 
@@ -29,7 +29,7 @@ const JurisdictionModal = () => {
         setIsDynamicLeverageVisible(!isDynamicLeverageVisible);
     }, [isDynamicLeverageVisible, setIsDynamicLeverageVisible]);
 
-    const jurisdictionTitle = `Choose a jurisdiction for your Deriv MT5 ${title} account`;
+    const jurisdictionTitle = `Choose a jurisdiction for your ${PlatformDetails.mt5.title} ${title} account`;
 
     const JurisdictionFlow = () => {
         if (selectedJurisdiction === 'svg') {
@@ -46,8 +46,9 @@ const JurisdictionModal = () => {
                   disabled={!selectedJurisdiction || (selectedJurisdiction !== 'svg' && !isCheckBoxChecked)}
                   isFullWidth={isMobile}
                   onClick={() => show(<JurisdictionFlow />)}
-                  text='Next'
-              />
+              >
+                  Next
+              </WalletButton>
           );
 
     useEffect(() => {

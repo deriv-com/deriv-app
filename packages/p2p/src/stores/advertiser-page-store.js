@@ -20,6 +20,7 @@ export default class AdvertiserPageStore extends BaseStore {
 
         makeObservable(this, {
             active_index: observable,
+            counterparty_advertiser_info: observable,
             counterparty_type: observable,
             api_error_message: observable,
             form_error_message: observable,
@@ -134,7 +135,7 @@ export default class AdvertiserPageStore extends BaseStore {
         const { general_store } = this.root_store;
         this.setIsLoading(true);
 
-        if (general_store.counterparty_advertiser_id && general_store.is_advertiser_info_subscribed) {
+        if (general_store.counterparty_advertiser_id) {
             requestWS({
                 p2p_advertiser_info: 1,
                 id: general_store.counterparty_advertiser_id,

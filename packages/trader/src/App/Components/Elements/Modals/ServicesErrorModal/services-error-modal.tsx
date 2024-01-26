@@ -31,7 +31,6 @@ const ServicesErrorModal = ({
     const { code, message, type } = services_error;
 
     if (!code || !message) return <React.Fragment />;
-
     switch (code) {
         case 'AuthorizationRequired':
             return (

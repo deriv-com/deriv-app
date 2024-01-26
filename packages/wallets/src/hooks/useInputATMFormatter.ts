@@ -53,7 +53,10 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             setCaret(newCaretPosition);
             setCaretNeedsRepositioning(true);
 
-            if (maxDigits && input.value.replace(separatorRegex, '').length > maxDigits) return;
+            // drop the changes if the number of digits is not decreasing and it has exceeded maxDigits
+            const inputDigitsCount = input.value.replace(separatorRegex, '').replace(/^0+/, '').length;
+            const changeDigitsCount = e.target?.value?.replace(separatorRegex, '').replace(/^0+/, '').length ?? 0;
+            if (maxDigits && changeDigitsCount >= inputDigitsCount && inputDigitsCount > maxDigits) return;
 
             const hasNoChangeInDigits =
                 input.value.length + 1 === prevFormattedValue.length &&
@@ -114,7 +117,7 @@ const useInputATMFormatter = (inputRef: React.RefObject<HTMLInputElement>, initi
             if (Number(unFormatLocaleString(formattedValue, locale)) === 0) {
                 const pasted = (e.clipboardData || window.clipboardData).getData('Text');
                 const pastedValue = Number(unFormatLocaleString(pasted, locale));
-                if (!isNaN(pastedValue) && isFinite(pastedValue))
+                if (!isNaN(pastedValue) && isFinite(pastedValue) && pastedValue >= 0)
                     onChange({
                         target: {
                             value: `${pastedValue.toLocaleString(locale, {

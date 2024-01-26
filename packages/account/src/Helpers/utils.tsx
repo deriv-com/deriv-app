@@ -1,18 +1,18 @@
 import React from 'react';
+import { FormikValues } from 'formik';
 import countries from 'i18n-iso-countries';
-import { Localize, localize } from '@deriv/translations';
+import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
 import {
     filterObjProperties,
     toMoment,
     validLength,
     validName,
     getIDVNotApplicableOption,
-    idv_error_statuses,
+    IDV_ERROR_STATUS,
     AUTH_STATUS_CODES,
 } from '@deriv/shared';
-import { ResidenceList, GetAccountStatus } from '@deriv/api-types';
-import { FormikValues } from 'formik';
-import { getIDVDocuments } from '../Constants/idv-document-config';
+import { Localize, localize } from '@deriv/translations';
+import { getIDVDocuments } from '../Configs/idv-document-config';
 import { TServerError } from '../Types';
 import { LANGUAGE_CODES } from '../Constants/onfido';
 
@@ -77,7 +77,10 @@ export const getDocumentData = (country_code: string, document_type: string) => 
         example_format: '',
     };
     const IDV_DOCUMENT_DATA: any = getIDVDocuments(country_code);
-    return IDV_DOCUMENT_DATA[document_type] ?? DEFAULT_CONFIG;
+    if (IDV_DOCUMENT_DATA) {
+        return IDV_DOCUMENT_DATA[document_type] ?? DEFAULT_CONFIG;
+    }
+    return DEFAULT_CONFIG;
 };
 
 export const preventEmptyClipboardPaste = (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -265,14 +268,17 @@ export const validate = <T,>(errors: Record<string, string>, values: T) => {
     };
 };
 
-type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];
+type TIDVErrorStatus = keyof typeof IDV_ERROR_STATUS;
 export const verifyFields = (status: TIDVErrorStatus) => {
     switch (status) {
-        case idv_error_statuses.poi_dob_mismatch:
+        case IDV_ERROR_STATUS.DobMismatch.code:
             return ['date_of_birth'];
-        case idv_error_statuses.poi_name_mismatch:
+        case IDV_ERROR_STATUS.NameMismatch.code:
             return ['first_name', 'last_name'];
         default:
             return ['first_name', 'last_name', 'date_of_birth'];
     }
 };
+
+export const isSpecialPaymentMethod = (payment_method_icon: string) =>
+    ['IcOnlineNaira', 'IcAstroPayLight', 'IcAstroPayDark'].some(icon => icon === payment_method_icon);

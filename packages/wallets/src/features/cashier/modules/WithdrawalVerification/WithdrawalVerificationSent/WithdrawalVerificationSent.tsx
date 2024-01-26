@@ -16,7 +16,10 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
             <WalletsActionScreen
                 description='Please check your email for the verification link to complete the process.'
                 icon={
-                    <div className='wallets-withdrawal-verification-sent__icon'>
+                    <div
+                        className='wallets-withdrawal-verification-sent__icon'
+                        data-testid='dt_withdrawal_verification_sent_icon'
+                    >
                         <EmailSent />
                     </div>
                 }
@@ -29,27 +32,25 @@ const WithdrawalVerificationSent: React.FC<TProps> = ({ counter, sendEmail }) =>
                                       setShowResend(!showResend);
                                   }}
                                   size='lg'
-                                  text='Didn’t receive the email?'
                                   variant='ghost'
-                              />
+                              >
+                                  Didn&apos;t receive the email?
+                              </WalletButton>
                           )
                         : undefined
                 }
-                title='We’ve sent you an email.'
+                title="We've sent you an email."
             />
             <div className='wallets-withdrawal-verification-sent__resend'>
                 {showResend && (
                     <WalletsActionScreen
-                        description='Check your spam or junk folder. If it’s not there, try resending the email.'
+                        description="Check your spam or junk folder. If it's not there, try resending the email."
                         renderButtons={() => (
-                            <WalletButton
-                                disabled={!!counter}
-                                onClick={sendEmail}
-                                size='lg'
-                                text={`Resend email${counter ? ` in ${counter}s` : ''}`}
-                            />
+                            <WalletButton disabled={!!counter} onClick={sendEmail} size='lg'>
+                                {`Resend email${counter ? ` in ${counter}s` : ''}`}
+                            </WalletButton>
                         )}
-                        title='Didn’t receive the email?'
+                        title="Didn't receive the email?"
                     />
                 )}
             </div>

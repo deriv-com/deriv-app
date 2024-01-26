@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useAuthorize, useJurisdictionStatus } from '@deriv/api';
 import { InlineMessage, WalletButton, WalletText } from '../../../../../components/Base';
@@ -6,7 +7,7 @@ import { useModal } from '../../../../../components/ModalProvider';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import { THooks } from '../../../../../types';
-import { MarketTypeDetails } from '../../../constants';
+import { MarketTypeDetails, PlatformDetails } from '../../../constants';
 import { MT5TradeModal, VerificationFailedModal } from '../../../modals';
 import './AddedMT5AccountsList.scss';
 
@@ -35,9 +36,14 @@ const MT5AccountIcon: React.FC<TProps> = ({ account }) => {
 const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
     const { data: activeWallet } = useAuthorize();
     const history = useHistory();
-    const { data: jurisdictionStatus } = useJurisdictionStatus(account.landing_company_short || 'svg', account.status);
-    const { title } = MarketTypeDetails[account.market_type || 'all'];
+    const { getVerificationStatus } = useJurisdictionStatus();
+    const jurisdictionStatus = useMemo(
+        () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
+        [account.landing_company_short, account.status, getVerificationStatus]
+    );
+    const { title } = MarketTypeDetails[account.market_type ?? 'all'];
     const { show } = useModal();
+    const { t } = useTranslation();
 
     return (
         <TradingAccountCard
@@ -47,24 +53,26 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <WalletButton
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => {
-                            history.push('/wallets/cashier/transfer');
+                            history.push(`/wallets/cashier/transfer?to-account=${account.loginid}`);
                         }}
-                        text='Transfer'
                         variant='outlined'
-                    />
+                    >
+                        {t('Transfer')}
+                    </WalletButton>
                     <WalletButton
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() =>
                             show(
                                 <MT5TradeModal
-                                    marketType={account.market_type || 'all'}
+                                    marketType={account.market_type ?? 'all'}
                                     mt5Account={account}
-                                    platform='mt5'
+                                    platform={PlatformDetails.mt5.platform}
                                 />
                             )
                         }
-                        text='Open'
-                    />
+                    >
+                        {t('Open')}
+                    </WalletButton>
                 </div>
             )}
         >
@@ -84,6 +92,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         {account.display_balance}
                     </WalletText>
                 )}
+
                 <WalletText as='p' color='primary' size='xs' weight='bold'>
                     {account.display_login}
                 </WalletText>
@@ -91,16 +100,17 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='warning' variant='outlined'>
                             <WalletText color='warning' size='2xs' weight='bold'>
-                                Pending verification
+                                {t('Pending verification')}
                             </WalletText>
                         </InlineMessage>
                     </div>
                 )}
+
                 {jurisdictionStatus.is_failed && (
                     <div className='wallets-added-mt5__details-badge'>
                         <InlineMessage size='xs' type='error' variant='outlined'>
                             <WalletText color='error' size='2xs' weight='bold'>
-                                Verification failed.{' '}
+                                {t('Verification failed.')}{' '}
                                 <a
                                     onClick={() =>
                                         show(<VerificationFailedModal />, {
@@ -108,7 +118,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                                         })
                                     }
                                 >
-                                    Why?
+                                    {t('Why?')}
                                 </a>
                             </WalletText>
                         </InlineMessage>

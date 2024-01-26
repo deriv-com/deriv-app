@@ -68,9 +68,9 @@ const NotificationOrder = ({ action, header, message, onClose }) => {
 
 NotificationOrder.propTypes = {
     action: PropTypes.object,
-    header: PropTypes.string,
+    header: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
     is_auto_close: PropTypes.bool,
-    message: PropTypes.string,
+    message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
     onClose: PropTypes.func,
 };
 

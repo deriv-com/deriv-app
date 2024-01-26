@@ -9,6 +9,7 @@ import { BaseMessage, FileMessage, MessageType, MessageTypeFilter, UserMessage }
 
 import BaseStore from 'Stores/base_store';
 import ChatMessage, { convertFromChannelMessage } from 'Utils/chat-message';
+import { renameFile } from 'Utils/file-uploader';
 import { requestWS } from 'Utils/websocket';
 
 type TChatInfo = { app_id: string; user_id: string; token?: string };
@@ -52,6 +53,7 @@ export default class SendbirdStore extends BaseStore {
             createChatForNewOrder: action.bound,
             onMessagesScroll: action.bound,
             replaceChannelMessage: action.bound,
+            sendFile: action.bound,
             setActiveChatChannel: action.bound,
             setChatChannelUrl: action.bound,
             setChatInfo: action.bound,
@@ -143,6 +145,10 @@ export default class SendbirdStore extends BaseStore {
                 appId: this.chat_info.app_id,
                 modules: [new GroupChannelModule()],
             });
+
+            if (this.sendbird_api.connectionState === 'OPEN') {
+                await this.sendbird_api.disconnect();
+            }
             const send_bird_user = await this.sendbird_api.connect(this.chat_info.user_id, this.chat_info.token);
             if (!send_bird_user) {
                 this.setChatError();
@@ -362,9 +368,7 @@ export default class SendbirdStore extends BaseStore {
             () => !!this.chat_channel_url && !!this.has_chat_info,
             (is_ready_to_intialise: boolean) => {
                 if (is_ready_to_intialise) {
-                    (async () => {
-                        await this.initialiseChatWsConnection();
-                    })();
+                    this.initialiseChatWsConnection();
                 } else {
                     this.terminateChatWsConnection();
                 }
@@ -407,9 +411,10 @@ export default class SendbirdStore extends BaseStore {
     sendFile(file: File) {
         if (!file) return;
 
+        const updated_file = renameFile(file);
         this.active_chat_channel
             ?.sendFileMessage({
-                file,
+                file: updated_file,
                 fileName: file.name,
                 fileSize: file.size,
                 mimeType: file.type,
@@ -483,6 +488,7 @@ export default class SendbirdStore extends BaseStore {
     terminateChatWsConnection() {
         if (
             this.sendbird_api &&
+            this.sendbird_api.connectionState === 'OPEN' &&
             ((this.file_upload_properties && this.is_upload_complete) || !this.file_upload_properties)
         ) {
             // eslint-disable-next-line no-console

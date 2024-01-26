@@ -6,6 +6,7 @@ import { useTransfer } from '../../provider';
 import type { TInitialTransferFormValues } from '../../types';
 import { TransferFormAmountInput } from '../TransferFormAmountInput';
 import { TransferFormDropdown } from '../TransferFormDropdown';
+import { TransferMessages } from '../TransferMessages';
 import './TransferForm.scss';
 
 const TransferForm = () => {
@@ -41,7 +42,7 @@ const TransferForm = () => {
                                     mobileAccountsListRef={mobileAccountsListRef}
                                 />
                             </div>
-                            <div style={{ height: '20px' }} />
+                            <TransferMessages />
                             <div className='wallets-transfer__fields-section'>
                                 <TransferFormAmountInput fieldName='toAmount' />
                                 <TransferFormDropdown
@@ -52,11 +53,11 @@ const TransferForm = () => {
                         </div>
                         <div className='wallets-transfer__submit-button'>
                             <WalletButton
-                                disabled={!values.toAmount}
+                                disabled={!values.fromAmount || !values.toAmount}
                                 size={isMobile ? 'md' : 'lg'}
-                                text='Transfer'
-                                variant='contained'
-                            />
+                            >
+                                Transfer
+                            </WalletButton>
                         </div>
                     </form>
                 )}

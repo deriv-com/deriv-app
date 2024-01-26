@@ -228,6 +228,143 @@ import type {
 } from '@deriv/api-types';
 import type { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
+/**
+ * Proof of Identity (POI) and Proof of Address (POA) authentication status details.
+ */
+type KycAuthStatus =
+    | {
+          /**
+           * POA authentication status details.
+           */
+          address: {
+              /**
+               * Current POA status.
+               */
+              status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired';
+          };
+          /**
+           * POI authentication status details.
+           */
+          identity: {
+              /**
+               * Available services for the next POI attempt.
+               */
+              available_services?: string[];
+              /**
+               * Details on the rejected POI attempt.
+               */
+              last_rejected?: {
+                  /**
+                   * Document type of the rejected POI attempt (IDV only).
+                   */
+                  document_type?: null | string;
+                  /**
+                   * Reason(s) for the rejected POI attempt.
+                   */
+                  rejected_reasons?: string[];
+              };
+              /**
+               * Service used for the current POI status.
+               */
+              service?: 'none' | 'idv' | 'onfido' | 'manual';
+              /**
+               * Current POI status.
+               */
+              status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected';
+              /**
+               * Supported documents per service.
+               */
+              supported_documents?: {
+                  idv?: {
+                      [k: string]: {
+                          additional?: {
+                              display_name?: string;
+                              format?: string;
+                              [k: string]: unknown;
+                          };
+                          display_name?: string;
+                          format?: string;
+                          [k: string]: unknown;
+                      };
+                  };
+                  onfido?: {
+                      [k: string]: {
+                          display_name?: string;
+                          [k: string]: unknown;
+                      };
+                  };
+                  [k: string]: unknown;
+              };
+          };
+      }
+    | {
+          [k: string]: {
+              /**
+               * POA authentication status details.
+               */
+              address: {
+                  /**
+                   * Current POA status.
+                   */
+                  status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired';
+              };
+              /**
+               * POI authentication status details.
+               */
+              identity: {
+                  /**
+                   * Available services for the next POI attempt.
+                   */
+                  available_services?: string[];
+                  /**
+                   * Details on the rejected POI attempt.
+                   */
+                  last_rejected?: {
+                      /**
+                       * Document type of the rejected POI attempt (IDV only).
+                       */
+                      document_type?: null | string;
+                      /**
+                       * Reason(s) for the rejected POI attempt.
+                       */
+                      rejected_reasons?: string[];
+                  };
+                  /**
+                   * Service used for the current POI status.
+                   */
+                  service?: 'none' | 'idv' | 'onfido' | 'manual';
+                  /**
+                   * Current POI status.
+                   */
+                  status?: 'none' | 'pending' | 'rejected' | 'verified' | 'expired' | 'suspected';
+                  /**
+                   * Supported documents per service.
+                   */
+                  supported_documents?: {
+                      idv?: {
+                          [k: string]: {
+                              additional?: {
+                                  display_name?: string;
+                                  format?: string;
+                                  [k: string]: unknown;
+                              };
+                              display_name?: string;
+                              format?: string;
+                              [k: string]: unknown;
+                          };
+                      };
+                      onfido?: {
+                          [k: string]: {
+                              display_name?: string;
+                              [k: string]: unknown;
+                          };
+                      };
+                      [k: string]: unknown;
+                  };
+              };
+          };
+      };
+
 type TPrivateSocketEndpoints = {
     available_accounts: {
         request: {
@@ -1602,6 +1739,49 @@ type TPrivateSocketEndpoints = {
             [k: string]: unknown;
         };
     };
+    account_closure: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            account_closure: 1;
+            /**
+             * Reason for closing off accounts.
+             */
+            reason: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            /**
+             * If set to `1`, all accounts are closed.
+             */
+            account_closure?: 0 | 1;
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'account_closure';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
     trading_platform_investor_password_change: {
         request: {
             /**
@@ -1708,6 +1888,178 @@ type TPrivateSocketEndpoints = {
              * [Optional] Used to map request to response.
              */
             req_id?: number;
+        };
+    };
+    trading_platform_deposit: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            trading_platform_deposit: 1;
+            /**
+             * Amount to deposit (in the currency of from_wallet).
+             */
+            amount?: number;
+            /**
+             * Wallet account to transfer money from.
+             */
+            from_account?: string;
+            /**
+             * Name of trading platform.
+             */
+            platform: 'dxtrade' | 'derivez' | 'ctrader';
+            /**
+             * Trading account login to deposit money to.
+             */
+            to_account: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            trading_platform_deposit?:
+                | {
+                      /**
+                       * The reference number for the related deposit to the trading account
+                       */
+                      transaction_id?: number;
+                      [k: string]: unknown;
+                  }
+                | 1;
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'trading_platform_deposit';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
+    mt5_deposit: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            mt5_deposit: 1;
+            /**
+             * Amount to deposit (in the currency of from_binary); min = $1 or an equivalent amount, max = $20000 or an equivalent amount
+             */
+            amount?: number;
+            /**
+             * Binary account loginid to transfer money from
+             */
+            from_binary?: string;
+            /**
+             * MT5 account login to deposit money to
+             */
+            to_mt5: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field. Maximum size is 3500 bytes.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            mt5_deposit?: number;
+            /**
+             * Withdrawal reference ID of Binary account
+             */
+            binary_transaction_id?: number;
+        };
+        /**
+         * Echo of the request made.
+         */
+        echo_req: {
+            [k: string]: unknown;
+        };
+        /**
+         * Action name of the request made.
+         */
+        msg_type: 'mt5_deposit';
+        /**
+         * Optional field sent in request to map to response, present only when request contains `req_id`.
+         */
+        req_id?: number;
+        [k: string]: unknown;
+    };
+    kyc_auth_status: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            kyc_auth_status: 1;
+            /**
+             * The country for which service availability is being verified, 2-letter country code
+             */
+            country?: string;
+            /**
+             * Indicates which landing companies to get the KYC authentication status for.
+             */
+            landing_companies?: (
+                | 'iom'
+                | 'malta'
+                | 'maltainvest'
+                | 'svg'
+                | 'virtual'
+                | 'vanuatu'
+                | 'labuan'
+                | 'samoa'
+                | 'samoa-virtual'
+                | 'bvi'
+                | 'dsl'
+            )[];
+            /**
+             * [Optional] The login id of the user. If left unspecified, it defaults to the initial authorized token's login id.
+             */
+            loginid?: string;
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            kyc_auth_status?: KycAuthStatus;
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'kyc_auth_status';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
         };
     };
 };

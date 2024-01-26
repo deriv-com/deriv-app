@@ -190,6 +190,24 @@ export const personal_details_config = ({
             supported_in: ['svg'],
             rules: [],
         },
+        crs_confirmation: {
+            default_value: false,
+            supported_in: ['svg'],
+            rules: [
+                [
+                    (
+                        value: string,
+                        options: Record<string, unknown>,
+                        { tax_identification_number }: { tax_identification_number: string }
+                    ) => {
+                        // need the confirmation in case of both Tax residence and TIN are available
+                        // only checking for TIN as we already have a rule for Tax residence to be filled if TIN field is filled
+                        return tax_identification_number ? value : true;
+                    },
+                    localize('CRS confirmation is required.'),
+                ],
+            ],
+        },
     };
 
     // Need to check if client is high risk (only have SVG i.e. China & Russia)
@@ -255,7 +273,6 @@ const personalDetailsConfig = <T>(
                 })
             ),
             is_svg: upgrade_info?.can_upgrade_to === 'svg',
-            is_mf: real_account_signup_target === 'maltainvest',
             account_opening_reason_list: [
                 {
                     text: localize('Hedging'),

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { TradingAccountCard } from '../../../../../../components';
 import { WalletButton, WalletText } from '../../../../../../components/Base';
 import { useModal } from '../../../../../../components/ModalProvider';
@@ -9,6 +10,7 @@ import './AvailableDxtradeAccountsList.scss';
 
 const AvailableDxtradeAccountsList: React.FC = () => {
     const { show } = useModal();
+    const { t } = useTranslation();
 
     return (
         <TradingAccountCard
@@ -23,17 +25,19 @@ const AvailableDxtradeAccountsList: React.FC = () => {
                 </div>
             )}
             trailing={() => (
-                <WalletButton color='primary-light' onClick={() => show(<DxtradeEnterPasswordModal />)} text='Get' />
+                <WalletButton color='primary-light' onClick={() => show(<DxtradeEnterPasswordModal />)}>
+                    {t('Get')}
+                </WalletButton>
             )}
         >
             <div className='wallets-available-dxtrade__details'>
                 <p className='wallets-available-dxtrade__details-title'>
                     <WalletText size='sm' weight='bold'>
-                        Deriv X
+                        {t('Deriv X')}
                     </WalletText>
                 </p>
                 <WalletText size='xs'>
-                    This account offers CFDs on a highly customisable CFD trading platform.
+                    {t('This account offers CFDs on a highly customisable CFD trading platform.')}
                 </WalletText>
             </div>
         </TradingAccountCard>

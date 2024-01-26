@@ -1,20 +1,25 @@
 import type {
+    useAccountLimits,
     useActiveAccount,
     useActiveTradingAccount,
     useActiveWalletAccount,
     useAllAccountsList,
     useAllWalletAccounts,
     useAuthentication,
+    useAuthorize,
     useAvailableMT5Accounts,
+    useCreateMT5Account,
     useCreateOtherCFDAccount,
     useCreateWallet,
     useCryptoTransactions,
+    useCryptoWithdrawal,
     useCtraderAccountsList,
     useCurrencyConfig,
     useDerivAccountsList,
     useDxtradeAccountsList,
     useDynamicLeverage,
-    useExchangeRate,
+    useExchangeRateSubscription,
+    useInfiniteTransactions,
     useMT5AccountsList,
     usePOA,
     usePOI,
@@ -26,12 +31,15 @@ import type {
 
 // eslint-disable-next-line  @typescript-eslint/no-namespace
 export namespace THooks {
+    export type AccountLimits = NonNullable<ReturnType<typeof useAccountLimits>['data']>;
     export type Authentication = NonNullable<ReturnType<typeof useAuthentication>['data']>;
     export type AvailableMT5Accounts = NonNullable<ReturnType<typeof useAvailableMT5Accounts>['data']>[number];
+    export type Authorize = NonNullable<ReturnType<typeof useAuthorize>['data']>;
     export type CreateWallet = NonNullable<ReturnType<typeof useCreateWallet>['data']>;
+    export type CreateMT5Account = NonNullable<ReturnType<typeof useCreateMT5Account>['data']>;
     export type CtraderAccountsList = NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number];
     export type DxtradeAccountsList = NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[number];
-    export type ExchangeRate = NonNullable<ReturnType<typeof useExchangeRate>['data']>;
+    export type ExchangeRate = NonNullable<ReturnType<typeof useExchangeRateSubscription>['data']>;
     export type MT5AccountsList = NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
     export type SortedMT5Accounts = NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number];
     export type WalletAccountsList = NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];
@@ -43,11 +51,13 @@ export namespace THooks {
     export type AllAccountsList = NonNullable<ReturnType<typeof useAllAccountsList>>['data'];
     export type DynamicLeverage = NonNullable<ReturnType<typeof useDynamicLeverage>['data']>;
     export type CryptoTransactions = NonNullable<ReturnType<typeof useCryptoTransactions>['data']>[number];
+    export type CryptoWithdrawal = NonNullable<ReturnType<typeof useCryptoWithdrawal>['mutateAsync']>;
     export type POA = NonNullable<ReturnType<typeof usePOA>['data']>;
     export type POI = NonNullable<ReturnType<typeof usePOI>['data']>;
     export type CurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['data']>[string];
     export type GetCurrencyConfig = NonNullable<ReturnType<typeof useCurrencyConfig>['getConfig']>;
     export type Transactions = NonNullable<ReturnType<typeof useTransactions>['data']>[number];
+    export type InfiniteTransactions = NonNullable<ReturnType<typeof useInfiniteTransactions>['data']>[number];
     export type TransferAccount = NonNullable<
         NonNullable<ReturnType<typeof useTransferBetweenAccounts>['data']>['accounts']
     >[number];

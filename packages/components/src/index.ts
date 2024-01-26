@@ -11,6 +11,7 @@
 
 export { default as Accordion } from './components/accordion';
 export { default as AmountInput } from './components/amount-input';
+export { default as ArrowIndicator } from './components/arrow-indicator';
 export { default as AutoHeightWrapper } from './components/auto-height-wrapper';
 export { default as Autocomplete } from './components/autocomplete';
 export { default as AutoSizer } from './components/autosizer';
@@ -45,6 +46,7 @@ export { default as Drawer } from './components/drawer';
 export { default as Dropdown } from './components/dropdown';
 export * from './components/empty-state';
 export { default as ExpansionPanel } from './components/expansion-panel';
+export { default as ErrorModal } from './components/error-modal';
 export { default as FadeWrapper } from './components/fade-wrapper';
 export { default as Field } from './components/field';
 export { default as FileDropzone } from './components/file-dropzone';
@@ -99,6 +101,7 @@ export { default as StaticUrl } from './components/static-url';
 export { default as SendEmailTemplate } from './components/send-email-template';
 export * from './components/side-note';
 export { default as StatusBadge } from './components/status-badge';
+export { default as SwipeableNotification } from './components/swipeable-notification';
 export { default as SwipeableWrapper } from './components/swipeable-wrapper';
 export { default as RelativeDatepicker } from './components/relative-datepicker';
 export { default as RemainingTime } from './components/remaining-time';

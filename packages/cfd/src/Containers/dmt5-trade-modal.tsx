@@ -8,6 +8,7 @@ import {
     getCFDPlatformLabel,
     getPlatformSettings,
     getUrlBase,
+    MT5_ACCOUNT_STATUS,
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -19,6 +20,7 @@ import { TTradingPlatformAccounts } from '../Components/props.types';
 
 import { TCFDPasswordReset } from './props.types';
 import { CATEGORY, CFD_PLATFORMS, MARKET_TYPE, JURISDICTION } from '../Helpers/cfd-config';
+import MigrationBanner from './migration-banner';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid & {
@@ -42,9 +44,12 @@ const getTitle = (market_type: string, show_eu_related_content: boolean) => {
 
 const DMT5TradeModal = observer(
     ({ mt5_trade_account, show_eu_related_content, onPasswordManager, toggleModal }: TMT5TradeModalProps) => {
-        const { ui } = useStore();
+        const { ui, client } = useStore();
         const { is_mobile } = ui;
-
+        const {
+            account_status: { authentication },
+        } = client;
+        const is_eligible_to_migrate = mt5_trade_account.eligible_to_migrate;
         const getCompanyShortcode = () => {
             if (
                 (mt5_trade_account.account_type === CATEGORY.DEMO &&
@@ -73,7 +78,21 @@ const DMT5TradeModal = observer(
             return 'Financial';
         };
 
-        const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(mt5_trade_account?.status);
+        const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
+            mt5_trade_account?.status,
+            undefined,
+            undefined,
+            undefined,
+            {
+                poi_status: authentication?.identity?.status,
+                poa_status: authentication?.document?.status,
+            }
+        );
+
+        const has_migration_status = [
+            MT5_ACCOUNT_STATUS.MIGRATED_WITH_POSITION,
+            MT5_ACCOUNT_STATUS.MIGRATED_WITHOUT_POSITION,
+        ].includes(mt5_trade_account?.status);
 
         return (
             <div className='cfd-trade-modal-container'>
@@ -105,7 +124,7 @@ const DMT5TradeModal = observer(
                                 />
                             </Text>
                         )}
-                        {mt5_trade_account?.status && (
+                        {has_migration_status && (
                             <StatusBadge
                                 className='trading-app-card__acc_status_badge'
                                 account_status={mt5_trade_account.status}
@@ -166,6 +185,7 @@ const DMT5TradeModal = observer(
                         </div>
                     </div>
                 </div>
+                {is_eligible_to_migrate && <MigrationBanner is_trade_modal />}
                 <div className='cfd-trade-modal__download-center-app'>
                     <div className='cfd-trade-modal__download-center-app--option'>
                         <Icon icon='IcRebrandingMt5Logo' size={32} />

@@ -1,15 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
-import { useActiveWalletAccount } from '@deriv/api';
+import { useHistory } from 'react-router-dom';
+import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
 import { ToggleSwitch, WalletDropdown, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
 import FilterIcon from '../../../../public/images/filter.svg';
-import { TransactionsCompleted, TransactionsPending } from './components';
+import { TransactionsCompleted, TransactionsCompletedDemoResetBalance, TransactionsPending } from './components';
 import './Transactions.scss';
 
 type TTransactionsPendingFilter = React.ComponentProps<typeof TransactionsPending>['filter'];
 type TTransactionCompletedFilter = React.ComponentProps<typeof TransactionsCompleted>['filter'];
 type TFilterValue = TTransactionCompletedFilter | TTransactionsPendingFilter;
+type THistoryState = {
+    showPending?: boolean;
+    transactionType?: string;
+};
 
 const filtersMapper: Record<string, Record<string, TFilterValue>> = {
     completed: {
@@ -28,9 +33,15 @@ const filtersMapper: Record<string, Record<string, TFilterValue>> = {
 
 const Transactions = () => {
     const { data: wallet } = useActiveWalletAccount();
+
+    const { isLoading } = useCurrencyConfig();
     const { isMobile } = useDevice();
-    const [isPendingActive, setIsPendingActive] = useState(false);
-    const [filterValue, setFilterValue] = useState('all');
+
+    const { location } = useHistory();
+    const state: THistoryState = location.state;
+
+    const [isPendingActive, setIsPendingActive] = useState(Boolean(state?.showPending));
+    const [filterValue, setFilterValue] = useState(state?.transactionType ?? 'all');
 
     const filterOptionsList = useMemo(
         () =>
@@ -48,10 +59,10 @@ const Transactions = () => {
     );
 
     useEffect(() => {
-        if (!wallet?.currency_config?.is_crypto && isPendingActive) {
+        if (!isLoading && !wallet?.currency_config?.is_crypto && isPendingActive) {
             setIsPendingActive(false);
         }
-    }, [wallet?.currency_config?.is_crypto, isPendingActive]);
+    }, [isLoading, wallet?.currency_config?.is_crypto, isPendingActive]);
 
     useEffect(() => {
         if (isPendingActive && !Object.keys(filtersMapper.pending).includes(filterValue)) {
@@ -84,11 +95,17 @@ const Transactions = () => {
                     value={filterValue}
                 />
             </div>
-            {isPendingActive ? (
+            {isPendingActive && (
                 <TransactionsPending filter={filtersMapper.pending[filterValue] as TTransactionsPendingFilter} />
-            ) : (
-                <TransactionsCompleted filter={filtersMapper.completed[filterValue] as TTransactionCompletedFilter} />
             )}
+            {!isPendingActive &&
+                (wallet?.is_virtual && filterValue === 'deposit' ? (
+                    <TransactionsCompletedDemoResetBalance />
+                ) : (
+                    <TransactionsCompleted
+                        filter={filtersMapper.completed[filterValue] as TTransactionCompletedFilter}
+                    />
+                ))}
         </div>
     );
 };

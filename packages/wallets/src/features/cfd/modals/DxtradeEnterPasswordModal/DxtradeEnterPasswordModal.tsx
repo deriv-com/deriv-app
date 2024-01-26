@@ -15,30 +15,31 @@ const DxtradeEnterPasswordModal = () => {
     const { isMobile } = useDevice();
     const [password, setPassword] = useState('');
     const { data: getAccountStatus, isSuccess: accountStatusSuccess } = useAccountStatus();
-    const { error, isLoading, isSuccess, mutate, status } = useCreateOtherCFDAccount();
+    const { error, isLoading, isSuccess, mutateAsync, status } = useCreateOtherCFDAccount();
     const { data: dxtradeAccount, isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { hide, show } = useModal();
     const accountType = activeWallet?.is_virtual ? 'demo' : 'real';
+    const dxtradePlatform = PlatformDetails.dxtrade.platform;
 
     const isDxtradePasswordNotSet = getAccountStatus?.is_dxtrade_password_not_set;
 
-    const onSubmit = useCallback(() => {
-        mutate({
+    const onSubmit = useCallback(async () => {
+        await mutateAsync({
             payload: {
                 account_type: accountType,
                 market_type: 'all',
                 password,
-                platform: 'dxtrade',
+                platform: dxtradePlatform,
             },
-        });
-    }, [mutate, accountType, password]);
+        }).catch(() => setPassword(''));
+    }, [mutateAsync, accountType, password, dxtradePlatform]);
 
     const successDescription = useMemo(() => {
         return accountType === 'demo'
-            ? 'Transfer virtual funds from your Demo Wallet to your Deriv X Demo account to practise trading.'
-            : `Transfer funds from your ${activeWallet?.currency} Wallet to your Deriv X account to start trading.`;
-    }, [accountType, activeWallet?.currency]);
+            ? `Let's practise trading with ${activeWallet?.display_balance} virtual funds.`
+            : `Transfer funds from your ${activeWallet?.currency} Wallet to your ${PlatformDetails.dxtrade.title} account to start trading.`;
+    }, [accountType, activeWallet?.currency, activeWallet?.display_balance]);
 
     const dxtradeBalance = useMemo(() => {
         return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;
@@ -46,17 +47,29 @@ const DxtradeEnterPasswordModal = () => {
 
     const renderFooter = useMemo(() => {
         if (isSuccess) {
+            if (accountType === 'demo') {
+                return (
+                    <div className='wallets-success-btn'>
+                        <WalletButton isFullWidth onClick={hide} size='lg'>
+                            OK
+                        </WalletButton>
+                    </div>
+                );
+            }
             return (
                 <WalletButtonGroup isFlex isFullWidth>
-                    <WalletButton onClick={() => hide()} size='lg' text='Maybe later' variant='outlined' />
+                    <WalletButton onClick={() => hide()} size='lg' variant='outlined'>
+                        Maybe later
+                    </WalletButton>
                     <WalletButton
                         onClick={() => {
                             hide();
                             history.push('/wallets/cashier/transfer');
                         }}
                         size='lg'
-                        text='Transfer funds'
-                    />
+                    >
+                        Transfer funds
+                    </WalletButton>
                 </WalletButtonGroup>
             );
         }
@@ -69,22 +82,24 @@ const DxtradeEnterPasswordModal = () => {
                         onClick={() => {
                             show(
                                 <ModalStepWrapper title="We've sent you an email">
-                                    <SentEmailContent platform='dxtrade' />
+                                    <SentEmailContent platform={dxtradePlatform} />
                                 </ModalStepWrapper>
                             );
                         }}
                         size='lg'
-                        text='Forgot password?'
                         variant='outlined'
-                    />
+                    >
+                        Forgot password?
+                    </WalletButton>
                     <WalletButton
                         disabled={!password || isLoading}
                         isFullWidth
                         isLoading={isLoading}
                         onClick={onSubmit}
                         size='lg'
-                        text='Add account'
-                    />
+                    >
+                        Add account
+                    </WalletButton>
                 </WalletButtonGroup>
             );
         }
@@ -96,25 +111,47 @@ const DxtradeEnterPasswordModal = () => {
                 isLoading={isLoading}
                 onClick={onSubmit}
                 size='lg'
-                text={`Create ${PlatformDetails.dxtrade.title} password`}
-            />
+            >
+                {`Create ${PlatformDetails.dxtrade.title} password`}
+            </WalletButton>
         );
-    }, [hide, history, isDxtradePasswordNotSet, isLoading, isSuccess, onSubmit, password, show]);
+    }, [
+        accountType,
+        dxtradePlatform,
+        hide,
+        history,
+        isDxtradePasswordNotSet,
+        isLoading,
+        isSuccess,
+        onSubmit,
+        password,
+        show,
+    ]);
 
     const successComponent = useMemo(() => {
         if (isSuccess && dxtradeAccountListSuccess) {
             return (
                 <CFDSuccess
                     description={successDescription}
-                    displayBalance={dxtradeBalance || ''}
+                    displayBalance={dxtradeBalance ?? ''}
                     marketType='all'
-                    platform='dxtrade'
+                    platform={dxtradePlatform}
                     renderButton={() => renderFooter}
-                    title={`Your Deriv X${accountType === 'demo' ? ` ${accountType}` : ''} account is ready`}
+                    title={`Your ${PlatformDetails.dxtrade.title}${
+                        accountType === 'demo' ? ` ${accountType}` : ''
+                    } account is ready`}
                 />
             );
         }
-    }, [isSuccess, dxtradeAccountListSuccess, successDescription, dxtradeBalance, renderFooter, accountType]);
+    }, [
+        isSuccess,
+        dxtradeAccountListSuccess,
+        successDescription,
+        dxtradeBalance,
+        dxtradePlatform,
+        accountType,
+        renderFooter,
+    ]);
 
     const passwordComponent = useMemo(() => {
         if (!isSuccess && accountStatusSuccess) {
@@ -125,7 +162,7 @@ const DxtradeEnterPasswordModal = () => {
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
                     password={password}
-                    platform='dxtrade'
+                    platform={dxtradePlatform}
                 />
             ) : (
                 <EnterPassword
@@ -136,19 +173,29 @@ const DxtradeEnterPasswordModal = () => {
                     onSecondaryClick={() =>
                         show(
                             <ModalWrapper>
-                                <SentEmailContent platform='dxtrade' />
+                                <SentEmailContent platform={dxtradePlatform} />
                             </ModalWrapper>
                         )
                     }
                     password={password}
-                    platform='dxtrade'
+                    passwordError={error?.error?.code === 'PasswordError'}
+                    platform={dxtradePlatform}
                 />
             );
         }
-    }, [isSuccess, accountStatusSuccess, show, isDxtradePasswordNotSet, isLoading, onSubmit, password]);
-
-    if (status === 'error') {
-        return <WalletError errorMessage={error?.error.message} onClick={() => hide()} title={error?.error?.code} />;
+    }, [
+        isSuccess,
+        accountStatusSuccess,
+        isDxtradePasswordNotSet,
+        isLoading,
+        onSubmit,
+        password,
+        dxtradePlatform,
+        error?.error?.code,
+        show,
+    ]);
+    if (status === 'error' && error?.error?.code !== 'PasswordError') {
+        return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;
     }
 
     if (isMobile) {

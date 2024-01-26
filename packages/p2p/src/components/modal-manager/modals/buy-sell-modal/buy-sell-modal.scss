@@ -141,12 +141,6 @@
         }
     }
 
-    &--danger {
-        margin-bottom: 1.6rem;
-        width: fit-content;
-        align-items: flex-start;
-    }
-
     &--input {
         display: flex;
         gap: 2rem;
@@ -212,10 +206,6 @@
             opacity: 0.32;
         }
     }
-
-    &--error-message {
-        padding: 0 2.4rem;
-    }
 }
 
 .buy-sell-modal__content {
@@ -231,5 +221,11 @@
     .dc-modal-footer--separator {
         margin-top: 1rem;
         border-top: 2px solid var(--general-section-5);
+    }
+}
+
+.notification-messages {
+    @include desktop {
+        z-index: 9999;
     }
 }

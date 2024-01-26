@@ -19,11 +19,12 @@ import {
     getDurationTime,
     getDurationUnitText,
     getEndTime,
+    TRADE_TYPES,
     removeBarrier,
-    TURBOS,
+    routes,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { ChartBarrierStore } from './chart-barrier-store';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
 
@@ -169,8 +170,8 @@ export default class PortfolioStore extends BaseStore {
             const i = this.getPositionIndexById(contract_id);
 
             if (!this.positions[i]) {
-                // On a page refresh, portfolio call has returend empty,
-                // even though we we get a transaction.sell response.
+                // On a page refresh, portfolio call has returned empty,
+                // even though we get a transaction.sell response.
                 return;
             }
             this.positions[i].is_loading = true;
@@ -305,7 +306,7 @@ export default class PortfolioStore extends BaseStore {
                         type: response.msg_type,
                         ...response.error,
                     });
-                } else {
+                } else if (window.location.pathname !== routes.trade || !this.root_store.ui.is_mobile) {
                     this.root_store.notifications.addNotificationMessage(contractCancelled());
                 }
             });
@@ -342,9 +343,11 @@ export default class PortfolioStore extends BaseStore {
                 sell_price: response.sell.sold_for,
                 transaction_id: response.sell.transaction_id,
             };
-            this.root_store.notifications.addNotificationMessage(
-                contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
-            );
+            if (window.location.pathname !== routes.trade || !this.root_store.ui.is_mobile) {
+                this.root_store.notifications.addNotificationMessage(
+                    contractSold(this.root_store.client.currency, response.sell.sold_for, Money)
+                );
+            }
 
             Analytics.trackEvent('ce_reports_form', {
                 action: 'close_contract',
@@ -408,6 +411,14 @@ export default class PortfolioStore extends BaseStore {
         if (isUserSold(contract_response)) this.positions[i].exit_spot = '-';
 
         this.positions[i].is_loading = false;
+
+        if (
+            this.root_store.ui.is_mobile &&
+            getEndTime(contract_response) &&
+            window.location.pathname === routes.trade
+        ) {
+            this.root_store.notifications.addTradeNotification(this.positions[i].contract_info);
+        }
     };
 
     populateContractUpdate({ contract_update }, contract_id) {
@@ -588,14 +599,14 @@ export default class PortfolioStore extends BaseStore {
     }
 
     get is_accumulator() {
-        return this.contract_type === 'accumulator';
+        return this.contract_type === TRADE_TYPES.ACCUMULATOR;
     }
 
     get is_multiplier() {
-        return this.contract_type === 'multiplier';
+        return this.contract_type === TRADE_TYPES.MULTIPLIER;
     }
 
     get is_turbos() {
-        return this.contract_type === TURBOS.LONG || this.contract_type === TURBOS.SHORT;
+        return this.contract_type === TRADE_TYPES.TURBOS.LONG || this.contract_type === TRADE_TYPES.TURBOS.SHORT;
     }
 }

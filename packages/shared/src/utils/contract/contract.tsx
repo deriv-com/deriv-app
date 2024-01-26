@@ -29,15 +29,75 @@ export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
 export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
 
-export const TURBOS = {
-    LONG: 'turboslong',
-    SHORT: 'turbosshort',
+export const CONTRACT_TYPES = {
+    ACCUMULATOR: 'ACCU',
+    ASIAN: { UP: 'ASIANU', DOWN: 'ASIAND' },
+    CALL: 'CALL',
+    CALLE: 'CALLE',
+    CALL_BARRIER: 'CALL_BARRIER',
+    CALL_PUT_SPREAD: { CALL: 'CALLSPREAD', PUT: 'PUTSPREAD' },
+    END: { IN: 'EXPIRYRANGE', OUT: 'EXPIRYMISS' },
+    EVEN_ODD: { ODD: 'DIGITODD', EVEN: 'DIGITEVEN' },
+    EXPIRYRANGEE: 'EXPIRYRANGEE',
+    FALL: 'FALL',
+    HIGHER: 'HIGHER',
+    LB_HIGH_LOW: 'LBHIGHLOW',
+    LB_CALL: 'LBFLOATCALL',
+    LB_PUT: 'LBFLOATPUT',
+    LOWER: 'LOWER',
+    MATCH_DIFF: { MATCH: 'DIGITMATCH', DIFF: 'DIGITDIFF' },
+    MULTIPLIER: {
+        UP: 'MULTUP',
+        DOWN: 'MULTDOWN',
+    },
+    OVER_UNDER: { OVER: 'DIGITOVER', UNDER: 'DIGITUNDER' },
+    PUT: 'PUT',
+    PUTE: 'PUTE',
+    PUT_BARRIER: 'PUT_BARRIER',
+    RESET: { CALL: 'RESETCALL', PUT: 'RESETPUT' },
+    RISE: 'RISE',
+    RUN_HIGH_LOW: { HIGH: 'RUNHIGH', LOW: 'RUNLOW' },
+    STAY: { IN: 'RANGE', OUT: 'UPORDOWN' },
+    TICK_HIGH_LOW: { HIGH: 'TICKHIGH', LOW: 'TICKLOW' },
+    TOUCH: { ONE_TOUCH: 'ONETOUCH', NO_TOUCH: 'NOTOUCH' },
+    TURBOS: {
+        LONG: 'TURBOSLONG',
+        SHORT: 'TURBOSSHORT',
+    },
+    VANILLA: {
+        CALL: 'VANILLALONGCALL',
+        PUT: 'VANILLALONGPUT',
+    },
 } as const;
-
-export const VANILLALONG = {
-    CALL: 'vanillalongcall',
-    PUT: 'vanillalongput',
-    FX: 'vanilla_fx',
+export const TRADE_TYPES = {
+    ACCUMULATOR: 'accumulator',
+    ASIAN: 'asian',
+    CALL_PUT_SPREAD: 'callputspread',
+    END: 'end',
+    EVEN_ODD: 'even_odd',
+    HIGH_LOW: 'high_low',
+    LB_HIGH_LOW: 'lb_high_low',
+    LB_CALL: 'lb_call',
+    LB_PUT: 'lb_put',
+    MATCH_DIFF: 'match_diff',
+    MULTIPLIER: 'multiplier',
+    OVER_UNDER: 'over_under',
+    RESET: 'reset',
+    RISE_FALL: 'rise_fall',
+    RISE_FALL_EQUAL: 'rise_fall_equal',
+    RUN_HIGH_LOW: 'run_high_low',
+    STAY: 'stay',
+    TICK_HIGH_LOW: 'tick_high_low',
+    TOUCH: 'touch',
+    TURBOS: {
+        LONG: CONTRACT_TYPES.TURBOS.LONG.toLowerCase(),
+        SHORT: CONTRACT_TYPES.TURBOS.SHORT.toLowerCase(),
+    },
+    VANILLA: {
+        CALL: CONTRACT_TYPES.VANILLA.CALL.toLowerCase(),
+        PUT: CONTRACT_TYPES.VANILLA.PUT.toLowerCase(),
+        FX: 'vanilla_fx',
+    },
 } as const;
 
 export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {
@@ -98,9 +158,12 @@ export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contrac
 export const isVanillaFxContract = (contract_type = '', symbol = '') =>
     isVanillaContract(contract_type) && VANILLA_FX_SYMBOLS.includes(symbol as typeof VANILLA_FX_SYMBOLS[number]);
 
-export const isSmartTraderContract = (contract_type = '') => /RUN|EXPIRY|RANGE|UPORDOWN|ASIAN/i.test(contract_type);
+export const isSmartTraderContract = (contract_type = '') =>
+    /RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET/i.test(contract_type);
 
 export const isAsiansContract = (contract_type = '') => /ASIAN/i.test(contract_type);
+
+export const isResetContract = (contract_type = '') => /RESET/i.test(contract_type);
 
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');
 
@@ -269,4 +332,14 @@ export const clickAndKeyEventHandler = (
     } else {
         callback();
     }
+};
+
+export const getSortedTradeTypes = (array: string[] = []) => {
+    if (array.includes(TRADE_TYPES.TURBOS.LONG)) {
+        return [TRADE_TYPES.TURBOS.LONG, ...array.filter(type => type !== TRADE_TYPES.TURBOS.LONG)];
+    }
+    if (array.includes(TRADE_TYPES.MULTIPLIER)) {
+        return [TRADE_TYPES.MULTIPLIER, ...array.filter(type => type !== TRADE_TYPES.MULTIPLIER)];
+    }
+    return array;
 };

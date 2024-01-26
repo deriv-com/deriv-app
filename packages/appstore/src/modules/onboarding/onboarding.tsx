@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { localize } from '@deriv/translations';
+import { useHasActiveRealAccount } from '@deriv/hooks';
 import { isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarTracker } from '@deriv/components';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
-import { useHistory } from 'react-router-dom';
 import EmptyOnboarding from './empty-onboarding';
 import { useStore, observer } from '@deriv/stores';
 import { useTradersHubTracking } from 'Hooks/index';
+import { Analytics } from '@deriv-com/analytics';
 
 type TOnboardingProps = {
     contents: Record<
@@ -15,8 +17,10 @@ type TOnboardingProps = {
         {
             component: React.ReactNode;
             eu_footer_header?: string;
+            eu_non_mt5_footer_header?: string;
             footer_header: string;
             eu_footer_text?: string;
+            eu_non_mt5_footer_text?: string;
             footer_text: string;
             next_content?: string;
             has_next_content: boolean;
@@ -26,12 +30,20 @@ type TOnboardingProps = {
 
 const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboardingProps) => {
     const history = useHistory();
-    const steps_list = Object.keys(contents);
     const { traders_hub, client, ui } = useStore();
-    const { is_eu_country, is_landing_company_loaded, is_logged_in, prev_account_type, setPrevAccountType } = client;
-    const { is_mobile } = ui;
+    const {
+        is_eu_country,
+        is_landing_company_loaded,
+        is_logged_in,
+        prev_account_type,
+        setPrevAccountType,
+        is_mt5_allowed,
+    } = client;
+    const { is_mobile, is_from_signup_account } = ui;
     const { content_flag, is_demo_low_risk, selectAccountType, toggleIsTourOpen } = traders_hub;
     const [step, setStep] = React.useState<number>(1);
+    const has_active_real_account = useHasActiveRealAccount();
+    const steps_list = Object.keys(contents).filter(key => is_mt5_allowed || key !== 'step3');
 
     const { trackOnboardingOpen, trackStepBack, trackStepForward, trackOnboardingClose, trackDotNavigation } =
         useTradersHubTracking();
@@ -41,11 +53,19 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
             trackStepBack(step);
             setStep(step - 1);
         }
+        if (!is_mt5_allowed && step === 4) {
+            trackStepBack(step);
+            setStep(step - 2);
+        }
     };
 
     const nextStep = () => {
         if (step < steps_list.length) {
             setStep(step + 1);
+            trackStepForward(step);
+        }
+        if (!is_mt5_allowed && step === 2) {
+            setStep(step + 2);
             trackStepForward(step);
         }
         if (step === steps_list.length) {
@@ -64,7 +84,11 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
 
         toggleIsTourOpen(false);
         history.push(routes.traders_hub);
-        await selectAccountType(prev_account_type);
+        if (content_flag === ContentFlag.EU_REAL && !has_active_real_account) {
+            await selectAccountType('demo');
+        } else {
+            await selectAccountType(prev_account_type);
+        }
     };
 
     const handleOnboardingStepChange = (step_num: number) => {
@@ -83,8 +107,14 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
     const footer_header = contents[onboarding_step]?.footer_header;
     const footer_text = contents[onboarding_step]?.footer_text;
 
-    const eu_footer_header = contents[onboarding_step]?.eu_footer_header || footer_header;
-    const eu_footer_text = contents[onboarding_step]?.eu_footer_text || footer_text;
+    const eu_footer_header =
+        (is_mt5_allowed
+            ? contents[onboarding_step]?.eu_footer_header
+            : contents[onboarding_step]?.eu_non_mt5_footer_header) ?? footer_header;
+    const eu_footer_text =
+        (is_mt5_allowed
+            ? contents[onboarding_step]?.eu_footer_text
+            : contents[onboarding_step]?.eu_non_mt5_footer_text) ?? footer_text;
 
     const footer_header_text = is_eu_user ? eu_footer_header : footer_header;
 
@@ -98,6 +128,10 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
 
     if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;
+    }
+
+    if (is_logged_in && is_from_signup_account && is_eu_user) {
+        history.push(routes.traders_hub);
     }
 
     return (

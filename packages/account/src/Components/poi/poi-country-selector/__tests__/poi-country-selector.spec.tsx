@@ -1,10 +1,9 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { IDV_ERROR_STATUS, isDesktop, isMobile, POIContext } from '@deriv/shared';
 import CountrySelector from '../poi-country-selector';
 import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { POIContext } from 'Helpers/poi-context';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -90,7 +89,7 @@ describe('<CountrySelector/>', () => {
     });
 
     it('should render error status and country selector when error is verification failed or expired', () => {
-        mock_props.mismatch_status = 'POI_FAILED';
+        mock_props.mismatch_status = IDV_ERROR_STATUS.Failed.code;
 
         renderComponent({ props: mock_props });
 
@@ -125,5 +124,17 @@ describe('<CountrySelector/>', () => {
         await waitFor(() => {
             expect(mock_props.handleSelectionNext).toHaveBeenCalledTimes(1);
         });
+    });
+
+    it('should render high risk error message', () => {
+        mock_props.mismatch_status = IDV_ERROR_STATUS.HighRisk.code;
+
+        renderComponent({ props: mock_props });
+
+        expect(
+            screen.getByText(
+                'For enhanced security, we need to reverify your identity. Kindly resubmit your proof of identity to unlock your account.'
+            )
+        ).toBeInTheDocument();
     });
 });

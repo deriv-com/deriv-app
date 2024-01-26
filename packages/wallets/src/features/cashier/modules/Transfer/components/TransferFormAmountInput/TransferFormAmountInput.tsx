@@ -1,74 +1,96 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useFormikContext } from 'formik';
 import { useDebounce } from 'usehooks-ts';
-import { useExchangeRate } from '@deriv/api';
-import { ATMAmountInput } from '../../../../../../components';
+import { ATMAmountInput, Timer } from '../../../../../../components';
+import useInputDecimalFormatter from '../../../../../../hooks/useInputDecimalFormatter';
 import { useTransfer } from '../../provider';
 import type { TInitialTransferFormValues } from '../../types';
+import './TransferFormAmountInput.scss';
 
 type TProps = {
     fieldName: 'fromAmount' | 'toAmount';
 };
 
-const MAX_DIGITS = 14;
+const MAX_DIGITS = 12;
+const USD_MAX_POSSIBLE_TRANSFER_AMOUNT = 100_000;
 
 const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
-    const { data: exchangeRate, subscribe, unsubscribe } = useExchangeRate();
-    const { activeWallet } = useTransfer();
     const { setFieldValue, setValues, values } = useFormikContext<TInitialTransferFormValues>();
     const { fromAccount, fromAmount, toAccount, toAmount } = values;
 
-    const isFromAmountFieldName = fieldName === 'fromAmount';
+    const {
+        USDExchangeRates,
+        activeWalletExchangeRates,
+        preferredLanguage,
+        refetchAccountLimits,
+        refetchExchangeRates,
+    } = useTransfer();
+
+    const refetchExchangeRatesAndLimits = useCallback(() => {
+        refetchAccountLimits();
+        const newRates = refetchExchangeRates();
+
+        return newRates;
+    }, [refetchAccountLimits, refetchExchangeRates]);
+
+    const hasFunds = Number(fromAccount?.balance) > 0;
+    const isFromAmountField = fieldName === 'fromAmount';
     const isSameCurrency = fromAccount?.currency === toAccount?.currency;
-    const amountValue = isFromAmountFieldName ? fromAmount : toAmount;
-    const debouncedAmountValue = useDebounce(values.activeAmountFieldName === fieldName ? amountValue : undefined, 500);
-    const toAmountLabel = isSameCurrency ? 'Amount you receive' : 'Estimated amount';
-    const amountLabel = isFromAmountFieldName ? 'Amount you send' : toAmountLabel;
-    const currency = isFromAmountFieldName ? fromAccount?.currency : toAccount?.currency;
-    const fractionDigits = isFromAmountFieldName
+    const isAmountInputDisabled = !hasFunds || (fieldName === 'toAmount' && !toAccount);
+    const isAmountFieldActive = fieldName === values.activeAmountFieldName;
+    const isTimerVisible = !isFromAmountField && toAccount && !isSameCurrency && fromAmount > 0 && toAmount > 0;
+
+    const amountValue = isFromAmountField ? fromAmount : toAmount;
+    const debouncedAmountValue = useDebounce(amountValue, 500);
+
+    const toAmountLabel = isSameCurrency || !toAccount ? 'Amount you receive' : 'Estimated amount';
+    const amountLabel = isFromAmountField ? 'Amount you send' : toAmountLabel;
+
+    const currency = isFromAmountField ? fromAccount?.currency : toAccount?.currency;
+    const fractionDigits = isFromAmountField
         ? fromAccount?.currencyConfig?.fractional_digits
         : toAccount?.currencyConfig?.fractional_digits;
-    const isAmountInputDisabled = fieldName === 'toAmount' && !toAccount;
 
-    useEffect(() => {
-        if (!fromAccount?.currency || !toAccount?.currency || !activeWallet?.loginid) return;
-        subscribe({
-            base_currency: fromAccount?.currency,
-            loginid: activeWallet?.loginid,
-            target_currency: toAccount?.currency,
-        });
-        return () => unsubscribe();
-    }, [
-        activeWallet?.currency,
-        activeWallet?.loginid,
-        fromAccount?.currency,
-        subscribe,
-        toAccount?.currency,
-        unsubscribe,
-    ]);
+    const convertedMaxPossibleAmount = useMemo(
+        () => USD_MAX_POSSIBLE_TRANSFER_AMOUNT * (USDExchangeRates?.rates?.[currency ?? 'USD'] ?? 1),
+        [USDExchangeRates?.rates, currency]
+    );
+    const { value: formattedConvertedMaxPossibleAmount } = useInputDecimalFormatter(convertedMaxPossibleAmount, {
+        fractionDigits,
+    });
+    const maxDigits = formattedConvertedMaxPossibleAmount.match(/\d/g)?.length ?? MAX_DIGITS;
 
     const amountConverterHandler = useCallback(
         (value: number) => {
-            if (!toAccount?.currency || !exchangeRate?.rates) return;
+            if (
+                !toAccount?.currency ||
+                !fromAccount?.currency ||
+                !activeWalletExchangeRates?.rates ||
+                !isAmountFieldActive
+            )
+                return;
 
-            const toRate = exchangeRate.rates[toAccount.currency];
+            const fromRate = activeWalletExchangeRates.rates[fromAccount.currency];
+            const toRate = activeWalletExchangeRates.rates[toAccount.currency];
 
-            if (isFromAmountFieldName) {
+            if (isFromAmountField) {
                 const convertedToAmount = Number(
-                    (value * toRate).toFixed(toAccount?.currencyConfig?.fractional_digits)
+                    (toRate ? value * toRate : value / fromRate).toFixed(toAccount?.currencyConfig?.fractional_digits)
                 );
                 setFieldValue('toAmount', convertedToAmount);
             } else {
                 const convertedFromAmount = Number(
-                    (value / toRate).toFixed(fromAccount?.currencyConfig?.fractional_digits)
+                    (toRate ? value / toRate : value * fromRate).toFixed(fromAccount?.currencyConfig?.fractional_digits)
                 );
                 setFieldValue('fromAmount', convertedFromAmount);
             }
         },
         [
-            exchangeRate?.rates,
+            activeWalletExchangeRates?.rates,
+            fromAccount?.currency,
             fromAccount?.currencyConfig?.fractional_digits,
-            isFromAmountFieldName,
+            isAmountFieldActive,
+            isFromAmountField,
             setFieldValue,
             toAccount?.currency,
             toAccount?.currencyConfig?.fractional_digits,
@@ -76,14 +98,15 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     );
 
     useEffect(() => {
-        if (debouncedAmountValue) {
+        if (debouncedAmountValue && !isSameCurrency) {
             amountConverterHandler(debouncedAmountValue);
         }
-    }, [amountConverterHandler, debouncedAmountValue]);
+    }, [amountConverterHandler, debouncedAmountValue, isSameCurrency]);
 
     const onChangeHandler = useCallback(
         (value: number) => {
-            if (fieldName !== values.activeAmountFieldName) return;
+            if (!isAmountFieldActive) return;
+
             if (isSameCurrency) {
                 setValues(prev => ({ ...prev, fromAmount: value, toAmount: value }));
             } else {
@@ -94,29 +117,54 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
                 setFieldValue(fieldName, value);
             }
         },
-        [fieldName, isSameCurrency, setFieldValue, setValues, values.activeAmountFieldName]
+        [fieldName, isAmountFieldActive, isSameCurrency, setFieldValue, setValues]
     );
 
-    const onFocusHandler = useCallback(() => {
-        setFieldValue('activeAmountFieldName', fieldName);
-    }, [fieldName, setFieldValue]);
+    const onTimerCompleteHandler = useCallback(() => {
+        refetchExchangeRatesAndLimits().then(res => {
+            const newRates = res.data?.exchange_rates;
+            if (!newRates?.rates || !fromAccount?.currency || !toAccount?.currency) return;
 
-    const onBlurHandler = useCallback(() => {
-        setFieldValue('activeAmountFieldName', undefined);
-    }, [setFieldValue]);
+            const fromRate = newRates.rates[fromAccount.currency];
+            const toRate = newRates.rates[toAccount.currency];
+
+            const convertedToAmount = Number(
+                (toRate ? fromAmount * toRate : fromAmount / fromRate).toFixed(
+                    toAccount?.currencyConfig?.fractional_digits
+                )
+            );
+
+            setFieldValue('toAmount', convertedToAmount);
+        });
+    }, [
+        fromAmount,
+        fromAccount?.currency,
+        refetchExchangeRatesAndLimits,
+        setFieldValue,
+        toAccount?.currency,
+        toAccount?.currencyConfig?.fractional_digits,
+    ]);
 
     return (
-        <ATMAmountInput
-            currency={currency}
-            disabled={isAmountInputDisabled}
-            fractionDigits={fractionDigits}
-            label={amountLabel}
-            maxDigits={MAX_DIGITS}
-            onBlur={onBlurHandler}
-            onChange={onChangeHandler}
-            onFocus={onFocusHandler}
-            value={amountValue}
-        />
+        <div className='wallets-transfer-form-amount-input'>
+            <ATMAmountInput
+                currency={currency}
+                disabled={isAmountInputDisabled}
+                fractionDigits={fractionDigits}
+                label={amountLabel}
+                locale={preferredLanguage}
+                maxDigits={maxDigits}
+                onBlur={() => setFieldValue('activeAmountFieldName', undefined)}
+                onChange={onChangeHandler}
+                onFocus={() => setFieldValue('activeAmountFieldName', fieldName)}
+                value={amountValue}
+            />
+            {isTimerVisible && (
+                <div className='wallets-transfer-form-amount-input__timer'>
+                    <Timer key={toAmount} onComplete={onTimerCompleteHandler} />
+                </div>
+            )}
+        </div>
     );
 };
 

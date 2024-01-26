@@ -5,39 +5,45 @@ import IcAppstoreDerivBot from '../public/images/ic-appstore-deriv-bot.svg';
 import IcAppstoreDerivGo from '../public/images/ic-appstore-deriv-go.svg';
 import IcAppstoreDerivTrader from '../public/images/ic-appstore-deriv-trader.svg';
 import IcAppstoreSmartTrader from '../public/images/ic-appstore-smart-trader.svg';
+import i18n from '../translations/i18n';
 
 export const optionsAndMultipliersContent = [
     {
-        description: 'Options and multipliers trading platform.',
+        description: i18n.t('Options and multipliers trading platform.'),
         icon: <IcAppstoreDerivTrader />,
         redirect: '/',
-        title: 'Deriv Trader',
+        smallIcon: <IcAppstoreDerivTrader height='3.2rem' width='3.2rem' />,
+        title: i18n.t('Deriv Trader'),
     },
     {
-        description: 'Automate your trading, no coding needed.',
+        description: i18n.t('Automate your trading, no coding needed.'),
         icon: <IcAppstoreDerivBot />,
         redirect: '/bot',
-        title: 'Deriv Bot',
+        smallIcon: <IcAppstoreDerivBot height='3.2rem' width='3.2rem' />,
+        title: i18n.t('Deriv Bot'),
     },
     {
-        description: 'Our legacy options trading platform.',
+        description: i18n.t('Our legacy options trading platform.'),
         icon: <IcAppstoreSmartTrader />,
         isExternal: true,
         redirect: getUrlSmartTrader(),
-        title: 'SmartTrader',
+        smallIcon: <IcAppstoreSmartTrader height='3.2rem' width='3.2rem' />,
+        title: i18n.t('SmartTrader'),
     },
     {
-        description: 'Our legacy automated trading platform.',
+        description: i18n.t('Our legacy automated trading platform.'),
         icon: <IcAppstoreBinaryBot />,
         isExternal: true,
         redirect: getUrlBinaryBot(),
-        title: 'Binary Bot',
+        smallIcon: <IcAppstoreBinaryBot height='3.2rem' width='3.2rem' />,
+        title: i18n.t('Binary Bot'),
     },
     {
-        description: 'Trade on the go with our mobile app.',
+        description: i18n.t('Trade on the go with our mobile app.'),
         icon: <IcAppstoreDerivGo />,
         isExternal: true,
         redirect: getStaticUrl('/deriv-go'),
-        title: 'Deriv GO',
+        smallIcon: <IcAppstoreDerivGo height='3.2rem' width='3.2rem' />,
+        title: i18n.t('Deriv GO'),
     },
 ];

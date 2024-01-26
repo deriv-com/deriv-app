@@ -77,9 +77,10 @@
         "@deriv/stores": "^1.0.0",
         "@deriv/translations": "^1.0.0",
         "classnames": "^2.2.6",
-        "embla-carousel-react": "^8.0.0-rc12",
+        "embla-carousel-react": "8.0.0-rc12",
         "gh-pages": "^2.1.1",
         "glob": "^7.1.5",
+        "lodash.debounce": "^4.0.8",
         "lodash.throttle": "^4.1.1",
         "moment": "^2.29.2",
         "prop-types": "^15.7.2",
@@ -94,6 +95,7 @@
         "react-tiny-popover": "^7.0.1",
         "react-transition-group": "4.4.2",
         "react-virtualized": "npm:@enykeev/react-virtualized@^9.22.4-mirror.1",
+        "usehooks-ts": "^2.7.0",
         "@types/react-virtualized": "^9.21.21"
     }
 }

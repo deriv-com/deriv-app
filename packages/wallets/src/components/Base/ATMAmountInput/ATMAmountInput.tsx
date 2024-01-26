@@ -11,7 +11,7 @@ type TProps = {
     label: string;
     locale?: Intl.LocalesArgument;
     maxDigits?: number;
-    onBlur: VoidFunction;
+    onBlur?: VoidFunction;
     onChange?: (value: number) => void;
     onFocus?: VoidFunction;
     value: number;
@@ -64,6 +64,7 @@ const WalletTransferFormInputField: React.FC<TProps> = ({
                     <input
                         className='wallets-atm-amount-input__input'
                         disabled={disabled || isFocused}
+                        readOnly
                         value={`${formattedValue} ${currency || ''}`}
                     />
                     <input

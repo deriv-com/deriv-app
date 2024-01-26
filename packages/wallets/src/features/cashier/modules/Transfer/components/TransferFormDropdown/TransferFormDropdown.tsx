@@ -1,11 +1,11 @@
-import React, { RefObject, useCallback, useMemo } from 'react';
+import React, { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { useFormikContext } from 'formik';
 import { WalletListCardBadge, WalletText } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
 import IcDropdown from '../../../../../../public/images/ic-dropdown.svg';
 import { useTransfer } from '../../provider';
-import { TInitialTransferFormValues } from '../../types';
+import { TInitialTransferFormValues, TToAccount } from '../../types';
 import { TransferFormAccountCard } from '../TransferFormAccountCard';
 import { TransferFormAccountSelection } from '../TransferFormAccountSelection';
 import './TransferFormDropdown.scss';
@@ -21,6 +21,7 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const { fromAccount, toAccount } = values;
     const { isMobile } = useDevice();
     const modal = useModal();
+    const isFromAccountDropdown = fieldName === 'fromAccount';
 
     const toAccountList = useMemo(() => {
         if (!activeWallet) return { tradingAccounts: [], walletAccounts: [] };
@@ -33,30 +34,57 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
         return { tradingAccounts: [], walletAccounts: [activeWallet] };
     }, [accounts?.tradingAccounts, accounts?.walletAccounts, activeWallet, fromAccount?.loginid]);
 
-    const selectedAccount = fieldName === 'fromAccount' ? fromAccount : toAccount;
-    const accountsList = fieldName === 'fromAccount' ? accounts : toAccountList;
-    const label = fieldName === 'fromAccount' ? 'Transfer from' : 'Transfer to';
+    const selectedAccount = isFromAccountDropdown ? fromAccount : toAccount;
+    const accountsList = isFromAccountDropdown ? accounts : toAccountList;
+    const label = isFromAccountDropdown ? 'Transfer from' : 'Transfer to';
     const badgeLabel = selectedAccount?.demo_account ? 'virtual' : selectedAccount?.landingCompanyName;
+    const queryParamToAccount = new URLSearchParams(window.location.search).get('to-account');
+
+    useEffect(() => {
+        const toAccount: TToAccount = Object.values(accounts)
+            .flatMap(account => account)
+            .find(account => account.loginid === queryParamToAccount);
+
+        if (queryParamToAccount && toAccount) {
+            setValues(prev => ({
+                ...prev,
+                toAccount,
+            }));
+        }
+
+        // remove 'to-account' query param from url
+        const url = new URL(window.location.href);
+        url.searchParams.delete('to-account');
+        window.history.replaceState({}, document.title, url.toString());
+    }, [accounts, queryParamToAccount, setValues]);
 
     const handleSelect = useCallback(
         (account: TInitialTransferFormValues['fromAccount']) => {
             if (account?.loginid === selectedAccount?.loginid) return;
 
-            setValues(prev => {
-                const fromAccount = fieldName === 'fromAccount' ? account : prev.fromAccount;
-                const computedToAccount = account?.loginid !== activeWallet?.loginid ? activeWallet : undefined;
-                const toAccount = fieldName === 'toAccount' ? account : computedToAccount;
-                return {
+            if (isFromAccountDropdown) {
+                setValues(prev => {
+                    const toAccount = account?.loginid !== activeWallet?.loginid ? activeWallet : undefined;
+
+                    return {
+                        ...prev,
+                        activeAmountFieldName: undefined,
+                        fromAccount: account,
+                        fromAmount: 0,
+                        toAccount,
+                        toAmount: 0,
+                    };
+                });
+            } else {
+                setValues(prev => ({
                     ...prev,
-                    activeAmountFieldName: undefined,
-                    fromAccount,
-                    fromAmount: 0,
-                    toAccount,
+                    activeAmountFieldName: 'fromAmount',
+                    toAccount: account,
                     toAmount: 0,
-                };
-            });
+                }));
+            }
         },
-        [activeWallet, fieldName, selectedAccount?.loginid, setValues]
+        [activeWallet, isFromAccountDropdown, selectedAccount?.loginid, setValues]
     );
 
     return (
@@ -90,9 +118,11 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 {selectedAccount ? (
                     <TransferFormAccountCard account={selectedAccount} activeWallet={activeWallet} type='input' />
                 ) : (
-                    <WalletText size='sm' weight='bold'>
-                        Select a trading account or a Wallet
-                    </WalletText>
+                    <div className='wallets-transfer-form-dropdown__select-account-cta'>
+                        <WalletText size='sm' weight='bold'>
+                            Select a trading account or a Wallet
+                        </WalletText>
+                    </div>
                 )}
             </div>
 

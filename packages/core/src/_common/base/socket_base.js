@@ -179,6 +179,8 @@ const BinarySocketBase = (() => {
 
     const subscribeWebsiteStatus = cb => subscribe({ website_status: 1 }, cb);
 
+    const getTicksHistory = request_object => deriv_api.send(request_object);
+
     const buyAndSubscribe = request => {
         return new Promise(resolve => {
             let called = false;
@@ -363,8 +365,6 @@ const BinarySocketBase = (() => {
     const p2pSubscribe = (request, cb) => subscribe(request, cb);
     const accountStatistics = () => deriv_api.send({ account_statistics: 1 });
 
-    const realityCheck = () => deriv_api.send({ reality_check: 1 });
-
     const tradingServers = platform => deriv_api.send({ platform, trading_servers: 1 });
 
     const tradingPlatformAccountsList = platform =>
@@ -456,6 +456,7 @@ const BinarySocketBase = (() => {
         profitTable,
         statement,
         verifyEmail,
+        getTicksHistory,
         tradingPlatformPasswordChange,
         tradingPlatformPasswordReset,
         tradingPlatformAvailableAccounts,
@@ -483,7 +484,6 @@ const BinarySocketBase = (() => {
         fetchLoginHistory,
         closeAndOpenNewConnection,
         accountStatistics,
-        realityCheck,
         tradingServers,
         tradingPlatformAccountsList,
         tradingPlatformNewAccount,

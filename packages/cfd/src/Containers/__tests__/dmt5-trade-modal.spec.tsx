@@ -15,6 +15,8 @@ jest.mock('@deriv/shared', () => ({
 
 jest.mock('../../Assets/svgs/trading-platform', () => jest.fn(() => 'MockTradingPlatformIcon'));
 
+jest.mock('../migration-banner', () => jest.fn(() => <div>MockMigrateBanner</div>));
+
 describe('<DMT5TradeModal/>', () => {
     const mock_props: React.ComponentProps<typeof DMT5TradeModal> = {
         mt5_trade_account: {
@@ -103,6 +105,20 @@ describe('<DMT5TradeModal/>', () => {
         expect(status_badge).toBeInTheDocument();
     });
 
+    it('should not render status badge if mt5_acc_auth_status value is poa_pending', () => {
+        const new_mock_props = {
+            ...mock_props,
+            mt5_trade_account: {
+                status: 'poa_pending',
+            },
+        };
+        renderComponent({ props: new_mock_props });
+
+        expect(screen.queryByText(/Pending verification/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/No new positions/)).not.toBeInTheDocument();
+        expect(screen.queryByText(/Account closed/)).not.toBeInTheDocument();
+    });
+
     it('should not render status badge if mt5_acc_auth_status value is null', () => {
         const new_mock_props = {
             ...mock_props,
@@ -115,5 +131,21 @@ describe('<DMT5TradeModal/>', () => {
         expect(screen.queryByText(/Pending verification/)).not.toBeInTheDocument();
         expect(screen.queryByText(/No new positions/)).not.toBeInTheDocument();
         expect(screen.queryByText(/Account closed/)).not.toBeInTheDocument();
+    });
+
+    it('should not render migration banner if account is not eligible to migrate', () => {
+        renderComponent({ props: mock_props });
+        expect(screen.queryByText(/MockMigrateBanner/)).not.toBeInTheDocument();
+    });
+
+    it('should render migration banner if account is eligible to migrate', () => {
+        const new_mock_props = {
+            ...mock_props,
+            mt5_trade_account: {
+                eligible_to_migrate: { financial: 'bvi' },
+            },
+        };
+        renderComponent({ props: new_mock_props });
+        expect(screen.queryByText(/MockMigrateBanner/)).toBeInTheDocument();
     });
 });

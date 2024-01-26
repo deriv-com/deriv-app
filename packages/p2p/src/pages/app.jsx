@@ -5,14 +5,13 @@ import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Loading } from '@deriv/components';
 import { routes, WS } from '@deriv/shared';
-import ServerTime from 'Utils/server-time';
 import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from 'Components/app-content.jsx';
 import { setLanguage } from 'Components/i18next';
 import { ModalManager, ModalManagerContextProvider } from 'Components/modal-manager';
-import Routes from 'Components/routes/routes.jsx';
+import Routes from 'Components/routes';
 import './app.scss';
 
 const App = () => {
@@ -73,8 +72,6 @@ const App = () => {
             history.push(routes.p2p_my_profile);
         }
 
-        ServerTime.init(general_store.server_time);
-
         // force safari refresh on back/forward
         window.onpageshow = function (event) {
             if (event.persisted) {
@@ -90,10 +87,8 @@ const App = () => {
             }
         });
 
-        if (/\/p2p$/.test(location.pathname)) {
-            history.push(routes.p2p_buy_sell);
-            general_store.setActiveIndex(0);
-        } else if (/\/orders$/.test(location.pathname)) {
+        // Redirect to the correct tab based on the url on page load
+        if (/\/orders$/.test(location.pathname)) {
             history.push(routes.p2p_orders);
             general_store.setActiveIndex(1);
         } else if (/\/my-ads$/.test(location.pathname)) {
@@ -132,6 +127,15 @@ const App = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // Redirect to /p2p/buy-sell if user navigates to /p2p without a subroute
+    React.useEffect(() => {
+        if (/\/p2p$/.test(location.pathname) || location.pathname === '/cashier/p2p/') {
+            history.push(routes.p2p_buy_sell);
+            general_store.setActiveIndex(0);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [location.pathname]);
 
     React.useEffect(() => {
         const url_params = new URLSearchParams(location.search);
@@ -255,15 +259,13 @@ const App = () => {
     }
 
     return (
-        <>
-            <main className='p2p'>
-                <ModalManagerContextProvider>
-                    <ModalManager />
-                    <AppContent order_id={order_id} />
-                    <Routes />
-                </ModalManagerContextProvider>
-            </main>
-        </>
+        <main className='p2p'>
+            <ModalManagerContextProvider>
+                <ModalManager />
+                <AppContent order_id={order_id} />
+                <Routes />
+            </ModalManagerContextProvider>
+        </main>
     );
 };
 

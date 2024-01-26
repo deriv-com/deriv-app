@@ -1,0 +1,39 @@
+.dc-modal__container_order-details-confirm-modal {
+    min-height: 41.2rem;
+    @include mobile {
+        width: 32.8rem;
+        min-height: 36.8rem;
+    }
+    .dc-modal-header {
+        border-bottom: none;
+
+        &__title {
+            padding: 2.4rem;
+
+            @include mobile {
+                padding: 1.6rem;
+            }
+        }
+    }
+
+    .dc-modal-body {
+        padding: 0 2.4rem;
+
+        @include mobile {
+            padding: 0 1.6rem;
+        }
+        .order-details-confirm-modal__file_format {
+            margin: 0.8rem 0 2.4rem;
+        }
+
+        .order-details-confirm-modal__inline-message {
+            margin-bottom: 1rem;
+        }
+    }
+    .dc-modal-footer {
+        padding: 2.4rem;
+        @include mobile {
+            padding: 1.6rem;
+        }
+    }
+}

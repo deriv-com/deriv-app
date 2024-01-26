@@ -2,11 +2,12 @@ import React, { useMemo, useState } from 'react';
 import classNames from 'classnames';
 import { WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
-import DocumentsIcon from '../../../../../public/images/ic-documents.svg';
 import IdCardIcon from '../../../../../public/images/ic-id-card.svg';
-import NotApplicableIcon from '../../../../../public/images/ic-not-applicable.svg';
+import DocumentIcon from '../../../../../public/images/ic-id-number.svg';
+import NameAndAddressIcon from '../../../../../public/images/ic-name-and-address.svg';
 import SelfieIcon from '../../../../../public/images/ic-selfie.svg';
 import { useDynamicLeverageModalState } from '../../../components/DynamicLeverageContext';
+import useVerificationDocs from '../hooks/useVerificationDocs';
 import { getJurisdictionContents } from '../jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardItems, TJurisdictionCardSection } from '../jurisdiction-contents/props.types';
 import JurisdictionCardBack from './JurisdictionCardBack';
@@ -26,22 +27,25 @@ type TJurisdictionCardProps = {
 type TVerificationDocumentsMapper = {
     [key: string]: {
         category: 'poa' | 'poi' | null;
-        icon: JSX.Element;
+        icon?: JSX.Element;
     };
 };
 
 const verificationDocumentsMapper: TVerificationDocumentsMapper = {
     documentNumber: {
         category: 'poi',
+        icon: <DocumentIcon />,
+    },
+    identityDocument: {
+        category: 'poi',
         icon: <IdCardIcon />,
     },
     nameAndAddress: {
         category: 'poa',
-        icon: <DocumentsIcon />,
+        icon: <NameAndAddressIcon />,
     },
     notApplicable: {
         category: null,
-        icon: <NotApplicableIcon />,
     },
     selfie: {
         category: 'poi',
@@ -53,6 +57,7 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
     const { getModalState } = useModal();
+    const verificationDocs = useVerificationDocs(jurisdiction);
 
     const descriptionClickHandler = (tag?: string) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.stopPropagation();
@@ -63,7 +68,7 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
         }
     };
 
-    const { contents, header, isOverHeaderAvailable, overHeader, verificationDocs } = useMemo<TJurisdictionCardItems>(
+    const { contents, header, isOverHeaderAvailable, overHeader } = useMemo<TJurisdictionCardItems>(
         () => getJurisdictionContents()[jurisdiction],
         [jurisdiction]
     );
@@ -108,53 +113,55 @@ const JurisdictionCard: React.FC<TJurisdictionCardProps> = ({ isAdded, isSelecte
                             {header}
                         </WalletText>
                     </div>
-                    {rows.map(row => {
-                        return (
-                            <JurisdictionCardRow
-                                description={parseDescription(row)}
-                                key={`wallets-jurisdiction-card--${row?.title}`}
-                                renderTag={() => {
-                                    if (!row?.titleIndicators) return;
+                    <div className='wallets-jurisdiction-card-rows'>
+                        {rows.map(row => {
+                            return (
+                                <JurisdictionCardRow
+                                    description={parseDescription(row)}
+                                    key={`wallets-jurisdiction-card--${row?.title}`}
+                                    renderTag={() => {
+                                        if (!row?.titleIndicators) return;
 
-                                    if (
-                                        row.titleIndicators?.type === 'displayIcons' &&
-                                        verificationDocs &&
-                                        marketType &&
-                                        marketType !== 'all'
-                                    ) {
-                                        return (
-                                            <div className='wallets-jurisdiction-card-front__tag-icons'>
-                                                {!(marketType in verificationDocs)
-                                                    ? verificationDocumentsMapper.notApplicable.icon
-                                                    : verificationDocs[marketType]?.map(doc => (
-                                                          <JurisdictionCardVerificationTag
-                                                              category={verificationDocumentsMapper[doc].category}
-                                                              icon={verificationDocumentsMapper[doc].icon}
-                                                              key={`verification-doc-${doc}`}
-                                                          />
-                                                      ))}
-                                            </div>
-                                        );
-                                    }
+                                        if (
+                                            row.titleIndicators?.type === 'displayIcons' &&
+                                            verificationDocs &&
+                                            marketType &&
+                                            marketType !== 'all'
+                                        ) {
+                                            return (
+                                                <div className='wallets-jurisdiction-card-front__tag-icons'>
+                                                    {!(marketType in verificationDocs)
+                                                        ? verificationDocumentsMapper.notApplicable.icon
+                                                        : verificationDocs[marketType]?.map(doc => (
+                                                              <JurisdictionCardVerificationTag
+                                                                  category={verificationDocumentsMapper[doc].category}
+                                                                  icon={verificationDocumentsMapper[doc].icon}
+                                                                  key={`verification-doc-${doc}`}
+                                                              />
+                                                          ))}
+                                                </div>
+                                            );
+                                        }
 
-                                    if (row?.titleIndicators?.displayText) {
-                                        return (
-                                            <div
-                                                className={`wallets-jurisdiction-card-front__tag wallets-jurisdiction-card-front__tag--${
-                                                    row.titleIndicators?.displayTextSkinColor || ''
-                                                }`}
-                                            >
-                                                <WalletText color='white' size='xs' weight='bold'>
-                                                    {row.titleIndicators.displayText}
-                                                </WalletText>
-                                            </div>
-                                        );
-                                    }
-                                }}
-                                title={row.title}
-                            />
-                        );
-                    })}
+                                        if (row?.titleIndicators?.displayText) {
+                                            return (
+                                                <div
+                                                    className={`wallets-jurisdiction-card-front__tag wallets-jurisdiction-card-front__tag--${
+                                                        row.titleIndicators?.displayTextSkinColor || ''
+                                                    }`}
+                                                >
+                                                    <WalletText color='white' size='xs' weight='bold'>
+                                                        {row.titleIndicators.displayText}
+                                                    </WalletText>
+                                                </div>
+                                            );
+                                        }
+                                    }}
+                                    title={row.title}
+                                />
+                            );
+                        })}
+                    </div>
                     {isAdded && (
                         <div className='wallets-jurisdiction-card__added-status'>
                             <WalletText align='center' color='white' lineHeight='3xs' size='xs' weight='bold'>

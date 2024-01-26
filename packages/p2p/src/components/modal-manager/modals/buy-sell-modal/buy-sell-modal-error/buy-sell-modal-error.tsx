@@ -1,0 +1,32 @@
+import React from 'react';
+import { InlineMessage } from '@deriv/components';
+import { localize } from 'Components/i18next';
+import { getInlineTextSize } from 'Utils/responsive';
+
+type TBuySellModalErrorProps = {
+    error_message: string;
+    show_low_balance_message: boolean;
+};
+
+const BuySellModalError = ({ error_message, show_low_balance_message }: TBuySellModalErrorProps) => {
+    if (error_message || show_low_balance_message) {
+        return (
+            <div className='buy-sell-modal-error'>
+                <InlineMessage
+                    message={
+                        show_low_balance_message
+                            ? localize(
+                                  "Your Deriv P2P balance isn't enough. Please increase your balance before trying again."
+                              )
+                            : error_message
+                    }
+                    size={getInlineTextSize('sm', 'xs')}
+                    type='error'
+                />
+            </div>
+        );
+    }
+    return null;
+};
+
+export default BuySellModalError;

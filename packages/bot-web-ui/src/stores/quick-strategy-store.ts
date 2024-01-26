@@ -1,14 +1,23 @@
 import { action, makeObservable, observable, reaction } from 'mobx';
 import { ApiHelpers, config as qs_config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
-import { STRATEGIES } from 'Components/quick-strategy/config';
-import { TFormData } from 'Components/quick-strategy/types';
+import { addDynamicBlockToDOM } from 'Utils/xml-dom-quick-strategy';
+import { STRATEGIES } from '../pages/bot-builder/quick-strategy/config';
+import { TFormData } from '../pages/bot-builder/quick-strategy/types';
 import RootStore from './root-store';
 
 export type TActiveSymbol = {
     group: string;
     text: string;
     value: string;
+};
+
+export type TLossThresholdWarningData = {
+    show: boolean;
+    loss_amount?: string | number;
+    currency?: string;
+    highlight_field?: Array<string>;
+    already_shown?: boolean;
 };
 
 interface IQuickStrategyStore {
@@ -20,8 +29,12 @@ interface IQuickStrategyStore {
     is_open: boolean;
     selected_strategy: string;
     form_data: TFormData;
+    loss_threshold_warning_data: {
+        show: boolean;
+    };
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
+    setLossThresholdWarningData: (data: TLossThresholdWarningData) => void;
     setFormVisibility: (is_open: boolean) => void;
     setSelectedStrategy: (strategy: string) => void;
     setValue: (name: string, value: string) => void;
@@ -46,6 +59,9 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         min: 0,
         max: 10,
     };
+    loss_threshold_warning_data: TLossThresholdWarningData = {
+        show: false,
+    };
 
     constructor(root_store: RootStore) {
         makeObservable(this, {
@@ -54,11 +70,14 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             is_contract_dialog_open: observable,
             is_open: observable,
             is_stop_bot_dialog_open: observable,
+            initializeLossThresholdWarningData: action,
             selected_strategy: observable,
+            loss_threshold_warning_data: observable,
             onSubmit: action,
             setCurrentDurationMinMax: action,
             setFormVisibility: action,
             setSelectedStrategy: action,
+            setLossThresholdWarningData: action,
             setValue: action,
             toggleStopBotDialog: action,
         });
@@ -72,6 +91,21 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
             }
         );
     }
+
+    setLossThresholdWarningData = (data: TLossThresholdWarningData) => {
+        this.loss_threshold_warning_data = {
+            ...this.loss_threshold_warning_data,
+            ...data,
+        };
+    };
+
+    initializeLossThresholdWarningData = () => {
+        this.loss_threshold_warning_data = {
+            show: false,
+            highlight_field: [],
+            already_shown: false,
+        };
+    };
 
     setFormVisibility = (is_open: boolean) => {
         this.is_open = is_open;
@@ -100,6 +134,7 @@ export default class QuickStrategyStore implements IQuickStrategyStore {
         const selected_strategy = STRATEGIES[this.selected_strategy];
         const strategy_xml = await import(/* webpackChunkName: `[request]` */ `../xml/${selected_strategy.name}.xml`);
         const strategy_dom = Blockly.Xml.textToDom(strategy_xml.default);
+        addDynamicBlockToDOM('PREDICTION', 'last_digit_prediction', trade_type_cat, strategy_dom);
 
         const modifyValueInputs = (key: string, value: number) => {
             const el_value_inputs = strategy_dom?.querySelectorAll(`value[strategy_value="${key}"]`);

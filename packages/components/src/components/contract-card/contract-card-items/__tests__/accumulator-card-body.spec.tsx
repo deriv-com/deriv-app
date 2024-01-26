@@ -1,12 +1,14 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { mockContractInfo, getCardLabels } from '@deriv/shared';
 import AccumulatorCardBody from '../accumulator-card-body';
 
 type TAccumulatorCardBody = React.ComponentProps<typeof AccumulatorCardBody>;
 
 describe('<AccumulatorCardBody />', () => {
     const mock_props: TAccumulatorCardBody = {
-        contract_info: {
+        addToast: jest.fn(),
+        contract_info: mockContractInfo({
             buy_price: 123,
             sell_price: 234,
             profit: 111,
@@ -15,21 +17,18 @@ describe('<AccumulatorCardBody />', () => {
             status: 'sold',
             is_settleable: 1,
             is_expired: 1,
-        },
+        }),
         contract_update: {
             take_profit: {
                 order_amount: 300,
             },
         },
-        getCardLabels: () => ({
-            CURRENT_STAKE: 'Current stake:',
-            INITIAL_STAKE: 'Initial stake:',
-            TAKE_PROFIT: 'Take profit:',
-            TOTAL_PROFIT_LOSS: 'Total profit/loss:',
-        }),
-        is_sold: 1,
-        status: 'profit',
+        getCardLabels: () => getCardLabels(),
+        getContractById: jest.fn(),
+        is_sold: true,
+        setCurrentFocus: jest.fn(),
         currency: 'USD',
+        removeToast: jest.fn(),
     };
     it('should display all contract card items, label, and values', () => {
         render(<AccumulatorCardBody {...mock_props} />);
@@ -49,5 +48,17 @@ describe('<AccumulatorCardBody />', () => {
         render(<AccumulatorCardBody {...mock_props} />);
         expect(screen.getByText('Take profit:')).toBeInTheDocument();
         expect(screen.getByText('-')).toBeInTheDocument();
+    });
+
+    it('should not render arrow indicator if the contract was sold (is_sold === true)', () => {
+        render(<AccumulatorCardBody {...mock_props} />);
+
+        expect(screen.queryByTestId('dt_arrow_indicator')).not.toBeInTheDocument();
+    });
+
+    it('should render arrow indicator if the contract is not sold (is_sold === false)', () => {
+        render(<AccumulatorCardBody {...mock_props} is_sold={false} />);
+
+        expect(screen.getAllByTestId('dt_arrow_indicator')).not.toHaveLength(0);
     });
 });

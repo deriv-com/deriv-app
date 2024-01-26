@@ -555,9 +555,13 @@ export default class TradeStore extends BaseStore {
                 }
             }
         );
-        when(
-            () => !!this.accumulator_range_list.length,
-            () => this.setDefaultGrowthRate()
+        reaction(
+            () => this.accumulator_range_list.length,
+            () => {
+                if (this.accumulator_range_list.length) {
+                    this.setDefaultGrowthRate();
+                }
+            }
         );
     }
 

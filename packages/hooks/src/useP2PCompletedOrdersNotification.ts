@@ -17,7 +17,6 @@ const useP2PCompletedOrdersNotification = () => {
                 },
             });
         }
-
         return () => {
             isSubscribed && unsubscribe();
         };

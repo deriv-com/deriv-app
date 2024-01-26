@@ -5,8 +5,6 @@ import { renderHook } from '@testing-library/react-hooks';
 import useP2PCompletedOrdersNotification from '../useP2PCompletedOrdersNotification';
 import useIsP2PEnabled from '../useIsP2PEnabled';
 
-// let mock_is_p2p_enabled = true;
-
 jest.mock('../useIsP2PEnabled');
 
 jest.mock('@deriv/api', () => ({
@@ -21,6 +19,7 @@ describe('useP2PCompletedOrdersNotification', () => {
         const mock = mockStore({
             client: {
                 is_authorize: false,
+                is_p2p_enabled: true,
                 currency: 'USD',
             },
             notifications: {
@@ -158,6 +157,7 @@ describe('useP2PCompletedOrdersNotification', () => {
         const mock = mockStore({
             client: {
                 is_authorize: true,
+                is_p2p_enabled: true,
                 currency: 'USD',
             },
             notifications: {

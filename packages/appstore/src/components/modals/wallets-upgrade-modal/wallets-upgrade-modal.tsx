@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Text, Button, Modal } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';

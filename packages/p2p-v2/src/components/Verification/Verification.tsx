@@ -1,6 +1,7 @@
 import React from 'react';
 import { Loader } from '@deriv-com/ui/dist/components/Loader';
 import { Text } from '@deriv-com/ui/dist/components/Text';
+import { useHistory } from 'react-router-dom';
 import { useDevice, usePoiPoaStatus } from '../../hooks';
 import SendEmailIcon from '../../public/ic-send-email.svg';
 import { Checklist } from '../Checklist';
@@ -34,6 +35,7 @@ const getPoaAction = (status: string | undefined) => {
 
 const Verification = () => {
     const { isMobile } = useDevice();
+    const history = useHistory();
     const { data, isLoading } = usePoiPoaStatus();
     const { isP2PPoaRequired, isPoaPending, isPoaVerified, isPoiPending, isPoiVerified, poaStatus, poiStatus } =
         data || {};
@@ -48,7 +50,7 @@ const Verification = () => {
             urlParams.forEach((value, key) => updatedUrlParams.append(key, value));
             updatedUrl = `${updatedUrl}&${urlParams.toString()}`;
         }
-        window.location.href = updatedUrl;
+        history.push(updatedUrl);
     };
 
     const checklistItems = [

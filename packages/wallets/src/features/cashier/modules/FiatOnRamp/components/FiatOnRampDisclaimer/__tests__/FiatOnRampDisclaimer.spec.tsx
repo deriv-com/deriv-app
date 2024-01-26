@@ -43,7 +43,7 @@ describe('FiatOnRampDisclaimer', () => {
         const handleDisclaimer = jest.fn();
 
         render(<FiatOnRampDisclaimer handleDisclaimer={handleDisclaimer} />);
-        expect(screen.getByTestId('dt_wallets-loader')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
     });
 
     it('should call handleDisclaimer function on "Back" button click', () => {

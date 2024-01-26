@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useActiveWalletAccount, useAuthorize, useWalletAccountsList } from '@deriv/api';
 import { render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../components/ModalProvider';
@@ -22,7 +22,7 @@ jest.mock('../../../components/', () => {
     };
 });
 
-const wrapper = ({ children }: { children: React.ReactNode }) => <ModalProvider>{children}</ModalProvider>;
+const wrapper = ({ children }: PropsWithChildren) => <ModalProvider>{children}</ModalProvider>;
 
 describe('WalletsListingRoute', () => {
     let mockSwitchAccount: jest.Mock;

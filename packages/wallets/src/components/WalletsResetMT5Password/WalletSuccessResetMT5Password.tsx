@@ -36,7 +36,11 @@ const WalletSuccessResetMT5Password: FC<WalletSuccessResetMT5PasswordProps> = ({
     }, [isDesktop, hide]);
 
     return (
-        <ModalStepWrapper renderFooter={renderFooter} shouldHideFooter={isDesktop} title={`Manage ${title} password`}>
+        <ModalStepWrapper
+            renderFooter={isMobile ? renderFooter : undefined}
+            shouldFixedFooter={isMobile}
+            title={`Manage ${title} password`}
+        >
             <div className='wallets-reset-mt5-password'>
                 <WalletsActionScreen
                     description={

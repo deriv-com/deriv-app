@@ -49,4 +49,16 @@ describe('<AccumulatorCardBody />', () => {
         expect(screen.getByText('Take profit:')).toBeInTheDocument();
         expect(screen.getByText('-')).toBeInTheDocument();
     });
+
+    it('should not render arrow indicator if the contract was sold (is_sold === true)', () => {
+        render(<AccumulatorCardBody {...mock_props} />);
+
+        expect(screen.queryByTestId('dt_arrow_indicator')).not.toBeInTheDocument();
+    });
+
+    it('should render arrow indicator if the contract is not sold (is_sold === false)', () => {
+        render(<AccumulatorCardBody {...mock_props} is_sold={false} />);
+
+        expect(screen.getAllByTestId('dt_arrow_indicator')).not.toHaveLength(0);
+    });
 });

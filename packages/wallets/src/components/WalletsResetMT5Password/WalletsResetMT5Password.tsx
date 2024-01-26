@@ -5,8 +5,7 @@ import { PlatformDetails } from '../../features/cfd/constants';
 import useDevice from '../../hooks/useDevice';
 import { TPlatforms } from '../../types';
 import { validPassword } from '../../utils/password';
-import { ModalStepWrapper, WalletButton, WalletButtonGroup, WalletText } from '../Base';
-import { WalletPasswordFieldLazy } from '../Base/WalletPasswordFieldLazy';
+import { ModalStepWrapper, WalletButton, WalletButtonGroup, WalletPasswordFieldLazy, WalletText } from '../Base';
 import { useModal } from '../ModalProvider';
 import WalletSuccessResetMT5Password from './WalletSuccessResetMT5Password';
 import './WalletsResetMT5Password.scss';
@@ -101,12 +100,7 @@ const WalletsResetMT5Password = ({
     };
 
     return (
-        <ModalStepWrapper
-            renderFooter={renderFooter}
-            shouldHideFooter={isDesktop}
-            shouldHideHeader={isDesktop}
-            title={`Manage ${title} password`}
-        >
+        <ModalStepWrapper renderFooter={renderFooter} shouldHideHeader={isDesktop} title={`Manage ${title} password`}>
             <div className='wallets-reset-mt5-password'>
                 <WalletText weight='bold'>
                     Create a new {title} {isInvestorPassword && 'investor'} Password

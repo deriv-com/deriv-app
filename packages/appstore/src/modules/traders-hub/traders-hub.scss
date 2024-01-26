@@ -3,6 +3,10 @@
     margin: auto;
     padding: 5rem 0;
 
+    &:has(.wallets-banner__container) {
+        padding-top: 0;
+    }
+
     @include mobile {
         padding: 2rem;
         width: 100%;

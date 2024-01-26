@@ -19,6 +19,7 @@ type TProps = {
     isInterWallet?: boolean;
     landingCompanyName?: TWalletLandingCompanyName;
     mt5Group?: string;
+    mt5LandingCompanyName?: string;
 };
 
 const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
@@ -31,6 +32,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
     isInterWallet = false,
     landingCompanyName,
     mt5Group,
+    mt5LandingCompanyName,
 }) => {
     return (
         <div className='wallets-transactions-completed-row-account-details'>
@@ -52,7 +54,7 @@ const TransactionsCompletedRowAccountDetails: React.FC<TProps> = ({
                     <WalletText color='general' size='xs' weight='bold'>
                         {displayAccountName}
                     </WalletText>
-                    {!isDemo && <WalletListCardBadge label={landingCompanyName} />}
+                    {!isDemo && <WalletListCardBadge label={mt5LandingCompanyName ?? landingCompanyName} />}
                 </div>
             </div>
         </div>

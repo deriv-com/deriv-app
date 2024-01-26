@@ -305,7 +305,7 @@ export const STRATEGIES: TStrategies = {
         ],
     },
     STRATEGY_1_3_2_6: {
-        name: 'STRATEGY_1_3_2_6',
+        name: '1_3_2_6',
         label: localize('1-3-2-6'),
         description: STRATEGY_1_3_2_6,
         fields: [

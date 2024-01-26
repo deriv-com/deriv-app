@@ -1,6 +1,6 @@
 import { TFormState, TReducerAction } from '../types';
 
-const advertiserPaymentMethodsReducer = (currentFormState: TFormState, action: TReducerAction) => {
+const advertiserPaymentMethodsReducer = (currentState: TFormState, action: TReducerAction) => {
     // TODO: Remember to translate the strings in this reducer function
     switch (action.type) {
         case 'ADD': {
@@ -20,7 +20,7 @@ const advertiserPaymentMethodsReducer = (currentFormState: TFormState, action: T
         }
         case 'EDIT': {
             return {
-                ...currentFormState,
+                ...currentState,
                 actionType: action.type,
                 isVisible: true,
                 selectedPaymentMethod: {

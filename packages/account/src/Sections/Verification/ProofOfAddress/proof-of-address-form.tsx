@@ -70,6 +70,8 @@ const ProofOfAddressForm = observer(
             should_show_form: true,
         });
 
+        const [should_scroll_to_top, setShouldScrollToTop] = React.useState(false);
+
         const poa_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poa'), []);
 
         const { upload } = useFileUploader();
@@ -88,6 +90,20 @@ const ProofOfAddressForm = observer(
                 });
             });
         }, [account_settings, fetchResidenceList, fetchStatesList]);
+
+        React.useEffect(() => {
+            if (should_scroll_to_top) {
+                // Scroll to the top of the page
+                const el = document.querySelector('#dt_poa_submit-error') as HTMLInputElement;
+                const target_element = el?.parentElement ?? el;
+                if (typeof target_element?.scrollIntoView === 'function') {
+                    target_element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+
+                // Reset the condition
+                setShouldScrollToTop(false);
+            }
+        }, [should_scroll_to_top]);
 
         const changeable_fields = getChangeableFields();
 
@@ -163,6 +179,7 @@ const ProofOfAddressForm = observer(
                 setStatus({ msg: data.error.message });
                 setFormState({ ...form_state, ...{ is_btn_loading: false } });
                 setSubmitting(false);
+                setShouldScrollToTop(true);
                 return;
             }
 
@@ -190,6 +207,7 @@ const ProofOfAddressForm = observer(
                 if (api_response?.warning) {
                     setStatus({ msg: api_response?.message });
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                    setShouldScrollToTop(true);
                     return;
                 }
 
@@ -223,6 +241,7 @@ const ProofOfAddressForm = observer(
                 if (isServerError(error)) {
                     setStatus({ msg: error.message });
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                    setShouldScrollToTop(true);
                 }
             } finally {
                 setSubmitting(false);
@@ -276,22 +295,21 @@ const ProofOfAddressForm = observer(
                                     className={className}
                                 >
                                     <FormBody scroll_offset={setOffset(status)}>
-                                        {status?.msg && (
+                                        {(status?.msg || is_resubmit) && (
                                             <HintBox
                                                 className='account-form_poa-submit-error'
                                                 icon='IcAlertDanger'
                                                 message={
                                                     <Text as='p' size={is_mobile ? 'xxxs' : 'xs'}>
-                                                        {status.msg}
+                                                        {!status?.msg && is_resubmit && (
+                                                            <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
+                                                        )}
+                                                        {status?.msg}
                                                     </Text>
                                                 }
                                                 is_danger
+                                                id='dt_poa_submit-error'
                                             />
-                                        )}
-                                        {!status?.msg && is_resubmit && (
-                                            <Text size={is_mobile ? 'xxs' : 'xs'} align='left' color='loss-danger'>
-                                                <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
-                                            </Text>
                                         )}
                                         <FormSubHeader title={localize('Address')} title_text_size='s' />
                                         <PersonalDetailsForm

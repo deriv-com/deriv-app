@@ -41,7 +41,6 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const badgeLabel = selectedAccount?.demo_account ? 'virtual' : selectedAccount?.landingCompanyName;
 
     const { location } = useHistory();
-
     const toAccountLoginId =
         location.pathname === '/wallets/cashier/transfer' ? location.state?.toAccountLoginId : undefined;
 

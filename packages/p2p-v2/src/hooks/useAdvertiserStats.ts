@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { useAdvertiserInfo } from '@deriv/api';
+import { p2p, useAuthentication, useSettings } from '@deriv/api';
+import { daysSince } from '../utils';
 
 /**
  * Hook to calculate an advertiser's stats based on their information.
@@ -7,12 +8,18 @@ import { useAdvertiserInfo } from '@deriv/api';
  * @param advertiserId - ID of the advertiser stats to reveal. If not provided, by default it will return the user's own stats.
  */
 const useAdvertiserStats = (advertiserId?: string) => {
-    const { data, isSuccess } = useAdvertiserInfo(advertiserId);
+    const { data, isSuccess, ...rest } = p2p.advertiser.useGetInfo(advertiserId);
+    const { data: settings, isSuccess: isSuccessSettings } = useSettings();
+    const { data: authenticationStatus, isSuccess: isSuccessAuthenticationStatus } = useAuthentication();
 
     const transformedData = useMemo(() => {
-        if (!isSuccess) return;
+        if (!isSuccess && !isSuccessSettings && !isSuccessAuthenticationStatus) return;
+
+        const isAdvertiser = data?.is_approved;
 
         return {
+            ...data,
+
             /** The average buy time in minutes */
             averagePayTime: data?.buy_time_avg && data.buy_time_avg > 60 ? Math.round(data.buy_time_avg / 60) : 1,
 
@@ -25,6 +32,29 @@ const useAdvertiserStats = (advertiserId?: string) => {
 
             /** The number of buy order completed within the past 30 days. */
             buyOrdersCount: Number(data?.buy_orders_count) || 0,
+
+            /** The daily available balance buy limit for P2P transactions in the past 24 hours. */
+            dailyAvailableBuyLimit: Number(data?.daily_buy_limit) - Number(data?.daily_buy) || 0,
+
+            /** The daily available balance sell limit for P2P transactions in the past 24 hours. */
+            dailyAvailableSellLimit: Number(data?.daily_sell_limit) - Number(data?.daily_sell) || 0,
+
+            /** The number of days since the user has became an advertiser */
+            daysSinceJoined: daysSince(
+                data?.created_time ? new Date(data.created_time * 1000).toISOString().split('T')[0] : ''
+            ),
+
+            /** The advertiser's full name */
+            fullName: (settings?.first_name || '') + (settings?.last_name || ''),
+
+            /** Checks if the advertiser has completed proof of address verification */
+            isAddressVerified: isAdvertiser ? data?.full_verification : authenticationStatus?.document?.status,
+
+            /** Checks if the user is already an advertiser */
+            isAdvertiser,
+
+            /** Checks if the advertiser has completed proof of identity verification */
+            isIdentityVerified: isAdvertiser ? data?.full_verification : authenticationStatus?.identity?.status,
 
             /** The percentage of completed orders out of total orders as a seller within the past 30 days. */
             sellCompletionRate: data?.sell_completion_rate || 0,
@@ -47,10 +77,12 @@ const useAdvertiserStats = (advertiserId?: string) => {
             /** The total trade volume since registration */
             tradeVolumeLifetime: Number(data?.total_turnover) || 0,
         };
-    }, [data, isSuccess]);
+    }, [data, settings, isSuccess, isSuccessSettings, isSuccessAuthenticationStatus, authenticationStatus]);
 
     return {
         data: transformedData,
+        isSuccess,
+        ...rest,
     };
 };
 

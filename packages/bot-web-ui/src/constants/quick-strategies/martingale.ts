@@ -128,7 +128,7 @@ export const MARTINGALE: TDescriptionItem[] = [
         dark_src: getImageLocation('martingale_formula_dark_1.svg'),
         alt: localize('Martingale formula 1'),
         className: 'formula',
-        styles: { height: '7.5rem' },
+        styles: { height: '6.5rem' },
     },
     {
         type: 'text',
@@ -156,7 +156,7 @@ export const MARTINGALE: TDescriptionItem[] = [
         dark_src: getImageLocation('martingale_formula_dark_2.svg'),
         alt: localize('Martingale formula 2'),
         className: 'formula',
-        styles: { height: '7.5rem' },
+        styles: { height: '6.5rem' },
     },
     {
         type: 'text',

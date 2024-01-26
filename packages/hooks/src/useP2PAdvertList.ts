@@ -17,6 +17,7 @@ const useP2PAdvertList = (
                 return pages.length;
             },
             enabled: config?.enabled === undefined || config.enabled,
+            refetchOnWindowFocus: false,
         },
     });
 

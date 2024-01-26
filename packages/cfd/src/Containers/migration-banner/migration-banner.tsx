@@ -1,5 +1,5 @@
 import React from 'react';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import classNames from 'classnames';
 import { Button, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';

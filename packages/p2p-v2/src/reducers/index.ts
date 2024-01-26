@@ -1,1 +1,1 @@
-export * from './AdvertiserPaymentMethodsProvider';
+export { default as advertiserPaymentMethodsReducer } from './advertiserPaymentMethodsReducer';

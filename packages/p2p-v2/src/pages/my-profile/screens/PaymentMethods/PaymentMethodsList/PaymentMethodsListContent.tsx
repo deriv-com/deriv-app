@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { TAdvertiserPaymentMethods, TSelectedPaymentMethod } from 'types';
 import { p2p } from '@deriv/api';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import { ConfirmDeletePaymentMethodModal } from '../../../../../components/Modals';
+import { PaymentMethodModal } from '../../../../../components/Modals';
 import { PaymentMethodCard } from '../../../../../components/PaymentMethodCard';
 import { PAYMENT_METHOD_CATEGORIES } from '../../../../../constants';
 import { TFormState } from '../../../../../reducers/types';
@@ -111,18 +111,23 @@ const PaymentMethodsListContent = ({
                     );
                 })}
             {actionType === 'DELETE' && (
-                <ConfirmDeletePaymentMethodModal
+                <PaymentMethodModal
+                    description='Are you sure you want to remove this payment method?'
                     isOpen={isOpen}
-                    onCancel={() => setIsOpen(false)}
                     onConfirm={() => {
                         deleteAdvertiserPaymentMethod(Number(selectedPaymentMethod?.id));
                         onResetFormState();
                     }}
-                    paymentMethodName={
+                    onReject={() => {
+                        setIsOpen(false);
+                    }}
+                    primaryButtonLabel='No'
+                    secondaryButtonLabel='Yes, remove'
+                    title={`Delete ${
                         selectedPaymentMethod?.fields?.bank_name?.value ??
                         selectedPaymentMethod?.fields?.name?.value ??
                         selectedPaymentMethod?.display_name
-                    }
+                    }?`}
                 />
             )}
         </div>

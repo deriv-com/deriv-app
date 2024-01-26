@@ -8,7 +8,7 @@ import { Text } from '@deriv-com/ui/dist/components/Text';
 import CloseCircle from '../../public/ic-close-circle.svg';
 import { ClickableText } from '../ClickableText';
 import { Dropdown } from '../Dropdown';
-import { AddEditPaymentMethodErrorModal, CancelAddPaymentMethodModal, CancelEditPaymentMethodModal } from '../Modals';
+import { AddEditPaymentMethodErrorModal, PaymentMethodModal } from '../Modals';
 import { PaymentMethodField } from '../PaymentMethodField';
 import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
 import { TextField } from '../TextField';
@@ -187,21 +187,35 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                 </div>
             </form>
             {actionType === 'EDIT' && (!isUpdateSuccessful || !updateError) && (
-                <CancelEditPaymentMethodModal
+                // TODO: Remember to translate these strings
+                <PaymentMethodModal
+                    description='If you choose to cancel, the edited details will be lost.'
                     isOpen={isOpen}
-                    onCancel={() => {
+                    onConfirm={() => {
                         onResetFormState();
                     }}
-                    onGoBack={() => {
+                    onReject={() => {
                         setIsOpen(false);
                     }}
+                    primaryButtonLabel="Don't cancel"
+                    secondaryButtonLabel='Cancel'
+                    title='Cancel your edits?'
                 />
             )}
             {actionType === 'ADD' && (!isCreateSuccessful || !createError) && (
-                <CancelAddPaymentMethodModal
+                // TODO: Remember to translate these strings
+                <PaymentMethodModal
+                    description='If you choose to cancel, the details you’ve entered will be lost.'
                     isOpen={isOpen}
-                    onCancel={() => onResetFormState()}
-                    onGoBack={() => setIsOpen(false)}
+                    onConfirm={() => {
+                        onResetFormState();
+                    }}
+                    onReject={() => {
+                        setIsOpen(false);
+                    }}
+                    primaryButtonLabel='Go back'
+                    secondaryButtonLabel='Cancel'
+                    title='Cancel adding this payment method?'
                 />
             )}
             {(createError || updateError) && (

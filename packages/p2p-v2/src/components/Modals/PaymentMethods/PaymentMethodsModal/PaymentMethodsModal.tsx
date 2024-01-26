@@ -3,15 +3,26 @@ import ReactModal from 'react-modal';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { customStyles } from '../../helpers';
-import '../styles.scss';
 
-type TCancelEditPaymentMethodModalProps = {
+type TPaymentMethodModalProps = {
+    description?: string;
     isOpen: boolean;
-    onCancel: () => void;
-    onGoBack: () => void;
+    onConfirm: () => void;
+    onReject: () => void;
+    primaryButtonLabel: string;
+    secondaryButtonLabel: string;
+    title?: string;
 };
 
-const CancelEditPaymentMethodModal = ({ isOpen, onCancel, onGoBack }: TCancelEditPaymentMethodModalProps) => {
+const PaymentMethodModal = ({
+    description,
+    isOpen,
+    onConfirm,
+    onReject,
+    primaryButtonLabel,
+    secondaryButtonLabel,
+    title,
+}: TPaymentMethodModalProps) => {
     useEffect(() => {
         ReactModal.setAppElement('#v2_modal_root');
     }, []);
@@ -19,29 +30,36 @@ const CancelEditPaymentMethodModal = ({ isOpen, onCancel, onGoBack }: TCancelEdi
     return (
         <ReactModal
             className='p2p-v2-payment-methods-modal__modal'
-            contentLabel='Cancel your edits?'
+            contentLabel={title}
             isOpen={isOpen}
             shouldCloseOnOverlayClick={false}
             style={customStyles}
         >
             <div className='p2p-v2-payment-methods-modal__wrapper'>
                 <Text color='prominent' weight='bold'>
-                    Cancel your edits?
+                    {title}
                 </Text>
-                <Text color='prominent' size='sm'>
-                    If you choose to cancel, the edited details will be lost.
-                </Text>
+                <Text color='prominent'>{description}</Text>
                 <div className='p2p-v2-payment-methods-modal__buttons'>
                     <Button
                         className='p2p-v2-payment-methods-modal__buttons--cancel'
-                        onClick={onCancel}
+                        onClick={e => {
+                            e.currentTarget.setAttribute('disabled', 'disabled');
+                            onConfirm();
+                        }}
                         size='lg'
                         variant='outlined'
                     >
-                        Cancel
+                        {secondaryButtonLabel}
                     </Button>
-                    <Button onClick={onGoBack} size='lg'>
-                        {"Don't cancel"}
+                    <Button
+                        onClick={e => {
+                            e.currentTarget.setAttribute('disabled', 'disabled');
+                            onReject();
+                        }}
+                        size='lg'
+                    >
+                        {primaryButtonLabel}
                     </Button>
                 </div>
             </div>
@@ -49,4 +67,4 @@ const CancelEditPaymentMethodModal = ({ isOpen, onCancel, onGoBack }: TCancelEdi
     );
 };
 
-export default CancelEditPaymentMethodModal;
+export default PaymentMethodModal;

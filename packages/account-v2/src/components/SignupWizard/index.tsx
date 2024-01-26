@@ -57,10 +57,10 @@ const SignupWizard: React.FC = () => {
     return (
         <ReactModal isOpen={isWizardOpen} onRequestClose={handleClose} shouldCloseOnOverlayClick style={CUSTOM_STYLES}>
             <div className='bg-background-primary-base h-[717px] w-[1040px] rounded-800 flex overflow-hidden'>
-                <div className='min-w-[25.6rem] bg-[#f2f3f4] p-800'>
+                <div className='min-w-[256px] bg-[#f2f3f4] p-800'>
                     <FormProgress activeStep={currentStep} steps={stepProgress} />
                 </div>
-                <div className='flex flex-col w-[100%] justify-between'>
+                <div className='flex flex-col justify-between w-full'>
                     <StandaloneXmarkBoldIcon
                         className='absolute cursor-pointer right-1200 top-1200'
                         onClick={handleClose}

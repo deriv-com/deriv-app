@@ -20,6 +20,9 @@ type TCurrencies = {
 const Currencies = ({ type }: TCurrencies) => {
     const currencies = useMemo(() => getCurrencyConfig(type), [type]);
     const { values } = useFormikContext<{ currency: string }>();
+
+    const isFiatCurrencySelected = currencies.find(currency => currency.id === values.currency);
+
     return (
         <div className='text-center'>
             <Heading.H5 className='mb-300'>
@@ -33,7 +36,7 @@ const Currencies = ({ type }: TCurrencies) => {
                 {currencies.map(currency => (
                     <CurrencyCard {...currency} key={currency.id} />
                 ))}
-                {values.currency && type === CURRENCY_TYPES.FIAT && (
+                {isFiatCurrencySelected && type === CURRENCY_TYPES.FIAT && (
                     <Text className='mt-200' size='sm'>
                         You are limited to one fiat account. You won’t be able to change your account currency if you
                         have already made your first deposit or created a real Deriv MT5 or Deriv X account.

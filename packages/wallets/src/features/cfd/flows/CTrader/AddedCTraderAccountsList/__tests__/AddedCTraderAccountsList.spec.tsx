@@ -7,8 +7,8 @@ import AddedCTraderAccountsList from '../AddedCTraderAccountsList';
 
 type TradingAccountCardProps = {
     children: ReactNode;
-    leading: () => ReactNode;
-    trailing: () => ReactNode;
+    leading: ReactNode;
+    trailing: ReactNode;
 };
 
 jest.mock('@deriv/api', () => ({
@@ -18,9 +18,9 @@ jest.mock('@deriv/api', () => ({
 jest.mock('../../../../../../components/', () => ({
     TradingAccountCard: ({ children, leading, trailing }: TradingAccountCardProps) => (
         <div>
-            {leading && <div>{leading()}</div>}
+            {leading}
             {children}
-            {trailing && <div>{trailing()}</div>}
+            {trailing}
         </div>
     ),
 }));

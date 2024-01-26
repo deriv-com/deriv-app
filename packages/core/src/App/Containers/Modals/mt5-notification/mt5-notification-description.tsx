@@ -10,7 +10,7 @@ const MT5NotificationDescription = ({ setMT5NotificationModal }: TMT5Notificatio
     return (
         <div className={'mt5-notification-modal-description'}>
             <Text as='p' size='xs'>
-                <Localize i18n_default_text='We’ve updated the login procedure for your Deriv MT5 account. Here is what you need to do when you want to log in via your MT5 mobile app:' />
+                <Localize i18n_default_text='We’ve updated the login process for your Deriv MT5 account. Here is what you need to do when you want to log in via your MT5 mobile app:' />
             </Text>
             <ol className='mt5-notification-list-container'>
                 <li className='mt5-notification-list'>

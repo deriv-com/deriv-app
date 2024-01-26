@@ -69,24 +69,30 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
 const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     const history = useHistory();
 
-    const { data } = useActiveTradingAccount();
-    if (data?.loginid) {
-        return (
-            <Button
-                className='rounded-200'
-                onClick={() => {
-                    if (isExternal) {
-                        window.open(redirect, '_blank');
-                    } else {
-                        history.push(redirect);
-                    }
-                }}
-            >
-                Open
-            </Button>
-        );
-    }
-    return null;
+    const { getUIState } = useUIContext();
+
+    const accountType = getUIState('accountType');
+
+    const regulation = getUIState('regulation');
+
+    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
+
+    if (noRealCRNonEUAccount || noRealMFEUAccount) return null;
+
+    return (
+        <Button
+            className='rounded-200'
+            onClick={() => {
+                if (isExternal) {
+                    window.open(redirect, '_blank');
+                } else {
+                    history.push(redirect);
+                }
+            }}
+        >
+            Open
+        </Button>
+    );
 };
 
 /**

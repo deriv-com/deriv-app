@@ -13,7 +13,7 @@ import {
 import { getSelectedRoute } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { TRoute } from 'Types';
 import 'Sass/app/modules/reports.scss';
 

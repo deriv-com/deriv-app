@@ -50,7 +50,10 @@ const MT5AccountAdded: FC<TProps> = ({ account, marketType, platform }) => {
                         <WalletButton
                             onClick={() => {
                                 hide();
-                                history.push(`/wallets/cashier/transfer?to-account=${addedAccount?.loginid}`);
+                                history.push(
+                                    `/wallets/cashier/transfer`,
+                                    addedAccount?.loginid ? { toAccountLoginId: addedAccount.loginid } : undefined
+                                );
                             }}
                             size='lg'
                         >

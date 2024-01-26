@@ -9,6 +9,7 @@ import { TInitialTransferFormValues, TToAccount } from '../../types';
 import { TransferFormAccountCard } from '../TransferFormAccountCard';
 import { TransferFormAccountSelection } from '../TransferFormAccountSelection';
 import './TransferFormDropdown.scss';
+import { useHistory } from 'react-router-dom';
 
 type TProps = {
     fieldName: keyof TInitialTransferFormValues;
@@ -38,25 +39,24 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const accountsList = isFromAccountDropdown ? accounts : toAccountList;
     const label = isFromAccountDropdown ? 'Transfer from' : 'Transfer to';
     const badgeLabel = selectedAccount?.demo_account ? 'virtual' : selectedAccount?.landingCompanyName;
-    const queryParamToAccount = new URLSearchParams(window.location.search).get('to-account');
+
+    const { location } = useHistory();
+
+    const toAccountLoginId =
+        location.pathname === '/wallets/cashier/transfer' ? location.state.toAccountLoginId : undefined;
 
     useEffect(() => {
         const toAccount: TToAccount = Object.values(accounts)
             .flatMap(account => account)
-            .find(account => account.loginid === queryParamToAccount);
+            .find(account => account.loginid === toAccountLoginId);
 
-        if (queryParamToAccount && toAccount) {
+        if (toAccountLoginId && toAccount) {
             setValues(prev => ({
                 ...prev,
                 toAccount,
             }));
         }
-
-        // remove 'to-account' query param from url
-        const url = new URL(window.location.href);
-        url.searchParams.delete('to-account');
-        window.history.replaceState({}, document.title, url.toString());
-    }, [accounts, queryParamToAccount, setValues]);
+    }, [accounts, toAccountLoginId, setValues]);
 
     const handleSelect = useCallback(
         (account: TInitialTransferFormValues['fromAccount']) => {

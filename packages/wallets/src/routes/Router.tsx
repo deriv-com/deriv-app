@@ -8,28 +8,48 @@ import { WalletsListingRoute } from './WalletsListingRoute';
 
 const prefix = '/wallets';
 
-type TRoutes = `${typeof prefix}${
+type TBaseRoute =
     | ''
     | '/cashier'
     | '/cashier/deposit'
+    | '/cashier/on-ramp'
     | '/cashier/reset-balance'
     | '/cashier/transactions'
     | '/cashier/transfer'
     | '/cashier/withdraw'
-    | '/compare-account'}`;
+    | '/compare-accounts';
+
+export type TRoute = '/endpoint' | `${typeof prefix}${TBaseRoute}`;
+
+interface BaseRouteState {
+    '/cashier/transactions': { showPending: boolean; transactionType: 'deposit' | 'withdrawal' };
+    '/cashier/transfer': { toAccountLoginId: string };
+}
+
+type TRouteState = {
+    [K in TBaseRoute as `${typeof prefix}${K}`]: K extends keyof BaseRouteState ? BaseRouteState[K] : never;
+};
+
+type TLocationInfo = {
+    [K in keyof BaseRouteState]: {
+        pathname: `${typeof prefix}${K}`;
+        state: BaseRouteState[K];
+    };
+}[keyof BaseRouteState];
 
 declare module 'react-router-dom' {
-    export function useHistory(): {
-        location: {
+    export function useHistory<T extends TRoute>(): {
+        location: TLocationInfo & {
             hash: string;
-            pathname: string;
             search: string;
-            state: Record<string, unknown>;
         };
-        push: (path: TRoutes | string, state?: Record<string, unknown>) => void;
+        push: <T extends TRoute>(
+            path: T,
+            state?: T extends `${typeof prefix}${TBaseRoute}` ? TRouteState[T] : never
+        ) => void;
     };
 
-    export function useRouteMatch(path: TRoutes): boolean;
+    export function useRouteMatch(path: TRoute): boolean;
 }
 
 const Router: React.FC = () => {

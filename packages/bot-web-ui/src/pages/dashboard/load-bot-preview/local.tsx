@@ -6,6 +6,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderstackDashboardOpenButton } from '../analytics/rudderstack-dashboard';
 import BotPreview from './bot-preview';
 import './index.scss';
 
@@ -20,12 +21,6 @@ const LocalComponent = observer(() => {
     const has_strategies = !!dashboard_strategies?.length;
 
     const sendToRudderStackForOpenButton = () => {
-        Analytics.trackEvent('ce_bot_dashboard_form', {
-            action: 'push_open_button',
-            form_name: 'ce_bot_dashboard_form',
-            form_source: 'ce_bot_dashboard_form',
-        });
-
         //this is to track from which open button user has come to bot builder tab
         Analytics.trackEvent('ce_bot_builder_form', {
             action: 'open',
@@ -43,6 +38,7 @@ const LocalComponent = observer(() => {
         <button
             className='load-strategy__button-group--open'
             onClick={() => {
+                rudderstackDashboardOpenButton();
                 sendToRudderStackForOpenButton();
                 setPreviewOnDialog(false);
                 loadFileFromRecent();

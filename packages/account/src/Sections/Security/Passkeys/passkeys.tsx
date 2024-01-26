@@ -6,9 +6,8 @@ import { PlatformContext, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import PasskeysStatusContainer from './components/passkeys-status-container';
-import PasskeysFooterButtons from './components/passkeys-footer-buttons';
 import PasskeysList from './components/passkeys-list';
-import PasskeysStatus from './components/passkeys-status';
+import PasskeyModal from './components/passkey-modal';
 import { PASSKEY_STATUS_CODES, TPasskeysStatus } from './passkeys-configs';
 import './passkeys.scss';
 
@@ -80,44 +79,37 @@ const Passkeys = observer(() => {
     if (!should_show_passkeys) {
         return <Redirect to={routes.traders_hub} />;
     }
-    // TODO add error messages and move all content to getStatusContent ans status component or show proper error component
-    if (passkeys_list_error || registration_error) {
-        return (
-            <div className='passkeys'>
-                <PasskeysStatus
-                    icon='IcErrorBadge'
-                    title={
-                        <Localize
-                            i18n_default_text='Our servers hit a bump.<0/> Let’s refresh to try again'
-                            components={[<br key={0} />]}
-                        />
-                    }
-                >
-                    <PasskeysFooterButtons
-                        primary_button_text={<Localize i18n_default_text='Refresh' />}
-                        onPrimaryButtonClick={() => {
-                            location.reload();
-                        }}
-                    />
-                </PasskeysStatus>
-            </div>
-        );
-    }
-    if (passkey_status) {
-        return (
-            <PasskeysStatusContainer
-                createPasskey={createPasskey}
-                passkey_status={passkey_status}
-                setPasskeyStatus={setPasskeyStatus}
-            />
-        );
-    }
+
+    //TODO consider different error messages with title and descriptions
     return (
         <div className='passkeys'>
-            <PasskeysList
-                passkeys_list={passkeys_list || []}
-                onSecondaryButtonClick={() => setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE)}
-                onPrimaryButtonClick={createPasskey}
+            {passkey_status ? (
+                <PasskeysStatusContainer
+                    createPasskey={createPasskey}
+                    passkey_status={passkey_status}
+                    setPasskeyStatus={setPasskeyStatus}
+                />
+            ) : (
+                <PasskeysList
+                    passkeys_list={passkeys_list || []}
+                    onSecondaryButtonClick={() => setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE)}
+                    onPrimaryButtonClick={createPasskey}
+                />
+            )}
+
+            <PasskeyModal
+                title={<Localize i18n_default_text='Passkey error' />}
+                description={
+                    (passkeys_list_error && String(passkeys_list_error)) ||
+                    (registration_error && String(registration_error)) || (
+                        <Localize i18n_default_text='Some error occured' />
+                    )
+                }
+                button_text={<Localize i18n_default_text='Refresh' />}
+                is_modal_open={!!passkeys_list_error || !!registration_error}
+                onButtonClick={() => {
+                    location.reload();
+                }}
             />
         </div>
     );

@@ -27,12 +27,7 @@ const PaymentMethods = () => {
     const handleEditPaymentMethod = (selectedPaymentMethod?: TSelectedPaymentMethod) => {
         dispatch({
             payload: {
-                selectedPaymentMethod: {
-                    displayName: selectedPaymentMethod?.display_name,
-                    fields: selectedPaymentMethod?.fields,
-                    id: selectedPaymentMethod?.id,
-                    method: selectedPaymentMethod?.method,
-                },
+                selectedPaymentMethod,
             },
             type: 'EDIT',
         });

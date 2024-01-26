@@ -3,6 +3,7 @@ import ReactModal from 'react-modal';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { customStyles } from '../../helpers';
+import '../styles.scss';
 
 type TPaymentMethodModalProps = {
     description?: string;

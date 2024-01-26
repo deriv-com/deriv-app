@@ -7,6 +7,7 @@ import { TFormState, TReducerAction } from './types';
  * @param currentState - The current state of the form.
  * @param action - The action dispatched to the reducer.
  * @returns The new state after applying the action.
+ * @example const [formState, dispatch] = useReducer(advertiserPaymentMethodsReducer, {});
  */
 const advertiserPaymentMethodsReducer = (currentState: TFormState, action: TReducerAction) => {
     // TODO: Remember to translate the strings in this reducer function

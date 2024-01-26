@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { Analytics, BotTActions } from '@deriv/analytics';
+import { Analytics, BotTActions } from '@deriv-com/analytics';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';

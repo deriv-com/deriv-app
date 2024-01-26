@@ -11,7 +11,7 @@ import {
     isForwardStarting,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component';
@@ -235,7 +235,8 @@ const Statement = observer(({ component_icon }: TStatement) => {
             </div>
         </React.Fragment>
     );
-
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Statement for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
             <ReportsMeta

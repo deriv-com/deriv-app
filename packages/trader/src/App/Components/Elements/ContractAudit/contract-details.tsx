@@ -23,7 +23,7 @@ import {
     toGMTFormat,
     TContractInfo,
 } from '@deriv/shared';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import ContractAuditItem from './contract-audit-item';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';

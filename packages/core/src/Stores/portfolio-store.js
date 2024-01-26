@@ -24,7 +24,7 @@ import {
     routes,
 } from '@deriv/shared';
 import { Money } from '@deriv/components';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { ChartBarrierStore } from './chart-barrier-store';
 import { setLimitOrderBarriers } from './Helpers/limit-orders';
 

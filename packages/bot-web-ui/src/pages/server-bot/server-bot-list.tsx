@@ -14,7 +14,7 @@ const ServerBotList = ({ bot_list }) => {
                     <Localize i18n_default_text='Your bots:' />
                 </Text>
             </div>
-            <div className='bot-list__header'>
+            <div className='bot-list-contract__header'>
                 {HEADERS.map(({ label, className }) => {
                     return (
                         <div className={className} key={label}>
@@ -25,23 +25,23 @@ const ServerBotList = ({ bot_list }) => {
                     );
                 })}
             </div>
-            <div className='server-bot-btn'>
-                <Button green>{localize('Start')}</Button>
-                <Button primary>{localize('Stop')}</Button>
-                <Button green>{localize('Pause')}</Button>
-                <Button primary>{localize('Remove')}</Button>
-            </div>
-            <div className='bot-list__wrapper'>
-                <div className='bot-list__item bot-list__item--loaded'>
-                    {bot_list?.map((bot, index) => {
-                        return (
-                            <div key={index}>
-                                <div className='bot-list__item__label'>{bot.name}</div>
-                                <div>{bot.status}</div>
+            <div className='bot-list-contract__wrapper'>
+                {bot_list?.map((bot, index) => {
+                    return (
+                        <div key={index} className='bot-list-contract__item'>
+                            <div className='bot-list-contract__item__label'>{bot.name}</div>
+                            <div><p>{localize('[ Strategy parameters ]')}</p></div>
+                            <div className='bot-list-contract__actions'>
+                                <Button green>{localize('Start')}</Button>
+                                <Button primary>{localize('Stop')}</Button>
+                                <Button green>{localize('Pause')}</Button>
+                                <Button primary>{localize('Remove')}</Button>
                             </div>
-                        )
-                    })}
-                </div>
+                            <div>{localize('last modified: [ Date ]')}</div>
+                            <div>{`status: ${bot.status}`}</div>
+                        </div>
+                    )
+                })}
             </div>
         </div>
     )

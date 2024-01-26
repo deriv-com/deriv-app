@@ -32,8 +32,31 @@
     }
 }
 
-.server-bot-btn {
-    display: flex;
-    gap: 2rem;
-    margin-top: 2rem;
+.bot-list-contract__header {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 3.3fr 1fr 1fr;
+}
+
+.bot-list-contract__wrapper {
+    padding-bottom: 3rem;
+}
+
+.bot-list-contract {
+    &__item {
+        display: grid;
+        grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+        // display: flex;
+        align-items: center;
+        justify-content: space-between;
+        column-gap: 1rem;
+        background-color: white;
+        border-radius: 1rem;
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    &__actions {
+        display: flex;
+        gap: 2rem;
+    }
 }

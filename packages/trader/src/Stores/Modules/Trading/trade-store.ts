@@ -32,6 +32,7 @@ import {
     hasBarrier,
     isHighLow,
     CONTRACT_TYPES,
+    setTradeURLParams,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -1070,7 +1071,15 @@ export default class TradeStore extends BaseStore {
             updateChartType(prev_chart_type);
             savePreviousChartMode('', null);
         }
-
+        if (obj_new_values.contract_type) {
+            setTradeURLParams({
+                contract_type: obj_new_values.contract_type,
+            });
+        } else if (obj_new_values.symbol) {
+            setTradeURLParams({
+                symbol: obj_new_values.symbol,
+            });
+        }
         if (/\bduration\b/.test(Object.keys(obj_new_values) as unknown as string)) {
             // TODO: fix this in input-field.jsx
             if (typeof obj_new_values.duration === 'string') {
@@ -1492,6 +1501,12 @@ export default class TradeStore extends BaseStore {
             this.is_trade_component_mounted = true;
             await this.prepareTradeStore();
             this.root_store.notifications.setShouldShowPopups(true);
+        });
+        setTradeURLParams({
+            chart_type: this.root_store.contract_trade.chart_type,
+            granularity: Number(this.root_store.contract_trade.granularity),
+            symbol: this.symbol,
+            contract_type: this.contract_type,
         });
     }
 

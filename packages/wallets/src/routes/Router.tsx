@@ -27,9 +27,11 @@ interface WalletsRouteState {
     '/cashier/transfer': { toAccountLoginId: string };
 }
 
+type TStatefulRoute = TRoute & `${typeof walletsPrefix}${keyof WalletsRouteState}`;
+
 type TRouteState = {
-    [K in TWalletsRoute as `${typeof walletsPrefix}${K}`]: K extends keyof WalletsRouteState
-        ? WalletsRouteState[K]
+    [K in TStatefulRoute]: K extends `${typeof walletsPrefix}${infer R extends keyof WalletsRouteState}`
+        ? WalletsRouteState[R]
         : never;
 };
 
@@ -46,10 +48,7 @@ declare module 'react-router-dom' {
             hash: string;
             search: string;
         };
-        push: <T extends TRoute>(
-            path: T,
-            state?: T extends `${typeof walletsPrefix}${TWalletsRoute}` ? TRouteState[T] : never
-        ) => void;
+        push: <T extends TRoute>(path: T, ...state: T extends TStatefulRoute ? [TRouteState[T]?] : []) => void;
     };
 
     export function useRouteMatch(path: TRoute): boolean;

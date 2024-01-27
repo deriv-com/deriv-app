@@ -1,5 +1,6 @@
 import React, { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { useFormikContext } from 'formik';
+import { useHistory } from 'react-router-dom';
 import { WalletListCardBadge, WalletText } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
@@ -9,7 +10,6 @@ import { TInitialTransferFormValues, TToAccount } from '../../types';
 import { TransferFormAccountCard } from '../TransferFormAccountCard';
 import { TransferFormAccountSelection } from '../TransferFormAccountSelection';
 import './TransferFormDropdown.scss';
-import { useHistory } from 'react-router-dom';
 
 type TProps = {
     fieldName: keyof TInitialTransferFormValues;

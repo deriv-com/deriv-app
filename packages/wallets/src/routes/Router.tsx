@@ -30,7 +30,7 @@ interface WalletsRouteState {
 type TStatefulRoute = TRoute & `${typeof walletsPrefix}${keyof WalletsRouteState}`;
 
 type TRouteState = {
-    [K in TStatefulRoute]: K extends `${typeof walletsPrefix}${infer R extends keyof WalletsRouteState}`
+    [T in TStatefulRoute]: T extends `${typeof walletsPrefix}${infer R extends keyof WalletsRouteState}`
         ? WalletsRouteState[R]
         : never;
 };

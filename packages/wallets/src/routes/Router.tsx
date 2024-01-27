@@ -36,11 +36,13 @@ type TRouteState = {
 };
 
 type TLocationInfo = {
-    [K in keyof WalletsRouteState]: {
-        pathname: `${typeof walletsPrefix}${K}`;
-        state?: WalletsRouteState[K];
+    [T in TRoute]: {
+        pathname: T;
+        state?: T extends `${typeof walletsPrefix}${infer R extends keyof WalletsRouteState}`
+            ? WalletsRouteState[R]
+            : never;
     };
-}[keyof WalletsRouteState];
+}[TRoute];
 
 declare module 'react-router-dom' {
     export function useHistory(): {

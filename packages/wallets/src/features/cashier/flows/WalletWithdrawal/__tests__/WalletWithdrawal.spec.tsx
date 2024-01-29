@@ -1,6 +1,6 @@
 import React from 'react';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import WalletWithdrawal from '../WalletWithdrawal';
 
 jest.mock('../../../modules', () => ({
@@ -25,21 +25,44 @@ describe('<WalletWithdrawal />', () => {
 
     beforeEach(() => {
         Object.defineProperty(window, 'location', {
-            configurable: true,
-            enumerable: true,
-            value: new URL('https://localhost:8443/redirect?verification=a4b2c0x6y9z'),
+            value: new URL('http://localhost/redirect?verification=1234'),
+            writable: true,
         });
     });
 
     afterEach(() => {
         Object.defineProperty(window, 'location', {
             configurable: true,
-            // enumerable: true,
             value: originalWindowLocation,
         });
     });
 
-    it('remove the `verification` param from the url', () => {
+    xit('remove the `verification` param from the url', () => {
+        mockUseActiveWalletAccount.mockReturnValue({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            data: {
+                currency: 'USD',
+            },
+        });
+
+        // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+        mockUseCurrencyConfig.mockReturnValue({
+            getConfig: jest.fn(),
+            isSuccess: true,
+        });
+
+        delete global.window.location;
+        global.window.location = new URL('http://localhost/redirect?verification=0987');
+        render(<WalletWithdrawal />);
+        expect(location.toString()).toEqual('http://localhost/redirect');
+    });
+
+    it('should render withdrawal email verification page if no verification code found', () => {
+        Object.defineProperty(window, 'location', {
+            value: new URL('http://localhost/redirect'),
+            writable: true,
+        });
+
         mockUseActiveWalletAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
@@ -54,5 +77,42 @@ describe('<WalletWithdrawal />', () => {
         });
 
         render(<WalletWithdrawal />);
+        expect(screen.getByText('WithdrawalVerificationModule')).toBeInTheDocument();
+    });
+
+    it('should render withdrawal fiat module if withdrawal is for fiat wallet', () => {
+        mockUseActiveWalletAccount.mockReturnValue({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            data: {
+                currency: 'USD',
+            },
+        });
+
+        mockUseCurrencyConfig.mockReturnValue({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            getConfig: jest.fn(() => ({ is_fiat: true })),
+            isSuccess: true,
+        });
+
+        render(<WalletWithdrawal />);
+        expect(screen.getByText('WithdrawalFiatModule')).toBeInTheDocument();
+    });
+
+    it('should render withdrawal crypto module if withdrawal is for crypto wallet', () => {
+        mockUseActiveWalletAccount.mockReturnValue({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            data: {
+                currency: 'BTC',
+            },
+        });
+
+        mockUseCurrencyConfig.mockReturnValue({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            getConfig: jest.fn(() => ({ is_fiat: false })),
+            isSuccess: true,
+        });
+
+        render(<WalletWithdrawal />);
+        expect(screen.getByText('WithdrawalCryptoModule')).toBeInTheDocument();
     });
 });

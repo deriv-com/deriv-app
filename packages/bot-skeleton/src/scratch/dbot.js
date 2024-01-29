@@ -549,7 +549,7 @@ class DBot {
                             type: block.type,
                         });
                     } else if (input.connection) {
-                        const order = Blockly.JavaScript.ORDER_ATOMIC;
+                        const order = Blockly.JavaScript.Order;
                         const value = Blockly.JavaScript.valueToCode(block, input_name, order);
                         const inputValidatorFn = required_inputs_object[input_name];
 

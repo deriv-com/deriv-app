@@ -1,5 +1,5 @@
 import { cloneThorough, isMultiplierContract } from '@deriv/shared';
-import JSInterpreter from '@deriv/js-interpreter';
+import JSInterpreter from 'js-interpreter';
 import { createScope } from './cliTools';
 import Interface from '../Interface';
 import { unrecoverable_errors } from '../../../constants/messages';
@@ -154,7 +154,6 @@ const Interpreter = () => {
                 return watch(watchName);
             })
         );
-
         js_interpreter.setProperty(scope, 'sleep', createAsync(js_interpreter, sleep));
     }
 
@@ -255,12 +254,9 @@ const Interpreter = () => {
                 bot.tradeEngine.start(tradeOptions);
                 revert($scope.startState);
             };
-
             $scope.observer.register('Error', onError);
-
             interpreter = new JSInterpreter(code, initFunc);
             onFinish = resolve;
-
             loop();
         });
     }

@@ -105,6 +105,7 @@ module.exports = function (env) {
             ],
         },
         resolve: {
+            fallback: { vm: require.resolve('vm-browserify') },
             alias: {
                 Components: path.resolve(__dirname, 'src', 'components'),
                 Constants: path.resolve(__dirname, './src/constants'),

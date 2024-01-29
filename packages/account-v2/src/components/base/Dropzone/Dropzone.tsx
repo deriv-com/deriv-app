@@ -147,9 +147,7 @@ const Dropzone: React.FC<TProps> = ({
                                 style={{ backgroundImage: `url(${file.preview})` }}
                             >
                                 {hasFrame && <DropzoneFrame />}
-                                <div onClick={removeFile}>
-                                    <CloseIcon iconSize='sm' />
-                                </div>
+                                <CloseIcon iconSize='sm' onClick={removeFile} />
                             </div>
                             {description && (
                                 <WalletText align='center' color={descriptionColor}>

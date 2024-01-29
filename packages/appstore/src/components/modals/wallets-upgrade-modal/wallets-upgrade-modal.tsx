@@ -19,22 +19,29 @@ const WalletsUpgradeModal = () => {
         sessionStorage.setItem('is_wallet_migration_modal_closed', 'true');
     };
 
-    const image = is_mobile ? 'upgrade_modal_mobile' : 'upgrade_modal_desktop';
+    const image = is_mobile ? 'upgrade_mobile' : 'upgrade_modal_desktop';
 
     return (
         <Modal
             className='wallets-upgrade-modal'
             is_open={is_eligible && modalOpen}
             width='60rem'
-            height={is_mobile ? '30rem' : undefined}
             title=' '
             toggleModal={closeModal}
         >
             <Modal.Body>
-                <div className='wallets-upgrade-modal__description'>
-                    <Text size={is_mobile ? 's' : 'm'}>
-                        <Localize i18n_default_text='Empower your trading experience with our new wallet feature: multiple currencies, secure transactions, and seamless fund transfers.' />
-                    </Text>
+                <div className='wallets-upgrade-modal__content'>
+                    <div className='wallets-upgrade-modal__description'>
+                        <Text size={is_mobile ? 's' : 'm'} weight='bold'>
+                            <Localize i18n_default_text='Introducing Wallets' />
+                        </Text>
+                        <Text size={is_mobile ? 's' : 'm'}>
+                            <Localize
+                                i18n_default_text='Enjoy smoother and more secure transactions in multiple currencies with Wallets – <1></1>our new and improved Cashier.'
+                                components={[<br key={0} />]}
+                            />
+                        </Text>
+                    </div>
                     <Button
                         large={is_desktop}
                         onClick={() => {

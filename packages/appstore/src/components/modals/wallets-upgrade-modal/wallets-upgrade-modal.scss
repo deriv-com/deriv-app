@@ -1,15 +1,23 @@
 .wallets-upgrade-modal {
-    &__description {
-        width: 70%;
+    &__content {
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: 1.6rem;
         flex-shrink: 0;
+        padding: 2.4rem;
 
         @include mobile {
-            width: 100%;
+            padding: 1.6rem;
         }
+    }
+
+    &__description {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
     }
 
     &__image {
@@ -24,10 +32,11 @@
     background: var(--system-light-7-secondary-background, #f2f3f4);
 
     & .dc-modal-body {
-        padding-top: 0;
+        padding: 0;
     }
 }
 
 .dc-modal-header--wallets-upgrade-modal {
     z-index: 10;
+    position: absolute;
 }

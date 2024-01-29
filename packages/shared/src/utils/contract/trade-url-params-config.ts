@@ -88,16 +88,17 @@ export const getTradeURLParams = ({ active_symbols, contract_types_list }: TGetT
         const configInterval = tradeURLParamsConfig.interval.find(item => item.text === interval);
         const configChartType = tradeURLParamsConfig.chartType.find(item => item.text === chart_type);
         const hasSymbol = active_symbols?.some(item => item.symbol === symbol);
-        const contract_list = Object.keys(contract_types_list || {}).reduce<string[]>((acc, key) => {
+        const contractList = Object.keys(contract_types_list || {}).reduce<string[]>((acc, key) => {
             const categories: TContractTypesList['Ups & Downs']['categories'] =
                 contract_types_list?.[key]?.categories || [];
             return [...acc, ...categories.map(contract => (contract as TTextValueStrings).value)];
         }, []);
-        const hasTradeType = contract_list.includes(trade_type ?? '');
+        const hasTradeType = contractList.includes(trade_type ?? '');
         if (configInterval) {
             result.granularity = Number(configInterval?.value);
         }
         if (configChartType) {
+            // rename chart_type & contract_type to camel case
             result.chart_type = configChartType?.value;
         }
         if (hasSymbol) {

@@ -6,9 +6,9 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
-import { TMarketTypes } from '@deriv/library/src/types';
 import { MarketType, PlatformDetails } from '../features/cfd/constants';
 import { Jurisdiction } from '../features/cfd/screens/CFDCompareAccounts/constants';
+import { TMarketTypes } from '../types';
 
 type TUseMT5AccountHandler = {
     marketType: TMarketTypes.All;

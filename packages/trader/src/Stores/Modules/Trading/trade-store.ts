@@ -33,6 +33,7 @@ import {
     isHighLow,
     CONTRACT_TYPES,
     setTradeURLParams,
+    getTradeURLParams,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import type { TEvents } from '@deriv-com/analytics';
@@ -625,6 +626,13 @@ export default class TradeStore extends BaseStore {
         if (should_set_default_symbol) await this.setDefaultSymbol();
 
         const r = await WS.storage.contractsFor(this.symbol);
+        const { symbol } = getTradeURLParams({
+            active_symbols: this.active_symbols,
+        });
+        if (symbol && symbol !== this.symbol) {
+            this.updateSymbol(symbol);
+        }
+        setTradeURLParams({ symbol: symbol && symbol !== this.symbol ? symbol : this.symbol });
         if (['InvalidSymbol', 'InputValidationFailed'].includes(r.error?.code)) {
             const symbol_to_update = await pickDefaultSymbol(this.active_symbols);
             await this.processNewValuesAsync({ symbol: symbol_to_update });
@@ -690,21 +698,37 @@ export default class TradeStore extends BaseStore {
     }
 
     async setContractTypes() {
+        let contractType: string | undefined = '';
+        let showModal: boolean | undefined = false;
         if (this.symbol && this.is_symbol_in_active_symbols) {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
                 const contract_categories = ContractType.getContractCategories();
+                const params = getTradeURLParams({
+                    contract_types_list: contract_categories.contract_types_list,
+                });
+                contractType = params.contract_type;
+                showModal = params.showModal;
                 this.processNewValuesAsync({
                     ...(contract_categories as Pick<TradeStore, 'contract_types_list'> & {
                         has_only_forward_starting_contracts: boolean;
                     }),
-                    ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),
+                    ...ContractType.getContractType(
+                        contract_categories.contract_types_list,
+                        contractType || this.contract_type
+                    ),
                 });
                 this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
-        this.root_store.common.setSelectedContractType(this.contract_type);
-        this.root_store.portfolio.setContractType(this.contract_type);
+        this.root_store.common.setSelectedContractType(contractType || this.contract_type);
+        this.root_store.portfolio.setContractType(contractType || this.contract_type);
+        setTradeURLParams({
+            contract_type: contractType || this.contract_type,
+        });
+        if (showModal) {
+            // console.log('show modal');
+        }
     }
 
     async prepareTradeStore(should_set_default_symbol = true) {
@@ -1500,13 +1524,21 @@ export default class TradeStore extends BaseStore {
         runInAction(async () => {
             this.is_trade_component_mounted = true;
             await this.prepareTradeStore();
+
+            const { chart_type, granularity } = getTradeURLParams({});
+            const chartType = chart_type && granularity === 0 ? 'line' : chart_type;
+            if (!isNaN(Number(granularity)) && granularity !== this.root_store.contract_trade.granularity) {
+                this.root_store.contract_trade.updateGranularity(Number(granularity));
+            }
+            if (chartType && chartType !== this.root_store.contract_trade.chart_type) {
+                this.root_store.contract_trade.updateChartType(chartType);
+            }
+            setTradeURLParams({
+                chart_type: chartType || this.root_store.contract_trade.chart_type,
+                granularity: granularity || Number(this.root_store.contract_trade.granularity),
+            });
+
             this.root_store.notifications.setShouldShowPopups(true);
-        });
-        setTradeURLParams({
-            chart_type: this.root_store.contract_trade.chart_type,
-            granularity: Number(this.root_store.contract_trade.granularity),
-            symbol: this.symbol,
-            contract_type: this.contract_type,
         });
     }
 

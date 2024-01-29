@@ -1,3 +1,5 @@
+import { ActiveSymbols } from '@deriv/api-types';
+
 type TTradeURLParamsConfig = {
     [key: string]: {
         text: string;
@@ -5,7 +7,24 @@ type TTradeURLParamsConfig = {
     }[];
 };
 
-type TSetTradeURLParamsArgs = {
+export type TTextValueStrings = {
+    text: string;
+    value: string;
+};
+
+type TContractTypesList = {
+    [key: string]: {
+        name: string;
+        categories: Array<string | TTextValueStrings>;
+    };
+};
+
+type TGetTradeURLParamsArgs = {
+    active_symbols?: ActiveSymbols;
+    contract_types_list?: TContractTypesList;
+};
+
+type TTradeParams = {
     contract_type?: string;
     symbol?: string;
     chart_type?: string;
@@ -26,7 +45,7 @@ const tradeURLParamsConfig: TTradeURLParamsConfig = {
         { text: 'hollow', value: 'hollow' },
         { text: 'ohlc', value: 'ohlc' },
     ],
-    chartInterval: [
+    interval: [
         { text: '1t', value: '0' },
         { text: '1m', value: '60' },
         { text: '2m', value: '120' },
@@ -46,11 +65,12 @@ const tradeURLParamsConfig: TTradeURLParamsConfig = {
 const getParamTextByValue = (value: number | string, key: string) =>
     tradeURLParamsConfig[key].find(interval => interval.value === value.toString())?.text ?? '';
 
-export const setTradeURLParams = ({ contract_type, symbol, chart_type, granularity }: TSetTradeURLParamsArgs) => {
+export const setTradeURLParams = ({ contract_type, symbol, chart_type, granularity }: TTradeParams) => {
     if ('URLSearchParams' in window) {
         const searchParams = new URLSearchParams(window.location.search);
         chart_type && searchParams.set('chart_type', getParamTextByValue(chart_type, 'chartType'));
-        granularity && searchParams.set('interval', getParamTextByValue(granularity, 'chartInterval'));
+        !isNaN(Number(granularity)) &&
+            searchParams.set('interval', getParamTextByValue(Number(granularity), 'interval'));
         symbol && searchParams.set('symbol', symbol);
         contract_type && searchParams.set('trade_type', contract_type);
         const newRelativePathQuery = `${window.location.pathname}?${searchParams.toString()}`;
@@ -58,10 +78,36 @@ export const setTradeURLParams = ({ contract_type, symbol, chart_type, granulari
     }
 };
 
-export const getTradeURLParams = () => {
+export const getTradeURLParams = ({ active_symbols, contract_types_list }: TGetTradeURLParamsArgs) => {
     const searchParams = new URLSearchParams(window.location.search);
-    return Object.keys(TRADE_URL_PARAMS).reduce(
-        (acc, key) => (searchParams.get(key) ? { ...acc, [key]: searchParams.get(key) } : acc),
-        {}
-    );
+    const result: TTradeParams & { showModal?: boolean } = {};
+    if (searchParams) {
+        const { chart_type, interval, trade_type, symbol } = Object.values(TRADE_URL_PARAMS).reduce<{
+            [key: string]: string | null;
+        }>((acc, key) => (searchParams.get(key) ? { ...acc, [key]: searchParams.get(key) } : acc), {});
+        const configInterval = tradeURLParamsConfig.interval.find(item => item.text === interval);
+        const configChartType = tradeURLParamsConfig.chartType.find(item => item.text === chart_type);
+        const hasSymbol = active_symbols?.some(item => item.symbol === symbol);
+        const contract_list = Object.keys(contract_types_list || {}).reduce<string[]>((acc, key) => {
+            const categories: TContractTypesList['Ups & Downs']['categories'] =
+                contract_types_list?.[key]?.categories || [];
+            return [...acc, ...categories.map(contract => (contract as TTextValueStrings).value)];
+        }, []);
+        const hasTradeType = contract_list.includes(trade_type ?? '');
+        if (configInterval) {
+            result.granularity = Number(configInterval?.value);
+        }
+        if (configChartType) {
+            result.chart_type = configChartType?.value;
+        }
+        if (hasSymbol) {
+            result.symbol = symbol || '';
+        }
+        if (hasTradeType) {
+            result.contract_type = trade_type || '';
+        } else if (trade_type) {
+            result.showModal = true;
+        }
+    }
+    return result;
 };

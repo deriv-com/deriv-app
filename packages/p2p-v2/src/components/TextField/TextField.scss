@@ -20,17 +20,12 @@
             border: 1px solid var(--brand-blue, #ec3f3f);
         }
 
-        .p2p-v2-textfield__field,
         .p2p-v2-textfield__label {
             color: #ec3f3f;
         }
+
         .p2p-v2-textfield__field:focus ~ .p2p-v2-textfield__label {
             color: #ec3f3f;
-        }
-
-        .p2p-v2-textfield__icon-left,
-        .p2p-v2-textfield__icon-right {
-            filter: invert(37%) sepia(87%) saturate(4597%) hue-rotate(343deg) brightness(98%) contrast(87%); //#ec3f3f for svg icon
         }
     }
 

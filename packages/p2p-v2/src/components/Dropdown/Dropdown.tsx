@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useCombobox } from 'downshift';
-import { TGenericSizes } from 'types';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import SearchIcon from '../../public/ic-cashier-search.svg';
-import ChevronUp from '../../public/ic-chevron-up.svg';
+import ArrowDown from '../../public/ic-chevron-down.svg';
 import reactNodeToString from '../../utils/react-node-to-string';
 import TextField, { TextFieldProps } from '../TextField/TextField';
 import './Dropdown.scss';
+
+type TGenericSizes = '2xl' | '2xs' | '3xl' | '3xs' | '4xl' | '5xl' | '6xl' | 'lg' | 'md' | 'sm' | 'xl' | 'xs';
 
 type TProps = {
     disabled?: boolean;
@@ -28,15 +28,17 @@ type TProps = {
 };
 
 const Dropdown: React.FC<TProps> = ({
-    disabled,
-    errorMessage,
+    disabled = false,
+    errorMessage = '',
     icon = false,
     isRequired = false,
-    label,
+    label = '',
     list,
     listHeight = 'md',
     name,
-    onChange,
+    onChange = () => {
+        // do nothing
+    },
     onSelect,
     value,
     variant = 'prompt',
@@ -113,8 +115,12 @@ const Dropdown: React.FC<TProps> = ({
                     readOnly={variant !== 'comboBox'}
                     renderLeftIcon={icon ? () => icon : undefined}
                     renderRightIcon={() => (
-                        <button className={clsx('p2p-v2-dropdown__button')}>
-                            {isOpen ? <ChevronUp /> : <SearchIcon height={16} width={16} />}
+                        <button
+                            className={clsx('p2p-v2-dropdown__button', {
+                                'p2p-v2-dropdown__button--active': isOpen,
+                            })}
+                        >
+                            <ArrowDown />
                         </button>
                     )}
                     type='text'
@@ -130,7 +136,8 @@ const Dropdown: React.FC<TProps> = ({
                                 'p2p-v2-dropdown__item--active': value === item.value,
                             })}
                             key={item.value}
-                            onClick={() => clearFilter()}
+                            onClick={clearFilter}
+                            onKeyDown={clearFilter}
                             {...getItemProps({ index, item })}
                         >
                             <Text size='sm' weight={value === item.value ? 'bold' : 'normal'}>

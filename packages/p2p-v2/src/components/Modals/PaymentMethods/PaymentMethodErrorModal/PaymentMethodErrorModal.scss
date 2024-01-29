@@ -6,6 +6,9 @@
         align-items: center;
         gap: 2.4rem;
         width: 44rem;
+        @include mobile {
+            width: 100%;
+        }
     }
     &__buttons {
         display: flex;

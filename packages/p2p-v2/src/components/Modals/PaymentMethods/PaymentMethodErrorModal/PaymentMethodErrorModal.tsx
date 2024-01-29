@@ -3,8 +3,8 @@ import ReactModal from 'react-modal';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { customStyles } from '../../helpers';
-import './PaymentMethodErrorModal.scss';
 import '../styles.scss';
+import './PaymentMethodErrorModal.scss';
 
 type TPaymentMethodErrorModalProps = {
     errorMessage: string;

@@ -78,9 +78,10 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
             <form
                 className='p2p-v2-payment-method-form__form'
                 onSubmit={handleSubmit(data => {
-                    if (actionType === 'ADD') {
+                    const hasData = Object.keys(data).length > 0;
+                    if (actionType === 'ADD' && hasData) {
                         create({ ...data, method: String(selectedPaymentMethod?.method) });
-                    } else if (actionType === 'EDIT') {
+                    } else if (actionType === 'EDIT' && hasData) {
                         update(String(selectedPaymentMethod?.id), {
                             ...data,
                             method: String(selectedPaymentMethod?.method),
@@ -209,10 +210,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
             {/* TODO: Remember to translate these strings */}
             {(createError || updateError) && (
                 <PaymentMethodErrorModal
-                    errorMessage={String(
-                        (createError && 'message' in createError && createError?.message) ||
-                            (updateError && 'message' in updateError && updateError?.message)
-                    )}
+                    errorMessage={String(createError?.error?.message || updateError?.error?.message)}
                     isModalOpen={true}
                     onConfirm={() => {
                         onResetFormState();

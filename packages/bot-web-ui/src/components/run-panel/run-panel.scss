@@ -87,10 +87,8 @@
     }
     &__footer {
         text-align: center;
-        display: flex;
+        @include flex-center(space-between);
         flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
 
         &-button {
             width: 318px;
@@ -101,8 +99,8 @@
     }
     &__content {
         display: flex;
-        flex-direction: column;
         justify-content: space-between;
+        flex-direction: column;
         overflow: hidden !important;
     }
     &__buttons {
@@ -146,10 +144,8 @@
 
 .controls {
     &__section {
-        display: flex;
+        @include flex-center(space-between);
         flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
         position: fixed;
         bottom: 0;
         width: 100%;

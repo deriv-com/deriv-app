@@ -8,7 +8,7 @@ import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import GoogleDrive from './load-bot-preview/google-drive';
 import Recent from './load-bot-preview/recent';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;

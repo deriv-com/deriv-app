@@ -56,49 +56,5 @@ export const NeedsReview = ({ needsPOI = true, redirectButton }: TPOANeedsReview
                 </Text>
             ) : null}
         </POAStatus>
-        // <div className='grid justify-center w-full justify-items-center mt-4000 gap-1000'>
-        //     <IcPOAVerified width={128} />
-        //     <div className='grid justify-center gap-200'>
-        //         <Text align='center' size='md' weight='bold'>
-        //             Your proof of address was submitted successfully
-        //         </Text>
-        //         <div className='grid gap-200'>
-        //             <Text align='center' size='sm'>
-        //                 Your document is being reviewed, please check back in 1-3 days.
-        //             </Text>
-        //             {needsPOI ? (
-        //                 <Text align='center' size='sm'>
-        //                     You must also submit a proof of identity.
-        //                 </Text>
-        //             ) : null}
-        //         </div>
-        //     </div>
-        //     <div className='mt-500'>{actionButton}</div>
-        // </div>
     );
-
-    // if (!needs_poi) {
-    //     return (
-    //         <IconMessageContent
-    //             message={message}
-    //             text={'Your document is being reviewed, please check back in 1-3 days.'}
-    //             icon={<Icon icon='IcPoaVerified' size={128} />}
-    //         >
-    //             {redirect_button || (!isRedirectedFromPlatform && <ContinueTradingButton />)}
-    //         </IconMessageContent>
-    //     );
-    // }
-    // return (
-    //     <IconMessageContent message={message} icon={<Icon icon='IcPoaVerified' size={128} />}>
-    //         <div className='account-management__text-container'>
-    //             <Text align='center' size='xs'>
-    //                 Your document is being reviewed, please check back in 1-3 days.
-    //             </Text>
-    //             <Text align='center' size='xs'>
-    //                 You must also submit a proof of identity.
-    //             </Text>
-    //         </div>
-    //         <PoiButton />
-    //     </IconMessageContent>
-    // );
 };

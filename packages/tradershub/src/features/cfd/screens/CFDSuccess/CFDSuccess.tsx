@@ -21,7 +21,7 @@ type TCFDSuccess = {
           title: string;
       }
     | {
-          marketType?: never;
+          marketType: never;
           platform: Exclude<TPlatforms.All, CFDPlatforms.MT5>;
       }
 );

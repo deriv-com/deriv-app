@@ -2,11 +2,23 @@ import React, { Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useIsEuRegion } from '@deriv/api';
 import { Button, Heading, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
+import useRegulationFlags from '../../../hooks/useRegulationFlags';
 import { TitleDescriptionLoader } from '../../Loaders';
 import { StaticLink } from '../../StaticLink';
+import { useUIContext } from '../../UIProvider';
 
 const CompareAccountsButton = ({ className }: { className?: string }) => {
     const history = useHistory();
+    const { getUIState } = useUIContext();
+
+    const accountType = getUIState('accountType');
+
+    const regulation = getUIState('regulation');
+
+    const { isEU } = useRegulationFlags(regulation, accountType);
+
+    const title = isEU ? 'Account information' : 'Compare Accounts';
+
     return (
         <Button
             className={qtMerge('no-underline', className)}
@@ -15,7 +27,7 @@ const CompareAccountsButton = ({ className }: { className?: string }) => {
             size='sm'
             variant='tertiary'
         >
-            Compare Accounts
+            {title}
         </Button>
     );
 };

@@ -17,6 +17,10 @@
         &--no-header--fixed-footer {
             grid-template-rows: auto 7rem;
         }
+
+        &--no-footer {
+            grid-template-rows: 6rem auto;
+        }
     }
 
     &__header {

@@ -3,6 +3,7 @@ import { Button } from '@deriv/quill-design';
 import { useSignupWizardContext } from '../../../context/SignupWizardContext';
 
 type TActions = {
+    canGoNext?: boolean;
     onSubmit: () => void;
 };
 
@@ -19,7 +20,7 @@ type TActions = {
  * );
  */
 
-const Actions: React.FC<TActions> = ({ onSubmit }) => {
+const Actions: React.FC<TActions> = ({ canGoNext, onSubmit }) => {
     const {
         helpers: { canGoToPrevStep, goToNextStep, goToPrevStep },
     } = useSignupWizardContext();
@@ -39,12 +40,19 @@ const Actions: React.FC<TActions> = ({ onSubmit }) => {
                         colorStyle='black'
                         onClick={goToPrevStep}
                         size='md'
+                        type='button'
                         variant='secondary'
                     >
                         Previous
                     </Button>
                 )}
-                <Button className='mr-8 rounded-200' onClick={handleSubmit} size='md' type='submit'>
+                <Button
+                    className='mr-8 rounded-200'
+                    disabled={!canGoNext}
+                    onClick={handleSubmit}
+                    size='md'
+                    type='submit'
+                >
                     Next
                 </Button>
             </div>

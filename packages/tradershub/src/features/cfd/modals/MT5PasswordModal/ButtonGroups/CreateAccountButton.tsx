@@ -6,10 +6,11 @@ import { validPassword } from '../../../../../utils/password';
 import { MarketType, TTM5FilterLandingCompany } from '../../../constants';
 
 type TProps = {
+    buttonText: string;
     password: string;
 };
 
-const CreateAccountButton = ({ password }: TProps) => {
+const CreateAccountButton = ({ buttonText, password }: TProps) => {
     const { getCFDState } = Provider.useCFDContext();
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
@@ -28,7 +29,7 @@ const CreateAccountButton = ({ password }: TProps) => {
             onClick={() => handleSubmit(password)}
             size='lg'
         >
-            Create Deriv MT5 password
+            {buttonText}
         </Button>
     );
 };

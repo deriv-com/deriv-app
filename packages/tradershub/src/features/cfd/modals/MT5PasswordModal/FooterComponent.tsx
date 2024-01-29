@@ -26,6 +26,6 @@ const FooterComponent = ({ password }: TProps) => {
 
     if (hasMT5Account) return <AddAccountButtonsGroup password={password} />;
 
-    return <CreateAccountButton password={password} />;
+    return <CreateAccountButton buttonText='Create Deriv MT5 password' password={password} />;
 };
 export default FooterComponent;

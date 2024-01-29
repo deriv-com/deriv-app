@@ -2,8 +2,8 @@ import React from 'react';
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
 import { ButtonGroup, Modal, SentEmailContent } from '../../../../../components';
-import useMT5AccountHandler from '../../../../../hooks/useMT5AccountHandler';
-import { CFDPlatforms, MarketType, TTM5FilterLandingCompany } from '../../../constants';
+import { CFDPlatforms } from '../../../constants';
+import CreateAccountButton from './CreateAccountButton';
 
 type TProps = {
     password: string;
@@ -12,13 +12,6 @@ type TProps = {
 const AddAccountButtonsGroup = ({ password }: TProps) => {
     const { show } = Provider.useModal();
     const { getCFDState } = Provider.useCFDContext();
-    const marketType = getCFDState('marketType') ?? MarketType.ALL;
-    const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
-    const { createMT5AccountLoading, handleSubmit, tradingPlatformPasswordChangeLoading } = useMT5AccountHandler({
-        marketType,
-        selectedJurisdiction,
-    });
-
     const platform = getCFDState('platform') ?? CFDPlatforms.MT5;
 
     return (
@@ -40,15 +33,7 @@ const AddAccountButtonsGroup = ({ password }: TProps) => {
             >
                 Forgot password?
             </Button>
-            <Button
-                disabled={!password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading}
-                fullWidth
-                isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
-                onClick={() => handleSubmit(password)}
-                size='lg'
-            >
-                Add account
-            </Button>
+            <CreateAccountButton buttonText='Add account' password={password} />;
         </ButtonGroup>
     );
 };

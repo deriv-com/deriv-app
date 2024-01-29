@@ -42,6 +42,52 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
         setNextScreen?.();
     };
 
+    const FormInputs = () => (
+        <Formik initialValues={initialValues} onSubmit={onChangeButtonClickHandler}>
+            {({ handleChange, handleSubmit, values }) => (
+                <form className='flex flex-col content-center gap-1200' onSubmit={handleSubmit}>
+                    <div className='flex flex-col content-center gap-800 w-[328px]'>
+                        <TextField
+                            autoComplete='current-password'
+                            className='border-solid rounded-200 border-xs border-system-light-active-background text-75 h-2000'
+                            label='Current investor password'
+                            name='currentPassword'
+                            onChange={handleChange}
+                            value={values.currentPassword}
+                        />
+                        <TextField
+                            autoComplete='new-password'
+                            className='border-solid rounded-200 border-xs border-system-light-active-background text-75 h-2000'
+                            label='New investor password'
+                            name='newPassword'
+                            onChange={handleChange}
+                            value={values.newPassword}
+                        />
+                    </div>
+                    <div className='flex flex-col content-center gap-800'>
+                        <Button
+                            // quill component issue, add type submit and disabled once the proper component is ready
+
+                            isLoading={changeInvestorPasswordStatus === 'loading'}
+                            size={isMobile ? 'lg' : 'md'}
+                        >
+                            Change investor password
+                        </Button>
+                        <Button
+                            className='border-none'
+                            colorStyle='coral'
+                            onClick={sendEmail}
+                            size={isMobile ? 'lg' : 'md'}
+                            variant='secondary'
+                        >
+                            Create or reset investor password
+                        </Button>
+                    </div>
+                </form>
+            )}
+        </Formik>
+    );
+
     return (
         <ActionScreen
             description={
@@ -62,51 +108,7 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
                 </Fragment>
             }
             descriptionSize='sm'
-            renderButtons={() => (
-                <Formik initialValues={initialValues} onSubmit={onChangeButtonClickHandler}>
-                    {({ handleChange, handleSubmit, values }) => (
-                        <form className='flex flex-col content-center gap-1200' onSubmit={handleSubmit}>
-                            <div className='flex flex-col content-center gap-800 w-[328px]'>
-                                <TextField
-                                    autoComplete='current-password'
-                                    className='border-solid rounded-200 border-xs border-system-light-active-background text-75 h-2000'
-                                    label='Current investor password'
-                                    name='currentPassword'
-                                    onChange={handleChange}
-                                    value={values.currentPassword}
-                                />
-                                <TextField
-                                    autoComplete='new-password'
-                                    className='border-solid rounded-200 border-xs border-system-light-active-background text-75 h-2000'
-                                    label='New investor password'
-                                    name='newPassword'
-                                    onChange={handleChange}
-                                    value={values.newPassword}
-                                />
-                            </div>
-                            <div className='flex flex-col content-center gap-800'>
-                                <Button
-                                    // quill component issue, add type submit and disabled once the proper component is ready
-
-                                    isLoading={changeInvestorPasswordStatus === 'loading'}
-                                    size={isMobile ? 'lg' : 'md'}
-                                >
-                                    Change investor password
-                                </Button>
-                                <Button
-                                    className='border-none'
-                                    colorStyle='coral'
-                                    onClick={sendEmail}
-                                    size={isMobile ? 'lg' : 'md'}
-                                    variant='secondary'
-                                >
-                                    Create or reset investor password
-                                </Button>
-                            </div>
-                        </form>
-                    )}
-                </Formik>
-            )}
+            renderButtons={() => <FormInputs />}
         />
     );
 };

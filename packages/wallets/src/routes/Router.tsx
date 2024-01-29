@@ -23,7 +23,7 @@ export type TRoute = '/endpoint' | `?${string}` | `${typeof walletsPrefix}${TWal
 
 // wallets routes which have their states
 interface WalletsRouteState {
-    '/cashier/transactions': { showPending?: boolean; transactionType?: 'deposit' | 'withdrawal' };
+    '/cashier/transactions': { showPending: boolean; transactionType: 'deposit' | 'withdrawal' };
     '/cashier/transfer': { toAccountLoginId: string };
 }
 
@@ -31,16 +31,14 @@ type TStatefulRoute = TRoute & `${typeof walletsPrefix}${keyof WalletsRouteState
 
 type TRouteState = {
     [T in TStatefulRoute]: T extends `${typeof walletsPrefix}${infer R extends keyof WalletsRouteState}`
-        ? WalletsRouteState[R]
+        ? Partial<WalletsRouteState[R]>
         : never;
 };
 
 type TLocationInfo = {
     [T in TRoute]: {
         pathname: T;
-        state?: T extends `${typeof walletsPrefix}${infer R extends keyof WalletsRouteState}`
-            ? WalletsRouteState[R]
-            : never;
+        state?: T extends TStatefulRoute ? TRouteState[T] : never;
     };
 }[TRoute];
 

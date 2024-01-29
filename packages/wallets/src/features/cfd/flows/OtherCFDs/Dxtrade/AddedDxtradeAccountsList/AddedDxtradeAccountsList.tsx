@@ -38,7 +38,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
         <div className='wallets-available-derivx__actions'>
             <WalletButton
                 onClick={() => {
-                    history.push(`/wallets/cashier/transfer`, loginid ? { toAccountLoginId: loginid } : undefined);
+                    history.push(`/wallets/cashier/transfer`, { toAccountLoginId: loginid });
                 }}
                 variant='outlined'
             >

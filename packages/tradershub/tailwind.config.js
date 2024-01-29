@@ -30,6 +30,11 @@ module.exports = {
                     coral: '#ff444f',
                     night: '#2a3052',
                     orange: '#ff6444',
+                    pink: {
+                        dark: '#3c2020',
+                        default: '#ffc0cb',
+                        light: '#ffe3e3',
+                    },
                     red: {
                         dark: '#b33037',
                         darker: '#661b20',

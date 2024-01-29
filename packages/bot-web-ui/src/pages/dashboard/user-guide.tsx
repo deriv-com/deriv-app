@@ -1,5 +1,5 @@
 import React from 'react';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';

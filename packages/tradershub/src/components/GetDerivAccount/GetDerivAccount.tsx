@@ -1,8 +1,11 @@
 import React from 'react';
 import { PlatformsDerivAppsLightIcon } from '@deriv/quill-icons';
+import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
 import { TradingAccountCard, TradingAccountCardContent, TradingAccountCardLightButton } from '../TradingAccountCard';
 
 const GetDerivAccount = () => {
+    const { setIsWizardOpen } = useSignupWizardContext();
+
     const title = 'Deriv account';
 
     const description = 'Get a real Deriv account, start trading and manage your funds.';
@@ -11,7 +14,7 @@ const GetDerivAccount = () => {
         <div className='grid grid-cols-1 gap-200 lg:grid-cols-3 lg:gap-x-1200 lg:gap-y-200'>
             <TradingAccountCard
                 leading={() => <PlatformsDerivAppsLightIcon height='60px' width='60px' />}
-                trailing={() => <TradingAccountCardLightButton />}
+                trailing={() => <TradingAccountCardLightButton onSubmit={() => setIsWizardOpen(true)} />}
             >
                 <TradingAccountCardContent title={title}>{description}</TradingAccountCardContent>
             </TradingAccountCard>

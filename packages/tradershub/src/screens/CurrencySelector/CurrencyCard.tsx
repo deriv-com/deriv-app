@@ -22,7 +22,7 @@ const CurrencyCard = ({ icon: Icon, id, info, title }: TCurrencyCard) => {
     const isSelected = values.currency === id;
     return (
         <div className='relative flex justify-center w-1/4 my-400'>
-            <div
+            <button
                 className={qtMerge(
                     `w-10/12 rounded-400 py-1100 hover:cursor-pointer hover:outline outline-1 ${
                         isSelected ? 'outline outline-2' : ''
@@ -38,7 +38,7 @@ const CurrencyCard = ({ icon: Icon, id, info, title }: TCurrencyCard) => {
                 <Text bold={isSelected} size='sm'>
                     ({id})
                 </Text>
-            </div>
+            </button>
         </div>
     );
 };

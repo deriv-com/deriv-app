@@ -1,6 +1,7 @@
 import React from 'react';
 import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
+import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import {
     Category,
@@ -15,15 +16,18 @@ import SuccessButtonGroup from './ButtonGroups/SuccessButtonGroup';
 
 const SuccessComponent = () => {
     const { isEU } = useRegulationFlags();
-    const { getCFDState } = Provider.useCFDContext();
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
     const isDemo = activeTrading?.is_virtual;
 
-    const isSuccess = getCFDState('isSuccess');
-    const marketType = getCFDState('marketType') ?? 'all';
+    const { getCFDState } = Provider.useCFDContext();
     const platform = getCFDState('platform') ?? 'mt5';
+    const marketType = getCFDState('marketType') ?? 'all';
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
+    const { isCreateMT5AccountSuccess } = useMT5AccountHandler({
+        marketType,
+        selectedJurisdiction,
+    });
 
     const marketTypeTitle =
         marketType === MarketType.ALL && Object.keys(PlatformDetails).includes(platform)
@@ -37,7 +41,7 @@ const SuccessComponent = () => {
         ? `Let's practise trading with ${activeTrading?.display_balance} virtual funds.`
         : `Transfer funds from your ${activeTrading?.currency} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
 
-    if (!isSuccess) return null;
+    if (!isCreateMT5AccountSuccess) return null;
 
     return (
         <CFDSuccess

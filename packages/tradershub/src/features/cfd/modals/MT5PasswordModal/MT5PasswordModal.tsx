@@ -3,6 +3,7 @@ import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { useBreakpoint } from '@deriv/quill-design';
 import { ActionScreen, Dialog, Modal } from '../../../../components';
+import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
 import { Category, PlatformDetails, QueryStatus } from '../../constants';
 import FooterComponent from './FooterComponent';
 import PasswordComponent from './PasswordComponent';
@@ -14,9 +15,12 @@ const MT5PasswordModal = () => {
     const { data: mt5Accounts } = useMT5AccountsList();
 
     const { getCFDState } = Provider.useCFDContext();
-    const error = getCFDState('error');
-    const isSuccess = getCFDState('isSuccess');
-    const status = getCFDState('status');
+    const marketType = getCFDState('marketType') ?? 'all';
+    const selectedJurisdiction = getCFDState('selectedJurisdiction') ?? 'maltainvest';
+    const { isCreateMT5AccountError, isCreateMT5AccountSuccess } = useMT5AccountHandler({
+        marketType,
+        selectedJurisdiction,
+    });
 
     const { isMobile } = useBreakpoint();
 
@@ -27,14 +31,19 @@ const MT5PasswordModal = () => {
         PlatformDetails.mt5.title
     } account`;
 
-    if (status === QueryStatus.ERROR && error?.error?.code !== 'PasswordError') {
-        return <ActionScreen description={error?.error.message} title={error?.error?.code} />;
+    if (status === QueryStatus.ERROR && isCreateMT5AccountError?.error?.code !== 'PasswordError') {
+        return (
+            <ActionScreen
+                description={isCreateMT5AccountError?.error.message}
+                title={isCreateMT5AccountError?.error?.code}
+            />
+        );
     }
 
     if (isMobile) {
         return (
             <Modal>
-                <Modal.Header title={isSuccess ? '' : ModalHeaderTitle} />
+                <Modal.Header title={isCreateMT5AccountSuccess ? '' : ModalHeaderTitle} />
                 <Modal.Content>
                     <SuccessComponent />
                     <PasswordComponent password={password} setPassword={setPassword} />

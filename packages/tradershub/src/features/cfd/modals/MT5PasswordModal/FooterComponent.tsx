@@ -1,6 +1,7 @@
 import React from 'react';
 import { useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
+import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
 import AddAccountButtonsGroup from './ButtonGroups/AddAccountButtonsGroup';
 import CreateAccountButton from './ButtonGroups/CreateAccountButton';
 import SuccessButtonGroup from './ButtonGroups/SuccessButtonGroup';
@@ -10,13 +11,17 @@ type TProps = {
 };
 
 const FooterComponent = ({ password }: TProps) => {
-    const { getCFDState } = Provider.useCFDContext();
     const { data: mt5Accounts } = useMT5AccountsList();
-    const isSuccess = getCFDState('isSuccess');
-
+    const { getCFDState } = Provider.useCFDContext();
+    const marketType = getCFDState('marketType') ?? 'all';
+    const selectedJurisdiction = getCFDState('selectedJurisdiction') ?? 'maltainvest';
+    const { isCreateMT5AccountSuccess } = useMT5AccountHandler({
+        marketType,
+        selectedJurisdiction,
+    });
     const hasMT5Account = mt5Accounts?.find(account => account.login);
 
-    if (isSuccess) return <SuccessButtonGroup />;
+    if (isCreateMT5AccountSuccess) return <SuccessButtonGroup />;
 
     if (hasMT5Account) return <AddAccountButtonsGroup password={password} />;
 

@@ -1,18 +1,21 @@
 import React from 'react';
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
+import useMT5AccountHandler from '../../../../../hooks/useMT5AccountHandler';
 import { validPassword } from '../../../../../utils/password';
-import { useSubmitHandler } from '../useSubmitHandler';
 
 type TProps = {
     password: string;
 };
 
 const CreateAccountButton = ({ password }: TProps) => {
-    const submitHandler = useSubmitHandler({ password });
     const { getCFDState } = Provider.useCFDContext();
-    const createMT5AccountLoading = getCFDState('createMT5AccountLoading');
-    const tradingPlatformPasswordChangeLoading = getCFDState('tradingPlatformPasswordChangeLoading');
+    const marketType = getCFDState('marketType') ?? 'all';
+    const selectedJurisdiction = getCFDState('selectedJurisdiction') ?? 'maltainvest';
+    const { createMT5AccountLoading, handleSubmit, tradingPlatformPasswordChangeLoading } = useMT5AccountHandler({
+        marketType,
+        selectedJurisdiction,
+    });
 
     return (
         <Button
@@ -21,7 +24,7 @@ const CreateAccountButton = ({ password }: TProps) => {
             }
             fullWidth
             isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
-            onClick={() => submitHandler}
+            onClick={() => handleSubmit(password)}
             size='lg'
         >
             Create Deriv MT5 password

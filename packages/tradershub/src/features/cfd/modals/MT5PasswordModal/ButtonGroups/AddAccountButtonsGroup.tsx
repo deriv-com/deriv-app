@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
 import { ButtonGroup, Modal, SentEmailContent } from '../../../../../components';
-import { useSubmitHandler } from '../useSubmitHandler';
+import useMT5AccountHandler from '../../../../../hooks/useMT5AccountHandler';
 
 type TProps = {
     password: string;
@@ -11,11 +11,15 @@ type TProps = {
 const AddAccountButtonsGroup = ({ password }: TProps) => {
     const { show } = Provider.useModal();
     const { getCFDState } = Provider.useCFDContext();
-    const createMT5AccountLoading = getCFDState('createMT5AccountLoading');
-    const tradingPlatformPasswordChangeLoading = getCFDState('tradingPlatformPasswordChangeLoading');
+    const marketType = getCFDState('marketType') ?? 'all';
+    const selectedJurisdiction = getCFDState('selectedJurisdiction') ?? 'maltainvest';
+    const { createMT5AccountLoading, handleSubmit, tradingPlatformPasswordChangeLoading } = useMT5AccountHandler({
+        marketType,
+        selectedJurisdiction,
+    });
 
     const platform = getCFDState('platform') ?? 'mt5';
-    const submitHandler = useSubmitHandler({ password });
+
     return (
         <ButtonGroup className='w-full'>
             <Button
@@ -39,7 +43,7 @@ const AddAccountButtonsGroup = ({ password }: TProps) => {
                 disabled={!password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading}
                 fullWidth
                 isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
-                onClick={() => submitHandler}
+                onClick={() => handleSubmit(password)}
                 size='lg'
             >
                 Add account

@@ -19,7 +19,7 @@ type TWalletsRoute =
     | '/cashier/withdraw'
     | '/compare-accounts';
 
-export type TRoute = '/endpoint' | `${typeof walletsPrefix}${TWalletsRoute}`;
+export type TRoute = '/endpoint' | `?${string}` | `${typeof walletsPrefix}${TWalletsRoute}`;
 
 // wallets routes which have their states
 interface WalletsRouteState {

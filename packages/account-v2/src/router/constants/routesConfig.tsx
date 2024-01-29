@@ -1,3 +1,4 @@
+import { POAFormContainer } from '../../modules/POAForm/POAFormContainer';
 import DummyRoute from '../components/dummy-route/dummy-route';
 
 export const routes = [
@@ -27,7 +28,7 @@ export const routes = [
         routePath: '/account-v2/proof_of_identity',
     },
     {
-        routeComponent: DummyRoute,
+        routeComponent: POAFormContainer,
         routeName: 'Proof of address',
         routePath: '/account-v2/proof_of_address',
     },

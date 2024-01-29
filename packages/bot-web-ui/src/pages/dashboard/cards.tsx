@@ -4,11 +4,12 @@ import classNames from 'classnames';
 import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendQsOpenEvent } from '../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
 import GoogleDrive from './load-bot-preview/google-drive';
 import Recent from './load-bot-preview/recent';
-import { Analytics } from '@deriv-com/analytics';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;
@@ -46,12 +47,9 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
         });
     };
 
-    // this is check if the user has opened quick strategy model from the dashboard
     const sendToRudderStackOnQuickStrategyIconClick = () => {
-        Analytics.trackEvent('ce_bot_quick_strategy_form', {
-            shortcut_name: 'quick-strategy',
-            form_source: 'bot_dashboard',
-        });
+        // send to rs if quick strategy is opened from dashbaord
+        rudderStackSendQsOpenEvent();
     };
 
     //this is to check which icon is clicked on dashboard

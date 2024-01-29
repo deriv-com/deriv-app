@@ -21,7 +21,7 @@ import useQsSubmitHandler from './useQsSubmitHandler';
 import '../quick-strategy.scss';
 
 type TDesktopFormWrapper = {
-    active_tab_ref: React.MutableRefObject<HTMLDivElement | null>;
+    active_tab_ref?: React.MutableRefObject<HTMLDivElement | null>;
     children: React.ReactNode;
     onClickClose: () => void;
 };

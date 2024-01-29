@@ -20,7 +20,7 @@ import '../quick-strategy.scss';
 
 type TMobileFormWrapper = {
     children: React.ReactNode;
-    active_tab_ref: React.MutableRefObject<HTMLDivElement | null>;
+    active_tab_ref?: React.MutableRefObject<HTMLDivElement | null>;
 };
 
 const MobileFormWrapper: React.FC<TMobileFormWrapper> = observer(({ children, active_tab_ref }) => {

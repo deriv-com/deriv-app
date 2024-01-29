@@ -68,6 +68,7 @@ const InformationSubmittedModal = React.lazy(() =>
 const AppModals = observer(() => {
     const { client, ui, traders_hub } = useStore();
     const {
+        is_authorize,
         is_logged_in,
         fetchFinancialAssessment,
         setCFDScore,
@@ -105,12 +106,12 @@ const AppModals = observer(() => {
     const should_show_mt5_notification_modal = mt5_login_list.find(login => login)?.white_label?.notification ?? true;
 
     React.useEffect(() => {
-        if (is_logged_in) {
+        if (is_logged_in && is_authorize) {
             fetchFinancialAssessment().then(response => {
                 setCFDScore(response?.cfd_score ?? 0);
             });
         }
-    }, [is_logged_in]);
+    }, [is_logged_in, is_authorize]);
     if (temp_session_signup_params && window.location.href.includes(routes.onboarding)) {
         toggleAccountSignupModal(true);
     } else {

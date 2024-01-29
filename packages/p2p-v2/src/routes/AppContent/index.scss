@@ -1,0 +1,19 @@
+.p2p-v2-tab {
+    &__items-wrapper {
+        & button {
+            padding: 0 3rem;
+            white-space: nowrap;
+            height: 40px;
+            @include mobile {
+                width: calc(100vw / 4);
+            }
+        }
+    }
+    &__wrapper {
+        width: fit-content;
+        @include mobile {
+            width: 100vw;
+            margin-top: 4rem;
+        }
+    }
+}

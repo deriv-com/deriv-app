@@ -19,23 +19,22 @@ jest.mock('../../../../../../../components/ModalProvider', () => ({
 }));
 
 const mockTransaction = {
-    address_hash: '1234567890',
-    address_url: 'https://example.com/address',
+    address_hash: '',
+    address_url: '',
     amount: 0.0002,
-    description: 'Transaction description',
-    formatted_address_hash: 'abc123',
-    formatted_amount: '0.0002 BTC',
+    description: '',
+    formatted_address_hash: '',
+    formatted_amount: '',
     formatted_confirmations: 'Pending',
     formatted_transaction_hash: 'Pending',
-    id: '123',
+    id: '',
     is_deposit: false,
     is_valid_to_cancel: 1 as const,
     is_withdrawal: true,
     status_code: 'LOCKED' as const,
-    status_message:
-        "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
-    status_name: 'In review',
-    submit_date: 1705399737,
+    status_message: '',
+    status_name: '',
+    submit_date: 123456,
     transaction_type: 'withdrawal' as const,
 };
 
@@ -60,23 +59,22 @@ describe('CryptoTransaction', () => {
 
     it('should render component with correct properties for deposit type transaction', () => {
         const mockDepositTransaction = {
-            address_hash: '1234567890',
-            address_url: 'https://example.com/address',
+            address_hash: '',
+            address_url: '',
             amount: 0.0002,
-            description: 'Transaction description',
-            formatted_address_hash: 'abc123',
-            formatted_amount: '0.0002 BTC',
+            description: '',
+            formatted_address_hash: '',
+            formatted_amount: '',
             formatted_confirmations: 'Pending',
             formatted_transaction_hash: 'Pending',
-            id: '123',
+            id: '',
             is_deposit: true,
             is_valid_to_cancel: 1 as const,
             is_withdrawal: false,
             status_code: 'LOCKED' as const,
-            status_message:
-                "We're reviewing your deposit request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
-            status_name: 'In review',
-            submit_date: 1705399737,
+            status_message: '',
+            status_name: '',
+            submit_date: 123456,
             transaction_type: 'withdrawal' as const,
         };
         (useCancelCryptoTransaction as jest.Mock).mockReturnValue({ mutate: jest.fn() });

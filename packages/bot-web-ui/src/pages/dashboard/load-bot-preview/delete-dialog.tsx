@@ -1,7 +1,7 @@
 import React from 'react';
 import localForage from 'localforage';
 import LZString from 'lz-string';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { Dialog, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';

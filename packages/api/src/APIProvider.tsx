@@ -30,6 +30,7 @@ type APIContextData = {
     send: TSendFunction;
     subscribe: TSubscribeFunction;
     unsubscribe: TUnsubscribeFunction;
+    queryClient: QueryClient;
 };
 
 const APIContext = createContext<APIContextData | null>(null);
@@ -229,6 +230,7 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
                 send,
                 subscribe,
                 unsubscribe,
+                queryClient,
             }}
         >
             <QueryClientProvider client={queryClient}>

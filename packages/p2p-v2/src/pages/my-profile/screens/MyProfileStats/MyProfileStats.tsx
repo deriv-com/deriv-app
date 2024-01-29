@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAdvertiserStats } from '../../../../hooks';
+import { numberToCurrencyText } from '../../../../utils';
 import MyProfileStatsItem from './MyProfileStatsItem';
 import './MyProfileStats.scss';
 
@@ -29,10 +30,6 @@ export const MyProfileStats = ({ advertiserId }: TMyProfileStatsProps) => {
     } = data;
 
     const getTimeValueText = (minutes: number) => `${minutes === 1 ? '< ' : ''}${minutes} min`;
-    const getCurrencyText = (currency: number) =>
-        new Intl.NumberFormat('en-US', { maximumFractionDigits: 2, minimumFractionDigits: 2, style: 'decimal' }).format(
-            currency
-        );
 
     return (
         <div className='p2p-v2-my-profile-stats'>
@@ -55,7 +52,9 @@ export const MyProfileStats = ({ advertiserId }: TMyProfileStatsProps) => {
                 onClickLifetime={hasClickedLifetime => setShouldShowTradeVolumeLifetime(hasClickedLifetime)}
                 shouldShowLifetime
                 value={
-                    shouldShowTradeVolumeLifetime ? getCurrencyText(tradeVolumeLifetime) : getCurrencyText(tradeVolume)
+                    shouldShowTradeVolumeLifetime
+                        ? numberToCurrencyText(tradeVolumeLifetime)
+                        : numberToCurrencyText(tradeVolume)
                 }
             />
             <MyProfileStatsItem

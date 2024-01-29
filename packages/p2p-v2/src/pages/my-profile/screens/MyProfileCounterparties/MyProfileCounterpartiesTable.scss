@@ -1,0 +1,18 @@
+.p2p-v2-my-profile-counterparties-table {
+    height: 28rem;
+
+    @include mobile {
+        height: 100%;
+    }
+    &__row {
+        &:last-child {
+            position: relative;
+        }
+        &-loader {
+            margin-top: 3rem;
+        }
+        &:not(:last-child) {
+            border-bottom: 1px solid var(--general-section-1);
+        }
+    }
+}

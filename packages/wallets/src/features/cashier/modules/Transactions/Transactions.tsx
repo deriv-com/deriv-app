@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
 import { ToggleSwitch, WalletDropdown, WalletText } from '../../../../components';
 import useDevice from '../../../../hooks/useDevice';
@@ -10,6 +11,10 @@ import './Transactions.scss';
 type TTransactionsPendingFilter = React.ComponentProps<typeof TransactionsPending>['filter'];
 type TTransactionCompletedFilter = React.ComponentProps<typeof TransactionsCompleted>['filter'];
 type TFilterValue = TTransactionCompletedFilter | TTransactionsPendingFilter;
+type THistoryState = {
+    showPending?: boolean;
+    transactionType?: string;
+};
 
 const filtersMapper: Record<string, Record<string, TFilterValue>> = {
     completed: {
@@ -32,11 +37,11 @@ const Transactions = () => {
     const { isLoading } = useCurrencyConfig();
     const { isMobile } = useDevice();
 
-    const queryParams = new URLSearchParams(location.search);
-    const showPending = queryParams.get('showPending');
+    const { location } = useHistory();
+    const state: THistoryState = location.state;
 
-    const [isPendingActive, setIsPendingActive] = useState(showPending === 'true');
-    const [filterValue, setFilterValue] = useState('all');
+    const [isPendingActive, setIsPendingActive] = useState(Boolean(state?.showPending));
+    const [filterValue, setFilterValue] = useState(state?.transactionType ?? 'all');
 
     const filterOptionsList = useMemo(
         () =>

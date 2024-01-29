@@ -6,6 +6,7 @@ import {
     isEqualObject,
     isMultiplierContract,
     isResetContract,
+    isLookBacksContract,
     isOpen,
     isTurbosContract,
     getDigitInfo,
@@ -334,7 +335,7 @@ export default class ContractStore extends BaseStore {
                     }
                 );
 
-                main_barrier.updateBarrierShade(true, contract_type);
+                if (!isLookBacksContract(contract_type)) main_barrier.updateBarrierShade(true, contract_type);
 
                 barriers = [main_barrier];
             } else if (isResetContract(contract_type) && entry_spot) {

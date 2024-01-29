@@ -589,6 +589,13 @@ export default class NotificationStore extends BaseStore {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
             }
+            if (
+                client &&
+                this.root_store.client.mt5_login_list.length > 0 &&
+                (this.root_store.client.mt5_login_list.find(login => login)?.white_label?.notification ?? true)
+            ) {
+                this.addNotificationMessage(this.client_notifications.mt5_notification);
+            }
         }
 
         if (!is_eu && isMultiplierContract(selected_contract_type) && current_language === 'EN' && is_logged_in) {
@@ -1504,8 +1511,8 @@ export default class NotificationStore extends BaseStore {
             },
             mt5_notification: {
                 key: 'mt5_notification',
-                header: localize('Deriv MT5: Your action is needed'),
-                message: localize('Follow these simple instructions to fix it.'),
+                header: localize('Changes to your Deriv MT5 login'),
+                message: localize('We’ve updated the login process for your Deriv MT5 account.'),
                 action: {
                     text: localize('Learn more'),
                     onClick: () => {

@@ -6,13 +6,14 @@ import { TradingAccountCard } from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/cfd/derivx.svg';
 import { CFDPlatforms, PlatformDetails } from '../../../../constants';
-import { TradeModal } from '../../../../modals/TradeModal';
+import { TopUpModal, TradeModal } from '../../../../modals';
 
 const AddedDxtradeAccountsList = () => {
     const { data: dxTradeAccounts } = useDxtradeAccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
     const { show } = Provider.useModal();
     const account = dxTradeAccounts?.find(account => account.is_virtual === activeTrading?.is_virtual);
+    const isVirtual = account?.is_virtual;
 
     const leading = () => (
         <div
@@ -38,9 +39,13 @@ const AddedDxtradeAccountsList = () => {
                 // open transfer modal
                 className='border-opacity-black-400 rounded-200 px-800'
                 colorStyle='black'
+                onClick={() => {
+                    if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.DXTRADE} />);
+                    // else transferModal;
+                }}
                 variant='secondary'
             >
-                Transfer
+                {isVirtual ? 'Top up' : 'Transfer'}
             </Button>
             <Button
                 className='rounded-200 px-800'
@@ -63,19 +68,17 @@ const AddedDxtradeAccountsList = () => {
     return (
         <TradingAccountCard leading={leading} trailing={trailing}>
             <div className='flex flex-col flex-grow'>
-                {dxTradeAccounts
-                    ?.filter(account => account.is_virtual === activeTrading?.is_virtual)
-                    ?.map(account => (
-                        <Fragment key={account?.account_id}>
-                            <Text size='sm'>{PlatformDetails.dxtrade.title}</Text>
-                            <Text bold size='sm'>
-                                {account?.display_balance}
-                            </Text>
-                            <Text color='primary' size='sm'>
-                                {account?.login}
-                            </Text>
-                        </Fragment>
-                    ))}
+                {account && (
+                    <Fragment key={account?.account_id}>
+                        <Text size='sm'>{PlatformDetails.dxtrade.title}</Text>
+                        <Text bold size='sm'>
+                            {account?.display_balance}
+                        </Text>
+                        <Text color='primary' size='sm'>
+                            {account?.login}
+                        </Text>
+                    </Fragment>
+                )}
             </div>
         </TradingAccountCard>
     );

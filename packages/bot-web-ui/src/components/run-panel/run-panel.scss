@@ -1,3 +1,5 @@
+@import '../../styles/mixins.scss';
+
 /**
 * @define -panel
 **/
@@ -24,10 +26,8 @@
         }
     }
     &__tile {
-        display: flex;
+        @include flex-center;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
         height: 100%;
 
         &-title {
@@ -42,9 +42,8 @@
         }
     }
     &__stat {
-        display: flex;
+        @include flex-center(flex-start, flex-end);
         flex-direction: column;
-        align-items: flex-end;
         width: 35rem;
         background-color: var(--general-section-2);
 
@@ -53,8 +52,7 @@
             position: fixed;
         }
         &--info {
-            display: flex;
-            justify-content: center;
+            @include flex-center(center, flex-start);
             width: 33%;
             padding: 16px 0px 2px 0;
             cursor: pointer;

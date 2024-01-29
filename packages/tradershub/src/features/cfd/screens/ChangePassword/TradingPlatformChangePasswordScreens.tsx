@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { useActiveWalletAccount, useSettings, useVerifyEmail } from '@deriv/api';
+import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { Button, Text } from '@deriv/quill-design';
 import { SentEmailContent, ActionScreen } from '../../../../components';
 import { Provider } from '@deriv/library';
@@ -22,7 +22,7 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
     const { hide } = Provider.useModal();
     const { data } = useSettings();
     const { mutate } = useVerifyEmail();
-    const { data: activeWallet } = useActiveWalletAccount();
+    const { data: activeTrading } = useActiveTradingAccount();
 
     const { title } = PlatformDetails[platform];
 
@@ -33,7 +33,7 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
             await mutate({
                 type: isDerivX ? 'trading_platform_dxtrade_password_reset' : 'trading_platform_mt5_password_reset',
                 url_parameters: {
-                    redirect_to: platformPasswordResetRedirectLink(platform, activeWallet?.is_virtual),
+                    redirect_to: platformPasswordResetRedirectLink(platform, activeTrading?.is_virtual),
                 },
                 verify_email: data.email,
             });

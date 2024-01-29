@@ -9,6 +9,16 @@
         padding: 1.6rem;
     }
 
+    &__button {
+        display: inline-block;
+        margin-left: 0.5rem;
+    }
+    .derivs-button__variant--ghost:hover:not(:disabled) {
+        background: transparent;
+        text-decoration: underline;
+        text-decoration-color: #ec3f3f;
+    }
+
     &__form {
         padding: 1.4rem 0;
         display: flex;

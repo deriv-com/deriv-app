@@ -1,10 +1,10 @@
 import React, { ComponentType, SVGAttributes } from 'react';
 import { TAdvertiserPaymentMethods } from 'types';
+import { Button } from '@deriv-com/ui/dist/components/Button';
 import IcCashierBankTransfer from '../../../public/ic-cashier-bank-transfer.svg';
 import IcCashierEwallet from '../../../public/ic-cashier-ewallet.svg';
 import IcCashierOther from '../../../public/ic-cashier-other.svg';
 import IcCashierVerticalEllipsis from '../../../public/ic-cashier-vertical-ellipsis.svg';
-import { ClickableText } from '../../ClickableText';
 import { FlyoutMenu } from '../../FlyoutMenu';
 import './PaymentMethodCardHeader.scss';
 
@@ -35,13 +35,13 @@ const PaymentMethodCardHeader = ({
     }
     // TODO: Remember to translate these
     const flyoutMenuItems = [
-        <ClickableText key={0} onClick={onEditPaymentMethod} size='sm'>
+        <Button color='black' key={0} onClick={onEditPaymentMethod} size='xs' textSize='xs' variant='ghost'>
             Edit
-        </ClickableText>,
+        </Button>,
 
-        <ClickableText key={1} onClick={onDeletePaymentMethod} size='sm'>
+        <Button color='black' key={1} onClick={onDeletePaymentMethod} size='xs' textSize='xs' variant='ghost'>
             Delete
-        </ClickableText>,
+        </Button>,
     ];
     return (
         <div className='p2p-v2-payment-method-card__header'>

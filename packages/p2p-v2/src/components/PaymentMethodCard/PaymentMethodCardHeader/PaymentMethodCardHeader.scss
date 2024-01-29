@@ -9,4 +9,11 @@
         align-items: center;
         margin-bottom: 1.1rem;
     }
+    .derivs-button__variant--ghost {
+        color: #0e0e0e;
+    }
+    .derivs-button__variant--ghost:hover:not(:disabled) {
+        cursor: pointer;
+        background-color: #e6e9e9;
+    }
 }

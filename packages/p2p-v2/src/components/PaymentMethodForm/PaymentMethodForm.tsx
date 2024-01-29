@@ -2,10 +2,10 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TSelectedPaymentMethod } from 'types';
 import { p2p } from '@deriv/api';
+import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import CloseCircle from '../../public/ic-close-circle.svg';
 import { TFormState } from '../../reducers/types';
-import { ClickableText } from '../ClickableText';
 import { Dropdown } from '../Dropdown';
 import { PaymentMethodErrorModal, PaymentMethodModal } from '../Modals';
 import { PaymentMethodField } from '../PaymentMethodField';
@@ -135,8 +135,9 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                             <Text color='less-prominent' size='xs'>
                                 {/* TODO: Remember to translate these */}
                                 <span className='p2p-v2-payment-method-form__text'>Don’t see your payment method?</span>
-                                <ClickableText
-                                    color='red'
+                                <Button
+                                    className='p2p-v2-payment-method-form__button'
+                                    color='primary'
                                     onClick={() => {
                                         const paymentMethod = availablePaymentMethods?.find(p => p.id === 'other');
                                         if (paymentMethod) {
@@ -147,9 +148,12 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                             });
                                         }
                                     }}
+                                    size='xs'
+                                    textSize='xs'
+                                    variant='ghost'
                                 >
                                     Add new.
-                                </ClickableText>
+                                </Button>
                             </Text>
                         </>
                     )}

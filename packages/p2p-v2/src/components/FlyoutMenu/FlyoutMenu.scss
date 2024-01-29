@@ -18,6 +18,10 @@
                 padding: 1rem 1.6rem;
                 width: 100%;
                 display: inline-block;
+                & > * {
+                    color: #0e0e0e;
+                    font-weight: 400;
+                }
                 &:hover {
                     cursor: pointer;
                     background-color: #e6e9e9;

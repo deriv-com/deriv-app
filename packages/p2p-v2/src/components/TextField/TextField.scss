@@ -30,14 +30,13 @@
     }
 
     &--disabled {
-        pointer-events: none;
-
         & .p2p-v2-textfield__box,
         .p2p-v2-textfield__box:hover {
             border: 1px solid var(--system-light-5-active-background, #eaeced);
 
             & input {
                 color: var(--system-light-5-active-background, #999);
+                background: transparent;
             }
         }
         & .p2p-v2-textfield__box:has(.p2p-v2-textfield__field:focus) {

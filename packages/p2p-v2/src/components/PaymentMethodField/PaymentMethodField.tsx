@@ -1,7 +1,7 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { Input } from '@deriv-com/ui/dist/components/Input';
 import { VALID_SYMBOLS_PATTERN } from '../../constants';
-import { TextField } from '../TextField';
 import { TextArea } from '..';
 
 type TPaymentMethodField = {
@@ -41,10 +41,10 @@ const PaymentMethodField = ({ control, defaultValue, displayName, field, require
                             value={value}
                         />
                     ) : (
-                        <TextField
-                            errorMessage={error?.message}
-                            isInvalid={!!error?.message}
+                        <Input
+                            error={!!error?.message}
                             label={displayName}
+                            message={error?.message}
                             onBlur={onBlur}
                             onChange={onChange}
                             value={value}

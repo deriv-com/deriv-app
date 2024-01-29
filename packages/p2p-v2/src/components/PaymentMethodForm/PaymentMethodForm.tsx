@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { TSelectedPaymentMethod } from 'types';
 import { p2p } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Input } from '@deriv-com/ui/dist/components/Input';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import CloseCircle from '../../public/ic-close-circle.svg';
 import { TFormState } from '../../reducers/types';
@@ -11,7 +12,6 @@ import { PaymentMethodErrorModal, PaymentMethodModal } from '../Modals';
 import { PaymentMethodField } from '../PaymentMethodField';
 import { PaymentMethodsFormFooter } from '../PaymentMethodsFormFooter';
 import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
-import { TextField } from '../TextField';
 import './PaymentMethodForm.scss';
 
 type TPaymentMethodFormProps = {
@@ -92,12 +92,11 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                 <div className='p2p-v2-payment-method-form__field-wrapper'>
                     {selectedPaymentMethod ? (
                         // TODO: Remember to translate this
-                        <TextField
+                        <Input
                             disabled
                             label='Choose your payment method'
-                            renderRightIcon={() => {
-                                // TODO: Remember to override this style for disabling pointer events
-                                return actionType === 'EDIT' ? null : (
+                            rightPlaceholder={
+                                actionType === 'EDIT' ? null : (
                                     <CloseCircle
                                         className='p2p-v2-payment-method-form__icon--close'
                                         fill='#999999'
@@ -108,8 +107,8 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                         }}
                                         width={20}
                                     />
-                                );
-                            }}
+                                )
+                            }
                             value={selectedPaymentMethod?.display_name}
                         />
                     ) : (

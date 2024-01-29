@@ -34,23 +34,24 @@ const DepositLocked: React.FC<React.PropsWithChildren<TProps>> = ({ accountStatu
     const unwelcomeStatus = cashierValidation?.includes('unwelcome_status') || false;
     const websiteTncVersion = websiteStatus?.website_status?.terms_conditions_version;
 
-    const state = depositLockedProvider({
-        askFixDetails,
-        clientTncStatus,
-        currency,
-        excludedUntil,
-        financialInformationNotComplete,
-        isDepositLocked,
-        isMFAccount,
-        poaNeedsVerification,
-        poaStatus,
-        poiNeedsVerification,
-        poiStatus,
-        selfExclusion,
-        tradingExperienceNotComplete,
-        unwelcomeStatus,
-        websiteTncVersion,
-    });
+    const state = isDepositLocked
+        ? depositLockedProvider({
+              askFixDetails,
+              clientTncStatus,
+              currency,
+              excludedUntil,
+              financialInformationNotComplete,
+              isMFAccount,
+              poaNeedsVerification,
+              poaStatus,
+              poiNeedsVerification,
+              poiStatus,
+              selfExclusion,
+              tradingExperienceNotComplete,
+              unwelcomeStatus,
+              websiteTncVersion,
+          })
+        : undefined;
 
     if (state) {
         return (

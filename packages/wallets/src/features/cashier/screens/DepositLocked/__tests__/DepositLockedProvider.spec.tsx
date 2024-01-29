@@ -14,7 +14,6 @@ describe('DepositLockedProvider', () => {
             currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
-            isDepositLocked: false,
             isMFAccount: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -37,7 +36,6 @@ describe('DepositLockedProvider', () => {
             currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
-            isDepositLocked: true,
             isMFAccount: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -66,7 +64,6 @@ describe('DepositLockedProvider', () => {
             currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
-            isDepositLocked: true,
             isMFAccount: false,
             poaNeedsVerification: true,
             poaStatus: 'pending',
@@ -93,7 +90,6 @@ describe('DepositLockedProvider', () => {
             currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
-            isDepositLocked: true,
             isMFAccount: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -120,7 +116,6 @@ describe('DepositLockedProvider', () => {
             currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: true,
-            isDepositLocked: true,
             isMFAccount: true,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -147,7 +142,6 @@ describe('DepositLockedProvider', () => {
             currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
-            isDepositLocked: true,
             isMFAccount: true,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -174,7 +168,6 @@ describe('DepositLockedProvider', () => {
             currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
-            isDepositLocked: true,
             isMFAccount: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -203,7 +196,6 @@ describe('DepositLockedProvider', () => {
             currency: 'USD',
             excludedUntil: new Date('01/01/2100'),
             financialInformationNotComplete: false,
-            isDepositLocked: true,
             isMFAccount: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -237,7 +229,6 @@ describe('DepositLockedProvider', () => {
             currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
-            isDepositLocked: true,
             isMFAccount: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -258,28 +249,5 @@ describe('DepositLockedProvider', () => {
         expect(link).toBeInTheDocument();
         fireEvent.click(link);
         expect(window.LC_API.open_chat_window).toHaveBeenCalled();
-    });
-
-    it('should render title and description as undefined when deposit is locked but no validations passed', () => {
-        const result = depositLockedProvider({
-            askFixDetails: false,
-            clientTncStatus: 'latest',
-            currency: 'USD',
-            excludedUntil: undefined,
-            financialInformationNotComplete: false,
-            isDepositLocked: true,
-            isMFAccount: false,
-            poaNeedsVerification: false,
-            poaStatus: 'none',
-            poiNeedsVerification: false,
-            poiStatus: 'none',
-            selfExclusion: false,
-            tradingExperienceNotComplete: false,
-            unwelcomeStatus: false,
-            websiteTncVersion: 'latest',
-        });
-
-        expect(result?.title).toBeUndefined();
-        expect(result?.description).toBeUndefined();
     });
 });

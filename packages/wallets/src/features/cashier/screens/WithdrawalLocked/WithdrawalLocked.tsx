@@ -38,21 +38,22 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren<TProps>> = ({ accountSt
         +remainder < minimumWithdrawal
     );
 
-    const state = withdrawalLockedProvider({
-        askAuthenticate,
-        askFinancialRiskApproval,
-        askFixDetails,
-        currency,
-        financialAssessmentRequired,
-        isWithdrawalLocked,
-        noWithdrawalOrTradingStatus,
-        poaNeedsVerification,
-        poaStatus,
-        poiNeedsVerification,
-        poiStatus,
-        withdrawalLimitReached,
-        withdrawalLockedStatus,
-    });
+    const state = isWithdrawalLocked
+        ? withdrawalLockedProvider({
+              askAuthenticate,
+              askFinancialRiskApproval,
+              askFixDetails,
+              currency,
+              financialAssessmentRequired,
+              noWithdrawalOrTradingStatus,
+              poaNeedsVerification,
+              poaStatus,
+              poiNeedsVerification,
+              poiStatus,
+              withdrawalLimitReached,
+              withdrawalLockedStatus,
+          })
+        : undefined;
 
     if (state) {
         return (

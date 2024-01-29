@@ -14,7 +14,6 @@ describe('WithdrawalLockedProvider', () => {
             askFixDetails: false,
             currency: 'USD',
             financialAssessmentRequired: false,
-            isWithdrawalLocked: false,
             noWithdrawalOrTradingStatus: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -35,7 +34,6 @@ describe('WithdrawalLockedProvider', () => {
             askFixDetails: false,
             currency: 'USD',
             financialAssessmentRequired: false,
-            isWithdrawalLocked: true,
             noWithdrawalOrTradingStatus: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -60,7 +58,6 @@ describe('WithdrawalLockedProvider', () => {
             askFixDetails: false,
             currency: 'USD',
             financialAssessmentRequired: false,
-            isWithdrawalLocked: true,
             noWithdrawalOrTradingStatus: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -85,7 +82,6 @@ describe('WithdrawalLockedProvider', () => {
             askFixDetails: false,
             currency: 'USD',
             financialAssessmentRequired: false,
-            isWithdrawalLocked: true,
             noWithdrawalOrTradingStatus: false,
             poaNeedsVerification: true,
             poaStatus: 'none',
@@ -110,7 +106,6 @@ describe('WithdrawalLockedProvider', () => {
             askFixDetails: false,
             currency: 'USD',
             financialAssessmentRequired: false,
-            isWithdrawalLocked: true,
             noWithdrawalOrTradingStatus: false,
             poaNeedsVerification: true,
             poaStatus: 'pending',
@@ -135,7 +130,6 @@ describe('WithdrawalLockedProvider', () => {
             askFixDetails: false,
             currency: 'USD',
             financialAssessmentRequired: false,
-            isWithdrawalLocked: true,
             noWithdrawalOrTradingStatus: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -160,7 +154,6 @@ describe('WithdrawalLockedProvider', () => {
             askFixDetails: false,
             currency: 'USD',
             financialAssessmentRequired: true,
-            isWithdrawalLocked: true,
             noWithdrawalOrTradingStatus: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -185,7 +178,6 @@ describe('WithdrawalLockedProvider', () => {
             askFixDetails: false,
             currency: 'USD',
             financialAssessmentRequired: false,
-            isWithdrawalLocked: true,
             noWithdrawalOrTradingStatus: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -211,7 +203,6 @@ describe('WithdrawalLockedProvider', () => {
             askFixDetails: true,
             currency: 'USD',
             financialAssessmentRequired: false,
-            isWithdrawalLocked: true,
             noWithdrawalOrTradingStatus: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -240,7 +231,6 @@ describe('WithdrawalLockedProvider', () => {
             askFixDetails: false,
             currency: 'USD',
             financialAssessmentRequired: false,
-            isWithdrawalLocked: true,
             noWithdrawalOrTradingStatus: true,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -268,7 +258,6 @@ describe('WithdrawalLockedProvider', () => {
             askFixDetails: false,
             currency: 'USD',
             financialAssessmentRequired: false,
-            isWithdrawalLocked: true,
             noWithdrawalOrTradingStatus: false,
             poaNeedsVerification: false,
             poaStatus: 'none',
@@ -287,26 +276,5 @@ describe('WithdrawalLockedProvider', () => {
         expect(link).toBeInTheDocument();
         fireEvent.click(link);
         expect(window.LC_API.open_chat_window).toHaveBeenCalled();
-    });
-
-    it('should render title and description as undefined when withdrawal is locked but no validations passed', () => {
-        const result = withdrawalLockedProvider({
-            askAuthenticate: false,
-            askFinancialRiskApproval: false,
-            askFixDetails: false,
-            currency: 'USD',
-            financialAssessmentRequired: false,
-            isWithdrawalLocked: true,
-            noWithdrawalOrTradingStatus: false,
-            poaNeedsVerification: false,
-            poaStatus: 'none',
-            poiNeedsVerification: false,
-            poiStatus: 'none',
-            withdrawalLimitReached: false,
-            withdrawalLockedStatus: false,
-        });
-
-        expect(result?.title).toBeUndefined();
-        expect(result?.description).toBeUndefined();
     });
 });

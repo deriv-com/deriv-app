@@ -8,7 +8,6 @@ type TDepositLockedProps = {
     currency: string;
     excludedUntil?: Date;
     financialInformationNotComplete: boolean;
-    isDepositLocked: boolean;
     isMFAccount: boolean;
     poaNeedsVerification: boolean;
     poaStatus: string;
@@ -26,7 +25,6 @@ const depositLockedProvider = ({
     currency,
     excludedUntil,
     financialInformationNotComplete,
-    isDepositLocked,
     isMFAccount,
     poaNeedsVerification,
     poaStatus,
@@ -37,140 +35,138 @@ const depositLockedProvider = ({
     unwelcomeStatus,
     websiteTncVersion,
 }: TDepositLockedProps) => {
-    if (isDepositLocked) {
-        if (poiNeedsVerification && poiStatus !== 'none')
-            return {
-                description: (
-                    <WalletText align='center'>
-                        <Trans
-                            components={[<WalletLink href='/account/proof-of-identity' key={0} />]}
-                            defaults='To enable deposits, you must check your <0>proof of identity document verification status</0>.'
-                        />
-                    </WalletText>
-                ),
-                title: (
+    if (poiNeedsVerification && poiStatus !== 'none')
+        return {
+            description: (
+                <WalletText align='center'>
                     <Trans
-                        defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
-                        values={{ currency }}
+                        components={[<WalletLink href='/account/proof-of-identity' key={0} />]}
+                        defaults='To enable deposits, you must check your <0>proof of identity document verification status</0>.'
                     />
-                ),
-            };
-        if (poaNeedsVerification && poaStatus !== 'none')
-            return {
-                description: (
-                    <WalletText align='center'>
-                        <Trans
-                            components={[<WalletLink href='/account/proof-of-address' key={0} />]}
-                            defaults='To enable deposits, you must check your <0>proof of address document verification status</0>.'
-                        />
-                    </WalletText>
-                ),
-                title: (
+                </WalletText>
+            ),
+            title: (
+                <Trans
+                    defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
+                    values={{ currency }}
+                />
+            ),
+        };
+    if (poaNeedsVerification && poaStatus !== 'none')
+        return {
+            description: (
+                <WalletText align='center'>
                     <Trans
-                        defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
-                        values={{ currency }}
+                        components={[<WalletLink href='/account/proof-of-address' key={0} />]}
+                        defaults='To enable deposits, you must check your <0>proof of address document verification status</0>.'
                     />
-                ),
-            };
-        if (clientTncStatus !== websiteTncVersion)
-            return {
-                description: (
-                    <WalletText align='center'>
-                        <Trans
-                            components={[<WalletLink key={0} staticUrl='/terms-and-conditions/#clients' />]}
-                            defaults='To enable deposits, you must accept our <0>updated terms and conditions</0>.'
-                        />
-                    </WalletText>
-                ),
-                title: (
+                </WalletText>
+            ),
+            title: (
+                <Trans
+                    defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
+                    values={{ currency }}
+                />
+            ),
+        };
+    if (clientTncStatus !== websiteTncVersion)
+        return {
+            description: (
+                <WalletText align='center'>
                     <Trans
-                        defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
-                        values={{ currency }}
+                        components={[<WalletLink key={0} staticUrl='/terms-and-conditions/#clients' />]}
+                        defaults='To enable deposits, you must accept our <0>updated terms and conditions</0>.'
                     />
-                ),
-            };
-        if (isMFAccount && (financialInformationNotComplete || tradingExperienceNotComplete))
-            return {
-                description: (
-                    <WalletText align='center'>
-                        <Trans
-                            components={[<WalletLink href='/account/financial-assessment' key={0} />]}
-                            defaults='To enable deposits, you must complete the <0>financial assessment form</0>.'
-                        />
-                    </WalletText>
-                ),
-                title: (
+                </WalletText>
+            ),
+            title: (
+                <Trans
+                    defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
+                    values={{ currency }}
+                />
+            ),
+        };
+    if (isMFAccount && (financialInformationNotComplete || tradingExperienceNotComplete))
+        return {
+            description: (
+                <WalletText align='center'>
                     <Trans
-                        defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
-                        values={{ currency }}
+                        components={[<WalletLink href='/account/financial-assessment' key={0} />]}
+                        defaults='To enable deposits, you must complete the <0>financial assessment form</0>.'
                     />
-                ),
-            };
-        if (askFixDetails)
-            return {
-                description: (
-                    <WalletText align='center'>
-                        <Trans
-                            components={[<WalletLink href='/account/personal-details' key={0} />]}
-                            defaults='Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable deposits.'
-                        />
-                    </WalletText>
-                ),
-                title: (
+                </WalletText>
+            ),
+            title: (
+                <Trans
+                    defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
+                    values={{ currency }}
+                />
+            ),
+        };
+    if (askFixDetails)
+        return {
+            description: (
+                <WalletText align='center'>
                     <Trans
-                        defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
-                        values={{ currency }}
+                        components={[<WalletLink href='/account/personal-details' key={0} />]}
+                        defaults='Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable deposits.'
                     />
-                ),
-            };
-        if (selfExclusion)
-            return {
-                description: (
-                    <WalletText align='center'>
-                        <Trans
-                            components={[
-                                <span
-                                    className='wallets-link'
-                                    key={0}
-                                    onClick={() => window.LC_API.open_chat_window()}
-                                />,
-                            ]}
-                            defaults='You have chosen to exclude yourself from trading on our website until {{excludedUntil}}. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via <0>live chat</0>.'
-                            values={{ excludedUntil }}
-                        />
-                    </WalletText>
-                ),
-                title: (
+                </WalletText>
+            ),
+            title: (
+                <Trans
+                    defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
+                    values={{ currency }}
+                />
+            ),
+        };
+    if (selfExclusion)
+        return {
+            description: (
+                <WalletText align='center'>
                     <Trans
-                        defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
-                        values={{ currency }}
+                        components={[
+                            <button
+                                className='wallets-link'
+                                key={0}
+                                onClick={() => window.LC_API.open_chat_window()}
+                            />,
+                        ]}
+                        defaults='You have chosen to exclude yourself from trading on our website until {{excludedUntil}}. If you are unable to place a trade or deposit after your self-exclusion period, please contact us via <0>live chat</0>.'
+                        values={{ excludedUntil }}
                     />
-                ),
-            };
-        if (unwelcomeStatus)
-            return {
-                description: (
-                    <WalletText align='center'>
-                        <Trans
-                            components={[
-                                <span
-                                    className='wallets-link'
-                                    key={0}
-                                    onClick={() => window.LC_API.open_chat_window()}
-                                />,
-                            ]}
-                            defaults='Please contact us via <0>live chat</0>.'
-                        />
-                    </WalletText>
-                ),
-                title: (
+                </WalletText>
+            ),
+            title: (
+                <Trans
+                    defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
+                    values={{ currency }}
+                />
+            ),
+        };
+    if (unwelcomeStatus)
+        return {
+            description: (
+                <WalletText align='center'>
                     <Trans
-                        defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
-                        values={{ currency }}
+                        components={[
+                            <button
+                                className='wallets-link'
+                                key={0}
+                                onClick={() => window.LC_API.open_chat_window()}
+                            />,
+                        ]}
+                        defaults='Please contact us via <0>live chat</0>.'
                     />
-                ),
-            };
-    }
+                </WalletText>
+            ),
+            title: (
+                <Trans
+                    defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
+                    values={{ currency }}
+                />
+            ),
+        };
 };
 
 export default depositLockedProvider;

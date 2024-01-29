@@ -19,6 +19,7 @@ import type {
     useDxtradeAccountsList,
     useDynamicLeverage,
     useExchangeRateSubscription,
+    useGetAccountStatus,
     useInfiniteTransactions,
     useMT5AccountsList,
     usePOA,
@@ -40,6 +41,7 @@ export namespace THooks {
     export type CtraderAccountsList = NonNullable<ReturnType<typeof useCtraderAccountsList>['data']>[number];
     export type DxtradeAccountsList = NonNullable<ReturnType<typeof useDxtradeAccountsList>['data']>[number];
     export type ExchangeRate = NonNullable<ReturnType<typeof useExchangeRateSubscription>['data']>;
+    export type GetAccountStatus = NonNullable<ReturnType<typeof useGetAccountStatus>['data']>;
     export type MT5AccountsList = NonNullable<ReturnType<typeof useMT5AccountsList>['data']>[number];
     export type SortedMT5Accounts = NonNullable<ReturnType<typeof useSortedMT5Accounts>['data']>[number];
     export type WalletAccountsList = NonNullable<ReturnType<typeof useWalletAccountsList>['data']>[number];

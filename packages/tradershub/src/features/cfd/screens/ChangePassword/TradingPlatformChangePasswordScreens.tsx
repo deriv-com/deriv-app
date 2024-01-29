@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { useState } from 'react';
 import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { Button, Text } from '@deriv/quill-design';
 import { SentEmailContent, ActionScreen } from '../../../../components';

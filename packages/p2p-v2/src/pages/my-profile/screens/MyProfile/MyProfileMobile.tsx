@@ -1,24 +1,34 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MobileTabs } from '../../../../components';
+import { useQueryString } from '../../../../hooks';
 import { MyProfileAdDetails } from '../MyProfileAdDetails';
 import { MyProfileContent } from '../MyProfileContent';
+import { MyProfileCounterparties } from '../MyProfileCounterparties';
 import MyProfileStatsMobile from '../MyProfileStats/MyProfileStatsMobile';
 
 const MyProfileMobile = () => {
-    const [currentTab, setCurrentTab] = useState('');
+    const { queryString, setQueryString } = useQueryString();
+    const currentTab = queryString.get('tab');
 
     if (currentTab === 'Stats') {
-        return <MyProfileStatsMobile onBack={() => setCurrentTab('')} />;
+        return <MyProfileStatsMobile />;
     }
     if (currentTab === 'Ad details') {
-        return <MyProfileAdDetails onBack={() => setCurrentTab('')} />;
+        return <MyProfileAdDetails />;
+    }
+    if (currentTab === 'My counterparties') {
+        return <MyProfileCounterparties />;
     }
 
     return (
         <>
             <MyProfileContent />
             <MobileTabs
-                onChangeTab={clickedTab => setCurrentTab(clickedTab)}
+                onChangeTab={clickedTab =>
+                    setQueryString({
+                        tab: clickedTab,
+                    })
+                }
                 tabs={['Stats', 'Payment methods', 'Ad details', 'My counterparties']}
             />
         </>

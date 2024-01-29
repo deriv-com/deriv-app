@@ -2,14 +2,17 @@ import React from 'react';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { FullPageMobileWrapper } from '../../../../components';
 import { MyProfileStats } from './MyProfileStats';
+import { useQueryString } from '../../../../hooks';
 
-type TMyProfileStatsMobile = {
-    onBack: () => void;
-};
-const MyProfileStatsMobile = ({ onBack }: TMyProfileStatsMobile) => {
+const MyProfileStatsMobile = () => {
+    const { setQueryString } = useQueryString();
     return (
         <FullPageMobileWrapper
-            onBack={onBack}
+            onBack={() =>
+                setQueryString({
+                    tab: 'default',
+                })
+            }
             renderHeader={() => (
                 <Text lineHeight='xs' size='lg' weight='bold'>
                     Stats

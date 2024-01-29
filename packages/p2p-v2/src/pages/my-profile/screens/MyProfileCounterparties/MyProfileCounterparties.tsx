@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import { useDevice } from '../../../../hooks';
+import { useDevice, useQueryString } from '../../../../hooks';
 import { BlockUnblockUserFilterModal } from '../../../../components/Modals/BlockUnblockUserFilterModal';
 import { FullPageMobileWrapper } from '../../../../components';
 import MyProfileCounterpartiesHeader from './MyProfileCounterpartiesHeader';
@@ -8,10 +8,17 @@ import MyProfileCounterpartiesTable from './MyProfileCounterpartiesTable';
 import './MyProfileCounterparties.scss';
 
 const MyProfileCounterpartiesDisplayWrapper = ({ children }: PropsWithChildren<unknown>) => {
+    const { setQueryString } = useQueryString();
     const { isMobile } = useDevice();
+
     if (isMobile) {
         return (
             <FullPageMobileWrapper
+                onBack={() =>
+                    setQueryString({
+                        tab: 'default',
+                    })
+                }
                 renderHeader={() => (
                     <Text className='p2p-v2-my-profile-counterparties__header' size='md' weight='bold'>
                         My counterparties

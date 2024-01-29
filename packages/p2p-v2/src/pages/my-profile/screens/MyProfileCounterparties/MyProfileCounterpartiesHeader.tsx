@@ -23,7 +23,7 @@ const MyProfileCounterpartiesHeader = ({
 }: MyProfileCounterpartiesHeaderProps) => {
     const { isMobile } = useDevice();
     return (
-        <>
+        <div className='px-[1.6rem]'>
             <Text as='p' size='sm'>
                 {`When you block someone, you won’t see their ads, and they can’t see yours. Your ads will be hidden from their search results, too.`}
             </Text>
@@ -46,7 +46,7 @@ const MyProfileCounterpartiesHeader = ({
                     />
                 )}
             </div>
-        </>
+        </div>
     );
 };
 export default MyProfileCounterpartiesHeader;

@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { p2p } from '@deriv/api';
-import { FullPageMobileWrapper, TextArea } from '../../../../components';
-import { useDevice } from '../../../../hooks';
 import { Button } from '@deriv-com/ui/dist/components/Button';
+import { FullPageMobileWrapper, TextArea } from '../../../../components';
+import { useDevice, useQueryString } from '../../../../hooks';
 import './MyProfileAdDetails.scss';
 
 type TMYProfileAdDetailsTextAreaProps = {
@@ -33,15 +33,13 @@ const MyProfileAdDetailsTextArea = ({
     );
 };
 
-type TMyProfileAdDetails = {
-    onBack?: () => void;
-};
-const MyProfileAdDetails = ({ onBack }: TMyProfileAdDetails) => {
+const MyProfileAdDetails = () => {
     const { data: advertiserInfo, isLoading } = p2p.advertiser.useGetInfo();
     const { mutate: updateAdvertiser } = p2p.advertiser.useUpdate();
     const [contactInfo, setContactInfo] = useState('');
     const [advertDescription, setAdvertDescription] = useState('');
     const { isMobile } = useDevice();
+    const { setQueryString } = useQueryString();
 
     const hasUpdated = useMemo(() => {
         return (
@@ -67,7 +65,11 @@ const MyProfileAdDetails = ({ onBack }: TMyProfileAdDetails) => {
     if (isMobile) {
         return (
             <FullPageMobileWrapper
-                onBack={onBack}
+                onBack={() =>
+                    setQueryString({
+                        tab: 'default',
+                    })
+                }
                 renderFooter={() => (
                     <Button disabled={!hasUpdated} isFullWidth onClick={submitAdDetails} size='lg'>
                         Save

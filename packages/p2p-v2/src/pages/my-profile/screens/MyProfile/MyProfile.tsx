@@ -1,21 +1,25 @@
-import React, { useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import React from 'react';
 import { Tab, Tabs } from '@deriv-com/ui/dist/components/Tabs';
-import { useDevice } from '../../../../hooks';
+import { useDevice, useQueryString } from '../../../../hooks';
 import { MyProfileAdDetails } from '../MyProfileAdDetails';
 import { MyProfileContent } from '../MyProfileContent';
+import { MyProfileCounterparties } from '../MyProfileCounterparties';
 import { MyProfileStats } from '../MyProfileStats';
 import MyProfileMobile from './MyProfileMobile';
 import './MyProfile.scss';
 
-const MyProfile = () => {
-    const location = useLocation();
-    const { isMobile } = useDevice();
+const TABS = ['Stats', 'Payment methods', 'Ad details', 'My counterparties'];
 
-    const queryString = useMemo(() => new URLSearchParams(location.search), [location.search]);
+const MyProfile = () => {
+    const { isMobile } = useDevice();
+    const { queryString, setQueryString } = useQueryString();
 
     if (isMobile) {
-        return <MyProfileMobile />;
+        return (
+            <div className='p2p-v2-my-profile'>
+                <MyProfileMobile />
+            </div>
+        );
     }
 
     return (
@@ -23,6 +27,11 @@ const MyProfile = () => {
             <MyProfileContent />
             <Tabs
                 activeTab={queryString.get('tab') || 'Stats'}
+                onChange={index => {
+                    setQueryString({
+                        tab: TABS[index],
+                    });
+                }}
                 variant='primary'
                 wrapperClassName='p2p-v2-my-profile__tabs'
             >
@@ -37,8 +46,7 @@ const MyProfile = () => {
                     <MyProfileAdDetails />
                 </Tab>
                 <Tab title='My counterparties'>
-                    {/* TODO: Place Counterparties component here once merged */}
-                    <h1>My counterparties</h1>
+                    <MyProfileCounterparties />
                 </Tab>
             </Tabs>
         </div>

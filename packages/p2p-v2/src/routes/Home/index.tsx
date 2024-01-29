@@ -1,8 +1,5 @@
 import React from 'react';
 import { useActiveAccount } from '@deriv/api';
-import { MobileCloseHeader } from '../../components';
-import { useDevice } from '../../hooks';
-import './index.scss';
 
 const Home: React.FC<{ path: string }> = ({ path }) => {
     const { data: activeAccountData, isLoading } = useActiveAccount();

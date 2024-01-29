@@ -7,7 +7,8 @@
         grid-template-rows: 6rem auto;
 
         &--fixed-footer {
-            grid-template-rows: 6rem auto 12rem;
+            // previously it was 12rem, now 8rem to accomodate height offset for the Deriv P2P close header AND primary tabs
+            grid-template-rows: 6rem auto 8rem;
         }
 
         &--no-header {

@@ -1,12 +1,10 @@
 .p2p-v2-my-profile-counterparties {
     display: flex;
-    padding: 2.4rem;
     flex-direction: column;
     height: 100%;
 
     @include mobile {
-        padding: 1.6rem;
-        padding-bottom: 4rem;
+        padding: 1.6rem 0;
     }
 
     &__content {

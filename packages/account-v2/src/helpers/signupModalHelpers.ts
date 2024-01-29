@@ -3,6 +3,9 @@ type TCustomStyles = {
     overlay: ReactModal.Styles['overlay'];
 };
 
+/**
+ * Custom styles for the react-modal to override the default styles for content and overlay
+ */
 export const CUSTOM_STYLES: TCustomStyles = {
     content: {
         background: 'none',

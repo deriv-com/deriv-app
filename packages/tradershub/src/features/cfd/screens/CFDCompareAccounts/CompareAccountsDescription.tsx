@@ -15,7 +15,13 @@ const CompareAccountsDescription = ({ isDemo, isEuRegion, marketType, shortCode 
     const jurisdictionData = getJurisdictionDescription(marketTypeShortCode ?? '');
 
     return (
-        <div className={qtMerge('max-h-[210px] lg:max-h-[245px]', isDemo && 'max-h-[9px]')}>
+        <div
+            className={qtMerge(
+                'h-[210px] lg:h-[245px]',
+                !isEuRegion && 'h-[265px] lg:h-[312px]',
+                isDemo && 'h-fit lg:h-fit'
+            )}
+        >
             <div className='m-[9px]'>
                 <Text bold size='xl'>
                     {'Up to'} {jurisdictionData.leverage}

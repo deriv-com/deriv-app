@@ -18,6 +18,13 @@ jest.mock('../../../../../../../components/ModalProvider', () => ({
     })),
 }));
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: jest.fn(() => ({
+        push: jest.fn(),
+    })),
+}));
+
 const mockTransaction = {
     address_hash: '',
     address_url: '',

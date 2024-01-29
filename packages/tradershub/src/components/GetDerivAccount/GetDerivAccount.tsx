@@ -1,5 +1,5 @@
 import React from 'react';
-import Options from '../../public/images/options.svg';
+import { PlatformsDerivAppsLightIcon } from '@deriv/quill-icons';
 import { TradingAccountCard, TradingAccountCardContent, TradingAccountCardLightButton } from '../TradingAccountCard';
 
 const GetDerivAccount = () => {
@@ -9,7 +9,10 @@ const GetDerivAccount = () => {
 
     return (
         <div className='grid grid-cols-1 gap-200 lg:grid-cols-3 lg:gap-x-1200 lg:gap-y-200'>
-            <TradingAccountCard leading={() => <Options />} trailing={() => <TradingAccountCardLightButton />}>
+            <TradingAccountCard
+                leading={() => <PlatformsDerivAppsLightIcon height='60px' width='60px' />}
+                trailing={() => <TradingAccountCardLightButton />}
+            >
                 <TradingAccountCardContent title={title}>{description}</TradingAccountCardContent>
             </TradingAccountCard>
         </div>

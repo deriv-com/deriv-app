@@ -17,6 +17,7 @@ type TProps = {
  * at the moment of writing this, there are already 3 different patterns use to display ex
  */
 const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
+    children,
     className,
     description,
     descriptionSize = 'md',
@@ -48,6 +49,7 @@ const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
                 )}
             </div>
             {renderButtons?.()}
+            {children}
         </div>
     );
 };

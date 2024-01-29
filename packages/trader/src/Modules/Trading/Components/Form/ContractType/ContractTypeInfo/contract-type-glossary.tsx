@@ -235,10 +235,8 @@ const ContractTypeGlossary = ({
                     { type: 'heading', text: <Localize i18n_default_text='Entry spot' /> },
                     {
                         type: 'paragraph',
-                        text: is_major_pairs ? (
-                            <Localize i18n_default_text='We use next-tick-execution mechanism, which is the next asset price when the trade opening is processed by our servers for Major Pairs.' />
-                        ) : (
-                            <Localize i18n_default_text='We use current-tick-execution mechanism, which is the latest asset price when the trade opening is processed by our servers for Volatility Index, Basket Indices, Jump Indices and Crash/Boom Indices.' />
+                        text: (
+                            <Localize i18n_default_text='We use next-tick-execution mechanism, which is the next asset price when the trade opening is processed by our servers.' />
                         ),
                     },
                     { type: 'heading', text: <Localize i18n_default_text='Exit spot' /> },

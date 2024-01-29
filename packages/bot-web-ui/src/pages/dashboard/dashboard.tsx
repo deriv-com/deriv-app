@@ -30,14 +30,14 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
             get_first_strategy_info.current = true;
             rudderstackDashboardOpen({
                 bot_name: dashboard_strategies?.[0]?.name,
-                preview_mode: dashboard_strategies.length ? 'yes' : 'no',
+                preview_mode: dashboard_strategies?.length ? 'yes' : 'no',
                 bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
             });
         }
         return () => {
             rudderstackDashboardClose({
                 bot_name: dashboard_strategies?.[0]?.name,
-                preview_mode: dashboard_strategies.length ? 'yes' : 'no',
+                preview_mode: dashboard_strategies?.length ? 'yes' : 'no',
                 bot_last_modified_time: dashboard_strategies?.[0]?.timestamp,
             });
         };

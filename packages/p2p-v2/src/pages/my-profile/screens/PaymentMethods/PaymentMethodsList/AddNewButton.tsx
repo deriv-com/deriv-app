@@ -13,12 +13,10 @@ type TAddNewButtonProps = {
  * @returns {JSX.Element}
  * @example <AddNewButton isMobile={isMobile} onAdd={onAdd} />
  * **/
-const AddNewButton = ({ isMobile, onAdd }: TAddNewButtonProps) => {
-    return (
-        <Button isFullWidth={isMobile} onClick={() => onAdd()} size='lg'>
-            Add new {/*  TODO Remember to translate this*/}
-        </Button>
-    );
-};
+const AddNewButton = ({ isMobile, onAdd }: TAddNewButtonProps) => (
+    <Button isFullWidth={isMobile} onClick={() => onAdd()} size='lg'>
+        Add new {/*  TODO Remember to translate this*/}
+    </Button>
+);
 
 export default AddNewButton;

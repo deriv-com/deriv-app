@@ -15,20 +15,6 @@
         flex-direction: column;
         width: 100%;
     }
-    &__buttons {
-        display: flex;
-        justify-content: end;
-        gap: 1.6rem;
-
-        &--cancel {
-            background: transparent;
-            border: 2px solid #999999;
-
-            &:active:not([disabled]) {
-                border: 1px solid #999999;
-            }
-        }
-    }
     &__icon--close {
         cursor: pointer;
         color: #ffffff;

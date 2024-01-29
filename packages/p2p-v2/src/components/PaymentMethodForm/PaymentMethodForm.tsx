@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { TFormState } from 'src/reducers/types';
 import { TSelectedPaymentMethod } from 'types';
 import { p2p } from '@deriv/api';
-import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import CloseCircle from '../../public/ic-close-circle.svg';
+import { TFormState } from '../../reducers/types';
 import { ClickableText } from '../ClickableText';
 import { Dropdown } from '../Dropdown';
 import { PaymentMethodErrorModal, PaymentMethodModal } from '../Modals';
 import { PaymentMethodField } from '../PaymentMethodField';
+import { PaymentMethodsFormFooter } from '../PaymentMethodsFormFooter';
 import { PaymentMethodsHeader } from '../PaymentMethodsHeader';
 import { TextField } from '../TextField';
 import './PaymentMethodForm.scss';
@@ -166,25 +166,13 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                         />
                     );
                 })}
-                <div className='p2p-v2-payment-method-form__buttons'>
-                    <Button
-                        className='p2p-v2-payment-method-form__buttons--cancel'
-                        onClick={e => {
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            handleGoBack();
-                        }}
-                        size='lg'
-                        variant='outlined'
-                    >
-                        Cancel
-                    </Button>
-                    {/* TODO: Remember to translate these */}
-                    <Button disabled={isSubmitting || !isValid || !isDirty} size='lg'>
-                        {actionType === 'ADD' ? 'Add' : 'Save changes'}
-                    </Button>
-                </div>
+                <PaymentMethodsFormFooter
+                    actionType={actionType}
+                    handleGoBack={handleGoBack}
+                    isDirty={isDirty}
+                    isSubmitting={isSubmitting}
+                    isValid={isValid}
+                />
             </form>
             {actionType === 'EDIT' && (!isUpdateSuccessful || !updateError) && (
                 // TODO: Remember to translate these strings

@@ -180,9 +180,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                 <PaymentMethodModal
                     description='If you choose to cancel, the edited details will be lost.'
                     isModalOpen={isModalOpen}
-                    onConfirm={() => {
-                        onResetFormState();
-                    }}
+                    onConfirm={onResetFormState}
                     onReject={() => {
                         setIsModalOpen(false);
                     }}
@@ -196,9 +194,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                 <PaymentMethodModal
                     description='If you choose to cancel, the details you’ve entered will be lost.'
                     isModalOpen={isModalOpen}
-                    onConfirm={() => {
-                        onResetFormState();
-                    }}
+                    onConfirm={onResetFormState}
                     onReject={() => {
                         setIsModalOpen(false);
                     }}

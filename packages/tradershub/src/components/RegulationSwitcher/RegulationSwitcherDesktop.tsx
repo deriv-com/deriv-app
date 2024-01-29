@@ -62,7 +62,6 @@ const RegulationSwitcherDesktop = () => {
                     onClick={() => show(<RegulationModal />)}
                 />
             </div>
-            <h1>{activeRegulation}</h1>
             <Tabs
                 activeTab={activeRegulation}
                 className='flex rounded-300 p-200 w-[200px] h-2000'

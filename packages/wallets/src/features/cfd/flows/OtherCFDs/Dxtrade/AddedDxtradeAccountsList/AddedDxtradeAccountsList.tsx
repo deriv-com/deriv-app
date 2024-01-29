@@ -17,7 +17,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
     const { show } = useModal();
     const { t } = useTranslation();
 
-    const leadingComponent = () => (
+    const leadingComponent = (
         <div
             className='wallets-available-derivx__icon'
             onClick={() => {
@@ -56,7 +56,7 @@ const AddedDxtradeAccountsList: React.FC = () => {
                 <TradingAccountCard
                     key={account?.account_id}
                     leading={leadingComponent}
-                    trailing={() => trailingComponent(account.account_id)}
+                    trailing={trailingComponent(account.account_id)}
                 >
                     <div className='wallets-available-derivx__details'>
                         <WalletText size='sm'>{PlatformDetails.dxtrade.title}</WalletText>

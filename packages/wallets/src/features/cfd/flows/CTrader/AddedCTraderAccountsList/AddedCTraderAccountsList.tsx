@@ -17,46 +17,47 @@ const AddedCTraderAccountsList: React.FC = () => {
     const { show } = useModal();
     const { t } = useTranslation();
 
-    const leading = () => (
-        <div
-            className='wallets-added-ctrader__icon'
-            onClick={() => {
-                window.open(getStaticUrl('/deriv-ctrader'));
-            }}
-            // Fix sonarcloud issue
-            onKeyDown={event => {
-                if (event.key === 'Enter') {
-                    window.open(getStaticUrl('/deriv-ctrader'));
-                }
-            }}
-        >
-            <CTrader />
-        </div>
-    );
-
-    const trailing = (loginid?: string) => (
-        <div className='wallets-added-ctrader__actions'>
-            <WalletButton
-                onClick={() => {
-                    history.push(`/wallets/cashier/transfer`, loginid ? { toAccountLoginId: loginid } : undefined);
-                }}
-                variant='outlined'
-            >
-                Transfer
-            </WalletButton>
-            <WalletButton onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}>
-                {t('Open')}
-            </WalletButton>
-        </div>
-    );
-
     return (
         <div className='wallets-added-ctrader'>
             {cTraderAccounts?.map(account => (
                 <TradingAccountCard
                     key={`added-ctrader-${account.login}`}
-                    leading={leading}
-                    trailing={() => trailing(account.id)}
+                    leading={
+                        <div
+                            className='wallets-added-ctrader__icon'
+                            onClick={() => {
+                                window.open(getStaticUrl('/deriv-ctrader'));
+                            }}
+                            // Fix sonarcloud issue
+                            onKeyDown={event => {
+                                if (event.key === 'Enter') {
+                                    window.open(getStaticUrl('/deriv-ctrader'));
+                                }
+                            }}
+                        >
+                            <CTrader />
+                        </div>
+                    }
+                    trailing={
+                        <div className='wallets-added-ctrader__actions'>
+                            <WalletButton
+                                onClick={() => {
+                                    history.push(
+                                        `/wallets/cashier/transfer`,
+                                        loginid ? { toAccountLoginId: loginid } : undefined
+                                    );
+                                }}
+                                variant='outlined'
+                            >
+                                Transfer
+                            </WalletButton>
+                            <WalletButton
+                                onClick={() => show(<MT5TradeModal platform={PlatformDetails.ctrader.platform} />)}
+                            >
+                                {t('Open')}
+                            </WalletButton>
+                        </div>
+                    }
                 >
                     <div className='wallets-added-ctrader__details'>
                         <WalletText size='sm'>{PlatformDetails.ctrader.title}</WalletText>

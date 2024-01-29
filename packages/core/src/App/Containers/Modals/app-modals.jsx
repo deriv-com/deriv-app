@@ -68,13 +68,15 @@ const InformationSubmittedModal = React.lazy(() =>
 const AppModals = observer(() => {
     const { client, ui, traders_hub } = useStore();
     const {
+        is_authorize,
         is_logged_in,
         fetchFinancialAssessment,
         setCFDScore,
         landing_company_shortcode: active_account_landing_company,
         is_trading_experience_incomplete,
+        mt5_login_list,
     } = client;
-    const { is_mt5_notification_modal_visible, content_flag } = traders_hub;
+    const { content_flag } = traders_hub;
     const {
         is_account_needed_modal_on,
         is_closing_create_real_account_modal,
@@ -101,13 +103,15 @@ const AppModals = observer(() => {
 
     const is_eu_user = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag);
 
+    const should_show_mt5_notification_modal = mt5_login_list.find(login => login)?.white_label?.notification ?? true;
+
     React.useEffect(() => {
-        if (is_logged_in) {
+        if (is_logged_in && is_authorize) {
             fetchFinancialAssessment().then(response => {
                 setCFDScore(response?.cfd_score ?? 0);
             });
         }
-    }, [is_logged_in]);
+    }, [is_logged_in, is_authorize]);
     if (temp_session_signup_params && window.location.href.includes(routes.onboarding)) {
         toggleAccountSignupModal(true);
     } else {
@@ -159,7 +163,7 @@ const AppModals = observer(() => {
         ComponentToLoad = <MT5AccountNeededModal />;
     } else if (should_show_cooldown_modal) {
         ComponentToLoad = <CooldownWarningModal />;
-    } else if (is_mt5_notification_modal_visible) {
+    } else if (should_show_mt5_notification_modal) {
         ComponentToLoad = <MT5Notification />;
     } else if (should_show_assessment_complete_modal) {
         ComponentToLoad = <CompletedAssessmentModal />;

@@ -1,17 +1,20 @@
 import React, { useEffect } from 'react';
-import { useActiveTradingAccount, useAuthorize, useIsDIELEnabled, useTradingAccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
+import { Provider } from '@deriv/library';
 import { Button, qtJoin } from '@deriv/quill-design';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { Regulation } from '../../constants/constants';
 import useRegulationFlags from '../../hooks/useRegulationFlags';
+import { RegulationModal } from '../../modals';
 import { useUIContext } from '../UIProvider';
 
 const RegulationSwitcherDesktop = () => {
     const { switchAccount } = useAuthorize();
     const { data: tradingAccountsList } = useTradingAccountsList();
     const { getUIState, setUIState } = useUIContext();
-    const { data: isDIEL } = useIsDIELEnabled();
+    const { show } = Provider.useModal();
+
     const regulation = getUIState('regulation');
     const accountType = getUIState('accountType');
     const { isEU, isHighRisk } = useRegulationFlags(regulation, accountType);
@@ -41,7 +44,7 @@ const RegulationSwitcherDesktop = () => {
     };
 
     useEffect(() => {
-        if (activeTrading?.loginid.startsWith('CR') || isDIEL || isHighRisk) {
+        if (activeTrading?.loginid.startsWith('CR') || isHighRisk) {
             setUIState('regulation', Regulation.NonEU);
         } else if (activeTrading?.loginid.startsWith('MF') || isEU) {
             setUIState('regulation', Regulation.EU);
@@ -53,7 +56,10 @@ const RegulationSwitcherDesktop = () => {
         <div className='flex items-center gap-400'>
             <div className='flex items-center gap-400'>
                 <Text size='sm'>Regulation:</Text>
-                <LabelPairedCircleInfoMdRegularIcon />
+                <LabelPairedCircleInfoMdRegularIcon
+                    className='cursor-pointer'
+                    onClick={() => show(<RegulationModal />)}
+                />
             </div>
             <div className='flex bg-system-light-secondary-background rounded-400 p-200 gap-200 w-[200px] h-2000'>
                 {buttons.map(button => (

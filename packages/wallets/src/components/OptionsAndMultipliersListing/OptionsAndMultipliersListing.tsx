@@ -134,15 +134,13 @@ const OptionsAndMultipliersListing: React.FC<TOptionsAndMultipliersListingProps>
                         <TradingAccountCard
                             {...account}
                             key={`trading-account-card-${title}`}
-                            leading={() => (
+                            leading={
                                 <LinkTitle
                                     icon={data?.dtrade_loginid || !isMobile ? account.icon : account.smallIcon}
                                     title={title}
                                 />
-                            )}
-                            trailing={() => (
-                                <ShowOpenButton isExternal={account.isExternal} redirect={account.redirect} />
-                            )}
+                            }
+                            trailing={<ShowOpenButton isExternal={account.isExternal} redirect={account.redirect} />}
                         >
                             <div className='wallets-options-and-multipliers-listing__content__details'>
                                 <WalletText size='sm' weight='bold'>

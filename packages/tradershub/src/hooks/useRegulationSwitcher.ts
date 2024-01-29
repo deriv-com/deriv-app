@@ -15,9 +15,9 @@ export const useRegulationSwitcher = () => {
     const { data: tradingAccountsList } = useTradingAccountsList();
     const { getUIState, setUIState } = useUIContext();
 
-    const regulation = getUIState('regulation');
+    const currentRegulation = getUIState('regulation');
     const accountType = getUIState('accountType');
-    const { isEU, isHighRisk } = useRegulationFlags(regulation, accountType);
+    const { isEU, isHighRisk } = useRegulationFlags(currentRegulation, accountType);
 
     const realCRAccount = tradingAccountsList?.find(account => account.loginid.startsWith('CR'))?.loginid ?? '';
     const realMFAccount = tradingAccountsList?.find(account => account.loginid.startsWith('MF'))?.loginid ?? '';
@@ -27,15 +27,17 @@ export const useRegulationSwitcher = () => {
     const buttons = [{ label: Regulation.NonEU }, { label: Regulation.EU }];
 
     const handleButtonClick = (label: string) => {
-        if (label === Regulation.NonEU) {
-            setUIState('regulation', Regulation.NonEU);
-            if (realCRAccount) {
-                switchAccount(realCRAccount);
-            }
-        } else {
-            setUIState('regulation', Regulation.EU);
-            if (realMFAccount) {
-                switchAccount(realMFAccount);
+        if (label !== currentRegulation) {
+            if (label === Regulation.NonEU) {
+                setUIState('regulation', Regulation.NonEU);
+                if (realCRAccount) {
+                    switchAccount(realCRAccount);
+                }
+            } else {
+                setUIState('regulation', Regulation.EU);
+                if (realMFAccount) {
+                    switchAccount(realMFAccount);
+                }
             }
         }
     };

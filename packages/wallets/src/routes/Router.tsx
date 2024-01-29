@@ -13,13 +13,21 @@ type TRoutes = `${typeof prefix}${
     | '/cashier'
     | '/cashier/deposit'
     | '/cashier/reset-balance'
-    | '/cashier/transaction'
+    | '/cashier/transactions'
     | '/cashier/transfer'
     | '/cashier/withdraw'
     | '/compare-account'}`;
 
 declare module 'react-router-dom' {
-    export function useHistory(): { push: (path: TRoutes | string) => void };
+    export function useHistory(): {
+        location: {
+            hash: string;
+            pathname: string;
+            search: string;
+            state: Record<string, unknown>;
+        };
+        push: (path: TRoutes | string, state?: Record<string, unknown>) => void;
+    };
 
     export function useRouteMatch(path: TRoutes): boolean;
 }

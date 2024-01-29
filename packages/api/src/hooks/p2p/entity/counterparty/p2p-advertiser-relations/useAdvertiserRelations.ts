@@ -9,7 +9,10 @@ const useAdvertiserRelations = () => {
     const invalidate = useInvalidateQuery();
     const { data, ...rest } = useQuery('p2p_advertiser_relations', { options: { enabled: isSuccess } });
     const { mutate, ...mutate_rest } = useMutation('p2p_advertiser_relations', {
-        onSuccess: () => invalidate('p2p_advertiser_relations'),
+        onSuccess: () => {
+            invalidate('p2p_advertiser_relations');
+            invalidate('p2p_advertiser_list');
+        },
     });
 
     const advertiser_relations = data?.p2p_advertiser_relations;

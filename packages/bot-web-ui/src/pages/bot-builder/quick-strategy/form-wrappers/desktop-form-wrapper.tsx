@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { useFormikContext } from 'formik';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { Button, Text, ThemedScrollbars } from '@deriv/components';
 import Icon from '@deriv/components/src/components/icon/icon';
 import { observer } from '@deriv/stores';

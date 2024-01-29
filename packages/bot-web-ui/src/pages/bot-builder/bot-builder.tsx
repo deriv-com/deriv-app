@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Analytics } from '@deriv/analytics'; //BotTAction will add ones that PR gets merged
+import { Analytics } from '@deriv-com/analytics'; //BotTAction will add ones that PR gets merged
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import BotSnackbar from 'Components/bot-snackbar';

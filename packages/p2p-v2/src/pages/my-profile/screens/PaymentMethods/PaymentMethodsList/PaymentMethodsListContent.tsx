@@ -6,6 +6,7 @@ import { PaymentMethodModal } from '../../../../../components/Modals';
 import { PaymentMethodCard } from '../../../../../components/PaymentMethodCard';
 import { PAYMENT_METHOD_CATEGORIES } from '../../../../../constants';
 import { TFormState } from '../../../../../reducers/types';
+import { sortPaymentMethods } from '../../../../../utils/payment-methods';
 import AddNewButton from './AddNewButton';
 
 type TPaymentMethodsGroup = Record<
@@ -53,7 +54,8 @@ const PaymentMethodsListContent = ({
     const { actionType, selectedPaymentMethod } = formState || {};
     const groupedPaymentMethods = useMemo(() => {
         const groups: TPaymentMethodsGroup = {};
-        p2pAdvertiserPaymentMethods?.forEach(advertiserPaymentMethod => {
+        const sortedPaymentMethods = sortPaymentMethods(p2pAdvertiserPaymentMethods);
+        sortedPaymentMethods?.forEach(advertiserPaymentMethod => {
             if (groups[advertiserPaymentMethod.type]) {
                 groups[advertiserPaymentMethod.type]?.paymentMethods?.push(advertiserPaymentMethod);
             } else {
@@ -75,41 +77,39 @@ const PaymentMethodsListContent = ({
     return (
         <div className='p2p-v2-payment-methods-list'>
             {!isMobile && <AddNewButton isMobile={isMobile} onAdd={onAdd} />}
-            {Object.keys(groupedPaymentMethods)
-                ?.sort()
-                ?.map(key => {
-                    return (
-                        <div className='p2p-v2-payment-methods-list__group' key={key}>
-                            <Text color='black' weight='bold'>
-                                {groupedPaymentMethods[key].title}
-                            </Text>
-                            <div className='p2p-v2-payment-methods-list__group-body'>
-                                {groupedPaymentMethods[key].paymentMethods?.map(advertiserPaymentMethod => {
-                                    return (
-                                        <PaymentMethodCard
-                                            isEditable
-                                            key={advertiserPaymentMethod.id}
-                                            onDeletePaymentMethod={() => {
-                                                onDelete(advertiserPaymentMethod);
-                                                setIsModalOpen(true);
-                                            }}
-                                            onEditPaymentMethod={() => {
-                                                onEdit({
-                                                    displayName: advertiserPaymentMethod.display_name,
-                                                    fields: advertiserPaymentMethod.fields,
-                                                    id: advertiserPaymentMethod.id,
-                                                    method: advertiserPaymentMethod.method,
-                                                });
-                                            }}
-                                            paymentMethod={advertiserPaymentMethod}
-                                            shouldShowPaymentMethodDisplayName={false}
-                                        />
-                                    );
-                                })}
-                            </div>
+            {Object.keys(groupedPaymentMethods)?.map(key => {
+                return (
+                    <div className='p2p-v2-payment-methods-list__group' key={key}>
+                        <Text color='black' weight='bold'>
+                            {groupedPaymentMethods[key].title}
+                        </Text>
+                        <div className='p2p-v2-payment-methods-list__group-body'>
+                            {groupedPaymentMethods[key].paymentMethods?.map(advertiserPaymentMethod => {
+                                return (
+                                    <PaymentMethodCard
+                                        isEditable
+                                        key={advertiserPaymentMethod.id}
+                                        onDeletePaymentMethod={() => {
+                                            onDelete(advertiserPaymentMethod);
+                                            setIsModalOpen(true);
+                                        }}
+                                        onEditPaymentMethod={() => {
+                                            onEdit({
+                                                displayName: advertiserPaymentMethod.display_name,
+                                                fields: advertiserPaymentMethod.fields,
+                                                id: advertiserPaymentMethod.id,
+                                                method: advertiserPaymentMethod.method,
+                                            });
+                                        }}
+                                        paymentMethod={advertiserPaymentMethod}
+                                        shouldShowPaymentMethodDisplayName={false}
+                                    />
+                                );
+                            })}
                         </div>
-                    );
-                })}
+                    </div>
+                );
+            })}
             {actionType === 'DELETE' && (
                 <PaymentMethodModal
                     description='Are you sure you want to remove this payment method?'

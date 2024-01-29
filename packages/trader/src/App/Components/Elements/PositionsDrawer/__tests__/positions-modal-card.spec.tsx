@@ -273,4 +273,18 @@ describe('<PositionsModalCard />', () => {
         expect(screen.getByText(/Stop loss:/i)).toBeInTheDocument();
         expect(screen.getByText(TOTAL_PROFIT_LOSS)).toBeInTheDocument();
     });
+
+    it('should not render arrow indicator if the contract was sold (is_sold === 1)', () => {
+        render(
+            mockPositionsModalCard(mockStore(default_mock_store), {
+                ...default_mock_props,
+                contract_info: {
+                    ...default_mock_props.contract_info,
+                    is_sold: 1,
+                },
+            })
+        );
+
+        expect(screen.queryByTestId('dt_arrow_indicator')).not.toBeInTheDocument();
+    });
 });

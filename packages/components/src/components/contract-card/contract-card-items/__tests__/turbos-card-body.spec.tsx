@@ -79,4 +79,16 @@ describe('TurbosCardBody', () => {
         expect(screen.getByText(getCardLabels().TOTAL_PROFIT_LOSS)).toBeInTheDocument();
         expect(screen.getByText('0.00')).toBeInTheDocument();
     });
+
+    it('should not render arrow indicator if the contract was sold (is_sold === true)', () => {
+        render(<TurbosCardBody {...mock_props} is_sold />);
+
+        expect(screen.queryByTestId('dt_arrow_indicator')).not.toBeInTheDocument();
+    });
+
+    it('should render arrow indicator if the contract is not sold (is_sold === false)', () => {
+        render(<TurbosCardBody {...mock_props} />);
+
+        expect(screen.getAllByTestId('dt_arrow_indicator')).not.toHaveLength(0);
+    });
 });

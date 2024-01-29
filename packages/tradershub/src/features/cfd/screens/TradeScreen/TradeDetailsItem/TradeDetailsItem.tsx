@@ -2,7 +2,8 @@ import React, { useRef } from 'react';
 import { useHover } from 'usehooks-ts';
 import { Provider } from '@deriv/library';
 import { ChangePassword } from '../../ChangePassword';
-import { Button, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
+import { Button, qtMerge, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui/dist/components/Text';
 import { Clipboard, Tooltip } from '../../../../../components';
 import EditIcon from '../../../../../public/images/ic-edit.svg';
 
@@ -25,13 +26,17 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
                 className
             )}
         >
-            <Text colorStyle='subtle' size='sm'>
-                {label}
-            </Text>
+            {label && <Text size='sm'>{label}</Text>}
             <div className='flex items-center gap-x-400'>
-                <Text bold={variant !== 'info'} size='sm'>
-                    {value}
-                </Text>
+                {variant === 'info' ? (
+                    <Text color='less-prominent' size='sm'>
+                        {value}
+                    </Text>
+                ) : (
+                    <Text size='sm' weight='bold'>
+                        {value}
+                    </Text>
+                )}
                 {variant === 'clipboard' && <Clipboard textCopy={value} />}
                 {variant === 'password' && (
                     <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>

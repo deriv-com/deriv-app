@@ -1,5 +1,5 @@
 import React from 'react';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { Popover, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 

@@ -3,6 +3,7 @@ import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
 import { ButtonGroup, Modal, SentEmailContent } from '../../../../../components';
 import useMT5AccountHandler from '../../../../../hooks/useMT5AccountHandler';
+import { CFDPlatforms, MarketType, TTM5FilterLandingCompany } from '../../../constants';
 
 type TProps = {
     password: string;
@@ -11,14 +12,14 @@ type TProps = {
 const AddAccountButtonsGroup = ({ password }: TProps) => {
     const { show } = Provider.useModal();
     const { getCFDState } = Provider.useCFDContext();
-    const marketType = getCFDState('marketType') ?? 'all';
-    const selectedJurisdiction = getCFDState('selectedJurisdiction') ?? 'maltainvest';
+    const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
     const { createMT5AccountLoading, handleSubmit, tradingPlatformPasswordChangeLoading } = useMT5AccountHandler({
         marketType,
         selectedJurisdiction,
     });
 
-    const platform = getCFDState('platform') ?? 'mt5';
+    const platform = getCFDState('platform') ?? CFDPlatforms.MT5;
 
     return (
         <ButtonGroup className='w-full'>

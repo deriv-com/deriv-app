@@ -4,7 +4,7 @@ import { Provider } from '@deriv/library';
 import { useBreakpoint } from '@deriv/quill-design';
 import { ActionScreen, Dialog, Modal } from '../../../../components';
 import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
-import { Category, PlatformDetails, QueryStatus } from '../../constants';
+import { Category, MarketType, PlatformDetails, QueryStatus, TTM5FilterLandingCompany } from '../../constants';
 import FooterComponent from './FooterComponent';
 import PasswordComponent from './PasswordComponent';
 import SuccessComponent from './SuccessComponent';
@@ -15,8 +15,8 @@ const MT5PasswordModal = () => {
     const { data: mt5Accounts } = useMT5AccountsList();
 
     const { getCFDState } = Provider.useCFDContext();
-    const marketType = getCFDState('marketType') ?? 'all';
-    const selectedJurisdiction = getCFDState('selectedJurisdiction') ?? 'maltainvest';
+    const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
     const { isCreateMT5AccountError, isCreateMT5AccountSuccess } = useMT5AccountHandler({
         marketType,
         selectedJurisdiction,

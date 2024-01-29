@@ -6,13 +6,13 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
-import { MarketType, PlatformDetails } from '../features/cfd/constants';
+import { CFDPlatforms, MarketType } from '../features/cfd/constants';
 import { Jurisdiction } from '../features/cfd/screens/CFDCompareAccounts/constants';
-import { TMarketTypes } from '../types';
+import { TMarketTypes, TMT5LandingCompanyName } from '../types';
 
 type TUseMT5AccountHandler = {
     marketType: TMarketTypes.All;
-    selectedJurisdiction: string;
+    selectedJurisdiction: TMT5LandingCompanyName;
 };
 
 const useMT5AccountHandler = ({ marketType, selectedJurisdiction }: TUseMT5AccountHandler) => {
@@ -40,7 +40,7 @@ const useMT5AccountHandler = ({ marketType, selectedJurisdiction }: TUseMT5Accou
         if (isMT5PasswordNotSet) {
             return tradingPasswordChange({
                 new_password: password,
-                platform: PlatformDetails.mt5.platform,
+                platform: CFDPlatforms.MT5,
             }).then(() => {
                 return createPassword(password);
             });

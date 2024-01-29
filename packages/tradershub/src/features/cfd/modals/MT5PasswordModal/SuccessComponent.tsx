@@ -5,6 +5,7 @@ import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import {
     Category,
+    CFDPlatforms,
     companyNamesAndUrls,
     MarketType,
     MarketTypeDetails,
@@ -21,8 +22,8 @@ const SuccessComponent = () => {
     const isDemo = activeTrading?.is_virtual;
 
     const { getCFDState } = Provider.useCFDContext();
-    const platform = getCFDState('platform') ?? 'mt5';
-    const marketType = getCFDState('marketType') ?? 'all';
+    const platform = getCFDState('platform') ?? CFDPlatforms.MT5;
+    const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
     const { isCreateMT5AccountSuccess } = useMT5AccountHandler({
         marketType,
@@ -36,10 +37,11 @@ const SuccessComponent = () => {
 
     const landingCompanyName = `(${companyNamesAndUrls?.[selectedJurisdiction]?.shortcode})`;
 
-    // TODO: description is wrong
     const SuccessDescription = isDemo
         ? `Let's practise trading with ${activeTrading?.display_balance} virtual funds.`
         : `Transfer funds from your ${activeTrading?.currency} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
+
+    const SuccessTitle = `Your ${marketTypeTitle} ${isDemo ? Category.DEMO : landingCompanyName} account is ready`;
 
     if (!isCreateMT5AccountSuccess) return null;
 
@@ -49,9 +51,9 @@ const SuccessComponent = () => {
             displayBalance={mt5Accounts?.find(account => account.market_type === marketType)?.display_balance ?? '0.00'}
             landingCompany={selectedJurisdiction}
             marketType={marketType}
-            platform='mt5'
+            platform={CFDPlatforms.MT5}
             renderButtons={SuccessButtonGroup}
-            title={`Your ${marketTypeTitle} ${isDemo ? Category.DEMO : landingCompanyName} account is ready`}
+            title={SuccessTitle}
         />
     );
 };

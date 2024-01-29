@@ -7,6 +7,7 @@ import MT5FinancialSuccess from '../../../../public/images/cfd/mt5-financial-suc
 import MT5SwapFreeSuccess from '../../../../public/images/cfd/mt5-swap-free-success.svg';
 import CheckMark from '../../../../public/images/checkmark.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
+import { CFDPlatforms } from '../../constants';
 
 type TCFDSuccess = {
     description: string;
@@ -16,23 +17,23 @@ type TCFDSuccess = {
           displayBalance: string;
           landingCompany?: string;
           marketType: TMarketTypes.SortedMT5Accounts;
-          platform: 'mt5';
+          platform: CFDPlatforms.MT5;
           title: string;
       }
     | {
           marketType?: never;
-          platform: Exclude<TPlatforms.All, 'mt5'>;
+          platform: Exclude<TPlatforms.All, CFDPlatforms.MT5>;
       }
 );
 
-type PlatformDetails = Partial<{
+type TPlatformDetails = Partial<{
     all: { icon: ReactNode };
     financial: { icon: ReactNode };
     icon: ReactNode;
     synthetic: { icon: ReactNode };
 }>;
 
-const marketTypeToDetailsMapper: Record<TPlatforms.All, PlatformDetails> = {
+const marketTypeToDetailsMapper: Record<TPlatforms.All, TPlatformDetails> = {
     ctrader: {
         icon: <CTraderSuccess />,
     },

@@ -4,7 +4,7 @@ import { Provider } from '@deriv/library';
 import { SentEmailContent } from '../../../../components';
 import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { PlatformDetails } from '../../constants';
+import { CFDPlatforms, MarketType, PlatformDetails, TTM5FilterLandingCompany } from '../../constants';
 import { CreatePassword, EnterPassword } from '../../screens';
 
 type TPasswordComponentProps = {
@@ -17,9 +17,9 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
     const { show } = Provider.useModal();
     const { getCFDState } = Provider.useCFDContext();
 
-    const marketType = getCFDState('marketType') ?? 'all';
-    const platform = getCFDState('platform') ?? 'mt5';
-    const selectedJurisdiction = getCFDState('selectedJurisdiction') ?? 'maltainvest';
+    const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const platform = getCFDState('platform') ?? CFDPlatforms.MT5;
+    const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
 
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
     const { createMT5AccountLoading, handleSubmit, isCreateMT5AccountError, tradingPlatformPasswordChangeLoading } =

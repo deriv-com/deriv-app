@@ -44,11 +44,7 @@ describe('<WalletsUpgradeModal />', () => {
 
         render(<WalletsUpgradeModal />, { wrapper });
 
-        expect(
-            screen.getByText(
-                'Empower your trading experience with our new wallet feature: multiple currencies, secure transactions, and seamless fund transfers.'
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText('Introducing Wallets')).toBeInTheDocument();
         expect(screen.getByText('Upgrade now')).toBeInTheDocument();
     });
 

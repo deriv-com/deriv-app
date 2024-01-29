@@ -4,11 +4,12 @@ import classNames from 'classnames';
 import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderstackDashboardChooseShortcut } from './analytics/rudderstack-dashboard';
 import GoogleDrive from './load-bot-preview/google-drive';
 import Recent from './load-bot-preview/recent';
-import { Analytics } from '@deriv-com/analytics';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;
@@ -51,15 +52,6 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
         Analytics.trackEvent('ce_bot_quick_strategy_form', {
             shortcut_name: 'quick-strategy',
             form_source: 'bot_dashboard',
-        });
-    };
-
-    //this is to check which icon is clicked on dashboard
-    const sentToRudderStack = (type: string) => {
-        Analytics.trackEvent('ce_bot_builder_form', {
-            shortcut_name: type,
-            action: 'choose_shortcut',
-            form_source: 'ce_bot_dashboard_form',
         });
     };
 
@@ -143,7 +135,7 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
                                     id={icon}
                                     onClick={() => {
                                         method();
-                                        sentToRudderStack(type);
+                                        rudderstackDashboardChooseShortcut({ shortcut_name: type });
                                     }}
                                 />
                                 <Text color='prominent' size={is_mobile ? 'xxs' : 'xs'}>

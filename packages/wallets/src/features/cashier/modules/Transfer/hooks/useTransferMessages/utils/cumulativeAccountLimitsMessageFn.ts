@@ -84,7 +84,7 @@ const cumulativeAccountLimitsMessageFn = ({
         activeWallet.currency === sourceAccount.currency
             ? 1 / (activeWalletExchangeRates?.rates?.USD ?? 1)
             : // if the source ("from") account is not the active wallet,
-              // compute sourceCurrency -> USD rate as activeWalletCurrency -> sourceCurrency rate,
+              // compute USD -> sourceCurrency rate as activeWalletCurrency -> sourceCurrency rate,
               // divided by activeWalletCurrency -> USD rate
               (activeWalletExchangeRates?.rates?.[sourceAccount.currency] ?? 1) /
               (activeWalletExchangeRates?.rates?.USD ?? 1);

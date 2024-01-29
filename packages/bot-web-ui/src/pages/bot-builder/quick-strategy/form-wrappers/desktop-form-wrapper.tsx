@@ -75,7 +75,16 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
                     <Text weight='bold'>{localize('Quick Strategy')}</Text>
                 </div>
                 <div className='qs__head__action'>
-                    <span data-testid='qs-desktop-close-button' onClick={onClickClose} role='button'>
+                    <span
+                        data-testid='qs-desktop-close-button'
+                        onClick={onClickClose}
+                        tabIndex={0}
+                        onKeyDown={(e: React.KeyboardEvent) => {
+                            if (e.key === 'Enter') {
+                                onClickClose();
+                            }
+                        }}
+                    >
                         <Icon icon='IcCross' />
                     </span>
                 </div>

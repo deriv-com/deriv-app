@@ -75,7 +75,7 @@ const FormWrapper: React.FC<TDesktopFormWrapper> = observer(({ children, onClick
                     <Text weight='bold'>{localize('Quick Strategy')}</Text>
                 </div>
                 <div className='qs__head__action'>
-                    <span data-testid='qs-desktop-close-button' onClick={onClickClose}>
+                    <span data-testid='qs-desktop-close-button' onClick={onClickClose} role='button'>
                         <Icon icon='IcCross' />
                     </span>
                 </div>

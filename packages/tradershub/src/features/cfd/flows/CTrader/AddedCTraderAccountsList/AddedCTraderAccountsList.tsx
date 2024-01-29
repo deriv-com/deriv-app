@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button, Text } from '@deriv/quill-design';
+import { Text } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui/dist/components/Button';
 import { TradingAccountCard } from '../../../../../components';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import CTrader from '../../../../../public/images/cfd/ctrader.svg';
@@ -36,18 +37,15 @@ const AddedCTraderAccountsList = () => {
         <div className='flex flex-col gap-y-200'>
             <Button
                 // todo: open transfer modal
-                className='border-opacity-black-400 rounded-200 px-800'
-                colorStyle='black'
                 onClick={() => {
                     if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.CTRADER} />);
                     // else transferModal;
                 }}
-                variant='secondary'
+                variant='outlined'
             >
                 {isVirtual ? 'Top up' : 'Transfer'}
             </Button>
             <Button
-                className='rounded-200 px-800'
                 onClick={() =>
                     account &&
                     show(

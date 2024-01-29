@@ -43,7 +43,7 @@ describe('DepositFiat', () => {
         });
 
         render(<DepositFiat />);
-        expect(screen.getByTestId('dt_wallets-loader')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_wallets_loader')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_deposit-fiat-iframe')).not.toBeInTheDocument();
     });
 
@@ -59,7 +59,7 @@ describe('DepositFiat', () => {
         await act(async () => {
             render(<DepositFiat />);
             await waitFor(() => {
-                expect(screen.queryByTestId('dt_wallets-loader')).not.toBeInTheDocument();
+                expect(screen.queryByTestId('dt_wallets_loader')).not.toBeInTheDocument();
             });
             const iframe = screen.getByTestId('dt_deposit-fiat-iframe');
             expect(iframe).toHaveAttribute('src', 'https://iframe_url');

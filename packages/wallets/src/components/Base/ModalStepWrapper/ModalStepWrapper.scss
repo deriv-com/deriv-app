@@ -1,13 +1,10 @@
 .wallets-modal-step-wrapper {
-    background-color: #ffffff;
+    background: var(--system-light-8-primary-background, #fff);
     border-radius: 0.8rem;
     animation: popup 0.4s;
 
     @include mobile {
         animation: popup 0.2s;
-    }
-
-    @include mobile {
         height: calc(var(--wallets-vh, 1vh) * 100 - 4rem);
         width: 100vw;
         margin: 0;

@@ -1,49 +1,8 @@
 import React from 'react';
 import { Field, Form, Formik } from 'formik';
 import { Button, Checkbox, Input, Text } from '@deriv/components';
-import {
-    getAppId,
-    getDebugServiceWorker,
-    getSocketURL,
-    isMobile,
-    TRADE_FEATURE_FLAGS,
-    website_domain,
-} from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
-
-const FeatureFlagsSection = observer(() => {
-    const { feature_flags } = useStore();
-    const HIDDEN_FEATURE_FLAGS = ['wallet'];
-
-    const visible_feature_flags = Object.entries(feature_flags.data ?? {})?.reduce(
-        (flags, [key, value]) => {
-            const is_production = location.hostname === website_domain;
-            if ((!is_production || !TRADE_FEATURE_FLAGS.includes(key)) && !HIDDEN_FEATURE_FLAGS.includes(key)) {
-                flags[key] = value;
-            }
-            return flags;
-        },
-        {} // hiding flags for trade types in production
-    );
-    if (!feature_flags.data) return null;
-
-    return (
-        <div style={{ marginTop: '4rem' }}>
-            <Text as='h1' weight='bold' color='prominent'>
-                Feature flags
-            </Text>
-            {Object.keys(visible_feature_flags).map(flag => (
-                <div key={flag} style={{ marginTop: '1.6rem' }}>
-                    <Checkbox
-                        label={flag}
-                        value={visible_feature_flags[flag]}
-                        onChange={e => feature_flags.update(old => ({ ...old, [flag]: e.target.checked }))}
-                    />
-                </div>
-            ))}
-        </div>
-    );
-});
+import { getAppId, getDebugServiceWorker, getSocketURL } from '@deriv/shared';
+import { FeatureFlagsSection } from './FeatureFlagsSection';
 
 const InputField = props => {
     return (
@@ -97,17 +56,12 @@ const Endpoint = () => {
             }}
         >
             {({ errors, isSubmitting, touched, values, handleChange, setFieldTouched }) => (
-                <Form style={{ width: '30vw', minWidth: '300px', margin: isMobile() ? 'auto' : '20vh auto' }}>
-                    <div
-                        style={{
-                            marginBottom: '1.6rem',
-                        }}
-                    >
+                <Form className='endpoint'>
+                    <div className='endpoint__title'>
                         <Text as='h1' weight='bold' color='prominent'>
                             Change API endpoint
                         </Text>
                     </div>
-
                     <InputField name='server' label='Server' hint='e.g. frontend.derivws.com' />
                     <InputField
                         name='app_id'
@@ -128,7 +82,7 @@ const Endpoint = () => {
                     />
                     <Field name='is_debug_service_worker_enabled'>
                         {({ field }) => (
-                            <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
+                            <div className='endpoint__checkbox'>
                                 <Checkbox
                                     {...field}
                                     label='Enable Service Worker registration for this URL'
@@ -156,7 +110,6 @@ const Endpoint = () => {
                         text='Submit'
                         primary
                     />
-                    <span style={{ marginLeft: '1.6rem' }} />
                     <Button
                         type='button'
                         onClick={() => {

@@ -6,7 +6,7 @@ import { mockProposalOpenContract } from './mocks/mockProposalOpenContract';
 import mockWalletsAuthorize, { DEFAULT_WALLET_ACCOUNTS } from './mocks/mockWalletsAuthorize';
 import mockWalletsLoggedIn from './mocks/mockWalletsLoggedIn';
 
-const CAROUSEL_SELECTOR = '.wallets-carousel-content__container';
+const CAROUSEL_SELECTOR = '.wallets-carousel-content__container .wallets-card:nth-child(1)';
 
 // swipe function
 async function swipeLeft(mobilePage: Page) {
@@ -91,17 +91,25 @@ test.describe('Wallets - Mobile carousel', () => {
 
     test('renders progress bar with active item and updates it when swiping', async ({ baseURL }) => {
         await mobilePage.goto(`${baseURL}/wallets`);
-        const activeProgressBarItem = await mobilePage.locator('.wallets-progress-bar div:nth-child(2)');
+        const activeProgressBarItem = await mobilePage.locator('.wallets-progress-bar div:nth-child(1)');
         const progressBarItemClass = await activeProgressBarItem.getAttribute('class');
 
         expect(progressBarItemClass).toContain('wallets-progress-bar-active');
 
+        // swipe left
         await swipeLeft(mobilePage);
 
-        const activeProgressBarItem2 = await mobilePage.locator('.wallets-progress-bar div:nth-child(3)');
+        const activeProgressBarItem2 = await mobilePage.locator('.wallets-progress-bar div:nth-child(2)');
         const progressBarItemClass2 = await activeProgressBarItem2.getAttribute('class');
 
         expect(progressBarItemClass2).toContain('wallets-progress-bar-active');
+
+        await swipeLeft(mobilePage);
+
+        const activeProgressBarItem3 = await mobilePage.locator('.wallets-progress-bar div:nth-child(3)');
+        const progressBarItemClass3 = await activeProgressBarItem3.getAttribute('class');
+
+        expect(progressBarItemClass3).toContain('wallets-progress-bar-active');
     });
 
     test('switches account when clicking on progress bar', async ({ baseURL }) => {

@@ -9,11 +9,12 @@ type TP2PSettingsProvider = {
 
 const P2PSettingsProvider = ({ children }: TP2PSettingsProvider) => {
     const { data, subscribe, ...rest } = useSubscription('p2p_settings');
+    const { isSubscribed, unsubscribe } = rest;
     const [p2p_settings, setP2PSettings] = useLocalStorage<TP2PSettings>('p2p_settings', {} as TP2PSettings);
 
     React.useEffect(() => {
         if (data) {
-            const p2p_settings_data = data?.p2p_settings;
+            const p2p_settings_data = data.p2p_settings;
 
             if (!p2p_settings_data) return undefined;
 
@@ -63,7 +64,11 @@ const P2PSettingsProvider = ({ children }: TP2PSettingsProvider) => {
                 reached_target_date: reached_target_date(),
             });
         }
-    }, [data, setP2PSettings]);
+
+        return () => {
+            isSubscribed && unsubscribe();
+        };
+    }, [data, isSubscribed, setP2PSettings, unsubscribe]);
 
     return (
         <P2PSettingsContext.Provider value={{ p2p_settings, subscribe, rest }}>{children}</P2PSettingsContext.Provider>

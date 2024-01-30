@@ -3,7 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
 import { Loading } from '@deriv/components';
 import { useP2PSettings } from '@deriv/hooks';
-import { routes, WS } from '@deriv/shared';
+import { isEmptyObject, routes, WS } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { init } from 'Utils/server_time';
@@ -135,7 +135,7 @@ const App = () => {
     }, []);
 
     React.useEffect(() => {
-        if (p2p_settings) {
+        if (!isEmptyObject(p2p_settings)) {
             p2p_settings.currency_list.forEach(currency => {
                 const { is_default, value } = currency;
 

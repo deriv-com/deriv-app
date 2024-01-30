@@ -10,9 +10,6 @@ export default class OrderStore {
         makeObservable(this, {
             active_order: observable,
             api_error_message: observable,
-            cancellation_block_duration: observable,
-            cancellation_count_period: observable,
-            cancellation_limit: observable,
             date_from: observable,
             date_to: observable,
             error_code: observable,
@@ -50,9 +47,6 @@ export default class OrderStore {
             setForceRerenderOrders: action.bound,
             setShouldNavigateToBuySell: action.bound,
             setApiErrorMessage: action.bound,
-            setCancellationBlockDuration: action.bound,
-            setCancellationCountPeriod: action.bound,
-            setCancellationLimit: action.bound,
             setErrorCode: action.bound,
             setErrorMessage: action.bound,
             setHasMoreItemsToLoad: action.bound,
@@ -87,9 +81,6 @@ export default class OrderStore {
 
     active_order = null;
     api_error_message = '';
-    cancellation_block_duration = 0;
-    cancellation_count_period = 0;
-    cancellation_limit = 0;
     date_from = null;
     date_to = null;
     error_code = '';
@@ -538,18 +529,6 @@ export default class OrderStore {
 
     setApiErrorMessage(api_error_message) {
         this.api_error_message = api_error_message;
-    }
-
-    setCancellationBlockDuration(cancellation_block_duration) {
-        this.cancellation_block_duration = cancellation_block_duration;
-    }
-
-    setCancellationCountPeriod(cancellation_count_period) {
-        this.cancellation_count_period = cancellation_count_period;
-    }
-
-    setCancellationLimit(cancellation_limit) {
-        this.cancellation_limit = cancellation_limit;
     }
 
     setShouldNavigateToBuySell(should_navigate_to_buy_sell) {

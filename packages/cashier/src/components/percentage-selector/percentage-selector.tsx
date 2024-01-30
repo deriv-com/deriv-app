@@ -51,11 +51,8 @@ const PercentageSelector = ({
 
     const calculateAmount = (e: TCalculateAmountInputEvent | TReactMouseEvent, percent: number) => {
         let new_percentage = percent;
-
-        if (new_percentage === 25 && Number(selected_percentage) === new_percentage) {
-            new_percentage = 0;
-            setSelectedPercentage(0);
-        }
+        const is_percentage_selected = percent > 0 && percent === Number(selected_percentage);
+        if (is_percentage_selected) new_percentage -= 25;
 
         setSelectedPercentage(new_percentage || 0);
         const rate = exchange_rates?.[from_currency]?.[to_currency] ?? 1;
@@ -69,7 +66,10 @@ const PercentageSelector = ({
         for (let i = 1; i <= 4; i++) {
             const percentage_selector_block = document.getElementById(String(i));
             if (percentage_selector_block) {
-                if (i <= Number((e as TCalculateAmountInputEvent).target.id) && new_percentage > 0) {
+                if (
+                    i < (e as TCalculateAmountInputEvent).target.id ||
+                    (i === Number((e as TCalculateAmountInputEvent).target.id) && !is_percentage_selected)
+                ) {
                     percentage_selector_block.style.backgroundColor = 'var(--status-success)';
                 } else {
                     percentage_selector_block.style.backgroundColor = 'var(--general-section-1)';

@@ -65,7 +65,7 @@ describe('<PercentageSelector />', () => {
         expect(screen.getByText(`100% of available balance (100.00 USD)`)).toBeInTheDocument();
     });
 
-    it('should reset the 25% percentage block upon clicking twice', () => {
+    it('should reset the percentage block upon clicking twice', () => {
         render(
             <CashierProviders store={mockRootStore}>
                 <ExchangeRatesProvider>
@@ -78,6 +78,21 @@ describe('<PercentageSelector />', () => {
         fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_1'));
 
         expect(screen.getByText(`0% of available balance (100.00 USD)`)).toBeInTheDocument();
+
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_2'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_2'));
+
+        expect(screen.getByText(`25% of available balance (100.00 USD)`)).toBeInTheDocument();
+
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_3'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_3'));
+
+        expect(screen.getByText(`50% of available balance (100.00 USD)`)).toBeInTheDocument();
+
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_4'));
+        fireEvent.click(screen.getByTestId('dt_percentage_selector_block_id_4'));
+
+        expect(screen.getByText(`75% of available balance (100.00 USD)`)).toBeInTheDocument();
     });
 
     it('should reset the percentage', () => {

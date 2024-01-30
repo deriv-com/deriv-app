@@ -15,7 +15,7 @@ type THeader = {
     className: string;
 };
 
-export const HEADERS: THeader[] = [
+const HEADERS: THeader[] = [
     {
         label: localize('Bot name'),
         className: 'bot-list__header__label',

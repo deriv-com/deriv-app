@@ -1,0 +1,62 @@
+.p2p-v2-payment-method-form {
+    max-width: 100%;
+    min-width: 67.2rem;
+    padding: 0 2.4rem;
+
+    @include mobile {
+        width: 100%;
+        min-width: 36rem;
+        padding: 1.6rem;
+    }
+
+    &__button {
+        display: inline-block;
+        margin-left: 0.5rem;
+    }
+    .derivs-button__variant--ghost:hover:not(:disabled) {
+        background: transparent;
+        text-decoration: underline;
+        text-decoration-color: #ec3f3f;
+    }
+    .deriv-input--field:not(:focus) {
+        border: 1px solid #d6dadb;
+    }
+    .deriv-input,
+    .deriv-input--field {
+        width: 100%;
+    }
+    &__form {
+        padding: 1.4rem 0;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .deriv-input--right-content {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        top: 0;
+    }
+    &__icon--close {
+        cursor: pointer;
+        color: #ffffff;
+        font-size: large;
+    }
+
+    &__field {
+        color: #333333;
+        &-wrapper {
+            width: 100%;
+            padding: 1rem 0;
+        }
+    }
+    &__text {
+        display: inline-block;
+        line-height: 1.5;
+        vertical-align: baseline;
+    }
+}
+.p2p-v2-textfield__message-container {
+    /* This is to hide the message container if it's empty */
+    height: auto;
+}

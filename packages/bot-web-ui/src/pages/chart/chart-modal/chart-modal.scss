@@ -7,15 +7,17 @@
 }
 
 .chart-modal-dialog {
-    --modal-height: 48.1vh;
+    --modal-height: calc(100% - 48px);
     height: var(--modal-height);
     max-height: var(--modal-height);
+    padding: 0 0.8rem;
     z-index: 999;
     transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
     @include flex-center;
 
     .dashboard__chart-wrapper--modal {
-        height: var(--modal-height);
+        height: 100%;
+        width: 100%;
     }
 
     .sc-navigation-widget {

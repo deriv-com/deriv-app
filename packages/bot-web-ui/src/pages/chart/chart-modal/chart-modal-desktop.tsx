@@ -25,8 +25,8 @@ const ChartModalDesktop = observer(() => {
         };
     }, []);
 
-    const modalWidth = 426;
-    const modalHeight = 481;
+    const modalWidth = 526;
+    const modalHeight = 524;
 
     const xAxisValue = (screenDimensions.width - modalWidth) / 2;
     const yAxisValue = (screenDimensions.height - modalHeight) / 2;
@@ -44,6 +44,7 @@ const ChartModalDesktop = observer(() => {
             onCloseDraggable={setChartModalVisibility}
             minWidth={modalWidth}
             width={modalWidth}
+            height={modalHeight}
             dragHandleClassName='react-rnd-wrapper-header'
         >
             <div className='chart-modal-dialog' data-testid='chart-modal-dialog'>

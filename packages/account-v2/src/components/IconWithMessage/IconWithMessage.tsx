@@ -1,14 +1,14 @@
 import React, { ReactNode } from 'react';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 
-type TPOAStatus = {
+type TIconWithMessage = {
     actionButton?: ReactNode;
     children?: ReactNode;
     icon: JSX.Element;
     title: string;
 };
 
-export const POAStatus = ({ actionButton, children, icon, title }: TPOAStatus) => (
+export const IconWithMessage = ({ actionButton, children, icon, title }: TIconWithMessage) => (
     <div className='grid justify-center w-full justify-items-center mt-4000 gap-1000'>
         {icon}
         <div className='grid justify-center gap-500'>

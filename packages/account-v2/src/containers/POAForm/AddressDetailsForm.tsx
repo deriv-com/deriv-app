@@ -6,10 +6,11 @@ import { useBreakpoint } from '@deriv/quill-design';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
+import IcPOALock from '../../assets/verification-status/ic-poa-lock.svg';
 import { InlineMessage } from '../../components/base/InlineMessage';
+import { IconWithMessage } from '../../components/IconWithMessage';
 import { AddressFields } from '../../modules/AddressFields';
 import DocumentSubmission from './DocumentSubmission';
-import { POAError } from './Status';
 
 type TAddressDetails = {
     addressCity: string;
@@ -71,10 +72,13 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
     };
 
     if (fetchError) {
-        return <POAError error_message={fetchError.error.message} />;
+        return <IconWithMessage icon={<IcPOALock width={128} />} title={fetchError.error.message} />;
     }
 
-    const updateError = settingsUpdateError?.error.message || documentUploadError?.error.message;
+    const updateError = settingsUpdateError?.error.message ?? documentUploadError?.error.message;
+
+    const resubmitMessage =
+        'We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.';
 
     return (
         <Fragment>
@@ -97,10 +101,7 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
                         <div className='flex flex-col w-full min-h-screen sm:w-auto space-y-800'>
                             {(updateError || status || resubmitting) && (
                                 <InlineMessage size='md' type='error' variant='contained'>
-                                    {updateError ||
-                                        status.message ||
-                                        `We were unable to verify your address with the details you provided. Please check
-                                    and resubmit or choose a different document type.`}
+                                    {updateError ?? status?.message ?? resubmitMessage}
                                 </InlineMessage>
                             )}
                             <div className='overflow-y-auto m-50 space-y-600'>

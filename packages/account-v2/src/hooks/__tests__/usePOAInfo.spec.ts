@@ -30,38 +30,7 @@ describe('usePOAInfo', () => {
             ],
         });
 
-        const { result } = renderHook(() => usePOAInfo('svg'));
-        const { data } = result.current;
-
-        expect(data.documentNotRequired).toBe(false);
-        expect(data.documentStatus).toBe('none');
-        expect(data.documentSubmitted).toBe(false);
-        expect(data.isPOAResubmission).toBe(true);
-        expect(data.isPOINeeded).toBe(true);
-    });
-
-    it('should return the correct values for malta', () => {
-        (useAuthentication as jest.Mock).mockReturnValue({
-            data: {
-                document: {
-                    status: 'none',
-                },
-                is_age_verified: true,
-                is_allow_document_upload: true,
-                is_poa_address_mismatch: true,
-                is_poa_resubmission_allowed: true,
-                is_poi_needed: true,
-            },
-        });
-        (useMT5AccountsList as jest.Mock).mockReturnValue({
-            data: [
-                {
-                    status: 'poa_failed',
-                },
-            ],
-        });
-
-        const { result } = renderHook(() => usePOAInfo('malta'));
+        const { result } = renderHook(() => usePOAInfo());
         const { data } = result.current;
 
         expect(data.documentNotRequired).toBe(false);
@@ -92,7 +61,7 @@ describe('usePOAInfo', () => {
             ],
         });
 
-        const { result } = renderHook(() => usePOAInfo('svg'));
+        const { result } = renderHook(() => usePOAInfo());
         const { data } = result.current;
 
         expect(data.documentNotRequired).toBe(false);
@@ -123,7 +92,7 @@ describe('usePOAInfo', () => {
             ],
         });
 
-        const { result } = renderHook(() => usePOAInfo('svg'));
+        const { result } = renderHook(() => usePOAInfo());
         const { data } = result.current;
 
         expect(data.documentNotRequired).toBe(false);
@@ -154,7 +123,7 @@ describe('usePOAInfo', () => {
             ],
         });
 
-        const { result } = renderHook(() => usePOAInfo('svg'));
+        const { result } = renderHook(() => usePOAInfo());
         const { data } = result.current;
 
         expect(data.documentNotRequired).toBe(false);
@@ -185,7 +154,7 @@ describe('usePOAInfo', () => {
             ],
         });
 
-        const { result } = renderHook(() => usePOAInfo('svg'));
+        const { result } = renderHook(() => usePOAInfo());
         const { data } = result.current;
 
         expect(data.documentNotRequired).toBe(false);
@@ -216,7 +185,7 @@ describe('usePOAInfo', () => {
             ],
         });
 
-        const { result } = renderHook(() => usePOAInfo('svg'));
+        const { result } = renderHook(() => usePOAInfo());
         const { data } = result.current;
 
         expect(data.documentNotRequired).toBe(false);
@@ -247,7 +216,7 @@ describe('usePOAInfo', () => {
             ],
         });
 
-        const { result } = renderHook(() => usePOAInfo('svg'));
+        const { result } = renderHook(() => usePOAInfo());
         const { data } = result.current;
 
         expect(data.documentNotRequired).toBe(true);

@@ -1,25 +1,23 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useActiveAccount } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import { useActiveAccount } from '@deriv/api';
+import IcPOAError from '../../assets/verification-status/ic-poa-error.svg';
+import IcPOAUpload from '../../assets/verification-status/ic-poa-upload.svg';
+import IcPOAVerified from '../../assets/verification-status/ic-poa-verified.svg';
+import { DemoMessage } from '../../components/DemoMessage';
+import { IconWithMessage } from '../../components/IconWithMessage';
 import { AUTH_STATUS_CODES, P2P_ROUTE } from '../../constants/constants';
 import { AddressDetailsForm } from '../../containers/POAForm/AddressDetailsForm';
-import {
-    DemoMessage,
-    Expired,
-    NeedsReview,
-    NotRequired,
-    Submitted,
-    Unverified,
-    Verified,
-} from '../../containers/POAForm/Status';
 import usePOAInfo from '../../hooks/usePOAInfo';
-import { isNavigationFromP2P } from '../../utils/platform';
+import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../utils/platform';
 
 export const POAFormContainer = () => {
     const { data: activeAccount } = useActiveAccount();
     const { data: poaInfo, isLoading } = usePOAInfo();
     const [resubmitting, setResubmitting] = useState(false);
+    const history = useHistory();
 
     const { documentNotRequired, documentStatus, documentSubmitted, isPOAResubmission, isPOINeeded } = poaInfo;
 
@@ -27,24 +25,73 @@ export const POAFormContainer = () => {
         setResubmitting(true);
     };
 
-    const redirectButton = isNavigationFromP2P() && (
-        <Button
-            onClick={() => {
-                window.location.href = P2P_ROUTE;
-                window.sessionStorage.removeItem('config.platform');
-            }}
-        >
-            Back to P2P
-        </Button>
-    );
+    const redirectButton = () =>
+        isNavigationFromP2P() ? (
+            <Button
+                onClick={() => {
+                    window.location.href = P2P_ROUTE;
+                    window.sessionStorage.removeItem('config.platform');
+                }}
+            >
+                Back to P2P
+            </Button>
+        ) : null;
+
+    const poiButton = () =>
+        isPOINeeded ? (
+            <Button
+                onClick={() => {
+                    history.push('/account/proof-of-identity');
+                }}
+            >
+                Proof of identity
+            </Button>
+        ) : null;
+
+    const continueTradingButton = () => {
+        const isRedirectedFromPlatform = isNavigationFromP2P() || isNavigationFromDerivGO();
+        return isRedirectedFromPlatform ? (
+            <Button
+                onClick={() => {
+                    history.push('/');
+                }}
+            >
+                Continue trading
+            </Button>
+        ) : null;
+    };
 
     if (activeAccount?.is_virtual) return <DemoMessage />;
 
     if (isLoading) return <Text>Loading ...</Text>;
 
-    if (documentNotRequired) return <NotRequired />;
+    if (documentNotRequired)
+        return (
+            <IconWithMessage icon={<IcPOAVerified width={128} />} title='Proof of address verification not required'>
+                <Text align='center' size='sm'>
+                    Your account does not need address verification at this time. We will inform you if address
+                    verification is required in the future.
+                </Text>
+            </IconWithMessage>
+        );
 
-    if (documentSubmitted) return <Submitted needsPOI={isPOINeeded} redirectButton={redirectButton} />;
+    if (documentSubmitted)
+        return (
+            <IconWithMessage
+                actionButton={poiButton() ?? redirectButton() ?? continueTradingButton()}
+                icon={<IcPOAVerified width={128} />}
+                title='Your documents were submitted successfully'
+            >
+                <Text align='center' size='sm'>
+                    We’ll review your documents and notify you of its status within 1 to 3 days.
+                </Text>
+                {isPOINeeded ? (
+                    <Text align='center' size='sm'>
+                        You must also submit a proof of identity.
+                    </Text>
+                ) : null}
+            </IconWithMessage>
+        );
 
     if (resubmitting || isPOAResubmission) {
         return <AddressDetailsForm resubmitting />;
@@ -54,14 +101,62 @@ export const POAFormContainer = () => {
         case AUTH_STATUS_CODES.NONE:
             return <AddressDetailsForm />;
         case AUTH_STATUS_CODES.PENDING:
-            return <NeedsReview needsPOI={isPOINeeded} redirectButton={redirectButton} />;
+            return (
+                <IconWithMessage
+                    actionButton={poiButton() ?? redirectButton() ?? continueTradingButton()}
+                    icon={<IcPOAVerified width={128} />}
+                    title='Your proof of address was submitted successfully'
+                >
+                    <Text align='center' size='sm'>
+                        Your document is being reviewed, please check back in 1-3 days.
+                    </Text>
+                    {isPOINeeded ? (
+                        <Text align='center' size='sm'>
+                            You must also submit a proof of identity.
+                        </Text>
+                    ) : null}
+                </IconWithMessage>
+            );
         case AUTH_STATUS_CODES.VERIFIED:
-            return <Verified needsPOI={isPOINeeded} redirectButton={redirectButton} />;
+            return (
+                <IconWithMessage
+                    actionButton={poiButton() ?? redirectButton() ?? continueTradingButton()}
+                    icon={<IcPOAVerified width={128} />}
+                    title='Your proof of address is verified'
+                >
+                    {isPOINeeded ? (
+                        <Text align='center' size='sm'>
+                            To continue trading, you must also submit a proof of identity.
+                        </Text>
+                    ) : null}
+                </IconWithMessage>
+            );
         case AUTH_STATUS_CODES.EXPIRED:
-            return <Expired onClick={handleResubmit} />;
+            return (
+                <IconWithMessage
+                    actionButton={<Button onClick={handleResubmit}>Resubmit</Button>}
+                    icon={<IcPOAUpload width={128} />}
+                    title='New proof of address is needed'
+                >
+                    <Text align='center' size='sm'>
+                        Your document for proof of address is expired. <br />
+                        Please submit again.
+                    </Text>
+                </IconWithMessage>
+            );
         case AUTH_STATUS_CODES.REJECTED:
         case AUTH_STATUS_CODES.SUSPECTED:
-            return <Unverified onClick={handleResubmit} />;
+            return (
+                <IconWithMessage
+                    actionButton={<Button onClick={handleResubmit}>Resubmit</Button>}
+                    icon={<IcPOAError width={128} />}
+                    title='We could not verify your proof of address'
+                >
+                    <Text align='center' size='sm'>
+                        Please check your email for details.
+                    </Text>
+                </IconWithMessage>
+            );
         default:
             return null;
     }

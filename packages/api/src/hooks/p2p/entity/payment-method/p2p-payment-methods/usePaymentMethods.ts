@@ -14,12 +14,8 @@ const usePaymentMethods = () => {
 
         return Object.keys(p2p_payment_methods).map(key => {
             const payment_method = p2p_payment_methods[key];
-            const fields = Object.keys(payment_method.fields).map(field_key => payment_method.fields[field_key]);
-
             return {
                 ...payment_method,
-                /** Payment method field definitions. */
-                fields,
                 /** Payment method id */
                 id: key,
             };

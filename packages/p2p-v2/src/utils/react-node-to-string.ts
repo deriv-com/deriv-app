@@ -1,4 +1,4 @@
-import React, { ReactNode, isValidElement } from 'react';
+import { isValidElement, ReactNode } from 'react';
 
 /**
  * The below function is used to convert a ReactNode to a string.

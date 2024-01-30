@@ -1,6 +1,6 @@
 import throttle from 'lodash.throttle';
 import { action, computed, observable, reaction, makeObservable, override } from 'mobx';
-import { createTransformer } from 'mobx-utils';
+import { computedFn } from 'mobx-utils';
 import {
     isAccumulatorContract,
     isEmptyObject,
@@ -45,7 +45,7 @@ export default class PortfolioStore extends BaseStore {
     main_barrier = null;
     contract_type = '';
 
-    getPositionById = createTransformer(id => this.positions.find(position => +position.id === +id));
+    getPositionById = computedFn(id => this.positions.find(position => +position.id === +id));
 
     responseQueue = [];
 

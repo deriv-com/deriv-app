@@ -4,23 +4,23 @@ import { Text } from '@deriv-com/ui/dist/components/Text';
 import './RadioGroup.scss';
 
 type TItem = HTMLAttributes<HTMLDivElement> & {
-    id?: string;
-    value: string;
-    label: string;
     disabled?: boolean;
-    hidden?: boolean;
     hasError?: boolean;
+    hidden?: boolean;
+    id?: string;
+    label: string;
+    value: string;
 };
 type TItemWrapper = {
     shouldWrapItems?: boolean;
 };
-type TRadioGroup = {
+type TRadioGroup = TItemWrapper & {
     className?: string;
     name: string;
     onToggle: (e: ChangeEvent<HTMLInputElement>) => void;
     required?: boolean;
     selected: string;
-} & TItemWrapper;
+};
 
 const ItemWrapper = ({ children, shouldWrapItems }: PropsWithChildren<TItemWrapper>) => {
     if (shouldWrapItems) {
@@ -31,13 +31,13 @@ const ItemWrapper = ({ children, shouldWrapItems }: PropsWithChildren<TItemWrapp
 };
 
 const RadioGroup = ({
+    children,
     className,
     name,
     onToggle,
     required,
     selected,
     shouldWrapItems,
-    children,
 }: PropsWithChildren<TRadioGroup>) => {
     const [selectedOption, setSelectedOption] = useState(selected);
 
@@ -63,15 +63,15 @@ const RadioGroup = ({
                                 })}
                             >
                                 <input
+                                    checked={selectedOption === item.props.value}
+                                    className='p2p-v2-radio-group__input'
+                                    disabled={item.props.disabled}
                                     id={item.props.id}
                                     name={name}
-                                    className='p2p-v2-radio-group__input'
+                                    onChange={onChange}
+                                    required={required}
                                     type='radio'
                                     value={item.props.value}
-                                    checked={selectedOption === item.props.value}
-                                    onChange={onChange}
-                                    disabled={item.props.disabled}
-                                    required={required}
                                 />
                                 <span
                                     className={clsx('p2p-v2-radio-group__circle', {
@@ -81,11 +81,11 @@ const RadioGroup = ({
                                     })}
                                 />
                                 <Text
-                                    size='lg'
                                     className={clsx('p2p-v2-radio-group__label', {
                                         'p2p-v2-radio-group__label--disabled': item.props.disabled,
                                         'p2p-v2-radio-group__label--error': item.props.hasError,
                                     })}
+                                    size='lg'
                                 >
                                     {item.props.label}
                                 </Text>

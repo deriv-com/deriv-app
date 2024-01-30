@@ -1,16 +1,26 @@
 import React from 'react';
-import { useActiveWalletAccount, useQuery, useSettings } from '@deriv/api';
+import {
+    useAccountStatus,
+    useActiveWalletAccount,
+    useAuthentication,
+    useCashierValidation,
+    useQuery,
+    useSettings,
+} from '@deriv/api';
 import { render, screen } from '@testing-library/react';
 import DepositLocked from '../DepositLocked';
-import depositLockedProvider from '../DepositLockedProvider';
+import getDepositLockedContent from '../DepositLockedContent';
 
 jest.mock('@deriv/api', () => ({
+    useAccountStatus: jest.fn(),
     useActiveWalletAccount: jest.fn(),
+    useAuthentication: jest.fn(),
+    useCashierValidation: jest.fn(),
     useQuery: jest.fn(),
     useSettings: jest.fn(),
 }));
 
-jest.mock('../DepositLockedProvider', () => ({
+jest.mock('../DepositLockedContent', () => ({
     __esModule: true,
     default: jest.fn(),
 }));
@@ -18,6 +28,13 @@ jest.mock('../DepositLockedProvider', () => ({
 const mockActiveWalletData = { currency_config: { minimum_withdrawal: 10 } };
 const mockSettingsData = { client_tnc_status: '' };
 const mockWebsiteStatusData = { website_status: '' };
+const mockAuthenticationData = { is_poa_needed: false, is_poi_needed: false };
+const mockCashierValidationData = { ask_fix_details: false, self_exclusion: false, unwelcome_status: false };
+const mockStatusData = {
+    is_deposit_locked: false,
+    is_financial_information_not_complete: false,
+    is_trading_experience_not_complete: false,
+};
 
 describe('DepositLocked', () => {
     afterEach(() => {
@@ -25,28 +42,23 @@ describe('DepositLocked', () => {
     });
 
     it('should render locked screen when in a locked state', () => {
+        const mockLockedStatusData = {
+            is_deposit_locked: true,
+            is_financial_information_not_complete: false,
+            is_trading_experience_not_complete: false,
+        };
         (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
         (useSettings as jest.Mock).mockReturnValueOnce({ data: mockSettingsData });
         (useQuery as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
+        (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
+        (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
+        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockLockedStatusData });
 
         const mockLockedState = { description: 'Locked Description', title: 'Locked Title' };
-        (depositLockedProvider as jest.Mock).mockReturnValueOnce(mockLockedState);
-
-        const mockLockedAccountStatus = {
-            authentication: {
-                needs_verification: [],
-            },
-            currency_config: {},
-            p2p_poa_required: 1 as const,
-            p2p_status: 'none' as const,
-            prompt_client_to_authenticate: 1 as const,
-            risk_classification: '',
-            should_prompt_client_to_authenticate: true,
-            status: ['deposit_locked'],
-        };
+        (getDepositLockedContent as jest.Mock).mockReturnValueOnce(mockLockedState);
 
         render(
-            <DepositLocked accountStatus={mockLockedAccountStatus}>
+            <DepositLocked>
                 <div>Test Child Component</div>
             </DepositLocked>
         );
@@ -60,24 +72,14 @@ describe('DepositLocked', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
         (useSettings as jest.Mock).mockReturnValueOnce({ data: mockSettingsData });
         (useQuery as jest.Mock).mockReturnValue({ data: mockWebsiteStatusData });
+        (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
+        (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
+        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockStatusData });
 
-        (depositLockedProvider as jest.Mock).mockReturnValueOnce(null);
-
-        const mockAccountStatus = {
-            authentication: {
-                needs_verification: [],
-            },
-            currency_config: {},
-            p2p_poa_required: 1 as const,
-            p2p_status: 'none' as const,
-            prompt_client_to_authenticate: 1 as const,
-            risk_classification: '',
-            should_prompt_client_to_authenticate: true,
-            status: [],
-        };
+        (getDepositLockedContent as jest.Mock).mockReturnValueOnce(null);
 
         render(
-            <DepositLocked accountStatus={mockAccountStatus}>
+            <DepositLocked>
                 <div>Test Child Component</div>
             </DepositLocked>
         );

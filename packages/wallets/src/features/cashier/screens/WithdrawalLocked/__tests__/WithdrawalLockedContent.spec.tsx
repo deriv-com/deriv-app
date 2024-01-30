@@ -1,14 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import withdrawalLockedProvider from '../WithdrawalLockedProvider';
+import getWithdrawalLockedContent from '../WithdrawalLockedContent';
 
 window.LC_API = {
     on_chat_ended: jest.fn(),
     open_chat_window: jest.fn(),
 };
 
-describe('WithdrawalLockedProvider', () => {
+describe('WithdrawalLockedContent', () => {
     it('should render title and description as undefined when withdrawal is not locked', () => {
-        const result = withdrawalLockedProvider({
+        const result = getWithdrawalLockedContent({
             askAuthenticate: false,
             askFinancialRiskApproval: false,
             askFixDetails: false,
@@ -28,7 +28,7 @@ describe('WithdrawalLockedProvider', () => {
     });
 
     it('should render correct message when withdrawal limit is reached and POI has not been uploaded', () => {
-        const result = withdrawalLockedProvider({
+        const result = getWithdrawalLockedContent({
             askAuthenticate: false,
             askFinancialRiskApproval: false,
             askFixDetails: false,
@@ -52,7 +52,7 @@ describe('WithdrawalLockedProvider', () => {
     });
 
     it('should render correct message when withdrawal limit is reached and POI has been uploaded but not yet verified', () => {
-        const result = withdrawalLockedProvider({
+        const result = getWithdrawalLockedContent({
             askAuthenticate: false,
             askFinancialRiskApproval: false,
             askFixDetails: false,
@@ -76,7 +76,7 @@ describe('WithdrawalLockedProvider', () => {
     });
 
     it('should render correct message when withdrawal limit is reached and POA has not been uploaded', () => {
-        const result = withdrawalLockedProvider({
+        const result = getWithdrawalLockedContent({
             askAuthenticate: false,
             askFinancialRiskApproval: false,
             askFixDetails: false,
@@ -100,7 +100,7 @@ describe('WithdrawalLockedProvider', () => {
     });
 
     it('should render correct message when withdrawal limit is reached and POA has been uploaded but not yet verified', () => {
-        const result = withdrawalLockedProvider({
+        const result = getWithdrawalLockedContent({
             askAuthenticate: false,
             askFinancialRiskApproval: false,
             askFixDetails: false,
@@ -124,7 +124,7 @@ describe('WithdrawalLockedProvider', () => {
     });
 
     it('should render correct message when withdrawal limit is reached and askFinancialRiskApproval status received', () => {
-        const result = withdrawalLockedProvider({
+        const result = getWithdrawalLockedContent({
             askAuthenticate: false,
             askFinancialRiskApproval: true,
             askFixDetails: false,
@@ -148,7 +148,7 @@ describe('WithdrawalLockedProvider', () => {
     });
 
     it('should render correct message when financialAssessmentRequired status received', () => {
-        const result = withdrawalLockedProvider({
+        const result = getWithdrawalLockedContent({
             askAuthenticate: false,
             askFinancialRiskApproval: false,
             askFixDetails: false,
@@ -172,7 +172,7 @@ describe('WithdrawalLockedProvider', () => {
     });
 
     it('should render correct message when askAuthenticate status received', () => {
-        const result = withdrawalLockedProvider({
+        const result = getWithdrawalLockedContent({
             askAuthenticate: true,
             askFinancialRiskApproval: false,
             askFixDetails: false,
@@ -197,7 +197,7 @@ describe('WithdrawalLockedProvider', () => {
     });
 
     it('should render correct message when askFixDetails status received', () => {
-        const result = withdrawalLockedProvider({
+        const result = getWithdrawalLockedContent({
             askAuthenticate: false,
             askFinancialRiskApproval: false,
             askFixDetails: true,
@@ -225,7 +225,7 @@ describe('WithdrawalLockedProvider', () => {
     });
 
     it('should render correct message when noWithdrawalOrTradingStatus status received', () => {
-        const result = withdrawalLockedProvider({
+        const result = getWithdrawalLockedContent({
             askAuthenticate: false,
             askFinancialRiskApproval: false,
             askFixDetails: false,
@@ -252,7 +252,7 @@ describe('WithdrawalLockedProvider', () => {
     });
 
     it('should render correct message when withdrawalLockedStatus status received', () => {
-        const result = withdrawalLockedProvider({
+        const result = getWithdrawalLockedContent({
             askAuthenticate: false,
             askFinancialRiskApproval: false,
             askFixDetails: false,

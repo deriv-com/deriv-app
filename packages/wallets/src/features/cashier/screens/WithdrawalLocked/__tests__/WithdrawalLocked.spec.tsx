@@ -1,21 +1,43 @@
 import React from 'react';
-import { useAccountLimits, useActiveWalletAccount } from '@deriv/api';
+import {
+    useAccountLimits,
+    useAccountStatus,
+    useActiveWalletAccount,
+    useAuthentication,
+    useCashierValidation,
+} from '@deriv/api';
 import { render, screen } from '@testing-library/react';
 import WithdrawalLocked from '../WithdrawalLocked';
-import withdrawalLockedProvider from '../WithdrawalLockedProvider';
+import getWithdrawalLockedContent from '../WithdrawalLockedContent';
 
 jest.mock('@deriv/api', () => ({
     useAccountLimits: jest.fn(),
+    useAccountStatus: jest.fn(),
     useActiveWalletAccount: jest.fn(),
+    useAuthentication: jest.fn(),
+    useCashierValidation: jest.fn(),
 }));
 
-jest.mock('../WithdrawalLockedProvider', () => ({
+jest.mock('../WithdrawalLockedContent', () => ({
     __esModule: true,
     default: jest.fn(),
 }));
 
 const mockActiveWalletData = { currency_config: { minimum_withdrawal: 10 } };
 const mockAccountLimitsData = { remainder: 20 };
+const mockAuthenticationData = {
+    is_poa_needed: false,
+    is_poi_needed: false,
+};
+const mockCashierValidationData = {
+    ask_authenticate: false,
+    ask_financial_risk_approval: false,
+    ask_fix_details: false,
+    financial_assessment_required: false,
+    no_withdrawal_or_trading_status: false,
+    withdrawal_locked_status: false,
+};
+const mockStatusData = { is_withdrawal_locked: false };
 
 describe('WithdrawalLocked', () => {
     afterEach(() => {
@@ -23,27 +45,19 @@ describe('WithdrawalLocked', () => {
     });
 
     it('should render locked screen when in a locked state', () => {
+        const mockLockedStatusData = { is_withdrawal_locked: true };
+
         (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
         (useAccountLimits as jest.Mock).mockReturnValueOnce({ data: mockAccountLimitsData });
+        (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
+        (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
+        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockLockedStatusData });
 
         const mockLockedState = { description: 'Locked Description', title: 'Locked Title' };
-        (withdrawalLockedProvider as jest.Mock).mockReturnValueOnce(mockLockedState);
-
-        const mockLockedAccountStatus = {
-            authentication: {
-                needs_verification: [],
-            },
-            currency_config: {},
-            p2p_poa_required: 1 as const,
-            p2p_status: 'none' as const,
-            prompt_client_to_authenticate: 1 as const,
-            risk_classification: '',
-            should_prompt_client_to_authenticate: true,
-            status: ['withdrawal_locked'],
-        };
+        (getWithdrawalLockedContent as jest.Mock).mockReturnValueOnce(mockLockedState);
 
         render(
-            <WithdrawalLocked accountStatus={mockLockedAccountStatus}>
+            <WithdrawalLocked>
                 <div>Test Child Component</div>
             </WithdrawalLocked>
         );
@@ -56,24 +70,14 @@ describe('WithdrawalLocked', () => {
     it('should render children when not in a locked state', () => {
         (useActiveWalletAccount as jest.Mock).mockReturnValueOnce({ data: mockActiveWalletData });
         (useAccountLimits as jest.Mock).mockReturnValueOnce({ data: mockAccountLimitsData });
+        (useAuthentication as jest.Mock).mockReturnValueOnce({ data: mockAuthenticationData });
+        (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
+        (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockStatusData });
 
-        (withdrawalLockedProvider as jest.Mock).mockReturnValueOnce(null);
-
-        const mockAccountStatus = {
-            authentication: {
-                needs_verification: [],
-            },
-            currency_config: {},
-            p2p_poa_required: 1 as const,
-            p2p_status: 'none' as const,
-            prompt_client_to_authenticate: 1 as const,
-            risk_classification: '',
-            should_prompt_client_to_authenticate: true,
-            status: [],
-        };
+        (getWithdrawalLockedContent as jest.Mock).mockReturnValueOnce(null);
 
         render(
-            <WithdrawalLocked accountStatus={mockAccountStatus}>
+            <WithdrawalLocked>
                 <div>Test Child Component</div>
             </WithdrawalLocked>
         );

@@ -1,34 +1,37 @@
 import React from 'react';
-import { useAccountLimits, useActiveWalletAccount } from '@deriv/api';
+import {
+    useAccountLimits,
+    useAccountStatus,
+    useActiveWalletAccount,
+    useAuthentication,
+    useCashierValidation,
+} from '@deriv/api';
 import { WalletsActionScreen } from '../../../../components';
-import type { THooks } from '../../../../types';
-import withdrawalLockedProvider from './WithdrawalLockedProvider';
+import getWithdrawalLockedContent from './WithdrawalLockedContent';
 import './WithdrawalLocked.scss';
 
-type TProps = {
-    accountStatus: THooks.GetAccountStatus;
-};
-
-const WithdrawalLocked: React.FC<React.PropsWithChildren<TProps>> = ({ accountStatus, children }) => {
+const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: activeWallet } = useActiveWalletAccount();
+    const { data: authentication } = useAuthentication();
+    const { data: cashierValidation } = useCashierValidation();
     const { data: accountLimits } = useAccountLimits();
+    const { data: status } = useAccountStatus();
 
-    const authentication = accountStatus?.authentication;
-    const cashierValidation = accountStatus?.cashier_validation;
-    const status = accountStatus?.status;
-
-    const askAuthenticate = cashierValidation?.includes('ASK_AUTHENTICATE') || false;
-    const askFinancialRiskApproval = cashierValidation?.includes('ASK_FINANCIAL_RISK_APPROVAL') || false;
-    const askFixDetails = cashierValidation?.includes('ASK_FIX_DETAILS') || false;
     const currency = activeWallet?.currency || 'USD';
-    const financialAssessmentRequired = cashierValidation?.includes('FinancialAssessmentRequired') || false;
-    const isWithdrawalLocked = status?.includes('withdrawal_locked');
-    const noWithdrawalOrTradingStatus = cashierValidation?.includes('no_withdrawal_or_trading_status') || false;
-    const poaNeedsVerification = authentication?.needs_verification?.includes('document') || false;
-    const poaStatus = authentication?.document?.status || 'none';
-    const poiNeedsVerification = authentication?.needs_verification?.includes('identity') || false;
-    const poiStatus = authentication?.identity?.status || 'none';
-    const withdrawalLockedStatus = cashierValidation?.includes('withdrawal_locked_status') || false;
+
+    const poaNeedsVerification = authentication?.is_poa_needed || false;
+    const poiNeedsVerification = authentication?.is_poa_needed || false;
+    const poaStatus = authentication?.poa_status || 'none';
+    const poiStatus = authentication?.poi_status || 'none';
+
+    const askAuthenticate = cashierValidation?.ask_authenticate || false;
+    const askFinancialRiskApproval = cashierValidation?.ask_financial_risk_approval || false;
+    const askFixDetails = cashierValidation?.ask_fix_details || false;
+    const financialAssessmentRequired = cashierValidation?.financial_assessment_required || false;
+    const noWithdrawalOrTradingStatus = cashierValidation?.no_withdrawal_or_trading_status || false;
+    const withdrawalLockedStatus = cashierValidation?.withdrawal_locked_status || false;
+
+    const isWithdrawalLocked = status?.is_withdrawal_locked || false;
 
     const remainder = accountLimits?.remainder;
     const minimumWithdrawal = activeWallet?.currency_config?.minimum_withdrawal;
@@ -39,7 +42,7 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren<TProps>> = ({ accountSt
     );
 
     const state = isWithdrawalLocked
-        ? withdrawalLockedProvider({
+        ? getWithdrawalLockedContent({
               askAuthenticate,
               askFinancialRiskApproval,
               askFixDetails,

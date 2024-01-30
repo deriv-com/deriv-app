@@ -1,14 +1,14 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import depositLockedProvider from '../DepositLockedProvider';
+import getDepositLockedContent from '../DepositLockedContent';
 
 window.LC_API = {
     on_chat_ended: jest.fn(),
     open_chat_window: jest.fn(),
 };
 
-describe('DepositLockedProvider', () => {
+describe('DepositLockedContent', () => {
     it('should render title and description as undefined when deposit is not locked', () => {
-        const result = depositLockedProvider({
+        const result = getDepositLockedContent({
             askFixDetails: false,
             clientTncStatus: 'latest',
             currency: 'USD',
@@ -30,7 +30,7 @@ describe('DepositLockedProvider', () => {
     });
 
     it('should render correct message when POI has not been verified', () => {
-        const result = depositLockedProvider({
+        const result = getDepositLockedContent({
             askFixDetails: false,
             clientTncStatus: 'latest',
             currency: 'USD',
@@ -58,7 +58,7 @@ describe('DepositLockedProvider', () => {
     });
 
     it('should render correct message when POA has not been verified', () => {
-        const result = depositLockedProvider({
+        const result = getDepositLockedContent({
             askFixDetails: false,
             clientTncStatus: 'latest',
             currency: 'USD',
@@ -84,7 +84,7 @@ describe('DepositLockedProvider', () => {
     });
 
     it('should render correct message when latest TnC has not been accepted', () => {
-        const result = depositLockedProvider({
+        const result = getDepositLockedContent({
             askFixDetails: false,
             clientTncStatus: 'not latest',
             currency: 'USD',
@@ -110,7 +110,7 @@ describe('DepositLockedProvider', () => {
     });
 
     it('should render correct message when financial information is pending for MF accounts', () => {
-        const result = depositLockedProvider({
+        const result = getDepositLockedContent({
             askFixDetails: false,
             clientTncStatus: 'latest',
             currency: 'USD',
@@ -136,7 +136,7 @@ describe('DepositLockedProvider', () => {
     });
 
     it('should render correct message when trading experience information is pending for MF accounts', () => {
-        const result = depositLockedProvider({
+        const result = getDepositLockedContent({
             askFixDetails: false,
             clientTncStatus: 'latest',
             currency: 'USD',
@@ -162,7 +162,7 @@ describe('DepositLockedProvider', () => {
     });
 
     it('should render correct message when askFixDetails status received', () => {
-        const result = depositLockedProvider({
+        const result = getDepositLockedContent({
             askFixDetails: true,
             clientTncStatus: 'latest',
             currency: 'USD',
@@ -190,7 +190,7 @@ describe('DepositLockedProvider', () => {
     });
 
     it('should render correct message when selfExclusion status received', () => {
-        const result = depositLockedProvider({
+        const result = getDepositLockedContent({
             askFixDetails: false,
             clientTncStatus: 'latest',
             currency: 'USD',
@@ -223,7 +223,7 @@ describe('DepositLockedProvider', () => {
     });
 
     it('should render correct message when unwelcomeStatus status received', () => {
-        const result = depositLockedProvider({
+        const result = getDepositLockedContent({
             askFixDetails: false,
             clientTncStatus: 'latest',
             currency: 'USD',

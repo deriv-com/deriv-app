@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import { useGetAccountStatus } from '@deriv/api';
-import { Loader } from '../../../../components';
 import { WalletDeposit } from '../../flows/WalletDeposit';
 import { WalletFiatOnRamp } from '../../flows/WalletFiatOnRamp';
 import { WalletResetBalance } from '../../flows/WalletResetBalance';
@@ -12,7 +10,6 @@ import { DepositLocked, WithdrawalLocked } from '../../screens';
 
 const WalletCashierContent = () => {
     const history = useHistory();
-    const { data: accountStatus, isLoading } = useGetAccountStatus();
 
     const isDeposit = useRouteMatch('/wallets/cashier/deposit');
     const isFiatOnRamp = useRouteMatch('/wallets/cashier/on-ramp');
@@ -28,11 +25,9 @@ const WalletCashierContent = () => {
         }
     }, [isTransfer, isDeposit, isTransactions, isWithdraw, isResetBalance, isFiatOnRamp, history]);
 
-    if (isLoading) return <Loader />;
-
-    if (isDeposit && accountStatus)
+    if (isDeposit)
         return (
-            <DepositLocked accountStatus={accountStatus}>
+            <DepositLocked>
                 <WalletDeposit />
             </DepositLocked>
         );
@@ -45,9 +40,9 @@ const WalletCashierContent = () => {
 
     if (isTransactions) return <WalletTransactions />;
 
-    if (isWithdraw && accountStatus) {
+    if (isWithdraw) {
         return (
-            <WithdrawalLocked accountStatus={accountStatus}>
+            <WithdrawalLocked>
                 <WalletWithdrawal />
             </WithdrawalLocked>
         );

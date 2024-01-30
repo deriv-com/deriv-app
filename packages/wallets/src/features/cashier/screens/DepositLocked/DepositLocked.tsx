@@ -1,41 +1,46 @@
 import React from 'react';
-import { useActiveWalletAccount, useQuery, useSettings } from '@deriv/api';
+import {
+    useAccountStatus,
+    useActiveWalletAccount,
+    useAuthentication,
+    useCashierValidation,
+    useQuery,
+    useSettings,
+} from '@deriv/api';
 import { WalletsActionScreen } from '../../../../components';
-import type { THooks } from '../../../../types';
-import depositLockedProvider from './DepositLockedProvider';
+import getDepositLockedContent from './DepositLockedContent';
 import './DepositLocked.scss';
 
-type TProps = {
-    accountStatus: THooks.GetAccountStatus;
-};
-
-const DepositLocked: React.FC<React.PropsWithChildren<TProps>> = ({ accountStatus, children }) => {
+const DepositLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { data: activeWallet } = useActiveWalletAccount();
     const { data: settings } = useSettings();
     const { data: websiteStatus } = useQuery('website_status');
+    const { data: authentication } = useAuthentication();
+    const { data: cashierValidation } = useCashierValidation();
+    const { data: status } = useAccountStatus();
 
-    const authentication = accountStatus?.authentication;
-    const cashierValidation = accountStatus?.cashier_validation;
-    const status = accountStatus?.status;
-
-    const askFixDetails = cashierValidation?.includes('ASK_FIX_DETAILS') || false;
-    const clientTncStatus = settings?.client_tnc_status;
     const currency = activeWallet?.currency || 'USD';
     const excludedUntil = activeWallet?.excluded_until;
-    const financialInformationNotComplete = status?.includes('financial_information_not_complete') || false;
-    const isDepositLocked = status?.includes('deposit_locked');
     const isMFAccount = activeWallet?.loginid?.startsWith('MF') || false;
-    const poaNeedsVerification = authentication?.needs_verification?.includes('document') || false;
-    const poaStatus = authentication?.document?.status || 'none';
-    const poiNeedsVerification = authentication?.needs_verification?.includes('identity') || false;
-    const poiStatus = authentication?.identity?.status || 'none';
-    const selfExclusion = cashierValidation?.includes('SelfExclusion') || false;
-    const tradingExperienceNotComplete = status?.includes('trading_experience_not_complete') || false;
-    const unwelcomeStatus = cashierValidation?.includes('unwelcome_status') || false;
+
+    const clientTncStatus = settings?.client_tnc_status;
     const websiteTncVersion = websiteStatus?.website_status?.terms_conditions_version;
 
+    const poaNeedsVerification = authentication?.is_poa_needed || false;
+    const poiNeedsVerification = authentication?.is_poa_needed || false;
+    const poaStatus = authentication?.poa_status || 'none';
+    const poiStatus = authentication?.poi_status || 'none';
+
+    const askFixDetails = cashierValidation?.ask_fix_details || false;
+    const selfExclusion = cashierValidation?.self_exclusion || false;
+    const unwelcomeStatus = cashierValidation?.unwelcome_status || false;
+
+    const isDepositLocked = status?.is_deposit_locked || false;
+    const financialInformationNotComplete = status?.is_financial_information_not_complete || false;
+    const tradingExperienceNotComplete = status?.is_trading_experience_not_complete || false;
+
     const state = isDepositLocked
-        ? depositLockedProvider({
+        ? getDepositLockedContent({
               askFixDetails,
               clientTncStatus,
               currency,

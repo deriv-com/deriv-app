@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trans } from 'react-i18next';
 import {
     useAccountLimits,
     useAccountStatus,
@@ -7,7 +8,7 @@ import {
     useCashierValidation,
 } from '@deriv/api';
 import { WalletsActionScreen } from '../../../../components';
-import getWithdrawalLockedContent from './WithdrawalLockedContent';
+import getWithdrawalLockedDesc from './WithdrawalLockedContent';
 import './WithdrawalLocked.scss';
 
 const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -41,27 +42,32 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
         +remainder < minimumWithdrawal
     );
 
-    const state = isWithdrawalLocked
-        ? getWithdrawalLockedContent({
-              askAuthenticate,
-              askFinancialRiskApproval,
-              askFixDetails,
-              currency,
-              financialAssessmentRequired,
-              noWithdrawalOrTradingStatus,
-              poaNeedsVerification,
-              poaStatus,
-              poiNeedsVerification,
-              poiStatus,
-              withdrawalLimitReached,
-              withdrawalLockedStatus,
-          })
-        : undefined;
-
-    if (state) {
+    if (isWithdrawalLocked) {
         return (
             <div className='wallets-withdrawal-locked'>
-                <WalletsActionScreen description={state?.description} title={state?.title} />
+                <WalletsActionScreen
+                    description={
+                        getWithdrawalLockedDesc({
+                            askAuthenticate,
+                            askFinancialRiskApproval,
+                            askFixDetails,
+                            financialAssessmentRequired,
+                            noWithdrawalOrTradingStatus,
+                            poaNeedsVerification,
+                            poaStatus,
+                            poiNeedsVerification,
+                            poiStatus,
+                            withdrawalLimitReached,
+                            withdrawalLockedStatus,
+                        })?.description
+                    }
+                    title={
+                        <Trans
+                            defaults='Withdrawals from your {{currency}} Wallet are temporarily locked.'
+                            values={{ currency }}
+                        />
+                    }
+                />
             </div>
         );
     }

@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import getDepositLockedContent from '../DepositLockedContent';
+import getDepositLockedDesc from '../DepositLockedContent';
 
 window.LC_API = {
     on_chat_ended: jest.fn(),
@@ -8,10 +8,9 @@ window.LC_API = {
 
 describe('DepositLockedContent', () => {
     it('should render title and description as undefined when deposit is not locked', () => {
-        const result = getDepositLockedContent({
+        const result = getDepositLockedDesc({
             askFixDetails: false,
             clientTncStatus: 'latest',
-            currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
             isMFAccount: false,
@@ -25,15 +24,13 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        expect(result?.title).toBeUndefined();
         expect(result?.description).toBeUndefined();
     });
 
     it('should render correct message when POI has not been verified', () => {
-        const result = getDepositLockedContent({
+        const result = getDepositLockedDesc({
             askFixDetails: false,
             clientTncStatus: 'latest',
-            currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
             isMFAccount: false,
@@ -47,9 +44,6 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.title);
-        expect(screen.getByText('Deposits into your USD Wallet are temporarily locked.')).toBeInTheDocument();
-
         if (result) render(result.description);
         expect(screen.getByText(/To enable deposits, you must check/)).toBeInTheDocument();
         expect(
@@ -58,10 +52,9 @@ describe('DepositLockedContent', () => {
     });
 
     it('should render correct message when POA has not been verified', () => {
-        const result = getDepositLockedContent({
+        const result = getDepositLockedDesc({
             askFixDetails: false,
             clientTncStatus: 'latest',
-            currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
             isMFAccount: false,
@@ -75,19 +68,15 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.title);
-        expect(screen.getByText('Deposits into your USD Wallet are temporarily locked.')).toBeInTheDocument();
-
         if (result) render(result.description);
         expect(screen.getByText(/To enable deposits, you must check/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'proof of address document verification status' })).toBeInTheDocument();
     });
 
     it('should render correct message when latest TnC has not been accepted', () => {
-        const result = getDepositLockedContent({
+        const result = getDepositLockedDesc({
             askFixDetails: false,
             clientTncStatus: 'not latest',
-            currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
             isMFAccount: false,
@@ -101,19 +90,15 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.title);
-        expect(screen.getByText('Deposits into your USD Wallet are temporarily locked.')).toBeInTheDocument();
-
         if (result) render(result.description);
         expect(screen.getByText(/To enable deposits, you must accept/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'updated terms and conditions' })).toBeInTheDocument();
     });
 
     it('should render correct message when financial information is pending for MF accounts', () => {
-        const result = getDepositLockedContent({
+        const result = getDepositLockedDesc({
             askFixDetails: false,
             clientTncStatus: 'latest',
-            currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: true,
             isMFAccount: true,
@@ -127,19 +112,15 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.title);
-        expect(screen.getByText('Deposits into your USD Wallet are temporarily locked.')).toBeInTheDocument();
-
         if (result) render(result.description);
         expect(screen.getByText(/To enable deposits, you must complete/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'financial assessment form' })).toBeInTheDocument();
     });
 
     it('should render correct message when trading experience information is pending for MF accounts', () => {
-        const result = getDepositLockedContent({
+        const result = getDepositLockedDesc({
             askFixDetails: false,
             clientTncStatus: 'latest',
-            currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
             isMFAccount: true,
@@ -153,19 +134,15 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.title);
-        expect(screen.getByText('Deposits into your USD Wallet are temporarily locked.')).toBeInTheDocument();
-
         if (result) render(result.description);
         expect(screen.getByText(/To enable deposits, you must complete/)).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'financial assessment form' })).toBeInTheDocument();
     });
 
     it('should render correct message when askFixDetails status received', () => {
-        const result = getDepositLockedContent({
+        const result = getDepositLockedDesc({
             askFixDetails: true,
             clientTncStatus: 'latest',
-            currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
             isMFAccount: false,
@@ -179,9 +156,6 @@ describe('DepositLockedContent', () => {
             websiteTncVersion: 'latest',
         });
 
-        if (result) render(result.title);
-        expect(screen.getByText('Deposits into your USD Wallet are temporarily locked.')).toBeInTheDocument();
-
         if (result) render(result.description);
         expect(
             screen.getByText(/Please go to your account settings and complete your personal details to enable deposits/)
@@ -190,10 +164,9 @@ describe('DepositLockedContent', () => {
     });
 
     it('should render correct message when selfExclusion status received', () => {
-        const result = getDepositLockedContent({
+        const result = getDepositLockedDesc({
             askFixDetails: false,
             clientTncStatus: 'latest',
-            currency: 'USD',
             excludedUntil: new Date('01/01/2100'),
             financialInformationNotComplete: false,
             isMFAccount: false,
@@ -206,9 +179,6 @@ describe('DepositLockedContent', () => {
             unwelcomeStatus: false,
             websiteTncVersion: 'latest',
         });
-
-        if (result) render(result.title);
-        expect(screen.getByText('Deposits into your USD Wallet are temporarily locked.')).toBeInTheDocument();
 
         if (result) render(result.description);
         expect(
@@ -223,10 +193,9 @@ describe('DepositLockedContent', () => {
     });
 
     it('should render correct message when unwelcomeStatus status received', () => {
-        const result = getDepositLockedContent({
+        const result = getDepositLockedDesc({
             askFixDetails: false,
             clientTncStatus: 'latest',
-            currency: 'USD',
             excludedUntil: undefined,
             financialInformationNotComplete: false,
             isMFAccount: false,
@@ -239,9 +208,6 @@ describe('DepositLockedContent', () => {
             unwelcomeStatus: true,
             websiteTncVersion: 'latest',
         });
-
-        if (result) render(result.title);
-        expect(screen.getByText('Deposits into your USD Wallet are temporarily locked.')).toBeInTheDocument();
 
         if (result) render(result.description);
         expect(screen.getByText(/Please contact us/)).toBeInTheDocument();

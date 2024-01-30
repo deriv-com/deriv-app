@@ -1,4 +1,5 @@
 import React from 'react';
+import { Trans } from 'react-i18next';
 import {
     useAccountStatus,
     useActiveWalletAccount,
@@ -8,7 +9,7 @@ import {
     useSettings,
 } from '@deriv/api';
 import { WalletsActionScreen } from '../../../../components';
-import getDepositLockedContent from './DepositLockedContent';
+import getDepositLockedDesc from './DepositLockedContent';
 import './DepositLocked.scss';
 
 const DepositLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -39,29 +40,34 @@ const DepositLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
     const financialInformationNotComplete = status?.is_financial_information_not_complete || false;
     const tradingExperienceNotComplete = status?.is_trading_experience_not_complete || false;
 
-    const state = isDepositLocked
-        ? getDepositLockedContent({
-              askFixDetails,
-              clientTncStatus,
-              currency,
-              excludedUntil,
-              financialInformationNotComplete,
-              isMFAccount,
-              poaNeedsVerification,
-              poaStatus,
-              poiNeedsVerification,
-              poiStatus,
-              selfExclusion,
-              tradingExperienceNotComplete,
-              unwelcomeStatus,
-              websiteTncVersion,
-          })
-        : undefined;
-
-    if (state) {
+    if (isDepositLocked) {
         return (
             <div className='wallets-deposit-locked'>
-                <WalletsActionScreen description={state?.description} title={state?.title} />
+                <WalletsActionScreen
+                    description={
+                        getDepositLockedDesc({
+                            askFixDetails,
+                            clientTncStatus,
+                            excludedUntil,
+                            financialInformationNotComplete,
+                            isMFAccount,
+                            poaNeedsVerification,
+                            poaStatus,
+                            poiNeedsVerification,
+                            poiStatus,
+                            selfExclusion,
+                            tradingExperienceNotComplete,
+                            unwelcomeStatus,
+                            websiteTncVersion,
+                        })?.description
+                    }
+                    title={
+                        <Trans
+                            defaults='Deposits into your {{currency}} Wallet are temporarily locked.'
+                            values={{ currency }}
+                        />
+                    }
+                />
             </div>
         );
     }

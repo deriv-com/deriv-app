@@ -9,7 +9,7 @@ import {
 } from '@deriv/api';
 import { render, screen } from '@testing-library/react';
 import DepositLocked from '../DepositLocked';
-import getDepositLockedContent from '../DepositLockedContent';
+import getDepositLockedDesc from '../DepositLockedContent';
 
 jest.mock('@deriv/api', () => ({
     useAccountStatus: jest.fn(),
@@ -54,8 +54,8 @@ describe('DepositLocked', () => {
         (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockLockedStatusData });
 
-        const mockLockedState = { description: 'Locked Description', title: 'Locked Title' };
-        (getDepositLockedContent as jest.Mock).mockReturnValueOnce(mockLockedState);
+        const mockLockedState = { description: 'Locked Description' };
+        (getDepositLockedDesc as jest.Mock).mockReturnValueOnce(mockLockedState);
 
         render(
             <DepositLocked>
@@ -64,8 +64,8 @@ describe('DepositLocked', () => {
         );
 
         expect(screen.queryByText('Test Child Component')).not.toBeInTheDocument();
-        expect(screen.getByText('Locked Title')).toBeInTheDocument();
         expect(screen.getByText('Locked Description')).toBeInTheDocument();
+        expect(screen.getByText('Deposits into your USD Wallet are temporarily locked.')).toBeInTheDocument();
     });
 
     it('should render children when not in a locked state', () => {
@@ -76,7 +76,7 @@ describe('DepositLocked', () => {
         (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockStatusData });
 
-        (getDepositLockedContent as jest.Mock).mockReturnValueOnce(null);
+        (getDepositLockedDesc as jest.Mock).mockReturnValueOnce(null);
 
         render(
             <DepositLocked>

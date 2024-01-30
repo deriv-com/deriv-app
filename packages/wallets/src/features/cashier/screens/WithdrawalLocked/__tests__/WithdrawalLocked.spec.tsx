@@ -8,7 +8,7 @@ import {
 } from '@deriv/api';
 import { render, screen } from '@testing-library/react';
 import WithdrawalLocked from '../WithdrawalLocked';
-import getWithdrawalLockedContent from '../WithdrawalLockedContent';
+import getWithdrawalLockedDesc from '../WithdrawalLockedContent';
 
 jest.mock('@deriv/api', () => ({
     useAccountLimits: jest.fn(),
@@ -53,8 +53,8 @@ describe('WithdrawalLocked', () => {
         (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockLockedStatusData });
 
-        const mockLockedState = { description: 'Locked Description', title: 'Locked Title' };
-        (getWithdrawalLockedContent as jest.Mock).mockReturnValueOnce(mockLockedState);
+        const mockLockedState = { description: 'Locked Description' };
+        (getWithdrawalLockedDesc as jest.Mock).mockReturnValueOnce(mockLockedState);
 
         render(
             <WithdrawalLocked>
@@ -63,8 +63,8 @@ describe('WithdrawalLocked', () => {
         );
 
         expect(screen.queryByText('Test Child Component')).not.toBeInTheDocument();
-        expect(screen.getByText('Locked Title')).toBeInTheDocument();
         expect(screen.getByText('Locked Description')).toBeInTheDocument();
+        expect(screen.getByText('Withdrawals from your USD Wallet are temporarily locked.')).toBeInTheDocument();
     });
 
     it('should render children when not in a locked state', () => {
@@ -74,7 +74,7 @@ describe('WithdrawalLocked', () => {
         (useCashierValidation as jest.Mock).mockReturnValueOnce({ data: mockCashierValidationData });
         (useAccountStatus as jest.Mock).mockReturnValueOnce({ data: mockStatusData });
 
-        (getWithdrawalLockedContent as jest.Mock).mockReturnValueOnce(null);
+        (getWithdrawalLockedDesc as jest.Mock).mockReturnValueOnce(null);
 
         render(
             <WithdrawalLocked>

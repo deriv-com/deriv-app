@@ -63,6 +63,7 @@ const WorkspaceGroup = observer(
                     data_testid='dt_toolbar_sort_button'
                     action={onSortClick}
                 />
+                <div className='vertical-divider' />
                 <DesktopWrapper>
                     <ToolbarIcon
                         popover_message={localize('Charts')}
@@ -73,7 +74,7 @@ const WorkspaceGroup = observer(
                 </DesktopWrapper>
                 <DesktopWrapper>
                     <ToolbarIcon
-                        popover_message={localize('TradingView Chart')}
+                        popover_message={localize('Trading View Chart')}
                         icon='IcTradingViewChart'
                         icon_id='db-toolbar__tradingview-button'
                         action={() => setTradingViewModalVisibility()}

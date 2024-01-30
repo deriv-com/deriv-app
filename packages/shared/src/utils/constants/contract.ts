@@ -400,14 +400,6 @@ export const getMarketNamesMap = () =>
 
 export const getUnsupportedContracts = () =>
     ({
-        TICKHIGH: {
-            name: localize('High Tick'),
-            position: 'top',
-        },
-        TICKLOW: {
-            name: localize('Low Tick'),
-            position: 'bottom',
-        },
         LBFLOATCALL: {
             name: localize('Close-to-Low'),
             position: 'top',
@@ -549,6 +541,14 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
             name: localize('Asian Down'),
             position: 'bottom',
         },
+        [CONTRACT_TYPES.TICK_HIGH_LOW.HIGH]: {
+            name: localize('High Tick'),
+            position: 'top',
+        },
+        [CONTRACT_TYPES.TICK_HIGH_LOW.LOW]: {
+            name: localize('Low Tick'),
+            position: 'bottom',
+        },
         RESETCALL: {
             name: localize('Reset Call'),
             position: 'top',
@@ -566,7 +566,7 @@ export const getSupportedContracts = (is_high_low?: boolean) =>
         // and also to DTRADER_FLAGS in FeatureFlagsStore, e.g.: sharkfin: false,
     } as const);
 
-export const TRADE_FEATURE_FLAGS = ['sharkfin'];
+export const TRADE_FEATURE_FLAGS = ['sharkfin', 'dtrader_v2'];
 
 export const getCleanedUpCategories = (categories: TTradeTypesCategories) => {
     const categories_copy: TTradeTypesCategories = cloneObject(categories);

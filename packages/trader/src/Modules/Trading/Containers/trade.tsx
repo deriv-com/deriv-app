@@ -158,6 +158,8 @@ const Trade = observer(() => {
         LocalStore.set('launchTurbosModalShown', true);
     };
 
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='xl'>Hello! I am DTrader 2.0.</Text>;
     return (
         <React.Fragment>
             {!is_eu && open_launch_modal && is_logged_in && !is_already_shown && (

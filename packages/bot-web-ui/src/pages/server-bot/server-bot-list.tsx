@@ -65,10 +65,10 @@ const ServerBotList = ({ bot_list, removeBot }: TServerBotList) => {
                 </>
             )}
             <div className='bot-list-contract__wrapper'>
-                {bot_list?.map((bot: TBotListItem, index: number) => {
+                {bot_list?.map((bot: TBotListItem) => {
                     const { name, bot_id, status } = bot;
                     return (
-                        <div key={index} className='bot-list-contract__item'>
+                        <div key={bot_id} className='bot-list-contract__item'>
                             <div className='bot-list-contract__item__label'>{name}</div>
                             <div>
                                 <p>{localize('[ Strategy parameters ]')}</p>

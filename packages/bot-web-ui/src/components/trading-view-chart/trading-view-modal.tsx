@@ -25,8 +25,8 @@ const TradingViewModal = observer(() => {
         };
     }, []);
 
-    const modalWidth = 580;
-    const modalHeight = 560;
+    const modalWidth = 540;
+    const modalHeight = 524;
 
     const xAxisValue = (screenDimensions.width - modalWidth) / 2;
     const yAxisValue = (screenDimensions.height - modalHeight) / 2;

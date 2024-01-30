@@ -5,11 +5,11 @@ import { ButtonGroup, Modal, SentEmailContent } from '../../../../../components'
 import { CFDPlatforms } from '../../../constants';
 import CreateAccountButton from './CreateAccountButton';
 
-type TProps = {
+type TAddAccountButtonsGroupProps = {
     password: string;
 };
 
-const AddAccountButtonsGroup = ({ password }: TProps) => {
+const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
     const { show } = Provider.useModal();
     const { getCFDState } = Provider.useCFDContext();
     const platform = getCFDState('platform') ?? CFDPlatforms.MT5;

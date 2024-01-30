@@ -5,12 +5,12 @@ import useMT5AccountHandler from '../../../../../hooks/useMT5AccountHandler';
 import { validPassword } from '../../../../../utils/password';
 import { MarketType, TTM5FilterLandingCompany } from '../../../constants';
 
-type TProps = {
+type TCreateAccountButtonProps = {
     buttonText: string;
     password: string;
 };
 
-const CreateAccountButton = ({ buttonText, password }: TProps) => {
+const CreateAccountButton = ({ buttonText, password }: TCreateAccountButtonProps) => {
     const { getCFDState } = Provider.useCFDContext();
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;

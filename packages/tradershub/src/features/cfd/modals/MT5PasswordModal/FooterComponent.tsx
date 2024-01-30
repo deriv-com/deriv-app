@@ -7,11 +7,11 @@ import AddAccountButtonsGroup from './ButtonGroups/AddAccountButtonsGroup';
 import CreateAccountButton from './ButtonGroups/CreateAccountButton';
 import SuccessButtonGroup from './ButtonGroups/SuccessButtonGroup';
 
-type TProps = {
+type TFooterComponentProps = {
     password: string;
 };
 
-const FooterComponent = ({ password }: TProps) => {
+const FooterComponent = ({ password }: TFooterComponentProps) => {
     const { data: mt5Accounts } = useMT5AccountsList();
     const { getCFDState } = Provider.useCFDContext();
     const marketType = getCFDState('marketType') ?? MarketType.ALL;

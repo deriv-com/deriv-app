@@ -1,4 +1,4 @@
-import React, { FC, Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useCountdown } from 'usehooks-ts';
 import { useActiveTradingAccount, useSettings, useVerifyEmail } from '@deriv/api';
 import { Button, useBreakpoint } from '@deriv/quill-design';
@@ -8,13 +8,13 @@ import { TPlatforms } from '../../types';
 import { platformPasswordResetRedirectLink } from '../../utils/cfd';
 import { ActionScreen } from '../ActionScreen';
 
-type TProps = {
+type TSentEmailContentProps = {
     description?: string;
     isInvestorPassword?: boolean;
     platform?: TPlatforms.All;
 };
 
-const SentEmailContent: FC<TProps> = ({ description, isInvestorPassword = false, platform }) => {
+const SentEmailContent = ({ description, isInvestorPassword = false, platform }: TSentEmailContentProps) => {
     const [shouldShowResendEmailReasons, setShouldShowResendEmailReasons] = useState(false);
     const [hasCountdownStarted, setHasCountdownStarted] = useState(false);
     const { data } = useSettings();

@@ -1,7 +1,7 @@
-import React, { ComponentProps, isValidElement, PropsWithChildren, ReactNode } from 'react';
+import React, { ComponentProps, isValidElement, ReactNode } from 'react';
 import { qtMerge, Text } from '@deriv/quill-design';
 
-type TProps = {
+type TActionScreenProps = {
     className?: string;
     description: ReactNode;
     descriptionSize?: ComponentProps<typeof Text>['size'];
@@ -16,7 +16,7 @@ type TProps = {
  * As its common and repeated in many places,
  * at the moment of writing this, there are already 3 different patterns use to display ex
  */
-const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
+const ActionScreen = ({
     className,
     description,
     descriptionSize = 'md',
@@ -24,7 +24,7 @@ const ActionScreen: React.FC<PropsWithChildren<TProps>> = ({
     renderButtons,
     title,
     titleSize = 'md',
-}) => {
+}: TActionScreenProps) => {
     return (
         <div
             className={qtMerge([

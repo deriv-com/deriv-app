@@ -2,8 +2,8 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
+import { Button } from '@deriv-com/ui/dist/components/Button';
 import { IconToCurrencyMapper } from '../../constants/constants';
 import useRegulationFlags from '../../hooks/useRegulationFlags';
 import { THooks } from '../../types';
@@ -30,8 +30,6 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
 
     return (
         <Button
-            className='flex items-center justify-center border-solid h-1600 py-300 px-800 rounded-200 border-75 border-system-light-less-prominent-text'
-            colorStyle='black'
             onClick={() => {
                 if (isDemo) {
                     resetVirtualBalance();
@@ -39,7 +37,7 @@ const AccountActionButton = ({ balance, isDemo }: AccountActionButtonProps) => {
                     history.push('/cashier/deposit');
                 }
             }}
-            variant='secondary'
+            variant='outlined'
         >
             {buttonText}
         </Button>
@@ -93,12 +91,7 @@ const CurrencySwitcher = () => {
                                     <TradingAccountsList />
                                 </Modal.Content>
                                 <Modal.Footer className='grid-cols-1'>
-                                    <Button
-                                        className='py-900 rounded-200 border-sm border-system-light-less-prominent-text'
-                                        colorStyle='black'
-                                        fullWidth
-                                        variant='secondary'
-                                    >
+                                    <Button isFullWidth variant='outlined'>
                                         Add or manage account
                                     </Button>
                                 </Modal.Footer>

@@ -32,7 +32,7 @@ import {
     toMoment,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';
@@ -649,7 +649,8 @@ const OpenPositions = observer(({ component_icon, ...props }: TOpenPositions) =>
             />
         );
     };
-
+    // TODO: Uncomment and update this when DTrader 2.0 development starts:
+    // if (useFeatureFlags().is_dtrader_v2_enabled) return <Text size='l'>I am Open positions for DTrader 2.0.</Text>;
     return (
         <React.Fragment>
             <NotificationMessages />

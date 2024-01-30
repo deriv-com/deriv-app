@@ -9,18 +9,17 @@
         display: flex;
         align-items: center;
     }
-
-    --modal-height: 48.1vh;
-
+    padding: 0 0.8rem;
+    --modal-height: calc(100% - 48px);
     height: var(--modal-height);
-    max-height: var(--modal-height);
     @include align-items-center;
     justify-content: center;
     z-index: 999;
     transition: opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
 
     .dashboard__chart-wrapper--modal {
-        height: var(--modal-height);
+        height: 100%;
+        width: 100%;
     }
 
     .sc-navigation-widget {

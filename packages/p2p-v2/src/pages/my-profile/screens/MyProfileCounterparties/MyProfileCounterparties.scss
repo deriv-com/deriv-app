@@ -14,6 +14,12 @@
         height: 100%;
         position: relative;
         flex-direction: column;
+
+        &-header {
+            @include mobile {
+                padding: 0 1.6rem;
+            }
+        }
     }
 
     &__header {

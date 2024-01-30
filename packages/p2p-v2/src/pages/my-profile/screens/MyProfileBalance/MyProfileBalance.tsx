@@ -5,6 +5,7 @@ import { useAdvertiserStats, useDevice } from '../../../../hooks';
 import InfoOutlineIcon from '../../../../public/ic-info-outline.svg';
 import { numberToCurrencyText } from '../../../../utils';
 import './MyProfileBalance.scss';
+import { MyProfileDailyLimit } from '../MyProfileDailyLimit';
 
 const MyProfileBalance = () => {
     const { data: advertiserInfo, isLoading } = useAdvertiserStats();
@@ -77,16 +78,8 @@ const MyProfileBalance = () => {
                             </div>
                         </div>
                     </div>
-                    <div className='p2p-v2-my-profile-balance__daily-limits'>
-                        <Text color='less-prominent' size='xs'>
-                            Want to increase your daily limits to <strong>{advertiserInfo?.daily_buy_limit} USD</strong>{' '}
-                            (buy) and <strong>{advertiserInfo?.daily_sell_limit} USD</strong> (sell)?
-                        </Text>
-                        <button className='' onClick={() => setShouldShowDailyLimitModal(true)}>
-                            <Text color='error' size='xs' weight='bold'>
-                                Increase my limits
-                            </Text>
-                        </button>
+                    <div className='w-fit'>
+                        <MyProfileDailyLimit />
                     </div>
                 </div>
             </div>

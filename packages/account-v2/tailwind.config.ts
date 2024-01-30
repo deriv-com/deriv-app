@@ -14,10 +14,6 @@ export default {
                         '5': '#d6dadb',
                         '6': '#d6d6d6',
                     },
-                    red: {
-                        '10': '#ff444f',
-                    },
-                    white: '#ffffff',
                 },
             },
         },

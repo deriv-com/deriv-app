@@ -1,7 +1,7 @@
 import React, { MouseEventHandler } from 'react';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import IcPOAError from '../../../../assets/poa/ic-poa-error.svg';
+import IcPOAError from '../../../../assets/verification-status/ic-poa-error.svg';
 import POAStatus from '../POAStatus';
 
 type TUnverified = {

@@ -1,7 +1,7 @@
 import React, { MouseEventHandler } from 'react';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import IcPOAUpload from '../../../../assets/poa/ic-poa-upload.svg';
+import IcPOAUpload from '../../../../assets/verification-status/ic-poa-upload.svg';
 import POAStatus from '../POAStatus';
 
 type TExpired = {

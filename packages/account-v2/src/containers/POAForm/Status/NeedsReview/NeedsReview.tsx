@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import IcPOAVerified from '../../../../assets/poa/ic-poa-verified.svg';
+import IcPOAVerified from '../../../../assets/verification-status/ic-poa-verified.svg';
 import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../../../utils/platform';
 import POAStatus from '../POAStatus';
 

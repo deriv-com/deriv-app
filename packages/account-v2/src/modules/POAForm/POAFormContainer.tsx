@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import { useActiveAccount } from '../../../../api/src/hooks';
+import { useActiveAccount } from '@deriv/api';
 import { AUTH_STATUS_CODES, P2P_ROUTE } from '../../constants/constants';
-import { AddressDetailsForm as ProofOfAddressForm } from '../../containers/POAForm/AddressDetailsForm';
+import { AddressDetailsForm } from '../../containers/POAForm/AddressDetailsForm';
 import {
     DemoMessage,
     Expired,
@@ -18,7 +18,7 @@ import { isNavigationFromP2P } from '../../utils/platform';
 
 export const POAFormContainer = () => {
     const { data: activeAccount } = useActiveAccount();
-    const { data: poaInfo, isLoading } = usePOAInfo(activeAccount?.landing_company_name ?? '');
+    const { data: poaInfo, isLoading } = usePOAInfo();
     const [resubmitting, setResubmitting] = useState(false);
 
     const { documentNotRequired, documentStatus, documentSubmitted, isPOAResubmission, isPOINeeded } = poaInfo;
@@ -47,12 +47,12 @@ export const POAFormContainer = () => {
     if (documentSubmitted) return <Submitted needsPOI={isPOINeeded} redirectButton={redirectButton} />;
 
     if (resubmitting || isPOAResubmission) {
-        return <ProofOfAddressForm resubmitting />;
+        return <AddressDetailsForm resubmitting />;
     }
 
     switch (documentStatus) {
         case AUTH_STATUS_CODES.NONE:
-            return <ProofOfAddressForm />;
+            return <AddressDetailsForm />;
         case AUTH_STATUS_CODES.PENDING:
             return <NeedsReview needsPOI={isPOINeeded} redirectButton={redirectButton} />;
         case AUTH_STATUS_CODES.VERIFIED:

@@ -1,7 +1,7 @@
 import React from 'react';
+import { useAuthorize } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
-import { useAuthorize } from '../../../../../../api/src/hooks';
-import IcPOALock from '../../../../assets/poa/ic-poa-lock.svg';
+import IcPOALock from '../../../../assets/verification-status/ic-poa-lock.svg';
 import POAStatus from '../POAStatus';
 
 export const DemoMessage = () => {

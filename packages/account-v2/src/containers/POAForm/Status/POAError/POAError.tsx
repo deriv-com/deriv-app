@@ -1,5 +1,5 @@
 import React from 'react';
-import IcPOALock from '../../../../assets/poa/ic-poa-lock.svg';
+import IcPOALock from '../../../../assets/verification-status/ic-poa-lock.svg';
 import POAStatus from '../POAStatus';
 
 type TPOAError = {

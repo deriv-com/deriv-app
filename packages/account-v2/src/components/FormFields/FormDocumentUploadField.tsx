@@ -1,9 +1,12 @@
 import React, { ComponentProps } from 'react';
-import { useField } from 'formik';
+import * as Yup from 'yup';
+import { Field, FieldProps } from 'formik';
 import { Dropzone } from '../base/Dropzone';
+import { validateField } from '../../utils/validation';
 
 type TFormDocumentUploadField = Omit<ComponentProps<typeof Dropzone>, 'onFileChange'> & {
     name: string;
+    validationSchema?: Yup.AnySchema;
 };
 
 /**
@@ -13,9 +16,12 @@ type TFormDocumentUploadField = Omit<ComponentProps<typeof Dropzone>, 'onFileCha
  * @param [props] - Other props to pass to Dropzone
  * @returns ReactNode
  */
-const FormDocumentUploadField = ({ name, ...rest }: TFormDocumentUploadField) => {
-    const [, , helpers] = useField(name);
-    return <Dropzone {...rest} onFileChange={(file: File) => helpers.setValue(file)} />;
-};
+const FormDocumentUploadField = ({ name, validationSchema, ...rest }: TFormDocumentUploadField) => (
+    <Field name={name} validate={validateField(validationSchema)}>
+        {({ form }: FieldProps<File>) => (
+            <Dropzone {...rest} onFileChange={(file: File) => form.setFieldValue(name, file)} />
+        )}
+    </Field>
+);
 
 export default FormDocumentUploadField;

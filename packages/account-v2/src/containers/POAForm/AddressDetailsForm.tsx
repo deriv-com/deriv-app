@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import { useHistory } from 'react-router-dom';
-import { useDocumentUpload, useSettings } from '@deriv/api';
+import { useDocumentUpload, useInvalidateQuery, useSettings } from '@deriv/api';
 import { useBreakpoint } from '@deriv/quill-design';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Button } from '@deriv-com/ui/dist/components/Button';
@@ -25,28 +25,39 @@ type TAddressDetailsForm = {
 };
 
 export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
-    const { data: settings, error: fetchError, mutation, update: updateSettings } = useSettings();
+    const {
+        data: settings,
+        error: fetchError,
+        mutation: { error: settingsUpdateError, isLoading: isSettingsUpdating, mutateAsync: updateSettings },
+    } = useSettings();
     const { error: documentUploadError, isLoading: isDocumentUploading, upload } = useDocumentUpload();
+    const invalidate = useInvalidateQuery();
     const { isMobile } = useBreakpoint();
     const history = useHistory();
 
-    const { error: settingsUpdateError, isLoading: isSettingsUpdating } = mutation;
-
-    const handleFormSubmit = async (values: TAddressDetails) => {
-        updateSettings({
-            address_city: values.addressCity,
-            address_line_1: values.addressLine1,
-            address_line_2: values.addressLine2,
-            address_postcode: values.addressPostcode,
-            address_state: values.addressState,
-        });
-
-        // upload file
-        return upload({
-            document_issuing_country: settings?.country_code ?? undefined,
-            document_type: 'proofaddress',
-            file: values.document,
-        });
+    const handleFormSubmit = async (values: TAddressDetails, { setStatus }: FormikHelpers<TAddressDetails>) => {
+        try {
+            await updateSettings({
+                payload: {
+                    address_city: values.addressCity,
+                    address_line_1: values.addressLine1,
+                    address_line_2: values.addressLine2,
+                    address_postcode: values.addressPostcode,
+                    address_state: values.addressState,
+                },
+            });
+            // upload file
+            await upload({
+                document_issuing_country: settings?.country_code ?? undefined,
+                document_type: 'proofaddress',
+                file: values.document,
+            });
+            invalidate('get_account_status');
+        } catch (error) {
+            if (error instanceof Error) {
+                setStatus({ message: error.message });
+            }
+        }
     };
 
     const { address_city, address_line_1, address_line_2, address_postcode, address_state } = settings;
@@ -63,7 +74,7 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
         return <POAError error_message={fetchError.error.message} />;
     }
 
-    const formSubmitError = settingsUpdateError?.error.message || documentUploadError?.error.message;
+    const updateError = settingsUpdateError?.error.message || documentUploadError?.error.message;
 
     return (
         <Fragment>
@@ -81,12 +92,13 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
                 </div>
             )}
             <Formik enableReinitialize initialValues={initialValues} onSubmit={handleFormSubmit} validateOnMount>
-                {({ isSubmitting, isValid }) => (
+                {({ isSubmitting, isValid, status }) => (
                     <Form>
                         <div className='flex flex-col w-full min-h-screen sm:w-auto space-y-800'>
-                            {(formSubmitError || resubmitting) && (
+                            {(updateError || status || resubmitting) && (
                                 <InlineMessage size='md' type='error' variant='contained'>
-                                    {formSubmitError ||
+                                    {updateError ||
+                                        status.message ||
                                         `We were unable to verify your address with the details you provided. Please check
                                     and resubmit or choose a different document type.`}
                                 </InlineMessage>
@@ -105,12 +117,11 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
                                 <AddressFields />
                                 <DocumentSubmission />
                             </div>
-                            <div className='sticky flex justify-end flex-shrink-0 w-full border-solid bottom-50 py-800 px-1200 bg-solid-white border-t-75 border-solid-grey-2'>
+                            <div className='sticky flex justify-end flex-shrink-0 w-full border-solid bottom-50 py-800 px-1200 bg-solid-slate-50 border-t-75 border-solid-grey-2'>
                                 <Button
-                                    className='bg-solid-red-10'
+                                    className='bg-solid-coral-700'
                                     disabled={isSubmitting || !isValid}
                                     isFullWidth={isMobile}
-                                    //submitSuccess
                                     isLoading={isSettingsUpdating || isDocumentUploading}
                                     size='lg'
                                     type='submit'

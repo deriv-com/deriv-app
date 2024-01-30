@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Yup from 'yup';
 import { useBreakpoint } from '@deriv/quill-design';
 import { StandaloneArrowUpFromBracketBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui/dist/components/Text';
@@ -11,6 +12,8 @@ const listItems = [
     'Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.',
     'Home rental agreement: valid and current agreement.',
 ];
+
+const documentValidation = Yup.mixed().required('Please upload a file');
 
 const DocumentSubmission: React.FC = () => {
     const { isMobile } = useBreakpoint();
@@ -65,6 +68,7 @@ const DocumentSubmission: React.FC = () => {
                         name='document'
                         title='Drag and drop a file or click to browse your files.'
                         titleType='bold'
+                        validationSchema={documentValidation}
                     />
                     <div className='flex items-start self-stretch justify-between'>
                         <Text size={isMobile ? '2xs' : 'xs'}>

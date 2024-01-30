@@ -1,9 +1,9 @@
-import IcBlurryDocument from '../../../assets/ic-blurry-document.svg';
-import IcCroppedDocument from '../../../assets/ic-cropped-document.svg';
-import IcDocumentAddressMismatch from '../../../assets/ic-document-address-mismatch.svg';
-import IcDocumentNameMismatch from '../../../assets/ic-document-name-mismatch.svg';
-import IcEnvelope from '../../../assets/ic-envelop.svg';
-import IcOldIssuedDocument from '../../../assets/ic-old-issued-document.svg';
+import IcBlurryDocument from '../../../assets/common-mistake-examples/ic-blurry-document.svg';
+import IcCroppedDocument from '../../../assets/common-mistake-examples/ic-cropped-document.svg';
+import IcDocumentAddressMismatch from '../../../assets/common-mistake-examples/ic-document-address-mismatch.svg';
+import IcDocumentNameMismatch from '../../../assets/common-mistake-examples/ic-document-name-mismatch.svg';
+import IcEnvelope from '../../../assets/common-mistake-examples/ic-envelop.svg';
+import IcOldIssuedDocument from '../../../assets/common-mistake-examples/ic-old-issued-document.svg';
 
 /**
  * Returns a configuration containing images and descriptions for common POA document upload mistakes

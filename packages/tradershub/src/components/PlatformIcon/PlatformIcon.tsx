@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, ElementType } from 'react';
 import {
     DerivProductDerivBotBrandLightLogoHorizontalIcon,
     DerivProductDerivGoBrandLightLogoHorizontalIcon,
@@ -44,7 +44,7 @@ const PlatformIcon = ({
     onClick,
     width = '48px',
 }: IconProps<keyof typeof PlatformIcons>) => {
-    const TradingPlatformIcon = PlatformIcons[icon] as React.ElementType;
+    const TradingPlatformIcon = PlatformIcons[icon] as ElementType;
 
     return TradingPlatformIcon ? (
         <TradingPlatformIcon className={className} height={height} onClick={onClick} width={width} />

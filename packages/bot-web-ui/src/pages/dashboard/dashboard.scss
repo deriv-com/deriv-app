@@ -332,12 +332,10 @@
             }
 
             &__tiles {
+                @include flex-center(center, flex-start);
                 word-wrap: break-word;
                 font-size: 1.3rem;
                 text-align: center;
-                display: flex;
-                justify-content: center;
-                align-items: flex-start;
 
                 @include mobile {
                     flex-wrap: wrap;

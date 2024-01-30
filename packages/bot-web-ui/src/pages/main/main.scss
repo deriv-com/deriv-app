@@ -181,11 +181,6 @@
     }
 }
 
-.position-center {
-    display: flex;
-    justify-content: center;
-}
-
 .bot-stopped-dialog {
     @include mobile {
         padding: 2rem;
@@ -474,12 +469,9 @@
 }
 
 .dbot-slider {
-    display: flex;
-    justify-content: flex-start;
+    @include flex-center(flex-start);
     flex-direction: column;
-    align-items: center;
     position: fixed;
-
     left: 0;
     bottom: 0;
     width: 100%;
@@ -594,17 +586,13 @@
             width: 100%;
 
             &__status {
-                display: flex;
-                @extend .position-center;
-                justify-content: flex-start;
+                @include flex-center(flex-start);
             }
 
             &__progress-bar {
                 width: 50%;
                 margin-bottom: unset;
-                @extend .position-center;
-                align-items: center;
-                justify-content: flex-start;
+                @include flex-center(flex-start);
                 margin-left: 1rem;
 
                 .progress-bar-circle {
@@ -614,7 +602,8 @@
 
             &__button-group {
                 width: 50%;
-                @extend .position-center;
+                display: flex;
+                justify-content: center;
 
                 .default {
                     background: transparent;

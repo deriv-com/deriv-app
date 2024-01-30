@@ -10,6 +10,11 @@ jest.mock('../../../modules', () => ({
     WithdrawalVerificationModule: jest.fn(() => <div>WithdrawalVerificationModule</div>),
 }));
 
+jest.mock('../../../../../components', () => ({
+    ...jest.requireActual('../../../../../components'),
+    Loader: jest.fn(() => <div>Loading</div>),
+}));
+
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useActiveWalletAccount: jest.fn(),
@@ -35,26 +40,6 @@ describe('<WalletWithdrawal />', () => {
             configurable: true,
             value: originalWindowLocation,
         });
-    });
-
-    xit('remove the `verification` param from the url', () => {
-        mockUseActiveWalletAccount.mockReturnValue({
-            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-            data: {
-                currency: 'USD',
-            },
-        });
-
-        // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-        mockUseCurrencyConfig.mockReturnValue({
-            getConfig: jest.fn(),
-            isSuccess: true,
-        });
-
-        delete global.window.location;
-        global.window.location = new URL('http://localhost/redirect?verification=0987');
-        render(<WalletWithdrawal />);
-        expect(location.toString()).toEqual('http://localhost/redirect');
     });
 
     it('should render withdrawal email verification page if no verification code found', () => {
@@ -114,5 +99,23 @@ describe('<WalletWithdrawal />', () => {
 
         render(<WalletWithdrawal />);
         expect(screen.getByText('WithdrawalCryptoModule')).toBeInTheDocument();
+    });
+
+    it('should show loader if verification code is there but currency config is yet to be loaded', () => {
+        mockUseActiveWalletAccount.mockReturnValue({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            data: {
+                currency: 'BTC',
+            },
+        });
+
+        // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+        mockUseCurrencyConfig.mockReturnValue({
+            getConfig: jest.fn(),
+            isSuccess: false,
+        });
+
+        render(<WalletWithdrawal />);
+        expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 });

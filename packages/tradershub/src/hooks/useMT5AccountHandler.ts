@@ -6,7 +6,7 @@ import {
     useSettings,
     useTradingPlatformPasswordChange,
 } from '@deriv/api';
-import { CFDPlatforms, MarketType } from '../features/cfd/constants';
+import { Category, CFDPlatforms, MarketType } from '../features/cfd/constants';
 import { Jurisdiction } from '../features/cfd/screens/CFDCompareAccounts/constants';
 import { TMarketTypes, TMT5LandingCompanyName } from '../types';
 
@@ -35,7 +35,7 @@ const useMT5AccountHandler = ({ marketType, selectedJurisdiction }: TUseMT5Accou
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
 
     const accountType = marketType === MarketType.SYNTHETIC ? 'gaming' : marketType;
-    const categoryAccountType = activeTrading?.is_virtual ? 'demo' : accountType;
+    const categoryAccountType = activeTrading?.is_virtual ? Category.DEMO : accountType;
     const handleSubmit = (password: string) => {
         // in order to create account, we need to set a password through trading_platform_password_change endpoint first
         // then only mt5_create_account can be called, otherwise it will response an error for password required

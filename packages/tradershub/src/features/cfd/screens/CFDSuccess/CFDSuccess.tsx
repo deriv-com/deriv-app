@@ -21,7 +21,7 @@ type TCFDSuccess = {
           title: string;
       }
     | {
-          marketType: never;
+          marketType?: never;
           platform: Exclude<TPlatforms.All, CFDPlatforms.MT5>;
       }
 );
@@ -55,10 +55,10 @@ const marketTypeToDetailsMapper: Record<TPlatforms.All, TPlatformDetails> = {
 
 const CFDSuccess = ({ description, marketType, platform, renderButtons }: TCFDSuccess) => {
     let icon: ReactNode;
-    if (platform === 'mt5') {
+    if (platform === 'mt5' && marketType) {
         icon = marketTypeToDetailsMapper[platform][marketType]?.icon;
     } else {
-        icon = marketTypeToDetailsMapper[platform].icon;
+        icon = marketTypeToDetailsMapper[platform]?.icon;
     }
 
     const IconWithCheckMark = () => (

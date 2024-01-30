@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useEventListener } from 'usehooks-ts';
 

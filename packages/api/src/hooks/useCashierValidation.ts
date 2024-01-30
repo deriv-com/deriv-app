@@ -11,7 +11,6 @@ const useCashierValidation = () => {
         const cashier_validation = new Set(get_account_status_data?.cashier_validation);
 
         return {
-            cashier_validation: get_account_status_data?.cashier_validation,
             transfer_blocked: cashier_validation.has('transfer_blocked'),
             no_residence: cashier_validation.has('no_residence'),
             unwelcome_status: cashier_validation.has('unwelcome_status'),

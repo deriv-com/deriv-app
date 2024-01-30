@@ -20,19 +20,19 @@ const WithdrawalLocked: React.FC<React.PropsWithChildren> = ({ children }) => {
 
     const currency = activeWallet?.currency || 'USD';
 
-    const poaNeedsVerification = authentication?.is_poa_needed || false;
-    const poiNeedsVerification = authentication?.is_poa_needed || false;
+    const poaNeedsVerification = authentication?.is_poa_needed;
+    const poiNeedsVerification = authentication?.is_poa_needed;
     const poaStatus = authentication?.poa_status || 'none';
     const poiStatus = authentication?.poi_status || 'none';
 
-    const askAuthenticate = cashierValidation?.ask_authenticate || false;
-    const askFinancialRiskApproval = cashierValidation?.ask_financial_risk_approval || false;
-    const askFixDetails = cashierValidation?.ask_fix_details || false;
-    const financialAssessmentRequired = cashierValidation?.financial_assessment_required || false;
-    const noWithdrawalOrTradingStatus = cashierValidation?.no_withdrawal_or_trading_status || false;
-    const withdrawalLockedStatus = cashierValidation?.withdrawal_locked_status || false;
+    const askAuthenticate = cashierValidation?.ask_authenticate;
+    const askFinancialRiskApproval = cashierValidation?.ask_financial_risk_approval;
+    const askFixDetails = cashierValidation?.ask_fix_details;
+    const financialAssessmentRequired = cashierValidation?.financial_assessment_required;
+    const noWithdrawalOrTradingStatus = cashierValidation?.no_withdrawal_or_trading_status;
+    const withdrawalLockedStatus = cashierValidation?.withdrawal_locked_status;
 
-    const isWithdrawalLocked = status?.is_withdrawal_locked || false;
+    const isWithdrawalLocked = status?.is_withdrawal_locked;
 
     const remainder = accountLimits?.remainder;
     const minimumWithdrawal = activeWallet?.currency_config?.minimum_withdrawal;

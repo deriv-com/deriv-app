@@ -4,18 +4,18 @@ import { WalletText } from '../../../../components';
 import { getStaticUrl } from '../../../../helpers/urls';
 
 type TDepositLockedDescProps = {
-    askFixDetails: boolean;
+    askFixDetails?: boolean;
     clientTncStatus?: string | null;
     excludedUntil?: Date;
-    financialInformationNotComplete: boolean;
+    financialInformationNotComplete?: boolean;
     isMFAccount: boolean;
-    poaNeedsVerification: boolean;
+    poaNeedsVerification?: boolean;
     poaStatus: string;
-    poiNeedsVerification: boolean;
+    poiNeedsVerification?: boolean;
     poiStatus: string;
-    selfExclusion: boolean;
-    tradingExperienceNotComplete: boolean;
-    unwelcomeStatus: boolean;
+    selfExclusion?: boolean;
+    tradingExperienceNotComplete?: boolean;
+    unwelcomeStatus?: boolean;
     websiteTncVersion?: string;
 };
 

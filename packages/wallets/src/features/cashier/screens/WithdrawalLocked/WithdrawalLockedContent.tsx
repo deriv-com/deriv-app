@@ -3,17 +3,17 @@ import { Trans } from 'react-i18next';
 import { WalletText } from '../../../../components';
 
 type TWithdrawalLockedDescProps = {
-    askAuthenticate: boolean;
-    askFinancialRiskApproval: boolean;
-    askFixDetails: boolean;
-    financialAssessmentRequired: boolean;
-    noWithdrawalOrTradingStatus: boolean;
-    poaNeedsVerification: boolean;
+    askAuthenticate?: boolean;
+    askFinancialRiskApproval?: boolean;
+    askFixDetails?: boolean;
+    financialAssessmentRequired?: boolean;
+    noWithdrawalOrTradingStatus?: boolean;
+    poaNeedsVerification?: boolean;
     poaStatus: string;
-    poiNeedsVerification: boolean;
+    poiNeedsVerification?: boolean;
     poiStatus: string;
     withdrawalLimitReached: boolean;
-    withdrawalLockedStatus: boolean;
+    withdrawalLockedStatus?: boolean;
 };
 
 const getWithdrawalLockedDesc = ({

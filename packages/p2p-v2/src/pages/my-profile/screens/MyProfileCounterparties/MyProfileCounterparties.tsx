@@ -3,8 +3,8 @@ import { Text } from '@deriv-com/ui/dist/components/Text';
 import { FullPageMobileWrapper } from '../../../../components';
 import { BlockUnblockUserFilterModal } from '../../../../components/Modals/BlockUnblockUserFilterModal';
 import { useDevice, useQueryString } from '../../../../hooks';
-import MyProfileCounterpartiesHeader from './MyProfileCounterpartiesHeader';
-import MyProfileCounterpartiesTable from './MyProfileCounterpartiesTable';
+import { MyProfileCounterpartiesHeader } from './MyProfileCounterpartiesHeader';
+import { MyProfileCounterpartiesTable } from './MyProfileCounterpartiesTable';
 import './MyProfileCounterparties.scss';
 
 const MyProfileCounterpartiesDisplayWrapper = ({ children }: PropsWithChildren<unknown>) => {

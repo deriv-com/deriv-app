@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import { Search } from '../../../../components/Search';
-import { Dropdown } from '../../../../components/Dropdown';
-import { useDevice } from '../../../../hooks';
-import { COUNTERPARTIES_DROPDOWN_LIST } from '../../../../utils/constants';
-import SortIcon from '../../../../public/ic-cashier-sort.svg';
+import { Search } from '../../../../../components/Search';
+import { Dropdown } from '../../../../../components/Dropdown';
+import { useDevice } from '../../../../../hooks';
+import { COUNTERPARTIES_DROPDOWN_LIST } from '../../../../../utils/constants';
+import SortIcon from '../../../../../public/ic-cashier-sort.svg';
 import './MyProfileCounterpartiesHeader.scss';
 
 type MyProfileCounterpartiesHeaderProps = {

@@ -25,14 +25,14 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
         description: isEU ? 'Multipliers trading platform.' : 'Options and multipliers trading platform.',
         icon: <PlatformIcon icon='DTrader' />,
         redirect: '/',
-        smallIcon: <PlatformIcon height='3.2rem' icon='DTrader' width='3.2rem' />,
+        smallIcon: <PlatformIcon height='32px' icon='DTrader' width='32px' />,
         title: 'Deriv Trader',
     },
     {
         description: 'Automate your trading, no coding needed.',
         icon: <PlatformIcon icon='DBot' />,
         redirect: '/bot',
-        smallIcon: <PlatformIcon height='3.2rem' icon='DBot' width='3.2rem' />,
+        smallIcon: <PlatformIcon height='32px' icon='DBot' width='32px' />,
         title: 'Deriv Bot',
     },
     {
@@ -40,7 +40,7 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
         icon: <PlatformIcon icon='SmartTrader' />,
         isExternal: true,
         redirect: getUrlSmartTrader(),
-        smallIcon: <PlatformIcon height='3.2rem' icon='SmartTrader' width='3.2rem' />,
+        smallIcon: <PlatformIcon height='32px' icon='SmartTrader' width='32px' />,
         title: 'SmartTrader',
     },
     {
@@ -48,7 +48,7 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
         icon: <PlatformIcon icon='BinaryBot' />,
         isExternal: true,
         redirect: getUrlBinaryBot(),
-        smallIcon: <PlatformIcon height='3.2rem' icon='BinaryBot' width='3.2rem' />,
+        smallIcon: <PlatformIcon height='32px' icon='BinaryBot' width='32px' />,
         title: 'Binary Bot',
     },
     {
@@ -56,7 +56,7 @@ export const optionsAndMultipliersContent = (isEU: boolean) => [
         icon: <PlatformIcon icon='DerivGo' />,
         isExternal: true,
         redirect: getStaticUrl('/deriv-go'),
-        smallIcon: <PlatformIcon height='3.2rem' icon='DerivGo' width='3.2rem' />,
+        smallIcon: <PlatformIcon height='32px' icon='DerivGo' width='32px' />,
         title: 'Deriv GO',
     },
 ];

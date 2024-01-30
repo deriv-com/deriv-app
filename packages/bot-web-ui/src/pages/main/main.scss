@@ -123,14 +123,6 @@
                 width: auto;
                 @include flex-center;
 
-                &__loaded {
-                    text-align: left;
-                    padding-left: 1.5rem;
-                    @include mobile {
-                        text-align: left;
-                    }
-                }
-
                 svg {
                     width: 1.6rem;
                     height: 1.6rem;

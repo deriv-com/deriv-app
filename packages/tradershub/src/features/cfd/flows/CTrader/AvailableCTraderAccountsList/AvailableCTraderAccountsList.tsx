@@ -11,7 +11,7 @@ import { getStaticUrl } from '../../../../../helpers/urls';
 import { PlatformDetails } from '../../../constants';
 import { CTraderSuccessModal } from '../../../modals';
 
-const leadingIcon = () => (
+const LeadingIcon = () => (
     <PlatformIcon
         icon='CTrader'
         onClick={() => {
@@ -46,7 +46,7 @@ const AvailableCTraderAccountsList = () => {
     return (
         <div>
             <TradingAccountCard
-                leading={leadingIcon}
+                leading={LeadingIcon}
                 trailing={() => <TradingAccountCardLightButton onSubmit={onSubmit} />}
             >
                 <TradingAccountCardContent title={PlatformDetails.ctrader.title}>

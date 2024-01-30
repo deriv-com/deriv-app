@@ -8,7 +8,7 @@ import { getStaticUrl } from '../../../../../../helpers/urls';
 import { CFDPlatforms, PlatformDetails } from '../../../../constants';
 import { TopUpModal, TradeModal } from '../../../../modals';
 
-const leadingIcon = () => (
+const LeadingIcon = () => (
     <PlatformIcon
         icon='DerivX'
         onClick={() => {
@@ -54,7 +54,7 @@ const AddedDxtradeAccountsList = () => {
     );
 
     return (
-        <TradingAccountCard leading={leadingIcon} trailing={trailing}>
+        <TradingAccountCard leading={LeadingIcon} trailing={trailing}>
             <div className='flex flex-col flex-grow'>
                 {account && (
                     <Fragment key={account?.account_id}>

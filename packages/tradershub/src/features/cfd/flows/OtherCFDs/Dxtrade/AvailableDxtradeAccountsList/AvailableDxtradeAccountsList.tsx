@@ -8,7 +8,7 @@ import {
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import { PlatformDetails } from '../../../../constants';
 
-const leadingIcon = () => (
+const LeadingIcon = () => (
     <PlatformIcon
         height='70px'
         icon='DerivX'
@@ -22,7 +22,7 @@ const leadingIcon = () => (
 const TrailingButton = () => <TradingAccountCardLightButton />;
 
 const AvailableDxtradeAccountsList = () => (
-    <TradingAccountCard leading={leadingIcon} trailing={TrailingButton}>
+    <TradingAccountCard leading={LeadingIcon} trailing={TrailingButton}>
         <TradingAccountCardContent title={PlatformDetails.dxtrade.title}>
             This account offers CFDs on a highly customisable CFD trading platform.
         </TradingAccountCardContent>

@@ -1,12 +1,8 @@
 import React from 'react';
 import { useActiveAccount } from '@deriv/api';
-import { MobileCloseHeader } from '../../components';
-import { useDevice } from '../../hooks';
-import './index.scss';
 
 const Home: React.FC<{ path: string }> = ({ path }) => {
     const { data: activeAccountData, isLoading } = useActiveAccount();
-    const { isMobile } = useDevice();
 
     // NOTE: Replace this with Loading component
     if (isLoading || !activeAccountData) return <h1>Loading...</h1>;
@@ -16,7 +12,6 @@ const Home: React.FC<{ path: string }> = ({ path }) => {
 
     return (
         <>
-            {isMobile && <MobileCloseHeader />}
             <div className='p2p-v2-home-style'>
                 <div className='flex justify-center px-10 text-red-500 font-bold'>
                     {' '}

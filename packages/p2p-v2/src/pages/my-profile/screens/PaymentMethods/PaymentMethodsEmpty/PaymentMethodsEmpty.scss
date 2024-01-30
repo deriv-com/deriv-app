@@ -4,6 +4,11 @@
     flex-direction: column;
     width: 100%;
 
+    @include mobile {
+        height: 100%;
+        justify-content: center;
+    }
+
     &__button {
         margin-top: 2.4rem;
         height: 4rem;

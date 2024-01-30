@@ -4,7 +4,7 @@ import { Provider } from '@deriv/library';
 import { BreakpointProvider } from '@deriv/quill-design';
 import { SignupWizardProvider } from './providers/SignupWizardProvider';
 import AppContent from './AppContent';
-import { ContentSwitcher, UIProvider } from './components';
+import { UIProvider } from './components';
 import './index.scss';
 
 const App = () => (
@@ -14,9 +14,7 @@ const App = () => (
                 <Provider.CFDProvider>
                     <Provider.ModalProvider>
                         <SignupWizardProvider>
-                            <ContentSwitcher>
-                                <AppContent />
-                            </ContentSwitcher>
+                            <AppContent />
                         </SignupWizardProvider>
                     </Provider.ModalProvider>
                 </Provider.CFDProvider>

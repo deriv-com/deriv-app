@@ -1,3 +1,4 @@
 export * from './currency';
-export * from './general';
+export * from './string';
 export * from './time';
+export * from './types';

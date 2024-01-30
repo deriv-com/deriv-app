@@ -43,6 +43,15 @@ const queryEvent = new Event('queryChange');
 //     };
 // };
 
+/**
+ * A hook that syncs URL params to the rendering lifecycle.
+ * You can use this hook to conditionally render tabs, forms or other screens based on what the current URL parameters are.
+ * For instance, `/p2p-v2/my-profile?tab=Stats`:
+ * - calling this hook returns `queryString` which is a Map that has a key of `tab` and value of `Stats`
+ * - You can use this to conditionally render the `Stats` tab screen by checking if `queryString.get('tab') === 'Stats'`
+ *
+ * This avoids props drilling for passing boolean screen setters into its child components to switch between different screens/tabs
+ */
 function useQueryString() {
     const [params, setParams] = useState(() => new URLSearchParams(window.location.search));
     const history = useHistory();

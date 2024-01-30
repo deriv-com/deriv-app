@@ -50,30 +50,30 @@ type TPlatformUrls = {
     };
 };
 
-export enum Category {
-    DEMO = 'demo',
-    REAL = 'real',
-}
+export const CFDPlatforms = {
+    CFDS: 'CFDs',
+    CTRADER: 'ctrader',
+    DXTRADE: 'dxtrade',
+    MT5: 'mt5',
+} as const;
 
-export enum CFDPlatforms {
-    CFDS = 'CFDs',
-    CTRADER = 'ctrader',
-    DXTRADE = 'dxtrade',
-    MT5 = 'mt5',
-}
+export const MarketType = {
+    ALL: 'all',
+    FINANCIAL: 'financial',
+    SYNTHETIC: 'synthetic',
+} as const;
 
-export enum MarketType {
-    ALL = 'all',
-    FINANCIAL = 'financial',
-    SYNTHETIC = 'synthetic',
-}
+export const Category = {
+    DEMO: 'demo',
+    REAL: 'real',
+} as const;
 
-export enum QueryStatus {
-    ERROR = 'error',
-    IDLE = 'idle',
-    LOADING = 'loading',
-    SUCCESS = 'success',
-}
+export const QueryStatus = {
+    ERROR: 'error',
+    IDLE: 'idle',
+    LOADING: 'loading',
+    SUCCESS: 'success',
+} as const;
 
 export const MarketTypeDetails = (isEU?: boolean): TMarketTypeDetails => ({
     all: {

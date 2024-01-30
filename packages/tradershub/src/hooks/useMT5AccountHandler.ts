@@ -16,11 +16,7 @@ type TUseMT5AccountHandler = {
 };
 
 const useMT5AccountHandler = ({ marketType, selectedJurisdiction }: TUseMT5AccountHandler) => {
-    const {
-        data: accountStatus,
-
-        status,
-    } = useAccountStatus();
+    const { data: accountStatus, status } = useAccountStatus();
     const {
         error: isCreateMT5AccountError,
         isLoading: createMT5AccountLoading,

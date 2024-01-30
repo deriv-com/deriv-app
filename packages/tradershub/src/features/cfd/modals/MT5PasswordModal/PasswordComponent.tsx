@@ -1,11 +1,12 @@
 import React from 'react';
 import { useAccountStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { SentEmailContent } from '../../../../components';
+import { ActionScreen, SentEmailContent } from '../../../../components';
 import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
-import { CFDPlatforms, MarketType, PlatformDetails, TTM5FilterLandingCompany } from '../../constants';
+import { CFDPlatforms, MarketType, PlatformDetails, QueryStatus, TTM5FilterLandingCompany } from '../../constants';
 import { CreatePassword, EnterPassword } from '../../screens';
+import SuccessComponent from './SuccessComponent';
 
 type TPasswordComponentProps = {
     password: string;
@@ -22,11 +23,27 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
 
     const isMT5PasswordNotSet = accountStatus?.is_mt5_password_not_set;
-    const { createMT5AccountLoading, handleSubmit, isCreateMT5AccountError, tradingPlatformPasswordChangeLoading } =
-        useMT5AccountHandler({
-            marketType,
-            selectedJurisdiction,
-        });
+    const {
+        createMT5AccountLoading,
+        handleSubmit,
+        isCreateMT5AccountError,
+        isCreateMT5AccountSuccess,
+        tradingPlatformPasswordChangeLoading,
+    } = useMT5AccountHandler({
+        marketType,
+        selectedJurisdiction,
+    });
+
+    if (status === QueryStatus.ERROR && isCreateMT5AccountError?.error?.code !== 'PasswordError') {
+        return (
+            <ActionScreen
+                description={isCreateMT5AccountError?.error.message}
+                title={isCreateMT5AccountError?.error?.code}
+            />
+        );
+    }
+
+    if (isCreateMT5AccountSuccess) return <SuccessComponent />;
 
     if (isMT5PasswordNotSet) {
         return (

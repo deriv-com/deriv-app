@@ -1,7 +1,6 @@
 import React from 'react';
 import { useActiveTradingAccount, useMT5AccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import {
     Category,
@@ -25,10 +24,6 @@ const SuccessComponent = () => {
     const platform = getCFDState('platform') ?? CFDPlatforms.MT5;
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
-    const { isCreateMT5AccountSuccess } = useMT5AccountHandler({
-        marketType,
-        selectedJurisdiction,
-    });
 
     const marketTypeTitle =
         marketType === MarketType.ALL && Object.keys(PlatformDetails).includes(platform)
@@ -42,8 +37,6 @@ const SuccessComponent = () => {
         : `Transfer funds from your ${activeTrading?.currency} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
 
     const SuccessTitle = `Your ${marketTypeTitle} ${isDemo ? Category.DEMO : landingCompanyName} account is ready`;
-
-    if (!isCreateMT5AccountSuccess) return null;
 
     return (
         <CFDSuccess

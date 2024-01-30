@@ -18,12 +18,15 @@ type TUseMT5AccountHandler = {
 const useMT5AccountHandler = ({ marketType, selectedJurisdiction }: TUseMT5AccountHandler) => {
     const {
         data: accountStatus,
+
+        status,
+    } = useAccountStatus();
+    const {
         error: isCreateMT5AccountError,
         isLoading: createMT5AccountLoading,
         isSuccess: isCreateMT5AccountSuccess,
-        status,
-    } = useAccountStatus();
-    const { mutate: createMT5Account } = useCreateMT5Account();
+        mutate: createMT5Account,
+    } = useCreateMT5Account();
     const { isLoading: tradingPlatformPasswordChangeLoading, mutateAsync: tradingPasswordChange } =
         useTradingPlatformPasswordChange();
     const { data: activeTrading } = useActiveTradingAccount();
@@ -33,7 +36,6 @@ const useMT5AccountHandler = ({ marketType, selectedJurisdiction }: TUseMT5Accou
 
     const accountType = marketType === MarketType.SYNTHETIC ? 'gaming' : marketType;
     const categoryAccountType = activeTrading?.is_virtual ? 'demo' : accountType;
-
     const handleSubmit = (password: string) => {
         // in order to create account, we need to set a password through trading_platform_password_change endpoint first
         // then only mt5_create_account can be called, otherwise it will response an error for password required

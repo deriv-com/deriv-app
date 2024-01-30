@@ -10,6 +10,7 @@ export * from './EUDisclaimerMessage';
 export * from './GetADerivAccountBanner';
 export * from './Modal';
 export * from './OptionsAndMultipliersSection';
+export * from './PlatformIcon';
 export * from './RegulationSwitcher';
 export * from './SentEmailContent';
 export * from './StaticLink';

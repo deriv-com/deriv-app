@@ -3,11 +3,19 @@ import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Text } from '@deriv/quill-design';
 import { Button } from '@deriv-com/ui/dist/components/Button';
-import { TradingAccountCard } from '../../../../../components';
+import { PlatformIcon, TradingAccountCard } from '../../../../../components';
 import { getStaticUrl } from '../../../../../helpers/urls';
-import CTrader from '../../../../../public/images/cfd/ctrader.svg';
 import { CFDPlatforms, PlatformDetails } from '../../../constants';
 import { TopUpModal, TradeModal } from '../../../modals';
+
+const leadingIcon = () => (
+    <PlatformIcon
+        icon='CTrader'
+        onClick={() => {
+            window.open(getStaticUrl('/deriv-ctrader'));
+        }}
+    />
+);
 
 const AddedCTraderAccountsList = () => {
     const { data: cTraderAccounts } = useCtraderAccountsList();
@@ -15,23 +23,6 @@ const AddedCTraderAccountsList = () => {
     const { show } = Provider.useModal();
     const account = cTraderAccounts?.find(account => account.is_virtual === activeTrading?.is_virtual);
     const isVirtual = account?.is_virtual;
-
-    const leading = () => (
-        <div
-            className='cursor-pointer'
-            onClick={() => {
-                window.open(getStaticUrl('/deriv-ctrader'));
-            }}
-            // Fix sonarcloud issue
-            onKeyDown={event => {
-                if (event.key === 'Enter') {
-                    window.open(getStaticUrl('/deriv-ctrader'));
-                }
-            }}
-        >
-            <CTrader />
-        </div>
-    );
 
     const trailing = () => (
         <div className='flex flex-col gap-y-200'>
@@ -64,7 +55,7 @@ const AddedCTraderAccountsList = () => {
 
     return (
         <div>
-            <TradingAccountCard leading={leading} trailing={trailing}>
+            <TradingAccountCard leading={leadingIcon} trailing={trailing}>
                 <div className='flex flex-col flex-grow'>
                     {account && (
                         <Fragment key={`added-ctrader-${account.login}`}>

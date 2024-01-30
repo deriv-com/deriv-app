@@ -27,9 +27,8 @@ import {
     State,
     toMoment,
     urlForLanguage,
-    getAppId,
 } from '@deriv/shared';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { getLanguage, localize, getRedirectionLanguage } from '@deriv/translations';
 
 import { requestLogout, WS } from 'Services';
@@ -1574,15 +1573,7 @@ export default class ClientStore extends BaseStore {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
-
-                // Client comes back from oauth and logs in
-                Analytics.setAttributes({
-                    app_id: getAppId(),
-                    account_type: this.loginid.substring(0, 2),
-                });
-                Analytics?.identifyEvent();
-                const current_page = window.location.hostname + window.location.pathname;
-                Analytics?.pageView(current_page);
+                Analytics.identifyEvent();
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -1652,7 +1643,7 @@ export default class ClientStore extends BaseStore {
             }
 
             if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
-            this.loginid !== 'null' && Analytics.setAttributes({ account_type: this.loginid.substring(0, 2) });
+
             await this.fetchResidenceList();
             await this.getTwoFAStatus();
             if (this.account_settings && !this.account_settings.residence) {
@@ -2309,8 +2300,8 @@ export default class ClientStore extends BaseStore {
 
     onSignup({ citizenship, password, residence }, cb) {
         if (!this.verification_code.signup || !password || !residence || !citizenship) return;
-        WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams()).then(
-            async response => {
+        WS.newAccountVirtual(this.verification_code.signup, password, residence, this.getSignupParams())
+            .then(async response => {
                 if (response.error) {
                     cb(response.error.message);
                 } else {
@@ -2324,8 +2315,13 @@ export default class ClientStore extends BaseStore {
                         event: 'virtual_signup',
                     });
                 }
-            }
-        );
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    const { event, analyticsData } = window.dataLayer.find(el => el.event === 'ce_questionnaire_form');
+                    Analytics.trackEvent(event, analyticsData);
+                }, 10000);
+            });
     }
 
     async switchToNewlyCreatedAccount(client_id, oauth_token, currency) {

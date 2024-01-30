@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik } from 'formik';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import {
     AutoHeightWrapper,
     Div100vhContainer,

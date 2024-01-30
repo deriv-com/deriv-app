@@ -22,11 +22,13 @@
     &__table-container {
         display: flex;
         flex-direction: column;
-        overflow: auto;
-        max-height: 40vh;
         margin-bottom: 8px;
         &__top-table {
-            height: 40vh;
+            overflow: auto;
+            height: inherit;
+        }
+        &__bottom-table {
+            overflow: unset;
         }
     }
 
@@ -57,7 +59,7 @@
         white-space: normal;
         word-wrap: break-word;
         &--grow-big {
-            flex-grow: 3;
+            flex-grow: 2.5;
         }
         &--grow-mid {
             flex-grow: 1.5;
@@ -93,4 +95,12 @@
         width: 100%;
         padding: 4px 16px;
     }
+}
+
+.transaction-details-tables {
+    height: calc(100% - 48px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
 }

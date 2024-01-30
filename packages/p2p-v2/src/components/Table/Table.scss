@@ -1,0 +1,38 @@
+.p2p-v2-table {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+
+    @include mobile {
+        height: 100%;
+    }
+
+    scrollbar-width: thin; /* For Firefox */
+    &::-webkit-scrollbar {
+        scrollbar-width: thin;
+        width: 5px;
+        height: 5px;
+        background-color: transparent;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        scrollbar-width: thin;
+        background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        display: none;
+    }
+
+    &:hover {
+        &::-webkit-scrollbar-thumb {
+            scrollbar-width: thin;
+            display: unset;
+            border-radius: 10px;
+            background-color: var(--state-active);
+        }
+    }
+}

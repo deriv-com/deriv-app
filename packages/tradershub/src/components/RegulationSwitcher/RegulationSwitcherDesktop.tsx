@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useActiveTradingAccount, useAuthorize, useIsDIELEnabled, useTradingAccountsList } from '@deriv/api';
+import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, qtJoin } from '@deriv/quill-design';
 import { LabelPairedCircleInfoMdRegularIcon } from '@deriv/quill-icons';
@@ -15,7 +15,6 @@ const RegulationSwitcherDesktop = () => {
     const { getUIState, setUIState } = useUIContext();
     const { show } = Provider.useModal();
 
-    const { data: isDIEL } = useIsDIELEnabled();
     const regulation = getUIState('regulation');
     const accountType = getUIState('accountType');
     const { isEU, isHighRisk } = useRegulationFlags(regulation, accountType);
@@ -45,7 +44,7 @@ const RegulationSwitcherDesktop = () => {
     };
 
     useEffect(() => {
-        if (activeTrading?.loginid.startsWith('CR') || isDIEL || isHighRisk) {
+        if (activeTrading?.loginid.startsWith('CR') || isHighRisk) {
             setUIState('regulation', Regulation.NonEU);
         } else if (activeTrading?.loginid.startsWith('MF') || isEU) {
             setUIState('regulation', Regulation.EU);

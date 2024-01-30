@@ -1,5 +1,5 @@
 .p2p-v2-textarea {
-    text-align: left;
+    position: relative;
     width: 100%;
 
     & textarea {
@@ -8,27 +8,57 @@
         height: 9.6rem;
         border-radius: 0.4rem;
         border: 1px solid #d6dadb;
-        outline-color: #85acb0;
+        outline: none;
         padding: 1rem 1.6rem;
         font-size: 1.4rem;
 
+        &:focus {
+            border: 1px solid #85acb0;
+        }
+
         &::placeholder {
             color: #999999;
+        }
+        &:focus + label span {
+            color: #85acb0;
+        }
+        &:focus + label,
+        &[data-has-value='true'] + label {
+            transform: translate(0, -1.4rem) scale(0.75);
+            background-color: #ffffff;
+        }
+        &:has(~ label)::placeholder {
+            color: transparent;
+        }
+    }
+
+    & label {
+        display: block;
+        position: absolute;
+        left: 1.6rem;
+        top: 1rem;
+        transition: all 0.2s ease;
+        transform-origin: left top;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    &--error {
+        & textarea,
+        & textarea:focus {
+            border: 1px solid #ec3f3f;
+            & + label span {
+                color: #ec3f3f;
+            }
         }
     }
 
     &__footer {
         display: flex;
-        font-size: 1.2rem;
-        color: #999999;
         line-height: 1.5;
 
         & span {
             margin-left: auto;
-        }
-
-        & label {
-            margin-right: auto;
         }
     }
 }

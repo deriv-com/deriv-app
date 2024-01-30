@@ -9,6 +9,10 @@
 
         .p2p-v2-search {
             max-width: 28rem;
+
+            @include mobile {
+                max-width: 100%;
+            }
         }
     }
 

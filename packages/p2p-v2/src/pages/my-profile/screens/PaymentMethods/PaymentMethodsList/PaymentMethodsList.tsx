@@ -2,7 +2,7 @@ import React from 'react';
 import { TAdvertiserPaymentMethods, TSelectedPaymentMethod } from 'types';
 import { FullPageMobileWrapper } from '../../../../../components';
 import { PaymentMethodsHeader } from '../../../../../components/PaymentMethodsHeader';
-import { useDevice } from '../../../../../hooks';
+import { useDevice, useQueryString } from '../../../../../hooks';
 import { TFormState } from '../../../../../reducers/types';
 import AddNewButton from './AddNewButton';
 import PaymentMethodsListContent from './PaymentMethodsListContent';
@@ -32,10 +32,16 @@ const PaymentMethodsList = ({
     p2pAdvertiserPaymentMethods,
 }: TPaymentMethodsListProps) => {
     const { isMobile } = useDevice();
+    const { setQueryString } = useQueryString();
 
     if (isMobile) {
         return (
             <FullPageMobileWrapper
+                onBack={() =>
+                    setQueryString({
+                        tab: 'default',
+                    })
+                }
                 renderFooter={() => <AddNewButton isMobile={isMobile} onAdd={onAdd} />}
                 // TODO: Remember to translate the title
                 renderHeader={() => <PaymentMethodsHeader title='Payment methods' />}

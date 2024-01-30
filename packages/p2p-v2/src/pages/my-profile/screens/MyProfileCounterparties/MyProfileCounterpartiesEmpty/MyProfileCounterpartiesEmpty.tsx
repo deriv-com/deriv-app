@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import EmptyCounterpartiesIcon from '../../../../public/ic-empty-blocked-advertisers.svg';
+import EmptyCounterpartiesIcon from '../../../../../public/ic-empty-blocked-advertisers.svg';
 import './MyProfileCounterpartiesEmpty.scss';
 
 const MyProfileCounterpartiesEmpty = () => (

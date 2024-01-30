@@ -8,11 +8,6 @@ jest.mock('../../../../../components', () => ({
     Loader: jest.fn(() => <div>Loading</div>),
 }));
 
-jest.mock('../../../modules', () => ({
-    ...jest.requireActual('../../../modules'),
-    TransferModule: jest.fn(() => <div>TransferModule</div>),
-}));
-
 jest.mock('../../../screens/TransferNotAvailable', () => ({
     ...jest.requireActual('../../../screens/TransferNotAvailable'),
     TransferNotAvailable: jest.fn(() => <div>TransferNotAvailable</div>),

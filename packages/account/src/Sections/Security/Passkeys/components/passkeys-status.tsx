@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import FormBody from '../../../../Components/form-body';
@@ -8,6 +9,34 @@ type TPasskeysStatus = {
     description?: React.ReactNode;
     icon: string;
     className?: string;
+    is_full_screen_overlay?: boolean;
+};
+
+const FullScreenOverlay = ({ children }: { children: React.ReactNode }) => {
+    const portal_element = document.getElementById('modal_root');
+    if (portal_element) {
+        return ReactDOM.createPortal(
+            <div className='passkeys' style={{ background: 'white', height: '100vh', width: '100vw' }}>
+                <div className={classNames('dc-mobile-dialog__header')}>
+                    <Text
+                        as='h2'
+                        size='xs'
+                        color='loss-danger'
+                        weight='bold'
+                        line_height='unset'
+                        align='right'
+                        className='dc-mobile-dialog__title'
+                    >
+                        Maybe later
+                    </Text>
+                </div>
+
+                {children}
+            </div>,
+            portal_element
+        );
+    }
+    return <React.Fragment>{children}</React.Fragment>;
 };
 
 const PasskeysStatus = ({
@@ -16,9 +45,18 @@ const PasskeysStatus = ({
     icon,
     children,
     className,
+    is_full_screen_overlay,
 }: React.PropsWithChildren<TPasskeysStatus>) => {
+    const StatusWrapper = ({ children }: { children: React.ReactNode }) => {
+        return is_full_screen_overlay ? (
+            <FullScreenOverlay>{children}</FullScreenOverlay>
+        ) : (
+            <React.Fragment>{children}</React.Fragment>
+        );
+    };
+
     return (
-        <React.Fragment>
+        <StatusWrapper>
             <FormBody
                 scroll_offset='22rem'
                 className={classNames('passkeys-status__wrapper', {
@@ -36,7 +74,7 @@ const PasskeysStatus = ({
                 )}
             </FormBody>
             {children}
-        </React.Fragment>
+        </StatusWrapper>
     );
 };
 

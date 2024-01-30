@@ -8,17 +8,29 @@ type TPasskeyModal = {
     button_text: React.ReactElement;
     onButtonClick: () => void;
     is_modal_open: boolean;
+    className?: string;
+    transition_timeout?: number;
 };
 
-const PasskeyModal = ({ is_modal_open, title, description, button_text, onButtonClick }: TPasskeyModal) => {
+const PasskeyModal = ({
+    is_modal_open,
+    title,
+    description,
+    button_text,
+    onButtonClick,
+    className,
+    transition_timeout,
+}: TPasskeyModal) => {
     return (
         <React.Fragment>
             <Modal
+                portalId='modal_root_absolute'
+                transition_timeout={transition_timeout}
                 title={title}
                 is_open={is_modal_open}
                 // toggleModal={() => {}}
                 has_close_icon={false}
-                className='passkeys-modal'
+                className={className}
             >
                 <Modal.Body>{description}</Modal.Body>
                 <Modal.Footer>

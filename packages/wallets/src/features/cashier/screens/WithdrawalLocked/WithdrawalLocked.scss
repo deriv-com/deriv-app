@@ -4,23 +4,23 @@
     @include mobile {
         margin-top: 1.6rem; //40px - 16px from cashier content
     }
-}
 
-.wallets-withdrawal-locked-link {
-    color: var(--brand-coral, #ff444f);
-    font-weight: bold;
-    font-size: 1.6rem;
-    text-decoration: none;
-    border: none;
-    background: none;
-    padding: 0;
+    &__link {
+        color: var(--brand-coral, #ff444f);
+        font-weight: bold;
+        font-size: 1.6rem;
+        text-decoration: none;
+        border: none;
+        background: none;
+        padding: 0;
 
-    @include mobile {
-        font-size: 1.4rem;
-    }
+        @include mobile {
+            font-size: 1.4rem;
+        }
 
-    &:hover {
-        cursor: pointer;
-        text-decoration: underline;
+        &:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
     }
 }

@@ -40,7 +40,7 @@ const getDepositLockedDesc = ({
                 <WalletText align='center'>
                     <Trans
                         components={[
-                            <a className='wallets-withdrawal-locked-link' href='/account/proof-of-identity' key={0} />,
+                            <a className='wallets-withdrawal-locked__link' href='/account/proof-of-identity' key={0} />,
                         ]}
                         defaults='To enable deposits, you must check your <0>proof of identity document verification status</0>.'
                     />
@@ -54,7 +54,7 @@ const getDepositLockedDesc = ({
                 <WalletText align='center'>
                     <Trans
                         components={[
-                            <a className='wallets-withdrawal-locked-link' href='/account/proof-of-address' key={0} />,
+                            <a className='wallets-withdrawal-locked__link' href='/account/proof-of-address' key={0} />,
                         ]}
                         defaults='To enable deposits, you must check your <0>proof of address document verification status</0>.'
                     />
@@ -69,7 +69,7 @@ const getDepositLockedDesc = ({
                     <Trans
                         components={[
                             <a
-                                className='wallets-withdrawal-locked-link'
+                                className='wallets-withdrawal-locked__link'
                                 href={getStaticUrl('/terms-and-conditions/#clients')}
                                 key={0}
                             />,
@@ -87,7 +87,7 @@ const getDepositLockedDesc = ({
                     <Trans
                         components={[
                             <a
-                                className='wallets-withdrawal-locked-link'
+                                className='wallets-withdrawal-locked__link'
                                 href='/account/financial-assessment'
                                 key={0}
                             />,
@@ -104,7 +104,7 @@ const getDepositLockedDesc = ({
                 <WalletText align='center'>
                     <Trans
                         components={[
-                            <a className='wallets-withdrawal-locked-link' href='/account/personal-details' key={0} />,
+                            <a className='wallets-withdrawal-locked__link' href='/account/personal-details' key={0} />,
                         ]}
                         defaults='Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable deposits.'
                     />
@@ -119,7 +119,7 @@ const getDepositLockedDesc = ({
                     <Trans
                         components={[
                             <button
-                                className='wallets-deposit-locked-link'
+                                className='wallets-deposit-locked__link'
                                 key={0}
                                 onClick={() => window.LC_API.open_chat_window()}
                             />,
@@ -138,7 +138,7 @@ const getDepositLockedDesc = ({
                     <Trans
                         components={[
                             <button
-                                className='wallets-deposit-locked-link'
+                                className='wallets-deposit-locked__link'
                                 key={0}
                                 onClick={() => window.LC_API.open_chat_window()}
                             />,

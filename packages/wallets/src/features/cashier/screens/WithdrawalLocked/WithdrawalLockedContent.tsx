@@ -35,7 +35,7 @@ const getWithdrawalLockedDesc = ({
                 <WalletText align='center'>
                     <Trans
                         components={[
-                            <a className='wallets-withdrawal-locked-link' href='/account/proof-of-identity' key={0} />,
+                            <a className='wallets-withdrawal-locked__link' href='/account/proof-of-identity' key={0} />,
                         ]}
                         defaults='You have reached the withdrawal limit. Please upload your <0>proof of identity</0> to lift the limit to continue your withdrawal.'
                     />
@@ -49,7 +49,7 @@ const getWithdrawalLockedDesc = ({
                 <WalletText align='center'>
                     <Trans
                         components={[
-                            <a className='wallets-withdrawal-locked-link' href='/account/proof-of-identity' key={0} />,
+                            <a className='wallets-withdrawal-locked__link' href='/account/proof-of-identity' key={0} />,
                         ]}
                         defaults='You have reached the withdrawal limit. Please check your <0>proof of identity</0> document verification status to lift the limit to continue your withdrawal.'
                     />
@@ -63,7 +63,7 @@ const getWithdrawalLockedDesc = ({
                 <WalletText align='center'>
                     <Trans
                         components={[
-                            <a className='wallets-withdrawal-locked-link' href='/account/proof-of-address' key={0} />,
+                            <a className='wallets-withdrawal-locked__link' href='/account/proof-of-address' key={0} />,
                         ]}
                         defaults='You have reached the withdrawal limit. Please upload your <0>proof of address</0> to lift the limit to continue your withdrawal.'
                     />
@@ -77,7 +77,7 @@ const getWithdrawalLockedDesc = ({
                 <WalletText align='center'>
                     <Trans
                         components={[
-                            <a className='wallets-withdrawal-locked-link' href='/account/proof-of-address' key={0} />,
+                            <a className='wallets-withdrawal-locked__link' href='/account/proof-of-address' key={0} />,
                         ]}
                         defaults='You have reached the withdrawal limit. Please check your <0>proof of address</0> document verification status to lift the limit to continue your withdrawal.'
                     />
@@ -92,7 +92,7 @@ const getWithdrawalLockedDesc = ({
                     <Trans
                         components={[
                             <a
-                                className='wallets-withdrawal-locked-link'
+                                className='wallets-withdrawal-locke__link'
                                 href='/account/financial-assessment'
                                 key={0}
                             />,
@@ -110,7 +110,7 @@ const getWithdrawalLockedDesc = ({
                     <Trans
                         components={[
                             <a
-                                className='wallets-withdrawal-locked-link'
+                                className='wallets-withdrawal-locked__link'
                                 href='/account/financial-assessment'
                                 key={0}
                             />,
@@ -127,8 +127,8 @@ const getWithdrawalLockedDesc = ({
                 <WalletText align='center'>
                     <Trans
                         components={[
-                            <a className='wallets-withdrawal-locked-link' href='/account/proof-of-identity' key={0} />,
-                            <a className='wallets-withdrawal-locked-link' href='/account/proof-of-address' key={1} />,
+                            <a className='wallets-withdrawal-locked__link' href='/account/proof-of-identity' key={0} />,
+                            <a className='wallets-withdrawal-locked__link' href='/account/proof-of-address' key={1} />,
                         ]}
                         defaults='Your account has not been authenticated. Please submit your <0>proof of identity</0> and <1>proof of address</1> to authenticate your account and request for withdrawals.'
                     />
@@ -142,7 +142,7 @@ const getWithdrawalLockedDesc = ({
                 <WalletText align='center'>
                     <Trans
                         components={[
-                            <a className='wallets-withdrawal-locked-link' href='/account/personal-details' key={0} />,
+                            <a className='wallets-withdrawal-locked__link' href='/account/personal-details' key={0} />,
                         ]}
                         defaults='Your <0>personal details</0> are incomplete. Please go to your account settings and complete your personal details to enable withdrawals.'
                     />
@@ -157,7 +157,7 @@ const getWithdrawalLockedDesc = ({
                     <Trans
                         components={[
                             <button
-                                className='wallets-withdrawal-locked-link'
+                                className='wallets-withdrawal-locked__link'
                                 key={0}
                                 onClick={() => window.LC_API.open_chat_window()}
                             />,

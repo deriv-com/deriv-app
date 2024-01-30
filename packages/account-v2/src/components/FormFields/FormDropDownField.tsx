@@ -2,8 +2,8 @@ import React, { ComponentProps } from 'react';
 import { Field, FieldProps } from 'formik';
 import * as Yup from 'yup';
 import { useBreakpoint } from '@deriv/quill-design';
-import { WalletDropdown as DropDown } from '../base/WalletDropdown';
 import { validateField } from '../../utils/validation';
+import { WalletDropdown as DropDown } from '../base/WalletDropdown';
 
 type FormDropDownFieldProps = Omit<
     ComponentProps<typeof DropDown>,

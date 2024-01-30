@@ -1,13 +1,13 @@
 import React from 'react';
 import localForage from 'localforage';
 import LZString from 'lz-string';
-import { Analytics } from '@deriv-com/analytics';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { Dialog, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { TStrategy } from 'Types';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderstackDashboardDeleteYourBot } from '../analytics/rudderstack-dashboard';
 
 const DeleteDialog = observer(() => {
     const { load_modal, dashboard } = useDBotStore();
@@ -59,21 +59,13 @@ const DeleteDialog = observer(() => {
         onToggleDeleteDialog(false);
     };
 
-    //this is to check after click of yes ir no on delete dailog send event to rudderstck
-    const sentToRudderStack = (param: string) => {
-        Analytics.trackEvent('ce_bot_builder_form', {
-            delete_popup_respond: param,
-            form_source: 'ce_bot_dashboard_form',
-        });
-    };
-
     const onHandleChange = (type: string, param: boolean) => {
         if (type === 'confirm') {
             removeBotStrategy(selected_strategy_id);
             setOpenSettings('delete', true);
-            sentToRudderStack('yes');
+            rudderstackDashboardDeleteYourBot({ delete_popup_respond: 'yes' });
         } else {
-            sentToRudderStack('no');
+            rudderstackDashboardDeleteYourBot({ delete_popup_respond: 'no' });
         }
         onToggleDeleteDialog(param);
     };

@@ -480,6 +480,7 @@ export const icons =
         'IcMinusBold',
         'IcMinusRounded',
         'IcMinus',
+        'IcMobileDevice',
         'IcMobile',
         'IcMoneyTransfer',
         'IcMultiplier',

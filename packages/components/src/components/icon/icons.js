@@ -471,6 +471,7 @@ import './common/ic-message-seen.svg';
 import './common/ic-minus-bold.svg';
 import './common/ic-minus-rounded.svg';
 import './common/ic-minus.svg';
+import './common/ic-mobile-device.svg';
 import './common/ic-mobile.svg';
 import './common/ic-money-transfer.svg';
 import './common/ic-multiplier.svg';

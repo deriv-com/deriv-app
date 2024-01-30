@@ -45,6 +45,7 @@ const WalletsUpgradeModal = () => {
                     <Button
                         large={is_desktop}
                         onClick={() => {
+                            // TODO: Uncomment this when wallet migration modal ready
                             // toggleWalletsUpgrade(true);
                             closeModal();
                         }}

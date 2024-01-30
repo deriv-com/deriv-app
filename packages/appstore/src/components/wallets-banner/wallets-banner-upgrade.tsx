@@ -28,6 +28,7 @@ const WalletsBannerUpgrade = observer(() => {
                     primary
                     large
                     onClick={() => {
+                        // TODO: Uncomment this when wallet migration modal ready
                         // toggleWalletsUpgrade(true)
                     }}
                 />

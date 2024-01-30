@@ -3,7 +3,7 @@ import { APIProvider } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { BreakpointProvider } from '@deriv/quill-design';
 import AppContent from './AppContent';
-import { ContentSwitcher, UIProvider } from './components';
+import { UIProvider } from './components';
 import './index.scss';
 
 const App = () => (
@@ -12,9 +12,7 @@ const App = () => (
             <BreakpointProvider>
                 <Provider.CFDProvider>
                     <Provider.ModalProvider>
-                        <ContentSwitcher>
-                            <AppContent />
-                        </ContentSwitcher>
+                        <AppContent />
                     </Provider.ModalProvider>
                 </Provider.CFDProvider>
             </BreakpointProvider>

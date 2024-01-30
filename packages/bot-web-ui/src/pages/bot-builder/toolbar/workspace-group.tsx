@@ -1,7 +1,7 @@
 import React from 'react';
+import { DesktopWrapper } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { DesktopWrapper } from '@deriv/components';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarIcon from './toolbar-icon';
 
@@ -28,7 +28,7 @@ const WorkspaceGroup = observer(
         toggleSaveModal,
     }: TWorkspaceGroup) => {
         const { dashboard } = useDBotStore();
-        const { setPreviewOnPopup, setChartModalVisibility } = dashboard;
+        const { setPreviewOnPopup, setChartModalVisibility, setTradingViewModalVisibility } = dashboard;
 
         return (
             <div className='toolbar__group toolbar__group-btn' data-testid='dt_toolbar_group_btn'>
@@ -63,12 +63,21 @@ const WorkspaceGroup = observer(
                     data_testid='dt_toolbar_sort_button'
                     action={onSortClick}
                 />
+                <div className='vertical-divider' />
                 <DesktopWrapper>
                     <ToolbarIcon
                         popover_message={localize('Charts')}
                         icon='IcChartsTabDbot'
                         icon_id='db-toolbar__charts-button'
                         action={() => setChartModalVisibility()}
+                    />
+                </DesktopWrapper>
+                <DesktopWrapper>
+                    <ToolbarIcon
+                        popover_message={localize('Trading View Chart')}
+                        icon='IcTradingViewChart'
+                        icon_id='db-toolbar__tradingview-button'
+                        action={() => setTradingViewModalVisibility()}
                     />
                 </DesktopWrapper>
                 <div className='vertical-divider' />

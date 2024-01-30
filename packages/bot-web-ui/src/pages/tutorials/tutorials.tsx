@@ -1,5 +1,5 @@
 import React from 'react';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';

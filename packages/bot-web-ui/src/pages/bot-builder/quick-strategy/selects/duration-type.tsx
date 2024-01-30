@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';

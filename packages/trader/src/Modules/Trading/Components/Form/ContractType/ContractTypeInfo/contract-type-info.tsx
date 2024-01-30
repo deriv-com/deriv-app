@@ -3,7 +3,7 @@ import { Button, ThemedScrollbars, ButtonToggle } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { clickAndKeyEventHandler, TRADE_TYPES } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif';
 import { getContractTypes, isMajorPairsSymbol } from '../../../../Helpers/contract-type';

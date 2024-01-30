@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Form as FormikForm, Formik } from 'formik';
 import * as Yup from 'yup';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { config as qs_config } from '@deriv/bot-skeleton';
 import { MobileFullPageModal, Modal } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';

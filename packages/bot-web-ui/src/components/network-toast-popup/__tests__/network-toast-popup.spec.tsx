@@ -26,7 +26,7 @@ const addPopupRootToDom = (root_name?: string) => {
     document.body.appendChild(modal_root_el);
 };
 
-describe('LocalFooter', () => {
+describe('NetworkToastPopup', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;
     const mock_store = mockStore({});
 
@@ -41,7 +41,7 @@ describe('LocalFooter', () => {
         );
     });
 
-    it('should render NetworkToastPopup message', async () => {
+    it('should render NetworkToastPopup message', () => {
         mock_store.common.network_status.message = 'Network is down!';
         mock_store.common.network_status.status = 'blinker';
         render(<NetworkToastPopup />, { wrapper });

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text } from '@deriv-com/ui/dist/components/Text';
-import { DailyLimitModal } from '../../../../components';
+import { AvailableP2PBalanceModal, DailyLimitModal } from '../../../../components';
 import { useAdvertiserStats, useDevice } from '../../../../hooks';
 import InfoOutlineIcon from '../../../../public/ic-info-outline.svg';
 import { numberToCurrencyText } from '../../../../utils';
@@ -11,11 +11,16 @@ const MyProfileBalance = () => {
     const { data: advertiserInfo, isLoading } = useAdvertiserStats();
     const { isDesktop } = useDevice();
     const [shouldShowDailyLimitModal, setShouldShowDailyLimitModal] = useState(false);
+    const [shouldShowAvailableBalanceModal, setShouldShowAvailableBalanceModal] = useState(false);
 
     if (isLoading || !advertiserInfo) return <h1>Loading...</h1>;
 
     return (
         <>
+            <AvailableP2PBalanceModal
+                isModalOpen={shouldShowAvailableBalanceModal}
+                onRequestClose={() => setShouldShowAvailableBalanceModal(false)}
+            />
             <DailyLimitModal
                 currency='USD'
                 isModalOpen={shouldShowDailyLimitModal}
@@ -27,7 +32,10 @@ const MyProfileBalance = () => {
                         <Text color='less-prominent' size={isDesktop ? 'sm' : 'md'}>
                             Available Deriv P2P Balance
                         </Text>
-                        <InfoOutlineIcon />
+                        <InfoOutlineIcon
+                            className='cursor-pointer'
+                            onClick={() => setShouldShowAvailableBalanceModal(true)}
+                        />
                     </div>
                     <Text size='xl' weight='bold'>
                         {numberToCurrencyText(advertiserInfo.balance_available || 0)} USD

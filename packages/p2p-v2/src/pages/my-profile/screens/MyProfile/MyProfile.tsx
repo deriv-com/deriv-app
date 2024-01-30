@@ -15,6 +15,8 @@ const MyProfile = () => {
     const { isMobile } = useDevice();
     const { queryString, setQueryString } = useQueryString();
 
+    const currentTab = queryString.get('tab');
+
     if (isMobile) {
         return (
             <div className='p2p-v2-my-profile'>
@@ -27,7 +29,7 @@ const MyProfile = () => {
         <div className='p2p-v2-my-profile'>
             <MyProfileContent />
             <Tabs
-                activeTab={queryString.get('tab') || 'Stats'}
+                activeTab={(currentTab !== 'default' && currentTab) || 'Stats'}
                 onChange={index => {
                     setQueryString({
                         tab: TABS[index],

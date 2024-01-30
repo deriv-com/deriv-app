@@ -32,7 +32,7 @@ import {
     toMoment,
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message';

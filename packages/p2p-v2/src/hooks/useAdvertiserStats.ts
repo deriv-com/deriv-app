@@ -53,6 +53,9 @@ const useAdvertiserStats = (advertiserId?: string) => {
             /** Checks if the user is already an advertiser */
             isAdvertiser,
 
+            /** Checks if the user is eligible to upgrade their daily limits */
+            isEligibleForLimitUpgrade: Boolean(data?.upgradable_daily_limits) || false,
+
             /** Checks if the advertiser has completed proof of identity verification */
             isIdentityVerified: isAdvertiser ? data?.full_verification : authenticationStatus?.identity?.status,
 

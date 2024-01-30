@@ -92,9 +92,11 @@ const MyProfileBalance = () => {
                             </div>
                         ))}
                     </div>
-                    <div className='w-fit'>
-                        <MyProfileDailyLimit />
-                    </div>
+                    {advertiserInfo.isEligibleForLimitUpgrade && (
+                        <div className='w-fit'>
+                            <MyProfileDailyLimit />
+                        </div>
+                    )}
                 </div>
             </div>
         </>

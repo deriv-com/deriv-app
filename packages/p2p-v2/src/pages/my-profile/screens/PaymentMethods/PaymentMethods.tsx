@@ -45,7 +45,7 @@ const PaymentMethods = () => {
     };
 
     if (isLoading) {
-        return <Loader />;
+        return <Loader className='m-auto' isFullScreen={false} />;
     }
 
     if (!p2pAdvertiserPaymentMethods?.length && !formState.isVisible) {

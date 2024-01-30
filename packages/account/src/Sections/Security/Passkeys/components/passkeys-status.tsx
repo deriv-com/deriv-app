@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import FormBody from '../../../../Components/form-body';
+import { Localize } from '@deriv/translations';
+import { useHistory } from 'react-router';
+import { routes } from '@deriv/shared';
 
 type TPasskeysStatus = {
     title: React.ReactElement;
@@ -14,23 +17,25 @@ type TPasskeysStatus = {
 
 const FullScreenOverlay = ({ children }: { children: React.ReactNode }) => {
     const portal_element = document.getElementById('modal_root');
+    const history = useHistory();
+
     if (portal_element) {
         return ReactDOM.createPortal(
-            <div className='passkeys' style={{ background: 'white', height: '100vh', width: '100vw' }}>
-                <div className={classNames('dc-mobile-dialog__header')}>
-                    <Text
-                        as='h2'
-                        size='xs'
-                        color='loss-danger'
-                        weight='bold'
-                        line_height='unset'
-                        align='right'
-                        className='dc-mobile-dialog__title'
-                    >
-                        Maybe later
-                    </Text>
-                </div>
-
+            <div className={classNames('passkeys-status__overlay-container')}>
+                <Text
+                    as='div'
+                    size='xxs'
+                    color='loss-danger'
+                    weight='bold'
+                    line_height='xl'
+                    align='right'
+                    className='passkeys-status__overlay-header'
+                    onClick={() => {
+                        history.push(routes.traders_hub);
+                    }}
+                >
+                    <Localize i18n_default_text='Maybe later' />
+                </Text>
                 {children}
             </div>,
             portal_element
@@ -58,7 +63,7 @@ const PasskeysStatus = ({
     return (
         <StatusWrapper>
             <FormBody
-                scroll_offset='22rem'
+                scroll_offset={is_full_screen_overlay ? '15rem' : '22rem'}
                 className={classNames('passkeys-status__wrapper', {
                     [`${className}`]: className,
                 })}

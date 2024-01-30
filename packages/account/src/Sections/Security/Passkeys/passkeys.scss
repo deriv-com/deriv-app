@@ -72,6 +72,7 @@
                 }
             }
         }
+
         &__footer {
             flex-direction: row;
             gap: 0.8rem;
@@ -79,6 +80,42 @@
 
             .dc-btn {
                 flex: 1;
+            }
+        }
+
+        &__overlay {
+            &-container {
+                background: var(--general-main-1);
+                height: 100vh;
+                width: 100vw;
+
+                .passkeys-status__wrapper {
+                    display: block;
+
+                    .dc-icon {
+                        display: block;
+                        margin-inline: auto;
+                    }
+
+                    .passkeys-status__overlay-tip {
+                        padding-block: 1.6rem;
+
+                        &:not(:last-child) {
+                            display: flex;
+                            border-bottom: 1px solid var(--border-disabled);
+                            gap: 0.8rem;
+                        }
+
+                        .dc-icon {
+                            margin-inline: unset;
+                        }
+                    }
+                }
+            }
+
+            &-header {
+                padding: 1.2rem 2.4rem;
+                border-bottom: 1px solid var(--border-disabled);
             }
         }
     }
@@ -103,6 +140,7 @@
                 border-bottom: none;
             }
         }
+
         &__passkey-type-icon {
             margin-top: 0.4rem;
         }

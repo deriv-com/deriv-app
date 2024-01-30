@@ -3,6 +3,7 @@ import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { mobileOSDetect } from '@deriv/shared';
 import { DescriptionContainer } from './components/description-container';
+import { EffortLessLoginTips } from './components/effortless-login-tips';
 import { TipsBlock } from './components/tips-block';
 
 export const PASSKEY_STATUS_CODES = {
@@ -59,12 +60,7 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>, onTextCli
             />
         ),
         //TODO add the rest of decriptions
-        effortless_login: (
-            <Localize
-                i18n_default_text='Learn more about passkeys <0>here</0>.'
-                components={[<Text key={0} color='loss-danger' size='xs' onClick={onTextClick} />]}
-            />
-        ),
+        effortless_login: <EffortLessLoginTips onLearnMoreClick={onTextClick} />,
         learn_more: (
             <React.Fragment>
                 <DescriptionContainer />

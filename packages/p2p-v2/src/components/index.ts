@@ -5,6 +5,7 @@ export * from './CloseHeader';
 export * from './FullPageMobileWrapper';
 export * from './MobileTabs';
 export * from './Modals';
+export * from './PaymentMethodsHeader';
 export * from './RadioGroup';
 export * from './StarRating';
 export * from './Table';

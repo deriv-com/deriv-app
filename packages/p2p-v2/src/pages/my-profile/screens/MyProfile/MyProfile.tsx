@@ -7,6 +7,7 @@ import { MyProfileCounterparties } from '../MyProfileCounterparties';
 import { MyProfileStats } from '../MyProfileStats';
 import MyProfileMobile from './MyProfileMobile';
 import './MyProfile.scss';
+import { PaymentMethods } from '../PaymentMethods';
 
 const TABS = ['Stats', 'Payment methods', 'Ad details', 'My counterparties'];
 
@@ -39,8 +40,7 @@ const MyProfile = () => {
                     <MyProfileStats />
                 </Tab>
                 <Tab title='Payment methods'>
-                    {/* TODO: Place PaymentMethods component here once merged */}
-                    <h1>Payment methods</h1>
+                    <PaymentMethods />
                 </Tab>
                 <Tab title='Ad details'>
                     <MyProfileAdDetails />

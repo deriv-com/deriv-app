@@ -13,7 +13,7 @@ import { PaymentMethodsList } from './PaymentMethodsList';
  * @example <PaymentMethods />
  * **/
 const PaymentMethods = () => {
-    const { data: p2pAdvertiserPaymentMethods, isLoading, isRefetching } = p2p.advertiserPaymentMethods.useGet();
+    const { data: p2pAdvertiserPaymentMethods, isLoading } = p2p.advertiserPaymentMethods.useGet();
     const [formState, dispatch] = useReducer(advertiserPaymentMethodsReducer, {});
 
     const handleAddPaymentMethod = (selectedPaymentMethod?: TSelectedPaymentMethod) => {
@@ -48,6 +48,10 @@ const PaymentMethods = () => {
         return <Loader />;
     }
 
+    if (!p2pAdvertiserPaymentMethods?.length && !formState.isVisible) {
+        return <PaymentMethodsEmpty onAddPaymentMethod={handleAddPaymentMethod} />;
+    }
+
     if (formState?.isVisible) {
         return (
             <PaymentMethodForm
@@ -56,10 +60,6 @@ const PaymentMethods = () => {
                 onResetFormState={handleResetFormState}
             />
         );
-    }
-
-    if (!p2pAdvertiserPaymentMethods?.length && !isRefetching) {
-        return <PaymentMethodsEmpty onAddPaymentMethod={handleAddPaymentMethod} />;
     }
 
     return (

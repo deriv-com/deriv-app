@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useEventListener } from 'usehooks-ts';
 
@@ -34,6 +34,14 @@ function mergeParams(params1: URLSearchParams, params2: URLSearchParams) {
 const payloadToParams = (payload: TQueryString) => new URLSearchParams(Object.entries(payload));
 const paramsToPayload = (params: URLSearchParams) => Object.fromEntries(params.entries());
 const queryEvent = new Event('queryChange');
+
+// TODO: Add validations for query strings once My Profile page is merged
+// type TQueryStringConfig = {
+//     tab?: {
+//         default: string;
+//         values: string[];
+//     };
+// };
 
 function useQueryString() {
     const [params, setParams] = useState(() => new URLSearchParams(window.location.search));

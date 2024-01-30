@@ -5,6 +5,7 @@ import { MyProfileAdDetails } from '../MyProfileAdDetails';
 import { MyProfileContent } from '../MyProfileContent';
 import { MyProfileCounterparties } from '../MyProfileCounterparties';
 import MyProfileStatsMobile from '../MyProfileStats/MyProfileStatsMobile';
+import { PaymentMethods } from '../PaymentMethods';
 
 const MyProfileMobile = () => {
     const { queryString, setQueryString } = useQueryString();
@@ -18,6 +19,9 @@ const MyProfileMobile = () => {
     }
     if (currentTab === 'My counterparties') {
         return <MyProfileCounterparties />;
+    }
+    if (currentTab === 'Payment methods') {
+        return <PaymentMethods />;
     }
 
     return (

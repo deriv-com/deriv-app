@@ -95,6 +95,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                         <Input
                             disabled
                             label='Choose your payment method'
+                            onChange={() => undefined}
                             rightPlaceholder={
                                 actionType === 'EDIT' ? null : (
                                     <CloseCircle

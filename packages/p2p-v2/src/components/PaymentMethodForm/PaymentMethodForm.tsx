@@ -93,9 +93,9 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                     {selectedPaymentMethod ? (
                         // TODO: Remember to translate this
                         <Input
+                            defaultValue={selectedPaymentMethod?.display_name}
                             disabled
                             label='Choose your payment method'
-                            onChange={() => undefined}
                             rightPlaceholder={
                                 actionType === 'EDIT' ? null : (
                                     <CloseCircle
@@ -110,7 +110,6 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                     />
                                 )
                             }
-                            value={selectedPaymentMethod?.display_name}
                         />
                     ) : (
                         <>

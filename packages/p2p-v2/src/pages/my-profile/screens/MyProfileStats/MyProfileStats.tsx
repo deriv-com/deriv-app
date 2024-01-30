@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useAdvertiserStats, useDevice } from '../../../../hooks';
+import { useActiveAccount } from '@deriv/api';
+import { useAdvertiserStats } from '../../../../hooks';
 import { numberToCurrencyText } from '../../../../utils';
 import MyProfileStatsItem from './MyProfileStatsItem';
 import './MyProfileStats.scss';
@@ -12,6 +13,7 @@ export const MyProfileStats = ({ advertiserId }: TMyProfileStatsProps) => {
     const [shouldShowTradeVolumeLifetime, setShouldShowTradeVolumeLifetime] = useState(false);
     const [shouldShowTotalOrdersLifetime, setShouldShowTotalOrdersLifetime] = useState(false);
     const { data } = useAdvertiserStats(advertiserId);
+    const { data: activeAccount } = useActiveAccount();
 
     if (!data) return <h1>Loading...</h1>;
 
@@ -47,7 +49,7 @@ export const MyProfileStats = ({ advertiserId }: TMyProfileStatsProps) => {
                 value={averageReleaseTime ? getTimeValueText(averageReleaseTime) : '-'}
             />
             <MyProfileStatsItem
-                currency='USD'
+                currency={activeAccount?.currency || 'USD'}
                 label='Trade volume'
                 onClickLifetime={hasClickedLifetime => setShouldShowTradeVolumeLifetime(hasClickedLifetime)}
                 shouldShowLifetime

@@ -22,15 +22,13 @@ const Router: React.FC = () => {
         history.push(`${prefix}/${routesConfiguration[0].path}`);
     }
     return (
-        <>
-            <Switch>
-                {routesConfiguration.map(({ Component, path }) => (
-                    <Route key={path} path={path}>
-                        {Component}
-                    </Route>
-                ))}
-            </Switch>
-        </>
+        <Switch>
+            {routesConfiguration.map(({ Component, path }) => (
+                <Route key={path} path={path}>
+                    {Component}
+                </Route>
+            ))}
+        </Switch>
     );
 };
 

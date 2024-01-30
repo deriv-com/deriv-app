@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import { AvailableP2PBalanceModal, DailyLimitModal } from '../../../../components';
 import { useAdvertiserStats, useDevice } from '../../../../hooks';
@@ -6,12 +6,37 @@ import InfoOutlineIcon from '../../../../public/ic-info-outline.svg';
 import { numberToCurrencyText } from '../../../../utils';
 import './MyProfileBalance.scss';
 import { MyProfileDailyLimit } from '../MyProfileDailyLimit';
+import { useActiveAccount } from '@deriv/api';
 
 const MyProfileBalance = () => {
     const { data: advertiserInfo, isLoading } = useAdvertiserStats();
+    const { data: activeAccount } = useActiveAccount();
     const { isDesktop } = useDevice();
     const [shouldShowDailyLimitModal, setShouldShowDailyLimitModal] = useState(false);
     const [shouldShowAvailableBalanceModal, setShouldShowAvailableBalanceModal] = useState(false);
+
+    const currency = activeAccount?.currency || 'USD';
+    const dailyLimits = useMemo(
+        () => [
+            {
+                available: `${numberToCurrencyText(advertiserInfo?.dailyAvailableBuyLimit || 0)} ${currency}`,
+                dailyLimit: `${advertiserInfo?.daily_buy_limit} ${currency}`,
+                type: 'Buy',
+            },
+            {
+                available: `${numberToCurrencyText(advertiserInfo?.dailyAvailableSellLimit || 0)} ${currency}`,
+                dailyLimit: `${advertiserInfo?.daily_sell_limit} ${currency}`,
+                type: 'Sell',
+            },
+        ],
+        [
+            advertiserInfo?.dailyAvailableBuyLimit,
+            advertiserInfo?.dailyAvailableSellLimit,
+            advertiserInfo?.daily_buy_limit,
+            advertiserInfo?.daily_sell_limit,
+            currency,
+        ]
+    );
 
     if (isLoading || !advertiserInfo) return <h1>Loading...</h1>;
 
@@ -22,7 +47,7 @@ const MyProfileBalance = () => {
                 onRequestClose={() => setShouldShowAvailableBalanceModal(false)}
             />
             <DailyLimitModal
-                currency='USD'
+                currency={currency}
                 isModalOpen={shouldShowDailyLimitModal}
                 onRequestClose={() => setShouldShowDailyLimitModal(false)}
             />
@@ -43,48 +68,29 @@ const MyProfileBalance = () => {
                 </div>
                 <div className='flex flex-col gap-[1.6rem]'>
                     <div className='p2p-v2-my-profile-balance__items'>
-                        <div className='p2p-v2-my-profile-balance__item'>
-                            <Text size='sm'>Buy</Text>
-                            <div className='p2p-v2-my-profile-balance__item-limits'>
-                                <div>
-                                    <Text color='less-prominent' size='sm'>
-                                        Daily limit
-                                    </Text>
-                                    <Text className='p2p-v2-my-profile-balance__label' size='sm' weight='bold'>
-                                        {advertiserInfo?.daily_buy_limit} USD
-                                    </Text>
-                                </div>
-                                <div>
-                                    <Text color='less-prominent' size='sm'>
-                                        Available
-                                    </Text>
-                                    <Text className='p2p-v2-my-profile-balance__label' size='sm' weight='bold'>
-                                        {numberToCurrencyText(advertiserInfo.dailyAvailableBuyLimit)} USD
-                                    </Text>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='p2p-v2-my-profile-balance__item'>
-                            <Text size='sm'>Sell</Text>
-                            <div className='p2p-v2-my-profile-balance__item-limits'>
-                                <div>
-                                    <Text color='less-prominent' size='sm'>
-                                        Daily limit
-                                    </Text>
-                                    <Text className='p2p-v2-my-profile-balance__label' size='sm' weight='bold'>
-                                        {advertiserInfo?.daily_sell_limit} USD
-                                    </Text>
-                                </div>
-                                <div>
-                                    <Text color='less-prominent' size='sm'>
-                                        Available
-                                    </Text>
-                                    <Text className='p2p-v2-my-profile-balance__label' size='sm' weight='bold'>
-                                        {numberToCurrencyText(advertiserInfo.dailyAvailableSellLimit)} USD
-                                    </Text>
+                        {dailyLimits.map(({ available, dailyLimit, type }) => (
+                            <div className='p2p-v2-my-profile-balance__item' key={type}>
+                                <Text size='sm'>{type}</Text>
+                                <div className='p2p-v2-my-profile-balance__item-limits'>
+                                    <div>
+                                        <Text color='less-prominent' size='sm'>
+                                            Daily limit
+                                        </Text>
+                                        <Text className='p2p-v2-my-profile-balance__label' size='sm' weight='bold'>
+                                            {dailyLimit}
+                                        </Text>
+                                    </div>
+                                    <div>
+                                        <Text color='less-prominent' size='sm'>
+                                            Available
+                                        </Text>
+                                        <Text className='p2p-v2-my-profile-balance__label' size='sm' weight='bold'>
+                                            {available}
+                                        </Text>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        ))}
                     </div>
                     <div className='w-fit'>
                         <MyProfileDailyLimit />

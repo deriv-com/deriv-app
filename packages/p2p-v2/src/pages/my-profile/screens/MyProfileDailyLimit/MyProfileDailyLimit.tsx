@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useActiveAccount } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import DailyLimitModal from '../../../../components/Modals/DailyLimitModal/DailyLimitModal';
@@ -9,6 +10,7 @@ const MyProfileDailyLimit = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { isMobile } = useDevice();
     const { data: advertiserStats } = useAdvertiserStats();
+    const { data: activeAccount } = useActiveAccount();
 
     return (
         <>
@@ -16,11 +18,11 @@ const MyProfileDailyLimit = () => {
                 <Text color='less-prominent' lineHeight='sm' size='xs'>
                     Want to increase your daily limits to{' '}
                     <Text color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
-                        {advertiserStats?.daily_buy_limit} USD{' '}
+                        {advertiserStats?.daily_buy_limit} {activeAccount?.currency || 'USD'}{' '}
                     </Text>{' '}
                     (buy) and{' '}
                     <Text color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
-                        {advertiserStats?.daily_sell_limit} USD{' '}
+                        {advertiserStats?.daily_sell_limit} {activeAccount?.currency || 'USD'}{' '}
                     </Text>{' '}
                     (sell)?
                 </Text>
@@ -33,8 +35,11 @@ const MyProfileDailyLimit = () => {
                     Increase my limits
                 </Button>
             </div>
-            {/* TODO: to move the below to parent */}
-            <DailyLimitModal currency='USD' isModalOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)} />
+            <DailyLimitModal
+                currency={activeAccount?.currency || 'USD'}
+                isModalOpen={isModalOpen}
+                onRequestClose={() => setIsModalOpen(false)}
+            />
         </>
     );
 };

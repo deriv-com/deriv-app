@@ -4,7 +4,6 @@ import { Provider } from '@deriv/library';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import {
     Category,
-    CFDPlatforms,
     companyNamesAndUrls,
     MarketType,
     MarketTypeDetails,
@@ -21,7 +20,7 @@ const SuccessComponent = () => {
     const isDemo = activeTrading?.is_virtual;
 
     const { getCFDState } = Provider.useCFDContext();
-    const platform = getCFDState('platform') ?? CFDPlatforms.MT5;
+    const platform = getCFDState('platform') ?? PlatformDetails.mt5.platform;
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
 
@@ -44,7 +43,7 @@ const SuccessComponent = () => {
             displayBalance={mt5Accounts?.find(account => account.market_type === marketType)?.display_balance ?? '0.00'}
             landingCompany={selectedJurisdiction}
             marketType={marketType}
-            platform={CFDPlatforms.MT5}
+            platform={PlatformDetails.mt5.platform}
             renderButtons={SuccessButtonGroup}
             title={SuccessTitle}
         />

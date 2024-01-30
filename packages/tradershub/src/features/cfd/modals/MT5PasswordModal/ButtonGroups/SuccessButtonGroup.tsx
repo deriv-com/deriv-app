@@ -20,10 +20,11 @@ const SuccessButtonGroup = () => {
     }
     return (
         <ButtonGroup className='justify-center w-full'>
-            <Button onClick={hide} size='lg' variant='secondary'>
+            <Button className='rounded-200' colorStyle='black' onClick={() => hide()} size='lg' variant='secondary'>
                 Maybe later
             </Button>
             <Button
+                className='rounded-200'
                 onClick={() => {
                     hide();
                     history.push('/cashier/transfer');

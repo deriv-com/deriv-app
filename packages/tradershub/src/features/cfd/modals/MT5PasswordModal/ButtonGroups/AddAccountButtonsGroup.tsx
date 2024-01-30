@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
 import { ButtonGroup, Modal, SentEmailContent } from '../../../../../components';
-import { CFDPlatforms } from '../../../constants';
+import { PlatformDetails } from '../../../constants';
 import CreateAccountButton from './CreateAccountButton';
 
 type TAddAccountButtonsGroupProps = {
@@ -12,7 +12,7 @@ type TAddAccountButtonsGroupProps = {
 const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
     const { show } = Provider.useModal();
     const { getCFDState } = Provider.useCFDContext();
-    const platform = getCFDState('platform') ?? CFDPlatforms.MT5;
+    const platform = getCFDState('platform') ?? PlatformDetails.mt5.platform;
 
     return (
         <ButtonGroup className='w-full'>

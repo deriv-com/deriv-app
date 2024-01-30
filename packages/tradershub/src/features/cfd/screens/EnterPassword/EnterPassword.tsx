@@ -74,13 +74,21 @@ const EnterPassword: React.FC<TProps> = ({
             </div>
             {isDesktop && (
                 <div className='flex items-center justify-center w-full gap-400'>
-                    <Button colorStyle='black' onClick={onSecondaryClick} variant='secondary'>
+                    <Button
+                        className='rounded-200'
+                        colorStyle='black'
+                        onClick={onSecondaryClick}
+                        size='lg'
+                        variant='secondary'
+                    >
                         Forgot password?
                     </Button>
                     <Button
+                        className='rounded-200'
                         disabled={!password || isLoading || !validPassword(password) || passwordError}
                         isLoading={isLoading}
                         onClick={onPrimaryClick}
+                        size='lg'
                     >
                         Add account
                     </Button>

@@ -7,7 +7,7 @@ import MT5FinancialSuccess from '../../../../public/images/cfd/mt5-financial-suc
 import MT5SwapFreeSuccess from '../../../../public/images/cfd/mt5-swap-free-success.svg';
 import CheckMark from '../../../../public/images/checkmark.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
-import { CFDPlatforms } from '../../constants';
+import { PlatformDetails } from '../../constants';
 
 type TCFDSuccess = {
     description: string;
@@ -17,12 +17,12 @@ type TCFDSuccess = {
           displayBalance: string;
           landingCompany?: string;
           marketType: TMarketTypes.SortedMT5Accounts;
-          platform: CFDPlatforms.MT5;
+          platform: TPlatforms.MT5;
           title: string;
       }
     | {
           marketType?: never;
-          platform: Exclude<TPlatforms.All, CFDPlatforms.MT5>;
+          platform: TPlatforms.OtherAccounts;
       }
 );
 
@@ -55,10 +55,10 @@ const marketTypeToDetailsMapper: Record<TPlatforms.All, TPlatformDetails> = {
 
 const CFDSuccess = ({ description, marketType, platform, renderButtons }: TCFDSuccess) => {
     let icon: ReactNode;
-    if (platform === 'mt5' && marketType) {
-        icon = marketTypeToDetailsMapper[platform][marketType]?.icon;
+    if (platform === PlatformDetails.mt5.platform && marketType) {
+        icon = marketTypeToDetailsMapper[platform as TPlatforms.All][marketType]?.icon;
     } else {
-        icon = marketTypeToDetailsMapper[platform]?.icon;
+        icon = PlatformDetails[platform as keyof typeof PlatformDetails]?.icon;
     }
 
     const IconWithCheckMark = () => (

@@ -42,6 +42,26 @@ describe('<WalletWithdrawal />', () => {
         });
     });
 
+    it('should remove the `verification` param from the window url', () => {
+        const replaceStateSpy = jest.spyOn(window.history, 'replaceState');
+        mockUseActiveWalletAccount.mockReturnValue({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            data: {
+                currency: 'USD',
+            },
+        });
+
+        // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+        mockUseCurrencyConfig.mockReturnValue({
+            getConfig: jest.fn(),
+            isSuccess: true,
+        });
+
+        render(<WalletWithdrawal />);
+
+        expect(replaceStateSpy).toBeCalledWith({}, '', 'http://localhost/redirect');
+    });
+
     it('should render withdrawal email verification page if no verification code found', () => {
         Object.defineProperty(window, 'location', {
             value: new URL('http://localhost/redirect'),

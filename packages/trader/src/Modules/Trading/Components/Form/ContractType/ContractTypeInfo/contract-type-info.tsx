@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif';
-import { getContractTypes, isMajorPairsSymbol } from '../../../../Helpers/contract-type';
+import { getContractTypes } from '../../../../Helpers/contract-type';
 import ContractTypeGlossary from './contract-type-glossary';
 import classNames from 'classnames';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -29,9 +29,8 @@ const TABS = {
 type TSelectedTab = 'description' | 'glossary';
 
 const Info = observer(({ handleSelect, item, list }: TInfo) => {
-    const { cached_multiplier_cancellation_list, symbol } = useTraderStore();
+    const { cached_multiplier_cancellation_list } = useTraderStore();
     const {
-        active_symbols: { active_symbols },
         ui: { is_mobile },
         modules: {
             trade: { is_vanilla_fx },
@@ -110,7 +109,6 @@ const Info = observer(({ handleSelect, item, list }: TInfo) => {
                                 category={type.value}
                                 is_vanilla_fx={is_vanilla_fx}
                                 is_multiplier_fx={!cached_multiplier_cancellation_list?.length}
-                                is_major_pairs={isMajorPairsSymbol(symbol, active_symbols)}
                             />
                         )}
                     </div>

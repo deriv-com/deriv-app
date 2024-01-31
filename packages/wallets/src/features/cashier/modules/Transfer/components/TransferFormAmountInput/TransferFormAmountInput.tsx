@@ -13,6 +13,7 @@ type TProps = {
 
 const MAX_DIGITS = 12;
 const USD_MAX_POSSIBLE_TRANSFER_AMOUNT = 100_000;
+const DEBOUNCE_DELAY_MS = 500;
 
 const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const { setFieldValue, setValues, values } = useFormikContext<TInitialTransferFormValues>();
@@ -41,7 +42,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
     const isTimerVisible = !isFromAmountField && toAccount && !isSameCurrency && fromAmount > 0 && toAmount > 0;
 
     const amountValue = isFromAmountField ? fromAmount : toAmount;
-    const debouncedAmountValue = useDebounce(amountValue, 500);
+    const debouncedAmountValue = useDebounce(amountValue, DEBOUNCE_DELAY_MS);
 
     const toAmountLabel = isSameCurrency || !toAccount ? 'Amount you receive' : 'Estimated amount';
     const amountLabel = isFromAmountField ? 'Amount you send' : toAmountLabel;
@@ -103,6 +104,13 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
         }
     }, [amountConverterHandler, debouncedAmountValue, isSameCurrency]);
 
+    const onBlurHandler = useCallback(() => {
+        if (!isSameCurrency) {
+            amountConverterHandler(amountValue);
+        }
+        setFieldValue('activeAmountFieldName', undefined);
+    }, [amountValue, isSameCurrency, setFieldValue]);
+
     const onChangeHandler = useCallback(
         (value: number) => {
             if (!isAmountFieldActive) return;
@@ -154,7 +162,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
                 label={amountLabel}
                 locale={preferredLanguage}
                 maxDigits={maxDigits}
-                onBlur={() => setFieldValue('activeAmountFieldName', undefined)}
+                onBlur={onBlurHandler}
                 onChange={onChangeHandler}
                 onFocus={() => setFieldValue('activeAmountFieldName', fieldName)}
                 value={amountValue}

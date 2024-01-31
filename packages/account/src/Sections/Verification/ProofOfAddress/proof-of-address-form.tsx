@@ -347,7 +347,6 @@ const ProofOfAddressForm = observer(
                                             label={localize('Continue')}
                                             is_absolute={is_mobile}
                                             is_loading={isSubmitting}
-                                            form_error={status?.msg}
                                         />
                                     </Modal.Footer>
                                 ) : (

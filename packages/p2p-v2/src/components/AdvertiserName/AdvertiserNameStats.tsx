@@ -1,9 +1,9 @@
 import React from 'react';
+import { Text } from '@deriv-com/ui';
 import { useAdvertiserStats, useDevice } from '../../hooks';
-import { StarRating } from '../StarRating';
 import ThumbUpIcon from '../../public/ic-thumb-up.svg';
 import BlockedUserOutlineIcon from '../../public/ic-user-blocked-outline.svg';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { StarRating } from '../StarRating';
 import './AdvertiserNameStats.scss';
 
 /**

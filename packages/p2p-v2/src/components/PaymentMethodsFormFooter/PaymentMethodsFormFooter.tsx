@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button } from '@deriv-com/ui';
 import { TFormState } from '../../reducers/types';
 import './PaymentMethodsFormFooter.scss';
 

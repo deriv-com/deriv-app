@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import { p2p } from '@deriv/api';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import { useAdvertiserStats } from '../../hooks';
 import { ToggleSwitch } from '../ToggleSwitch';
 import './AdvertiserNameToggle.scss';

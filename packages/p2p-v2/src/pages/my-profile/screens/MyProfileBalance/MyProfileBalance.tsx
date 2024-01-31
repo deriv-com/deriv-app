@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from 'react';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { useActiveAccount } from '@deriv/api';
+import { Text } from '@deriv-com/ui';
 import { AvailableP2PBalanceModal, DailyLimitModal } from '../../../../components';
 import { useAdvertiserStats, useDevice } from '../../../../hooks';
 import InfoOutlineIcon from '../../../../public/ic-info-outline.svg';
 import { numberToCurrencyText } from '../../../../utils';
-import './MyProfileBalance.scss';
 import { MyProfileDailyLimit } from '../MyProfileDailyLimit';
-import { useActiveAccount } from '@deriv/api';
 import { useHistory } from 'react-router-dom';
+import './MyProfileBalance.scss';
 
 const MyProfileBalance = () => {
     const history = useHistory();

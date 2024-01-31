@@ -87,11 +87,11 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                                 }
                                                 label='Current investor password'
                                                 name={field.name}
-                                                onChange={field.onChange}
-                                                onFocus={e => {
+                                                onBlur={e => {
                                                     setHasCurrentPasswordFieldTouched(true);
                                                     field.onBlur(e);
                                                 }}
+                                                onChange={field.onChange}
                                                 renderRightIcon={() => (
                                                     <PasswordViewerIcon
                                                         setViewPassword={setIsCurrentPasswordVisible}

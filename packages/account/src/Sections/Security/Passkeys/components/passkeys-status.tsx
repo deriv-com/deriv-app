@@ -15,11 +15,16 @@ type TPasskeysStatus = {
     is_full_screen_overlay?: boolean;
 };
 
-const FullScreenOverlay = ({ children }: { children: React.ReactNode }) => {
+type TStatusWrapper = {
+    children: React.ReactNode;
+    is_full_screen_overlay?: boolean;
+};
+
+const StatusWrapper = ({ children, is_full_screen_overlay }: TStatusWrapper) => {
     const portal_element = document.getElementById('modal_root');
     const history = useHistory();
 
-    if (portal_element) {
+    if (portal_element && is_full_screen_overlay) {
         return ReactDOM.createPortal(
             <div className={classNames('passkeys-status__overlay-container')}>
                 <Text
@@ -52,16 +57,8 @@ const PasskeysStatus = ({
     className,
     is_full_screen_overlay,
 }: React.PropsWithChildren<TPasskeysStatus>) => {
-    const StatusWrapper = ({ children }: { children: React.ReactNode }) => {
-        return is_full_screen_overlay ? (
-            <FullScreenOverlay>{children}</FullScreenOverlay>
-        ) : (
-            <React.Fragment>{children}</React.Fragment>
-        );
-    };
-
     return (
-        <StatusWrapper>
+        <StatusWrapper is_full_screen_overlay={is_full_screen_overlay}>
             <FormBody
                 scroll_offset={is_full_screen_overlay ? '15rem' : '22rem'}
                 className={classNames('passkeys-status__wrapper', {

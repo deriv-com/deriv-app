@@ -4,11 +4,10 @@ import { Loading } from '@deriv/components';
 import { useGetPasskeysList, useIsPasskeySupported, useRegisterPasskey } from '@deriv/hooks';
 import { PlatformContext, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
 import PasskeysStatusContainer from './components/passkeys-status-container';
 import PasskeysList from './components/passkeys-list';
 import PasskeyModal from './components/passkey-modal';
-import { PASSKEY_STATUS_CODES, TPasskeysStatus } from './passkeys-configs';
+import { getErrorContent, PASSKEY_STATUS_CODES, TPasskeysStatus } from './passkeys-configs';
 import './passkeys.scss';
 
 //TODO remove mock passkeys
@@ -89,6 +88,9 @@ const Passkeys = observer(() => {
         return <Redirect to={routes.traders_hub} />;
     }
 
+    const error_text =
+        (passkeys_list_error && String(passkeys_list_error)) || (registration_error && String(registration_error));
+
     //TODO consider different error messages with title and descriptions
     return (
         <div className='passkeys'>
@@ -101,25 +103,18 @@ const Passkeys = observer(() => {
             ) : (
                 <PasskeysList
                     passkeys_list={passkeys_list || []}
-                    onSecondaryButtonClick={() => setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE)}
                     onPrimaryButtonClick={createPasskey}
+                    onSecondaryButtonClick={() => setPasskeyStatus(PASSKEY_STATUS_CODES.LEARN_MORE)}
                 />
             )}
 
             <PasskeyModal
-                title={<Localize i18n_default_text='Passkey error' />}
-                description={
-                    (passkeys_list_error && String(passkeys_list_error)) ||
-                    (registration_error && String(registration_error)) || (
-                        <Localize i18n_default_text='Some error occured' />
-                    )
-                }
-                button_text={<Localize i18n_default_text='Refresh' />}
-                is_modal_open={!!passkeys_list_error || !!registration_error}
-                onButtonClick={() => {
-                    location.reload();
-                }}
                 className='passkeys-modal__error'
+                is_modal_open={!!error_text}
+                title={getErrorContent(error_text).title}
+                description={getErrorContent(error_text).description}
+                button_text={getErrorContent(error_text).button_text}
+                onButtonClick={getErrorContent(error_text).buttonOnclick}
             />
         </div>
     );

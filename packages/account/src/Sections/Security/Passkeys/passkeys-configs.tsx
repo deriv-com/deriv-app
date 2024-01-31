@@ -115,3 +115,29 @@ export const getStatusContent = (status: Exclude<TPasskeysStatus, ''>, onTextCli
         secondary_button_text: back_button_texts[status],
     };
 };
+
+export const getErrorContent = (error_message: string | null) => {
+    const is_not_allowed_error = error_message?.includes('NotAllowedError');
+
+    const reloadPage = () => location.reload();
+
+    const try_again_button_text = <Localize i18n_default_text='Try again' />;
+
+    if (is_not_allowed_error) {
+        return {
+            title: <Localize i18n_default_text='Unable to setup passkey' />,
+            description: (
+                <Localize i18n_default_text='We encountered an issue while setting up your passkey. The process might have been interrupted or the session timed out. Please try again.' />
+            ),
+            button_text: try_again_button_text,
+            buttonOnclick: reloadPage,
+        };
+    }
+
+    return {
+        title: undefined,
+        description: <Localize i18n_default_text='Some issue occured' />,
+        button_text: try_again_button_text,
+        buttonOnclick: reloadPage,
+    };
+};

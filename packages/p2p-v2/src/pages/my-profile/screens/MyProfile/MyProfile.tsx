@@ -1,13 +1,13 @@
 import React from 'react';
-import { Tab, Tabs } from '@deriv-com/ui/dist/components/Tabs';
+import { Tab, Tabs } from '@deriv-com/ui';
 import { useDevice, useQueryString } from '../../../../hooks';
 import { MyProfileAdDetails } from '../MyProfileAdDetails';
 import { MyProfileContent } from '../MyProfileContent';
 import { MyProfileCounterparties } from '../MyProfileCounterparties';
 import { MyProfileStats } from '../MyProfileStats';
+import { PaymentMethods } from '../PaymentMethods';
 import MyProfileMobile from './MyProfileMobile';
 import './MyProfile.scss';
-import { PaymentMethods } from '../PaymentMethods';
 
 const TABS = ['Stats', 'Payment methods', 'Ad details', 'My counterparties'];
 

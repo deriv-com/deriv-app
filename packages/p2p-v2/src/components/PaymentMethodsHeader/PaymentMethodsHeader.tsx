@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import ArrowLeftBold from '../../public/ic-arrow-left-bold.svg';
 import './PaymentMethodsHeader.scss';
 

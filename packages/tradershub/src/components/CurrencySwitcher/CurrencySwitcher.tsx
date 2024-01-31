@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button } from '@deriv-com/ui';
 import { IconToCurrencyMapper } from '../../constants/constants';
 import useRegulationFlags from '../../hooks/useRegulationFlags';
 import { THooks } from '../../types';

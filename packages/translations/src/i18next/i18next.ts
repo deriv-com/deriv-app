@@ -32,6 +32,7 @@ export const getAllowedLanguages = () => {
         DE: 'Deutsch',
         KO: '한국어',
         PT: 'Português',
+        PL: 'Polish',
         RU: 'Русский',
         FR: 'Français',
         IT: 'Italiano',
@@ -59,7 +60,7 @@ export const getAllowedLanguages = () => {
 
 const isStaging = () => /staging-app\.deriv\.com/i.test(window.location.hostname);
 
-const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
+const isLocal = () => /localhost(:\d+)?$/i.test(window.location.hostname);
 
 const isLanguageAvailable = (lang: string) => {
     if (!lang) return false;

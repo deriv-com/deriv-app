@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { useFormik } from 'formik';
-import { HintBox, Input, Text } from '@deriv/components';
+import { InlineMessage, Input, Text } from '@deriv/components';
 import { useP2PAdvertiserPaymentMethods, useP2PExchangeRate } from '@deriv/hooks';
 import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
@@ -11,12 +11,13 @@ import { localize, Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
-import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
+import PaymentMethodCard from 'Components/payment-method-card';
 import { floatingPointValidator } from 'Utils/validations';
 import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PaymentMethodIcon from 'Components/payment-method-icon';
+import { getInlineTextSize } from 'Utils/responsive';
 import './buy-sell-form.scss';
 
 const BuySellForm = props => {
@@ -180,15 +181,13 @@ const BuySellForm = props => {
     return (
         <React.Fragment>
             {rate_type === ad_type.FLOAT && !should_disable_field && (
-                <div className='buy-sell-form-hintbox'>
-                    <HintBox
-                        icon='IcAlertInfo'
-                        message={
-                            <Text as='p' size='xxxs' color='prominent' line_height='xs'>
-                                <Localize i18n_default_text="If the market rate changes from the rate shown here, we won't be able to process your order." />
-                            </Text>
-                        }
-                        is_info
+                <div className='buy-sell-form__inline-message'>
+                    <InlineMessage
+                        message={localize(
+                            "If the market rate changes from the rate shown here, we won't be able to process your order."
+                        )}
+                        size={getInlineTextSize('sm', 'xs')}
+                        type='information'
                     />
                 </div>
             )}

@@ -15,7 +15,7 @@ const DxtradeEnterPasswordModal = () => {
     const { isMobile } = useDevice();
     const [password, setPassword] = useState('');
     const { data: getAccountStatus, isSuccess: accountStatusSuccess } = useAccountStatus();
-    const { error, isLoading, isSuccess, mutate, status } = useCreateOtherCFDAccount();
+    const { error, isLoading, isSuccess, mutateAsync, status } = useCreateOtherCFDAccount();
     const { data: dxtradeAccount, isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeWallet } = useActiveWalletAccount();
     const { hide, show } = useModal();
@@ -24,22 +24,22 @@ const DxtradeEnterPasswordModal = () => {
 
     const isDxtradePasswordNotSet = getAccountStatus?.is_dxtrade_password_not_set;
 
-    const onSubmit = useCallback(() => {
-        mutate({
+    const onSubmit = useCallback(async () => {
+        await mutateAsync({
             payload: {
                 account_type: accountType,
                 market_type: 'all',
                 password,
                 platform: dxtradePlatform,
             },
-        });
-    }, [mutate, accountType, password, dxtradePlatform]);
+        }).catch(() => setPassword(''));
+    }, [mutateAsync, accountType, password, dxtradePlatform]);
 
     const successDescription = useMemo(() => {
         return accountType === 'demo'
-            ? "Let's practise trading with 10,000 USD virtual funds."
+            ? `Let's practise trading with ${activeWallet?.display_balance} virtual funds.`
             : `Transfer funds from your ${activeWallet?.currency} Wallet to your ${PlatformDetails.dxtrade.title} account to start trading.`;
-    }, [accountType, activeWallet?.currency]);
+    }, [accountType, activeWallet?.currency, activeWallet?.display_balance]);
 
     const dxtradeBalance = useMemo(() => {
         return dxtradeAccount?.find(account => account.market_type === 'all')?.display_balance;
@@ -49,15 +49,11 @@ const DxtradeEnterPasswordModal = () => {
         if (isSuccess) {
             if (accountType === 'demo') {
                 return (
-                    <WalletButton
-                        isFullWidth
-                        onClick={() => {
-                            hide();
-                        }}
-                        size='lg'
-                    >
-                        OK
-                    </WalletButton>
+                    <div className='wallets-success-btn'>
+                        <WalletButton isFullWidth onClick={hide} size='lg'>
+                            OK
+                        </WalletButton>
+                    </div>
                 );
             }
             return (
@@ -182,6 +178,7 @@ const DxtradeEnterPasswordModal = () => {
                         )
                     }
                     password={password}
+                    passwordError={error?.error?.code === 'PasswordError'}
                     platform={dxtradePlatform}
                 />
             );
@@ -194,11 +191,11 @@ const DxtradeEnterPasswordModal = () => {
         onSubmit,
         password,
         dxtradePlatform,
+        error?.error?.code,
         show,
     ]);
-
-    if (status === 'error') {
-        return <WalletError errorMessage={error?.error.message} onClick={() => hide()} title={error?.error?.code} />;
+    if (status === 'error' && error?.error?.code !== 'PasswordError') {
+        return <WalletError errorMessage={error?.error.message} onClick={hide} title={error?.error?.code} />;
     }
 
     if (isMobile) {

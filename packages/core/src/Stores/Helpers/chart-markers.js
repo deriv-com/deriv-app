@@ -5,41 +5,43 @@ import {
     createMarkerSpotExit,
     createMarkerStartTime,
     createMarkerSpotMiddle,
+    createMarkerResetTime,
     getSpotCount,
 } from './chart-marker-helpers';
 import {
+    getContractStatus,
     getDecimalPlaces,
     getEndTime,
     isAccumulatorContract,
     isAccumulatorContractOpen,
     isDigitContract,
     isHighLow,
-    isSmartTraderContract,
-    isOpen,
-    isTouchContract,
     isMultiplierContract,
-    isVanillaContract,
-    getContractStatus,
-    unique,
+    isOpen,
+    isSmartTraderContract,
+    isTicksContract,
+    isTouchContract,
     isTurbosContract,
+    isVanillaContract,
+    unique,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';
 import { getChartType } from './logic';
 
-export const createChartMarkers = (contract_info, is_delayed_markers_update, is_beta_chart) => {
+export const createChartMarkers = (contract_info, is_delayed_markers_update) => {
     const { tick_stream } = contract_info;
     const should_show_10_last_ticks = isAccumulatorContractOpen(contract_info) && tick_stream.length === 10;
 
     let markers = [];
     if (contract_info) {
         const end_time = getEndTime(contract_info);
-        const chart_type = getChartType(contract_info.date_start, end_time, is_beta_chart);
+        const chart_type = getChartType(contract_info.date_start, end_time);
 
         if (contract_info.tick_count) {
             const tick_markers = createTickMarkers(contract_info, is_delayed_markers_update);
             markers.push(...tick_markers);
-        } else if (chart_type !== 'candle') {
+        } else if (chart_type !== 'candles') {
             const spot_markers = Object.keys(marker_spots).map(type => marker_spots[type](contract_info));
             markers.push(...spot_markers);
         }
@@ -65,6 +67,7 @@ const marker_spots = {
 
 const marker_lines = {
     [MARKER_TYPES_CONFIG.LINE_START.type]: createMarkerStartTime,
+    [MARKER_TYPES_CONFIG.LINE_RESET.type]: createMarkerResetTime,
     [MARKER_TYPES_CONFIG.LINE_END.type]: createMarkerEndTime,
     [MARKER_TYPES_CONFIG.LINE_PURCHASE.type]: createMarkerPurchaseTime,
 };
@@ -84,6 +87,7 @@ const addLabelAlignment = (tick, idx, arr) => {
 export const createTickMarkers = (contract_info, is_delayed_markers_update) => {
     const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_smarttrader_contract = isSmartTraderContract(contract_info.contract_type);
+    const is_ticks_contract = isTicksContract(contract_info.contract_type);
     const is_accu_contract_closed = is_accumulator && !isOpen(contract_info);
     const available_ticks = (is_accumulator && contract_info.audit_details?.all_ticks) || contract_info.tick_stream;
     const tick_stream = unique(available_ticks, 'epoch').map(addLabelAlignment);
@@ -106,6 +110,7 @@ export const createTickMarkers = (contract_info, is_delayed_markers_update) => {
         // accumulators entry spot will be missing from tick_stream when contract is lasting for longer than 10 ticks
         const entry_spot_index = is_accumulator ? tick_stream.findIndex(isEntrySpot) : 0;
         const is_middle_spot = idx > entry_spot_index && +tick.epoch !== +contract_info.exit_tick_time;
+        const is_selected_tick = is_ticks_contract && idx + 1 === contract_info.selected_tick;
         const isExitSpot = (_tick, _idx) =>
             +_tick.epoch === +contract_info.exit_tick_time ||
             getSpotCount(contract_info, _idx) === contract_info.tick_count;
@@ -125,12 +130,23 @@ export const createTickMarkers = (contract_info, is_delayed_markers_update) => {
             tick.align_label = 'top'; // force exit spot label to be 'top' to avoid overlapping
             marker_config = createMarkerSpotExit(contract_info, tick, idx);
         }
-        if (is_smarttrader_contract && is_middle_spot) {
-            const spot_className = marker_config.content_config.spot_className;
-            marker_config.content_config.spot_className = `${spot_className} ${spot_className}--smarttrader-contract-middle`;
+
+        if (is_selected_tick && is_smarttrader_contract) {
+            marker_config = createMarkerSpotMiddle(contract_info, tick, idx);
+        }
+
+        const spot_className = marker_config && marker_config.content_config.spot_className;
+
+        if (is_smarttrader_contract && is_middle_spot && !is_selected_tick) {
+            marker_config &&
+                (marker_config.content_config.spot_className = `${spot_className} ${spot_className}--smarttrader-contract-middle`);
+
             if (!is_current_last_spot) {
                 marker_config.content_config.is_value_hidden = true;
             }
+        }
+        if (is_selected_tick) {
+            marker_config.content_config.spot_className = `${spot_className} chart-spot__spot--${contract_info.status}`;
         }
         if (is_accumulator) {
             if ((is_accu_current_last_spot || is_exit_spot) && !is_accu_contract_closed) return;

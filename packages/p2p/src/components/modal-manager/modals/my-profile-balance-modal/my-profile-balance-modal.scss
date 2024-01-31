@@ -1,0 +1,13 @@
+.my-profile-balance-modal {
+    &__body {
+        padding: 1rem 2.4rem;
+
+        @include mobile {
+            padding: 0 1.6rem;
+        }
+
+        &-text {
+            margin-bottom: 1.6rem;
+        }
+    }
+}

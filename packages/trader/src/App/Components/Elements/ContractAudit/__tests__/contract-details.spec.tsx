@@ -5,11 +5,13 @@ import { mockContractInfo, TRADE_TYPES } from '@deriv/shared';
 import ContractDetails from '../contract-details';
 
 const contract_types = {
-    test_contract_type: 'test_contract_type',
-    multiplier: TRADE_TYPES.MULTIPLIER,
-    vanilla: TRADE_TYPES.VANILLA.CALL,
     digit: 'digit',
     expiry: 'expiry',
+    multiplier: TRADE_TYPES.MULTIPLIER,
+    test_contract_type: 'test_contract_type',
+    tick_high_low: TRADE_TYPES.TICK_HIGH_LOW,
+    vanilla: TRADE_TYPES.VANILLA.CALL,
+    reset: 'reset',
 };
 const contract_info = mockContractInfo({
     barrier: '1460.00',
@@ -36,6 +38,8 @@ const contract_info = mockContractInfo({
     low_barrier: '2020',
     display_number_of_contracts: '0.04958',
     profit: -0.1,
+    reset_time: undefined,
+    reset_barrier: '2070.88',
     status: 'open',
     transaction_ids: { buy: 420381262708 },
 });
@@ -70,10 +74,9 @@ describe('<ContractDetails />', () => {
     });
 
     it('should render specific component for multiplier contract_type', () => {
-        const new_props = { ...mock_default_props };
-        new_props.contract_info.contract_type = contract_types.multiplier;
-        new_props.contract_info.transaction_ids = { buy: 420381262708, sell: 420381262710 };
-        render(<ContractDetails {...new_props} />);
+        mock_default_props.contract_info.contract_type = contract_types.multiplier;
+        mock_default_props.contract_info.transaction_ids = { buy: 420381262708, sell: 420381262710 };
+        render(<ContractDetails {...mock_default_props} />);
 
         expect(screen.getByText('Commission')).toBeInTheDocument();
         expect(screen.getByText('122,223.00')).toBeInTheDocument();
@@ -90,18 +93,24 @@ describe('<ContractDetails />', () => {
         expect(screen.getByText('Strike')).toBeInTheDocument();
     });
 
-    it('should render barrier information in ContractAuditItem if it is digit contract type', () => {
+    it('should render selected tick if it is tick_high_low contract type', () => {
         const new_props = { ...mock_default_props };
-        new_props.contract_info.contract_type = contract_types.digit;
+        new_props.contract_info.contract_type = contract_types.tick_high_low;
         render(<ContractDetails {...new_props} />);
+
+        expect(screen.getByText('Selected tick')).toBeInTheDocument();
+    });
+
+    it('should render barrier information in ContractAuditItem if it is digit contract type', () => {
+        mock_default_props.contract_info.contract_type = contract_types.digit;
+        render(<ContractDetails {...mock_default_props} />);
 
         expect(screen.getByText('Target')).toBeInTheDocument();
     });
 
     it('should render hight and low barriers information in ContractAuditItem if it is expiry contract type', () => {
-        const new_props = { ...mock_default_props };
-        new_props.contract_info.contract_type = contract_types.expiry;
-        render(<ContractDetails {...new_props} />);
+        mock_default_props.contract_info.contract_type = contract_types.expiry;
+        render(<ContractDetails {...mock_default_props} />);
 
         expect(screen.getByText('High barrier')).toBeInTheDocument();
         expect(screen.getByText('Low barrier')).toBeInTheDocument();
@@ -117,33 +126,40 @@ describe('<ContractDetails />', () => {
         expect(screen.getByText('Payout per point')).toBeInTheDocument();
     });
 
+    it('should render reset time and reset barrier information for Reset contract if it was passed in prop', () => {
+        mock_default_props.contract_info.contract_type = contract_types.reset;
+        mock_default_props.contract_info.reset_time = 1235782312876;
+        render(<ContractDetails {...mock_default_props} />);
+
+        expect(screen.getByText('Reset time')).toBeInTheDocument();
+        expect(screen.getByText('Reset barrier')).toBeInTheDocument();
+        expect(screen.getByText('2,070.88')).toBeInTheDocument();
+    });
+
     it('getLabel function should return correct label if user sold the contract and it ended before cancellation expired', () => {
-        const new_props = { ...mock_default_props };
-        new_props.contract_info.contract_type = contract_types.multiplier;
-        new_props.contract_info.status = 'sold';
-        new_props.contract_info.transaction_ids = { buy: 420381262708, sell: 420381262710 };
-        render(<ContractDetails {...new_props} />);
+        mock_default_props.contract_info.contract_type = contract_types.multiplier;
+        mock_default_props.contract_info.status = 'sold';
+        mock_default_props.contract_info.transaction_ids = { buy: 420381262708, sell: 420381262710 };
+        render(<ContractDetails {...mock_default_props} />);
 
         expect(screen.getByText('Deal cancellation')).toBeInTheDocument();
     });
 
     it('getLabel function should return correct label if user cancelled contract', () => {
-        const new_props = { ...mock_default_props };
-        new_props.contract_info.contract_type = contract_types.multiplier;
-        new_props.contract_info.status = 'cancelled';
-        new_props.contract_info.transaction_ids = { buy: 420381262708, sell: 420381262710 };
-        render(<ContractDetails {...new_props} />);
+        mock_default_props.contract_info.contract_type = contract_types.multiplier;
+        mock_default_props.contract_info.status = 'cancelled';
+        mock_default_props.contract_info.transaction_ids = { buy: 420381262708, sell: 420381262710 };
+        render(<ContractDetails {...mock_default_props} />);
 
         expect(screen.getByText('Deal cancellation (executed)')).toBeInTheDocument();
     });
 
     it('getLabel function should return correct label if cancellation expired', () => {
         (isCancellationExpired as jest.Mock).mockReturnValue(true);
-        const new_props = { ...mock_default_props };
-        new_props.contract_info.contract_type = contract_types.multiplier;
-        new_props.contract_info.status = undefined;
-        new_props.contract_info.transaction_ids = { buy: 420381262708, sell: 420381262710 };
-        render(<ContractDetails {...new_props} />);
+        mock_default_props.contract_info.contract_type = contract_types.multiplier;
+        mock_default_props.contract_info.status = undefined;
+        mock_default_props.contract_info.transaction_ids = { buy: 420381262708, sell: 420381262710 };
+        render(<ContractDetails {...mock_default_props} />);
 
         expect(screen.getByText('Deal cancellation (expired)')).toBeInTheDocument();
     });

@@ -6,11 +6,6 @@ import RootStore from 'Stores/index';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import TransactionDetailsDesktop from '../transaction-details-desktop';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
-}));
-
 jest.mock('@deriv/bot-skeleton/src/scratch/blockly', () => jest.fn());
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({
     saveRecentWorkspace: jest.fn(),
@@ -82,7 +77,7 @@ describe('TransactionDetailsDesktop', () => {
         const computedStyle = window.getComputedStyle(draggable_element);
         const transformValue = computedStyle.getPropertyValue('transform');
 
-        expect(transformValue).toBe('translate(-1034px,0px)');
+        expect(transformValue).toBe('translate(-882px,0px)');
     });
 
     it('should close DesktopTransactionTable modal', () => {

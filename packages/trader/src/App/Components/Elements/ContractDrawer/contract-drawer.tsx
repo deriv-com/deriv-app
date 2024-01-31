@@ -6,11 +6,13 @@ import { DesktopWrapper, MobileWrapper, Div100vhContainer } from '@deriv/compone
 import {
     isUserSold,
     isMobile,
+    isEmptyObject,
     getDurationPeriod,
     getDurationTime,
     getDurationUnitText,
     getEndTime,
     TContractStore,
+    TContractInfo,
 } from '@deriv/shared';
 import ContractAudit from 'App/Components/Elements/ContractAudit';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
@@ -20,12 +22,12 @@ import { observer, useStore } from '@deriv/stores';
 
 type TContractDrawerCardProps = React.ComponentProps<typeof ContractDrawerCard>;
 type TContractDrawerProps = RouteComponentProps & {
+    contract_info?: TContractInfo;
     contract_update_history: TContractStore['contract_update_history'];
     is_dark_theme: boolean;
     toggleHistoryTab: (state_change?: boolean) => void;
 } & Pick<
         TContractDrawerCardProps,
-        | 'contract_info'
         | 'contract_update'
         | 'is_accumulator'
         | 'is_market_closed'
@@ -36,12 +38,11 @@ type TContractDrawerProps = RouteComponentProps & {
         | 'is_vanilla'
         | 'onClickCancel'
         | 'onClickSell'
-        | 'status'
     >;
 
 const ContractDrawer = observer(
     ({
-        contract_info,
+        contract_info = {},
         contract_update,
         contract_update_history,
         is_accumulator,
@@ -54,7 +55,6 @@ const ContractDrawer = observer(
         is_smarttrader_contract,
         onClickCancel,
         onClickSell,
-        status,
         toggleHistoryTab,
     }: TContractDrawerProps) => {
         const { common, ui } = useStore();
@@ -74,7 +74,7 @@ const ContractDrawer = observer(
                 contract_end_time={getEndTime(contract_info)}
                 contract_info={contract_info}
                 contract_update_history={contract_update_history}
-                duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
+                duration_unit={getDurationUnitText(getDurationPeriod(contract_info)) ?? ''}
                 duration={getDurationTime(contract_info)}
                 exit_spot={exit_spot}
                 has_result={
@@ -90,7 +90,7 @@ const ContractDrawer = observer(
             />
         );
 
-        if (!contract_info) return null;
+        if (isEmptyObject(contract_info)) return null;
 
         // For non-binary contract, the status is always null, so we check for is_expired in contract_info
         const fallback_result = contract_info.status || contract_info.is_expired;
@@ -115,7 +115,6 @@ const ContractDrawer = observer(
                     onSwipedUp={() => setShouldShowContractAudit(true)}
                     onSwipedDown={() => setShouldShowContractAudit(false)}
                     server_time={server_time}
-                    status={status}
                     toggleContractAuditDrawer={() => setShouldShowContractAudit(!should_show_contract_audit)}
                 />
                 <DesktopWrapper>{contract_audit}</DesktopWrapper>

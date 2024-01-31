@@ -24,19 +24,15 @@ const copyConfig = base => {
             to: 'js/smartcharts/',
         },
         {
-            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist'),
-            to: 'js/smartchartsbeta/',
-        },
-        {
-            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist/chart/assets'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/chart/assets'),
             to: 'assets',
         },
         {
-            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist/chart/assets'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/chart/assets'),
             to: 'contract/assets',
         },
         {
-            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts-beta/dist/chart/assets'),
+            from: path.resolve(__dirname, '../../../node_modules/@deriv/deriv-charts/dist/chart/assets'),
             to: 'bot/assets',
         },
         {
@@ -94,6 +90,22 @@ const copyConfig = base => {
         {
             from: path.resolve(__dirname, '../node_modules/@deriv/wallets/dist/wallets'),
             to: 'wallets',
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/p2p-v2/dist/p2p-v2'),
+            to: 'p2p-v2',
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/tradershub/dist/tradershub'),
+            to: 'tradershub',
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/account-v2/dist/account-v2'),
+            to: 'account-v2',
+        },
+        {
+            from: path.resolve(__dirname, '../node_modules/@deriv/cashier-v2/dist/cashier-v2'),
+            to: 'cashier-v2',
         },
         { from: path.resolve(__dirname, '../scripts/CNAME'), to: 'CNAME', toType: 'file', noErrorOnMissing: true },
         {
@@ -183,7 +195,7 @@ const generateSWConfig = () => ({
         },
         {
             urlPattern: ({ url }) => {
-                return url.pathname.match(/^\/js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts|smartchartsbeta))).*$/);
+                return url.pathname.match(/^\/js\/(?!(.*((core\.[a-z_]*-json\.)|smartcharts))).*$/);
             },
             handler: 'CacheFirst',
             options: {
@@ -195,7 +207,7 @@ const generateSWConfig = () => ({
         },
         {
             urlPattern: ({ url }) => {
-                return url.pathname.match(/^\/js\/(smartcharts|smartchartsbeta)\//);
+                return url.pathname.match(/^\/js\/(smartcharts)\//);
             },
             handler: 'CacheFirst',
             options: {

@@ -1,9 +1,11 @@
 import React from 'react';
 import { Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
 import { Loading, Button, Text, ThemedScrollbars, FormSubmitButton, Modal, HintBox } from '@deriv/components';
+import { useFileUploader } from '@deriv/hooks';
 import { validAddress, validPostCode, validLetterSymbol, validLength, getLocation, WS } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import FilesDescription from '../../../Components/file-uploader-container/files-descriptions';
 import FormFooter from '../../../Components/form-footer';
 import FormBody from '../../../Components/form-body';
 import FormBodySection from '../../../Components/form-body-section';
@@ -14,47 +16,7 @@ import FileUploaderContainer from '../../../Components/file-uploader-container';
 import CommonMistakeExamples from '../../../Components/poa/common-mistakes/common-mistake-examples';
 import PersonalDetailsForm from '../../../Components/forms/personal-details-form.jsx';
 import { isServerError, validate } from '../../../Helpers/utils';
-import { useFileUploader } from '@deriv/hooks';
-
-const descriptions: {
-    key: string;
-    value: JSX.Element;
-}[] = [
-    {
-        key: 'utility_bill',
-        value: <Localize i18n_default_text='Utility bill: electricity, water, gas, or landline phone bill.' />,
-    },
-    {
-        key: 'financial_legal_government_document',
-        value: (
-            <Localize i18n_default_text='Financial, legal, or government document: recent bank statement, affidavit, or government-issued letter.' />
-        ),
-    },
-    {
-        key: 'home_rental_agreement',
-        value: <Localize i18n_default_text='Home rental agreement: valid and current agreement.' />,
-    },
-];
-
-const FilesDescription = observer(() => {
-    const {
-        ui: { is_mobile },
-    } = useStore();
-    return (
-        <div className='files-description'>
-            <Text size={is_mobile ? 'xxs' : 'xs'} as='div' className='files-description__title' weight='bold'>
-                <Localize i18n_default_text='We accept only these types of documents as proof of your address. The document must be recent (issued within last 6 months) and include your name and address:' />
-            </Text>
-            <ul>
-                {descriptions.map(item => (
-                    <li key={item.key}>
-                        <Text size={is_mobile ? 'xxs' : 'xs'}>{item.value}</Text>
-                    </li>
-                ))}
-            </ul>
-        </div>
-    );
-});
+import { getFileUploaderDescriptions } from '../../../Constants/file-uploader';
 
 type TProofOfAddressForm = {
     className?: string;
@@ -108,6 +70,10 @@ const ProofOfAddressForm = observer(
             should_show_form: true,
         });
 
+        const [should_scroll_to_top, setShouldScrollToTop] = React.useState(false);
+
+        const poa_uploader_files_descriptions = React.useMemo(() => getFileUploaderDescriptions('poa'), []);
+
         const { upload } = useFileUploader();
 
         React.useEffect(() => {
@@ -124,6 +90,20 @@ const ProofOfAddressForm = observer(
                 });
             });
         }, [account_settings, fetchResidenceList, fetchStatesList]);
+
+        React.useEffect(() => {
+            if (should_scroll_to_top) {
+                // Scroll to the top of the page
+                const el = document.querySelector('#dt_poa_submit-error') as HTMLInputElement;
+                const target_element = el?.parentElement ?? el;
+                if (typeof target_element?.scrollIntoView === 'function') {
+                    target_element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+
+                // Reset the condition
+                setShouldScrollToTop(false);
+            }
+        }, [should_scroll_to_top]);
 
         const changeable_fields = getChangeableFields();
 
@@ -199,6 +179,7 @@ const ProofOfAddressForm = observer(
                 setStatus({ msg: data.error.message });
                 setFormState({ ...form_state, ...{ is_btn_loading: false } });
                 setSubmitting(false);
+                setShouldScrollToTop(true);
                 return;
             }
 
@@ -226,6 +207,7 @@ const ProofOfAddressForm = observer(
                 if (api_response?.warning) {
                     setStatus({ msg: api_response?.message });
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                    setShouldScrollToTop(true);
                     return;
                 }
 
@@ -259,6 +241,7 @@ const ProofOfAddressForm = observer(
                 if (isServerError(error)) {
                     setStatus({ msg: error.message });
                     setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                    setShouldScrollToTop(true);
                 }
             } finally {
                 setSubmitting(false);
@@ -279,9 +262,7 @@ const ProofOfAddressForm = observer(
             address_postcode,
         };
 
-        if (api_initial_load_error) {
-            return <LoadErrorMessage error_message={api_initial_load_error} />;
-        }
+        if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
         if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
 
         if (form_initial_values.address_state) {
@@ -295,6 +276,7 @@ const ProofOfAddressForm = observer(
             const mobile_scroll_offset = status?.msg ? '200px' : '154px';
             return is_mobile && !is_for_cfd_modal ? mobile_scroll_offset : '80px';
         };
+
         return (
             <Formik
                 initialValues={form_initial_values}
@@ -313,22 +295,21 @@ const ProofOfAddressForm = observer(
                                     className={className}
                                 >
                                     <FormBody scroll_offset={setOffset(status)}>
-                                        {status?.msg && (
+                                        {(status?.msg || is_resubmit) && (
                                             <HintBox
                                                 className='account-form_poa-submit-error'
                                                 icon='IcAlertDanger'
                                                 message={
                                                     <Text as='p' size={is_mobile ? 'xxxs' : 'xs'}>
-                                                        {status.msg}
+                                                        {!status?.msg && is_resubmit && (
+                                                            <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
+                                                        )}
+                                                        {status?.msg}
                                                     </Text>
                                                 }
                                                 is_danger
+                                                id='dt_poa_submit-error'
                                             />
-                                        )}
-                                        {is_resubmit && (
-                                            <Text size={is_mobile ? 'xxs' : 'xs'} align='left' color='loss-danger'>
-                                                <Localize i18n_default_text='We were unable to verify your address with the details you provided. Please check and resubmit or choose a different document type.' />
-                                            </Text>
                                         )}
                                         <FormSubHeader title={localize('Address')} title_text_size='s' />
                                         <PersonalDetailsForm
@@ -343,7 +324,12 @@ const ProofOfAddressForm = observer(
                                                     setDocumentFiles(files);
                                                 }}
                                                 onError={setFileSelectionError}
-                                                files_description={<FilesDescription />}
+                                                files_description={
+                                                    <FilesDescription
+                                                        title={poa_uploader_files_descriptions.title}
+                                                        descriptions={poa_uploader_files_descriptions.descriptions}
+                                                    />
+                                                }
                                                 examples={<CommonMistakeExamples />}
                                             />
                                         </FormBodySection>

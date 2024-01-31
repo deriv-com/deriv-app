@@ -1,10 +1,10 @@
 import React from 'react';
 import { useActiveWalletAccount } from '@deriv/api';
-import { WalletButton, WalletPasswordField, WalletText } from '../../../../components/Base';
+import { WalletButton, WalletPasswordFieldLazy, WalletText } from '../../../../components/Base';
 import useDevice from '../../../../hooks/useDevice';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
-import { MarketTypeDetails, PlatformDetails } from '../../constants';
+import { CFD_PLATFORMS, MarketTypeDetails, PlatformDetails } from '../../constants';
 import './EnterPassword.scss';
 
 type TProps = {
@@ -14,6 +14,7 @@ type TProps = {
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
     password: string;
+    passwordError?: boolean;
     platform: TPlatforms.All;
 };
 
@@ -24,12 +25,13 @@ const EnterPassword: React.FC<TProps> = ({
     onPrimaryClick,
     onSecondaryClick,
     password,
+    passwordError,
     platform,
 }) => {
     const { isDesktop } = useDevice();
-    const title = PlatformDetails[platform].title;
     const { data } = useActiveWalletAccount();
     const accountType = data?.is_virtual ? 'Demo' : 'Real';
+    const title = PlatformDetails[platform].title;
     const marketTypeTitle =
         platform === PlatformDetails.dxtrade.platform ? accountType : MarketTypeDetails[marketType].title;
 
@@ -39,16 +41,29 @@ const EnterPassword: React.FC<TProps> = ({
                 <WalletText lineHeight='xl' weight='bold'>
                     Enter your {title} password
                 </WalletText>
-                <WalletText size='sm'>
-                    Enter your {title} password to add a {title} {marketTypeTitle} account.
-                </WalletText>
-                <WalletPasswordField
-                    label={`${title} password`}
-                    onChange={onPasswordChange}
-                    password={password}
-                    shouldDisablePasswordMeter
-                    showMessage={false}
-                />
+                <div className='wallets-enter-password__content'>
+                    <WalletText size='sm'>
+                        Enter your {title} password to add a{' '}
+                        {platform === CFD_PLATFORMS.MT5 && accountType === 'Demo'
+                            ? `${accountType.toLocaleLowerCase()} ${CFD_PLATFORMS.MT5.toLocaleUpperCase()}`
+                            : title}{' '}
+                        {marketTypeTitle} account.
+                    </WalletText>
+                    <WalletPasswordFieldLazy
+                        label={`${title} password`}
+                        onChange={onPasswordChange}
+                        password={password}
+                        passwordError={passwordError}
+                        shouldDisablePasswordMeter
+                        showMessage={false}
+                    />
+                    {passwordError && (
+                        <WalletText size='sm'>
+                            Hint: You may have entered your Deriv password, which is different from your {title}{' '}
+                            password.
+                        </WalletText>
+                    )}
+                </div>
             </div>
             {isDesktop && (
                 <div className='wallets-enter-password__buttons'>

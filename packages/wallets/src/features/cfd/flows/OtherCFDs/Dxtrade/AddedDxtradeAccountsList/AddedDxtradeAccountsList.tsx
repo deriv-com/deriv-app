@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDxtradeAccountsList } from '@deriv/api';
 import { TradingAccountCard } from '../../../../../../components';
@@ -14,8 +15,9 @@ const AddedDxtradeAccountsList: React.FC = () => {
     const history = useHistory();
     const { data } = useDxtradeAccountsList();
     const { show } = useModal();
+    const { t } = useTranslation();
 
-    const leadingComponent = () => (
+    const leadingComponent = (
         <div
             className='wallets-available-derivx__icon'
             onClick={() => {
@@ -32,27 +34,31 @@ const AddedDxtradeAccountsList: React.FC = () => {
         </div>
     );
 
-    const trailingComponent = () => (
+    const trailingComponent = (loginid?: string) => (
         <div className='wallets-available-derivx__actions'>
             <WalletButton
                 onClick={() => {
-                    history.push('/wallets/cashier/transfer');
+                    history.push(`/wallets/cashier/transfer?to-account=${loginid}`);
                 }}
                 variant='outlined'
             >
-                Transfer
+                {t('Transfer')}
             </WalletButton>
             <WalletButton onClick={() => show(<MT5TradeModal platform={PlatformDetails.dxtrade.platform} />)}>
-                Open
+                {t('Open')}
             </WalletButton>
         </div>
     );
 
     return (
-        <TradingAccountCard leading={leadingComponent} trailing={trailingComponent}>
-            <div className='wallets-available-derivx__details'>
-                {data?.map(account => (
-                    <React.Fragment key={account?.account_id}>
+        <React.Fragment>
+            {data?.map(account => (
+                <TradingAccountCard
+                    key={account?.account_id}
+                    leading={leadingComponent}
+                    trailing={trailingComponent(account.account_id)}
+                >
+                    <div className='wallets-available-derivx__details'>
                         <WalletText size='sm'>{PlatformDetails.dxtrade.title}</WalletText>
                         <WalletText size='sm' weight='bold'>
                             {account?.display_balance}
@@ -60,10 +66,10 @@ const AddedDxtradeAccountsList: React.FC = () => {
                         <WalletText color='primary' size='xs' weight='bold'>
                             {account?.login}
                         </WalletText>
-                    </React.Fragment>
-                ))}
-            </div>
-        </TradingAccountCard>
+                    </div>
+                </TradingAccountCard>
+            ))}
+        </React.Fragment>
     );
 };
 

@@ -1,9 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
+import { useStore } from '@deriv/stores';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info';
-import { getContractTypeDisplay } from '@deriv/shared';
+import { MT5_ACCOUNT_STATUS, getContractTypeDisplay } from '@deriv/shared';
 import { TProposalTypeInfo, TTradeStore } from 'Types';
+import { useMFAccountStatus } from '@deriv/hooks';
 
 type TPurchaseButton = {
     basis: string;
@@ -76,11 +78,14 @@ const PurchaseButton = ({
     should_fade,
     type,
 }: TPurchaseButton) => {
+    const {
+        ui: { setIsMFVericationPendingModal },
+    } = useStore();
+    const mf_account_status = useMFAccountStatus();
     const getIconType = () => {
         if (!should_fade && is_loading) return '';
         return is_high_low ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
     };
-    const { has_increased } = info;
     const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
 
     let button_value;
@@ -118,8 +123,12 @@ const PurchaseButton = ({
                 'btn-purchase--2__vanilla-opts': index === 1 && is_vanilla,
             })}
             onClick={() => {
-                setPurchaseState(index);
-                onClickPurchase(info.id, info.stake, type);
+                if (is_multiplier && mf_account_status === MT5_ACCOUNT_STATUS.PENDING) {
+                    setIsMFVericationPendingModal(true);
+                } else {
+                    setPurchaseState(index);
+                    onClickPurchase(info.id, info.stake, type);
+                }
             }}
         >
             <DesktopWrapper>
@@ -161,7 +170,6 @@ const PurchaseButton = ({
                             basis={basis}
                             currency={currency}
                             growth_rate={growth_rate}
-                            has_increased={has_increased}
                             is_accumulator={is_accumulator}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}

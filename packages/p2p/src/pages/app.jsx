@@ -5,14 +5,13 @@ import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Loading } from '@deriv/components';
 import { routes, WS } from '@deriv/shared';
-import ServerTime from 'Utils/server-time';
 import { init } from 'Utils/server_time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from 'Components/app-content.jsx';
 import { setLanguage } from 'Components/i18next';
 import { ModalManager, ModalManagerContextProvider } from 'Components/modal-manager';
-import Routes from 'Components/routes/routes.jsx';
+import Routes from 'Components/routes';
 import './app.scss';
 
 const App = () => {
@@ -72,8 +71,6 @@ const App = () => {
             localStorage.setItem('is_verifying_p2p', true);
             history.push(routes.p2p_my_profile);
         }
-
-        ServerTime.init(general_store.server_time);
 
         // force safari refresh on back/forward
         window.onpageshow = function (event) {

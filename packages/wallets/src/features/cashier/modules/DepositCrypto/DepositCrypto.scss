@@ -30,8 +30,10 @@
         justify-content: flex-end;
 
         .wallets-transaction-status {
-            margin-top: -2.4rem;
-            margin-right: 2.4rem;
+            @include desktop {
+                margin-top: -2.4rem;
+                margin-right: 2.4rem;
+            }
         }
     }
 }

@@ -72,7 +72,17 @@ const ResetTradingPassword = ({
                 validate={validateReset}
                 onSubmit={handleSubmit}
             >
-                {({ handleBlur, errors, values, touched, isSubmitting, setFieldTouched, handleChange, status }) => (
+                {({
+                    handleBlur,
+                    errors,
+                    values,
+                    resetForm,
+                    touched,
+                    isSubmitting,
+                    setFieldTouched,
+                    handleChange,
+                    status,
+                }) => (
                     <Form>
                         <React.Fragment>
                             {status.error_msg && (
@@ -102,7 +112,10 @@ const ResetTradingPassword = ({
                                         className='reset-trading-password__confirm-button'
                                         primary
                                         large
-                                        onClick={() => toggleResetTradingPasswordModal(false)}
+                                        onClick={() => {
+                                            resetForm();
+                                            toggleResetTradingPasswordModal(false);
+                                        }}
                                     >
                                         <Localize i18n_default_text='Ok' />
                                     </Button>
@@ -128,7 +141,10 @@ const ResetTradingPassword = ({
                                     </Text>
                                     <Button
                                         type='button'
-                                        onClick={() => toggleResetTradingPasswordModal(false)}
+                                        onClick={() => {
+                                            resetForm();
+                                            toggleResetTradingPasswordModal(false);
+                                        }}
                                         primary
                                         large
                                     >

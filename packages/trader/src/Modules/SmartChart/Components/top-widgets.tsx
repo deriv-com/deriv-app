@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { ChartTitle } from 'Modules/SmartChart';
-import { ChartTitleBeta } from 'Modules/SmartChartBeta';
-import BuyToastNotification from './buy-toast-notification';
 import { useTraderStore } from 'Stores/useTraderStores';
 import RecentTradeInfo from './recent-trade-info';
 
@@ -12,13 +10,12 @@ type TTopWidgets = {
     is_digits_widget_active?: boolean;
     is_mobile?: boolean;
     is_title_enabled?: boolean;
-    is_beta_chart?: boolean;
     onSymbolChange?: ReturnType<typeof useTraderStore>['onChange'];
     open?: boolean;
     open_market?: {
-        category: string | null;
-        subcategory?: string | null;
-    };
+        category?: string;
+        subcategory?: string;
+    } | null;
     theme?: string;
     y_axis_width?: number;
 };
@@ -28,16 +25,13 @@ const TopWidgets = ({
     is_mobile,
     is_title_enabled = true,
     onSymbolChange,
-    y_axis_width,
     theme,
     open_market,
     open,
     is_digits_widget_active,
-    is_beta_chart,
 }: TTopWidgets) => {
-    const ChartTitleComponent = is_beta_chart ? ChartTitleBeta : ChartTitle;
     const ChartTitleLocal = (
-        <ChartTitleComponent
+        <ChartTitle
             open_market={open_market}
             open={open}
             enabled={is_title_enabled}
@@ -53,10 +47,9 @@ const TopWidgets = ({
             <div
                 className='top-widgets-portal'
                 style={{
-                    width: `calc(100% - ${y_axis_width ? y_axis_width + 5 : 0}px)`,
+                    width: `100%`,
                 }}
             >
-                {is_mobile && <BuyToastNotification />}
                 {ChartTitleLocal}
                 {!is_digits_widget_active && <RecentTradeInfo />}
             </div>

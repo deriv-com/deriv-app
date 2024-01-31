@@ -15,7 +15,7 @@ import {
 import './WalletTourGuide.scss';
 
 const WalletTourGuide = () => {
-    const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key));
+    const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key) ?? '');
     const [addMoreWalletsTransformValue, setAddMoreWalletsTransformValue] = useState('');
     const { isMobile } = useDevice();
 
@@ -84,6 +84,7 @@ const WalletTourGuide = () => {
             disableOverlayClose
             floaterProps={{ disableAnimation: true }}
             run={walletsOnboarding === startValue && !isLoading && !isFetching && isSuccess}
+            scrollDuration={0}
             scrollOffset={150}
             steps={tourStepConfig(
                 false,

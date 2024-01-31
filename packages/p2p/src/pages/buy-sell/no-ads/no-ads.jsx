@@ -5,11 +5,13 @@ import { useHistory } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores';
 import './no-ads.scss';
 
 const NoAds = ({ is_ads_page = false }) => {
     const { buy_sell_store, general_store, my_ads_store } = useStores();
+    const { showModal } = useModalManagerContext();
     const { handleTabClick, is_barred } = general_store;
     const { is_buy, local_currencies, selected_local_currency, setCreateSellAdFromNoAds } = buy_sell_store;
     const { setShowAdForm } = my_ads_store;
@@ -41,7 +43,24 @@ const NoAds = ({ is_ads_page = false }) => {
                     <Text className='no-ads__message' align='center'>
                         <Localize i18n_default_text='Looking to buy or sell USD? You can post your own ad for others to respond.' />
                     </Text>
-                    <Button className='no-ads__button' disabled={is_barred} primary large onClick={onClickButton}>
+                    <Button
+                        className='no-ads__button'
+                        disabled={is_barred}
+                        primary
+                        large
+                        onClick={() => {
+                            if (general_store.is_advertiser || !is_ads_page) {
+                                onClickButton();
+                            } else {
+                                showModal({
+                                    key: 'NicknameModal',
+                                    props: {
+                                        onConfirm: onClickButton,
+                                    },
+                                });
+                            }
+                        }}
+                    >
                         {is_ads_page ? (
                             <Localize i18n_default_text='Create new ad' />
                         ) : (

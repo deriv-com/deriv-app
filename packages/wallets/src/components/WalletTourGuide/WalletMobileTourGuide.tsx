@@ -26,7 +26,7 @@ const WalletMobileTourGuide = ({
     isOptionsAndMultipliersLoaded = true,
     isWalletSettled = true,
 }: TProps) => {
-    const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key));
+    const [walletsOnboarding, setWalletsOnboarding] = useLocalStorage(key, useReadLocalStorage(key) ?? '');
     const { isMobile } = useDevice();
     const { activeTabIndex, setActiveTabIndex } = useTabs();
     const [onboardingStep, setOnboardingStep] = useState(0);
@@ -126,6 +126,7 @@ const WalletMobileTourGuide = ({
             disableOverlayClose
             floaterProps={{ disableAnimation: true }}
             run={walletsOnboarding === startValue && run && !isLoading && !isFetching && isSuccess}
+            scrollDuration={0}
             scrollOffset={300}
             stepIndex={onboardingStep}
             steps={tourStepConfig(

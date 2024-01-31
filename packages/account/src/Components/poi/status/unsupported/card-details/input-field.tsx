@@ -33,7 +33,6 @@ const InputField = ({ data }: FormikValues) => {
                             display_format='DD-MM-YYYY'
                             start_date={min_date}
                             min_date={min_date}
-                            should_show_today={false}
                             name={data.name}
                             label={`${data.label}${data.required ? '*' : ''}`}
                             error={touched[field.name] && errors[field.name]}

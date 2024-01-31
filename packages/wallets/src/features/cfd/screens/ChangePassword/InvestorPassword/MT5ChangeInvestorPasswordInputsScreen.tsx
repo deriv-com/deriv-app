@@ -1,11 +1,12 @@
 import React from 'react';
 import { Formik } from 'formik';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
-import { WalletButton, WalletPasswordField, WalletsActionScreen, WalletText } from '../../../../../components';
+import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
 import { useModal } from '../../../../../components/ModalProvider';
 import useDevice from '../../../../../hooks/useDevice';
 import { validPassword } from '../../../../../utils/password';
 import { PlatformDetails } from '../../../constants';
+import { WalletPasswordFieldLazy } from '../../../../../components/Base';
 
 type TFormInitialValues = {
     currentPassword: string;
@@ -30,7 +31,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
 
     const initialValues: TFormInitialValues = { currentPassword: '', newPassword: '' };
 
-    const onChangeButtonClickHandler = async (values: TFormInitialValues) => {
+    const onFormSubmitHandler = async (values: TFormInitialValues) => {
         await changeInvestorPassword({
             account_id: mt5AccountId,
             new_password: values.newPassword,
@@ -61,18 +62,18 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
             }
             descriptionSize='sm'
             renderButtons={() => (
-                <Formik initialValues={initialValues} onSubmit={onChangeButtonClickHandler}>
+                <Formik initialValues={initialValues} onSubmit={onFormSubmitHandler}>
                     {({ handleChange, handleSubmit, values }) => (
                         <form className='wallets-change-investor-password-screens__form' onSubmit={handleSubmit}>
                             <div className='wallets-change-investor-password-screens__form-fields'>
-                                <WalletPasswordField
+                                <WalletPasswordFieldLazy
                                     autoComplete='current-password'
                                     label='Current investor password'
                                     name='currentPassword'
                                     onChange={handleChange}
                                     password={values.currentPassword}
                                 />
-                                <WalletPasswordField
+                                <WalletPasswordFieldLazy
                                     autoComplete='new-password'
                                     label='New investor password'
                                     name='newPassword'

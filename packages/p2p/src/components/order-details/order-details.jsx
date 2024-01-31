@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, Icon, InlineMessage, Text, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile, routes } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
-import { api_error_codes } from '../../constants/api-error-codes.js';
+import { api_error_codes } from 'Constants/api-error-codes';
 import Chat from 'Pages/orders/chat/chat.jsx';
 import StarRating from 'Components/star-rating';
 import UserRatingButton from 'Components/user-rating-button';
@@ -17,10 +17,11 @@ import P2PAccordion from 'Components/p2p-accordion/p2p-accordion.jsx';
 import { useStores } from 'Stores';
 import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx';
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
-import MyProfileSeparatorContainer from 'Pages/my-profile/my-profile-separator-container';
+import SeparatorContainerLine from 'Components/separator-container-line';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
 import { getDateAfterHours } from 'Utils/date-time';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { getInlineTextSize } from 'Utils/responsive';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(() => {
@@ -199,14 +200,11 @@ const OrderDetails = observer(() => {
         <OrderDetailsWrapper page_title={page_title}>
             {should_show_lost_funds_banner && (
                 <div className='order-details--warning'>
-                    <HintBox
-                        icon='IcAlertWarning'
-                        message={
-                            <Text size='xxxs' color='prominent' line_height='xs'>
-                                <Localize i18n_default_text="Don't risk your funds with cash transactions. Use bank transfers or e-wallets instead." />
-                            </Text>
-                        }
-                        is_warn
+                    <InlineMessage
+                        message={localize(
+                            "Don't risk your funds with cash transactions. Use bank transfers or e-wallets instead."
+                        )}
+                        size={getInlineTextSize('sm', 'xs')}
                     />
                 </div>
             )}
@@ -286,7 +284,7 @@ const OrderDetails = observer(() => {
                         </div>
                         {is_active_order && (
                             <React.Fragment>
-                                <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                <SeparatorContainerLine className='order-details-card--line' />
                                 {order_store?.has_order_payment_method_details ? (
                                     <div className='order-details-card--padding'>
                                         <section className='order-details-card__title'>
@@ -331,7 +329,7 @@ const OrderDetails = observer(() => {
                                         value={payment_info || '-'}
                                     />
                                 )}
-                                <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                <SeparatorContainerLine className='order-details-card--line' />
                                 <OrderInfoBlock
                                     className='order-details-card--padding order-details-card__textbox'
                                     label={labels.contact_details}
@@ -339,7 +337,7 @@ const OrderDetails = observer(() => {
                                     weight='bold'
                                     value={contact_info || '-'}
                                 />
-                                <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                                <SeparatorContainerLine className='order-details-card--line' />
                                 <OrderInfoBlock
                                     className='order-details-card--padding order-details-card__textbox'
                                     label={labels.instructions}
@@ -351,7 +349,7 @@ const OrderDetails = observer(() => {
                         )}
                         {is_completed_order && !review_details && (
                             <React.Fragment>
-                                <MyProfileSeparatorContainer.Line className='order-details-card--rating__line' />
+                                <SeparatorContainerLine className='order-details-card--rating__line' />
                                 <div className='order-details-card--rating'>
                                     <UserRatingButton
                                         button_text={
@@ -378,7 +376,7 @@ const OrderDetails = observer(() => {
                         )}
                         {review_details && (
                             <React.Fragment>
-                                <MyProfileSeparatorContainer.Line className='order-details-card--rating__line' />
+                                <SeparatorContainerLine className='order-details-card--rating__line' />
                                 <div className='order-details-card__ratings'>
                                     <Text color='prominent' weight='bold'>
                                         <Localize i18n_default_text='Your transaction experience' />
@@ -428,7 +426,7 @@ const OrderDetails = observer(() => {
                             </React.Fragment>
                         )}
                         {should_show_order_footer && isDesktop() && (
-                            <MyProfileSeparatorContainer.Line className='order-details-card--line' />
+                            <SeparatorContainerLine className='order-details-card--line' />
                         )}
                     </ThemedScrollbars>
                     {should_show_order_footer && isDesktop() && (

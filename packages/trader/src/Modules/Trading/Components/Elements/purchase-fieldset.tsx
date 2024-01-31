@@ -16,7 +16,6 @@ type TPurchaseFieldset = {
     index: number;
     info: TProposalTypeInfo;
     is_accumulator: boolean;
-    is_beta_chart: boolean;
     is_disabled: boolean;
     is_high_low: boolean;
     is_loading: boolean;
@@ -43,7 +42,6 @@ const PurchaseFieldset = ({
     index,
     info,
     is_accumulator,
-    is_beta_chart,
     is_disabled,
     is_high_low,
     is_loading,
@@ -116,7 +114,6 @@ const PurchaseFieldset = ({
                         <ContractInfo
                             basis={basis}
                             currency={currency}
-                            has_increased={info.has_increased}
                             is_loading={is_loading}
                             is_multiplier={is_multiplier}
                             is_turbos={is_turbos}
@@ -144,7 +141,7 @@ const PurchaseFieldset = ({
                             }
                         }}
                         onClick={() => {
-                            if (!is_disabled && is_beta_chart) {
+                            if (!is_disabled) {
                                 onHoverPurchase(false, type);
                             }
                         }}

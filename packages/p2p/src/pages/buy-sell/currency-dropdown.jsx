@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { Dropdown, useOnClickOutside } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { CurrencySelector } from 'Pages/buy-sell/currency-selector';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -29,11 +30,13 @@ const CurrencyDropdown = () => {
                 className={classNames('currency-dropdown__list', {
                     'currency-dropdown__list--visible': is_list_visible,
                 })}
+                is_align_text_left
                 list={local_currencies}
                 onClick={() => {
                     if (isMobile()) showModal({ key: 'CurrencySelectorModal' });
                     else setIsListVisible(!is_list_visible);
                 }}
+                placeholder={localize('Currency')}
                 value={selected_local_currency}
             />
             {is_list_visible && (

@@ -2,6 +2,7 @@ import React, { ComponentType, useEffect } from 'react';
 import { debounce } from 'lodash';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import Modal from 'react-modal';
+// import { useHistory } from 'react-router-dom';
 import { p2p } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
@@ -11,7 +12,12 @@ import { Input } from '../../Input';
 import { customStyles } from '../helpers';
 import './NicknameModal.scss';
 
-const NicknameModal = () => {
+type TNicknameModalProps = {
+    isModalOpen: boolean | undefined;
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+};
+
+const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => {
     const ReactModal = Modal as ComponentType<ReactModal['props']>;
     const {
         control,
@@ -29,6 +35,7 @@ const NicknameModal = () => {
     const { isMobile } = useDevice();
     const textSize = isMobile ? 'md' : 'sm';
     const debouncedReset = debounce(reset, 3000);
+    // const history = useHistory();
 
     const onSubmit = () => {
         mutate({ name: getValues('nickname') });
@@ -44,15 +51,7 @@ const NicknameModal = () => {
     }, []);
 
     return (
-        <ReactModal
-            className='p2p-v2-nickname-modal'
-            isOpen={true}
-            onRequestClose={() => {
-                // Implement return function here
-            }}
-            shouldCloseOnOverlayClick
-            style={customStyles}
-        >
+        <ReactModal className='p2p-v2-nickname-modal' isOpen={!!isModalOpen} style={customStyles}>
             <form className='p2p-v2-nickname-modal__form' onSubmit={handleSubmit(onSubmit)}>
                 <P2PUserIcon />
                 <Text className='p2p-v2-nickname-modal__form-title' weight='bold'>
@@ -73,12 +72,22 @@ const NicknameModal = () => {
                     Your nickname cannot be changed later.
                 </Text>
                 <div className='p2p-v2-nickname-modal__form__button-group'>
-                    <Button className='p2p-v2-nickname-modal__form__button-group__cancel' size='lg' variant='outlined'>
+                    <Button
+                        className='p2p-v2-nickname-modal__form__button-group__cancel'
+                        onClick={() => {
+                            // TODO: Fix this routing issue for modals in separate card
+                            // history.replace({ pathname: '/cashier/p2p-v2/buy-sell', search: '' });
+                            setIsModalOpen(false);
+                        }}
+                        size='lg'
+                        type='button'
+                        variant='outlined'
+                    >
                         <Text size={textSize} weight='bold'>
                             Cancel
                         </Text>
                     </Button>
-                    <Button disabled={watchNickname === '' || hasError} size='lg'>
+                    <Button disabled={watchNickname === '' || hasError} size='lg' type='submit'>
                         <Text color='white' size={textSize} weight='bold'>
                             Confirm
                         </Text>

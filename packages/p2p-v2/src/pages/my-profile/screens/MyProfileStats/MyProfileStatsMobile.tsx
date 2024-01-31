@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import { FullPageMobileWrapper } from '../../../../components';
-import { MyProfileStats } from './MyProfileStats';
 import { useQueryString } from '../../../../hooks';
+import { MyProfileStats } from './MyProfileStats';
 
 const MyProfileStatsMobile = () => {
     const { setQueryString } = useQueryString();

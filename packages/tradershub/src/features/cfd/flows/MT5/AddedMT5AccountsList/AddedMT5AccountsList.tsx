@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Text } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button } from '@deriv-com/ui';
 import { useUIContext } from '../../../../../components';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import useRegulationFlags from '../../../../../hooks/useRegulationFlags';

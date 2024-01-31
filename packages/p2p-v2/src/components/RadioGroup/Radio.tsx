@@ -1,6 +1,6 @@
 import React, { ChangeEvent, PropsWithChildren, useEffect, useState } from 'react';
 import clsx from 'clsx';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import './RadioGroup.scss';
 
 type TRadio = {

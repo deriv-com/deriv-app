@@ -1,8 +1,8 @@
 import React from 'react';
+import { Text } from '@deriv-com/ui';
 import { useDevice } from '../../hooks';
 import CrossIcon from '../../public/ic-cross.svg';
 import './CloseHeader.scss';
-import { Text } from '@deriv-com/ui/dist/components/Text';
 
 const CloseHeader = () => {
     const { isMobile } = useDevice();

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Loader } from '@deriv-com/ui/dist/components/Loader';
-import { Text } from '@deriv-com/ui/dist/components/Text';
 import { useHistory } from 'react-router-dom';
+import { Loader, Text } from '@deriv-com/ui';
 import { useDevice, usePoiPoaStatus } from '../../hooks';
 import SendEmailIcon from '../../public/ic-send-email.svg';
 import { Checklist } from '../Checklist';

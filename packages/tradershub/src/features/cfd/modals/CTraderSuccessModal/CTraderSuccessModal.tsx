@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Provider } from '@deriv/library';
 import { Button } from '@deriv/quill-design';
 import { ButtonGroup, Modal } from '../../../../components';
-import { Provider } from '@deriv/library';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens';
 

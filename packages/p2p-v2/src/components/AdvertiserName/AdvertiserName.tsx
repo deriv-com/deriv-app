@@ -1,10 +1,10 @@
 import React from 'react';
-import { UserAvatar } from '../UserAvatar';
+import { Text } from '@deriv-com/ui';
 import { useAdvertiserStats, useDevice } from '../../hooks';
-import AdvertiserNameStats from './AdvertiserNameStats';
+import { UserAvatar } from '../UserAvatar';
 import AdvertiserNameBadges from './AdvertiserNameBadges';
+import AdvertiserNameStats from './AdvertiserNameStats';
 import AdvertiserNameToggle from './AdvertiserNameToggle';
-import { Text } from '@deriv-com/ui/dist/components/Text';
 import './AdvertiserName.scss';
 
 const AdvertiserName = () => {

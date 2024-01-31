@@ -1,11 +1,10 @@
 import React from 'react';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import { Search } from '../../../../components/Search';
-import { Dropdown } from '../../../../components/Dropdown';
-import { useDevice } from '../../../../hooks';
-import { COUNTERPARTIES_DROPDOWN_LIST } from '../../../../utils/constants';
-import SortIcon from '../../../../public/ic-cashier-sort.svg';
+import { Button, Text } from '@deriv-com/ui';
+import { Dropdown } from '../../../../../components/Dropdown';
+import { Search } from '../../../../../components/Search';
+import { useDevice } from '../../../../../hooks';
+import SortIcon from '../../../../../public/ic-cashier-sort.svg';
+import { COUNTERPARTIES_DROPDOWN_LIST } from '../../../../../utils/constants';
 import './MyProfileCounterpartiesHeader.scss';
 
 type MyProfileCounterpartiesHeaderProps = {
@@ -23,7 +22,7 @@ const MyProfileCounterpartiesHeader = ({
 }: MyProfileCounterpartiesHeaderProps) => {
     const { isMobile } = useDevice();
     return (
-        <>
+        <div className='p2p-v2-my-profile-counterparties__content-header'>
             <Text as='p' size='sm'>
                 {`When you block someone, you won’t see their ads, and they can’t see yours. Your ads will be hidden from their search results, too.`}
             </Text>
@@ -46,7 +45,7 @@ const MyProfileCounterpartiesHeader = ({
                     />
                 )}
             </div>
-        </>
+        </div>
     );
 };
 export default MyProfileCounterpartiesHeader;

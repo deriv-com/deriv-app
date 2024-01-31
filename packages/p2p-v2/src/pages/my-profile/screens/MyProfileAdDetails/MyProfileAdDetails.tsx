@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { p2p } from '@deriv/api';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button } from '@deriv-com/ui';
 import { FullPageMobileWrapper, TextArea } from '../../../../components';
 import { useDevice, useQueryString } from '../../../../hooks';
 import './MyProfileAdDetails.scss';

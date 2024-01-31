@@ -1,6 +1,6 @@
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Input } from '@deriv-com/ui/dist/components/Input';
+import { Input } from '@deriv-com/ui';
 import { VALID_SYMBOLS_PATTERN } from '../../constants';
 import { TextArea } from '..';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useIsDIELEnabled } from '@deriv/api';
 import { Heading, useBreakpoint } from '@deriv/quill-design';
-import { Tab, Tabs } from '@deriv-com/ui/dist/components/Tabs';
+import { Tab, Tabs } from '@deriv-com/ui';
 import {
     CFDSection,
     DemoRealSwitcher,

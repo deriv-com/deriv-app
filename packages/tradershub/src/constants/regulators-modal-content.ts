@@ -1,12 +1,12 @@
-/* eslint-disable sort-keys */
-import { TextProps } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
+import { ComponentProps } from 'react';
 
 export type TRowItem = {
     options?: {
-        align?: TextProps['align'];
-        color?: TextProps['color'];
+        align?: ComponentProps<typeof Text>['align'];
+        color?: ComponentProps<typeof Text>['color'];
         shouldShowAsterickAtEnd?: boolean;
-        weight?: TextProps['weight'];
+        weight?: ComponentProps<typeof Text>['weight'];
     };
     text: string;
 };

@@ -14,5 +14,3 @@ export const AUTH_STATUS_CODES = {
     SUSPECTED: 'suspected',
     VERIFIED: 'verified',
 } as const;
-
-export const P2P_ROUTE = '/cashier/p2p';

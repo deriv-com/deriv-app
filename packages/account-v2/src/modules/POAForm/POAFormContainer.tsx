@@ -8,7 +8,8 @@ import IcPOAUpload from '../../assets/verification-status/ic-poa-upload.svg';
 import IcPOAVerified from '../../assets/verification-status/ic-poa-verified.svg';
 import { DemoMessage } from '../../components/DemoMessage';
 import { IconWithMessage } from '../../components/IconWithMessage';
-import { AUTH_STATUS_CODES, P2P_ROUTE } from '../../constants/constants';
+import { AUTH_STATUS_CODES } from '../../constants/constants';
+import { ACCOUNT_V2_ROUTES, P2P_ROUTE } from '../../constants/routes';
 import { AddressDetailsForm } from '../../containers/POAForm/AddressDetailsForm';
 import usePOAInfo from '../../hooks/usePOAInfo';
 import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../utils/platform';
@@ -41,7 +42,7 @@ export const POAFormContainer = () => {
         isPOINeeded ? (
             <Button
                 onClick={() => {
-                    history.push('/account/proof-of-identity');
+                    history.push(ACCOUNT_V2_ROUTES.ProofOfIdentity);
                 }}
             >
                 Proof of identity

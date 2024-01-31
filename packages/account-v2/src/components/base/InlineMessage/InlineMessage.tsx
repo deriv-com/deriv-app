@@ -9,15 +9,15 @@ import {
 import './InlineMessage.scss';
 
 const typeIconMapper = {
-    announcement: StandaloneBullhornRegularIcon, // <StandaloneBullhornRegularIcon fill='#0e5345' iconSize='md' />,
-    error: StandaloneTriangleExclamationRegularIcon, // <StandaloneTriangleExclamationRegularIcon fill='#ec1818' iconSize='md' />,
-    information: StandaloneCircleInfoRegularIcon, // <StandaloneCircleInfoRegularIcon fill='#18d3ec' iconSize='md' />,
-    warning: StandaloneCircleExclamationRegularIcon, // <StandaloneCircleExclamationRegularIcon fill='#18d3ec' iconSize='md' />,
+    announcement: StandaloneBullhornRegularIcon,
+    error: StandaloneTriangleExclamationRegularIcon,
+    information: StandaloneCircleInfoRegularIcon,
+    warning: StandaloneCircleExclamationRegularIcon,
 };
 
 type TProps = RequireAtLeastOne<{ children: React.ReactNode; message: React.ReactNode; title: React.ReactNode }> & {
     size?: 'lg' | 'md' | 'sm' | 'xs';
-    type?: keyof typeof typeIconMapper;
+    type?: 'announcement' | 'error' | 'information' | 'warning';
     variant?: 'contained' | 'outlined';
 };
 

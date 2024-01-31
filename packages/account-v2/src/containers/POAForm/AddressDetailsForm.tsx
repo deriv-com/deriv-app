@@ -9,6 +9,7 @@ import { Text } from '@deriv-com/ui/dist/components/Text';
 import IcPOALock from '../../assets/verification-status/ic-poa-lock.svg';
 import { InlineMessage } from '../../components/base/InlineMessage';
 import { IconWithMessage } from '../../components/IconWithMessage';
+import { ACCOUNT_V2_DEFAULT_ROUTE } from '../../constants/routes';
 import { AddressFields } from '../../modules/AddressFields';
 import DocumentSubmission from './DocumentSubmission';
 
@@ -90,7 +91,7 @@ export const AddressDetailsForm = ({ resubmitting }: TAddressDetailsForm) => {
                     <StandaloneXmarkBoldIcon
                         iconSize='md'
                         onClick={() => {
-                            history.push('/account-v2/');
+                            history.push(ACCOUNT_V2_DEFAULT_ROUTE);
                         }}
                     />
                 </div>

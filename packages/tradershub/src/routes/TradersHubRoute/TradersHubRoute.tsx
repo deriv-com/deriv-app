@@ -18,8 +18,7 @@ const TradersHubRoute = () => {
     const { isMobile } = useBreakpoint();
     const { data: isDIEL } = useIsDIELEnabled();
     const { uiState } = useUIContext();
-    const accountType = uiState.accountType;
-    const regulation = uiState.regulation;
+    const { accountType, regulation } = uiState;
     const isReal = accountType === 'real';
     const isDemo = accountType === 'demo';
     const { hasActiveDerivAccount } = useRegulationFlags(regulation, accountType);

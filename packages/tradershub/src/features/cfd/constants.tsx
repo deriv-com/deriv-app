@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ComponentType, ReactNode, SVGAttributes } from 'react';
 import CTraderIcon from '../../public/images/cfd/ctrader.svg';
 import DerivXIcon from '../../public/images/cfd/derivx.svg';
 import FinancialEUMT5Icon from '../../public/images/cfd/eu-mt5-financial.svg';
@@ -217,7 +217,7 @@ export const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
     },
 };
 
-export const AppToIconMapper: Record<string, React.ComponentType<React.SVGAttributes<SVGElement>>> = {
+export const AppToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElement>>> = {
     android: InstallationGoogleIcon,
     huawei: InstallationHuaweiIcon,
     ios: InstallationAppleIcon,

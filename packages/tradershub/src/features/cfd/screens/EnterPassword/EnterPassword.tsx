@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { useActiveTradingAccount } from '@deriv/api';
 import { Button, Text, TextField, useBreakpoint } from '@deriv/quill-design';
 import { useUIContext } from '../../../../components';
@@ -10,7 +10,7 @@ import { MarketTypeDetails, PlatformDetails } from '../../constants';
 type TProps = {
     isLoading?: boolean;
     marketType: TMarketTypes.CreateOtherCFDAccount;
-    onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onPasswordChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick?: () => void;
     onSecondaryClick?: () => void;
     password: string;
@@ -28,10 +28,10 @@ type TProps = {
  * @param {string} password - password value
  * @param {boolean} passwordError - password error state
  * @param {TPlatforms.All} platform - platform Mt5 or Dxtrade
- * @returns {React.ReactNode} - returns the enter password screen component
+ * @returns {ReactNode} - returns the enter password screen component
  */
 
-const EnterPassword: React.FC<TProps> = ({
+const EnterPassword = ({
     isLoading,
     marketType,
     onPasswordChange,
@@ -40,7 +40,7 @@ const EnterPassword: React.FC<TProps> = ({
     password,
     passwordError,
     platform,
-}) => {
+}: TProps) => {
     const { isDesktop } = useBreakpoint();
     const title = PlatformDetails[platform].title;
     const { getUIState } = useUIContext();

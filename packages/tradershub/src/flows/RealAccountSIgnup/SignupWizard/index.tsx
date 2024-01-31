@@ -24,7 +24,7 @@ const FORM_PROGRESS_STEPS = [
  *  <SignupWizard />
  * );
  */
-const SignupWizard: React.FC = () => {
+const SignupWizard = () => {
     const { currentStep, dispatch, helpers, isWizardOpen, setIsWizardOpen } = useSignupWizardContext();
     const { isMobile } = useBreakpoint();
     useEffect(() => {

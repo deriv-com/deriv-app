@@ -7,6 +7,7 @@ import { localize } from '@deriv/translations';
 import { Analytics } from '@deriv-com/analytics';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendQsOpenEvent } from '../bot-builder/quick-strategy/analytics/rudderstack-quick-strategy';
 import { rudderstackDashboardChooseShortcut } from './analytics/rudderstack-dashboard';
 import GoogleDrive from './load-bot-preview/google-drive';
 import Recent from './load-bot-preview/recent';
@@ -47,12 +48,9 @@ const Cards = observer(({ is_mobile, has_dashboard_strategies }: TCardProps) => 
         });
     };
 
-    // this is check if the user has opened quick strategy model from the dashboard
     const sendToRudderStackOnQuickStrategyIconClick = () => {
-        Analytics.trackEvent('ce_bot_quick_strategy_form', {
-            shortcut_name: 'quick-strategy',
-            form_source: 'bot_dashboard',
-        });
+        // send to rs if quick strategy is opened from dashbaord
+        rudderStackSendQsOpenEvent();
     };
 
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);

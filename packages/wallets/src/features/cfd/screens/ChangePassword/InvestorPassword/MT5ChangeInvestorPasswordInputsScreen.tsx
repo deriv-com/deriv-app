@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Formik } from 'formik';
+import { Field, FieldProps, Form, Formik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
 import { WalletButton, WalletsActionScreen, WalletText } from '../../../../../components';
 import { WalletPasswordFieldLazy, WalletTextField } from '../../../../../components/Base';
@@ -24,6 +25,8 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
     const { getModalState } = useModal();
     const mt5AccountId = getModalState('accountId') ?? '';
     const [isCurrentPasswordVisible, setIsCurrentPasswordVisible] = useState(false);
+    const [hasCurrentPasswordFieldTouched, setHasCurrentPasswordFieldTouched] = useState(false);
+    const { t } = useTranslation();
 
     const {
         error: changeInvestorPasswordError,
@@ -32,6 +35,11 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
     } = useTradingPlatformInvestorPasswordChange();
 
     const initialValues: TFormInitialValues = { currentPassword: '', newPassword: '' };
+
+    const validateCurrentPassword = (value: string) => {
+        if (!value) return 'The field is required';
+        return undefined;
+    };
 
     const onFormSubmitHandler = async (values: TFormInitialValues) => {
         await changeInvestorPassword({
@@ -65,30 +73,47 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
             descriptionSize='sm'
             renderButtons={() => (
                 <Formik initialValues={initialValues} onSubmit={onFormSubmitHandler}>
-                    {({ handleChange, handleSubmit, values }) => (
-                        <form className='wallets-change-investor-password-screens__form' onSubmit={handleSubmit}>
+                    {({ handleChange, values }) => (
+                        <Form className='wallets-change-investor-password-screens__form'>
                             <div className='wallets-change-investor-password-screens__form-fields'>
-                                <WalletTextField
-                                    autoComplete='current-password'
-                                    label='Current investor password'
-                                    name='currentPassword'
-                                    onChange={handleChange}
-                                    renderRightIcon={() => (
-                                        <PasswordViewerIcon
-                                            isIconDisabled={!values.currentPassword}
-                                            setViewPassword={setIsCurrentPasswordVisible}
-                                            viewPassword={isCurrentPasswordVisible}
-                                        />
-                                    )}
-                                    type={isCurrentPasswordVisible ? 'text' : 'password'}
-                                    value={values.currentPassword}
-                                />
+                                <Field name='currentPassword' validate={validateCurrentPassword}>
+                                    {({ field, form }: FieldProps) => {
+                                        return (
+                                            <WalletTextField
+                                                autoComplete='current-password'
+                                                errorMessage={hasCurrentPasswordFieldTouched && form.errors[field.name]}
+                                                isInvalid={
+                                                    hasCurrentPasswordFieldTouched && Boolean(form.errors[field.name])
+                                                }
+                                                label='Current investor password'
+                                                name={field.name}
+                                                onChange={field.onChange}
+                                                onFocus={e => {
+                                                    setHasCurrentPasswordFieldTouched(true);
+                                                    field.onBlur(e);
+                                                }}
+                                                renderRightIcon={() => (
+                                                    <PasswordViewerIcon
+                                                        setViewPassword={setIsCurrentPasswordVisible}
+                                                        viewPassword={isCurrentPasswordVisible}
+                                                    />
+                                                )}
+                                                type={isCurrentPasswordVisible ? 'text' : 'password'}
+                                                value={values.currentPassword}
+                                            />
+                                        );
+                                    }}
+                                </Field>
                                 <WalletPasswordFieldLazy
                                     autoComplete='new-password'
                                     label='New investor password'
+                                    message={t(
+                                        'Strong passwords contain at least 8 characters, combine uppercase and lowercase letters and numbers.'
+                                    )}
                                     name='newPassword'
                                     onChange={handleChange}
                                     password={values.newPassword}
+                                    showMessage
                                 />
                             </div>
                             <div className='wallets-change-investor-password-screens__form-buttons'>
@@ -104,7 +129,7 @@ const MT5ChangeInvestorPasswordInputsScreen: React.FC<TProps> = ({ sendEmail, se
                                     Create or reset investor password
                                 </WalletButton>
                             </div>
-                        </form>
+                        </Form>
                     )}
                 </Formik>
             )}

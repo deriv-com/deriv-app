@@ -10,17 +10,16 @@ type TActions = {
 /**
  * @name Actions
  * @description The Actions component is used to navigate between steps in the SignupWizard component.
- * @param {Function} onSubmit - A function that is called when the Next button is clicked.
+ * Intended to be used as a child component of the Formik component.
+ * @param {Object} props - React props object
+ * @param {boolean} [props.canGoNext] - A boolean that determines whether the Next button is disabled
  * @example
- * const onSubmit = () => {
- *     // do something
- * };
  * return (
- *     <Actions onSubmit={onSubmit} />
+ *     <Actions canGoNext />
  * );
  */
 
-const Actions: React.FC<TActions> = ({ canGoNext }) => {
+const Actions = ({ canGoNext }: TActions) => {
     const {
         helpers: { canGoToPrevStep, goToNextStep, goToPrevStep },
     } = useSignupWizardContext();

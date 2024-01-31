@@ -1,14 +1,12 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveAccount } from '@deriv/api';
-import { Loader } from '@deriv-com/ui/dist/components/Loader';
-import { Tab, Tabs } from '@deriv-com/ui/dist/components/Tabs';
+import { Loader, Tab, Tabs } from '@deriv-com/ui';
 import { CloseHeader } from '../../components';
 import { MyProfile } from '../../pages';
 import './index.scss';
-import { useEventListener } from 'usehooks-ts';
 
-const DEFAULT_TAB = 'Buy / Sell';
+const DEFAULT_TAB = 'buy-sell';
 
 export const routesConfiguration = [
     { Component: <div> Buy Sell Page </div>, path: 'buy-sell', title: 'Buy / Sell' },
@@ -19,13 +17,13 @@ export const routesConfiguration = [
 const AppContent = () => {
     const history = useHistory();
     const { data: activeAccountData, isLoading } = useActiveAccount();
-    const [activeTab, setActiveTab] = useState(DEFAULT_TAB);
 
-    useEventListener('switchTab', event => {
-        console.log(event);
-        setActiveTab('orders');
-        history.push(`/cashier/p2p-v2/${event.detail.tab}`);
-    });
+    const initialTab = useMemo(() => {
+        const pathname = new URL(window.location.href).pathname;
+        const segments = pathname.split('/');
+
+        return routesConfiguration.find(route => route.path === segments[segments.length - 1])?.title || DEFAULT_TAB;
+    }, [window.location.href]);
 
     if (isLoading || !activeAccountData) return <Loader color='#85acb0' />;
 
@@ -37,8 +35,7 @@ const AppContent = () => {
             <CloseHeader />
             <div className='p2p-v2-tab__wrapper'>
                 <Tabs
-                    activeTab={activeTab}
-                    key={activeTab}
+                    activeTab={initialTab}
                     className='p2p-v2-tab__items-wrapper'
                     onChange={index => {
                         history.push(`/cashier/p2p-v2/${routesConfiguration[index].path}`);

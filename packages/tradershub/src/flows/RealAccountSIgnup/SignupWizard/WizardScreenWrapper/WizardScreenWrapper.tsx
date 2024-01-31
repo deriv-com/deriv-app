@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
-import { Heading, useBreakpoint } from '@deriv/quill-design';
+import { useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv/ui';
 
 type TWizardScreenWrapper = { children: React.ReactNode; heading: ReactNode };
 
@@ -21,7 +22,11 @@ const WizardScreenWrapper = ({ children, heading }: TWizardScreenWrapper) => {
     const { isMobile } = useBreakpoint();
     return (
         <div className='flex flex-col justify-between h-full'>
-            {!isMobile && <Heading.H5 className='pt-2400 pl-1200'>{heading}</Heading.H5>}
+            {!isMobile && (
+                <Text as='p' className='font-bold pt-2400 pl-1200 text-100'>
+                    {heading}
+                </Text>
+            )}
             {children}
         </div>
     );

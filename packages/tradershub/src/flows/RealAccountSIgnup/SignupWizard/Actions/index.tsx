@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useFormikContext } from 'formik';
 import { useBreakpoint } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button } from '@deriv-com/ui';
 import { useSignupWizardContext } from '../../../../providers/SignupWizardProvider';
 
 type TActions = {

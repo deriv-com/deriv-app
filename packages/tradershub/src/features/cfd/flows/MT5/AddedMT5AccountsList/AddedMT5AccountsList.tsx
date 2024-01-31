@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button, Text } from '@deriv/quill-design';
+import { Text } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui';
 import { useUIContext } from '../../../../../components';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
 import { THooks } from '../../../../../types';
 import { CFDPlatforms, MarketType, MarketTypeDetails } from '../../../constants';
-import { TradeModal } from '../../../modals/TradeModal';
+import { TopUpModal, TradeModal } from '../../../modals';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
@@ -19,7 +19,6 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
     const { isEU } = useRegulationFlags(activeRegulation);
 
     const { show } = Provider.useModal();
-    const history = useHistory();
     const { getVerificationStatus } = useJurisdictionStatus();
     const jurisdictionStatus = useMemo(
         () => getVerificationStatus(account.landing_company_short || 'svg', account.status),
@@ -29,6 +28,7 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
     const marketTypeDetails = MarketTypeDetails(isEU)[account.market_type ?? MarketType.ALL];
 
     const title = marketTypeDetails?.title;
+    const isVirtual = account.is_virtual;
 
     return (
         <TradingAccountCard
@@ -36,18 +36,16 @@ const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) 
             trailing={() => (
                 <div className='flex flex-col gap-y-200'>
                     <Button
-                        className='border-opacity-black-400 rounded-200 px-800'
-                        colorStyle='black'
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => {
-                            history.push('/cashier/transfer');
+                            if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.MT5} />);
+                            // else transferModal;
                         }}
-                        variant='secondary'
+                        variant='outlined'
                     >
-                        Transfer
+                        {isVirtual ? 'Top up' : 'Transfer'}
                     </Button>
                     <Button
-                        className='rounded-200 px-800'
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() =>
                             show(

@@ -5,11 +5,12 @@ import { mockContractInfo, TRADE_TYPES } from '@deriv/shared';
 import ContractDetails from '../contract-details';
 
 const contract_types = {
-    test_contract_type: 'test_contract_type',
-    multiplier: TRADE_TYPES.MULTIPLIER,
-    vanilla: TRADE_TYPES.VANILLA.CALL,
     digit: 'digit',
     expiry: 'expiry',
+    multiplier: TRADE_TYPES.MULTIPLIER,
+    test_contract_type: 'test_contract_type',
+    tick_high_low: TRADE_TYPES.TICK_HIGH_LOW,
+    vanilla: TRADE_TYPES.VANILLA.CALL,
     reset: 'reset',
 };
 const contract_info = mockContractInfo({
@@ -90,6 +91,14 @@ describe('<ContractDetails />', () => {
 
         expect(screen.getByText('Duration')).toBeInTheDocument();
         expect(screen.getByText('Strike')).toBeInTheDocument();
+    });
+
+    it('should render selected tick if it is tick_high_low contract type', () => {
+        const new_props = { ...mock_default_props };
+        new_props.contract_info.contract_type = contract_types.tick_high_low;
+        render(<ContractDetails {...new_props} />);
+
+        expect(screen.getByText('Selected tick')).toBeInTheDocument();
     });
 
     it('should render barrier information in ContractAuditItem if it is digit contract type', () => {

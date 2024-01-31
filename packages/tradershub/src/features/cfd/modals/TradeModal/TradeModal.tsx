@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
 import { Provider } from '@deriv/library';
-import { Text, useBreakpoint } from '@deriv/quill-design';
+import { useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { Modal } from '../../../../components/Modal';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '../../constants';
@@ -32,9 +33,9 @@ const TradeModal = ({ account, marketType, platform }: TTradeModalProps) => {
             <Modal.Content>
                 <TradeScreen account={account} />
             </Modal.Content>
-            <Modal.Footer>
+            <Modal.Footer align='center'>
                 <div className='pt-50 min-h-[190px] flex justify-center items-center flex-col h-fit w-full gap-800'>
-                    <Text align='center' size='sm' weight='bold'>
+                    <Text align='center' size='xs' weight='bold'>
                         Download {PlatformDetails[platform].title} on your phone to trade with the{' '}
                         {PlatformDetails[platform].title} account
                     </Text>

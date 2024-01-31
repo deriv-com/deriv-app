@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { IconToCurrencyMapperType } from 'src/constants/constants';
 import { THooks } from 'src/types';
-import { Text } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 
 type DemoCurrencySwitcherAccountInfoProps = {
     displayBalance: THooks.ActiveTradingAccount['display_balance'];
@@ -13,26 +13,26 @@ type RealCurrencySwitcherAccountInfoProps = {
 };
 
 export const DemoCurrencySwitcherAccountInfo = ({ displayBalance }: DemoCurrencySwitcherAccountInfoProps) => (
-    <Fragment>
-        <Text bold className='font-light text-system-light-less-prominent-text' size='sm'>
+    <div className='flex flex-col'>
+        <Text className='font-light text-system-light-less-prominent-text' size='sm' weight='bold'>
             Demo
         </Text>
-        <Text bold className='text-status-light-information' size='sm'>
+        <Text className='text-status-light-information' size='sm' weight='bold'>
             {displayBalance}
         </Text>
-    </Fragment>
+    </div>
 );
 
 export const RealCurrencySwitcherAccountInfo = ({
     currencyText,
     displayBalance,
 }: RealCurrencySwitcherAccountInfoProps) => (
-    <Fragment>
-        <Text bold className='text-status-light-success' size='sm'>
+    <div className='flex flex-col'>
+        <Text className='text-status-light-success' size='sm' weight='bold'>
             {displayBalance}
         </Text>
         <Text className='text-system-light-less-prominent-text' size='sm'>
             {currencyText}
         </Text>
-    </Fragment>
+    </div>
 );

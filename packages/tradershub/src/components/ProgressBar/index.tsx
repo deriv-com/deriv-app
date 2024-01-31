@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { useBreakpoint } from '@deriv/quill-design';
+import Stepper, { TStep } from './ProgressBar';
 import StepConnector from './StepConnector';
-import Stepper, { TStep } from './Timeline';
 
 type TFormProgressProps = {
     activeStep: number;
@@ -13,7 +13,7 @@ type TFormProgressProps = {
  * @param steps - List of steps to be rendered
  * @returns React Component
  */
-export const Timeline = ({ activeStep, steps = [] }: TFormProgressProps) => {
+export const ProgressBar = ({ activeStep, steps = [] }: TFormProgressProps) => {
     const { isMobile } = useBreakpoint();
 
     return (

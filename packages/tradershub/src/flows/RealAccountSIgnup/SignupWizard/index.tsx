@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import ReactModal from 'react-modal';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
-import { Timeline } from '../../../components/Timeline';
+import { ProgressBar } from '../../../components/ProgressBar';
 import { CUSTOM_STYLES } from '../../../helpers/signupModalHelpers';
 import { ACTION_TYPES, useSignupWizardContext } from '../../../providers/SignupWizardProvider';
 import CurrencySelector from '../../../screens/CurrencySelector';
@@ -63,7 +63,7 @@ const SignupWizard: React.FC = () => {
         <ReactModal isOpen={isWizardOpen} onRequestClose={handleClose} shouldCloseOnOverlayClick style={CUSTOM_STYLES}>
             <div className='bg-background-primary-base h-[717px] w-[1040px] rounded-800 flex overflow-hidden'>
                 <div className='min-w-[256px] bg-system-light-secondary-background p-800'>
-                    <Timeline activeStep={currentStep} steps={FORM_TIMELINE_STEPS} />
+                    <ProgressBar activeStep={currentStep} steps={FORM_TIMELINE_STEPS} />
                 </div>
                 <div className='flex flex-col justify-between w-full'>
                     <StandaloneXmarkBoldIcon

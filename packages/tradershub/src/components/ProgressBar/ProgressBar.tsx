@@ -1,8 +1,8 @@
 import React from 'react';
 import { qtMerge, Text } from '@deriv/quill-design';
 import { StandaloneCheckBoldIcon } from '@deriv/quill-icons';
+import { desktopStyle, stepperVariants } from './ProgressBar.classnames';
 import StepConnector from './StepConnector';
-import { desktopStyle, stepperVariants } from './Timeline.classnames';
 
 export type TStep = { isFilled: boolean; title: string };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useActiveTradingAccount } from '@deriv/api';
 import { Button, Text, TextField, useBreakpoint } from '@deriv/quill-design';
 import { useUIContext } from '../../../../components';
@@ -7,7 +7,7 @@ import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
 import { MarketTypeDetails, PlatformDetails } from '../../constants';
 
-type TProps = {
+type TEnterPasswordProps = {
     isLoading?: boolean;
     marketType: TMarketTypes.CreateOtherCFDAccount;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -31,7 +31,7 @@ type TProps = {
  * @returns {React.ReactNode} - returns the enter password screen component
  */
 
-const EnterPassword: React.FC<TProps> = ({
+const EnterPassword: FC<TEnterPasswordProps> = ({
     isLoading,
     marketType,
     onPasswordChange,

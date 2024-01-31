@@ -57,11 +57,11 @@ export const CFDPlatforms = {
     MT5: 'mt5',
 } as const;
 
-export const MarketType = {
-    ALL: 'all',
-    FINANCIAL: 'financial',
-    SYNTHETIC: 'synthetic',
-} as const;
+export enum MarketType {
+    ALL = 'all',
+    FINANCIAL = 'financial',
+    SYNTHETIC = 'synthetic',
+}
 
 export const Category = {
     DEMO: 'demo',

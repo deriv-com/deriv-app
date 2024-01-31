@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react';
 import Modal from 'react-modal';
 import { p2p } from '@deriv/api';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { Loader } from '@deriv-com/ui/dist/components/Loader';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Button, Loader, Text } from '@deriv-com/ui';
 import { useDevice } from '../../../hooks';
 import { customStyles } from '../helpers';
 import './DailyLimitModal.scss';

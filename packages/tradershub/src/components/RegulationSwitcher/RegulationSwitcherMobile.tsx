@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from '@deriv/library';
-import { Tab, Tabs } from '@deriv-com/ui/dist/components/Tabs';
+import { Tab, Tabs } from '@deriv-com/ui';
 import { useRegulationSwitcher } from '../../hooks/useRegulationSwitcher';
 import { RegulationModal } from '../../modals';
 import InfoIcon from '../../public/images/ic-info-outline.svg';

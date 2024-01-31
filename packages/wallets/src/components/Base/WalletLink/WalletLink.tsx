@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { getStaticUrl } from '../../../helpers/urls';
 import './WalletLink.scss';
 
@@ -14,7 +13,7 @@ interface LinkProps {
 
 const WalletLink: React.FC<LinkProps> = ({ children, href, staticUrl, variant = 'normal' }) => (
     <a
-        className={classNames('wallets-link', `wallets-link__variant--${variant}`)}
+        className={`wallets-link__variant--${variant}`}
         href={href ?? (staticUrl ? getStaticUrl(staticUrl) : '#')}
         rel='noopener noreferrer'
         target='_blank'

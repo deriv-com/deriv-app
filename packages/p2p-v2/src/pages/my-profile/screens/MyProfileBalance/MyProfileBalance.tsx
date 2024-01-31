@@ -6,11 +6,9 @@ import { useAdvertiserStats, useDevice } from '../../../../hooks';
 import InfoOutlineIcon from '../../../../public/ic-info-outline.svg';
 import { numberToCurrencyText } from '../../../../utils';
 import { MyProfileDailyLimit } from '../MyProfileDailyLimit';
-import { useHistory } from 'react-router-dom';
 import './MyProfileBalance.scss';
 
 const MyProfileBalance = () => {
-    const history = useHistory();
     const { data: advertiserInfo, isLoading } = useAdvertiserStats();
     const { data: activeAccount } = useActiveAccount();
     const { isDesktop } = useDevice();
@@ -47,13 +45,6 @@ const MyProfileBalance = () => {
             <AvailableP2PBalanceModal
                 isModalOpen={shouldShowAvailableBalanceModal}
                 onRequestClose={() => {
-                    dispatchEvent(
-                        new CustomEvent('switchTab', {
-                            detail: {
-                                tab: 'buy-sell',
-                            },
-                        })
-                    );
                     setShouldShowAvailableBalanceModal(false);
                 }}
             />

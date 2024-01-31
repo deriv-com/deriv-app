@@ -1,0 +1,52 @@
+import React from 'react';
+import { APIProvider } from '@deriv/api';
+import { render, screen } from '@testing-library/react';
+import { ManualForm } from '../manualForm';
+
+jest.mock('react-calendar/dist/Calendar.css', () => jest.fn());
+
+describe('ManualForm', () => {
+    const mockProps: React.ComponentProps<typeof ManualForm> = { selectedDocument: 'driving_licence' };
+    const renderComponent = (props = mockProps) =>
+        render(
+            <APIProvider>
+                <ManualForm {...props} />
+            </APIProvider>
+        );
+
+    it('should render the header texts correctly for the document Driving licence', () => {
+        renderComponent();
+        expect(screen.getByText(/First, enter your Driving licence number and the expiry date./)).toBeInTheDocument();
+        expect(screen.getByText(/Next, upload the front and back of your driving licence./)).toBeInTheDocument();
+    });
+
+    it('should render the header texts correctly for the document Passport', () => {
+        renderComponent({ selectedDocument: 'passport' });
+        expect(screen.getByText(/First, enter your Passport number and the expiry date./)).toBeInTheDocument();
+        expect(
+            screen.getByText(/Next, upload the page of your passport that contains your photo./)
+        ).toBeInTheDocument();
+    });
+
+    it('should render the header texts correctly for the document Identity card', () => {
+        renderComponent({ selectedDocument: 'national_identity_card' });
+        expect(screen.getByText(/First, enter your Identity card number and the expiry date./)).toBeInTheDocument();
+        expect(screen.getByText(/Next, upload the front and back of your identity card./)).toBeInTheDocument();
+    });
+
+    it('should render the header texts correctly for the document NIMC slip', () => {
+        renderComponent({ selectedDocument: 'nimc_slip' });
+        expect(screen.getByText(/First, enter your NIMC slip number and the expiry date./)).toBeInTheDocument();
+        expect(
+            screen.getByText(/Next, upload the page of your NIMC slip that contains your photo./)
+        ).toBeInTheDocument();
+    });
+
+    it('should render the footer items correctly', () => {
+        renderComponent();
+        expect(screen.getByText(/A clear colour photo or scanned image/)).toBeInTheDocument();
+        expect(screen.getByText(/JPEG, JPG, PNG, PDF, or GIF/)).toBeInTheDocument();
+        expect(screen.getByText(/Less than 8MB/)).toBeInTheDocument();
+        expect(screen.getByText(/Must be valid for at least 6 months/)).toBeInTheDocument();
+    });
+});

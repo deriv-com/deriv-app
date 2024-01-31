@@ -56,20 +56,22 @@ const Verification = () => {
         {
             isDisabled: isPoiPending,
             onClick: () => {
-                if (!isPoaVerified) redirectToVerification('/account/proof-of-identity');
+                if (!isPoiVerified) redirectToVerification('/account/proof-of-identity');
             },
-            status: isPoaVerified ? 'done' : 'action',
+            status: isPoiVerified ? 'done' : 'action',
             text: getPoiAction(poiStatus),
+            testId: 'dt_verification__poi-arrow-button',
         },
         ...(isP2PPoaRequired
             ? [
                   {
                       isDisabled: isPoaPending,
                       onClick: () => {
-                          if (!isPoiVerified) redirectToVerification('/account/proof-of-address');
+                          if (!isPoaVerified) redirectToVerification('/account/proof-of-address');
                       },
-                      status: isPoiVerified ? 'done' : 'action',
+                      status: isPoaVerified ? 'done' : 'action',
                       text: getPoaAction(poaStatus),
+                      testId: 'dt_verification__poa-arrow-button',
                   },
               ]
             : []),

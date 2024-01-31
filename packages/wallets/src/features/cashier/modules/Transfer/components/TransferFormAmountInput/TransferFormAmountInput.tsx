@@ -109,7 +109,7 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
             amountConverterHandler(amountValue);
         }
         setFieldValue('activeAmountFieldName', undefined);
-    }, [amountValue, isSameCurrency, setFieldValue]);
+    }, [amountConverterHandler, amountValue, isSameCurrency, setFieldValue]);
 
     const onChangeHandler = useCallback(
         (value: number) => {

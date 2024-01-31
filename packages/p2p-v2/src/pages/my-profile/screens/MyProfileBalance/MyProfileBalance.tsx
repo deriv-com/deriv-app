@@ -7,8 +7,10 @@ import { numberToCurrencyText } from '../../../../utils';
 import './MyProfileBalance.scss';
 import { MyProfileDailyLimit } from '../MyProfileDailyLimit';
 import { useActiveAccount } from '@deriv/api';
+import { useHistory } from 'react-router-dom';
 
 const MyProfileBalance = () => {
+    const history = useHistory();
     const { data: advertiserInfo, isLoading } = useAdvertiserStats();
     const { data: activeAccount } = useActiveAccount();
     const { isDesktop } = useDevice();
@@ -44,7 +46,16 @@ const MyProfileBalance = () => {
         <>
             <AvailableP2PBalanceModal
                 isModalOpen={shouldShowAvailableBalanceModal}
-                onRequestClose={() => setShouldShowAvailableBalanceModal(false)}
+                onRequestClose={() => {
+                    dispatchEvent(
+                        new CustomEvent('switchTab', {
+                            detail: {
+                                tab: 'buy-sell',
+                            },
+                        })
+                    );
+                    setShouldShowAvailableBalanceModal(false);
+                }}
             />
             <DailyLimitModal
                 currency={currency}

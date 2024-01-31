@@ -1,4 +1,4 @@
-import { useCallback, useRef, useMemo, useEffect, useState, useId } from 'react';
+import { useCallback, useRef, useMemo, useEffect, useState } from 'react';
 import useOnfidoServiceToken from './useOnfidoServiceToken';
 import { ALPHA_2_TO_ALPHA_3, ONFIDO_PHRASES } from '../constants';
 import useSettings from './useSettings';
@@ -24,8 +24,6 @@ import { v4 as uuidv4 } from 'uuid';
  * ```
  */
 const useOnfido = () => {
-    // used to check that we only initialize and load the onfido script once
-    const [isOnfidoLoaded, setIsOnfidoLoaded] = useState(false);
     // use to check that we do not re-attempt to reload the onfido script while its still loading
     const [isOnfidoLoading, setIsOnfidoLoading] = useState(false);
     const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -89,33 +87,7 @@ const useOnfido = () => {
         [submitDocuments]
     );
 
-    const loadOnfidoSdkScript = () => {
-        const onfidoScriptNode = document.getElementById('onfido_sdk');
-        // check if the onfido sdk script has been loaded, and if its still loading the onfido script, don't re-attempt to load the script again
-        if (!onfidoScriptNode || !isOnfidoLoading) {
-            setIsOnfidoLoading(true);
-            const scriptNode = document.createElement('script');
-            const linkNode = document.createElement('link');
-
-            scriptNode.id = 'onfido_sdk';
-            scriptNode.src = 'https://assets.onfido.com/web-sdk-releases/latest/onfido.min.js';
-            linkNode.href = 'https://assets.onfido.com/web-sdk-releases/latest/style.css';
-            linkNode.rel = 'stylesheet';
-
-            document.body.appendChild(scriptNode);
-            document.body.appendChild(linkNode);
-
-            scriptNode.addEventListener('load', () => {
-                setIsOnfidoLoading(false);
-                setIsOnfidoLoaded(true);
-                initOnfido();
-            });
-        } else {
-            initOnfido();
-        }
-    };
-
-    const initOnfido = async () => {
+    const initOnfido = useCallback(async () => {
         const i18NLanguage = window.localStorage.getItem('i18n_language')?.toLowerCase() || 'en';
         const onfidoCountryCode =
             countryCode.length !== 3 ? ALPHA_2_TO_ALPHA_3[countryCode.toUpperCase()] : settings?.country_code;
@@ -156,13 +128,38 @@ const useOnfido = () => {
                 'face',
             ],
         });
-    };
+    }, [countryCode, onComplete, onfidoContainerId, settings?.country_code, supportedDocuments, token]);
+
+    const loadOnfidoSdkScript = useCallback(() => {
+        const hasOnfidoScriptNode = !!document.getElementById('onfido_sdk');
+        // check if the onfido sdk script has been loaded, and if its still loading the onfido script, don't re-attempt to load the script again
+        if (hasOnfidoScriptNode) {
+            if (!isOnfidoLoading) initOnfido();
+        } else {
+            setIsOnfidoLoading(true);
+            const scriptNode = document.createElement('script');
+            const linkNode = document.createElement('link');
+
+            scriptNode.id = 'onfido_sdk';
+            scriptNode.src = 'https://assets.onfido.com/web-sdk-releases/latest/onfido.min.js';
+            linkNode.href = 'https://assets.onfido.com/web-sdk-releases/latest/style.css';
+            linkNode.rel = 'stylesheet';
+
+            document.body.appendChild(scriptNode);
+            document.body.appendChild(linkNode);
+
+            scriptNode.addEventListener('load', () => {
+                initOnfido();
+                setIsOnfidoLoading(false);
+            });
+        }
+    }, [initOnfido, isOnfidoLoading]);
 
     useEffect(() => {
-        if (token && supportedDocuments.length && !isOnfidoLoaded && countryCode) {
+        if (token && supportedDocuments.length && countryCode) {
             loadOnfidoSdkScript();
         }
-    }, [token, supportedDocuments, countryCode]);
+    }, [token, supportedDocuments, countryCode, loadOnfidoSdkScript]);
 
     return {
         data: {

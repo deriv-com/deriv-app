@@ -9,18 +9,18 @@ describe('TradingAccountCard', () => {
     });
 
     it('should render the component with the leading component', () => {
-        render(<TradingAccountCard leading={() => <button>Get</button>}>MT5</TradingAccountCard>);
+        render(<TradingAccountCard leading={<button>Get</button>}>MT5</TradingAccountCard>);
         expect(screen.getByRole('button', { name: 'Get' })).toBeInTheDocument();
     });
 
     it('should render the component with the trailing component', () => {
-        render(<TradingAccountCard trailing={() => <button>Get</button>}>MT5</TradingAccountCard>);
+        render(<TradingAccountCard trailing={<button>Get</button>}>MT5</TradingAccountCard>);
         expect(screen.getByRole('button', { name: 'Get' })).toBeInTheDocument();
     });
 
     it('should render the component with the leading and trailing component', () => {
         render(
-            <TradingAccountCard leading={() => <button>Transfer</button>} trailing={() => <button>Open</button>}>
+            <TradingAccountCard leading={<button>Transfer</button>} trailing={<button>Open</button>}>
                 MT5
             </TradingAccountCard>
         );

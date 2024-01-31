@@ -25,7 +25,10 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         common,
         client,
         traders_hub,
+        ui,
     } = useStore();
+
+    const { openDerivRealAccountNeededModal } = ui;
 
     const {
         setAccountType,
@@ -34,7 +37,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         toggleCFDVerificationModal,
         current_list,
     } = cfd;
-    const { getAccount } = traders_hub;
+    const { getAccount, no_CR_account, no_MF_account, is_real, is_eu_user } = traders_hub;
     const { setAppstorePlatform } = common;
 
     const {
@@ -47,6 +50,10 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         setAccountSettings,
         updateMT5Status,
     } = client;
+
+    const no_real_mf_account_eu_regulator = no_MF_account && is_eu_user && is_real;
+
+    const no_real_cr_non_eu_regulator = no_CR_account && !is_eu_user && is_real;
 
     const {
         poi_or_poa_not_submitted,
@@ -115,20 +122,25 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
     );
 
     const onClickAdd = () => {
-        setAppstorePlatform(trading_platforms.platform as string);
-        if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
-            setJurisdictionSelectedShortcode(trading_platforms.shortcode);
-            if (is_account_status_verified) {
-                setAccountType(type_of_account);
-                enableCFDPasswordModal();
-            } else {
-                toggleCFDVerificationModal();
-            }
+        if (no_real_cr_non_eu_regulator || no_real_mf_account_eu_regulator) {
+            history.push(routes.traders_hub);
+            openDerivRealAccountNeededModal();
         } else {
-            setAccountType(type_of_account);
-            getAccount();
+            setAppstorePlatform(trading_platforms.platform as string);
+            if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
+                setJurisdictionSelectedShortcode(trading_platforms.shortcode);
+                if (is_account_status_verified) {
+                    setAccountType(type_of_account);
+                    enableCFDPasswordModal();
+                } else {
+                    toggleCFDVerificationModal();
+                }
+            } else {
+                setAccountType(type_of_account);
+                getAccount();
+            }
+            history.push(routes.traders_hub);
         }
-        history.push(routes.traders_hub);
     };
     return (
         <Button

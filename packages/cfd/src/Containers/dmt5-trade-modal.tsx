@@ -12,7 +12,7 @@ import {
 } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { getPlatformMt5DownloadLink, getBrokerName } from '../Helpers/constants';
+import { getPlatformMt5DownloadLink } from '../Helpers/constants';
 import SpecBox from '../Components/specbox';
 import PasswordBox from '../Components/passwordbox';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
@@ -25,11 +25,6 @@ import MigrationBanner from './migration-banner';
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid & {
         webtrader_url?: string;
-        white_label_download_links?: {
-            android?: string;
-            ios?: string;
-            windows?: string;
-        };
         white_label?: {
             download_links?: {
                 android?: string;
@@ -148,7 +143,7 @@ const DMT5TradeModal = observer(
                 <div className='cfd-trade-modal__login-specs'>
                     <div className='cfd-trade-modal__login-specs-item'>
                         <Text className='cfd-trade-modal--paragraph'>{localize('Broker')}</Text>
-                        <SpecBox is_bold is_broker value={getBrokerName()} />
+                        <SpecBox is_bold is_broker value={mt5_trade_account?.landing_company} />
                     </div>
                     <div className='cfd-trade-modal__login-specs-item'>
                         <Text className='cfd-trade-modal--paragraph'>{localize('Server')}</Text>

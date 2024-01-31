@@ -49,8 +49,6 @@ const DXTRADE_HUAWEI_APP_URL = 'https://appgallery.huawei.com/app/C104633219';
 const CTRADER_IOS_APP_URL = 'https://apps.apple.com/cy/app/ctrader/id767428811';
 const CTRADER_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.ct';
 
-const getBrokerName = () => 'Deriv.com Limited';
-
 const CTRADER_URL = is_staging || is_test_link ? CTRADER_UAT_URL : CTRADER_PRODUCTION_URL;
 
 const getTopUpConfig = () => {
@@ -118,7 +116,6 @@ export {
     DEMO_DXTRADE_URL,
     CTRADER_URL,
     CTRADER_DOWNLOAD_LINK,
-    getBrokerName,
     platformsText,
     getPlatformDXTradeDownloadLink,
     getPlatformCTraderDownloadLink,

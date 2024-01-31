@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveAccount } from '@deriv/api';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Button, Text } from '@deriv-com/ui';
 import IcPOAError from '../../assets/verification-status/ic-poa-error.svg';
 import IcPOAUpload from '../../assets/verification-status/ic-poa-upload.svg';
 import IcPOAVerified from '../../assets/verification-status/ic-poa-verified.svg';

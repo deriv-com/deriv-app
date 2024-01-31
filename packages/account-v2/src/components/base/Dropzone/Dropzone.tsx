@@ -11,7 +11,7 @@ import React, {
 import classNames from 'classnames';
 import { useDropzone } from 'react-dropzone';
 import { StandaloneXmarkRegularIcon as CloseIcon } from '@deriv/quill-icons';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button } from '@deriv-com/ui';
 import DropzoneFrame from '../../../assets/dropzone/dropzone-frame.svg';
 import { WalletText } from '../WalletText';
 import './Dropzone.scss';

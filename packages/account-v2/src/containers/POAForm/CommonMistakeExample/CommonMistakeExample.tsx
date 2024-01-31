@@ -1,6 +1,6 @@
 import React from 'react';
 import { StandaloneCircleXmarkRegularIcon as CrossIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 
 type TCommonMistakeExamplePartialsProps = {
     description: React.ReactNode;

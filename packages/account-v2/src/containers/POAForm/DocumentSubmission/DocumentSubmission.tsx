@@ -2,7 +2,7 @@ import React from 'react';
 import * as Yup from 'yup';
 import { useBreakpoint } from '@deriv/quill-design';
 import { StandaloneArrowUpFromBracketBoldIcon } from '@deriv/quill-icons';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import FormDocumentUploadField from '../../../components/FormFields/FormDocumentUploadField';
 import CommonMistakesExamples from '../CommonMistakeExample/CommonMistakeExample';
 import { getExampleImagesConfig } from '../CommonMistakeExample/CommonMistakeExampleConfig';

@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 
 type TIconWithMessage = {
     actionButton?: ReactNode;

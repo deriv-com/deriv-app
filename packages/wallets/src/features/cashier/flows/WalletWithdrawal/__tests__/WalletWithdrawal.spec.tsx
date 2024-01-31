@@ -5,8 +5,18 @@ import WalletWithdrawal from '../WalletWithdrawal';
 
 jest.mock('../../../modules', () => ({
     ...jest.requireActual('../../../modules'),
-    WithdrawalCryptoModule: jest.fn(() => <div>WithdrawalCryptoModule</div>),
-    WithdrawalFiatModule: jest.fn(() => <div>WithdrawalFiatModule</div>),
+    WithdrawalCryptoModule: jest.fn(({ verificationCode }) => (
+        <>
+            <div>WithdrawalCryptoModule</div>
+            <div>verificationCode={verificationCode}</div>
+        </>
+    )),
+    WithdrawalFiatModule: jest.fn(({ verificationCode }) => (
+        <>
+            <div>WithdrawalFiatModule</div>
+            <div>verificationCode={verificationCode}</div>
+        </>
+    )),
     WithdrawalVerificationModule: jest.fn(() => <div>WithdrawalVerificationModule</div>),
 }));
 
@@ -101,6 +111,7 @@ describe('<WalletWithdrawal />', () => {
 
         render(<WalletWithdrawal />);
         expect(screen.getByText('WithdrawalFiatModule')).toBeInTheDocument();
+        expect(screen.getByText('verificationCode=1234')).toBeInTheDocument();
     });
 
     it('should render withdrawal crypto module if withdrawal is for crypto wallet', () => {
@@ -119,6 +130,7 @@ describe('<WalletWithdrawal />', () => {
 
         render(<WalletWithdrawal />);
         expect(screen.getByText('WithdrawalCryptoModule')).toBeInTheDocument();
+        expect(screen.getByText('verificationCode=1234')).toBeInTheDocument();
     });
 
     it('should show loader if verification code is there but currency config is yet to be loaded', () => {

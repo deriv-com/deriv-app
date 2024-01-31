@@ -4,10 +4,6 @@
     justify-content: space-between;
     padding: 2rem 1.6rem;
 
-    @include mobile {
-        padding: 2rem 0;
-    }
-
     &:hover {
         background: var(--general-hover);
     }

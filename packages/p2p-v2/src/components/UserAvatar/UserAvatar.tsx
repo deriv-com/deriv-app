@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 import clsx from 'clsx';
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import { getShortNickname } from '../../utils/string';
-import { TGenericSizes } from '../../utils/types';
+import { Text } from '@deriv-com/ui';
+import { getShortNickname, TGenericSizes } from '../../utils';
 import './UserAvatar.scss';
 
 type TUserAvatarProps = {

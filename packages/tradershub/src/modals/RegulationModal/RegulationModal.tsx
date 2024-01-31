@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import { Modal } from '../../components/Modal';
 import { getCFDContents, getOptionsContents } from '../../constants/regulators-modal-content';
 import Row from './Row';

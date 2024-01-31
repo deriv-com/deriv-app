@@ -28,6 +28,7 @@ const svg_loaders = [
         },
     },
 ];
+
 module.exports = function (env) {
     const base = env && env.base && env.base !== true ? `/${env.base}/` : '/';
     return {

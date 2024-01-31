@@ -1,25 +1,33 @@
-// TODO: Add logic to switch between EU and non-EU
 import React from 'react';
 import { Provider } from '@deriv/library';
-import { Tab } from '@deriv/quill-design';
+import { Tab, Tabs } from '@deriv-com/ui';
+import { useRegulationSwitcher } from '../../hooks/useRegulationSwitcher';
 import { RegulationModal } from '../../modals';
 import InfoIcon from '../../public/images/ic-info-outline.svg';
+import { useUIContext } from '../UIProvider';
 
 const RegulationSwitcherMobile = () => {
     const { show } = Provider.useModal();
+    const { getUIState } = useUIContext();
 
-    const activeClassName =
-        'aria-selected:font-bold active:font-bold aria-selected:border-b-brand-coral active:border-b-brand-coral';
+    const { buttons, handleButtonClick } = useRegulationSwitcher();
+
+    const activeRegulation = getUIState('regulation');
 
     return (
         <div className='flex items-center gap-400'>
             <InfoIcon className='h-auto w-800' onClick={() => show(<RegulationModal />)} />
-            <Tab.Container size='sm'>
-                <Tab.List>
-                    <Tab.Trigger className={activeClassName}>Non - EU</Tab.Trigger>
-                    <Tab.Trigger className={activeClassName}>EU</Tab.Trigger>
-                </Tab.List>
-            </Tab.Container>
+            <Tabs
+                activeTab={activeRegulation}
+                className='flex rounded-300 p-200 w-[120px] h-2000'
+                key={activeRegulation}
+                onChange={index => handleButtonClick(buttons[index].label)}
+                variant='secondary'
+            >
+                {buttons.map(button => (
+                    <Tab className='rounded-200' key={button.label} title={button.label} />
+                ))}
+            </Tabs>
         </div>
     );
 };

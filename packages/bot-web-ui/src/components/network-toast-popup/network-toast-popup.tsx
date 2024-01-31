@@ -12,14 +12,14 @@ import { observer, useStore } from '@deriv/stores';
  * Network status Toast components
  */
 
-const NetworkStatusToastError = observer(() => {
+const NetworkStatusToastError = observer(({ should_open = false }: { should_open?: boolean }) => {
     const { common } = useStore();
     const { network_status } = common;
-    const [is_open, setIsOpen] = React.useState(false);
+    const [is_open, setIsOpen] = React.useState(should_open);
     const { message, status } = network_status;
-    const portal_id = 'popup_root';
+    const portal_el = document.getElementById('popup_root');
 
-    if (!document.getElementById(portal_id) || !message) return null;
+    if (!portal_el || !message) return null;
 
     if (!is_open && status !== 'online') {
         setIsOpen(true); // open if status === 'blinker' or 'offline'
@@ -42,7 +42,7 @@ const NetworkStatusToastError = observer(() => {
                 {message}
             </Toast>
         </MobileWrapper>,
-        document.getElementById(portal_id)
+        portal_el
     );
 });
 

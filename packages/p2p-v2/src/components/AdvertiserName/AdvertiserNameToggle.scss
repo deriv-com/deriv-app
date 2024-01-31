@@ -3,7 +3,10 @@
     gap: 0.8rem;
 
     @include mobile {
+        padding: 1.4rem 1.6rem;
         justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f2f3f4;
     }
 
     &__label {

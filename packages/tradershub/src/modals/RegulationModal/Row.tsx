@@ -1,6 +1,6 @@
 import React from 'react';
 import { qtMerge } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import { TRegulatorsContentProps, TRowItem } from '../../constants/regulators-modal-content';
 
 type TProps = TRegulatorsContentProps & {

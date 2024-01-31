@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import {
@@ -10,18 +11,19 @@ import {
     formatResetDuration,
     hasTwoBarriers,
     isAccumulatorContract,
+    isAsiansContract,
     isEndedBeforeCancellationExpired,
     isMobile,
     isMultiplierContract,
     isSmartTraderContract,
-    isAsiansContract,
+    isTicksContract,
     isResetContract,
     isTurbosContract,
     isUserCancelled,
     isUserSold,
     isVanillaFxContract,
-    toGMTFormat,
     TContractInfo,
+    toGMTFormat,
 } from '@deriv/shared';
 import { Analytics } from '@deriv-com/analytics';
 import { getBarrierLabel, getBarrierValue, isDigitType } from 'App/Components/Elements/PositionsDrawer/helpers';
@@ -46,6 +48,7 @@ const ContractDetails = ({
     is_vanilla,
 }: TContractDetails) => {
     const {
+        barrier,
         commission,
         contract_type,
         currency,
@@ -57,6 +60,8 @@ const ContractDetails = ({
         high_barrier,
         low_barrier,
         profit,
+        selected_tick,
+        status,
         tick_count,
         tick_passed,
         transaction_ids: { buy, sell } = {},
@@ -223,6 +228,25 @@ const ContractDetails = ({
                         )}
                     </React.Fragment>
                 )}
+                {isTicksContract(contract_type) && (
+                    <ContractAuditItem
+                        id='dt_entry_spot_label'
+                        icon={
+                            <div className='contract-audit__selected-tick'>
+                                <div
+                                    className={classNames(
+                                        'contract-audit__selected-tick--marker',
+                                        `contract-audit__selected-tick--marker--${status}`
+                                    )}
+                                >
+                                    {selected_tick}
+                                </div>
+                            </div>
+                        }
+                        label={localize('Selected tick')}
+                        value={barrier || '----'}
+                    />
+                )}
                 <ContractAuditItem
                     id='dt_start_time_label'
                     icon={<Icon icon='IcContractStartTime' size={24} />}
@@ -236,6 +260,10 @@ const ContractDetails = ({
                         label={localize('Entry spot')}
                         value={entry_spot_display_value ? addComma(entry_spot_display_value) : ' - '}
                         value2={toGMTFormat(epochToMoment(Number(entry_tick_time))) || ' - '}
+                        additional_info={
+                            isTicksContract(contract_type) &&
+                            localize('The entry spot is the first tick for High/Low Ticks.')
+                        }
                     />
                 )}
                 {!isNaN(Number(exit_spot)) && (

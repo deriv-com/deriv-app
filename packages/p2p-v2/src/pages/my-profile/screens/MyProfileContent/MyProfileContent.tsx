@@ -7,11 +7,13 @@ import './MyProfileContent.scss';
 const MyProfileContent = () => {
     const { isMobile } = useDevice();
     return (
-        <div className='p2p-v2-my-profile-content'>
-            <AdvertiserName />
-            <MyProfileBalance />
+        <>
+            <div className='p2p-v2-my-profile-content'>
+                <AdvertiserName />
+                <MyProfileBalance />
+            </div>
             {isMobile && <AdvertiserNameToggle />}
-        </div>
+        </>
     );
 };
 

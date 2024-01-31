@@ -41,7 +41,7 @@ const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkPro
     };
 
     return (
-        <div className='flex items-center justify-between border-t-100 border-system-light-secondary-background px-800 py-1200'>
+        <div className='flex items-center justify-between border-solid border-t-75 border-system-light-secondary-background px-800 py-1200'>
             <div className='flex items-center gap-800'>
                 {(platform === mt5Platform || app === ctraderPlatform) && (
                     <Fragment>
@@ -66,12 +66,12 @@ const TradeLink = ({ app = 'linux', platform, webtraderUrl = '' }: TTradeLinkPro
             )}
             {platform !== mt5Platform && app !== ctraderPlatform && (
                 <Button
-                    className='flex justify-center items-center border-none rounded-md cursor-pointer bg-system-dark-primary-background p-400 gap-400'
+                    className='flex items-center justify-center border-none rounded-md cursor-pointer bg-system-dark-primary-background p-400 gap-400'
                     colorStyle='white'
                     onClick={onClickWebTerminal}
                     variant='secondary'
                 >
-                    <span className='flex justify-center items-center gap-400'>
+                    <span className='flex items-center justify-center gap-400'>
                         {PlatformToLabelIconMapper[platform ?? dxtradePlatform]}
                         <Text bold className='text-system-light-primary-background' size='sm'>
                             Web terminal

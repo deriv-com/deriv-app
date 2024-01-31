@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { Analytics } from '@deriv/analytics';
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
@@ -8,6 +7,8 @@ import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
+import TradingViewModal from 'Components/trading-view-chart/trading-view-modal';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../../components/run-panel';
@@ -25,6 +26,7 @@ const AppWrapper = observer(() => {
         active_tab,
         active_tour,
         is_chart_modal_visible,
+        is_trading_view_modal_visible,
         setActiveTab,
         setWebSocketState,
         setActiveTour,
@@ -159,7 +161,11 @@ const AppWrapper = observer(() => {
                         <div
                             icon='IcChartsTabDbot'
                             label={<Localize i18n_default_text='Charts' />}
-                            id={is_chart_modal_visible ? 'id-charts--disabled' : 'id-charts'}
+                            id={
+                                is_chart_modal_visible || is_trading_view_modal_visible
+                                    ? 'id-charts--disabled'
+                                    : 'id-charts'
+                            }
                         >
                             <Chart />
                         </div>
@@ -181,6 +187,7 @@ const AppWrapper = observer(() => {
                     <RunPanel />
                 </div>
                 <ChartModal />
+                <TradingViewModal />
             </DesktopWrapper>
             <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
             <Dialog

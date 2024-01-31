@@ -14,7 +14,7 @@ import { STRATEGIES } from './config';
 import { TConfigItem, TFormData, TShouldHave } from './types';
 import { useFormikContext } from 'formik';
 import debounce from 'lodash.debounce';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { DEBOUNCE_INTERVAL_TIME } from 'Constants/bot-contents';
 
 const QuickStrategyForm = observer(() => {

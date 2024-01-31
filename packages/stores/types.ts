@@ -597,6 +597,10 @@ type TClientStore = {
     setAccounts: () => (accounts: Record<string, TActiveAccount>) => void;
     should_show_eu_error: boolean;
     is_options_blocked: boolean;
+    temp_formik_data: Array<Record<string, any>>;
+    temp_formik_data_step: number;
+    setTempFormikData: (data: Array<Record<string, any>>) => void;
+    setTempFormikDataStep: (step: number) => void;
 };
 
 type TCommonStoreError = {

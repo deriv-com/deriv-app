@@ -294,6 +294,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             updateMt5LoginList: jest.fn(),
             should_show_eu_error: false,
             is_options_blocked: false,
+            temp_formik_data: [],
+            temp_formik_data_step: 0,
+            setTempFormikData: jest.fn(),
+            setTempFormikDataStep: jest.fn(),
         },
         common: {
             error: common_store_error,

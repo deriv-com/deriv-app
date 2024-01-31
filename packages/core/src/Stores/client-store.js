@@ -149,6 +149,8 @@ export default class ClientStore extends BaseStore {
     prev_account_type = 'demo';
     external_url_params = {};
     is_already_attempted = false;
+    temp_formik_data = [];
+    temp_formik_data_step = 0;
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -215,6 +217,8 @@ export default class ClientStore extends BaseStore {
             p2p_advertiser_info: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
+            temp_formik_data: observable,
+            temp_formik_data_step: observable,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -388,6 +392,8 @@ export default class ClientStore extends BaseStore {
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
+            setTempFormikData: action.bound,
+            setTempFormikDataStep: action.bound,
         });
 
         reaction(
@@ -2625,6 +2631,14 @@ export default class ClientStore extends BaseStore {
 
     setIsAlreadyAttempted(status) {
         this.is_already_attempted = status;
+    }
+
+    setTempFormikData(data) {
+        this.temp_formik_data = data;
+    }
+
+    setTempFormikDataStep(step) {
+        this.temp_formik_data_step = step;
     }
 
     /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.

@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { useFormikContext } from 'formik';
+import { useBreakpoint } from '@deriv/quill-design';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { useSignupWizardContext } from '../../../../providers/SignupWizardProvider';
 
@@ -19,11 +20,12 @@ type TActions = {
  * );
  */
 
-const Actions = ({ canGoNext }: TActions) => {
+const Actions = ({ canGoNext = true }: TActions) => {
     const {
-        helpers: { canGoToPrevStep, goToNextStep, goToPrevStep },
+        helpers: { canGoToNextStep, canGoToPrevStep, goToNextStep, goToPrevStep },
     } = useSignupWizardContext();
     const { handleSubmit: handleFormikSubmit } = useFormikContext();
+    const { isMobile } = useBreakpoint();
 
     const handleSubmit = useCallback(() => {
         handleFormikSubmit?.();
@@ -35,12 +37,25 @@ const Actions = ({ canGoNext }: TActions) => {
             <hr className='opacity-100' />
             <div className='flex justify-end divide-y-75 p-1200'>
                 {canGoToPrevStep && (
-                    <Button className='mr-400' onClick={goToPrevStep} variant='outlined'>
-                        Previous
+                    <Button
+                        className='mr-400'
+                        isFullWidth={isMobile}
+                        onClick={goToPrevStep}
+                        size={isMobile ? 'lg' : 'md'}
+                        variant='outlined'
+                    >
+                        Back
                     </Button>
                 )}
-                <Button disabled={!canGoNext} onClick={handleSubmit} type='submit'>
-                    Next
+                <Button
+                    className='bg-solid-coral-700'
+                    disabled={!canGoNext}
+                    isFullWidth={isMobile}
+                    onClick={handleSubmit}
+                    size={isMobile ? 'lg' : 'md'}
+                    type='submit'
+                >
+                    {canGoToNextStep ? 'Next' : 'Add account'}
                 </Button>
             </div>
         </div>

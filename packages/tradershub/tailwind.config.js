@@ -58,6 +58,13 @@ module.exports = {
                     purple: '#db69e1',
                     teal: '#00a8af',
                 },
+                solid: {
+                    grey: {
+                        dark: '#d6d6d6',
+                        default: '#d6dadb',
+                        light: '#999999',
+                    },
+                },
                 status: {
                     dark: {
                         danger: '#cc2e3d',
@@ -73,6 +80,7 @@ module.exports = {
                         warning: '#ffad3a',
                     },
                 },
+
                 system: {
                     dark: {
                         'active-background': '#323738',

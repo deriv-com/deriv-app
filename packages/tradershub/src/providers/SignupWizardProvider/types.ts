@@ -22,7 +22,11 @@ export type TSignupWizardProvider = {
     children: React.ReactNode;
 };
 
-export type TActions = {
-    payload: TState;
-    type: keyof typeof ACTION_TYPES;
-};
+export type TActions =
+    | {
+          payload: TState;
+          type: Exclude<keyof typeof ACTION_TYPES, 'RESET'>;
+      }
+    | {
+          type: typeof ACTION_TYPES.RESET;
+      };

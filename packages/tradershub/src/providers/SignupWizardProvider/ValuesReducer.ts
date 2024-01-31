@@ -2,6 +2,8 @@ import { ACTION_TYPES } from './SignupWizardContext';
 import { TActions, TState } from './types';
 
 export function valuesReducer(state: TState, action: TActions) {
+    if (action.type === ACTION_TYPES.RESET) return { currency: '' };
+
     const { payload, type } = action;
     switch (type) {
         case ACTION_TYPES.SET_CURRENCY:
@@ -14,10 +16,6 @@ export function valuesReducer(state: TState, action: TActions) {
                 ...state,
                 firstName: payload.firstName,
                 lastName: payload.lastName,
-            };
-        case ACTION_TYPES.RESET:
-            return {
-                currency: '',
             };
         default:
             return state;

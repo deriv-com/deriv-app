@@ -1,12 +1,12 @@
 import { cva } from 'class-variance-authority';
 
-const stepperBaseStyles =
+const progressBarBaseStyles =
     'z-10 box-border flex h-800 w-800 items-center rounded-pill outline outline-2 transition-all delay-700 duration-700 ease-out ';
 
-export const stepperVariants = cva(stepperBaseStyles, {
+export const stepperVariants = cva(progressBarBaseStyles, {
     compoundVariants: [
         {
-            class: 'bg-solid-grey-5',
+            class: 'bg-solid-grey-default',
             isActive: false,
             isFilled: true,
         },
@@ -18,7 +18,7 @@ export const stepperVariants = cva(stepperBaseStyles, {
     ],
     variants: {
         isActive: {
-            false: 'outline-solid-grey-5',
+            false: 'outline-solid-grey-default',
             true: 'outline-solid-coral-700',
         },
         isFilled: {

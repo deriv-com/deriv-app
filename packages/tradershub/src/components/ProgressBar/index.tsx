@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import { useBreakpoint } from '@deriv/quill-design';
-import Stepper, { TStep } from './ProgressBar';
 import StepConnector from './StepConnector';
+import Stepper, { TStep } from './Stepper';
 
 type TFormProgressProps = {
     activeStep: number;
-    steps: TStep[]; // [TODO]:Mock - Enable once isActive comes from Modal
+    steps: TStep[];
 };
 
 /**
@@ -17,7 +17,7 @@ export const ProgressBar = ({ activeStep, steps = [] }: TFormProgressProps) => {
     const { isMobile } = useBreakpoint();
 
     return (
-        <Fragment>
+        <div className='pl-100'>
             {isMobile ? (
                 <div className='grid grid-flow-col gap-gap-2xs'>
                     {steps.map((step, index) => (
@@ -31,6 +31,6 @@ export const ProgressBar = ({ activeStep, steps = [] }: TFormProgressProps) => {
                     ))}
                 </Fragment>
             )}
-        </Fragment>
+        </div>
     );
 };

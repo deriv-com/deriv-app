@@ -2,37 +2,38 @@ import React from 'react';
 import { Form, Formik, FormikValues } from 'formik';
 import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
 import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
-import { CURRENCY_TYPES } from '../../helpers/currencyConfig';
 import { ACTION_TYPES, useSignupWizardContext } from '../../providers/SignupWizardProvider/SignupWizardContext';
-import Currencies from './Currencies';
 
 /**
- * @name CurrencySelector
- * @description The CurrencySelector component is used to display the currency selector screen.
+ * @name Address
+ * @description The Address component is used to display the address screen.
+ * @example <Address />
  * @returns {React.ReactNode}
  */
-const CurrencySelector = () => {
-    const { dispatch, state } = useSignupWizardContext();
+const TermsOfUse = () => {
+    const { dispatch } = useSignupWizardContext();
 
     const handleSubmit = (values: FormikValues) => {
-        dispatch({ payload: { currency: values.currency }, type: ACTION_TYPES.SET_CURRENCY });
+        dispatch({ payload: { firstName: values.firstName }, type: ACTION_TYPES.SET_PERSONAL_DETAILS });
     };
     return (
-        <WizardScreenWrapper heading='Select your preferred currency'>
+        <WizardScreenWrapper heading='Terms of Use'>
             <Formik
                 initialValues={{
-                    currency: state.currency ?? '',
+                    firstName: '',
                 }}
                 onSubmit={handleSubmit}
             >
-                {({ values }) => (
+                {() => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
                         <div className='flex-1 overflow-y-auto p-1200'>
-                            <Currencies type={CURRENCY_TYPES.FIAT} />
-                            <hr className='opacity-100 my-1200' />
-                            <Currencies type={CURRENCY_TYPES.CRYPTO} />
+                            <p className='font-bold text-50'>Jurisdiction and choice of law </p>
+                            <p className='text-50'>
+                                Your account will be opened with Deriv (SVG) Ltd., and will be subject to the laws of
+                                Saint Vincent and the Grenadines.
+                            </p>
                         </div>
-                        <Actions canGoNext={!!values.currency} />
+                        <Actions />
                     </Form>
                 )}
             </Formik>
@@ -40,4 +41,4 @@ const CurrencySelector = () => {
     );
 };
 
-export default CurrencySelector;
+export default TermsOfUse;

@@ -15,7 +15,18 @@ jest.mock(
     // eslint-disable-next-line react/display-name
     () => (props: ComponentProps<typeof WalletMobileTourGuide>) => {
         mockWalletMobileTourGuide(props);
-        return <p>mock wallet tour guide</p>;
+        return (
+            <div>
+                <p>mock wallet tour guide</p>
+                <p>{props.isMT5PlatformListLoaded ? 'mt5 list loaded' : 'mt5 list not loaded'}</p>
+                <p>
+                    {props.isOptionsAndMultipliersLoaded
+                        ? 'options and multipliers loaded'
+                        : 'options and multipliers not loaded'}
+                </p>
+                <p>{props.isWalletSettled ? 'wallet settled' : 'wallet not settled'}</p>
+            </div>
+        );
     }
 );
 
@@ -38,6 +49,28 @@ describe('AccountsList', () => {
         expect(screen.getByTestId('dt_tab_panels')).toBeInTheDocument();
         expect(screen.getByText('CFDs')).toBeInTheDocument();
         expect(screen.getByText('Options & multipliers')).toBeInTheDocument();
+        expect(screen.getByText('Deriv MT5')).toBeInTheDocument();
+        expect(screen.getByText('Compare accounts')).toBeInTheDocument();
+    });
+
+    it('should show Options & Multipliers tab in mobile view when the tab active', () => {
+        mockUseDevice.mockReturnValue({
+            isDesktop: false,
+            isMobile: true,
+            isTablet: false,
+        });
+        render(<AccountsList isWalletSettled={true} />, { wrapper });
+        expect(screen.getByTestId('dt_tab_panels')).toBeInTheDocument();
+        expect(screen.getByText('CFDs')).toBeInTheDocument();
+        expect(screen.getByText('Options & multipliers')).toBeInTheDocument();
+
+        screen.getByText('Options & multipliers').click();
+        expect(screen.getByText('Deriv Apps')).toBeInTheDocument();
+        expect(screen.getByText('Deriv Trader')).toBeInTheDocument();
+        expect(screen.getByText('Deriv Bot')).toBeInTheDocument();
+        expect(screen.getByText('SmartTrader')).toBeInTheDocument();
+        expect(screen.getByText('Binary Bot')).toBeInTheDocument();
+        expect(screen.getByText('Deriv GO')).toBeInTheDocument();
     });
 
     it('should render account list in desktop view', () => {

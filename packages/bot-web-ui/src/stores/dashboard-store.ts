@@ -50,6 +50,7 @@ export interface IDashboardStore {
     strategy_save_type: string;
     toast_message: string;
     is_chart_modal_visible: boolean;
+    is_trading_view_modal_visible: boolean;
 }
 
 export default class DashboardStore implements IDashboardStore {
@@ -106,6 +107,7 @@ export default class DashboardStore implements IDashboardStore {
             setStrategySaveType: action.bound,
             setShowMobileTourDialog: action.bound,
             is_chart_modal_visible: observable,
+            is_trading_view_modal_visible: observable,
         });
         this.root_store = root_store;
         this.core = core;
@@ -219,6 +221,7 @@ export default class DashboardStore implements IDashboardStore {
     quick_strategy_tab_content = quick_strategy_content;
     filtered_tab_list = [];
     is_chart_modal_visible = false;
+    is_trading_view_modal_visible = false;
 
     resetTutorialTabContent = () => {
         this.guide_tab_content = user_guide_content;
@@ -289,6 +292,10 @@ export default class DashboardStore implements IDashboardStore {
 
     setChartModalVisibility = () => {
         this.is_chart_modal_visible = !this.is_chart_modal_visible;
+    };
+
+    setTradingViewModalVisibility = () => {
+        this.is_trading_view_modal_visible = !this.is_trading_view_modal_visible;
     };
 
     setIsFileSupported = (is_file_supported: boolean) => {

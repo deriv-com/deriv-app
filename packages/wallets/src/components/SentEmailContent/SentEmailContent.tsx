@@ -100,7 +100,7 @@ const SentEmailContent: FC<SentEmailContentProps> = ({ description, isInvestorPa
                             }
                         }}
                     >
-                        {hasCountdownStarted ? `Resend email in ${count}` : 'Resend email'}
+                        {hasCountdownStarted ? `Resend email in ${count} seconds` : 'Resend email'}
                     </WalletButton>
                 </Fragment>
             )}

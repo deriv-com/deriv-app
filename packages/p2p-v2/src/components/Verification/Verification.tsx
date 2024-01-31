@@ -60,7 +60,7 @@ const Verification = () => {
             },
             status: isPoiVerified ? 'done' : 'action',
             text: getPoiAction(poiStatus),
-            testId: 'dt_verification__poi-arrow-button',
+            testId: 'dt_p2p_v2_verification__poi-arrow-button',
         },
         ...(isP2PPoaRequired
             ? [
@@ -71,7 +71,7 @@ const Verification = () => {
                       },
                       status: isPoaVerified ? 'done' : 'action',
                       text: getPoaAction(poaStatus),
-                      testId: 'dt_verification__poa-arrow-button',
+                      testId: 'dt_p2p_v2_verification__poa-arrow-button',
                   },
               ]
             : []),

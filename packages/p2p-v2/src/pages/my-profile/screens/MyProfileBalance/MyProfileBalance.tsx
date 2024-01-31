@@ -44,9 +44,7 @@ const MyProfileBalance = () => {
         <>
             <AvailableP2PBalanceModal
                 isModalOpen={shouldShowAvailableBalanceModal}
-                onRequestClose={() => {
-                    setShouldShowAvailableBalanceModal(false);
-                }}
+                onRequestClose={() => setShouldShowAvailableBalanceModal(false)}
             />
             <DailyLimitModal
                 currency={currency}

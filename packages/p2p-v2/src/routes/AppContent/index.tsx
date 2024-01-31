@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveAccount } from '@deriv/api';
-import { Loader } from '@deriv-com/ui/dist/components/Loader';
-import { Tab, Tabs } from '@deriv-com/ui/dist/components/Tabs';
+import { Loader, Tab, Tabs } from '@deriv-com/ui';
 import { CloseHeader } from '../../components';
 import { MyProfile } from '../../pages';
 import './index.scss';

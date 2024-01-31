@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import Modal from 'react-modal';
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button, Text } from '@deriv-com/ui';
 import { customStyles } from '../helpers';
 import './AvailableP2PBalanceModal.scss';
 

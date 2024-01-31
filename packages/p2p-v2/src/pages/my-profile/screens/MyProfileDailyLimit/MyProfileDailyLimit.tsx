@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
+import { useActiveAccount } from '@deriv/api';
 import { Button } from '@deriv-com/ui/dist/components/Button';
 import { Text } from '@deriv-com/ui/dist/components/Text';
 import DailyLimitModal from '../../../../components/Modals/DailyLimitModal/DailyLimitModal';
-import { useDevice } from '../../../../hooks';
+import { useAdvertiserStats, useDevice } from '../../../../hooks';
 import './MyProfileDailyLimit.scss';
 
-type TMyProfileDailyLimitProps = {
-    buyLimit: number;
-    currency: string;
-    sellLimit: number;
-};
-
-const MyProfileDailyLimit = ({ buyLimit, currency, sellLimit }: TMyProfileDailyLimitProps) => {
+const MyProfileDailyLimit = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { isMobile } = useDevice();
+    const { data: advertiserStats } = useAdvertiserStats();
+    const { data: activeAccount } = useActiveAccount();
 
     return (
         <>
@@ -21,11 +18,11 @@ const MyProfileDailyLimit = ({ buyLimit, currency, sellLimit }: TMyProfileDailyL
                 <Text color='less-prominent' lineHeight='sm' size='xs'>
                     Want to increase your daily limits to{' '}
                     <Text color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
-                        {buyLimit} {currency}{' '}
+                        {advertiserStats?.daily_buy_limit} {activeAccount?.currency || 'USD'}{' '}
                     </Text>{' '}
                     (buy) and{' '}
                     <Text color='less-prominent' lineHeight='sm' size='xs' weight='bold'>
-                        {sellLimit} {currency}{' '}
+                        {advertiserStats?.daily_sell_limit} {activeAccount?.currency || 'USD'}{' '}
                     </Text>{' '}
                     (sell)?
                 </Text>
@@ -38,9 +35,8 @@ const MyProfileDailyLimit = ({ buyLimit, currency, sellLimit }: TMyProfileDailyL
                     Increase my limits
                 </Button>
             </div>
-            {/* TODO: to move the below to parent */}
             <DailyLimitModal
-                currency={currency}
+                currency={activeAccount?.currency || 'USD'}
                 isModalOpen={isModalOpen}
                 onRequestClose={() => setIsModalOpen(false)}
             />

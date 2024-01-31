@@ -1,8 +1,10 @@
 import React, { Fragment } from 'react';
 import { Formik } from 'formik';
+import { Button, Text } from '@deriv-com/ui';
+import { TextField, useBreakpoint } from '@deriv/quill-design';
 import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
-import { Button, Text, TextField, useBreakpoint } from '@deriv/quill-design';
 import { ActionScreen } from '../../../../../components';
+import { validPassword } from '../../../../../utils/password';
 import { Provider } from '@deriv/library';
 import { PlatformDetails } from '../../../constants';
 
@@ -86,19 +88,13 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
                         </div>
                         <div className='flex flex-col content-center gap-800'>
                             <Button
-                                // quill component issue, add type submit and disabled once the proper component is ready
+                                disabled={!validPassword(values.currentPassword) || !validPassword(values.newPassword)}
                                 isLoading={changeInvestorPasswordStatus === 'loading'}
                                 size={isMobile ? 'lg' : 'md'}
                             >
                                 Change investor password
                             </Button>
-                            <Button
-                                className='border-none'
-                                colorStyle='coral'
-                                onClick={sendEmail}
-                                size={isMobile ? 'lg' : 'md'}
-                                variant='secondary'
-                            >
+                            <Button className='border-none' onClick={sendEmail} size={isMobile ? 'lg' : 'md'}>
                                 Create or reset investor password
                             </Button>
                         </div>

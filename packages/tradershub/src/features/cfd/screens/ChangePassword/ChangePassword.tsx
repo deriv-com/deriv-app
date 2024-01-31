@@ -1,7 +1,7 @@
 import React from 'react';
-import { Modal } from '../../../../components/Modal';
 import { Provider } from '@deriv/library';
 import { PlatformDetails } from '../../constants';
+import { Modal } from '../../../../components/Modal';
 import MT5ChangePasswordScreens from './MT5ChangePasswordScreens';
 import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswordScreens';
 

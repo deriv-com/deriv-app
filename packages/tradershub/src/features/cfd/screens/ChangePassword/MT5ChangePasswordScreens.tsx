@@ -1,7 +1,6 @@
 import React, { Fragment, useState } from 'react';
-import { Tabs, Tab } from '@deriv-com/ui/dist/components/Tabs';
+import { Tabs, Tab, Text } from '@deriv-com/ui';
 import { SentEmailContent } from '../../../../components';
-import { Text } from '@deriv/quill-design';
 import IcBackArrow from '../../../../public/images/ic-back-arrow.svg';
 import { PlatformDetails } from '../../constants';
 import MT5ChangeInvestorPasswordScreens from './InvestorPassword/MT5ChangeInvestorPasswordScreens';

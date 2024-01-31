@@ -3,12 +3,12 @@ import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import { MarketTypeDetails } from '../../constants';
 import { MT5AccountTypeCard } from '../MT5AccountTypeCard';
 
-type TProps = {
+type TMT5AccountTypeProps = {
     onMarketTypeSelect: (marketType: keyof typeof MarketTypeDetails) => void;
     selectedMarketType?: keyof typeof MarketTypeDetails;
 };
 
-const MT5AccountType: FC<TProps> = ({ onMarketTypeSelect, selectedMarketType }) => {
+const MT5AccountType: FC<TMT5AccountTypeProps> = ({ onMarketTypeSelect, selectedMarketType }) => {
     const { isEU } = useRegulationFlags();
     const marketTypeDetails = MarketTypeDetails(isEU);
     const sortedMarketTypeEntries = Object.entries(marketTypeDetails).sort(([keyA], [keyB]) => {

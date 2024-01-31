@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import { MarketTypeDetails } from '../../constants';
 import { MT5AccountTypeCard } from '../MT5AccountTypeCard';
@@ -8,7 +8,7 @@ type TMT5AccountTypeProps = {
     selectedMarketType?: keyof typeof MarketTypeDetails;
 };
 
-const MT5AccountType: FC<TMT5AccountTypeProps> = ({ onMarketTypeSelect, selectedMarketType }) => {
+const MT5AccountType = ({ onMarketTypeSelect, selectedMarketType }: TMT5AccountTypeProps) => {
     const { isEU } = useRegulationFlags();
     const marketTypeDetails = MarketTypeDetails(isEU);
     const sortedMarketTypeEntries = Object.entries(marketTypeDetails).sort(([keyA], [keyB]) => {

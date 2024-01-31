@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { qtMerge, Text } from '@deriv/quill-design';
 
 type TMT5AccountTypeCardProps = {
@@ -9,7 +9,7 @@ type TMT5AccountTypeCardProps = {
     title: string;
 };
 
-const MT5AccountTypeCard: FC<TMT5AccountTypeCardProps> = ({ description, icon, isSelected, onClick, title }) => {
+const MT5AccountTypeCard = ({ description, icon, isSelected, onClick, title }: TMT5AccountTypeCardProps) => {
     return (
         <div
             className={qtMerge(

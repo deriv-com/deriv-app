@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useActiveTradingAccount } from '@deriv/api';
 import { Button, Text, TextField, useBreakpoint } from '@deriv/quill-design';
 import { useUIContext } from '../../../../components';
@@ -31,7 +31,7 @@ type TEnterPasswordProps = {
  * @returns {React.ReactNode} - returns the enter password screen component
  */
 
-const EnterPassword: FC<TEnterPasswordProps> = ({
+const EnterPassword = ({
     isLoading,
     marketType,
     onPasswordChange,
@@ -40,7 +40,7 @@ const EnterPassword: FC<TEnterPasswordProps> = ({
     password,
     passwordError,
     platform,
-}) => {
+}: TEnterPasswordProps) => {
     const { isDesktop } = useBreakpoint();
     const title = PlatformDetails[platform].title;
     const { getUIState } = useUIContext();

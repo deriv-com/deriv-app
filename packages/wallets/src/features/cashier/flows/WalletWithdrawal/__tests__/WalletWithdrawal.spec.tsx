@@ -1,16 +1,19 @@
 import React from 'react';
 import { useActiveWalletAccount, useCurrencyConfig } from '@deriv/api';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import WalletWithdrawal from '../WalletWithdrawal';
 
 jest.mock('../../../modules', () => ({
     ...jest.requireActual('../../../modules'),
-    WithdrawalCryptoModule: jest.fn(({ verificationCode }) => (
-        <>
-            <div>WithdrawalCryptoModule</div>
-            <div>verificationCode={verificationCode}</div>
-        </>
-    )),
+    WithdrawalCryptoModule: jest.fn(({ onClose, verificationCode }) => {
+        return (
+            <>
+                <div>WithdrawalCryptoModule</div>
+                <div>verificationCode={verificationCode}</div>
+                <button onClick={onClose}>close</button>
+            </>
+        );
+    }),
     WithdrawalFiatModule: jest.fn(({ verificationCode }) => (
         <>
             <div>WithdrawalFiatModule</div>
@@ -114,7 +117,7 @@ describe('<WalletWithdrawal />', () => {
         expect(screen.getByText('verificationCode=1234')).toBeInTheDocument();
     });
 
-    it('should render withdrawal crypto module if withdrawal is for crypto wallet', () => {
+    it('should render withdrawal crypto module if withdrawal is for crypto wallet', async () => {
         mockUseActiveWalletAccount.mockReturnValue({
             // @ts-expect-error - since this is a mock, we only need partial properties of the hook
             data: {
@@ -131,6 +134,26 @@ describe('<WalletWithdrawal />', () => {
         render(<WalletWithdrawal />);
         expect(screen.getByText('WithdrawalCryptoModule')).toBeInTheDocument();
         expect(screen.getByText('verificationCode=1234')).toBeInTheDocument();
+    });
+
+    it('should render withdrawal email verification module when onClose is triggered on the withdrawal crypto module', () => {
+        mockUseActiveWalletAccount.mockReturnValue({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            data: {
+                currency: 'BTC',
+            },
+        });
+
+        mockUseCurrencyConfig.mockReturnValue({
+            // @ts-expect-error - since this is a mock, we only need partial properties of the hook
+            getConfig: jest.fn(() => ({ is_fiat: false })),
+            isSuccess: true,
+        });
+
+        render(<WalletWithdrawal />);
+        const button = screen.getByRole('button');
+        fireEvent.click(button);
+        expect(screen.getByText('WithdrawalVerificationModule')).toBeInTheDocument();
     });
 
     it('should show loader if verification code is there but currency config is yet to be loaded', () => {

@@ -1512,7 +1512,7 @@ export default class NotificationStore extends BaseStore {
             mt5_notification: {
                 key: 'mt5_notification',
                 header: localize('Changes to your Deriv MT5 login'),
-                message: localize('We’ve updated the login process for your Deriv MT5 account.'),
+                message: localize('We are going to update the login process for your Deriv MT5 account.'),
                 action: {
                     text: localize('Learn more'),
                     onClick: () => {

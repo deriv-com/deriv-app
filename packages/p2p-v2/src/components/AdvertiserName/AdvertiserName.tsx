@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSettings } from '@deriv/api';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import { useAdvertiserStats, useDevice } from '../../hooks';
 import { UserAvatar } from '../UserAvatar';
 import AdvertiserNameBadges from './AdvertiserNameBadges';

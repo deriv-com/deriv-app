@@ -4,8 +4,7 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import Modal from 'react-modal';
 // import { useHistory } from 'react-router-dom';
 import { p2p } from '@deriv/api';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Button, Text } from '@deriv-com/ui';
 import { useDevice } from '../../../hooks';
 import P2PUserIcon from '../../../public/ic-cashier-p2p-user.svg';
 import { Input } from '../../Input';
@@ -31,7 +30,7 @@ const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => 
         mode: 'onChange',
     });
 
-    const { error, isError, mutate, reset } = p2p.advertiser.useCreate();
+    const { error, isError, isSuccess, mutate, reset } = p2p.advertiser.useCreate();
     const { isMobile } = useDevice();
     const textSize = isMobile ? 'md' : 'sm';
     const debouncedReset = debounce(reset, 3000);
@@ -39,7 +38,6 @@ const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => 
 
     const onSubmit = () => {
         mutate({ name: getValues('nickname') });
-        debouncedReset();
     };
 
     const errorMessage = error?.error?.message || 'Can only contain letters, numbers, and special characters .-_@.';
@@ -49,6 +47,14 @@ const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => 
     useEffect(() => {
         Modal.setAppElement('#v2_modal_root');
     }, []);
+
+    useEffect(() => {
+        if (isSuccess) {
+            setIsModalOpen(false);
+        } else if (isError) {
+            debouncedReset();
+        }
+    }, [isError, isSuccess]);
 
     return (
         <ReactModal className='p2p-v2-nickname-modal' isOpen={!!isModalOpen} style={customStyles}>

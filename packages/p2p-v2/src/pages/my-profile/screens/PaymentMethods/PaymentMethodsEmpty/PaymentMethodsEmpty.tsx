@@ -1,10 +1,9 @@
 import React from 'react';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import WalletIcon from '../../../../../public/ic-payment-methods-wallet.svg';
-import { useDevice, setQueryString } from '../../../../../hooks';
-import './PaymentMethodsEmpty.scss';
+import { Button, Text } from '@deriv-com/ui';
 import { FullPageMobileWrapper, PaymentMethodsHeader } from '../../../../../components';
+import { setQueryString, useDevice } from '../../../../../hooks';
+import WalletIcon from '../../../../../public/ic-payment-methods-wallet.svg';
+import './PaymentMethodsEmpty.scss';
 
 type TPaymentMethodsEmptyProps = {
     onAddPaymentMethod: () => void;

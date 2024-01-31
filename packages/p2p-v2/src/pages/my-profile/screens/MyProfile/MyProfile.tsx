@@ -1,6 +1,5 @@
-import React from 'react';
-import { Loader } from '@deriv-com/ui/dist/components/Loader';
-import { Tab, Tabs } from '@deriv-com/ui/dist/components/Tabs';
+import React, { useEffect, useState } from 'react';
+import { Loader, Tab, Tabs } from '@deriv-com/ui';
 import { NicknameModal } from '../../../../components/Modals/NicknameModal';
 import { Verification } from '../../../../components/Verification';
 import { useAdvertiserStats, useDevice, usePoiPoaStatus, useQueryString } from '../../../../hooks';

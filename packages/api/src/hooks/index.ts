@@ -14,6 +14,7 @@ export { default as useAccesiblePlatforms } from './useAccesiblePlatforms';
 export { default as useAvailableMT5Accounts } from './useAvailableMT5Accounts';
 export { default as useAvailableWallets } from './useAvailableWallets';
 export { default as useBalance } from './useBalance';
+export { default as useCashierValidation } from './useCashierValidation';
 export { default as useCloseDerivAccount } from './useCloseDerivAccount';
 export { default as useCFDAccountsList } from './useCFDAccountsList';
 export { default as useCFDCompareAccounts } from './useCFDCompareAccounts';

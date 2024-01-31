@@ -135,7 +135,7 @@ const getWithdrawalLockedDesc = ({
                     <Trans
                         components={[
                             <button
-                                className='wallets-link__variant--bold'
+                                className='wallets-link wallets-link__variant--bold'
                                 key={0}
                                 onClick={() => window.LC_API.open_chat_window()}
                             />,

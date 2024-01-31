@@ -13,7 +13,7 @@ interface LinkProps {
 
 const WalletLink: React.FC<LinkProps> = ({ children, href, staticUrl, variant = 'normal' }) => (
     <a
-        className={`wallets-link__variant--${variant}`}
+        className={`wallets-link wallets-link__variant--${variant}`}
         href={href ?? (staticUrl ? getStaticUrl(staticUrl) : '#')}
         rel='noopener noreferrer'
         target='_blank'

@@ -136,13 +136,23 @@ const TransferFormAmountInput: React.FC<TProps> = ({ fieldName }) => {
             const fromRate = newRates.rates[fromAccount.currency];
             const toRate = newRates.rates[toAccount.currency];
 
+            const convertedFromAmount = Number(
+                (fromRate ? toAmount * fromRate : toAmount / toRate).toFixed(
+                    fromAccount?.currencyConfig?.fractional_digits
+                )
+            );
             const convertedToAmount = Number(
                 (toRate ? fromAmount * toRate : fromAmount / fromRate).toFixed(
                     toAccount?.currencyConfig?.fractional_digits
                 )
             );
 
-            setFieldValue('toAmount', convertedToAmount);
+            // if focused into the receiving account amount field, change the other ("from") field value
+            if (values.activeAmountFieldName === 'toAmount') {
+                setFieldValue('fromAmount', convertedFromAmount);
+            } else {
+                setFieldValue('toAmount', convertedToAmount);
+            }
         });
     }, [
         fromAmount,

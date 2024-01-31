@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { p2p } from '@deriv/api';
-import { Button, FullPageMobileWrapper, TextArea } from '../../../../components';
-import { useDevice } from '../../../../hooks';
+import { Button } from '@deriv-com/ui/dist/components/Button';
+import { FullPageMobileWrapper, TextArea } from '../../../../components';
+import { useDevice, useQueryString } from '../../../../hooks';
 import './MyProfileAdDetails.scss';
 
 type TMYProfileAdDetailsTextAreaProps = {
@@ -38,6 +39,7 @@ const MyProfileAdDetails = () => {
     const [contactInfo, setContactInfo] = useState('');
     const [advertDescription, setAdvertDescription] = useState('');
     const { isMobile } = useDevice();
+    const { setQueryString } = useQueryString();
 
     const hasUpdated = useMemo(() => {
         return (
@@ -63,8 +65,13 @@ const MyProfileAdDetails = () => {
     if (isMobile) {
         return (
             <FullPageMobileWrapper
+                onBack={() =>
+                    setQueryString({
+                        tab: 'default',
+                    })
+                }
                 renderFooter={() => (
-                    <Button disabled={!hasUpdated} isFullWidth onClick={submitAdDetails}>
+                    <Button disabled={!hasUpdated} isFullWidth onClick={submitAdDetails} size='lg'>
                         Save
                     </Button>
                 )}
@@ -88,7 +95,7 @@ const MyProfileAdDetails = () => {
                 setContactInfo={setContactInfo}
             />
             <div className='p2p-v2-my-profile-ad-details__border' />
-            <Button disabled={!hasUpdated} onClick={submitAdDetails}>
+            <Button disabled={!hasUpdated} onClick={submitAdDetails} size='lg'>
                 Save
             </Button>
         </div>

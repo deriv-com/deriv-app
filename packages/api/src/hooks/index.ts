@@ -76,3 +76,4 @@ export { default as useResetVirtualBalance } from './useResetVirtualBalance';
 export { default as useTotalAssets } from './useTotalAssets';
 export { default as useExchangeRates } from './useExchangeRates';
 export { default as useIsDIELEnabled } from './useIsDIELEnabled';
+export { default as useKycAuthStatus } from './useKycAuthStatus';

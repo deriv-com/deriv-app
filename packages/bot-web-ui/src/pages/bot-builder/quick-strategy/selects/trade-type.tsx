@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
 import debounce from 'lodash.debounce';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import { ApiHelpers } from '@deriv/bot-skeleton';
 import { Autocomplete, IconTradeTypes, Text } from '@deriv/components';
 import { TItem } from '@deriv/components/src/components/dropdown-list';

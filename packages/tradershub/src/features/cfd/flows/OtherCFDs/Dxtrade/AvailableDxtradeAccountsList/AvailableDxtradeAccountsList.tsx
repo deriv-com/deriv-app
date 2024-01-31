@@ -9,14 +9,14 @@ import { getStaticUrl } from '../../../../../../helpers/urls';
 import { PlatformDetails } from '../../../../constants';
 
 const LeadingIcon = () => (
-    <PlatformIcon
-        height='70px'
-        icon='DerivX'
-        onClick={() => {
-            window.open(getStaticUrl('/derivx'));
-        }}
-        width='70px'
-    />
+    <div>
+        <PlatformIcon
+            icon='DerivX'
+            onClick={() => {
+                window.open(getStaticUrl('/derivx'));
+            }}
+        />
+    </div>
 );
 
 const TrailingButton = () => <TradingAccountCardLightButton />;

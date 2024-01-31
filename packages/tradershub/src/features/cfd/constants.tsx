@@ -89,22 +89,19 @@ export const MarketTypeDetails = (isEU?: boolean): TMarketTypeDetails => ({
 
 export const PlatformDetails = {
     ctrader: {
-        icon: () => <PlatformIcon icon='CTrader' />,
-        iconWithWidth: (width: number) => <PlatformIcon icon='CTrader' width={width} />,
+        icon: (width?: number) => <PlatformIcon icon='CTrader' width={width} />,
         link: 'https://onelink.to/hyqpv7',
         platform: 'ctrader' as TPlatforms.OtherAccounts,
         title: 'Deriv cTrader',
     },
     dxtrade: {
-        icon: () => <PlatformIcon icon='DerivX' />,
-        iconWithWidth: (width: number) => <PlatformIcon icon='DerivX' width={width} />,
+        icon: (width?: number) => <PlatformIcon icon='DerivX' width={width} />,
         link: 'https://onelink.to/grmtyx',
         platform: 'dxtrade' as TPlatforms.OtherAccounts,
         title: 'Deriv X',
     },
     mt5: {
-        icon: () => <PlatformIcon icon='Derived' />,
-        iconWithWidth: (width: number) => <PlatformIcon icon='Derived' width={width} />,
+        icon: (width?: number) => <PlatformIcon icon='Derived' width={width} />,
         link: 'https://onelink.to/grmtyx',
         platform: 'mt5' as TPlatforms.MT5,
         title: 'Deriv MT5',

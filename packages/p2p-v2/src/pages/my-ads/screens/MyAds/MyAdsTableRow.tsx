@@ -56,7 +56,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
         });
     }, [local_currency]);
 
-    const [isActionsVisible, setIsActionsVisible] = useState(false);
+    const [isActionsVisible, setIsActionsVisible] = useState(true);
     const isAdvertListed = isListed && !isBarred;
     const adPauseColor = isAdvertListed ? 'general' : 'less-prominent';
     const amountDealt = amount! - remaining_amount!;
@@ -72,6 +72,8 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
         marketRate: Number(effective_rate),
     });
 
+    //TODO: get the floating rate configs after integration with usep2pconfig to handle disabled case.
+
     const advertType = type === 'buy' ? ADVERT_TYPE.BUY : ADVERT_TYPE.SELL;
 
     if (!isDesktop) {
@@ -81,24 +83,24 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                     'p2p-v2-my-ads-table-row__line-disabled': !is_active,
                 })}
             >
-                <Text color='less-prominent' size='2xs'>
+                <Text color='less-prominent' size='sm'>
                     {`Ad ID ${id} `}
                 </Text>
                 <div className='p2p-v2-my-ads-table-row__line__type-and-status'>
-                    <Text color={adPauseColor} weight='bold'>
+                    <Text color={adPauseColor} size='lg' weight='bold'>
                         {advertType} {account_currency}
                     </Text>
                     <div className='p2p-v2-my-ads-table-row__line__type-and-status__wrapper'>
                         <AdStatus isActive={!!is_active && !isBarred} />
-                        <PopoverDropdown dropdownList={list} />
+                        <PopoverDropdown dropdownList={list} onClick={value => onClickIcon(id!, value)} />
                     </div>
                 </div>
                 <div className='p2p-v2-my-ads-table-row__line-details'>
-                    <Text size='2xs'>
+                    <Text color='success' size='sm'>
                         {`${formatMoney(account_currency!, amountDealt, true)}`} {account_currency}&nbsp;
                         {advertType === 'Buy' ? 'Bought' : 'Sold'}
                     </Text>
-                    <Text color='less-prominent' size='2xs'>
+                    <Text color='less-prominent' size='sm'>
                         {amount_display} {account_currency}
                     </Text>
                 </div>
@@ -108,16 +110,18 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                     value={amountDealt}
                 />
                 <div className='p2p-v2-my-ads-table-row__line-details'>
-                    <Text color='less-prominent'>Limits</Text>
-                    <Text color='less-prominent' size='2xs'>
+                    <Text color='less-prominent' size='sm'>
+                        Limits
+                    </Text>
+                    <Text color='less-prominent' size='sm'>
                         {`Rate (1 ${account_currency})`}
                     </Text>
                 </div>
                 <div className='p2p-v2-my-ads-table-row__line-details'>
-                    <Text color={adPauseColor} size='2xs'>
+                    <Text color={adPauseColor} size='sm'>
                         {min_order_amount_display} - {max_order_amount_display} {account_currency}
                     </Text>
-                    <Text size='xs' weight='bold'>
+                    <Text color='success' weight='bold'>
                         <div className='display-layout'>
                             {displayEffectiveRate} {local_currency}
                             {rate_type === RATE_TYPE.FLOAT && (
@@ -129,7 +133,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                 <div className='p2p-v2-my-ads-table-row__line-methods'>
                     {payment_method_names?.map(payment_method => (
                         <div className='p2p-v2-my-ads-table-row__payment-method--label' key={payment_method}>
-                            <Text color={adPauseColor} size='2xs'>
+                            <Text color={adPauseColor} size='xs'>
                                 {payment_method}
                             </Text>
                         </div>
@@ -143,7 +147,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
         <div
             className={clsx('p2p-v2-my-ads-table-row__line', { 'p2p-v2-my-ads-table-row__line-disabled': !is_active })}
             onMouseEnter={() => setIsActionsVisible(true)}
-            onMouseLeave={() => setIsActionsVisible(false)}
+            onMouseLeave={() => setIsActionsVisible(true)}
         >
             <Text size='sm'>
                 {advertType} {id}
@@ -166,7 +170,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
             <div className='p2p-v2-my-ads-table-row__payment-method'>
                 {payment_method_names?.map(paymentMethod => (
                     <div className='p2p-v2-my-ads-table-row__payment-method--label' key={paymentMethod}>
-                        <Text color={adPauseColor} size='xs'>
+                        <Text color={adPauseColor} size='sm'>
                             {paymentMethod}
                         </Text>
                     </div>
@@ -174,19 +178,33 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
             </div>
             <div className='p2p-v2-my-ads-table-row__actions'>
                 {isActionsVisible ? (
-                    <div className='p2p-v2-my-ads-table-row__actions-icons'>
+                    <div className='p2p-v2-my-ads-table-row__actions-popovers'>
                         <Button onClick={() => onClickIcon(id!, is_active ? 'deactivate' : 'activate')}>
-                            <Tooltip message='Edit' position='bottom'>
+                            <Tooltip
+                                className='p2p-v2-my-ads-table-row__actions-popovers__item'
+                                message={is_active ? 'Deactivate' : 'Activate'}
+                                position='top'
+                                variant='general'
+                            >
                                 {is_active ? <DeactivateIcon /> : <ActivateIcon />}
                             </Tooltip>
                         </Button>
                         <Button onClick={() => onClickIcon(id!, 'edit')}>
-                            <Tooltip message={is_active ? 'Deactivate' : 'Activate'} position='bottom'>
+                            <Tooltip
+                                className='p2p-v2-my-ads-table-row__actions-popovers__item'
+                                message={is_active ? 'Deactivate' : 'Activate'}
+                                position='bottom'
+                            >
                                 <EditIcon />
                             </Tooltip>
                         </Button>
                         <Button onClick={() => onClickIcon(id!, 'delete')}>
-                            <Tooltip message='Delete' position='bottom'>
+                            <Tooltip
+                                className='p2p-v2-my-ads-table-row__actions-popovers__item'
+                                message='Delete'
+                                position='bottom'
+                                triggerAction='click'
+                            >
                                 <DeleteIcon />
                             </Tooltip>
                         </Button>

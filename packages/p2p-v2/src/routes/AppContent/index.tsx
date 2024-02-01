@@ -4,7 +4,7 @@ import { useEventListener } from 'usehooks-ts';
 import { useActiveAccount } from '@deriv/api';
 import { Loader, Tab, Tabs } from '@deriv-com/ui';
 import { CloseHeader } from '../../components';
-import { MyProfile } from '../../pages';
+import { MyAds, MyProfile } from '../../pages';
 import './index.scss';
 
 const DEFAULT_TAB = 'buy-sell';
@@ -12,7 +12,15 @@ const DEFAULT_TAB = 'buy-sell';
 export const routesConfiguration = [
     { Component: <div> Buy sell page </div>, path: 'buy-sell', title: 'Buy / Sell' },
     { Component: <div> Orders Page </div>, path: 'orders', title: 'Orders' },
-    { Component: <div> My Ads Page </div>, path: 'my-ads', title: 'My Ads' },
+    {
+        Component: (
+            <div>
+                <MyAds />{' '}
+            </div>
+        ),
+        path: 'my-ads',
+        title: 'My Ads',
+    },
     { Component: <MyProfile />, path: 'my-profile', title: 'My Profile' },
 ];
 

@@ -44,7 +44,7 @@ const Table = <T,>({
     });
 
     return (
-        <div>
+        <div className='w-full'>
             {isDesktop && columns.length > 0 && (
                 <div className='p2p-v2-table__header' style={{ gridTemplateColumns: `repeat(${columns.length}, 1fr)` }}>
                     {table.getFlatHeaders().map(header => (

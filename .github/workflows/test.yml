@@ -57,3 +57,9 @@ jobs:
       run: bash ./scripts/check-tests.sh packages/utils/src
     - name: Run tests
       run: npm run test:ci
+    - name: Publish to TestSpace
+      uses: "./.github/actions/push_to_testspace"
+      with:
+        domain: 'deriv-app'
+        testspace_token: ${{ secrets.TESTSPACE_TOKEN }}
+      

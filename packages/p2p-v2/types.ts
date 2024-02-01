@@ -1,5 +1,16 @@
 import { p2p } from '@deriv/api';
 
+declare global {
+    interface WindowEventMap {
+        queryChange: CustomEvent;
+        switchTab: CustomEvent & {
+            detail: {
+                tab: 'buy-sell' | 'my-ads' | 'my-profile' | 'orders';
+            };
+        };
+    }
+}
+
 export type TAdvertiserPaymentMethods = ReturnType<typeof p2p.advertiserPaymentMethods.useGet>['data'];
 
 export type TSelectedPaymentMethod = Partial<{

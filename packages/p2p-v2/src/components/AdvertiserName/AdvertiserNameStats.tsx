@@ -1,9 +1,9 @@
 import React from 'react';
+import { Loader, Text } from '@deriv-com/ui';
 import { useAdvertiserStats, useDevice } from '../../hooks';
-import { StarRating } from '../StarRating';
 import ThumbUpIcon from '../../public/ic-thumb-up.svg';
 import BlockedUserOutlineIcon from '../../public/ic-user-blocked-outline.svg';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { StarRating } from '../StarRating';
 import './AdvertiserNameStats.scss';
 
 /**
@@ -17,8 +17,7 @@ const AdvertiserNameStats = () => {
     const { data: advertiserStats, isLoading } = useAdvertiserStats();
     const { isMobile } = useDevice();
 
-    // TODO: Use Skeleton loader here
-    if (isLoading || !advertiserStats) return <h1>Loading...</h1>;
+    if (isLoading || !advertiserStats) return <Loader />;
 
     const { blocked_by_count, daysSinceJoined, rating_average, rating_count, recommended_average } = advertiserStats;
 

@@ -59,11 +59,11 @@ const routesConfig: TRouteTypes.IRouteConfig[] = [
 export const defaultRoute = routesConfig[0].routes?.[0];
 
 const Router = () => {
+    const { component: RouteComponent, path, routes, title } = routesConfig[0];
+
     return (
         <Switch>
-            {routesConfig.map(route => (
-                <RouteWithSubRoutes key={route.path} {...route} />
-            ))}
+            <RouteWithSubRoutes component={RouteComponent} path={path} routes={routes} title={title} />
         </Switch>
     );
 };

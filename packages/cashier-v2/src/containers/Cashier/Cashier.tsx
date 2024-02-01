@@ -1,9 +1,9 @@
 import React from 'react';
 import { NavLink, Route, Switch } from 'react-router-dom';
 import { PageLayout, Text } from '@deriv-com/ui';
-import { TRouteComponent } from '../../constants/routesConfig';
+import { TRouteTypes } from '../../types';
 
-const MenuOptions = ({ routes }: Pick<TRouteComponent, 'routes'>) => {
+const MenuOptions = ({ routes }: Pick<TRouteTypes.TRouteComponent, 'routes'>) => {
     return (
         <div className='flex min-w-[278px] flex-col rounded-400 bg-[#f2f3f4] p-400'>
             {routes?.map(route => {
@@ -21,7 +21,7 @@ const MenuOptions = ({ routes }: Pick<TRouteComponent, 'routes'>) => {
     );
 };
 
-const Cashier = ({ routes }: TRouteComponent) => {
+const Cashier = ({ routes }: TRouteTypes.TRouteComponent) => {
     return (
         <div className='max-w-screen-xl mx-auto'>
             <PageLayout left={<MenuOptions routes={routes} />}>

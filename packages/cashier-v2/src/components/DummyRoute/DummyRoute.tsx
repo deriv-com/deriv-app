@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text } from '@deriv-com/ui';
-import { TRouteComponent } from '../../constants/routesConfig';
+import { TRouteTypes } from '../../types';
 
-const DummyRoute = ({ title }: TRouteComponent) => {
+const DummyRoute = ({ title }: TRouteTypes.TRouteComponent) => {
     return <Text size='lg'>Welcome to {title}</Text>;
 };
 

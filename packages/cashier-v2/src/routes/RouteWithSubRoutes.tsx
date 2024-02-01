@@ -1,8 +1,9 @@
 import React from 'react';
 import { Redirect, Route, useLocation } from 'react-router-dom';
-import { defaultRoute, IRouteConfig } from '../constants/routesConfig';
+import { TRouteTypes } from '../types';
+import { defaultRoute } from './Router';
 
-const RouteWithSubRoutes = (route: IRouteConfig) => {
+const RouteWithSubRoutes = (route: TRouteTypes.IRouteConfig) => {
     const location = useLocation();
     const pathname = location.pathname.replace(/\/$/, '');
 

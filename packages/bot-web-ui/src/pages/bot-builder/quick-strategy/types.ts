@@ -64,8 +64,25 @@ export type TStrategy = {
     label: string;
     description: TDescriptionItem[];
     fields: TConfigItem[][];
+    rs_strategy_type?: TRsStrategyType;
 };
 
 export type TStrategies = {
     [key: string]: TStrategy;
+};
+
+export type TRsStrategyType =
+    | `d'alembert`
+    | `martingale`
+    | `oscar's-grind`
+    | `reverse martingale`
+    | `reverse d'alembert`
+    | `1-3-2-6`;
+
+export type TFormValues = Record<string, string | number | boolean> & {
+    durationtype: 't' | 's' | 'm' | 'h' | 'd';
+    symbol: string;
+    tradetype: string;
+    type?: string;
+    duration?: string;
 };

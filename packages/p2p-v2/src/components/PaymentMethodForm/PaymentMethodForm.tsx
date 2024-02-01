@@ -2,9 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { TSelectedPaymentMethod } from 'types';
 import { p2p } from '@deriv/api';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { Input } from '@deriv-com/ui/dist/components/Input';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Button, Input, Text } from '@deriv-com/ui';
 import CloseCircle from '../../public/ic-close-circle.svg';
 import { TFormState } from '../../reducers/types';
 import { Dropdown } from '../Dropdown';
@@ -93,6 +91,7 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                     {selectedPaymentMethod ? (
                         // TODO: Remember to translate this
                         <Input
+                            defaultValue={selectedPaymentMethod?.display_name}
                             disabled
                             label='Choose your payment method'
                             rightPlaceholder={
@@ -109,7 +108,6 @@ const PaymentMethodForm = ({ onAdd, onResetFormState, ...rest }: TPaymentMethodF
                                     />
                                 )
                             }
-                            value={selectedPaymentMethod?.display_name}
                         />
                     ) : (
                         <>

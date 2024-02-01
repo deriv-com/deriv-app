@@ -1,9 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useExchangeRateSubscription } from '@deriv/api';
-import { Button } from '@deriv-com/ui/dist/components/Button';
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import { Tooltip } from '@deriv-com/ui/dist/components/Tooltip';
+import { Button, Text, Tooltip } from '@deriv-com/ui';
 import { useDevice } from '../../../../hooks';
 import { generateEffectiveRate } from '../../../../utils/format-value';
 import DeactivateIcon from '../../../../public/ic-archive.svg';
@@ -21,12 +19,12 @@ import './MyAdsTableRow.scss';
 
 const BASE_CURRENCY = 'USD';
 const list = [
-    { label: 'Edit', value: 'edit'},
-    { label: 'Delete', value: 'delete'},
-    { label: 'Duplicate', value: 'duplicate'},
-    { label: 'Share', value: 'share'},
-    { label: 'Deactivate', value: 'deactivate'},
-]
+    { label: 'Edit', value: 'edit' },
+    { label: 'Delete', value: 'delete' },
+    { label: 'Duplicate', value: 'duplicate' },
+    { label: 'Share', value: 'share' },
+    { label: 'Deactivate', value: 'deactivate' },
+];
 
 const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTableRowRendererProps) => {
     const { isDesktop } = useDevice();
@@ -79,132 +77,125 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
     if (!isDesktop) {
         return (
             <div
-            className={clsx('p2p-v2-my-ads-table-row__line', {
-                'p2p-v2-my-ads-table-row__line-disabled': !is_active,
-            })}
-        >
-            <Text color='less-prominent' size='2xs'>
-                {`Ad ID ${id} `}
-            </Text>
-            <div className='p2p-v2-my-ads-table-row__line__type-and-status'>
-                <Text color={adPauseColor} weight='bold'>
-                    {advertType} {account_currency}
+                className={clsx('p2p-v2-my-ads-table-row__line', {
+                    'p2p-v2-my-ads-table-row__line-disabled': !is_active,
+                })}
+            >
+                <Text color='less-prominent' size='2xs'>
+                    {`Ad ID ${id} `}
                 </Text>
-                <div className='p2p-v2-my-ads-table-row__line__type-and-status__wrapper'>
-                    <AdStatus isActive={!!is_active && !isBarred} />
-                    <PopoverDropdown dropdownList={list}/>
+                <div className='p2p-v2-my-ads-table-row__line__type-and-status'>
+                    <Text color={adPauseColor} weight='bold'>
+                        {advertType} {account_currency}
+                    </Text>
+                    <div className='p2p-v2-my-ads-table-row__line__type-and-status__wrapper'>
+                        <AdStatus isActive={!!is_active && !isBarred} />
+                        <PopoverDropdown dropdownList={list} />
+                    </div>
+                </div>
+                <div className='p2p-v2-my-ads-table-row__line-details'>
+                    <Text size='2xs'>
+                        {`${formatMoney(account_currency!, amountDealt, true)}`} {account_currency}&nbsp;
+                        {advertType === 'Buy' ? 'Bought' : 'Sold'}
+                    </Text>
+                    <Text color='less-prominent' size='2xs'>
+                        {amount_display} {account_currency}
+                    </Text>
+                </div>
+                <ProgressIndicator
+                    className={'p2p-v2-my-ads-table-row__available-progress'}
+                    total={amount!}
+                    value={amountDealt}
+                />
+                <div className='p2p-v2-my-ads-table-row__line-details'>
+                    <Text color='less-prominent'>Limits</Text>
+                    <Text color='less-prominent' size='2xs'>
+                        {`Rate (1 ${account_currency})`}
+                    </Text>
+                </div>
+                <div className='p2p-v2-my-ads-table-row__line-details'>
+                    <Text color={adPauseColor} size='2xs'>
+                        {min_order_amount_display} - {max_order_amount_display} {account_currency}
+                    </Text>
+                    <Text size='xs' weight='bold'>
+                        <div className='display-layout'>
+                            {displayEffectiveRate} {local_currency}
+                            {rate_type === RATE_TYPE.FLOAT && (
+                                <AdType adPauseColor={adPauseColor} floatRate={rate_display!} />
+                            )}
+                        </div>
+                    </Text>
+                </div>
+                <div className='p2p-v2-my-ads-table-row__line-methods'>
+                    {payment_method_names?.map(payment_method => (
+                        <div className='p2p-v2-my-ads-table-row__payment-method--label' key={payment_method}>
+                            <Text color={adPauseColor} size='2xs'>
+                                {payment_method}
+                            </Text>
+                        </div>
+                    ))}
                 </div>
             </div>
-            <div className='p2p-v2-my-ads-table-row__line-details'>
-                <Text size='2xs'>
-                    {`${formatMoney(account_currency!, amountDealt, true)}`} {account_currency}&nbsp;
-                    {advertType === 'Buy' ? 'Bought' : 'Sold' }
-                </Text>
-                <Text color='less-prominent' size='2xs'>
-                    {amount_display} {account_currency}
-                </Text>
-            </div>
-            <ProgressIndicator
-                className={'p2p-v2-my-ads-table-row__available-progress'}
-                value={amountDealt}
-                total={amount!}
-            />
-            <div className='p2p-v2-my-ads-table-row__line-details'>
-                <Text color='less-prominent'>
-                    Limits
-                </Text>
-                <Text color='less-prominent' size='2xs'>
-                   {`Rate (1 ${account_currency})`}
-                </Text>
-            </div>
-            <div className='p2p-v2-my-ads-table-row__line-details'>
-                <Text color={adPauseColor} size='2xs'>
-                    {min_order_amount_display} - {max_order_amount_display} {account_currency}
-                </Text>
-                <Text size='xs' weight='bold'>
-                    <div className='display-layout'>
-                        {displayEffectiveRate} {local_currency}
-                        {rate_type === RATE_TYPE.FLOAT && (
-                            <AdType adPauseColor={adPauseColor} floatRate={rate_display!} />
-                        )}
-                    </div>
-                </Text>
-            </div>
-            <div className='p2p-v2-my-ads-table-row__line-methods'>
-                {
-                    payment_method_names?.map((payment_method) => 
-                         (
-                            <div className='p2p-v2-my-ads-table-row__payment-method--label' key={payment_method}>
-                                <Text color={adPauseColor} size='2xs'>
-                                    {payment_method}
-                                </Text>
-                            </div>
-                        )
-                    )          
-                }
-            </div>
-        </div>
         );
     }
 
     return (
-            <div
-                className={clsx('p2p-v2-my-ads-table-row__line', { 'p2p-v2-my-ads-table-row__line-disabled': !is_active })}
-                onMouseEnter={() => setIsActionsVisible(true)}
-                onMouseLeave={() => setIsActionsVisible(false)}
-            >
-                <Text size='sm'>
-                    {advertType} {id}
-                </Text>
-                <Text size='sm'>
-                    {min_order_amount_display} - {max_order_amount_display} {account_currency}
-                </Text>
-                <Text className='p2p-v2-my-ads-table-row__rate' size='sm'>
-                    {displayEffectiveRate} {local_currency}
-                    {rate_type === RATE_TYPE.FLOAT && <AdType adPauseColor={adPauseColor} floatRate={rate_display!} />}
-                </Text>
-                <Text size='sm' className='p2p-v2-my-ads-table-row__available'>
-                    <ProgressIndicator
-                        className={'p2p-v2-my-ads-table-row__available-progress'}
-                        value={remaining_amount!}
-                        total={amount!}
-                    />
-                    {remaining_amount_display}/{amount_display} {account_currency}
-                </Text>
-                    <div className='p2p-v2-my-ads-table-row__payment-method'>
-                        {payment_method_names?.map(paymentMethod => (
-                            <div className='p2p-v2-my-ads-table-row__payment-method--label' key={paymentMethod}>
-                                <Text color={adPauseColor} size='xs'>
-                                    {paymentMethod}
-                                </Text>
-                            </div>
-                        ))}
+        <div
+            className={clsx('p2p-v2-my-ads-table-row__line', { 'p2p-v2-my-ads-table-row__line-disabled': !is_active })}
+            onMouseEnter={() => setIsActionsVisible(true)}
+            onMouseLeave={() => setIsActionsVisible(false)}
+        >
+            <Text size='sm'>
+                {advertType} {id}
+            </Text>
+            <Text size='sm'>
+                {min_order_amount_display} - {max_order_amount_display} {account_currency}
+            </Text>
+            <Text className='p2p-v2-my-ads-table-row__rate' size='sm'>
+                {displayEffectiveRate} {local_currency}
+                {rate_type === RATE_TYPE.FLOAT && <AdType adPauseColor={adPauseColor} floatRate={rate_display!} />}
+            </Text>
+            <Text className='p2p-v2-my-ads-table-row__available' size='sm'>
+                <ProgressIndicator
+                    className={'p2p-v2-my-ads-table-row__available-progress'}
+                    total={amount!}
+                    value={remaining_amount!}
+                />
+                {remaining_amount_display}/{amount_display} {account_currency}
+            </Text>
+            <div className='p2p-v2-my-ads-table-row__payment-method'>
+                {payment_method_names?.map(paymentMethod => (
+                    <div className='p2p-v2-my-ads-table-row__payment-method--label' key={paymentMethod}>
+                        <Text color={adPauseColor} size='xs'>
+                            {paymentMethod}
+                        </Text>
                     </div>
-                <div className='p2p-v2-my-ads-table-row__actions'>
-                    {isActionsVisible ? (
-                        <div className='p2p-v2-my-ads-table-row__actions-icons'>
-                            <Button onClick={() => onClickIcon(id!, is_active ? 'deactivate' : 'activate')}>
-                                <Tooltip message='Edit' position='bottom'>
-                                    {is_active ? <DeactivateIcon /> : <ActivateIcon />}
-                                </Tooltip>
-                            </Button>
-                            <Button onClick={() => onClickIcon(id!, 'edit')}>
-                                <Tooltip message={is_active ? 'Deactivate' : 'Activate'} position='bottom'>
-                                    <EditIcon />
-                                </Tooltip>
-                            </Button>
-                            <Button onClick={() => onClickIcon(id!, 'delete')}>
-                                <Tooltip message='Delete' position='bottom'>
-                                    <DeleteIcon />
-                                </Tooltip>
-                            </Button>
-                        </div>
-                    ) : (
-                        <AdStatus isActive={is_active} />
-                    )}
-                </div>
+                ))}
             </div>
-        
+            <div className='p2p-v2-my-ads-table-row__actions'>
+                {isActionsVisible ? (
+                    <div className='p2p-v2-my-ads-table-row__actions-icons'>
+                        <Button onClick={() => onClickIcon(id!, is_active ? 'deactivate' : 'activate')}>
+                            <Tooltip message='Edit' position='bottom'>
+                                {is_active ? <DeactivateIcon /> : <ActivateIcon />}
+                            </Tooltip>
+                        </Button>
+                        <Button onClick={() => onClickIcon(id!, 'edit')}>
+                            <Tooltip message={is_active ? 'Deactivate' : 'Activate'} position='bottom'>
+                                <EditIcon />
+                            </Tooltip>
+                        </Button>
+                        <Button onClick={() => onClickIcon(id!, 'delete')}>
+                            <Tooltip message='Delete' position='bottom'>
+                                <DeleteIcon />
+                            </Tooltip>
+                        </Button>
+                    </div>
+                ) : (
+                    <AdStatus isActive={is_active} />
+                )}
+            </div>
+        </div>
     );
 };
 

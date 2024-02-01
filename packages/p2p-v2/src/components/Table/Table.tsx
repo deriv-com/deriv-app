@@ -1,7 +1,7 @@
-import React, { Fragment, memo, useRef } from 'react';
+import React, { memo, useRef } from 'react';
 import clsx from 'clsx';
 import { ColumnDef, GroupingState, getCoreRowModel, getGroupedRowModel, useReactTable } from '@tanstack/react-table';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import useFetchMore from '../../hooks/useFetchMore';
 import './Table.scss';
 import { useDevice } from '../../hooks';
@@ -10,10 +10,10 @@ type TProps<T> = {
     columns?: ColumnDef<T>[];
     data: T[];
     groupBy?: GroupingState;
+    headerRender?: (data: T) => JSX.Element;
     isFetching: boolean;
     loadMoreFunction: () => void;
     rowClassname: string;
-    headerRender?: (data: T) => JSX.Element;
     rowRender: (data: T) => JSX.Element;
     tableClassname: string;
 };
@@ -21,7 +21,7 @@ type TProps<T> = {
 const Table = <T,>({
     columns = [],
     data,
-    headerRender = () => <div></div>,
+    headerRender = () => <div />,
     isFetching,
     loadMoreFunction,
     rowClassname,
@@ -48,7 +48,7 @@ const Table = <T,>({
             {isDesktop && columns.length > 0 && (
                 <div className='p2p-v2-table__header' style={{ gridTemplateColumns: `repeat(${columns.length}, 1fr)` }}>
                     {table.getFlatHeaders().map(header => (
-                        <Text key={header.id} className='p2p-v2-table__header-items' weight='bold' size='sm'>
+                        <Text className='p2p-v2-table__header-items' key={header.id} size='sm' weight='bold'>
                             {headerRender(header.column.columnDef.header as T)}
                         </Text>
                     ))}

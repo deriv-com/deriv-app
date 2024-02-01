@@ -1,6 +1,6 @@
-import React, { useRef, useState } from "react";
-import { Text } from '@deriv-com/ui/dist/components/Text';
-import { useOnClickOutside } from "usehooks-ts";
+import React, { useRef, useState } from 'react';
+import { Text } from '@deriv-com/ui';
+import { useOnClickOutside } from 'usehooks-ts';
 import DropdownIcon from '../../public/ic-more.svg';
 import './PopoverDropdown.scss';
 
@@ -21,17 +21,20 @@ const PopoverDropdown = ({ dropdownList }: TPopoverDropdownProps) => {
         setVisible(value);
     };
 
-    return (<div className="p2p-v2-popover-dropdown">
-        <DropdownIcon onClick={() => handleVisibleChange(!visible)}  className="p2p-v2-popover-dropdown__icon"/>
-        {
-            visible && <div className="p2p-v2-popover-dropdown__list" ref={ref}>
-                {dropdownList.map((item) => <Text className="p2p-v2-popover-dropdown__list-item">
-                    {item.label}</Text>
-                    )}
-            </div>
-        }
-
-    </div>);
+    return (
+        <div className='p2p-v2-popover-dropdown'>
+            <DropdownIcon className='p2p-v2-popover-dropdown__icon' onClick={() => handleVisibleChange(!visible)} />
+            {visible && (
+                <div className='p2p-v2-popover-dropdown__list' ref={ref}>
+                    {dropdownList.map(item => (
+                        <Text className='p2p-v2-popover-dropdown__list-item' key={item.value}>
+                            {item.label}
+                        </Text>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
 };
 
 export default PopoverDropdown;

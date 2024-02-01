@@ -1,6 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import { p2p } from '@deriv/api';
-import { Loader } from '@deriv-com/ui/dist/components/Loader';
+import { Loader } from '@deriv-com/ui';
 import { Table } from '../../../../components';
 import MyAdsTableRow from './MyAdsTableRow';
 import './MyAdsTable.scss';
@@ -8,12 +8,13 @@ import './MyAdsTable.scss';
 export type TMyAdsTableRowRendererProps = Partial<
     NonNullable<ReturnType<typeof p2p.advertiserAdverts.useGet>['data']>[0]
 > & {
-    onClickIcon: (id: string, action: string) => void;
     isBarred: boolean;
     isListed: boolean;
+    onClickIcon: (id: string, action: string) => void;
 };
 
 const MyAdsTableRowRenderer = memo((values: TMyAdsTableRowRendererProps) => <MyAdsTableRow {...values} />);
+MyAdsTableRowRenderer.displayName = 'MyAdsTableRowRenderer';
 
 const headerRenderer = (header: any) => <div>{header}</div>;
 
@@ -67,16 +68,21 @@ const MyAdsTable = () => {
     return (
         <div className='p2p-v2-my-ads-table'>
             <Table
+                columns={columns}
                 data={data}
+                headerRender={headerRenderer}
                 isFetching={isFetching}
                 loadMoreFunction={loadMoreAdverts}
                 rowClassname=''
-                tableClassname=''
                 rowRender={(rowData: unknown) => (
-                    <MyAdsTableRowRenderer {...(rowData as TMyAdsTableRowRendererProps)} onClickIcon={onClickIcon} isBarred={!!advertiserInfo?.blocked_until} isListed={!!advertiserInfo?.is_listed} />
+                    <MyAdsTableRowRenderer
+                        {...(rowData as TMyAdsTableRowRendererProps)}
+                        isBarred={!!advertiserInfo?.blocked_until}
+                        isListed={!!advertiserInfo?.is_listed}
+                        onClickIcon={onClickIcon}
+                    />
                 )}
-                columns={columns}
-                headerRender={headerRenderer}
+                tableClassname=''
             />
         </div>
     );

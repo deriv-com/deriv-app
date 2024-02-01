@@ -67,7 +67,11 @@ const UpdateEmailModal = observer(() => {
                         <Icon className='change-email-update__modal-icon' icon={`IcEmailVerified`} size={128} />
                     )}
                     <Text className='change-email-update__modal-title' weight='bold' size='s'>
-                        <Localize i18n_default_text={!update_email_error ? 'Success!' : 'Failed'} />
+                        {update_email_error ? (
+                            <Localize i18n_default_text='Failed' />
+                        ) : (
+                            <Localize i18n_default_text='Success!' />
+                        )}
                     </Text>
                     <Text className='change-email-update__modal-description' size='xs'>
                         {update_email_error ?? (

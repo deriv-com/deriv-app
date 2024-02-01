@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useExchangeRates, useTradingAccountsList } from '@deriv/api';
 
 /**
- * @description This hook is used to get the total demo and real CFD balance
+ * @description This hook is used to get the total demo and real balance of the user
  * @param regulation  - Regulation of the user
  */
 const usePlatformAssets = (regulation?: string) => {

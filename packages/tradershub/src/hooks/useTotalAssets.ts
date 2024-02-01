@@ -5,8 +5,8 @@ import useCFDAssets from './useCFDAssets';
 import usePlatformAssets from './usePlatformAssets';
 
 /**
- * @description Get total balance of all accounts
- * @returns data - Total balance of all accounts
+ * @description Get total balance of cfd and platform accounts
+ * @returns data - Total balance of all cfd and platform accounts
  */
 const useTotalAssets = () => {
     const { getUIState } = useUIContext();

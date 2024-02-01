@@ -5,7 +5,7 @@ import { ACTION_TYPES, useSignupWizardContext } from '../../context/SignupWizard
 import { CUSTOM_STYLES } from '../../helpers/signupModalHelpers';
 import { stepProgress } from '../../mocks/form-progress.mock';
 import CurrencySelector from '../../pages/CurrencySelector';
-import { FormProgress } from '../form-progress';
+import { FormProgress } from '../FormProgress';
 import './index.scss';
 
 /**

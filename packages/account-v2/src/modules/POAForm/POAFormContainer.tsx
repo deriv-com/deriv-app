@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveAccount } from '@deriv/api';
-import { Button, Text } from '@deriv-com/ui';
+import { Button, Loader, Text } from '@deriv-com/ui';
 import IcPOAError from '../../assets/verification-status/ic-poa-error.svg';
 import IcPOAUpload from '../../assets/verification-status/ic-poa-upload.svg';
 import IcPOAVerified from '../../assets/verification-status/ic-poa-verified.svg';
@@ -63,7 +63,12 @@ export const POAFormContainer = () => {
 
     if (activeAccount?.is_virtual) return <DemoMessage />;
 
-    if (isLoading) return <Text>Loading ...</Text>;
+    if (isLoading)
+        return (
+            <div className='flex items-center justify-center h-full'>
+                <Loader isFullScreen={false} />
+            </div>
+        );
 
     if (documentNotRequired)
         return (

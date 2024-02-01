@@ -15,7 +15,7 @@
     /*rtl:ignore*/
     &__wrapper {
         position: absolute;
-        inset-inline-end: calc(100% + 10px);
+        right: calc(100% + 10px);
         top: -66px;
         display: flex;
         flex-direction: column;
@@ -97,9 +97,6 @@
     &--enter,
     &--exit {
         transform: translate3d(20%, 0, 0);
-        @include rtl {
-            transform: translate3d(-20%, 0, 0);
-        }
         pointer-events: none;
         opacity: 0;
         height: 0;

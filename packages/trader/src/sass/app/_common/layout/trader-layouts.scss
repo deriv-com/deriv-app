@@ -11,9 +11,6 @@
                 .sc-toolbar-widget,
                 .stx-panel-control {
                     transform: translate3d(248px, 0, 0);
-                    @include rtl {
-                        transform: translate3d(-248px, 0, 0);
-                    }
                 }
                 .cq-chart-controls {
                     transform: translate3d(130px, 0, 0) !important;
@@ -85,6 +82,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
     overflow: hidden;
 
     &__replay {
+        direction: ltr;
         width: 100%;
         display: flex;
         flex-direction: row;
@@ -284,6 +282,7 @@ $FLOATING_HEADER_HEIGHT: 41px;
             }
         }
         .replay-chart__container {
+            direction: ltr;
             width: 100%;
             position: relative;
             margin-left: 24px;

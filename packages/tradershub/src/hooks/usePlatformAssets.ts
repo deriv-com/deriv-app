@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useExchangeRates, useTradingAccountsList } from '@deriv/api';
+import { BrokerCodes, Regulation } from '../constants/constants';
 
 /**
  * @description This hook is used to get the total demo and real balance of the user
@@ -13,10 +14,10 @@ const usePlatformAssets = (regulation?: string) => {
     } = useTradingAccountsList();
     const { data, getExchangeRate, subscribe: multiSubscribe, unsubscribe } = useExchangeRates();
 
-    const isEURegulation = regulation === 'EU';
+    const isEURegulation = regulation === Regulation.EU;
 
     const fiatCurrency = isEURegulation
-        ? tradingAccount?.find(account => account.broker === 'MF')?.currency
+        ? tradingAccount?.find(account => account.broker === BrokerCodes.MF)?.currency
         : fiatAccount;
 
     const demoAccount = tradingAccount?.find(account => account.is_virtual);
@@ -24,10 +25,10 @@ const usePlatformAssets = (regulation?: string) => {
 
     const regionRealAccounts = realAccounts?.filter(account => {
         if (isEURegulation) {
-            return account.broker === 'MF';
+            return account.broker === BrokerCodes.MF;
         }
 
-        return account.broker === 'CR';
+        return account.broker === BrokerCodes.CR;
     });
 
     useEffect(() => {

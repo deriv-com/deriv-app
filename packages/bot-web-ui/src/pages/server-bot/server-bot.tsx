@@ -13,7 +13,7 @@ const ServerBot = observer(() => {
     const { client } = useStore();
     const DBotStores = useDBotStore();
     const {
-        server_bot: { getBotList, bot_list, removeBot, createBot },
+        server_bot: { getBotList, bot_list, createBot },
     } = DBotStores;
     const [add_btn_active, setAddBtnActive] = useState(false);
 
@@ -56,7 +56,7 @@ const ServerBot = observer(() => {
             </Button>
             <div>
                 <div>
-                    <ServerBotList bot_list={bot_list} removeBot={removeBot} />
+                    <ServerBotList />
                 </div>
                 <div>
                     <div className='chart-modal-dialog' data-testid='chart-modal-dialog'>

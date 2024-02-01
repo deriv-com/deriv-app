@@ -47,7 +47,16 @@ export default class ServerBotStore implements IServerBotStore {
         });
     }
 
-    getBotList() {
+    makeRequest = req_schema => {
+        return new Promise((resolve, reject) => {
+            api_base.api
+                ?.send(req_schema)
+                .then(data => resolve(data))
+                .catch((error: Error) => reject(error));
+        });
+    };
+
+    getBotList = () => {
         /* eslint-disable no-unused-vars */
         const api_status = api_base.getConnectionStatus();
         setTimeout(() => {
@@ -64,14 +73,14 @@ export default class ServerBotStore implements IServerBotStore {
                 /* eslint-disable no-console */
                 .catch((e: Error) => console.error('error: ', e));
         }, 2000);
-    }
+    };
 
-    createBot() {
-        api_base.api
-            ?.send(initial_req_schema)
-            .catch((e: Error) => {
+    createBot = () => {
+        this.makeRequest(initial_req_schema)
+            .then(data => console.log(data))
+            .catch((error: Error) => {
                 /* eslint-disable no-console */
-                console.error('error: ', e);
+                console.error(error);
             })
             .then(() => this.getBotList());
 
@@ -79,18 +88,42 @@ export default class ServerBotStore implements IServerBotStore {
             'qs-fields',
             JSON.stringify({ ...initial_req_schema.data.parameters, ...initial_req_schema.data.contract_parameters })
         );
-    }
+    };
 
-    removeBot(bot_id: string) {
-        api_base.api
-            ?.send({
-                bot_remove: 1,
-                bot_id,
-            })
-            .catch((e: Error) => {
+    removeBot = (bot_id: string) => {
+        this.makeRequest({
+            bot_remove: 1,
+            bot_id,
+        })
+            .then(data => console.log(data))
+            .catch((error: Error) => {
                 /* eslint-disable no-console */
-                console.error('error: ', e);
+                console.error(error);
             })
             .then(() => this.getBotList());
-    }
+    };
+
+    startBot = (bot_id: string) => {
+        this.makeRequest({
+            bot_start: 1,
+            bot_id,
+        })
+            .then(data => console.log(data))
+            .catch((error: Error) => {
+                /* eslint-disable no-console */
+                console.error(error);
+            });
+    };
+
+    stopBot = (bot_id: string) => {
+        this.makeRequest({
+            bot_stop: 1,
+            bot_id,
+        })
+            .then(data => console.log(data))
+            .catch((error: Error) => {
+                /* eslint-disable no-console */
+                console.error(error);
+            });
+    };
 }

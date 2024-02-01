@@ -3,6 +3,7 @@ import { useStore } from '@deriv/stores';
 import { Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { TBotListItem } from 'Stores/server-bot-store';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 type THeader = {
     label: string;
@@ -34,14 +35,13 @@ const HEADERS: THeader[] = [
     },
 ];
 
-type TServerBotList = {
-    bot_list: Array<TBotListItem>;
-    removeBot: (bot_id: string) => void;
-};
-
-const ServerBotList = ({ bot_list, removeBot }: TServerBotList) => {
+const ServerBotList = () => {
     const { ui } = useStore();
     const { is_mobile } = ui;
+    const DBotStores = useDBotStore();
+    const {
+        server_bot: { bot_list, removeBot, startBot, stopBot },
+    } = DBotStores;
     return (
         <div className='bot-list__wrapper'>
             {bot_list && (
@@ -74,8 +74,12 @@ const ServerBotList = ({ bot_list, removeBot }: TServerBotList) => {
                                 <p>{localize('[ Strategy parameters ]')}</p>
                             </div>
                             <div className='bot-list-contract__actions'>
-                                <Button green>{localize('Start')}</Button>
-                                <Button primary>{localize('Stop')}</Button>
+                                <Button green onClick={() => startBot(bot_id)}>
+                                    {localize('Start')}
+                                </Button>
+                                <Button primary onClick={() => stopBot(bot_id)}>
+                                    {localize('Stop')}
+                                </Button>
                                 <Button green>{localize('Pause')}</Button>
                                 <Button primary onClick={() => removeBot(bot_id)}>
                                     {localize('Remove')}

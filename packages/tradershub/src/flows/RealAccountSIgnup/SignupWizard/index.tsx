@@ -39,7 +39,7 @@ const SignupWizard = () => {
 
     return (
         <ReactModal isOpen={isWizardOpen} onRequestClose={handleClose} shouldCloseOnOverlayClick style={CUSTOM_STYLES}>
-            <div className='bg-background-primary-base md:h-[717px] md:w-[1040px] h-screen w-screen md:rounded-800 flex overflow-hidden'>
+            <div className='bg-background-primary-base md:max-h-[717px] md:max-w-[1040px] h-screen w-screen md:rounded-800 flex overflow-hidden'>
                 {!isMobile && (
                     <div className='min-w-[256px] bg-system-light-secondary-background p-1200'>
                         <Text as='p' className='font-bold pt-1600 pb-1200 text-300'>

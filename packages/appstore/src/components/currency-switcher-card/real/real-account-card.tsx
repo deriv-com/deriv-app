@@ -36,7 +36,7 @@ const RealAccountCard = observer(() => {
                 currency ? (
                     <BalanceText currency={get_currency} balance={Number(balance)} size='xs' />
                 ) : (
-                    'No currency Assigned'
+                    'No currency assigned'
                 )
             }
             icon={get_currency}

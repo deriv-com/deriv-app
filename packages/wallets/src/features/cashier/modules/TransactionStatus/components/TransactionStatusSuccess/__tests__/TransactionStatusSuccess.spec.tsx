@@ -86,6 +86,7 @@ const mockWallet = {
     is_active: true,
     is_crypto: true,
     is_disabled: false,
+    is_linked_account_active: false,
     is_malta_wallet: false,
     is_mf: false,
     is_trading: false,

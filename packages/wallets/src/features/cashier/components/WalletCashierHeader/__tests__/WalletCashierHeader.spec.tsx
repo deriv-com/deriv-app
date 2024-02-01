@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api';
 import { render, screen } from '@testing-library/react';
 import WalletCashierHeader from '../WalletCashierHeader';
 
@@ -21,7 +21,9 @@ describe('<WalletCashierHeader/>', () => {
     it('renders', () => {
         render(
             <APIProvider>
-                <WalletCashierHeader hideWalletDetails={false} />
+                <AuthProvider>
+                    <WalletCashierHeader hideWalletDetails={false} />
+                </AuthProvider>
             </APIProvider>
         );
 
@@ -32,7 +34,9 @@ describe('<WalletCashierHeader/>', () => {
     it('displays balance', () => {
         render(
             <APIProvider>
-                <WalletCashierHeader hideWalletDetails={false} />
+                <AuthProvider>
+                    <WalletCashierHeader hideWalletDetails={false} />
+                </AuthProvider>
             </APIProvider>
         );
 

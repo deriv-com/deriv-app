@@ -1,7 +1,7 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { APIProvider, useActiveWalletAccount, useJurisdictionStatus, usePOI } from '@deriv/api';
+import { APIProvider, AuthProvider, useActiveWalletAccount, useJurisdictionStatus, usePOI } from '@deriv/api';
 import { render, screen } from '@testing-library/react';
 import { ModalProvider } from '../../../../../components/ModalProvider';
 import { THooks } from '../../../../../types';
@@ -54,9 +54,11 @@ describe('MT5AccountAdded', () => {
         });
         render(
             <APIProvider>
-                <ModalProvider>
-                    <MT5AccountAdded marketType='financial' platform='mt5' />
-                </ModalProvider>
+                <AuthProvider>
+                    <ModalProvider>
+                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                    </ModalProvider>
+                </AuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('Your Financial demo account is ready')).toBeInTheDocument();
@@ -78,9 +80,11 @@ describe('MT5AccountAdded', () => {
         });
         render(
             <APIProvider>
-                <ModalProvider>
-                    <MT5AccountAdded marketType='financial' platform='mt5' />
-                </ModalProvider>
+                <AuthProvider>
+                    <ModalProvider>
+                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                    </ModalProvider>
+                </AuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('Your Financial (SVG) account is ready')).toBeInTheDocument();
@@ -109,9 +113,11 @@ describe('MT5AccountAdded', () => {
         render(
             <Router history={history}>
                 <APIProvider>
-                    <ModalProvider>
-                        <MT5AccountAdded account={mockAddedAccount} marketType='financial' platform='mt5' />
-                    </ModalProvider>
+                    <AuthProvider>
+                        <ModalProvider>
+                            <MT5AccountAdded account={mockAddedAccount} marketType='financial' platform='mt5' />
+                        </ModalProvider>
+                    </AuthProvider>
                 </APIProvider>
             </Router>
         );
@@ -152,9 +158,11 @@ describe('MT5AccountAdded', () => {
         });
         render(
             <APIProvider>
-                <ModalProvider>
-                    <MT5AccountAdded marketType='financial' platform='mt5' />
-                </ModalProvider>
+                <AuthProvider>
+                    <ModalProvider>
+                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                    </ModalProvider>
+                </AuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('Almost there')).toBeInTheDocument();
@@ -195,9 +203,11 @@ describe('MT5AccountAdded', () => {
         });
         render(
             <APIProvider>
-                <ModalProvider>
-                    <MT5AccountAdded marketType='financial' platform='mt5' />
-                </ModalProvider>
+                <AuthProvider>
+                    <ModalProvider>
+                        <MT5AccountAdded marketType='financial' platform='mt5' />
+                    </ModalProvider>
+                </AuthProvider>
             </APIProvider>
         );
         expect(screen.getByText('Almost there')).toBeInTheDocument();

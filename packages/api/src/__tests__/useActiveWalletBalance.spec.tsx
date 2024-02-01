@@ -3,6 +3,7 @@ import { useWS } from '@deriv/shared';
 import { act, renderHook } from '@testing-library/react-hooks';
 import APIProvider from '../APIProvider';
 import useActiveWalletBalance from '../hooks/useActiveWalletBalance';
+import AuthProvider from '../AuthProvider';
 
 jest.mock('@deriv/shared');
 
@@ -25,7 +26,11 @@ describe('useActiveWalletBalance', () => {
             }),
         });
 
-        wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <AuthProvider>{children}</AuthProvider>
+            </APIProvider>
+        );
         renderResult = renderHook(() => useActiveWalletBalance(), { wrapper });
     });
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider, useFetch, useRequest } from '@deriv/api';
+import { APIProvider, useFetch, useRequest, AuthProvider } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import useWalletMigration from '../useWalletMigration';
@@ -19,7 +19,9 @@ describe('useWalletMigration', () => {
         const Component = ({ children }: { children: JSX.Element }) => {
             return (
                 <APIProvider>
-                    <StoreProvider store={mock}>{children}</StoreProvider>
+                    <AuthProvider>
+                        <StoreProvider store={mock}>{children}</StoreProvider>
+                    </AuthProvider>
                 </APIProvider>
             );
         };

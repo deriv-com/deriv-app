@@ -2,11 +2,16 @@ import { renderHook } from '@testing-library/react-hooks';
 import useAdvertiserAdverts from '../entity/advert/p2p-advertiser-adverts/useAdvertiserAdverts';
 import useInfiniteQuery from '../../../useInfiniteQuery';
 import APIProvider from '../../../APIProvider';
+import AuthProvider from '../../../AuthProvider';
 import React from 'react';
 
 jest.mock('../../../useInfiniteQuery', () => jest.fn());
 
-const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <APIProvider>
+        <AuthProvider>{children}</AuthProvider>
+    </APIProvider>
+);
 
 const mockUseInfiniteQuery = useInfiniteQuery as jest.MockedFunction<typeof useInfiniteQuery<'p2p_advertiser_adverts'>>;
 

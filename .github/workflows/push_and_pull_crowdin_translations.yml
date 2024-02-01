@@ -23,14 +23,14 @@ jobs:
         node-version: [18.x]
     steps:
       - name: Setup node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@b39b52d1213e96004bfcb1c61a8a6fa8ab84f3e8
         with:
           node-version: ${{ matrix.node-version }}
 
       # We checkout the master branch so we can run the translations
       # script on the latest changes.
       - name: Checkout master branch
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
       - name: Import GPG key
         id: import-gpg

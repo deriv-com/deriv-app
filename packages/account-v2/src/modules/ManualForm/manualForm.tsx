@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import { Button } from '@deriv/ui';
 import { MANUAL_FORM_INITIAL_VALUES, TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { getManualFormValidationSchema } from '../../utils/manualFormUtils';
@@ -20,19 +20,23 @@ export const ManualForm = ({ selectedDocument }: TManualFormProps) => {
                 initialValues={MANUAL_FORM_INITIAL_VALUES}
                 validationSchema={() => getManualFormValidationSchema(selectedDocument)}
             >
-                <div className='flex flex-col gap-1200 max-w-[67rem]'>
-                    <ManualFormInputs selectedDocument={selectedDocument} />
-                    <Divider />
-                    <ManualFormDocumentUpload selectedDocument={selectedDocument} />
-                    <ManualFormFooter />
-                    <div>
-                        <Divider />
-                        <div className='flex justify-end gap-800 bg-vp px-400 py-800'>
-                            <Button color='secondary'>Back</Button>
-                            <Button>Next</Button>
+                {({ isValid }) => (
+                    <Form>
+                        <div className='flex flex-col gap-1200 max-w-[67rem]'>
+                            <ManualFormInputs selectedDocument={selectedDocument} />
+                            <Divider />
+                            <ManualFormDocumentUpload selectedDocument={selectedDocument} />
+                            <ManualFormFooter />
+                            <div>
+                                <Divider />
+                                <div className='flex justify-end gap-800 bg-vp px-400 py-800'>
+                                    <Button color='secondary'>Back</Button>
+                                    <Button disabled={!isValid}>Next</Button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </Form>
+                )}
             </Formik>
         </div>
     );

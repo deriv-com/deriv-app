@@ -7,8 +7,11 @@ export const getTitleForFormInputs = (selectedDocument: TManualDocumentTypes) =>
 export const getTitleForDocumentUpload = (selectedDocument: TManualDocumentTypes) =>
     MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].uploadSectionHeader;
 
-export const getFieldsData = (selectedDocument: TManualDocumentTypes) =>
+export const getFieldsConfig = (selectedDocument: TManualDocumentTypes) =>
     MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].fields;
+
+export const getUploadConfig = (selectedDocument: TManualDocumentTypes) =>
+    MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].upload;
 
 export const getManualFormValidationSchema = (selectedDocument: TManualDocumentTypes) => {
     const fieldsData = MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].fields;

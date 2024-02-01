@@ -5,13 +5,13 @@ import { WalletDatePicker } from '../../components/base/WalletDatePicker';
 import { WalletText } from '../../components/base/WalletText';
 import { WalletTextField } from '../../components/base/WalletTextField';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { getFieldsData, getTitleForFormInputs } from '../../utils/manualFormUtils';
+import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manualFormUtils';
 
 type TManualFormInputsProps = { selectedDocument: TManualDocumentTypes };
 
 export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) => {
+    const fieldsConfig = getFieldsConfig(selectedDocument);
     const { data: settings } = useSettings();
-    const fieldsData = getFieldsData(selectedDocument);
     const isExpiryDateRequired = settings?.country !== 'ng';
 
     return (
@@ -24,7 +24,7 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                             {...field}
                             errorMessage={meta.error}
                             isInvalid={meta.touched && Boolean(meta.error)}
-                            label={`${fieldsData.documentNumber.label}*`}
+                            label={`${fieldsConfig.documentNumber.label}*`}
                         />
                     )}
                 </Field>
@@ -35,7 +35,7 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                                 {...field}
                                 errorMessage={meta.error}
                                 isInvalid={meta.touched && Boolean(meta.error)}
-                                label={`${fieldsData.documentExpiry.label}*`}
+                                label={`${fieldsConfig.documentExpiry.label}*`}
                                 onDateChange={field.onChange}
                             />
                         )}

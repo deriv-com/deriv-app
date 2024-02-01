@@ -305,6 +305,38 @@ const getModules = () => {
             component: Cashier_V2,
             is_authenticated: true,
             getTitle: () => localize('Cashier'),
+            routes: [
+                {
+                    path: '/cashier-v2/deposit',
+                    component: Cashier_V2,
+                    title: 'Deposit',
+                },
+                {
+                    path: '/cashier-v2/withdrawal',
+                    component: Cashier_V2,
+                    title: 'Withdrawal',
+                },
+                {
+                    path: '/cashier-v2/payment-agent',
+                    component: Cashier_V2,
+                    title: 'Payment agents',
+                },
+                {
+                    path: '/cashier-v2/account-transfer',
+                    component: Cashier_V2,
+                    title: 'Transfer',
+                },
+                {
+                    path: '/cashier-v2/payment-agent-transfer',
+                    component: Cashier_V2,
+                    title: 'Transfer to client',
+                },
+                {
+                    path: '/cashier-v2/on-ramp',
+                    component: Cashier_V2,
+                    title: 'Fiat onramp',
+                },
+            ],
         },
         {
             path: routes.onboarding,

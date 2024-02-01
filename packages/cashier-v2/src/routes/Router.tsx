@@ -1,10 +1,11 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import Home from './Home';
+import { Switch } from 'react-router-dom';
+import { routesConfig as routes } from '../constants/routesConfig';
+import RouteWithSubRoutes from './RouteWithSubRoutes';
 
 const prefix = '/cashier-v2';
 
-type TRoutes = `${typeof prefix}`;
+type TRoutes = `${typeof prefix}${'' | '/deposit' | '/withdrawal'}`;
 
 declare module 'react-router-dom' {
     export function useHistory(): { push: (path: TRoutes) => void };
@@ -12,10 +13,12 @@ declare module 'react-router-dom' {
     export function useRouteMatch(path: TRoutes): boolean;
 }
 
-const Router: React.FC = () => {
+const Router = () => {
     return (
         <Switch>
-            <Route component={() => <Home path='Root' />} exact path={`${prefix}/`} />
+            {routes.map(route => (
+                <RouteWithSubRoutes key={route.path} {...route} />
+            ))}
         </Switch>
     );
 };

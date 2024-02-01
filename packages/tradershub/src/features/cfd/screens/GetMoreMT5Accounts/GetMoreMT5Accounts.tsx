@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Provider } from '@deriv/library';
-import { Text } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import AddIcon from '../../../../public/images/add-icon.svg';
 import { MT5AccountTypeModal } from '../../modals';
 
@@ -25,7 +25,7 @@ const GetMoreMT5Accounts: FC = () => {
                 </div>
                 <div className='flex flex-col items-start flex-1'>
                     <div className='self-stretch'>
-                        <Text bold size='md'>
+                        <Text size='md' weight='bold'>
                             Get more
                         </Text>
                     </div>

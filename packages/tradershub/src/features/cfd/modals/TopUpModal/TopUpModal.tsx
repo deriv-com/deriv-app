@@ -1,6 +1,7 @@
 import React from 'react';
 import { useIsEuRegion, useMT5Deposit, useOtherCFDPlatformsDeposit } from '@deriv/api';
-import { Button, Heading, Text, useBreakpoint } from '@deriv/quill-design';
+import { Button, Heading, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { Modal } from '../../../../components/Modal';
 import { THooks, TPlatforms } from '../../../../types';
 import { CFDPlatforms, MarketType, MarketTypeDetails, PlatformDetails } from '../../constants';
@@ -44,9 +45,9 @@ const TopUpModal = ({ account, platform }: TTopUpModalProps) => {
         <Modal className='max-w-[330px] md:max-w-[440px]'>
             <Modal.Header title='Fund top up' />
             <Modal.Content className='flex flex-col items-center justify-center space-y-1200 p-1200 sm:p-1200'>
-                <Text bold>{title} Demo account</Text>
+                <Text weight='bold'>{title} Demo account</Text>
                 <div className='text-center'>
-                    <Text bold size='sm'>
+                    <Text size='sm' weight='bold'>
                         Balance
                     </Text>
                     <HeadingTag className='text-status-light-success'>{balance}</HeadingTag>

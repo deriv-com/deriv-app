@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { useActiveTradingAccount } from '@deriv/api';
-import { Button, Text, TextField, useBreakpoint } from '@deriv/quill-design';
+import { Button, TextField, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { useUIContext } from '../../../../components';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import { TMarketTypes, TPlatforms } from '../../../../types';
@@ -58,7 +59,7 @@ const EnterPassword = ({
     return (
         <div className='flex ps-800 w-full lg:inline-flex lg:w-[400px] lg:pt-1000 lg:pb-1200 lg:px-[24px] flex-col justify-center items-start rounded-400 border-sm bg-system-light-primary-background'>
             <div className='flex flex-col items-center w-full'>
-                <Text bold>Enter your {title} password</Text>
+                <Text weight='bold'>Enter your {title} password</Text>
                 <div className='flex flex-col text-center gap-800 lg:gap-400 lg:py-1200'>
                     <Text size='sm'>
                         Enter your {title} password to add a {title} {marketTypeTitle} account.

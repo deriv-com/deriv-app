@@ -1,6 +1,7 @@
 import React from 'react';
 import { useActiveTradingAccount, useAuthorize, useTradingAccountsList } from '@deriv/api';
-import { qtMerge, Text } from '@deriv/quill-design';
+import { qtMerge } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { IconToCurrencyMapper } from '../../constants/constants';
 import useRegulationFlags from '../../hooks/useRegulationFlags';
 import { useUIContext } from '../UIProvider';

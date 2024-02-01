@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
 import { useFormikContext } from 'formik';
-import { Heading, Text, useBreakpoint } from '@deriv/quill-design';
+import { Heading, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { CURRENCY_TYPES, getCurrencyConfig } from '../../helpers/currencyConfig';
 import CurrencyCard from './CurrencyCard';
 

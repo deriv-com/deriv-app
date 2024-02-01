@@ -1,8 +1,7 @@
 import React, { Fragment } from 'react';
 import { useActiveTradingAccount, useCtraderAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Text } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui';
+import { Button, Text } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../components';
 import { getStaticUrl } from '../../../../../helpers/urls';
 import CTrader from '../../../../../public/images/cfd/ctrader.svg';
@@ -69,7 +68,7 @@ const AddedCTraderAccountsList = () => {
                     {account && (
                         <Fragment key={`added-ctrader-${account.login}`}>
                             <Text size='sm'>{PlatformDetails.ctrader.title}</Text>
-                            <Text bold size='sm'>
+                            <Text size='sm' weight='bold'>
                                 {account?.formatted_balance}
                             </Text>
                             <Text color='primary' size='sm'>

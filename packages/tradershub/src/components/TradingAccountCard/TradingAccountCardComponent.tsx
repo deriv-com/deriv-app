@@ -1,6 +1,6 @@
 import React from 'react';
-import { ButtonProps, Text } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui';
+import { ButtonProps } from '@deriv/quill-design';
+import { Button, Text } from '@deriv-com/ui';
 
 type TTradingAccountCardContent = {
     children: string;
@@ -9,7 +9,7 @@ type TTradingAccountCardContent = {
 
 export const TradingAccountCardContent = ({ children, title }: TTradingAccountCardContent) => (
     <div className='grow'>
-        <Text bold className='leading-200' size='sm'>
+        <Text className='leading-200' size='sm' weight='bold'>
             {title}
         </Text>
         <Text className='text-[12px] leading-100 w-5/6 lg:w-full'>{children}</Text>

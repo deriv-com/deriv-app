@@ -1,4 +1,5 @@
 import React from 'react';
+import SignupWizard from './flows/RealAccountSIgnup/SignupWizard';
 import useRegulationFlags from './hooks/useRegulationFlags';
 import { EUDisclaimerMessage, useUIContext } from './components';
 import { Router } from './routes';
@@ -15,6 +16,7 @@ const AppContent = () => {
                 <Router />
             </div>
             {isEU && <EUDisclaimerMessage />}
+            <SignupWizard />
         </div>
     );
 };

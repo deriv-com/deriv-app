@@ -14,9 +14,10 @@ const useP2PCompletedOrdersNotification = () => {
                     active: 0,
                 },
             });
-        } else {
-            isSubscribed && unsubscribeAll();
         }
+        return () => {
+            if (isSubscribed) unsubscribeAll();
+        };
     }, [isSubscribed, is_authorize, is_p2p_enabled, subscribe, unsubscribeAll]);
 
     React.useEffect(() => {

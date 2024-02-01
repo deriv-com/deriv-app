@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { FullPageMobileWrapper, TextArea } from '@/components';
 import { useDevice, useQueryString } from '@/hooks';
 import { p2p } from '@deriv/api';
-import { Button } from '@deriv-com/ui';
+import { Button, Loader } from '@deriv-com/ui';
 import './MyProfileAdDetails.scss';
 
 type TMYProfileAdDetailsTextAreaProps = {
@@ -60,7 +60,7 @@ const MyProfileAdDetails = () => {
         });
     };
 
-    if (isLoading) return <h1>Loading...</h1>;
+    if (isLoading) return <Loader />;
 
     if (isMobile) {
         return (

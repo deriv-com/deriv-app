@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAdvertiserStats } from '@/hooks';
 import { numberToCurrencyText } from '@/utils';
 import { useActiveAccount } from '@deriv/api';
+import { Loader } from '@deriv-com/ui';
 import MyProfileStatsItem from './MyProfileStatsItem';
 import './MyProfileStats.scss';
 
@@ -15,7 +16,7 @@ export const MyProfileStats = ({ advertiserId }: TMyProfileStatsProps) => {
     const { data } = useAdvertiserStats(advertiserId);
     const { data: activeAccount } = useActiveAccount();
 
-    if (!data) return <h1>Loading...</h1>;
+    if (!data) return <Loader />;
 
     const {
         averagePayTime,

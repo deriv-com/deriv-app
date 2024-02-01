@@ -1,7 +1,7 @@
 import React from 'react';
 import { UserAvatar } from '@/components';
 import { useAdvertiserStats, useDevice } from '@/hooks';
-import { Text } from '@deriv-com/ui';
+import { Loader, Text } from '@deriv-com/ui';
 import AdvertiserNameBadges from './AdvertiserNameBadges';
 import AdvertiserNameStats from './AdvertiserNameStats';
 import AdvertiserNameToggle from './AdvertiserNameToggle';
@@ -11,7 +11,7 @@ const AdvertiserName = () => {
     const { data: advertiserStats, isLoading } = useAdvertiserStats();
     const { isDesktop } = useDevice();
 
-    if (isLoading || !advertiserStats) return <h1>Loading...</h1>;
+    if (isLoading || !advertiserStats) return <Loader />;
 
     return (
         <div className='p2p-v2-advertiser-name'>

@@ -3,7 +3,7 @@ import { AvailableP2PBalanceModal, DailyLimitModal } from '@/components';
 import { useAdvertiserStats, useDevice } from '@/hooks';
 import { numberToCurrencyText } from '@/utils';
 import { useActiveAccount } from '@deriv/api';
-import { Text } from '@deriv-com/ui';
+import { Loader, Text } from '@deriv-com/ui';
 import InfoOutlineIcon from '../../../../public/ic-info-outline.svg';
 import { MyProfileDailyLimit } from '../MyProfileDailyLimit';
 import './MyProfileBalance.scss';
@@ -38,7 +38,7 @@ const MyProfileBalance = () => {
         ]
     );
 
-    if (isLoading || !advertiserInfo) return <h1>Loading...</h1>;
+    if (isLoading || !advertiserInfo) return <Loader />;
 
     return (
         <>

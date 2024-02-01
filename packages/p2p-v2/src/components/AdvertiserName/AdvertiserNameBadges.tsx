@@ -1,6 +1,7 @@
 import React from 'react';
 import { Badge } from '@/components';
 import { useAdvertiserStats } from '@/hooks';
+import { Loader } from '@deriv-com/ui';
 import './AdvertiserNameBadges.scss';
 
 /**
@@ -12,7 +13,7 @@ import './AdvertiserNameBadges.scss';
 const AdvertiserNameBadges = () => {
     const { data: advertiserStats, isLoading } = useAdvertiserStats();
 
-    if (isLoading || !advertiserStats) return <h1>Loading...</h1>;
+    if (isLoading || !advertiserStats) return <Loader />;
 
     const { isAddressVerified, isIdentityVerified, totalOrders } = advertiserStats;
 

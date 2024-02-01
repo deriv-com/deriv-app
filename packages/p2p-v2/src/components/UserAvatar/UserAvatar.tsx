@@ -15,6 +15,7 @@ const UserAvatar = memo(({ className, nickname, size = 32, textSize = 'md' }: TU
     return (
         <div
             className={clsx('p2p-v2-user-avatar', className)}
+            data-testid='dt_p2p_v2_user_avatar'
             style={{
                 height: `${size}px`,
                 width: `${size}px`,

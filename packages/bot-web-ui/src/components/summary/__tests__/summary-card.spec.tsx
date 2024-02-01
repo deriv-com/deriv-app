@@ -37,7 +37,7 @@ describe('SummaryCard', () => {
     it('should render SummaryCard component', () => {
         render(<SummaryCard is_contract_loading={false} />, { wrapper });
 
-        const summary_card = screen.getByTestId('mock-summary-card');
+        const summary_card = screen.getByTestId('dt_mock_summary_card');
 
         expect(summary_card).toBeInTheDocument();
     });
@@ -45,7 +45,7 @@ describe('SummaryCard', () => {
     it('the SummaryCard should be rendered with the inactive style when the contract is inactive, the contract is not loading, and the contract_info is null or absent', () => {
         render(<SummaryCard is_contract_loading={false} contract_info={null} />, { wrapper });
 
-        const summary_card = screen.getByTestId('mock-summary-card');
+        const summary_card = screen.getByTestId('dt_mock_summary_card');
 
         expect(summary_card).toBeInTheDocument();
         expect(summary_card).toHaveClass('db-summary-card--inactive');
@@ -58,7 +58,7 @@ describe('SummaryCard', () => {
 
         render(<SummaryCard is_contract_loading={true} contract_info={mock_contract_info} />, { wrapper });
 
-        const summary_card = screen.getByTestId('mock-summary-card');
+        const summary_card = screen.getByTestId('dt_mock_summary_card');
         const contract_card_loader = screen.getByText('ContractCardLoader');
         expect(summary_card).toHaveClass('db-summary-card--completed-mobile');
 
@@ -69,7 +69,7 @@ describe('SummaryCard', () => {
     it('the SummaryCard should render the inner component ContractCard when the contract is not loading and the contract info exists', () => {
         render(<SummaryCard is_contract_loading={false} contract_info={mock_contract_info} />, { wrapper });
 
-        const summary_card = screen.getByTestId('mock-summary-card');
+        const summary_card = screen.getByTestId('dt_mock_summary_card');
         const contract_card = screen.getByText('ContractCard');
 
         expect(summary_card).toBeInTheDocument();

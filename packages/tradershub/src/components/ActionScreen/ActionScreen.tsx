@@ -2,6 +2,7 @@ import React, { ComponentProps, isValidElement, ReactNode } from 'react';
 import { qtMerge, Text } from '@deriv/quill-design';
 
 type TActionScreenProps = {
+    children?: ReactNode;
     className?: string;
     description: ReactNode;
     descriptionSize?: ComponentProps<typeof Text>['size'];
@@ -17,6 +18,7 @@ type TActionScreenProps = {
  * at the moment of writing this, there are already 3 different patterns use to display ex
  */
 const ActionScreen = ({
+    children,
     className,
     description,
     descriptionSize = 'md',
@@ -48,6 +50,7 @@ const ActionScreen = ({
                 )}
             </div>
             {renderButtons?.()}
+            {children}
         </div>
     );
 };

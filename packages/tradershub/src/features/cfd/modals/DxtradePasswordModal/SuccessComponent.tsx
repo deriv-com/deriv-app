@@ -2,7 +2,7 @@ import React from 'react';
 import { useActiveTradingAccount } from '@deriv/api';
 import { PlatformDetails } from '../../constants';
 import { CFDSuccess } from '../../screens';
-import SuccessButtonGroup from './ButtonGroups/SuccessButtonGroup';
+import SuccessButtonGroup from '../ButtonGroups/SuccessButtonGroup';
 
 const SuccessComponent = () => {
     const { data: activeTrading } = useActiveTradingAccount();

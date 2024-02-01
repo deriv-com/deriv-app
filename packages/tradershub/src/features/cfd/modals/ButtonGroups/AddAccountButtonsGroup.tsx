@@ -1,8 +1,8 @@
 import React from 'react';
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv-com/ui';
-import { ButtonGroup, Modal, SentEmailContent } from '../../../../../components';
-import { PlatformDetails } from '../../../constants';
+import { ButtonGroup, Modal, SentEmailContent } from '../../../../components';
+import { PlatformDetails } from '../../constants';
 import CreateAccountButton from './CreateAccountButton';
 
 type TAddAccountButtonsGroupProps = {

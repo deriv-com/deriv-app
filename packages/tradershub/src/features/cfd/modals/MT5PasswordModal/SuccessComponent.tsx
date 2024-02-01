@@ -11,7 +11,7 @@ import {
     TTM5FilterLandingCompany,
 } from '../../constants';
 import { CFDSuccess } from '../../screens';
-import SuccessButtonGroup from './ButtonGroups/SuccessButtonGroup';
+import SuccessButtonGroup from '../ButtonGroups/SuccessButtonGroup';
 
 const SuccessComponent = () => {
     const { isEU } = useRegulationFlags();

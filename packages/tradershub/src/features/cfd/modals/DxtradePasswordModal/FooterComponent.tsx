@@ -2,9 +2,9 @@ import React from 'react';
 import { useDxtradeAccountsList } from '@deriv/api';
 import useDxtradeAccountHandler from '../../../../hooks/useDxtradeAccountHandler';
 import { PlatformDetails } from '../../constants';
-import AddAccountButtonsGroup from './ButtonGroups/AddAccountButtonsGroup';
-import CreateAccountButton from './ButtonGroups/CreateAccountButton';
-import SuccessButtonGroup from './ButtonGroups/SuccessButtonGroup';
+import AddAccountButtonsGroup from '../ButtonGroups/AddAccountButtonsGroup';
+import CreateAccountButton from '../ButtonGroups/CreateAccountButton';
+import SuccessButtonGroup from '../ButtonGroups/SuccessButtonGroup';
 
 type TFooterComponentProps = {
     password: string;
@@ -19,6 +19,12 @@ const FooterComponent = ({ password }: TFooterComponentProps) => {
 
     if (hasDxtradeAccount) return <AddAccountButtonsGroup password={password} />;
 
-    return <CreateAccountButton buttonText={`Create ${PlatformDetails.dxtrade.title} password`} password={password} />;
+    return (
+        <CreateAccountButton
+            buttonText={`Create ${PlatformDetails.dxtrade.title} password`}
+            password={password}
+            platform={PlatformDetails.dxtrade.platform}
+        />
+    );
 };
 export default FooterComponent;

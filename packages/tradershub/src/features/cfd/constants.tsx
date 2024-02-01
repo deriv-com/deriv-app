@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ComponentType, ReactNode, SVGAttributes } from 'react';
 import CTraderIcon from '../../public/images/cfd/ctrader.svg';
 import DerivXIcon from '../../public/images/cfd/derivx.svg';
 import FinancialEUMT5Icon from '../../public/images/cfd/eu-mt5-financial.svg';
@@ -14,7 +14,7 @@ import LinuxIcon from '../../public/images/ic-linux-logo.svg';
 import MacOSIcon from '../../public/images/ic-macos-logo.svg';
 import MT5Icon from '../../public/images/ic-mt5.svg';
 import WindowsIcon from '../../public/images/ic-windows-logo.svg';
-import { TMarketTypes, TMT5LandingCompanyName, TPlatforms } from '../../types';
+import { TJurisdiction, TMarketTypes, TPlatforms } from '../../types';
 
 type TAppContent = {
     description: string;
@@ -27,7 +27,7 @@ type TAppContent = {
 
 type TPlatform = 'ctrader' | 'linux' | 'macos' | 'web' | 'windows';
 
-type TTM5FilterLandingCompany = Exclude<TMT5LandingCompanyName, 'malta' | 'seychelles' | undefined>;
+export type TTM5FilterLandingCompany = Exclude<TJurisdiction, 'malta' | 'seychelles' | undefined>;
 type TLandingCompanyDetails = { name: string; shortcode: string; tncUrl: string };
 
 type TMarketTypeDetails = {
@@ -66,6 +66,13 @@ export const MarketType = {
 export const Category = {
     DEMO: 'demo',
     REAL: 'real',
+} as const;
+
+export const QueryStatus = {
+    ERROR: 'error',
+    IDLE: 'idle',
+    LOADING: 'loading',
+    SUCCESS: 'success',
 } as const;
 
 export const MarketTypeDetails = (isEU?: boolean): TMarketTypeDetails => ({
@@ -210,7 +217,7 @@ export const LinksMapper: Record<TPlatforms.All, TAppLinks> = {
     },
 };
 
-export const AppToIconMapper: Record<string, React.ComponentType<React.SVGAttributes<SVGElement>>> = {
+export const AppToIconMapper: Record<string, ComponentType<SVGAttributes<SVGElement>>> = {
     android: InstallationGoogleIcon,
     huawei: InstallationHuaweiIcon,
     ios: InstallationAppleIcon,

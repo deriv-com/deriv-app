@@ -2,7 +2,7 @@ import React, { Fragment, useMemo } from 'react';
 import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import { useUIContext } from '../../../../components';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import ImportantIcon from '../../../../public/images/ic-important.svg';

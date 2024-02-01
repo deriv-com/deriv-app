@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { p2p } from '@deriv/api';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button, Loader } from '@deriv-com/ui';
 import { FullPageMobileWrapper, TextArea } from '../../../../components';
 import { useDevice, useQueryString } from '../../../../hooks';
 import './MyProfileAdDetails.scss';
@@ -60,7 +60,7 @@ const MyProfileAdDetails = () => {
         });
     };
 
-    if (isLoading) return <h1>Loading...</h1>;
+    if (isLoading) return <Loader />;
 
     if (isMobile) {
         return (

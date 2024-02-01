@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { WalletText } from '../../components/base/WalletText';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { getTitleForDocumentUpload } from '../../helpers/manualFormHelpers';
+import { getTitleForDocumentUpload } from '../../utils/manualFormUtils';
 
 type TManualFormDocumentUploadProps = { selectedDocument: TManualDocumentTypes };
 

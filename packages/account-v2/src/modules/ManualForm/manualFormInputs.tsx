@@ -5,7 +5,7 @@ import { WalletDatePicker } from '../../components/base/WalletDatePicker';
 import { WalletText } from '../../components/base/WalletText';
 import { WalletTextField } from '../../components/base/WalletTextField';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { getFieldsData, getTitleForFormInputs } from '../../helpers/manualFormHelpers';
+import { getFieldsData, getTitleForFormInputs } from '../../utils/manualFormUtils';
 
 type TManualFormInputsProps = { selectedDocument: TManualDocumentTypes };
 

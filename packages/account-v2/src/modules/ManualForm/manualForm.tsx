@@ -1,11 +1,11 @@
 import React from 'react';
 import { Formik } from 'formik';
+import { Button } from '@deriv/ui';
 import { MANUAL_FORM_INITIAL_VALUES, TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { getManualFormValidationSchema } from '../../helpers/manualFormHelpers';
+import { getManualFormValidationSchema } from '../../utils/manualFormUtils';
 import { ManualFormDocumentUpload } from './manualFormDocumentUpload';
 import { ManualFormFooter } from './manualFormFooter';
 import { ManualFormInputs } from './manualFormInputs';
-import { Button } from '@deriv/ui';
 
 type TManualFormProps = {
     selectedDocument: TManualDocumentTypes;
@@ -18,7 +18,6 @@ export const ManualForm = ({ selectedDocument }: TManualFormProps) => {
         <div className='m-400 p-800 border-100 border-solid rounded-400'>
             <Formik
                 initialValues={MANUAL_FORM_INITIAL_VALUES}
-                onSubmit={() => {}}
                 validationSchema={() => getManualFormValidationSchema(selectedDocument)}
             >
                 <div className='flex flex-col gap-1200 max-w-[67rem]'>

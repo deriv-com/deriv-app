@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Router, Route, Switch } from 'react-router-dom';
 import useQueryString from '../useQueryString';
 import { createMemoryHistory } from 'history';
@@ -85,7 +85,6 @@ jest.mock('react-router-dom', () => ({
         replace: mockReplace,
     }),
 }));
-// import { useHistory } from 'react-router-dom';
 
 let windowLocationSpy: jest.SpyInstance<Location, []>;
 

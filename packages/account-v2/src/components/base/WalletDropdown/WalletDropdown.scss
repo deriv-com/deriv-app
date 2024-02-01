@@ -74,7 +74,7 @@
     label,
     &__field:focus ~ &__label {
         position: absolute;
-        top: -0.5rem;
+        top: 0;
         display: block;
         transition: 0.2s;
         font-size: 1rem;

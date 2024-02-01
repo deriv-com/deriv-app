@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import QRCode from 'qrcode.react';
 import { Provider } from '@deriv/library';
 import { useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import { Modal } from '../../../../components/Modal';
 import { THooks, TMarketTypes, TPlatforms } from '../../../../types';
 import { AppToIconMapper, CFDPlatforms, LinksMapper, PlatformDetails, TAppLinks } from '../../constants';

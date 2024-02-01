@@ -4,7 +4,7 @@ import { TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
 import { PlatformDetails } from '../../constants';
 
-type TProps = {
+type TCreatePasswordProps = {
     icon: ReactNode;
     isLoading?: boolean;
     onPasswordChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -23,7 +23,14 @@ type TProps = {
  * @param platform MT5 or Deriv X
  * @returns
  */
-const CreatePassword = ({ icon, isLoading, onPasswordChange, onPrimaryClick, password, platform }: TProps) => {
+const CreatePassword = ({
+    icon,
+    isLoading,
+    onPasswordChange,
+    onPrimaryClick,
+    password,
+    platform,
+}: TCreatePasswordProps) => {
     const { isMobile } = useBreakpoint();
 
     const { title } = PlatformDetails[platform];

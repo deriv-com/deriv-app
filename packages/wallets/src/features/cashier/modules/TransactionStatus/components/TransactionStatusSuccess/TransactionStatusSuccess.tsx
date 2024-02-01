@@ -41,7 +41,7 @@ const TransactionStatusSuccess: React.FC<TTransactionStatusSuccess> = ({ transac
                                 // should navigate to transactions page with "Pending transactions" toggle on and filter set to `transactionType`
                                 history.push('/wallets/cashier/transactions', {
                                     showPending: true,
-                                    transactionType: 'withdrawal',
+                                    transactionType,
                                 });
                             }}
                             size='sm'

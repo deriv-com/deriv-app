@@ -20,7 +20,7 @@ const transaction_columns: TColumn[] = [
 
 /* TODO: Add back account & balance when we have support from transaction store */
 const result_columns: TColumn[] = [
-    { key: 'account', label: localize('Account') },
+    { key: 'account', label: localize('Account'), extra_class: '--grow-mid' },
     { key: 'no_of_runs', label: localize('No. of runs') },
     { key: 'total_stake', label: localize('Total stake') },
     { key: 'total_payout', label: localize('Total payout') },
@@ -57,8 +57,8 @@ const TransactionDetailsDesktop = observer(() => {
     }, []);
 
     // Calculate xaxis and yaxis to center the modal on open
-    const modalWidth = 1034;
-    const modalHeight = 800;
+    const modalWidth = 882;
+    const modalHeight = 404;
     const xaxis = (screenDimensions.width - modalWidth) / 2;
     const yAxisValue = (screenDimensions.height - modalHeight) / 2;
     const yaxis = yAxisValue >= 0 ? yAxisValue : 0;
@@ -71,6 +71,7 @@ const TransactionDetailsDesktop = observer(() => {
             minWidth={modalWidth}
             onCloseDraggable={() => toggleTransactionDetailsModal(false)}
             width={modalWidth}
+            height={modalHeight}
             xaxis={xaxis}
             yaxis={yaxis}
             header_title={'Transactions detailed summary'}

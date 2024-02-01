@@ -7,7 +7,7 @@ import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
 import { MarketTypeDetails, PlatformDetails } from '../../constants';
 
-type TProps = {
+type TEnterPasswordProps = {
     isLoading?: boolean;
     marketType: TMarketTypes.CreateOtherCFDAccount;
     onPasswordChange?: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -40,7 +40,7 @@ const EnterPassword = ({
     password,
     passwordError,
     platform,
-}: TProps) => {
+}: TEnterPasswordProps) => {
     const { isDesktop } = useBreakpoint();
     const title = PlatformDetails[platform].title;
     const { getUIState } = useUIContext();

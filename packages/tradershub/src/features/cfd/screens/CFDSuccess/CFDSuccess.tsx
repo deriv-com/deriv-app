@@ -9,7 +9,7 @@ import CheckMark from '../../../../public/images/checkmark.svg';
 import { TMarketTypes, TPlatforms } from '../../../../types';
 import { PlatformDetails } from '../../constants';
 
-type TCFDSuccess = {
+type TCFDSuccessProps = {
     description: string;
     renderButtons?: () => ReactNode;
 } & (
@@ -53,10 +53,10 @@ const marketTypeToDetailsMapper: Record<TPlatforms.All, TPlatformDetails> = {
     },
 };
 
-const CFDSuccess = ({ description, marketType, platform, renderButtons }: TCFDSuccess) => {
+const CFDSuccess = ({ description, marketType, platform, renderButtons }: TCFDSuccessProps) => {
     let icon: ReactNode;
-    if (platform === PlatformDetails.mt5.platform && marketType) {
-        icon = marketTypeToDetailsMapper[platform as TPlatforms.All][marketType]?.icon;
+    if (platform === 'mt5') {
+        icon = marketTypeToDetailsMapper[platform][marketType]?.icon;
     } else {
         icon = PlatformDetails[platform as keyof typeof PlatformDetails]?.icon;
     }

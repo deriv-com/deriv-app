@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, ButtonProps, Text } from '@deriv/quill-design';
+import { ButtonProps, Text } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui';
 
 type TTradingAccountCardContent = {
     children: string;
@@ -20,11 +21,7 @@ type TTradingAccountCardButton = {
 };
 
 export const TradingAccountCardLightButton = ({ onSubmit }: TTradingAccountCardButton) => (
-    <Button
-        className='rounded-200 bg-solid-coral-100 text-solid-coral-700 enabled:hover:bg-solid-red-200'
-        onClick={onSubmit}
-        variant='primary'
-    >
+    <Button color='primary-light' onClick={onSubmit}>
         Get
     </Button>
 );

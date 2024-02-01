@@ -1,6 +1,6 @@
 import React, { ComponentProps, useState } from 'react';
 import { Provider } from '@deriv/library';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button } from '@deriv-com/ui';
 import { Modal } from '../../../../components';
 import { MT5AccountType } from '../../screens';
 import { JurisdictionModal } from '../JurisdictionModal';

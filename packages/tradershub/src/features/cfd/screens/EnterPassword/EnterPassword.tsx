@@ -7,7 +7,7 @@ import { TMarketTypes, TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
 import { MarketTypeDetails, PlatformDetails } from '../../constants';
 
-type TProps = {
+type TEnterPasswordProps = {
     isLoading?: boolean;
     marketType: TMarketTypes.CreateOtherCFDAccount;
     onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -31,7 +31,7 @@ type TProps = {
  * @returns {React.ReactNode} - returns the enter password screen component
  */
 
-const EnterPassword: React.FC<TProps> = ({
+const EnterPassword = ({
     isLoading,
     marketType,
     onPasswordChange,
@@ -40,7 +40,7 @@ const EnterPassword: React.FC<TProps> = ({
     password,
     passwordError,
     platform,
-}) => {
+}: TEnterPasswordProps) => {
     const { isDesktop } = useBreakpoint();
     const title = PlatformDetails[platform].title;
     const { getUIState } = useUIContext();

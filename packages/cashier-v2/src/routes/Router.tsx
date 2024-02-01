@@ -5,7 +5,14 @@ import RouteWithSubRoutes from './RouteWithSubRoutes';
 
 const prefix = '/cashier-v2';
 
-type TRoutes = `${typeof prefix}${'' | '/deposit' | '/withdrawal'}`;
+type TRoutes = `${typeof prefix}${
+    | ''
+    | '/account-transfer'
+    | '/deposit'
+    | '/on-ramp'
+    | '/payment-agent-transfer'
+    | '/payment-agent'
+    | '/withdrawal'}`;
 
 declare module 'react-router-dom' {
     export function useHistory(): { push: (path: TRoutes) => void };

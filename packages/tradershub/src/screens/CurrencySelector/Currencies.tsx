@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
 import { useFormikContext } from 'formik';
-import { Heading, Text } from '@deriv/quill-design';
-import { CURRENCY_TYPES, getCurrencyConfig } from '../../constants/currencyConfig';
+import { Heading, Text, useBreakpoint } from '@deriv/quill-design';
+import { CURRENCY_TYPES, getCurrencyConfig } from '../../helpers/currencyConfig';
 import CurrencyCard from './CurrencyCard';
 
 type TCurrencies = {
@@ -18,6 +18,7 @@ type TCurrencies = {
  * @example <Currencies type={CURRENCY_TYPES.FIAT} />
  */
 const Currencies = ({ type }: TCurrencies) => {
+    const { isMobile } = useBreakpoint();
     const currencies = useMemo(() => getCurrencyConfig(type), [type]);
     const { values } = useFormikContext<{ currency: string }>();
 
@@ -30,7 +31,8 @@ const Currencies = ({ type }: TCurrencies) => {
             </Heading.H5>
             <div
                 className={clsx('flex flex-wrap', {
-                    'justify-center': currencies.length < 4,
+                    'justify-center': currencies.length < 4 && !isMobile,
+                    'justify-start': isMobile,
                 })}
             >
                 {currencies.map(currency => (

@@ -1,37 +1,13 @@
 import React, { createContext, useContext, useMemo, useReducer, useState } from 'react';
 import { useStep } from 'usehooks-ts';
-
-type Helpers = ReturnType<typeof useStep>[1];
-
-type TSignupWizardContext = {
-    currentStep: number;
-    dispatch: React.Dispatch<TActions>;
-    helpers: Helpers;
-    isWizardOpen: boolean;
-    setIsWizardOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    state: TState;
-};
-
-type TState = {
-    currency?: string;
-    firstName?: string;
-    lastName?: string;
-};
-
-type TSignupWizardProvider = {
-    children: React.ReactNode;
-};
+import { Helpers, TSignupWizardContext, TSignupWizardProvider } from './types';
+import { valuesReducer } from './ValuesReducer';
 
 export const ACTION_TYPES = {
     RESET: 'RESET',
     SET_CURRENCY: 'SET_CURRENCY',
     SET_PERSONAL_DETAILS: 'SET_PERSONAL_DETAILS',
 } as const;
-
-type TActions = {
-    payload: TState;
-    type: keyof typeof ACTION_TYPES;
-};
 
 const initialHelpers: Helpers = {
     canGoToNextStep: false,
@@ -49,6 +25,7 @@ const initialHelpers: Helpers = {
         /* noop */
     }) as React.Dispatch<React.SetStateAction<number>>,
 };
+
 export const SignupWizardContext = createContext<TSignupWizardContext>({
     currentStep: 0,
     dispatch: /* noop */ () => {
@@ -72,29 +49,6 @@ export const useSignupWizardContext = () => {
     return context;
 };
 
-function valuesReducer(state: TState, action: TActions) {
-    const { payload, type } = action;
-    switch (type) {
-        case ACTION_TYPES.SET_CURRENCY:
-            return {
-                ...state,
-                currency: payload.currency,
-            };
-        case ACTION_TYPES.SET_PERSONAL_DETAILS:
-            return {
-                ...state,
-                firstName: payload.firstName,
-                lastName: payload.lastName,
-            };
-        case ACTION_TYPES.RESET:
-            return {
-                currency: '',
-            };
-        default:
-            return state;
-    }
-}
-
 /**
  * @name SignupWizardProvider
  * @description The SignupWizardProvider component is used to wrap the components that need access to the SignupWizardContext.
@@ -102,7 +56,7 @@ function valuesReducer(state: TState, action: TActions) {
  */
 export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
     const [isWizardOpen, setIsWizardOpen] = useState(false);
-    const [currentStep, helpers] = useStep(5);
+    const [currentStep, helpers] = useStep(4);
     const [state, dispatch] = useReducer(valuesReducer, {
         currency: '',
     });

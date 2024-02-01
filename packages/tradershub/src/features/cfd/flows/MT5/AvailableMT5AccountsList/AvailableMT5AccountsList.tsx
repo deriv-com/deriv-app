@@ -11,6 +11,7 @@ import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
 import { THooks } from '../../../../../types';
 import { MarketType, MarketTypeDetails } from '../../../constants';
 import { JurisdictionModal } from '../../../modals/JurisdictionModal';
+import { MT5PasswordModal } from '../../../modals/MT5PasswordModal';
 import { MT5AccountIcon } from '../MT5AccountIcon';
 
 const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
@@ -25,7 +26,8 @@ const AvailableMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList
 
     const trailingButtonClick = () => {
         setCfdState('marketType', account.market_type);
-        !activeAccount?.is_virtual && show(<JurisdictionModal />); /* show MT5PasswordModal for demo */
+        !activeAccount?.is_virtual && show(<JurisdictionModal />);
+        activeAccount?.is_virtual && show(<MT5PasswordModal />);
     };
 
     const title = marketTypeDetails?.title ?? '';

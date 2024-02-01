@@ -1,7 +1,7 @@
 /* eslint-disable sort-keys */
 import React from 'react';
 import { Switch } from 'react-router-dom';
-import { DummyRoute } from '../components';
+import { DummyComponent } from '../components';
 import { Cashier } from '../containers';
 import { TRouteTypes } from '../types';
 import RouteWithSubRoutes from './RouteWithSubRoutes';
@@ -24,32 +24,32 @@ const routesConfig: TRouteTypes.IRouteConfig[] = [
         routes: [
             {
                 path: cashierPathRoutes.cashierDeposit,
-                component: DummyRoute,
+                component: DummyComponent,
                 title: 'Deposit',
             },
             {
                 path: cashierPathRoutes.cashierWithdrawal,
-                component: DummyRoute,
+                component: DummyComponent,
                 title: 'Withdrawal',
             },
             {
                 path: cashierPathRoutes.cashierPaymentAgents,
-                component: DummyRoute,
+                component: DummyComponent,
                 title: 'Payment agents',
             },
             {
                 path: cashierPathRoutes.cashierAccountTransfer,
-                component: DummyRoute,
+                component: DummyComponent,
                 title: 'Transfer',
             },
             {
                 path: cashierPathRoutes.cashierPaymentAgentTransfer,
-                component: DummyRoute,
+                component: DummyComponent,
                 title: 'Transfer to client',
             },
             {
                 path: cashierPathRoutes.cashierOnRamp,
-                component: DummyRoute,
+                component: DummyComponent,
                 title: 'Fiat onramp',
             },
         ],

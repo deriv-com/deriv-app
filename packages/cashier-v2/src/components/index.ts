@@ -1,1 +1,1 @@
-export { DummyRoute } from './DummyRoute';
+export { DummyComponent } from './DummyComponent';

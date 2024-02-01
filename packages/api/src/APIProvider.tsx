@@ -25,6 +25,7 @@ type TSubscribeFunction = <T extends TSocketSubscribableEndpointNames>(
 type TUnsubscribeFunction = (id: string) => void;
 
 type APIContextData = {
+    customLoginIDKey?: string;
     derivAPI: DerivAPIBasic | null;
     switchEnvironment: (loginid: string | null | undefined) => void;
     send: TSendFunction;
@@ -139,13 +140,15 @@ const getEnvironment = (loginid: string | null | undefined) => {
 type TAPIProviderProps = {
     /** If set to true, the APIProvider will instantiate it's own socket connection. */
     standalone?: boolean;
+    /** Custom loginid key to get current active account */
+    customLoginIDKey?: string;
 };
 
-const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIProviderProps>) => {
+const APIProvider = ({ children, standalone = false, customLoginIDKey }: PropsWithChildren<TAPIProviderProps>) => {
     const WS = useWS();
     const [reconnect, setReconnect] = useState(false);
-    const activeLoginid = window.localStorage.getItem('active_loginid');
-    const [environment, setEnvironment] = useState(getEnvironment(activeLoginid));
+    const activeLoginId = localStorage.getItem(customLoginIDKey ?? 'active_loginid');
+    const [environment, setEnvironment] = useState(getEnvironment(activeLoginId));
     const standaloneDerivAPI = useRef(standalone ? initializeDerivAPI(() => setReconnect(true)) : null);
     const subscriptions = useRef<Record<string, DerivAPIBasic['subscribe']>>();
 
@@ -225,6 +228,7 @@ const APIProvider = ({ children, standalone = false }: PropsWithChildren<TAPIPro
     return (
         <APIContext.Provider
             value={{
+                customLoginIDKey,
                 derivAPI: standalone ? standaloneDerivAPI.current : WS,
                 switchEnvironment,
                 send,

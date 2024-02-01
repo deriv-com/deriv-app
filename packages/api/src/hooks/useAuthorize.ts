@@ -1,6 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
-import { getActiveAuthTokenIDFromLocalStorage, getActiveLoginIDFromLocalStorage } from '@deriv/utils';
-import useInvalidateQuery from '../useInvalidateQuery';
+import {
+    getAccountsFromLocalStorage,
+    getActiveAuthTokenIDFromLocalStorage,
+    getActiveLoginIDFromLocalStorage,
+} from '@deriv/utils';
 import useQuery from '../useQuery';
 import { useAPIContext } from '../APIProvider';
 
@@ -8,11 +11,11 @@ import { useAPIContext } from '../APIProvider';
  * it will use the current token from localStorage.
  */
 const useAuthorize = () => {
-    const current_token = getActiveAuthTokenIDFromLocalStorage();
-    const invalidate = useInvalidateQuery();
-    const { switchEnvironment, queryClient } = useAPIContext();
-
-    const [currentLoginID, setCurrentLoginID] = useState(getActiveLoginIDFromLocalStorage());
+    const { switchEnvironment, queryClient, customLoginIDKey } = useAPIContext();
+    const accounts = getAccountsFromLocalStorage();
+    const firstAccount = Object.keys(accounts ?? {})[0];
+    const [currentLoginID, setCurrentLoginID] = useState(getActiveLoginIDFromLocalStorage(customLoginIDKey));
+    const current_token = getActiveAuthTokenIDFromLocalStorage(customLoginIDKey) ?? accounts?.[firstAccount]?.token;
 
     const { data, ...rest } = useQuery('authorize', {
         payload: { authorize: current_token || '' },
@@ -32,7 +35,7 @@ const useAuthorize = () => {
         (loginid: string) => {
             const active_loginid = getActiveLoginIDFromLocalStorage();
             if (active_loginid !== loginid) {
-                localStorage.setItem('active_loginid', loginid);
+                localStorage.setItem(customLoginIDKey ?? 'active_loginid', loginid);
                 switchEnvironment(active_loginid);
                 // whenever we change the loginid, we need to invalidate all queries
                 // as there might be ongoing queries against previous loginid
@@ -41,7 +44,7 @@ const useAuthorize = () => {
                 setCurrentLoginID(loginid);
             }
         },
-        [invalidate, switchEnvironment, currentLoginID]
+        [customLoginIDKey, switchEnvironment, queryClient]
     );
 
     return {

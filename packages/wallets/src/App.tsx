@@ -7,7 +7,7 @@ import './index.scss';
 import './translations/i18n';
 
 const App: React.FC = () => (
-    <APIProvider standalone>
+    <APIProvider customLoginIDKey='active_wallet_loginid' standalone>
         <ModalProvider>
             <AppContent />
         </ModalProvider>

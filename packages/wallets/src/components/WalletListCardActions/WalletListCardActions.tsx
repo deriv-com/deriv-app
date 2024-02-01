@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { useActiveWalletAccount, useAuthorize } from '@deriv/api';
+import { useActiveWalletAccount } from '@deriv/api';
 import useDevice from '../../hooks/useDevice';
+import useWalletAccountSwitcher from '../../hooks/useWalletAccountSwitcher';
 import IcCashierAdd from '../../public/images/ic-cashier-deposit.svg';
 import IcCashierStatement from '../../public/images/ic-cashier-statement.svg';
 import IcCashierTransfer from '../../public/images/ic-cashier-transfer.svg';
@@ -53,7 +54,7 @@ type TProps = {
 };
 
 const WalletListCardActions: React.FC<TProps> = ({ isActive, isDemo, loginid }) => {
-    const { switchAccount } = useAuthorize();
+    const switchAccount = useWalletAccountSwitcher();
     const { data: activeWallet } = useActiveWalletAccount();
     const { isMobile } = useDevice();
     const history = useHistory();

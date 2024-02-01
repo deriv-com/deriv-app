@@ -5,7 +5,7 @@ const isProductionOrStaging = process.env.NODE_ENV === 'production' || process.e
 
 const initHotjar = (client: TCoreStores['client']) => {
     // To initialize only on staging and production links
-    if (!isProductionOrStaging) return;
+    // if (!isProductionOrStaging) return;
 
     /**
      * Inject: External Script - Hotjar

@@ -17,7 +17,7 @@ const useDxtradeAccountHandler = () => {
     const isDxtradePasswordNotSet = getAccountStatus?.is_dxtrade_password_not_set;
 
     const handleSubmit = (password: string) => {
-        createDxtradeAccount({
+        return createDxtradeAccount({
             payload: {
                 account_type: accountType,
                 market_type: MarketType.ALL,

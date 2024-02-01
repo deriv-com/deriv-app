@@ -149,8 +149,8 @@ export default class ClientStore extends BaseStore {
     prev_account_type = 'demo';
     external_url_params = {};
     is_already_attempted = false;
-    temp_formik_data = [];
-    temp_formik_data_step = 0;
+    real_account_signup_form_data = [];
+    real_account_signup_form_step = 0;
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -217,8 +217,8 @@ export default class ClientStore extends BaseStore {
             p2p_advertiser_info: observable,
             prev_account_type: observable,
             is_already_attempted: observable,
-            temp_formik_data: observable,
-            temp_formik_data_step: observable,
+            real_account_signup_form_data: observable,
+            real_account_signup_form_step: observable,
             balance: computed,
             account_open_date: computed,
             is_svg: computed,
@@ -392,8 +392,8 @@ export default class ClientStore extends BaseStore {
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
             setIsAlreadyAttempted: action.bound,
-            setTempFormikData: action.bound,
-            setTempFormikDataStep: action.bound,
+            setRealAccountSignupFormData: action.bound,
+            setRealAccountSignupFormStep: action.bound,
         });
 
         reaction(
@@ -2633,12 +2633,12 @@ export default class ClientStore extends BaseStore {
         this.is_already_attempted = status;
     }
 
-    setTempFormikData(data) {
-        this.temp_formik_data = data;
+    setRealAccountSignupFormData(data) {
+        this.real_account_signup_form_data = data;
     }
 
-    setTempFormikDataStep(step) {
-        this.temp_formik_data_step = step;
+    setRealAccountSignupFormStep(step) {
+        this.real_account_signup_form_step = step;
     }
 
     /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.

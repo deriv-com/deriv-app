@@ -86,13 +86,18 @@ const AccountWizard = observer(props => {
         sub_section_index: ui.sub_section_index,
     };
 
-    const { temp_formik_data, setTempFormikData, temp_formik_data_step, setTempFormikDataStep } = client;
+    const {
+        real_account_signup_form_data,
+        setRealAccountSignupFormData,
+        real_account_signup_form_step,
+        setRealAccountSignupFormStep,
+    } = client;
 
     const [finished] = React.useState(undefined);
     const [mounted, setMounted] = React.useState(false);
     const [form_error, setFormError] = React.useState('');
     const [previous_data, setPreviousData] = React.useState([]);
-    const [state_items, setStateItems] = React.useState(temp_formik_data ?? []);
+    const [state_items, setStateItems] = React.useState(real_account_signup_form_data ?? []);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
     const is_high_risk_client_for_mt5 = useIsClientHighRiskForMT5();
 
@@ -144,16 +149,11 @@ const AccountWizard = observer(props => {
             }
             return previous_state;
         });
-        setTempFormikData(previous_state => {
-            if (!previous_state.length) {
-                return getItems(get_items_props);
-            }
-            return previous_state;
-        });
+        if (!state_items?.length) setRealAccountSignupFormData(getItems(get_items_props));
 
         setPreviousData(fetchFromStorage());
         setMounted(true);
-    }, [residence_list, states_list, fetchResidenceList, fetchStatesList, has_residence, setTempFormikData]);
+    }, [residence_list, states_list, fetchResidenceList, fetchStatesList, has_residence, setRealAccountSignupFormData]);
 
     React.useEffect(() => {
         if (previous_data.length > 0) {
@@ -164,10 +164,10 @@ const AccountWizard = observer(props => {
                 }
             });
             setStateItems(items);
-            setTempFormikData(items);
+            setRealAccountSignupFormData(items);
             setPreviousData([]);
         }
-    }, [previous_data, setTempFormikData]);
+    }, [previous_data, setRealAccountSignupFormData]);
 
     React.useEffect(() => {
         if (residence_list.length) {
@@ -182,12 +182,12 @@ const AccountWizard = observer(props => {
                 if (items.length > 1 && 'phone' in items[1]?.form_value) {
                     items[1].form_value.phone = items[1].form_value.phone || country_code || '';
                     setStateItems(items);
-                    setTempFormikData(items);
+                    setRealAccountSignupFormData(items);
                 }
             };
             getCountryCode(residence_list).then(setDefaultPhone);
         }
-    }, [residence_list, setTempFormikData]);
+    }, [residence_list, setRealAccountSignupFormData]);
 
     const fetchFromStorage = () => {
         const stored_items = localStorage.getItem('real_account_signup_wizard');
@@ -330,7 +330,7 @@ const AccountWizard = observer(props => {
         const cloned_items = Object.assign([], state_items);
         cloned_items[index].form_value = value;
         setStateItems(cloned_items);
-        setTempFormikData(cloned_items);
+        setRealAccountSignupFormData(cloned_items);
     };
 
     const getCurrent = (key, step_index) => {
@@ -477,9 +477,9 @@ const AccountWizard = observer(props => {
                     'account-wizard--set-currency': !modifiedProps.has_currency,
                     'account-wizard--deriv-crypto': modifiedProps.real_account_signup_target === 'samoa',
                 })}
-                initial_step={temp_formik_data_step}
+                initial_step={real_account_signup_form_step}
                 onStepChange={state => {
-                    setTempFormikDataStep(state?.active_step - 1);
+                    setRealAccountSignupFormStep(state?.active_step - 1);
                 }}
             >
                 {wizard_steps}

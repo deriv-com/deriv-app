@@ -1,12 +1,38 @@
 import { useActiveWalletAccount, usePOI } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useTransferMessages from '../useTransferMessages';
+import {
+    cumulativeAccountLimitsMessageFn,
+    insufficientBalanceMessageFn,
+    lifetimeAccountLimitsBetweenWalletsMessageFn,
+    transferFeesBetweenWalletsMessageFn,
+} from '../utils';
 
 jest.mock('@deriv/api', () => ({
     useActiveWalletAccount: jest.fn(() => ({ data: { mockWallets } })),
     useAuthorize: jest.fn(() => ({ data: { preferred_language: 'en' } })),
     usePOI: jest.fn(() => ({ data: { is_verified: true } })),
     useWalletAccountsList: jest.fn(() => ({ data: [{ mockWallets }, { mockTrading }] })),
+}));
+
+jest.mock('../utils/cumulativeAccountLimitsMessageFn', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}));
+
+jest.mock('../utils/insufficientBalanceMessageFn', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}));
+
+jest.mock('../utils/lifetimeAccountLimitsBetweenWalletsMessageFn', () => ({
+    __esModule: true,
+    default: jest.fn(),
+}));
+
+jest.mock('../utils/transferFeesBetweenWalletsMessageFn', () => ({
+    __esModule: true,
+    default: jest.fn(),
 }));
 
 const mockWallets = {
@@ -129,50 +155,8 @@ describe('useTransferMessages', () => {
         jest.clearAllMocks();
     });
 
-    test('should render default message and type correctly for verified account', () => {
-        const { result } = renderHook(() => useTransferMessages(mockWalletsTransfer));
-
-        expect(result.current).toEqual([
-            {
-                message: {
-                    text: 'Fee: {{feeMessageText}} ({{feePercentage}}% transfer fee or {{minimumFeeText}}, whichever is higher, applies for fund transfers between your {{fiatAccountName}}{{conjunction}} cryptocurrency Wallets)',
-                    values: {
-                        conjunction: ' Wallet and ',
-                        feeMessageText: '0.1 USD',
-                        feePercentage: undefined,
-                        fiatAccountName: undefined,
-                        minimumFeeText: '0.1 USD',
-                    },
-                },
-                type: 'info',
-            },
-        ]);
-    });
-
-    test('should render default message and type correctly for unverified account', () => {
-        (usePOI as jest.Mock).mockReturnValueOnce({ data: { is_verified: false } });
-
-        const { result } = renderHook(() => useTransferMessages(mockWalletsTransfer));
-
-        expect(result.current).toEqual([
-            {
-                message: {
-                    text: 'Fee: {{feeMessageText}} ({{feePercentage}}% transfer fee or {{minimumFeeText}}, whichever is higher, applies for fund transfers between your {{fiatAccountName}}{{conjunction}} cryptocurrency Wallets)',
-                    values: {
-                        conjunction: ' Wallet and ',
-                        feeMessageText: '0.1 USD',
-                        feePercentage: undefined,
-                        fiatAccountName: undefined,
-                        minimumFeeText: '0.1 USD',
-                    },
-                },
-                type: 'info',
-            },
-        ]);
-    });
-
-    test('should return correct error message and type when existing error in current transfer', () => {
-        const mockFailingTransfer = {
+    test('should return correct message and type for insufficientBalanceMessageFn', () => {
+        const mockInsufficientBalanceTransfer = {
             accountLimits: {},
             activeWalletExchangeRates: {},
             formData: { fromAmount: 100, toAmount: 200 },
@@ -180,16 +164,73 @@ describe('useTransferMessages', () => {
             toAccount: mockWallets,
             USDExchangeRates: {},
         };
+        (insufficientBalanceMessageFn as jest.Mock).mockReturnValueOnce({
+            message: 'insufficientBalanceMessageFn',
+            type: 'error',
+        });
 
-        const { result } = renderHook(() => useTransferMessages(mockFailingTransfer));
+        const { result } = renderHook(() => useTransferMessages(mockInsufficientBalanceTransfer));
 
         expect(result.current).toEqual([
             {
-                message: {
-                    text: 'Your {{sourceAccountName}} has insufficient balance.',
-                    values: { sourceAccountName: 'Deriv cTrader' },
-                },
+                message: 'insufficientBalanceMessageFn',
                 type: 'error',
+            },
+        ]);
+    });
+
+    test('should render correct message and type for lifetimeAccountLimitsBetweenWalletsMessageFn', () => {
+        (usePOI as jest.Mock).mockReturnValueOnce({ data: { is_verified: false } });
+        (lifetimeAccountLimitsBetweenWalletsMessageFn as jest.Mock).mockReturnValueOnce({
+            message: 'lifetimeAccountLimitsBetweenWalletsMessageFn',
+            type: 'error',
+        });
+
+        const { result } = renderHook(() => useTransferMessages(mockWalletsTransfer));
+
+        expect(result.current).toEqual([
+            {
+                message: 'lifetimeAccountLimitsBetweenWalletsMessageFn',
+                type: 'error',
+            },
+        ]);
+    });
+
+    test('should render correct message and type for cumulativeAccountLimitsMessageFn', () => {
+        (usePOI as jest.Mock).mockReturnValueOnce({ data: { is_verified: false } });
+        const mockWalletsToTradingTransfer = {
+            accountLimits: {},
+            activeWalletExchangeRates: {},
+            formData: { fromAmount: 100, toAmount: 200 },
+            fromAccount: mockWallets,
+            toAccount: mockTrading,
+            USDExchangeRates: {},
+        };
+        (cumulativeAccountLimitsMessageFn as jest.Mock).mockReturnValueOnce({
+            message: 'cumulativeAccountLimitsMessageFn',
+            type: 'info',
+        });
+        const { result } = renderHook(() => useTransferMessages(mockWalletsToTradingTransfer));
+
+        expect(result.current).toEqual([
+            {
+                message: 'cumulativeAccountLimitsMessageFn',
+                type: 'info',
+            },
+        ]);
+    });
+
+    test('should render correct message and type for transferFeesBetweenWalletsMessageFn', () => {
+        (transferFeesBetweenWalletsMessageFn as jest.Mock).mockReturnValueOnce({
+            message: 'transferFeesBetweenWalletsMessageFn',
+            type: 'info',
+        });
+        const { result } = renderHook(() => useTransferMessages(mockWalletsTransfer));
+
+        expect(result.current).toEqual([
+            {
+                message: 'transferFeesBetweenWalletsMessageFn',
+                type: 'info',
             },
         ]);
     });

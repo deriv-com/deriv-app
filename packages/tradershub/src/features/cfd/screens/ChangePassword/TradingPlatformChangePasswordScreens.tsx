@@ -7,7 +7,7 @@ import DerivXPasswordIcon from '../../../../public/images/ic-derivx-password-upd
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { TPlatforms } from '../../../../types';
 import { platformPasswordResetRedirectLink } from '../../../../utils/cfd';
-import { PlatformDetails } from '../../constants';
+import { CFDPlatforms, PlatformDetails } from '../../constants';
 
 type TradingPlatformChangePasswordScreensProps = {
     isVirtual?: boolean;
@@ -26,7 +26,7 @@ const TradingPlatformChangePasswordScreens = ({ platform }: TradingPlatformChang
 
     const { title } = PlatformDetails[platform];
 
-    const isDerivX = platform === PlatformDetails.dxtrade.platform;
+    const isDerivX = platform === CFDPlatforms.DXTRADE;
 
     const handleSendEmail = async () => {
         if (data.email) {

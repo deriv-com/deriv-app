@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { Tabs, Tab, Text } from '@deriv-com/ui';
 import { SentEmailContent } from '../../../../components';
 import IcBackArrow from '../../../../public/images/ic-back-arrow.svg';
-import { PlatformDetails } from '../../constants';
+import { CFDPlatforms, PlatformDetails } from '../../constants';
 import MT5ChangeInvestorPasswordScreens from './InvestorPassword/MT5ChangeInvestorPasswordScreens';
 import TradingPlatformChangePasswordScreens from './TradingPlatformChangePasswordScreens';
 
@@ -10,7 +10,7 @@ const MT5ChangePasswordScreens = () => {
     const [showSentEmailContentWithoutTabs, setShowSentEmailContentWithoutTabs] = useState(false);
     const [, setTabNumber] = useState(0);
 
-    const platform = PlatformDetails.mt5.platform;
+    const platform = CFDPlatforms.MT5;
     const { title } = PlatformDetails[platform];
 
     return showSentEmailContentWithoutTabs ? (

@@ -6,7 +6,7 @@ import { useTradingPlatformInvestorPasswordChange } from '@deriv/api';
 import { ActionScreen } from '../../../../../components';
 import { validPassword } from '../../../../../utils/password';
 import { Provider } from '@deriv/library';
-import { PlatformDetails } from '../../../constants';
+import { CFDPlatforms } from '../../../constants';
 
 type TFormInitialValues = {
     currentPassword: string;
@@ -39,7 +39,7 @@ const MT5ChangeInvestorPasswordInputsScreen = ({
             account_id: mt5AccountId,
             new_password: values.newPassword,
             old_password: values.currentPassword,
-            platform: PlatformDetails.mt5.platform,
+            platform: CFDPlatforms.MT5,
         });
         setNextScreen?.();
     };

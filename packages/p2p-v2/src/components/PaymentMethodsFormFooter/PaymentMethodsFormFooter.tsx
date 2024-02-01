@@ -1,6 +1,6 @@
 import React from 'react';
+import { TFormState } from '@/reducers/types';
 import { Button } from '@deriv-com/ui';
-import { TFormState } from '../../reducers/types';
 import './PaymentMethodsFormFooter.scss';
 
 type TPaymentMethodsFormFooterProps = {

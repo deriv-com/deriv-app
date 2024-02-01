@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAdvertiserStats } from '../../hooks';
-import { Badge } from '../Badge';
+import { Badge } from '@/components';
+import { useAdvertiserStats } from '@/hooks';
 import './AdvertiserNameBadges.scss';
 
 /**

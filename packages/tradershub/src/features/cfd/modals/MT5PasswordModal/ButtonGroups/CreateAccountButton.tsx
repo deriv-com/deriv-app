@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui';
 import useMT5AccountHandler from '../../../../../hooks/useMT5AccountHandler';
 import { validPassword } from '../../../../../utils/password';
 import { MarketType, TTM5FilterLandingCompany } from '../../../constants';
@@ -24,7 +24,7 @@ const CreateAccountButton = ({ buttonText, password }: TCreateAccountButtonProps
             disabled={
                 !password || createMT5AccountLoading || tradingPlatformPasswordChangeLoading || !validPassword(password)
             }
-            fullWidth
+            isFullWidth
             isLoading={tradingPlatformPasswordChangeLoading || createMT5AccountLoading}
             onClick={() => handleSubmit(password)}
             size='lg'

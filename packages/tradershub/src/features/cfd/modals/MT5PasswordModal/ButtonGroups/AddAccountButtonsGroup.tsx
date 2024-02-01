@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from '@deriv/library';
-import { Button } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui';
 import { ButtonGroup, Modal, SentEmailContent } from '../../../../../components';
 import { PlatformDetails } from '../../../constants';
 import CreateAccountButton from './CreateAccountButton';
@@ -17,7 +17,7 @@ const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
     return (
         <ButtonGroup className='w-full'>
             <Button
-                fullWidth
+                isFullWidth
                 onClick={() => {
                     show(
                         <Modal>
@@ -29,7 +29,7 @@ const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
                     );
                 }}
                 size='lg'
-                variant='secondary'
+                variant='outlined'
             >
                 Forgot password?
             </Button>

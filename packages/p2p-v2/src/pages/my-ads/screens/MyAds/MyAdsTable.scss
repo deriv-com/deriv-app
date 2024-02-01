@@ -1,0 +1,13 @@
+.p2p-v2-my-ads-table {
+    position: absolute;
+    height: 100%;
+    & .p2p-v2-table {
+        &__header {
+            grid-template-columns: repeat(3, 1.6fr) 1.9fr 3fr 1.9fr !important;
+        }
+
+        &__content {
+            height: 100%;
+        }
+    }
+}

@@ -13,11 +13,12 @@ const useAdvertiserAdverts = (
         options: {
             ...config,
             getNextPageParam: (lastPage, pages) => {
-                if (!lastPage?.p2p_advertiser_adverts?.list) return;
+                if (!lastPage?.p2p_advertiser_adverts?.list?.length) return;
 
                 return pages.length;
             },
             enabled: isSuccess && (config?.enabled === undefined || config.enabled),
+            refetchOnWindowFocus: false,
         },
     });
 

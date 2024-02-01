@@ -3,14 +3,31 @@ import { useHistory } from 'react-router-dom';
 import { useActiveAccount } from '@deriv/api';
 import { Loader } from '@deriv-com/ui/dist/components/Loader';
 import { Tab, Tabs } from '@deriv-com/ui/dist/components/Tabs';
-import { MobileCloseHeader } from '../../components';
+import { MobileCloseHeader, PopoverDropdown } from '../../components';
 import { useDevice } from '../../hooks';
 import './index.scss';
+import { MyAds } from '../../pages/my-ads/screens';
 
+const list = [
+    { label: 'Edit', value: 'edit'},
+    { label: 'Delete', value: 'delete'},
+    { label: 'Duplicate', value: 'duplicate'},
+    { label: 'Share', value: 'share'},
+    { label: 'Deactivate', value: 'deactivate'},
+]
 export const routesConfiguration = [
-    { Component: <div> Buy Sell Page </div>, path: 'buy-sell', title: 'Buy / Sell' },
+    { Component: <div> <PopoverDropdown dropdownList={list}/> </div>, path: 'buy-sell', title: 'Buy / Sell' },
     { Component: <div> Orders Page </div>, path: 'orders', title: 'Orders' },
-    { Component: <div> My Ads Page </div>, path: 'my-ads', title: 'My Ads' },
+    {
+        Component: (
+            <div>
+                {' '}
+                <MyAds />{' '}
+            </div>
+        ),
+        path: 'my-ads',
+        title: 'My Ads',
+    },
     { Component: <div> My Profile Page </div>, path: 'my-profile', title: 'My Profile' },
 ];
 const AppContent = () => {

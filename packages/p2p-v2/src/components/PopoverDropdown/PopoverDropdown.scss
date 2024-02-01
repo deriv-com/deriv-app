@@ -1,0 +1,23 @@
+.p2p-v2-popover-dropdown {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        border-radius: 0.4rem;
+        width: 19.5rem;
+        box-shadow: 0px 32px 64px 0px #0E0E0E24;
+        z-index: 999;
+        top: 2.8rem;
+        position: absolute;
+        background: #fff;
+        right: 0;
+
+        &-item {
+            padding: 1rem 1.6rem;
+        }
+    }
+}
+

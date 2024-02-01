@@ -3,6 +3,7 @@ export * from './Badge';
 export * from './Button';
 export * from './FullPageMobileWrapper';
 export * from './MobileCloseHeader';
+export * from './PopoverDropdown';
 export * from './RadioGroup';
 export * from './StarRating';
 export * from './Table';

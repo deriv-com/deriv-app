@@ -60,6 +60,6 @@ jobs:
     - name: Publish to TestSpace
       uses: "./.github/actions/push_to_testspace"
       with:
-        domain: 'deriv-app'
+        domain: 'derivfe'
         testspace_token: ${{ secrets.TESTSPACE_TOKEN }}
       

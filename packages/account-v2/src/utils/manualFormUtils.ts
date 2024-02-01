@@ -16,7 +16,6 @@ export const getUploadConfig = (selectedDocument: TManualDocumentTypes) =>
 export const getManualFormValidationSchema = (selectedDocument: TManualDocumentTypes) => {
     const fieldsData = MANUAL_DOCUMENT_TYPES_DATA[selectedDocument].fields;
     return Yup.object({
-        document: Yup.string().required('Document is required.'),
         document_expiry: Yup.string().required(fieldsData.documentExpiry.errorMessage),
         document_number: Yup.string().required(fieldsData.documentNumber.errorMessage),
     });

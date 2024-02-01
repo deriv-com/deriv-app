@@ -10,6 +10,7 @@ import { DynamicLeverageContext } from '../../components/DynamicLeverageContext'
 import { Jurisdiction, MarketType, MarketTypeDetails } from '../../constants';
 import { DynamicLeverageScreen, DynamicLeverageTitle } from '../../screens/DynamicLeverage';
 import { JurisdictionScreen } from '../../screens/Jurisdiction';
+import { MT5PasswordModal } from '../MT5PasswordModal';
 
 const JurisdictionModal = () => {
     const [selectedJurisdiction, setSelectedJurisdiction] = useState('');
@@ -37,7 +38,7 @@ const JurisdictionModal = () => {
 
     const JurisdictionFlow = () => {
         if (selectedJurisdiction === Jurisdiction.SVG) {
-            return <DummyComponent />; // MT5PasswordModal
+            return <MT5PasswordModal />;
         }
 
         return <DummyComponent />; // Verification flow

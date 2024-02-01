@@ -1,6 +1,7 @@
 import React from 'react';
 import { APIProvider } from '@deriv/api';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { ManualForm } from '../manualForm';
 
 jest.mock('react-calendar/dist/Calendar.css', () => jest.fn());
@@ -40,6 +41,24 @@ describe('ManualForm', () => {
         expect(
             screen.getByText(/Next, upload the page of your NIMC slip that contains your photo./)
         ).toBeInTheDocument();
+    });
+
+    it('should display the error message if the document number is empty', async () => {
+        renderComponent({ selectedDocument: 'passport' });
+        userEvent.type(screen.getByRole('textbox', { name: 'Passport number' }), '');
+        userEvent.tab();
+        await waitFor(() => {
+            expect(screen.getByText(/Passport number is required./)).toBeInTheDocument();
+        });
+    });
+
+    it('should display the error message if the document expiry date is empty', async () => {
+        renderComponent({ selectedDocument: 'passport' });
+        userEvent.type(screen.getByRole('textbox', { name: 'Expiry date' }), '');
+        userEvent.tab();
+        await waitFor(() => {
+            expect(screen.getByText(/Expiry date is required./)).toBeInTheDocument();
+        });
     });
 
     it('should render the footer items correctly', () => {

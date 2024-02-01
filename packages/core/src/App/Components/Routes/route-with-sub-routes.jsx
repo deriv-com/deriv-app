@@ -20,10 +20,7 @@ const RouteWithSubRoutes = observer(route => {
     const { is_next_account_enabled, is_next_cashier_enabled } = useFeatureFlags();
     const { checkAppId } = common;
     const validateRoute = pathname => {
-        if (pathname.startsWith('/cashier-v2')) {
-            if (!is_next_cashier_enabled) return false;
-            return route?.path === pathname || !!route?.routes?.find(({ path }) => pathname === path);
-        } else if (pathname.startsWith('/cashier') && !pathname.includes('p2p') && !!route.routes) {
+        if (pathname.startsWith('/cashier') && !pathname.includes('p2p') && !!route.routes) {
             return route.path === pathname || !!route?.routes.find(({ path }) => pathname === path);
         } else if (pathname.includes('p2p') && !!route.routes) {
             const cashier_subroutes = route?.routes.find(({ path }) => path === '/cashier/p2p');
@@ -34,6 +31,8 @@ const RouteWithSubRoutes = observer(route => {
 
             return route.path === pathname || !!p2p_subroutes;
         } else if (pathname.includes(routes.account_v2) && !is_next_account_enabled) {
+            return false;
+        } else if (pathname.includes(routes.cashier_v2) && !is_next_cashier_enabled) {
             return false;
         }
         return true;

@@ -4,7 +4,7 @@ import { cashierPathRoutes } from './routes/Router';
 export namespace TRouteTypes {
     export type TRoutes = typeof cashierPathRoutes[keyof typeof cashierPathRoutes];
     export interface IRouteConfig {
-        component: React.ComponentType<IRouteConfig>;
+        component: React.ComponentType<Omit<IRouteConfig, 'component'>>;
         path: string;
         routes?: IRouteConfig[];
         title: string;

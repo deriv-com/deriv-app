@@ -1,18 +1,9 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
-import { routesConfig as routes } from '../constants/routesConfig';
+import { cashierPathRoutes, routesConfig as routes } from '../constants/routesConfig';
 import RouteWithSubRoutes from './RouteWithSubRoutes';
 
-const prefix = '/cashier-v2';
-
-type TRoutes = `${typeof prefix}${
-    | ''
-    | '/account-transfer'
-    | '/deposit'
-    | '/on-ramp'
-    | '/payment-agent-transfer'
-    | '/payment-agent'
-    | '/withdrawal'}`;
+type TRoutes = typeof cashierPathRoutes[keyof typeof cashierPathRoutes];
 
 declare module 'react-router-dom' {
     export function useHistory(): { push: (path: TRoutes) => void };

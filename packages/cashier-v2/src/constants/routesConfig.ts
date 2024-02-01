@@ -2,6 +2,16 @@
 import { DummyRoute } from '../components';
 import { Cashier } from '../containers';
 
+export const cashierPathRoutes = {
+    cashier: '/cashier-v2',
+    cashierDeposit: '/cashier-v2/deposit',
+    cashierWithdrawal: '/cashier-v2/withdrawal',
+    cashierPaymentAgents: '/cashier-v2/payment-agent',
+    cashierAccountTransfer: '/cashier-v2/account-transfer',
+    cashierPaymentAgentTransfer: '/cashier-v2/payment-agent-transfer',
+    cashierOnRamp: '/cashier-v2/on-ramp',
+} as const;
+
 export interface IRouteConfig {
     component: React.ComponentType<IRouteConfig>;
     path: string;
@@ -13,37 +23,37 @@ export type TRouteComponent = React.ComponentProps<IRouteConfig['component']>;
 
 export const routesConfig: IRouteConfig[] = [
     {
-        path: '/cashier-v2',
+        path: cashierPathRoutes.cashier,
         component: Cashier,
         title: 'Cashier',
         routes: [
             {
-                path: '/cashier-v2/deposit',
+                path: cashierPathRoutes.cashierDeposit,
                 component: DummyRoute,
                 title: 'Deposit',
             },
             {
-                path: '/cashier-v2/withdrawal',
+                path: cashierPathRoutes.cashierWithdrawal,
                 component: DummyRoute,
                 title: 'Withdrawal',
             },
             {
-                path: '/cashier-v2/payment-agent',
+                path: cashierPathRoutes.cashierPaymentAgents,
                 component: DummyRoute,
                 title: 'Payment agents',
             },
             {
-                path: '/cashier-v2/account-transfer',
+                path: cashierPathRoutes.cashierAccountTransfer,
                 component: DummyRoute,
                 title: 'Transfer',
             },
             {
-                path: '/cashier-v2/payment-agent-transfer',
+                path: cashierPathRoutes.cashierPaymentAgentTransfer,
                 component: DummyRoute,
                 title: 'Transfer to client',
             },
             {
-                path: '/cashier-v2/on-ramp',
+                path: cashierPathRoutes.cashierOnRamp,
                 component: DummyRoute,
                 title: 'Fiat onramp',
             },

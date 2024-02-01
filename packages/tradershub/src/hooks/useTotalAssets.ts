@@ -1,0 +1,46 @@
+import { useActiveTradingAccount, useAuthorize } from '@deriv/api';
+import { Helpers } from '@deriv/library';
+import { useUIContext } from '../components';
+import useCFDAssets from './useCFDAssets';
+import usePlatformAssets from './usePlatformAssets';
+
+/**
+ * @description Get total balance of all accounts
+ * @returns data - Total balance of all accounts
+ */
+const useTotalAssets = () => {
+    const { getUIState } = useUIContext();
+    const regulation = getUIState('regulation');
+    const { displayMoney } = Helpers;
+    const { data: activeTradingAccount } = useActiveTradingAccount();
+    const { data: authorizeData, isSuccess: isAuthorizeSuccess } = useAuthorize();
+    const {
+        demoAccountBalance,
+        fiatCurrency,
+        isSuccess: isPlatformSuccess,
+        realAccounts,
+        totalRealPlatformBalance,
+    } = usePlatformAssets(regulation);
+    const { calculatedDemoBalance, calculatedRealBalance, isSuccess: isCFDSuccess } = useCFDAssets(regulation);
+
+    const demoTotalBalance = demoAccountBalance + calculatedDemoBalance;
+
+    const realTotalBalance = totalRealPlatformBalance + calculatedRealBalance;
+
+    const totalBalance = activeTradingAccount?.is_virtual ? demoTotalBalance : realTotalBalance;
+
+    const formattedTotalBalance = displayMoney(totalBalance, fiatCurrency ?? 'USD', {
+        fractional_digits: 2,
+        preferred_language: authorizeData?.preferred_language,
+    });
+
+    return {
+        //Returns the total balance of all accounts
+        data: formattedTotalBalance,
+        //Returns true if all the requests are successful
+        isSuccess: isPlatformSuccess && isCFDSuccess && isAuthorizeSuccess,
+        realAccounts,
+    };
+};
+
+export default useTotalAssets;

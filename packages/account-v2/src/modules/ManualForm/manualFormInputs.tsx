@@ -24,7 +24,7 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                             {...field}
                             errorMessage={meta.error}
                             isInvalid={meta.touched && Boolean(meta.error)}
-                            label={fieldsData.documentNumber.label}
+                            label={`${fieldsData.documentNumber.label}*`}
                         />
                     )}
                 </Field>
@@ -35,7 +35,7 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                                 {...field}
                                 errorMessage={meta.error}
                                 isInvalid={meta.touched && Boolean(meta.error)}
-                                label={fieldsData.documentExpiry.label}
+                                label={`${fieldsData.documentExpiry.label}*`}
                                 onDateChange={field.onChange}
                             />
                         )}

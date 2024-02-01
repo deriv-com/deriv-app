@@ -42,7 +42,7 @@ const AddedCTraderAccountsList: React.FC = () => {
                         <div className='wallets-added-ctrader__actions'>
                             <WalletButton
                                 onClick={() => {
-                                    history.push(`/wallets/cashier/transfer?to-account=${account.id}`);
+                                    history.push(`/wallets/cashier/transfer`, { toAccountLoginId: account.account_id });
                                 }}
                                 variant='outlined'
                             >

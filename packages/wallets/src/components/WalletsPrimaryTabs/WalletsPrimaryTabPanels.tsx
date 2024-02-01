@@ -5,7 +5,7 @@ const WalletsPrimaryTabPanels = ({ children }: React.PropsWithChildren<unknown>)
     const { activeTabIndex } = useTabs();
 
     return (
-        <div>
+        <div data-testid='dt_tab_panels'>
             {Children.map(children, (child, index) => {
                 if (index !== activeTabIndex) return undefined;
 

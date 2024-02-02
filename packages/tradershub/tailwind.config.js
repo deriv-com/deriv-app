@@ -3,6 +3,9 @@ const plugin = require('tailwindcss/plugin');
 
 module.exports = {
     content: ['./src/**/*.{js,jsx,ts,tsx}'],
+    corePlugins: {
+        preflight: false,
+    },
     plugins: [
         plugin(({ addUtilities }) => {
             addUtilities({
@@ -30,6 +33,11 @@ module.exports = {
                     coral: '#ff444f',
                     night: '#2a3052',
                     orange: '#ff6444',
+                    pink: {
+                        dark: '#3c2020',
+                        default: '#ffc0cb',
+                        light: '#ffe3e3',
+                    },
                     red: {
                         dark: '#b33037',
                         darker: '#661b20',
@@ -50,6 +58,13 @@ module.exports = {
                     purple: '#db69e1',
                     teal: '#00a8af',
                 },
+                solid: {
+                    grey: {
+                        dark: '#d6d6d6',
+                        default: '#d6dadb',
+                        light: '#999999',
+                    },
+                },
                 status: {
                     dark: {
                         danger: '#cc2e3d',
@@ -65,6 +80,7 @@ module.exports = {
                         warning: '#ffad3a',
                     },
                 },
+
                 system: {
                     dark: {
                         'active-background': '#323738',

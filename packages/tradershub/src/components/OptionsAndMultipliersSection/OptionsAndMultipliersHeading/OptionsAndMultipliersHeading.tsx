@@ -14,8 +14,8 @@ import { useUIContext } from '../../UIProvider';
 const OptionsAndMultipliersHeading = () => {
     const { isMobile } = useBreakpoint();
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
     const { isEU } = useRegulationFlags(activeRegulation);
 
     const title = isEU ? 'Multipliers' : 'Options & multipliers';

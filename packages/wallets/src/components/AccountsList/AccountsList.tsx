@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CFDPlatformsList } from '../../features';
 import useDevice from '../../hooks/useDevice';
 import { OptionsAndMultipliersListing } from '../OptionsAndMultipliersListing';
@@ -19,12 +20,12 @@ const AccountsList = ({ isWalletSettled }: TProps) => {
     const { isMobile } = useDevice();
     const [isMT5PlatformListLoaded, setIsMT5PlatformListLoaded] = useState(false);
     const [isOptionsAndMultipliersLoaded, setIsOptionsAndMultipliersLoaded] = useState(false);
+    const { t } = useTranslation();
 
     if (isMobile) {
         return (
             <WalletsPrimaryTabs className='wallets-accounts-list'>
-                {/* TODO: Localization needed on tab headers */}
-                <WalletsPrimaryTabList list={['CFDs', 'Options & multipliers']} />
+                <WalletsPrimaryTabList list={[t('CFDs'), t('Options & multipliers')]} />
                 <WalletsPrimaryTabPanels>
                     <WalletsPrimaryTabPanel>
                         <CFDPlatformsList onMT5PlatformListLoaded={setIsMT5PlatformListLoaded} />
@@ -45,7 +46,7 @@ const AccountsList = ({ isWalletSettled }: TProps) => {
     }
 
     return (
-        <div className='wallets-accounts-list'>
+        <div className='wallets-accounts-list' data-testid='dt_desktop_accounts_list'>
             <div className='wallets-accounts-list__content'>
                 <CFDPlatformsList />
                 <OptionsAndMultipliersListing />

@@ -9,15 +9,22 @@ const useAdvertiserList = (
     payload?: NonNullable<Parameters<typeof useInfiniteQuery<'p2p_advertiser_list'>>[1]>['payload']
 ) => {
     const { isSuccess } = useAuthorize();
+    if (!payload?.is_blocked) {
+        delete payload?.is_blocked;
+    }
+    if (!payload?.advertiser_name) {
+        delete payload?.advertiser_name;
+    }
     const { data, fetchNextPage, ...rest } = useInfiniteQuery('p2p_advertiser_list', {
         payload: { ...payload, offset: payload?.offset, limit: payload?.limit },
         options: {
             getNextPageParam: (lastPage, pages) => {
-                if (!lastPage?.p2p_advertiser_list?.list) return;
+                if (!lastPage?.p2p_advertiser_list?.list?.length) return;
 
                 return pages.length;
             },
             enabled: isSuccess,
+            refetchOnWindowFocus: false,
         },
     });
 

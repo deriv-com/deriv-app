@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Router, Route, Switch } from 'react-router-dom';
 import useQueryString from '../useQueryString';
 import { createMemoryHistory } from 'history';
@@ -112,7 +113,7 @@ describe('useQueryString', () => {
             pathname: 'my-profile',
             search: '?tab=Payment+methods',
         }));
-        btn.click();
+        userEvent.click(btn);
         expect(mockReplace).toHaveBeenLastCalledWith({
             pathname: 'my-profile',
             search: 'tab=Payment+methods',
@@ -131,7 +132,7 @@ describe('useQueryString', () => {
             pathname: 'my-profile',
             search: '?tab=Stats',
         }));
-        statsBtn.click();
+        userEvent.click(statsBtn);
         expect(mockReplace).toHaveBeenLastCalledWith({
             pathname: 'my-profile',
             search: 'tab=Stats',
@@ -149,7 +150,7 @@ describe('useQueryString', () => {
             pathname: 'my-profile',
             search: 'tab=Payment+methods&form=Payment+method+form',
         }));
-        paymentMethodFormBtn.click();
+        userEvent.click(paymentMethodFormBtn);
         expect(queryChangeEventSpy).toHaveBeenCalledWith(expect.any(Event));
         expect(queryChangeEventSpy.mock.calls[0][0].type).toBe('queryChange');
         expect(screen.getByText('Payment methods tab')).toBeInTheDocument();
@@ -179,7 +180,7 @@ describe('useQueryString', () => {
             pathname: 'my-profile',
             search: '?tab=Payment+methods',
         }));
-        btn.click();
+        userEvent.click(btn);
 
         const goBackBtn = screen.getByRole('button', {
             name: 'Go back',
@@ -190,7 +191,7 @@ describe('useQueryString', () => {
             pathname: 'my-profile',
             search: 'form=Payment+method+form',
         }));
-        goBackBtn.click();
+        userEvent.click(goBackBtn);
         expect(mockReplace).toHaveBeenLastCalledWith({
             pathname: 'my-profile',
             search: 'form=Payment+method+form',
@@ -223,7 +224,8 @@ describe('useQueryString', () => {
             pathname: 'my-profile',
             search: 'tab=Counterparties&form=Payment+method+form',
         }));
-        btn.click();
+        userEvent.click(btn);
+
         expect(queryChangeEventSpy).toHaveBeenCalledWith(expect.any(Event));
         expect(queryChangeEventSpy.mock.calls[0][0].type).toBe('queryChange');
         expect(screen.getByText('Counterparties tab')).toBeInTheDocument();

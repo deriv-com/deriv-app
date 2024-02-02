@@ -25,9 +25,9 @@ export type TCurrenciesConfig = {
         transfer_between_accounts?: {
             fees?: { [key: string]: number };
             limits: {
+                [key: string]: unknown;
                 max?: number;
                 min: number;
-                [key: string]: unknown;
             } | null;
             limits_dxtrade?: { [key: string]: unknown };
             limits_mt5?: { [key: string]: unknown };
@@ -38,52 +38,12 @@ export type TCurrenciesConfig = {
 
 let currencies_config: TCurrenciesConfig = {};
 
-const fiat_currencies_display_order = ['USD', 'EUR', 'GBP', 'AUD'];
-const crypto_currencies_display_order = [
-    'TUSDT',
-    'BTC',
-    'ETH',
-    'LTC',
-    'UST',
-    'eUSDT',
-    'BUSD',
-    'DAI',
-    'EURS',
-    'IDK',
-    'PAX',
-    'TUSD',
-    'USDC',
-    'USDK',
-];
-
-export const reorderCurrencies = <T extends { value: string; type: string }>(list: Array<T>, type = 'fiat') => {
-    const new_order = type === 'fiat' ? fiat_currencies_display_order : crypto_currencies_display_order;
-
-    return list.sort((a, b) => {
-        if (new_order.indexOf(a.value) < new_order.indexOf(b.value)) {
-            return -1;
-        }
-        if (new_order.indexOf(a.value) > new_order.indexOf(b.value)) {
-            return 1;
-        }
-        return 0;
-    });
-};
-
 export const AMOUNT_MAX_LENGTH = 10;
 
 export const CURRENCY_TYPE = {
     CRYPTO: 'crypto',
     FIAT: 'fiat',
 } as const;
-
-export const getRoundedNumber = (number: number, currency: string) => {
-    return Number(Number(number).toFixed(getDecimalPlaces(currency)));
-};
-
-export const getFormattedText = (number: number, currency: string) => {
-    return `${addComma(number, getDecimalPlaces(currency), isCryptocurrency(currency))} ${currency}`;
-};
 
 export const formatMoney = (
     currency_value: string,
@@ -303,39 +263,8 @@ export const CryptoConfig = (() => {
     };
 })();
 
-export const getMinWithdrawal = (currency: string) => {
-    return isCryptocurrency(currency) ? getPropertyValue(CryptoConfig.get(), [currency, 'min_withdrawal']) || 0.002 : 1;
-};
-
-export const getTransferFee = (currency_from: string, currency_to: string) => {
-    const transfer_fee = getPropertyValue(currencies_config, [
-        currency_from,
-        'transfer_between_accounts',
-        'fees',
-        currency_to,
-    ]);
-    return `${typeof transfer_fee === 'undefined' ? '1' : transfer_fee}%`;
-};
-
-export const getCurrencyDisplayCode = (currency = '') => {
-    // eslint-disable-next-line
-    if (currency !== 'eUSDT' && currency !== 'tUSDT') currency = currency.toUpperCase();
-    return getPropertyValue(CryptoConfig.get(), [currency, 'display_code']) || currency;
-};
-
-export const getCurrencyName = (currency = '') =>
-    currency === 'USDT' ? 'Tether Omni' : getPropertyValue(currencies_config, [currency, 'name']) || '';
-
-export const getMinPayout = (currency: string) => {
-    return getPropertyValue(currencies_config, [currency, 'stake_default']);
-};
-
-export const getCurrencies = () => {
-    return currencies_config;
-};
-
 export type TAccount = {
-    account_type: 'real' | 'demo';
+    account_type: 'demo' | 'real';
     balance: number;
     currency: string;
 };

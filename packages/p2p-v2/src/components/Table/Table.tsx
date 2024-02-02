@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect, useRef } from 'react';
+import React, { memo, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { ColumnDef, GroupingState, getCoreRowModel, getGroupedRowModel, useReactTable } from '@tanstack/react-table';
 import { Text } from '@deriv-com/ui';
@@ -41,10 +41,9 @@ const Table = <T,>({
     useLayoutEffect(() => {
         if (headerRef?.current) {
             const topPosition = headerRef.current.getBoundingClientRect().bottom;
-
             setHeight(window.innerHeight - topPosition);
         }
-    }, []);
+    }, [headerRef?.current]);
 
     const { fetchMoreOnBottomReached } = useFetchMore({
         loadMore: loadMoreFunction,

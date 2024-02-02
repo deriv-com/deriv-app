@@ -37,9 +37,6 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
     const [available_routes, setAvailableRoutes] = React.useState(routes);
     const { is_passkey_supported, is_loading } = useIsPasskeySupported();
 
-    // eslint-disable-next-line no-console
-    console.log('is_passkey_supported in account.tsx', is_passkey_supported);
-
     const should_remove_passkey_route = !is_passkeys_enabled || is_desktop || (is_mobile && !is_passkey_supported);
 
     React.useEffect(() => {

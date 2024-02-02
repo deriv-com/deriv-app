@@ -18,6 +18,7 @@ const Passkeys = observer(() => {
 
     const [passkey_status, setPasskeyStatus] = React.useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
     const { is_passkey_supported, is_loading: is_passkey_support_checked } = useIsPasskeySupported();
+    const [passkey_error_modal_open, setPasskeyErrorModalOpen] = React.useState(false);
     const {
         data: passkeys_list,
         isLoading: is_passkeys_list_loading,
@@ -26,6 +27,12 @@ const Passkeys = observer(() => {
     const { createPasskey, is_passkey_registered, registration_error } = useRegisterPasskey();
 
     const should_show_passkeys = is_passkeys_enabled && is_passkey_supported && is_mobile;
+
+    React.useEffect(() => {
+        if (passkeys_list_error || registration_error) {
+            setPasskeyErrorModalOpen(true);
+        }
+    }, [passkeys_list_error, registration_error]);
 
     React.useEffect(() => {
         if (!passkeys_list?.length && !is_passkey_registered) {
@@ -44,8 +51,16 @@ const Passkeys = observer(() => {
         return <Redirect to={routes.traders_hub} />;
     }
 
-    const error_text =
-        (passkeys_list_error && String(passkeys_list_error)) || (registration_error && String(registration_error));
+    const getErrorText = () => {
+        if (passkeys_list_error) {
+            return passkeys_list_error.error.message ? passkeys_list_error.error.message : String(passkeys_list_error);
+        }
+        if (registration_error) {
+            if (typeof registration_error === 'string') return registration_error;
+            return registration_error.error.message ? registration_error?.error?.message : String(registration_error);
+        }
+        return null;
+    };
 
     //TODO consider different error messages with title and descriptions
     return (
@@ -66,11 +81,11 @@ const Passkeys = observer(() => {
 
             <PasskeyModal
                 className='passkeys-modal__error'
-                is_modal_open={!!error_text}
-                title={getErrorContent(error_text).title}
-                description={getErrorContent(error_text).description}
-                button_text={getErrorContent(error_text).button_text}
-                onButtonClick={getErrorContent(error_text).buttonOnclick}
+                is_modal_open={passkey_error_modal_open}
+                title={getErrorContent(getErrorText()).title}
+                description={getErrorContent(getErrorText()).description}
+                button_text={getErrorContent(getErrorText()).button_text}
+                onButtonClick={() => setPasskeyErrorModalOpen(false)}
             />
         </div>
     );

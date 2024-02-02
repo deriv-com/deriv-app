@@ -49,7 +49,7 @@ const useRegisterPasskey = () => {
                     //TODO check error handling after deployment
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
-                    setRegistrationError(e);
+                    setRegistrationError(String(e));
                 }
             };
 
@@ -68,6 +68,7 @@ const useRegisterPasskey = () => {
     return {
         createPasskey: () => {
             setIsPasskeyRegistered(false);
+            setRegistrationError('');
             refetch();
         },
         is_passkey_registered,

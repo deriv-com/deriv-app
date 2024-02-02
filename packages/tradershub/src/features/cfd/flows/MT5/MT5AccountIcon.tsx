@@ -6,8 +6,8 @@ import { THooks } from '../../../../types';
 import { MarketType, MarketTypeDetails } from '../../constants';
 
 export const MT5AccountIcon = ({ account }: { account: THooks.MT5AccountsList }) => {
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
 
     const { isEU } = useRegulationFlags(activeRegulation);
 

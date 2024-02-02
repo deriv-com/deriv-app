@@ -10,9 +10,8 @@ import { OptionsAndMultipliersHeading } from './OptionsAndMultipliersHeading';
  * @returns {React.ElementType} The `OptionsAndMultipliersSection` component.
  */
 const OptionsAndMultipliersSection = () => {
-    const { getUIState } = useUIContext();
-    const regulation = getUIState('regulation');
-    const accountType = getUIState('accountType');
+    const { uiState } = useUIContext();
+    const { accountType, regulation } = uiState;
     const { isSuccess, noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
     return (
         <div className='overflow-y-scroll pt-800 lg:border-solid lg:p-1200 lg:rounded-1200 lg:border-xs lg:border-opacity-black-100 '>

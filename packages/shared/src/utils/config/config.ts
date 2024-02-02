@@ -70,7 +70,7 @@ export const getAppId = () => {
         window.localStorage.removeItem('config.default_app_id');
         app_id = _app_id || 16303; // it's being used in endpoint chrome extension - please do not remove
     } else if (/localhost/i.test(window.location.hostname)) {
-        app_id = isBot() ? 1041 : 1043;
+        app_id = 36300;
     } else {
         window.localStorage.removeItem('config.default_app_id');
         app_id = _app_id || 16929;

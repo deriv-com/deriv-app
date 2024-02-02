@@ -27,10 +27,11 @@ const FullPageMobileWrapper = ({
                 'p2p-v2-mobile-wrapper--no-header': !renderHeader,
                 'p2p-v2-mobile-wrapper--no-header-fixed-footer': !renderHeader && shouldFixedFooter,
             })}
+            role='full-page-mobile-wrapper'
         >
             {renderHeader && (
                 <div className='p2p-v2-mobile-wrapper__header'>
-                    {shouldShowBackIcon && <LeftArrowIcon onClick={onBack} />}
+                    {shouldShowBackIcon && <LeftArrowIcon onClick={onBack} role='go-back-button' />}
                     {renderHeader()}
                 </div>
             )}

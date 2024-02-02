@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text } from '@deriv-com/ui';
 import { FullPageMobileWrapper, PaymentMethodsHeader } from '../../../../../components';
-import { setQueryString, useDevice } from '../../../../../hooks';
+import { useDevice, useQueryString } from '../../../../../hooks';
 import WalletIcon from '../../../../../public/ic-payment-methods-wallet.svg';
 import './PaymentMethodsEmpty.scss';
 
@@ -17,15 +17,15 @@ type TPaymentMethodsEmptyProps = {
  * **/
 const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) => {
     const { isMobile } = useDevice();
-
+    const { setQueryString } = useQueryString();
     if (isMobile) {
         return (
             <FullPageMobileWrapper
-                onBack={() =>
+                onBack={() => {
                     setQueryString({
                         tab: 'default',
-                    })
-                }
+                    });
+                }}
                 renderHeader={() => <PaymentMethodsHeader title='Payment methods' />}
             >
                 <div className='p2p-v2-payment-methods-empty'>
@@ -35,7 +35,12 @@ const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) 
                         You haven’t added any payment methods yet
                     </Text>
                     <Text size='lg'>Hit the button below to add payment methods.</Text>
-                    <Button className='p2p-v2-payment-methods-empty__button' onClick={() => onAddPaymentMethod()}>
+                    <Button
+                        className='p2p-v2-payment-methods-empty__button'
+                        onClick={() => {
+                            onAddPaymentMethod();
+                        }}
+                    >
                         Add payment methods
                     </Button>
                 </div>
@@ -51,7 +56,12 @@ const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) 
                 You haven’t added any payment methods yet
             </Text>
             <Text>Hit the button below to add payment methods.</Text>
-            <Button className='p2p-v2-payment-methods-empty__button' onClick={() => onAddPaymentMethod()}>
+            <Button
+                className='p2p-v2-payment-methods-empty__button'
+                onClick={() => {
+                    onAddPaymentMethod();
+                }}
+            >
                 Add payment methods
             </Button>
         </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import WalletsBannerUpgrade from './wallets-banner-upgrade';
 import WalletsBannerUpgrading from './wallets-banner-upgrading';
 import WalletsBannerReady from './wallets-banner-ready';
-import { useWalletMigration } from '@deriv/hooks';
+import { useWalletMigration } from '@deriv/api';
 import { observer, useStore } from '@deriv/stores';
 
 const WalletsBanner = observer(() => {

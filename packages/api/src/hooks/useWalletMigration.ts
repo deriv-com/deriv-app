@@ -2,23 +2,22 @@ import { useCallback } from 'react';
 import useInvalidateQuery from '../useInvalidateQuery';
 import useMutation from '../useMutation';
 import useQuery from '../useQuery';
-import { getActiveLoginIDFromLocalStorage } from '@deriv/utils';
+import useAuthorize from './useAuthorize';
 
 /** A custom hook to get the status of wallet_migration API and to start/reset the migration process */
 const useWalletMigration = () => {
+    const { isSuccess } = useAuthorize();
     const invalidate = useInvalidateQuery();
 
     /** Make a request to wallet_migration API and onSuccess it will invalidate the cached data  */
     const { mutate } = useMutation('wallet_migration', { onSuccess: () => invalidate('wallet_migration') });
-
-    const activeLoginID = getActiveLoginIDFromLocalStorage();
 
     /** Fetch the wallet_migration API and refetch it every second if the status is in_progress */
     const { data } = useQuery('wallet_migration', {
         payload: { wallet_migration: 'state' },
         options: {
             refetchInterval: response => (response?.wallet_migration?.state === 'in_progress' ? 500 : false),
-            enabled: !!activeLoginID,
+            enabled: isSuccess,
         },
     });
 

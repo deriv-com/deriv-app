@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { AvailableP2PBalanceModal, DailyLimitModal } from '@/components';
+import { AvailableP2PBalanceModal, DailyLimitModal } from '@/components/Modals';
 import { useAdvertiserStats, useDevice } from '@/hooks';
 import { numberToCurrencyText } from '@/utils';
 import { useActiveAccount } from '@deriv/api';

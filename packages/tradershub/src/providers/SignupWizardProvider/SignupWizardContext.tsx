@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useReducer, useState } from 'react';
+import React, { createContext, useContext, useMemo, useReducer } from 'react';
 import { useStep } from 'usehooks-ts';
 import { Helpers, TSignupWizardContext, TSignupWizardProvider } from './types';
 import { valuesReducer } from './ValuesReducer';
@@ -32,10 +32,6 @@ export const SignupWizardContext = createContext<TSignupWizardContext>({
         /* noop */
     },
     helpers: initialHelpers,
-    isWizardOpen: false,
-    setIsWizardOpen: /* noop */ () => {
-        /* noop */
-    },
     state: {
         currency: '',
     },
@@ -55,7 +51,6 @@ export const useSignupWizardContext = () => {
  * @param {React.ReactNode} children - The content to be wrapped.
  */
 export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
-    const [isWizardOpen, setIsWizardOpen] = useState(false);
     const [currentStep, helpers] = useStep(4);
     const [state, dispatch] = useReducer(valuesReducer, {
         currency: '',
@@ -66,11 +61,9 @@ export const SignupWizardProvider = ({ children }: TSignupWizardProvider) => {
             currentStep,
             dispatch,
             helpers,
-            isWizardOpen,
-            setIsWizardOpen,
             state,
         }),
-        [currentStep, helpers, isWizardOpen, state]
+        [currentStep, helpers, state]
     );
 
     return <SignupWizardContext.Provider value={contextState}>{children}</SignupWizardContext.Provider>;

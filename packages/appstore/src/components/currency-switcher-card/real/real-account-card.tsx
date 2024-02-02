@@ -27,12 +27,18 @@ const RealAccountCard = observer(() => {
         .some(account => account.landing_company_short === 'maltainvest');
 
     const uppercase_currency = currency?.toUpperCase();
-    const get_currency = IsIconCurrency(uppercase_currency) ? uppercase_currency : 'USD';
+    const get_currency = IsIconCurrency(uppercase_currency) ? uppercase_currency : 'Unknown';
 
     return (
         <CurrencySwitcherContainer
             className='demo-account-card'
-            title={<BalanceText currency={get_currency} balance={Number(balance)} size='xs' />}
+            title={
+                currency ? (
+                    <BalanceText currency={get_currency} balance={Number(balance)} size='xs' />
+                ) : (
+                    'No currency assigned'
+                )
+            }
             icon={get_currency}
             onClick={() => {
                 if (!is_eu_user && !has_mf_mt5_account) {
@@ -41,16 +47,21 @@ const RealAccountCard = observer(() => {
                 return openModal('currency_selection');
             }}
             actions={
-                <Button
-                    onClick={(e: MouseEvent) => {
-                        e.stopPropagation();
-                        history.push(`${routes.cashier_deposit}#deposit`);
-                    }}
-                    secondary
-                    className='currency-switcher__button'
-                >
-                    <Localize key={`currency-switcher__button-text-${current_language}`} i18n_default_text='Deposit' />
-                </Button>
+                currency && (
+                    <Button
+                        onClick={(e: MouseEvent) => {
+                            e.stopPropagation();
+                            history.push(`${routes.cashier_deposit}#deposit`);
+                        }}
+                        secondary
+                        className='currency-switcher__button'
+                    >
+                        <Localize
+                            key={`currency-switcher__button-text-${current_language}`}
+                            i18n_default_text='Deposit'
+                        />
+                    </Button>
+                )
             }
             has_interaction
         >

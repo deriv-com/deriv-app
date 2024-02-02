@@ -77,7 +77,7 @@ export const formatCurrency = (currency: string) => {
 };
 
 export const addComma = (num?: number | string | null, decimal_points?: number, is_crypto?: boolean) => {
-    let number: number | string = String(num ?? 0).replace(/,/g, '');
+    let number: number | string = String(num || 0).replace(/,/g, '');
     if (typeof decimal_points !== 'undefined') {
         number = (+number).toFixed(decimal_points);
     }

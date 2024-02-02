@@ -72,7 +72,6 @@ describe('CurrencyUtils', () => {
         it('handles null values', () => {
             expect(CurrencyUtils.addComma()).toBe('0');
             expect(CurrencyUtils.addComma(null)).toBe('0');
-            expect(CurrencyUtils.addComma(undefined)).toBe('0');
             expect(CurrencyUtils.addComma('')).toBe('0');
         });
     });

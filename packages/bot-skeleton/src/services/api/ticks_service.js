@@ -213,6 +213,13 @@ export default class TicksService {
                     }
                 }
 
+                if (data.msg_type === 'candles') {
+                    const {
+                        subscription: { id },
+                    } = data;
+                    this.subscriptions = this.subscriptions.set('candle', id);
+                }
+
                 if (data.msg_type === 'ohlc') {
                     const { ohlc } = data;
                     const { symbol, granularity, id } = ohlc;
@@ -305,6 +312,21 @@ export default class TicksService {
         });
     };
 
+    forgetCandleSubscription = () => {
+        return new Promise((resolve, reject) => {
+            const { stringified_options } = this.candles_promise;
+            const { symbol = '' } = JSON.parse(stringified_options);
+            if (symbol) {
+                this.forget(this.subscriptions.get('candle'))
+                    .then(res => {
+                        resolve(res);
+                    })
+                    .catch(reject);
+            } else {
+                resolve();
+            }
+        });
+    };
     unsubscribeFromTicksService() {
         return new Promise((resolve, reject) => {
             if (this.ticks_history_promise) {
@@ -314,13 +336,21 @@ export default class TicksService {
                     if (!this.subscriptions.getIn(['tick', symbol])) {
                         this.forget(this.subscriptions.get('history'))
                             .then(res => {
-                                resolve(res);
+                                if (this.candles_promise) {
+                                    this.forgetCandleSubscription().then(() => resolve());
+                                } else {
+                                    resolve(res);
+                                }
                             })
                             .catch(reject);
                     } else {
                         this.forget(this.subscriptions.getIn(['tick', symbol]))
                             .then(res => {
-                                resolve(res);
+                                if (this.candles_promise) {
+                                    this.forgetCandleSubscription().then(() => resolve());
+                                } else {
+                                    resolve(res);
+                                }
                             })
                             .catch(reject);
                     }
@@ -329,19 +359,6 @@ export default class TicksService {
                 }
             }
             this.ticks_history_promise = null;
-            if (this.candles_promise) {
-                const { stringified_options } = this.candles_promise;
-                const { symbol = '' } = JSON.parse(stringified_options);
-                if (symbol) {
-                    this.forget(this.subscriptions.getIn(['candle', symbol]))
-                        .then(res => {
-                            resolve(res);
-                        })
-                        .catch(reject);
-                } else {
-                    resolve();
-                }
-            }
 
             if (!this.ticks_history_promise && !this.candles_promise) {
                 resolve();

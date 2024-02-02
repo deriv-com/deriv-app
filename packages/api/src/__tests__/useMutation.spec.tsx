@@ -2,6 +2,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { TSocketResponse } from '../../types';
 import APIProvider from '../APIProvider';
+import AuthProvider from '../AuthProvider';
 import useMutation from '../useMutation';
 
 jest.mock('@deriv/shared', () => ({
@@ -19,7 +20,11 @@ jest.mock('@deriv/shared', () => ({
 
 describe('useMutation', () => {
     test('should call verify_email and get 1 in response', async () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <AuthProvider>{children}</AuthProvider>
+            </APIProvider>
+        );
 
         const { result, waitFor } = renderHook(() => useMutation('verify_email'), { wrapper });
 

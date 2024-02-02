@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api';
 import LoginHistoryListRow from '../login-history-list-row';
 
 describe('LoginHistoryListRow', () => {
@@ -19,7 +19,9 @@ describe('LoginHistoryListRow', () => {
     const renderComponent = () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
-                <StoreProvider store={mock_store}>{children}</StoreProvider>
+                <AuthProvider>
+                    <StoreProvider store={mock_store}>{children}</StoreProvider>
+                </AuthProvider>
             </APIProvider>
         );
         render(<LoginHistoryListRow {...mock_props} />, { wrapper });

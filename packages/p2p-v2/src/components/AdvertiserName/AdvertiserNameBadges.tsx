@@ -18,7 +18,7 @@ const AdvertiserNameBadges = () => {
     const { isAddressVerified, isIdentityVerified, totalOrders } = advertiserStats;
 
     return (
-        <div className='p2p-v2-advertiser-name-badges'>
+        <div className='p2p-v2-advertiser-name-badges' data-testid='dt_p2p_v2_advertiser_name_badges'>
             {totalOrders >= 100 && <Badge label='100+' status='trades' variant='warning' />}
             <Badge
                 label='ID'

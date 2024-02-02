@@ -29,7 +29,7 @@ const PaymentMethodsFormFooter = ({
     isSubmitting,
     isValid,
 }: TPaymentMethodsFormFooterProps) => (
-    <div className='p2p-v2-payment-method-form__buttons' data-testid='dt_p2p_v2_payment-methods-form-footer'>
+    <div className='p2p-v2-payment-method-form__buttons' role='payment-methods-form-footer'>
         <Button
             className='p2p-v2-payment-method-form__buttons--cancel'
             onClick={e => {

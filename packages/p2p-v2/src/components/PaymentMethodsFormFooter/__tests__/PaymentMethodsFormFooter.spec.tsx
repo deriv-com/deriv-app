@@ -14,7 +14,7 @@ describe('PaymentMethodsFormFooter', () => {
                 isValid={false}
             />
         );
-        expect(screen.getByTestId('dt_p2p_v2_payment-methods-form-footer')).toBeInTheDocument();
+        expect(screen.getByRole('payment-methods-form-footer')).toBeInTheDocument();
     });
     it('should render the correct button text when action type is edit', () => {
         render(

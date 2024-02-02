@@ -4,7 +4,7 @@ import { useActiveTradingAccount, useResetVirtualBalance } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Text } from '@deriv/quill-design';
 import { StandaloneChevronDownBoldIcon } from '@deriv/quill-icons';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button } from '@deriv-com/ui';
 import { IconToCurrencyMapper } from '../../constants/constants';
 import useRegulationFlags from '../../hooks/useRegulationFlags';
 import { THooks } from '../../types';
@@ -48,11 +48,9 @@ const CurrencySwitcher = () => {
     const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
     const { show } = Provider.useModal();
-    const { getUIState } = useUIContext();
+    const { uiState } = useUIContext();
 
-    const accountType = getUIState('accountType');
-
-    const regulation = getUIState('regulation');
+    const { accountType, regulation } = uiState;
 
     const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
 

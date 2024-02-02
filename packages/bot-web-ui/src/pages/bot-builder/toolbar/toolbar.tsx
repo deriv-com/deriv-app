@@ -3,6 +3,7 @@ import { Dialog } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { rudderStackSendQsOpenEvent } from '../quick-strategy/analytics/rudderstack-quick-strategy';
 import ToolbarButton from './toolbar-button';
 import WorkspaceGroup from './workspace-group';
 
@@ -30,6 +31,8 @@ const Toolbar = observer(() => {
     const cancel_button_text = is_running ? localize('No') : localize('Cancel');
     const handleQuickStrategyOpen = () => {
         setFormVisibility(true);
+        // send to rs if quick strategy is opened from bot builder (mobile)
+        rudderStackSendQsOpenEvent();
     };
     return (
         <React.Fragment>

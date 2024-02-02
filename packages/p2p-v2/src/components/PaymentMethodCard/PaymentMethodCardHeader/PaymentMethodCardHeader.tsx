@@ -44,7 +44,7 @@ const PaymentMethodCardHeader = ({
         </Button>,
     ];
     return (
-        <div className='p2p-v2-payment-method-card__header'>
+        <div className='p2p-v2-payment-method-card__header' data-testid='dt_p2p_v2_payment-method-card__header'>
             <Icon
                 className='p2p-v2-payment-method-card__icon'
                 height={medium || small ? 16 : 24}

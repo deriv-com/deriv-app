@@ -3,9 +3,9 @@ import { debounce } from 'lodash';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import Modal from 'react-modal';
 import { p2p } from '@deriv/api';
+import { DerivLightIcCashierUserIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
 import { useDevice } from '../../../hooks';
-import P2PUserIcon from '../../../public/ic-cashier-p2p-user.svg';
 import { Input } from '../../Input';
 import { customStyles } from '../helpers';
 import './NicknameModal.scss';
@@ -53,7 +53,7 @@ const NicknameModal = () => {
             style={customStyles}
         >
             <form className='p2p-v2-nickname-modal__form' onSubmit={handleSubmit(onSubmit)}>
-                <P2PUserIcon />
+                <DerivLightIcCashierUserIcon height='12.8rem' width='12.8rem' />
                 <Text className='p2p-v2-nickname-modal__form-title' weight='bold'>
                     Choose your nickname
                 </Text>

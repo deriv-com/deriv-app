@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { DerivLightIcCashierSendEmailIcon } from '@deriv/quill-icons';
 import { Loader, Text } from '@deriv-com/ui';
 import { useDevice, usePoiPoaStatus } from '../../hooks';
-import SendEmailIcon from '../../public/ic-send-email.svg';
 import { Checklist } from '../Checklist';
 import './Verification.scss';
 
@@ -79,7 +79,7 @@ const Verification = () => {
 
     return (
         <div className='p2p-v2-verification'>
-            <SendEmailIcon className='p2p-v2-verification__icon' />
+            <DerivLightIcCashierSendEmailIcon className='p2p-v2-verification__icon' />
             <Text className='p2p-v2-verification__text' size={isMobile ? 'lg' : 'md'} weight='bold'>
                 Verify your P2P account
             </Text>

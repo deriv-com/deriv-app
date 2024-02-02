@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useCombobox } from 'downshift';
+import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import ArrowDown from '../../public/ic-chevron-down.svg';
 import reactNodeToString from '../../utils/react-node-to-string';
 import TextField, { TextFieldProps } from '../TextField/TextField';
 import './Dropdown.scss';
@@ -120,7 +120,7 @@ const Dropdown: React.FC<TProps> = ({
                                 'p2p-v2-dropdown__button--active': isOpen,
                             })}
                         >
-                            <ArrowDown />
+                            <LabelPairedChevronDownMdRegularIcon />
                         </button>
                     )}
                     type='text'

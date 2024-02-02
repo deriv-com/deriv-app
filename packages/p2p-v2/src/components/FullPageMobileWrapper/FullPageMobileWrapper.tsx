@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import clsx from 'clsx';
-import LeftArrowIcon from '../../public/ic-arrow-left.svg';
+import { LabelPairedArrowLeftLgBoldIcon } from '@deriv/quill-icons';
 import './FullPageMobileWrapper.scss';
 
 type TFullPageMobileWrapperProps = {
@@ -30,7 +30,7 @@ const FullPageMobileWrapper = ({
         >
             {renderHeader && (
                 <div className='p2p-v2-mobile-wrapper__header'>
-                    {shouldShowBackIcon && <LeftArrowIcon onClick={onBack} />}
+                    {shouldShowBackIcon && <LabelPairedArrowLeftLgBoldIcon onClick={onBack} />}
                     {renderHeader()}
                 </div>
             )}

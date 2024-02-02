@@ -1,7 +1,7 @@
 import React from 'react';
+import { LabelPairedXmarkLgBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import { useDevice } from '../../hooks';
-import CrossIcon from '../../public/ic-cross.svg';
 import './CloseHeader.scss';
 
 const CloseHeader = () => {
@@ -12,7 +12,7 @@ const CloseHeader = () => {
             <Text size={isMobile ? 'md' : 'xl'} weight='bold'>
                 {isMobile ? 'Deriv P2P' : 'Cashier'}
             </Text>
-            <CrossIcon className='p2p-v2-close-header--icon' onClick={() => window.history.back()} />
+            <LabelPairedXmarkLgBoldIcon className='p2p-v2-close-header--icon' onClick={() => window.history.back()} />
         </div>
     );
 };

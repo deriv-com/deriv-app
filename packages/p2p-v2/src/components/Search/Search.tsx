@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import SearchIcon from '../../public/ic-search.svg';
+import { LabelPairedSearchMdRegularIcon } from '@deriv/quill-icons';
 import { Input } from '../Input';
 import './Search.scss';
 
@@ -23,7 +23,7 @@ const Search = ({ name, onSearch, placeholder }: TSearchProps) => {
 
     return (
         <form className='p2p-v2-search' onChange={event => debouncedOnSearch((event.target as HTMLInputElement).value)}>
-            <Input leadingIcon={<SearchIcon />} name={name} placeholder={placeholder} />
+            <Input leadingIcon={<LabelPairedSearchMdRegularIcon />} name={name} placeholder={placeholder} />
         </form>
     );
 };

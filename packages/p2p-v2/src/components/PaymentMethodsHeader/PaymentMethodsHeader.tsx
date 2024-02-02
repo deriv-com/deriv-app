@@ -1,6 +1,6 @@
 import React from 'react';
+import { LabelPairedArrowLeftLgBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
-import ArrowLeftBold from '../../public/ic-arrow-left-bold.svg';
 import './PaymentMethodsHeader.scss';
 
 type TPaymentMethodsHeaderProps = {
@@ -18,7 +18,7 @@ type TPaymentMethodsHeaderProps = {
 const PaymentMethodsHeader = ({ onGoBack, title }: TPaymentMethodsHeaderProps) => (
     <div className='p2p-v2-payment-method-form__header'>
         <div className='p2p-v2-payment-method-form__back-button'>
-            {onGoBack && <ArrowLeftBold onClick={onGoBack} />}
+            {onGoBack && <LabelPairedArrowLeftLgBoldIcon onClick={onGoBack} />}
         </div>
         {/* TODO: Remember to translate this */}
         <Text size='sm' weight='bold'>

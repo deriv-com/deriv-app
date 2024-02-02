@@ -2,6 +2,7 @@ import React from 'react';
 import { APIProvider } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { BreakpointProvider } from '@deriv/quill-design';
+import { SignupWizardProvider } from './providers/SignupWizardProvider';
 import AppContent from './AppContent';
 import { UIProvider } from './components';
 import './index.scss';
@@ -12,7 +13,9 @@ const App = () => (
             <BreakpointProvider>
                 <Provider.CFDProvider>
                     <Provider.ModalProvider>
-                        <AppContent />
+                        <SignupWizardProvider>
+                            <AppContent />
+                        </SignupWizardProvider>
                     </Provider.ModalProvider>
                 </Provider.CFDProvider>
             </BreakpointProvider>

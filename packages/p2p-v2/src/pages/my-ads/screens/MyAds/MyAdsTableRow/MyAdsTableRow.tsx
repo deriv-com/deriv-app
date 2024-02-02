@@ -198,7 +198,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                         <Button onClick={() => onClickActionItem('edit')}>
                             <Tooltip
                                 className='p2p-v2-my-ads-table-row__actions-popovers__item'
-                                message={is_active ? 'Deactivate' : 'Activate'}
+                                message='Edit'
                                 position='bottom'
                             >
                                 <EditIcon />

@@ -5,7 +5,6 @@ import {
     cumulativeAccountLimitsMessageFn,
     insufficientBalanceMessageFn,
     lifetimeAccountLimitsBetweenWalletsMessageFn,
-    transferFeesBetweenWalletsMessageFn,
 } from '../utils';
 
 jest.mock('@deriv/api', () => ({
@@ -26,11 +25,6 @@ jest.mock('../utils/insufficientBalanceMessageFn', () => ({
 }));
 
 jest.mock('../utils/lifetimeAccountLimitsBetweenWalletsMessageFn', () => ({
-    __esModule: true,
-    default: jest.fn(),
-}));
-
-jest.mock('../utils/transferFeesBetweenWalletsMessageFn', () => ({
     __esModule: true,
     default: jest.fn(),
 }));
@@ -220,19 +214,11 @@ describe('useTransferMessages', () => {
         ]);
     });
 
-    test('should render correct message and type for transferFeesBetweenWalletsMessageFn', () => {
-        (transferFeesBetweenWalletsMessageFn as jest.Mock).mockReturnValueOnce({
-            message: 'transferFeesBetweenWalletsMessageFn',
-            type: 'info',
-        });
+    test('should pass values with correct format to messageFns', () => {
         const { result } = renderHook(() => useTransferMessages(mockWalletsTransfer));
 
-        expect(result.current).toEqual([
-            {
-                message: 'transferFeesBetweenWalletsMessageFn',
-                type: 'info',
-            },
-        ]);
+        expect(result.current[0].message.values.feeMessageText).toEqual('0.1 USD');
+        expect(result.current[0].message.values.minimumFeeText).toEqual('0.1 USD');
     });
 
     test('should not render transfer messages when active wallet is null', () => {

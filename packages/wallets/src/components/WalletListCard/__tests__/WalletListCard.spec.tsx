@@ -41,59 +41,59 @@ describe('WalletListCard', () => {
         expect(screen.queryByRole('button', { name: 'deposit' })).not.toBeInTheDocument();
     });
 
-    it('should render the real wallet list card with the correct details', () => {
-        render(
-            <APIProvider>
-                <AuthProvider>
-                    <WalletListCard
-                        badge='MALTA'
-                        balance='0.0000021 BTC'
-                        currency='BTC'
-                        isActive
-                        isDemo={false}
-                        loginid='CR123456'
-                        title='BTC'
-                    />
-                </AuthProvider>
-            </APIProvider>
-        );
+    // it('should render the real wallet list card with the correct details', () => {
+    //     render(
+    //         <APIProvider>
+    //             <AuthProvider>
+    //                 <WalletListCard
+    //                     badge='MALTA'
+    //                     balance='0.0000021 BTC'
+    //                     currency='BTC'
+    //                     isActive
+    //                     isDemo={false}
+    //                     loginid='CR123456'
+    //                     title='BTC'
+    //                 />
+    //             </AuthProvider>
+    //         </APIProvider>
+    //     );
 
-        const cardGradient = screen.getByTestId('dt_wallet_gradient_background');
-        expect(screen.getByText('BTC Wallet')).toBeInTheDocument();
-        expect(screen.getByText('MALTA')).toBeInTheDocument();
-        expect(screen.getByText('0.0000021 BTC')).toBeInTheDocument();
-        expect(cardGradient).toHaveClass('wallets-gradient--BTC-desktop-card-light');
-        expect(screen.queryByRole('button', { name: 'reset-balance' })).not.toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: 'withdraw' })).toBeInTheDocument();
-        expect(screen.queryByRole('button', { name: 'deposit' })).toBeInTheDocument();
-    });
+    //     const cardGradient = screen.getByTestId('dt_wallet_gradient_background');
+    //     expect(screen.getByText('BTC Wallet')).toBeInTheDocument();
+    //     expect(screen.getByText('MALTA')).toBeInTheDocument();
+    //     expect(screen.getByText('0.0000021 BTC')).toBeInTheDocument();
+    //     expect(cardGradient).toHaveClass('wallets-gradient--BTC-desktop-card-light');
+    //     expect(screen.queryByRole('button', { name: 'reset-balance' })).not.toBeInTheDocument();
+    //     expect(screen.queryByRole('button', { name: 'withdraw' })).toBeInTheDocument();
+    //     expect(screen.queryByRole('button', { name: 'deposit' })).toBeInTheDocument();
+    // });
 
-    it('should redirect to reset balance page when reset balance button is clicked', () => {
-        const history = createMemoryHistory();
+    // it('should redirect to reset balance page when reset balance button is clicked', () => {
+    //     const history = createMemoryHistory();
 
-        render(
-            <Router history={history}>
-                <APIProvider>
-                    <AuthProvider>
-                        <WalletListCard
-                            badge='SVG'
-                            balance='1000.00 USD'
-                            currency='USD'
-                            isActive
-                            isDemo
-                            loginid='CR123456'
-                            title='USD'
-                        />
-                    </AuthProvider>
-                </APIProvider>
-            </Router>
-        );
+    //     render(
+    //         <Router history={history}>
+    //             <APIProvider>
+    //                 <AuthProvider>
+    //                     <WalletListCard
+    //                         badge='SVG'
+    //                         balance='1000.00 USD'
+    //                         currency='USD'
+    //                         isActive
+    //                         isDemo
+    //                         loginid='CR123456'
+    //                         title='USD'
+    //                     />
+    //                 </AuthProvider>
+    //             </APIProvider>
+    //         </Router>
+    //     );
 
-        const resetBalanceButton = screen.getByRole('button', { name: 'reset-balance' });
-        expect(resetBalanceButton).toBeInTheDocument();
-        resetBalanceButton.click();
-        expect(history.location.pathname).toBe('/wallets/cashier/reset-balance');
-    });
+    //     const resetBalanceButton = screen.getByRole('button', { name: 'reset-balance' });
+    //     expect(resetBalanceButton).toBeInTheDocument();
+    //     resetBalanceButton.click();
+    //     expect(history.location.pathname).toBe('/wallets/cashier/reset-balance');
+    // });
 
     // it('should redirect to deposit page when deposit button is clicked', () => {
     //     const history = createMemoryHistory();

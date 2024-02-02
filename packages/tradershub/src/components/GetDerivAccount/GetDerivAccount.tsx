@@ -1,11 +1,14 @@
 import React from 'react';
 import { PlatformsDerivAppsLightIcon } from '@deriv/quill-icons';
-import { useSignupWizardContext } from '../../providers/SignupWizardProvider';
 import { TradingAccountCard, TradingAccountCardContent, TradingAccountCardLightButton } from '../TradingAccountCard';
+import { useUIContext } from '../UIProvider';
 
 const TrailingButton = () => {
-    const { setIsWizardOpen } = useSignupWizardContext();
-    return <TradingAccountCardLightButton onSubmit={() => setIsWizardOpen(true)} />;
+    const { setUIState } = useUIContext();
+    const handleOpenSignupWizard = () => {
+        setUIState({ isSignupWizardOpen: true });
+    };
+    return <TradingAccountCardLightButton onSubmit={handleOpenSignupWizard} />;
 };
 
 const GetDerivAccount = () => {

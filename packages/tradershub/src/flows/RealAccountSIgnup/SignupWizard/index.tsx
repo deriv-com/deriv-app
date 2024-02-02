@@ -4,6 +4,7 @@ import { useBreakpoint } from '@deriv/quill-design';
 import { StandaloneXmarkBoldIcon } from '@deriv/quill-icons';
 import { Text } from '@deriv-com/ui';
 import { ProgressBar } from '../../../components/ProgressBar';
+import { useUIContext } from '../../../components/UIProvider';
 import { CUSTOM_STYLES } from '../../../helpers/signupModalHelpers';
 import { ACTION_TYPES, useSignupWizardContext } from '../../../providers/SignupWizardProvider';
 import WizardScreens from './WizardScreens';
@@ -25,20 +26,31 @@ const FORM_PROGRESS_STEPS = [
  * );
  */
 const SignupWizard = () => {
-    const { currentStep, dispatch, helpers, isWizardOpen, setIsWizardOpen } = useSignupWizardContext();
+    const { currentStep, dispatch, helpers } = useSignupWizardContext();
     const { isMobile } = useBreakpoint();
+    const {
+        setUIState,
+        uiState: { isSignupWizardOpen },
+    } = useUIContext();
     useEffect(() => {
         ReactModal.setAppElement('#v2_modal_root');
     }, []);
 
     const handleClose = useCallback(() => {
-        setIsWizardOpen(false);
+        setUIState({
+            isSignupWizardOpen: false,
+        });
         dispatch({ type: ACTION_TYPES.RESET });
         helpers.setStep(1);
-    }, [dispatch, helpers, setIsWizardOpen]);
+    }, [dispatch, helpers, setUIState]);
 
     return (
-        <ReactModal isOpen={isWizardOpen} onRequestClose={handleClose} shouldCloseOnOverlayClick style={CUSTOM_STYLES}>
+        <ReactModal
+            isOpen={isSignupWizardOpen}
+            onRequestClose={handleClose}
+            shouldCloseOnOverlayClick
+            style={CUSTOM_STYLES}
+        >
             <div className='bg-background-primary-base md:max-h-[717px] md:max-w-[1040px] h-screen w-screen md:rounded-800 flex overflow-hidden'>
                 {!isMobile && (
                     <div className='min-w-[256px] bg-system-light-secondary-background p-1200'>

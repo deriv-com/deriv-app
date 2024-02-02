@@ -3,7 +3,7 @@ import React, { createContext, useCallback, useContext, useMemo, useState } from
 type TUIState = {
     // Add other UI states here
     accountType?: string;
-    isSignupWizardOpen?: boolean;
+    isSignupWizardOpen: boolean;
     regulation?: string;
 };
 
@@ -25,7 +25,9 @@ export const useUIContext = () => {
 };
 
 export const UIProvider = ({ children }: { children: React.ReactNode }) => {
-    const [uiState, setUIState] = useState<TUIState>({});
+    const [uiState, setUIState] = useState<TUIState>({
+        isSignupWizardOpen: false,
+    });
 
     const updateUIState = useCallback((newState: TUIState) => {
         setUIState(prevState => ({ ...prevState, ...newState }));

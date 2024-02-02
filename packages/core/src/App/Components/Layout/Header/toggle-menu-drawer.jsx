@@ -57,7 +57,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { data: is_p2p_enabled } = useIsP2PEnabled();
 
-    const { is_passkey_supported, is_loading } = useIsPasskeySupported();
+    const { is_passkey_supported, is_loading, ...rest } = useIsPasskeySupported();
+    // eslint-disable-next-line no-console
+    console.log('is_passkey_supported in toggle-menu-drawer', is_passkey_supported);
+    // eslint-disable-next-line no-console
+    console.log('rest in toggle-menu-drawer', rest);
+
     const { is_passkeys_enabled } = React.useContext(PlatformContext);
 
     const { pathname: route } = useLocation();

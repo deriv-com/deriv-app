@@ -63,15 +63,6 @@ const Passkeys = observer(() => {
     const should_show_passkeys = is_passkeys_enabled && is_passkey_supported && is_mobile;
 
     React.useEffect(() => {
-        //TODO add here logic to read local storage and check if there is no passkey and navigate to effortless_login page
-        // const is_first_login = true;
-        // if (passkeys_list?.length) {
-        //     passkeys_list.length = 0;
-        // }
-        // if (!passkeys_list?.length && is_first_login) {
-        //     setPasskeyStatus(PASSKEY_STATUS_CODES.EFFORTLESS_LOGIN);
-        // } else
-
         if (!passkeys_list?.length && !is_passkey_registered) {
             setPasskeyStatus(PASSKEY_STATUS_CODES.NO_PASSKEY);
         } else if (is_passkey_registered) {

@@ -43,7 +43,6 @@ const PasskeysStatusContainer = ({ createPasskey, passkey_status, setPasskeyStat
     }
 
     const is_learn_more_opened = passkey_status === PASSKEY_STATUS_CODES.LEARN_MORE;
-    const is_full_screen_opened = passkey_status === PASSKEY_STATUS_CODES.EFFORTLESS_LOGIN;
 
     return (
         <div className='passkeys'>
@@ -59,7 +58,6 @@ const PasskeysStatusContainer = ({ createPasskey, passkey_status, setPasskeyStat
                 icon={content.icon}
                 title={content.title}
                 description={content.description}
-                is_full_screen_overlay={is_full_screen_opened}
             >
                 <PasskeysFooterButtons
                     primary_button_text={content.primary_button_text}

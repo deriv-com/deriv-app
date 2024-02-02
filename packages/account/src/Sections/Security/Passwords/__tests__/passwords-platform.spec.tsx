@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider, AuthProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import PasswordsPlatform from '../passwords-platform';
 
@@ -28,11 +28,9 @@ describe('<PasswordsPlatform />', () => {
     const renderComponent = ({ props = mock_props, store_config = store }) =>
         render(
             <APIProvider>
-                <AuthProvider>
-                    <StoreProvider store={store_config}>
-                        <PasswordsPlatform {...props} />
-                    </StoreProvider>
-                </AuthProvider>
+                <StoreProvider store={store_config}>
+                    <PasswordsPlatform {...props} />
+                </StoreProvider>
             </APIProvider>
         );
 

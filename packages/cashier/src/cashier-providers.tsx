@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider, AuthProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import { ThemeProvider } from '@deriv/ui';
 import { CashierStoreProvider } from './stores/useCashierStores';
@@ -10,9 +10,7 @@ const CashierProviders: React.FC<React.PropsWithChildren<TProps>> = ({ children,
     <StoreProvider store={store}>
         <CashierStoreProvider>
             <APIProvider>
-                <AuthProvider>
-                    <ThemeProvider>{children}</ThemeProvider>
-                </AuthProvider>
+                <ThemeProvider>{children}</ThemeProvider>
             </APIProvider>
         </CashierStoreProvider>
     </StoreProvider>

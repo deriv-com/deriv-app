@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { APIProvider, AuthProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import DerivEmail from '../deriv-email';
 
@@ -27,11 +27,9 @@ describe('DerivEmail', () => {
     const renderComponent = ({ store_config = store }) =>
         render(
             <APIProvider>
-                <AuthProvider>
-                    <StoreProvider store={store_config}>
-                        <DerivEmail />
-                    </StoreProvider>
-                </AuthProvider>
+                <StoreProvider store={store_config}>
+                    <DerivEmail />
+                </StoreProvider>
             </APIProvider>
         );
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { APIProvider, AuthProvider } from '@deriv/api';
+import { APIProvider } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import Passwords from '../passwords';
 
@@ -24,11 +24,9 @@ describe('<Passwords />', () => {
     const renderComponent = ({ store_config = store }) => {
         return render(
             <APIProvider>
-                <AuthProvider>
-                    <StoreProvider store={store_config}>
-                        <Passwords />
-                    </StoreProvider>
-                </AuthProvider>
+                <StoreProvider store={store_config}>
+                    <Passwords />
+                </StoreProvider>
             </APIProvider>
         );
     };

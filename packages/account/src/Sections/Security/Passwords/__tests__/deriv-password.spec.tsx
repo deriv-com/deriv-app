@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import DerivPassword from '../deriv-password';
-import { APIProvider, AuthProvider, useVerifyEmail } from '@deriv/api';
+import { APIProvider, useVerifyEmail } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('Assets/ic-brand-deriv-red.svg', () => () => 'BrandDerivRed');
@@ -29,11 +29,9 @@ describe('<DerivPassword />', () => {
     const renderComponent = ({ store_config = store }) =>
         render(
             <APIProvider>
-                <AuthProvider>
-                    <StoreProvider store={store_config}>
-                        <DerivPassword />
-                    </StoreProvider>
-                </AuthProvider>
+                <StoreProvider store={store_config}>
+                    <DerivPassword />
+                </StoreProvider>
             </APIProvider>
         );
 

@@ -24,12 +24,11 @@ import MigrationBanner from './migration-banner';
 
 type TMT5TradeModalProps = {
     mt5_trade_account: DetailsOfEachMT5Loginid & {
-        webtrader_url?: string;
         white_label?: {
             download_links?: {
-                android?: string;
-                ios?: string;
                 windows?: string;
+                ios?: string;
+                android?: string;
             };
         };
     };
@@ -218,10 +217,7 @@ const DMT5TradeModal = observer(
                         <a
                             className='dc-btn cfd-trade-modal__download-center-app--option-link'
                             type='button'
-                            href={
-                                mt5_trade_account?.white_label_download_links?.windows ??
-                                mt5_trade_account?.white_label?.download_links?.windows
-                            }
+                            href={mt5_trade_account?.white_label?.download_links?.windows}
                             target='_blank'
                             rel='noopener noreferrer'
                         >
@@ -283,20 +279,14 @@ const DMT5TradeModal = observer(
                 <div className='cfd-trade-modal__download-center-options'>
                     <div className='cfd-trade-modal__download-center-options--mobile-links'>
                         <a
-                            href={
-                                mt5_trade_account?.white_label_download_links?.ios ??
-                                mt5_trade_account?.white_label?.download_links?.ios
-                            }
+                            href={mt5_trade_account?.white_label?.download_links?.ios}
                             target='_blank'
                             rel='noopener noreferrer'
                         >
                             <Icon icon='IcInstallationApple' width={135} height={40} />
                         </a>
                         <a
-                            href={
-                                mt5_trade_account?.white_label_download_links?.android ??
-                                mt5_trade_account?.white_label?.download_links?.android
-                            }
+                            href={mt5_trade_account?.white_label?.download_links?.android}
                             target='_blank'
                             rel='noopener noreferrer'
                         >

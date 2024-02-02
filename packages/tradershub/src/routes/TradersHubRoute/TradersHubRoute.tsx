@@ -17,9 +17,8 @@ import useRegulationFlags from '../../hooks/useRegulationFlags';
 const TradersHubRoute = () => {
     const { isMobile } = useBreakpoint();
     const { data: isDIEL } = useIsDIELEnabled();
-    const { getUIState } = useUIContext();
-    const accountType = getUIState('accountType');
-    const regulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const { accountType, regulation } = uiState;
     const isReal = accountType === 'real';
     const isDemo = accountType === 'demo';
     const { hasActiveDerivAccount } = useRegulationFlags(regulation, accountType);

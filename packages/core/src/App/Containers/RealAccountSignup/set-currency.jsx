@@ -12,7 +12,7 @@ import { observer, useStore } from '@deriv/stores';
 
 const SetCurrency = observer(({ setLoading, onSuccessSetAccountCurrency, onError, is_loading, ...props }) => {
     const { client } = useStore();
-    const { available_crypto_currencies, has_fiat, landing_company_shortcode } = client;
+    const { available_crypto_currencies, has_fiat, landing_company_shortcode, setAccountCurrency } = client;
     const form_error = React.useState('');
     const form_value = React.useState({ currency: '' });
 
@@ -20,8 +20,7 @@ const SetCurrency = observer(({ setLoading, onSuccessSetAccountCurrency, onError
         setLoading(true);
         const { currency } = obj;
         if (currency) {
-            props
-                .setCurrency(currency)
+            setAccountCurrency(currency)
                 .then(response => {
                     setSubmitting(false);
                     onSuccessSetAccountCurrency('', response.echo_req.set_account_currency);

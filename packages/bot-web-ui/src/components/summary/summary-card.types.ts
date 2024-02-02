@@ -1,4 +1,4 @@
-import { TCoreStores } from '@deriv/stores/types';
+import { ProposalOpenContract } from '@deriv/api-types';
 
 type TTransactionIds = {
     buy: number;
@@ -68,6 +68,6 @@ export type TContractInfo = {
 };
 
 export interface TSummaryCardProps {
-    contract_info?: TCoreStores['portfolio']['active_positions'][0]['contract_info'] | null;
+    contract_info?: ProposalOpenContract | null;
     is_contract_loading: boolean;
 }

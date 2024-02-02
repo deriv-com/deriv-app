@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react';
 import { mock_ws } from 'Utils/mock';
 import RootStore from 'Stores/root-store';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
-import { TCoreStores } from '@deriv/stores/types';
+import { ProposalOpenContract } from '@deriv/api-types';
 import SummaryCard from '../summary-card';
 
 jest.mock('@deriv/bot-skeleton/src/scratch/dbot', () => ({}));
@@ -17,7 +17,7 @@ jest.mock('@deriv/components', () => ({
 
 jest.mock('Components/contract-card-loading', () => jest.fn(() => 'ContractCardLoader'));
 
-const mock_contract_info: TCoreStores['portfolio']['active_positions'][0]['contract_info'] = { account_id: 95381528 };
+const mock_contract_info: ProposalOpenContract = { account_id: 95381528 };
 
 describe('SummaryCard', () => {
     let wrapper: ({ children }: { children: JSX.Element }) => JSX.Element, mock_DBot_store: RootStore | undefined;

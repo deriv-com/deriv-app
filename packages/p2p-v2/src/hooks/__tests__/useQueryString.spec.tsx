@@ -11,7 +11,6 @@ const MockMyProfile = () => {
     return (
         <div>
             <button
-                data-testid='switch_payment_methods_btn'
                 onClick={() =>
                     setQueryString({
                         tab: 'Payment methods',
@@ -21,7 +20,6 @@ const MockMyProfile = () => {
                 Switch payment methods
             </button>
             <button
-                data-testid='switch_stats_btn'
                 onClick={() =>
                     setQueryString({
                         tab: 'Stats',
@@ -95,7 +93,7 @@ describe('useQueryString', () => {
     afterEach(() => {
         jest.restoreAllMocks();
     });
-    test('setting new query strings', () => {
+    it('setting new query strings', () => {
         const history = createMemoryHistory();
         history.push('/mock-my-profile');
         render(
@@ -107,7 +105,9 @@ describe('useQueryString', () => {
         expect(screen.queryByText('Payment methods tab')).not.toBeInTheDocument();
         expect(screen.queryByText('Stats tab')).not.toBeInTheDocument();
 
-        const btn = screen.getByTestId('switch_payment_methods_btn');
+        const btn = screen.getByRole('button', {
+            name: 'Switch payment methods',
+        });
         const originalLocation = window.location;
         const queryChangeEventSpy = jest.spyOn(window, 'dispatchEvent');
         windowLocationSpy.mockImplementation(() => ({
@@ -126,7 +126,9 @@ describe('useQueryString', () => {
         expect(queryChangeEventSpy.mock.calls[0][0].type).toBe('queryChange');
         expect(screen.getByText('Payment methods tab')).toBeInTheDocument();
 
-        const statsBtn = screen.getByTestId('switch_stats_btn');
+        const statsBtn = screen.getByRole('button', {
+            name: 'Switch stats',
+        });
         windowLocationSpy.mockImplementation(() => ({
             ...originalLocation,
             href: 'http://localhost/my-profile?tab=Stats',
@@ -142,7 +144,9 @@ describe('useQueryString', () => {
         expect(queryChangeEventSpy.mock.calls[0][0].type).toBe('queryChange');
         expect(screen.getByText('Stats tab')).toBeInTheDocument();
 
-        const paymentMethodFormBtn = screen.getByTestId('pm_form_btn');
+        const paymentMethodFormBtn = screen.getByRole('button', {
+            name: 'Switch payment method form',
+        });
         windowLocationSpy.mockImplementation(() => ({
             ...originalLocation,
             href: 'http://localhost/my-profile?tab=Stats&form=Payment+method+form',
@@ -156,7 +160,7 @@ describe('useQueryString', () => {
         expect(screen.getByText('Payment method form')).toBeInTheDocument();
     });
 
-    test('deleting query strings', () => {
+    it('deleting query strings', () => {
         const history = createMemoryHistory();
         history.push('/mock-my-profile');
         render(
@@ -168,7 +172,9 @@ describe('useQueryString', () => {
         expect(screen.queryByText('Payment methods tab')).not.toBeInTheDocument();
         expect(screen.queryByText('Payment method form')).not.toBeInTheDocument();
 
-        const btn = screen.getByTestId('switch_payment_methods_btn');
+        const btn = screen.getByRole('button', {
+            name: 'Switch payment methods',
+        });
         const originalLocation = window.location;
         const queryChangeEventSpy = jest.spyOn(window, 'dispatchEvent');
         windowLocationSpy.mockImplementation(() => ({
@@ -179,7 +185,9 @@ describe('useQueryString', () => {
         }));
         btn.click();
 
-        const goBackBtn = screen.getByTestId('go_back_btn');
+        const goBackBtn = screen.getByRole('button', {
+            name: 'Go back',
+        });
         windowLocationSpy.mockImplementation(() => ({
             ...originalLocation,
             href: 'http://localhost/my-profile?form=Payment+method+form',
@@ -196,7 +204,7 @@ describe('useQueryString', () => {
         expect(screen.getByText('My profile')).toBeInTheDocument();
         expect(screen.getByText('Payment method form')).toBeInTheDocument();
     });
-    test('replacing query strings', () => {
+    it('replacing query strings', () => {
         const history = createMemoryHistory();
         history.push('/mock-my-profile');
         render(
@@ -208,7 +216,9 @@ describe('useQueryString', () => {
         expect(screen.queryByText('Counterparties tab')).not.toBeInTheDocument();
         expect(screen.queryByText('Payment method form')).not.toBeInTheDocument();
 
-        const btn = screen.getByTestId('counterparties_btn');
+        const btn = screen.getByRole('button', {
+            name: 'Switch counterparties',
+        });
         const originalLocation = window.location;
         const queryChangeEventSpy = jest.spyOn(window, 'dispatchEvent');
         windowLocationSpy.mockImplementation(() => ({

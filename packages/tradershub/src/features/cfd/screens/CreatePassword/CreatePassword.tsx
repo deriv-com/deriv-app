@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { ChangeEvent, ReactNode } from 'react';
 import { Button, Text, TextField, useBreakpoint } from '@deriv/quill-design';
 import { TPlatforms } from '../../../../types';
 import { validPassword } from '../../../../utils/password';
 import { PlatformDetails } from '../../constants';
 
 type TCreatePasswordProps = {
-    icon: React.ReactNode;
+    icon: ReactNode;
     isLoading?: boolean;
-    onPasswordChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onPasswordChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     onPrimaryClick: () => void;
     password: string;
     platform: TPlatforms.All;

@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
-import { useAuthorize, useFetch, useInvalidateQuery, useRequest } from '@deriv/api';
+import { useFetch, useInvalidateQuery, useRequest } from '@deriv/api';
+import useAuthorize from './useAuthorize';
 import { useStore } from '@deriv/stores';
 
 /** A custom hook to get the status of wallet_migration API and to start/reset the migration process

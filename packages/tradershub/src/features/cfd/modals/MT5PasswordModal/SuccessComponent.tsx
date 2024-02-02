@@ -32,8 +32,8 @@ const SuccessComponent = () => {
     const landingCompanyName = `(${companyNamesAndUrls?.[selectedJurisdiction]?.shortcode})`;
 
     const SuccessDescription = isDemo
-        ? `Let's practise trading with ${activeTrading?.display_balance} virtual funds.`
-        : `Transfer funds from your ${activeTrading?.currency} Wallet to your ${marketTypeTitle} ${landingCompanyName} account to start trading.`;
+        ? `Congratulations, you have successfully created your ${Category.DEMO} ${PlatformDetails.mt5.title} account. To start trading, transfer funds from your Deriv account into this account.`
+        : `Congratulations, you have successfully created your ${Category.REAL} ${PlatformDetails.mt5.title} ${landingCompanyName} ${selectedJurisdiction} account. To start trading, top-up funds from your Deriv account into this account.`;
 
     const SuccessTitle = `Your ${marketTypeTitle} ${isDemo ? Category.DEMO : landingCompanyName} account is ready`;
 

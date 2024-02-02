@@ -10,7 +10,7 @@
         align-items: center;
     }
     padding: 0 0.8rem;
-    --modal-height: calc(100% - 48px);
+    --modal-height: calc(100% - 50px);
     height: var(--modal-height);
     @include align-items-center;
     justify-content: center;

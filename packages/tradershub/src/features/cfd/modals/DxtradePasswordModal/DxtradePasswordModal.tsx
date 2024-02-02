@@ -8,9 +8,9 @@ import {
 } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Button, useBreakpoint } from '@deriv/quill-design';
-import { ActionScreen, ButtonGroup, Dialog, Modal } from '../../../../components';
+import { ActionScreen, ButtonGroup, Dialog, Modal, SentEmailContent } from '../../../../components';
 import DxTradePasswordIcon from '../../../../public/images/cfd/dxtrade-password.svg';
-import { PlatformDetails } from '../../constants';
+import { Category, MarketType, PlatformDetails, QueryStatus } from '../../constants';
 import { CFDSuccess, CreatePassword, EnterPassword } from '../../screens';
 
 const DxtradePasswordModal = () => {
@@ -21,8 +21,9 @@ const DxtradePasswordModal = () => {
     const { error, isLoading, isSuccess, mutate, status } = useCreateOtherCFDAccount();
     const { isSuccess: dxtradeAccountListSuccess } = useDxtradeAccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
-    const { hide } = Provider.useModal();
-    const accountType = activeTrading?.is_virtual ? 'demo' : 'real';
+    const isDemo = activeTrading?.is_virtual;
+    const { hide, show } = Provider.useModal();
+    const accountType = activeTrading?.is_virtual ? Category.DEMO : Category.REAL;
     const dxtradePlatform = PlatformDetails.dxtrade.platform;
 
     const isDxtradePasswordNotSet = getAccountStatus?.is_dxtrade_password_not_set;
@@ -31,29 +32,18 @@ const DxtradePasswordModal = () => {
         mutate({
             payload: {
                 account_type: accountType,
-                market_type: 'all',
+                market_type: MarketType.ALL,
                 password,
                 platform: dxtradePlatform,
             },
         });
     }, [mutate, accountType, password, dxtradePlatform]);
 
-    const successDescription = useMemo(() => {
-        return accountType === 'demo'
-            ? `Congratulations, you have successfully created your demo Deriv X account.`
-            : `Congratulations, you have successfully created your real Deriv X account. To start trading, transfer funds from your Deriv account into this account.`;
-    }, [accountType]);
-
     const renderFooter = useMemo(() => {
         if (isSuccess) {
-            if (accountType === 'demo') {
+            if (accountType === Category.DEMO) {
                 return (
-                    <Button
-                        onClick={() => {
-                            hide();
-                        }}
-                        size='lg'
-                    >
+                    <Button onClick={hide} size='lg'>
                         OK
                     </Button>
                 );
@@ -90,23 +80,28 @@ const DxtradePasswordModal = () => {
         }
 
         return (
-            <Button disabled={!password || isLoading} isFullWidth isLoading={isLoading} onClick={onSubmit} size='lg'>
+            <Button disabled={!password || isLoading} fullWidth isLoading={isLoading} onClick={onSubmit} size='lg'>
                 {`Create ${PlatformDetails.dxtrade.title} password`}
             </Button>
         );
     }, [accountType, hide, history, isDxtradePasswordNotSet, isLoading, isSuccess, onSubmit, password]);
 
     const successComponent = useMemo(() => {
+        const renderSuccessDescription = () => {
+            return isDemo
+                ? `Congratulations, you have successfully created your ${Category.DEMO} ${PlatformDetails.dxtrade.title} account.`
+                : `Congratulations, you have successfully created your ${Category.REAL} ${PlatformDetails.dxtrade.title} account. To start trading, transfer funds from your Deriv account into this account.`;
+        };
         if (isSuccess && dxtradeAccountListSuccess) {
             return (
                 <CFDSuccess
-                    description={successDescription}
+                    description={renderSuccessDescription()}
                     platform={dxtradePlatform}
                     renderButtons={() => renderFooter}
                 />
             );
         }
-    }, [isSuccess, dxtradeAccountListSuccess, successDescription, dxtradePlatform, renderFooter]);
+    }, [isSuccess, dxtradeAccountListSuccess, isDemo, dxtradePlatform, renderFooter]);
 
     const passwordComponent = useMemo(() => {
         if (!isSuccess && accountStatusSuccess) {
@@ -122,9 +117,10 @@ const DxtradePasswordModal = () => {
             ) : (
                 <EnterPassword
                     isLoading={isLoading}
-                    marketType='all'
+                    marketType={MarketType.ALL}
                     onPasswordChange={e => setPassword(e.target.value)}
                     onPrimaryClick={onSubmit}
+                    onSecondaryClick={() => show(<SentEmailContent platform={dxtradePlatform} />)}
                     password={password}
                     passwordError={error?.error?.code === 'PasswordError'}
                     platform={dxtradePlatform}
@@ -138,11 +134,12 @@ const DxtradePasswordModal = () => {
         isLoading,
         onSubmit,
         password,
+        show,
         dxtradePlatform,
         error?.error?.code,
     ]);
 
-    if (status === 'error' && error?.error?.code !== 'PasswordError') {
+    if (status === QueryStatus.ERROR && error?.error?.code !== 'PasswordError') {
         return <ActionScreen description={error?.error.message} title={error?.error?.code} />;
     }
 

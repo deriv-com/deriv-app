@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { TAdvertiserPaymentMethods, TSelectedPaymentMethod } from 'types';
 import { p2p } from '@deriv/api';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import { PaymentMethodModal } from '../../../../../components/Modals';
 import { PaymentMethodCard } from '../../../../../components/PaymentMethodCard';
 import { PAYMENT_METHOD_CATEGORIES } from '../../../../../constants';

@@ -89,7 +89,7 @@ describe('useQueryString', () => {
     afterEach(() => {
         jest.restoreAllMocks();
     });
-    it('setting new query strings', () => {
+    it('should test case for setting new query strings', () => {
         const history = createMemoryHistory();
         history.push('/mock-my-profile');
         render(
@@ -156,7 +156,7 @@ describe('useQueryString', () => {
         expect(screen.getByText('Payment method form')).toBeInTheDocument();
     });
 
-    it('deleting query strings', () => {
+    it('should test case for deleting query strings', () => {
         const history = createMemoryHistory();
         history.push('/mock-my-profile');
         render(
@@ -200,7 +200,7 @@ describe('useQueryString', () => {
         expect(screen.getByText('My profile')).toBeInTheDocument();
         expect(screen.getByText('Payment method form')).toBeInTheDocument();
     });
-    it('replacing query strings', () => {
+    it('should test case for replacing query strings', () => {
         const history = createMemoryHistory();
         history.push('/mock-my-profile');
         render(

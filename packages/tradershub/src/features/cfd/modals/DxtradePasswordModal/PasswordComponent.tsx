@@ -16,9 +16,10 @@ type TPasswordComponentProps = {
 const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) => {
     const { data: accountStatus } = useAccountStatus();
     const { show } = Provider.useModal();
+    const { getCFDState } = Provider.useCFDContext();
 
     const marketType = MarketType.ALL;
-    const platform = PlatformDetails.dxtrade.platform;
+    const platform = getCFDState('platform') ?? PlatformDetails.dxtrade.platform;
 
     const isDxtradePasswordNotSet = accountStatus?.is_dxtrade_password_not_set;
     const { createDxtradeAccountError, createDxtradeAccountLoading, createOtherCFDAccountSuccess, handleSubmit } =
@@ -43,7 +44,7 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
                 onPasswordChange={e => setPassword(e.target.value)}
                 onPrimaryClick={() => handleSubmit(password)}
                 password={password}
-                platform={PlatformDetails.dxtrade.platform}
+                platform={platform}
             />
         );
     }
@@ -57,7 +58,7 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
             onSecondaryClick={() => show(<SentEmailContent platform={platform} />)}
             password={password}
             passwordError={createDxtradeAccountError?.error?.code === 'PasswordError'}
-            platform={PlatformDetails.dxtrade.platform}
+            platform={platform}
         />
     );
 };

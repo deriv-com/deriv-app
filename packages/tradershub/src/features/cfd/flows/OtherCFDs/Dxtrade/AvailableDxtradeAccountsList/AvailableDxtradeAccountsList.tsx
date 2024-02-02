@@ -29,10 +29,12 @@ const LeadingIcon = () => (
 
 const AvailableDxtradeAccountsList = () => {
     const { show } = Provider.useModal();
+    const { setCfdState } = Provider.useCFDContext();
 
     const TrailingButton = () => <TradingAccountCardLightButton onSubmit={trailingButtonClick} />;
 
     const trailingButtonClick = () => {
+        setCfdState('platform', PlatformDetails.dxtrade.platform);
         show(<DxtradePasswordModal />);
     };
     return (

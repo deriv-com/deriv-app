@@ -15,6 +15,7 @@ const FooterComponent = ({ password }: TFooterComponentProps) => {
     const { data: mt5Accounts } = useMT5AccountsList();
     const { getCFDState } = Provider.useCFDContext();
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
+    const platform = getCFDState('platform') ?? PlatformDetails.mt5.platform;
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
     const { isCreateMT5AccountSuccess } = useMT5AccountHandler({
         marketType,
@@ -30,7 +31,7 @@ const FooterComponent = ({ password }: TFooterComponentProps) => {
         <CreateAccountButton
             buttonText={`Create ${PlatformDetails.mt5.title} password`}
             password={password}
-            platform={PlatformDetails.mt5.platform}
+            platform={platform}
         />
     );
 };

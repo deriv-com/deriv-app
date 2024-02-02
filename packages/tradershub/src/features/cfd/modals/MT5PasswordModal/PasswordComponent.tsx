@@ -53,7 +53,7 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
                 onPasswordChange={e => setPassword(e.target.value)}
                 onPrimaryClick={() => handleSubmit(password)}
                 password={password}
-                platform={PlatformDetails.mt5.platform}
+                platform={platform}
             />
         );
     }
@@ -67,7 +67,7 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
             onSecondaryClick={() => show(<SentEmailContent platform={platform} />)}
             password={password}
             passwordError={isCreateMT5AccountError?.error?.code === 'PasswordError'}
-            platform={PlatformDetails.mt5.platform}
+            platform={platform}
         />
     );
 };

@@ -20,4 +20,3 @@ export const ADVERT_TYPE = {
     SELL: 'Sell',
     BUY: 'Buy',
 };
-

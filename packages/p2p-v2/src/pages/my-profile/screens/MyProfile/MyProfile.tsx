@@ -18,14 +18,14 @@ const MyProfile = () => {
     const { queryString, setQueryString } = useQueryString();
     const { data } = usePoiPoaStatus();
     const { data: advertiserStats, failureReason, isLoading } = useAdvertiserStats();
-    const { isPoaVerified, isPoiVerified } = data || {};
+    const { isP2PPoaRequired, isPoaVerified, isPoiVerified } = data || {};
     const [isNicknameModalOpen, setIsNicknameModalOpen] = useState<boolean | undefined>(false);
 
     const currentTab = queryString.get('tab');
 
     useEffect(() => {
-        if (isPoaVerified && isPoiVerified && !!failureReason) setIsNicknameModalOpen(true);
-    }, [failureReason, isPoaVerified, isPoiVerified]);
+        if ((!isP2PPoaRequired || isPoaVerified) && isPoiVerified && !!failureReason) setIsNicknameModalOpen(true);
+    }, [failureReason, isP2PPoaRequired, isPoaVerified, isPoiVerified]);
 
     if (isLoading && !advertiserStats) {
         return <Loader />;

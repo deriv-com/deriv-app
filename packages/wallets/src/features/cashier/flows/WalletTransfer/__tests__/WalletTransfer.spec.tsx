@@ -41,7 +41,7 @@ describe('<WalletTransfer />', () => {
         });
 
         render(<WalletTransfer />);
-        expect(screen.getByText('Loading'));
+        expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
     it('should render the TransferNotAvailable screen and its children as the API response is received', () => {

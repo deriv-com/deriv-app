@@ -12,7 +12,6 @@ export const ConfirmEmailModal = ({
     prev_email,
     setErrorMessage,
     verification_code,
-    is_social_signup,
 }) => {
     const [email_request, setEmailRequest] = React.useState(null);
     const [is_send_email_modal_open, setIsSendEmailModalOpen] = React.useState(false);
@@ -23,7 +22,6 @@ export const ConfirmEmailModal = ({
             change_email: 'verify',
             new_email: changed_email,
             verification_code,
-            ...(is_social_signup && { social_signup: true }),
         };
 
         setEmailRequest(prev => ({ ...prev, ...api_request }));

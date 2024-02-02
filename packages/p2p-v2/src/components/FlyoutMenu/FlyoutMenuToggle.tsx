@@ -6,7 +6,7 @@ type TFlyoutToggleProps = HTMLAttributes<HTMLDivElement> & {
 
 const FlyoutToggle = ({ renderIcon, ...props }: TFlyoutToggleProps) => {
     return (
-        <div {...props} role='flyout-toggle'>
+        <div {...props} data-testid='dt_p2p_v2_flyout_toggle'>
             {renderIcon?.()}
         </div>
     );

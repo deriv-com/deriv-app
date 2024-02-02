@@ -3,7 +3,7 @@ import React, { createContext, useCallback, useContext, useMemo, useState } from
 type TUIState = {
     // Add other UI states here
     accountType?: string;
-    isSignupWizardOpen: boolean;
+    isSignupWizardOpen?: boolean;
     regulation?: string;
 };
 

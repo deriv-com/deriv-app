@@ -46,7 +46,7 @@ const SignupWizard = () => {
 
     return (
         <ReactModal
-            isOpen={isSignupWizardOpen}
+            isOpen={isSignupWizardOpen ?? false}
             onRequestClose={handleClose}
             shouldCloseOnOverlayClick
             style={CUSTOM_STYLES}

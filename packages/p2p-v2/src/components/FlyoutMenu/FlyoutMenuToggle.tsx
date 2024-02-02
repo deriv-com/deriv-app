@@ -5,7 +5,11 @@ type TFlyoutToggleProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 const FlyoutToggle = ({ renderIcon, ...props }: TFlyoutToggleProps) => {
-    return <div {...props}>{renderIcon?.()}</div>;
+    return (
+        <div {...props} role='flyout-toggle'>
+            {renderIcon?.()}
+        </div>
+    );
 };
 
 export default FlyoutToggle;

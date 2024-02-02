@@ -9,7 +9,7 @@ import { BrokerCodes, Regulation } from '../constants/constants';
 const usePlatformAssets = (regulation?: string) => {
     const {
         data: tradingAccount,
-        fiat_account: fiatAccount,
+        fiat_account: firstFiatCurrency,
         isSuccess: isTradingAccountSuccess,
     } = useTradingAccountsList();
     const { data, getExchangeRate, subscribe: multiSubscribe, unsubscribe } = useExchangeRates();
@@ -18,7 +18,7 @@ const usePlatformAssets = (regulation?: string) => {
 
     const fiatCurrency = isEURegulation
         ? tradingAccount?.find(account => account.broker === BrokerCodes.MF)?.currency
-        : fiatAccount;
+        : firstFiatCurrency;
 
     const demoAccount = tradingAccount?.find(account => account.is_virtual);
     const realAccounts = tradingAccount?.filter(account => !account.is_virtual);

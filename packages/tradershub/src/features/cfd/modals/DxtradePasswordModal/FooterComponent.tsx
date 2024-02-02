@@ -19,12 +19,6 @@ const FooterComponent = ({ password }: TFooterComponentProps) => {
 
     if (hasDxtradeAccount) return <AddAccountButtonsGroup password={password} />;
 
-    return (
-        <CreateAccountButton
-            buttonText={`Create ${PlatformDetails.dxtrade.title} password`}
-            password={password}
-            platform={PlatformDetails.dxtrade.platform}
-        />
-    );
+    return <CreateAccountButton buttonText={`Create ${PlatformDetails.dxtrade.title} password`} password={password} />;
 };
 export default FooterComponent;

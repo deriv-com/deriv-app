@@ -33,7 +33,7 @@ const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
             >
                 Forgot password?
             </Button>
-            <CreateAccountButton buttonText='Add account' password={password} platform={platform} />;
+            <CreateAccountButton buttonText='Add account' password={password} />;
         </ButtonGroup>
     );
 };

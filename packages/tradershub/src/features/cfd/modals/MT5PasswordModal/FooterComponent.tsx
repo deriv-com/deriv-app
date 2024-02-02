@@ -27,12 +27,6 @@ const FooterComponent = ({ password }: TFooterComponentProps) => {
 
     if (hasMT5Account) return <AddAccountButtonsGroup password={password} />;
 
-    return (
-        <CreateAccountButton
-            buttonText={`Create ${PlatformDetails.mt5.title} password`}
-            password={password}
-            platform={platform}
-        />
-    );
+    return <CreateAccountButton buttonText={`Create ${PlatformDetails.mt5.title} password`} password={password} />;
 };
 export default FooterComponent;

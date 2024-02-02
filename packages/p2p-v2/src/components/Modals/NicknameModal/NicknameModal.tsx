@@ -4,7 +4,7 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import Modal from 'react-modal';
 import { p2p } from '@deriv/api';
 import { Button, Text } from '@deriv-com/ui';
-import { useDevice } from '../../../hooks';
+import { useBreakpoint } from '../../../hooks';
 import P2PUserIcon from '../../../public/ic-cashier-p2p-user.svg';
 import { Input } from '../../Input';
 import { customStyles } from '../helpers';
@@ -25,7 +25,7 @@ const NicknameModal = () => {
     });
 
     const { error, isError, mutate, reset } = p2p.advertiser.useCreate();
-    const { isMobile } = useDevice();
+    const { isMobile } = useBreakpoint();
     const textSize = isMobile ? 'md' : 'sm';
     const debouncedReset = debounce(reset, 3000);
 

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Modal from 'react-modal';
 import { p2p } from '@deriv/api';
 import { Button, Loader, Text } from '@deriv-com/ui';
-import { useDevice } from '../../../hooks';
+import { useBreakpoint } from '../../../hooks';
 import { customStyles } from '../helpers';
 import './DailyLimitModal.scss';
 
@@ -15,7 +15,7 @@ type TDailyLimitModalProps = {
 const DailyLimitModal = ({ currency, isModalOpen, onRequestClose }: TDailyLimitModalProps) => {
     const { data, error, isLoading, isSuccess, mutate } = p2p.advertiser.useUpdate();
     const { daily_buy_limit, daily_sell_limit } = data ?? {};
-    const { isMobile } = useDevice();
+    const { isMobile } = useBreakpoint();
     useEffect(() => {
         Modal.setAppElement('#v2_modal_root');
     }, []);

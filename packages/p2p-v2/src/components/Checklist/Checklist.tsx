@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Text } from '@deriv-com/ui';
-import { useDevice } from '../../hooks';
+import { useBreakpoint } from '../../hooks';
 import ArrowRightIcon from '../../public/ic-arrow-right.svg';
 import CheckmarkIcon from '../../public/ic-checkmark.svg';
 import './Checklist.scss';
@@ -13,7 +13,7 @@ type TChecklistItem = {
 };
 
 const Checklist = ({ items }: { items: TChecklistItem[] }) => {
-    const { isMobile } = useDevice();
+    const { isMobile } = useBreakpoint();
     return (
         <div className='p2p-v2-checklist'>
             {items.map(item => (

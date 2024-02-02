@@ -2,7 +2,7 @@ import React from 'react';
 import { TAdvertiserPaymentMethods, TSelectedPaymentMethod } from 'types';
 import { FullPageMobileWrapper } from '../../../../../components';
 import { PaymentMethodsHeader } from '../../../../../components/PaymentMethodsHeader';
-import { useDevice, useQueryString } from '../../../../../hooks';
+import { useBreakpoint, useQueryString } from '../../../../../hooks';
 import { TFormState } from '../../../../../reducers/types';
 import AddNewButton from './AddNewButton';
 import PaymentMethodsListContent from './PaymentMethodsListContent';
@@ -31,7 +31,7 @@ const PaymentMethodsList = ({
     onResetFormState,
     p2pAdvertiserPaymentMethods,
 }: TPaymentMethodsListProps) => {
-    const { isMobile } = useDevice();
+    const { isMobile } = useBreakpoint();
     const { setQueryString } = useQueryString();
 
     if (isMobile) {

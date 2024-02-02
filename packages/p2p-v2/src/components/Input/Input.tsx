@@ -1,7 +1,7 @@
 import React, { forwardRef, ReactElement } from 'react';
 import clsx from 'clsx';
 import { Text } from '@deriv-com/ui';
-import { useDevice } from '../../hooks';
+import { useBreakpoint } from '../../hooks';
 import './Input.scss';
 
 type TInputProps = {
@@ -17,7 +17,7 @@ type TInputProps = {
 
 const Input = forwardRef<HTMLInputElement, TInputProps>(
     ({ errorMessage, hasError, leadingIcon, name, onBlur, onChange, placeholder, value, ...props }, ref) => {
-        const { isMobile } = useDevice();
+        const { isMobile } = useBreakpoint();
 
         return (
             <div className='p2p-v2-input'>

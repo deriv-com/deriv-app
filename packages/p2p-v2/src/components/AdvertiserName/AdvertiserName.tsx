@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loader, Text } from '@deriv-com/ui';
-import { useAdvertiserStats, useDevice } from '../../hooks';
+import { useAdvertiserStats, useBreakpoint } from '../../hooks';
 import { UserAvatar } from '../UserAvatar';
 import AdvertiserNameBadges from './AdvertiserNameBadges';
 import AdvertiserNameStats from './AdvertiserNameStats';
@@ -9,7 +9,7 @@ import './AdvertiserName.scss';
 
 const AdvertiserName = () => {
     const { data: advertiserStats, isLoading } = useAdvertiserStats();
-    const { isDesktop } = useDevice();
+    const { isDesktop } = useBreakpoint();
 
     if (isLoading || !advertiserStats) return <Loader />;
 

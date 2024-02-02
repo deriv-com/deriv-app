@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tab, Tabs } from '@deriv-com/ui';
-import { useDevice, useQueryString } from '../../../../hooks';
+import { useBreakpoint, useQueryString } from '../../../../hooks';
 import { MyProfileAdDetails } from '../MyProfileAdDetails';
 import { MyProfileContent } from '../MyProfileContent';
 import { MyProfileCounterparties } from '../MyProfileCounterparties';
@@ -12,7 +12,7 @@ import './MyProfile.scss';
 const TABS = ['Stats', 'Payment methods', 'Ad details', 'My counterparties'];
 
 const MyProfile = () => {
-    const { isMobile } = useDevice();
+    const { isMobile } = useBreakpoint();
     const { queryString, setQueryString } = useQueryString();
 
     const currentTab = queryString.get('tab');

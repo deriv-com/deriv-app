@@ -3,12 +3,15 @@ import { APIProvider } from '@deriv/api';
 import AppContent from './routes/AppContent';
 import { Router } from './routes';
 import './index.scss';
+import { BreakpointProvider } from './providers';
 
 const App: React.FC = () => {
     return (
         <APIProvider standalone>
-            <Router />
-            <AppContent />
+            <BreakpointProvider>
+                <Router />
+                <AppContent />
+            </BreakpointProvider>
         </APIProvider>
     );
 };

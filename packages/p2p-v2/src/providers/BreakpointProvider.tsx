@@ -20,7 +20,13 @@ export const BreakpointProvider = ({ children }: PropsWithChildren<unknown>) => 
     const isXl = useMediaQuery(`(min-width: ${screens.xl})`);
     const isXXl = useMediaQuery(`(min-width: ${screens['2xl']})`);
 
-    const isMobile = useMemo(() => isXs || isSm || isMd, [isMd, isSm, isXs]);
+    /**
+     *
+     * The mobile and desktop breakpoints are taken as from the following conditions:
+     * isMobile: width > 0 && width < 768
+     * isDesktop: width >= 1024
+     */
+    const isMobile = useMediaQuery(`(max-width: ${screens.md})`);
     const isDesktop = useMemo(() => isLg || isXl || isXXl, [isLg, isXXl, isXl]);
 
     const value: BreakpointContextValue = useMemo(() => {

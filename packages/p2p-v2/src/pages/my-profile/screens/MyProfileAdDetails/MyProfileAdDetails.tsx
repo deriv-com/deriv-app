@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { p2p } from '@deriv/api';
 import { Button, Loader } from '@deriv-com/ui';
 import { FullPageMobileWrapper, TextArea } from '../../../../components';
-import { useDevice, useQueryString } from '../../../../hooks';
+import { useBreakpoint, useQueryString } from '../../../../hooks';
 import './MyProfileAdDetails.scss';
 
 type TMYProfileAdDetailsTextAreaProps = {
@@ -38,7 +38,7 @@ const MyProfileAdDetails = () => {
     const { mutate: updateAdvertiser } = p2p.advertiser.useUpdate();
     const [contactInfo, setContactInfo] = useState('');
     const [advertDescription, setAdvertDescription] = useState('');
-    const { isMobile } = useDevice();
+    const { isMobile } = useBreakpoint();
     const { setQueryString } = useQueryString();
 
     const hasUpdated = useMemo(() => {

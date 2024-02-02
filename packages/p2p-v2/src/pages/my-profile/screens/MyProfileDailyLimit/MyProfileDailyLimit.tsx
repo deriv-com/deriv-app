@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useActiveAccount } from '@deriv/api';
 import { Button, Text } from '@deriv-com/ui';
 import DailyLimitModal from '../../../../components/Modals/DailyLimitModal/DailyLimitModal';
-import { useAdvertiserStats, useDevice } from '../../../../hooks';
+import { useAdvertiserStats, useBreakpoint } from '../../../../hooks';
 import './MyProfileDailyLimit.scss';
 
 const MyProfileDailyLimit = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { isMobile } = useDevice();
+    const { isMobile } = useBreakpoint();
     const { data: advertiserStats } = useAdvertiserStats();
     const { data: activeAccount } = useActiveAccount();
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Loader, Text } from '@deriv-com/ui';
-import { useDevice, usePoiPoaStatus } from '../../hooks';
+import { useBreakpoint, usePoiPoaStatus } from '../../hooks';
 import SendEmailIcon from '../../public/ic-send-email.svg';
 import { Checklist } from '../Checklist';
 import './Verification.scss';
@@ -33,7 +33,7 @@ const getPoaAction = (status: string | undefined) => {
 };
 
 const Verification = () => {
-    const { isMobile } = useDevice();
+    const { isMobile } = useBreakpoint();
     const history = useHistory();
     const { data, isLoading } = usePoiPoaStatus();
     const { isP2PPoaRequired, isPoaPending, isPoaVerified, isPoiPending, isPoiVerified, poaStatus, poiStatus } =

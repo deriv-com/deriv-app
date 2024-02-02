@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text } from '@deriv-com/ui';
 import { FullPageMobileWrapper, PaymentMethodsHeader } from '../../../../../components';
-import { setQueryString, useDevice } from '../../../../../hooks';
+import { setQueryString, useBreakpoint } from '../../../../../hooks';
 import WalletIcon from '../../../../../public/ic-payment-methods-wallet.svg';
 import './PaymentMethodsEmpty.scss';
 
@@ -16,7 +16,7 @@ type TPaymentMethodsEmptyProps = {
  * @example <PaymentMethodsEmpty onAddPaymentMethod={onAddPaymentMethod} />
  * **/
 const PaymentMethodsEmpty = ({ onAddPaymentMethod }: TPaymentMethodsEmptyProps) => {
-    const { isMobile } = useDevice();
+    const { isMobile } = useBreakpoint();
 
     if (isMobile) {
         return (

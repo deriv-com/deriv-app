@@ -1,11 +1,11 @@
 import React from 'react';
-import { useDevice } from '../../../../hooks';
+import { useBreakpoint } from '../../../../hooks';
 import { MyProfileBalance } from '../MyProfileBalance';
 import { AdvertiserName, AdvertiserNameToggle } from '../../../../components';
 import './MyProfileContent.scss';
 
 const MyProfileContent = () => {
-    const { isMobile } = useDevice();
+    const { isMobile } = useBreakpoint();
     return (
         <>
             <div className='p2p-v2-my-profile-content'>

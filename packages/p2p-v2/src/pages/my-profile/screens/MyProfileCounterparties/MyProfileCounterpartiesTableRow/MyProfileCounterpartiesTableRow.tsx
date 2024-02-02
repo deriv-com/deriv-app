@@ -2,7 +2,7 @@ import React, { memo, useState } from 'react';
 import { Button, Text } from '@deriv-com/ui';
 import { UserAvatar } from '../../../../../components';
 import { BlockUnblockUserModal } from '../../../../../components/Modals/BlockUnblockUserModal';
-import { useDevice } from '../../../../../hooks';
+import { useBreakpoint } from '../../../../../hooks';
 import './MyProfileCounterpartiesTableRow.scss';
 
 type TMyProfileCounterpartiesTableRowProps = {
@@ -13,7 +13,7 @@ type TMyProfileCounterpartiesTableRowProps = {
 
 const MyProfileCounterpartiesTableRow = ({ id, isBlocked, nickname }: TMyProfileCounterpartiesTableRowProps) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const { isMobile } = useDevice();
+    const { isMobile } = useBreakpoint();
 
     return (
         <>

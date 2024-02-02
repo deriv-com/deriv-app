@@ -153,15 +153,7 @@ const AccountWizard = observer(props => {
 
         setPreviousData(fetchFromStorage());
         setMounted(true);
-    }, [
-        residence_list,
-        states_list,
-        fetchResidenceList,
-        fetchStatesList,
-        has_residence,
-        setRealAccountSignupFormData,
-        state_items,
-    ]);
+    }, [residence_list, states_list, fetchResidenceList, fetchStatesList, has_residence, setRealAccountSignupFormData]);
 
     React.useEffect(() => {
         if (previous_data.length > 0) {

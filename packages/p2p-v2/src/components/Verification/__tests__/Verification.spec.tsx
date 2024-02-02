@@ -61,7 +61,7 @@ describe('<Verification />', () => {
 
         render(<Verification />, { wrapper });
 
-        const poiButton = screen.getByTestId('dt_p2p_v2_verification__poi-arrow-button');
+        const poiButton = screen.getByTestId('dt_p2p_v2_verification_poi_arrow_button');
         expect(poiButton).toBeInTheDocument();
 
         userEvent.click(poiButton);
@@ -77,7 +77,7 @@ describe('<Verification />', () => {
 
         render(<Verification />, { wrapper });
 
-        const poaButton = screen.getByTestId('dt_p2p_v2_verification__poa-arrow-button');
+        const poaButton = screen.getByTestId('dt_p2p_v2_verification_poa_arrow_button');
         expect(poaButton).toBeInTheDocument();
 
         userEvent.click(poaButton);
@@ -101,7 +101,7 @@ describe('<Verification />', () => {
 
         render(<Verification />, { wrapper });
 
-        const poiButton = screen.getByTestId('dt_p2p_v2_verification__poi-arrow-button');
+        const poiButton = screen.getByTestId('dt_p2p_v2_verification_poi_arrow_button');
         expect(poiButton).toBeInTheDocument();
 
         userEvent.click(poiButton);
@@ -124,8 +124,8 @@ describe('<Verification />', () => {
 
         render(<Verification />, { wrapper });
 
-        const poaButton = screen.getByTestId('dt_p2p_v2_verification__poa-arrow-button');
-        const poiButton = screen.getByTestId('dt_p2p_v2_verification__poi-arrow-button');
+        const poaButton = screen.getByTestId('dt_p2p_v2_verification_poa_arrow_button');
+        const poiButton = screen.getByTestId('dt_p2p_v2_verification_poi_arrow_button');
 
         expect(screen.getByText('Identity verification in progress.')).toBeInTheDocument();
         expect(screen.getByText('Address verification in progress.')).toBeInTheDocument();

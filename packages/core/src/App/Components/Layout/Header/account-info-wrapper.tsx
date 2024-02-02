@@ -13,13 +13,14 @@ const AccountInfoWrapper = ({
     is_mobile,
     disabled_message,
     children,
-}: React.PropsWithChildren<TAccountInfoWrapper>) =>
-    is_disabled && disabled_message ? (
+}: React.PropsWithChildren<TAccountInfoWrapper>) => {
+    return is_disabled && disabled_message ? (
         <Popover alignment={isBot() && is_mobile ? 'bottom' : 'left'} message={disabled_message} zIndex='99999'>
             {children}
         </Popover>
     ) : (
         <React.Fragment>{children}</React.Fragment>
     );
+};
 
 export default AccountInfoWrapper;

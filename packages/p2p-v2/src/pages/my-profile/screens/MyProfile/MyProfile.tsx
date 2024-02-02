@@ -24,7 +24,8 @@ const MyProfile = () => {
     const currentTab = queryString.get('tab');
 
     useEffect(() => {
-        if ((!isP2PPoaRequired || isPoaVerified) && isPoiVerified && !!failureReason) setIsNicknameModalOpen(true);
+        const isPoaPoiVerified = (!isP2PPoaRequired || isPoaVerified) && isPoiVerified;
+        if (isPoaPoiVerified && !!failureReason) setIsNicknameModalOpen(true);
     }, [failureReason, isP2PPoaRequired, isPoaVerified, isPoiVerified]);
 
     if (isLoading && !advertiserStats) {

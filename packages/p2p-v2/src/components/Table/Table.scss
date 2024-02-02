@@ -8,6 +8,12 @@
         @include mobile {
             height: 100%;
         }
+
+        &-row {
+            &:not(:last-child) {
+                border-bottom: 1px solid var(--general-section-1);
+            }
+        }
     }
 
     scrollbar-width: thin; /* For Firefox */
@@ -41,6 +47,5 @@
         display: grid;
         border-bottom: 2px solid var(--general-section-1);
         padding: 1.6rem;
-        height: 100%;
     }
 }

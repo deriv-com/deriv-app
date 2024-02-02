@@ -4,14 +4,18 @@ import './ProgressIndicator.scss';
 
 type TProgressIndicator = {
     className?: string;
-    value: number;
-    total: number;
     style?: CSSProperties;
+    total: number;
+    value: number;
 };
 
-const ProgressIndicator = ({ className, value, total, style }: TProgressIndicator) => {
+const ProgressIndicator = ({ className, style, total, value }: TProgressIndicator) => {
     return (
-        <div className={clsx('p2p-v2-progress-indicator__container', className)} style={style}>
+        <div
+            className={clsx('p2p-v2-progress-indicator__container', className)}
+            data-testid='dt_p2p_v2_progress_indicator'
+            style={style}
+        >
             <div className={clsx('p2p-v2-progress-indicator__bar')} style={{ width: `${(value / total) * 100}%` }} />
             <div className={'p2p-v2-progress-indicator__empty'} />
         </div>

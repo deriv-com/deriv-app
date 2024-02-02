@@ -1,8 +1,8 @@
 import React, { memo, useMemo } from 'react';
 import { p2p } from '@deriv/api';
 import { Loader } from '@deriv-com/ui';
-import { Table } from '../../../../components';
-import MyAdsTableRow from './MyAdsTableRow';
+import { Table } from '../../../../../components';
+import { MyAdsTableRow } from '../MyAdsTableRow';
 import './MyAdsTable.scss';
 
 export type TMyAdsTableRowRendererProps = Partial<
@@ -16,7 +16,7 @@ export type TMyAdsTableRowRendererProps = Partial<
 const MyAdsTableRowRenderer = memo((values: TMyAdsTableRowRendererProps) => <MyAdsTableRow {...values} />);
 MyAdsTableRowRenderer.displayName = 'MyAdsTableRowRenderer';
 
-const headerRenderer = (header: any) => <div>{header}</div>;
+const headerRenderer = (header: string) => <span>{header}</span>;
 
 const MyAdsTable = () => {
     const columns = useMemo(
@@ -73,7 +73,6 @@ const MyAdsTable = () => {
                 headerRender={headerRenderer}
                 isFetching={isFetching}
                 loadMoreFunction={loadMoreAdverts}
-                rowClassname=''
                 rowRender={(rowData: unknown) => (
                     <MyAdsTableRowRenderer
                         {...(rowData as TMyAdsTableRowRendererProps)}

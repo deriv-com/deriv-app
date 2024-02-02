@@ -47,7 +47,7 @@ const MyProfileCounterpartiesTable = ({
         if (data.length > 0) {
             setShowHeader(true);
         }
-    }, [data]);
+    }, [data, setShowHeader]);
 
     if (!isFetching && data.length === 0) {
         if (searchValue === '') return <MyProfileCounterpartiesEmpty />;
@@ -63,7 +63,6 @@ const MyProfileCounterpartiesTable = ({
             data={data}
             isFetching={isFetching}
             loadMoreFunction={loadMoreAdvertisers}
-            rowClassname='p2p-v2-my-profile-counterparties-table__row'
             rowRender={(rowData: unknown) => (
                 <MyProfileCounterpartiesTableRowRenderer
                     {...(rowData as TMyProfileCounterpartiesTableRowRendererProps)}

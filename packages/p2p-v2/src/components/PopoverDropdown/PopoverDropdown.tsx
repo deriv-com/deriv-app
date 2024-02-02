@@ -10,11 +10,12 @@ type TItem = {
 };
 
 type TPopoverDropdownProps = {
+    dataTestId?: string;
     dropdownList: TItem[];
     onClick: (value: string) => void;
 };
 
-const PopoverDropdown = ({ dropdownList, onClick }: TPopoverDropdownProps) => {
+const PopoverDropdown = ({ dataTestId, dropdownList, onClick }: TPopoverDropdownProps) => {
     const [visible, setVisible] = useState(false);
     const ref = useRef(null);
     useOnClickOutside(ref, () => setVisible(false));
@@ -23,6 +24,7 @@ const PopoverDropdown = ({ dropdownList, onClick }: TPopoverDropdownProps) => {
         <div className='p2p-v2-popover-dropdown' ref={ref}>
             <DropdownIcon
                 className='p2p-v2-popover-dropdown__icon'
+                data-testid={dataTestId}
                 onClick={() => setVisible(prevState => !prevState)}
             />
             {visible && (

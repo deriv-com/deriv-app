@@ -120,16 +120,6 @@
                 fill: #333333;
             }
 
-            &--disable {
-                // stylelint-disable-next-line declaration-no-important
-                cursor: not-allowed !important;
-
-                @include mobile {
-                    // stylelint-disable-next-line declaration-no-important
-                    background-color: var(--checkbox-disabled-grey) !important;
-                }
-            }
-
             @include mobile {
                 display: flex;
                 justify-content: unset;
@@ -137,8 +127,6 @@
 
             div {
                 margin: auto;
-            }
-            &__item {
             }
         }
     }

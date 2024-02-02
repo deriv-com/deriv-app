@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from '@deriv-com/ui';
-import './AdStatus.scss';
 import { useDevice } from '../../../../hooks';
+import './AdStatus.scss';
 
 type TAdStatusProps = {
     isActive?: boolean;

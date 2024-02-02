@@ -54,6 +54,8 @@ const useAdvertiserAdverts = (
             },
             /** The advert creation time in epoch. */
             created_time: advert?.created_time ? new Date(advert.created_time) : undefined,
+            /** Indicates if this is block trade advert or not. */
+            block_trade: Boolean(advert?.block_trade),
         }));
     }, [flatten_data]);
 

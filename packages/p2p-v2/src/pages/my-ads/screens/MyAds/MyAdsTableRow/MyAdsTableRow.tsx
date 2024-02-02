@@ -2,22 +2,21 @@ import React, { memo, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useExchangeRateSubscription } from '@deriv/api';
 import { Button, Text, Tooltip } from '@deriv-com/ui';
-import { useDevice } from '../../../../hooks';
-import { generateEffectiveRate } from '../../../../utils/format-value';
-import DeactivateIcon from '../../../../public/ic-archive.svg';
-import ActivateIcon from '../../../../public/ic-unarchive.svg';
-import EditIcon from '../../../../public/ic-edit.svg';
-import DeleteIcon from '../../../../public/ic-delete.svg';
-import { PopoverDropdown } from '../../../../components';
-import { ADVERT_TYPE, RATE_TYPE } from '../../../../utils/constants';
-import { formatMoney } from '../../../../utils/currency';
-import AdStatus from './AdStatus';
-import AdType from './AdType';
-import { TMyAdsTableRowRendererProps } from './MyAdsTable';
-import ProgressIndicator from './ProgressIndicator';
+import { useDevice } from '../../../../../hooks';
+import { generateEffectiveRate } from '../../../../../utils/format-value';
+import DeactivateIcon from '../../../../../public/ic-archive.svg';
+import ActivateIcon from '../../../../../public/ic-unarchive.svg';
+import EditIcon from '../../../../../public/ic-edit.svg';
+import DeleteIcon from '../../../../../public/ic-delete.svg';
+import { PopoverDropdown } from '../../../../../components';
+import { ADVERT_TYPE, RATE_TYPE } from '../../../../../utils/constants';
+import { formatMoney } from '../../../../../utils/currency';
+import { AdStatus, AdType, ProgressIndicator } from '../../../components';
+import { TMyAdsTableRowRendererProps } from '../MyAdsTable/MyAdsTable';
 import './MyAdsTableRow.scss';
 
 const BASE_CURRENCY = 'USD';
+//TODO: to be modified after design is updated.
 const list = [
     { label: 'Edit', value: 'edit' },
     { label: 'Delete', value: 'delete' },
@@ -27,7 +26,7 @@ const list = [
 ];
 
 const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTableRowRendererProps) => {
-    const { isDesktop } = useDevice();
+    const { isMobile } = useDevice();
     const { data: exchangeRateValue, subscribe } = useExchangeRateSubscription();
 
     const {
@@ -54,14 +53,14 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
             base_currency: BASE_CURRENCY,
             target_currency: local_currency!,
         });
-    }, [local_currency]);
+    }, [local_currency, subscribe]);
 
-    const [isActionsVisible, setIsActionsVisible] = useState(true);
+    const [isActionsVisible, setIsActionsVisible] = useState(false);
     const isAdvertListed = isListed && !isBarred;
     const adPauseColor = isAdvertListed ? 'general' : 'less-prominent';
-    const amountDealt = amount! - remaining_amount!;
+    const amountDealt = (amount ?? 0) - (remaining_amount ?? 0);
 
-    const exchangeRate = exchangeRateValue?.rates?.[local_currency!];
+    const exchangeRate = exchangeRateValue?.rates?.[local_currency ?? ''];
 
     const { displayEffectiveRate } = generateEffectiveRate({
         price: Number(price_display),
@@ -76,7 +75,11 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
 
     const advertType = type === 'buy' ? ADVERT_TYPE.BUY : ADVERT_TYPE.SELL;
 
-    if (!isDesktop) {
+    const onClickActionItem = (value: string) => {
+        onClickIcon(id!, value);
+    };
+
+    if (isMobile) {
         return (
             <div
                 className={clsx('p2p-v2-my-ads-table-row__line', {
@@ -92,7 +95,11 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                     </Text>
                     <div className='p2p-v2-my-ads-table-row__line__type-and-status__wrapper'>
                         <AdStatus isActive={!!is_active && !isBarred} />
-                        <PopoverDropdown dropdownList={list} onClick={value => onClickIcon(id!, value)} />
+                        <PopoverDropdown
+                            dataTestId='dt_p2p_v2_actions_menu'
+                            dropdownList={list}
+                            onClick={value => onClickActionItem(value)}
+                        />
                     </div>
                 </div>
                 <div className='p2p-v2-my-ads-table-row__line-details'>
@@ -147,7 +154,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
         <div
             className={clsx('p2p-v2-my-ads-table-row__line', { 'p2p-v2-my-ads-table-row__line-disabled': !is_active })}
             onMouseEnter={() => setIsActionsVisible(true)}
-            onMouseLeave={() => setIsActionsVisible(true)}
+            onMouseLeave={() => setIsActionsVisible(false)}
         >
             <Text size='sm'>
                 {advertType} {id}
@@ -179,17 +186,16 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
             <div className='p2p-v2-my-ads-table-row__actions'>
                 {isActionsVisible ? (
                     <div className='p2p-v2-my-ads-table-row__actions-popovers'>
-                        <Button onClick={() => onClickIcon(id!, is_active ? 'deactivate' : 'activate')}>
+                        <Button onClick={() => onClickActionItem(is_active ? 'deactivate' : 'activate')}>
                             <Tooltip
                                 className='p2p-v2-my-ads-table-row__actions-popovers__item'
                                 message={is_active ? 'Deactivate' : 'Activate'}
-                                position='top'
-                                variant='general'
+                                position='bottom'
                             >
                                 {is_active ? <DeactivateIcon /> : <ActivateIcon />}
                             </Tooltip>
                         </Button>
-                        <Button onClick={() => onClickIcon(id!, 'edit')}>
+                        <Button onClick={() => onClickActionItem('edit')}>
                             <Tooltip
                                 className='p2p-v2-my-ads-table-row__actions-popovers__item'
                                 message={is_active ? 'Deactivate' : 'Activate'}
@@ -198,12 +204,11 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
                                 <EditIcon />
                             </Tooltip>
                         </Button>
-                        <Button onClick={() => onClickIcon(id!, 'delete')}>
+                        <Button onClick={() => onClickActionItem('delete')}>
                             <Tooltip
                                 className='p2p-v2-my-ads-table-row__actions-popovers__item'
                                 message='Delete'
                                 position='bottom'
-                                triggerAction='click'
                             >
                                 <DeleteIcon />
                             </Tooltip>

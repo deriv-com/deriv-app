@@ -6,9 +6,8 @@ import { CFDContent } from './CFDContent';
 import { CFDHeading } from './CFDHeading';
 
 const CFDSection = () => {
-    const { getUIState } = useUIContext();
-    const regulation = getUIState('regulation');
-    const accountType = getUIState('accountType');
+    const { uiState } = useUIContext();
+    const { accountType, regulation } = uiState;
     const { isSuccess, noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
 
     return (

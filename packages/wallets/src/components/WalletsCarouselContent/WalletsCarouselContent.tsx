@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useMobileCarouselWalletsList } from '@deriv/api';
+import { useActiveWalletAccount, useAuthorize, useCurrencyConfig, useWalletAccountsList } from '@deriv/api';
 import { ProgressBar } from '../Base';
 import { WalletsCarouselLoader } from '../SkeletonLoader';
 import { WalletCard } from '../WalletCard';
@@ -19,13 +19,14 @@ type TProps = {
  */
 const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
     const { switchAccount } = useAuthorize();
-    const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useMobileCarouselWalletsList();
+    const { data: walletAccountsList, isLoading: isWalletAccountsListLoading } = useWalletAccountsList();
     const { data: activeWallet, isLoading: isActiveWalletLoading } = useActiveWalletAccount();
     const { isLoading: isCurrencyConfigLoading } = useCurrencyConfig();
 
-    const [selectedLoginId, setSelectedLoginId] = useState('');
     const [currentIndex, setCurrentIndex] = useState(-1);
     const [isInitialDataLoaded, setIsInitialDataLoaded] = useState(false);
+
+    const activeWalletLoginId = activeWallet?.loginid;
 
     // for the embla "on select" callback
     // to avoid unbinding / cleaning etc, just let it use up-to-date list
@@ -40,13 +41,6 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         walletsAccountsListRef.current = walletAccountsList;
     }, [walletAccountsList]);
 
-    // set login ID once wallet changes
-    useEffect(() => {
-        if (activeWallet) {
-            setSelectedLoginId(activeWallet?.loginid);
-        }
-    }, [activeWallet]);
-
     // bind to embla events
     useEffect(() => {
         walletsCarouselEmblaApi?.on('select', () => {
@@ -56,7 +50,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
             }
             const loginId = walletsAccountsListRef?.current?.[index]?.loginid;
 
-            loginId && setSelectedLoginId(loginId);
+            loginId && switchAccount(loginId);
         });
 
         // on settle, this is only for tutorial / onboarding plugin in some other components,
@@ -66,29 +60,28 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [walletsCarouselEmblaApi]);
 
-    // load active wallet whenever its scrolled
+    // support for adding new wallet
     useEffect(() => {
-        if (selectedLoginId) {
-            switchAccount(selectedLoginId);
-            const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
+        if (activeWalletLoginId) {
+            const index = walletAccountsList?.findIndex(({ loginid }) => loginid === activeWalletLoginId) ?? -1;
             walletsCarouselEmblaApi?.scrollTo(index);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedLoginId, walletAccountsList]);
+    }, [walletAccountsList?.length]);
 
     // initial loading
     useEffect(() => {
         if (walletsCarouselEmblaApi && isInitialDataLoaded) {
-            const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
+            const index = walletAccountsList?.findIndex(({ loginid }) => loginid === activeWalletLoginId) ?? -1;
             walletsCarouselEmblaApi?.scrollTo(index, true);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [walletsCarouselEmblaApi, isInitialDataLoaded]);
 
     useEffect(() => {
-        const index = walletAccountsList?.findIndex(({ loginid }) => loginid === selectedLoginId) ?? -1;
+        const index = walletAccountsList?.findIndex(({ loginid }) => loginid === activeWalletLoginId) ?? -1;
         setCurrentIndex(index);
-    }, [selectedLoginId, walletAccountsList]);
+    }, [activeWalletLoginId, walletAccountsList]);
 
     // set the initial data loading flag to false once all "is loading" flags are false,
     // as then and only then we can display all the stuff and we want to display it permanently after that

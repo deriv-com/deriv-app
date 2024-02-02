@@ -80,6 +80,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         (newLoginid: string) => {
             queryClient.cancelQueries();
 
+            // it shouldn't happen, but if it happens, at least do not break application, just log it
+            if (newLoginid === loginid) {
+                // eslint-disable-next-line no-console
+                console.error('switchAccount: same loginid');
+                return;
+            }
+
             setIsLoading(true);
             mutateAsync({ payload: { authorize: getToken(newLoginid) || '' } }).then(res => {
                 setLoginid(newLoginid);

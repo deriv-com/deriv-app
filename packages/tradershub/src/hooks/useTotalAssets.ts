@@ -9,8 +9,8 @@ import usePlatformAssets from './usePlatformAssets';
  * @returns data - Total balance of all cfd and platform accounts
  */
 const useTotalAssets = () => {
-    const { getUIState } = useUIContext();
-    const regulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const { regulation } = uiState;
     const { displayMoney } = Helpers;
     const { data: activeTradingAccount } = useActiveTradingAccount();
     const { data: authorizeData, isSuccess: isAuthorizeSuccess } = useAuthorize();

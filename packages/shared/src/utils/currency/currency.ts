@@ -111,10 +111,9 @@ export const addComma = (num?: number | string | null, decimal_points?: number, 
         number = parseFloat(String(number));
     }
 
-    return number.toString().replace(/(^|[^\w.])(\d{4,})/g, (_, prefix, digits) => {
-        const formattedDigits = digits.replace(/\d{1,3}(?=(\d{3})+(?!\d))/g, '$&,');
-        return prefix + formattedDigits;
-    });
+    return number
+        .toString()
+        .replace(/(^|[^\w.])(\d{4,})/g, ($0, $1, $2) => $1 + $2.replace(/\d(?=(?:\d\d\d)+(?!\d))/g, '$&,'));
 };
 
 export const calcDecimalPlaces = (currency: string) => {

@@ -1,7 +1,8 @@
 import React from 'react';
-import { useActiveTradingAccount, useTotalAssets } from '@deriv/api';
+import { useActiveTradingAccount } from '@deriv/api';
 import { Heading, qtMerge, useBreakpoint } from '@deriv/quill-design';
 import { Text } from '@deriv-com/ui';
+import useTotalAssets from '../../hooks/useTotalAssets';
 
 const Loader = () => <div className='flex animate-pulse bg-solid-slate-100 w-5000 h-2000 rounded-200' />;
 

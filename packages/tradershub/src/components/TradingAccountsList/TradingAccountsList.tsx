@@ -11,8 +11,8 @@ const TradingAccountsList = () => {
     const { data: activeAccount } = useActiveTradingAccount();
     const { switchAccount } = useAuthorize();
 
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
 
     const { isEU } = useRegulationFlags(activeRegulation);
 

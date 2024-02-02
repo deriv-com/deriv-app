@@ -62,8 +62,8 @@ const JurisdictionCard = ({ isAdded = false, isSelected = false, jurisdiction, o
     const [isFlipped, setIsFlipped] = useState(false);
     const { toggleDynamicLeverage } = useDynamicLeverageModalState();
     const { getCFDState } = Provider.useCFDContext();
-    const { getUIState } = useUIContext();
-    const regulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const regulation = uiState.regulation;
     const { isEU } = useRegulationFlags(regulation);
 
     const descriptionClickHandler = (tag?: TClickableDescription['tag']) => (event: MouseEvent) => {

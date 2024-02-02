@@ -37,7 +37,9 @@ const DemoRealSwitcher = () => {
     useEffect(() => {
         if (activeType) {
             setSelected(activeType);
-            setUIState('accountType', activeAccountType);
+            setUIState({
+                accountType: activeAccountType,
+            });
         }
     }, [activeAccountType, activeType, setUIState]);
 
@@ -51,7 +53,9 @@ const DemoRealSwitcher = () => {
 
     const selectAccount = (account: TAccount) => {
         setSelected(account);
-        setUIState('accountType', account.value);
+        setUIState({
+            accountType: account.value,
+        });
 
         const loginId = account.value === 'demo' ? demoLoginId : firstRealLoginId;
         if (loginId) {

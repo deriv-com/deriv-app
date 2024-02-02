@@ -69,8 +69,8 @@ const RangeSlider = ({ className, name, value, min_value, max_value, onChange }:
                 <input
                     className='input trade-container__input range-slider__track'
                     id='dt_duration_range_input'
-                    max={max_value}
-                    min={min_value}
+                    max={max_value || undefined}
+                    min={min_value || undefined}
                     name={name}
                     onChange={handleChange}
                     tabIndex={0}

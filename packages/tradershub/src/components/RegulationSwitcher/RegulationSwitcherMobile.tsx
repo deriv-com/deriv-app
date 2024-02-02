@@ -8,11 +8,11 @@ import { useUIContext } from '../UIProvider';
 
 const RegulationSwitcherMobile = () => {
     const { show } = Provider.useModal();
-    const { getUIState } = useUIContext();
+    const { uiState } = useUIContext();
 
     const { buttons, handleButtonClick } = useRegulationSwitcher();
 
-    const activeRegulation = getUIState('regulation');
+    const activeRegulation = uiState.regulation;
 
     return (
         <div className='flex items-center gap-400'>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Form, Formik, FormikValues } from 'formik';
-import { Input, Text, Dropdown } from '@deriv-com/ui';
+import { useSettings, useStatesList } from '@deriv/api';
+import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
+import { Dropdown, Input, Text } from '@deriv-com/ui';
 import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
 import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
 import { ACTION_TYPES, useSignupWizardContext } from '../../providers/SignupWizardProvider/SignupWizardContext';
-import { useSettings, useStatesList } from '@deriv/api';
-import { LabelPairedChevronDownMdRegularIcon } from '@deriv/quill-icons';
 
 /**
  * @name Address
@@ -17,24 +17,37 @@ const Address = () => {
     const { data: getSettings } = useSettings();
     const country = getSettings?.country_code ?? '';
     const { data: statesList } = useStatesList(country);
-    const { dispatch } = useSignupWizardContext();
+    const { dispatch, state } = useSignupWizardContext();
 
     const handleSubmit = (values: FormikValues) => {
-        dispatch({ payload: { firstName: values.firstName }, type: ACTION_TYPES.SET_PERSONAL_DETAILS });
+        dispatch({
+            payload: {
+                firstLineAddress: values.firstLineAddress,
+                secondLineAddress: values.secondLineAddress,
+                stateProvince: values.stateProvince,
+                townCity: values.townCity,
+                zipCode: values.zipCode,
+            },
+            type: ACTION_TYPES.SET_ADDRESS,
+        });
     };
+
+    const initialValues = {
+        firstLineAddress: getSettings?.address_line_1 ?? state.firstLineAddress,
+        secondLineAddress: getSettings?.address_line_2 ?? state.secondLineAddress,
+        stateProvince: getSettings?.address_state ?? state.stateProvince,
+        townCity: getSettings?.address_city ?? state.townCity,
+        zipCode: getSettings?.address_postcode ?? state.zipCode,
+    };
+
     return (
         <WizardScreenWrapper heading='Complete your address details'>
-            <Formik
-                initialValues={{
-                    firstName: '',
-                }}
-                onSubmit={handleSubmit}
-            >
-                {() => (
+            <Formik enableReinitialize initialValues={initialValues} onSubmit={handleSubmit}>
+                {({ handleBlur, handleChange, setFieldValue, values }) => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
                         <div className='flex-1 overflow-y-auto p-1200'>
                             <div className='flex flex-col'>
-                                <Text weight='bold' size='sm'>
+                                <Text size='sm' weight='bold'>
                                     Only use an address for which you have proof of residence -
                                 </Text>
                                 <Text size='sm'>
@@ -43,20 +56,53 @@ const Address = () => {
                                 </Text>
                             </div>
                             <div className='flex flex-col items-center self-stretch gap-2000 mt-1500'>
-                                <Input label='First line of address*' name='firstName' />
-                                <Input label='Second line of address' name='lastName' />
-                                <Input label='Town/City*' name='townCity' />
+                                <Input
+                                    className='text-body-sm'
+                                    label='First line of address*'
+                                    name='firstLineAddress'
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    required
+                                    value={values.firstLineAddress}
+                                />
+                                <Input
+                                    className='text-body-sm'
+                                    label='Second line of address'
+                                    name='secondLineAddress'
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    value={values.secondLineAddress}
+                                />
+                                <Input
+                                    className='text-body-sm'
+                                    label='Town/City*'
+                                    name='townCity'
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    required
+                                    value={values.townCity}
+                                />
                                 <div>
                                     <Dropdown
-                                        variant='comboBox'
+                                        dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
                                         label='State/Province'
                                         list={statesList}
                                         name='stateProvince'
-                                        onSelect={() => {}}
-                                        dropdownIcon={<LabelPairedChevronDownMdRegularIcon />}
+                                        onSelect={selectedItem => {
+                                            setFieldValue('stateProvince', selectedItem);
+                                        }}
+                                        value={values.stateProvince}
+                                        variant='comboBox'
                                     />
                                 </div>
-                                <Input className='text-body-sm' label='Postal/ZIP Code' name='zipCode' />
+                                <Input
+                                    className='text-body-sm'
+                                    label='Postal/ZIP Code'
+                                    name='zipCode'
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    value={values.zipCode}
+                                />
                             </div>
                         </div>
                         <Actions />

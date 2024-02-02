@@ -70,11 +70,8 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
 const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     const history = useHistory();
 
-    const { getUIState } = useUIContext();
-
-    const accountType = getUIState('accountType');
-
-    const regulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const { accountType, regulation } = uiState;
 
     const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
 
@@ -104,8 +101,8 @@ const OptionsAndMultipliersContent = () => {
     const { data } = useActiveTradingAccount();
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
 
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
 
     const { isEU } = useRegulationFlags(activeRegulation);
 

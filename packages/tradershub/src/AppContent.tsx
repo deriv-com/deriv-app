@@ -5,8 +5,8 @@ import { EUDisclaimerMessage, useUIContext } from './components';
 import { Router } from './routes';
 
 const AppContent = () => {
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
     const { isEU } = useRegulationFlags(activeRegulation);
 
     return (

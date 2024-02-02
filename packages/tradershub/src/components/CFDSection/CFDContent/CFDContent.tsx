@@ -7,9 +7,9 @@ import { useUIContext } from '../../UIProvider';
 
 const CFDContent = () => {
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
-    const { getUIState } = useUIContext();
+    const { uiState } = useUIContext();
 
-    const activeRegulation = getUIState('regulation');
+    const activeRegulation = uiState.regulation;
 
     const { isEU } = useRegulationFlags(activeRegulation);
 

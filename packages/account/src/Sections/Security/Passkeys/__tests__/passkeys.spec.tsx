@@ -4,7 +4,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { APIProvider } from '@deriv/api';
 import { useGetPasskeysList, useRegisterPasskey } from '@deriv/hooks';
-import { PlatformContext } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import Passkeys from '../passkeys';
 
@@ -54,12 +53,6 @@ jest.mock('@deriv/hooks', () => ({
 
 describe('Passkeys', () => {
     const mock_store = mockStore({ ui: { is_mobile: true } });
-    const platform_context_value = {
-        is_appstore: false,
-        is_passkeys_enabled: true,
-        is_pre_appstore: false,
-        is_deriv_crypto: false,
-    };
 
     afterEach(() => {
         jest.clearAllMocks();
@@ -67,11 +60,9 @@ describe('Passkeys', () => {
 
     const RenderWrapper = ({ children }: React.PropsWithChildren) => (
         <MemoryRouter>
-            <PlatformContext.Provider value={platform_context_value}>
-                <APIProvider>
-                    <StoreProvider store={mock_store}>{children}</StoreProvider>
-                </APIProvider>
-            </PlatformContext.Provider>
+            <APIProvider>
+                <StoreProvider store={mock_store}>{children}</StoreProvider>
+            </APIProvider>
         </MemoryRouter>
     );
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Loading } from '@deriv/components';
 import { useGetPasskeysList, useIsPasskeySupported, useRegisterPasskey } from '@deriv/hooks';
-import { PlatformContext, routes } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import PasskeysStatusContainer from './components/passkeys-status-container';
 import PasskeysList from './components/passkeys-list';
@@ -10,46 +10,11 @@ import PasskeyModal from './components/passkey-modal';
 import { getErrorContent, PASSKEY_STATUS_CODES, TPasskeysStatus } from './passkeys-configs';
 import './passkeys.scss';
 
-//TODO remove mock passkeys
-const mock_passkeys_list = [
-    {
-        id: 1,
-        name: 'New Passkey 1',
-        last_used: 1702365923000,
-        created_at: 1702365923000,
-        stored_on: '',
-        icon: 'IcFingerprint',
-    },
-    {
-        id: 2,
-        name: 'New Passkey 2',
-        last_used: 1702365923000,
-        created_at: 1702365923000,
-        stored_on: '',
-        icon: 'IcPattern',
-    },
-    {
-        id: 3,
-        name: 'New Passkey 3',
-        last_used: 1702365923000,
-        created_at: 1702365923000,
-        stored_on: '',
-        icon: 'IcPasscode',
-    },
-    {
-        id: 4,
-        name: 'New Passkey 4',
-        last_used: 1702365923000,
-        created_at: 1702365923000,
-        stored_on: '',
-        icon: 'IcFaceid',
-    },
-];
-
 const Passkeys = observer(() => {
     const { ui } = useStore();
     const { is_mobile } = ui;
-    const { is_passkeys_enabled } = React.useContext(PlatformContext);
+    //TODO: add feature flag with growthbook
+    const is_passkeys_enabled = true;
 
     const [passkey_status, setPasskeyStatus] = React.useState<TPasskeysStatus>(PASSKEY_STATUS_CODES.NONE);
     const { is_passkey_supported, is_loading: is_passkey_support_checked } = useIsPasskeySupported();

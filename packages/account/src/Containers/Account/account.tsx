@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { FadeWrapper, Loading } from '@deriv/components';
 import { useIsPasskeySupported } from '@deriv/hooks';
-import { flatten, matchRoute, PlatformContext, removePasskeysFromRoutes, routes as shared_routes } from '@deriv/shared';
+import { flatten, matchRoute, removeExactRouteFromRoutes, routes as shared_routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import PageOverlayWrapper from './page-overlay-wrapper';
 import { TRoute } from '../../Types';
@@ -32,21 +32,20 @@ const Account = observer(({ history, location, routes }: TAccountProps) => {
         should_allow_poinc_authentication,
     } = client;
     const { toggleAccountSettings, is_account_settings_visible, is_mobile, is_desktop } = ui;
-    const { is_passkeys_enabled } = React.useContext(PlatformContext);
+    //TODO: add feature flag with growthbook
+    const is_passkeys_enabled = true;
     const [available_routes, setAvailableRoutes] = React.useState(routes);
-    const { is_passkey_supported, is_loading, ...rest } = useIsPasskeySupported();
+    const { is_passkey_supported, is_loading } = useIsPasskeySupported();
 
     // eslint-disable-next-line no-console
     console.log('is_passkey_supported in account.tsx', is_passkey_supported);
-    // eslint-disable-next-line no-console
-    console.log('rest in account.tsx', rest);
 
     const should_remove_passkey_route = !is_passkeys_enabled || is_desktop || (is_mobile && !is_passkey_supported);
 
     React.useEffect(() => {
         if (is_loading) return;
         if (should_remove_passkey_route) {
-            const desktop_routes = removePasskeysFromRoutes(routes);
+            const desktop_routes = removeExactRouteFromRoutes(routes, 'passkeys');
             setAvailableRoutes(desktop_routes as TRoute[]);
         }
     }, [routes, should_remove_passkey_route, is_loading]);

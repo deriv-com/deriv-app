@@ -10,7 +10,7 @@ import {
     useOnrampVisible,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
-import { getStaticUrl, PlatformContext, removePasskeysFromRoutesMobile, routes, whatsapp_url } from '@deriv/shared';
+import { getStaticUrl, removeExactRouteFromRoutes, routes, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
@@ -20,7 +20,7 @@ import LiveChat from 'App/Components/Elements/LiveChat';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
 import MenuLink from './menu-link';
-import { MobileLanguageMenu, MenuTitle } from './Components/ToggleMenu';
+import { MenuTitle, MobileLanguageMenu } from './Components/ToggleMenu';
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
@@ -57,13 +57,10 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { data: is_p2p_enabled } = useIsP2PEnabled();
 
-    const { is_passkey_supported, is_loading, ...rest } = useIsPasskeySupported();
-    // eslint-disable-next-line no-console
-    console.log('is_passkey_supported in toggle-menu-drawer', is_passkey_supported);
-    // eslint-disable-next-line no-console
-    console.log('rest in toggle-menu-drawer', rest);
+    const { is_passkey_supported, is_loading } = useIsPasskeySupported();
 
-    const { is_passkeys_enabled } = React.useContext(PlatformContext);
+    //TODO: add feature flag with growthbook
+    const is_passkeys_enabled = true;
 
     const { pathname: route } = useLocation();
 
@@ -88,7 +85,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             let routes_config = getRoutesConfig({});
 
             if (should_remove_passkeys_route) {
-                routes_config = removePasskeysFromRoutesMobile(routes_config);
+                routes_config = removeExactRouteFromRoutes(routes_config, 'passkeys');
             }
             let primary_routes = [];
 

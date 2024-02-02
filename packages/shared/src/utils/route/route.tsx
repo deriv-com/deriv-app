@@ -3,7 +3,6 @@
 // TODO: Add test cases for this
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { deepCopy } from '../object';
 import { routes } from '../routes';
 
 export type TRoute = {
@@ -42,20 +41,17 @@ export const getSelectedRoute = ({ routes, pathname }: TGetSelectedRoute) => {
 export const isRouteVisible = (route: TRoute, is_logged_in: boolean) =>
     !(route && route.is_authenticated && !is_logged_in);
 
-export const removePasskeysFromRoutes = (routes_array: TRoute[]) => {
-    return (deepCopy(routes_array) as TRoute[]).filter(route => {
-        if (route?.id === 'security_routes') {
-            route.subroutes = route.subroutes?.filter(subroute => subroute.path !== routes.passkeys);
+export function removeExactRouteFromRoutes(routes_array: TRoute[], route_to_remove: keyof typeof routes) {
+    return routes_array.filter(route => {
+        if (route.path === routes[route_to_remove]) {
+            return false;
         }
-        return route;
-    });
-};
-
-export const removePasskeysFromRoutesMobile = (routes_array: TRoute[]) => {
-    return (deepCopy(routes_array) as TRoute[]).map(route => {
-        if (route.path === routes.account && route.routes) {
-            route.routes = removePasskeysFromRoutes(route.routes);
+        if (route.routes) {
+            route.routes = removeExactRouteFromRoutes(route.routes, route_to_remove);
         }
-        return route;
+        if (route.subroutes) {
+            route.subroutes = removeExactRouteFromRoutes(route.subroutes, route_to_remove);
+        }
+        return true;
     });
-};
+}

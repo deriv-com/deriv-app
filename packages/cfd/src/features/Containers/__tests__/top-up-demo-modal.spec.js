@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import TopUpDemoModal from '../top-up-demo-modal.tsx';
 import CFDProviders from '../../../cfd-providers.tsx';
 import { mockStore } from '@deriv/stores';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api';
 
 jest.mock('../../../Components/success-dialog.jsx', () => () => <div>Success Dialog</div>);
 
@@ -82,9 +82,11 @@ describe('TopUpDemoModal', () => {
     const renderComponent = () => {
         render(
             <APIProvider>
-                <CFDProviders store={mockStore(mock_props)}>
-                    <TopUpDemoModal platform={mock_props.platform} />
-                </CFDProviders>
+                <AuthProvider>
+                    <CFDProviders store={mockStore(mock_props)}>
+                        <TopUpDemoModal platform={mock_props.platform} />
+                    </CFDProviders>
+                </AuthProvider>
             </APIProvider>
         );
     };

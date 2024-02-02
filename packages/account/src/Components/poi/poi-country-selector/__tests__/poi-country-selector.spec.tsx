@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { IDV_ERROR_STATUS, isDesktop, isMobile, POIContext } from '@deriv/shared';
 import CountrySelector from '../poi-country-selector';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
@@ -49,11 +49,13 @@ describe('<CountrySelector/>', () => {
     const renderComponent = ({ props = mock_props, context = poi_context_config }) =>
         render(
             <APIProvider>
-                <StoreProvider store={store_config}>
-                    <POIContext.Provider value={context}>
-                        <CountrySelector {...props} />
-                    </POIContext.Provider>
-                </StoreProvider>
+                <AuthProvider>
+                    <StoreProvider store={store_config}>
+                        <POIContext.Provider value={context}>
+                            <CountrySelector {...props} />
+                        </POIContext.Provider>
+                    </StoreProvider>
+                </AuthProvider>
             </APIProvider>
         );
 

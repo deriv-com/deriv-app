@@ -6,7 +6,7 @@ import { withTranslation } from 'react-i18next';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Analytics } from '@deriv-com/analytics';
 import { BreakpointProvider } from '@deriv/quill-design';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
 import {
@@ -109,13 +109,15 @@ const AppWithoutTranslation = ({ root_store }) => {
                     <StoreProvider store={root_store}>
                         <BreakpointProvider>
                             <APIProvider>
-                                <POIProvider>
-                                    <StoreProvider store={root_store}>
-                                        <ExchangeRatesProvider>
-                                            <AppContent passthrough={platform_passthrough} />
-                                        </ExchangeRatesProvider>
-                                    </StoreProvider>
-                                </POIProvider>
+                                <AuthProvider>
+                                    <POIProvider>
+                                        <StoreProvider store={root_store}>
+                                            <ExchangeRatesProvider>
+                                                <AppContent passthrough={platform_passthrough} />
+                                            </ExchangeRatesProvider>
+                                        </StoreProvider>
+                                    </POIProvider>
+                                </AuthProvider>
                             </APIProvider>
                         </BreakpointProvider>
                     </StoreProvider>

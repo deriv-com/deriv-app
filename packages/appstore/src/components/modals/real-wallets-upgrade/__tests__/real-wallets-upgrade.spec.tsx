@@ -2,13 +2,15 @@ import React from 'react';
 import RealWalletsUpgrade from '../real-wallets-upgrade';
 import { render } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api';
 
 describe('<RealWalletsUpgrade />', () => {
     const wrapper = (mock: ReturnType<typeof mockStore>) => {
         const Component = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
+                <AuthProvider>
+                    <StoreProvider store={mock}>{children}</StoreProvider>
+                </AuthProvider>
             </APIProvider>
         );
         return Component;

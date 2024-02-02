@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIProvider } from '@deriv/api';
+import { APIProvider, AuthProvider } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { BreakpointProvider } from '@deriv/quill-design';
 import { SignupWizardProvider } from './providers/SignupWizardProvider';
@@ -10,15 +10,17 @@ import './index.scss';
 const App = () => (
     <UIProvider>
         <APIProvider standalone>
-            <BreakpointProvider>
-                <Provider.CFDProvider>
-                    <Provider.ModalProvider>
-                        <SignupWizardProvider>
-                            <AppContent />
-                        </SignupWizardProvider>
-                    </Provider.ModalProvider>
-                </Provider.CFDProvider>
-            </BreakpointProvider>
+            <AuthProvider>
+                <BreakpointProvider>
+                    <Provider.CFDProvider>
+                        <Provider.ModalProvider>
+                            <SignupWizardProvider>
+                                <AppContent />
+                            </SignupWizardProvider>
+                        </Provider.ModalProvider>
+                    </Provider.CFDProvider>
+                </BreakpointProvider>
+            </AuthProvider>
         </APIProvider>
     </UIProvider>
 );

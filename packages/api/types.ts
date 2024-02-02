@@ -2064,7 +2064,7 @@ type TPrivateSocketEndpoints = {
     };
 };
 
-type TSocketEndpoints = {
+export type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
         response: ActiveSymbolsResponse;

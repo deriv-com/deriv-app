@@ -2,6 +2,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { TSocketResponse } from '../../types';
 import APIProvider from '../APIProvider';
+import AuthProvider from '../AuthProvider';
 import usePaginatedFetch from '../usePaginatedFetch';
 
 jest.mock('@deriv/shared', () => ({
@@ -29,7 +30,11 @@ jest.mock('@deriv/shared', () => ({
 
 describe('usePaginatedFetch', () => {
     it('should call p2p_advert_list and get data in response', async () => {
-        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <AuthProvider>{children}</AuthProvider>
+            </APIProvider>
+        );
 
         const { result, waitFor } = renderHook(() => usePaginatedFetch('p2p_advert_list'), { wrapper });
 

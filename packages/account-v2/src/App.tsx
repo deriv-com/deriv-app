@@ -1,10 +1,12 @@
 // TODO - Remove this once the IDV form is moved out
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import { Formik } from 'formik';
 import { APIProvider } from '@deriv/api';
 import { BreakpointProvider } from '@deriv/quill-design';
 import SignupWizard from './components/SignupWizard';
+import DocumentSelection from './containers/DocumentSelection';
 import { SignupWizardProvider, useSignupWizardContext } from './context/SignupWizardContext';
 import { DOCUMENT_LIST, INITIAL_VALUES, SELECTED_COUNTRY } from './mocks/idv-form.mock';
 import { IDVForm } from './modules/IDVForm';
@@ -34,6 +36,8 @@ const App: React.FC = () => {
                     <IDVForm selectedCountry={SELECTED_COUNTRY} />
                 </Formik>
                 <RouteLinks />
+                {/* [TODO]:Mock - Remove Mock values */}
+                <DocumentSelection countryCode='ng' handleOnClick={val => console.log(val)} />
             </BreakpointProvider>
         </APIProvider>
     );

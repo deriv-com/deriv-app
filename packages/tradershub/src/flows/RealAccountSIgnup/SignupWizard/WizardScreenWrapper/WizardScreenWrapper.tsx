@@ -21,7 +21,7 @@ type TWizardScreenWrapper = { children: React.ReactNode; heading: ReactNode };
 const WizardScreenWrapper = ({ children, heading }: TWizardScreenWrapper) => {
     const { isMobile } = useBreakpoint();
     return (
-        <div className='flex flex-col justify-between h-full'>
+        <div className='flex flex-col justify-between h-full bg-system-light-primary-background'>
             {!isMobile && <Text className='font-bold pt-2400 pl-1200 text-100'>{heading}</Text>}
             {children}
         </div>

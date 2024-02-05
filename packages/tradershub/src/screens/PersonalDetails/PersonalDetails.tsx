@@ -32,6 +32,7 @@ const PersonalDetails = () => {
                                 only.
                             </p>
                         </div>
+
                         <Actions />
                     </Form>
                 )}

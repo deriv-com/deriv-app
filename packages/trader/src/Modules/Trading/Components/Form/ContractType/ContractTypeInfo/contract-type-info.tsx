@@ -47,8 +47,8 @@ const Info = observer(({ handleSelect, item, list, info_banner }: TInfo) => {
     );
     const has_toggle_buttons = /accumulator|turboslong|vanilla|multiplier/i.test(selected_contract_type);
     const should_show_video = /accumulator|turboslong|vanilla/i.test(selected_contract_type);
-    const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
-    const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
+    const is_description_tab_selected = selected_tab === TABS.DESCRIPTION || !has_toggle_buttons;
+    const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY && has_toggle_buttons;
     const width = is_mobile ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
     const button_name = contract_types?.find(item => item.value === selected_contract_type)?.text;

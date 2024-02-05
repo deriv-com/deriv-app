@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Formik, FormikValues } from 'formik';
-import { Input } from '@deriv-com/ui';
 import Actions from '../../flows/RealAccountSIgnup/SignupWizard/Actions';
 import WizardScreenWrapper from '../../flows/RealAccountSIgnup/SignupWizard/WizardScreenWrapper';
 import { ACTION_TYPES, useSignupWizardContext } from '../../providers/SignupWizardProvider/SignupWizardContext';
@@ -25,21 +24,13 @@ const PersonalDetails = () => {
                 }}
                 onSubmit={handleSubmit}
             >
-                {({ handleBlur, handleChange, values }) => (
+                {() => (
                     <Form className='flex flex-col flex-grow w-full overflow-y-auto'>
                         <div className='flex-1 overflow-y-auto p-1200'>
                             <p className='text-75'>
                                 Any information you provide is confidential and will be used for verification purposes
                                 only.
                             </p>
-                            <Input
-                                className='text-body-sm'
-                                label='First name'
-                                name='firstName'
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.firstName}
-                            />
                         </div>
 
                         <Actions />

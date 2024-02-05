@@ -59,7 +59,6 @@ const Verification = () => {
                 if (!isPoiVerified) redirectToVerification('/account/proof-of-identity');
             },
             status: isPoiVerified ? 'done' : 'action',
-            testId: 'dt_p2p_v2_verification_poi_arrow_button',
             text: getPoiAction(poiStatus),
         },
         ...(isP2PPoaRequired
@@ -70,7 +69,6 @@ const Verification = () => {
                           if (!isPoaVerified) redirectToVerification('/account/proof-of-address');
                       },
                       status: isPoaVerified ? 'done' : 'action',
-                      testId: 'dt_p2p_v2_verification_poa_arrow_button',
                       text: getPoaAction(poaStatus),
                   },
               ]

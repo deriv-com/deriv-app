@@ -113,4 +113,8 @@
 
 .dc-modal__container_passkeys-modal__error {
     min-width: 32.8rem;
+
+    .dc-modal-body {
+        padding: 0 1.6rem;
+    }
 }

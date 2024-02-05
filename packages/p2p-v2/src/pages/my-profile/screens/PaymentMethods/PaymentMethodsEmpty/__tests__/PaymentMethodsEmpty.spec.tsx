@@ -18,21 +18,21 @@ const mockUseDevice = useDevice as jest.MockedFunction<typeof useDevice>;
 const mockuseQueryString = useQueryString as jest.MockedFunction<typeof useQueryString>;
 
 describe('PaymentMethodsEmpty', () => {
-    it('it should render the component correctly', () => {
+    it('should render the component correctly', () => {
         const onAddPaymentMethod = jest.fn();
         render(<PaymentMethodsEmpty onAddPaymentMethod={onAddPaymentMethod} />);
         expect(screen.getByText('You haven’t added any payment methods yet')).toBeInTheDocument();
         expect(screen.getByText('Hit the button below to add payment methods.')).toBeInTheDocument();
         expect(screen.getByText('Add payment methods')).toBeInTheDocument();
     });
-    it('it should call onaddpaymentmethods when ismobile is false', () => {
+    it('should call onaddpaymentmethods when ismobile is false', () => {
         const mockOnAddPaymentMethod = jest.fn();
         render(<PaymentMethodsEmpty onAddPaymentMethod={mockOnAddPaymentMethod} />);
         const button = screen.getByRole('button', { name: 'Add payment methods' });
         userEvent.click(button);
         expect(mockOnAddPaymentMethod).toHaveBeenCalled();
     });
-    it('it should call onaddpaymentmethods when ismobile is true', () => {
+    it('should call onaddpaymentmethods when ismobile is true', () => {
         mockUseDevice.mockReturnValueOnce({
             isDesktop: false,
             isMobile: true,

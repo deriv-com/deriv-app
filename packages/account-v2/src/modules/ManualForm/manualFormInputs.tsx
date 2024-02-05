@@ -5,6 +5,7 @@ import { WalletText } from '../../components/base/WalletText';
 import { WalletTextField } from '../../components/base/WalletTextField';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
 import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manualFormUtils';
+import { Input } from '@deriv-com/ui';
 import { useManualForm } from '../../hooks';
 
 type TManualFormInputsProps = { selectedDocument: TManualDocumentTypes };
@@ -18,14 +19,18 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
             <WalletText>{getTitleForFormInputs(selectedDocument)}</WalletText>
             <div className='grid grid-cols-2 gap-1200'>
                 <Field name='document_number'>
-                    {({ field, meta }: FieldProps) => (
-                        <WalletTextField
-                            {...field}
-                            errorMessage={meta.error}
-                            isInvalid={meta.touched && Boolean(meta.error)}
-                            label={`${fieldsConfig.documentNumber.label}*`}
-                        />
-                    )}
+                    {({ field, meta }: FieldProps) => {
+                        const hasError = meta.touched && !!meta.error;
+                        return (
+                            <Input
+                                className='h-2100'
+                                error={hasError}
+                                label={`${fieldsConfig.documentNumber.label}*`}
+                                message={hasError ? meta.error : ''}
+                                {...field}
+                            />
+                        );
+                    }}
                 </Field>
                 {isExpiryDateRequired && (
                     <Field name='document_expiry'>

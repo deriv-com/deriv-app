@@ -72,10 +72,12 @@ const AccumulatorCardBody = ({
                     >
                         <Money amount={sell_price || indicative} currency={currency} />
                     </div>
-                    <ArrowIndicator
-                        className='dc-contract-card__indicative--movement'
-                        value={sell_price || indicative}
-                    />
+                    {!is_sold && (
+                        <ArrowIndicator
+                            className='dc-contract-card__indicative--movement'
+                            value={sell_price || indicative}
+                        />
+                    )}
                 </ContractCardItem>
                 <ContractCardItem
                     header={TOTAL_PROFIT_LOSS}
@@ -84,7 +86,7 @@ const AccumulatorCardBody = ({
                     is_won={is_won}
                 >
                     <Money amount={profit} currency={currency} />
-                    <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
+                    {!is_sold && <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />}
                 </ContractCardItem>
                 <ContractCardItem header={TAKE_PROFIT} className='dc-contract-card__take-profit'>
                     {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}

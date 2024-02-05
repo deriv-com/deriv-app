@@ -126,7 +126,11 @@ const Verification: FC<TVerificationProps> = ({ selectedJurisdiction }) => {
                     !formValues.firstName ||
                     !formValues.lastName ||
                     !formValues.dateOfBirth ||
-                    !!errors.documentNumber
+                    !formValues.verifiedIdvDetails ||
+                    !!errors.documentNumber ||
+                    !!errors.firstName ||
+                    !!errors.lastName ||
+                    !!errors.dateOfBirth
                 );
             case 'manualScreen':
                 if (formValues.selectedManualDocument === 'driving-license') {

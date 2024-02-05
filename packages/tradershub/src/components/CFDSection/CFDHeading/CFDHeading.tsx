@@ -1,14 +1,33 @@
 import React, { Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useIsEuRegion } from '@deriv/api';
 import { Button, Heading, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
+import useRegulationFlags from '../../../hooks/useRegulationFlags';
 import { TitleDescriptionLoader } from '../../Loaders';
 import { StaticLink } from '../../StaticLink';
+import { useUIContext } from '../../UIProvider';
 
-const CompareAccountsButton = ({ className }: { className?: string }) => (
-    <Button className={qtMerge('no-underline', className)} colorStyle='coral' size='sm' variant='tertiary'>
-        Compare Accounts
-    </Button>
-);
+const CompareAccountsButton = ({ className }: { className?: string }) => {
+    const history = useHistory();
+    const { uiState } = useUIContext();
+    const { accountType, regulation } = uiState;
+
+    const { isEU } = useRegulationFlags(regulation, accountType);
+
+    const title = isEU ? 'Account information' : 'Compare Accounts';
+
+    return (
+        <Button
+            className={qtMerge('no-underline', className)}
+            colorStyle='coral'
+            onClick={() => history.push('/traders-hub/compare-accounts')}
+            size='sm'
+            variant='tertiary'
+        >
+            {title}
+        </Button>
+    );
+};
 
 const CFDHeading = () => {
     const { isMobile } = useBreakpoint();

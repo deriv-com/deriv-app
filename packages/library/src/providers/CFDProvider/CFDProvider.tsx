@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useMemo, useState } from 'react';
+import React, { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
 import { TMarketTypes, TPlatforms, THooks } from '../../types';
 
 type TCFDState = {
@@ -17,7 +17,7 @@ type TCFDContext = {
 const CFDContext = createContext<TCFDContext | null>(null);
 
 export const useCFDContext = () => {
-    const context = React.useContext(CFDContext);
+    const context = useContext(CFDContext);
 
     if (!context) {
         throw new Error('useCFDContext must be used within a CFDProvider. Please import Provider from @deriv/library');
@@ -26,7 +26,7 @@ export const useCFDContext = () => {
     return context;
 };
 
-export const CFDProvider = ({ children }: { children: React.ReactNode }) => {
+export const CFDProvider = ({ children }: PropsWithChildren) => {
     const [cfdState, setCfdState] = useState<TCFDState>({});
 
     const getCFDState = useCallback(
@@ -36,11 +36,14 @@ export const CFDProvider = ({ children }: { children: React.ReactNode }) => {
         [cfdState]
     );
 
-    const updateCFDState = <T extends keyof TCFDState>(key: T, value: TCFDState[T]) => {
-        setCfdState(prevState => ({ ...prevState, [key]: value }));
-    };
+    const updateCFDState = useCallback(
+        <T extends keyof TCFDState>(key: T, value: TCFDState[T]) => {
+            setCfdState(prevState => ({ ...prevState, [key]: value }));
+        },
+        [setCfdState]
+    );
 
-    const providerValue = useMemo(() => ({ getCFDState, setCfdState: updateCFDState }), [getCFDState]);
+    const providerValue = useMemo(() => ({ getCFDState, setCfdState: updateCFDState }), [getCFDState, updateCFDState]);
 
     return <CFDContext.Provider value={providerValue}>{children}</CFDContext.Provider>;
 };

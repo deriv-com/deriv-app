@@ -315,6 +315,9 @@ const FinancialAssessment = observer(() => {
                 errors[field] = localize('This field is required');
             }
         });
+        if (shouldHideOccupationField(values?.employment_status || employment_status)) {
+            delete errors.occupation;
+        }
         return errors;
     };
 

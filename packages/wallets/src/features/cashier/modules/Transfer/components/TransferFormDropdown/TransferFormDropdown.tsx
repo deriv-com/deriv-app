@@ -1,5 +1,6 @@
 import React, { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { useFormikContext } from 'formik';
+import { useHistory } from 'react-router-dom';
 import { WalletListCardBadge, WalletText } from '../../../../../../components';
 import { useModal } from '../../../../../../components/ModalProvider';
 import useDevice from '../../../../../../hooks/useDevice';
@@ -38,25 +39,23 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
     const accountsList = isFromAccountDropdown ? accounts : toAccountList;
     const label = isFromAccountDropdown ? 'Transfer from' : 'Transfer to';
     const badgeLabel = selectedAccount?.demo_account ? 'virtual' : selectedAccount?.landingCompanyName;
-    const queryParamToAccount = new URLSearchParams(window.location.search).get('to-account');
+
+    const { location } = useHistory();
+    const toAccountLoginId =
+        location.pathname === '/wallets/cashier/transfer' ? location.state?.toAccountLoginId : undefined;
 
     useEffect(() => {
         const toAccount: TToAccount = Object.values(accounts)
             .flatMap(account => account)
-            .find(account => account.loginid === queryParamToAccount);
+            .find(account => account.loginid === toAccountLoginId);
 
-        if (queryParamToAccount && toAccount) {
+        if (toAccountLoginId && toAccount) {
             setValues(prev => ({
                 ...prev,
                 toAccount,
             }));
         }
-
-        // remove 'to-account' query param from url
-        const url = new URL(window.location.href);
-        url.searchParams.delete('to-account');
-        window.history.replaceState({}, document.title, url.toString());
-    }, [accounts, queryParamToAccount, setValues]);
+    }, [accounts, toAccountLoginId, setValues]);
 
     const handleSelect = useCallback(
         (account: TInitialTransferFormValues['fromAccount']) => {
@@ -118,9 +117,11 @@ const TransferFormDropdown: React.FC<TProps> = ({ fieldName, mobileAccountsListR
                 {selectedAccount ? (
                     <TransferFormAccountCard account={selectedAccount} activeWallet={activeWallet} type='input' />
                 ) : (
-                    <WalletText size='sm' weight='bold'>
-                        Select a trading account or a Wallet
-                    </WalletText>
+                    <div className='wallets-transfer-form-dropdown__select-account-cta'>
+                        <WalletText size='sm' weight='bold'>
+                            Select a trading account or a Wallet
+                        </WalletText>
+                    </div>
                 )}
             </div>
 

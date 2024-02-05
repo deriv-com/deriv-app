@@ -2,7 +2,7 @@ import React, { Fragment, useMemo } from 'react';
 import { useActiveTradingAccount, useCtraderAccountsList, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { useBreakpoint } from '@deriv/quill-design';
-import { Text } from '@deriv-com/ui/dist/components/Text';
+import { Text } from '@deriv-com/ui';
 import { useUIContext } from '../../../../components';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import ImportantIcon from '../../../../public/images/ic-important.svg';
@@ -25,8 +25,8 @@ const serviceMaintenanceMessages: Record<TPlatforms.All, string> = {
 
 const TradeScreen = ({ account }: TradeScreenProps) => {
     const { isMobile } = useBreakpoint();
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
     const { isEU } = useRegulationFlags(activeRegulation);
 
     const { getCFDState } = Provider.useCFDContext();

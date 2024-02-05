@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import { useActiveTradingAccount, useDxtradeAccountsList } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button, Text } from '@deriv/quill-design';
+import { Text } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui';
 import { TradingAccountCard } from '../../../../../../components';
 import { getStaticUrl } from '../../../../../../helpers/urls';
 import DerivX from '../../../../../../public/images/cfd/derivx.svg';
@@ -37,18 +38,15 @@ const AddedDxtradeAccountsList = () => {
         <div className='flex flex-col gap-y-200'>
             <Button
                 // open transfer modal
-                className='border-opacity-black-400 rounded-200 px-800'
-                colorStyle='black'
                 onClick={() => {
                     if (isVirtual) show(<TopUpModal account={account} platform={CFDPlatforms.DXTRADE} />);
                     // else transferModal;
                 }}
-                variant='secondary'
+                variant='outlined'
             >
                 {isVirtual ? 'Top up' : 'Transfer'}
             </Button>
             <Button
-                className='rounded-200 px-800'
                 onClick={() =>
                     account &&
                     show(

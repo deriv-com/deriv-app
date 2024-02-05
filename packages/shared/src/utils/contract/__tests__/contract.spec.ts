@@ -308,6 +308,15 @@ describe('isAccumulatorContract', () => {
     });
 });
 
+describe('isTicksContract', () => {
+    it('should return true if contract_type includes CONTRACT_TYPES.TICK_HIGH_LOW.HIGH', () => {
+        expect(ContractUtils.isTicksContract(CONTRACT_TYPES.TICK_HIGH_LOW.HIGH)).toEqual(true);
+    });
+    it('should return false if contract_type is not CONTRACT_TYPES.TICK', () => {
+        expect(ContractUtils.isTicksContract(CONTRACT_TYPES.ACCUMULATOR)).toEqual(false);
+    });
+});
+
 describe('isAccumulatorContractOpen', () => {
     it('should return true if contract_type includes CONTRACT_TYPES.ACCUMULATOR, status is open, and current spot has NOT crossed barriers', () => {
         const contract_info = mockContractInfo({

@@ -35,66 +35,64 @@ jest.mock('@deriv/shared', () => {
     return {
         ...jest.requireActual('@deriv/shared'),
         WS: {
-            storage: {
-                contractsFor: jest.fn(() =>
-                    Promise.resolve({
-                        contracts_for: {
-                            available: [
-                                {
-                                    ...vanilla_contracts_for_data,
-                                    barrier: barrier_daily,
-                                    barrier_choices: barrier_choices_daily,
-                                    contract_display: 'Vanilla Long Call',
-                                    contract_type: 'VANILLALONGCALL',
-                                    expiry_type: 'daily',
-                                    max_contract_duration: '365d',
-                                    min_contract_duration: '1d',
-                                    sentiment: 'up',
-                                },
-                                {
-                                    ...vanilla_contracts_for_data,
-                                    barrier: barrier_daily,
-                                    barrier_choices: barrier_choices_daily,
-                                    contract_display: 'Vanilla Long Put',
-                                    contract_type: 'VANILLALONGPUT',
-                                    expiry_type: 'daily',
-                                    max_contract_duration: '365d',
-                                    min_contract_duration: '1d',
-                                    sentiment: 'down',
-                                },
-                                {
-                                    ...vanilla_contracts_for_data,
-                                    barrier: barrier_intraday,
-                                    barrier_choices: barrier_choices_intraday,
-                                    contract_display: 'Vanilla Long Call',
-                                    contract_type: 'VANILLALONGCALL',
-                                    expiry_type: 'intraday',
-                                    max_contract_duration: '1d',
-                                    min_contract_duration: '1m',
-                                    sentiment: 'up',
-                                },
-                                {
-                                    ...vanilla_contracts_for_data,
-                                    barrier: barrier_intraday,
-                                    barrier_choices: barrier_choices_intraday,
-                                    contract_display: 'Vanilla Long Put',
-                                    contract_type: 'VANILLALONGPUT',
-                                    expiry_type: 'intraday',
-                                    max_contract_duration: '1d',
-                                    min_contract_duration: '1m',
-                                    sentiment: 'down',
-                                },
-                            ],
-                            close: 1703203199,
-                            feed_license: 'realtime',
-                            hit_count: 47,
-                            non_available: [],
-                            open: 1703116800,
-                            spot: 6945.975,
-                        },
-                    })
-                ),
-            },
+            contractsFor: jest.fn(() =>
+                Promise.resolve({
+                    contracts_for: {
+                        available: [
+                            {
+                                ...vanilla_contracts_for_data,
+                                barrier: barrier_daily,
+                                barrier_choices: barrier_choices_daily,
+                                contract_display: 'Vanilla Long Call',
+                                contract_type: 'VANILLALONGCALL',
+                                expiry_type: 'daily',
+                                max_contract_duration: '365d',
+                                min_contract_duration: '1d',
+                                sentiment: 'up',
+                            },
+                            {
+                                ...vanilla_contracts_for_data,
+                                barrier: barrier_daily,
+                                barrier_choices: barrier_choices_daily,
+                                contract_display: 'Vanilla Long Put',
+                                contract_type: 'VANILLALONGPUT',
+                                expiry_type: 'daily',
+                                max_contract_duration: '365d',
+                                min_contract_duration: '1d',
+                                sentiment: 'down',
+                            },
+                            {
+                                ...vanilla_contracts_for_data,
+                                barrier: barrier_intraday,
+                                barrier_choices: barrier_choices_intraday,
+                                contract_display: 'Vanilla Long Call',
+                                contract_type: 'VANILLALONGCALL',
+                                expiry_type: 'intraday',
+                                max_contract_duration: '1d',
+                                min_contract_duration: '1m',
+                                sentiment: 'up',
+                            },
+                            {
+                                ...vanilla_contracts_for_data,
+                                barrier: barrier_intraday,
+                                barrier_choices: barrier_choices_intraday,
+                                contract_display: 'Vanilla Long Put',
+                                contract_type: 'VANILLALONGPUT',
+                                expiry_type: 'intraday',
+                                max_contract_duration: '1d',
+                                min_contract_duration: '1m',
+                                sentiment: 'down',
+                            },
+                        ],
+                        close: 1703203199,
+                        feed_license: 'realtime',
+                        hit_count: 47,
+                        non_available: [],
+                        open: 1703116800,
+                        spot: 6945.975,
+                    },
+                })
+            ),
             tradingTimes: jest.fn(() =>
                 Promise.resolve({
                     trading_times: {

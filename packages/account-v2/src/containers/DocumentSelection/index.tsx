@@ -17,23 +17,23 @@ const DocumentSelection = ({ countryCode, handleOnClick }: TDocumentSelection) =
 
     return (
         <div className='flex flex-col'>
-            <Text as='h2' className='manual-poi__title' color='prominent' size='xs'>
+            <Text as='h2' color='prominent' size='xs'>
                 Please upload one of the following documents:
             </Text>
             <div className='gap-900'>
-                {documentList.map(document => (
+                {documentList.map(({ description, icon: Icon, title, value }) => (
                     <Card
                         className='flex flex-row items-center cursor-pointer'
-                        key={document.value}
-                        onClick={() => handleOnClick(document.value)}
+                        key={value}
+                        onClick={() => handleOnClick(value)}
                     >
-                        <document.icon />
+                        <Icon />
                         <div className='flex flex-col flex-grow ml-1200 gap-400'>
                             <Text as='p' color='prominent' size={isMobile ? 'xs' : 'sm'} weight='bold'>
-                                {document.title}
+                                {title}
                             </Text>
                             <Text as='p' size={isMobile ? '2xs' : 'xs'}>
-                                {document.description}
+                                {description}
                             </Text>
                         </div>
                         <StandaloneChevronRightRegularIcon />

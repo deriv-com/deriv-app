@@ -13,7 +13,7 @@ const fatcaDeclaration = [
 ];
 
 const FatcaDeclaration = () => {
-    const { handleChange, setFieldValue, values } = useFormikContext<{
+    const { setFieldValue, values } = useFormikContext<{
         fatcaDeclaration: string;
     }>();
     return (
@@ -41,7 +41,6 @@ const FatcaDeclaration = () => {
                         { text: 'No', value: 'no' },
                     ]}
                     name='fatcaDeclaration'
-                    onChange={handleChange}
                     onSelect={selectedItem => {
                         setFieldValue('fatcaDeclaration', selectedItem);
                     }}

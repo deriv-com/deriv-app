@@ -47,13 +47,13 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
 
     return (
         <TradingAccountCard
-            leading={() => <MT5AccountIcon account={account} />}
-            trailing={() => (
+            leading={<MT5AccountIcon account={account} />}
+            trailing={
                 <div className='wallets-added-mt5__actions'>
                     <WalletButton
                         disabled={jurisdictionStatus.is_failed || jurisdictionStatus.is_pending}
                         onClick={() => {
-                            history.push(`/wallets/cashier/transfer?to-account=${account.loginid}`);
+                            history.push(`/wallets/cashier/transfer`, { toAccountLoginId: account.loginid });
                         }}
                         variant='outlined'
                     >
@@ -74,7 +74,7 @@ const AddedMT5AccountsList: React.FC<TProps> = ({ account }) => {
                         {t('Open')}
                     </WalletButton>
                 </div>
-            )}
+            }
         >
             <div className='wallets-added-mt5__details'>
                 <div className='wallets-added-mt5__details-title'>

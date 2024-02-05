@@ -1,6 +1,9 @@
 import React, { useRef } from 'react';
 import { useHover } from 'usehooks-ts';
-import { Button, qtMerge, Text, useBreakpoint } from '@deriv/quill-design';
+import { Provider } from '@deriv/library';
+import { ChangePassword } from '../../ChangePassword';
+import { Button, qtMerge, useBreakpoint } from '@deriv/quill-design';
+import { Text } from '@deriv-com/ui';
 import { Clipboard, Tooltip } from '../../../../../components';
 import EditIcon from '../../../../../public/images/ic-edit.svg';
 
@@ -15,6 +18,7 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
     const { isDesktop } = useBreakpoint();
     const hoverRef = useRef(null);
     const isHovered = useHover(hoverRef);
+    const { show } = Provider.useModal();
     return (
         <div
             className={qtMerge(
@@ -22,19 +26,23 @@ const TradeDetailsItem = ({ className, label, value, variant = 'clipboard' }: TT
                 className
             )}
         >
-            <Text colorStyle='subtle' size='sm'>
-                {label}
-            </Text>
+            {label && <Text size='sm'>{label}</Text>}
             <div className='flex items-center gap-x-400'>
-                <Text bold={variant !== 'info'} size='sm'>
-                    {value}
-                </Text>
+                {variant === 'info' ? (
+                    <Text color='less-prominent' size='sm'>
+                        {value}
+                    </Text>
+                ) : (
+                    <Text size='sm' weight='bold'>
+                        {value}
+                    </Text>
+                )}
                 {variant === 'clipboard' && <Clipboard textCopy={value} />}
                 {variant === 'password' && (
                     <Tooltip alignment='left' isVisible={isHovered && isDesktop} message='Change password'>
                         <div ref={hoverRef}>
                             <Button colorStyle='white' size='sm' variant='tertiary'>
-                                <EditIcon className='cursor-pointer' />
+                                <EditIcon className='cursor-pointer' onClick={() => show(<ChangePassword />)} />
                             </Button>
                         </div>
                     </Tooltip>

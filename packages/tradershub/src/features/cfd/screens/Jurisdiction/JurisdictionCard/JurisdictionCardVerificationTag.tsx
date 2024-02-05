@@ -5,7 +5,7 @@ import VerificationPendingIcon from '../../../../../public/images/ic-verificatio
 import VerificationSuccessIcon from '../../../../../public/images/ic-verification-success-status.svg';
 import { THooks } from '../../../../../types';
 
-type TProps = {
+type TJurisdictionCardVerificationTagProps = {
     category: 'poa' | 'poi' | null;
     icon: ReactNode;
 };
@@ -28,11 +28,11 @@ const verificationStatusIconMapper: Partial<
  * @returns
  */
 
-const JurisdictionCardVerificationTag = ({ category, icon }: TProps) => {
+const JurisdictionCardVerificationTag = ({ category, icon }: TJurisdictionCardVerificationTagProps) => {
     const { data } = useAuthentication();
 
     const renderStatusIcon = (
-        category: TProps['category'],
+        category: TJurisdictionCardVerificationTagProps['category'],
         status: NonNullable<THooks.Authentication['poa_status' | 'poi_status']>
     ) => {
         if (category && status && Object.keys(verificationStatusIconMapper).includes(status)) {

@@ -10,11 +10,9 @@ import './AdvertiserNameBadges.scss';
  * Use cases are usually in My Profile page and Advertiser page used under the advertiser's name
  */
 const AdvertiserNameBadges = () => {
-    const { data: advertiserStats, isLoading } = useAdvertiserStats();
+    const { data: advertiserStats } = useAdvertiserStats();
 
-    if (isLoading || !advertiserStats) return <h1>Loading...</h1>;
-
-    const { isAddressVerified, isIdentityVerified, totalOrders } = advertiserStats;
+    const { isAddressVerified, isIdentityVerified, totalOrders } = advertiserStats || {};
 
     return (
         <div className='p2p-v2-advertiser-name-badges'>

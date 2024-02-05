@@ -22,7 +22,6 @@ const useAuthorize = () => {
             // e.g. during the process of swithcing account or smth
             refetchOnWindowFocus: false,
             refetchOnReconnect: false,
-            refetchOnMount: false,
         },
     });
 

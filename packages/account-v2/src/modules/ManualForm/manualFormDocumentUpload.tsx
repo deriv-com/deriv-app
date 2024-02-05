@@ -10,7 +10,7 @@ export const ManualFormDocumentUpload = ({ selectedDocument }: TManualFormDocume
     const uploadConfig = getUploadConfig(selectedDocument);
 
     return (
-        <div className='pt-1200 border-t-solid-general-section-1  border-solid border-t-100'>
+        <div className='flex flex-col gap-1200 pt-1200 border-t-solid-general-section-1  border-solid border-t-100'>
             <WalletText>{getTitleForDocumentUpload(selectedDocument)}</WalletText>
             <div className='flex gap-1200 w-full justify-between'>
                 {uploadConfig.map(upload => (

@@ -101,15 +101,12 @@ const ContractDetails = ({
         let label: string;
 
         switch (abbreviation) {
-            case 'H':
-                label = localize('Indicative high spot');
-                break;
             case 'L':
                 label = localize('Indicative low spot');
                 break;
+            case 'H':
             default:
                 label = localize('Indicative high spot');
-                break;
         }
 
         return {

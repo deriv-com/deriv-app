@@ -316,6 +316,10 @@
     }
 }
 
+.smartcharts .barrier-area {
+    z-index: 1 !important;
+}
+
 /** @define smartcharts-mobile; weak */
 .smartcharts-mobile {
     .cq-modal-dropdown {

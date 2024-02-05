@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useEventListener } from 'usehooks-ts';
+import { CloseHeader } from '@/components';
+import { MyProfile } from '@/pages';
 import { useActiveAccount } from '@deriv/api';
 import { Loader, Tab, Tabs } from '@deriv-com/ui';
-import { CloseHeader } from '../../components';
-import { MyProfile } from '../../pages';
 import './index.scss';
 
 const DEFAULT_TAB = 'buy-sell';

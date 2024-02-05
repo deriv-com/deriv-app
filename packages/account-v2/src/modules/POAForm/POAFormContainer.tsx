@@ -10,7 +10,7 @@ import { IconWithMessage } from '../../components/IconWithMessage';
 import { AUTH_STATUS_CODES } from '../../constants/constants';
 import { ACCOUNT_V2_ROUTES, P2P_ROUTE } from '../../constants/routes';
 import { AddressDetailsForm } from '../../containers/POAForm/AddressDetailsForm';
-import usePOAInfo from '../../hooks/usePOAInfo';
+import { usePOAInfo } from '../../hooks/usePOAInfo';
 import { isNavigationFromDerivGO, isNavigationFromP2P } from '../../utils/platform';
 
 export const POAFormContainer = () => {
@@ -25,11 +25,11 @@ export const POAFormContainer = () => {
         setResubmitting(true);
     };
 
-    const redirectButton = () =>
+    const p2pButton = () =>
         isNavigationFromP2P() ? (
             <Button
                 onClick={() => {
-                    window.location.href = P2P_ROUTE;
+                    history.push(P2P_ROUTE);
                     window.sessionStorage.removeItem('config.platform');
                 }}
             >
@@ -50,7 +50,7 @@ export const POAFormContainer = () => {
 
     const continueTradingButton = () => {
         const isRedirectedFromPlatform = isNavigationFromP2P() || isNavigationFromDerivGO();
-        return isRedirectedFromPlatform ? (
+        return !isRedirectedFromPlatform ? (
             <Button
                 onClick={() => {
                     history.push('/');
@@ -60,6 +60,8 @@ export const POAFormContainer = () => {
             </Button>
         ) : null;
     };
+
+    const redirectionButton = poiButton() ?? p2pButton() ?? continueTradingButton();
 
     if (activeAccount?.is_virtual) return <DemoMessage />;
 
@@ -83,7 +85,7 @@ export const POAFormContainer = () => {
     if (documentSubmitted)
         return (
             <IconWithMessage
-                actionButton={poiButton() ?? redirectButton() ?? continueTradingButton()}
+                actionButton={redirectionButton}
                 icon={<IcPOAVerified width={128} />}
                 title='Your documents were submitted successfully'
             >
@@ -108,7 +110,7 @@ export const POAFormContainer = () => {
         case AUTH_STATUS_CODES.PENDING:
             return (
                 <IconWithMessage
-                    actionButton={poiButton() ?? redirectButton() ?? continueTradingButton()}
+                    actionButton={redirectionButton}
                     icon={<IcPOAVerified width={128} />}
                     title='Your proof of address was submitted successfully'
                 >
@@ -125,7 +127,7 @@ export const POAFormContainer = () => {
         case AUTH_STATUS_CODES.VERIFIED:
             return (
                 <IconWithMessage
-                    actionButton={poiButton() ?? redirectButton() ?? continueTradingButton()}
+                    actionButton={redirectionButton}
                     icon={<IcPOAVerified width={128} />}
                     title='Your proof of address is verified'
                 >

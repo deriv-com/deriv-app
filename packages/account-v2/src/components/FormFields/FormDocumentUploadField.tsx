@@ -1,8 +1,8 @@
 import React, { ComponentProps } from 'react';
-import * as Yup from 'yup';
 import { Field, FieldProps } from 'formik';
-import { Dropzone } from '../base/Dropzone';
+import * as Yup from 'yup';
 import { validateField } from '../../utils/validation';
+import { Dropzone } from '../base/Dropzone';
 
 type TFormDocumentUploadField = Omit<ComponentProps<typeof Dropzone>, 'onFileChange'> & {
     name: string;

@@ -261,7 +261,8 @@
         margin: 0 0.8rem 0.8rem;
 
         @include mobile {
-            margin: 0.8rem 1.6rem;
+            width: 32.8rem;
+            margin: 0.8rem auto;
         }
     }
 }

@@ -1,9 +1,8 @@
 import React, { memo, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
-import { ColumnDef, GroupingState, getCoreRowModel, getGroupedRowModel, useReactTable } from '@tanstack/react-table';
 import { Text } from '@deriv-com/ui';
-import useFetchMore from '../../hooks/useFetchMore';
-import { useDevice } from '../../hooks';
+import { useFetchMore, useDevice } from '@/hooks';
+import { ColumnDef, getCoreRowModel, getGroupedRowModel, GroupingState, useReactTable } from '@tanstack/react-table';
 import './Table.scss';
 
 type TProps<T> = {

@@ -9,7 +9,7 @@ import ActivateIcon from '../../../../../public/ic-unarchive.svg';
 import EditIcon from '../../../../../public/ic-edit.svg';
 import DeleteIcon from '../../../../../public/ic-delete.svg';
 import { PopoverDropdown } from '../../../../../components';
-import { ADVERT_TYPE, RATE_TYPE } from '../../../../../utils/constants';
+import { ADVERT_TYPE, RATE_TYPE } from '@/constants';
 import { formatMoney } from '../../../../../utils/currency';
 import { AdStatus, AdType, ProgressIndicator } from '../../../components';
 import { TMyAdsTableRowRendererProps } from '../MyAdsTable/MyAdsTable';

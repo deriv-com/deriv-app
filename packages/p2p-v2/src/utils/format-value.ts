@@ -1,4 +1,4 @@
-import { RATE_TYPE } from './constants';
+import { RATE_TYPE } from '@/constants';
 import { formatMoney } from './currency';
 
 /**
@@ -29,17 +29,17 @@ export const setDecimalPlaces = (value: number, expectedDecimalPlace: number): n
 export const percentOf = (number: number, percent: number): number => number + number * (percent / 100);
 
 type TGenerateEffectiveRate = {
+    exchangeRate: number;
+    localCurrency: string;
+    marketRate: number;
     price: number;
     rate: number;
-    localCurrency: string;
-    exchangeRate: number;
-    marketRate: number;
     rateType: string;
 };
 
 type TReturnGenerateEffectiveRate = {
-    effectiveRate: number;
     displayEffectiveRate: string;
+    effectiveRate: number;
 };
 
 /**
@@ -54,11 +54,11 @@ type TReturnGenerateEffectiveRate = {
  * @returns {Object} The effective rate and the display effective rate.
  */
 export const generateEffectiveRate = ({
+    exchangeRate = 0,
+    localCurrency = '',
+    marketRate = 0,
     price = 0,
     rate = 0,
-    localCurrency = '',
-    exchangeRate = 0,
-    marketRate = 0,
     rateType = RATE_TYPE.FIXED,
 }: Partial<TGenerateEffectiveRate>): TReturnGenerateEffectiveRate => {
     let effectiveRate, displayEffectiveRate;

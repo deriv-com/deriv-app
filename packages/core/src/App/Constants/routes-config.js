@@ -305,6 +305,46 @@ const getModules = () => {
             component: Cashier_V2,
             is_authenticated: true,
             getTitle: () => localize('Cashier'),
+            icon_component: 'IcCashier',
+            routes: [
+                {
+                    path: routes.cashier_v2_deposit,
+                    component: Cashier_V2,
+                    getTitle: () => localize('Deposit'),
+                    icon_component: 'IcCashierAdd',
+                    default: true,
+                },
+                {
+                    path: routes.cashier_v2_withdrawal,
+                    component: Cashier_V2,
+                    getTitle: () => localize('Withdrawal'),
+                    icon_component: 'IcCashierMinus',
+                },
+                {
+                    path: routes.cashier_v2_pa,
+                    component: Cashier_V2,
+                    getTitle: () => localize('Payment agents'),
+                    icon_component: 'IcPaymentAgent',
+                },
+                {
+                    path: routes.cashier_v2_acc_transfer,
+                    component: Cashier_V2,
+                    getTitle: () => localize('Transfer'),
+                    icon_component: 'IcAccountTransfer',
+                },
+                {
+                    path: routes.cashier_v2_pa_transfer,
+                    component: Cashier_V2,
+                    getTitle: () => localize('Transfer to client'),
+                    icon_component: 'IcAccountTransfer',
+                },
+                {
+                    path: routes.cashier_v2_onramp,
+                    component: Cashier_V2,
+                    getTitle: () => localize('Fiat onramp'),
+                    icon_component: 'IcCashierOnRamp',
+                },
+            ],
         },
         {
             path: routes.onboarding,

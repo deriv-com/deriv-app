@@ -7,8 +7,8 @@ import Menu from './Menu';
 const Cashier = ({ routes }: TRouteTypes.TRouteComponent) => {
     return (
         <div className='max-w-screen-xl mx-auto'>
-            <PageLayout sidebar={<Menu routes={routes} />}>
-                <div className='ml-1200 max-w-[740px] bg-solid-red-500 px-1200'>
+            <PageLayout left={<Menu routes={routes} />}>
+                <div className='px-1200 md:ml-1200'>
                     <Switch>
                         {routes?.map(route => {
                             const { path, title } = route;

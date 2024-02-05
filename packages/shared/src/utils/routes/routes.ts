@@ -91,4 +91,10 @@ export const routes = {
 
     // Cashier V2
     cashier_v2: '/cashier-v2',
+    cashier_v2_deposit: '/cashier-v2/deposit',
+    cashier_v2_withdrawal: '/cashier-v2/withdrawal',
+    cashier_v2_pa: '/cashier-v2/payment-agent',
+    cashier_v2_acc_transfer: '/cashier-v2/account-transfer',
+    cashier_v2_pa_transfer: '/cashier-v2/payment-agent-transfer',
+    cashier_v2_onramp: '/cashier-v2/on-ramp',
 };

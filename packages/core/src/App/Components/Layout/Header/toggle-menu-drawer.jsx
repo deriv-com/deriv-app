@@ -64,7 +64,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
     const history = useHistory();
-    const { is_next_wallet_enabled } = useFeatureFlags();
+    const { is_next_wallet_enabled, is_next_cashier_enabled } = useFeatureFlags();
 
     React.useEffect(() => {
         const processRoutes = () => {
@@ -72,6 +72,8 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
             let primary_routes = [];
 
             const location = window.location.pathname;
+
+            const cashier_routes = is_next_cashier_enabled ? routes.cashier_v2 : routes.cashier;
 
             if (is_appstore) {
                 primary_routes = [
@@ -83,11 +85,11 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                     routes.markets,
                 ];
             } else if (location === routes.traders_hub || is_trading_hub_category) {
-                primary_routes = [routes.account, routes.cashier];
+                primary_routes = [routes.account, cashier_routes];
             } else if (location === routes.wallets || is_next_wallet_enabled) {
                 primary_routes = [routes.reports, routes.account];
             } else {
-                primary_routes = [routes.reports, routes.account, routes.cashier];
+                primary_routes = [routes.reports, routes.account, cashier_routes];
             }
             setPrimaryRoutesConfig(getFilteredRoutesConfig(routes_config, primary_routes));
         };
@@ -97,7 +99,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         }
 
         return () => clearTimeout(timeout.current);
-    }, [is_appstore, account_status, should_allow_authentication, is_trading_hub_category, is_next_wallet_enabled]);
+    }, [
+        is_appstore,
+        account_status,
+        should_allow_authentication,
+        is_trading_hub_category,
+        is_next_wallet_enabled,
+        is_next_cashier_enabled,
+    ]);
 
     const toggleDrawer = React.useCallback(() => {
         if (is_mobile_language_menu_open) setMobileLanguageMenuOpen(false);

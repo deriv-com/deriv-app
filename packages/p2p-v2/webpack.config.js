@@ -184,6 +184,9 @@ module.exports = function (env) {
             publicPath: base,
         },
         resolve: {
+            alias: {
+                '@': path.resolve(__dirname, 'src'),
+            },
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },
     };

@@ -63,8 +63,8 @@ const WorkspaceGroup = observer(
                     data_testid='dt_toolbar_sort_button'
                     action={onSortClick}
                 />
-                <div className='vertical-divider' />
                 <DesktopWrapper>
+                    <div className='vertical-divider' />
                     <ToolbarIcon
                         popover_message={localize('Charts')}
                         icon='IcChartsTabDbot'

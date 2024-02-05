@@ -1,8 +1,8 @@
 import React from 'react';
+import { UserAvatar } from '@/components';
+import { useAdvertiserStats, useDevice } from '@/hooks';
 import { useSettings } from '@deriv/api';
 import { Text } from '@deriv-com/ui';
-import { useAdvertiserStats, useDevice } from '../../hooks';
-import { UserAvatar } from '../UserAvatar';
 import AdvertiserNameBadges from './AdvertiserNameBadges';
 import AdvertiserNameStats from './AdvertiserNameStats';
 import AdvertiserNameToggle from './AdvertiserNameToggle';

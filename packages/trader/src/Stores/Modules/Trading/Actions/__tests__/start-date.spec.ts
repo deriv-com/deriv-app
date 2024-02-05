@@ -93,63 +93,63 @@ jest.mock('@deriv/shared', () => {
                     },
                 })
             ),
+            tradingTimes: jest.fn(() =>
+                Promise.resolve({
+                    trading_times: {
+                        markets: [
+                            {
+                                name: 'Derived',
+                                submarkets: [
+                                    {
+                                        name: 'Continuous Indices',
+                                        symbols: [
+                                            {
+                                                events: [
+                                                    {
+                                                        dates: 'Fridays',
+                                                        descrip: 'Closes early (at 20:55)',
+                                                    },
+                                                    {
+                                                        dates: '2023-12-25',
+                                                        descrip: 'Christmas Day',
+                                                    },
+                                                    {
+                                                        dates: '2024-01-01',
+                                                        descrip: "New Year's Day",
+                                                    },
+                                                ],
+                                                name: 'AUD/JPY',
+                                                symbol: 'frxAUDJPY',
+                                                times: {
+                                                    close: ['23:59:59'],
+                                                    open: ['00:00:00'],
+                                                    settlement: '23:59:59',
+                                                },
+                                                trading_days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                                            },
+                                            {
+                                                events: [],
+                                                name: 'Volatility 10 Index',
+                                                symbol: 'R_10',
+                                                times: {
+                                                    close: ['23:59:59'],
+                                                    open: ['00:00:00'],
+                                                    settlement: '23:59:59',
+                                                },
+                                                trading_days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                                            },
+                                        ],
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                    echo_req: {
+                        trading_times: '2023-12-25',
+                    },
+                })
+            ),
         },
-        tradingTimes: jest.fn(() =>
-            Promise.resolve({
-                trading_times: {
-                    markets: [
-                        {
-                            name: 'Derived',
-                            submarkets: [
-                                {
-                                    name: 'Continuous Indices',
-                                    symbols: [
-                                        {
-                                            events: [
-                                                {
-                                                    dates: 'Fridays',
-                                                    descrip: 'Closes early (at 20:55)',
-                                                },
-                                                {
-                                                    dates: '2023-12-25',
-                                                    descrip: 'Christmas Day',
-                                                },
-                                                {
-                                                    dates: '2024-01-01',
-                                                    descrip: "New Year's Day",
-                                                },
-                                            ],
-                                            name: 'AUD/JPY',
-                                            symbol: 'frxAUDJPY',
-                                            times: {
-                                                close: ['23:59:59'],
-                                                open: ['00:00:00'],
-                                                settlement: '23:59:59',
-                                            },
-                                            trading_days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-                                        },
-                                        {
-                                            events: [],
-                                            name: 'Volatility 10 Index',
-                                            symbol: 'R_10',
-                                            times: {
-                                                close: ['23:59:59'],
-                                                open: ['00:00:00'],
-                                                settlement: '23:59:59',
-                                            },
-                                            trading_days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                                        },
-                                    ],
-                                },
-                            ],
-                        },
-                    ],
-                },
-                echo_req: {
-                    trading_times: '2023-12-25',
-                },
-            })
-        ),
     };
 });
 

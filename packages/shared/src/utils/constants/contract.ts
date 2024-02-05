@@ -180,14 +180,14 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
         config: { hide_duration: true },
     }, // hide Duration for Multiplier contracts for now
     [TRADE_TYPES.TURBOS.LONG]: {
-        title: localize('Long/Short'),
+        title: localize('Turbos'),
         trade_types: [CONTRACT_TYPES.TURBOS.LONG],
         basis: ['stake'],
         barrier_count: 1,
         components: ['trade_type_tabs', 'barrier_selector', 'take_profit'],
     },
     [TRADE_TYPES.TURBOS.SHORT]: {
-        title: localize('Long/Short'),
+        title: localize('Turbos'),
         trade_types: [CONTRACT_TYPES.TURBOS.SHORT],
         basis: ['stake'],
         barrier_count: 1,

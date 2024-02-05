@@ -34,10 +34,10 @@ const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
             >
                 Forgot password?
             </Button>
-            {platform === PlatformDetails.dxtrade.platform ?? (
+            {platform === PlatformDetails.dxtrade.platform && (
                 <DxtradeCreateAccountButton buttonText='Add account' password={password} />
             )}
-            {platform === PlatformDetails.mt5.platform ?? (
+            {platform === PlatformDetails.mt5.platform && (
                 <MT5CreateAccountButton buttonText='Add account' password={password} />
             )}
         </ButtonGroup>

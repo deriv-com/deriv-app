@@ -6,11 +6,17 @@ import { p2p } from '@deriv/api';
 import { DerivLightIcCashierUserIcon } from '@deriv/quill-icons';
 import { Button, Text } from '@deriv-com/ui';
 import { useDevice } from '../../../hooks';
+import { useSwitchTab } from '../../../hooks/useSwitchTab';
 import { Input } from '../../Input';
 import { customStyles } from '../helpers';
 import './NicknameModal.scss';
 
-const NicknameModal = () => {
+type TNicknameModalProps = {
+    isModalOpen: boolean | undefined;
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+};
+
+const NicknameModal = ({ isModalOpen, setIsModalOpen }: TNicknameModalProps) => {
     const ReactModal = Modal as ComponentType<ReactModal['props']>;
     const {
         control,
@@ -24,14 +30,14 @@ const NicknameModal = () => {
         mode: 'onChange',
     });
 
-    const { error, isError, mutate, reset } = p2p.advertiser.useCreate();
+    const switchTab = useSwitchTab();
+    const { error, isError, isSuccess, mutate, reset } = p2p.advertiser.useCreate();
     const { isMobile } = useDevice();
     const textSize = isMobile ? 'md' : 'sm';
     const debouncedReset = debounce(reset, 3000);
 
     const onSubmit = () => {
         mutate({ name: getValues('nickname') });
-        debouncedReset();
     };
 
     const errorMessage = error?.error?.message || 'Can only contain letters, numbers, and special characters .-_@.';
@@ -42,16 +48,16 @@ const NicknameModal = () => {
         Modal.setAppElement('#v2_modal_root');
     }, []);
 
+    useEffect(() => {
+        if (isSuccess) {
+            setIsModalOpen(false);
+        } else if (isError) {
+            debouncedReset();
+        }
+    }, [isError, isSuccess]);
+
     return (
-        <ReactModal
-            className='p2p-v2-nickname-modal'
-            isOpen={true}
-            onRequestClose={() => {
-                // Implement return function here
-            }}
-            shouldCloseOnOverlayClick
-            style={customStyles}
-        >
+        <ReactModal className='p2p-v2-nickname-modal' isOpen={!!isModalOpen} style={customStyles}>
             <form className='p2p-v2-nickname-modal__form' onSubmit={handleSubmit(onSubmit)}>
                 <DerivLightIcCashierUserIcon height='12.8rem' width='12.8rem' />
                 <Text className='p2p-v2-nickname-modal__form-title' weight='bold'>
@@ -72,12 +78,21 @@ const NicknameModal = () => {
                     Your nickname cannot be changed later.
                 </Text>
                 <div className='p2p-v2-nickname-modal__form__button-group'>
-                    <Button className='p2p-v2-nickname-modal__form__button-group__cancel' size='lg' variant='outlined'>
+                    <Button
+                        className='p2p-v2-nickname-modal__form__button-group__cancel'
+                        onClick={() => {
+                            switchTab('buy-sell');
+                            setIsModalOpen(false);
+                        }}
+                        size='lg'
+                        type='button'
+                        variant='outlined'
+                    >
                         <Text size={textSize} weight='bold'>
                             Cancel
                         </Text>
                     </Button>
-                    <Button disabled={watchNickname === '' || hasError} size='lg'>
+                    <Button disabled={watchNickname === '' || hasError} size='lg' type='submit'>
                         <Text color='white' size={textSize} weight='bold'>
                             Confirm
                         </Text>

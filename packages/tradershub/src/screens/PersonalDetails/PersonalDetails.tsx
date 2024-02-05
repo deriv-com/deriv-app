@@ -137,6 +137,7 @@ const PersonalDetails = () => {
                                 </div>
                             </div>
                         </div>
+
                         <Actions />
                     </Form>
                 )}

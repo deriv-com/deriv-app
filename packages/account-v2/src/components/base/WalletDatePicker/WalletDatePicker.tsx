@@ -63,7 +63,7 @@ const WalletDatePicker = ({
         <div className='wallets-datepicker' ref={datePickerRef}>
             <Input
                 {...field}
-                className='h-2100'
+                className='h-2100 w-full'
                 error={isInvalid}
                 label={label}
                 message={isInvalid ? errorMessage?.toString() : ''}

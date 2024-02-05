@@ -10,7 +10,7 @@ type TDocumentSelection = {
     handleOnClick: (value: string) => void;
 };
 
-const DocumentSelection = ({ countryCode, handleOnClick }: TDocumentSelection) => {
+export const DocumentSelection = ({ countryCode, handleOnClick }: TDocumentSelection) => {
     const { isMobile } = useBreakpoint();
 
     const documentList = getManualUploadDocumentList(countryCode);
@@ -44,5 +44,3 @@ const DocumentSelection = ({ countryCode, handleOnClick }: TDocumentSelection) =
         </div>
     );
 };
-
-export default DocumentSelection;

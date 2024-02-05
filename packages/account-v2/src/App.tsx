@@ -5,7 +5,7 @@ import React from 'react';
 import { Formik } from 'formik';
 import { APIProvider } from '@deriv/api';
 import { BreakpointProvider } from '@deriv/quill-design';
-import DocumentSelection from './containers/DocumentSelection';
+import { DocumentSelection } from './containers/DocumentSelection';
 import { DOCUMENT_LIST, INITIAL_VALUES, SELECTED_COUNTRY } from './mocks/idv-form.mock';
 import { IDVForm } from './modules/IDVForm';
 import { getIDVFormValidationSchema } from './modules/IDVForm/utils';

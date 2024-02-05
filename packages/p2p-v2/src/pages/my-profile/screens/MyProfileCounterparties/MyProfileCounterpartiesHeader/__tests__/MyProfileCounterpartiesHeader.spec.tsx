@@ -13,7 +13,11 @@ const mockProps = {
 describe('MyProfileCounterpartiesHeader', () => {
     it('should render the component as expected', () => {
         render(<MyProfileCounterpartiesHeader {...mockProps} />);
-        expect(screen.getByText('When you block someone, you won’t see their ads, and they can’t see yours. Your ads will be hidden from their search results, too.')).toBeInTheDocument();
+        expect(
+            screen.getByText(
+                'When you block someone, you won’t see their ads, and they can’t see yours. Your ads will be hidden from their search results, too.'
+            )
+        ).toBeInTheDocument();
         expect(screen.getByText('Filter by')).toBeInTheDocument();
         const dropdownField = screen.getByRole('combobox');
         expect(dropdownField).toHaveValue('All');

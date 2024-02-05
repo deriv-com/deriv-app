@@ -1,7 +1,7 @@
 import React from 'react';
 import MyProfileCounterparties from '../MyProfileCounterparties';
 import { render, screen } from '@testing-library/react';
-import { useDevice } from '../../../../../hooks';
+import { useDevice } from '@/hooks';
 
 jest.mock('../../MyProfileCounterparties/MyProfileCounterpartiesHeader', () => ({
     MyProfileCounterpartiesHeader: () => <div>MyProfileCounterpartiesHeader</div>,
@@ -11,14 +11,18 @@ jest.mock('../../MyProfileCounterparties/MyProfileCounterpartiesTable', () => ({
     MyProfileCounterpartiesTable: () => <div>MyProfileCounterpartiesTable</div>,
 }));
 
-jest.mock('../../../../../hooks/useDevice', () => ({
+jest.mock('@/components/Modals/BlockUnblockUserFilterModal', () => ({
+    BlockUnblockUserFilterModal: jest.fn(() => <div>BlockUnblockUserFilterModal</div>),
+}));
+
+jest.mock('@/hooks/useDevice', () => ({
     __esModule: true,
     default: jest.fn(() => ({
         isMobile: false,
     })),
 }));
 
-jest.mock('../../../../../hooks/useQueryString', () => ({
+jest.mock('@/hooks/useQueryString', () => ({
     __esModule: true,
     default: jest.fn(() => ({
         setQueryString: jest.fn(),

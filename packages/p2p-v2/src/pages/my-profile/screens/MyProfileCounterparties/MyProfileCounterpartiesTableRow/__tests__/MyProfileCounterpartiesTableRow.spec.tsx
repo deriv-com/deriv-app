@@ -1,10 +1,7 @@
 import React from 'react';
-import MyProfileCounterpartiesTableRow from '../MyProfileCounterpartiesTableRow';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import '../../../../../../components/Modals/BlockUnblockUserModal'
-import { mock } from 'node:test';
-import { BlockUnblockUserModal } from '../../../../../../components/Modals/BlockUnblockUserModal';
+import MyProfileCounterpartiesTableRow from '../MyProfileCounterpartiesTableRow';
 
 const mockProps = {
     id: 'id1',
@@ -50,21 +47,18 @@ describe('MyProfileCounterpartiesTableRow', () => {
         userEvent.click(screen.getByText('Block'));
         await waitFor(() => {
             expect(screen.getByText('Block nickname?')).toBeInTheDocument();
-        })
+        });
     });
     it('should close modal for onrequest close of modal', async () => {
-        const mockSetIsModalOpen = jest.spyOn(React, 'useState');
-        (mockSetIsModalOpen as jest.Mock).mockImplementation(initialValue => [initialValue, jest.fn()]);
         render(<MyProfileCounterpartiesTableRow {...mockProps} />);
         userEvent.click(screen.getByText('Block'));
         await waitFor(() => {
             expect(screen.getByText('Block nickname?')).toBeInTheDocument();
             const button = screen.getByRole('button', { name: 'Cancel' });
             userEvent.click(button);
-        })
+        });
         await waitFor(() => {
             expect(screen.queryByText('Block nickname?')).not.toBeInTheDocument();
         });
-        
     });
 });

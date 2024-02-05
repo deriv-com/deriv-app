@@ -1,6 +1,6 @@
 import React from 'react';
 import { ButtonProps, Text } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button } from '@deriv-com/ui';
 
 type TTradingAccountCardContent = {
     children: string;

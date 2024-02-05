@@ -2,20 +2,19 @@
     @include mobile {
         height: calc(100vh - 4rem);
         width: 100vw;
-        margin: 12rem 0 0;
         border-radius: 0;
         display: grid;
         grid-template-rows: 6rem auto;
 
         &--fixed-footer {
-            grid-template-rows: 6rem auto 12rem;
+            grid-template-rows: 6rem auto 8rem;
         }
 
         &--no-header {
             grid-template-rows: auto;
         }
 
-        &--no-header--fixed-footer {
+        &--no-header-fixed-footer {
             grid-template-rows: auto 7rem;
         }
 

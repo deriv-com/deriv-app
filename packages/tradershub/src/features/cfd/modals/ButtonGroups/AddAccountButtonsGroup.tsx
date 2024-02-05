@@ -2,7 +2,9 @@ import React from 'react';
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv-com/ui';
 import { ButtonGroup, Modal, SentEmailContent } from '../../../../components';
-import CreateAccountButton from './CreateAccountButton';
+import { PlatformDetails } from '../../constants';
+import DxtradeCreateAccountButton from '../DxtradePasswordModal/DxtradeCreateAccountButton';
+import MT5CreateAccountButton from '../MT5PasswordModal/MT5CreateAccountButton';
 
 type TAddAccountButtonsGroupProps = {
     password: string;
@@ -32,7 +34,12 @@ const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
             >
                 Forgot password?
             </Button>
-            <CreateAccountButton buttonText='Add account' password={password} />;
+            {platform === PlatformDetails.dxtrade.platform ?? (
+                <DxtradeCreateAccountButton buttonText='Add account' password={password} />
+            )}
+            {platform === PlatformDetails.mt5.platform ?? (
+                <MT5CreateAccountButton buttonText='Add account' password={password} />
+            )}
         </ButtonGroup>
     );
 };

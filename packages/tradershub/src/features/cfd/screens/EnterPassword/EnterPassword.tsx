@@ -64,12 +64,7 @@ const EnterPassword = ({
                     <Text size='sm'>
                         Enter your {title} password to add a {title} {marketTypeTitle} account.
                     </Text>
-                    <PasswordInput
-                        hint={passwordError && 'error'}
-                        label={`${title} password`}
-                        onChange={onPasswordChange}
-                        value={password}
-                    />
+                    <PasswordInput label={`${title} password`} onChange={onPasswordChange} value={password} />
                 </div>
             </div>
             {isDesktop && (

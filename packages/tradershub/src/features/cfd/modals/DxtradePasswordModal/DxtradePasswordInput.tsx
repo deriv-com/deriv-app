@@ -6,14 +6,14 @@ import useDxtradeAccountHandler from '../../../../hooks/useDxtradeAccountHandler
 import DxtradePasswordIcon from '../../../../public/images/ic-dxtrade-password.svg';
 import { MarketType, QueryStatus } from '../../constants';
 import { CreatePassword, EnterPassword } from '../../screens';
-import SuccessComponent from './SuccessComponent';
+import DxtradeSuccessModal from './DxtradeSuccessModal';
 
-type TPasswordComponentProps = {
+type TDxtradePasswordInputProps = {
     password: string;
     setPassword: (password: string) => void;
 };
 
-const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) => {
+const DxtradePasswordInput = ({ password, setPassword }: TDxtradePasswordInputProps) => {
     const { data: accountStatus } = useAccountStatus();
     const { show } = Provider.useModal();
     const { getCFDState } = Provider.useCFDContext();
@@ -34,7 +34,7 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
         );
     }
 
-    if (createOtherCFDAccountSuccess) return <SuccessComponent />;
+    if (createOtherCFDAccountSuccess) return <DxtradeSuccessModal />;
 
     if (isDxtradePasswordNotSet) {
         return (
@@ -63,4 +63,4 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
     );
 };
 
-export default PasswordComponent;
+export default DxtradePasswordInput;

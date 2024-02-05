@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useBreakpoint } from '@deriv/quill-design';
 import { Dialog, Modal } from '../../../../components';
-import FooterComponent from './FooterComponent';
-import PasswordComponent from './PasswordComponent';
+import DxtradePasswordFooter from './DxtradePasswordFooter';
+import DxtradePasswordInput from './DxtradePasswordInput';
 
 const DxtradePasswordModal = () => {
     const { isMobile } = useBreakpoint();
@@ -12,10 +12,10 @@ const DxtradePasswordModal = () => {
         return (
             <Modal>
                 <Modal.Content>
-                    <PasswordComponent password={password} setPassword={setPassword} />
+                    <DxtradePasswordInput password={password} setPassword={setPassword} />
                 </Modal.Content>
                 <Modal.Footer>
-                    <FooterComponent password={password} />
+                    <DxtradePasswordFooter password={password} />
                 </Modal.Footer>
             </Modal>
         );
@@ -24,7 +24,7 @@ const DxtradePasswordModal = () => {
         <Dialog>
             <Dialog.Header />
             <Dialog.Content>
-                <PasswordComponent password={password} setPassword={setPassword} />
+                <DxtradePasswordInput password={password} setPassword={setPassword} />
             </Dialog.Content>
         </Dialog>
     );

@@ -13,7 +13,7 @@ import {
 import { CFDSuccess } from '../../screens';
 import SuccessButtonGroup from '../ButtonGroups/SuccessButtonGroup';
 
-const SuccessComponent = () => {
+const MT5SuccessModal = () => {
     const { isEU } = useRegulationFlags();
     const { data: mt5Accounts } = useMT5AccountsList();
     const { data: activeTrading } = useActiveTradingAccount();
@@ -50,4 +50,4 @@ const SuccessComponent = () => {
     );
 };
 
-export default SuccessComponent;
+export default MT5SuccessModal;

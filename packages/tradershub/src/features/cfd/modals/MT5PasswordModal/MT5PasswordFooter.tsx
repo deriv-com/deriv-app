@@ -4,14 +4,14 @@ import { Provider } from '@deriv/library';
 import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
 import { MarketType, PlatformDetails, TTM5FilterLandingCompany } from '../../constants';
 import AddAccountButtonsGroup from '../ButtonGroups/AddAccountButtonsGroup';
-import CreateAccountButton from '../ButtonGroups/CreateAccountButton';
 import SuccessButtonGroup from '../ButtonGroups/SuccessButtonGroup';
+import MT5CreateAccountButton from './MT5CreateAccountButton';
 
-type TFooterComponentProps = {
+type TMT5PasswordFooterProps = {
     password: string;
 };
 
-const FooterComponent = ({ password }: TFooterComponentProps) => {
+const MT5PasswordFooter = ({ password }: TMT5PasswordFooterProps) => {
     const { data: mt5Accounts } = useMT5AccountsList();
     const { getCFDState } = Provider.useCFDContext();
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
@@ -26,6 +26,6 @@ const FooterComponent = ({ password }: TFooterComponentProps) => {
 
     if (hasMT5Account) return <AddAccountButtonsGroup password={password} />;
 
-    return <CreateAccountButton buttonText={`Create ${PlatformDetails.mt5.title} password`} password={password} />;
+    return <MT5CreateAccountButton buttonText={`Create ${PlatformDetails.mt5.title} password`} password={password} />;
 };
-export default FooterComponent;
+export default MT5PasswordFooter;

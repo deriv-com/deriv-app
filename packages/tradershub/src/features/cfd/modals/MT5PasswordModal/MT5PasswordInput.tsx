@@ -6,14 +6,14 @@ import useMT5AccountHandler from '../../../../hooks/useMT5AccountHandler';
 import MT5PasswordIcon from '../../../../public/images/ic-mt5-password.svg';
 import { MarketType, QueryStatus, TTM5FilterLandingCompany } from '../../constants';
 import { CreatePassword, EnterPassword } from '../../screens';
-import SuccessComponent from './SuccessComponent';
+import MT5SuccessModal from './MT5SuccessModal';
 
-type TPasswordComponentProps = {
+type TMT5PasswordInputProps = {
     password: string;
     setPassword: (password: string) => void;
 };
 
-const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) => {
+const MT5PasswordInput = ({ password, setPassword }: TMT5PasswordInputProps) => {
     const { data: accountStatus } = useAccountStatus();
     const { show } = Provider.useModal();
     const { getCFDState } = Provider.useCFDContext();
@@ -43,7 +43,7 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
         );
     }
 
-    if (isCreateMT5AccountSuccess) return <SuccessComponent />;
+    if (isCreateMT5AccountSuccess) return <MT5SuccessModal />;
 
     if (isMT5PasswordNotSet) {
         return (
@@ -72,4 +72,4 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
     );
 };
 
-export default PasswordComponent;
+export default MT5PasswordInput;

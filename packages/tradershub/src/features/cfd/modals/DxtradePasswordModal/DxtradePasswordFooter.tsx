@@ -3,14 +3,14 @@ import { useDxtradeAccountsList } from '@deriv/api';
 import useDxtradeAccountHandler from '../../../../hooks/useDxtradeAccountHandler';
 import { PlatformDetails } from '../../constants';
 import AddAccountButtonsGroup from '../ButtonGroups/AddAccountButtonsGroup';
-import CreateAccountButton from '../ButtonGroups/CreateAccountButton';
 import SuccessButtonGroup from '../ButtonGroups/SuccessButtonGroup';
+import DxtradeCreateAccountButton from './DxtradeCreateAccountButton';
 
-type TFooterComponentProps = {
+type TDxtradePasswordFooterProps = {
     password: string;
 };
 
-const FooterComponent = ({ password }: TFooterComponentProps) => {
+const DxtradePasswordFooter = ({ password }: TDxtradePasswordFooterProps) => {
     const { data: dxtradeAccounts } = useDxtradeAccountsList();
     const { createOtherCFDAccountSuccess } = useDxtradeAccountHandler();
     const hasDxtradeAccount = dxtradeAccounts?.find(account => account.login);
@@ -19,6 +19,11 @@ const FooterComponent = ({ password }: TFooterComponentProps) => {
 
     if (hasDxtradeAccount) return <AddAccountButtonsGroup password={password} />;
 
-    return <CreateAccountButton buttonText={`Create ${PlatformDetails.dxtrade.title} password`} password={password} />;
+    return (
+        <DxtradeCreateAccountButton
+            buttonText={`Create ${PlatformDetails.dxtrade.title} password`}
+            password={password}
+        />
+    );
 };
-export default FooterComponent;
+export default DxtradePasswordFooter;

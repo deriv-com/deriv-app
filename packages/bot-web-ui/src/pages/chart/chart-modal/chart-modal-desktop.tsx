@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import Chart from '..';
 import Draggable from '../../../components/draggable';
+import Chart from '..';
 
 const ChartModalDesktop = observer(() => {
     const { dashboard } = useDBotStore();
@@ -36,7 +36,7 @@ const ChartModalDesktop = observer(() => {
 
     return (
         <Draggable
-            bounds='.dashboard__main'
+            bounds='.main'
             xaxis={xaxis}
             yaxis={yaxis}
             is_visible={is_chart_modal_visible}

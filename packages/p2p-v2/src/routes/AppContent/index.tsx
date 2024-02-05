@@ -10,7 +10,7 @@ import './index.scss';
 const DEFAULT_TAB = 'buy-sell';
 
 export const routesConfiguration = [
-    { Component: <div> Buy sell page </div>, path: 'buy-sell', title: 'Buy / Sell' },
+    { Component: <div> Buy sell Page </div>, path: 'buy-sell', title: 'Buy / Sell' },
     { Component: <div> Orders Page </div>, path: 'orders', title: 'Orders' },
     {
         Component: (

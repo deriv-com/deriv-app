@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { Text } from '@deriv-com/ui';
 import { useDevice } from '../../../../hooks';
 import './AdStatus.scss';
@@ -9,29 +10,18 @@ type TAdStatusProps = {
 
 const AdStatus = ({ isActive = false }: TAdStatusProps) => {
     const { isMobile } = useDevice();
-    if (!isActive) {
-        return (
-            <Text
-                align='center'
-                className='p2p-v2-ad-status--inactive'
-                color='error'
-                size={isMobile ? 'md' : 'sm'}
-                weight='bold'
-            >
-                Inactive
-            </Text>
-        );
-    }
-
     return (
         <Text
             align='center'
-            className='p2p-v2-ad-status--active'
-            color='success'
+            className={clsx({
+                'p2p-v2-ad-status--active': isActive,
+                'p2p-v2-ad-status--inactive': !isActive,
+            })}
+            color={isActive ? 'success': 'error'}
             size={isMobile ? 'md' : 'sm'}
             weight='bold'
         >
-            Active
+            {isActive ? 'Active' : 'Inactive'}
         </Text>
     );
 };

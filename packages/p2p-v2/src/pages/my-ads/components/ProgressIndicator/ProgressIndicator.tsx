@@ -16,8 +16,8 @@ const ProgressIndicator = ({ className, style, total, value }: TProgressIndicato
             data-testid='dt_p2p_v2_progress_indicator'
             style={style}
         >
-            <div className={clsx('p2p-v2-progress-indicator__bar')} style={{ width: `${(value / total) * 100}%` }} />
-            <div className={'p2p-v2-progress-indicator__empty'} />
+            <div className='p2p-v2-progress-indicator__bar' style={{ width: `${(value / total) * 100}%` }} />
+            <div className='p2p-v2-progress-indicator__empty' />
         </div>
     );
 };

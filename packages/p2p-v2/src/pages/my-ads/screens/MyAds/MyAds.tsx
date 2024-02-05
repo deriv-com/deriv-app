@@ -4,7 +4,7 @@ import { MyAdsTable } from './MyAdsTable';
 const MyAds = () => {
     //TODO: add empty state
     return (
-        <div style={{ height: '100%' }}>
+        <div className='h-full'>
             <MyAdsTable />
         </div>
     );

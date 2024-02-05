@@ -71,7 +71,7 @@ const MyAdsTableRow = ({ isBarred, isListed, onClickIcon, ...rest }: TMyAdsTable
         marketRate: Number(effective_rate),
     });
 
-    //TODO: get the floating rate configs after integration with usep2pconfig to handle disabled case.
+    //TODO: get the floating rate configs after integration with usep2psettings to handle disabled case.
 
     const advertType = type === 'buy' ? ADVERT_TYPE.BUY : ADVERT_TYPE.SELL;
 

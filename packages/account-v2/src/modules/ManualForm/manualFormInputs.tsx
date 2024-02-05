@@ -19,9 +19,9 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
         <Fragment>
             <WalletText>{getTitleForFormInputs(selectedDocument)}</WalletText>
             <div
-                className={classNames({
-                    'flex flex-col gap-1200': !isDesktop,
-                    'grid grid-cols-2 gap-1200': isDesktop,
+                className={classNames('gap-1200', {
+                    'flex flex-col': !isDesktop,
+                    'grid grid-cols-2': isDesktop,
                 })}
             >
                 <Field name='document_number'>

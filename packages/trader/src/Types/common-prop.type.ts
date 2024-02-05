@@ -32,7 +32,7 @@ export type TBinaryRoutesProps = {
     };
 };
 
-type TBuyRequest = {
+export type TBuyRequest = {
     proposal_id: string;
     price: string | number;
     passthrough?: BuyContractRequest['passthrough'];

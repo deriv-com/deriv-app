@@ -2,7 +2,7 @@ import React from 'react';
 import { InlineMessage, Text, Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 import ContractType from './contract-type';
 import { TRADE_TYPES } from '@deriv/shared';
 import {

@@ -1,18 +1,4 @@
-@mixin align-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-@mixin recent-list-properties {
-    display: -webkit-box;
-    max-width: 90%;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-all;
-}
+@import '../../styles/mixins.scss';
 
 .bot-dashboard {
     position: relative;
@@ -59,161 +45,51 @@
     }
 }
 
-.dashboard {
-    &__main {
-        display: flex;
-        overflow: hidden;
+.db {
+    --icon-height: 2.4rem;
+    --icon-width: 2.4rem;
+    --border-radius: 2.4rem;
+
+    &-sidebar {
+        position: relative;
+        background-color: var(--general-main-1);
+        padding: 2.4rem;
+        height: 100%;
+
+        &--block {
+            display: block;
+        }
+
+        display: none;
+
+        &__images {
+            background: var(--general-section-6);
+        }
     }
+    &-info-panel {
+        &__close-action {
+            position: absolute;
+            right: 1.4rem;
+            top: 1.4rem;
+            height: 2rem;
+            width: 2rem;
+            line-height: 2.3rem;
+            text-align: center;
+            border-radius: 1rem;
 
-    &__container {
-        border: none;
-        max-width: 100%;
-        width: 100%;
-
-        .dc-tabs {
-            &__active-line {
-                background-color: var(--general-main-1);
-                transition: none;
-            }
-
-            &__active {
-                background: var(--general-main-1);
-            }
-
-            &__list {
+            &:hover {
+                cursor: pointer;
                 background: var(--general-section-1);
-                justify-content: start;
-
-                @include mobile {
-                    overflow-x: auto;
-
-                    &::-webkit-scrollbar {
-                        display: none;
-                    }
-
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
-                }
-
-                &--header {
-                    &--dashboard {
-                        &__tabs {
-                            @include mobile {
-                                width: 100%;
-                                overflow-x: auto;
-                            }
-                        }
-                    }
-                }
-            }
-
-            &__content {
-                @include mobile {
-                    width: 100%;
-                    overflow-x: auto;
-
-                    &--no-result {
-                        @include align-center;
-                        flex-direction: column;
-                        justify-content: flex-start;
-                        height: 100vh;
-                        margin-top: 5rem;
-
-                        svg {
-                            margin-bottom: 2.4rem;
-                        }
-                        h1 {
-                            margin-bottom: 0.8rem;
-                        }
-                        span {
-                            word-break: break-word;
-                            text-align: center;
-                        }
-                    }
-                }
-
-                &--dashboard {
-                    &__tabs {
-                        display: flex;
-                        justify-content: space-between;
-
-                        @include mobile {
-                            flex-direction: column;
-                            background-color: var(--general-section-1);
-                        }
-                    }
-                }
-            }
-
-            &__item {
-                border-top-left-radius: 1rem;
-                border-top-right-radius: 1rem;
-                height: 4.8rem;
-                @include align-center;
-
-                &__loaded {
-                    text-align: left;
-                    padding-left: 1.5rem;
-                }
-
-                svg {
-                    width: 1.6rem;
-                    height: 1.6rem;
-                    padding-right: 0;
-                    margin-right: 0.8rem;
-                }
             }
         }
-    }
-}
 
-.w-100 {
-    width: 100%;
-}
-
-.nm-48 {
-    margin-top: -4.8rem;
-}
-
-.db-sidebar {
-    position: relative;
-    background-color: var(--general-main-1);
-    padding: 2.4rem;
-    height: 100%;
-
-    &--block {
-        display: block;
-    }
-
-    display: none;
-
-    &__images {
-        background: var(--general-section-6);
-    }
-}
-
-.db-info-panel {
-    &__close-action {
-        position: absolute;
-        right: 1.4rem;
-        top: 1.4rem;
-        height: 2rem;
-        width: 2rem;
-        line-height: 2.3rem;
-        text-align: center;
-        border-radius: 1rem;
-
-        &:hover {
+        &__content {
             cursor: pointer;
-            background: var(--general-section-1);
-        }
-    }
 
-    &__content {
-        cursor: pointer;
-
-        &:hover {
-            text-decoration: underline;
+            &:hover {
+                text-decoration: underline;
+                color: var(--button-primary-default);
+            }
         }
     }
 }
@@ -294,7 +170,7 @@
         }
 
         &__mobile-container {
-            @include align-center;
+            @include flex-center;
             margin: 1.4rem 0;
             column-gap: 1rem;
             height: 3.2rem;
@@ -305,10 +181,8 @@
         }
 
         &__centered {
-            display: flex;
+            @include flex-center;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
 
             @include tablet {
                 width: 100%;
@@ -328,9 +202,9 @@
 
             &--listed {
                 align-items: initial;
+                justify-content: flex-start;
                 padding: 0.4rem 2.4rem;
                 height: 100%;
-                justify-content: flex-start;
             }
         }
 
@@ -353,7 +227,7 @@
                     border: none;
                     height: 4rem;
                     padding: 1rem;
-                    @include align-center;
+                    @include flex-center;
                     cursor: pointer;
 
                     @include mobile {
@@ -369,8 +243,8 @@
                 }
 
                 &__icon {
-                    width: 2.4rem;
-                    height: 2.4rem;
+                    width: var(--icon-width);
+                    height: var(--icon-height);
                 }
             }
         }
@@ -389,7 +263,7 @@
                     border: none;
                     height: 4rem;
                     padding: 1rem;
-                    @include align-center;
+                    @include flex-center;
                     cursor: pointer;
                 }
 
@@ -399,8 +273,8 @@
                 }
 
                 &__icon {
-                    width: 2.4rem;
-                    height: 2.4rem;
+                    width: var(--icon-width);
+                    height: var(--icon-height);
                 }
             }
         }
@@ -409,27 +283,6 @@
             @include desktop {
                 text-align: center;
                 margin-bottom: 4rem;
-            }
-
-            &__loaded {
-                text-align: left;
-
-                @include desktop {
-                    margin-top: 12rem;
-                }
-
-                &--listed {
-                    text-align: left;
-                    padding: 2rem 2rem 0 0;
-                }
-
-                &--not-listed {
-                    @include mobile {
-                        text-align: center;
-                        margin-bottom: 1.4rem;
-                        padding: 0 0.6rem;
-                    }
-                }
             }
         }
 
@@ -458,12 +311,10 @@
             }
 
             &__tiles {
+                @include flex-center(center, flex-start);
                 word-wrap: break-word;
                 font-size: 1.3rem;
                 text-align: center;
-                display: flex;
-                justify-content: center;
-                align-items: flex-start;
 
                 @include mobile {
                     flex-wrap: wrap;
@@ -487,9 +338,7 @@
             }
 
             &__block {
-                display: flex;
-                justify-content: center;
-                align-items: center;
+                @include flex-center;
                 flex-direction: column;
                 padding-right: 2.4rem;
 
@@ -548,9 +397,7 @@
     top: 1.8rem;
     z-index: 1;
     &__button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include flex-center;
         padding: 0.8rem 1.4rem;
         border: none;
         outline: none;

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { Analytics } from '@deriv/analytics';
 import { updateWorkspaceName } from '@deriv/bot-skeleton';
 import dbot from '@deriv/bot-skeleton/src/scratch/dbot';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
@@ -8,6 +7,8 @@ import { api_base } from '@deriv/bot-skeleton/src/services/api/api-base';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
+import { Analytics } from '@deriv-com/analytics';
+import TradingViewModal from 'Components/trading-view-chart/trading-view-modal';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 import RunPanel from '../../components/run-panel';
@@ -25,6 +26,7 @@ const AppWrapper = observer(() => {
         active_tab,
         active_tour,
         is_chart_modal_visible,
+        is_trading_view_modal_visible,
         setActiveTab,
         setWebSocketState,
         setActiveTour,
@@ -63,6 +65,7 @@ const AppWrapper = observer(() => {
 
     React.useEffect(() => {
         window.addEventListener('focus', checkAndHandleConnection);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     React.useEffect(() => {
@@ -80,6 +83,7 @@ const AppWrapper = observer(() => {
         if (tour_list[active_tab] !== active_tour) {
             setActiveTour('');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_tab]);
 
     React.useEffect(() => {
@@ -97,6 +101,7 @@ const AppWrapper = observer(() => {
                 window.dispatchEvent(new Event('resize')); // make the trash can work again after resize
             }, 500);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [active_tab, is_drawer_open]);
 
     useEffect(() => {
@@ -126,20 +131,21 @@ const AppWrapper = observer(() => {
                 });
             }
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [active_tab]
     );
 
     return (
         <React.Fragment>
-            <div className='dashboard__main'>
+            <div className='main'>
                 <div
-                    className={classNames('dashboard__container', {
-                        'dashboard__container--active': active_tour && active_tab === DASHBOARD && is_mobile,
+                    className={classNames('main__container', {
+                        'main__container--active': active_tour && active_tab === DASHBOARD && is_mobile,
                     })}
                 >
                     <Tabs
                         active_index={active_tab}
-                        className='dashboard__tabs'
+                        className='main__tabs'
                         onTabItemChange={onEntered}
                         onTabItemClick={handleTabChange}
                         top
@@ -159,7 +165,11 @@ const AppWrapper = observer(() => {
                         <div
                             icon='IcChartsTabDbot'
                             label={<Localize i18n_default_text='Charts' />}
-                            id={is_chart_modal_visible ? 'id-charts--disabled' : 'id-charts'}
+                            id={
+                                is_chart_modal_visible || is_trading_view_modal_visible
+                                    ? 'id-charts--disabled'
+                                    : 'id-charts'
+                            }
                         >
                             <Chart />
                         </div>
@@ -176,11 +186,12 @@ const AppWrapper = observer(() => {
                 </div>
             </div>
             <DesktopWrapper>
-                <div className={'dashboard__run-strategy-wrapper'}>
+                <div className={'main__run-strategy-wrapper'}>
                     <RunStrategy />
                     <RunPanel />
                 </div>
                 <ChartModal />
+                <TradingViewModal />
             </DesktopWrapper>
             <MobileWrapper>{!is_open && <RunPanel />}</MobileWrapper>
             <Dialog

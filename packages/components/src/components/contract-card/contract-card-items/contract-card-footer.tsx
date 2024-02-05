@@ -39,10 +39,9 @@ const CardFooter = ({
     const { in_prop } = useNewRowTransition(!!should_show_transition);
 
     const is_valid_to_cancel = isValidToCancel(contract_info);
-    const is_valid_to_sell = isValidToSell(contract_info);
 
     const should_show_sell = hasContractEntered(contract_info) && isOpen(contract_info);
-    const should_show_sell_note = is_lookbacks && is_valid_to_sell && should_show_sell;
+    const should_show_sell_note = is_lookbacks && isValidToSell(contract_info) && should_show_sell;
 
     if (!should_show_sell) return null;
 

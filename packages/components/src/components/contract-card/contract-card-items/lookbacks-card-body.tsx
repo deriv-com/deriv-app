@@ -1,6 +1,6 @@
-import classNames from 'classnames';
 import React from 'react';
 import { getDisplayStatus, getCardLabels, isCryptocurrency, CONTRACT_TYPES } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 import ContractCardItem from './contract-card-item';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
@@ -22,7 +22,6 @@ const LookBacksCardBody = ({
     progress_slider_mobile_el,
 }: TLookBacksCardBody) => {
     const { buy_price, contract_type, sell_price, profit, multiplier } = contract_info;
-
     const { INDICATIVE_PRICE, MULTIPLIER, PROFIT_LOSS, POTENTIAL_PROFIT_LOSS, PAYOUT, PURCHASE_PRICE } =
         getCardLabels();
 
@@ -41,8 +40,18 @@ const LookBacksCardBody = ({
             default:
                 base = '';
         }
-        return `Payout limit: ${multiplier} x (${base})`;
+
+        return (
+            <Localize
+                i18n_default_text='Payout limit: {{multiplier}} x ({{base}})'
+                values={{
+                    multiplier,
+                    base,
+                }}
+            />
+        );
     };
+
     return (
         <React.Fragment>
             <div className='dc-contract-card-items-wrapper dc-contract-card--lookbacks'>
@@ -53,30 +62,16 @@ const LookBacksCardBody = ({
                     is_won={Number(profit) > 0}
                 >
                     <Money amount={profit} currency={currency} />
-                    <div
-                        className={classNames('dc-contract-card__indicative--movement', {
-                            'dc-contract-card__indicative--movement-complete': is_sold,
-                        })}
-                    >
-                        {!is_sold && (
-                            <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />
-                        )}
-                    </div>
+                    {!is_sold && <ArrowIndicator className='dc-contract-card__indicative--movement' value={profit} />}
                 </ContractCardItem>
                 <ContractCardItem header={is_sold ? PAYOUT : INDICATIVE_PRICE}>
                     <Money currency={currency} amount={Number(sell_price || indicative)} />
-                    <div
-                        className={classNames('dc-contract-card__indicative--movement', {
-                            'dc-contract-card__indicative--movement-complete': is_sold,
-                        })}
-                    >
-                        {!is_sold && (
-                            <ArrowIndicator
-                                className='dc-contract-card__indicative--movement'
-                                value={Number(sell_price || indicative)}
-                            />
-                        )}
-                    </div>
+                    {!is_sold && (
+                        <ArrowIndicator
+                            className='dc-contract-card__indicative--movement'
+                            value={Number(sell_price || indicative)}
+                        />
+                    )}
                 </ContractCardItem>
                 <ContractCardItem header={PURCHASE_PRICE}>
                     <Money amount={buy_price} currency={currency} />

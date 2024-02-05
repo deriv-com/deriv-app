@@ -116,7 +116,7 @@ const ContractDetails = ({
             label,
             icon: (
                 <div className='lookbacks-marker__wrapper'>
-                    <Text color='disabled-1' size='xxxs' className='lookbacks-marker__asset'>
+                    <Text color='colored-background' size='xxxs' className='lookbacks-marker__asset'>
                         {abbreviation}
                     </Text>
                 </div>

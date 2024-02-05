@@ -646,9 +646,9 @@
         }
         &--lookbacks-contract {
             width: 5rem;
-            // @include mobile {
-            //     width: initial;
-            // }
+            @include mobile {
+                width: initial;
+            }
         }
 
         &-trade-param {

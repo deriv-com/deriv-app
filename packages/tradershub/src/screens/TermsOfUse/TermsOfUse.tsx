@@ -8,11 +8,6 @@ import FatcaDeclaration from './TermsOfUseSections/FatcaDeclaration';
 import PEPs from './TermsOfUseSections/PEPs';
 
 // Replace divider from deriv-com/ui once it is implemented
-// const Divider = () => {
-//     return (
-//         <div className='flex border-solid border-system-light-active-background bg-system-light-primary-background border-75' />
-//     );
-// };
 const Divider = () => <hr className=' bg-system-light-primary-background' />;
 
 /**

@@ -30,7 +30,9 @@ export const ManualForm = ({ selectedDocument }: TManualFormProps) => {
                             <div>
                                 <Divider />
                                 <div className='flex justify-end gap-800 bg-vp px-400 py-800'>
-                                    <Button color='secondary'>Back</Button>
+                                    <Button color='secondary' type='button'>
+                                        Back
+                                    </Button>
                                     <Button disabled={!isValid}>Next</Button>
                                 </div>
                             </div>

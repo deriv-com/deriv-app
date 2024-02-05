@@ -10,15 +10,21 @@ jest.mock('../../../../../components', () => ({
 
 jest.mock('../../../modules', () => ({
     ...jest.requireActual('../../../modules'),
-    TransferModule: jest.fn(() => <div>TransferModule</div>),
+    TransferModule: jest.fn(({ accounts }) => (
+        <>
+            <div>TransferModule</div>
+            <div>{accounts}-module</div>
+        </>
+    )),
 }));
 
 jest.mock('../../../screens/TransferNotAvailable', () => ({
     ...jest.requireActual('../../../screens/TransferNotAvailable'),
-    TransferNotAvailable: jest.fn(({ children }) => (
+    TransferNotAvailable: jest.fn(({ accounts, children }) => (
         <>
             <div>TransferNotAvailable</div>
             <div>{children}</div>
+            <div>{accounts}-screen</div>
         </>
     )),
 }));
@@ -48,7 +54,7 @@ describe('<WalletTransfer />', () => {
         mockUseTransferBetweenAccounts.mockReturnValue({
             data: {
                 // @ts-expect-error - since this is a mock, we only need partial properties of the hook
-                accounts: {},
+                accounts: 'transfer-accounts-data-for',
             },
             mutate: jest.fn(),
         });
@@ -56,5 +62,7 @@ describe('<WalletTransfer />', () => {
         render(<WalletTransfer />);
         expect(screen.getByText('TransferNotAvailable')).toBeInTheDocument();
         expect(screen.getByText('TransferModule')).toBeInTheDocument();
+        expect(screen.getByText('transfer-accounts-data-for-screen')).toBeInTheDocument();
+        expect(screen.getByText('transfer-accounts-data-for-module')).toBeInTheDocument();
     });
 });

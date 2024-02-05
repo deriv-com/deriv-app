@@ -17,7 +17,7 @@ describe('FlyoutMenu', () => {
             expect(screen.getByText(item)).toBeInTheDocument();
         });
     });
-    it('should hide the flyout menu when the parent is clicked', () => {
+    it('should hide the flyout menu list when the parent is clicked', () => {
         render(
             <div data-testid='dt_p2p_v2_flyout_parent'>
                 <FlyoutMenu listItems={flyoutItems} />

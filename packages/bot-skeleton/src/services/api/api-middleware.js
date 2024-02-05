@@ -87,17 +87,6 @@ class APIMiddleware {
         return false;
     };
 
-    sendWillBeCalled({ args: [request] }) {
-        const req_type = this.getRequestType(request);
-        if (req_type === 'buy') {
-            performance.mark('first_proposal_or_run_end');
-            if (performance.getEntriesByName('bot-start', 'mark').length) {
-                performance.measure('bot-start', 'first_proposal_or_run_end');
-                performance.clearMarks('bot-start');
-            }
-        }
-    }
-
     sendIsCalled = ({ response_promise, args: [request] }) => {
         const req_type = this.getRequestType(request);
         if (req_type) performance.mark(`${req_type}_start`);

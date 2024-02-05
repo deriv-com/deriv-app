@@ -13,9 +13,9 @@ type TCreateAccountButtonProps = {
 };
 
 const DxtradeAccountButton = ({ buttonText, password }: TCreateAccountButtonProps) => {
-    const { createDxtradeAccountLoading, handleSubmit } = useDxtradeAccountHandler();
-    const isLoading = createDxtradeAccountLoading;
+    const { createDxtradeAccountLoading: isLoading, handleSubmit } = useDxtradeAccountHandler();
     const isDisabled = !password || isLoading || !validPassword(password);
+
     return (
         <Button
             disabled={isDisabled}

@@ -4,7 +4,7 @@ import { Provider } from '@deriv/library';
 import { ActionScreen, SentEmailContent } from '../../../../components';
 import useDxtradeAccountHandler from '../../../../hooks/useDxtradeAccountHandler';
 import DxtradePasswordIcon from '../../../../public/images/ic-dxtrade-password.svg';
-import { MarketType, PlatformDetails, QueryStatus } from '../../constants';
+import { MarketType, QueryStatus } from '../../constants';
 import { CreatePassword, EnterPassword } from '../../screens';
 import SuccessComponent from './SuccessComponent';
 
@@ -19,13 +19,13 @@ const PasswordComponent = ({ password, setPassword }: TPasswordComponentProps) =
     const { getCFDState } = Provider.useCFDContext();
 
     const marketType = MarketType.ALL;
-    const platform = getCFDState('platform') ?? PlatformDetails.dxtrade.platform;
+    const platform = getCFDState('platform');
 
     const isDxtradePasswordNotSet = accountStatus?.is_dxtrade_password_not_set;
     const { createDxtradeAccountError, createDxtradeAccountLoading, createOtherCFDAccountSuccess, handleSubmit } =
         useDxtradeAccountHandler();
 
-    if (status === QueryStatus.ERROR && createDxtradeAccountError?.error?.code !== 'PasswordError') {
+    if (!platform || (status === QueryStatus.ERROR && createDxtradeAccountError?.error?.code !== 'PasswordError')) {
         return (
             <ActionScreen
                 description={createDxtradeAccountError?.error.message}

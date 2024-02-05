@@ -20,12 +20,12 @@ const SuccessComponent = () => {
     const isDemo = activeTrading?.is_virtual;
 
     const { getCFDState } = Provider.useCFDContext();
-    const platform = getCFDState('platform') ?? PlatformDetails.mt5.platform;
+    const platform = getCFDState('platform');
     const marketType = getCFDState('marketType') ?? MarketType.ALL;
     const selectedJurisdiction = getCFDState('selectedJurisdiction') as TTM5FilterLandingCompany;
 
     const marketTypeTitle =
-        marketType === MarketType.ALL && Object.keys(PlatformDetails).includes(platform)
+        marketType === MarketType.ALL && platform && Object.keys(PlatformDetails).includes(platform)
             ? PlatformDetails[platform].title
             : MarketTypeDetails(isEU)[marketType].title;
 

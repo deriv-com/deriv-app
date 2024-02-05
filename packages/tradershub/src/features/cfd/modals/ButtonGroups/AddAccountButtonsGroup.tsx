@@ -2,7 +2,6 @@ import React from 'react';
 import { Provider } from '@deriv/library';
 import { Button } from '@deriv-com/ui';
 import { ButtonGroup, Modal, SentEmailContent } from '../../../../components';
-import { PlatformDetails } from '../../constants';
 import CreateAccountButton from './CreateAccountButton';
 
 type TAddAccountButtonsGroupProps = {
@@ -12,7 +11,7 @@ type TAddAccountButtonsGroupProps = {
 const AddAccountButtonsGroup = ({ password }: TAddAccountButtonsGroupProps) => {
     const { show } = Provider.useModal();
     const { getCFDState } = Provider.useCFDContext();
-    const platform = getCFDState('platform') ?? PlatformDetails.dxtrade.platform;
+    const platform = getCFDState('platform');
 
     return (
         <ButtonGroup className='w-full'>

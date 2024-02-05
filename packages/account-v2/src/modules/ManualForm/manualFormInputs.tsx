@@ -1,12 +1,11 @@
-import React, { Fragment } from 'react';
+import { Input } from '@deriv-com/ui';
 import { Field, FieldProps } from 'formik';
+import React, { Fragment } from 'react';
 import { WalletDatePicker } from '../../components/base/WalletDatePicker';
 import { WalletText } from '../../components/base/WalletText';
-import { WalletTextField } from '../../components/base/WalletTextField';
 import { TManualDocumentTypes } from '../../constants/manualFormConstants';
-import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manualFormUtils';
-import { Input } from '@deriv-com/ui';
 import { useManualForm } from '../../hooks';
+import { getFieldsConfig, getTitleForFormInputs } from '../../utils/manualFormUtils';
 
 type TManualFormInputsProps = { selectedDocument: TManualDocumentTypes };
 
@@ -23,11 +22,11 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                         const hasError = meta.touched && !!meta.error;
                         return (
                             <Input
+                                {...field}
                                 className='h-2100'
                                 error={hasError}
                                 label={`${fieldsConfig.documentNumber.label}*`}
                                 message={hasError ? meta.error : ''}
-                                {...field}
                             />
                         );
                     }}
@@ -38,7 +37,7 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                             <WalletDatePicker
                                 {...field}
                                 errorMessage={meta.error}
-                                isInvalid={meta.touched && Boolean(meta.error)}
+                                isInvalid={meta.touched && !!meta.error}
                                 label={`${fieldsConfig.documentExpiry.label}*`}
                                 onDateChange={field.onChange}
                             />

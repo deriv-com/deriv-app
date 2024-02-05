@@ -1,14 +1,14 @@
+import { Input } from '@deriv-com/ui';
 import React, { useEffect, useRef, useState } from 'react';
 import Calendar, { CalendarProps } from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 import { useOnClickOutside } from 'usehooks-ts';
 import * as Yup from 'yup';
 import CalendarIcon from '../../../assets/date-picker/ic-calendar.svg';
-import unixToDateString from '../utils';
-import { WalletTextField } from '../WalletTextField';
 import { WalletTextFieldProps } from '../WalletTextField/WalletTextField';
-import customFormatShortWeekday from './utils';
-import 'react-calendar/dist/Calendar.css';
+import unixToDateString from '../utils';
 import './WalletDatePicker.scss';
+import customFormatShortWeekday from './utils';
 
 interface TDatePickerProps extends WalletTextFieldProps {
     isInvalid?: WalletTextFieldProps['isInvalid'];
@@ -48,7 +48,7 @@ const WalletDatePicker = ({
 
     const handleDateChange: CalendarProps['onChange'] = value => {
         const calendarSelectedDate = Array.isArray(value) ? value[0] : value;
-        setSelectedDate(calendarSelectedDate);
+        setSelectedDate(new Date(calendarSelectedDate?.toString() ?? ''));
         setIsCalendarOpen(false);
     };
 
@@ -61,27 +61,25 @@ const WalletDatePicker = ({
 
     return (
         <div className='wallets-datepicker' ref={datePickerRef}>
-            <WalletTextField
+            <Input
                 {...field}
-                disabled={disabled}
-                errorMessage={errorMessage}
-                isInvalid={isInvalid}
+                className='h-2100'
+                error={isInvalid}
                 label={label}
-                message={message}
-                name={name}
+                message={isInvalid ? errorMessage?.toString() : ''}
                 onClick={toggleCalendar}
-                renderRightIcon={() => (
+                rightPlaceholder={
                     <button
                         className='wallets-datepicker__button'
                         data-testid='wallets_datepicker_button'
                         disabled={disabled}
                         onClick={toggleCalendar}
+                        type='button'
                     >
                         <CalendarIcon />
                     </button>
-                )}
-                showMessage
-                value={selectedDate !== null ? unixToDateString(selectedDate) : ''}
+                }
+                value={selectedDate ? unixToDateString(selectedDate) : ''}
             />
             {isCalendarOpen && (
                 <div

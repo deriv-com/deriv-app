@@ -302,6 +302,7 @@ export default class TradeStore extends BaseStore {
     initial_barriers?: { barrier_1: string; barrier_2: string };
     is_initial_barrier_applied = false;
     is_digits_widget_active = false;
+    isUrlUnavailableModalVisible = false;
 
     should_skip_prepost_lifecycle = false;
 
@@ -394,6 +395,7 @@ export default class TradeStore extends BaseStore {
             is_trade_enabled: observable,
             is_trade_params_expanded: observable,
             is_turbos: computed,
+            isUrlUnavailableModalVisible: observable,
             last_digit: observable,
             long_barriers: observable,
             main_barrier: observable,
@@ -481,6 +483,7 @@ export default class TradeStore extends BaseStore {
             setStakeBoundary: action.bound,
             setTradeStatus: action.bound,
             show_digits_stats: computed,
+            toggleUrlUnavailableModal: action.bound,
             updateStore: action.bound,
             updateSymbol: action.bound,
         });
@@ -727,7 +730,7 @@ export default class TradeStore extends BaseStore {
             contract_type: contractType || this.contract_type,
         });
         if (showModal) {
-            // console.log('show modal');
+            this.toggleUrlUnavailableModal(true);
         }
     }
 
@@ -1770,5 +1773,9 @@ export default class TradeStore extends BaseStore {
 
     setIsDigitsWidgetActive(is_active: boolean) {
         this.is_digits_widget_active = is_active;
+    }
+
+    toggleUrlUnavailableModal(is_visible: boolean) {
+        this.isUrlUnavailableModalVisible = is_visible;
     }
 }

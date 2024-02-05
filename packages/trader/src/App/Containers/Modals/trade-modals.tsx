@@ -4,12 +4,20 @@ import UnsupportedContractModal from 'App/Components/Elements/Modals/Unsupported
 import MarketUnavailableModal from 'App/Components/Elements/Modals/MarketUnavailableModal';
 import ServicesErrorModal from 'App/Components/Elements/Modals/ServicesErrorModal';
 import AccountVerificationPendingModal from 'App/Components/Elements/Modals/AccountVerificationPendingModal';
+import UrlUnavailableModal from 'App/Components/Elements/Modals/UrlUnavailableModal';
 import { observer, useStore } from '@deriv/stores';
+import { Localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const TradeModals = observer(() => {
     const { ui, client, common } = useStore();
-    const { resetPreviousSymbol, clearPurchaseInfo, requestProposal: resetPurchase } = useTraderStore();
+    const {
+        resetPreviousSymbol,
+        clearPurchaseInfo,
+        isUrlUnavailableModalVisible,
+        requestProposal: resetPurchase,
+        toggleUrlUnavailableModal,
+    } = useTraderStore();
     const { is_virtual, is_logged_in } = client;
 
     const { services_error } = common;
@@ -70,6 +78,14 @@ const TradeModals = observer(() => {
                 is_visible={is_mf_verification_pending_modal_visible}
                 onConfirm={() => setIsMFVericationPendingModal(false)}
             />
+
+            <UrlUnavailableModal
+                is_visible={isUrlUnavailableModalVisible}
+                onConfirm={() => toggleUrlUnavailableModal(false)}
+                title={<Localize i18n_default_text="The URL you requested isn't available" />}
+            >
+                bla
+            </UrlUnavailableModal>
         </React.Fragment>
     );
 });

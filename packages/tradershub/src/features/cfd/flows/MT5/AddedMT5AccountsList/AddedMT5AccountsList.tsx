@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useActiveTradingAccount, useJurisdictionStatus } from '@deriv/api';
 import { Provider } from '@deriv/library';
 import { Text } from '@deriv/quill-design';
-import { Button } from '@deriv-com/ui/dist/components/Button';
+import { Button } from '@deriv-com/ui';
 import { useUIContext } from '../../../../../components';
 import { TradingAccountCard } from '../../../../../components/TradingAccountCard';
 import useRegulationFlags from '../../../../../hooks/useRegulationFlags';
@@ -14,8 +14,8 @@ import { MT5AccountIcon } from '../MT5AccountIcon';
 const AddedMT5AccountsList = ({ account }: { account: THooks.MT5AccountsList }) => {
     const { data: activeAccount } = useActiveTradingAccount();
 
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
     const { isEU } = useRegulationFlags(activeRegulation);
 
     const { show } = Provider.useModal();

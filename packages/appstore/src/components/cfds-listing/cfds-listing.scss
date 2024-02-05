@@ -448,15 +448,10 @@
             align-items: center;
             gap: 0.8rem;
         }
-        &-text {
-            overflow: hidden;
-        }
         &-action {
-            padding: 0;
-            height: 1.5rem;
-            .dc-btn__icon {
-                padding-right: 0;
-            }
+            text-decoration: underline;
+            padding-right: 0;
+            height: 2.1rem;
         }
     }
 

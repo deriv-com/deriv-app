@@ -1,3 +1,5 @@
+@import '../../styles/mixins.scss';
+
 #modal_root {
     .load-strategy {
         &__recent {
@@ -12,11 +14,9 @@
             }
 
             &__empty {
-                display: flex;
+                @include flex-center;
                 align-items: center;
                 flex-direction: column;
-                justify-content: center;
-                text-align: center;
 
                 &-icon {
                     margin-bottom: 1.6rem;
@@ -117,9 +117,7 @@
                 }
 
                 &-location {
-                    justify-content: flex-start;
-                    display: flex;
-                    align-items: center;
+                    @include flex-center(flex-start);
                     width: 100%;
                     word-break: break-word;
                     color: var(--text-general);

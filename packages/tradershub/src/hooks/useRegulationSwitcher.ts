@@ -13,10 +13,10 @@ import useRegulationFlags from './useRegulationFlags';
 export const useRegulationSwitcher = () => {
     const { switchAccount } = useAuthorize();
     const { data: tradingAccountsList } = useTradingAccountsList();
-    const { getUIState, setUIState } = useUIContext();
+    const { setUIState, uiState } = useUIContext();
 
-    const currentRegulation = getUIState('regulation');
-    const accountType = getUIState('accountType');
+    const currentRegulation = uiState.regulation;
+    const accountType = uiState.accountType;
     const { isEU, isHighRisk } = useRegulationFlags(currentRegulation, accountType);
 
     const realCRAccount = tradingAccountsList?.find(account => account.loginid.startsWith('CR'))?.loginid ?? '';
@@ -29,12 +29,16 @@ export const useRegulationSwitcher = () => {
     const handleButtonClick = (label: string) => {
         if (label !== currentRegulation) {
             if (label === Regulation.NonEU) {
-                setUIState('regulation', Regulation.NonEU);
+                setUIState({
+                    regulation: Regulation.NonEU,
+                });
                 if (realCRAccount) {
                     switchAccount(realCRAccount);
                 }
             } else {
-                setUIState('regulation', Regulation.EU);
+                setUIState({
+                    regulation: Regulation.EU,
+                });
                 if (realMFAccount) {
                     switchAccount(realMFAccount);
                 }
@@ -44,9 +48,13 @@ export const useRegulationSwitcher = () => {
 
     useEffect(() => {
         if (activeTrading?.loginid.startsWith('CR') || isHighRisk) {
-            setUIState('regulation', Regulation.NonEU);
+            setUIState({
+                regulation: Regulation.NonEU,
+            });
         } else if (activeTrading?.loginid.startsWith('MF') || isEU) {
-            setUIState('regulation', Regulation.EU);
+            setUIState({
+                regulation: Regulation.EU,
+            });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

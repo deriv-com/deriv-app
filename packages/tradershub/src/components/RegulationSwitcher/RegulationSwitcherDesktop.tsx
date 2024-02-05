@@ -7,10 +7,10 @@ import { RegulationModal } from '../../modals';
 import { useUIContext } from '../UIProvider';
 
 const RegulationSwitcherDesktop = () => {
-    const { getUIState } = useUIContext();
+    const { uiState } = useUIContext();
     const { show } = Provider.useModal();
     const { buttons, handleButtonClick } = useRegulationSwitcher();
-    const activeRegulation = getUIState('regulation');
+    const activeRegulation = uiState.regulation;
 
     return (
         <div className='flex items-center gap-400'>

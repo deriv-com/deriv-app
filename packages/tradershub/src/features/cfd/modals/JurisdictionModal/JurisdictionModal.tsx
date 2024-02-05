@@ -18,8 +18,8 @@ const JurisdictionModal = () => {
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
 
     const { show } = Provider.useModal();
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
     const { isEU } = useRegulationFlags(activeRegulation);
     const { getCFDState, setCfdState } = Provider.useCFDContext();
 

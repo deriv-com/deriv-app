@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import PaymentMethodCard from '../PaymentMethodCard';
 
 describe('PaymentMethodCard', () => {
-    it('should render the component', () => {
+    it('should render the component correctly', () => {
         render(
             <PaymentMethodCard
                 onDeletePaymentMethod={() => undefined}

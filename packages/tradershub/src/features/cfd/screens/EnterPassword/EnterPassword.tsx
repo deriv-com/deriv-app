@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react';
 import { useActiveTradingAccount } from '@deriv/api';
-import { TextField, useBreakpoint } from '@deriv/quill-design';
-import { Button, Text } from '@deriv-com/ui';
+import { useBreakpoint } from '@deriv/quill-design';
+import { Button, PasswordInput, Text } from '@deriv-com/ui';
 import { useUIContext } from '../../../../components';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
 import { TMarketTypes, TPlatforms } from '../../../../types';
@@ -64,11 +64,10 @@ const EnterPassword = ({
                     <Text size='sm'>
                         Enter your {title} password to add a {title} {marketTypeTitle} account.
                     </Text>
-                    <TextField
-                        leftStatusMessage=''
+                    <PasswordInput
+                        hint={passwordError && 'error'}
+                        label={`${title} password`}
                         onChange={onPasswordChange}
-                        placeholder={`${title} password`}
-                        status={passwordError && 'error'}
                         value={password}
                     />
                 </div>

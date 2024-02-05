@@ -11,8 +11,6 @@ type TManualFormProps = {
     selectedDocument: TManualDocumentTypes;
 };
 
-const Divider = () => <div className='w-full border-t-solid-grey-5 border-solid border-t-100' />;
-
 export const ManualForm = ({ selectedDocument }: TManualFormProps) => {
     return (
         <div className='m-400 p-800 border-100 border-solid rounded-400'>
@@ -24,17 +22,13 @@ export const ManualForm = ({ selectedDocument }: TManualFormProps) => {
                     <Form>
                         <div className='flex flex-col gap-1200 max-w-[67rem]'>
                             <ManualFormInputs selectedDocument={selectedDocument} />
-                            <Divider />
                             <ManualFormDocumentUpload selectedDocument={selectedDocument} />
                             <ManualFormFooter />
-                            <div>
-                                <Divider />
-                                <div className='flex justify-end gap-800 bg-vp px-400 py-800'>
-                                    <Button color='secondary' type='button'>
-                                        Back
-                                    </Button>
-                                    <Button disabled={!isValid}>Next</Button>
-                                </div>
+                            <div className='flex justify-end gap-800 bg-vp px-400 py-800 border-t-solid-general-section-1 border-solid border-t-100'>
+                                <Button color='secondary' type='button'>
+                                    Back
+                                </Button>
+                                <Button disabled={!isValid}>Next</Button>
                             </div>
                         </div>
                     </Form>

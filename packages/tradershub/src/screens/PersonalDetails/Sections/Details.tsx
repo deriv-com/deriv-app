@@ -1,6 +1,6 @@
-import React, { lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 import { useFormikContext } from 'formik';
-import { InlineMessage, Input, Text } from '@deriv-com/ui';
+import { InlineMessage, Input, Loader, Text } from '@deriv-com/ui';
 
 const ExampleImage = lazy(() => import('../../../public/images/personal-details-example.svg'));
 
@@ -57,11 +57,13 @@ const Details = () => {
                             value={values.dateOfBirth}
                         />
                     </div>
-                    <div className='w-1/2 text-center'>
+                    <div className='relative w-1/2 text-center'>
                         <Text as='p' className='mt-2 mb-4' size='xs' weight='bold'>
                             Example:
                         </Text>
-                        <ExampleImage />
+                        <Suspense fallback={<Loader />}>
+                            <ExampleImage />
+                        </Suspense>
                     </div>
                     {/** Add confirmation checkbox for the confirmation when available in deriv/ui */}
                 </div>

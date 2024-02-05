@@ -14,8 +14,13 @@ export type TSignupWizardContext = {
 
 export type TState = {
     currency?: string;
+    firstLineAddress?: string;
     firstName?: string;
     lastName?: string;
+    secondLineAddress?: string;
+    stateProvince?: string;
+    townCity?: string;
+    zipCode?: string;
 };
 
 export type TSignupWizardProvider = {

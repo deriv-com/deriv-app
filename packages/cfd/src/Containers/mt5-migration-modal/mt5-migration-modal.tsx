@@ -20,7 +20,7 @@ const MT5MigrationModal = observer(() => {
 
     const modal_title = (
         <Text size={is_mobile ? 'xs' : 's'} weight='bold'>
-            <Localize i18n_default_text='Enhancing your trading experience' />
+            <Localize i18n_default_text='Upgrade your MT5 account' />
         </Text>
     );
 

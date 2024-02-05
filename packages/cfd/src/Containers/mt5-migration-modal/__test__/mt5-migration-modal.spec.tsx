@@ -66,7 +66,7 @@ describe('MT5MigrationModal', () => {
     it('should render MT5MigrationModal', () => {
         renderComponent();
         expect(screen.getByText(/MT5Content/)).toBeInTheDocument();
-        expect(screen.getByText(/Enhancing your trading experience/)).toBeInTheDocument();
+        expect(screen.getByText(/Upgrade your MT5 account/)).toBeInTheDocument();
         expect(screen.getByRole('button')).toBeInTheDocument();
     });
 

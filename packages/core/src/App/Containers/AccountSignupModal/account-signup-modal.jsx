@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Button, Checkbox, Dialog, Loading, Text } from '@deriv/components';
 import { getLocation, SessionStore, shuffleArray } from '@deriv/shared';
 import { getLanguage, localize } from '@deriv/translations';
-import { Analytics } from '@deriv/analytics';
+import { Analytics } from '@deriv-com/analytics';
 
 import { WS } from 'Services';
 import { observer, useStore } from '@deriv/stores';
@@ -65,15 +65,15 @@ const AccountSignup = ({
         });
         // need to modify data from ab testing platform to reach translation and tracking needs
         const fetchQuestionnarieData = () => {
-            let ab_value = Analytics.getFeatureValue('questionnaire-config', 'inactive');
+            let ab_value = Analytics.getFeatureValue('questionnaire-config', 'inactive') || 'inactive';
             const default_ab_value = ab_value;
             ab_value = ab_value?.[language] ?? ab_value?.EN ?? ab_value;
             if (ab_value?.show_answers_in_random_order) {
                 ab_value = [
-                    { ...default_ab_value.default },
+                    { ...default_ab_value?.default },
                     {
                         ...ab_value,
-                        answers: shuffleArray(ab_value.answers),
+                        answers: shuffleArray(ab_value?.answers),
                     },
                 ];
             } else if (ab_value !== 'inactive') ab_value = [{ ...default_ab_value?.default }, { ...ab_value }];

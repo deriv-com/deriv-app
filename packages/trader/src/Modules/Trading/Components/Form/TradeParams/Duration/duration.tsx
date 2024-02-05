@@ -29,7 +29,6 @@ export type TDuration = {
     hasDurationUnit: (duration_type: string, is_advanced: boolean) => boolean;
     is_advanced_duration: TUIStore['is_advanced_duration'];
     is_minimized?: boolean;
-    market_open_times: TTradeStore['market_open_times'];
     max_value: number | null;
     min_value: number | null;
     onChange: TTradeStore['onChange'];
@@ -56,7 +55,6 @@ const Duration = ({
     hasDurationUnit,
     is_advanced_duration,
     is_minimized,
-    market_open_times,
     max_value,
     min_value,
     onChange,
@@ -202,7 +200,6 @@ const Duration = ({
                             expiry_list={expiry_list}
                             expiry_type={expiry_type}
                             getDurationFromUnit={getDurationFromUnit}
-                            market_open_times={market_open_times}
                             number_input_props={passthrough_props.number_input}
                             onChange={onChange}
                             onChangeUiStore={onChangeUiStore}

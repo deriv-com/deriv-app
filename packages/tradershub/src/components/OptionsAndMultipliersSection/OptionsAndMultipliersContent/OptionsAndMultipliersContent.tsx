@@ -1,7 +1,8 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useActiveTradingAccount, useIsEuRegion } from '@deriv/api';
-import { Button, useBreakpoint } from '@deriv/quill-design';
+import { useBreakpoint } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui';
 import { optionsAndMultipliersContent } from '../../../constants/constants';
 import { getStaticUrl, getUrlBinaryBot, getUrlSmartTrader } from '../../../helpers/urls';
 import useRegulationFlags from '../../../hooks/useRegulationFlags';
@@ -69,24 +70,26 @@ const LinkTitle = ({ icon, title }: TLinkTitleProps) => {
 const ShowOpenButton = ({ isExternal, redirect }: TShowButtonProps) => {
     const history = useHistory();
 
-    const { data } = useActiveTradingAccount();
-    if (data?.loginid) {
-        return (
-            <Button
-                className='rounded-200'
-                onClick={() => {
-                    if (isExternal) {
-                        window.open(redirect, '_blank');
-                    } else {
-                        history.push(redirect);
-                    }
-                }}
-            >
-                Open
-            </Button>
-        );
-    }
-    return null;
+    const { uiState } = useUIContext();
+    const { accountType, regulation } = uiState;
+
+    const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
+
+    if (noRealCRNonEUAccount || noRealMFEUAccount) return null;
+
+    return (
+        <Button
+            onClick={() => {
+                if (isExternal) {
+                    window.open(redirect, '_blank');
+                } else {
+                    history.push(redirect);
+                }
+            }}
+        >
+            Open
+        </Button>
+    );
 };
 
 /**
@@ -98,8 +101,8 @@ const OptionsAndMultipliersContent = () => {
     const { data } = useActiveTradingAccount();
     const { isSuccess: isRegulationAccessible } = useIsEuRegion();
 
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
 
     const { isEU } = useRegulationFlags(activeRegulation);
 

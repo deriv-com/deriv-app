@@ -27,7 +27,7 @@ const Currencies = ({ type }: TCurrencies) => {
                 {type === CURRENCY_TYPES.CRYPTO ? 'Cryptocurrencies' : 'Fiat Currencies'}
             </Heading.H5>
             {type === CURRENCY_TYPES.FIAT && (
-                <InlineMessage className='my-800 w-[261px]' variant='info'>
+                <InlineMessage className='my-800 md:w-[261px]' variant='info'>
                     Please note that you can only have 1 fiat account.
                 </InlineMessage>
             )}

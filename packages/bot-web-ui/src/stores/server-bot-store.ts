@@ -112,12 +112,26 @@ export default class ServerBotStore implements IServerBotStore {
             .catch((error: Error) => {
                 /* eslint-disable no-console */
                 console.error(error);
-            });
+            })
+            .then(() => this.notifyBot(bot_id));
     };
 
     stopBot = (bot_id: string) => {
         this.makeRequest({
             bot_stop: 1,
+            bot_id,
+        })
+            .then(data => console.log(data))
+            .catch((error: Error) => {
+                /* eslint-disable no-console */
+                console.error(error);
+            });
+    };
+
+    notifyBot = (bot_id: string) => {
+        this.makeRequest({
+            bot_notification: 1,
+            subscribe: 1,
             bot_id,
         })
             .then(data => console.log(data))

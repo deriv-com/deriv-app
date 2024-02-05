@@ -11,12 +11,12 @@ const WalletsUpgradeModal = () => {
     const { toggleWalletsUpgrade } = traders_hub;
     const { is_mobile, is_desktop } = ui;
     const { is_eligible } = useWalletMigration();
-    const isWalletMigrationModalClosed = sessionStorage.getItem('is_wallet_migration_modal_closed');
+    const isWalletMigrationModalClosed = localStorage.getItem('is_wallet_migration_modal_closed');
     const [modalOpen, setModalOpen] = React.useState(!isWalletMigrationModalClosed);
 
     const closeModal = () => {
         setModalOpen(false);
-        sessionStorage.setItem('is_wallet_migration_modal_closed', 'true');
+        localStorage.setItem('is_wallet_migration_modal_closed', 'true');
     };
 
     const image = is_mobile ? 'upgrade_mobile' : 'upgrade_modal_desktop';

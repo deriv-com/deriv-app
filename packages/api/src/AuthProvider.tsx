@@ -25,17 +25,21 @@ type AuthProviderProps = {
     children: React.ReactNode;
 };
 
-async function waitForLogin(): Promise<string> {
-    const checkLogin = (resolve: (value: string) => void, reject: (reason?: any) => void) => {
+async function waitForLoginAndToken(): Promise<any> {
+    const checkLogin = (resolve: (value: any) => void, reject: (reason?: any) => void) => {
         const loginId = getActiveLoginIDFromLocalStorage();
-        if (loginId) {
-            resolve(loginId as unknown as string);
+        const token = getToken(loginId as string);
+        if (loginId && token) {
+            resolve({
+                loginId,
+                token,
+            });
         } else {
             setTimeout(checkLogin, 100, resolve, reject);
         }
     };
 
-    return new Promise<string>(checkLogin);
+    return new Promise<any>(checkLogin);
 }
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
@@ -55,8 +59,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setIsLoading(true);
         setIsSuccess(false);
 
-        waitForLogin().then(storedLoginId => {
-            const token = getToken(storedLoginId);
+        waitForLoginAndToken().then(({ token }) => {
             setIsLoading(true);
             setIsFetching(true);
             mutateAsync({ payload: { authorize: token || '' } })
@@ -78,14 +81,14 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const switchAccount = useCallback(
         (newLoginid: string) => {
-            queryClient.cancelQueries();
-
             // it shouldn't happen, but if it happens, at least do not break application, just log it
             if (newLoginid === loginid) {
                 // eslint-disable-next-line no-console
                 console.error('switchAccount: same loginid');
                 return;
             }
+
+            queryClient.cancelQueries();
 
             setIsLoading(true);
             mutateAsync({ payload: { authorize: getToken(newLoginid) || '' } }).then(res => {

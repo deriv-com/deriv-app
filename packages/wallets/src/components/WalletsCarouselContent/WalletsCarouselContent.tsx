@@ -49,6 +49,7 @@ const WalletsCarouselContent: React.FC<TProps> = ({ onWalletSettled }) => {
                 return;
             }
             const loginId = walletsAccountsListRef?.current?.[index]?.loginid;
+            setCurrentIndex(index);
 
             loginId && switchAccount(loginId);
         });

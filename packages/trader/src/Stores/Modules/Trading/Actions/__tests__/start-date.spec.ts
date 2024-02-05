@@ -35,123 +35,121 @@ jest.mock('@deriv/shared', () => {
     return {
         ...jest.requireActual('@deriv/shared'),
         WS: {
-            storage: {
-                contractsFor: jest.fn(() =>
-                    Promise.resolve({
-                        contracts_for: {
-                            available: [
-                                {
-                                    ...vanilla_contracts_for_data,
-                                    barrier: barrier_daily,
-                                    barrier_choices: barrier_choices_daily,
-                                    contract_display: 'Vanilla Long Call',
-                                    contract_type: 'VANILLALONGCALL',
-                                    expiry_type: 'daily',
-                                    max_contract_duration: '365d',
-                                    min_contract_duration: '1d',
-                                    sentiment: 'up',
-                                },
-                                {
-                                    ...vanilla_contracts_for_data,
-                                    barrier: barrier_daily,
-                                    barrier_choices: barrier_choices_daily,
-                                    contract_display: 'Vanilla Long Put',
-                                    contract_type: 'VANILLALONGPUT',
-                                    expiry_type: 'daily',
-                                    max_contract_duration: '365d',
-                                    min_contract_duration: '1d',
-                                    sentiment: 'down',
-                                },
-                                {
-                                    ...vanilla_contracts_for_data,
-                                    barrier: barrier_intraday,
-                                    barrier_choices: barrier_choices_intraday,
-                                    contract_display: 'Vanilla Long Call',
-                                    contract_type: 'VANILLALONGCALL',
-                                    expiry_type: 'intraday',
-                                    max_contract_duration: '1d',
-                                    min_contract_duration: '1m',
-                                    sentiment: 'up',
-                                },
-                                {
-                                    ...vanilla_contracts_for_data,
-                                    barrier: barrier_intraday,
-                                    barrier_choices: barrier_choices_intraday,
-                                    contract_display: 'Vanilla Long Put',
-                                    contract_type: 'VANILLALONGPUT',
-                                    expiry_type: 'intraday',
-                                    max_contract_duration: '1d',
-                                    min_contract_duration: '1m',
-                                    sentiment: 'down',
-                                },
-                            ],
-                            close: 1703203199,
-                            feed_license: 'realtime',
-                            hit_count: 47,
-                            non_available: [],
-                            open: 1703116800,
-                            spot: 6945.975,
-                        },
-                    })
-                ),
-            },
-            tradingTimes: jest.fn(() =>
+            contractsFor: jest.fn(() =>
                 Promise.resolve({
-                    trading_times: {
-                        markets: [
+                    contracts_for: {
+                        available: [
                             {
-                                name: 'Derived',
-                                submarkets: [
-                                    {
-                                        name: 'Continuous Indices',
-                                        symbols: [
-                                            {
-                                                events: [
-                                                    {
-                                                        dates: 'Fridays',
-                                                        descrip: 'Closes early (at 20:55)',
-                                                    },
-                                                    {
-                                                        dates: '2023-12-25',
-                                                        descrip: 'Christmas Day',
-                                                    },
-                                                    {
-                                                        dates: '2024-01-01',
-                                                        descrip: "New Year's Day",
-                                                    },
-                                                ],
-                                                name: 'AUD/JPY',
-                                                symbol: 'frxAUDJPY',
-                                                times: {
-                                                    close: ['23:59:59'],
-                                                    open: ['00:00:00'],
-                                                    settlement: '23:59:59',
-                                                },
-                                                trading_days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-                                            },
-                                            {
-                                                events: [],
-                                                name: 'Volatility 10 Index',
-                                                symbol: 'R_10',
-                                                times: {
-                                                    close: ['23:59:59'],
-                                                    open: ['00:00:00'],
-                                                    settlement: '23:59:59',
-                                                },
-                                                trading_days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                                            },
-                                        ],
-                                    },
-                                ],
+                                ...vanilla_contracts_for_data,
+                                barrier: barrier_daily,
+                                barrier_choices: barrier_choices_daily,
+                                contract_display: 'Vanilla Long Call',
+                                contract_type: 'VANILLALONGCALL',
+                                expiry_type: 'daily',
+                                max_contract_duration: '365d',
+                                min_contract_duration: '1d',
+                                sentiment: 'up',
+                            },
+                            {
+                                ...vanilla_contracts_for_data,
+                                barrier: barrier_daily,
+                                barrier_choices: barrier_choices_daily,
+                                contract_display: 'Vanilla Long Put',
+                                contract_type: 'VANILLALONGPUT',
+                                expiry_type: 'daily',
+                                max_contract_duration: '365d',
+                                min_contract_duration: '1d',
+                                sentiment: 'down',
+                            },
+                            {
+                                ...vanilla_contracts_for_data,
+                                barrier: barrier_intraday,
+                                barrier_choices: barrier_choices_intraday,
+                                contract_display: 'Vanilla Long Call',
+                                contract_type: 'VANILLALONGCALL',
+                                expiry_type: 'intraday',
+                                max_contract_duration: '1d',
+                                min_contract_duration: '1m',
+                                sentiment: 'up',
+                            },
+                            {
+                                ...vanilla_contracts_for_data,
+                                barrier: barrier_intraday,
+                                barrier_choices: barrier_choices_intraday,
+                                contract_display: 'Vanilla Long Put',
+                                contract_type: 'VANILLALONGPUT',
+                                expiry_type: 'intraday',
+                                max_contract_duration: '1d',
+                                min_contract_duration: '1m',
+                                sentiment: 'down',
                             },
                         ],
-                    },
-                    echo_req: {
-                        trading_times: '2023-12-25',
+                        close: 1703203199,
+                        feed_license: 'realtime',
+                        hit_count: 47,
+                        non_available: [],
+                        open: 1703116800,
+                        spot: 6945.975,
                     },
                 })
             ),
         },
+        tradingTimes: jest.fn(() =>
+            Promise.resolve({
+                trading_times: {
+                    markets: [
+                        {
+                            name: 'Derived',
+                            submarkets: [
+                                {
+                                    name: 'Continuous Indices',
+                                    symbols: [
+                                        {
+                                            events: [
+                                                {
+                                                    dates: 'Fridays',
+                                                    descrip: 'Closes early (at 20:55)',
+                                                },
+                                                {
+                                                    dates: '2023-12-25',
+                                                    descrip: 'Christmas Day',
+                                                },
+                                                {
+                                                    dates: '2024-01-01',
+                                                    descrip: "New Year's Day",
+                                                },
+                                            ],
+                                            name: 'AUD/JPY',
+                                            symbol: 'frxAUDJPY',
+                                            times: {
+                                                close: ['23:59:59'],
+                                                open: ['00:00:00'],
+                                                settlement: '23:59:59',
+                                            },
+                                            trading_days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                                        },
+                                        {
+                                            events: [],
+                                            name: 'Volatility 10 Index',
+                                            symbol: 'R_10',
+                                            times: {
+                                                close: ['23:59:59'],
+                                                open: ['00:00:00'],
+                                                settlement: '23:59:59',
+                                            },
+                                            trading_days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                echo_req: {
+                    trading_times: '2023-12-25',
+                },
+            })
+        ),
     };
 });
 

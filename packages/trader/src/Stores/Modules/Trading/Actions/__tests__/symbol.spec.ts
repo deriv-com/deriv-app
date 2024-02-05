@@ -4,15 +4,13 @@ import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     WS: {
-        storage: {
-            contractsFor: jest.fn(() =>
-                Promise.resolve({
-                    contracts_for: {
-                        available: [],
-                    },
-                })
-            ),
-        },
+        contractsFor: jest.fn(() =>
+            Promise.resolve({
+                contracts_for: {
+                    available: [],
+                },
+            })
+        ),
     },
 }));
 

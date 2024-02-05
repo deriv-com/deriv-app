@@ -6,18 +6,18 @@ import FlyoutMenu from '../FlyoutMenu';
 const flyoutItems = ['item1', 'item2', 'item3'];
 
 describe('FlyoutMenu', () => {
-    it('it should render the flyout menu correctly', () => {
+    it('should render the flyout menu correctly', () => {
         render(<FlyoutMenu listItems={flyoutItems} renderIcon={() => 'MockIcCashierVerticalEllipsis'} />);
         expect(screen.getByText('MockIcCashierVerticalEllipsis')).toBeInTheDocument();
     });
-    it('it should display the menu items when the icon is clicked', () => {
+    it('should display the menu items when the icon is clicked', () => {
         render(<FlyoutMenu listItems={flyoutItems} />);
         userEvent.click(screen.getByTestId('dt_p2p_v2_flyout_toggle'));
         flyoutItems.forEach(item => {
             expect(screen.getByText(item)).toBeInTheDocument();
         });
     });
-    it('should call the usecallback callback, when the parent is clicked', () => {
+    it('should hide the flyout menu when the parent is clicked', () => {
         render(
             <div data-testid='dt_p2p_v2_flyout_parent'>
                 <FlyoutMenu listItems={flyoutItems} />

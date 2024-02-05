@@ -14,8 +14,11 @@ Blockly.Blocks.procedures_defreturn = {
 
         // Render a ➕-icon for adding parameters
         const fieldImage = new Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.onAddClick());
+        const fieldImage2 = new Blockly.FieldImage(plusIconDark, 24, 24, '+', () => this.setCollapsed(true));
         this.appendDummyInput('ADD_ICON').appendField(fieldImage);
+        this.appendDummyInput('ADD_ICON2').appendField(fieldImage2);
         this.moveInputBefore('ADD_ICON', 'RETURN');
+        this.moveInputBefore('ADD_ICON2', 'RETURN');
 
         this.setStatements(true);
     },

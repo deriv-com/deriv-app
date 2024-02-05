@@ -17,6 +17,11 @@ export function valuesReducer(state: TState, action: TActions) {
                 firstName: payload.firstName,
                 lastName: payload.lastName,
             };
+        case ACTION_TYPES.SET_ADDRESS:
+            return {
+                ...state,
+                ...payload,
+            };
         default:
             return state;
     }

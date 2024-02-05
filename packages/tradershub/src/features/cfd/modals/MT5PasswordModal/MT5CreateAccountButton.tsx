@@ -8,7 +8,6 @@ import { MarketType, TTM5FilterLandingCompany } from '../../constants';
 type TCreateAccountButtonProps = {
     buttonText: string;
     password: string;
-    selectedJurisdiction?: TTM5FilterLandingCompany;
 };
 
 const MT5CreateAccountButton = ({ buttonText, password }: TCreateAccountButtonProps) => {

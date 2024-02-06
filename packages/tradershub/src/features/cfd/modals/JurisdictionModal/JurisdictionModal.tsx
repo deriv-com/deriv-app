@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useAvailableMT5Accounts } from '@deriv/api';
 import { Provider } from '@deriv/library';
-import { Button, Heading, useBreakpoint } from '@deriv/quill-design';
+import { Heading, useBreakpoint } from '@deriv/quill-design';
+import { Button } from '@deriv-com/ui';
 import { useUIContext } from '../../../../components';
 import { Modal } from '../../../../components/Modal';
 import useRegulationFlags from '../../../../hooks/useRegulationFlags';
@@ -18,8 +19,8 @@ const JurisdictionModal = () => {
     const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
 
     const { show } = Provider.useModal();
-    const { getUIState } = useUIContext();
-    const activeRegulation = getUIState('regulation');
+    const { uiState } = useUIContext();
+    const activeRegulation = uiState.regulation;
     const { isEU } = useRegulationFlags(activeRegulation);
     const { getCFDState, setCfdState } = Provider.useCFDContext();
 
@@ -75,7 +76,7 @@ const JurisdictionModal = () => {
                                 !selectedJurisdiction ||
                                 (selectedJurisdiction !== Jurisdiction.SVG && !isCheckBoxChecked)
                             }
-                            fullWidth={isMobile}
+                            isFullWidth={isMobile}
                             onClick={() => show(<JurisdictionFlow />)}
                         >
                             Next

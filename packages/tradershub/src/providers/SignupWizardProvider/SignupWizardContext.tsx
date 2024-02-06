@@ -5,6 +5,7 @@ import { valuesReducer } from './ValuesReducer';
 
 export const ACTION_TYPES = {
     RESET: 'RESET',
+    SET_ADDRESS: 'SET_ADDRESS',
     SET_CURRENCY: 'SET_CURRENCY',
     SET_PERSONAL_DETAILS: 'SET_PERSONAL_DETAILS',
 } as const;

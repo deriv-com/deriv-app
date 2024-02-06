@@ -48,11 +48,9 @@ const CurrencySwitcher = () => {
     const { data: activeAccount, isSuccess } = useActiveTradingAccount();
     const isDemo = activeAccount?.is_virtual;
     const { show } = Provider.useModal();
-    const { getUIState } = useUIContext();
+    const { uiState } = useUIContext();
 
-    const accountType = getUIState('accountType');
-
-    const regulation = getUIState('regulation');
+    const { accountType, regulation } = uiState;
 
     const { noRealCRNonEUAccount, noRealMFEUAccount } = useRegulationFlags(regulation, accountType);
 

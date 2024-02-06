@@ -71,6 +71,12 @@ export type TStrategies = {
     [key: string]: TStrategy;
 };
 
+export type TShouldHave = {
+    key: string;
+    value: string | number | boolean;
+    multiple?: Array<string>;
+};
+
 export type TRsStrategyType =
     | `d'alembert`
     | `martingale`

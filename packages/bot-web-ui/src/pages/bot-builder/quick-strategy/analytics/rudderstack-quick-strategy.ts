@@ -10,6 +10,7 @@ enum ACTION {
     SWITCH_STRATEGY_MODE = 'switch_strategy_mode',
     RUN_STRATEGY = 'run_strategy',
     EDIT_STRATEGY = 'edit_strategy',
+    CHANGE_PARAMETER_VALUE = 'change_parameter_value',
 }
 
 enum DURATION_TYPE_MAP {
@@ -112,5 +113,23 @@ export const rudderStackSendQsSelectedTabEvent = ({
         action: ACTION.SWITCH_STRATEGY_MODE,
         form_name,
         strategy_switcher_mode,
+    });
+};
+
+export const rudderStackSendQsParameterChangeEvent = ({
+    parameter_type,
+    parameter_value,
+    parameter_field_type,
+    manual_parameter_input,
+    plus_minus_push,
+}: TEvents['ce_bot_quick_strategy_form']) => {
+    Analytics.trackEvent('ce_bot_quick_strategy_form', {
+        action: ACTION.CHANGE_PARAMETER_VALUE,
+        form_name,
+        parameter_type,
+        parameter_value,
+        parameter_field_type,
+        plus_minus_push,
+        manual_parameter_input,
     });
 };

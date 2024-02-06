@@ -27,12 +27,14 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                 <Field name='document_number'>
                     {({ field, meta }: FieldProps) => {
                         const hasError = meta.touched && !!meta.error;
+                        const fieldLabel = `${fieldsConfig.documentNumber.label}*`;
                         return (
                             <Input
                                 {...field}
+                                aria-label={fieldLabel}
                                 className='h-2100 w-full'
                                 error={hasError}
-                                label={`${fieldsConfig.documentNumber.label}*`}
+                                label={fieldLabel}
                                 message={hasError ? meta.error : ''}
                             />
                         );
@@ -40,7 +42,7 @@ export const ManualFormInputs = ({ selectedDocument }: TManualFormInputsProps) =
                 </Field>
                 {isExpiryDateRequired && (
                     <Field name='document_expiry'>
-                        {({ field, meta, form }: FieldProps) => (
+                        {({ field, form, meta }: FieldProps) => (
                             <WalletDatePicker
                                 {...field}
                                 errorMessage={meta.error}

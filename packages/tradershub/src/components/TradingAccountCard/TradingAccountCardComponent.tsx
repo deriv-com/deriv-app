@@ -12,7 +12,9 @@ export const TradingAccountCardContent = ({ children, title }: TTradingAccountCa
         <Text className='leading-200' size='sm' weight='bold'>
             {title}
         </Text>
-        <Text className='text-[12px] leading-100 w-5/6 lg:w-full'>{children}</Text>
+        <Text className='w-5/6 leading-100 lg:w-full' size='xs'>
+            {children}
+        </Text>
     </div>
 );
 
